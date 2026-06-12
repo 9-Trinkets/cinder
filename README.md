@@ -58,7 +58,7 @@ Enable Synapse event traces:
 cargo run -p cinder -- --trace-events
 ```
 
-Trace files are written under `examples/cinder/.cinder-state/runs/`.
+Trace files are written under `.cinder-state/runs/`.
 
 Display language can be switched in-game from `? Menu` → `Language`.
 
