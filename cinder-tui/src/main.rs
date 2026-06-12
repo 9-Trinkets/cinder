@@ -1,3 +1,11 @@
+mod cli;
+mod effects;
+mod input;
+mod projector;
+mod render;
+mod theme;
+mod transcript;
+
 use clap::Parser;
 use std::error::Error;
 
@@ -13,5 +21,7 @@ struct Cli {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let cli = Cli::parse();
-    cinder::run_cli(cli.trace_events, &cli.content)
+    let pack = cinder_core::content::loader::load_named_pack(&cli.content, None)?;
+    let runtime = cinder_core::CinderRuntime::new(pack, cli.trace_events)?;
+    cli::run(runtime)
 }

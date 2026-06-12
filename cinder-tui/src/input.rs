@@ -1,4 +1,4 @@
-use crate::tui::render::PaneFocus;
+use crate::render::PaneFocus;
 use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
 
 pub(crate) struct InputContext {

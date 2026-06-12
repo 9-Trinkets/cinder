@@ -184,7 +184,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "613afe47fcd5fac7ccf1db93babcb082c5994d996f20b8b159f2ad1658eb5724"
 
 [[package]]
-name = "cinder"
+name = "cinder-core"
+version = "0.1.0"
+dependencies = [
+ "neuron-app",
+ "serde",
+ "serde_json",
+ "toml",
+]
+
+[[package]]
+name = "cinder-tui"
 version = "0.1.0"
 dependencies = [
  "cinder-core",
@@ -193,16 +203,6 @@ dependencies = [
  "ratatui",
  "serde_json",
  "tachyonfx",
-]
-
-[[package]]
-name = "cinder-core"
-version = "0.1.0"
-dependencies = [
- "neuron-app",
- "serde",
- "serde_json",
- "toml",
 ]
 
 [[package]]

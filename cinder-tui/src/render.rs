@@ -1,7 +1,7 @@
-use crate::tui::effects::{TimedTextPlayback, TranscriptAnimationSnapshot};
-use crate::tui::projector;
-use crate::tui::theme::RosePineMoon;
-use crate::tui::transcript;
+use crate::effects::{TimedTextPlayback, TranscriptAnimationSnapshot};
+use crate::projector;
+use crate::theme::RosePineMoon;
+use crate::transcript;
 use cinder_core::content::types::UiTextDefinition;
 use cinder_core::MenuChoiceOption;
 use ratatui::Frame;

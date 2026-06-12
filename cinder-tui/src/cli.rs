@@ -1,8 +1,8 @@
-use crate::tui::effects::{TimedTextPlayback, TranscriptAnimationSnapshot, TranscriptTypewriter};
-use crate::tui::input::{self, InputAction, InputContext, ShellModalKind};
-use crate::tui::projector;
-use crate::tui::render::{self, MenuSnapshot, PaneFocus, RenderSnapshot, ShellModalSnapshot};
-use crate::tui::transcript;
+use crate::effects::{TimedTextPlayback, TranscriptAnimationSnapshot, TranscriptTypewriter};
+use crate::input::{self, InputAction, InputContext, ShellModalKind};
+use crate::projector;
+use crate::render::{self, MenuSnapshot, PaneFocus, RenderSnapshot, ShellModalSnapshot};
+use crate::transcript;
 use cinder_core::content::loader::{
     LocaleOption, available_locales, load_pack_from_dir_with_locale, pack_dir,
 };
