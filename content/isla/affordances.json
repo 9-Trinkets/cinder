@@ -1,0 +1,29 @@
+{
+  "actions": [
+    {
+      "id": "speak",
+      "group": "social",
+      "prompt_verb": "speak to",
+      "prompt_reply_verb": "reply to",
+      "command_id": "speak",
+      "sort_order": 0,
+      "visible_by_default": true
+    },
+    {
+      "id": "inspect_feature",
+      "group": "observe",
+      "prompt_verb": "inspect",
+      "command_id": "inspect_feature",
+      "sort_order": 1,
+      "visible_by_default": true
+    },
+    {
+      "id": "inspect_actor",
+      "group": "observe",
+      "prompt_verb": "study",
+      "command_id": "inspect_actor",
+      "sort_order": 2,
+      "visible_by_default": true
+    }
+  ]
+}

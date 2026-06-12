@@ -1,0 +1,9 @@
+{
+  "typewriter_char_ms": 7,
+  "npc_tick_interval_ms": 4000,
+  "tick_minutes_per_turn": 10,
+  "default_language": "en",
+  "channel_surfing_only": true,
+  "autonomous_actor_dialogue": true,
+  "speech_stamina_cost_floor": 0
+}

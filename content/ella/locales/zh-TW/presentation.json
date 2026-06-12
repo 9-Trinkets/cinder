@@ -1,0 +1,24 @@
+{
+  "error_text": {
+    "room_missing": "找不到房間資料。",
+    "cannot_go": "你現在沒辦法從這裡去 {target}。",
+    "actor_not_here": "{actor_name} 現在不在這裡。",
+    "actor_unknown": "這裡沒有叫 {target} 的人。",
+    "feature_unknown": "這裡沒有你說的 {target}。",
+    "unknown_input": "我現在還看不懂 `{raw_input}`。可以試試 {available_commands}。",
+    "dialogue_unavailable": "{actor_name} 現在沒有回應。對話錯誤：{error}"
+  },
+  "presentation_text": {
+    "room_observation": "== {room_title} ==\n{body}{features}{people}{exits}",
+    "objective": "\n\n現在要做的事：\n{objective}",
+    "features": "\n\n你注意到：{features}。",
+    "people": "\n\n這裡的人：{people}。",
+    "exits": "\n\n可前往：{exits}。",
+    "feature_consumables": "\n\n{feature_label}這裡現在有：{items}。",
+    "actor_speech": "{actor_name}：{text}",
+    "actor_targeted_speech": "{actor_name}（對 {target_name}）：{text}",
+    "actor_departed": "{actor_name}往{room_title}那邊去了。",
+    "actor_arrived": "{actor_name}從{room_title}那頭走了進來。",
+    "session_ended": "整個家又安靜了下來。"
+  }
+}

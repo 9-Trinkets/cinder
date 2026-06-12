@@ -1,0 +1,291 @@
+{
+  "initial_stage_ids": [
+    "intake",
+    "timeout-watch-transformative",
+    "timeout-watch-partial",
+    "timeout-watch-misaligned"
+  ],
+  "stages": [
+    {
+      "id": "intake",
+      "summary": "Listen and map the emotional pattern.",
+      "update_message": "Intake begins. Let Noa tell the story before trying to solve it. Use `recommend` when ready to offer a book.",
+      "beat_note": "This is the trust-building phase. Noa is articulate but practiced at keeping the real wound just out of reach. She will give you the version of herself she has practiced giving everyone. Beneath her composure is a fourteen-year-old who learned that feelings this big break things and love is conditional on performance. You cannot rush this. She needs to feel that this space costs her nothing before she will let you see what is actually there. Let her talk. When she pauses, hold the silence instead of filling it. Watch for the moment her polished summary gives way to something smaller and less certain. Type 'recommend' only when the conversation has reached enough depth that a book feels like the right next step.\n\nThe method depends on dissolving the outside world. Noa's phone is face-down. There is no clock. Let the conversation take as long as it needs — time is not the constraint here.",
+      "advance_signals": ["recommendation_started"],
+      "next_stage_id": "book-selection"
+    },
+    {
+      "id": "book-selection",
+      "summary": "Choose one of three books.",
+      "update_message": "Noa is ready for a recommendation.",
+      "beat_note": "Your recommendation sets the baseline fit of the session. Each book represents a different approach: reaching for unresolved grief, building slow honesty through routine, or hiding behind control disguised as discipline. Consider what Noa revealed during intake.",
+      "advance_signals": ["menu_selected:book-recommendation"],
+      "next_stage_id": "reading-quarter"
+    },
+    {
+      "id": "reading-quarter",
+      "summary": "Noa enters the first quarter of the book.",
+      "update_message": "Noa starts reading. Watch for early resistance or relief.",
+      "beat_note": "The first checkpoint reveals whether the book is landing. Noa reads in the window nook while Isla works the espresso bar or shelves. The early pages are testing the fit: she is checking whether the story speaks to her pattern or just talks around it. She has not touched her phone once. The outside world is already fading.",
+      "narrative_lines": [
+        "Noa settles into the reading nook with the book held open in one hand, her other hand wrapped around the warm cup.",
+        "The rain picks up against the glass. Noa turns a page without looking up.",
+        "She reads through the first chapter in near silence, only the occasional shift of her weight in the deep chair."
+      ],
+      "elapsed_minutes": 12,
+      "advance_signals": ["reading_step"],
+      "next_stage_id": "request-quarter"
+    },
+    {
+      "id": "request-quarter",
+      "summary": "First reading checkpoint — reflection and support.",
+      "update_message": "Noa pauses at the end of the first quarter. Let her reflect before deciding how to continue.",
+      "beat_note": "Noa has read enough to know whether the book fits. She should share an honest reflection about what the early chapters stirred in her — the depth depends on current trust level (actor.state_notes). This is a moment for genuine exchange, not just a menu. After the reflection lands and the player responds, guide naturally toward requesting support or returning to the book. Use 'continue' or the support menu to advance when ready.",
+      "narrative_lines": [
+        "Noa closes the book on her finger and looks up. She has made it through the first quarter.",
+        "The early chapters have landed enough for her to want to continue, but something in her expression is guarded.",
+        "She presses her palm flat against the cover as if steadying herself before she speaks."
+      ],
+      "elapsed_minutes": 3,
+      "advance_signals": ["menu_selected:request-quarter", "reading_step"],
+      "next_stage_id": "reading-half"
+    },
+    {
+      "id": "reading-half",
+      "summary": "Noa reaches the middle and the themes intensify.",
+      "update_message": "Noa reaches the middle chapters. The emotional load increases.",
+      "beat_note": "Stay responsive without over-directing. The middle of the book is where Noa's identified pattern starts to surface in the story. She may read more slowly here, pause more often, or look up from the page as if checking whether anyone noticed. Let the silence hold her — she is deeper in the book than she realizes.",
+      "narrative_lines": [
+        "Noa reads the middle section with her jaw slightly tensed. She stops twice to look out at the rain.",
+        "A longer pause around page seventy, where the central character makes the choice Noa recognizes in herself.",
+        "The cafe feels smaller now, the low music wrapping around the space between two people who are not quite speaking."
+      ],
+      "elapsed_minutes": 12,
+      "advance_signals": ["reading_step"],
+      "next_stage_id": "request-half"
+    },
+    {
+      "id": "request-half",
+      "summary": "Second reading checkpoint — reflection and regulation.",
+      "update_message": "Noa reaches the halfway point. Give space for the reflection before moving forward.",
+      "beat_note": "The middle chapters have likely hit harder than Noa expected. She should reflect on what surfaced — the depth of revelation depends on current trust (actor.state_notes). This checkpoint is where the session pivots from reading to real processing. Let the reflection breathe. After the conversation, guide toward requesting a regulation pause or continuing. Use 'continue' or the support menu to advance.",
+      "narrative_lines": [
+        "Noa sets the book face-down on the arm of the chair, careful to keep her place.",
+        "The middle section has clearly reached her. She is quieter now, her usual composure frayed at the edges.",
+        "She rubs the bridge of her nose before looking up, and you notice her hand is not entirely steady."
+      ],
+      "elapsed_minutes": 3,
+      "advance_signals": ["menu_selected:request-half", "reading_step"],
+      "next_stage_id": "reading-three-quarters"
+    },
+    {
+      "id": "reading-three-quarters",
+      "summary": "Late-stage reading where defenses can reopen.",
+      "update_message": "Noa enters the final stretch. Fatigue and insight are both high.",
+      "beat_note": "Late pacing choices decide whether the ending integrates or fragments. Noa is tired and more transparent than she realizes. Defenses that dropped mid-reading may start returning as the book end approaches, because closing the book means sitting with what surfaced.",
+      "narrative_lines": [
+        "Noa is reading faster now, as if racing toward a conclusion she both wants and dreads.",
+        "She pauses at the start of the final section, her thumb marking the page, staring at nothing.",
+        "The cafe has settled into a deep stillness. No more refills. The boundary between the book and the room has blurred."
+      ],
+      "elapsed_minutes": 12,
+      "advance_signals": ["reading_step"],
+      "next_stage_id": "request-three-quarters"
+    },
+    {
+      "id": "request-three-quarters",
+      "summary": "Final reading checkpoint — reflection and pacing decision.",
+      "update_message": "The book is nearly done. Noa needs to decide how to handle the final stretch.",
+      "beat_note": "This is the last decision point before the ending. Noa should reflect on what the full journey of the book has meant — the depth depends on current trust (actor.state_notes). She is asking you to help her regulate the landing. After reflection, guide toward deciding whether to finish first and then talk, or pause briefly before the ending. Use 'continue' or the pacing menu to advance.",
+      "narrative_lines": [
+        "Noa is holding the book open near the end, her thumb marking a spot three pages from the final chapter.",
+        "She looks exhausted in a way that has nothing to do with the hour. The book has done its work.",
+        "The rain has stopped outside. The cafe feels smaller and more still than it did when she started."
+      ],
+      "elapsed_minutes": 3,
+      "advance_signals": ["menu_selected:request-three-quarters", "reading_step"],
+      "next_stage_id": "ready-to-finish"
+    },
+    {
+      "id": "ready-to-finish",
+      "summary": "Noa is ready to finish the book.",
+      "update_message": "Noa is ready to close the final pages.\n\nHint: Type 'finish reading' to end the session.",
+      "beat_note": "When ready, use `finish reading` to resolve the session. There is no rush — let her close the book when she is ready to sit with what surfaced.",
+      "elapsed_minutes": 5,
+      "advance_signals": ["reading_complete"],
+      "next_stage_ids": [
+        "ending-transformative-candidate",
+        "ending-partial-candidate",
+        "ending-misaligned-candidate"
+      ]
+    },
+    {
+      "id": "ending-transformative-candidate",
+      "summary": "Candidate routing stage.",
+      "advance_signals": [
+        {
+          "signal": "ending_check",
+          "conditions": [
+            { "path": "actor_stats.noa.outcome_score", "operator": "gte", "value": 6 }
+          ]
+        }
+      ],
+      "next_stage_id": "ending-transformative"
+    },
+    {
+      "id": "ending-partial-candidate",
+      "summary": "Candidate routing stage.",
+      "advance_signals": [
+        {
+          "signal": "ending_check",
+          "conditions": [
+            { "path": "actor_stats.noa.outcome_score", "operator": "gte", "value": 2 },
+            { "path": "actor_stats.noa.outcome_score", "operator": "lte", "value": 5 }
+          ]
+        }
+      ],
+      "next_stage_id": "ending-partial"
+    },
+    {
+      "id": "ending-misaligned-candidate",
+      "summary": "Candidate routing stage.",
+      "advance_signals": [
+        {
+          "signal": "ending_check",
+          "conditions": [
+            { "path": "actor_stats.noa.outcome_score", "operator": "lte", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_id": "ending-misaligned"
+    },
+    {
+      "id": "timeout-watch-transformative",
+      "advance_signals": [
+        {
+          "signal": "time_reached:22:00",
+          "conditions": [
+            { "path": "actor_stats.noa.outcome_score", "operator": "gte", "value": 6 }
+          ]
+        },
+        {
+          "signal": "session_terminated",
+          "conditions": [
+            { "path": "actor_stats.noa.outcome_score", "operator": "gte", "value": 6 }
+          ]
+        }
+      ],
+      "next_stage_id": "ending-timeout-transformative"
+    },
+    {
+      "id": "timeout-watch-partial",
+      "advance_signals": [
+        {
+          "signal": "time_reached:22:00",
+          "conditions": [
+            { "path": "actor_stats.noa.outcome_score", "operator": "gte", "value": 2 },
+            { "path": "actor_stats.noa.outcome_score", "operator": "lte", "value": 5 }
+          ]
+        },
+        {
+          "signal": "session_terminated",
+          "conditions": [
+            { "path": "actor_stats.noa.outcome_score", "operator": "gte", "value": 2 },
+            { "path": "actor_stats.noa.outcome_score", "operator": "lte", "value": 5 }
+          ]
+        }
+      ],
+      "next_stage_id": "ending-timeout-partial"
+    },
+    {
+      "id": "timeout-watch-misaligned",
+      "advance_signals": [
+        {
+          "signal": "time_reached:22:00",
+          "conditions": [
+            { "path": "actor_stats.noa.outcome_score", "operator": "lte", "value": 1 }
+          ]
+        },
+        {
+          "signal": "session_terminated",
+          "conditions": [
+            { "path": "actor_stats.noa.outcome_score", "operator": "lte", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_id": "ending-timeout-misaligned"
+    },
+    {
+      "id": "ending-transformative",
+      "summary": "Transformative fit.",
+      "update_message": "Noa closes the book with steadier breath and clearer language for what hurt her.",
+      "narrative_lines": [
+        "Outcome: Transformative.",
+        "She says the story did not solve her life, but it gave her a way to stop repeating it blindly.",
+        "Before leaving, Noa asks if she can come back next week and continue from this exact point."
+      ],
+      "end_session": true,
+      "next_chapter_preview": "A stronger patient may return with a more difficult truth next session."
+    },
+    {
+      "id": "ending-partial",
+      "summary": "Partial fit.",
+      "update_message": "Noa closes the book with mixed feelings: clearer in some places, defended in others.",
+      "narrative_lines": [
+        "Outcome: Partial.",
+        "She can name one pattern she wants to change, but not yet the fear underneath it.",
+        "She thanks you for the session and leaves with a cautious kind of hope."
+      ],
+      "end_session": true,
+      "next_chapter_preview": "Another session could either deepen trust or reveal a harder resistance."
+    },
+    {
+      "id": "ending-misaligned",
+      "summary": "Misaligned fit.",
+      "update_message": "Noa closes the book politely, but the distance between words and feeling remains.",
+      "narrative_lines": [
+        "Outcome: Misaligned.",
+        "She says she appreciated the space, though her voice suggests the book missed something central.",
+        "When the door chime fades, you are left with the sense that care without fit can still fail."
+      ],
+      "end_session": true,
+      "next_chapter_preview": "Future sessions may demand sharper recommendations and softer control."
+    },
+    {
+      "id": "ending-timeout-transformative",
+      "summary": "Session reached its natural end with strong progress.",
+      "update_message": "Noa has read deep into the book, but the final pages remain. The absorption has done its work, even if the story is not fully closed.",
+      "narrative_lines": [
+        "Outcome: Absorption (Strong Progress).",
+        "Noa has not reached the final page, but she leaves with language she did not have when she arrived. The book has already changed something.",
+        "She asks if she can come back to finish. The door chime sounds, soft and final."
+      ],
+      "end_session": true,
+      "next_chapter_preview": "A continuation session may let the final pages complete what the first half began."
+    },
+    {
+      "id": "ending-timeout-partial",
+      "summary": "Session reached its natural end with mixed progress.",
+      "update_message": "Noa read through the middle, but the absorption never fully took hold. The session ends with partial insight.",
+      "narrative_lines": [
+        "Outcome: Absorption (Partial).",
+        "Noa can name one pattern she wants to change, but not yet the fear underneath it. The book reached her, but not all the way.",
+        "She thanks you and leaves with a cautious kind of hope. The door chime fades into the rain."
+      ],
+      "end_session": true,
+      "next_chapter_preview": "The next session is a pivotal chance to rebuild depth before politeness hardens into distance."
+    },
+    {
+      "id": "ending-timeout-misaligned",
+      "summary": "Session reached its natural end with low progress.",
+      "update_message": "Noa read, but the disconnect never happened. The outside world stayed too close.",
+      "narrative_lines": [
+        "Outcome: Absorption (Low Progress).",
+        "Noa thanks you courteously, but her posture says the session never reached the real wound. The book was a miss, or the timing was off.",
+        "The door chime sounds. You are left with a clean cafe and the feeling that care without fit can still fail."
+      ],
+      "end_session": true,
+      "next_chapter_preview": "Future sessions may require a different recommendation strategy and softer intervention timing."
+    }
+  ]
+}

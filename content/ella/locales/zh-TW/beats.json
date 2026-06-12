@@ -1,0 +1,150 @@
+{
+  "initial_stage_ids": [
+    "join-mom",
+    "go-to-kitchen"
+  ],
+  "stages": [
+    {
+      "id": "join-mom",
+      "summary": "去客廳找媽媽。",
+      "beat_note": "媽媽在客廳等她。",
+      "update_message": "",
+      "advance_signals": [
+        "room_entered:living-room"
+      ],
+      "next_stage_id": "talk-with-mom"
+    },
+    {
+      "id": "talk-with-mom",
+      "summary": "跟媽媽說，好，今晚一起看電影。",
+      "beat_note": "媽媽提了電影的事，艾拉還沒真正答應。",
+      "update_message": "目標更新：跟媽媽說今晚一起看電影。",
+      "advance_signals": [
+        "menu_opened:movie-night"
+      ],
+      "next_stage_id": "choose-movie"
+    },
+    {
+      "id": "choose-movie",
+      "summary": "從媽媽想看的片單裡挑一部。",
+      "beat_note": "媽媽把選擇丟給她了，現在輪到艾拉決定。",
+      "update_message": "目標更新：從媽媽想看的片單裡挑一部。",
+      "advance_signals": [
+        "menu_selected:movie-night"
+      ],
+      "next_stage_id": "dad-brings-fruit"
+    },
+    {
+      "id": "dad-brings-fruit",
+      "summary": "爸爸在切水果，等他過來再一起開始。",
+      "beat_note": "爸爸還在廚房忙，電影還沒真正開場。",
+      "update_message": "目標更新：爸爸在切水果，等他過來再一起開始。",
+      "advance_signals": [
+        "actor_entered:dad:living-room"
+      ],
+      "next_stage_id": "movie-afterglow"
+    },
+    {
+      "id": "movie-afterglow",
+      "summary": "《{movie_title}》剛播完，再陪家人坐一下。",
+      "beat_note": "電影剛看完，三個人都還捨不得立刻散。",
+      "update_message": "目標更新：《{movie_title}》剛播完，再陪家人坐一下。",
+      "elapsed_minutes": 95,
+      "projector_sequence_var_key": "movie_choice_id",
+      "narrative_lines": [
+        "燈一暗，投影機就開始低低地轉，牆上很快亮了起來。",
+        "看到喜歡的地方，總有人下意識伸手指一下，然後自己又笑著縮回去。",
+        "播到一半，媽媽提起以前週末租片的事，說那時候總是站在店裡挑很久，最後還是會租到差不多的片。",
+        "爸爸也笑，說第一次帶艾拉去電影院，她開場沒多久就睡著，醒來還硬要裝作自己都有看懂。",
+        "片尾跑完，客廳反而更安靜，也更近。好像明天的事暫時被往後推了一點。",
+        "爸爸：等我一下，我先把水果盤拿去沖一沖，不然等一下會黏住。"
+      ],
+      "advance_signals": [
+        "room_left:living-room"
+      ]
+    },
+    {
+      "id": "go-to-kitchen",
+      "summary": "去廚房找爸爸。",
+      "beat_note": "爸爸還在廚房，艾拉還沒去跟他說話。",
+      "update_message": "目標更新：去廚房找爸爸。",
+      "advance_signals": [
+        "room_entered:kitchen"
+      ],
+      "next_stage_id": "talk-with-dad"
+    },
+    {
+      "id": "talk-with-dad",
+      "summary": "跟爸爸決定要不要弄點宵夜。",
+      "beat_note": "爸爸就在廚房，艾拉只要開口，今晚的宵夜就會真的開始。",
+      "update_message": "目標更新：跟爸爸決定要不要弄點宵夜。",
+      "actor_relocations": [
+        {
+          "actor_id": "dad",
+          "to_room_id": "kitchen"
+        }
+      ],
+      "advance_signals": [
+        "menu_opened:late-night-snack"
+      ],
+      "next_stage_id": "choose-snack"
+    },
+    {
+      "id": "choose-snack",
+      "summary": "選一樣跟爸爸一起弄的宵夜。",
+      "beat_note": "爸爸已經把問題丟回來了，現在看艾拉想吃什麼。",
+      "update_message": "目標更新：選一樣跟爸爸一起弄的宵夜。",
+      "advance_signals": [
+        "menu_selected:late-night-snack"
+      ],
+      "next_stage_id": "snack-afterglow"
+    },
+    {
+      "id": "snack-afterglow",
+      "summary": "你和爸爸剛弄好 {snack_title}，再陪他待一會。",
+      "beat_note": "廚房裡還有 {snack_title} 的香味，你們兩個也還沒想這麼快散。",
+      "update_message": "目標更新：你和爸爸剛弄好 {snack_title}，再陪他待一會。",
+      "elapsed_minutes": 25,
+      "advance_signals": [
+        "room_left:kitchen"
+      ]
+    },
+    {
+      "id": "go-to-bed",
+      "summary": "回房間準備睡。",
+      "beat_note": "今晚差不多了，只剩回房間，讓心也慢慢靜下來。",
+      "update_message": "",
+      "advance_signals": [
+        "room_entered:bedroom"
+      ],
+      "next_stage_id": "goodnight-ending"
+    },
+    {
+      "id": "goodnight-ending",
+      "summary": "",
+      "beat_note": "爸媽等一下會來跟艾拉道晚安。",
+      "next_chapter_preview": "明天就是離開的日子。下一章會從早晨道別、最後幾個小小的日常動作，還有真正踏出家門的那一刻開始。",
+      "update_message": "",
+      "actor_relocations": [
+        {
+          "actor_id": "mom",
+          "to_room_id": "bedroom"
+        },
+        {
+          "actor_id": "dad",
+          "to_room_id": "bedroom"
+        }
+      ],
+      "elapsed_minutes": 8,
+      "end_session": true,
+      "narrative_lines": [
+        "過了一會兒，媽媽先在門口敲了兩下，爸爸跟在她後面。",
+        "媽媽走近一點，捧著艾拉的臉看了看，像是想把這一刻多記久一點，才低頭親了她一下。",
+        "爸爸彎下來，輕輕碰了碰她的頭髮。「快睡吧，明天很早。」",
+        "媽媽笑著，可眼眶已經有點紅了。「我們真的很替你高興。明天的事慢慢來，不用一下子什麼都扛。」",
+        "爸爸拍了拍她的肩。「這裡永遠是你家。你的房間也是。」",
+        "他們又站了一下才出去，把門口那點聲音也一起帶走。房裡只剩下睡前最後那種熟悉的安靜。"
+      ]
+    }
+  ]
+}

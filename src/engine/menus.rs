@@ -1,0 +1,242 @@
+use crate::content::types::{ContentPack, OpeningMenuDefinition};
+use crate::engine::dialogue::{DialogueGenerator, MenuIntentRequest};
+use crate::engine::dialogue_grounding::{
+    build_current_beat_notes, build_setting_notes, current_objective_beat_notes,
+    viewer_participant_id,
+};
+use crate::engine::events::WorldEvent;
+use crate::engine::reducer::render_actor_speech_line;
+use crate::engine::state::WorldState;
+
+pub(crate) struct PendingMenuDialogue<'a> {
+    pub actor_id: &'a str,
+    pub current_room_id: &'a str,
+    pub other_person_message: Option<&'a str>,
+}
+
+pub(crate) fn render_menu_prompt(content: &ContentPack, menu: &OpeningMenuDefinition) -> String {
+    let actor_line = if menu.proposal_line.is_empty() {
+        String::new()
+    } else {
+        let actor_name = content
+            .actor(&menu.actor_id)
+            .map(|actor| actor.name.as_str())
+            .unwrap_or(menu.actor_id.as_str());
+        render_actor_speech_line(
+            content,
+            actor_name,
+            Some(&content.opening.title),
+            &menu.proposal_line,
+        )
+    };
+    match menu.selection_prompt.is_empty() {
+        false => menu.selection_prompt.clone(),
+        true => actor_line,
+    }
+}
+
+pub(crate) fn menu_to_offer_for_pending_dialogue<'a, F>(
+    content: &'a ContentPack,
+    state: &WorldState,
+    dialogue: &dyn DialogueGenerator,
+    pending: PendingMenuDialogue<'_>,
+    mut emit_trace: F,
+) -> Result<Option<&'a OpeningMenuDefinition>, String>
+where
+    F: FnMut(&str, &str, serde_json::Value) -> Result<(), String>,
+{
+    let candidate_menus = content
+        .menus
+        .iter()
+        .filter(|menu| {
+            state
+                .active_objective_stage_ids
+                .iter()
+                .any(|stage_id| stage_id == &menu.stage_id)
+                && pending.actor_id == menu.actor_id
+        })
+        .collect::<Vec<_>>();
+    let objective_notes = current_objective_beat_notes(content, state);
+    let current_time_note = content.render_template(
+        &content.system_text.prompt_time_note,
+        &[("current_time", state.current_time_label().as_str())],
+    );
+    let actor = content
+        .actor(pending.actor_id)
+        .ok_or_else(|| format!("missing actor '{}'", pending.actor_id))?;
+    let room = content
+        .room(pending.current_room_id)
+        .ok_or_else(|| format!("missing room '{}'", pending.current_room_id))?;
+    let viewer_id = viewer_participant_id(content);
+    let recent_memory = state
+        .conversation_history(pending.actor_id, &viewer_id)
+        .iter()
+        .rev()
+        .filter(|line| {
+            !pending
+                .other_person_message
+                .is_some_and(|message| line.speaker_id == viewer_id && line.text == message)
+        })
+        .take(6)
+        .cloned()
+        .collect::<Vec<_>>()
+        .into_iter()
+        .rev()
+        .collect::<Vec<_>>();
+    let setting_notes = build_setting_notes(content, state, actor, room, &current_time_note);
+    let current_beat_notes = build_current_beat_notes(
+        content,
+        room,
+        &viewer_id,
+        &content.opening.title,
+        pending.other_person_message,
+        &objective_notes,
+    );
+
+    for menu in candidate_menus {
+        let should_open = match menu.trigger_mode {
+            crate::content::types::MenuTriggerMode::Agreement => {
+                is_movie_agreement_message(pending.other_person_message)
+            }
+            crate::content::types::MenuTriggerMode::AnySpeak => true,
+            crate::content::types::MenuTriggerMode::IntentClarified => {
+                let request = MenuIntentRequest {
+                    menu_id: menu.id.clone(),
+                    actor_id: actor.id.clone(),
+                    actor_name: actor.name.clone(),
+                    other_person_id: viewer_id.clone(),
+                    other_person_name: content.opening.title.clone(),
+                    locale: content.locale.clone(),
+                    system_text: content.system_text.clone(),
+                    setting_notes: setting_notes.clone(),
+                    current_beat_notes: current_beat_notes.clone(),
+                    recent_memory: recent_memory.clone(),
+                    other_person_message: pending.other_person_message.map(str::to_string),
+                    intent_guidance: menu.intent_guidance.clone(),
+                    option_titles: menu
+                        .options
+                        .iter()
+                        .map(|option| option.title.clone())
+                        .collect(),
+                };
+                let trace_backend = dialogue.trace_metadata("menu_intent_clarifier");
+                emit_trace(
+                    "menu_intent_clarifier",
+                    "model.request",
+                    serde_json::json!({
+                        "menu_id": request.menu_id,
+                        "actor_id": request.actor_id,
+                        "actor_name": request.actor_name,
+                        "dialogue_request": request.clone(),
+                        "prompt": dialogue.build_menu_intent_prompt(&request),
+                        "backend": trace_backend.clone(),
+                    }),
+                )?;
+                match dialogue.clarify_menu_intent(&request) {
+                    Ok(decision) => {
+                        emit_trace(
+                            "menu_intent_clarifier",
+                            "model.response",
+                            serde_json::json!({
+                                "menu_id": request.menu_id,
+                                "actor_id": request.actor_id,
+                                "actor_name": request.actor_name,
+                                "decision": decision.label,
+                                "should_open": decision.should_open,
+                                "backend": trace_backend,
+                            }),
+                        )?;
+                        decision.should_open
+                    }
+                    Err(error) => {
+                        emit_trace(
+                            "menu_intent_clarifier",
+                            "model.response",
+                            serde_json::json!({
+                                "menu_id": request.menu_id,
+                                "actor_id": request.actor_id,
+                                "actor_name": request.actor_name,
+                                "error": error.clone(),
+                                "backend": trace_backend,
+                            }),
+                        )?;
+                        return Err(error);
+                    }
+                }
+            }
+        };
+        if should_open {
+            return Ok(Some(menu));
+        }
+    }
+    Ok(None)
+}
+
+pub(crate) fn resolve_menu_choice<'a>(
+    menu: &'a OpeningMenuDefinition,
+    raw_input: &str,
+) -> Option<&'a crate::content::types::OpeningMenuOptionDefinition> {
+    let trimmed = raw_input.trim();
+    if trimmed.is_empty() {
+        return None;
+    }
+    if let Ok(index) = trimmed.parse::<usize>() {
+        return menu.options.get(index.saturating_sub(1));
+    }
+    let lower = trimmed.to_ascii_lowercase();
+    menu.options.iter().find(|option| {
+        let title = option.title.to_ascii_lowercase();
+        let id = option.id.to_ascii_lowercase();
+        lower == title || lower == id || title.contains(&lower) || lower.contains(&title)
+    })
+}
+
+pub(crate) fn build_menu_choice_events(
+    content: &ContentPack,
+    menu: &OpeningMenuDefinition,
+    option: &crate::content::types::OpeningMenuOptionDefinition,
+) -> Vec<WorldEvent> {
+    let mut events = vec![WorldEvent::MenuChoiceMade {
+        menu_id: menu.id.clone(),
+        option_id: option.id.clone(),
+        title: option.title.clone(),
+    }];
+    events.extend(
+        menu.actor_relocations
+            .iter()
+            .map(|relocation| WorldEvent::ActorRelocated {
+                actor_id: relocation.actor_id.clone(),
+                to_room_id: relocation.to_room_id.clone(),
+            }),
+    );
+    events.extend(
+        menu.narrative_lines
+            .iter()
+            .map(|line| WorldEvent::NarrativeLine {
+                text: content.render_template(
+                    line,
+                    &[
+                        ("selection_title", option.title.as_str()),
+                        (menu.selection_var_key.as_str(), option.title.as_str()),
+                    ],
+                ),
+            }),
+    );
+    events
+}
+
+fn is_movie_agreement_message(message: Option<&str>) -> bool {
+    let Some(message) = message else {
+        return false;
+    };
+    let lower = message.to_ascii_lowercase();
+    lower.contains("watch")
+        || lower.contains("movie")
+        || lower.contains("film")
+        || lower.contains("sounds good")
+        || lower.contains("sure")
+        || lower.contains("yeah")
+        || lower.contains("yes")
+        || lower.contains("okay")
+        || lower.contains("ok")
+}

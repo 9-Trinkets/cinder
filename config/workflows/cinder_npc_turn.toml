@@ -1,0 +1,28 @@
+[synapse]
+default_workflow = "cinder_npc_turn"
+
+[synapse.workflows.cinder_npc_turn]
+entry_role = "npc_rule_gate"
+routing_mode = "sequential"
+max_hops = 4
+max_message_chars = 4000
+graph = """
+npc_rule_gate -> npc_apply
+npc_apply -> complete
+"""
+
+[synapse.workflows.cinder_npc_turn.roles.npc_rule_gate]
+planner_mode = "symbolic"
+symbolic_planner_rule = "decision_table"
+
+[synapse.workflows.cinder_npc_turn.roles.npc_rule_gate.symbolic_planner_rule_config]
+cases_path = "rules"
+next_on_match = "npc_apply"
+next_on_default = "npc_apply"
+
+[synapse.workflows.cinder_npc_turn.roles.npc_rule_gate.symbolic_planner_rule_config.default_payload_template]
+actor_id = "$input.actor_id"
+current_room_id = "$input.current_room_id"
+target_room_id = "$input.default_target_room_id"
+
+[synapse.workflows.cinder_npc_turn.roles.npc_apply]

@@ -1,0 +1,87 @@
+[synapse]
+default_workflow = "cinder_turn"
+
+[synapse.workflows.cinder_turn]
+entry_role = "turn_dispatch"
+routing_mode = "event_driven"
+max_hops = 24
+max_message_chars = 32000
+graph = """
+turn_dispatch -> command_parser
+command_parser -> turn_merge
+state_reader -> turn_merge
+turn_merge -> turn_planner
+turn_planner -> menu_intent_clarifier
+menu_intent_clarifier -> dialogue_grounder
+menu_intent_clarifier -> turn_reducer
+turn_planner -> turn_reducer
+dialogue_grounder -> actor_dialogue
+actor_dialogue -> turn_reducer
+turn_reducer -> turn_narrator
+turn_narrator -> complete
+"""
+
+[synapse.workflows.cinder_turn.event_runtime]
+worker_count = 3
+max_attempts = 2
+dead_letter_topic = "dead_letter"
+
+[synapse.workflows.cinder_turn.serve]
+interval_seconds = 60
+event_type = "turn"
+event_topic = "role.turn_dispatch"
+event_level = "info"
+message = "Cinder turn"
+
+[synapse.workflows.cinder_turn.roles.turn_dispatch]
+handler = "dispatch"
+
+[synapse.workflows.cinder_turn.roles.command_parser]
+handler = "command_parser"
+
+[synapse.workflows.cinder_turn.roles.state_reader]
+handler = "state_reader"
+consumes_topics = ["role.command_parser"]
+
+[synapse.workflows.cinder_turn.roles.turn_merge]
+handler = "aggregation"
+[synapse.workflows.cinder_turn.roles.turn_merge.aggregation]
+required_signal_types = ["command", "world"]
+emit_partial_on_drain = false
+
+[synapse.workflows.cinder_turn.roles.turn_planner]
+handler = "planner"
+
+[synapse.workflows.cinder_turn.roles.menu_intent_clarifier]
+handler = "menu_intent_clarifier"
+agent_profile = "cinder_menu_intent_validator"
+
+[synapse.workflows.cinder_turn.roles.dialogue_grounder]
+handler = "dialogue_grounder"
+
+[synapse.workflows.cinder_turn.roles.actor_dialogue]
+handler = "actor_dialogue"
+
+[synapse.workflows.cinder_turn.roles.actor_turn_decider]
+agent_profile = "cinder_actor_turn_validator"
+
+[synapse.workflows.cinder_turn.roles.conversation_memory_summarizer]
+
+[synapse.workflows.cinder_turn.roles.chapter_script_summarizer]
+
+[synapse.workflows.cinder_turn.roles.chapter_relationship_summarizer]
+
+[synapse.workflows.cinder_turn.roles.direct_speech_intent]
+
+[synapse.workflows.cinder_turn.roles.book_recommender]
+system_prompt = """You are a literary therapist recommending fiction books for a bibliotherapy session.
+Each recommendation must feel like a real published novel: an evocative, cinematic title that
+suggests atmosphere and emotional weight (not a clinical description of the patient's problem).
+The menu_text should be a one-line thematic hook — vivid, understated, and genre-aware.
+Respond only with valid JSON."""
+
+[synapse.workflows.cinder_turn.roles.turn_reducer]
+handler = "reducer"
+
+[synapse.workflows.cinder_turn.roles.turn_narrator]
+handler = "narrator"

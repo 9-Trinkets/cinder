@@ -1,0 +1,41 @@
+[
+  {
+    "id": "bookstore-cafe",
+    "title": "Bookstore Cafe Office",
+    "summary": "A warm room lined with books, low music, and one table set for a difficult conversation.",
+    "inspect_text": "The room feels like a cafe until you notice how precisely everything is arranged for listening. Shelves hold marked copies, annotated tabs, and worn spines. A small pastry case sits beside the espresso machine. A reading chair near the window waits for the patient between conversations.",
+    "features": [
+      {
+        "id": "therapist-table",
+        "label": "conversation table",
+        "aliases": ["table", "desk"],
+        "inspect_text": "Two cups, one notebook, and a deliberate amount of empty space. Nothing here lets people hide behind clutter."
+      },
+      {
+        "id": "isla-shelf",
+        "label": "recommendation shelf",
+        "aliases": ["shelf", "books", "bookshelf", "bookcase"],
+        "inspect_text": "Every book has tabs and penciled notes. Some are comforting. Some are confrontational. None are random."
+      },
+      {
+        "id": "espresso-bar",
+        "label": "espresso bar",
+        "aliases": ["coffee", "machine"],
+        "inspect_text": "Steam rises in small, controlled bursts. The scent of coffee is steady enough to slow anxious breathing by itself."
+      },
+      {
+        "id": "pastry-case",
+        "label": "pastry case",
+        "aliases": ["pastry", "case"],
+        "inspect_text": "Homemade pastries sit under glass beside simple labels. Nothing ornate, everything intentional."
+      },
+      {
+        "id": "reading-nook",
+        "label": "reading nook",
+        "aliases": ["nook", "chair", "window seat"],
+        "inspect_text": "A deep chair by the rain-streaked window. Patients usually sit here once they start reading, and only return to the table when something in the book catches on a deeper wound."
+      }
+    ],
+    "exits": []
+  }
+]

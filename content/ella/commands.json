@@ -1,0 +1,129 @@
+{
+  "actions": [
+    {
+      "id": "look",
+      "command": "LOOK",
+      "target_mode": "none",
+      "effects": ["observe_room"],
+      "player_enabled": true,
+      "player_phrases": ["look", "l", "look room", "look around", "inspect room", "x room"],
+      "player_command": {
+        "usage": "look",
+        "example": "look around",
+        "advances_time": false
+      }
+    },
+    {
+      "id": "move",
+      "command": "MOVE",
+      "target_mode": "room",
+      "effects": ["move_actor"],
+      "event_text": "{actor_name} heads to {target_room_title}.",
+      "player_enabled": true,
+      "player_phrases": ["go to", "go", "enter", "move to", "move"],
+      "player_command": {
+        "target_mode": "room_reference",
+        "usage": "go <room>",
+        "example": "go bedroom",
+        "advances_time": true,
+        "input": {
+          "required": true
+        }
+      }
+    },
+    {
+      "id": "speak",
+      "command": "SPEAK",
+      "target_mode": "actor_optional",
+      "outcome_mode": "dialogue",
+      "player_enabled": true,
+      "player_phrases": ["talk to", "talk", "tell to", "tell", "speak to", "speak"],
+      "player_command": {
+        "target_mode": "actor_reference",
+        "usage": "speak <person> [message]",
+        "example": "talk to ella hi",
+        "advances_time": true,
+        "input": {
+          "required": true
+        }
+      }
+    },
+    {
+      "id": "hug",
+      "command": "HUG",
+      "target_mode": "actor",
+      "effects": ["remember_with_target_actor"],
+      "hook_id": "actor.hugged",
+      "event_text": "{actor_name} hugs {target_actor_name}."
+    },
+    {
+      "id": "rest",
+      "command": "REST",
+      "target_mode": "context_label",
+      "effects": ["remember_in_room"],
+      "hook_id": "actor.rested",
+      "event_text": "{actor_name} takes a quiet moment to rest on the {context_label}."
+    },
+    {
+      "id": "eat",
+      "command": "EAT",
+      "target_mode": "consumable",
+      "consumable_kind": "eat",
+      "effects": ["consume_targeted_consumable", "remember_in_room"],
+      "hook_id": "actor.consumed",
+      "event_text": "{actor_name} eats the {item_label} from the {feature_label}."
+    },
+    {
+      "id": "drink",
+      "command": "DRINK",
+      "target_mode": "consumable",
+      "consumable_kind": "drink",
+      "effects": ["consume_targeted_consumable", "remember_in_room"],
+      "hook_id": "actor.consumed",
+      "event_text": "{actor_name} drinks the {item_label} from the {feature_label}."
+    },
+    {
+      "id": "consume",
+      "command": "CONSUME",
+      "target_mode": "consumable",
+      "consumable_kind": "consume",
+      "effects": ["consume_targeted_consumable", "remember_in_room"],
+      "hook_id": "actor.consumed",
+      "event_text": "{actor_name} has the {item_label} from the {feature_label}."
+    },
+    {
+      "id": "inspect_feature",
+      "command": "INSPECT FEATURE",
+      "target_mode": "feature",
+      "effects": ["observe_feature"],
+      "event_text": "{actor_name} studies the {feature_label}.",
+      "player_enabled": true,
+      "player_phrases": ["look at", "look", "inspect", "x"],
+      "player_command": {
+        "target_mode": "actor_or_feature_reference",
+        "usage": "inspect <thing or person>",
+        "example": "inspect piano",
+        "advances_time": false,
+        "input": {
+          "required": true
+        }
+      }
+    },
+    {
+      "id": "inspect_actor",
+      "command": "INSPECT ACTOR",
+      "target_mode": "actor",
+      "effects": ["observe_actor"],
+      "event_text": "{actor_name} studies {target_actor_name} more closely.",
+      "player_enabled": false,
+      "player_phrases": ["look at", "look", "inspect", "x"]
+    },
+    {
+      "id": "act",
+      "command": "ACT",
+      "target_mode": "none",
+      "input_mode": "freeform_text",
+      "effects": ["remember_in_room"]
+    }
+  ]
+}

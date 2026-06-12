@@ -1,0 +1,711 @@
+{
+  "actor.state_notes": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "notes": [] },
+      "matched_payload_template": { "notes": [] },
+      "effects_field": "notes"
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "noa" },
+            { "path": "actor_stats.noa.trust", "operator": "less_than", "value": 3 }
+          ],
+          "payload_template": "Trust is very low. Noa is guarded, polite, and giving you the version of herself she has practiced giving everyone. She will describe her problem from a safe distance, as if it belongs to someone else. Her mother's hospitalization, her pattern of disappearing in relationships, her fear of being truly seen — none of this is reachable yet. Do not push. Let her feel that this space costs her nothing to occupy."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "noa" },
+            { "path": "actor_stats.noa.trust", "operator": "greater_than_or_equal", "value": 3 },
+            { "path": "actor_stats.noa.trust", "operator": "less_than", "value": 6 }
+          ],
+          "payload_template": "Trust is moderate and building. Noa is beginning to drop the polished summary and hint at what actually hurts. She might mention the last relationship ending, but she will frame it as a failure of circumstance rather than a pattern. She may say something like 'I guess I keep choosing people who are not really there' — she is testing whether you will hear the deeper implication. Do not rush to interpret; let her arrive at it herself. The story about her mother is still locked away, but the door is no longer bolted."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "noa" },
+            { "path": "actor_stats.noa.trust", "operator": "greater_than_or_equal", "value": 6 },
+            { "path": "actor_stats.noa.trust", "operator": "less_than", "value": 9 }
+          ],
+          "payload_template": "Trust is high. Noa is becoming more vulnerable and less controlled. Her language is getting shorter and less polished. She may allude to her childhood for the first time — 'My mom was around, but I never knew which version I would get' — but she will still stop short of naming the hospitalization or what it taught her. She may become visibly uncomfortable when she gets close to the real wound: averted eyes, silence, a hand pressed flat on the table. Hold the space. Do not rescue her from the silence. She is close to something she has never said out loud."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "noa" },
+            { "path": "actor_stats.noa.trust", "operator": "greater_than_or_equal", "value": 9 }
+          ],
+          "payload_template": "Trust is very high. Noa is in breakthrough territory. She may name her core fear for the first time: that she has never actually been loved, just appreciated for how undemanding she was. The story about her mother at fourteen — the hospitalization, the silence afterward, the lesson that feelings this big break things — is accessible now if the space feels safe enough. She will be raw, uncertain, and unpracticed at this kind of honesty. Her sentences may trail off. She may cry and apologize for crying. Your response in these moments determines whether the session deepens or whether she retreats and rebuilds the wall."
+        }
+      ]
+    }
+  },
+  "conversation.speech": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "noa" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "openness",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "noa" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "trust",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "isla.reading_progress": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "focus",
+            "delta": -1
+          }
+        },
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "resistance",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "isla.coffee_brewed": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "actor_stats.isla.coffee_brewed", "operator": "less_than", "value": 1 }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "isla",
+            "stat": "coffee_brewed",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "isla.tea_brewed": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "actor_stats.isla.tea_brewed", "operator": "less_than", "value": 1 }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "isla",
+            "stat": "tea_brewed",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "isla.pastry_baked": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "actor_stats.isla.pastry_baked", "operator": "less_than", "value": 1 }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "isla",
+            "stat": "pastry_baked",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "isla.coffee_served": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "actor_stats.isla.coffee_brewed", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": [
+            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "coffee_brewed", "delta": -1 },
+            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "coffee_served", "delta": 1 },
+            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "trust", "delta": 1 }
+          ]
+        }
+      ]
+    }
+  },
+  "isla.tea_served": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "actor_stats.isla.tea_brewed", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": [
+            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "tea_brewed", "delta": -1 },
+            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "tea_served", "delta": 1 },
+            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "trust", "delta": 1 }
+          ]
+        }
+      ]
+    }
+  },
+  "isla.pastry_served": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "actor_stats.isla.pastry_baked", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": [
+            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "pastry_baked", "delta": -1 },
+            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "pastry_served", "delta": 1 },
+            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "trust", "delta": 1 }
+          ]
+        }
+      ]
+    }
+  },
+  "isla.beverage_consumed": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "actor_stats.noa.coffee_served", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": [
+            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "coffee_served", "delta": -1 },
+            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "focus", "delta": 1 }
+          ]
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.noa.tea_served", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": [
+            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "tea_served", "delta": -1 },
+            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "focus", "delta": 1 }
+          ]
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.isla.coffee_brewed", "operator": "greater_than", "value": 0 },
+            { "path": "actor_stats.noa.coffee_served", "operator": "less_than", "value": 1 },
+            { "path": "actor_stats.noa.tea_served", "operator": "less_than", "value": 1 }
+          ],
+          "payload_template": [
+            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "coffee_brewed", "delta": -1 },
+            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "focus", "delta": 1 }
+          ]
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.isla.tea_brewed", "operator": "greater_than", "value": 0 },
+            { "path": "actor_stats.noa.coffee_served", "operator": "less_than", "value": 1 },
+            { "path": "actor_stats.noa.tea_served", "operator": "less_than", "value": 1 }
+          ],
+          "payload_template": [
+            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "tea_brewed", "delta": -1 },
+            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "focus", "delta": 1 }
+          ]
+        }
+      ]
+    }
+  },
+  "isla.pastry_consumed": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "actor_stats.noa.pastry_served", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": [
+            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "pastry_served", "delta": -1 },
+            { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "trust", "delta": 1 }
+          ]
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.isla.pastry_baked", "operator": "greater_than", "value": 0 },
+            { "path": "actor_stats.noa.pastry_served", "operator": "less_than", "value": 1 }
+          ],
+          "payload_template": [
+            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "pastry_baked", "delta": -1 },
+            { "kind": "adjust_actor_stat", "actor_id": "isla", "stat": "trust", "delta": 1 }
+          ]
+        }
+      ]
+    }
+  },
+  "isla.session_terminated": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "outcome_score",
+            "delta": -3
+          }
+        }
+      ]
+    }
+  },
+  "isla.reading_complete": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
+  "menu.book-recommendation.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "book-index-of-small-escapes" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "outcome_score",
+            "delta": 4
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "book-index-of-small-escapes" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "trust",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "book-index-of-small-escapes" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "resistance",
+            "delta": -2
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "book-echoes-of-the-open-window" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "outcome_score",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "book-echoes-of-the-open-window" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "openness",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "book-the-perfectly-managed-life" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "outcome_score",
+            "delta": -3
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "book-the-perfectly-managed-life" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "resistance",
+            "delta": 2
+          }
+        }
+      ]
+    }
+  },
+  "menu.request-quarter.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "quarter-coffee" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "focus",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "quarter-pastry" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "trust",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "quarter-push-through" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "resistance",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "quarter-push-through" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "outcome_score",
+            "delta": -1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "quarter-coffee" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "outcome_score",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.request-half.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "half-water-and-breathe" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "resistance",
+            "delta": -2
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "half-water-and-breathe" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "outcome_score",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "half-brief-reflection" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "openness",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "half-brief-reflection" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "outcome_score",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "half-overinterpret" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "trust",
+            "delta": -2
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "half-overinterpret" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "resistance",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "half-overinterpret" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "outcome_score",
+            "delta": -2
+          }
+        }
+      ]
+    }
+  },
+  "menu.request-three-quarters.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "effects": [] }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "threeq-finish-then-talk" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "focus",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "threeq-finish-then-talk" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "outcome_score",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "threeq-short-checkin" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "trust",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "threeq-short-checkin" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "openness",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "threeq-short-checkin" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "outcome_score",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "threeq-rush-to-end" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "resistance",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "threeq-rush-to-end" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "noa",
+            "stat": "outcome_score",
+            "delta": -2
+          }
+        }
+      ]
+    }
+  }
+}

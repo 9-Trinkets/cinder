@@ -1,0 +1,150 @@
+{
+  "initial_stage_ids": [
+    "join-mom",
+    "go-to-kitchen"
+  ],
+  "stages": [
+    {
+      "id": "join-mom",
+      "summary": "Go to the living room and join Mom.",
+      "beat_note": "Ella still needs to join her mother in the living room.",
+      "update_message": "",
+      "advance_signals": [
+        "room_entered:living-room"
+      ],
+      "next_stage_id": "talk-with-mom"
+    },
+    {
+      "id": "talk-with-mom",
+      "summary": "Tell Mom you're up for a movie night.",
+      "beat_note": "Ella is deciding whether to say yes to a movie night with her mother.",
+      "update_message": "Objective updated: Tell Mom you're up for a movie night.",
+      "advance_signals": [
+        "menu_opened:movie-night"
+      ],
+      "next_stage_id": "choose-movie"
+    },
+    {
+      "id": "choose-movie",
+      "summary": "Pick a movie from Mom's list.",
+      "beat_note": "Mom has offered a few movies, and Ella needs to pick one.",
+      "update_message": "Objective updated: Pick a movie from Mom's list.",
+      "advance_signals": [
+        "menu_selected:movie-night"
+      ],
+      "next_stage_id": "dad-brings-fruit"
+    },
+    {
+      "id": "dad-brings-fruit",
+      "summary": "Dad is bringing fruit over. Wait for him to join you before the movie starts.",
+      "beat_note": "Dad is still in the kitchen pulling together fruit before he joins the movie night in the living room.",
+      "update_message": "Objective updated: Dad is bringing fruit over. Wait for him to join you before the movie starts.",
+      "advance_signals": [
+        "actor_entered:dad:living-room"
+      ],
+      "next_stage_id": "movie-afterglow"
+    },
+    {
+      "id": "movie-afterglow",
+      "summary": "Movie night wrapped up with {movie_title}. Stay with the family for a bit.",
+      "beat_note": "The family has just finished watching {movie_title} together and is lingering in the afterglow.",
+      "update_message": "Objective updated: Movie night wrapped up with {movie_title}. Stay with the family for a bit.",
+      "elapsed_minutes": 95,
+      "projector_sequence_var_key": "movie_choice_id",
+      "narrative_lines": [
+        "The lights go low, the projector hums, and {movie_title} washes the living room wall in flickering color.",
+        "Every now and then one of them leans forward to point at the wall, then settles back before the moment can turn into commentary.",
+        "Halfway through, Mom starts laughing about old weekend rentals and the cheap DVDs they used to borrow from the corner store.",
+        "Mom and Dad end up laughing about the first movie they ever took Ella to see, because she fell asleep almost immediately and slept through the entire thing.",
+        "By the time the movie ends, the room feels warmer. The three of them have wandered into a pocket of shared memory that makes tomorrow seem farther away for a little while.",
+        "Dad: Give me a minute. I should get these fruit dishes to the sink before they start sticking."
+      ],
+      "advance_signals": [
+        "room_left:living-room"
+      ]
+    },
+    {
+      "id": "go-to-kitchen",
+      "summary": "Go to the kitchen and check in with Dad.",
+      "beat_note": "Ella still needs to go to the kitchen and check in about a late-night snack.",
+      "update_message": "Objective updated: Go to the kitchen and check in with Dad.",
+      "advance_signals": [
+        "room_entered:kitchen"
+      ],
+      "next_stage_id": "talk-with-dad"
+    },
+    {
+      "id": "talk-with-dad",
+      "summary": "Talk to Dad about a late-night snack.",
+      "beat_note": "Ella is checking in about a quick late-night snack in the kitchen.",
+      "update_message": "Objective updated: Talk to Dad about a late-night snack.",
+      "actor_relocations": [
+        {
+          "actor_id": "dad",
+          "to_room_id": "kitchen"
+        }
+      ],
+      "advance_signals": [
+        "menu_opened:late-night-snack"
+      ],
+      "next_stage_id": "choose-snack"
+    },
+    {
+      "id": "choose-snack",
+      "summary": "Pick a late-night snack to make with Dad.",
+      "beat_note": "Ella has a few quick late-night snack options and needs to pick one.",
+      "update_message": "Objective updated: Pick a late-night snack to make with Dad.",
+      "advance_signals": [
+        "menu_selected:late-night-snack"
+      ],
+      "next_stage_id": "snack-afterglow"
+    },
+    {
+      "id": "snack-afterglow",
+      "summary": "You and Dad just made {snack_title} together. Stay with him for a bit.",
+      "beat_note": "The kitchen still smells like {snack_title}, and the two of you are lingering in the shared memory of making it together.",
+      "update_message": "Objective updated: You and Dad just made {snack_title} together. Stay with him for a bit.",
+      "elapsed_minutes": 25,
+      "advance_signals": [
+        "room_left:kitchen"
+      ]
+    },
+    {
+      "id": "go-to-bed",
+      "summary": "Go back to your room and get ready for bed.",
+      "beat_note": "The last thing left tonight is heading back to her room and letting the night wind down.",
+      "update_message": "",
+      "advance_signals": [
+        "room_entered:bedroom"
+      ],
+      "next_stage_id": "goodnight-ending"
+    },
+    {
+      "id": "goodnight-ending",
+      "summary": "",
+      "beat_note": "Mom and Dad come by to say good night before Ella leaves in the morning.",
+      "next_chapter_preview": "Tomorrow is departure day. The next chapter begins with the morning goodbye, the final small routines, and the moment leaving becomes real.",
+      "update_message": "",
+      "actor_relocations": [
+        {
+          "actor_id": "mom",
+          "to_room_id": "bedroom"
+        },
+        {
+          "actor_id": "dad",
+          "to_room_id": "bedroom"
+        }
+      ],
+      "elapsed_minutes": 8,
+      "end_session": true,
+      "narrative_lines": [
+        "A few minutes later, Mom taps softly on the doorframe and Dad appears just behind her.",
+        "Mom crosses the room first, cups Ella's face for a second like she is memorizing it, and kisses her good night.",
+        "Dad leans down to press a kiss to the top of Ella's head. \"Get some sleep, kiddo. Morning comes fast.\"",
+        "Mom smiles, damp-eyed but steady. \"We're so proud of you. Tomorrow can be big without you having to hold all of it at once.\"",
+        "Dad gives Ella's shoulder a squeeze. \"Your room is still your room. That part doesn't change.\"",
+        "They linger for one last second, then leave her with the kind of quiet that only settles over a house after everyone has finally said what they needed to say."
+      ]
+    }
+  ]
+}

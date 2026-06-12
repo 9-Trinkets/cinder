@@ -1,0 +1,127 @@
+[
+  {
+    "id": "book-recommendation",
+    "actor_id": "noa",
+    "stage_id": "book-selection",
+    "trigger_mode": "any_speak",
+    "dynamic": true,
+    "generation_role": "book_recommender",
+    "proposal_line": "If we're doing this, can we pick the book now?",
+    "intent_guidance": "Open this menu when Isla is moving from listening into recommendation.",
+    "selection_prompt": "Choose one book for Noa:",
+    "invalid_choice_text": "Noa waits, hands folded over the table. Choose one of the books.",
+    "selection_confirmation": "You choose {selection_title}.",
+    "selection_var_key": "recommended_book_title",
+    "selection_id_var_key": "recommended_book_id",
+    "narrative_lines": [
+      "The rain has softened to a steady patter against the front window. Noa rests her elbows on the table, waiting without urgency. The moment between diagnosis and prescription — between being heard and being steered."
+    ],
+    "options": [
+      {
+        "id": "book-echoes-of-the-open-window",
+        "title": "Echoes of the Open Window",
+        "menu_text": "grief, unfinished conversations, and making room for unresolved love."
+      },
+      {
+        "id": "book-index-of-small-escapes",
+        "title": "Index of Small Escapes",
+        "menu_text": "coping through routines, avoidance, and slow honesty."
+      },
+      {
+        "id": "book-the-perfectly-managed-life",
+        "title": "The Perfectly Managed Life",
+        "menu_text": "control, productivity, and emotional distance disguised as discipline."
+      }
+    ]
+  },
+  {
+    "id": "request-quarter",
+    "actor_id": "noa",
+    "stage_id": "request-quarter",
+    "trigger_mode": "intent_clarified",
+    "proposal_line": "Could I have something warm before I keep reading?",
+    "intent_guidance": "Open when Noa asks for support at the first reading checkpoint (but let her reflect naturally first).",
+    "selection_prompt": "Noa asks for support. How do you respond?",
+    "invalid_choice_text": "Noa is still waiting for your response.",
+    "selection_confirmation": "You choose {selection_title}.",
+    "selection_var_key": "quarter_request_choice",
+    "selection_id_var_key": "quarter_request_choice_id",
+    "options": [
+      {
+        "id": "quarter-coffee",
+        "title": "Serve coffee",
+        "menu_text": "Serve coffee and invite her to keep reading while it's still hot."
+      },
+      {
+        "id": "quarter-pastry",
+        "title": "Serve pastry",
+        "menu_text": "Serve a homemade pastry and give her a few minutes of quiet."
+      },
+      {
+        "id": "quarter-push-through",
+        "title": "Ask her to push through",
+        "menu_text": "Tell her to keep reading first and discuss comfort later."
+      }
+    ]
+  },
+  {
+    "id": "request-half",
+    "actor_id": "noa",
+    "stage_id": "request-half",
+    "trigger_mode": "intent_clarified",
+    "proposal_line": "I'm getting pulled in, but it's a lot. Could we pause a minute?",
+    "intent_guidance": "Open when Noa asks for regulation at the halfway checkpoint (let her reflection land first).",
+    "selection_prompt": "Noa asks for a pause. How do you respond?",
+    "invalid_choice_text": "Noa is waiting for your call.",
+    "selection_confirmation": "You choose {selection_title}.",
+    "selection_var_key": "half_request_choice",
+    "selection_id_var_key": "half_request_choice_id",
+    "options": [
+      {
+        "id": "half-water-and-breathe",
+        "title": "Offer water and breathing space",
+        "menu_text": "Bring water, lower the pressure, and let her settle before continuing."
+      },
+      {
+        "id": "half-brief-reflection",
+        "title": "Offer a brief reflection",
+        "menu_text": "Name one pattern you hear and ask if she wants to test it against the next chapter."
+      },
+      {
+        "id": "half-overinterpret",
+        "title": "Push a strong interpretation",
+        "menu_text": "Give a firm interpretation and ask her to accept it before continuing."
+      }
+    ]
+  },
+  {
+    "id": "request-three-quarters",
+    "actor_id": "noa",
+    "stage_id": "request-three-quarters",
+    "trigger_mode": "intent_clarified",
+    "proposal_line": "I can finish, but I need one thing: should we talk now or after the last pages?",
+    "intent_guidance": "Open when Noa asks for final pacing support (let the late-stage reflection happen first).",
+    "selection_prompt": "Noa asks how to handle the final stretch. Choose your approach:",
+    "invalid_choice_text": "Noa watches your expression, waiting for direction.",
+    "selection_confirmation": "You choose {selection_title}.",
+    "selection_var_key": "three_quarters_request_choice",
+    "selection_id_var_key": "three_quarters_request_choice_id",
+    "options": [
+      {
+        "id": "threeq-finish-then-talk",
+        "title": "Let her finish, then debrief",
+        "menu_text": "Prioritize completion first, then hold a clean reflection space."
+      },
+      {
+        "id": "threeq-short-checkin",
+        "title": "Do a short check-in now",
+        "menu_text": "Spend two minutes grounding the insight before she reads the ending."
+      },
+      {
+        "id": "threeq-rush-to-end",
+        "title": "Rush to the ending",
+        "menu_text": "Push to finish quickly and postpone emotional processing."
+      }
+    ]
+  }
+]

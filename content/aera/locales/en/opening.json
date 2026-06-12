@@ -1,0 +1,14 @@
+{
+  "id": "aera",
+  "title": "Aera",
+  "start_room_id": "lounge",
+  "start_time_minutes": 1020,
+  "intro_text": "Four strangers have moved into a beautiful house and agreed to let the next seven days be observed like a documentary. They keep their jobs, keep their habits, and keep pretending the cameras are not changing anything. The first introductions are only just beginning in the lounge. You are not one of them. You are the eye that decides where to look.",
+  "help_text": "Frequently used commands:\n{available_commands}\n- Tab switches focus between command and transcript\n- Up/Down recalls command history when command is focused\n- Up/Down scrolls the transcript when transcript is focused\n- PageUp/PageDown/Home/End scroll the transcript faster\n- ? opens the menu",
+  "prompt_context": {
+    "subtext_notes": [
+      "This is the first day in a seven-day documentary house experiment.",
+      "The player is an observing camera presence, not a participant in the house."
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "movie-night",
+    "actor_id": "mom",
+    "stage_id": "talk-with-mom",
+    "trigger_mode": "intent_clarified",
+    "proposal_line": "Okay. If we're really doing this, let's do it properly. Pick one and we'll make a whole night of it.",
+    "intent_guidance": "Open this menu only if Ella is clearly agreeing that she wants to watch a movie with Mom right now. Do not open it for unrelated questions, emotional disclosures, or vague small talk.",
+    "selection_prompt": "Choose a movie:",
+    "invalid_choice_text": "Mom is still waiting on a movie pick. Choose 1-3 or type one of the titles.",
+    "selection_confirmation": "Ella picks {selection_title}.",
+    "selection_var_key": "movie_title",
+    "selection_id_var_key": "movie_choice_id",
+    "actor_relocations": [],
+    "narrative_lines": [
+      "In the kitchen, Dad starts slicing fruit to bring over once he has a chance to slip away quietly."
+    ],
+    "options": [
+      {
+        "id": "wind-over-the-valley",
+        "title": "Wind over the Valley",
+        "menu_text": "Wind over the Valley - wide skies and drifting clouds."
+      },
+      {
+        "id": "castle-in-the-clouds",
+        "title": "Castle in the Clouds",
+        "menu_text": "Castle in the Clouds - floating ruins, bright skies, and the kind of adventure that makes the whole room lean in."
+      },
+      {
+        "id": "my-neighbor-flufforo",
+        "title": "My Neighbor Flufforo",
+        "menu_text": "My Neighbor Flufforo - soft, quiet, and easy to sit with together."
+      }
+    ]
+  },
+  {
+    "id": "late-night-snack",
+    "actor_id": "dad",
+    "stage_id": "talk-with-dad",
+    "trigger_mode": "intent_clarified",
+    "proposal_line": "If you're still hungry, we can put together something quick before it gets too late.",
+    "intent_guidance": "Open this menu only if Ella is clearly saying she wants food, a snack, or to make something quick with Dad right now. Do not open it for small talk, emotional check-ins, or unrelated questions.",
+    "selection_prompt": "Dad opens the fridge, glances back at Ella, and waits.\nChoose a late-night snack:",
+    "invalid_choice_text": "Dad is waiting on a snack pick. Choose 1-3 or type one of the options.",
+    "selection_confirmation": "They settle on {selection_title}.",
+    "selection_var_key": "snack_title",
+    "selection_id_var_key": "snack_choice_id",
+    "narrative_lines": [
+      "Dad starts pulling ingredients together while Ella takes over the small jobs he used to hand her when she was little.",
+      "The two of them fall into an old rhythm of passing bowls, tasting as they go, and pretending not to notice how naturally they still move around each other in the kitchen.",
+      "Dad laughs about the nights when Ella used to stand on a chair to help stir things and insist she was doing the important part.",
+      "By the time {selection_title} is ready, they are both smiling at the kind of kitchen memory that only makes sense inside one family."
+    ],
+    "options": [
+      {
+        "id": "midnight-scallion-noodles",
+        "title": "Midnight Scallion Noodles",
+        "menu_text": "Midnight Scallion Noodles - fast, savory, and the kind of thing that tastes better after everyone should already be asleep."
+      },
+      {
+        "id": "crispy-egg-toast",
+        "title": "Crispy Egg Toast",
+        "menu_text": "Crispy Egg Toast - simple, buttery, and easy to make together without turning it into a whole project."
+      },
+      {
+        "id": "sweet-sesame-tangyuan",
+        "title": "Sweet Sesame Tangyuan",
+        "menu_text": "Sweet Sesame Tangyuan - soft, warm, and just sentimental enough for a last-night snack."
+      }
+    ]
+  }
+]

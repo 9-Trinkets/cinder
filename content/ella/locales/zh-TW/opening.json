@@ -1,0 +1,12 @@
+{
+  "id": "ella",
+  "title": "艾拉",
+  "start_room_id": "bedroom",
+  "intro_text": "晚上八點。明天一早，她就要飛到美國另一頭去念大學。房間還沒收完，看起來還像有人會在這裡繼續過日子。",
+  "help_text": "常用指令：\n{available_commands}\n- Tab 可在指令區和對話紀錄間切換焦點\n- 指令區聚焦時，Up/Down 可叫出指令歷史\n- 對話紀錄聚焦時，Up/Down 可捲動紀錄\n- PageUp/PageDown/Home/End 可更快捲動對話紀錄\n- ? 開啟選單",
+  "prompt_context": {
+    "subtext_notes": [
+      "今晚是艾拉離家去念大學前的最後一晚。"
+    ]
+  }
+}

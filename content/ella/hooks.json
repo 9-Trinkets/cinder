@@ -1,0 +1,536 @@
+{
+  "actor.state_notes": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "effects_field": "notes",
+      "default_payload_template": {
+        "notes": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 7 }
+          ],
+          "payload_template": "You are genuinely hungry now, and food is getting harder to ignore."
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "actor_stats.hunger", "operator": "less_than", "value": 7 }
+          ],
+          "payload_template": "You are starting to feel hungry."
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 }
+          ],
+          "payload_template": "Your stamina is running low, so you do not want to push yourself too hard."
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 4 },
+            { "path": "actor_stats.stamina", "operator": "greater_than", "value": 2 }
+          ],
+          "payload_template": "Your energy is starting to dip."
+        }
+      ]
+    }
+  },
+  "actor.time_advanced": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "stat", "operator": "equal", "value": "hunger" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "hunger",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "stat", "operator": "equal", "value": "stamina" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "stamina",
+            "delta": -1
+          }
+        }
+      ]
+    }
+  },
+  "actor.moved": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
+  "actor.rested": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "stamina",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "actor.consumed": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "hunger_recovery", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "hunger",
+            "delta": "-${input.hunger_recovery}"
+          }
+        },
+        {
+          "conditions": [
+            { "path": "stamina_recovery", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "stamina",
+            "delta": "$input.stamina_recovery"
+          }
+        }
+      ]
+    }
+  },
+  "actor.hugged": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_pair_stat",
+            "participant_a_id": "$input.actor_id",
+            "participant_b_id": "$input.target_actor_id",
+            "stat": "safety",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_pair_stat",
+            "participant_a_id": "$input.actor_id",
+            "participant_b_id": "$input.target_actor_id",
+            "stat": "attraction",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "actor.turn_action_guidance": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "affordances.rest.available", "operator": "equal", "value": true },
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 7 }
+          ],
+          "payload_template": { "kind": "show_affordance", "affordance_id": "rest" }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.eat.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "kind": "show_affordance", "affordance_id": "eat" }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.drink.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "kind": "show_affordance", "affordance_id": "drink" }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.consume.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "kind": "show_affordance", "affordance_id": "consume" }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 7 },
+            { "path": "speak_candidate_count", "operator": "equal", "value": 0 },
+            { "path": "affordances.eat.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "consume", "by": 200 }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 7 },
+            { "path": "speak_candidate_count", "operator": "equal", "value": 0 },
+            { "path": "affordances.drink.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "consume", "by": 200 }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 7 },
+            { "path": "speak_candidate_count", "operator": "equal", "value": 0 },
+            { "path": "affordances.consume.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "consume", "by": 200 }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.eat.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "consume", "by": 100 }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.drink.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "consume", "by": 100 }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.consume.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "consume", "by": 100 }
+        },
+        {
+          "conditions": [
+            { "path": "affordances.rest.available", "operator": "equal", "value": true },
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "recovery", "by": 200 }
+        },
+        {
+          "conditions": [
+            { "path": "affordances.rest.available", "operator": "equal", "value": true },
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 7 },
+            { "path": "speak_candidate_count", "operator": "equal", "value": 0 }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "recovery", "by": 200 }
+        },
+        {
+          "conditions": [
+            { "path": "affordances.rest.available", "operator": "equal", "value": true },
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 4 }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "recovery", "by": 100 }
+        },
+        {
+          "conditions": [
+            { "path": "speak_candidate_count", "operator": "greater_than", "value": 0 },
+            { "path": "affordances.move.available", "operator": "equal", "value": false }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "social", "by": 100 }
+        },
+        {
+          "conditions": [
+            { "path": "speak_candidate_count", "operator": "greater_than", "value": 0 },
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 4 }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "social", "by": 100 }
+        },
+        {
+          "conditions": [
+            { "path": "speak_candidate_count", "operator": "greater_than", "value": 0 },
+            { "path": "affordances.speak.option_count", "operator": "greater_than", "value": 0 },
+            { "path": "top_speak_candidate.reply_now", "operator": "equal", "value": true }
+          ],
+          "payload_template": { "kind": "prioritize_affordance", "affordance_id": "speak", "by": 220 }
+        },
+        {
+          "conditions": [
+            { "path": "speak_candidate_count", "operator": "greater_than", "value": 0 },
+            { "path": "top_speak_candidate.pair_stats.connection", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "social", "by": 100 }
+        },
+        {
+          "conditions": [
+            { "path": "speak_candidate_count", "operator": "greater_than", "value": 0 },
+            { "path": "top_speak_candidate.pair_stats.safety", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "social", "by": 100 }
+        },
+        {
+          "conditions": [
+            { "path": "speak_candidate_count", "operator": "greater_than", "value": 0 },
+            { "path": "top_speak_candidate.pair_stats.attraction", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "social", "by": 100 }
+        },
+        {
+          "conditions": [
+            { "path": "speak_candidate_count", "operator": "greater_than", "value": 0 },
+            { "path": "top_speak_candidate.affordances.hug.available", "operator": "equal", "value": true }
+          ],
+          "payload_template": { "kind": "prioritize_group", "group": "social", "by": 100 }
+        }
+      ]
+    }
+  },
+  "conversation.pair_state_notes": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "effects_field": "notes",
+      "default_payload_template": {
+        "notes": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "affordances.hug.available", "operator": "equal", "value": true },
+            { "path": "pair_stats.attraction", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": "There is enough physical pull here that a hug would feel natural."
+        },
+        {
+          "conditions": [
+            { "path": "affordances.hug.available", "operator": "equal", "value": true }
+          ],
+          "payload_template": "There is enough warmth here that a hug would feel natural."
+        },
+        {
+          "conditions": [
+            { "path": "pair_stats.attraction", "operator": "greater_than_or_equal", "value": 3 }
+          ],
+          "payload_template": "You feel a noticeable physical pull toward them."
+        },
+        {
+          "conditions": [
+            { "path": "pair_stats.attraction", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": "You feel the beginnings of a physical pull toward them."
+        }
+      ]
+    }
+  },
+  "npc.hidden_exploration_actions": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "affordances.rest.available", "operator": "equal", "value": true }
+          ],
+          "payload_template": {
+            "kind": "hide_action",
+            "action": "move"
+          }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.eat.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": {
+            "kind": "hide_action",
+            "action": "move"
+          }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.drink.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": {
+            "kind": "hide_action",
+            "action": "move"
+          }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.consume.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": {
+            "kind": "hide_action",
+            "action": "move"
+          }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "affordances.rest.available", "operator": "equal", "value": true }
+          ],
+          "payload_template": {
+            "kind": "hide_action",
+            "action": "inspect_feature"
+          }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.eat.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": {
+            "kind": "hide_action",
+            "action": "inspect_feature"
+          }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.drink.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": {
+            "kind": "hide_action",
+            "action": "inspect_feature"
+          }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.consume.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": {
+            "kind": "hide_action",
+            "action": "inspect_feature"
+          }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "affordances.rest.available", "operator": "equal", "value": true }
+          ],
+          "payload_template": {
+            "kind": "hide_action",
+            "action": "inspect_actor"
+          }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.eat.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": {
+            "kind": "hide_action",
+            "action": "inspect_actor"
+          }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.drink.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": {
+            "kind": "hide_action",
+            "action": "inspect_actor"
+          }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.consume.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": {
+            "kind": "hide_action",
+            "action": "inspect_actor"
+          }
+        }
+      ]
+    }
+  }
+}

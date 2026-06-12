@@ -1,0 +1,21 @@
+[agent_profiles.cinder_menu_intent_validator]
+tools = []
+evaluator_rules = ["allowed_tools", "planner_token_budget"]
+max_rejections = 3
+planner_token_budget_max = 12000
+
+[[agent_profiles.cinder_menu_intent_validator.external_evaluator_rules]]
+name = "menu_intent_completion"
+command = "scripts/role_completion_evaluator.py"
+config = { mode = "enum", values = ["OPEN", "PASS"] }
+
+[agent_profiles.cinder_actor_turn_validator]
+tools = []
+evaluator_rules = ["allowed_tools", "planner_token_budget"]
+max_rejections = 3
+planner_token_budget_max = 16000
+
+[[agent_profiles.cinder_actor_turn_validator.external_evaluator_rules]]
+name = "actor_turn_completion"
+command = "scripts/role_completion_evaluator.py"
+config = { mode = "decision_commands", allow_annotated = true }

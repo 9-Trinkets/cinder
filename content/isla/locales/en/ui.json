@@ -1,0 +1,53 @@
+{
+  "language_name": "English",
+  "menu_button_label": "? Menu",
+  "session_ended_title": "Session Ended",
+  "game_over_hint": "↑/↓ or PageUp/PageDown scroll • q exits",
+  "menu_option_list_title": "Choose an option",
+  "menu_choice_hint": "Use ↑/↓ and Enter to choose.",
+  "menu_choice_transcript": "chose {title}",
+  "shell_menu_title": "Menu",
+  "shell_menu_close_hint": "Use ↑/↓ and Enter to choose. Esc closes.",
+  "help_label": "Help",
+  "resume_label": "Resume",
+  "things_to_do_label": "Session goals",
+  "language_menu_label": "Language",
+  "about_label": "About",
+  "exit_label": "Exit",
+  "things_to_do_empty": "Listen, recommend, support, and see the reading through.",
+  "about_body": "Isla\nBookstore cafe therapy session",
+  "language_modal_title": "Display language",
+  "language_changed_text": "Display language changed to {language_name}.",
+  "modal_close_hint": "Press Enter or Esc to close.",
+  "day_summary_title": "Session Summary",
+  "day_summary_current_focus_label": "Current focus",
+  "day_summary_highlights_label": "Highlights",
+  "day_summary_relationships_label": "Patient status",
+  "day_summary_empty_highlights": "A quieter stretch with steady reading.",
+  "day_summary_empty_relationships": "No major emotional shift yet.",
+  "final_summary_title": "End of Session",
+  "final_summary_highlights_label": "What happened",
+  "final_summary_relationships_label": "Where Noa is now",
+  "final_summary_preview_label": "Next session",
+  "final_summary_empty_preview": "The next session remains unwritten.",
+  "exit_confirm_title": "Exit session?",
+  "exit_confirm_body": "Press Enter to exit to the terminal, or Esc to keep playing.",
+  "projector_skip_hint": "Press Enter to skip ahead. Esc closes.",
+  "projector_title_prefix": "Projector",
+  "error_prefix": "Error:",
+  "response_worker_disconnected": "response worker disconnected.",
+  "menu_unavailable": "That menu is no longer available.",
+  "npc_tick_soft_error": "Noa goes quiet for a moment, searching for words.",
+  "shell_menu": {
+    "items": [
+      { "id": "resume", "label": "Resume" },
+      { "id": "help", "label": "Help" },
+      { "id": "goals", "label": "Session goals" },
+      { "id": "settings", "label": "Settings", "children": [
+        { "id": "language", "label": "Language" },
+        { "id": "about", "label": "About" }
+      ]},
+      { "id": "exit", "label": "End session" }
+    ]
+  }
+}

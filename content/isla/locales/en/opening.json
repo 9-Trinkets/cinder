@@ -1,0 +1,22 @@
+{
+  "id": "isla",
+  "title": "Isla",
+  "start_room_id": "bookstore-cafe",
+  "start_time_minutes": 780,
+  "intro_text": "The door chime is soft enough to feel private. Shelves run wall to wall, the espresso machine hums in the background, and rain taps the front window like careful punctuation. This is Isla's office, though nothing about it looks clinical.\n\nYou are in your late thirties, dressed in layers that suit the weather and the work — a cardigan with ink-stained cuffs, reading glasses pushed up into your hair. Your voice settles into a lower register when you talk about books, the way some people's voices change when they talk about something they trust absolutely.\n\nNoa settles in across from you. Phone facedown on the table, already forgotten. There is no clock on the wall.\n\nShe waits. You let the silence hold for a beat before you speak.\n\n'I practise bibliotherapy,' you say. 'It means a book does part of the talking. We disconnect — phones off, no timekeeping — and let a story reach what direct conversation sometimes cannot. I will listen first and recommend something based on what I hear. You read at your own pace. When a chapter brings something up, we pause. At the end, we close together.'\n\nYou pause. 'The only rule is: let yourself lose track of time. That is where the work happens.'\n\nShe nods, small. The rain fills the space between you.\n\nListen first. Then decide which book might take her there.\n\nThe session ends when the work reaches a natural close — or when you choose to close it yourself. Type 'end session' if you need to finish early.",
+  "help_text": "Commands:\n{available_commands}\n- Tab switches focus between command and transcript\n- ? opens the menu\n- Type 'end session' to close early (reduces outcome score)",
+  "prompt_context": {
+    "setting_notes": [
+      "A warm bookstore-cafe converted into a private session space. Shelves are curated, not decorative.",
+      "Rain against the front window. Low music. The espresso machine hissing in small bursts.",
+      "The table between Isla and Noa holds two cups and a deliberate lack of clutter.",
+      "No clock on the wall. No phones buzzing. The space is designed to dissolve the outside world."
+    ],
+    "subtext_notes": [
+      "Noa chose bibliotherapy because talking directly felt too exposed.",
+      "The room is designed to lower defenses: warm light, comfortable chairs, no desk between patient and therapist.",
+      "What Noa says aloud and what she actually feels are often two different things.",
+      "The method depends on losing the sense of time — if Noa checks how long she has been here, the absorption breaks."
+    ]
+  }
+}

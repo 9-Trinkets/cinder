@@ -1,0 +1,72 @@
+[
+  {
+    "id": "movie-night",
+    "actor_id": "mom",
+    "stage_id": "talk-with-mom",
+    "trigger_mode": "intent_clarified",
+    "proposal_line": "好啊，那我們今天就真的看一部。你挑吧。",
+    "intent_guidance": "只有在艾拉很明確地表示，她現在想和媽媽一起看電影時，才打開這個選單。若只是閒聊、情緒傾訴，或沒有真的答應，都不要打開。",
+    "selection_prompt": "選一部片：",
+    "invalid_choice_text": "媽媽還在等你選片。請輸入 1-3，或直接輸入片名。",
+    "selection_confirmation": "艾拉挑了《{selection_title}》。",
+    "selection_var_key": "movie_title",
+    "selection_id_var_key": "movie_choice_id",
+    "actor_relocations": [],
+    "narrative_lines": [
+      "廚房那頭，爸爸已經開始切水果，打算等一下端過來。"
+    ],
+    "options": [
+      {
+        "id": "wind-over-the-valley",
+        "title": "風過山谷",
+        "menu_text": "風過山谷——天空很大，節奏很慢，看著人會安靜下來。"
+      },
+      {
+        "id": "castle-in-the-clouds",
+        "title": "雲上之城",
+        "menu_text": "雲上之城——天空、遺跡、飛行和冒險，會讓人不知不覺一直盯著看。"
+      },
+      {
+        "id": "my-neighbor-flufforo",
+        "title": "我的鄰居絨絨洛",
+        "menu_text": "我的鄰居絨絨洛——軟軟的、靜靜的，很適合一家人窩在一起看。"
+      }
+    ]
+  },
+  {
+    "id": "late-night-snack",
+    "actor_id": "dad",
+    "stage_id": "talk-with-dad",
+    "trigger_mode": "intent_clarified",
+    "proposal_line": "要是還有點餓，我們弄個簡單的吧。",
+    "intent_guidance": "只有在艾拉很明確地表示，她現在想吃點東西、想吃宵夜，或想和爸爸一起弄點吃的時，才打開這個選單。若只是聊天、情緒交流或其他問題，都不要打開。",
+    "selection_prompt": "",
+    "invalid_choice_text": "爸爸還在等你選宵夜。請輸入 1-3，或直接輸入選項名稱。",
+    "selection_confirmation": "最後他們決定做 {selection_title}。",
+    "selection_var_key": "snack_title",
+    "selection_id_var_key": "snack_choice_id",
+    "narrative_lines": [
+      "爸爸把幾樣東西拿上檯面，艾拉很自然就接手那些她從小做到大的小事。",
+      "一個遞碗，一個開火，邊做邊試味道，動作熟得幾乎不用多說。",
+      "爸爸笑她以前站在椅子上，還硬說自己才是主廚。",
+      "{selection_title} 端上桌的時候，兩個人都在笑，像是剛剛又把某段舊日常做了一遍。"
+    ],
+    "options": [
+      {
+        "id": "midnight-scallion-noodles",
+        "title": "蔥油拌麵",
+        "menu_text": "蔥油拌麵——快、香，而且是那種明明不該吃了，還是會覺得特別好吃的宵夜。"
+      },
+      {
+        "id": "crispy-egg-toast",
+        "title": "煎蛋吐司",
+        "menu_text": "煎蛋吐司——簡單、熱熱的，兩個人一起做也不會搞成大工程。"
+      },
+      {
+        "id": "sweet-sesame-tangyuan",
+        "title": "芝麻小湯圓",
+        "menu_text": "芝麻小湯圓——軟軟熱熱的，剛好很適合這種捨不得結束的晚上。"
+      }
+    ]
+  }
+]

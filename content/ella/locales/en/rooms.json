@@ -1,0 +1,328 @@
+[
+  {
+    "id": "bedroom",
+    "title": "Her Bedroom",
+    "summary": "A narrow bedroom sits under warm lamplight. An open suitcase waits on the bed. Posters, books, and small personal things are still spread across the room.",
+    "inspect_text": "This room still feels like it belongs to a younger version of her. A half-packed suitcase lies open on the bed. A desk is crowded with school papers, pens, books, and small things she forgot to sort. Posters cover one wall. A heart-shaped neon light casts a soft glow. The room is not messy, exactly. It is suspended between staying and a cross-country move.",
+    "features": [
+      {
+        "id": "suitcase",
+        "label": "open suitcase",
+        "aliases": ["suitcase", "bag", "luggage"],
+        "inspect_text": "The suitcase is only half packed. Socks, chargers, a toiletry bag, and other living necessities still need a place. It looks like a cross-country move that has been started but not accepted."
+      },
+      {
+        "id": "desk",
+        "label": "crowded desk",
+        "aliases": ["desk", "papers", "school papers"],
+        "inspect_text": "The desk is crowded with pens, notes, and school papers from the life she is about to leave behind. Nothing on it is priceless, but all of it feels specific to this room."
+      },
+      {
+        "id": "posters",
+        "label": "k-pop posters",
+        "aliases": ["posters", "bands", "kpop posters", "k-pop bands"],
+        "inspect_text": "The posters of k-pop bands have been on the wall for years. Their corners are starting to curl. They make the room feel like the version of herself she built in private."
+      },
+      {
+        "id": "neon-light",
+        "label": "heart-shaped neon light",
+        "aliases": ["neon light", "light", "our glowing hearts", "heart light"],
+        "inspect_text": "The heart-shaped neon light is from Our Glowing Hearts. It throws a soft pink glow across the room. It is a little sentimental and a little embarrassing, which is probably why she loves it."
+      },
+      {
+        "id": "allergy-meds",
+        "label": "allergy meds",
+        "aliases": ["meds", "medicine", "allergy medicine", "allergies"],
+        "inspect_text": "Her allergy meds are sitting where she will not forget them. They are exactly the kind of ordinary necessity that could ruin a week if she leaves them behind."
+      },
+      {
+        "id": "bookshelf",
+        "label": "bookshelf",
+        "aliases": ["bookshelves", "books", "shelf"],
+        "inspect_text": "The bookshelf holds old school books, manga, paperbacks, and a few titles she once thought would explain who she was. The mix feels more honest than organized."
+      },
+      {
+        "id": "memory-box",
+        "label": "memory box",
+        "aliases": ["box", "keepsakes", "keepsake box", "memories"],
+        "inspect_text": "A small box holds ticket stubs, notes, and tiny things that can remember her life here for her if she cannot carry every detail by herself."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "hallway",
+        "label": "hallway",
+        "aliases": ["hall"]
+      }
+    ]
+  },
+  {
+    "id": "hallway",
+    "title": "Hallway",
+    "summary": "A short hallway links the private rooms to the front of the apartment. The air is still, but the whole apartment seems to be listening to tomorrow.",
+    "inspect_text": "The hallway is plain and narrow, with worn floorboards and soft light spilling out from the rooms around it. Her bedroom door is open behind her. Her parents' bedroom is nearby. The kitchen is close enough to carry the smell of food and dish soap. At the far end sits the foyer, where tomorrow will begin.",
+    "features": [
+      {
+        "id": "floorboards",
+        "label": "worn floorboards",
+        "aliases": ["floorboards", "floor"],
+        "inspect_text": "The floorboards creak in familiar places. They have carried years of rushing to school, late-night water runs, and quiet pacing when no one could sleep."
+      },
+      {
+        "id": "hall-shelf",
+        "label": "hall bookshelf",
+        "aliases": ["bookshelf", "shelf", "hall shelf"],
+        "inspect_text": "A small bookshelf in the hall is packed with practical things: dictionaries, old study guides, photo albums, and paperbacks no one admits to rereading."
+      },
+      {
+        "id": "family-doors",
+        "label": "family doors",
+        "aliases": ["doors", "bedroom doors"],
+        "inspect_text": "The doors make the apartment feel smaller than it is. Each one opens onto a room that knows too much about the people inside it."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "bedroom",
+        "label": "your room",
+        "aliases": ["bedroom", "my room", "room"]
+      },
+      {
+        "room_id": "parents-bedroom",
+        "label": "parents' bedroom",
+        "aliases": ["parents room", "parents bedroom"]
+      },
+      {
+        "room_id": "kitchen",
+        "label": "kitchen",
+        "aliases": []
+      },
+      {
+        "room_id": "foyer",
+        "label": "foyer",
+        "aliases": ["front door", "entryway"]
+      }
+    ]
+  },
+  {
+    "id": "parents-bedroom",
+    "title": "Parents' Bedroom",
+    "summary": "Her parents' room is neat in the careful way of people who have learned to keep too much life in too little space.",
+    "inspect_text": "Their bedroom is compact and orderly. Extra blankets are folded with care. A folder of papers sits on a dresser beside medicine and old receipts. The room feels practical first, private second. It carries the long habit of making things work without complaint.",
+    "features": [
+      {
+        "id": "blankets",
+        "label": "folded blankets",
+        "aliases": ["blankets", "bedding"],
+        "inspect_text": "The blankets are folded with the kind of care that comes from sharing space and never wasting comfort."
+      },
+      {
+        "id": "document-folder",
+        "label": "document folder",
+        "aliases": ["folder", "documents", "papers"],
+        "inspect_text": "The folder is thick with insurance papers, receipts, school forms, and copies of the paperwork that seems to follow immigrant families forever."
+      },
+      {
+        "id": "dresser",
+        "label": "dresser",
+        "aliases": ["drawer", "drawers"],
+        "inspect_text": "The dresser top is tidy but full. Every object on it feels chosen for usefulness before beauty."
+      },
+      {
+        "id": "medicine",
+        "label": "medicine",
+        "aliases": ["meds", "medicine bottles"],
+        "inspect_text": "The medicine bottles are a reminder that care in this family often looks like schedules, refills, and making sure no one runs out of what they need."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "hallway",
+        "label": "hallway",
+        "aliases": ["hall"]
+      }
+    ]
+  },
+  {
+    "id": "kitchen",
+    "title": "Kitchen",
+    "summary": "The kitchen is bright compared to the rest of the apartment. Clean dishes, food containers, and tomorrow's small preparations line the counters.",
+    "inspect_text": "The kitchen is narrow but efficient. A rice cooker sits near the wall. Containers are stacked in the fridge for tomorrow and the day after. A dish rack is still damp. Someone has already started preparing care in the form of leftovers, cut fruit, and reminders.",
+    "features": [
+      {
+        "id": "rice-cooker",
+        "label": "rice cooker",
+        "aliases": ["cooker", "rice"],
+        "inspect_text": "The rice cooker is ordinary enough to disappear into the room until she imagines living without it. It feels like one of the machines that quietly held the household together."
+      },
+      {
+        "id": "dish-rack",
+        "label": "dish rack",
+        "aliases": ["rack", "dishes"],
+        "inspect_text": "The dish rack is still damp. It makes the kitchen feel active, as if the room is still in the middle of taking care of everyone."
+      },
+      {
+        "id": "leftovers",
+        "label": "packed leftovers",
+        "aliases": ["leftovers", "containers", "food containers"],
+        "inspect_text": "The leftovers are already packed into containers. Care has been portioned out in advance, ready for a daughter who may be too busy or too proud to cook for herself."
+      },
+      {
+        "id": "cookbooks",
+        "label": "cookbooks",
+        "aliases": ["books", "kitchen books", "recipes"],
+        "inspect_text": "A few cookbooks and handwritten recipes sit wedged together on a small shelf. Some were bought, some were copied, and some were simply remembered into existence."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "hallway",
+        "label": "hallway",
+        "aliases": ["hall"]
+      },
+      {
+        "room_id": "dining-room",
+        "label": "dining room",
+        "aliases": ["table", "dining area"]
+      }
+    ]
+  },
+  {
+    "id": "dining-room",
+    "title": "Dining Room",
+    "summary": "A small dining area sits between the kitchen and the foyer, centered on a table that has held homework, bills, meals, and long family talks.",
+    "inspect_text": "The dining room is really just a corner with a table, but in this apartment it has carried many roles. Tonight the tabletop is clean except for a few coasters and a bowl of fruit. The bench by the breakfast nook has gone slightly soft with use. The room feels ready for a conversation that may or may not happen.",
+    "features": [
+      {
+        "id": "table",
+        "label": "small table",
+        "aliases": ["table", "dining table"],
+        "inspect_text": "The table has served as desk, office, dinner table, and negotiation space. It looks plain until she remembers how much life has passed over it."
+      },
+      {
+        "id": "bench",
+        "label": "breakfast nook bench",
+        "aliases": ["bench", "nook", "breakfast nook"],
+        "inspect_text": "The breakfast nook bench is slightly worn in the middle. It has held rushed breakfasts, late-night studying, and the kind of family conversations that never stay about one subject."
+      },
+      {
+        "id": "fruit-bowl",
+        "label": "fruit bowl",
+        "aliases": ["bowl", "fruit"],
+        "inspect_text": "The fruit bowl is simple and familiar. It is one of those small household constants that only become emotional once a person is about to leave them."
+      },
+      {
+        "id": "coasters",
+        "label": "coasters",
+        "aliases": ["coaster"],
+        "inspect_text": "The coasters are slightly mismatched and a little faded. They feel like the kind of thing no one would pack on purpose, which somehow makes them more personal."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "kitchen",
+        "label": "kitchen",
+        "aliases": []
+      },
+      {
+        "room_id": "foyer",
+        "label": "foyer",
+        "aliases": ["front door", "entryway"]
+      }
+    ]
+  },
+  {
+    "id": "foyer",
+    "title": "Foyer",
+    "summary": "The foyer is cramped but important. Shoes crowd the floor. Keys hang near the wall. The apartment entrance stands here like a quiet countdown.",
+    "inspect_text": "The foyer is barely a room, but it is the apartment's threshold. Shoes are lined up in a discipline that never quite holds. Reusable bags hang from hooks. The heavy apartment door opens to the fifth floor hallway of a six-floor elevator co-op building. Just outside is the small shared corridor, the elevator, and the stairs down to the street. Tomorrow, this is where a cross-country move becomes real.",
+    "features": [
+      {
+        "id": "door",
+        "label": "apartment door",
+        "aliases": ["door", "front door"],
+        "inspect_text": "The apartment door looks heavier tonight. It is only a door, but it feels like the line between family routine and whatever comes after."
+      },
+      {
+        "id": "shoe-rack",
+        "label": "shoe rack",
+        "aliases": ["shoes", "shoe rack"],
+        "inspect_text": "The shoe rack is crowded and practical. Every pair suggests a version of daily life that seems ordinary until it is almost gone."
+      },
+      {
+        "id": "keys",
+        "label": "keys on hooks",
+        "aliases": ["keys", "hooks"],
+        "inspect_text": "The keys hang where everyone can find them in the dark. They belong to the rhythm of coming home."
+      },
+      {
+        "id": "bags",
+        "label": "reusable bags",
+        "aliases": ["bags", "shopping bags"],
+        "inspect_text": "The reusable bags are bunched on their hooks, ready for errands, groceries, or one more practical trip before tomorrow changes the scale of things."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "hallway",
+        "label": "hallway",
+        "aliases": ["hall"]
+      },
+      {
+        "room_id": "dining-room",
+        "label": "dining room",
+        "aliases": ["table", "dining area"]
+      },
+      {
+        "room_id": "living-room",
+        "label": "living room",
+        "aliases": ["livingroom", "couch room"]
+      }
+    ]
+  },
+  {
+    "id": "living-room",
+    "title": "Living Room",
+    "summary": "The living room is modest and lived-in. The couch dips slightly in the middle, and a projector faces the wall above an electronic piano.",
+    "inspect_text": "The living room is the apartment's shared space, though it is small enough that every sound reaches every other room. The couch has softened with years of use. A projector faces the wall instead of a television. An electronic piano sits nearby. Bookshelves hold a mix of novels, manuals, and old school books. The room carries the ordinary history of evenings spent half-resting, half-working, and staying near one another.",
+    "features": [
+      {
+        "id": "couch",
+        "label": "worn couch",
+        "aliases": ["couch", "sofa"],
+        "inspect_text": "The couch dips in the middle in a way that only happens after years of shared evenings. It is not stylish, but it has earned its place."
+      },
+      {
+        "id": "projector",
+        "label": "projector",
+        "aliases": ["projector setup", "screen"],
+        "inspect_text": "The projector is slightly improvised but clearly loved. It turns one wall into a small theater and makes the room feel more ambitious than its square footage."
+      },
+      {
+        "id": "piano",
+        "label": "electronic piano",
+        "aliases": ["piano", "keyboard"],
+        "inspect_text": "The electronic piano has the look of something bought carefully and kept for years. It makes the room feel like it still has room for hobbies, not only obligations."
+      },
+      {
+        "id": "bookshelves",
+        "label": "bookshelves",
+        "aliases": ["bookshelf", "books", "shelves"],
+        "inspect_text": "The bookshelves hold a family mix: novels, technical books, language guides, music books, and things kept because throwing them away would feel like disrespect."
+      },
+      {
+        "id": "throw-blanket",
+        "label": "folded throw blanket",
+        "aliases": ["blanket", "throw"],
+        "inspect_text": "The folded throw blanket suggests the room can become restful in seconds. It is another small object that has learned the shape of the family."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "foyer",
+        "label": "foyer",
+        "aliases": ["front door", "entryway"]
+      }
+    ]
+  }
+]

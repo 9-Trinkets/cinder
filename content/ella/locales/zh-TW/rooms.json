@@ -1,0 +1,328 @@
+[
+  {
+    "id": "bedroom",
+    "title": "她的房間",
+    "summary": "窄窄的房間亮著暖燈，床上攤著還沒收完的行李箱。海報、書和各種小東西都還在原來的位置。",
+    "inspect_text": "這房間還是很像以前的她。行李箱只收了一半，書桌上散著講義、筆和一堆小東西。牆上貼滿海報，心形霓虹燈把整個房間染得粉粉的。說亂也不算亂，只是還沒準備好真的變成「離開前一晚」。",
+    "features": [
+      {
+        "id": "suitcase",
+        "label": "打開的行李箱",
+        "aliases": ["行李箱", "箱子", "suitcase", "bag", "luggage"],
+        "inspect_text": "行李箱只收了一半。襪子、充電器、盥洗包，還有那些最普通卻最不能忘的東西，現在都還卡在外面。"
+      },
+      {
+        "id": "desk",
+        "label": "書桌",
+        "aliases": ["書桌", "桌子", "desk", "papers", "school papers"],
+        "inspect_text": "桌上堆著筆記、考卷和零碎小物，都是這幾年在這個房間裡慢慢累出來的生活痕跡。"
+      },
+      {
+        "id": "posters",
+        "label": "K-pop 海報",
+        "aliases": ["海報", "kpop", "k-pop", "posters", "bands", "kpop posters", "k-pop bands"],
+        "inspect_text": "那些 K-pop 海報貼了很多年，邊角都有點翹了。她每次看到，還是會想到以前躲在房裡聽歌的自己。"
+      },
+      {
+        "id": "neon-light",
+        "label": "心形霓虹燈",
+        "aliases": ["霓虹燈", "燈", "心形燈", "neon light", "light", "our glowing hearts", "heart light"],
+        "inspect_text": "這盞心形霓虹燈是《Our Glowing Hearts》的周邊，亮起來會把房間染成淡淡的粉色。有點少女，有點好笑，但她就是很愛。"
+      },
+      {
+        "id": "allergy-meds",
+        "label": "過敏藥",
+        "aliases": ["過敏藥", "藥", "藥物", "meds", "medicine", "allergy medicine", "allergies"],
+        "inspect_text": "過敏藥擺在她一伸手就拿得到的地方。平常最不起眼的東西，往往才是最不能漏帶的。"
+      },
+      {
+        "id": "bookshelf",
+        "label": "書架",
+        "aliases": ["書架", "書", "bookshelf", "bookshelves", "books", "shelf"],
+        "inspect_text": "書架上有課本、漫畫、小說，還有幾本她當年很認真買回來、以為能看懂自己人生的書。"
+      },
+      {
+        "id": "memory-box",
+        "label": "回憶盒",
+        "aliases": ["回憶盒", "盒子", "紀念盒", "box", "keepsakes", "keepsake box", "memories"],
+        "inspect_text": "盒子裡塞著票根、紙條和一堆沒什麼用、卻怎樣都捨不得丟的小東西。很多回憶其實就是這樣留下來的。"
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "hallway",
+        "label": "走廊",
+        "aliases": ["hallway", "hall"]
+      }
+    ]
+  },
+  {
+    "id": "hallway",
+    "title": "走廊",
+    "summary": "短短一條走廊，把每個房間和公寓前段串在一起。整間屋子都很安靜，安靜得像在等明天。",
+    "inspect_text": "走廊不長，也沒什麼特別，就是家裡最日常的那一段。她的房門開著，爸媽房間在旁邊，廚房那頭飄來一點食物和洗碗精的味道。再往前就是玄關，到了明天，一切都會從那裡開始。",
+    "features": [
+      {
+        "id": "floorboards",
+        "label": "木地板",
+        "aliases": ["地板", "木地板", "floorboards", "floor"],
+        "inspect_text": "地板在熟悉的地方還是會小小叫一下。這些聲音陪過趕上學的早晨、半夜找水喝的腳步，還有睡不著時來回走動的夜晚。"
+      },
+      {
+        "id": "hall-shelf",
+        "label": "走廊書架",
+        "aliases": ["走廊書架", "書架", "shelf", "bookshelf", "hall shelf"],
+        "inspect_text": "小書架塞得很滿：字典、舊參考書、相簿，還有一些明明很久沒翻，卻也沒人真的想丟的書。"
+      },
+      {
+        "id": "family-doors",
+        "label": "一排房門",
+        "aliases": ["房門", "門", "doors", "bedroom doors"],
+        "inspect_text": "這幾扇門把家切成一小格一小格，可門後的人其實都還在同一種日子裡過生活。"
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "bedroom",
+        "label": "你的房間",
+        "aliases": ["bedroom", "my room", "room", "她的房間", "房間"]
+      },
+      {
+        "room_id": "parents-bedroom",
+        "label": "爸媽的房間",
+        "aliases": ["parents room", "parents bedroom", "父母房間", "爸媽房間"]
+      },
+      {
+        "room_id": "kitchen",
+        "label": "廚房",
+        "aliases": ["kitchen"]
+      },
+      {
+        "room_id": "foyer",
+        "label": "玄關",
+        "aliases": ["foyer", "front door", "entryway"]
+      }
+    ]
+  },
+  {
+    "id": "parents-bedroom",
+    "title": "爸媽的房間",
+    "summary": "房間不大，但收得很整齊，一看就知道是住慣小空間的人。",
+    "inspect_text": "床鋪、毯子、櫃子都整理得很好。斗櫃上放著藥、收據和一夾夾文件。這裡沒什麼花樣，實用擺在前面，舒服排在後面，跟爸媽一直以來過日子的方式一模一樣。",
+    "features": [
+      {
+        "id": "blankets",
+        "label": "摺好的毯子",
+        "aliases": ["毯子", "棉被", "blankets", "bedding"],
+        "inspect_text": "毯子摺得整整齊齊，像是有人早就習慣把每一點空間和每一點舒服都用得剛剛好。"
+      },
+      {
+        "id": "document-folder",
+        "label": "文件夾",
+        "aliases": ["文件夾", "文件", "folder", "documents", "papers"],
+        "inspect_text": "裡面夾著保險資料、收據、學校文件，還有那種移民家庭總是越收越厚、怎麼都不敢亂丟的紙。"
+      },
+      {
+        "id": "dresser",
+        "label": "斗櫃",
+        "aliases": ["斗櫃", "櫃子", "dresser", "drawer", "drawers"],
+        "inspect_text": "斗櫃上擺得很滿，可每樣東西都像有自己的位置。好不好看是其次，有用最重要。"
+      },
+      {
+        "id": "medicine",
+        "label": "藥瓶",
+        "aliases": ["藥", "藥瓶", "medicine", "meds", "medicine bottles"],
+        "inspect_text": "那些藥瓶提醒人，在這個家裡，照顧很多時候就是記得時間、記得補藥，還有記得誰快用完了。"
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "hallway",
+        "label": "走廊",
+        "aliases": ["hallway", "hall"]
+      }
+    ]
+  },
+  {
+    "id": "kitchen",
+    "title": "廚房",
+    "summary": "廚房裡燈還亮著，洗好的碗盤、保鮮盒和明天要帶的東西都排在流理台邊。",
+    "inspect_text": "廚房不大，但什麼都排得剛剛好。電鍋靠牆放著，冰箱裡已經塞好幾盒隔天能吃的東西，瀝水架還有水。這個家很常把關心做成剩菜、水果和一句句提醒。",
+    "features": [
+      {
+        "id": "rice-cooker",
+        "label": "電鍋",
+        "aliases": ["電鍋", "煮飯鍋", "rice cooker", "cooker", "rice"],
+        "inspect_text": "電鍋平常安靜得像背景，可一想到離開家以後可能沒有它，就會發現它其實撐了這個家的很多餐。"
+      },
+      {
+        "id": "dish-rack",
+        "label": "瀝水架",
+        "aliases": ["瀝水架", "碗盤架", "dish rack", "rack", "dishes"],
+        "inspect_text": "瀝水架還是濕的，表示晚上的收尾還沒真正做完，家裡還在運轉。"
+      },
+      {
+        "id": "leftovers",
+        "label": "保鮮盒裡的剩菜",
+        "aliases": ["剩菜", "保鮮盒", "leftovers", "containers", "food containers"],
+        "inspect_text": "冰箱裡那幾盒東西一看就知道是先替她想好的。怕她忙，怕她懶，怕她嘴上說沒事其實根本沒好好吃飯。"
+      },
+      {
+        "id": "cookbooks",
+        "label": "食譜書",
+        "aliases": ["食譜", "食譜書", "cookbooks", "books", "kitchen books", "recipes"],
+        "inspect_text": "旁邊夾著幾本食譜書和手寫菜單。有些是照著做的，有些早就做熟到不必再翻。"
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "hallway",
+        "label": "走廊",
+        "aliases": ["hallway", "hall"]
+      },
+      {
+        "room_id": "dining-room",
+        "label": "餐廳",
+        "aliases": ["dining room", "table", "dining area", "餐區"]
+      }
+    ]
+  },
+  {
+    "id": "dining-room",
+    "title": "餐廳",
+    "summary": "廚房和玄關之間卡著一小塊餐區。那張桌子陪過吃飯、寫作業，也陪過很多家裡的重要時刻。",
+    "inspect_text": "說是餐廳，其實就是角落裡的一張桌子。但在這個家，它做過很多事。今晚桌面收得很乾淨，只留著杯墊和一碗水果。早餐角落那張長椅中間坐得有點軟了，像把很多年的日常都記在上面。",
+    "features": [
+      {
+        "id": "table",
+        "label": "小餐桌",
+        "aliases": ["餐桌", "桌子", "table", "dining table"],
+        "inspect_text": "這張桌子當過書桌、辦公桌、餐桌，也當過全家坐下來商量事情的地方。"
+      },
+      {
+        "id": "bench",
+        "label": "早餐角落長椅",
+        "aliases": ["長椅", "早餐角落", "bench", "nook", "breakfast nook"],
+        "inspect_text": "長椅中間有點塌，是那種每天都有人坐、坐久了自然就留下來的痕跡。"
+      },
+      {
+        "id": "fruit-bowl",
+        "label": "水果碗",
+        "aliases": ["水果碗", "水果", "bowl", "fruit"],
+        "inspect_text": "水果碗很普通，可也正因為普通，才會在快要離開的時候變得特別捨不得。"
+      },
+      {
+        "id": "coasters",
+        "label": "杯墊",
+        "aliases": ["杯墊", "coasters", "coaster"],
+        "inspect_text": "杯墊有點舊，也不怎麼成套。這種不會有人特地去買、卻會一直留在家裡的東西，反而最像過日子。"
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "kitchen",
+        "label": "廚房",
+        "aliases": ["kitchen"]
+      },
+      {
+        "room_id": "foyer",
+        "label": "玄關",
+        "aliases": ["foyer", "front door", "entryway"]
+      }
+    ]
+  },
+  {
+    "id": "foyer",
+    "title": "玄關",
+    "summary": "玄關又小又擠，鞋子、鑰匙、袋子都擠在這裡。明天，她就會從這裡真正出門。",
+    "inspect_text": "這裡幾乎不能算一個房間，可它就是這個家的門口。鞋子排得勉強算整齊，袋子掛在鉤子上，厚重的大門外是公寓走廊和電梯。平常只是出門回家的地方，偏偏今晚看起來特別像分界線。",
+    "features": [
+      {
+        "id": "door",
+        "label": "公寓大門",
+        "aliases": ["門", "大門", "door", "front door"],
+        "inspect_text": "這扇門今晚看起來特別重。平常不覺得，到了真的要離家的前一晚，它才忽然像是把兩種生活隔開來。"
+      },
+      {
+        "id": "shoe-rack",
+        "label": "鞋架",
+        "aliases": ["鞋架", "鞋子", "shoe rack", "shoes"],
+        "inspect_text": "鞋架擠得滿滿的，每一雙鞋都只是日常的一小部分，可全部排在一起就很像這個家原本的節奏。"
+      },
+      {
+        "id": "keys",
+        "label": "掛鉤上的鑰匙",
+        "aliases": ["鑰匙", "掛鉤", "keys", "hooks"],
+        "inspect_text": "鑰匙掛在大家都找得到的位置。就算摸黑，也知道手該往哪裡伸。"
+      },
+      {
+        "id": "bags",
+        "label": "環保袋",
+        "aliases": ["袋子", "購物袋", "環保袋", "bags", "shopping bags"],
+        "inspect_text": "那幾個袋子皺皺地掛在旁邊，像是在等下一次出門買菜、跑腿，做那些原本覺得永遠都做不完的小事。"
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "hallway",
+        "label": "走廊",
+        "aliases": ["hallway", "hall"]
+      },
+      {
+        "room_id": "dining-room",
+        "label": "餐廳",
+        "aliases": ["dining room", "table", "dining area", "餐區"]
+      },
+      {
+        "room_id": "living-room",
+        "label": "客廳",
+        "aliases": ["living room", "livingroom", "couch room"]
+      }
+    ]
+  },
+  {
+    "id": "living-room",
+    "title": "客廳",
+    "summary": "客廳不大，但很有生活感。沙發中間坐得微微下陷，投影機正對著電子琴上方那面牆。",
+    "inspect_text": "客廳是全家最常待在一起的地方，雖然小，小到誰在這裡說話，別的房間大概也聽得到。沙發坐久了已經軟了，牆上沒有電視，取而代之的是投影機。旁邊擺著電子琴，書架上混著小說、技術書和舊課本。這裡就是那種晚上有人休息、有人還在忙，但誰也不真的離彼此太遠的地方。",
+    "features": [
+      {
+        "id": "couch",
+        "label": "舊沙發",
+        "aliases": ["沙發", "couch", "sofa"],
+        "inspect_text": "沙發中間微微凹下去，那是一起坐了很多很多個晚上才會留下來的形狀。"
+      },
+      {
+        "id": "projector",
+        "label": "投影機",
+        "aliases": ["投影機", "投影", "projector", "projector setup", "screen"],
+        "inspect_text": "投影設備有點陽春，可也正因為這樣，看得出來是全家真的喜歡、才慢慢弄出來的。"
+      },
+      {
+        "id": "piano",
+        "label": "電子琴",
+        "aliases": ["電子琴", "琴", "piano", "keyboard"],
+        "inspect_text": "電子琴放在那裡很多年了。不是裝飾，也不是擺好看的，而是真的一直有人在用。"
+      },
+      {
+        "id": "bookshelves",
+        "label": "書架",
+        "aliases": ["書架", "書", "bookshelf", "bookshelves", "books", "shelves"],
+        "inspect_text": "書架上什麼都有：小說、技術書、語言教材、樂譜，還有一些只是一直放著，誰也沒真的想清掉的書。"
+      },
+      {
+        "id": "throw-blanket",
+        "label": "摺好的披毯",
+        "aliases": ["毯子", "披毯", "blanket", "throw"],
+        "inspect_text": "披毯摺得好好的，一拿起來就知道這個位置平常有人常坐，也常順手把自己裹起來。"
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "foyer",
+        "label": "玄關",
+        "aliases": ["foyer", "front door", "entryway"]
+      }
+    ]
+  }
+]

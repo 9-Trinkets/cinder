@@ -1,0 +1,65 @@
+{
+  "initial_stage_ids": [
+    "introduce-everyone-first-evening"
+  ],
+  "stages": [
+    {
+      "id": "introduce-everyone-first-evening",
+      "summary": "Introduction: everyone arrives in the lounge and settles in.",
+      "update_message": "It is 5 PM. Everyone is arriving and introducing themselves in the lounge.",
+      "beat_note": "This is first-impression hour. Keep everyone in the lounge and make the energy feel like a new cast settling into the same house for the first time. Let each actor show what kind of entrance they make, who they naturally notice first, what detail they comment on, and whether they play warm, cool, awkward, curious, or a little performative. Push for clear introductions, quick reads on each other, small offers of help or humor, and the first tiny sparks of comfort, friction, or intrigue.",
+      "advance_signals": [
+        "time_reached:18:00"
+      ],
+      "next_stage_id": "share-dinner-in-kitchen"
+    },
+    {
+      "id": "share-dinner-in-kitchen",
+      "summary": "Dinner in the kitchen: the house gathers around food and eats together.",
+      "update_message": "It is 6 PM. Everyone drifts to the kitchen where dinner is already spread out and waiting.",
+      "beat_note": "Dinner is premade and laid out. This is the first time the whole house shares a meal, and food gives everyone a reason to hover, reach past each other, claim a spot, and talk without it feeling forced. Let eating together do the social work: who sits close to whom, who serves others without being asked, who is particular about what they take, who uses the food as an excuse to stay near someone. Let conversation move between the practical and the personal. Someone might compliment the spread, someone might make a dietary comment, someone might use the act of eating to avoid or invite closeness. Make the meal feel communal, a little charged, and emotionally useful.",
+      "advance_signals": [
+        "time_reached:19:00"
+      ],
+      "next_stage_id": "talk-after-dinner"
+    },
+    {
+      "id": "talk-after-dinner",
+      "summary": "Talk after dinner: the house lingers at the dining table and the conversation gets less guarded.",
+      "update_message": "It is 7 PM. Dinner is done. Everyone has drifted to the dining table and the conversation is still going.",
+      "beat_note": "This is the first real settling. The meal is finished, the kitchen noise is gone, and now there is just the table, the light, and whatever people choose to fill the quiet with. Let conversation slow down and get a little more revealing. Someone might bring up something from earlier in the evening, replay a moment that stuck with them, admit something small, or start testing a connection more openly. This is also where the first cracks in group harmony might show, or the first time two people look at each other and realize they want to keep talking after everyone else stops. Push for honesty by default, depth where the pair stats support it, and one moment per conversation that would feel too honest for the kitchen.",
+      "advance_signals": [
+        "time_reached:20:00",
+        {
+          "signal": "time_reached:19:30",
+          "conditions": [
+            {
+              "path": "pair_stats.aera.ren.connection",
+              "operator": "gte",
+              "value": 4
+            }
+          ]
+        }
+      ],
+      "next_stage_id": "debrief-in-bedrooms"
+    },
+    {
+      "id": "debrief-in-bedrooms",
+      "summary": "Debrief in bedrooms: split by room and compare impressions from the evening.",
+      "update_message": "It is 7 PM. The housemates drift to bedrooms to debrief and compare impressions from dinner and the evening.",
+      "beat_note": "After dinner, split the house into smaller bedroom conversations and let the public group energy turn into private interpretation. This is where actors compare notes, test first loyalties, admit surprise, and say things they would not say in the kitchen. Encourage softer but sharper conversation: who made the strongest impression, who feels safest, who may be hiding something, who seems attractive, who seems exhausting, who might become an ally, and who might become trouble. Let people replay moments from dinner, defend or question each other, and start building early social narratives.",
+      "advance_signals": [
+        "time_reached:21:00"
+      ],
+      "next_stage_id": "sleep-end-first-day"
+    },
+    {
+      "id": "sleep-end-first-day",
+      "summary": "Sleep and end of first day.",
+      "update_message": "It is 9 PM. The first day winds down toward sleep.",
+      "beat_note": "This is the last emotional beat before lights out. Let conversations taper into final glances, unfinished thoughts, quiet vulnerability, and the sense that today's first impressions will carry into tomorrow. Actors should settle toward sleep while holding onto one clear feeling about the night: excitement, relief, attraction, suspicion, comfort, regret, or anticipation. End with the sense that the house has started choosing its first bonds and tensions, even if no one can fully name them yet.",
+      "next_chapter_preview": "Tomorrow morning is when the house stops feeling like an arrival and starts feeling like a real social map. First routines, first private check-ins, and the first clear pulls between people will start to show.",
+      "end_session": true
+    }
+  ]
+}

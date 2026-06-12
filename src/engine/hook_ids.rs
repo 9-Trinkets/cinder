@@ -1,0 +1,14 @@
+pub const SPEECH: &str = "conversation.speech";
+pub const BROKEN_REPLY: &str = "conversation.broken_reply";
+pub const SHARED_ROOM_TICK: &str = "conversation.shared_room_tick";
+pub const PAIR_STATE_NOTES: &str = "conversation.pair_state_notes";
+pub const CONVERSATION_CANDIDATE: &str = "conversation.candidate";
+pub const ACTOR_MOVED: &str = "actor.moved";
+pub const ACTOR_TIME_ADVANCED: &str = "actor.time_advanced";
+pub const TURN_ACTION_GUIDANCE: &str = "actor.turn_action_guidance";
+pub const TURN_SHOULD_SPEAK: &str = "actor.turn_should_speak";
+pub const TURN_SHOULD_REST: &str = "actor.turn_should_rest";
+pub const TURN_SHOULD_CONSUME: &str = "actor.turn_should_consume";
+pub const TURN_SHOULD_MOVE: &str = "actor.turn_should_move";
+pub const TURN_SHOULD_DIRECT_SPEECH: &str = "actor.turn_should_direct_speech";
+pub const STATE_NOTES: &str = "actor.state_notes";

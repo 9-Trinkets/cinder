@@ -1,0 +1,12 @@
+{
+  "id": "ella",
+  "title": "Ella",
+  "start_room_id": "bedroom",
+  "intro_text": "It is 8 PM, and tomorrow morning she leaves to attend college across the country. Her room is still half full of the life she is about to leave behind.",
+  "help_text": "Frequently used commands:\n{available_commands}\n- Tab switches focus between command and transcript\n- Up/Down recalls command history when command is focused\n- Up/Down scrolls the transcript when transcript is focused\n- PageUp/PageDown/Home/End scroll the transcript faster\n- ? opens the menu",
+  "prompt_context": {
+    "subtext_notes": [
+      "Tonight is the last night before Ella leaves to attend college across the country."
+    ]
+  }
+}

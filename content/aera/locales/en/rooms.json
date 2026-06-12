@@ -1,0 +1,488 @@
+[
+  {
+    "id": "entrance",
+    "title": "Entrance",
+    "summary": "The front entry is clean, bright, and carefully staged in the way high-end houses always are. Shoes line the wall more politely than the people inside probably feel.",
+    "inspect_text": "The entrance is all warm wood, soft indirect lighting, and the faint sense that everyone noticed it the moment they arrived. House shoes are lined up under a bench. A mirror catches the door, the hallway, and whoever is deciding whether to enter as themselves or as a version worth filming.",
+    "features": [
+      {
+        "id": "shoe-bench",
+        "label": "shoe bench",
+        "aliases": [
+          "bench",
+          "shoes"
+        ],
+        "inspect_text": "The shoe bench already feels like social evidence. Even in a beautiful house, people reveal themselves by what they kick off first and what they leave perfectly aligned."
+      },
+      {
+        "id": "entry-mirror",
+        "label": "entry mirror",
+        "aliases": [
+          "mirror"
+        ],
+        "inspect_text": "The mirror catches arrivals and departures in one glance. It feels like a good place to fix your face before joining everyone else."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "lounge",
+        "label": "lounge",
+        "aliases": [
+          "living room",
+          "living"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "lounge",
+    "title": "Lounge",
+    "summary": "The lounge is the heart of the house: a low sofa, soft evening light, and enough visual space for silence to mean something.",
+    "inspect_text": "The lounge is designed to make conversations feel accidental and cinematic at the same time. A long sofa faces a low table. The house opens outward from here toward the kitchen, patio, and bedrooms, so nearly every shared mood passes through this room eventually.",
+    "features": [
+      {
+        "id": "sofa",
+        "label": "long sofa",
+        "aliases": [
+          "sofa",
+          "couch"
+        ],
+        "allow_rest": true,
+        "inspect_text": "The sofa is deep enough for group conversations and dangerous enough for unresolved tension. It looks like the kind of place where someone will eventually say more than they meant to."
+      },
+      {
+        "id": "coffee-table",
+        "label": "coffee table",
+        "aliases": [
+          "table",
+          "low table"
+        ],
+        "inspect_text": "The coffee table is almost too photogenic. Mugs, phones, mail, and one badly timed confession could all end up here."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "entrance",
+        "label": "entrance",
+        "aliases": [
+          "entry",
+          "front"
+        ]
+      },
+      {
+        "room_id": "kitchen",
+        "label": "kitchen",
+        "aliases": []
+      },
+      {
+        "room_id": "dining-room",
+        "label": "dining room",
+        "aliases": [
+          "dining",
+          "table"
+        ]
+      },
+      {
+        "room_id": "studio",
+        "label": "studio",
+        "aliases": [
+          "work room",
+          "creative room"
+        ]
+      },
+      {
+        "room_id": "patio",
+        "label": "patio",
+        "aliases": [
+          "deck",
+          "outside"
+        ]
+      },
+      {
+        "room_id": "girls-room",
+        "label": "girls' room",
+        "aliases": [
+          "women's room",
+          "shared girls room"
+        ]
+      },
+      {
+        "room_id": "guys-room",
+        "label": "guys' room",
+        "aliases": [
+          "men's room",
+          "shared guys room"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "kitchen",
+    "title": "Kitchen",
+    "summary": "The kitchen is sleek, generous, and impossible to ignore. It invites competence, collaboration, and judgment in equal measure.",
+    "inspect_text": "The kitchen is large enough that two people can work side by side without touching, which somehow makes every near-touch more noticeable. The counters are immaculate for now. A wide island faces the lounge, making it hard to cook here without also being part of the room's social weather.",
+    "features": [
+      {
+        "id": "island",
+        "label": "kitchen island",
+        "aliases": [
+          "island",
+          "counter"
+        ],
+        "consumables": [
+          {
+            "id": "soy-ginger-noodles",
+            "label": "soy-ginger noodles",
+            "aliases": [
+              "noodles",
+              "dinner noodles"
+            ],
+            "tags": [
+              "vegan"
+            ],
+            "kind": "eat",
+            "initial_stock": 6,
+            "hunger_recovery": 8
+          },
+          {
+            "id": "roasted-vegetables",
+            "label": "roasted vegetables",
+            "aliases": [
+              "vegetables",
+              "veg"
+            ],
+            "tags": [
+              "vegan"
+            ],
+            "kind": "eat",
+            "initial_stock": 6,
+            "hunger_recovery": 6
+          },
+          {
+            "id": "citrus-iced-tea",
+            "label": "citrus iced tea",
+            "aliases": [
+              "iced tea",
+              "tea"
+            ],
+            "tags": [
+              "vegan"
+            ],
+            "kind": "drink",
+            "initial_stock": 6,
+            "hunger_recovery": 2,
+            "stamina_recovery": 2
+          }
+        ],
+        "inspect_text": "The island practically demands shared prep work. Tonight it also holds the first real dinner spread: glossy noodles, roasted vegetables, and a pitcher of citrus iced tea waiting for people to finally stop hovering and eat."
+      },
+      {
+        "id": "fridge",
+        "label": "double-door fridge",
+        "aliases": [
+          "fridge",
+          "refrigerator"
+        ],
+        "consumables": [
+          {
+            "id": "cut-fruit",
+            "label": "cut fruit",
+            "aliases": [
+              "fruit"
+            ],
+            "tags": [
+              "vegan"
+            ],
+            "kind": "eat",
+            "initial_stock": 4,
+            "hunger_recovery": 2
+          },
+          {
+            "id": "sparkling-water",
+            "label": "sparkling water",
+            "aliases": [
+              "water"
+            ],
+            "tags": [
+              "vegan"
+            ],
+            "kind": "drink",
+            "initial_stock": 6,
+            "hunger_recovery": 1,
+            "stamina_recovery": 1
+          },
+          {
+            "id": "energy-gel",
+            "label": "energy gel",
+            "aliases": [
+              "gel"
+            ],
+            "tags": [
+              "vegan"
+            ],
+            "kind": "consume",
+            "initial_stock": 4,
+            "hunger_recovery": 1,
+            "stamina_recovery": 2
+          }
+        ],
+        "inspect_text": "The fridge is still full of first-week optimism: ingredients, sparkling water, careful purchases, and the fantasy that strangers can become a household through logistics."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "lounge",
+        "label": "lounge",
+        "aliases": [
+          "living room",
+          "living"
+        ]
+      },
+      {
+        "room_id": "dining-room",
+        "label": "dining room",
+        "aliases": [
+          "dining",
+          "table"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dining-room",
+    "title": "Dining Room",
+    "summary": "The dining room is small compared to the rest of the house, which is exactly why meals here will matter.",
+    "inspect_text": "A long table anchors the dining room without overpowering it. There is no television here, no good way to avoid eye contact, and no graceful place to hide once everyone sits down. The room feels made for routine dinners that quietly change the shape of a house.",
+    "features": [
+      {
+        "id": "dining-table",
+        "label": "long table",
+        "aliases": [
+          "table",
+          "dining table"
+        ],
+        "inspect_text": "The table is large enough for all four housemates and small enough that every seating choice will mean something."
+      },
+      {
+        "id": "pendant-light",
+        "label": "pendant light",
+        "aliases": [
+          "light"
+        ],
+        "inspect_text": "The pendant light makes the room feel warmer than the conversations may always deserve."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "lounge",
+        "label": "lounge",
+        "aliases": [
+          "living room",
+          "living"
+        ]
+      },
+      {
+        "room_id": "kitchen",
+        "label": "kitchen",
+        "aliases": []
+      },
+      {
+        "room_id": "patio",
+        "label": "patio",
+        "aliases": [
+          "deck",
+          "outside"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "studio",
+    "title": "Studio",
+    "summary": "A small creative room doubles as work corner, fitting room, and retreat from the house's main social current.",
+    "inspect_text": "The studio is half practical workspace, half self-invention chamber. A rack of clothes stands near a rolling mirror. A desk holds editing gear, chargers, notebooks, and the kind of unfinished tasks people carry back from real jobs. This room feels private even with the door open.",
+    "features": [
+      {
+        "id": "clothes-rack",
+        "label": "clothes rack",
+        "aliases": [
+          "rack",
+          "clothes"
+        ],
+        "inspect_text": "The clothes rack looks temporary, but temporary things often decide the mood of a room first."
+      },
+      {
+        "id": "editing-desk",
+        "label": "editing desk",
+        "aliases": [
+          "desk",
+          "computer"
+        ],
+        "inspect_text": "The desk is crowded with headphones, adapters, notebooks, and careful disorder. It belongs to someone whose work depends on seeing patterns other people miss."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "lounge",
+        "label": "lounge",
+        "aliases": [
+          "living room",
+          "living"
+        ]
+      },
+      {
+        "room_id": "girls-room",
+        "label": "girls' room",
+        "aliases": [
+          "women's room",
+          "shared girls room"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "patio",
+    "title": "Patio",
+    "summary": "The patio opens the house up to air and distance. It feels made for private talks disguised as casual lingering.",
+    "inspect_text": "The patio is open enough to feel like escape without actually leaving the house. A narrow table sits beside a few chairs. Plants soften the edges. In daylight it would feel healthy and aspirational. At night it feels like the place where people admit things more carefully than they do indoors.",
+    "features": [
+      {
+        "id": "patio-table",
+        "label": "narrow patio table",
+        "aliases": [
+          "table",
+          "patio table"
+        ],
+        "inspect_text": "The patio table feels like a setting for one coffee, two drinks, or one conversation that goes on longer than planned."
+      },
+      {
+        "id": "plants",
+        "label": "potted plants",
+        "aliases": [
+          "plants",
+          "herbs"
+        ],
+        "inspect_text": "The potted plants make the patio feel curated rather than wild. Someone will eventually use watering them as an excuse to avoid a harder conversation."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "lounge",
+        "label": "lounge",
+        "aliases": [
+          "living room",
+          "living"
+        ]
+      },
+      {
+        "room_id": "dining-room",
+        "label": "dining room",
+        "aliases": [
+          "dining",
+          "table"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "girls-room",
+    "title": "Girls' Room",
+    "summary": "The shared girls' room is tidy in a way that still leaves room for self-curation. It feels closer to backstage than sanctuary.",
+    "inspect_text": "Two beds, two wardrobes, and a few carefully claimed surfaces turn the shared girls' room into a negotiation between privacy and presentation. Makeup, chargers, folded clothes, and notebooks are already beginning to sort the room into emotional territories.",
+    "features": [
+      {
+        "id": "shared-beds",
+        "label": "shared beds",
+        "aliases": [
+          "beds",
+          "bed"
+        ],
+        "allow_rest": true,
+        "inspect_text": "The beds make the room feel less performative for a moment. Rest is one of the few things here that cannot really be faked."
+      },
+      {
+        "id": "vanity",
+        "label": "small vanity",
+        "aliases": [
+          "vanity",
+          "mirror",
+          "makeup"
+        ],
+        "inspect_text": "The vanity turns getting ready into a public-private act. Even ordinary routines look a little more intentional here."
+      },
+      {
+        "id": "shared-wardrobe",
+        "label": "shared wardrobe",
+        "aliases": [
+          "wardrobe",
+          "closet"
+        ],
+        "inspect_text": "The wardrobe is already dividing itself into personalities."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "lounge",
+        "label": "lounge",
+        "aliases": [
+          "living room",
+          "living"
+        ]
+      },
+      {
+        "room_id": "studio",
+        "label": "studio",
+        "aliases": [
+          "work room",
+          "creative room"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "guys-room",
+    "title": "Guys' Room",
+    "summary": "The shared guys' room feels spare, functional, and not yet fully inhabited.",
+    "inspect_text": "The shared guys' room is cleaner than comfortable so far. Duffel bags, a training mat, neatly stacked basics, and a laptop charger on the floor all suggest two men still deciding how much of themselves to unpack here.",
+    "features": [
+      {
+        "id": "shared-beds",
+        "label": "shared beds",
+        "aliases": [
+          "beds",
+          "bed"
+        ],
+        "allow_rest": true,
+        "inspect_text": "The beds still feel half temporary, but they are the clearest invitation in the room to stop performing and actually recover."
+      },
+      {
+        "id": "training-mat",
+        "label": "training mat",
+        "aliases": [
+          "mat",
+          "exercise mat"
+        ],
+        "inspect_text": "The training mat is the clearest sign that routine came into the house before intimacy did."
+      },
+      {
+        "id": "duffel-bags",
+        "label": "duffel bags",
+        "aliases": [
+          "bags",
+          "duffels"
+        ],
+        "inspect_text": "The duffel bags still look half ready to leave, which makes the room feel temporary in a telling way."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "lounge",
+        "label": "lounge",
+        "aliases": [
+          "living room",
+          "living"
+        ]
+      }
+    ]
+  }
+]

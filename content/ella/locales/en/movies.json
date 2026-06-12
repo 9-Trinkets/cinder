@@ -1,0 +1,71 @@
+[
+  {
+    "id": "wind-over-the-valley-projector",
+    "title": "Wind over the Valley",
+    "match_value": "wind-over-the-valley",
+    "frames": [
+      {
+        "text_path": "assets/valley.txt",
+        "duration_ms": 900
+      },
+      {
+        "text_path": "assets/valley.txt",
+        "duration_ms": 900
+      },
+      {
+        "text_path": "assets/valley.txt",
+        "duration_ms": 900
+      },
+      {
+        "text_path": "assets/valley.txt",
+        "duration_ms": 900
+      }
+    ]
+  },
+  {
+    "id": "castle-in-the-clouds-projector",
+    "title": "Castle in the Clouds",
+    "match_value": "castle-in-the-clouds",
+    "frames": [
+      {
+        "text_path": "assets/castle.txt",
+        "duration_ms": 900
+      },
+      {
+        "text_path": "assets/castle.txt",
+        "duration_ms": 900
+      },
+      {
+        "text_path": "assets/castle.txt",
+        "duration_ms": 900
+      },
+      {
+        "text_path": "assets/castle.txt",
+        "duration_ms": 900
+      }
+    ]
+  },
+  {
+    "id": "my-neighbor-flufforo-projector",
+    "title": "My Neighbor Flufforo",
+    "match_value": "my-neighbor-flufforo",
+    "frames": [
+      {
+        "text_path": "assets/forest.txt",
+        "duration_ms": 900
+      },
+      {
+        "text_path": "assets/forest.txt",
+        "duration_ms": 900
+      },
+      {
+        "text_path": "assets/forest.txt",
+        "duration_ms": 900
+      },
+      {
+        "text_path": "assets/forest.txt",
+        "duration_ms": 900
+      }
+    ]
+  }
+]

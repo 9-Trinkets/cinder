@@ -1,0 +1,691 @@
+{
+  "conversation.shared_room_tick": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "event_kind",
+              "operator": "equal",
+              "value": "shared_room_tick"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_pair_stat",
+            "participant_a_id": "$input.participant_a_id",
+            "participant_b_id": "$input.participant_b_id",
+            "stat": "safety",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "conversation.speech": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "event_kind",
+              "operator": "equal",
+              "value": "speech"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_pair_stat",
+            "participant_a_id": "$input.participant_a_id",
+            "participant_b_id": "$input.participant_b_id",
+            "stat": "connection",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "event_kind",
+              "operator": "equal",
+              "value": "speech"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "confidence",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "conversation.broken_reply": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "event_kind",
+              "operator": "equal",
+              "value": "broken_reply"
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_pair_stat",
+            "participant_a_id": "$input.participant_a_id",
+            "participant_b_id": "$input.participant_b_id",
+            "stat": "safety",
+            "delta": -1
+          }
+        }
+      ]
+    }
+  },
+  "actor.time_advanced": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "hunger",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "actor.moved": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "stamina",
+            "delta": -1
+          }
+        }
+      ]
+    }
+  },
+  "actor.rested": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "stamina",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "actor.consumed": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "hunger_recovery",
+              "operator": "greater_than",
+              "value": 0
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "hunger",
+            "delta": "-${input.hunger_recovery}"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "stamina_recovery",
+              "operator": "greater_than",
+              "value": 0
+            }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "stamina",
+            "delta": "$input.stamina_recovery"
+          }
+        }
+      ]
+    }
+  },
+  "actor.hugged": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_pair_stat",
+            "participant_a_id": "$input.actor_id",
+            "participant_b_id": "$input.target_actor_id",
+            "stat": "safety",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_pair_stat",
+            "participant_a_id": "$input.actor_id",
+            "participant_b_id": "$input.target_actor_id",
+            "stat": "attraction",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "actor.turn_action_guidance": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "active_stage_ids",
+              "operator": "array_contains",
+              "value": "introduce-everyone-first-evening"
+            }
+          ],
+          "payload_template": {
+            "kind": "hide_affordance",
+            "affordance_id": "move"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_stats.stamina",
+              "operator": "less_than",
+              "value": 5
+            },
+            {
+              "path": "affordances.rest.available",
+              "operator": "equal",
+              "value": true
+            }
+          ],
+          "payload_template": {
+            "kind": "prioritize_affordance",
+            "affordance_id": "rest",
+            "by": 20
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_stats.stamina",
+              "operator": "less_than",
+              "value": 4
+            },
+            {
+              "path": "affordances.rest.available",
+              "operator": "equal",
+              "value": true
+            }
+          ],
+          "payload_template": {
+            "kind": "prioritize_affordance",
+            "affordance_id": "rest",
+            "by": 20
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "affordances.hug.available",
+              "operator": "equal",
+              "value": true
+            },
+            {
+              "path": "top_speak_candidate.pair_stats.connection",
+              "operator": "greater_than",
+              "value": 4
+            },
+            {
+              "path": "top_speak_candidate.pair_stats.safety",
+              "operator": "greater_than",
+              "value": 5
+            },
+            {
+              "path": "top_speak_candidate.pair_stats.attraction",
+              "operator": "greater_than",
+              "value": 6
+            },
+            {
+              "path": "actor_stats.stamina",
+              "operator": "greater_than",
+              "value": 4
+            },
+            {
+              "path": "actor_stats.confidence",
+              "operator": "greater_than",
+              "value": 4
+            },
+            {
+              "path": "actor_stats.hunger",
+              "operator": "less_than",
+              "value": 6
+            }
+          ],
+          "payload_template": {
+            "kind": "prioritize_affordance",
+            "affordance_id": "hug",
+            "by": 12
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "affordances.hug.available",
+              "operator": "equal",
+              "value": true
+            },
+            {
+              "path": "actor_stats.stamina",
+              "operator": "less_than",
+              "value": 5
+            }
+          ],
+          "payload_template": {
+            "kind": "prioritize_affordance",
+            "affordance_id": "hug",
+            "by": -15
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "affordances.hug.available",
+              "operator": "equal",
+              "value": true
+            },
+            {
+              "path": "actor_stats.confidence",
+              "operator": "less_than",
+              "value": 5
+            }
+          ],
+          "payload_template": {
+            "kind": "prioritize_affordance",
+            "affordance_id": "hug",
+            "by": -10
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "affordances.hug.available",
+              "operator": "equal",
+              "value": true
+            },
+            {
+              "path": "actor_stats.hunger",
+              "operator": "greater_than",
+              "value": 5
+            }
+          ],
+          "payload_template": {
+            "kind": "prioritize_affordance",
+            "affordance_id": "hug",
+            "by": -10
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "affordances.inspect_actor.available",
+              "operator": "equal",
+              "value": true
+            },
+            {
+              "path": "top_speak_candidate.pair_stats.connection",
+              "operator": "less_than",
+              "value": 4
+            }
+          ],
+          "payload_template": {
+            "kind": "prioritize_affordance",
+            "affordance_id": "inspect_actor",
+            "by": 10
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "affordances.inspect_actor.available",
+              "operator": "equal",
+              "value": true
+            },
+            {
+              "path": "top_speak_candidate.pair_stats.safety",
+              "operator": "less_than",
+              "value": 3
+            }
+          ],
+          "payload_template": {
+            "kind": "prioritize_affordance",
+            "affordance_id": "inspect_actor",
+            "by": 10
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "affordances.inspect_feature.available",
+              "operator": "equal",
+              "value": true
+            },
+            {
+              "path": "unseen_feature_count",
+              "operator": "greater_than",
+              "value": 0
+            }
+          ],
+          "payload_template": {
+            "kind": "prioritize_affordance",
+            "affordance_id": "inspect_feature",
+            "by": 8
+          }
+        }
+      ]
+    }
+  },
+  "conversation.pair_state_notes": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "effects_field": "notes",
+      "default_payload_template": {
+        "notes": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "affordances.hug.available",
+              "operator": "equal",
+              "value": true
+            }
+          ],
+          "payload_template": "There is enough warmth here that a hug would feel natural."
+        }
+      ]
+    }
+  },
+  "actor.turn_should_speak": {
+    "rule": "decision_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "value": false
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "is_directly_addressed",
+              "operator": "equal",
+              "value": true
+            }
+          ],
+          "payload_template": {
+            "value": true
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "stamina",
+              "operator": "greater_than",
+              "value": 2
+            },
+            {
+              "path": "hunger",
+              "operator": "less_than",
+              "value": 6
+            },
+            {
+              "path": "confidence",
+              "operator": "greater_than",
+              "value": 4
+            }
+          ],
+          "payload_template": {
+            "value": true
+          }
+        }
+      ]
+    }
+  },
+  "actor.turn_should_rest": {
+    "rule": "decision_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "value": false
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "stamina",
+              "operator": "less_than",
+              "value": 5
+            },
+            {
+              "path": "has_rest_affordance",
+              "operator": "equal",
+              "value": true
+            }
+          ],
+          "payload_template": {
+            "value": true
+          }
+        }
+      ]
+    }
+  },
+  "actor.turn_should_consume": {
+    "rule": "decision_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "value": false
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "hunger",
+              "operator": "greater_than",
+              "value": 5
+            },
+            {
+              "path": "has_hunger_recovery_consumable",
+              "operator": "equal",
+              "value": true
+            }
+          ],
+          "payload_template": {
+            "value": true
+          }
+        }
+      ]
+    }
+  },
+  "actor.turn_should_move": {
+    "rule": "decision_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "value": false
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "has_pending_movement_target",
+              "operator": "equal",
+              "value": true
+            }
+          ],
+          "payload_template": {
+            "value": true
+          }
+        }
+      ]
+    }
+  },
+  "actor.turn_should_direct_speech": {
+    "rule": "decision_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "value": false
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "is_directly_addressed",
+              "operator": "equal",
+              "value": true
+            }
+          ],
+          "payload_template": {
+            "value": true
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "has_clearly_preferred_target",
+              "operator": "equal",
+              "value": true
+            }
+          ],
+          "payload_template": {
+            "value": true
+          }
+        }
+      ]
+    }
+  }
+}

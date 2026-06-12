@@ -1,0 +1,663 @@
+use crate::app::effects::{TimedTextPlayback, TranscriptAnimationSnapshot};
+use crate::app::projector;
+use crate::app::theme::RosePineMoon;
+use crate::app::transcript;
+use crate::content::types::UiTextDefinition;
+use crate::engine::runtime::MenuChoiceOption;
+use ratatui::Frame;
+use ratatui::layout::{Alignment, Constraint, Direction, Flex, Layout, Margin, Position, Rect};
+use ratatui::style::{Modifier, Style};
+use ratatui::text::{Line, Span, Text};
+use ratatui::widgets::{
+    Bar, BarChart, BarGroup, Block, Borders, Clear, List, ListItem, ListState, Paragraph,
+    Scrollbar, ScrollbarOrientation, ScrollbarState, Wrap,
+};
+use std::time::Duration;
+
+pub(crate) struct RenderSnapshot {
+    pub title: String,
+    pub time: String,
+    pub transcript: Vec<String>,
+    pub transcript_scroll: u16,
+    pub transcript_animation: Option<TranscriptAnimationSnapshot>,
+    pub pending_transcript_animation_entries: Vec<usize>,
+    pub ui_text: UiTextDefinition,
+    pub pane_focus: PaneFocus,
+    pub input: String,
+    pub game_over: bool,
+    pub menu: Option<MenuSnapshot>,
+    pub shell_modal: Option<ShellModalSnapshot>,
+}
+
+pub(crate) struct MenuSnapshot {
+    pub options: Vec<MenuChoiceOption>,
+    pub selected_index: usize,
+}
+
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub(crate) enum PaneFocus {
+    Command,
+    Transcript,
+}
+
+pub(crate) enum ShellModalSnapshot {
+    Root {
+        selected_index: usize,
+        options: Vec<String>,
+    },
+    Detail {
+        title: String,
+        body: String,
+        hint: String,
+        scroll: u16,
+    },
+    Selection {
+        title: String,
+        selected_index: usize,
+        options: Vec<String>,
+        hint: String,
+    },
+    ReportCard {
+        outcome_score: i32,
+        stats: Vec<(String, i32, i32)>,
+        hint: String,
+    },
+}
+
+const SHELL_MODAL_WIDTH_PERCENT: u16 = 72;
+const SHELL_MODAL_MIN_HEIGHT: u16 = 12;
+const SHELL_MODAL_MAX_HEIGHT: u16 = 24;
+
+pub(crate) fn draw(
+    frame: &mut Frame,
+    snapshot: &RenderSnapshot,
+    projector_playback: Option<&mut TimedTextPlayback>,
+    frame_interval: Duration,
+) {
+    frame.render_widget(Clear, frame.area());
+    frame.render_widget(
+        Block::default().style(Style::default().bg(RosePineMoon::BASE)),
+        frame.area(),
+    );
+
+    let chunks = Layout::vertical([
+        Constraint::Length(1),
+        Constraint::Min(8),
+        Constraint::Length(3),
+    ])
+    .margin(1)
+    .split(frame.area());
+
+    let shell = Line::from(vec![
+        Span::styled(
+            format!(" {} ", snapshot.title),
+            Style::default()
+                .fg(RosePineMoon::FOAM)
+                .add_modifier(Modifier::BOLD),
+        ),
+        Span::styled("• ", Style::default().fg(RosePineMoon::MUTED)),
+        Span::styled(
+            snapshot.time.clone(),
+            Style::default()
+                .fg(RosePineMoon::GOLD)
+                .add_modifier(Modifier::BOLD),
+        ),
+        Span::styled(" • ", Style::default().fg(RosePineMoon::MUTED)),
+        Span::styled(
+            snapshot.ui_text.menu_button_label.clone(),
+            Style::default().fg(RosePineMoon::MUTED),
+        ),
+    ]);
+    frame.render_widget(
+        Paragraph::new(shell)
+            .style(Style::default().bg(RosePineMoon::BASE))
+            .alignment(Alignment::Left),
+        chunks[0],
+    );
+
+    let transcript_text = Text::from(transcript::lines(
+        &snapshot.transcript,
+        snapshot.transcript_animation,
+        &snapshot.pending_transcript_animation_entries,
+        &snapshot.ui_text,
+    ));
+    let transcript = Paragraph::new(transcript_text)
+        .block(
+            Block::default()
+                .borders(Borders::ALL)
+                .border_style(Style::default().fg(
+                    if snapshot.pane_focus == PaneFocus::Transcript {
+                        RosePineMoon::FOAM
+                    } else {
+                        RosePineMoon::HIGHLIGHT_HIGH
+                    },
+                ))
+                .style(Style::default().bg(RosePineMoon::SURFACE)),
+        )
+        .style(
+            Style::default()
+                .fg(RosePineMoon::TEXT)
+                .bg(RosePineMoon::SURFACE),
+        )
+        .wrap(Wrap { trim: false })
+        .scroll((snapshot.transcript_scroll, 0));
+    frame.render_widget(transcript, chunks[1]);
+    let transcript_lines = transcript::content_lines(&snapshot.transcript, chunks[1].width);
+    let mut scrollbar_state =
+        ScrollbarState::new(transcript_lines).position(snapshot.transcript_scroll as usize);
+    let scrollbar = Scrollbar::new(ScrollbarOrientation::VerticalRight)
+        .thumb_style(Style::default().fg(RosePineMoon::FOAM))
+        .track_style(Style::default().fg(RosePineMoon::HIGHLIGHT_HIGH))
+        .begin_symbol(None)
+        .end_symbol(None);
+    frame.render_stateful_widget(
+        scrollbar,
+        chunks[1].inner(Margin {
+            vertical: 1,
+            horizontal: 0,
+        }),
+        &mut scrollbar_state,
+    );
+
+    let input_title = if snapshot.game_over {
+        Some(snapshot.ui_text.session_ended_title.as_str())
+    } else {
+        None
+    };
+    let input_title_style = if snapshot.game_over {
+        Style::default()
+            .fg(RosePineMoon::MUTED)
+            .add_modifier(Modifier::BOLD)
+    } else {
+        Style::default()
+            .fg(RosePineMoon::ROSE)
+            .add_modifier(Modifier::BOLD)
+    };
+    let input = Paragraph::new(Line::from(vec![
+        Span::styled(
+            if snapshot.game_over {
+                snapshot.ui_text.game_over_hint.as_str()
+            } else {
+                "> "
+            },
+            Style::default()
+                .fg(if snapshot.game_over {
+                    RosePineMoon::MUTED
+                } else {
+                    RosePineMoon::PINE
+                })
+                .add_modifier(Modifier::BOLD),
+        ),
+        Span::styled(
+            if snapshot.game_over {
+                ""
+            } else {
+                snapshot.input.as_str()
+            },
+            Style::default().fg(RosePineMoon::TEXT),
+        ),
+    ]))
+    .block({
+        let block = Block::default()
+            .borders(Borders::ALL)
+            .border_style(
+                Style::default().fg(if snapshot.pane_focus == PaneFocus::Command {
+                    RosePineMoon::ROSE
+                } else {
+                    RosePineMoon::HIGHLIGHT_HIGH
+                }),
+            )
+            .style(Style::default().bg(RosePineMoon::OVERLAY));
+        if let Some(title) = input_title {
+            block.title(title).title_style(input_title_style)
+        } else {
+            block
+        }
+    })
+    .wrap(Wrap { trim: false })
+    .style(Style::default().bg(RosePineMoon::OVERLAY));
+    frame.render_widget(input, chunks[2]);
+
+    if let Some(playback) = projector_playback {
+        projector::render_modal(frame, playback, &snapshot.ui_text, frame_interval);
+    } else if let Some(shell_modal) = &snapshot.shell_modal {
+        render_shell_modal(frame, shell_modal, &snapshot.ui_text);
+    } else if let Some(menu) = &snapshot.menu {
+        render_menu(frame, menu, &snapshot.ui_text);
+    }
+
+    if !snapshot.game_over
+        && snapshot.menu.is_none()
+        && snapshot.shell_modal.is_none()
+        && snapshot.pane_focus == PaneFocus::Command
+        && snapshot.transcript_animation.is_none()
+        && snapshot.pending_transcript_animation_entries.is_empty()
+    {
+        let inner_width = chunks[2].width.saturating_sub(2);
+        let prompt_width: u16 = 2;
+        let first_line_width = inner_width.saturating_sub(prompt_width);
+        let input_len = snapshot.input.chars().count() as u16;
+        if input_len <= first_line_width {
+            let cursor_offset = prompt_width + input_len;
+            frame.set_cursor_position(Position::new(
+                chunks[2].x + 1 + cursor_offset,
+                chunks[2].y + 1,
+            ));
+        } else {
+            let remaining = input_len - first_line_width;
+            let other_line_width = inner_width.max(1);
+            let col = remaining % other_line_width;
+            let row = (remaining - 1) / other_line_width + 1;
+            let max_row = chunks[2].height.saturating_sub(2);
+            let row = row.min(max_row);
+            frame.set_cursor_position(Position::new(chunks[2].x + 1 + col, chunks[2].y + 1 + row));
+        }
+    }
+}
+
+fn word_wrap(text: &str, max_width: usize) -> Vec<Line<'static>> {
+    let mut lines = Vec::new();
+    for word in text.split(' ') {
+        let can_append = lines
+            .last()
+            .is_some_and(|last: &Line| last.width() + 1 + word.len() <= max_width);
+        if can_append {
+            let last = lines.last_mut().unwrap();
+            last.push_span(Span::raw(format!(" {word}")));
+        } else {
+            lines.push(Line::from(word.to_string()));
+        }
+    }
+    if lines.is_empty() {
+        lines.push(Line::from(""));
+    }
+    lines
+}
+
+fn render_menu(frame: &mut Frame, menu: &MenuSnapshot, ui_text: &UiTextDefinition) {
+    let inner_width = (frame.area().width * 70 / 100).saturating_sub(6) as usize;
+    let wrapped_lines: Vec<Vec<Line>> = menu
+        .options
+        .iter()
+        .map(|option| {
+            let mut lines = Vec::new();
+            lines.push(Line::from(Span::styled(
+                &option.title,
+                Style::default()
+                    .fg(RosePineMoon::IRIS)
+                    .add_modifier(Modifier::BOLD),
+            )));
+            for wrapped_line in word_wrap(&option.menu_text, inner_width) {
+                lines.push(wrapped_line);
+            }
+            lines
+        })
+        .collect();
+    let total_lines: u16 = wrapped_lines.iter().map(|lines| lines.len() as u16).sum();
+    let height = (total_lines + 4).min(24);
+    let area = centered_rect(70, height, frame.area());
+    let sections = modal_block(frame, area, &ui_text.menu_option_list_title);
+    let items = wrapped_lines
+        .into_iter()
+        .map(ListItem::new)
+        .collect::<Vec<_>>();
+    let list = List::new(items)
+        .style(
+            Style::default()
+                .fg(RosePineMoon::TEXT)
+                .bg(RosePineMoon::OVERLAY),
+        )
+        .highlight_style(
+            Style::default()
+                .fg(RosePineMoon::BASE)
+                .bg(RosePineMoon::FOAM)
+                .add_modifier(Modifier::BOLD),
+        )
+        .highlight_symbol("› ");
+    let mut state = ListState::default();
+    state.select(Some(menu.selected_index));
+    frame.render_stateful_widget(list, sections[0], &mut state);
+    frame.render_widget(
+        Paragraph::new(ui_text.menu_choice_hint.clone())
+            .alignment(Alignment::Right)
+            .style(
+                Style::default()
+                    .fg(RosePineMoon::MUTED)
+                    .bg(RosePineMoon::OVERLAY),
+            ),
+        sections[1],
+    );
+}
+
+fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &UiTextDefinition) {
+    let area = match modal {
+        ShellModalSnapshot::Detail { title, body, .. } => {
+            detail_modal_area(frame.area(), &detail_modal_body_text(title, body))
+        }
+        ShellModalSnapshot::ReportCard { .. } => centered_rect(62, 14, frame.area()),
+        _ => centered_rect(62, 12, frame.area()),
+    };
+    let block_title = match modal {
+        ShellModalSnapshot::ReportCard { .. } => "Session Report",
+        _ => &ui_text.shell_menu_title,
+    };
+    let sections = modal_block(frame, area, block_title);
+    match modal {
+        ShellModalSnapshot::Root {
+            selected_index,
+            options,
+        } => {
+            let items = options
+                .iter()
+                .enumerate()
+                .map(|(index, option)| {
+                    ListItem::new(Line::from(format!("{}. {}", index + 1, option)))
+                })
+                .collect::<Vec<_>>();
+            let list = List::new(items)
+                .style(
+                    Style::default()
+                        .fg(RosePineMoon::TEXT)
+                        .bg(RosePineMoon::OVERLAY),
+                )
+                .highlight_style(
+                    Style::default()
+                        .fg(RosePineMoon::BASE)
+                        .bg(RosePineMoon::FOAM)
+                        .add_modifier(Modifier::BOLD),
+                )
+                .highlight_symbol("› ");
+            let mut state = ListState::default();
+            state.select(Some(*selected_index));
+            frame.render_stateful_widget(list, sections[0], &mut state);
+            frame.render_widget(
+                Paragraph::new(ui_text.shell_menu_close_hint.clone())
+                    .alignment(Alignment::Right)
+                    .style(
+                        Style::default()
+                            .fg(RosePineMoon::MUTED)
+                            .bg(RosePineMoon::OVERLAY),
+                    ),
+                sections[1],
+            );
+        }
+        ShellModalSnapshot::Selection {
+            title,
+            selected_index,
+            options,
+            hint,
+        } => {
+            let items = options
+                .iter()
+                .enumerate()
+                .map(|(index, option)| {
+                    ListItem::new(Line::from(format!("{}. {}", index + 1, option)))
+                })
+                .collect::<Vec<_>>();
+            frame.render_widget(
+                Paragraph::new(title.clone()).style(
+                    Style::default()
+                        .fg(RosePineMoon::IRIS)
+                        .bg(RosePineMoon::OVERLAY)
+                        .add_modifier(Modifier::BOLD),
+                ),
+                sections[0].inner(Margin {
+                    vertical: 0,
+                    horizontal: 0,
+                }),
+            );
+            let list_area = sections[0].inner(Margin {
+                vertical: 1,
+                horizontal: 0,
+            });
+            let list = List::new(items)
+                .style(
+                    Style::default()
+                        .fg(RosePineMoon::TEXT)
+                        .bg(RosePineMoon::OVERLAY),
+                )
+                .highlight_style(
+                    Style::default()
+                        .fg(RosePineMoon::BASE)
+                        .bg(RosePineMoon::FOAM)
+                        .add_modifier(Modifier::BOLD),
+                )
+                .highlight_symbol("› ");
+            let mut state = ListState::default();
+            state.select(Some(*selected_index));
+            frame.render_stateful_widget(list, list_area, &mut state);
+            frame.render_widget(
+                Paragraph::new(hint.clone())
+                    .alignment(Alignment::Right)
+                    .style(
+                        Style::default()
+                            .fg(RosePineMoon::MUTED)
+                            .bg(RosePineMoon::OVERLAY),
+                    ),
+                sections[1],
+            );
+        }
+        ShellModalSnapshot::ReportCard {
+            outcome_score,
+            stats,
+            hint,
+        } => {
+            let inner =
+                Layout::vertical([Constraint::Length(2), Constraint::Fill(1)]).split(sections[0]);
+            let top = inner[0];
+            let chart_area = inner[1];
+
+            frame.render_widget(
+                Paragraph::new(format!("  Score: {} / 10", outcome_score)).style(
+                    Style::default()
+                        .fg(RosePineMoon::TEXT)
+                        .add_modifier(Modifier::BOLD),
+                ),
+                top,
+            );
+
+            let horizontal = Layout::horizontal([
+                Constraint::Length(12),
+                Constraint::Length(10),
+                Constraint::Fill(1),
+            ])
+            .split(chart_area);
+            let names_area = horizontal[0];
+            let values_area = horizontal[1];
+            let bars_area = horizontal[2];
+
+            let colors = [
+                RosePineMoon::FOAM,
+                RosePineMoon::IRIS,
+                RosePineMoon::GOLD,
+                RosePineMoon::LOVE,
+            ];
+
+            let name_lines: Vec<Line> = stats
+                .iter()
+                .enumerate()
+                .map(|(i, (name, _, _))| {
+                    Line::from(Span::styled(
+                        name.clone(),
+                        Style::default().fg(colors[i % colors.len()]),
+                    ))
+                })
+                .collect();
+            frame.render_widget(Paragraph::new(Text::from(name_lines)), names_area);
+
+            let value_lines: Vec<Line> = stats
+                .iter()
+                .map(|(_, value, delta)| {
+                    let text = if *delta >= 0 {
+                        format!("{} (+{})", value, delta)
+                    } else {
+                        format!("{} ({})", value, delta)
+                    };
+                    Line::from(text)
+                })
+                .collect();
+            frame.render_widget(Paragraph::new(Text::from(value_lines)), values_area);
+
+            let bars: Vec<Bar> = stats
+                .iter()
+                .enumerate()
+                .map(|(i, (_, value, _))| {
+                    Bar::default()
+                        .value((*value).clamp(0, 10) as u64)
+                        .text_value("".to_string())
+                        .style(Style::default().fg(colors[i % colors.len()]))
+                })
+                .collect();
+
+            frame.render_widget(
+                BarChart::default()
+                    .data(BarGroup::default().bars(&bars))
+                    .direction(Direction::Horizontal)
+                    .bar_width(1)
+                    .bar_gap(0)
+                    .max(10),
+                bars_area,
+            );
+
+            frame.render_widget(
+                Paragraph::new(hint.clone())
+                    .alignment(Alignment::Right)
+                    .style(
+                        Style::default()
+                            .fg(RosePineMoon::MUTED)
+                            .bg(RosePineMoon::OVERLAY),
+                    ),
+                sections[1],
+            );
+        }
+        ShellModalSnapshot::Detail {
+            title,
+            body,
+            hint,
+            scroll,
+        } => {
+            let body_text = detail_modal_body_text(title, body);
+            frame.render_widget(
+                Paragraph::new(body_text.clone())
+                    .wrap(Wrap { trim: false })
+                    .scroll((*scroll, 0))
+                    .style(
+                        Style::default()
+                            .fg(RosePineMoon::TEXT)
+                            .bg(RosePineMoon::OVERLAY),
+                    ),
+                sections[0],
+            );
+            let mut scrollbar_state =
+                ScrollbarState::new(detail_modal_content_lines(&body_text, sections[0].width))
+                    .position(*scroll as usize);
+            let scrollbar = Scrollbar::new(ScrollbarOrientation::VerticalRight)
+                .thumb_style(Style::default().fg(RosePineMoon::FOAM))
+                .track_style(Style::default().fg(RosePineMoon::HIGHLIGHT_HIGH))
+                .begin_symbol(None)
+                .end_symbol(None);
+            frame.render_stateful_widget(
+                scrollbar,
+                sections[0].inner(Margin {
+                    vertical: 0,
+                    horizontal: 0,
+                }),
+                &mut scrollbar_state,
+            );
+            frame.render_widget(
+                Paragraph::new(hint.clone())
+                    .alignment(Alignment::Right)
+                    .style(
+                        Style::default()
+                            .fg(RosePineMoon::MUTED)
+                            .bg(RosePineMoon::OVERLAY),
+                    ),
+                sections[1],
+            );
+        }
+    }
+}
+
+pub(crate) fn detail_modal_max_scroll(frame_area: Rect, title: &str, body: &str) -> u16 {
+    let body_text = detail_modal_body_text(title, body);
+    let area = detail_modal_area(frame_area, &body_text);
+    let sections = Layout::vertical([Constraint::Min(3), Constraint::Length(1)])
+        .margin(1)
+        .split(area);
+    let visible = sections[0].height.max(1) as usize;
+    detail_modal_content_lines(&body_text, sections[0].width).saturating_sub(visible) as u16
+}
+
+pub(crate) fn detail_modal_page_size(frame_area: Rect, title: &str, body: &str) -> u16 {
+    let body_text = detail_modal_body_text(title, body);
+    let area = detail_modal_area(frame_area, &body_text);
+    let sections = Layout::vertical([Constraint::Min(3), Constraint::Length(1)])
+        .margin(1)
+        .split(area);
+    sections[0].height.max(1)
+}
+
+fn detail_modal_body_text(title: &str, body: &str) -> String {
+    format!("{title}\n\n{body}")
+}
+
+fn detail_modal_area(frame_area: Rect, body_text: &str) -> Rect {
+    centered_rect(
+        SHELL_MODAL_WIDTH_PERCENT,
+        detail_modal_height(frame_area, body_text),
+        frame_area,
+    )
+}
+
+fn detail_modal_height(frame_area: Rect, body_text: &str) -> u16 {
+    let max_height = frame_area
+        .height
+        .saturating_sub(4)
+        .clamp(SHELL_MODAL_MIN_HEIGHT, SHELL_MODAL_MAX_HEIGHT);
+    let content_width = frame_area
+        .width
+        .saturating_mul(SHELL_MODAL_WIDTH_PERCENT)
+        .saturating_div(100)
+        .saturating_sub(2);
+    let desired = detail_modal_content_lines(body_text, content_width).saturating_add(3) as u16;
+    desired.clamp(SHELL_MODAL_MIN_HEIGHT, max_height)
+}
+
+fn detail_modal_content_lines(text: &str, width: u16) -> usize {
+    let width = width.max(1) as usize;
+    text.lines()
+        .map(|line| {
+            let count = line.chars().count();
+            if count == 0 { 1 } else { count.div_ceil(width) }
+        })
+        .sum()
+}
+
+fn centered_rect(width_percent: u16, height: u16, area: Rect) -> Rect {
+    let vertical = Layout::vertical([Constraint::Length(height)])
+        .flex(Flex::Center)
+        .split(area);
+    let horizontal = Layout::horizontal([Constraint::Percentage(width_percent)])
+        .flex(Flex::Center)
+        .split(vertical[0]);
+    horizontal[0]
+}
+
+fn modal_block(frame: &mut Frame, area: Rect, title: &str) -> [Rect; 2] {
+    frame.render_widget(Clear, area);
+    let block = Block::default()
+        .title(title)
+        .title_style(
+            Style::default()
+                .fg(RosePineMoon::IRIS)
+                .add_modifier(Modifier::BOLD),
+        )
+        .borders(Borders::ALL)
+        .border_style(Style::default().fg(RosePineMoon::IRIS))
+        .style(Style::default().bg(RosePineMoon::OVERLAY));
+    frame.render_widget(block, area);
+    let sections = Layout::vertical([Constraint::Min(1), Constraint::Length(1)])
+        .margin(1)
+        .split(area);
+    [sections[0], sections[1]]
+}

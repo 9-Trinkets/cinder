@@ -1,0 +1,79 @@
+[synapse]
+default_workflow = "isla_turn"
+
+[synapse.workflows.isla_turn]
+entry_role = "turn_dispatch"
+routing_mode = "event_driven"
+max_hops = 24
+max_message_chars = 32000
+graph = """
+turn_dispatch -> command_parser
+command_parser -> turn_merge
+state_reader -> turn_merge
+turn_merge -> turn_planner
+turn_planner -> menu_intent_clarifier
+turn_planner -> turn_reducer
+menu_intent_clarifier -> dialogue_grounder
+dialogue_grounder -> actor_dialogue
+actor_dialogue -> turn_reducer
+turn_reducer -> turn_narrator
+turn_narrator -> complete
+"""
+
+[synapse.workflows.isla_turn.event_runtime]
+worker_count = 3
+max_attempts = 2
+dead_letter_topic = "dead_letter"
+
+[synapse.workflows.isla_turn.serve]
+interval_seconds = 60
+event_type = "turn"
+event_topic = "role.turn_dispatch"
+event_level = "info"
+message = "Isla turn"
+
+[synapse.workflows.isla_turn.roles.turn_dispatch]
+handler = "dispatch"
+
+[synapse.workflows.isla_turn.roles.command_parser]
+handler = "command_parser"
+
+[synapse.workflows.isla_turn.roles.state_reader]
+handler = "state_reader"
+consumes_topics = ["role.command_parser"]
+
+[synapse.workflows.isla_turn.roles.turn_merge]
+handler = "aggregation"
+[synapse.workflows.isla_turn.roles.turn_merge.aggregation]
+required_signal_types = ["command", "world"]
+emit_partial_on_drain = false
+
+[synapse.workflows.isla_turn.roles.turn_planner]
+handler = "planner"
+
+[synapse.workflows.isla_turn.roles.menu_intent_clarifier]
+handler = "menu_intent_clarifier"
+agent_profile = "cinder_menu_intent_validator"
+
+[synapse.workflows.isla_turn.roles.dialogue_grounder]
+handler = "dialogue_grounder"
+
+[synapse.workflows.isla_turn.roles.actor_dialogue]
+handler = "actor_dialogue"
+
+[synapse.workflows.isla_turn.roles.actor_turn_decider]
+agent_profile = "cinder_actor_turn_validator"
+
+[synapse.workflows.isla_turn.roles.conversation_memory_summarizer]
+
+[synapse.workflows.isla_turn.roles.chapter_script_summarizer]
+
+[synapse.workflows.isla_turn.roles.chapter_relationship_summarizer]
+
+[synapse.workflows.isla_turn.roles.direct_speech_intent]
+
+[synapse.workflows.isla_turn.roles.turn_reducer]
+handler = "reducer"
+
+[synapse.workflows.isla_turn.roles.turn_narrator]
+handler = "narrator"

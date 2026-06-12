@@ -1,0 +1,24 @@
+{
+  "error_text": {
+    "room_missing": "The room data could not be found.",
+    "cannot_go": "You can't go to {target} from here.",
+    "actor_not_here": "{actor_name} isn't here right now.",
+    "actor_unknown": "You don't see anyone called {target} here.",
+    "feature_unknown": "You don't notice anything called {target} here.",
+    "unknown_input": "I don't know how to `{raw_input}` yet. Try {available_commands}.",
+    "dialogue_unavailable": "{actor_name} doesn't answer right now. Dialogue error: {error}"
+  },
+  "presentation_text": {
+    "room_observation": "== {room_title} ==\n{body}{features}{people}{exits}",
+    "objective": "\n\nObjectives:\n{objective}",
+    "features": "\n\nYou notice: {features}.",
+    "people": "\n\nPeople here: {people}.",
+    "exits": "\n\nExits: {exits}.",
+    "feature_consumables": "\n\nAvailable at the {feature_label}: {items}.",
+    "actor_speech": "{actor_name}: {text}",
+    "actor_targeted_speech": "{actor_name} (to {target_name}): {text}",
+    "actor_departed": "{actor_name} heads to the {room_title}.",
+    "actor_arrived": "{actor_name} comes in from the {room_title}.",
+    "session_ended": "The house goes still around her."
+  }
+}

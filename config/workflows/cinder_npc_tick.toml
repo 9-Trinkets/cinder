@@ -1,0 +1,28 @@
+[synapse]
+default_workflow = "cinder_npc_tick"
+
+[synapse.workflows.cinder_npc_tick]
+entry_role = "npc_tick_orchestrator"
+routing_mode = "sequential"
+max_hops = 32
+max_message_chars = 24000
+graph = """
+npc_tick_orchestrator -> npc_actor_turn_build_actions
+npc_actor_turn_build_actions -> npc_actor_turn_apply
+npc_actor_turn_build_actions -> npc_actor_turn_decide_action
+npc_actor_turn_decide_action -> npc_actor_turn_write_dialogue
+npc_actor_turn_write_dialogue -> npc_actor_turn_apply
+npc_actor_turn_apply -> npc_tick_orchestrator
+"""
+
+[synapse.workflows.cinder_npc_tick.roles.npc_tick_orchestrator]
+
+[synapse.workflows.cinder_npc_tick.roles.npc_actor_turn_build_actions]
+
+[synapse.workflows.cinder_npc_tick.roles.npc_actor_turn_decide_action]
+planner_mode = "symbolic"
+symbolic_planner_rule = "decision_table"
+
+[synapse.workflows.cinder_npc_tick.roles.npc_actor_turn_write_dialogue]
+
+[synapse.workflows.cinder_npc_tick.roles.npc_actor_turn_apply]

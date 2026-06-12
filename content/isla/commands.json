@@ -1,0 +1,298 @@
+{
+  "actions": [
+    {
+      "id": "look",
+      "group": "observation",
+      "command": "LOOK",
+      "target_mode": "none",
+      "effects": ["observe_room"],
+      "player_enabled": true,
+      "player_phrases": ["look", "l", "look at", "look room", "look around", "inspect room", "examine"],
+      "player_command": {
+        "usage": "look [at <thing or person>]",
+        "example": "look around",
+        "advances_time": false,
+        "input": { "required": false }
+      }
+    },
+    {
+      "id": "speak",
+      "group": "conversation",
+      "command": "SPEAK",
+      "target_mode": "actor_optional",
+      "outcome_mode": "dialogue",
+      "player_enabled": true,
+      "player_phrases": ["talk to", "talk", "speak to", "speak"],
+      "player_command": {
+        "target_mode": "actor_reference",
+        "usage": "talk to <patient> [message]",
+        "example": "talk to noa what feels hardest right now",
+        "advances_time": false,
+        "input": { "required": true }
+      }
+    },
+    {
+      "id": "listen",
+      "group": "conversation",
+      "command": "LISTEN",
+      "target_mode": "none",
+      "outcome_mode": "dialogue",
+      "player_enabled": true,
+      "player_phrases": ["listen", "hear"],
+      "player_command": {
+        "target_mode": "first_actor_in_room",
+        "usage": "listen",
+        "example": "listen",
+        "advances_time": false
+      }
+    },
+    {
+      "id": "recommend_book",
+      "group": "book",
+      "command": "RECOMMEND BOOK",
+      "target_mode": "none",
+      "player_enabled": true,
+      "player_phrases": ["recommend", "recommend book", "book recommendation", "choose a book", "pick a book"],
+      "player_command": {
+        "usage": "recommend",
+        "example": "recommend",
+        "advances_time": false
+      },
+      "content_event": {
+        "id": "isla.recommendation_started",
+        "event_text": "You rest a hand on the shelf and let Noa know you're ready to choose a book together.",
+        "signals": ["recommendation_started"],
+        "open_menu": "book-recommendation"
+      }
+    },
+    {
+      "id": "continue_reading",
+      "group": "book",
+      "command": "CONTINUE READING",
+      "target_mode": "none",
+      "player_enabled": true,
+      "player_phrases": ["continue", "continue reading", "read on", "next chapter"],
+      "player_command": {
+        "usage": "continue",
+        "example": "continue",
+        "advances_time": true
+      },
+      "content_event": {
+        "id": "isla.reading_progressed",
+        "event_text": "Noa keeps reading while the cafe settles into a quieter rhythm.",
+        "hook_id": "isla.reading_progress",
+        "signals": ["reading_step"]
+      }
+    },
+    {
+      "id": "finish_reading",
+      "group": "book",
+      "command": "FINISH READING",
+      "target_mode": "none",
+      "player_enabled": true,
+      "player_phrases": ["finish", "finish reading", "close book", "done reading"],
+      "player_command": {
+        "usage": "finish reading",
+        "example": "finish reading",
+        "advances_time": false
+      },
+      "content_event": {
+        "id": "isla.reading_complete",
+        "event_text": "Noa closes the book and looks up, waiting for what the session means now.",
+        "hook_id": "isla.reading_complete",
+        "signals": ["reading_complete", "ending_check"]
+      }
+    },
+    {
+      "id": "inspect_feature",
+      "group": "observation",
+      "command": "INSPECT FEATURE",
+      "target_mode": "feature",
+      "effects": ["observe_feature"],
+      "event_text": "{actor_name} studies the {feature_label}.",
+      "player_enabled": false,
+      "player_phrases": ["look at", "inspect", "x"]
+    },
+    {
+      "id": "inspect_actor",
+      "group": "observation",
+      "command": "INSPECT ACTOR",
+      "target_mode": "actor",
+      "effects": ["observe_actor"],
+      "event_text": "{actor_name} studies {target_actor_name} more closely.",
+      "player_enabled": false,
+      "player_phrases": ["look at", "inspect", "x"]
+    },
+    {
+      "id": "brew_coffee",
+      "group": "service",
+      "command": "BREW COFFEE",
+      "target_mode": "none",
+      "player_enabled": true,
+      "player_phrases": ["brew", "brew coffee", "make coffee", "pull espresso"],
+      "player_command": {
+        "usage": "brew coffee",
+        "example": "brew coffee",
+        "advances_time": true
+      },
+      "content_event": {
+        "id": "isla.coffee_brewed",
+        "event_text": "You pull a fresh shot of espresso. Steam curls upward as the machine settles into a low hum. A fresh cup waits on the counter.",
+        "hook_id": "isla.coffee_brewed",
+        "signals": ["beverage_ready"]
+      }
+    },
+    {
+      "id": "brew_tea",
+      "group": "service",
+      "command": "BREW TEA",
+      "target_mode": "none",
+      "player_enabled": true,
+      "player_phrases": ["brew tea", "make tea", "steep tea"],
+      "player_command": {
+        "usage": "brew tea",
+        "example": "brew tea",
+        "advances_time": true
+      },
+      "content_event": {
+        "id": "isla.tea_brewed",
+        "event_text": "You pour hot water over loose leaves and let them steep. The fragrance curls through the cafe. A warm cup steeps by the kettle.",
+        "hook_id": "isla.tea_brewed",
+        "signals": ["beverage_ready"]
+      }
+    },
+    {
+      "id": "bake_pastry",
+      "group": "service",
+      "command": "BAKE PASTRY",
+      "target_mode": "none",
+      "player_enabled": true,
+      "player_phrases": ["bake", "bake pastry", "prepare pastry", "heat pastry"],
+      "player_command": {
+        "usage": "bake pastry",
+        "example": "bake pastry",
+        "advances_time": true
+      },
+      "content_event": {
+        "id": "isla.pastry_baked",
+        "event_text": "You slide a tray from the small oven. The pastry case fills with the scent of butter and something warm and simple. A small plate rests on the counter.",
+        "hook_id": "isla.pastry_baked",
+        "signals": ["pastry_ready"]
+      }
+    },
+    {
+      "id": "serve_coffee",
+      "group": "service",
+      "command": "SERVE COFFEE",
+      "target_mode": "none",
+      "player_enabled": true,
+      "player_phrases": ["serve coffee", "give coffee", "pour coffee"],
+      "player_command": {
+        "usage": "serve coffee",
+        "example": "serve coffee",
+        "advances_time": false
+      },
+      "content_event": {
+        "id": "isla.coffee_served",
+        "event_text": "You bring a fresh cup to Noa's side of the table. She wraps both hands around it without looking up from the page.",
+        "hook_id": "isla.coffee_served",
+        "signals": ["coffee_served"]
+      }
+    },
+    {
+      "id": "serve_tea",
+      "group": "service",
+      "command": "SERVE TEA",
+      "target_mode": "none",
+      "player_enabled": true,
+      "player_phrases": ["serve tea", "give tea", "pour tea"],
+      "player_command": {
+        "usage": "serve tea",
+        "example": "serve tea",
+        "advances_time": false
+      },
+      "content_event": {
+        "id": "isla.tea_served",
+        "event_text": "You set a warm cup beside Noa's elbow. The steam rises slowly between them and the page.",
+        "hook_id": "isla.tea_served",
+        "signals": ["tea_served"]
+      }
+    },
+    {
+      "id": "serve_pastry",
+      "group": "service",
+      "command": "SERVE PASTRY",
+      "target_mode": "none",
+      "player_enabled": true,
+      "player_phrases": ["serve pastry", "give pastry", "bring pastry"],
+      "player_command": {
+        "usage": "serve pastry",
+        "example": "serve pastry",
+        "advances_time": false
+      },
+      "content_event": {
+        "id": "isla.pastry_served",
+        "event_text": "You place a small plate near Noa, the pastry still warm. She glances at it and her focus softens.",
+        "hook_id": "isla.pastry_served",
+        "signals": ["pastry_served"]
+      }
+    },
+    {
+      "id": "drink",
+      "group": "service",
+      "command": "DRINK",
+      "target_mode": "none",
+      "player_enabled": true,
+      "player_phrases": ["drink", "take a drink", "sip"],
+      "player_command": {
+        "usage": "drink",
+        "example": "drink",
+        "advances_time": false
+      },
+      "content_event": {
+        "id": "isla.beverage_consumed",
+        "event_text": "The familiar rhythm of the cafe deepens. Steam rises, warmth settles.",
+        "hook_id": "isla.beverage_consumed",
+        "signals": ["beverage_consumed"]
+      }
+    },
+    {
+      "id": "eat",
+      "group": "service",
+      "command": "EAT",
+      "target_mode": "none",
+      "player_enabled": true,
+      "player_phrases": ["eat", "take a bite", "have some pastry"],
+      "player_command": {
+        "usage": "eat",
+        "example": "eat",
+        "advances_time": false
+      },
+      "content_event": {
+        "id": "isla.pastry_consumed",
+        "event_text": "The warm pastry breaks apart easily. The quiet is punctuated by small, unhurried sounds.",
+        "hook_id": "isla.pastry_consumed",
+        "signals": ["pastry_consumed"]
+      }
+    },
+    {
+      "id": "end_session",
+      "group": "session",
+      "command": "END SESSION",
+      "target_mode": "none",
+      "player_enabled": true,
+      "player_phrases": ["end session", "end", "quit", "exit", "leave"],
+      "player_command": {
+        "usage": "end session",
+        "example": "end session",
+        "advances_time": false
+      },
+      "content_event": {
+        "id": "isla.session_terminated",
+        "event_text": "You let the silence settle and draw the session to a close. What surfaced here will carry beyond this room.",
+        "hook_id": "isla.session_terminated",
+        "signals": ["session_terminated"]
+      }
+    }
+  ]
+}

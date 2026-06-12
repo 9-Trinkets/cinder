@@ -1,0 +1,6 @@
+| Actor  | Cultural profile                                                                                                                                                                                            |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Aera   | Lower power distance; more individual than group-oriented; emotionally restrained in outward display; tolerant of ambiguity; long-horizon in attachment.                                                    |
+| Ren    | Lower power distance; more collectivist than individualist; care-oriented rather than competitive; moderate uncertainty avoidance; long-horizon in attachment; emotionally restrained in direct expression. |
+| Mio    | Lower power distance; more individual than group-oriented; expressive but approval-sensitive; comfortable with novelty and improvisation; shorter-horizon socially.                                         |
+| Daichi | Moderate respect for structure and role clarity; more duty- and discipline-oriented than impulsive; emotionally restrained; higher uncertainty avoidance; long-horizon in attachment.                       |

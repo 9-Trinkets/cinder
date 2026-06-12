@@ -1,0 +1,85 @@
+{
+  "actions": [
+    {
+      "id": "move",
+      "group": "movement",
+      "prompt_verb": "move",
+      "command_id": "move",
+      "sort_order": 0,
+      "visible_by_default": true
+    },
+    {
+      "id": "speak",
+      "group": "social",
+      "prompt_verb": "speak to",
+      "prompt_reply_verb": "reply to",
+      "command_id": "speak",
+      "sort_order": 1,
+      "visible_by_default": true
+    },
+    {
+      "id": "hug",
+      "group": "social",
+      "prompt_verb": "hug",
+      "command_id": "hug",
+      "sort_order": 2,
+      "visible_by_default": true
+    },
+    {
+      "id": "rest",
+      "group": "recovery",
+      "prompt_verb": "rest",
+      "command_id": "rest",
+      "sort_order": 3,
+      "visible_by_default": true
+    },
+    {
+      "id": "eat",
+      "group": "consume",
+      "prompt_verb": "eat",
+      "command_id": "eat",
+      "sort_order": 4,
+      "visible_by_default": true
+    },
+    {
+      "id": "drink",
+      "group": "consume",
+      "prompt_verb": "drink",
+      "command_id": "drink",
+      "sort_order": 5,
+      "visible_by_default": true
+    },
+    {
+      "id": "consume",
+      "group": "consume",
+      "prompt_verb": "have",
+      "command_id": "consume",
+      "sort_order": 6,
+      "visible_by_default": true
+    },
+    {
+      "id": "inspect_feature",
+      "group": "observe",
+      "prompt_verb": "inspect",
+      "command_id": "inspect_feature",
+      "sort_order": 7,
+      "visible_by_default": true
+    },
+    {
+      "id": "inspect_actor",
+      "group": "observe",
+      "prompt_verb": "study",
+      "command_id": "inspect_actor",
+      "sort_order": 8,
+      "visible_by_default": true
+    },
+    {
+      "id": "act",
+      "group": "in_room",
+      "prompt_verb": "do",
+      "command_id": "act",
+      "sort_order": 9,
+      "visible_by_default": true
+    }
+  ]
+}
