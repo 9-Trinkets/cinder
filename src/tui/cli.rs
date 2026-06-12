@@ -1,8 +1,8 @@
-use crate::app::effects::{TimedTextPlayback, TranscriptAnimationSnapshot, TranscriptTypewriter};
-use crate::app::input::{self, InputAction, InputContext, ShellModalKind};
-use crate::app::projector;
-use crate::app::render::{self, MenuSnapshot, PaneFocus, RenderSnapshot, ShellModalSnapshot};
-use crate::app::transcript;
+use crate::tui::effects::{TimedTextPlayback, TranscriptAnimationSnapshot, TranscriptTypewriter};
+use crate::tui::input::{self, InputAction, InputContext, ShellModalKind};
+use crate::tui::projector;
+use crate::tui::render::{self, MenuSnapshot, PaneFocus, RenderSnapshot, ShellModalSnapshot};
+use crate::tui::transcript;
 use crate::content::loader::{
     LocaleOption, available_locales, load_pack_from_dir_with_locale, pack_dir,
 };

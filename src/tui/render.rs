@@ -1,7 +1,7 @@
-use crate::app::effects::{TimedTextPlayback, TranscriptAnimationSnapshot};
-use crate::app::projector;
-use crate::app::theme::RosePineMoon;
-use crate::app::transcript;
+use crate::tui::effects::{TimedTextPlayback, TranscriptAnimationSnapshot};
+use crate::tui::projector;
+use crate::tui::theme::RosePineMoon;
+use crate::tui::transcript;
 use crate::content::types::UiTextDefinition;
 use crate::engine::runtime::MenuChoiceOption;
 use ratatui::Frame;

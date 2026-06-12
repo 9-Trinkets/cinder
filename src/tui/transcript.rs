@@ -1,5 +1,5 @@
-use crate::app::effects::TranscriptAnimationSnapshot;
-use crate::app::theme::RosePineMoon;
+use crate::tui::effects::TranscriptAnimationSnapshot;
+use crate::tui::theme::RosePineMoon;
 use crate::content::types::UiTextDefinition;
 use ratatui::style::{Modifier, Style};
 use ratatui::text::{Line, Span};

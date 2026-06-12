@@ -1,5 +1,5 @@
-use crate::app::effects::{TimedTextFrame, TimedTextPlayback};
-use crate::app::theme::RosePineMoon;
+use crate::tui::effects::{TimedTextFrame, TimedTextPlayback};
+use crate::tui::theme::RosePineMoon;
 use crate::content::types::{OpeningMovieDefinition, UiTextDefinition};
 use ratatui::Frame;
 use ratatui::layout::{Alignment, Constraint, Flex, Layout, Rect};
