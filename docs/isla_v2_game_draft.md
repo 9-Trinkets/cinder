@@ -1,4 +1,4 @@
-# Isla V2 Draft
+# Isla Draft
 
 ## Premise
 Isla is a mysterious therapist with an unorthodox method. She hosts one patient at a time in a bookstore cafe office, listens to their story, recommends one book from a curated set, and supports them while they read the full book in-session.
@@ -55,7 +55,7 @@ When a request appears, present Isla with 2-4 response options.
 Each option applies stat deltas and sometimes flags narrative consequences.
 
 ## Core Stats
-Suggested minimum stats for V1 of Isla V2:
+Suggested minimum stats for Isla:
 1. `trust` (patient trust in Isla).
 2. `openness` (willingness to reflect honestly).
 3. `focus` (ability to continue reading).
@@ -158,8 +158,3 @@ Room features can support service flavor:
 4. Wire stage progression to reading progress events.
 5. Add ending resolver and end-session outcomes.
 
-## Open Design Questions
-1. Should recommendation happen once only, or allow one mid-session swap with penalties?
-2. Should patient requests be fully event-driven, or partially player-triggered?
-3. Should some patient archetypes prefer fewer interventions and reward restraint?
-4. Should endings include explicit "book mismatch but care success" variant text?
