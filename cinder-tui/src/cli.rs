@@ -2,6 +2,7 @@ use crate::effects::{TimedTextPlayback, TranscriptAnimationSnapshot, TranscriptT
 use crate::input::{self, InputAction, InputContext, ShellModalKind};
 use crate::projector;
 use crate::render::{self, MenuSnapshot, PaneFocus, RenderSnapshot, ShellModalSnapshot};
+use crate::theme::Theme;
 use crate::transcript;
 use cinder_core::content::loader::{
     LocaleOption, available_locales, load_pack_from_dir_with_locale, pack_dir,
@@ -784,6 +785,7 @@ impl TuiApp {
             transcript_animation: self.current_transcript_animation_snapshot(),
             pending_transcript_animation_entries: self.transcript_typewriter.pending_entries(),
             ui_text: self.ui_text.clone(),
+            theme: Theme::from(&self.runtime.content().settings.theme),
             pane_focus: self.pane_focus,
             input: self.input.clone(),
             game_over: self.game_over,

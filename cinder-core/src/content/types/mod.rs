@@ -7,6 +7,9 @@ use serde_json::Value;
 use std::collections::BTreeMap;
 use std::collections::HashMap;
 
+mod theme;
+pub use theme::ThemeDefinition;
+
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct OpeningDefinition {
     pub id: String,
@@ -44,6 +47,8 @@ pub struct ContentSettingsDefinition {
     pub speech_stamina_cost_floor: i32,
     #[serde(default = "default_true")]
     pub show_day_summary: bool,
+    #[serde(default)]
+    pub theme: ThemeDefinition,
 }
 
 fn default_typewriter_char_ms() -> u64 {
@@ -90,6 +95,7 @@ impl Default for ContentSettingsDefinition {
             speech_stamina_cost_floor: default_speech_stamina_cost_floor(),
             workflow_id: String::default(),
             show_day_summary: true,
+            theme: ThemeDefinition::default(),
         }
     }
 }

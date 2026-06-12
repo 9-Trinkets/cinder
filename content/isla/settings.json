@@ -6,5 +6,22 @@
   "channel_surfing_only": false,
   "autonomous_actor_dialogue": false,
   "speech_stamina_cost_floor": 0,
-  "show_day_summary": false
+  "show_day_summary": false,
+  "theme": {
+    "base": "#1c1820",
+    "surface": "#2a2521",
+    "overlay": "#3d352e",
+    "muted": "#7a6f64",
+    "text": "#e6dac8",
+    "love": "#c97a5e",
+    "gold": "#d4a76a",
+    "rose": "#d49a8a",
+    "pine": "#5a7a64",
+    "foam": "#8ab5a0",
+    "iris": "#b8a5bf",
+    "highlight_high": "#5a4f45",
+    "crt_glow": "#c8e6d0",
+    "crt_dim": "#4a7a64",
+    "crt_bez": "#121418"
+  }
 }

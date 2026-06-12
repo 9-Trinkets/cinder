@@ -1,5 +1,5 @@
 use crate::effects::TranscriptAnimationSnapshot;
-use crate::theme::RosePineMoon;
+use crate::theme::Theme;
 use cinder_core::content::types::UiTextDefinition;
 use ratatui::style::{Modifier, Style};
 use ratatui::text::{Line, Span};
@@ -15,18 +15,19 @@ pub fn lines(
     animation: Option<TranscriptAnimationSnapshot>,
     pending_entries: &[usize],
     ui_text: &UiTextDefinition,
+    theme: &Theme,
 ) -> Vec<Line<'static>> {
     let mut lines = Vec::new();
     for (index, entry) in transcript.iter().enumerate() {
         if let Some(animation) = animation
             && animation.entry_index == index
         {
-            lines.extend(animated_lines(entry, animation.visible_chars, ui_text));
+            lines.extend(animated_lines(entry, animation.visible_chars, ui_text, theme));
         } else if pending_entries.contains(&index) {
             continue;
         } else {
             for line in entry.lines() {
-                lines.push(styled_line(line, ui_text));
+                lines.push(styled_line(line, ui_text, theme));
             }
         }
         lines.push(Line::default());
@@ -52,6 +53,7 @@ fn animated_lines(
     entry: &str,
     visible_chars: usize,
     ui_text: &UiTextDefinition,
+    theme: &Theme,
 ) -> Vec<Line<'static>> {
     let mut lines = Vec::new();
     let mut remaining = visible_chars;
@@ -62,7 +64,7 @@ fn animated_lines(
         let partial = line.chars().take(visible_in_line).collect::<String>();
         let line_complete = visible_in_line == line_len;
         if !partial.is_empty() || line_complete {
-            lines.push(styled_line(&partial, ui_text));
+            lines.push(styled_line(&partial, ui_text, theme));
         }
         remaining = remaining.saturating_sub(visible_in_line);
         if !line_complete {
@@ -78,29 +80,29 @@ fn wrapped_line_count(line: &str, width: usize) -> usize {
     if count == 0 { 1 } else { count.div_ceil(width) }
 }
 
-fn styled_line(line: &str, ui_text: &UiTextDefinition) -> Line<'static> {
+fn styled_line(line: &str, ui_text: &UiTextDefinition, theme: &Theme) -> Line<'static> {
     let style = if line.starts_with("> ") {
-        Style::default().fg(RosePineMoon::PINE)
+        Style::default().fg(theme.pine)
     } else if is_npc_movement_line(line) {
         Style::default()
-            .fg(RosePineMoon::MUTED)
+            .fg(theme.muted)
             .add_modifier(Modifier::ITALIC)
     } else if line.starts_with(&ui_text.error_prefix) {
-        Style::default().fg(RosePineMoon::LOVE)
+        Style::default().fg(theme.love)
     } else if line.starts_with("== ") && line.ends_with(" ==") {
         Style::default()
-            .fg(RosePineMoon::FOAM)
+            .fg(theme.foam)
             .add_modifier(Modifier::BOLD)
     } else if line.starts_with("You notice:")
         || line.starts_with("People here:")
         || line.starts_with("Exits:")
         || line.starts_with("Objective:")
     {
-        Style::default().fg(RosePineMoon::GOLD)
+        Style::default().fg(theme.gold)
     } else if line.contains(": ") && !line.starts_with("I don't") {
-        Style::default().fg(RosePineMoon::ROSE)
+        Style::default().fg(theme.rose)
     } else {
-        Style::default().fg(RosePineMoon::TEXT)
+        Style::default().fg(theme.text)
     };
     Line::from(Span::styled(line.to_string(), style))
 }

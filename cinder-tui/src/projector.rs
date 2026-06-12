@@ -1,5 +1,5 @@
 use crate::effects::{TimedTextFrame, TimedTextPlayback};
-use crate::theme::RosePineMoon;
+use crate::theme::Theme;
 use cinder_core::content::types::{OpeningMovieDefinition, UiTextDefinition};
 use ratatui::Frame;
 use ratatui::layout::{Alignment, Constraint, Flex, Layout, Rect};
@@ -33,6 +33,7 @@ pub fn render_modal(
     frame: &mut Frame,
     playback: &mut TimedTextPlayback,
     ui_text: &UiTextDefinition,
+    theme: &Theme,
     frame_interval: Duration,
 ) {
     let bezel_area = projector_rect(frame.area());
@@ -44,7 +45,7 @@ pub fn render_modal(
     };
     frame.render_widget(Clear, bezel_area);
     frame.render_widget(
-        Block::default().style(Style::default().bg(RosePineMoon::BASE)),
+        Block::default().style(Style::default().bg(theme.base)),
         bezel_area,
     );
     let bezel = Block::default()
@@ -55,16 +56,16 @@ pub fn render_modal(
         ))
         .title_style(
             Style::default()
-                .fg(RosePineMoon::GOLD)
+                .fg(theme.gold)
                 .add_modifier(ratatui::style::Modifier::BOLD),
         )
         .borders(Borders::ALL)
-        .border_style(Style::default().fg(RosePineMoon::HIGHLIGHT_HIGH))
-        .style(Style::default().bg(RosePineMoon::CRT_BEZEL));
+        .border_style(Style::default().fg(theme.highlight_high))
+        .style(Style::default().bg(theme.crt_bez));
     frame.render_widget(bezel, bezel_area);
     let screen_block = Block::default()
         .borders(Borders::ALL)
-        .border_style(Style::default().fg(RosePineMoon::CRT_DIM))
+        .border_style(Style::default().fg(theme.crt_dim))
         .style(Style::default().bg(ratatui::style::Color::Black));
     frame.render_widget(screen_block, screen_area);
     let sections = Layout::vertical([Constraint::Min(3), Constraint::Length(1)])
@@ -75,12 +76,13 @@ pub fn render_modal(
             playback.current_text(),
             sections[0].width,
             sections[0].height,
+            theme,
         )))
         .alignment(Alignment::Left)
         .wrap(Wrap { trim: false })
         .style(
             Style::default()
-                .fg(RosePineMoon::CRT_GLOW)
+                .fg(theme.crt_glow)
                 .bg(ratatui::style::Color::Black),
         ),
         sections[0],
@@ -99,7 +101,7 @@ pub fn render_modal(
         .alignment(Alignment::Center)
         .style(
             Style::default()
-                .fg(RosePineMoon::CRT_DIM)
+                .fg(theme.crt_dim)
                 .bg(ratatui::style::Color::Black),
         ),
         sections[1],
@@ -125,6 +127,7 @@ fn projector_frame_lines(
     frame_text: &str,
     available_width: u16,
     available_height: u16,
+    theme: &Theme,
 ) -> Vec<Line<'static>> {
     let available_width = available_width as usize;
     let available_height = available_height as usize;
@@ -171,7 +174,7 @@ fn projector_frame_lines(
             Line::from(Span::styled(
                 format!("{}{}", " ".repeat(left_padding), line),
                 Style::default()
-                    .fg(RosePineMoon::CRT_GLOW)
+                    .fg(theme.crt_glow)
                     .bg(ratatui::style::Color::Black),
             ))
         })

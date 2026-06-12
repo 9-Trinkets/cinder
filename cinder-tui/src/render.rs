@@ -1,6 +1,6 @@
 use crate::effects::{TimedTextPlayback, TranscriptAnimationSnapshot};
 use crate::projector;
-use crate::theme::RosePineMoon;
+use crate::theme::Theme;
 use crate::transcript;
 use cinder_core::content::types::UiTextDefinition;
 use cinder_core::MenuChoiceOption;
@@ -22,6 +22,7 @@ pub(crate) struct RenderSnapshot {
     pub transcript_animation: Option<TranscriptAnimationSnapshot>,
     pub pending_transcript_animation_entries: Vec<usize>,
     pub ui_text: UiTextDefinition,
+    pub theme: Theme,
     pub pane_focus: PaneFocus,
     pub input: String,
     pub game_over: bool,
@@ -76,7 +77,7 @@ pub(crate) fn draw(
 ) {
     frame.render_widget(Clear, frame.area());
     frame.render_widget(
-        Block::default().style(Style::default().bg(RosePineMoon::BASE)),
+        Block::default().style(Style::default().bg(snapshot.theme.base)),
         frame.area(),
     );
 
@@ -92,25 +93,25 @@ pub(crate) fn draw(
         Span::styled(
             format!(" {} ", snapshot.title),
             Style::default()
-                .fg(RosePineMoon::FOAM)
+                .fg(snapshot.theme.foam)
                 .add_modifier(Modifier::BOLD),
         ),
-        Span::styled("• ", Style::default().fg(RosePineMoon::MUTED)),
+        Span::styled("• ", Style::default().fg(snapshot.theme.muted)),
         Span::styled(
             snapshot.time.clone(),
             Style::default()
-                .fg(RosePineMoon::GOLD)
+                .fg(snapshot.theme.gold)
                 .add_modifier(Modifier::BOLD),
         ),
-        Span::styled(" • ", Style::default().fg(RosePineMoon::MUTED)),
+        Span::styled(" • ", Style::default().fg(snapshot.theme.muted)),
         Span::styled(
             snapshot.ui_text.menu_button_label.clone(),
-            Style::default().fg(RosePineMoon::MUTED),
+            Style::default().fg(snapshot.theme.muted),
         ),
     ]);
     frame.render_widget(
         Paragraph::new(shell)
-            .style(Style::default().bg(RosePineMoon::BASE))
+            .style(Style::default().bg(snapshot.theme.base))
             .alignment(Alignment::Left),
         chunks[0],
     );
@@ -120,6 +121,7 @@ pub(crate) fn draw(
         snapshot.transcript_animation,
         &snapshot.pending_transcript_animation_entries,
         &snapshot.ui_text,
+        &snapshot.theme,
     ));
     let transcript = Paragraph::new(transcript_text)
         .block(
@@ -127,17 +129,17 @@ pub(crate) fn draw(
                 .borders(Borders::ALL)
                 .border_style(Style::default().fg(
                     if snapshot.pane_focus == PaneFocus::Transcript {
-                        RosePineMoon::FOAM
+                        snapshot.theme.foam
                     } else {
-                        RosePineMoon::HIGHLIGHT_HIGH
+                        snapshot.theme.highlight_high
                     },
                 ))
-                .style(Style::default().bg(RosePineMoon::SURFACE)),
+                .style(Style::default().bg(snapshot.theme.surface)),
         )
         .style(
             Style::default()
-                .fg(RosePineMoon::TEXT)
-                .bg(RosePineMoon::SURFACE),
+                .fg(snapshot.theme.text)
+                .bg(snapshot.theme.surface),
         )
         .wrap(Wrap { trim: false })
         .scroll((snapshot.transcript_scroll, 0));
@@ -146,8 +148,8 @@ pub(crate) fn draw(
     let mut scrollbar_state =
         ScrollbarState::new(transcript_lines).position(snapshot.transcript_scroll as usize);
     let scrollbar = Scrollbar::new(ScrollbarOrientation::VerticalRight)
-        .thumb_style(Style::default().fg(RosePineMoon::FOAM))
-        .track_style(Style::default().fg(RosePineMoon::HIGHLIGHT_HIGH))
+        .thumb_style(Style::default().fg(snapshot.theme.foam))
+        .track_style(Style::default().fg(snapshot.theme.highlight_high))
         .begin_symbol(None)
         .end_symbol(None);
     frame.render_stateful_widget(
@@ -166,11 +168,11 @@ pub(crate) fn draw(
     };
     let input_title_style = if snapshot.game_over {
         Style::default()
-            .fg(RosePineMoon::MUTED)
+            .fg(snapshot.theme.muted)
             .add_modifier(Modifier::BOLD)
     } else {
         Style::default()
-            .fg(RosePineMoon::ROSE)
+            .fg(snapshot.theme.rose)
             .add_modifier(Modifier::BOLD)
     };
     let input = Paragraph::new(Line::from(vec![
@@ -182,9 +184,9 @@ pub(crate) fn draw(
             },
             Style::default()
                 .fg(if snapshot.game_over {
-                    RosePineMoon::MUTED
+                    snapshot.theme.muted
                 } else {
-                    RosePineMoon::PINE
+                    snapshot.theme.pine
                 })
                 .add_modifier(Modifier::BOLD),
         ),
@@ -194,7 +196,7 @@ pub(crate) fn draw(
             } else {
                 snapshot.input.as_str()
             },
-            Style::default().fg(RosePineMoon::TEXT),
+            Style::default().fg(snapshot.theme.text),
         ),
     ]))
     .block({
@@ -202,12 +204,12 @@ pub(crate) fn draw(
             .borders(Borders::ALL)
             .border_style(
                 Style::default().fg(if snapshot.pane_focus == PaneFocus::Command {
-                    RosePineMoon::ROSE
+                    snapshot.theme.rose
                 } else {
-                    RosePineMoon::HIGHLIGHT_HIGH
+                    snapshot.theme.highlight_high
                 }),
             )
-            .style(Style::default().bg(RosePineMoon::OVERLAY));
+            .style(Style::default().bg(snapshot.theme.overlay));
         if let Some(title) = input_title {
             block.title(title).title_style(input_title_style)
         } else {
@@ -215,15 +217,15 @@ pub(crate) fn draw(
         }
     })
     .wrap(Wrap { trim: false })
-    .style(Style::default().bg(RosePineMoon::OVERLAY));
+    .style(Style::default().bg(snapshot.theme.overlay));
     frame.render_widget(input, chunks[2]);
 
     if let Some(playback) = projector_playback {
-        projector::render_modal(frame, playback, &snapshot.ui_text, frame_interval);
+        projector::render_modal(frame, playback, &snapshot.ui_text, &snapshot.theme, frame_interval);
     } else if let Some(shell_modal) = &snapshot.shell_modal {
-        render_shell_modal(frame, shell_modal, &snapshot.ui_text);
+        render_shell_modal(frame, shell_modal, &snapshot.ui_text, &snapshot.theme);
     } else if let Some(menu) = &snapshot.menu {
-        render_menu(frame, menu, &snapshot.ui_text);
+        render_menu(frame, menu, &snapshot.ui_text, &snapshot.theme);
     }
 
     if !snapshot.game_over
@@ -274,7 +276,7 @@ fn word_wrap(text: &str, max_width: usize) -> Vec<Line<'static>> {
     lines
 }
 
-fn render_menu(frame: &mut Frame, menu: &MenuSnapshot, ui_text: &UiTextDefinition) {
+ fn render_menu(frame: &mut Frame, menu: &MenuSnapshot, ui_text: &UiTextDefinition, theme: &Theme) {
     let inner_width = (frame.area().width * 70 / 100).saturating_sub(6) as usize;
     let wrapped_lines: Vec<Vec<Line>> = menu
         .options
@@ -284,7 +286,7 @@ fn render_menu(frame: &mut Frame, menu: &MenuSnapshot, ui_text: &UiTextDefinitio
             lines.push(Line::from(Span::styled(
                 &option.title,
                 Style::default()
-                    .fg(RosePineMoon::IRIS)
+                    .fg(theme.iris)
                     .add_modifier(Modifier::BOLD),
             )));
             for wrapped_line in word_wrap(&option.menu_text, inner_width) {
@@ -296,7 +298,7 @@ fn render_menu(frame: &mut Frame, menu: &MenuSnapshot, ui_text: &UiTextDefinitio
     let total_lines: u16 = wrapped_lines.iter().map(|lines| lines.len() as u16).sum();
     let height = (total_lines + 4).min(24);
     let area = centered_rect(70, height, frame.area());
-    let sections = modal_block(frame, area, &ui_text.menu_option_list_title);
+    let sections = modal_block(frame, area, &ui_text.menu_option_list_title, theme);
     let items = wrapped_lines
         .into_iter()
         .map(ListItem::new)
@@ -304,13 +306,13 @@ fn render_menu(frame: &mut Frame, menu: &MenuSnapshot, ui_text: &UiTextDefinitio
     let list = List::new(items)
         .style(
             Style::default()
-                .fg(RosePineMoon::TEXT)
-                .bg(RosePineMoon::OVERLAY),
+                .fg(theme.text)
+                .bg(theme.overlay),
         )
         .highlight_style(
             Style::default()
-                .fg(RosePineMoon::BASE)
-                .bg(RosePineMoon::FOAM)
+                .fg(theme.base)
+                .bg(theme.foam)
                 .add_modifier(Modifier::BOLD),
         )
         .highlight_symbol("› ");
@@ -322,14 +324,14 @@ fn render_menu(frame: &mut Frame, menu: &MenuSnapshot, ui_text: &UiTextDefinitio
             .alignment(Alignment::Right)
             .style(
                 Style::default()
-                    .fg(RosePineMoon::MUTED)
-                    .bg(RosePineMoon::OVERLAY),
+                    .fg(theme.muted)
+                    .bg(theme.overlay),
             ),
         sections[1],
     );
 }
 
-fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &UiTextDefinition) {
+fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &UiTextDefinition, theme: &Theme) {
     let area = match modal {
         ShellModalSnapshot::Detail { title, body, .. } => {
             detail_modal_area(frame.area(), &detail_modal_body_text(title, body))
@@ -341,7 +343,7 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
         ShellModalSnapshot::ReportCard { .. } => "Session Report",
         _ => &ui_text.shell_menu_title,
     };
-    let sections = modal_block(frame, area, block_title);
+    let sections = modal_block(frame, area, block_title, theme);
     match modal {
         ShellModalSnapshot::Root {
             selected_index,
@@ -357,13 +359,13 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
             let list = List::new(items)
                 .style(
                     Style::default()
-                        .fg(RosePineMoon::TEXT)
-                        .bg(RosePineMoon::OVERLAY),
+                        .fg(theme.text)
+                        .bg(theme.overlay),
                 )
                 .highlight_style(
                     Style::default()
-                        .fg(RosePineMoon::BASE)
-                        .bg(RosePineMoon::FOAM)
+                        .fg(theme.base)
+                        .bg(theme.foam)
                         .add_modifier(Modifier::BOLD),
                 )
                 .highlight_symbol("› ");
@@ -375,8 +377,8 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
                     .alignment(Alignment::Right)
                     .style(
                         Style::default()
-                            .fg(RosePineMoon::MUTED)
-                            .bg(RosePineMoon::OVERLAY),
+                            .fg(theme.muted)
+                            .bg(theme.overlay),
                     ),
                 sections[1],
             );
@@ -397,8 +399,8 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
             frame.render_widget(
                 Paragraph::new(title.clone()).style(
                     Style::default()
-                        .fg(RosePineMoon::IRIS)
-                        .bg(RosePineMoon::OVERLAY)
+                        .fg(theme.iris)
+                        .bg(theme.overlay)
                         .add_modifier(Modifier::BOLD),
                 ),
                 sections[0].inner(Margin {
@@ -413,13 +415,13 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
             let list = List::new(items)
                 .style(
                     Style::default()
-                        .fg(RosePineMoon::TEXT)
-                        .bg(RosePineMoon::OVERLAY),
+                        .fg(theme.text)
+                        .bg(theme.overlay),
                 )
                 .highlight_style(
                     Style::default()
-                        .fg(RosePineMoon::BASE)
-                        .bg(RosePineMoon::FOAM)
+                        .fg(theme.base)
+                        .bg(theme.foam)
                         .add_modifier(Modifier::BOLD),
                 )
                 .highlight_symbol("› ");
@@ -431,8 +433,8 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
                     .alignment(Alignment::Right)
                     .style(
                         Style::default()
-                            .fg(RosePineMoon::MUTED)
-                            .bg(RosePineMoon::OVERLAY),
+                            .fg(theme.muted)
+                            .bg(theme.overlay),
                     ),
                 sections[1],
             );
@@ -450,7 +452,7 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
             frame.render_widget(
                 Paragraph::new(format!("  Score: {} / 10", outcome_score)).style(
                     Style::default()
-                        .fg(RosePineMoon::TEXT)
+                        .fg(theme.text)
                         .add_modifier(Modifier::BOLD),
                 ),
                 top,
@@ -467,10 +469,10 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
             let bars_area = horizontal[2];
 
             let colors = [
-                RosePineMoon::FOAM,
-                RosePineMoon::IRIS,
-                RosePineMoon::GOLD,
-                RosePineMoon::LOVE,
+                theme.foam,
+                theme.iris,
+                theme.gold,
+                theme.love,
             ];
 
             let name_lines: Vec<Line> = stats
@@ -524,8 +526,8 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
                     .alignment(Alignment::Right)
                     .style(
                         Style::default()
-                            .fg(RosePineMoon::MUTED)
-                            .bg(RosePineMoon::OVERLAY),
+                            .fg(theme.muted)
+                            .bg(theme.overlay),
                     ),
                 sections[1],
             );
@@ -543,8 +545,8 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
                     .scroll((*scroll, 0))
                     .style(
                         Style::default()
-                            .fg(RosePineMoon::TEXT)
-                            .bg(RosePineMoon::OVERLAY),
+                            .fg(theme.text)
+                            .bg(theme.overlay),
                     ),
                 sections[0],
             );
@@ -552,8 +554,8 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
                 ScrollbarState::new(detail_modal_content_lines(&body_text, sections[0].width))
                     .position(*scroll as usize);
             let scrollbar = Scrollbar::new(ScrollbarOrientation::VerticalRight)
-                .thumb_style(Style::default().fg(RosePineMoon::FOAM))
-                .track_style(Style::default().fg(RosePineMoon::HIGHLIGHT_HIGH))
+                .thumb_style(Style::default().fg(theme.foam))
+                .track_style(Style::default().fg(theme.highlight_high))
                 .begin_symbol(None)
                 .end_symbol(None);
             frame.render_stateful_widget(
@@ -569,8 +571,8 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
                     .alignment(Alignment::Right)
                     .style(
                         Style::default()
-                            .fg(RosePineMoon::MUTED)
-                            .bg(RosePineMoon::OVERLAY),
+                            .fg(theme.muted)
+                            .bg(theme.overlay),
                     ),
                 sections[1],
             );
@@ -643,18 +645,18 @@ fn centered_rect(width_percent: u16, height: u16, area: Rect) -> Rect {
     horizontal[0]
 }
 
-fn modal_block(frame: &mut Frame, area: Rect, title: &str) -> [Rect; 2] {
+fn modal_block(frame: &mut Frame, area: Rect, title: &str, theme: &Theme) -> [Rect; 2] {
     frame.render_widget(Clear, area);
     let block = Block::default()
         .title(title)
         .title_style(
             Style::default()
-                .fg(RosePineMoon::IRIS)
+                .fg(theme.iris)
                 .add_modifier(Modifier::BOLD),
         )
         .borders(Borders::ALL)
-        .border_style(Style::default().fg(RosePineMoon::IRIS))
-        .style(Style::default().bg(RosePineMoon::OVERLAY));
+        .border_style(Style::default().fg(theme.iris))
+        .style(Style::default().bg(theme.overlay));
     frame.render_widget(block, area);
     let sections = Layout::vertical([Constraint::Min(1), Constraint::Length(1)])
         .margin(1)

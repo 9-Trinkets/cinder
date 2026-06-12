@@ -3,7 +3,7 @@ pub mod engine;
 
 pub use content::loader;
 pub use content::types::{
-    ContentPack, OpeningMovieDefinition, ShellMenuItem, UiTextDefinition,
+    ContentPack, OpeningMovieDefinition, ShellMenuItem, ThemeDefinition, UiTextDefinition,
 };
 pub use engine::runtime::{
     CinderRuntime, FinalChapterSummary, MenuChoiceOption, ReportCardData, ReportCardEntry,
