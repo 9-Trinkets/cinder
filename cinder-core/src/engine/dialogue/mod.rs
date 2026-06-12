@@ -100,8 +100,8 @@ pub struct SynapseDialogueGenerator {
 }
 
 fn build_role_service() -> Result<NeuronRoleService, String> {
-    let config_path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("neuron.toml");
-    let dotenv_path = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(".env");
+    let config_path = PathBuf::from(env!("CINDER_PROJECT_DIR")).join("neuron.toml");
+    let dotenv_path = PathBuf::from(env!("CINDER_PROJECT_DIR")).join(".env");
     NeuronRoleService::new_with_config_path_and_dotenv_path(&config_path, &dotenv_path)
         .map_err(|error| format!("failed to initialize role execution service: {error}"))
 }

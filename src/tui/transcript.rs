@@ -1,6 +1,6 @@
 use crate::tui::effects::TranscriptAnimationSnapshot;
 use crate::tui::theme::RosePineMoon;
-use crate::content::types::UiTextDefinition;
+use cinder_core::content::types::UiTextDefinition;
 use ratatui::style::{Modifier, Style};
 use ratatui::text::{Line, Span};
 

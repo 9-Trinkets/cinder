@@ -40,9 +40,11 @@ Display language can be switched in-game from `? Menu` → `Language`.
 ## Layout
 
 ```
-src/app/          Terminal app shell (TUI, input, effects, transcript)
-src/engine/       Generic runtime, events, reducer, workflow loading
-src/content/      Content loading and type definitions
+cinder-core/      Engine library (runtime, content loading, event system)
+src/
+  main.rs         CLI entry point
+  lib.rs          run_cli() wrapper
+  tui/            Terminal frontend (ratatui, effects, input)
 config/workflows/ Synapse workflow TOML files
 content/<pack>/   Authored content packs (characters, rooms, beats, menus, locale data)
 docs/             Concept and design docs
@@ -51,9 +53,9 @@ docs/             Concept and design docs
 ### Runtime setup
 
 1. `src/main.rs` parses CLI flags (`--trace-events`, `--content`).
-2. `src/lib.rs::run_cli` loads a content pack (`src/content/loader.rs`) and builds
-   `CinderRuntime` (`src/engine/runtime.rs`).
-3. `src/app/cli.rs` starts the terminal loop, submits player turns, and runs periodic NPC ticks.
+2. `src/lib.rs::run_cli` loads a content pack (`cinder_core::content::loader`) and builds
+   `CinderRuntime`.
+3. `src/tui/cli.rs` starts the terminal loop, submits player turns, and runs periodic NPC ticks.
 
 ### Player turn flow
 
@@ -83,7 +85,7 @@ scheduling, and event traces.
 
 ## Architecture
 
-- `src/engine/state.rs` owns mutable world state (rooms, time, stats, memory, objectives, menus).
-- `src/engine/events.rs` defines the world event vocabulary used by both player and NPC flows.
+- `cinder-core/src/engine/state.rs` owns mutable world state (rooms, time, stats, memory, objectives, menus).
+- `cinder-core/src/engine/events.rs` defines the world event vocabulary used by both player and NPC flows.
 - `content/*/*.json` provides authored content per game pack.
 - `hooks.json` provides rule-driven side effects (stat changes, affordance visibility, guidance).

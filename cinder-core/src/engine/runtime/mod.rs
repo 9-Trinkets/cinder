@@ -79,7 +79,7 @@ impl CinderRuntime {
             workflow,
             load_workflow(&cinder_npc_tick_workflow_path())?,
             load_workflow(&cinder_npc_turn_workflow_path())?,
-            PathBuf::from(env!("CARGO_MANIFEST_DIR")).join(".cinder-state"),
+            PathBuf::from(env!("CINDER_PROJECT_DIR")).join(".cinder-state"),
         )
     }
 
@@ -364,7 +364,7 @@ impl CinderRuntime {
         )
     }
 
-    pub(crate) fn consume_pending_projector_sequence(
+    pub fn consume_pending_projector_sequence(
         &self,
     ) -> Result<Option<OpeningMovieDefinition>, Box<dyn Error>> {
         let mut state = self
@@ -382,7 +382,7 @@ impl CinderRuntime {
             .cloned())
     }
 
-    pub(crate) fn consume_pending_projector_narrative_lines(
+    pub fn consume_pending_projector_narrative_lines(
         &self,
     ) -> Result<Vec<String>, Box<dyn Error>> {
         let mut state = self
@@ -402,7 +402,7 @@ impl CinderRuntime {
             .collect()
     }
 
-    pub(crate) fn menu_choice_options(
+    pub fn menu_choice_options(
         &self,
     ) -> Result<Option<Vec<MenuChoiceOption>>, Box<dyn Error>> {
         let menu_id = {
@@ -545,7 +545,7 @@ impl CinderRuntime {
         ))
     }
 
-    pub(crate) fn room_switch_options(&self) -> Result<Vec<MenuChoiceOption>, Box<dyn Error>> {
+    pub fn room_switch_options(&self) -> Result<Vec<MenuChoiceOption>, Box<dyn Error>> {
         let state = self
             .state
             .lock()
@@ -624,7 +624,7 @@ impl CinderRuntime {
         })
     }
 
-    pub(crate) fn follow_actor_options(&self) -> Result<Vec<MenuChoiceOption>, Box<dyn Error>> {
+    pub fn follow_actor_options(&self) -> Result<Vec<MenuChoiceOption>, Box<dyn Error>> {
         let state = self
             .state
             .lock()
@@ -656,7 +656,7 @@ impl CinderRuntime {
         Ok(options)
     }
 
-    pub(crate) fn switch_room_view(&self, room_id: &str) -> Result<TurnOutcome, Box<dyn Error>> {
+    pub fn switch_room_view(&self, room_id: &str) -> Result<TurnOutcome, Box<dyn Error>> {
         let mut state = self
             .state
             .lock()
@@ -691,7 +691,7 @@ impl CinderRuntime {
         })
     }
 
-    pub(crate) fn follow_actor(
+    pub fn follow_actor(
         &self,
         actor_id: Option<&str>,
     ) -> Result<TurnOutcome, Box<dyn Error>> {

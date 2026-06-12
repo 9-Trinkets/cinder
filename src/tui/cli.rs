@@ -3,12 +3,11 @@ use crate::tui::input::{self, InputAction, InputContext, ShellModalKind};
 use crate::tui::projector;
 use crate::tui::render::{self, MenuSnapshot, PaneFocus, RenderSnapshot, ShellModalSnapshot};
 use crate::tui::transcript;
-use crate::content::loader::{
+use cinder_core::content::loader::{
     LocaleOption, available_locales, load_pack_from_dir_with_locale, pack_dir,
 };
-use crate::content::types::{ShellMenuItem, UiTextDefinition};
-use crate::engine::runtime::{CinderRuntime, MenuChoiceOption, ReportCardData};
-use crate::engine::state::TurnOutcome;
+use cinder_core::content::types::{ShellMenuItem, UiTextDefinition};
+use cinder_core::{CinderRuntime, MenuChoiceOption, ReportCardData, TurnOutcome};
 use crossterm::cursor::SetCursorStyle;
 use crossterm::event::{self, Event, KeyEventKind};
 use crossterm::execute;
@@ -1339,7 +1338,7 @@ impl Drop for TuiApp {
 #[cfg(test)]
 mod tests {
     use super::{build_final_summary_body, format_summary_lines, summarize_day_highlights};
-    use crate::content::types::UiTextDefinition;
+    use cinder_core::content::types::UiTextDefinition;
     use serde_json::json;
 
     #[test]

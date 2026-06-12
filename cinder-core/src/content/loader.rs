@@ -33,7 +33,7 @@ pub fn load_named_pack(pack_id: &str, locale: Option<&str>) -> Result<ContentPac
 }
 
 pub fn content_dir() -> PathBuf {
-    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("content")
+    PathBuf::from(env!("CINDER_PROJECT_DIR")).join("content")
 }
 
 pub fn pack_dir(pack_id: &str) -> PathBuf {
