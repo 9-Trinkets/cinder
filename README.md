@@ -69,6 +69,18 @@ docs/             Concept and design docs
    - `turn_narrator` joins reducer lines into `TurnOutcome`
 4. UI appends output text to transcript and updates modal/menu state.
 
+## Neuron
+
+[Neuron](https://github.com/9-Trinkets/neuron) is Cinder's underlying workflow
+runtime. It orchestrates every turn through a directed graph of *roles* — each
+role is either an LLM prompt, a symbolic planner (decision table), or a Rust
+handler. Cinder authors the game logic as a graph of these roles, and Neuron
+routes inputs through the graph, collects outputs, and handles retries,
+scheduling, and event traces.
+
+- **Repository**: [github.com/9-Trinkets/neuron](https://github.com/9-Trinkets/neuron)
+- **Cinder**: [github.com/9-Trinkets/cinder](https://github.com/9-Trinkets/cinder)
+
 ## Architecture
 
 - `src/engine/state.rs` owns mutable world state (rooms, time, stats, memory, objectives, menus).
