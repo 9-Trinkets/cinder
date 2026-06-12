@@ -32,10 +32,6 @@ impl TranscriptTypewriter {
         self.char_ms = char_ms.max(1);
     }
 
-    pub fn is_active(&self) -> bool {
-        self.current.is_some() || !self.pending_entries.is_empty()
-    }
-
     pub fn pending_entries(&self) -> Vec<usize> {
         self.pending_entries.iter().copied().collect()
     }
