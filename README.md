@@ -11,7 +11,7 @@ loaded at startup via `--content <name>`.
 |---|---|
 | `ella` | First-person bedroom escape — a sandbox for exploring the engine |
 | `isla` | Bibliotherapy simulation with structured session progression, relationship stats, and LLM-generated book recommendations |
-| `aera` | *(in development)* |
+| `aera` | Documentary house experiment — four strangers, seven days, and a camera that decides where to look |
 
 ## Run
 
