@@ -2,3 +2,4 @@
 .llama-models/
 /target
 .env
+cinder-desk/gen/
