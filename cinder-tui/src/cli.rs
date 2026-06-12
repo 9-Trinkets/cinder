@@ -1290,39 +1290,6 @@ fn summarize_day_highlights(transcript: &[String], start_index: usize) -> Vec<St
         .collect()
 }
 
-#[cfg_attr(not(test), allow(dead_code))]
-fn build_final_summary_body(
-    ui_text: &UiTextDefinition,
-    highlights: &str,
-    _relationships: &str,
-    _preview_lines: &str,
-) -> String {
-    format!("{}\n{}", ui_text.final_summary_highlights_label, highlights,)
-}
-
-#[allow(dead_code)]
-fn format_summary_lines(text: &str) -> String {
-    let lines = text
-        .lines()
-        .map(str::trim)
-        .filter(|line| !line.is_empty())
-        .collect::<Vec<_>>();
-    if lines.len() <= 1 {
-        return text.trim().to_string();
-    }
-    lines
-        .into_iter()
-        .map(|line| {
-            if line.starts_with("- ") || line.starts_with("• ") {
-                line.to_string()
-            } else {
-                format!("• {line}")
-            }
-        })
-        .collect::<Vec<_>>()
-        .join("\n")
-}
-
 impl Drop for TuiApp {
     fn drop(&mut self) {
         let _ = disable_raw_mode();
@@ -1337,9 +1304,40 @@ impl Drop for TuiApp {
 
 #[cfg(test)]
 mod tests {
-    use super::{build_final_summary_body, format_summary_lines, summarize_day_highlights};
+    use super::summarize_day_highlights;
     use cinder_core::content::types::UiTextDefinition;
     use serde_json::json;
+
+    fn build_final_summary_body(
+        ui_text: &UiTextDefinition,
+        highlights: &str,
+        _relationships: &str,
+        _preview_lines: &str,
+    ) -> String {
+        format!("{}\n{}", ui_text.final_summary_highlights_label, highlights)
+    }
+
+    fn format_summary_lines(text: &str) -> String {
+        let lines = text
+            .lines()
+            .map(str::trim)
+            .filter(|line| !line.is_empty())
+            .collect::<Vec<_>>();
+        if lines.len() <= 1 {
+            return text.trim().to_string();
+        }
+        lines
+            .into_iter()
+            .map(|line| {
+                if line.starts_with("- ") || line.starts_with("• ") {
+                    line.to_string()
+                } else {
+                    format!("• {line}")
+                }
+            })
+            .collect::<Vec<_>>()
+            .join("\n")
+    }
 
     #[test]
     fn day_highlights_skip_commands_and_keep_recent_unique_lines() {

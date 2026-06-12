@@ -9,7 +9,7 @@ loaded at startup via `--content <name>`.
 
 | Content Pack | Description |
 |---|---|
-| `ella` | First-person bedroom escape — a sandbox for exploring the engine |
+| `ella` | A young woman's last night at home before leaving for college — reflecting on the life she's about to leave behind |
 | `isla` | Bibliotherapy simulation with structured session progression, relationship stats, and LLM-generated book recommendations |
 | `aera` | Documentary house experiment — four strangers, seven days, and a camera that decides where to look |
 
@@ -40,27 +40,26 @@ Display language can be switched in-game from `? Menu` → `Language`.
 ## Layout
 
 ```
-cinder-core/      Engine library (runtime, content loading, event system)
-src/
-  main.rs         CLI entry point
-  lib.rs          run_cli() wrapper
-  tui/            Terminal frontend (ratatui, effects, input)
-config/workflows/ Synapse workflow TOML files
-content/<pack>/   Authored content packs (characters, rooms, beats, menus, locale data)
-docs/             Concept and design docs
+Cargo.toml            Workspace root (members: cinder-core, cinder-tui)
+cinder-core/          Engine library (runtime, content loading, event system)
+cinder-tui/           Terminal frontend (ratatui, effects, input)
+  src/main.rs         CLI entry point + content pack loading
+  src/cli.rs          Terminal loop, turn submission, NPC tick scheduling
+config/workflows/     Synapse workflow TOML files
+content/<pack>/       Authored content packs (characters, rooms, beats, menus, locale data)
+docs/                 Concept and design docs
 ```
 
 ### Runtime setup
 
-1. `src/main.rs` parses CLI flags (`--trace-events`, `--content`).
-2. `src/lib.rs::run_cli` loads a content pack (`cinder_core::content::loader`) and builds
-   `CinderRuntime`.
-3. `src/tui/cli.rs` starts the terminal loop, submits player turns, and runs periodic NPC ticks.
+1. `cinder-tui/src/main.rs` parses CLI flags (`--trace-events`, `--content`) and loads the content pack.
+2. `CinderRuntime::new` builds the engine from the content pack.
+3. `cinder-tui/src/cli.rs` starts the terminal loop, submits player turns, and runs periodic NPC ticks.
 
 ### Player turn flow
 
 1. UI submits text command to `CinderRuntime::run_turn`.
-2. `src/engine/turn_runner.rs` runs the workflow `config/workflows/cinder_turn.toml`.
+2. `cinder-core/src/engine/turn_runner.rs` runs the workflow `config/workflows/cinder_turn.toml`.
 3. Roles process command in sequence:
    - `command_parser` parses raw input to `PlayerCommand`
    - `state_reader` reads minimal world snapshot
