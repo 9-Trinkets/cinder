@@ -72,8 +72,10 @@ impl CinderRuntime {
             SynapseDialogueGenerator::new(workflow.clone())
                 .map_err(|error| format!("failed to configure dialogue roles: {error}"))?,
         );
+        let state = WorldState::new(&content);
         Self::new_with_dialogue_generator_and_workflows(
             content,
+            state,
             trace_events,
             dialogue,
             workflow,
@@ -83,8 +85,43 @@ impl CinderRuntime {
         )
     }
 
+    pub fn from_state(
+        content: ContentPack,
+        state: WorldState,
+        trace_events: bool,
+    ) -> Result<Self, Box<dyn Error>> {
+        let workflow_id = if content.settings.workflow_id.is_empty() {
+            "cinder_turn".to_string()
+        } else {
+            content.settings.workflow_id.clone()
+        };
+        let workflow = load_workflow(&workflow_path_for_id(&workflow_id))?;
+        let dialogue = Arc::new(
+            SynapseDialogueGenerator::new(workflow.clone())
+                .map_err(|error| format!("failed to configure dialogue roles: {error}"))?,
+        );
+        Self::new_with_dialogue_generator_and_workflows(
+            content,
+            state,
+            trace_events,
+            dialogue,
+            workflow,
+            load_workflow(&cinder_npc_tick_workflow_path())?,
+            load_workflow(&cinder_npc_turn_workflow_path())?,
+            PathBuf::from(env!("CINDER_PROJECT_DIR")).join(".cinder-state"),
+        )
+    }
+
+    pub fn export_state(&self) -> Result<WorldState, Box<dyn Error>> {
+        self.state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for export".into())
+            .map(|state| state.clone())
+    }
+
     fn new_with_dialogue_generator_and_workflows(
         content: ContentPack,
+        state: WorldState,
         trace_events: bool,
         dialogue: Arc<dyn DialogueGenerator>,
         workflow: WorkflowDefinition,
@@ -93,7 +130,7 @@ impl CinderRuntime {
         trace_dir: PathBuf,
     ) -> Result<Self, Box<dyn Error>> {
         Ok(Self {
-            state: Arc::new(Mutex::new(WorldState::new(&content))),
+            state: Arc::new(Mutex::new(state)),
             content: Arc::new(content),
             dialogue,
             workflow,

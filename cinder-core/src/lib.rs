@@ -8,4 +8,4 @@ pub use content::types::{
 pub use engine::runtime::{
     CinderRuntime, FinalChapterSummary, MenuChoiceOption, ReportCardData, ReportCardEntry,
 };
-pub use engine::state::TurnOutcome;
+pub use engine::state::{TurnOutcome, WorldState};
