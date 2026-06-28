@@ -23,6 +23,10 @@ pub struct SessionInfo {
     pub pack_id: String,
     pub created_at: String,
     pub updated_at: String,
+    #[serde(default)]
+    pub title: String,
+    #[serde(default)]
+    pub intro_text: String,
 }
 
 #[derive(Deserialize)]
@@ -42,7 +46,7 @@ pub async fn create_session(
     auth: AuthPlayer,
     Json(req): Json<CreateSessionRequest>,
 ) -> Result<Json<SessionInfo>, (StatusCode, String)> {
-    let (session_id, _) = game_manager::create_session(&state.sessions, &auth.id, &req.pack_id, None)
+    let (session_id, session) = game_manager::create_session(&state.sessions, &auth.id, &req.pack_id, None)
         .map_err(internal)?;
 
     sqlx::query(
@@ -56,11 +60,16 @@ pub async fn create_session(
     .await
     .map_err(internal)?;
 
+    let title = session.runtime.content().opening.title.clone();
+    let intro_text = session.runtime.content().opening.intro_text.clone();
+
     Ok(Json(SessionInfo {
         session_id,
         pack_id: req.pack_id,
         created_at: now_iso(),
         updated_at: now_iso(),
+        title,
+        intro_text,
     }))
 }
 
@@ -83,6 +92,8 @@ pub async fn list_sessions(
                 pack_id,
                 created_at,
                 updated_at,
+                title: String::new(),
+                intro_text: String::new(),
             })
             .collect(),
     ))
