@@ -149,35 +149,53 @@ pub fn create_session(
     Ok((session_id, session))
 }
 
-pub fn run_command(
+pub async fn run_command(
     sessions: &SessionMap,
     session_id: &str,
     input: &str,
 ) -> Result<TurnOutcome, String> {
-    with_session(sessions, session_id, |session| {
+    let session = {
+        let mut guard = sessions.lock().map_err(|_| "lock poisoned".to_string())?;
+        guard
+            .remove(session_id)
+            .ok_or_else(|| "session not found".to_string())?
+    };
+
+    let input = input.to_string();
+    let (result, session) = tokio::task::spawn_blocking(move || {
         let outcome = session
             .runtime
-            .run_turn(input)
-            .map_err(|e| format!("turn error: {e}"))?;
-
-        if !outcome.game_over {
-            let tick_outcome = session
-                .runtime
-                .run_tick()
-                .map_err(|e| format!("tick error: {e}"))?;
-            let combined_text = if tick_outcome.text.is_empty() {
-                outcome.text
-            } else {
-                format!("{}\n\n{}", outcome.text, tick_outcome.text)
-            };
-            Ok(TurnOutcome {
-                text: combined_text,
-                game_over: outcome.game_over || tick_outcome.game_over,
-            })
-        } else {
-            Ok(outcome)
-        }
+            .run_turn(&input)
+            .map_err(|e| format!("turn error: {e}"));
+        let outcome = match outcome {
+            Ok(outcome) if !outcome.game_over => {
+                match session.runtime.run_tick() {
+                    Ok(tick_outcome) => {
+                        let combined = if tick_outcome.text.is_empty() {
+                            outcome.text
+                        } else {
+                            format!("{}\n\n{}", outcome.text, tick_outcome.text)
+                        };
+                        Ok(TurnOutcome {
+                            text: combined,
+                            game_over: outcome.game_over || tick_outcome.game_over,
+                        })
+                    }
+                    Err(e) => Err(format!("tick error: {e}")),
+                }
+            }
+            other => other,
+        };
+        (outcome, session)
     })
+    .await
+    .map_err(|e| format!("blocking task failed: {e}"))?;
+
+    {
+        let mut guard = sessions.lock().map_err(|_| "lock poisoned".to_string())?;
+        guard.insert(session_id.to_string(), session);
+    }
+    result
 }
 
 pub fn switch_room(

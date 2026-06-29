@@ -125,6 +125,7 @@ pub async fn run_command(
         .await
         .map_err(internal)?;
     let outcome = game_manager::run_command(&state.sessions, &session_id, &req.input)
+        .await
         .map_err(internal)?;
     Ok(Json(CommandResponse {
         text: outcome.text,

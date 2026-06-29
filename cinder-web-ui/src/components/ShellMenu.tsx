@@ -15,6 +15,62 @@ interface ShellMenuProps {
   busy: boolean
 }
 
+interface MenuEntry {
+  id: string
+  label: string
+  kind: 'view' | 'close' | 'exit'
+}
+
+const CANONICAL_ORDER = ['resume', 'help', 'goals', 'things_to_do', 'objectives', 'rooms', 'follow', 'language', 'about', 'exit']
+
+const CANONICAL_FALLBACK: { id: string; labelKey: string }[] = [
+  { id: 'resume', labelKey: 'resume_label' },
+  { id: 'help', labelKey: 'help_label' },
+  { id: 'objectives', labelKey: 'things_to_do_label' },
+  { id: 'language', labelKey: 'language_menu_label' },
+  { id: 'about', labelKey: 'about_label' },
+  { id: 'exit', labelKey: 'exit_label' },
+]
+
+function buildMenuItems(
+  t: UiSnapshot['ui_text'],
+): MenuEntry[] {
+  const items: { id: string; label: string }[] = []
+
+  if (t.shell_menu.items.length > 0) {
+    for (const item of t.shell_menu.items) {
+      if (item.children && item.children.length > 0) {
+        for (const child of item.children) {
+          items.push({ id: child.id, label: child.label })
+        }
+      } else {
+        items.push({ id: item.id, label: item.label })
+      }
+    }
+  } else {
+    for (const entry of CANONICAL_FALLBACK) {
+      items.push({ id: entry.id, label: t[entry.labelKey as keyof typeof t] as string })
+    }
+  }
+
+  items.sort((a, b) => {
+    const ai = CANONICAL_ORDER.indexOf(a.id)
+    const bi = CANONICAL_ORDER.indexOf(b.id)
+    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi)
+  })
+
+  return items
+      .filter(i => {
+        if (i.id === 'resume' || i.id === 'exit') return true
+        return new Set(['help', 'things_to_do', 'objectives', 'goals', 'about', 'rooms', 'follow', 'language']).has(i.id)
+      })
+      .map(i => ({
+        id: i.id,
+        label: i.label,
+        kind: i.id === 'exit' ? 'exit' as const : i.id === 'resume' ? 'close' as const : 'view' as const,
+      }))
+}
+
 export default function ShellMenu({
   ui,
   view,
@@ -28,16 +84,7 @@ export default function ShellMenu({
 }: ShellMenuProps) {
   const t = ui.ui_text
 
-  const menuItems = t.shell_menu.items.length > 0
-    ? t.shell_menu.items
-    : [
-        { id: 'resume', label: t.resume_label, children: [] as never[] },
-        { id: 'help', label: t.help_label, children: [] as never[] },
-        { id: 'things_to_do', label: t.things_to_do_label, children: [] as never[] },
-        { id: 'language', label: t.language_menu_label, children: [] as never[] },
-        { id: 'about', label: t.about_label, children: [] as never[] },
-        { id: 'exit', label: t.exit_label, children: [] as never[] },
-      ]
+  const menuItems: MenuEntry[] = buildMenuItems(t)
 
   if (view === 'help') {
     return (
@@ -140,89 +187,23 @@ export default function ShellMenu({
   return (
     <Modal title={t.shell_menu_title} onClose={onClose}>
       {menuItems.map((item) => {
-        if (item.children && item.children.length > 0) {
+        if (item.kind === 'exit') {
           return (
             <div key={item.id}>
-              <p className="text-xs text-muted uppercase tracking-wider mb-1">{item.label}</p>
-              <div className="space-y-1 pl-2 border-l-2 border-subtle">
-                {item.children.map((child) => {
-                  const childId = child.id as View
-                  const action = menuItemAction(childId)
-                  if (action === 'exit') {
-                    return (
-                      <button
-                        key={child.id}
-                        onClick={onExit}
-                        className="block w-full text-left px-3 py-1.5 rounded hover:bg-overlay cursor-pointer text-sm"
-                      >
-                        {child.label}
-                      </button>
-                    )
-                  }
-                  if (action === 'view') {
-                    return (
-                      <button
-                        key={child.id}
-                        onClick={() => onViewChange(childId)}
-                        className="block w-full text-left px-3 py-1.5 rounded hover:bg-overlay cursor-pointer text-sm"
-                      >
-                        {child.label}
-                      </button>
-                    )
-                  }
-                  return null
-                })}
-              </div>
+              <hr className="border-subtle my-2" />
+              <button onClick={onExit} className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle cursor-pointer text-sm">{item.label}</button>
             </div>
           )
         }
-        const itemId = item.id as View
-        const action = menuItemAction(itemId)
-        if (action === 'close') {
+        if (item.kind === 'close') {
           return (
-            <button
-              key={item.id}
-              onClick={onClose}
-              className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle cursor-pointer"
-            >
-              {item.label}
-            </button>
+            <button key={item.id} onClick={onClose} className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle cursor-pointer text-sm">{item.label}</button>
           )
         }
-        if (action === 'exit') {
-          return (
-            <button
-              key={item.id}
-              onClick={onExit}
-              className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle cursor-pointer"
-            >
-              {item.label}
-            </button>
-          )
-        }
-        if (action === 'view') {
-          return (
-            <button
-              key={item.id}
-              onClick={() => onViewChange(itemId)}
-              className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle cursor-pointer"
-            >
-              {item.label}
-            </button>
-          )
-        }
-        return null
+        return (
+          <button key={item.id} onClick={() => onViewChange(item.id as View)} disabled={busy} className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer text-sm">{item.label}</button>
+        )
       })}
     </Modal>
   )
-}
-
-function menuItemAction(id: string): 'view' | 'exit' | 'close' | 'none' {
-  const views = new Set(['help', 'things_to_do', 'objectives', 'about', 'rooms', 'follow', 'language'])
-  const closes = new Set(['resume'])
-  const exits = new Set(['exit'])
-  if (views.has(id)) return 'view'
-  if (exits.has(id)) return 'exit'
-  if (closes.has(id)) return 'close'
-  return 'none'
 }

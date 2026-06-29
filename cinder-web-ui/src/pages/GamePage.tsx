@@ -127,6 +127,12 @@ export default function GamePage() {
     setInput('')
     setBusy(true)
 
+    if (trimmed === '?') {
+      setBusy(false)
+      openMenu()
+      return
+    }
+
     const cmdLine: Line = { text: `> ${trimmed}`, key: nextKey.current++ }
     setLines(prev => [...prev, cmdLine])
 
