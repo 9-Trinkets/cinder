@@ -11,6 +11,7 @@ export default function GamesPage() {
   const [sessions, setSessions] = useState<api.SessionInfo[]>([])
   const [loading, setLoading] = useState(true)
   const [creating, setCreating] = useState(false)
+  const [deleting, setDeleting] = useState<string | null>(null)
 
   async function load() {
     if (!token) return
@@ -25,6 +26,21 @@ export default function GamesPage() {
   }
 
   useEffect(() => { load() }, [token])
+
+  async function doDelete(sessionId: string, e: React.MouseEvent) {
+    e.stopPropagation()
+    if (!token || deleting) return
+    if (!confirm('Delete this session?')) return
+    setDeleting(sessionId)
+    try {
+      await api.deleteSession(token, sessionId)
+      setSessions(prev => prev.filter(s => s.session_id !== sessionId))
+    } catch (err: unknown) {
+      alert(err instanceof Error ? err.message : 'failed to delete')
+    } finally {
+      setDeleting(null)
+    }
+  }
 
   async function create(packId: string) {
     if (!token) return
@@ -72,13 +88,21 @@ export default function GamesPage() {
           ) : (
             <div className="space-y-2">
               {sessions.map(s => (
-                <div
-                  key={s.session_id}
-                  onClick={() => navigate(`/games/${s.session_id}`)}
-                  className="flex items-center justify-between px-4 py-3 rounded bg-overlay hover:bg-subtle cursor-pointer"
-                >
-                  <span className="text-text capitalize">{s.pack_id}</span>
-                  <span className="text-faint text-xs">{s.updated_at}</span>
+                <div key={s.session_id} className="flex items-center px-4 py-3 rounded bg-overlay hover:bg-subtle group">
+                  <div
+                    onClick={() => navigate(`/games/${s.session_id}`)}
+                    className="flex-1 flex items-center justify-between cursor-pointer"
+                  >
+                    <span className="text-text capitalize">{s.pack_id}</span>
+                    <span className="text-faint text-xs">{s.updated_at}</span>
+                  </div>
+                  <button
+                    onClick={e => doDelete(s.session_id, e)}
+                    disabled={deleting === s.session_id}
+                    className="ml-3 text-xs text-muted hover:text-love opacity-0 group-hover:opacity-100 disabled:opacity-50 cursor-pointer shrink-0"
+                  >
+                    {deleting === s.session_id ? '...' : '✕'}
+                  </button>
                 </div>
               ))}
             </div>

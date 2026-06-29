@@ -2,7 +2,7 @@ use axum::{
     extract::{Path, State},
     http::StatusCode,
     middleware,
-    routing::{get, post},
+    routing::{delete, get, post},
     Json, Router,
 };
 use serde::{Deserialize, Serialize};
@@ -38,6 +38,11 @@ pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
     Router::new()
         .route("/api/games", get(list_sessions).post(create_session))
         .route("/api/games/{id}/command", post(run_command))
+        .route("/api/games/{id}/ui", get(session_ui))
+        .route("/api/games/{id}/room", post(switch_room_handler))
+        .route("/api/games/{id}/follow", post(follow_actor_handler))
+        .route("/api/games/{id}/locale", post(set_locale_handler))
+        .route("/api/games/{id}", delete(delete_session_handler))
         .route_layer(middleware::from_fn_with_state(state, auth_middleware))
 }
 
@@ -112,16 +117,113 @@ pub struct CommandResponse {
 
 pub async fn run_command(
     State(state): State<Arc<AppState>>,
-    _auth: AuthPlayer,
+    auth: AuthPlayer,
     Path(session_id): Path<String>,
     Json(req): Json<CommandRequest>,
 ) -> Result<Json<CommandResponse>, (StatusCode, String)> {
+    game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id)
+        .await
+        .map_err(internal)?;
     let outcome = game_manager::run_command(&state.sessions, &session_id, &req.input)
         .map_err(internal)?;
     Ok(Json(CommandResponse {
         text: outcome.text,
         game_over: outcome.game_over,
     }))
+}
+
+pub async fn session_ui(
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+    Path(session_id): Path<String>,
+) -> Result<Json<game_manager::UiSnapshot>, (StatusCode, String)> {
+    game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id)
+        .await
+        .map_err(internal)?;
+    let snapshot = game_manager::get_session_ui(&state.sessions, &session_id).map_err(internal)?;
+    Ok(Json(snapshot))
+}
+
+#[derive(Deserialize)]
+pub struct RoomSwitchRequest {
+    pub room_id: String,
+}
+
+pub async fn switch_room_handler(
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+    Path(session_id): Path<String>,
+    Json(req): Json<RoomSwitchRequest>,
+) -> Result<Json<CommandResponse>, (StatusCode, String)> {
+    game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id)
+        .await
+        .map_err(internal)?;
+    let outcome = game_manager::switch_room(&state.sessions, &session_id, &req.room_id)
+        .map_err(internal)?;
+    Ok(Json(CommandResponse {
+        text: outcome.text,
+        game_over: outcome.game_over,
+    }))
+}
+
+#[derive(Deserialize)]
+pub struct FollowRequest {
+    pub actor_id: Option<String>,
+}
+
+pub async fn follow_actor_handler(
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+    Path(session_id): Path<String>,
+    Json(req): Json<FollowRequest>,
+) -> Result<Json<CommandResponse>, (StatusCode, String)> {
+    game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id)
+        .await
+        .map_err(internal)?;
+    let outcome =
+        game_manager::follow_actor(&state.sessions, &session_id, req.actor_id.as_deref())
+            .map_err(internal)?;
+    Ok(Json(CommandResponse {
+        text: outcome.text,
+        game_over: outcome.game_over,
+    }))
+}
+
+#[derive(Deserialize)]
+pub struct LocaleRequest {
+    pub locale: String,
+}
+
+pub async fn set_locale_handler(
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+    Path(session_id): Path<String>,
+    Json(req): Json<LocaleRequest>,
+) -> Result<Json<String>, (StatusCode, String)> {
+    game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id)
+        .await
+        .map_err(internal)?;
+    let text = game_manager::set_locale(&state.sessions, &session_id, &req.locale)
+        .map_err(internal)?;
+    Ok(Json(text))
+}
+
+pub async fn delete_session_handler(
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+    Path(session_id): Path<String>,
+) -> Result<Json<()>, (StatusCode, String)> {
+    game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id)
+        .await
+        .map_err(internal)?;
+    game_manager::delete_session(&state.sessions, &session_id).map_err(internal)?;
+    sqlx::query("DELETE FROM game_sessions WHERE id = ? AND player_id = ?")
+        .bind(&session_id)
+        .bind(&auth.id)
+        .execute(&*state.pool)
+        .await
+        .map_err(internal)?;
+    Ok(Json(()))
 }
 
 fn now_iso() -> String {

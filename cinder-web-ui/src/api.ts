@@ -88,6 +88,96 @@ export function listSaves(token: string, sessionId: string) {
   )
 }
 
+export interface LocaleItem {
+  code: string
+  label: string
+}
+
+export interface ObjectiveItem {
+  summary: string
+  message: string
+}
+
+export interface MenuOptionItem {
+  id: string
+  title: string
+  menu_text: string
+}
+
+export interface UiSnapshot {
+  title: string
+  time_label: string
+  day_number: number
+  help_text: string
+  about_body: string
+  current_locale: string
+  locale_options: LocaleItem[]
+  objectives: ObjectiveItem[]
+  rooms: MenuOptionItem[]
+  follow_options: MenuOptionItem[]
+  ui_text: {
+    language_name: string
+    menu_button_label: string
+    shell_menu_title: string
+    help_label: string
+    resume_label: string
+    things_to_do_label: string
+    about_label: string
+    exit_label: string
+    language_menu_label: string
+    room_switcher_label: string
+    room_switcher_title: string
+    follow_actor_title: string
+    things_to_do_empty: string
+    about_body: string
+    language_modal_title: string
+    modal_close_hint: string
+    exit_confirm_title: string
+    exit_confirm_body: string
+    shell_menu: {
+      items: { id: string; label: string; children?: { id: string; label: string }[] }[]
+    }
+    [key: string]: unknown
+  }
+}
+
+export function fetchSessionUi(token: string, sessionId: string) {
+  return req<UiSnapshot>(`/games/${sessionId}/ui`, {
+    headers: authHeader(token),
+  })
+}
+
+export function switchRoom(token: string, sessionId: string, roomId: string) {
+  return req<CommandResponse>(`/games/${sessionId}/room`, {
+    method: 'POST',
+    headers: authHeader(token),
+    body: JSON.stringify({ room_id: roomId }),
+  })
+}
+
+export function followActor(token: string, sessionId: string, actorId: string | null) {
+  return req<CommandResponse>(`/games/${sessionId}/follow`, {
+    method: 'POST',
+    headers: authHeader(token),
+    body: JSON.stringify({ actor_id: actorId }),
+  })
+}
+
+export function setLocale(token: string, sessionId: string, locale: string) {
+  return req<string>(`/games/${sessionId}/locale`, {
+    method: 'POST',
+    headers: authHeader(token),
+    body: JSON.stringify({ locale }),
+  })
+}
+
+export function deleteSession(token: string, sessionId: string) {
+  return req<void>(`/games/${sessionId}`, {
+    method: 'DELETE',
+    headers: authHeader(token),
+  })
+}
+
 export interface LoadGameResponse {
   session_id: string
   pack_id: string
