@@ -30,8 +30,6 @@ const CANONICAL_FALLBACK: { id: string; labelKey: string }[] = [
   { id: 'resume', labelKey: 'resume_label' },
   { id: 'help', labelKey: 'help_label' },
   { id: 'objectives', labelKey: 'things_to_do_label' },
-  { id: 'rooms', labelKey: 'room_switcher_label' },
-  { id: 'follow', labelKey: 'follow_actor_title' },
   { id: 'language', labelKey: 'language_menu_label' },
   { id: 'about', labelKey: 'about_label' },
   { id: 'exit', labelKey: 'exit_label' },
@@ -42,31 +40,15 @@ const KNOWN_IDS = new Set([
   'rooms', 'follow', 'language',
 ])
 
-function flattenItems(t: UiSnapshot['ui_text']): { id: string; label: string }[] {
-  const out: FlatItem[] = []
-
+function flattenItems(t: UiSnapshot['ui_text']): FlatItem[] {
   if (t.shell_menu.items.length > 0) {
-    for (const item of t.shell_menu.items) {
-      if (item.children && item.children.length > 0) {
-        for (const child of item.children) {
-          out.push({ id: child.id, label: child.label })
-        }
-      } else {
-        out.push({ id: item.id, label: item.label })
-      }
-    }
-  } else {
-    for (const entry of CANONICAL_FALLBACK) {
-      out.push({ id: entry.id, label: t[entry.labelKey as keyof typeof t] as string || entry.id })
-    }
+    return t.shell_menu.items.map(item => ({ id: item.id, label: item.label }))
   }
 
-  out.sort((a, b) => {
-    const ai = CANONICAL_ORDER.indexOf(a.id)
-    const bi = CANONICAL_ORDER.indexOf(b.id)
-    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi)
-  })
-
+  const out: FlatItem[] = []
+  for (const entry of CANONICAL_FALLBACK) {
+    out.push({ id: entry.id, label: t[entry.labelKey as keyof typeof t] as string || entry.id })
+  }
   return out.filter(i => i.id === 'resume' || i.id === 'exit' || KNOWN_IDS.has(i.id))
 }
 
@@ -285,6 +267,17 @@ function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy }: MainMen
   )
 }
 
+const VIEW_ROUTE: Record<string, View> = {
+  help: 'help',
+  goals: 'objectives',
+  things_to_do: 'objectives',
+  objectives: 'objectives',
+  about: 'about',
+  rooms: 'rooms',
+  follow: 'follow',
+  language: 'language',
+}
+
 function handleItemClick(
   id: string,
   onViewChange: (v: View) => void,
@@ -293,5 +286,6 @@ function handleItemClick(
 ) {
   if (id === 'exit') { onExit(); return }
   if (id === 'resume') { onClose(); return }
-  onViewChange(id as View)
+  const view = VIEW_ROUTE[id]
+  if (view) onViewChange(view)
 }
