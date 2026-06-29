@@ -108,6 +108,8 @@ export interface UiSnapshot {
   title: string
   time_label: string
   day_number: number
+  current_room_name: string
+  followed_actor_name: string | null
   help_text: string
   about_body: string
   current_locale: string

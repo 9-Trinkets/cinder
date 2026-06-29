@@ -25,6 +25,8 @@ pub struct UiSnapshot {
     pub title: String,
     pub time_label: String,
     pub day_number: u32,
+    pub current_room_name: String,
+    pub followed_actor_name: Option<String>,
     pub help_text: String,
     pub about_body: String,
     pub current_locale: String,
@@ -297,10 +299,23 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             .collect();
         let content = session.runtime.content();
 
+        let current_room_id = session.runtime.current_room_id().map_err(|e| e.to_string())?;
+        let current_room_name = content
+            .room(&current_room_id)
+            .map(|r| r.title.clone())
+            .unwrap_or(current_room_id);
+        let followed_actor_name = session
+            .runtime
+            .followed_actor_id()
+            .map_err(|e| e.to_string())?
+            .and_then(|id| content.actor(&id).map(|a| a.name.clone()));
+
         Ok(UiSnapshot {
             title: content.opening.title.clone(),
             time_label,
             day_number,
+            current_room_name,
+            followed_actor_name,
             help_text: session.runtime.help_text(),
             about_body: content.ui_text.about_body.clone(),
             current_locale: content.locale.clone(),

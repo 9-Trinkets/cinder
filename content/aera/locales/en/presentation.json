@@ -19,6 +19,6 @@
     "actor_targeted_speech": "{actor_name} (to {target_name}): {text}",
     "actor_departed": "{actor_name} heads to the {room_title}.",
     "actor_arrived": "{actor_name} comes in from the {room_title}.",
-    "session_ended": "The house goes still around her."
+    "session_ended": "The house goes still."
   }
 }

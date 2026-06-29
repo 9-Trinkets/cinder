@@ -184,6 +184,22 @@ impl CinderRuntime {
         Ok(state.current_day_number())
     }
 
+    pub fn current_room_id(&self) -> Result<String, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for room id")?;
+        Ok(state.current_room_id.clone())
+    }
+
+    pub fn followed_actor_id(&self) -> Result<Option<String>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for followed actor")?;
+        Ok(state.followed_actor_id.clone())
+    }
+
     pub fn help_text(&self) -> String {
         let available_commands = player_command_help_text(self.content.as_ref());
         self.content.render_template(

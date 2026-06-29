@@ -42,11 +42,9 @@ export default function GamePage() {
 
   function startNextLine() {
     if (pendingLines.current.length === 0 || typewriterTimer.current) return
-
     const line = pendingLines.current[0]
     charsRevealed.current = 0
     setTypewriterDisplay({ text: '', key: line.key })
-
     typewriterTimer.current = setInterval(() => {
       charsRevealed.current++
       if (charsRevealed.current >= line.text.length) {
@@ -82,11 +80,16 @@ export default function GamePage() {
     setTypewriterDisplay(null)
   }
 
+  function refreshSnapshot() {
+    if (!token || !id) return
+    api.fetchSessionUi(token, id).then(snap => {
+      setUiSnapshot(snap)
+    }).catch(() => {})
+  }
+
   useEffect(() => {
     return () => {
-      if (typewriterTimer.current) {
-        clearInterval(typewriterTimer.current)
-      }
+      if (typewriterTimer.current) clearInterval(typewriterTimer.current)
     }
   }, [])
 
@@ -129,12 +132,10 @@ export default function GamePage() {
   useEffect(() => {
     if (!token || !id) return
     if (wsRef.current) return
-
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
     const wsUrl = `${protocol}//${window.location.host}/api/games/${id}/stream?token=${encodeURIComponent(token)}`
     const ws = new WebSocket(wsUrl)
     wsRef.current = ws
-
     ws.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data)
@@ -155,27 +156,42 @@ export default function GamePage() {
         }
       } catch { /* ignore parse errors */ }
     }
-
-    ws.onclose = () => {
-      wsRef.current = null
-    }
-
-    return () => {
-      ws.close()
-      wsRef.current = null
-    }
+    ws.onclose = () => { wsRef.current = null }
+    return () => { ws.close(); wsRef.current = null }
   }, [token, id])
 
   function openMenu() {
     setMenuView('main')
     setShowMenu(true)
     if (token && id) {
-      api.fetchSessionUi(token, id).then(setUiSnapshot).catch((err) => console.error('fetchSessionUi failed', err))
+      api.fetchSessionUi(token, id).then(setUiSnapshot).catch(() => {})
     }
   }
 
   function addOutcome(text: string) {
     setLines(prev => [...prev, { text, key: nextKey.current++ }])
+  }
+
+  async function execCommand(cmd: string) {
+    if (!token || !id || busy || gameOver) return
+    setBusy(true)
+    wsRef.current?.send('pause')
+    flushTypewriter()
+    const cmdLine: Line = { text: `> ${cmd}`, key: nextKey.current++ }
+    setLines(prev => [...prev, cmdLine])
+    try {
+      const res = await api.runCommand(token, id, cmd)
+      wsRef.current?.send('resume')
+      const outLine: Line = { text: res.text, key: nextKey.current++ }
+      setLines(prev => [...prev, outLine])
+      refreshSnapshot()
+      if (res.game_over) setGameOver(true)
+    } catch (err: unknown) {
+      wsRef.current?.send('resume')
+      addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
+    } finally {
+      setBusy(false)
+    }
   }
 
   async function doSwitchRoom(roomId: string) {
@@ -185,6 +201,7 @@ export default function GamePage() {
     try {
       const res = await api.switchRoom(token, id, roomId)
       addOutcome(res.text)
+      refreshSnapshot()
       if (res.game_over) setGameOver(true)
     } catch (err: unknown) {
       addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
@@ -200,6 +217,7 @@ export default function GamePage() {
     try {
       const res = await api.followActor(token, id, actorId)
       addOutcome(res.text)
+      refreshSnapshot()
       if (res.game_over) setGameOver(true)
     } catch (err: unknown) {
       addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
@@ -234,12 +252,7 @@ export default function GamePage() {
     const trimmed = input.trim()
     if (!trimmed) return
     setInput('')
-
-    if (trimmed === '?') {
-      openMenu()
-      return
-    }
-
+    if (trimmed === '?') { openMenu(); return }
     if (trimmed.toLowerCase() === 'move' || trimmed.toLowerCase() === 'follow') {
       const snap = uiSnapshot || await api.fetchSessionUi(token, id).catch(() => null)
       if (snap?.channel_surfing_only) {
@@ -249,27 +262,7 @@ export default function GamePage() {
         return
       }
     }
-
-    setBusy(true)
-    wsRef.current?.send('pause')
-    flushTypewriter()
-
-    const cmdLine: Line = { text: `> ${trimmed}`, key: nextKey.current++ }
-    setLines(prev => [...prev, cmdLine])
-
-    try {
-      const res = await api.runCommand(token, id, trimmed)
-      wsRef.current?.send('resume')
-      const outLine: Line = { text: res.text, key: nextKey.current++ }
-      setLines(prev => [...prev, outLine])
-      if (res.game_over) setGameOver(true)
-    } catch (err: unknown) {
-      wsRef.current?.send('resume')
-      const errLine: Line = { text: `[error: ${err instanceof Error ? err.message : 'request failed'}]`, key: nextKey.current++ }
-      setLines(prev => [...prev, errLine])
-    } finally {
-      setBusy(false)
-    }
+    await execCommand(trimmed)
   }
 
   return (
@@ -281,57 +274,102 @@ export default function GamePage() {
             onClick={openMenu}
             disabled={busy}
             className="text-sm px-2 py-1 rounded bg-overlay border border-subtle text-text hover:brightness-110 disabled:opacity-50 cursor-pointer"
-          >
-            &#9776; Menu
-          </button>
+          >&#9776; Menu</button>
         </div>
         <button onClick={logout} className="text-sm text-muted hover:text-love cursor-pointer">Log out</button>
       </header>
 
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
-        {lines.map(line => (
-          <div key={line.key} className="whitespace-pre-wrap text-sm leading-relaxed">
-            {line.text.startsWith('> ') ? (
-              <span className="text-foam">{line.text}</span>
-            ) : line.text.startsWith('== ') ? (
-              <span className="text-iris font-bold">{line.text}</span>
-            ) : (
-              <span className="text-text">{line.text}</span>
+      <div className="flex-1 flex overflow-hidden">
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+            {lines.map(line => (
+              <div key={line.key} className="whitespace-pre-wrap text-sm leading-relaxed">
+                {line.text.startsWith('> ') ? (
+                  <span className="text-foam">{line.text}</span>
+                ) : line.text.startsWith('== ') ? (
+                  <span className="text-iris font-bold">{line.text}</span>
+                ) : (
+                  <span className="text-text">{line.text}</span>
+                )}
+              </div>
+            ))}
+            {typewriterDisplay && (
+              <div key={typewriterDisplay.key} className="whitespace-pre-wrap text-sm leading-relaxed">
+                <span className="text-text">
+                  {typewriterDisplay.text}
+                  <span className="animate-pulse text-muted">▌</span>
+                </span>
+              </div>
             )}
+            {busy && <p className="text-muted text-sm italic">...</p>}
+            {gameOver && (
+              <p className="text-love font-semibold text-center pt-4">Game Over</p>
+            )}
+            <div ref={bottomRef} />
           </div>
-        ))}
-        {typewriterDisplay && (
-          <div key={typewriterDisplay.key} className="whitespace-pre-wrap text-sm leading-relaxed">
-            <span className="text-text">
-              {typewriterDisplay.text}
-              <span className="animate-pulse text-muted">▌</span>
-            </span>
-          </div>
-        )}
-        {busy && <p className="text-muted text-sm italic">...</p>}
-        {gameOver && (
-          <p className="text-love font-semibold text-center pt-4">Game Over</p>
-        )}
-        <div ref={bottomRef} />
-      </div>
 
-      <form onSubmit={send} className="flex gap-2 border-t border-subtle px-4 py-3 shrink-0">
-        <input
-          className="flex-1 px-3 py-2 rounded bg-overlay border border-subtle text-text placeholder-faint focus:outline-none focus:border-pine text-sm"
-          placeholder={gameOver ? 'Game over' : 'What do you do?'}
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          disabled={busy || gameOver}
-          autoFocus
-        />
-        <button
-          type="submit"
-          disabled={busy || gameOver || !input.trim()}
-          className="px-4 py-2 rounded bg-pine text-surface text-sm font-semibold hover:brightness-110 disabled:opacity-50 cursor-pointer"
-        >
-          Send
-        </button>
-      </form>
+          <div className="flex gap-2 px-4 py-2 border-t border-subtle shrink-0">
+            <button
+              onClick={() => execCommand('look')}
+              disabled={busy || gameOver}
+              className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm hover:brightness-110 disabled:opacity-50 cursor-pointer"
+            >Look</button>
+            <button
+              onClick={() => { if (!busy) { setMenuView('rooms'); setShowMenu(true) } }}
+              disabled={busy || gameOver}
+              className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm hover:brightness-110 disabled:opacity-50 cursor-pointer"
+            >Move</button>
+            <button
+              onClick={() => { if (!busy) { setMenuView('follow'); setShowMenu(true) } }}
+              disabled={busy || gameOver}
+              className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm hover:brightness-110 disabled:opacity-50 cursor-pointer"
+            >Follow</button>
+            <button
+              onClick={() => execCommand('wait')}
+              disabled={busy || gameOver}
+              className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm hover:brightness-110 disabled:opacity-50 cursor-pointer"
+            >Wait</button>
+          </div>
+
+          <form onSubmit={send} className="flex gap-2 border-t border-subtle px-4 py-3 shrink-0">
+            <input
+              className="flex-1 px-3 py-2 rounded bg-overlay border border-subtle text-text placeholder-faint focus:outline-none focus:border-pine text-sm"
+              placeholder={gameOver ? 'Game over' : 'What do you do?'}
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              disabled={busy || gameOver}
+              autoFocus
+            />
+            <button
+              type="submit"
+              disabled={busy || gameOver || !input.trim()}
+              className="px-4 py-2 rounded bg-pine text-surface text-sm font-semibold hover:brightness-110 disabled:opacity-50 cursor-pointer"
+            >Send</button>
+          </form>
+        </div>
+
+        {uiSnapshot && (
+          <aside className="w-56 shrink-0 border-l border-subtle p-4 flex flex-col gap-4 text-sm overflow-y-auto">
+            <div>
+              <p className="text-xs text-muted uppercase tracking-wider">Location</p>
+              <p className="text-text font-medium">{uiSnapshot.current_room_name}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted uppercase tracking-wider">Time</p>
+              <p className="text-text">
+                Day {uiSnapshot.day_number}
+                {uiSnapshot.time_label ? <span className="text-muted ml-1">— {uiSnapshot.time_label}</span> : null}
+              </p>
+            </div>
+            {uiSnapshot.followed_actor_name && (
+              <div>
+                <p className="text-xs text-muted uppercase tracking-wider">Following</p>
+                <p className="text-pine font-medium">{uiSnapshot.followed_actor_name}</p>
+              </div>
+            )}
+          </aside>
+        )}
+      </div>
 
       {showMenu && uiSnapshot && (
         <ShellMenu
