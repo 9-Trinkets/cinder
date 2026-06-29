@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import Modal from './Modal'
 import type { UiSnapshot } from '../api'
 
@@ -15,60 +16,58 @@ interface ShellMenuProps {
   busy: boolean
 }
 
-interface MenuEntry {
+interface FlatItem {
   id: string
   label: string
-  kind: 'view' | 'close' | 'exit'
 }
 
-const CANONICAL_ORDER = ['resume', 'help', 'goals', 'things_to_do', 'objectives', 'rooms', 'follow', 'language', 'about', 'exit']
+const CANONICAL_ORDER: string[] = [
+  'resume', 'help', 'goals', 'things_to_do', 'objectives',
+  'rooms', 'follow', 'language', 'about', 'exit',
+]
 
 const CANONICAL_FALLBACK: { id: string; labelKey: string }[] = [
   { id: 'resume', labelKey: 'resume_label' },
   { id: 'help', labelKey: 'help_label' },
   { id: 'objectives', labelKey: 'things_to_do_label' },
+  { id: 'rooms', labelKey: 'room_switcher_label' },
+  { id: 'follow', labelKey: 'follow_actor_title' },
   { id: 'language', labelKey: 'language_menu_label' },
   { id: 'about', labelKey: 'about_label' },
   { id: 'exit', labelKey: 'exit_label' },
 ]
 
-function buildMenuItems(
-  t: UiSnapshot['ui_text'],
-): MenuEntry[] {
-  const items: { id: string; label: string }[] = []
+const KNOWN_IDS = new Set([
+  'help', 'things_to_do', 'objectives', 'goals', 'about',
+  'rooms', 'follow', 'language',
+])
+
+function flattenItems(t: UiSnapshot['ui_text']): { id: string; label: string }[] {
+  const out: FlatItem[] = []
 
   if (t.shell_menu.items.length > 0) {
     for (const item of t.shell_menu.items) {
       if (item.children && item.children.length > 0) {
         for (const child of item.children) {
-          items.push({ id: child.id, label: child.label })
+          out.push({ id: child.id, label: child.label })
         }
       } else {
-        items.push({ id: item.id, label: item.label })
+        out.push({ id: item.id, label: item.label })
       }
     }
   } else {
     for (const entry of CANONICAL_FALLBACK) {
-      items.push({ id: entry.id, label: t[entry.labelKey as keyof typeof t] as string })
+      out.push({ id: entry.id, label: t[entry.labelKey as keyof typeof t] as string || entry.id })
     }
   }
 
-  items.sort((a, b) => {
+  out.sort((a, b) => {
     const ai = CANONICAL_ORDER.indexOf(a.id)
     const bi = CANONICAL_ORDER.indexOf(b.id)
     return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi)
   })
 
-  return items
-      .filter(i => {
-        if (i.id === 'resume' || i.id === 'exit') return true
-        return new Set(['help', 'things_to_do', 'objectives', 'goals', 'about', 'rooms', 'follow', 'language']).has(i.id)
-      })
-      .map(i => ({
-        id: i.id,
-        label: i.label,
-        kind: i.id === 'exit' ? 'exit' as const : i.id === 'resume' ? 'close' as const : 'view' as const,
-      }))
+  return out.filter(i => i.id === 'resume' || i.id === 'exit' || KNOWN_IDS.has(i.id))
 }
 
 export default function ShellMenu({
@@ -83,8 +82,7 @@ export default function ShellMenu({
   busy,
 }: ShellMenuProps) {
   const t = ui.ui_text
-
-  const menuItems: MenuEntry[] = buildMenuItems(t)
+  const items = flattenItems(t)
 
   if (view === 'help') {
     return (
@@ -142,17 +140,10 @@ export default function ShellMenu({
   if (view === 'follow') {
     return (
       <Modal title={t.follow_actor_title} onClose={() => onViewChange('main')}>
-        <button
-          onClick={() => onFollowActor(null)}
-          disabled={busy}
-          className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
-        >
-          Stop following
-        </button>
         {ui.follow_options.map((a) => (
           <button
             key={a.id}
-            onClick={() => onFollowActor(a.id)}
+            onClick={() => onFollowActor(a.id === 'none' ? null : a.id)}
             disabled={busy}
             className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
           >
@@ -184,26 +175,123 @@ export default function ShellMenu({
     )
   }
 
+  return <MainMenu
+    items={items}
+    t={t}
+    ui={ui}
+    onViewChange={onViewChange}
+    onClose={onClose}
+    onExit={onExit}
+    busy={busy}
+  />
+}
+
+interface MainMenuProps {
+  items: FlatItem[]
+  t: UiSnapshot['ui_text']
+  ui: UiSnapshot
+  onViewChange: (v: View) => void
+  onClose: () => void
+  onExit: () => void
+  busy: boolean
+}
+
+function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy }: MainMenuProps) {
+  const [submenu, setSubmenu] = useState<{ id: string; label: string }[] | null>(null)
+  const [submenuTitle, setSubmenuTitle] = useState('')
+
+  if (submenu !== null) {
+    return (
+      <Modal title={submenuTitle} onClose={onClose}>
+        <button
+          onClick={() => { setSubmenu(null); setSubmenuTitle('') }}
+          className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle cursor-pointer text-sm mb-2"
+        >
+          &larr; Back
+        </button>
+        {submenu.map((child) => (
+          <button
+            key={child.id}
+            onClick={() => handleItemClick(child.id, onViewChange, onClose, onExit)}
+            className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle cursor-pointer text-sm"
+          >
+            {child.label}
+          </button>
+        ))}
+      </Modal>
+    )
+  }
+
   return (
     <Modal title={t.shell_menu_title} onClose={onClose}>
-      {menuItems.map((item) => {
-        if (item.kind === 'exit') {
+      {items.map((item) => {
+        const packItem = t.shell_menu.items.find(i => i.id === item.id)
+        const hasChildren = packItem?.children && packItem.children.length > 0
+
+        if (item.id === 'exit') {
           return (
             <div key={item.id}>
               <hr className="border-subtle my-2" />
-              <button onClick={onExit} className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle cursor-pointer text-sm">{item.label}</button>
+              <button
+                onClick={onExit}
+                className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle cursor-pointer text-sm"
+              >
+                {item.label}
+              </button>
             </div>
           )
         }
-        if (item.kind === 'close') {
+
+        if (item.id === 'resume') {
           return (
-            <button key={item.id} onClick={onClose} className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle cursor-pointer text-sm">{item.label}</button>
+            <button
+              key={item.id}
+              onClick={onClose}
+              className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle cursor-pointer text-sm"
+            >
+              {item.label}
+            </button>
           )
         }
+
+        if (hasChildren) {
+          const children = packItem!.children!
+          return (
+            <button
+              key={item.id}
+              onClick={() => {
+                setSubmenu(children)
+                setSubmenuTitle(item.label)
+              }}
+              className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle cursor-pointer text-sm"
+            >
+              {item.label} &rarr;
+            </button>
+          )
+        }
+
         return (
-          <button key={item.id} onClick={() => onViewChange(item.id as View)} disabled={busy} className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer text-sm">{item.label}</button>
+          <button
+            key={item.id}
+            onClick={() => handleItemClick(item.id, onViewChange, onClose, onExit)}
+            disabled={busy}
+            className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer text-sm"
+          >
+            {item.label}
+          </button>
         )
       })}
     </Modal>
   )
+}
+
+function handleItemClick(
+  id: string,
+  onViewChange: (v: View) => void,
+  onClose: () => void,
+  onExit: () => void,
+) {
+  if (id === 'exit') { onExit(); return }
+  if (id === 'resume') { onClose(); return }
+  onViewChange(id as View)
 }

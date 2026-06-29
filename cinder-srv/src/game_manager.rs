@@ -32,6 +32,7 @@ pub struct UiSnapshot {
     pub objectives: Vec<ObjectiveItem>,
     pub rooms: Vec<MenuOptionData>,
     pub follow_options: Vec<MenuOptionData>,
+    pub channel_surfing_only: bool,
     pub ui_text: UiTextDefinition,
 }
 
@@ -317,6 +318,7 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
                     .follow_actor_options()
                     .map_err(|e| e.to_string())?,
             ),
+            channel_surfing_only: content.settings.channel_surfing_only,
             ui_text: content.ui_text.clone(),
         })
     })

@@ -115,6 +115,7 @@ export interface UiSnapshot {
   objectives: ObjectiveItem[]
   rooms: MenuOptionItem[]
   follow_options: MenuOptionItem[]
+  channel_surfing_only: boolean
   ui_text: {
     language_name: string
     menu_button_label: string

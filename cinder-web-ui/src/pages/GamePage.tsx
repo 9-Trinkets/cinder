@@ -24,6 +24,7 @@ export default function GamePage() {
   const [showMenu, setShowMenu] = useState(false)
   const [menuView, setMenuView] = useState<MenuView>('main')
   const [uiSnapshot, setUiSnapshot] = useState<api.UiSnapshot | null>(null)
+  const channelSurfingOnly = useRef(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const nextKey = useRef(1)
   const initialized = useRef(false)
@@ -45,6 +46,13 @@ export default function GamePage() {
       entries.push({ text: sessionState.intro_text, key: nextKey.current++ })
     }
     setLines(entries)
+
+    api.fetchSessionUi(token, id)
+      .then(snap => {
+        channelSurfingOnly.current = snap.channel_surfing_only
+        setUiSnapshot(snap)
+      })
+      .catch(() => {})
 
     api.runCommand(token, id, 'look')
       .then(res => {
@@ -125,14 +133,23 @@ export default function GamePage() {
     const trimmed = input.trim()
     if (!trimmed) return
     setInput('')
-    setBusy(true)
 
     if (trimmed === '?') {
-      setBusy(false)
       openMenu()
       return
     }
 
+    if (trimmed.toLowerCase() === 'move' || trimmed.toLowerCase() === 'follow') {
+      const snap = uiSnapshot || await api.fetchSessionUi(token, id).catch(() => null)
+      if (snap?.channel_surfing_only) {
+        setUiSnapshot(snap)
+        setMenuView(trimmed.toLowerCase() === 'move' ? 'rooms' : 'follow')
+        setShowMenu(true)
+        return
+      }
+    }
+
+    setBusy(true)
     const cmdLine: Line = { text: `> ${trimmed}`, key: nextKey.current++ }
     setLines(prev => [...prev, cmdLine])
 
