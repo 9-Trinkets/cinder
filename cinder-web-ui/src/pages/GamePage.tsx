@@ -131,7 +131,7 @@ export default function GamePage() {
     if (wsRef.current) return
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const wsUrl = `${protocol}//${window.location.host}/api/games/${id}/stream`
+    const wsUrl = `${protocol}//${window.location.host}/api/games/${id}/stream?token=${encodeURIComponent(token)}`
     const ws = new WebSocket(wsUrl)
     wsRef.current = ws
 

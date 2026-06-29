@@ -1,7 +1,7 @@
 use axum::{
     extract::{
         ws::{Message, WebSocket, WebSocketUpgrade},
-        Path, State,
+        Path, Query, State,
     },
     http::StatusCode,
     middleware,
@@ -13,7 +13,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 use tokio::sync::mpsc;
 
-use crate::auth::{auth_middleware, AuthPlayer};
+use crate::auth::{auth_middleware, validate_token, AuthPlayer};
 use crate::game_manager;
 
 use super::AppState;
@@ -47,9 +47,9 @@ pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/api/games/{id}/room", post(switch_room_handler))
         .route("/api/games/{id}/follow", post(follow_actor_handler))
         .route("/api/games/{id}/locale", post(set_locale_handler))
-        .route("/api/games/{id}/stream", get(stream_handler))
         .route("/api/games/{id}", delete(delete_session_handler))
-        .route_layer(middleware::from_fn_with_state(state, auth_middleware))
+        .route_layer(middleware::from_fn_with_state(state.clone(), auth_middleware))
+        .route("/api/games/{id}/stream", get(stream_handler))
 }
 
 pub async fn create_session(
@@ -242,13 +242,22 @@ fn now_iso() -> String {
     format!("epoch={d}")
 }
 
+#[derive(Deserialize)]
+pub struct StreamQuery {
+    pub token: String,
+}
+
 pub async fn stream_handler(
     ws: WebSocketUpgrade,
     State(state): State<Arc<AppState>>,
-    auth: AuthPlayer,
     Path(session_id): Path<String>,
-) -> impl axum::response::IntoResponse {
-    ws.on_upgrade(move |socket| handle_ws(socket, state, auth, session_id))
+    Query(query): Query<StreamQuery>,
+) -> Result<impl axum::response::IntoResponse, (StatusCode, String)> {
+    let claims = validate_token(&query.token, state.config.jwt_secret.as_bytes())
+        .map_err(|_| (StatusCode::UNAUTHORIZED, "invalid token".to_string()))?;
+    Ok(ws.on_upgrade(move |socket| {
+        handle_ws(socket, state, AuthPlayer { id: claims.sub }, session_id)
+    }))
 }
 
 async fn handle_ws(
