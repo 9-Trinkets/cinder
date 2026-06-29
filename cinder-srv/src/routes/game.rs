@@ -1,12 +1,17 @@
 use axum::{
-    extract::{Path, State},
+    extract::{
+        ws::{Message, WebSocket, WebSocketUpgrade},
+        Path, State,
+    },
     http::StatusCode,
     middleware,
     routing::{delete, get, post},
     Json, Router,
 };
 use serde::{Deserialize, Serialize};
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
+use tokio::sync::mpsc;
 
 use crate::auth::{auth_middleware, AuthPlayer};
 use crate::game_manager;
@@ -42,6 +47,7 @@ pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/api/games/{id}/room", post(switch_room_handler))
         .route("/api/games/{id}/follow", post(follow_actor_handler))
         .route("/api/games/{id}/locale", post(set_locale_handler))
+        .route("/api/games/{id}/stream", get(stream_handler))
         .route("/api/games/{id}", delete(delete_session_handler))
         .route_layer(middleware::from_fn_with_state(state, auth_middleware))
 }
@@ -234,4 +240,110 @@ fn now_iso() -> String {
         .unwrap()
         .as_secs();
     format!("epoch={d}")
+}
+
+pub async fn stream_handler(
+    ws: WebSocketUpgrade,
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+    Path(session_id): Path<String>,
+) -> impl axum::response::IntoResponse {
+    ws.on_upgrade(move |socket| handle_ws(socket, state, auth, session_id))
+}
+
+async fn handle_ws(
+    mut ws: WebSocket,
+    state: Arc<AppState>,
+    auth: AuthPlayer,
+    session_id: String,
+) {
+    if let Err(e) = game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id).await
+    {
+        let _ = ws.send(Message::Text(format!(r#"{{"type":"error","text":"{e}"}}"#).into())).await;
+        return;
+    }
+
+    let runtime = match game_manager::get_runtime(&state.sessions, &session_id) {
+        Ok(r) => r,
+        Err(e) => {
+            let _ = ws.send(Message::Text(format!(r#"{{"type":"error","text":"{e}"}}"#).into())).await;
+            return;
+        }
+    };
+
+    let typewriter_char_ms = runtime.content().settings.typewriter_char_ms;
+    let npc_tick_interval_ms = runtime.content().settings.npc_tick_interval_ms;
+
+    let settings_msg =
+        serde_json::json!({ "type": "settings", "typewriter_char_ms": typewriter_char_ms });
+    if ws
+        .send(Message::Text(settings_msg.to_string().into()))
+        .await
+        .is_err()
+    {
+        return;
+    }
+
+    let (tick_tx, mut tick_rx) = mpsc::unbounded_channel::<Result<(String, bool), String>>();
+    let paused = Arc::new(AtomicBool::new(false));
+    let paused_clone = Arc::clone(&paused);
+
+    tokio::task::spawn_blocking(move || {
+        let duration = std::time::Duration::from_millis(npc_tick_interval_ms);
+        loop {
+            std::thread::sleep(duration);
+            if paused_clone.load(Ordering::Relaxed) {
+                continue;
+            }
+            let result = match runtime.run_tick() {
+                Ok(outcome) => Ok((outcome.text, outcome.game_over)),
+                Err(e) => Err(e.to_string()),
+            };
+            if tick_tx.send(result).is_err() {
+                break;
+            }
+        }
+    });
+
+    loop {
+        tokio::select! {
+            maybe_tick = tick_rx.recv() => {
+                match maybe_tick {
+                    Some(Ok((text, game_over))) => {
+                        if text.is_empty() {
+                            continue;
+                        }
+                        let msg = serde_json::json!({
+                            "type": "tick",
+                            "text": text,
+                            "game_over": game_over,
+                        });
+                        if ws.send(Message::Text(msg.to_string().into())).await.is_err() {
+                            break;
+                        }
+                    }
+                    Some(Err(e)) => {
+                        let msg = serde_json::json!({ "type": "error", "text": e });
+                        if ws.send(Message::Text(msg.to_string().into())).await.is_err() {
+                            break;
+                        }
+                    }
+                    None => break,
+                }
+            }
+            maybe_msg = ws.recv() => {
+                match maybe_msg {
+                    Some(Ok(Message::Text(text))) => {
+                        if text == "pause" {
+                            paused.store(true, Ordering::Relaxed);
+                        } else if text == "resume" {
+                            paused.store(false, Ordering::Relaxed);
+                        }
+                    }
+                    Some(Ok(Message::Close(_))) | None => break,
+                    _ => {}
+                }
+            }
+        }
+    }
 }

@@ -324,6 +324,14 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
     })
 }
 
+pub fn get_runtime(sessions: &SessionMap, session_id: &str) -> Result<CinderRuntime, String> {
+    let guard = sessions.lock().map_err(|_| "lock poisoned".to_string())?;
+    let session = guard
+        .get(session_id)
+        .ok_or_else(|| "session not found".to_string())?;
+    Ok(session.runtime.clone())
+}
+
 pub fn delete_session(sessions: &SessionMap, session_id: &str) -> Result<(), String> {
     let mut guard = sessions.lock().map_err(|_| "lock poisoned".to_string())?;
     guard

@@ -9,6 +9,11 @@ interface Line {
   key: number
 }
 
+interface PendingLine {
+  text: string
+  key: number
+}
+
 type MenuView = 'main' | 'help' | 'objectives' | 'about' | 'rooms' | 'follow' | 'language'
 
 export default function GamePage() {
@@ -28,10 +33,66 @@ export default function GamePage() {
   const bottomRef = useRef<HTMLDivElement>(null)
   const nextKey = useRef(1)
   const initialized = useRef(false)
+  const wsRef = useRef<WebSocket | null>(null)
+  const [typewriterCharMs, setTypewriterCharMs] = useState(40)
+  const [typewriterDisplay, setTypewriterDisplay] = useState<{ text: string; key: number } | null>(null)
+  const pendingLines = useRef<PendingLine[]>([])
+  const typewriterTimer = useRef<ReturnType<typeof setInterval> | null>(null)
+  const charsRevealed = useRef(0)
+
+  function startNextLine() {
+    if (pendingLines.current.length === 0 || typewriterTimer.current) return
+
+    const line = pendingLines.current[0]
+    charsRevealed.current = 0
+    setTypewriterDisplay({ text: '', key: line.key })
+
+    typewriterTimer.current = setInterval(() => {
+      charsRevealed.current++
+      if (charsRevealed.current >= line.text.length) {
+        if (typewriterTimer.current) {
+          clearInterval(typewriterTimer.current)
+          typewriterTimer.current = null
+        }
+        pendingLines.current.shift()
+        setTypewriterDisplay(null)
+        setLines(prev => [...prev, line])
+        startNextLine()
+      } else {
+        setTypewriterDisplay({
+          text: line.text.slice(0, charsRevealed.current),
+          key: line.key,
+        })
+      }
+    }, typewriterCharMs)
+  }
+
+  function flushTypewriter() {
+    if (typewriterTimer.current) {
+      clearInterval(typewriterTimer.current)
+      typewriterTimer.current = null
+    }
+    if (pendingLines.current.length > 0) {
+      setLines(prev => [...prev, pendingLines.current.shift()!])
+    }
+    while (pendingLines.current.length > 0) {
+      const line = pendingLines.current.shift()!
+      setLines(prev => [...prev, line])
+    }
+    setTypewriterDisplay(null)
+  }
+
+  useEffect(() => {
+    return () => {
+      if (typewriterTimer.current) {
+        clearInterval(typewriterTimer.current)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [lines])
+  }, [lines, typewriterDisplay])
 
   useEffect(() => {
     if (initialized.current || !token || !id) return
@@ -63,6 +124,46 @@ export default function GamePage() {
         setLines(prev => [...prev, { text: `[error: ${err instanceof Error ? err.message : 'failed to load'}]`, key: nextKey.current++ }])
       })
       .finally(() => setBusy(false))
+  }, [token, id])
+
+  useEffect(() => {
+    if (!token || !id) return
+    if (wsRef.current) return
+
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+    const wsUrl = `${protocol}//${window.location.host}/api/games/${id}/stream`
+    const ws = new WebSocket(wsUrl)
+    wsRef.current = ws
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data)
+        if (data.type === 'settings') {
+          setTypewriterCharMs(data.typewriter_char_ms ?? 40)
+        } else if (data.type === 'tick' && data.text) {
+          const paragraphs = data.text.split('\n\n')
+            .map((p: string) => p.trim())
+            .filter((p: string) => p.length > 0)
+          if (paragraphs.length > 0) {
+            for (const p of paragraphs) {
+              pendingLines.current.push({ text: p, key: nextKey.current++ })
+            }
+            if (!typewriterTimer.current) {
+              startNextLine()
+            }
+          }
+        }
+      } catch { /* ignore parse errors */ }
+    }
+
+    ws.onclose = () => {
+      wsRef.current = null
+    }
+
+    return () => {
+      ws.close()
+      wsRef.current = null
+    }
   }, [token, id])
 
   function openMenu() {
@@ -150,15 +251,20 @@ export default function GamePage() {
     }
 
     setBusy(true)
+    wsRef.current?.send('pause')
+    flushTypewriter()
+
     const cmdLine: Line = { text: `> ${trimmed}`, key: nextKey.current++ }
     setLines(prev => [...prev, cmdLine])
 
     try {
       const res = await api.runCommand(token, id, trimmed)
+      wsRef.current?.send('resume')
       const outLine: Line = { text: res.text, key: nextKey.current++ }
       setLines(prev => [...prev, outLine])
       if (res.game_over) setGameOver(true)
     } catch (err: unknown) {
+      wsRef.current?.send('resume')
       const errLine: Line = { text: `[error: ${err instanceof Error ? err.message : 'request failed'}]`, key: nextKey.current++ }
       setLines(prev => [...prev, errLine])
     } finally {
@@ -194,6 +300,14 @@ export default function GamePage() {
             )}
           </div>
         ))}
+        {typewriterDisplay && (
+          <div key={typewriterDisplay.key} className="whitespace-pre-wrap text-sm leading-relaxed">
+            <span className="text-text">
+              {typewriterDisplay.text}
+              <span className="animate-pulse text-muted">▌</span>
+            </span>
+          </div>
+        )}
         {busy && <p className="text-muted text-sm italic">...</p>}
         {gameOver && (
           <p className="text-love font-semibold text-center pt-4">Game Over</p>
