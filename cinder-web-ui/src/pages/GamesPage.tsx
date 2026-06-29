@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth'
 import * as api from '../api'
 
@@ -8,24 +8,27 @@ const PACKS = ['ella', 'isla', 'aera']
 export default function GamesPage() {
   const { token, logout } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
   const [sessions, setSessions] = useState<api.SessionInfo[]>([])
   const [loading, setLoading] = useState(true)
   const [creating, setCreating] = useState(false)
   const [deleting, setDeleting] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
   async function load() {
     if (!token) return
+    setError(null)
     try {
       const list = await api.listSessions(token)
       setSessions(list)
-    } catch {
-      /* ignore */
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'failed to load')
     } finally {
       setLoading(false)
     }
   }
 
-  useEffect(() => { load() }, [token])
+  useEffect(() => { load() }, [token, location.key])
 
   async function doDelete(sessionId: string, e: React.MouseEvent) {
     e.stopPropagation()
@@ -83,6 +86,8 @@ export default function GamesPage() {
           <h2 className="text-lg font-semibold text-text mb-4">Sessions</h2>
           {loading ? (
             <p className="text-muted">Loading...</p>
+          ) : error ? (
+            <p className="text-love text-sm">{error}</p>
           ) : sessions.length === 0 ? (
             <p className="text-muted">No sessions yet.</p>
           ) : (
