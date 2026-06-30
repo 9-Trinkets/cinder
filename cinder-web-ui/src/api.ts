@@ -115,6 +115,11 @@ export interface LookOptionData {
   command: string
 }
 
+export interface ActiveMenuData {
+  prompt: string
+  options: MenuOptionItem[]
+}
+
 export interface UiSnapshot {
   title: string
   time_label: string
@@ -131,6 +136,8 @@ export interface UiSnapshot {
   channel_surfing_only: boolean
   action_bar_actions: ActionBarAction[]
   look_options: LookOptionData[]
+  talk_options: MenuOptionItem[]
+  active_menu: ActiveMenuData | null
   ui_text: {
     language_name: string
     menu_button_label: string

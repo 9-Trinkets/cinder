@@ -1,6 +1,6 @@
 use cinder_core::content::loader;
 use cinder_core::content::types::UiTextDefinition;
-use cinder_core::engine::runtime::{CinderRuntime, LookOptionItem, MenuChoiceOption};
+use cinder_core::engine::runtime::{ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption};
 use cinder_core::engine::state::{TurnOutcome, WorldState};
 use serde::Serialize;
 use sqlx::SqlitePool;
@@ -37,6 +37,8 @@ pub struct UiSnapshot {
     pub channel_surfing_only: bool,
     pub action_bar_actions: Vec<ActionBarAction>,
     pub look_options: Vec<LookOptionData>,
+    pub talk_options: Vec<MenuOptionData>,
+    pub active_menu: Option<ActiveMenuData>,
     pub ui_text: UiTextDefinition,
 }
 
@@ -58,6 +60,12 @@ pub struct MenuOptionData {
     pub id: String,
     pub title: String,
     pub menu_text: String,
+}
+
+#[derive(Clone, Serialize)]
+pub struct ActiveMenuData {
+    pub prompt: String,
+    pub options: Vec<MenuOptionData>,
 }
 
 #[derive(Clone)]
@@ -370,6 +378,45 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             })
             .collect();
 
+        let talk_options: Vec<MenuOptionData> = session
+            .runtime
+            .current_room_talk_options()
+            .map_err(|e| e.to_string())?
+            .into_iter()
+            .map(|o: LookOptionItem| MenuOptionData {
+                id: o.id,
+                title: o.label.clone(),
+                menu_text: o.label,
+            })
+            .collect();
+
+        let active_menu: Option<ActiveMenuData> = session
+            .runtime
+            .current_active_menu_info()
+            .map_err(|e| e.to_string())?
+            .map(|info: ActiveMenuInfo| ActiveMenuData {
+                prompt: info.prompt,
+                options: info
+                    .options
+                    .into_iter()
+                    .map(|o| MenuOptionData {
+                        id: o.id,
+                        title: o.title,
+                        menu_text: o.menu_text,
+                    })
+                    .collect(),
+            });
+
+        let mut action_bar_actions = action_bar_actions;
+        if !talk_options.is_empty()
+            && !action_bar_actions.iter().any(|a| a.id == "speak" || a.id == "talk")
+        {
+            action_bar_actions.push(ActionBarAction {
+                id: "talk".into(),
+                label: "Talk".into(),
+            });
+        }
+
         Ok(UiSnapshot {
             title: content.opening.title.clone(),
             time_label,
@@ -396,6 +443,8 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             channel_surfing_only: content.settings.channel_surfing_only,
             action_bar_actions,
             look_options,
+            talk_options,
+            active_menu,
             ui_text: content.ui_text.clone(),
         })
     })

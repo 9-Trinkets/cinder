@@ -29,6 +29,8 @@ export default function GamePage() {
   const [busy, setBusy] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
   const [showLookModal, setShowLookModal] = useState(false)
+  const [showTalkModal, setShowTalkModal] = useState(false)
+  const [activeMenu, setActiveMenu] = useState<api.ActiveMenuData | null>(null)
   const [menuView, setMenuView] = useState<MenuView>('main')
   const [uiSnapshot, setUiSnapshot] = useState<api.UiSnapshot | null>(null)
   const channelSurfingOnly = useRef(false)
@@ -86,6 +88,11 @@ export default function GamePage() {
     if (!token || !id) return
     api.fetchSessionUi(token, id).then(snap => {
       setUiSnapshot(snap)
+      if (snap.active_menu) {
+        setActiveMenu(snap.active_menu)
+      } else {
+        setActiveMenu(null)
+      }
     }).catch(() => {})
   }
 
@@ -176,6 +183,7 @@ export default function GamePage() {
 
   async function execCommand(cmd: string) {
     if (!token || !id || busy || gameOver) return
+    setActiveMenu(null)
     setBusy(true)
     wsRef.current?.send('pause')
     flushTypewriter()
@@ -316,20 +324,28 @@ export default function GamePage() {
               { id: 'move', label: 'Move' },
               { id: 'follow', label: 'Follow' },
               { id: 'wait', label: 'Wait' },
-            ]).map(action => (
-              <button
-                key={action.id}
-                onClick={() => {
-                  if (busy || gameOver) return
-                  if (action.id === 'look') { setShowLookModal(true) }
-                  else if (action.id === 'move') { setMenuView('rooms'); setShowMenu(true) }
-                  else if (action.id === 'follow') { setMenuView('follow'); setShowMenu(true) }
-                  else { execCommand(action.id) }
-                }}
-                disabled={busy || gameOver}
-                className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm hover:brightness-110 disabled:opacity-50 cursor-pointer"
-              >{action.label}</button>
-            ))}
+            ]).map(action => {
+              const handleClick = () => {
+                if (busy || gameOver) return
+                if (action.id === 'look') { setShowLookModal(true); return }
+                if (action.id === 'move') { setMenuView('rooms'); setShowMenu(true); return }
+                if (action.id === 'follow') { setMenuView('follow'); setShowMenu(true); return }
+                const talkOpts = uiSnapshot?.talk_options ?? []
+                if ((action.id === 'speak' || action.id === 'talk') && talkOpts.length > 0) {
+                  if (talkOpts.length === 1) { execCommand(`talk to ${talkOpts[0].title}`); return }
+                  if (talkOpts.length > 1) { setShowTalkModal(true); return }
+                }
+                execCommand(action.id)
+              }
+              return (
+                <button
+                  key={action.id}
+                  onClick={handleClick}
+                  disabled={busy || gameOver}
+                  className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm hover:brightness-110 disabled:opacity-50 cursor-pointer"
+                >{action.label}</button>
+              )
+            })}
           </div>
 
           {!channelSurfingOnly.current && (
@@ -404,6 +420,51 @@ export default function GamePage() {
                 className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
               >
                 {opt.title}
+              </button>
+            ))
+          )}
+        </Modal>
+      )}
+
+      {showTalkModal && uiSnapshot && (
+        <Modal title="Talk" onClose={() => setShowTalkModal(false)}>
+          <p className="text-sm text-muted mb-3">Who do you want to talk to?</p>
+          {uiSnapshot.talk_options.map(opt => (
+            <button
+              key={opt.id}
+              onClick={async () => {
+                setShowTalkModal(false)
+                await execCommand(`talk to ${opt.title}`)
+              }}
+              disabled={busy}
+              className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
+            >
+              {opt.title}
+            </button>
+          ))}
+        </Modal>
+      )}
+
+      {activeMenu && (
+        <Modal title="Choose" onClose={() => setActiveMenu(null)}>
+          {activeMenu.prompt && (
+            <p className="text-sm text-text whitespace-pre-wrap mb-3">{activeMenu.prompt}</p>
+          )}
+          {activeMenu.options.length === 0 ? (
+            <p className="text-muted italic">No options available.</p>
+          ) : (
+            activeMenu.options.map((opt, i) => (
+              <button
+                key={opt.id}
+                onClick={async () => {
+                  await execCommand((i + 1).toString())
+                }}
+                disabled={busy}
+                className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
+              >
+                <span className="text-muted mr-2">{(i + 1).toString()}.</span>
+                <span className="font-medium">{opt.title}</span>
+                {opt.menu_text && <span className="text-muted ml-2">— {opt.menu_text}</span>}
               </button>
             ))
           )}

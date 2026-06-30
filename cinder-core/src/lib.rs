@@ -6,7 +6,7 @@ pub use content::types::{
     ContentPack, OpeningMovieDefinition, ShellMenuItem, ThemeDefinition, UiTextDefinition,
 };
 pub use engine::runtime::{
-    CinderRuntime, FinalChapterSummary, LookOptionItem, MenuChoiceOption, ReportCardData,
-    ReportCardEntry,
+    ActiveMenuInfo, CinderRuntime, FinalChapterSummary, LookOptionItem, MenuChoiceOption,
+    ReportCardData, ReportCardEntry,
 };
 pub use engine::state::{TurnOutcome, WorldState};

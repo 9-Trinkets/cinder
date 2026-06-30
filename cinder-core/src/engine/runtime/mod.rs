@@ -1,4 +1,6 @@
-use crate::content::types::{ContentPack, OpeningMenuOptionDefinition, OpeningMovieDefinition, RoomDefinition};
+use crate::content::types::{
+    ContentPack, OpeningMenuOptionDefinition, OpeningMovieDefinition, RoomDefinition,
+};
 use crate::engine::actor_tick::{ActorTickError, run_actor_tick};
 use crate::engine::commands::player_command_help_text;
 use crate::engine::conversation_memory::refresh_conversation_summaries;
@@ -38,6 +40,12 @@ pub struct LookOptionItem {
     pub id: String,
     pub label: String,
     pub command: String,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct ActiveMenuInfo {
+    pub prompt: String,
+    pub options: Vec<OpeningMenuOptionDefinition>,
 }
 
 #[derive(Debug, Clone)]
@@ -246,6 +254,52 @@ impl CinderRuntime {
             }
         }
         Ok(options)
+    }
+
+    pub fn current_room_talk_options(&self) -> Result<Vec<LookOptionItem>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for talk options")?;
+        let current_room_id = &state.current_room_id;
+        let mut options = Vec::new();
+        for actor in &self.content.actors {
+            let actor_room = state.actor_room_id(&actor.id, &actor.room_id);
+            if actor_room == current_room_id {
+                options.push(LookOptionItem {
+                    id: format!("actor:{}", actor.id),
+                    label: actor.name.clone(),
+                    command: format!("talk to {}", actor.name),
+                });
+            }
+        }
+        Ok(options)
+    }
+
+    pub fn current_active_menu_info(&self) -> Result<Option<ActiveMenuInfo>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for active menu")?;
+        let Some(active_menu_id) = &state.active_menu_id else {
+            return Ok(None);
+        };
+        let Some(menu) = self.content.menu(active_menu_id) else {
+            return Ok(None);
+        };
+        let options = if menu.dynamic {
+            state
+                .generated_menu_options
+                .get(active_menu_id)
+                .cloned()
+                .unwrap_or_default()
+        } else {
+            menu.options.clone()
+        };
+        Ok(Some(ActiveMenuInfo {
+            prompt: menu.selection_prompt.clone(),
+            options,
+        }))
     }
 
     pub fn help_text(&self) -> String {

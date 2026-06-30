@@ -7,7 +7,7 @@
       "target_mode": "none",
       "effects": ["observe_room"],
       "player_enabled": true,
-      "player_phrases": ["look", "l", "look at", "look room", "look around", "inspect room", "examine"],
+      "player_phrases": ["look", "l", "look at", "look room", "look around", "inspect room", "examine", "x"],
       "player_command": {
         "usage": "look [at <thing or person>]",
         "example": "look around",
