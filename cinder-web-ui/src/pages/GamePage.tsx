@@ -38,6 +38,7 @@ export default function GamePage() {
   const nextKey = useRef(1)
   const initialized = useRef(false)
   const wsRef = useRef<WebSocket | null>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
   const [typewriterCharMs, setTypewriterCharMs] = useState(40)
   const [typewriterDisplay, setTypewriterDisplay] = useState<{ text: string; key: number } | null>(null)
   const pendingLines = useRef<PendingLine[]>([])
@@ -332,7 +333,11 @@ export default function GamePage() {
                 if (action.id === 'follow') { setMenuView('follow'); setShowMenu(true); return }
                 const talkOpts = uiSnapshot?.talk_options ?? []
                 if ((action.id === 'speak' || action.id === 'talk') && talkOpts.length > 0) {
-                  if (talkOpts.length === 1) { execCommand(`talk to ${talkOpts[0].title}`); return }
+                  if (talkOpts.length === 1) {
+                    setInput(`talk to ${talkOpts[0].title} `)
+                    setTimeout(() => inputRef.current?.focus(), 0)
+                    return
+                  }
                   if (talkOpts.length > 1) { setShowTalkModal(true); return }
                 }
                 execCommand(action.id)
@@ -351,6 +356,7 @@ export default function GamePage() {
           {!channelSurfingOnly.current && (
             <form onSubmit={send} className="flex gap-2 border-t border-subtle px-4 py-3 shrink-0">
               <input
+                ref={inputRef}
                 className="flex-1 px-3 py-2 rounded bg-overlay border border-subtle text-text placeholder-faint focus:outline-none focus:border-pine text-sm"
                 placeholder={gameOver ? 'Game over' : 'What do you do?'}
                 value={input}
@@ -432,9 +438,10 @@ export default function GamePage() {
           {uiSnapshot.talk_options.map(opt => (
             <button
               key={opt.id}
-              onClick={async () => {
+              onClick={() => {
                 setShowTalkModal(false)
-                await execCommand(`talk to ${opt.title}`)
+                setInput(`talk to ${opt.title} `)
+                setTimeout(() => inputRef.current?.focus(), 0)
               }}
               disabled={busy}
               className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
