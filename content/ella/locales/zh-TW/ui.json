@@ -41,8 +41,7 @@
   "action_bar": {
     "actions": [
       { "id": "look", "label": "查看" },
-      { "id": "move", "label": "移動" },
-      { "id": "wait", "label": "等待" }
+      { "id": "move", "label": "移動" }
     ]
   }
 }

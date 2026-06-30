@@ -41,8 +41,7 @@
   "action_bar": {
     "actions": [
       { "id": "look", "label": "Look" },
-      { "id": "move", "label": "Move" },
-      { "id": "wait", "label": "Wait" }
+      { "id": "move", "label": "Move" }
     ]
   }
 }

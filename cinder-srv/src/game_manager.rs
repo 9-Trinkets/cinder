@@ -359,10 +359,6 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
                         id: "follow".into(),
                         label: "Follow".into(),
                     },
-                    ActionBarAction {
-                        id: "wait".into(),
-                        label: "Wait".into(),
-                    },
                 ]
             };
 

@@ -324,7 +324,6 @@ export default function GamePage() {
               { id: 'look', label: 'Look' },
               { id: 'move', label: 'Move' },
               { id: 'follow', label: 'Follow' },
-              { id: 'wait', label: 'Wait' },
             ]).map(action => {
               const handleClick = () => {
                 if (busy || gameOver) return
