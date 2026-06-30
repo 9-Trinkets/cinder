@@ -37,5 +37,12 @@
   "error_prefix": "錯誤：",
   "response_worker_disconnected": "回應工作執行緒已中斷。",
   "menu_unavailable": "那個選單已經不能用了。",
-  "npc_tick_soft_error": "{actor_name} 恍神了一下，神情看起來有點困惑。"
+  "npc_tick_soft_error": "{actor_name} 恍神了一下，神情看起來有點困惑。",
+  "action_bar": {
+    "actions": [
+      { "id": "look", "label": "查看" },
+      { "id": "move", "label": "移動" },
+      { "id": "wait", "label": "等待" }
+    ]
+  }
 }

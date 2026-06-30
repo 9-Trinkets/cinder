@@ -1,6 +1,6 @@
 use cinder_core::content::loader;
 use cinder_core::content::types::UiTextDefinition;
-use cinder_core::engine::runtime::{CinderRuntime, MenuChoiceOption};
+use cinder_core::engine::runtime::{CinderRuntime, LookOptionItem, MenuChoiceOption};
 use cinder_core::engine::state::{TurnOutcome, WorldState};
 use serde::Serialize;
 use sqlx::SqlitePool;
@@ -35,7 +35,22 @@ pub struct UiSnapshot {
     pub rooms: Vec<MenuOptionData>,
     pub follow_options: Vec<MenuOptionData>,
     pub channel_surfing_only: bool,
+    pub action_bar_actions: Vec<ActionBarAction>,
+    pub look_options: Vec<LookOptionData>,
     pub ui_text: UiTextDefinition,
+}
+
+#[derive(Clone, Serialize)]
+pub struct ActionBarAction {
+    pub id: String,
+    pub label: String,
+}
+
+#[derive(Clone, Serialize)]
+pub struct LookOptionData {
+    pub id: String,
+    pub title: String,
+    pub command: String,
 }
 
 #[derive(Clone, Serialize)]
@@ -310,6 +325,51 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             .map_err(|e| e.to_string())?
             .and_then(|id| content.actor(&id).map(|a| a.name.clone()));
 
+        let action_bar_actions =
+            if !content.ui_text.action_bar.actions.is_empty() {
+                content
+                    .ui_text
+                    .action_bar
+                    .actions
+                    .iter()
+                    .map(|a| ActionBarAction {
+                        id: a.id.clone(),
+                        label: a.label.clone(),
+                    })
+                    .collect()
+            } else {
+                vec![
+                    ActionBarAction {
+                        id: "look".into(),
+                        label: "Look".into(),
+                    },
+                    ActionBarAction {
+                        id: "move".into(),
+                        label: "Move".into(),
+                    },
+                    ActionBarAction {
+                        id: "follow".into(),
+                        label: "Follow".into(),
+                    },
+                    ActionBarAction {
+                        id: "wait".into(),
+                        label: "Wait".into(),
+                    },
+                ]
+            };
+
+        let look_options: Vec<LookOptionData> = session
+            .runtime
+            .current_room_look_options()
+            .map_err(|e| e.to_string())?
+            .into_iter()
+            .map(|o: LookOptionItem| LookOptionData {
+                id: o.id,
+                title: o.label,
+                command: o.command,
+            })
+            .collect();
+
         Ok(UiSnapshot {
             title: content.opening.title.clone(),
             time_label,
@@ -334,6 +394,8 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
                     .map_err(|e| e.to_string())?,
             ),
             channel_surfing_only: content.settings.channel_surfing_only,
+            action_bar_actions,
+            look_options,
             ui_text: content.ui_text.clone(),
         })
     })

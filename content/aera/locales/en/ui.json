@@ -37,5 +37,13 @@
   "error_prefix": "Error:",
   "response_worker_disconnected": "response worker disconnected.",
   "menu_unavailable": "That menu is no longer available.",
-  "npc_tick_soft_error": "{actor_name} blanks for a second, looking briefly confused."
+  "npc_tick_soft_error": "{actor_name} blanks for a second, looking briefly confused.",
+  "action_bar": {
+    "actions": [
+      { "id": "look", "label": "Look" },
+      { "id": "move", "label": "Move" },
+      { "id": "follow", "label": "Follow" },
+      { "id": "wait", "label": "Wait" }
+    ]
+  }
 }

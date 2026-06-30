@@ -3,6 +3,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth'
 import * as api from '../api'
 import ShellMenu from '../components/ShellMenu'
+import Modal from '../components/Modal'
 
 interface Line {
   text: string
@@ -27,6 +28,7 @@ export default function GamePage() {
   const [gameOver, setGameOver] = useState(false)
   const [busy, setBusy] = useState(false)
   const [showMenu, setShowMenu] = useState(false)
+  const [showLookModal, setShowLookModal] = useState(false)
   const [menuView, setMenuView] = useState<MenuView>('main')
   const [uiSnapshot, setUiSnapshot] = useState<api.UiSnapshot | null>(null)
   const channelSurfingOnly = useRef(false)
@@ -309,43 +311,44 @@ export default function GamePage() {
           </div>
 
           <div className="flex gap-2 px-4 py-2 border-t border-subtle shrink-0">
-            <button
-              onClick={() => execCommand('look')}
-              disabled={busy || gameOver}
-              className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm hover:brightness-110 disabled:opacity-50 cursor-pointer"
-            >Look</button>
-            <button
-              onClick={() => { if (!busy) { setMenuView('rooms'); setShowMenu(true) } }}
-              disabled={busy || gameOver}
-              className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm hover:brightness-110 disabled:opacity-50 cursor-pointer"
-            >Move</button>
-            <button
-              onClick={() => { if (!busy) { setMenuView('follow'); setShowMenu(true) } }}
-              disabled={busy || gameOver}
-              className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm hover:brightness-110 disabled:opacity-50 cursor-pointer"
-            >Follow</button>
-            <button
-              onClick={() => execCommand('wait')}
-              disabled={busy || gameOver}
-              className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm hover:brightness-110 disabled:opacity-50 cursor-pointer"
-            >Wait</button>
+            {(uiSnapshot?.action_bar_actions ?? [
+              { id: 'look', label: 'Look' },
+              { id: 'move', label: 'Move' },
+              { id: 'follow', label: 'Follow' },
+              { id: 'wait', label: 'Wait' },
+            ]).map(action => (
+              <button
+                key={action.id}
+                onClick={() => {
+                  if (busy || gameOver) return
+                  if (action.id === 'look') { setShowLookModal(true) }
+                  else if (action.id === 'move') { setMenuView('rooms'); setShowMenu(true) }
+                  else if (action.id === 'follow') { setMenuView('follow'); setShowMenu(true) }
+                  else { execCommand(action.id) }
+                }}
+                disabled={busy || gameOver}
+                className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm hover:brightness-110 disabled:opacity-50 cursor-pointer"
+              >{action.label}</button>
+            ))}
           </div>
 
-          <form onSubmit={send} className="flex gap-2 border-t border-subtle px-4 py-3 shrink-0">
-            <input
-              className="flex-1 px-3 py-2 rounded bg-overlay border border-subtle text-text placeholder-faint focus:outline-none focus:border-pine text-sm"
-              placeholder={gameOver ? 'Game over' : 'What do you do?'}
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              disabled={busy || gameOver}
-              autoFocus
-            />
-            <button
-              type="submit"
-              disabled={busy || gameOver || !input.trim()}
-              className="px-4 py-2 rounded bg-pine text-surface text-sm font-semibold hover:brightness-110 disabled:opacity-50 cursor-pointer"
-            >Send</button>
-          </form>
+          {!channelSurfingOnly.current && (
+            <form onSubmit={send} className="flex gap-2 border-t border-subtle px-4 py-3 shrink-0">
+              <input
+                className="flex-1 px-3 py-2 rounded bg-overlay border border-subtle text-text placeholder-faint focus:outline-none focus:border-pine text-sm"
+                placeholder={gameOver ? 'Game over' : 'What do you do?'}
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                disabled={busy || gameOver}
+                autoFocus
+              />
+              <button
+                type="submit"
+                disabled={busy || gameOver || !input.trim()}
+                className="px-4 py-2 rounded bg-pine text-surface text-sm font-semibold hover:brightness-110 disabled:opacity-50 cursor-pointer"
+              >Send</button>
+            </form>
+          )}
         </div>
 
         {uiSnapshot && (
@@ -383,6 +386,28 @@ export default function GamePage() {
           onExit={doExit}
           busy={busy}
         />
+      )}
+
+      {showLookModal && uiSnapshot && (
+        <Modal title="Look" onClose={() => setShowLookModal(false)}>
+          {uiSnapshot.look_options.length === 0 ? (
+            <p className="text-muted italic">Nothing of particular interest here.</p>
+          ) : (
+            uiSnapshot.look_options.map(opt => (
+              <button
+                key={opt.id}
+                onClick={async () => {
+                  setShowLookModal(false)
+                  await execCommand(opt.command)
+                }}
+                disabled={busy}
+                className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
+              >
+                {opt.title}
+              </button>
+            ))
+          )}
+        </Modal>
       )}
     </div>
   )

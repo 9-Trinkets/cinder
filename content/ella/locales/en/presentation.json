@@ -13,7 +13,7 @@
     "objective": "\n\nObjectives:\n{objective}",
     "features": "\n\nYou notice: {features}.",
     "people": "\n\nPeople here: {people}.",
-    "exits": "\n\nExits: {exits}.",
+    "exits": "",
     "feature_consumables": "\n\nAvailable at the {feature_label}: {items}.",
     "actor_speech": "{actor_name}: {text}",
     "actor_targeted_speech": "{actor_name} (to {target_name}): {text}",

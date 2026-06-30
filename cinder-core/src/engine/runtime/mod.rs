@@ -1,4 +1,4 @@
-use crate::content::types::{ContentPack, OpeningMenuOptionDefinition, OpeningMovieDefinition};
+use crate::content::types::{ContentPack, OpeningMenuOptionDefinition, OpeningMovieDefinition, RoomDefinition};
 use crate::engine::actor_tick::{ActorTickError, run_actor_tick};
 use crate::engine::commands::player_command_help_text;
 use crate::engine::conversation_memory::refresh_conversation_summaries;
@@ -16,6 +16,7 @@ use crate::engine::turn_runner;
 use crate::engine::workflows::{
     cinder_npc_tick_workflow_path, cinder_npc_turn_workflow_path, workflow_path_for_id,
 };
+use serde::Serialize;
 use std::error::Error;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
@@ -30,6 +31,13 @@ pub struct CinderRuntime {
     actor_move_workflow: WorkflowDefinition,
     trace_events: bool,
     trace_dir: PathBuf,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct LookOptionItem {
+    pub id: String,
+    pub label: String,
+    pub command: String,
 }
 
 #[derive(Debug, Clone)]
@@ -198,6 +206,46 @@ impl CinderRuntime {
             .lock()
             .map_err(|_| "failed to lock runtime state for followed actor")?;
         Ok(state.followed_actor_id.clone())
+    }
+
+    pub fn current_room_look_options(&self) -> Result<Vec<LookOptionItem>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for look options")?;
+        let current_room_id = &state.current_room_id;
+        let Some(room) = self.content.room(current_room_id) else {
+            return Ok(Vec::new());
+        };
+        let mut options = Vec::new();
+        options.push(LookOptionItem {
+            id: "__room__".to_string(),
+            label: room.title.clone(),
+            command: "look".to_string(),
+        });
+        for feature in &room.features {
+            let alias = feature
+                .aliases
+                .first()
+                .map(|a| a.as_str())
+                .unwrap_or(&feature.label);
+            options.push(LookOptionItem {
+                id: format!("feature:{}", feature.id),
+                label: feature.label.clone(),
+                command: format!("x {}", alias),
+            });
+        }
+        for actor in &self.content.actors {
+            let actor_room = state.actor_room_id(&actor.id, &actor.room_id);
+            if actor_room == current_room_id {
+                options.push(LookOptionItem {
+                    id: format!("actor:{}", actor.id),
+                    label: actor.name.clone(),
+                    command: format!("look at {}", actor.name),
+                });
+            }
+        }
+        Ok(options)
     }
 
     pub fn help_text(&self) -> String {
@@ -606,16 +654,28 @@ impl CinderRuntime {
         let Some(current_room) = self.content.room(&state.current_room_id) else {
             return Ok(Vec::new());
         };
-        Ok(self
+        let prompt = self
             .content
-            .rooms
-            .iter()
+            .ui_text
+            .room_switch_prompt
+            .replace("{}", &current_room.title);
+
+        let exit_ids: Vec<String> = current_room.exits.iter().map(|e| e.room_id.clone()).collect();
+        let rooms_iter: Box<dyn Iterator<Item = &RoomDefinition>> =
+            if self.content.settings.channel_surfing_only {
+                Box::new(self.content.rooms.iter())
+            } else {
+                Box::new(
+                    self.content
+                        .rooms
+                        .iter()
+                        .filter(move |r| exit_ids.contains(&r.id)),
+                )
+            };
+
+        Ok(rooms_iter
             .map(|room| MenuChoiceOption {
-                prompt: self
-                    .content
-                    .ui_text
-                    .room_switch_prompt
-                    .replace("{}", &current_room.title),
+                prompt: prompt.clone(),
                 title: room.title.clone(),
                 menu_text: room.title.clone(),
                 command: room.id.clone(),

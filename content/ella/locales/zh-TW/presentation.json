@@ -13,7 +13,7 @@
     "objective": "\n\n現在要做的事：\n{objective}",
     "features": "\n\n你注意到：{features}。",
     "people": "\n\n這裡的人：{people}。",
-    "exits": "\n\n可前往：{exits}。",
+    "exits": "",
     "feature_consumables": "\n\n{feature_label}這裡現在有：{items}。",
     "actor_speech": "{actor_name}：{text}",
     "actor_targeted_speech": "{actor_name}（對 {target_name}）：{text}",

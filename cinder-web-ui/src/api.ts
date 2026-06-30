@@ -104,6 +104,17 @@ export interface MenuOptionItem {
   menu_text: string
 }
 
+export interface ActionBarAction {
+  id: string
+  label: string
+}
+
+export interface LookOptionData {
+  id: string
+  title: string
+  command: string
+}
+
 export interface UiSnapshot {
   title: string
   time_label: string
@@ -118,6 +129,8 @@ export interface UiSnapshot {
   rooms: MenuOptionItem[]
   follow_options: MenuOptionItem[]
   channel_surfing_only: boolean
+  action_bar_actions: ActionBarAction[]
+  look_options: LookOptionData[]
   ui_text: {
     language_name: string
     menu_button_label: string

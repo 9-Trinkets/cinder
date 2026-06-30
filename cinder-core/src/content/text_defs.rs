@@ -14,6 +14,18 @@ pub struct ShellMenuItem {
     pub children: Vec<ShellMenuItem>,
 }
 
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ActionBarDefinition {
+    #[serde(default)]
+    pub actions: Vec<ActionBarItem>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ActionBarItem {
+    pub id: String,
+    pub label: String,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UiTextDefinition {
     #[serde(default = "default_language_name")]
@@ -116,6 +128,8 @@ pub struct UiTextDefinition {
     pub room_switch_prompt: String,
     #[serde(default)]
     pub shell_menu: ShellMenuDefinition,
+    #[serde(default)]
+    pub action_bar: ActionBarDefinition,
 }
 
 pub use crate::content::system_text_defs::SystemTextDefinition;
@@ -369,6 +383,7 @@ impl Default for UiTextDefinition {
             follow_unknown_actor_name: default_follow_unknown_actor_name(),
             room_switch_prompt: default_room_switch_prompt(),
             shell_menu: ShellMenuDefinition::default(),
+            action_bar: ActionBarDefinition::default(),
         }
     }
 }
