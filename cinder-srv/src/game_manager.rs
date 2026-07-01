@@ -36,6 +36,7 @@ pub struct UiSnapshot {
     pub follow_options: Vec<MenuOptionData>,
     pub channel_surfing_only: bool,
     pub action_bar_actions: Vec<ActionBarAction>,
+    pub overflow_actions: Vec<OverflowAction>,
     pub look_options: Vec<LookOptionData>,
     pub talk_options: Vec<MenuOptionData>,
     pub active_menu: Option<ActiveMenuData>,
@@ -43,9 +44,37 @@ pub struct UiSnapshot {
 }
 
 #[derive(Clone, Serialize)]
+pub struct MovieFrameData {
+    pub text: String,
+    pub duration_ms: u64,
+}
+
+#[derive(Clone, Serialize)]
+pub struct MovieData {
+    pub title: String,
+    pub frames: Vec<MovieFrameData>,
+    pub narrative_lines: Vec<String>,
+}
+
+#[derive(Clone, Serialize)]
+pub struct CommandResponse {
+    pub text: String,
+    pub game_over: bool,
+    pub movie: Option<MovieData>,
+}
+
+#[derive(Clone, Serialize)]
 pub struct ActionBarAction {
     pub id: String,
     pub label: String,
+}
+
+#[derive(Clone, Serialize)]
+pub struct OverflowAction {
+    pub id: String,
+    pub label: String,
+    pub group: String,
+    pub usage: String,
 }
 
 #[derive(Clone, Serialize)]
@@ -179,7 +208,7 @@ pub async fn run_command(
     sessions: &SessionMap,
     session_id: &str,
     input: &str,
-) -> Result<TurnOutcome, String> {
+) -> Result<CommandResponse, String> {
     let session = {
         let mut guard = sessions.lock().map_err(|_| "lock poisoned".to_string())?;
         guard
@@ -193,18 +222,19 @@ pub async fn run_command(
             .runtime
             .run_turn(&input)
             .map_err(|e| format!("turn error: {e}"));
+        let turn_text = outcome.as_ref().ok().map(|o| o.text.clone());
         let outcome = match outcome {
-            Ok(outcome) if !outcome.game_over => {
+            Ok(turn) if !turn.game_over => {
                 match session.runtime.run_tick() {
-                    Ok(tick_outcome) => {
-                        let combined = if tick_outcome.text.is_empty() {
-                            outcome.text
+                    Ok(tick) => {
+                        let combined = if tick.text.is_empty() {
+                            turn.text
                         } else {
-                            format!("{}\n\n{}", outcome.text, tick_outcome.text)
+                            format!("{}\n\n{}", turn.text, tick.text)
                         };
                         Ok(TurnOutcome {
                             text: combined,
-                            game_over: outcome.game_over || tick_outcome.game_over,
+                            game_over: turn.game_over || tick.game_over,
                         })
                     }
                     Err(e) => Err(format!("tick error: {e}")),
@@ -212,16 +242,52 @@ pub async fn run_command(
             }
             other => other,
         };
+        if let Some(ref text) = turn_text {
+            let _ = session.runtime.push_transcript_line(text);
+        }
         (outcome, session)
     })
     .await
     .map_err(|e| format!("blocking task failed: {e}"))?;
 
+    let movie = result.as_ref().ok().and_then(|_| {
+        consume_projector_sequence(&session.runtime)
+    });
+
     {
         let mut guard = sessions.lock().map_err(|_| "lock poisoned".to_string())?;
         guard.insert(session_id.to_string(), session);
     }
-    result
+
+    result.map(|outcome| CommandResponse {
+        text: outcome.text,
+        game_over: outcome.game_over,
+        movie,
+    })
+}
+
+pub fn consume_projector_sequence(runtime: &CinderRuntime) -> Option<MovieData> {
+    let raw = runtime.consume_pending_projector_sequence();
+    eprintln!("[web] consume_pending_projector_sequence: raw={:?}", raw.as_ref().err().map(|e| e.to_string()));
+    let sequence = raw.ok()??;
+    let narrative_lines = runtime
+        .consume_pending_projector_narrative_lines()
+        .ok()
+        .unwrap_or_default();
+    eprintln!("[web] frames count: {}, narrative lines: {}", sequence.frames.len(), narrative_lines.len());
+    let frames = sequence
+        .frames
+        .into_iter()
+        .map(|f| MovieFrameData {
+            text: f.text,
+            duration_ms: f.duration_ms,
+        })
+        .collect();
+    Some(MovieData {
+        title: sequence.title,
+        frames,
+        narrative_lines,
+    })
 }
 
 pub fn switch_room(
@@ -233,10 +299,12 @@ pub fn switch_room(
     let session = guard
         .get_mut(session_id)
         .ok_or_else(|| "session not found".to_string())?;
-    session
+    let outcome = session
         .runtime
         .switch_room_view(room_id)
-        .map_err(|e| format!("room switch error: {e}"))
+        .map_err(|e| format!("room switch error: {e}"))?;
+    let _ = session.runtime.push_transcript_line(&outcome.text);
+    Ok(outcome)
 }
 
 pub fn follow_actor(
@@ -248,10 +316,12 @@ pub fn follow_actor(
     let session = guard
         .get_mut(session_id)
         .ok_or_else(|| "session not found".to_string())?;
-    session
+    let outcome = session
         .runtime
         .follow_actor(actor_id)
-        .map_err(|e| format!("follow error: {e}"))
+        .map_err(|e| format!("follow error: {e}"))?;
+    let _ = session.runtime.push_transcript_line(&outcome.text);
+    Ok(outcome)
 }
 
 pub fn set_locale(
@@ -413,6 +483,52 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             });
         }
 
+        let bar_ids: Vec<&str> = action_bar_actions.iter().map(|a| a.id.as_str()).collect();
+        let has_talk = bar_ids.contains(&"speak") || bar_ids.contains(&"talk");
+        let modal_covered: Vec<&str> = vec!["inspect_feature", "inspect_actor"];
+        let overflow_actions: Vec<OverflowAction> = content
+            .commands
+            .actions
+            .iter()
+            .filter(|c| {
+                if !c.player_enabled || bar_ids.contains(&c.id.as_str()) {
+                    return false;
+                }
+                if modal_covered.contains(&c.id.as_str()) {
+                    return false;
+                }
+                if (c.id == "speak" || c.id == "talk") && has_talk {
+                    return false;
+                }
+                true
+            })
+            .map(|c| {
+                let label = c
+                    .id
+                    .split('_')
+                    .map(|w| {
+                        let mut chars = w.chars();
+                        chars
+                            .next()
+                            .map(|f| f.to_uppercase().to_string() + chars.as_str())
+                            .unwrap_or_default()
+                    })
+                    .collect::<Vec<_>>()
+                    .join(" ");
+                let usage = c
+                    .player_command
+                    .as_ref()
+                    .map(|p| p.usage.clone())
+                    .unwrap_or_default();
+                OverflowAction {
+                    id: c.id.clone(),
+                    label,
+                    group: c.group.clone(),
+                    usage,
+                }
+            })
+            .collect();
+
         Ok(UiSnapshot {
             title: content.opening.title.clone(),
             time_label,
@@ -438,11 +554,21 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             ),
             channel_surfing_only: content.settings.channel_surfing_only,
             action_bar_actions,
+            overflow_actions,
             look_options,
             talk_options,
             active_menu,
             ui_text: content.ui_text.clone(),
         })
+    })
+}
+
+pub fn get_transcript(sessions: &SessionMap, session_id: &str) -> Result<Vec<String>, String> {
+    with_session(sessions, session_id, |session| {
+        session
+            .runtime
+            .transcript_lines()
+            .map_err(|e| e.to_string())
     })
 }
 

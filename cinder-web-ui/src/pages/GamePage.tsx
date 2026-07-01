@@ -15,7 +15,7 @@ interface PendingLine {
   key: number
 }
 
-type MenuView = 'main' | 'help' | 'objectives' | 'about' | 'rooms' | 'follow' | 'language'
+type MenuView = 'main' | 'objectives' | 'about' | 'rooms' | 'follow' | 'language'
 
 export default function GamePage() {
   const { id } = useParams<{ id: string }>()
@@ -30,6 +30,9 @@ export default function GamePage() {
   const [showMenu, setShowMenu] = useState(false)
   const [showLookModal, setShowLookModal] = useState(false)
   const [showTalkModal, setShowTalkModal] = useState(false)
+  const [showOverflowModal, setShowOverflowModal] = useState(false)
+  const [movie, setMovie] = useState<api.MovieData | null>(null)
+  const [movieFrame, setMovieFrame] = useState(0)
   const [activeMenu, setActiveMenu] = useState<api.ActiveMenuData | null>(null)
   const [menuView, setMenuView] = useState<MenuView>('main')
   const [uiSnapshot, setUiSnapshot] = useState<api.UiSnapshot | null>(null)
@@ -128,15 +131,31 @@ export default function GamePage() {
       })
       .catch(() => {})
 
-    api.runCommand(token, id, 'look')
-      .then(res => {
-        setLines(prev => [...prev, { text: res.text, key: nextKey.current++ }])
-        if (res.game_over) setGameOver(true)
+    api.fetchTranscript(token, id)
+      .then(transcript => {
+        if (transcript.length > 0) {
+          setLines(prev => [
+            ...prev,
+            ...transcript.map(t => ({ text: t, key: nextKey.current++ })),
+          ])
+          setBusy(false)
+          return false
+        }
+        return true
       })
-      .catch(err => {
-        setLines(prev => [...prev, { text: `[error: ${err instanceof Error ? err.message : 'failed to load'}]`, key: nextKey.current++ }])
+      .catch(() => true)
+      .then(shouldLook => {
+        if (!shouldLook) return
+        api.runCommand(token, id, 'look')
+          .then(res => {
+            setLines(prev => [...prev, { text: res.text, key: nextKey.current++ }])
+            if (res.game_over) setGameOver(true)
+          })
+          .catch(err => {
+            setLines(prev => [...prev, { text: `[error: ${err instanceof Error ? err.message : 'failed to load'}]`, key: nextKey.current++ }])
+          })
+          .finally(() => setBusy(false))
       })
-      .finally(() => setBusy(false))
   }, [token, id])
 
   useEffect(() => {
@@ -151,6 +170,9 @@ export default function GamePage() {
         const data = JSON.parse(event.data)
         if (data.type === 'settings') {
           setTypewriterCharMs(data.typewriter_char_ms ?? 40)
+        } else if (data.type === 'movie') {
+          setMovie(data as unknown as api.MovieData)
+          setMovieFrame(0)
         } else if (data.type === 'tick' && data.text) {
           const paragraphs = data.text.split('\n\n')
             .map((p: string) => p.trim())
@@ -185,6 +207,8 @@ export default function GamePage() {
   async function execCommand(cmd: string) {
     if (!token || !id || busy || gameOver) return
     setActiveMenu(null)
+    setMovie(null)
+    setMovieFrame(0)
     setBusy(true)
     wsRef.current?.send('pause')
     flushTypewriter()
@@ -193,9 +217,15 @@ export default function GamePage() {
     try {
       const res = await api.runCommand(token, id, cmd)
       wsRef.current?.send('resume')
-      const outLine: Line = { text: res.text, key: nextKey.current++ }
-      setLines(prev => [...prev, outLine])
+      if (res.text) {
+        const outLine: Line = { text: res.text, key: nextKey.current++ }
+        setLines(prev => [...prev, outLine])
+      }
       refreshSnapshot()
+      if (res.movie) {
+        setMovie(res.movie)
+        setMovieFrame(0)
+      }
       if (res.game_over) setGameOver(true)
     } catch (err: unknown) {
       wsRef.current?.send('resume')
@@ -203,6 +233,18 @@ export default function GamePage() {
     } finally {
       setBusy(false)
     }
+  }
+
+  function closeMovie() {
+    if (movie && movie.narrative_lines.length > 0) {
+      setLines(prev => [
+        ...prev,
+        ...movie.narrative_lines.map(t => ({ text: t, key: nextKey.current++ })),
+      ])
+    }
+    setMovie(null)
+    setMovieFrame(0)
+    refreshSnapshot()
   }
 
   async function doSwitchRoom(roomId: string) {
@@ -350,6 +392,14 @@ export default function GamePage() {
                 >{action.label}</button>
               )
             })}
+            {uiSnapshot && uiSnapshot.overflow_actions?.length > 0 && (
+              <button
+                onClick={() => setShowOverflowModal(true)}
+                disabled={busy || gameOver}
+                className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm hover:brightness-110 disabled:opacity-50 cursor-pointer"
+                title="More actions"
+              >...</button>
+            )}
           </div>
 
           {!channelSurfingOnly.current && (
@@ -476,6 +526,100 @@ export default function GamePage() {
           )}
         </Modal>
       )}
+
+      {showOverflowModal && uiSnapshot && (
+        <Modal title="Commands" onClose={() => setShowOverflowModal(false)}>
+          {groupOverflowActions(uiSnapshot.overflow_actions ?? []).map(([group, items]) => (
+            <div key={group} className="mb-4 last:mb-0">
+              <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">{group}</h3>
+              {items.map(action => (
+                <button
+                  key={action.id}
+                  onClick={async () => {
+                    setShowOverflowModal(false)
+                    await execCommand(action.id)
+                  }}
+                  disabled={busy}
+                  className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer mb-1 last:mb-0"
+                  title={action.usage}
+                >
+                  <span className="font-medium">{action.label}</span>
+                  {action.usage && <span className="text-muted text-xs ml-2">— {action.usage}</span>}
+                </button>
+              ))}
+            </div>
+          ))}
+          {uiSnapshot.overflow_actions?.length === 0 && (
+            <p className="text-muted italic">No additional commands available.</p>
+          )}
+        </Modal>
+      )}
+
+      {movie && (
+        <MovieModal
+          movie={movie}
+          frame={movieFrame}
+          onAdvance={() => {
+            if (movieFrame < movie.frames.length - 1) {
+              setMovieFrame(prev => prev + 1)
+            } else {
+              closeMovie()
+            }
+          }}
+          onClose={closeMovie}
+        />
+      )}
     </div>
   )
+}
+
+function MovieModal({ movie, frame, onAdvance, onClose }: {
+  movie: api.MovieData
+  frame: number
+  onAdvance: () => void
+  onClose: () => void
+}) {
+  const f = movie.frames[frame]
+  const isLast = frame >= movie.frames.length - 1
+
+  useEffect(() => {
+    if (!f || isLast) return
+    const timer = setTimeout(onAdvance, Math.max(300, f.duration_ms))
+    return () => clearTimeout(timer)
+  }, [frame, f, isLast, onAdvance])
+
+  if (!f) return null
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black" onClick={onClose}>
+      <div
+        className="max-w-2xl w-full mx-4"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-base font-semibold text-text">{movie.title}</h2>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted">{frame + 1} / {movie.frames.length}</span>
+            <button onClick={onClose} className="text-muted hover:text-text text-lg leading-none cursor-pointer">&times;</button>
+          </div>
+        </div>
+        <pre className="text-pine text-xs leading-none whitespace-pre-wrap font-mono bg-black/40 rounded-lg p-4 max-h-[60vh] overflow-y-auto border border-subtle select-none">
+          {f.text}
+        </pre>
+        {isLast && (
+          <p className="text-center text-muted text-sm mt-3 animate-pulse cursor-pointer" onClick={onClose}>Click or tap to continue...</p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function groupOverflowActions(actions: api.OverflowAction[]): [string, api.OverflowAction[]][] {
+  const map = new Map<string, api.OverflowAction[]>()
+  for (const a of actions) {
+    const g = a.group || 'Other'
+    if (!map.has(g)) map.set(g, [])
+    map.get(g)!.push(a)
+  }
+  return Array.from(map.entries()).sort(([a], [b]) => a.localeCompare(b))
 }

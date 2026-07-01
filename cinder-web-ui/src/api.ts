@@ -61,9 +61,21 @@ export function listSessions(token: string) {
   })
 }
 
+export interface MovieFrameData {
+  text: string
+  duration_ms: number
+}
+
+export interface MovieData {
+  title: string
+  frames: MovieFrameData[]
+  narrative_lines: string[]
+}
+
 export interface CommandResponse {
   text: string
   game_over: boolean
+  movie: MovieData | null
 }
 
 export function runCommand(token: string, sessionId: string, input: string) {
@@ -109,6 +121,13 @@ export interface ActionBarAction {
   label: string
 }
 
+export interface OverflowAction {
+  id: string
+  label: string
+  group: string
+  usage: string
+}
+
 export interface LookOptionData {
   id: string
   title: string
@@ -135,6 +154,7 @@ export interface UiSnapshot {
   follow_options: MenuOptionItem[]
   channel_surfing_only: boolean
   action_bar_actions: ActionBarAction[]
+  overflow_actions: OverflowAction[]
   look_options: LookOptionData[]
   talk_options: MenuOptionItem[]
   active_menu: ActiveMenuData | null
@@ -191,6 +211,12 @@ export function setLocale(token: string, sessionId: string, locale: string) {
     method: 'POST',
     headers: authHeader(token),
     body: JSON.stringify({ locale }),
+  })
+}
+
+export function fetchTranscript(token: string, sessionId: string) {
+  return req<string[]>(`/games/${sessionId}/transcript`, {
+    headers: authHeader(token),
   })
 }
 

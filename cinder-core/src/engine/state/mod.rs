@@ -37,6 +37,8 @@ pub struct WorldState {
     pub initial_actor_stats: BTreeMap<String, BTreeMap<String, i32>>,
     #[serde(default)]
     pub initial_pair_stats: BTreeMap<String, BTreeMap<String, i32>>,
+    #[serde(default)]
+    pub transcript: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -110,6 +112,7 @@ impl WorldState {
             actor_recent_observation_notes: BTreeMap::new(),
             initial_actor_stats: seeded_actor_stats(content, &content.stats.actor),
             initial_pair_stats: seeded_pair_stats(content, &content.stats.pair),
+            transcript: Vec::new(),
         }
     }
 

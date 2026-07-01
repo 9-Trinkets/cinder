@@ -49,22 +49,27 @@ pub(super) fn advance_objective_for_signal(
                     .actor_room_overrides
                     .insert(relocation.actor_id.clone(), relocation.to_room_id.clone());
             }
-            if !next_stage.projector_sequence_var_key.is_empty()
-                && let Some(selected_value) =
-                    state.story_vars.get(&next_stage.projector_sequence_var_key)
-                && let Some(movie) = content
-                    .movies
-                    .iter()
-                    .find(|movie| movie.match_value == *selected_value)
-            {
-                state.pending_projector_sequence_id = Some(movie.id.clone());
-                state.current_time_minutes += next_stage.elapsed_minutes;
-                state.pending_projector_narrative_lines = next_stage
-                    .narrative_lines
-                    .iter()
-                    .map(|line| super::observation::render_story_text(line, state))
-                    .collect();
-                continue;
+            if !next_stage.projector_sequence_var_key.is_empty() {
+                let selected_value = state.story_vars.get(&next_stage.projector_sequence_var_key);
+                eprintln!("[debug] projector check: key={:?}, selected_value={:?}, movies_count={}", 
+                    next_stage.projector_sequence_var_key, selected_value, content.movies.len());
+                if let Some(selected_value) = selected_value
+                    && let Some(movie) = content
+                        .movies
+                        .iter()
+                        .find(|movie| movie.match_value == *selected_value)
+                {
+                    eprintln!("[debug] projector matched: movie_id={}", movie.id);
+                    state.pending_projector_sequence_id = Some(movie.id.clone());
+                    state.current_time_minutes += next_stage.elapsed_minutes;
+                    state.pending_projector_narrative_lines = next_stage
+                        .narrative_lines
+                        .iter()
+                        .map(|line| super::observation::render_story_text(line, state))
+                        .collect();
+                    continue;
+                }
+                eprintln!("[debug] projector no match for key={:?}", next_stage.projector_sequence_var_key);
             }
             state.current_time_minutes += next_stage.elapsed_minutes;
             for line in &next_stage.narrative_lines {

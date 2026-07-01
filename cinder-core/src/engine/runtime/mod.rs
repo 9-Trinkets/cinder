@@ -170,18 +170,23 @@ impl CinderRuntime {
     }
 
     pub fn run_tick(&self) -> Result<TurnOutcome, Box<dyn Error>> {
-        match self.run_actor_turns() {
-            Ok((text, game_over)) => Ok(TurnOutcome { text, game_over }),
+        let outcome = match self.run_actor_turns() {
+            Ok((text, game_over)) => TurnOutcome { text, game_over },
             Err(error) => {
                 if let Some(actor_tick_error) = error.downcast_ref::<ActorTickError>() {
-                    return Ok(TurnOutcome {
+                    TurnOutcome {
                         text: self.actor_tick_soft_error_text(actor_tick_error),
                         game_over: false,
-                    });
+                    }
+                } else {
+                    return Err(error);
                 }
-                Err(error)
             }
+        };
+        if !outcome.text.is_empty() {
+            self.push_transcript_line(&outcome.text).ok();
         }
+        Ok(outcome)
     }
 
     pub fn current_time_label(&self) -> Result<String, Box<dyn Error>> {
@@ -214,6 +219,23 @@ impl CinderRuntime {
             .lock()
             .map_err(|_| "failed to lock runtime state for followed actor")?;
         Ok(state.followed_actor_id.clone())
+    }
+
+    pub fn push_transcript_line(&self, line: &str) -> Result<(), Box<dyn Error>> {
+        let mut state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for transcript")?;
+        state.transcript.push(line.to_string());
+        Ok(())
+    }
+
+    pub fn transcript_lines(&self) -> Result<Vec<String>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for transcript")?;
+        Ok(state.transcript.clone())
     }
 
     pub fn current_room_look_options(&self) -> Result<Vec<LookOptionItem>, Box<dyn Error>> {
@@ -526,15 +548,23 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for projector sequence")?;
+        eprintln!("[debug] consume_pending_projector_sequence: pending_id={:?}, story_vars_keys={:?}, active_stages={:?}, actor_overrides={:?}",
+            state.pending_projector_sequence_id,
+            state.story_vars.keys().collect::<Vec<_>>(),
+            state.active_objective_stage_ids,
+            state.actor_room_overrides);
         let Some(sequence_id) = state.pending_projector_sequence_id.take() else {
             return Ok(None);
         };
-        Ok(self
+        let found = self
             .content
             .movies
             .iter()
             .find(|movie| movie.id == sequence_id)
-            .cloned())
+            .cloned();
+        eprintln!("[debug] consume_pending_projector_sequence: looked up id={:?}, found={}",
+            sequence_id, found.is_some());
+        Ok(found)
     }
 
     pub fn consume_pending_projector_narrative_lines(
@@ -1021,12 +1051,18 @@ impl CinderRuntime {
             if state.game_over {
                 return Ok((lines.join("\n\n"), true));
             }
+            eprintln!("[debug] run_actor_turns: applying {} tick events, active_stages={:?}, story_vars_keys={:?}",
+                tick.events.len(),
+                state.active_objective_stage_ids,
+                state.story_vars.keys().collect::<Vec<_>>());
             let logged_events = tick
                 .events
                 .into_iter()
                 .map(TimestampedWorldEvent::now)
                 .collect::<Vec<_>>();
             let reduced = apply_events(&mut state, self.content.as_ref(), &logged_events);
+            eprintln!("[debug] run_actor_turns: after apply, pending_projector_id={:?}",
+                state.pending_projector_sequence_id);
             refresh_conversation_summaries(
                 self.content.as_ref(),
                 self.dialogue.as_ref(),
