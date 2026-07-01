@@ -48,7 +48,6 @@
   "shell_menu": {
     "items": [
       { "id": "resume", "label": "Resume" },
-      { "id": "help", "label": "Help" },
       { "id": "goals", "label": "Session goals" },
       { "id": "settings", "label": "Settings", "children": [
         { "id": "language", "label": "Language" },

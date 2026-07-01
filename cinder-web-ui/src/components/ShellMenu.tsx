@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Modal from './Modal'
 import type { UiSnapshot } from '../api'
 
-type View = 'main' | 'help' | 'objectives' | 'about' | 'rooms' | 'follow' | 'language'
+type View = 'main' | 'objectives' | 'about' | 'rooms' | 'follow' | 'language'
 
 interface ShellMenuProps {
   ui: UiSnapshot
@@ -22,13 +22,12 @@ interface FlatItem {
 }
 
 const CANONICAL_ORDER: string[] = [
-  'resume', 'help', 'goals', 'things_to_do', 'objectives',
+  'resume', 'goals', 'things_to_do', 'objectives',
   'rooms', 'follow', 'language', 'about', 'exit',
 ]
 
 const CANONICAL_FALLBACK: { id: string; labelKey: string }[] = [
   { id: 'resume', labelKey: 'resume_label' },
-  { id: 'help', labelKey: 'help_label' },
   { id: 'objectives', labelKey: 'things_to_do_label' },
   { id: 'language', labelKey: 'language_menu_label' },
   { id: 'about', labelKey: 'about_label' },
@@ -36,7 +35,7 @@ const CANONICAL_FALLBACK: { id: string; labelKey: string }[] = [
 ]
 
 const KNOWN_IDS = new Set([
-  'help', 'things_to_do', 'objectives', 'goals', 'about',
+  'things_to_do', 'objectives', 'goals', 'about',
   'rooms', 'follow', 'language',
 ])
 
@@ -65,14 +64,6 @@ export default function ShellMenu({
 }: ShellMenuProps) {
   const t = ui.ui_text
   const items = flattenItems(t)
-
-  if (view === 'help') {
-    return (
-      <Modal title={t.help_label} onClose={() => onViewChange('main')}>
-        <pre className="whitespace-pre-wrap font-sans text-sm">{ui.help_text}</pre>
-      </Modal>
-    )
-  }
 
   if (view === 'objectives') {
     return (
@@ -268,7 +259,6 @@ function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy }: MainMen
 }
 
 const VIEW_ROUTE: Record<string, View> = {
-  help: 'help',
   goals: 'objectives',
   things_to_do: 'objectives',
   objectives: 'objectives',
