@@ -72,7 +72,7 @@ export default function ShellMenu({
 
   if (view === 'about') {
     return (
-      <Modal title={t.about_label} onClose={() => onViewChange('main')}>
+      <Modal title={t.about_label} onClose={onClose}>
         <p className="whitespace-pre-wrap">{ui.about_body}</p>
       </Modal>
     )
@@ -80,7 +80,7 @@ export default function ShellMenu({
 
   if (view === 'rooms') {
     return (
-      <Modal title={t.room_switcher_title} onClose={() => onViewChange('main')}>
+      <Modal title={t.room_switcher_title} onClose={onClose}>
         {ui.rooms.map((r) => (
           <button
             key={r.id}
@@ -98,7 +98,7 @@ export default function ShellMenu({
 
   if (view === 'follow') {
     return (
-      <Modal title={t.follow_actor_title} onClose={() => onViewChange('main')}>
+      <Modal title={t.follow_actor_title} onClose={onClose}>
         {ui.follow_options.map((a) => (
           <button
             key={a.id}
@@ -116,7 +116,7 @@ export default function ShellMenu({
 
   if (view === 'language') {
     return (
-      <Modal title={t.language_modal_title} onClose={() => onViewChange('main')}>
+      <Modal title={t.language_modal_title} onClose={onClose}>
         {ui.locale_options.map((l) => (
           <button
             key={l.code}
