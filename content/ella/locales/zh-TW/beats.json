@@ -18,7 +18,7 @@
       "id": "talk-with-mom",
       "summary": "跟媽媽說，好，今晚一起看電影。",
       "beat_note": "媽媽提了電影的事，艾拉還沒真正答應。",
-      "update_message": "目標更新：跟媽媽說今晚一起看電影。",
+      "update_message": "跟媽媽說今晚一起看電影。",
       "advance_signals": [
         "menu_opened:movie-night"
       ],
@@ -28,7 +28,7 @@
       "id": "choose-movie",
       "summary": "從媽媽想看的片單裡挑一部。",
       "beat_note": "媽媽把選擇丟給她了，現在輪到艾拉決定。",
-      "update_message": "目標更新：從媽媽想看的片單裡挑一部。",
+      "update_message": "從媽媽想看的片單裡挑一部。",
       "advance_signals": [
         "menu_selected:movie-night"
       ],
@@ -38,7 +38,7 @@
       "id": "dad-brings-fruit",
       "summary": "爸爸在切水果，等他過來再一起開始。",
       "beat_note": "爸爸還在廚房忙，電影還沒真正開場。",
-      "update_message": "目標更新：爸爸在切水果，等他過來再一起開始。",
+      "update_message": "爸爸在切水果，等他過來再一起開始。",
       "advance_signals": [
         "actor_entered:dad:living-room"
       ],
@@ -48,7 +48,7 @@
       "id": "movie-afterglow",
       "summary": "《{movie_title}》剛播完，再陪家人坐一下。",
       "beat_note": "電影剛看完，三個人都還捨不得立刻散。",
-      "update_message": "目標更新：《{movie_title}》剛播完，再陪家人坐一下。",
+      "update_message": "《{movie_title}》剛播完，再陪家人坐一下。",
       "elapsed_minutes": 95,
       "projector_sequence_var_key": "movie_choice_id",
       "narrative_lines": [
@@ -67,7 +67,7 @@
       "id": "go-to-kitchen",
       "summary": "去廚房找爸爸。",
       "beat_note": "爸爸還在廚房，艾拉還沒去跟他說話。",
-      "update_message": "目標更新：去廚房找爸爸。",
+      "update_message": "去廚房找爸爸。",
       "advance_signals": [
         "room_entered:kitchen"
       ],
@@ -77,7 +77,7 @@
       "id": "talk-with-dad",
       "summary": "跟爸爸決定要不要弄點宵夜。",
       "beat_note": "爸爸就在廚房，艾拉只要開口，今晚的宵夜就會真的開始。",
-      "update_message": "目標更新：跟爸爸決定要不要弄點宵夜。",
+      "update_message": "跟爸爸決定要不要弄點宵夜。",
       "actor_relocations": [
         {
           "actor_id": "dad",
@@ -93,7 +93,7 @@
       "id": "choose-snack",
       "summary": "選一樣跟爸爸一起弄的宵夜。",
       "beat_note": "爸爸已經把問題丟回來了，現在看艾拉想吃什麼。",
-      "update_message": "目標更新：選一樣跟爸爸一起弄的宵夜。",
+      "update_message": "選一樣跟爸爸一起弄的宵夜。",
       "advance_signals": [
         "menu_selected:late-night-snack"
       ],
@@ -103,7 +103,7 @@
       "id": "snack-afterglow",
       "summary": "你和爸爸剛弄好 {snack_title}，再陪他待一會。",
       "beat_note": "廚房裡還有 {snack_title} 的香味，你們兩個也還沒想這麼快散。",
-      "update_message": "目標更新：你和爸爸剛弄好 {snack_title}，再陪他待一會。",
+      "update_message": "你和爸爸剛弄好 {snack_title}，再陪他待一會。",
       "elapsed_minutes": 25,
       "advance_signals": [
         "room_left:kitchen"

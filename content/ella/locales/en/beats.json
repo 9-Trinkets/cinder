@@ -18,7 +18,7 @@
       "id": "talk-with-mom",
       "summary": "Tell Mom you're up for a movie night.",
       "beat_note": "Ella is deciding whether to say yes to a movie night with her mother.",
-      "update_message": "Objective updated: Tell Mom you're up for a movie night.",
+      "update_message": "Tell Mom you're up for a movie night.",
       "advance_signals": [
         "menu_opened:movie-night"
       ],
@@ -28,7 +28,7 @@
       "id": "choose-movie",
       "summary": "Pick a movie from Mom's list.",
       "beat_note": "Mom has offered a few movies, and Ella needs to pick one.",
-      "update_message": "Objective updated: Pick a movie from Mom's list.",
+      "update_message": "Pick a movie from Mom's list.",
       "advance_signals": [
         "menu_selected:movie-night"
       ],
@@ -38,7 +38,7 @@
       "id": "dad-brings-fruit",
       "summary": "Dad is bringing fruit over. Wait for him to join you before the movie starts.",
       "beat_note": "Dad is still in the kitchen pulling together fruit before he joins the movie night in the living room.",
-      "update_message": "Objective updated: Dad is bringing fruit over. Wait for him to join you before the movie starts.",
+      "update_message": "Dad is bringing fruit over. Wait for him to join you before the movie starts.",
       "advance_signals": [
         "actor_entered:dad:living-room"
       ],
@@ -48,7 +48,7 @@
       "id": "movie-afterglow",
       "summary": "Movie night wrapped up with {movie_title}. Stay with the family for a bit.",
       "beat_note": "The family has just finished watching {movie_title} together and is lingering in the afterglow.",
-      "update_message": "Objective updated: Movie night wrapped up with {movie_title}. Stay with the family for a bit.",
+      "update_message": "Movie night wrapped up with {movie_title}. Stay with the family for a bit.",
       "elapsed_minutes": 95,
       "projector_sequence_var_key": "movie_choice_id",
       "narrative_lines": [
@@ -67,7 +67,7 @@
       "id": "go-to-kitchen",
       "summary": "Go to the kitchen and check in with Dad.",
       "beat_note": "Ella still needs to go to the kitchen and check in about a late-night snack.",
-      "update_message": "Objective updated: Go to the kitchen and check in with Dad.",
+      "update_message": "Go to the kitchen and check in with Dad.",
       "advance_signals": [
         "room_entered:kitchen"
       ],
@@ -77,7 +77,7 @@
       "id": "talk-with-dad",
       "summary": "Talk to Dad about a late-night snack.",
       "beat_note": "Ella is checking in about a quick late-night snack in the kitchen.",
-      "update_message": "Objective updated: Talk to Dad about a late-night snack.",
+      "update_message": "Talk to Dad about a late-night snack.",
       "actor_relocations": [
         {
           "actor_id": "dad",
@@ -93,7 +93,7 @@
       "id": "choose-snack",
       "summary": "Pick a late-night snack to make with Dad.",
       "beat_note": "Ella has a few quick late-night snack options and needs to pick one.",
-      "update_message": "Objective updated: Pick a late-night snack to make with Dad.",
+      "update_message": "Pick a late-night snack to make with Dad.",
       "advance_signals": [
         "menu_selected:late-night-snack"
       ],
@@ -103,7 +103,7 @@
       "id": "snack-afterglow",
       "summary": "You and Dad just made {snack_title} together. Stay with him for a bit.",
       "beat_note": "The kitchen still smells like {snack_title}, and the two of you are lingering in the shared memory of making it together.",
-      "update_message": "Objective updated: You and Dad just made {snack_title} together. Stay with him for a bit.",
+      "update_message": "You and Dad just made {snack_title} together. Stay with him for a bit.",
       "elapsed_minutes": 25,
       "advance_signals": [
         "room_left:kitchen"
