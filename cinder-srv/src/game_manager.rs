@@ -32,6 +32,9 @@ pub struct UiSnapshot {
     pub current_locale: String,
     pub locale_options: Vec<LocaleItem>,
     pub objectives: Vec<ObjectiveItem>,
+    pub objective_message: String,
+    pub progress_completed: usize,
+    pub progress_total: usize,
     pub rooms: Vec<MenuOptionData>,
     pub follow_options: Vec<MenuOptionData>,
     pub channel_surfing_only: bool,
@@ -372,7 +375,7 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             .runtime
             .current_day_number()
             .map_err(|e| e.to_string())?;
-        let objectives = session
+        let objectives: Vec<ObjectiveItem> = session
             .runtime
             .current_objective_summaries()
             .map_err(|e| e.to_string())?
@@ -382,6 +385,14 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
                 message: m,
             })
             .collect();
+        let (progress_completed, progress_total) = session
+            .runtime
+            .current_objective_progress()
+            .map_err(|e| e.to_string())?;
+        let objective_message = objectives
+            .first()
+            .map(|o| o.message.clone())
+            .unwrap_or_default();
         let locales = loader::available_locales(&loader::pack_dir(&session.pack_id))
             .map_err(|e| e.to_string())?
             .into_iter()
@@ -540,6 +551,9 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             current_locale: content.locale.clone(),
             locale_options: locales,
             objectives,
+            objective_message,
+            progress_completed,
+            progress_total,
             rooms: menu_option_data(
                 session
                     .runtime

@@ -150,6 +150,9 @@ export interface UiSnapshot {
   current_locale: string
   locale_options: LocaleItem[]
   objectives: ObjectiveItem[]
+  objective_message: string
+  progress_completed: number
+  progress_total: number
   rooms: MenuOptionItem[]
   follow_options: MenuOptionItem[]
   channel_surfing_only: boolean

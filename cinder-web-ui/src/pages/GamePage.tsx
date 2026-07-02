@@ -15,7 +15,7 @@ interface PendingLine {
   key: number
 }
 
-type MenuView = 'main' | 'objectives' | 'about' | 'rooms' | 'follow' | 'language'
+type MenuView = 'main' | 'about' | 'rooms' | 'follow' | 'language'
 
 export default function GamePage() {
   const { id } = useParams<{ id: string }>()
@@ -423,7 +423,7 @@ export default function GamePage() {
         </div>
 
         {uiSnapshot && (
-          <aside className="w-56 shrink-0 border-l border-subtle p-4 flex flex-col gap-4 text-sm overflow-y-auto">
+          <aside className="w-60 shrink-0 border-l border-subtle p-4 flex flex-col gap-4 text-sm overflow-y-auto">
             <div>
               <p className="text-xs text-muted uppercase tracking-wider">Location</p>
               <p className="text-text font-medium">{uiSnapshot.current_room_name}</p>
@@ -439,6 +439,24 @@ export default function GamePage() {
               <div>
                 <p className="text-xs text-muted uppercase tracking-wider">Following</p>
                 <p className="text-pine font-medium">{uiSnapshot.followed_actor_name}</p>
+              </div>
+            )}
+            <div>
+              <p className="text-xs text-muted uppercase tracking-wider">What now?</p>
+              <p className="text-text text-xs leading-relaxed">
+                {uiSnapshot.objective_message || 'No current objective.'}
+              </p>
+            </div>
+            {uiSnapshot.progress_total > 0 && (
+              <div>
+                <p className="text-xs text-muted uppercase tracking-wider">Progress</p>
+                <div className="mt-1 h-1.5 w-full bg-overlay rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-pine rounded-full transition-all duration-500"
+                    style={{ width: `${(uiSnapshot.progress_completed / uiSnapshot.progress_total) * 100}%` }}
+                  />
+                </div>
+                <p className="text-xs text-faint mt-0.5">{uiSnapshot.progress_completed} / {uiSnapshot.progress_total}</p>
               </div>
             )}
           </aside>

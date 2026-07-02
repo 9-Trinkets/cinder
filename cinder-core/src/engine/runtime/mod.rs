@@ -356,6 +356,16 @@ impl CinderRuntime {
             .collect())
     }
 
+    pub fn current_objective_progress(&self) -> Result<(usize, usize), Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for progress")?;
+        let completed = state.stages_completed;
+        let total = self.content.beats.stages.len();
+        Ok((completed, total))
+    }
+
     pub fn relationship_status_lines(&self) -> Result<Vec<String>, Box<dyn Error>> {
         let state = self
             .state

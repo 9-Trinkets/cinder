@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Modal from './Modal'
 import type { UiSnapshot } from '../api'
 
-type View = 'main' | 'objectives' | 'about' | 'rooms' | 'follow' | 'language'
+type View = 'main' | 'about' | 'rooms' | 'follow' | 'language'
 
 interface ShellMenuProps {
   ui: UiSnapshot
@@ -22,33 +22,38 @@ interface FlatItem {
 }
 
 const CANONICAL_ORDER: string[] = [
-  'resume', 'goals', 'things_to_do', 'objectives',
+  'resume',
   'rooms', 'follow', 'language', 'about', 'exit',
 ]
 
 const CANONICAL_FALLBACK: { id: string; labelKey: string }[] = [
   { id: 'resume', labelKey: 'resume_label' },
-  { id: 'objectives', labelKey: 'things_to_do_label' },
   { id: 'language', labelKey: 'language_menu_label' },
   { id: 'about', labelKey: 'about_label' },
   { id: 'exit', labelKey: 'exit_label' },
 ]
 
 const KNOWN_IDS = new Set([
-  'things_to_do', 'objectives', 'goals', 'about',
+  'about',
   'rooms', 'follow', 'language',
 ])
 
+function isKnownMenuItem(id: string): boolean {
+  return id === 'resume' || id === 'exit' || KNOWN_IDS.has(id) || !!VIEW_ROUTE[id]
+}
+
 function flattenItems(t: UiSnapshot['ui_text']): FlatItem[] {
   if (t.shell_menu.items.length > 0) {
-    return t.shell_menu.items.map(item => ({ id: item.id, label: item.label }))
+    return t.shell_menu.items
+      .filter(item => isKnownMenuItem(item.id))
+      .map(item => ({ id: item.id, label: item.label }))
   }
 
   const out: FlatItem[] = []
   for (const entry of CANONICAL_FALLBACK) {
     out.push({ id: entry.id, label: t[entry.labelKey as keyof typeof t] as string || entry.id })
   }
-  return out.filter(i => i.id === 'resume' || i.id === 'exit' || KNOWN_IDS.has(i.id))
+  return out.filter(i => isKnownMenuItem(i.id))
 }
 
 export default function ShellMenu({
@@ -64,25 +69,6 @@ export default function ShellMenu({
 }: ShellMenuProps) {
   const t = ui.ui_text
   const items = flattenItems(t)
-
-  if (view === 'objectives') {
-    return (
-      <Modal title={t.things_to_do_label} onClose={() => onViewChange('main')}>
-        {ui.objectives.length === 0 ? (
-          <p className="text-muted italic">{t.things_to_do_empty}</p>
-        ) : (
-          <ul className="space-y-2">
-            {ui.objectives.map((o, i) => (
-              <li key={i}>
-                <p className="font-medium">{o.summary}</p>
-                <p className="text-muted text-xs">{o.message}</p>
-              </li>
-            ))}
-          </ul>
-        )}
-      </Modal>
-    )
-  }
 
   if (view === 'about') {
     return (
@@ -259,9 +245,6 @@ function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy }: MainMen
 }
 
 const VIEW_ROUTE: Record<string, View> = {
-  goals: 'objectives',
-  things_to_do: 'objectives',
-  objectives: 'objectives',
   about: 'about',
   rooms: 'rooms',
   follow: 'follow',

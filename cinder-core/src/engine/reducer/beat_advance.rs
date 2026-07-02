@@ -24,6 +24,7 @@ pub(super) fn advance_objective_for_signal(
             next_active_stage_ids.push(current_stage_id);
             continue;
         }
+        state.stages_completed += 1;
         let next_stage_ids = current_stage.resolved_next_stage_ids();
         if next_stage_ids.is_empty() {
             continue;
@@ -38,12 +39,6 @@ pub(super) fn advance_objective_for_signal(
             else {
                 continue;
             };
-            if !next_stage.update_message.is_empty() {
-                messages.push(super::observation::render_story_text(
-                    &next_stage.update_message,
-                    state,
-                ));
-            }
             for relocation in &next_stage.actor_relocations {
                 state
                     .actor_room_overrides
@@ -95,12 +90,6 @@ pub(super) fn advance_objective_for_signal(
             .find(|stage| stage.id == "go-to-bed")
     {
         state.active_objective_stage_ids.push(stage.id.clone());
-        if !stage.update_message.is_empty() {
-            messages.push(super::observation::render_story_text(
-                &stage.update_message,
-                state,
-            ));
-        }
     }
     messages
 }
