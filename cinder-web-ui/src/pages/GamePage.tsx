@@ -1,9 +1,24 @@
-import { useEffect, useState, useRef, type FormEvent } from 'react'
+import { Component, useEffect, useState, useRef, type FormEvent, type ReactNode } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth'
 import * as api from '../api'
 import ShellMenu from '../components/ShellMenu'
 import Modal from '../components/Modal'
+
+class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
+  state = { error: null }
+  static getDerivedStateFromError(error: Error) { return { error } }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="h-screen flex items-center justify-center bg-surface text-text p-8">
+          <p className="text-love">Something went wrong. Please reload the page.</p>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
 
 interface Line {
   text: string
@@ -319,6 +334,7 @@ export default function GamePage() {
   }
 
   return (
+    <ErrorBoundary>
     <div className="h-screen flex flex-col bg-surface">
       <header className="flex items-center justify-between px-4 py-2 border-b border-subtle shrink-0">
         <div className="flex items-center gap-2">
@@ -369,7 +385,7 @@ export default function GamePage() {
             ]).map(action => {
               const handleClick = () => {
                 if (busy || gameOver) return
-                if (action.id === 'look') { setShowLookModal(true); return }
+                if (action.id === 'look') { flushTypewriter(); setShowLookModal(true); return }
                 if (action.id === 'move') { setMenuView('rooms'); setShowMenu(true); return }
                 if (action.id === 'follow') { setMenuView('follow'); setShowMenu(true); return }
                 const talkOpts = uiSnapshot?.talk_options ?? []
@@ -587,6 +603,7 @@ export default function GamePage() {
         />
       )}
     </div>
+    </ErrorBoundary>
   )
 }
 
