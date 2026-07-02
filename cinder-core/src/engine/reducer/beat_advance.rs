@@ -71,6 +71,7 @@ pub(super) fn advance_objective_for_signal(
                 messages.push(super::observation::render_story_text(line, state));
             }
             if next_stage.end_session {
+                state.stages_completed += 1;
                 state.game_over = true;
                 messages.push(content.presentation.presentation_text.session_ended.clone());
             }
