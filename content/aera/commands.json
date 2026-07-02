@@ -36,7 +36,7 @@
       "command": "SPEAK",
       "target_mode": "actor_optional",
       "outcome_mode": "dialogue",
-      "player_enabled": true,
+      "player_enabled": false,
       "player_phrases": ["talk to", "talk", "tell to", "tell", "speak to", "speak"],
       "player_command": {
         "target_mode": "actor_reference",
