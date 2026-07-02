@@ -478,7 +478,7 @@ export default function GamePage() {
 
       {showLookModal && uiSnapshot && (
         <Modal title="Look" onClose={() => setShowLookModal(false)}>
-          {uiSnapshot.look_options.length === 0 ? (
+          {(uiSnapshot.look_options ?? []).length === 0 ? (
             <p className="text-muted italic">Nothing of particular interest here.</p>
           ) : (
             uiSnapshot.look_options.map(opt => (

@@ -414,33 +414,39 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             .map_err(|e| e.to_string())?
             .and_then(|id| content.actor(&id).map(|a| a.name.clone()));
 
-        let action_bar_actions =
+        let (action_bar_actions, content_defined_bar) =
             if !content.ui_text.action_bar.actions.is_empty() {
-                content
-                    .ui_text
-                    .action_bar
-                    .actions
-                    .iter()
-                    .map(|a| ActionBarAction {
-                        id: a.id.clone(),
-                        label: a.label.clone(),
-                    })
-                    .collect()
+                (
+                    content
+                        .ui_text
+                        .action_bar
+                        .actions
+                        .iter()
+                        .map(|a| ActionBarAction {
+                            id: a.id.clone(),
+                            label: a.label.clone(),
+                        })
+                        .collect(),
+                    true,
+                )
             } else {
-                vec![
-                    ActionBarAction {
-                        id: "look".into(),
-                        label: "Look".into(),
-                    },
-                    ActionBarAction {
-                        id: "move".into(),
-                        label: "Move".into(),
-                    },
-                    ActionBarAction {
-                        id: "follow".into(),
-                        label: "Follow".into(),
-                    },
-                ]
+                (
+                    vec![
+                        ActionBarAction {
+                            id: "look".into(),
+                            label: "Look".into(),
+                        },
+                        ActionBarAction {
+                            id: "move".into(),
+                            label: "Move".into(),
+                        },
+                        ActionBarAction {
+                            id: "follow".into(),
+                            label: "Follow".into(),
+                        },
+                    ],
+                    false,
+                )
             };
 
         let look_options: Vec<LookOptionData> = session
@@ -485,7 +491,8 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             });
 
         let mut action_bar_actions = action_bar_actions;
-        if !talk_options.is_empty()
+        if !content_defined_bar
+            && !talk_options.is_empty()
             && !action_bar_actions.iter().any(|a| a.id == "speak" || a.id == "talk")
         {
             action_bar_actions.push(ActionBarAction {
