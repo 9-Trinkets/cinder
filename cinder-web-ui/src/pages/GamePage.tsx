@@ -456,7 +456,6 @@ export default function GamePage() {
                     style={{ width: `${(uiSnapshot.progress_completed / uiSnapshot.progress_total) * 100}%` }}
                   />
                 </div>
-                <p className="text-xs text-faint mt-0.5">{uiSnapshot.progress_completed} / {uiSnapshot.progress_total}</p>
               </div>
             )}
           </aside>
