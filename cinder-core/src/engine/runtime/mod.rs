@@ -299,28 +299,46 @@ impl CinderRuntime {
     }
 
     pub fn current_active_menu_info(&self) -> Result<Option<ActiveMenuInfo>, Box<dyn Error>> {
-        let state = self
-            .state
-            .lock()
-            .map_err(|_| "failed to lock runtime state for active menu")?;
-        let Some(active_menu_id) = &state.active_menu_id else {
+        let menu_id = {
+            let state = self
+                .state
+                .lock()
+                .map_err(|_| "failed to lock runtime state for active menu")?;
+            state.active_menu_id.clone()
+        };
+        let Some(ref menu_id) = menu_id else {
             return Ok(None);
         };
-        let Some(menu) = self.content.menu(active_menu_id) else {
+        let menu = self.content.menu(menu_id);
+        let Some(menu) = menu else {
             return Ok(None);
         };
-        let options = if menu.dynamic {
-            state
+        let prompt = menu.selection_prompt.clone();
+        if menu.dynamic {
+            let needs_generation = {
+                let state = self
+                    .state
+                    .lock()
+                    .map_err(|_| "failed to lock runtime state for dynamic menu")?;
+                !state.generated_menu_options.contains_key(menu_id.as_str())
+            };
+            if needs_generation {
+                self.menu_choice_options()?;
+            }
+            let state = self
+                .state
+                .lock()
+                .map_err(|_| "failed to lock runtime state after dynamic menu gen")?;
+            let options = state
                 .generated_menu_options
-                .get(active_menu_id)
+                .get(menu_id.as_str())
                 .cloned()
-                .unwrap_or_default()
-        } else {
-            menu.options.clone()
-        };
+                .unwrap_or_default();
+            return Ok(Some(ActiveMenuInfo { prompt, options }));
+        }
         Ok(Some(ActiveMenuInfo {
-            prompt: menu.selection_prompt.clone(),
-            options,
+            prompt,
+            options: menu.options.clone(),
         }))
     }
 
