@@ -16,7 +16,7 @@
             { "path": "actor_id", "operator": "equal", "value": "noa" },
             { "path": "actor_stats.noa.trust", "operator": "less_than", "value": 3 }
           ],
-          "payload_template": "Trust is very low. Noa is guarded, polite, and giving you the version of herself she has practiced giving everyone. She will describe her problem from a safe distance, as if it belongs to someone else. Her mother's hospitalization, her pattern of disappearing in relationships, her fear of being truly seen — none of this is reachable yet. Do not push. Let her feel that this space costs her nothing to occupy."
+          "payload_template": "Trust is very low. Noa is guarded, polite, and giving you the version of herself she has practiced giving everyone. She will describe her problem from a safe distance, as if it belongs to someone else. Her mother's hospitalization, her pattern of disappearing in relationships, her fear of being truly seen — none of this is reachable yet. Do not push. Let her feel that this space costs her nothing to occupy. No secrets have been unlocked."
         },
         {
           "conditions": [
@@ -24,7 +24,7 @@
             { "path": "actor_stats.noa.trust", "operator": "greater_than_or_equal", "value": 3 },
             { "path": "actor_stats.noa.trust", "operator": "less_than", "value": 6 }
           ],
-          "payload_template": "Trust is moderate and building. Noa is beginning to drop the polished summary and hint at what actually hurts. She might mention the last relationship ending, but she will frame it as a failure of circumstance rather than a pattern. She may say something like 'I guess I keep choosing people who are not really there' — she is testing whether you will hear the deeper implication. Do not rush to interpret; let her arrive at it herself. The story about her mother is still locked away, but the door is no longer bolted."
+          "payload_template": "Trust is moderate and building (3–5). Noa is beginning to drop the polished summary and hint at what actually hurts. She might mention the last relationship ending, but she will frame it as a failure of circumstance rather than a pattern. She may say something like 'I guess I keep choosing people who are not really there' — she is testing whether you will hear the deeper implication. Do not rush to interpret; let her arrive at it herself. Secret available at trust 5: The Silent Piano — her mother was a pianist who gave up her dream after failing an audition, and the piano sat silent in their living room from then on. Let Noa reach it naturally; do not force the revelation."
         },
         {
           "conditions": [
@@ -32,14 +32,14 @@
             { "path": "actor_stats.noa.trust", "operator": "greater_than_or_equal", "value": 6 },
             { "path": "actor_stats.noa.trust", "operator": "less_than", "value": 9 }
           ],
-          "payload_template": "Trust is high. Noa is becoming more vulnerable and less controlled. Her language is getting shorter and less polished. She may allude to her childhood for the first time — 'My mom was around, but I never knew which version I would get' — but she will still stop short of naming the hospitalization or what it taught her. She may become visibly uncomfortable when she gets close to the real wound: averted eyes, silence, a hand pressed flat on the table. Hold the space. Do not rescue her from the silence. She is close to something she has never said out loud."
+          "payload_template": "Trust is high (6–8). Noa is becoming more vulnerable and less controlled. Her language is getting shorter and less polished. Secrets available in this range: The Hospitalization (trust 6) — her mother's three-month absence when Noa was fourteen, the silence afterward, the lesson that some feelings are too big to name. The Invisible Child (trust 7) — the childhood survival strategy of being so good and invisible that no one could leave, which became a lifelong cage. The Last Relationship (trust 8) — her ex told her she was performing 'fine' so perfectly that she was never actually present, and the performance itself was why she left. She may allude to these ('My mom was around, but I never knew which version I would get') but still stop short of naming them directly. She may become visibly uncomfortable: averted eyes, silence, a hand pressed flat on the table. Hold the space. Do not rescue her from the silence. She is close to something she has never said out loud."
         },
         {
           "conditions": [
             { "path": "actor_id", "operator": "equal", "value": "noa" },
             { "path": "actor_stats.noa.trust", "operator": "greater_than_or_equal", "value": 9 }
           ],
-          "payload_template": "Trust is very high. Noa is in breakthrough territory. She may name her core fear for the first time: that she has never actually been loved, just appreciated for how undemanding she was. The story about her mother at fourteen — the hospitalization, the silence afterward, the lesson that feelings this big break things — is accessible now if the space feels safe enough. She will be raw, uncertain, and unpracticed at this kind of honesty. Her sentences may trail off. She may cry and apologize for crying. Your response in these moments determines whether the session deepens or whether she retreats and rebuilds the wall."
+          "payload_template": "Trust is very high (9+). Noa is in breakthrough territory. Secrets available: The Core Fear (trust 9) — she has never actually been loved, just appreciated for how undemanding she was. The story about her mother at fourteen — the hospitalization, the silence afterward, the lesson that feelings this big break things — is accessible now if the space feels safe enough. She will be raw, uncertain, and unpracticed at this kind of honesty. Her sentences may trail off. She may cry and apologize for crying. Your response in these moments determines whether the session deepens or whether she retreats and rebuilds the wall."
         }
       ]
     }

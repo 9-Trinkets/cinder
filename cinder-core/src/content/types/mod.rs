@@ -142,6 +142,22 @@ pub struct AdvanceCondition {
     pub value: serde_json::Value,
 }
 
+#[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum AdvanceEffect {
+    AdjustActorStat {
+        actor_id: String,
+        stat: String,
+        delta: i32,
+    },
+    AdjustPairStat {
+        participant_a_id: String,
+        participant_b_id: String,
+        stat: String,
+        delta: i32,
+    },
+}
+
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct BeatsDefinition {
     #[serde(default)]
@@ -177,6 +193,8 @@ pub struct BeatDefinition {
     pub next_stage_id: Option<String>,
     #[serde(default)]
     pub next_stage_ids: Vec<String>,
+    #[serde(default)]
+    pub on_advance_effects: Vec<AdvanceEffect>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]

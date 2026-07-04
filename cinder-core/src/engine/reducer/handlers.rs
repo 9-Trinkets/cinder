@@ -8,7 +8,8 @@ use super::observation::{
     render_story_text,
 };
 use super::tick::{
-    advance_actor_stats_on_tick, advance_house_progress_objectives, increment_shared_room_safety,
+    advance_actor_stats_on_tick, advance_house_progress_objectives, advance_stat_threshold_objectives,
+    increment_shared_room_safety,
 };
 use crate::content::types::ContentPack;
 use crate::engine::commands::{player_command_help_text, player_command_suggestions};
@@ -41,6 +42,7 @@ pub(super) fn handle_turn_started(
             lines.extend(advance_objective_for_signal(state, content, &signal));
         }
         lines.extend(advance_house_progress_objectives(state, content));
+        lines.extend(advance_stat_threshold_objectives(state, content));
     }
 }
 

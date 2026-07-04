@@ -10,7 +10,13 @@
     "pastry_baked": { "default": 0, "min": 0, "max": 1 },
     "coffee_served": { "default": 0, "min": 0, "max": 1 },
     "tea_served": { "default": 0, "min": 0, "max": 1 },
-    "pastry_served": { "default": 0, "min": 0, "max": 1 }
+    "pastry_served": { "default": 0, "min": 0, "max": 1 },
+    "secrets_found": { "default": 0, "min": 0, "max": 5 },
+    "secret_1_found": { "default": 0, "min": 0, "max": 1 },
+    "secret_2_found": { "default": 0, "min": 0, "max": 1 },
+    "secret_3_found": { "default": 0, "min": 0, "max": 1 },
+    "secret_4_found": { "default": 0, "min": 0, "max": 1 },
+    "secret_5_found": { "default": 0, "min": 0, "max": 1 }
   },
   "pair": {
     "connection": { "default": 0, "min": 0, "max": 10 },

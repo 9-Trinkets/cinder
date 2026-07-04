@@ -474,6 +474,12 @@ export default function GamePage() {
                 </div>
               </div>
             )}
+            {uiSnapshot.secrets_total > 0 && (
+              <div>
+                <p className="text-xs text-muted uppercase tracking-wider">Secrets Found</p>
+                <p className="text-text font-medium">{uiSnapshot.secrets_found} / {uiSnapshot.secrets_total}</p>
+              </div>
+            )}
           </aside>
         )}
       </div>

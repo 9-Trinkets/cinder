@@ -35,6 +35,8 @@ pub struct UiSnapshot {
     pub objective_message: String,
     pub progress_completed: usize,
     pub progress_total: usize,
+    pub secrets_found: usize,
+    pub secrets_total: usize,
     pub rooms: Vec<MenuOptionData>,
     pub follow_options: Vec<MenuOptionData>,
     pub channel_surfing_only: bool,
@@ -389,6 +391,10 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             .runtime
             .current_objective_progress()
             .map_err(|e| e.to_string())?;
+        let (secrets_found, secrets_total) = session
+            .runtime
+            .current_secret_progress()
+            .map_err(|e| e.to_string())?;
         let objective_message = objectives
             .first()
             .map(|o| o.message.clone())
@@ -561,6 +567,8 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             objective_message,
             progress_completed,
             progress_total,
+            secrets_found,
+            secrets_total,
             rooms: menu_option_data(
                 session
                     .runtime

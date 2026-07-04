@@ -153,6 +153,8 @@ export interface UiSnapshot {
   objective_message: string
   progress_completed: number
   progress_total: number
+  secrets_found: number
+  secrets_total: number
   rooms: MenuOptionItem[]
   follow_options: MenuOptionItem[]
   channel_surfing_only: boolean

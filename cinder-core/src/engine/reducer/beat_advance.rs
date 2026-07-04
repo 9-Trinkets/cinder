@@ -1,4 +1,4 @@
-use crate::content::types::{AdvanceCondition, ContentPack};
+use crate::content::types::{AdvanceCondition, AdvanceEffect, ContentPack};
 use crate::engine::state::WorldState;
 
 pub(super) fn advance_objective_for_signal(
@@ -70,6 +70,20 @@ pub(super) fn advance_objective_for_signal(
             for line in &next_stage.narrative_lines {
                 messages.push(super::observation::render_story_text(line, state));
             }
+            for effect in &next_stage.on_advance_effects {
+                match effect {
+                    AdvanceEffect::AdjustActorStat { actor_id, stat, delta } => {
+                        if let Err(e) = state.adjust_actor_stat(actor_id, stat, *delta) {
+                            eprintln!("[cinder] on_advance_effect error: {e}");
+                        }
+                    }
+                    AdvanceEffect::AdjustPairStat { participant_a_id, participant_b_id, stat, delta } => {
+                        if let Err(e) = state.adjust_pair_stat(participant_a_id, participant_b_id, stat, *delta) {
+                            eprintln!("[cinder] on_advance_effect error: {e}");
+                        }
+                    }
+                }
+            }
             if next_stage.end_session {
                 state.stages_completed += 1;
                 state.game_over = true;
@@ -109,6 +123,7 @@ pub(super) fn world_state_condition_input(state: &WorldState) -> serde_json::Val
     serde_json::json!({
         "current_time_minutes": state.current_time_minutes,
         "active_stage_ids": state.active_objective_stage_ids,
+        "stages_completed": state.stages_completed,
         "actor_stats": state.actor_stats,
         "pair_stats": state.pair_stats,
     })

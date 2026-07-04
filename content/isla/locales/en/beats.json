@@ -3,7 +3,12 @@
     "intake",
     "timeout-watch-transformative",
     "timeout-watch-partial",
-    "timeout-watch-misaligned"
+    "timeout-watch-misaligned",
+    "secret-1-silent-piano",
+    "secret-2-hospitalization",
+    "secret-3-invisible-child",
+    "secret-4-last-relationship",
+    "secret-5-core-fear"
   ],
   "stages": [
     {
@@ -286,6 +291,140 @@
       ],
       "end_session": true,
       "next_chapter_preview": "Future sessions may require a different recommendation strategy and softer intervention timing."
+    },
+    {
+      "id": "secret-1-silent-piano",
+      "advance_signals": [
+        {
+          "signal": "stat_threshold",
+          "conditions": [
+            { "path": "actor_stats.noa.trust", "operator": "gte", "value": 5 },
+            { "path": "stages_completed", "operator": "gte", "value": 1 },
+            { "path": "actor_stats.noa.secret_1_found", "operator": "less_than", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_id": "secret-1-revealed"
+    },
+    {
+      "id": "secret-1-revealed",
+      "summary": "Secret 1/5: The Silent Piano",
+      "update_message": "Noa mentions her mother was a pianist who gave up her dream.",
+      "narrative_lines": [
+        "Noa's eyes drift to the window. 'My mother was a pianist. Really talented. She had this audition once \u2014 for the Philharmonic \u2014 and she didn't get it.' She pauses. 'After that, she stopped playing. The piano just sat in our living room. Silent. I was maybe ten, and I remember thinking: this is what happens if you want something too much.'"
+      ],
+      "on_advance_effects": [
+        { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "secrets_found", "delta": 1 },
+        { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "secret_1_found", "delta": 1 }
+      ]
+    },
+    {
+      "id": "secret-2-hospitalization",
+      "advance_signals": [
+        {
+          "signal": "stat_threshold",
+          "conditions": [
+            { "path": "actor_stats.noa.trust", "operator": "gte", "value": 6 },
+            { "path": "actor_stats.noa.secret_1_found", "operator": "gte", "value": 1 },
+            { "path": "stages_completed", "operator": "gte", "value": 3 },
+            { "path": "actor_stats.noa.secret_2_found", "operator": "less_than", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_id": "secret-2-revealed"
+    },
+    {
+      "id": "secret-2-revealed",
+      "summary": "Secret 2/5: The Hospitalization",
+      "update_message": "Noa reveals what happened when her mother disappeared for three months.",
+      "narrative_lines": [
+        "Noa wraps both hands around her cup. 'When I was fourteen, she stopped getting out of bed. I didn't know what was happening. My father sent me to my aunt's. He said she needed rest.' Her voice stays flat, clinical. 'When I came back, she was different. Quieter. No one ever told me what happened. We just \u2014 never talked about it. I was fourteen and I learned that some things are too big to say out loud. So you don't say them.'"
+      ],
+      "on_advance_effects": [
+        { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "secrets_found", "delta": 1 },
+        { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "secret_2_found", "delta": 1 }
+      ]
+    },
+    {
+      "id": "secret-3-invisible-child",
+      "advance_signals": [
+        {
+          "signal": "stat_threshold",
+          "conditions": [
+            { "path": "actor_stats.noa.trust", "operator": "gte", "value": 7 },
+            { "path": "actor_stats.noa.secret_2_found", "operator": "gte", "value": 1 },
+            { "path": "stages_completed", "operator": "gte", "value": 6 },
+            { "path": "actor_stats.noa.secret_3_found", "operator": "less_than", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_id": "secret-3-revealed"
+    },
+    {
+      "id": "secret-3-revealed",
+      "summary": "Secret 3/5: The Invisible Child",
+      "update_message": "Noa connects her childhood survival strategy to who she became.",
+      "narrative_lines": [
+        "Noa sets the book down. 'I figured out pretty early that my mom had two modes. When I was good \u2014 top of my class, no trouble \u2014 she was present. She'd make dinner, ask about school. But if I was messy \u2014 if I forgot an assignment, if I talked back \u2014 she'd just \u2026 go through the motions. Like I wasn't there.' She presses her palm flat on the table. 'So I learned to be the kind of kid no one had to worry about. I've been that person for twenty years. I don't know how to be anything else.'"
+      ],
+      "on_advance_effects": [
+        { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "secrets_found", "delta": 1 },
+        { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "secret_3_found", "delta": 1 }
+      ]
+    },
+    {
+      "id": "secret-4-last-relationship",
+      "advance_signals": [
+        {
+          "signal": "stat_threshold",
+          "conditions": [
+            { "path": "actor_stats.noa.trust", "operator": "gte", "value": 8 },
+            { "path": "actor_stats.noa.secret_3_found", "operator": "gte", "value": 1 },
+            { "path": "stages_completed", "operator": "gte", "value": 9 },
+            { "path": "actor_stats.noa.secret_4_found", "operator": "less_than", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_id": "secret-4-revealed"
+    },
+    {
+      "id": "secret-4-revealed",
+      "summary": "Secret 4/5: The Last Relationship",
+      "update_message": "Noa understands what her ex saw that she couldn't.",
+      "narrative_lines": [
+        "Noa is quiet for a long moment. 'The last one \u2014 she told me, toward the end, that she felt like I was keeping score. Like I was trying to be so good that she couldn't possibly leave, but the effort of being that good meant I was never actually there.' She lets out a small breath. 'And she was right. I was doing exactly what I learned to do at fourteen. I was performing \u201cfine\u201d so she wouldn't leave, and the performance itself was why she left.'"
+      ],
+      "on_advance_effects": [
+        { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "secrets_found", "delta": 1 },
+        { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "secret_4_found", "delta": 1 }
+      ]
+    },
+    {
+      "id": "secret-5-core-fear",
+      "advance_signals": [
+        {
+          "signal": "stat_threshold",
+          "conditions": [
+            { "path": "actor_stats.noa.trust", "operator": "gte", "value": 9 },
+            { "path": "actor_stats.noa.secret_4_found", "operator": "gte", "value": 1 },
+            { "path": "stages_completed", "operator": "gte", "value": 12 },
+            { "path": "actor_stats.noa.secret_5_found", "operator": "less_than", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_id": "secret-5-revealed"
+    },
+    {
+      "id": "secret-5-revealed",
+      "summary": "Secret 5/5: The Core Fear",
+      "update_message": "Noa names the fear that has driven her entire life.",
+      "narrative_lines": [
+        "Noa's voice drops. 'I'm afraid that if anyone really saw me \u2014 the version that doesn't have it together, that doesn't know what she wants, that's still fourteen years old and waiting for her mom to come back \u2014 they'd leave.' She looks down at her hands. 'Because that's what happened. My dad left emotionally. My mom left into her depression. The message was the same: you are not enough to stay for. So I made myself easy. Undemanding. Invisible. And now I'm so good at being invisible that I don't even know if there's someone underneath anymore.'"
+      ],
+      "on_advance_effects": [
+        { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "secrets_found", "delta": 1 },
+        { "kind": "adjust_actor_stat", "actor_id": "noa", "stat": "secret_5_found", "delta": 1 }
+      ]
     }
   ]
 }

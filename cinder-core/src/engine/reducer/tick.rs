@@ -5,7 +5,7 @@ use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
 use serde_json::json;
 
-use super::beat_advance::advance_objective_for_signal;
+use super::beat_advance::{advance_objective_for_signal, advance_conditions_met};
 use super::observation::actors_in_room;
 
 pub(super) fn advance_actor_stats_on_tick(
@@ -157,6 +157,24 @@ pub(super) fn all_actors_have_met_everyone(state: &WorldState, content: &Content
                 .any(|line| line.kind == ConversationMemoryKind::Speech)
         })
     })
+}
+
+pub(super) fn advance_stat_threshold_objectives(
+    state: &mut WorldState,
+    content: &ContentPack,
+) -> Vec<String> {
+    let active_ids: Vec<String> = state.active_objective_stage_ids.clone();
+    for stage_id in &active_ids {
+        let Some(stage) = content.beats.stages.iter().find(|s| s.id == *stage_id) else {
+            continue;
+        };
+        if stage.advance_signals.iter().any(|signal| {
+            signal.signal() == "stat_threshold" && advance_conditions_met(state, signal.conditions())
+        }) {
+            return advance_objective_for_signal(state, content, "stat_threshold");
+        }
+    }
+    Vec::new()
 }
 
 pub(super) fn all_actors_have_learned_house(state: &WorldState, content: &ContentPack) -> bool {

@@ -366,6 +366,30 @@ impl CinderRuntime {
         Ok((completed, total))
     }
 
+    pub fn current_secret_progress(&self) -> Result<(usize, usize), Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for secret progress")?;
+        let secret_stages: Vec<_> = self
+            .content
+            .beats
+            .stages
+            .iter()
+            .filter(|s| {
+                s.advance_signals
+                    .iter()
+                    .any(|sig| sig.signal() == "stat_threshold")
+            })
+            .collect();
+        let total = secret_stages.len();
+        let found = secret_stages
+            .iter()
+            .filter(|s| !state.active_objective_stage_ids.contains(&s.id))
+            .count();
+        Ok((found, total))
+    }
+
     pub fn relationship_status_lines(&self) -> Result<Vec<String>, Box<dyn Error>> {
         let state = self
             .state
