@@ -97,6 +97,11 @@ pub fn apply_events(
                     &mut lines,
                 );
             }
+            WorldEvent::ActorStatAdjusted { actor_id, stat, delta } => {
+                if let Err(e) = state.adjust_actor_stat(actor_id, stat, *delta) {
+                    eprintln!("[cinder] ActorStatAdjusted error: {e}");
+                }
+            }
             WorldEvent::PairStatAdjusted {
                 participant_a_id,
                 participant_b_id,

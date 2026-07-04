@@ -18,6 +18,7 @@ pub struct ContentPack {
     pub commands: CommandsDefinition,
     pub affordances: AffordancesDefinition,
     pub hooks: BTreeMap<String, Value>,
+    pub speech_intents: SpeechIntentsConfig,
     pub room_index: HashMap<String, usize>,
     pub actor_index: HashMap<String, usize>,
     pub command_index: HashMap<String, usize>,

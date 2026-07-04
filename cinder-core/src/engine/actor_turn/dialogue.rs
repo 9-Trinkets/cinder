@@ -1,6 +1,6 @@
 use super::builder::ActorTurnTargetContext;
 use super::context::{SpeakCandidateContext, actors_in_room_except};
-use crate::content::types::{ActorDefinition, ContentPack};
+use crate::content::types::{ActorDefinition, ContentPack, SpeechIntentEffect};
 use crate::engine::dialogue::{DialogueGenerator, DirectSpeechIntentRequest};
 use crate::engine::dialogue_grounding::{
     build_grounded_dialogue_request_for_exchange, build_grounded_dialogue_request_for_room,
@@ -206,7 +206,8 @@ pub(crate) fn actor_to_actor_dialogue(
         target_person_message: request.other_person_message.clone(),
         spoken_line: text,
     };
-    let attraction_prompt = dialogue.build_direct_speech_intent_prompt(&attraction_request);
+    let intents = &content.speech_intents.intents;
+    let attraction_prompt = dialogue.build_direct_speech_intent_prompt(&attraction_request, intents);
     let attraction_backend = dialogue.trace_metadata("direct_speech_intent");
     emit_trace(
         "direct_speech_intent",
@@ -224,7 +225,7 @@ pub(crate) fn actor_to_actor_dialogue(
     )
     .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
     let decision = dialogue
-        .extract_direct_speech_intent(&attraction_request)
+        .extract_direct_speech_intent(&attraction_request, intents)
         .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
     emit_trace(
         "direct_speech_intent",
@@ -235,12 +236,13 @@ pub(crate) fn actor_to_actor_dialogue(
             "actor_name": attraction_request.actor_name.clone(),
             "other_person_id": attraction_request.other_person_id.clone(),
             "other_person_name": attraction_request.other_person_name.clone(),
-            "decision": decision.label(),
-            "delta": decision.attraction_delta(),
+            "decision": decision.0,
             "backend": attraction_backend,
         }),
     )
     .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
+    let actor_id = actor.id.clone();
+    let other_person_id = target.actor_id.clone();
     let mut events = vec![WorldEvent::ActorSpoke {
         actor_id: actor.id.clone(),
         actor_name: actor.name.clone(),
@@ -250,13 +252,26 @@ pub(crate) fn actor_to_actor_dialogue(
         room_id: current_room_id.to_string(),
         text: attraction_request.spoken_line.clone(),
     }];
-    if decision.attraction_delta() > 0 {
-        events.push(WorldEvent::PairStatAdjusted {
-            participant_a_id: attraction_request.actor_id,
-            participant_b_id: attraction_request.other_person_id,
-            stat: "attraction".to_string(),
-            delta: decision.attraction_delta(),
-        });
+    if let Some(intent) = intents.iter().find(|i| i.label.eq_ignore_ascii_case(&decision.0)) {
+        for effect in &intent.effects {
+            match effect {
+                SpeechIntentEffect::ActorStat { stat, delta } => {
+                    events.push(WorldEvent::ActorStatAdjusted {
+                        actor_id: actor_id.clone(),
+                        stat: stat.clone(),
+                        delta: *delta,
+                    });
+                }
+                SpeechIntentEffect::PairStat { stat, delta } => {
+                    events.push(WorldEvent::PairStatAdjusted {
+                        participant_a_id: actor_id.clone(),
+                        participant_b_id: other_person_id.clone(),
+                        stat: stat.clone(),
+                        delta: *delta,
+                    });
+                }
+            }
+        }
     }
     Ok(events)
 }

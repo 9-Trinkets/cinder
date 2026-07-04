@@ -1,4 +1,5 @@
 use super::DialogueGenerator;
+use crate::content::types::SpeechIntentLabel;
 use super::types::{
     ActorTurnActionDecision, ActorTurnActionRequest, ConversationMemorySummaryRequest,
     DialogueRequest, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
@@ -152,6 +153,7 @@ impl DialogueGenerator for ScriptedDialogueGenerator {
     fn extract_direct_speech_intent(
         &self,
         request: &DirectSpeechIntentRequest,
+        _intents: &[SpeechIntentLabel],
     ) -> Result<DirectSpeechIntentDecision, String> {
         Ok(self
             .attraction_intents
@@ -159,7 +161,7 @@ impl DialogueGenerator for ScriptedDialogueGenerator {
                 "{}::{}",
                 request.actor_id, request.other_person_id
             ))
-            .copied()
-            .unwrap_or(DirectSpeechIntentDecision::None))
+            .cloned()
+            .unwrap_or(DirectSpeechIntentDecision("NONE".to_string())))
     }
 }

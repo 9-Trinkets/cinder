@@ -1,9 +1,47 @@
 use super::types::{PlannedTurn, RouteEnvelope};
-use crate::content::types::ContentPack;
+use crate::content::types::{ContentPack, SpeechIntentEffect};
 use crate::engine::dialogue::{
     DialogueGenerator, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
 };
 use crate::engine::events::WorldEvent;
+
+fn apply_speech_intent_effects(
+    content: &ContentPack,
+    decision: &DirectSpeechIntentDecision,
+    actor_id: &str,
+    other_person_id: &str,
+) -> Vec<WorldEvent> {
+    let label = &decision.0;
+    let Some(intent) = content
+        .speech_intents
+        .intents
+        .iter()
+        .find(|i| i.label.eq_ignore_ascii_case(label))
+    else {
+        return Vec::new();
+    };
+    intent
+        .effects
+        .iter()
+        .map(|effect| match effect {
+            SpeechIntentEffect::ActorStat { stat, delta } => {
+                WorldEvent::ActorStatAdjusted {
+                    actor_id: actor_id.to_string(),
+                    stat: stat.clone(),
+                    delta: *delta,
+                }
+            }
+            SpeechIntentEffect::PairStat { stat, delta } => {
+                WorldEvent::PairStatAdjusted {
+                    participant_a_id: actor_id.to_string(),
+                    participant_b_id: other_person_id.to_string(),
+                    stat: stat.clone(),
+                    delta: *delta,
+                }
+            }
+        })
+        .collect()
+}
 
 pub(super) fn handle_actor_dialogue(
     dialogue: &dyn DialogueGenerator,
@@ -13,6 +51,7 @@ pub(super) fn handle_actor_dialogue(
     inbound: &str,
     emit_trace: impl Fn(&str, &str, serde_json::Value) -> Result<(), String>,
 ) -> Result<RouteEnvelope, String> {
+    let intents = &content.speech_intents.intents;
     let mut planned: PlannedTurn =
         serde_json::from_str(inbound).map_err(|error| error.to_string())?;
     let request = planned
@@ -70,7 +109,8 @@ pub(super) fn handle_actor_dialogue(
                 room_id: request.current_room_id,
                 text: attraction_request.spoken_line.clone(),
             });
-            let attraction_prompt = dialogue.build_direct_speech_intent_prompt(&attraction_request);
+            let attraction_prompt =
+                dialogue.build_direct_speech_intent_prompt(&attraction_request, intents);
             let attraction_backend = dialogue.trace_metadata("direct_speech_intent");
             emit_trace(
                 "direct_speech_intent",
@@ -86,7 +126,8 @@ pub(super) fn handle_actor_dialogue(
                     "backend": attraction_backend.clone(),
                 }),
             )?;
-            let decision = dialogue.extract_direct_speech_intent(&attraction_request)?;
+            let decision =
+                dialogue.extract_direct_speech_intent(&attraction_request, intents)?;
             emit_trace(
                 "direct_speech_intent",
                 "model.response",
@@ -96,37 +137,16 @@ pub(super) fn handle_actor_dialogue(
                     "actor_name": attraction_request.actor_name.clone(),
                     "other_person_id": attraction_request.other_person_id.clone(),
                     "other_person_name": attraction_request.other_person_name.clone(),
-                    "decision": decision.label(),
-                    "delta": decision.attraction_delta(),
+                    "decision": decision.0,
                     "backend": attraction_backend,
                 }),
             )?;
-            if decision.attraction_delta() > 0 {
-                planned.events.push(WorldEvent::PairStatAdjusted {
-                    participant_a_id: attraction_request.actor_id.clone(),
-                    participant_b_id: attraction_request.other_person_id.clone(),
-                    stat: "attraction".to_string(),
-                    delta: decision.attraction_delta(),
-                });
-            }
-
-            if decision == DirectSpeechIntentDecision::Validating {
-                planned.events.push(WorldEvent::PairStatAdjusted {
-                    participant_a_id: attraction_request.actor_id.clone(),
-                    participant_b_id: attraction_request.other_person_id.clone(),
-                    stat: "validation".to_string(),
-                    delta: 1,
-                });
-            }
-
-            if decision == DirectSpeechIntentDecision::Challenging {
-                planned.events.push(WorldEvent::PairStatAdjusted {
-                    participant_a_id: attraction_request.actor_id.clone(),
-                    participant_b_id: attraction_request.other_person_id.clone(),
-                    stat: "challenge".to_string(),
-                    delta: 1,
-                });
-            }
+            planned.events.extend(apply_speech_intent_effects(
+                content,
+                &decision,
+                &attraction_request.actor_id,
+                &attraction_request.other_person_id,
+            ));
         }
         Err(error) => planned.events.push(WorldEvent::ActionRejected {
             message: {

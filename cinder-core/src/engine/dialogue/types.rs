@@ -97,36 +97,8 @@ pub struct DirectSpeechIntentRequest {
     pub spoken_line: String,
 }
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, Eq, PartialEq)]
-pub enum DirectSpeechIntentDecision {
-    None,
-    Warm,
-    Flirty,
-    Validating,
-    Challenging,
-}
-
-impl DirectSpeechIntentDecision {
-    pub fn attraction_delta(self) -> i32 {
-        match self {
-            Self::None => 0,
-            Self::Warm => 1,
-            Self::Flirty => 2,
-            Self::Validating => 0,
-            Self::Challenging => 0,
-        }
-    }
-
-    pub fn label(self) -> &'static str {
-        match self {
-            Self::None => "NONE",
-            Self::Warm => "WARM",
-            Self::Flirty => "FLIRTY",
-            Self::Validating => "VALIDATING",
-            Self::Challenging => "CHALLENGING",
-        }
-    }
-}
+#[derive(Debug, Clone, Serialize, Deserialize, Eq, PartialEq)]
+pub struct DirectSpeechIntentDecision(pub String);
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ActorTurnActionRequest {

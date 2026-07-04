@@ -24,6 +24,7 @@ use self::prompts::{
     direct_speech_intent_system_prompt, menu_intent_system_prompt, sanitize_statement,
 };
 
+use crate::content::types::SpeechIntentLabel;
 use crate::engine::neuron::{
     NeuronRoleService, RoleExecutionError, RoleExecutionResponse, RoleMetadata, WorkflowDefinition,
 };
@@ -58,8 +59,12 @@ pub trait DialogueGenerator: Send + Sync {
         build_conversation_memory_summary_prompt(request)
     }
 
-    fn build_direct_speech_intent_prompt(&self, request: &DirectSpeechIntentRequest) -> String {
-        build_direct_speech_intent_prompt(request)
+    fn build_direct_speech_intent_prompt(
+        &self,
+        request: &DirectSpeechIntentRequest,
+        intents: &[SpeechIntentLabel],
+    ) -> String {
+        build_direct_speech_intent_prompt(request, intents)
     }
 
     fn trace_metadata(&self, _role_name: &str) -> serde_json::Value {
@@ -86,6 +91,7 @@ pub trait DialogueGenerator: Send + Sync {
     fn extract_direct_speech_intent(
         &self,
         request: &DirectSpeechIntentRequest,
+        intents: &[SpeechIntentLabel],
     ) -> Result<DirectSpeechIntentDecision, String>;
 
     fn generate_dynamic_menu_options(
@@ -256,10 +262,11 @@ impl DialogueGenerator for SynapseDialogueGenerator {
     fn extract_direct_speech_intent(
         &self,
         request: &DirectSpeechIntentRequest,
+        intents: &[SpeechIntentLabel],
     ) -> Result<DirectSpeechIntentDecision, String> {
         let response = self.run_text_role(
             DIRECT_SPEECH_ATTRACTION_INTENT_ROLE,
-            self.build_direct_speech_intent_prompt(request),
+            self.build_direct_speech_intent_prompt(request, intents),
             direct_speech_intent_system_prompt(request).to_string(),
         )?;
         parse_direct_speech_intent_label(&response)

@@ -4,6 +4,7 @@ use super::{
     ChapterScriptSummaryRequest, ConversationMemorySummaryRequest, DialogueRequest,
     DirectSpeechIntentRequest, MenuIntentRequest,
 };
+use crate::content::types::SpeechIntentLabel;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine};
 
 pub(crate) fn build_scene_brief_dialogue_prompt(request: &DialogueRequest) -> String {
@@ -193,7 +194,10 @@ pub(crate) fn build_chapter_relationship_summary_prompt(
     )
 }
 
-pub(crate) fn build_direct_speech_intent_prompt(request: &DirectSpeechIntentRequest) -> String {
+pub(crate) fn build_direct_speech_intent_prompt(
+    request: &DirectSpeechIntentRequest,
+    intents: &[SpeechIntentLabel],
+) -> String {
     let text = &request.system_text;
     let other_person_message = request
         .other_person_message
@@ -201,6 +205,15 @@ pub(crate) fn build_direct_speech_intent_prompt(request: &DirectSpeechIntentRequ
         .filter(|message| !message.trim().is_empty())
         .map(|message| format!("- {}", sanitize_statement(message)))
         .unwrap_or_else(|| format!("- {}", text.direct_speech_intent_no_reply));
+    let available_intents = if intents.is_empty() {
+        String::new()
+    } else {
+        intents
+            .iter()
+            .map(|label| format!("  - {}: {}", label.label, label.description))
+            .collect::<Vec<_>>()
+            .join("\n")
+    };
     let template = &text.direct_speech_intent_prompt_template;
     render_prompt_template(
         template,
@@ -231,6 +244,7 @@ pub(crate) fn build_direct_speech_intent_prompt(request: &DirectSpeechIntentRequ
             ),
             ("other_person_message", &other_person_message),
             ("spoken_line", &sanitize_statement(&request.spoken_line)),
+            ("available_intents", &available_intents),
         ],
     )
 }

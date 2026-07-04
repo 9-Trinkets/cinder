@@ -1,0 +1,38 @@
+{
+  "intents": [
+    {
+      "label": "NONE",
+      "description": "The line is neutral, practical, cooperative, or purely observational.",
+      "effects": []
+    },
+    {
+      "label": "WARM",
+      "description": "The line reaches toward closeness, emotional openness, or shows vulnerability and trust.",
+      "effects": [
+        { "kind": "actor_stat", "actor_id": "noa", "stat": "openness", "delta": 1 }
+      ]
+    },
+    {
+      "label": "SEEKING",
+      "description": "The line is curious, explorative, or reaches for understanding — asking back or engaging with genuine interest.",
+      "effects": [
+        { "kind": "actor_stat", "actor_id": "noa", "stat": "openness", "delta": 1 }
+      ]
+    },
+    {
+      "label": "RESISTING",
+      "description": "The line is guarded, defensive, deflecting, or pushes the other person away without hostility.",
+      "effects": [
+        { "kind": "actor_stat", "actor_id": "noa", "stat": "resistance", "delta": 1 }
+      ]
+    },
+    {
+      "label": "DISTANT",
+      "description": "The line withdraws emotionally — cold, dismissing, or shutting down the conversation.",
+      "effects": [
+        { "kind": "actor_stat", "actor_id": "noa", "stat": "resistance", "delta": 1 },
+        { "kind": "actor_stat", "actor_id": "noa", "stat": "trust", "delta": -1 }
+      ]
+    }
+  ]
+}

@@ -179,11 +179,11 @@ fn default_direct_speech_intent_no_reply() -> String {
 }
 
 fn default_direct_speech_intent_prompt_template() -> String {
-    "Speaker\n- {actor_name}\n\nTarget\n- {other_person_name}\n\nCurrent Beat\n{current_beat}\n\nSubtext\n{subtext}\n\nRecent Memory\n{recent_memory}\n\nLatest Line From Target\n{other_person_message}\n\nSpoken Line\n- {spoken_line}\n\nTask\nChoose the attraction-building intent in the spoken line.\n- Return NONE when the line is practical, neutral, guarded, or purely friendly.\n- Return WARM when the line reaches toward closeness, praise, tenderness, personal interest, or emotional openness.\n- Return FLIRTY when the line clearly plays with romantic or charged tension, invitation, teasing intimacy, or direct desire.\n- Base the choice on the spoken line first, using the other context only to interpret it.\n- Return exactly one label: NONE, WARM, or FLIRTY.".to_string()
+    "Speaker\n- {actor_name}\n\nTarget\n- {other_person_name}\n\nCurrent Beat\n{current_beat}\n\nSubtext\n{subtext}\n\nRecent Memory\n{recent_memory}\n\nLatest Line From Target\n{other_person_message}\n\nSpoken Line\n- {spoken_line}\n\nAvailable Intents\n{available_intents}\n\nTask\nChoose the intent that best describes the spoken line.\n- Base the choice on the spoken line first, using the other context only to interpret it.\n- Return exactly one label from the Available Intents list.".to_string()
 }
 
 fn default_direct_speech_intent_system_prompt() -> String {
-    "You classify whether one direct line is building attraction toward the other person. Return exactly one label: NONE, WARM, or FLIRTY. NONE means neutral or purely friendly, WARM means clearly reaching toward closeness or tenderness, and FLIRTY means clearly charged, teasing, inviting, or romantic.".to_string()
+    "You classify the relational intent of a spoken line. Return exactly one label from the available intents list. Use the descriptions to guide your choice.".to_string()
 }
 
 fn default_actor_turn_prompt_recent_memory_note() -> String {

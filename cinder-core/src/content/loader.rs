@@ -1,8 +1,8 @@
 use crate::content::types::{
     ActorDefinition, AffordancesDefinition, BeatsDefinition, CommandsDefinition, ContentPack,
     ContentSettingsDefinition, OpeningDefinition, OpeningMenuDefinition, OpeningMovieDefinition,
-    PresentationDefinition, RoomDefinition, StatsDefinition, SystemTextDefinition,
-    UiTextDefinition,
+    PresentationDefinition, RoomDefinition, SpeechIntentsConfig, StatsDefinition,
+    SystemTextDefinition, UiTextDefinition,
 };
 use serde::de::DeserializeOwned;
 use serde_json::Value;
@@ -128,6 +128,9 @@ pub fn load_pack_from_dir_with_locale(
         read_optional_json::<AffordancesDefinition>(path, "affordances.json")?.unwrap_or_default();
     let hooks =
         read_optional_json::<BTreeMap<String, Value>>(path, "hooks.json")?.unwrap_or_default();
+    let speech_intents: SpeechIntentsConfig =
+        read_optional_json::<SpeechIntentsConfig>(path, "intents.json")?
+            .unwrap_or_default();
 
     let room_index: HashMap<String, usize> = rooms
         .iter()
@@ -229,6 +232,7 @@ pub fn load_pack_from_dir_with_locale(
         commands,
         affordances,
         hooks,
+        speech_intents,
         room_index,
         actor_index,
         command_index,

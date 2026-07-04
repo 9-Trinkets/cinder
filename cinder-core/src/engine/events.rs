@@ -42,6 +42,11 @@ pub enum WorldEvent {
         room_id: String,
         text: String,
     },
+    ActorStatAdjusted {
+        actor_id: String,
+        stat: String,
+        delta: i32,
+    },
     PairStatAdjusted {
         participant_a_id: String,
         participant_b_id: String,

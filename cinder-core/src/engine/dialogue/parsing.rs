@@ -28,17 +28,11 @@ pub(super) fn parse_menu_intent_label(label: &str) -> Result<MenuIntentDecision,
 pub(super) fn parse_direct_speech_intent_label(
     label: &str,
 ) -> Result<DirectSpeechIntentDecision, String> {
-    match label.trim().to_ascii_uppercase().as_str() {
-        "NONE" => Ok(DirectSpeechIntentDecision::None),
-        "WARM" => Ok(DirectSpeechIntentDecision::Warm),
-        "FLIRTY" => Ok(DirectSpeechIntentDecision::Flirty),
-        "VALIDATING" => Ok(DirectSpeechIntentDecision::Validating),
-        "CHALLENGING" => Ok(DirectSpeechIntentDecision::Challenging),
-        _ => Err(format!(
-            "direct speech attraction intent backend returned '{}'; expected NONE, WARM, FLIRTY, VALIDATING, or CHALLENGING",
-            label.trim()
-        )),
+    let trimmed = label.trim().to_ascii_uppercase();
+    if trimmed.is_empty() {
+        return Err("direct speech intent backend returned empty label".to_string());
     }
+    Ok(DirectSpeechIntentDecision(trimmed))
 }
 
 pub(super) fn parse_actor_turn_action(

@@ -50,33 +50,12 @@
       "cases_path": "rules",
       "next_on_match": "complete",
       "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
+      "default_payload_template": { "effects": [] },
+      "matched_payload_template": { "effects": [] },
+      "effects_field": "effects"
     },
     "input_overlay": {
-      "rules": [
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "noa" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "openness",
-            "delta": 1
-          }
-        },
-        {
-          "conditions": [
-            { "path": "actor_id", "operator": "equal", "value": "noa" }
-          ],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "trust",
-            "delta": 1
-          }
-        }
-      ]
+      "rules": []
     }
   },
   "isla.reading_progress": {
@@ -85,29 +64,12 @@
       "cases_path": "rules",
       "next_on_match": "complete",
       "next_on_default": "complete",
-      "default_payload_template": { "effects": [] }
+      "default_payload_template": { "effects": [] },
+      "matched_payload_template": { "effects": [] },
+      "effects_field": "effects"
     },
     "input_overlay": {
-      "rules": [
-        {
-          "conditions": [],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "focus",
-            "delta": -1
-          }
-        },
-        {
-          "conditions": [],
-          "payload_template": {
-            "kind": "adjust_actor_stat",
-            "actor_id": "noa",
-            "stat": "resistance",
-            "delta": 1
-          }
-        }
-      ]
+      "rules": []
     }
   },
   "isla.coffee_brewed": {
