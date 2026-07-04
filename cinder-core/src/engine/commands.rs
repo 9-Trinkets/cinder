@@ -58,6 +58,16 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
         };
     }
 
+    // Fallback: match by command ID directly (used by web UI overflow actions)
+    for command in &content.commands.actions {
+        if command.player_enabled && command.id.to_ascii_lowercase() == lower {
+            return PlayerCommand::Authored {
+                command_id: command.id.clone(),
+                input: None,
+            };
+        }
+    }
+
     PlayerCommand::Unknown
 }
 
