@@ -38,6 +38,7 @@ const CONVERSATION_MEMORY_SUMMARIZER_ROLE: &str = "conversation_memory_summarize
 const CHAPTER_SCRIPT_SUMMARIZER_ROLE: &str = "chapter_script_summarizer";
 const CHAPTER_RELATIONSHIP_SUMMARIZER_ROLE: &str = "chapter_relationship_summarizer";
 const DIRECT_SPEECH_ATTRACTION_INTENT_ROLE: &str = "direct_speech_intent";
+const YELP_REVIEW_ROLE: &str = "yelp_review";
 
 pub trait DialogueGenerator: Send + Sync {
     fn build_prompt(&self, request: &DialogueRequest) -> String {
@@ -98,6 +99,11 @@ pub trait DialogueGenerator: Send + Sync {
         &self,
         request: &DynamicMenuRequest,
     ) -> Result<Vec<DynamicMenuOptionOutput>, String>;
+
+    fn generate_yelp_review(
+        &self,
+        request: &YelpReviewRequest,
+    ) -> Result<YelpReview, String>;
 }
 
 pub struct SynapseDialogueGenerator {
@@ -270,6 +276,46 @@ impl DialogueGenerator for SynapseDialogueGenerator {
             direct_speech_intent_system_prompt(request).to_string(),
         )?;
         parse_direct_speech_intent_label(&response)
+    }
+
+    fn generate_yelp_review(
+        &self,
+        request: &YelpReviewRequest,
+    ) -> Result<YelpReview, String> {
+        let prompt = format!(
+            r#"Patient: {actor_name}
+Therapist: {other_person_name}
+
+Session Outcome
+{stats_context}
+
+Session Summary
+{session_summary}
+
+Relationship Notes
+{relationship_lines}
+
+Write a short Yelp-style review from {actor_name}'s perspective about their therapy session with {other_person_name}. Be specific and in character.
+
+Return ONLY valid JSON (no markdown, no backticks) in this exact format:
+{{"rating": <1-5>, "review_text": "<the review text>"}}
+
+The rating (1-5 stars) should reflect the patient's genuine experience based on the session outcome.
+The review text should be 2-5 sentences in the patient's voice — honest, specific, and a bit Yelp-flavored."#,
+            actor_name = request.actor_name,
+            other_person_name = request.other_person_name,
+            stats_context = request.stats_context,
+            session_summary = request.session_summary,
+            relationship_lines = request.relationship_lines.join("\n"),
+        );
+        let response = self.run_text_role(
+            YELP_REVIEW_ROLE,
+            prompt,
+            "You write a short Yelp-style review from a patient's perspective. Respond only with valid JSON."
+                .to_string(),
+        )?;
+        serde_json::from_str::<YelpReview>(&response)
+            .map_err(|e| format!("failed to parse yelp review: {e}"))
     }
 
     fn generate_dynamic_menu_options(

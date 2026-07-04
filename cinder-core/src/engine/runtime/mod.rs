@@ -6,7 +6,7 @@ use crate::engine::commands::player_command_help_text;
 use crate::engine::conversation_memory::refresh_conversation_summaries;
 use crate::engine::dialogue::{
     ChapterRelationshipSummaryRequest, ChapterScriptSummaryRequest, DialogueGenerator,
-    SynapseChapterSummaryGenerator, SynapseDialogueGenerator,
+    SynapseChapterSummaryGenerator, SynapseDialogueGenerator, YelpReview, YelpReviewRequest,
 };
 use crate::engine::dialogue_grounding::render_story_text;
 use crate::engine::events::{ObservationMode, TimestampedWorldEvent, WorldEvent};
@@ -23,7 +23,6 @@ use std::error::Error;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
 
-#[derive(Clone)]
 pub struct CinderRuntime {
     content: Arc<ContentPack>,
     dialogue: Arc<dyn DialogueGenerator>,
@@ -33,6 +32,28 @@ pub struct CinderRuntime {
     actor_move_workflow: WorkflowDefinition,
     trace_events: bool,
     trace_dir: PathBuf,
+    yelp_review: Mutex<Option<crate::engine::dialogue::YelpReview>>,
+}
+
+impl Clone for CinderRuntime {
+    fn clone(&self) -> Self {
+        Self {
+            content: Arc::clone(&self.content),
+            dialogue: Arc::clone(&self.dialogue),
+            state: Arc::clone(&self.state),
+            workflow: self.workflow.clone(),
+            actor_tick_workflow: self.actor_tick_workflow.clone(),
+            actor_move_workflow: self.actor_move_workflow.clone(),
+            trace_events: self.trace_events,
+            trace_dir: self.trace_dir.clone(),
+            yelp_review: Mutex::new(
+                self.yelp_review
+                    .lock()
+                    .map(|opt| opt.clone())
+                    .unwrap_or(None),
+            ),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -55,19 +76,6 @@ pub struct MenuChoiceOption {
     pub menu_text: String,
     pub command: String,
     pub transcript_label: Option<String>,
-}
-
-#[derive(Debug, Clone)]
-pub struct ReportCardEntry {
-    pub name: String,
-    pub value: i32,
-    pub delta: i32,
-}
-
-#[derive(Debug, Clone)]
-pub struct ReportCardData {
-    pub outcome_score: i32,
-    pub stats: Vec<ReportCardEntry>,
 }
 
 pub struct FinalChapterSummary {
@@ -154,6 +162,7 @@ impl CinderRuntime {
             actor_move_workflow,
             trace_events,
             trace_dir,
+            yelp_review: Mutex::new(None),
         })
     }
 
@@ -539,6 +548,7 @@ impl CinderRuntime {
             actor_move_workflow: self.actor_move_workflow.clone(),
             trace_events: self.trace_events,
             trace_dir: self.trace_dir.clone(),
+            yelp_review: Mutex::new(None),
         }
     }
 
@@ -834,43 +844,71 @@ impl CinderRuntime {
             .collect())
     }
 
-    pub fn build_report_card(&self) -> Result<ReportCardData, Box<dyn Error>> {
-        let state = self
-            .state
-            .lock()
-            .map_err(|_| "failed to lock runtime state for report card")?;
-        let noa_id = "noa";
-
-        let current = state.actor_stats_snapshot(noa_id);
-        let deltas = state.actor_stat_deltas(noa_id).unwrap_or_default();
-
-        let trust = current.get("trust").copied().unwrap_or(0);
-        let openness = current.get("openness").copied().unwrap_or(0);
-        let focus = current.get("focus").copied().unwrap_or(0);
-        let resistance = current.get("resistance").copied().unwrap_or(0);
-
-        // Derive outcome score from the 4 core stats.
-        // Trust, Openness, and Focus are positive contributors. Resistance is negative.
-        // All stats are 0-10, so (10 - resistance) inverts it to a positive contributor.
-        let derived_score = (trust + openness + focus + (10 - resistance)) as f32 / 4.0;
-        let outcome_score = derived_score.round() as i32;
-
-        let display_stats = ["trust", "openness", "focus", "resistance"];
-        let stats = display_stats
+    pub fn yelp_review(&self) -> Result<Option<YelpReview>, Box<dyn Error>> {
+        {
+            let cached = self
+                .yelp_review
+                .lock()
+                .map_err(|e| e.to_string())?;
+            if let Some(review) = cached.as_ref() {
+                return Ok(Some(review.clone()));
+            }
+        }
+        let (stats_context, session_summary, relationship_lines) = {
+            let state = self
+                .state
+                .lock()
+                .map_err(|_| "failed to lock runtime state for yelp review")?;
+            let noa_id = "noa";
+            let current = state.actor_stats_snapshot(noa_id);
+            let deltas = state.actor_stat_deltas(noa_id).unwrap_or_default();
+            let stats_context = [
+                "trust",
+                "openness",
+                "focus",
+                "resistance",
+                "energy",
+                "secrets_found",
+            ]
             .iter()
-            .filter_map(|stat_key| {
-                current.get(*stat_key).map(|value| ReportCardEntry {
-                    name: stat_key.to_string(),
-                    value: *value,
-                    delta: deltas.get(*stat_key).copied().unwrap_or(0),
-                })
+            .filter_map(|key| {
+                let val = current.get(*key).copied()?;
+                let delta = deltas.get(*key).copied().unwrap_or(0);
+                Some(format!("  {key}: {val} ({delta:+})"))
             })
-            .collect();
-
-        Ok(ReportCardData {
-            outcome_score: outcome_score.clamp(0, 10),
-            stats,
-        })
+            .collect::<Vec<_>>()
+            .join("\n");
+            let session_summary = state.transcript.last().cloned().unwrap_or_default();
+            let relationship_lines = self.relationship_status_lines().unwrap_or_default();
+            (stats_context, session_summary, relationship_lines)
+        };
+        let request = YelpReviewRequest {
+            locale: self.content.locale.clone(),
+            system_text: self.content.system_text.clone(),
+            actor_name: self
+                .content
+                .actors
+                .iter()
+                .find(|a| a.id == "noa")
+                .map(|a| a.name.clone())
+                .unwrap_or_else(|| "Patient".to_string()),
+            other_person_name: "You".to_string(),
+            stats_context,
+            session_summary,
+            relationship_lines,
+        };
+        let review = self
+            .dialogue
+            .generate_yelp_review(&request)
+            .map_err(|e| format!("yelp review generation failed: {e}"))?;
+        {
+            let mut cached = self
+                .yelp_review
+                .lock()
+                .map_err(|e| e.to_string())?;
+            *cached = Some(review.clone());
+        }
+        Ok(Some(review))
     }
 
     pub fn follow_actor_options(&self) -> Result<Vec<MenuChoiceOption>, Box<dyn Error>> {

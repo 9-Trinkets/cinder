@@ -5,11 +5,11 @@ use crate::transcript;
 use cinder_core::content::types::UiTextDefinition;
 use cinder_core::MenuChoiceOption;
 use ratatui::Frame;
-use ratatui::layout::{Alignment, Constraint, Direction, Flex, Layout, Margin, Position, Rect};
+use ratatui::layout::{Alignment, Constraint, Flex, Layout, Margin, Position, Rect};
 use ratatui::style::{Modifier, Style};
 use ratatui::text::{Line, Span, Text};
 use ratatui::widgets::{
-    Bar, BarChart, BarGroup, Block, Borders, Clear, List, ListItem, ListState, Paragraph,
+    Block, Borders, Clear, List, ListItem, ListState, Paragraph,
     Scrollbar, ScrollbarOrientation, ScrollbarState, Wrap,
 };
 use std::time::Duration;
@@ -58,9 +58,9 @@ pub(crate) enum ShellModalSnapshot {
         options: Vec<String>,
         hint: String,
     },
-    ReportCard {
-        outcome_score: i32,
-        stats: Vec<(String, i32, i32)>,
+    YelpReview {
+        rating: u32,
+        review_text: String,
         hint: String,
     },
 }
@@ -336,11 +336,11 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
         ShellModalSnapshot::Detail { title, body, .. } => {
             detail_modal_area(frame.area(), &detail_modal_body_text(title, body))
         }
-        ShellModalSnapshot::ReportCard { .. } => centered_rect(62, 14, frame.area()),
+        ShellModalSnapshot::YelpReview { .. } => centered_rect(62, 14, frame.area()),
         _ => centered_rect(62, 12, frame.area()),
     };
     let block_title = match modal {
-        ShellModalSnapshot::ReportCard { .. } => "Session Report",
+        ShellModalSnapshot::YelpReview { .. } => "Session Complete",
         _ => &ui_text.shell_menu_title,
     };
     let sections = modal_block(frame, area, block_title, theme);
@@ -439,96 +439,33 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
                 sections[1],
             );
         }
-        ShellModalSnapshot::ReportCard {
-            outcome_score,
-            stats,
+        ShellModalSnapshot::YelpReview {
+            rating,
+            review_text,
             hint,
         } => {
             let inner =
                 Layout::vertical([Constraint::Length(2), Constraint::Fill(1)]).split(sections[0]);
             let top = inner[0];
-            let chart_area = inner[1];
+            let review_area = inner[1];
 
             frame.render_widget(
-                Paragraph::new(format!("  Score: {} / 10", outcome_score)).style(
-                    Style::default()
-                        .fg(theme.text)
-                        .add_modifier(Modifier::BOLD),
-                ),
+                Paragraph::new(format!("  {}", rating_stars(*rating)))
+                    .style(Style::default().fg(theme.gold)),
                 top,
             );
 
-            let horizontal = Layout::horizontal([
-                Constraint::Length(12),
-                Constraint::Length(10),
-                Constraint::Fill(1),
-            ])
-            .split(chart_area);
-            let names_area = horizontal[0];
-            let values_area = horizontal[1];
-            let bars_area = horizontal[2];
-
-            let colors = [
-                theme.foam,
-                theme.iris,
-                theme.gold,
-                theme.love,
-            ];
-
-            let name_lines: Vec<Line> = stats
-                .iter()
-                .enumerate()
-                .map(|(i, (name, _, _))| {
-                    Line::from(Span::styled(
-                        name.clone(),
-                        Style::default().fg(colors[i % colors.len()]),
-                    ))
-                })
-                .collect();
-            frame.render_widget(Paragraph::new(Text::from(name_lines)), names_area);
-
-            let value_lines: Vec<Line> = stats
-                .iter()
-                .map(|(_, value, delta)| {
-                    let text = if *delta >= 0 {
-                        format!("{} (+{})", value, delta)
-                    } else {
-                        format!("{} ({})", value, delta)
-                    };
-                    Line::from(text)
-                })
-                .collect();
-            frame.render_widget(Paragraph::new(Text::from(value_lines)), values_area);
-
-            let bars: Vec<Bar> = stats
-                .iter()
-                .enumerate()
-                .map(|(i, (_, value, _))| {
-                    Bar::default()
-                        .value((*value).clamp(0, 10) as u64)
-                        .text_value("".to_string())
-                        .style(Style::default().fg(colors[i % colors.len()]))
-                })
-                .collect();
-
             frame.render_widget(
-                BarChart::default()
-                    .data(BarGroup::default().bars(&bars))
-                    .direction(Direction::Horizontal)
-                    .bar_width(1)
-                    .bar_gap(0)
-                    .max(10),
-                bars_area,
+                Paragraph::new(review_text.clone())
+                    .wrap(Wrap { trim: false })
+                    .style(Style::default().fg(theme.text)),
+                review_area,
             );
 
             frame.render_widget(
                 Paragraph::new(hint.clone())
                     .alignment(Alignment::Right)
-                    .style(
-                        Style::default()
-                            .fg(theme.muted)
-                            .bg(theme.overlay),
-                    ),
+                    .style(Style::default().fg(theme.muted).bg(theme.overlay)),
                 sections[1],
             );
         }
@@ -643,6 +580,12 @@ fn centered_rect(width_percent: u16, height: u16, area: Rect) -> Rect {
         .flex(Flex::Center)
         .split(vertical[0]);
     horizontal[0]
+}
+
+fn rating_stars(rating: u32) -> String {
+    let filled = "★".repeat(rating.min(5) as usize);
+    let empty = "☆".repeat((5 - rating.min(5)) as usize);
+    filled + &empty
 }
 
 fn modal_block(frame: &mut Frame, area: Rect, title: &str, theme: &Theme) -> [Rect; 2] {

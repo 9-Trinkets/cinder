@@ -46,6 +46,13 @@ pub struct UiSnapshot {
     pub talk_options: Vec<MenuOptionData>,
     pub active_menu: Option<ActiveMenuData>,
     pub ui_text: UiTextDefinition,
+    pub yelp_review: Option<YelpReviewData>,
+}
+
+#[derive(Clone, Serialize)]
+pub struct YelpReviewData {
+    pub rating: u32,
+    pub review_text: String,
 }
 
 #[derive(Clone, Serialize)]
@@ -588,6 +595,15 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             talk_options,
             active_menu,
             ui_text: content.ui_text.clone(),
+            yelp_review: session
+                .runtime
+                .yelp_review()
+                .ok()
+                .flatten()
+                .map(|r| YelpReviewData {
+                    rating: r.rating,
+                    review_text: r.review_text,
+                }),
         })
     })
 }

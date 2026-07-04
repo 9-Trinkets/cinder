@@ -139,6 +139,11 @@ export interface ActiveMenuData {
   options: MenuOptionItem[]
 }
 
+export interface YelpReviewData {
+  rating: number
+  review_text: string
+}
+
 export interface UiSnapshot {
   title: string
   time_label: string
@@ -163,6 +168,7 @@ export interface UiSnapshot {
   look_options: LookOptionData[]
   talk_options: MenuOptionItem[]
   active_menu: ActiveMenuData | null
+  yelp_review: YelpReviewData | null
   ui_text: {
     language_name: string
     menu_button_label: string

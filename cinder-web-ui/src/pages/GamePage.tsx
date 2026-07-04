@@ -42,6 +42,7 @@ export default function GamePage() {
   const [input, setInput] = useState('')
   const [gameOver, setGameOver] = useState(false)
   const [busy, setBusy] = useState(false)
+  const [yelpReview, setYelpReview] = useState<api.YelpReviewData | null>(null)
   const [showMenu, setShowMenu] = useState(false)
   const [showLookModal, setShowLookModal] = useState(false)
   const [showTalkModal, setShowTalkModal] = useState(false)
@@ -207,6 +208,18 @@ export default function GamePage() {
     return () => { ws.close(); wsRef.current = null }
   }, [token, id])
 
+  useEffect(() => {
+    if (gameOver) {
+      refreshSnapshot()
+    }
+  }, [gameOver])
+
+  useEffect(() => {
+    if (gameOver && uiSnapshot?.yelp_review) {
+      setYelpReview(uiSnapshot.yelp_review)
+    }
+  }, [gameOver, uiSnapshot])
+
   function openMenu() {
     setMenuView('main')
     setShowMenu(true)
@@ -371,7 +384,29 @@ export default function GamePage() {
               </div>
             )}
             {busy && <p className="text-muted text-sm italic">...</p>}
-            {gameOver && (
+            {yelpReview && (
+              <div className="fixed inset-0 bg-base/80 flex items-center justify-center z-50">
+                <div className="bg-surface rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl">
+                  <h2 className="text-xl font-bold text-center mb-2">Session Complete</h2>
+                  <div className="flex justify-center gap-1 text-2xl mb-4">
+                    {[1,2,3,4,5].map(n => (
+                      <span key={n} className={n <= yelpReview.rating ? 'text-yellow-400' : 'text-muted'}>
+                        {n <= yelpReview.rating ? '\u2605' : '\u2606'}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="text-center text-sm text-muted mb-1">— Noa</p>
+                  <p className="text-center text-balance leading-relaxed">{yelpReview.review_text}</p>
+                  <button
+                    className="mt-6 w-full py-2 bg-love text-white rounded-lg font-semibold hover:opacity-90"
+                    onClick={() => setYelpReview(null)}
+                  >
+                    OK
+                  </button>
+                </div>
+              </div>
+            )}
+            {gameOver && !yelpReview && (
               <p className="text-love font-semibold text-center pt-4">Game Over</p>
             )}
             <div ref={bottomRef} />

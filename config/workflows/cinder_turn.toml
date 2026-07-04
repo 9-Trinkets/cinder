@@ -73,6 +73,8 @@ agent_profile = "cinder_actor_turn_validator"
 
 [synapse.workflows.cinder_turn.roles.direct_speech_intent]
 
+[synapse.workflows.cinder_turn.roles.yelp_review]
+
 [synapse.workflows.cinder_turn.roles.book_recommender]
 system_prompt = """You are a literary therapist recommending fiction books for a bibliotherapy session.
 Each recommendation must feel like a real published novel: an evocative, cinematic title that

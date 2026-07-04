@@ -274,3 +274,20 @@ pub struct DynamicMenuOptionOutput {
     pub title: String,
     pub menu_text: String,
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct YelpReviewRequest {
+    pub locale: String,
+    pub system_text: SystemTextDefinition,
+    pub actor_name: String,
+    pub other_person_name: String,
+    pub stats_context: String,
+    pub session_summary: String,
+    pub relationship_lines: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct YelpReview {
+    pub rating: u32,
+    pub review_text: String,
+}

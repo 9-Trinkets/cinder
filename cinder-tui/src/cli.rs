@@ -8,7 +8,7 @@ use cinder_core::content::loader::{
     LocaleOption, available_locales, load_pack_from_dir_with_locale, pack_dir,
 };
 use cinder_core::content::types::{ShellMenuItem, UiTextDefinition};
-use cinder_core::{CinderRuntime, MenuChoiceOption, ReportCardData, TurnOutcome};
+use cinder_core::{CinderRuntime, MenuChoiceOption, TurnOutcome, YelpReview};
 use crossterm::cursor::SetCursorStyle;
 use crossterm::event::{self, Event, KeyEventKind};
 use crossterm::execute;
@@ -80,7 +80,7 @@ enum ShellModalState {
     About,
     ExitConfirm,
     DaySummary { day_number: u32, body: String },
-    ReportCard { data: ReportCardData },
+    YelpReview { data: YelpReview },
     Projector(TimedTextPlayback),
 }
 
@@ -227,9 +227,12 @@ impl TuiApp {
             self.sync_tick_pause();
             return Ok(());
         }
-        let data = self.build_report_card()?;
+        let data = self.runtime.yelp_review()?.unwrap_or(YelpReview {
+            rating: 0,
+            review_text: "Session ended.".to_string(),
+        });
         self.pending_final_summary = false;
-        self.set_shell_modal(Some(ShellModalState::ReportCard { data }));
+        self.set_shell_modal(Some(ShellModalState::YelpReview { data }));
         self.sync_tick_pause();
         Ok(())
     }
@@ -262,10 +265,6 @@ impl TuiApp {
             self.ui_text.day_summary_relationships_label,
             bullet_join(relationship_lines)
         ))
-    }
-
-    fn build_report_card(&self) -> Result<ReportCardData, Box<dyn Error>> {
-        self.runtime.build_report_card()
     }
 
     fn run(&mut self) -> Result<(), Box<dyn Error>> {
@@ -381,7 +380,7 @@ impl TuiApp {
             Some(ShellModalState::Submenu { .. }) => Some(ShellModalState::Root),
             Some(ShellModalState::ExitConfirm)
             | Some(ShellModalState::DaySummary { .. })
-            | Some(ShellModalState::ReportCard { .. }) => None,
+            | Some(ShellModalState::YelpReview { .. }) => None,
             Some(ShellModalState::Projector(_)) | Some(ShellModalState::Root) | None => None,
         });
         self.sync_tick_pause();
@@ -536,7 +535,7 @@ impl TuiApp {
                 | ShellModalState::ThingsToDo
                 | ShellModalState::About
                 | ShellModalState::DaySummary { .. }
-                | ShellModalState::ReportCard { .. }
+                | ShellModalState::YelpReview { .. }
                 | ShellModalState::Projector(_),
             ) => None,
             Some(ShellModalState::ExitConfirm) => {
@@ -868,7 +867,7 @@ impl TuiApp {
             Some(ShellModalState::DaySummary { day_number, body }) => {
                 Some((self.format_day_summary_title(*day_number), body.clone()))
             }
-            Some(ShellModalState::ReportCard { .. }) => None,
+            Some(ShellModalState::YelpReview { .. }) => None,
             _ => None,
         }
     }
@@ -1192,13 +1191,9 @@ impl TuiApp {
                     scroll: self.shell_modal_scroll,
                 })
             }
-            Some(ShellModalState::ReportCard { data }) => Some(ShellModalSnapshot::ReportCard {
-                outcome_score: data.outcome_score,
-                stats: data
-                    .stats
-                    .iter()
-                    .map(|s| (s.name.clone(), s.value, s.delta))
-                    .collect(),
+            Some(ShellModalState::YelpReview { data }) => Some(ShellModalSnapshot::YelpReview {
+                rating: data.rating,
+                review_text: data.review_text.clone(),
                 hint: self.ui_text.modal_close_hint.clone(),
             }),
             Some(ShellModalState::Projector(_)) => None,
