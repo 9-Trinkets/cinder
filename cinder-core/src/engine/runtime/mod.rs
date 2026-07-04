@@ -854,6 +854,15 @@ impl CinderRuntime {
                 return Ok(Some(review.clone()));
             }
         }
+        {
+            let state = self
+                .state
+                .lock()
+                .map_err(|_| "failed to lock runtime state for yelp review guard")?;
+            if !state.game_over {
+                return Ok(None);
+            }
+        }
         let (stats_context, session_summary, relationship_lines) = {
             let state = self
                 .state
