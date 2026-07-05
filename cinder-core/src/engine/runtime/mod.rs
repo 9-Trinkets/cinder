@@ -19,6 +19,7 @@ use crate::engine::workflows::{
     cinder_npc_tick_workflow_path, cinder_npc_turn_workflow_path, workflow_path_for_id,
 };
 use serde::Serialize;
+use std::collections::HashMap;
 use std::error::Error;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
@@ -238,7 +239,7 @@ impl CinderRuntime {
         Ok(state.has_item(item_id))
     }
 
-    pub fn inventory_items(&self) -> Result<Vec<String>, Box<dyn Error>> {
+    pub fn inventory_items(&self) -> Result<HashMap<String, u32>, Box<dyn Error>> {
         let state = self
             .state
             .lock()

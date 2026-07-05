@@ -497,7 +497,9 @@ export default function GamePage() {
                 <p className="text-xs text-muted uppercase tracking-wider">Inventory</p>
                 <ul className="mt-1 space-y-0.5">
                   {uiSnapshot.inventory.map((item, i) => (
-                    <li key={i} className="text-text text-xs">• {item}</li>
+                    <li key={i} className="text-text text-xs">
+                      • {item.label}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
+                    </li>
                   ))}
                 </ul>
               </div>

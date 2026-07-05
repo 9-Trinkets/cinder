@@ -144,6 +144,11 @@ export interface YelpReviewData {
   review_text: string
 }
 
+export interface InventoryItem {
+  label: string
+  count: number
+}
+
 export interface UiSnapshot {
   title: string
   time_label: string
@@ -169,7 +174,7 @@ export interface UiSnapshot {
   talk_options: MenuOptionItem[]
   active_menu: ActiveMenuData | null
   yelp_review: YelpReviewData | null
-  inventory: string[]
+  inventory: InventoryItem[]
   ui_text: {
     language_name: string
     menu_button_label: string

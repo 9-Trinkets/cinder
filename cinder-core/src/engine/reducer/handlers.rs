@@ -556,6 +556,7 @@ pub(super) fn handle_item_consumed(
     state: &mut WorldState,
     content: &ContentPack,
     item_id: &str,
+    consumer_id: &str,
     consumer_name: &str,
     lines: &mut Vec<String>,
 ) {
@@ -564,7 +565,11 @@ pub(super) fn handle_item_consumed(
         .map(|i| i.label.as_str())
         .unwrap_or(item_id);
     if state.remove_item(item_id) {
-        lines.push(format!("{consumer_name} accepts the {label}."));
+        if consumer_id == "player" {
+            lines.push(format!("You drink the {label}."));
+        } else {
+            lines.push(format!("{consumer_name} accepts the {label}."));
+        }
     }
 }
 

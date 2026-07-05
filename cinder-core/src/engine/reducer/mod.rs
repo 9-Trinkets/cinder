@@ -232,10 +232,10 @@ pub fn apply_events(
             }
             WorldEvent::ItemConsumed {
                 item_id,
+                consumer_id,
                 consumer_name,
-                ..
             } => {
-                handle_item_consumed(state, content, item_id, consumer_name, &mut lines);
+                handle_item_consumed(state, content, item_id, consumer_id, consumer_name, &mut lines);
             }
             WorldEvent::ItemObserved { item_id } => {
                 handle_item_observed(state, content, item_id, &mut lines);

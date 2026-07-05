@@ -47,13 +47,19 @@ pub struct UiSnapshot {
     pub active_menu: Option<ActiveMenuData>,
     pub ui_text: UiTextDefinition,
     pub yelp_review: Option<YelpReviewData>,
-    pub inventory: Vec<String>,
+    pub inventory: Vec<InventoryItem>,
 }
 
 #[derive(Clone, Serialize)]
 pub struct YelpReviewData {
     pub rating: u32,
     pub review_text: String,
+}
+
+#[derive(Clone, Serialize)]
+pub struct InventoryItem {
+    pub label: String,
+    pub count: u32,
 }
 
 #[derive(Clone, Serialize)]
@@ -550,13 +556,17 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
                         return false;
                     }
                 }
-                if !c.requires_any.is_empty() {
-                    let has_any = c.requires_any.iter().any(|id| {
-                        session
-                            .runtime
-                            .player_has_item(id)
-                            .unwrap_or(false)
-                    });
+                if !c.requires_any.is_empty() || !c.consumes_any.is_empty() {
+                    let has_any = c
+                        .requires_any
+                        .iter()
+                        .chain(c.consumes_any.iter())
+                        .any(|id| {
+                            session
+                                .runtime
+                                .player_has_item(id)
+                                .unwrap_or(false)
+                        });
                     if !has_any {
                         return false;
                     }
@@ -639,11 +649,12 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
                 .inventory_items()
                 .unwrap_or_default()
                 .into_iter()
-                .map(|id| {
-                    content
+                .map(|(id, count)| {
+                    let label = content
                         .item(&id)
                         .map(|i| i.label.clone())
-                        .unwrap_or(id)
+                        .unwrap_or(id);
+                    InventoryItem { label, count }
                 })
                 .collect(),
         })

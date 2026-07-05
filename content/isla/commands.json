@@ -202,7 +202,7 @@
       "consumes_item": "coffee",
       "content_event": {
         "id": "isla.coffee_served",
-        "event_text": "You bring a fresh cup to Noa's side of the table. She wraps both hands around it without looking up from the page.",
+        "event_text": "You bring a fresh cup to Noa's side of the table. She wraps both hands around it, the warmth settling into her palms.",
         "hook_id": "isla.coffee_served",
         "signals": ["coffee_served"]
       }
@@ -223,7 +223,7 @@
       "consumes_item": "tea",
       "content_event": {
         "id": "isla.tea_served",
-        "event_text": "You set a warm cup beside Noa's elbow. The steam rises slowly between them and the page.",
+        "event_text": "You set a warm cup beside Noa's elbow. The steam rises slowly, carrying a floral note through the air.",
         "hook_id": "isla.tea_served",
         "signals": ["tea_served"]
       }
@@ -261,7 +261,7 @@
         "example": "drink",
         "advances_time": false
       },
-      "requires_any": ["coffee", "tea"],
+      "consumes_any": ["coffee", "tea"],
       "content_event": {
         "id": "isla.beverage_consumed",
         "event_text": "The familiar rhythm of the cafe deepens. Steam rises, warmth settles.",
@@ -281,7 +281,7 @@
         "example": "eat",
         "advances_time": false
       },
-      "requires_any": ["pastry"],
+      "consumes_any": ["pastry"],
       "content_event": {
         "id": "isla.pastry_consumed",
         "event_text": "The warm pastry breaks apart easily. The quiet is punctuated by small, unhurried sounds.",

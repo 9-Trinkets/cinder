@@ -74,7 +74,7 @@ pub(super) fn plan_content_command(
         return false;
     }
 
-    // Check item requirement (consumes_item or requires_any)
+    // Check item requirement (consumes_item, consumes_any, or requires_any)
     if let Some(item_id) = &command.consumes_item {
         if !context.planner_state.has_item(item_id) {
             let label = content
@@ -104,9 +104,13 @@ pub(super) fn plan_content_command(
             return false;
         }
     }
-    if !command.requires_any.is_empty() {
-        let has_any = command
+    if !command.requires_any.is_empty() || !command.consumes_any.is_empty() {
+        let all_required: Vec<_> = command
             .requires_any
+            .iter()
+            .chain(command.consumes_any.iter())
+            .collect();
+        let has_any = all_required
             .iter()
             .any(|id| context.planner_state.has_item(id));
         if !has_any {
@@ -168,6 +172,19 @@ pub(super) fn plan_content_command(
             consumer_id: recipient.id.clone(),
             consumer_name: recipient.name.clone(),
         });
+    }
+    if !command.consumes_any.is_empty() {
+        if let Some(item_id) = command
+            .consumes_any
+            .iter()
+            .find(|id| context.planner_state.has_item(id))
+        {
+            planned.events.push(WorldEvent::ItemConsumed {
+                item_id: item_id.clone(),
+                consumer_id: "player".to_string(),
+                consumer_name: "You".to_string(),
+            });
+        }
     }
 
     metadata.advances_time

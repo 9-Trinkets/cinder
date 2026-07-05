@@ -42,7 +42,7 @@ pub struct WorldState {
     #[serde(default)]
     pub transcript: Vec<String>,
     #[serde(default)]
-    pub player_inventory: Vec<String>,
+    pub player_inventory: HashMap<String, u32>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -118,7 +118,7 @@ impl WorldState {
             initial_actor_stats: seeded_actor_stats(content, &content.stats.actor),
             initial_pair_stats: seeded_pair_stats(content, &content.stats.pair),
             transcript: Vec::new(),
-            player_inventory: Vec::new(),
+            player_inventory: HashMap::new(),
         }
     }
 
@@ -514,26 +514,39 @@ impl WorldState {
     }
 
     pub fn has_item(&self, item_id: &str) -> bool {
-        self.player_inventory.contains(&item_id.to_string())
+        self.player_inventory
+            .get(item_id)
+            .copied()
+            .unwrap_or(0)
+            > 0
+    }
+
+    pub fn item_count(&self, item_id: &str) -> u32 {
+        self.player_inventory
+            .get(item_id)
+            .copied()
+            .unwrap_or(0)
     }
 
     pub fn add_item(&mut self, item_id: &str) {
-        if !self.has_item(item_id) {
-            self.player_inventory.push(item_id.to_string());
-        }
+        *self
+            .player_inventory
+            .entry(item_id.to_string())
+            .or_insert(0) += 1;
     }
 
     pub fn remove_item(&mut self, item_id: &str) -> bool {
-        let idx = self
-            .player_inventory
-            .iter()
-            .position(|id| id == item_id);
-        if let Some(i) = idx {
-            self.player_inventory.swap_remove(i);
-            true
-        } else {
-            false
+        let mut has = false;
+        if let Some(count) = self.player_inventory.get_mut(item_id) {
+            if *count > 0 {
+                *count -= 1;
+                has = true;
+            }
         }
+        if let Some(0) = self.player_inventory.get(item_id) {
+            self.player_inventory.remove(item_id);
+        }
+        has
     }
 
     pub fn mark_actor_observed_room(&mut self, actor_id: &str, room_id: &str) {
