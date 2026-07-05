@@ -314,3 +314,6 @@ pub use command_defs::{
 
 mod content_pack;
 pub use content_pack::{ContentPack, RoomConsumableRef};
+
+mod item_defs;
+pub use item_defs::ItemDefinition;

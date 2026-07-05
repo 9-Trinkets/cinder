@@ -1,7 +1,7 @@
 {
   "id": "isla",
   "title": "Isla",
-  "start_room_id": "entrance-lobby",
+  "start_room_id": "cafe",
   "start_time_minutes": 780,
   "intro_text": "The entrance is quiet. A small lamp on the reception desk casts a warm pool of light across the wood. Two armchairs face each other beside a low table. The door to the cafe is slightly ajar, a sliver of warm light spilling through.\n\nYou are in your late thirties, dressed in layers that suit the weather and the work \u2014 a cardigan with ink-stained cuffs, reading glasses pushed up into your hair. Your voice settles into a lower register when you talk about books, the way some people's voices change when they talk about something they trust absolutely.\n\nThe chime sounds. Through the glass of the entrance door, you see Noa arriving \u2014 early thirties, dressed in quiet quality, carrying an umbrella that she folds with deliberate care. She nods as she steps inside.\n\nYou greet her in the lobby. The session has not formally begun yet, but the space between you is already shaping itself.\n\n'I practise bibliotherapy,' you explain as you guide her toward the cafe. 'It means a book does part of the talking. We disconnect \u2014 phones off, no timekeeping \u2014 and let a story reach what direct conversation sometimes cannot.'\n\nShe listens. In the cafe, she settles into the chair across from you. Phone facedown on the table. There is no clock on the wall.\n\nThe rain fills the space between you.\n\nListen first. Then decide which book might take her there.\n\nThe session ends when the work reaches a natural close \u2014 or when you choose to close it yourself. Type 'end session' if you need to finish early.",
   "help_text": "Commands:\n{available_commands}\n- Tab switches focus between command and transcript\n- ? opens the menu\n- Type 'end session' to close early (reduces outcome score)",
@@ -12,7 +12,7 @@
       "The table between Isla and Noa holds two cups and a deliberate lack of clutter.",
       "No clock on the wall. No phones buzzing. The space is designed to dissolve the outside world.",
       "The kitchen is just off the cafe \u2014 Isla can step back to brew coffee or warm a pastry without fully leaving the session.",
-      "Noa usually arrives in the lobby. The session proper begins once they settle in the cafe."
+      "Noa is already settled in the cafe when Isla arrives. The session begins once they are both seated."
     ],
     "subtext_notes": [
       "Noa chose bibliotherapy because talking directly felt too exposed.",

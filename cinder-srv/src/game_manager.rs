@@ -47,6 +47,7 @@ pub struct UiSnapshot {
     pub active_menu: Option<ActiveMenuData>,
     pub ui_text: UiTextDefinition,
     pub yelp_review: Option<YelpReviewData>,
+    pub inventory: Vec<String>,
 }
 
 #[derive(Clone, Serialize)]
@@ -517,6 +518,10 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
         let bar_ids: Vec<&str> = action_bar_actions.iter().map(|a| a.id.as_str()).collect();
         let has_talk = bar_ids.contains(&"speak") || bar_ids.contains(&"talk");
         let modal_covered: Vec<&str> = vec!["inspect_feature", "inspect_actor"];
+        let current_room_id = session
+            .runtime
+            .current_room_id()
+            .unwrap_or_default();
         let overflow_actions: Vec<OverflowAction> = content
             .commands
             .actions
@@ -530,6 +535,31 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
                 }
                 if (c.id == "speak" || c.id == "talk") && has_talk {
                     return false;
+                }
+                if !c.allowed_rooms.is_empty()
+                    && !c.allowed_rooms.contains(&current_room_id)
+                {
+                    return false;
+                }
+                if let Some(item_id) = &c.consumes_item {
+                    if !session
+                        .runtime
+                        .player_has_item(item_id)
+                        .unwrap_or(false)
+                    {
+                        return false;
+                    }
+                }
+                if !c.requires_any.is_empty() {
+                    let has_any = c.requires_any.iter().any(|id| {
+                        session
+                            .runtime
+                            .player_has_item(id)
+                            .unwrap_or(false)
+                    });
+                    if !has_any {
+                        return false;
+                    }
                 }
                 true
             })
@@ -604,6 +634,18 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
                     rating: r.rating,
                     review_text: r.review_text,
                 }),
+            inventory: session
+                .runtime
+                .inventory_items()
+                .unwrap_or_default()
+                .into_iter()
+                .map(|id| {
+                    content
+                        .item(&id)
+                        .map(|i| i.label.clone())
+                        .unwrap_or(id)
+                })
+                .collect(),
         })
     })
 }

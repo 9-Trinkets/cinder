@@ -1,5 +1,6 @@
 use super::*;
 use crate::content::text_defs::{SystemTextDefinition, UiTextDefinition};
+use crate::engine::state::WorldState;
 
 #[derive(Debug, Clone)]
 pub struct ContentPack {
@@ -19,6 +20,7 @@ pub struct ContentPack {
     pub affordances: AffordancesDefinition,
     pub hooks: BTreeMap<String, Value>,
     pub speech_intents: SpeechIntentsConfig,
+    pub items: Vec<ItemDefinition>,
     pub room_index: HashMap<String, usize>,
     pub actor_index: HashMap<String, usize>,
     pub command_index: HashMap<String, usize>,
@@ -90,6 +92,23 @@ impl ContentPack {
 
     pub fn menu(&self, menu_id: &str) -> Option<&OpeningMenuDefinition> {
         self.menus.iter().find(|menu| menu.id == menu_id)
+    }
+
+    pub fn item(&self, item_id: &str) -> Option<&ItemDefinition> {
+        self.items.iter().find(|item| item.id == item_id)
+    }
+
+    pub fn resolve_item_in_inventory<'a>(
+        &'a self,
+        state: &WorldState,
+        raw_target: &str,
+    ) -> Option<&'a ItemDefinition> {
+        let target = raw_target.trim().to_ascii_lowercase();
+        self.items.iter().find(|item| {
+            state.has_item(&item.id)
+                && (item.id.eq_ignore_ascii_case(&target)
+                    || item.label.eq_ignore_ascii_case(&target))
+        })
     }
 
     pub fn movement_rules(&self, actor_id: &str) -> Option<&ActorMovementRulesDefinition> {

@@ -51,9 +51,72 @@ pub(super) fn plan_content_command(
     content: &ContentPack,
     command: &CommandDefinition,
     input: Option<&str>,
-    raw_input: &str,
+    context: &PlanningContext<'_>,
     planned: &mut PlannedTurn,
 ) -> bool {
+    // Check room restrictions
+    if !command.allowed_rooms.is_empty()
+        && !command.allowed_rooms.contains(&context.current_room_id.to_string())
+    {
+        let needed = command
+            .allowed_rooms
+            .first()
+            .and_then(|id| content.room(id))
+            .map(|r| r.title.as_str())
+            .unwrap_or("another room");
+        planned.events.push(WorldEvent::ActionRejected {
+            message: format!(
+                "You can't {} here. Head to the {} first.",
+                command.command.to_lowercase(),
+                needed,
+            ),
+        });
+        return false;
+    }
+
+    // Check item requirement (consumes_item or requires_any)
+    if let Some(item_id) = &command.consumes_item {
+        if !context.planner_state.has_item(item_id) {
+            let label = content
+                .item(item_id)
+                .map(|i| i.label.as_str())
+                .unwrap_or(item_id);
+            planned.events.push(WorldEvent::ActionRejected {
+                message: format!("You don't have any {label} to serve."),
+            });
+            return false;
+        }
+        // Check target actor is in the same room
+        let actors_here: Vec<_> = content
+            .actors
+            .iter()
+            .filter(|actor| {
+                context
+                    .planner_state
+                    .actor_room_id(&actor.id, &actor.room_id)
+                    == context.current_room_id
+            })
+            .collect();
+        if actors_here.is_empty() {
+            planned.events.push(WorldEvent::ActionRejected {
+                message: "There is no one here to serve.".to_string(),
+            });
+            return false;
+        }
+    }
+    if !command.requires_any.is_empty() {
+        let has_any = command
+            .requires_any
+            .iter()
+            .any(|id| context.planner_state.has_item(id));
+        if !has_any {
+            planned.events.push(WorldEvent::ActionRejected {
+                message: "You don't have anything to consume.".to_string(),
+            });
+            return false;
+        }
+    }
+
     let metadata = command
         .player_command
         .as_ref()
@@ -66,7 +129,7 @@ pub(super) fn plan_content_command(
                 message: content.render_template(
                     &content.presentation.error_text.unknown_input,
                     &[
-                        ("raw_input", raw_input),
+                        ("raw_input", context.raw_input),
                         ("available_commands", metadata.usage.as_str()),
                     ],
                 ),
@@ -77,9 +140,36 @@ pub(super) fn plan_content_command(
             payload.insert(input_metadata.payload_key.clone(), value.to_string());
         }
     }
+
+    // Content event (narrative) first, then item events
     planned
         .events
         .push(content_event_for_command(command, payload));
+
+    if let Some(item_id) = &command.creates_item {
+        planned.events.push(WorldEvent::ItemAcquired {
+            item_id: item_id.clone(),
+        });
+    }
+    if let Some(item_id) = &command.consumes_item {
+        // Use the first actor in the room as the recipient
+        let recipient = content
+            .actors
+            .iter()
+            .find(|actor| {
+                context
+                    .planner_state
+                    .actor_room_id(&actor.id, &actor.room_id)
+                    == context.current_room_id
+            })
+            .expect("actor should be in room");
+        planned.events.push(WorldEvent::ItemConsumed {
+            item_id: item_id.clone(),
+            consumer_id: recipient.id.clone(),
+            consumer_name: recipient.name.clone(),
+        });
+    }
+
     metadata.advances_time
 }
 
@@ -118,6 +208,10 @@ pub(super) fn plan_observe_target(
         planned.events.push(WorldEvent::FeatureObserved {
             room_id: context.current_room_id.to_string(),
             feature_id: feature.id.clone(),
+        });
+    } else if let Some(item) = content.resolve_item_in_inventory(context.planner_state, target) {
+        planned.events.push(WorldEvent::ItemObserved {
+            item_id: item.id.clone(),
         });
     } else {
         planned.events.push(WorldEvent::ActionRejected {
@@ -319,6 +413,6 @@ pub(super) fn plan_authored_command(
     } else if !command.effects.is_empty() {
         plan_command_effects(content, command, input, &context, planned)
     } else {
-        plan_content_command(content, command, input, context.raw_input, planned)
+        plan_content_command(content, command, input, &context, planned)
     }
 }

@@ -2,7 +2,7 @@
   {
     "id": "noa",
     "name": "Noa",
-    "room_id": "entrance-lobby",
+    "room_id": "cafe",
     "initial_stats": {
       "trust": 3,
       "openness": 3,

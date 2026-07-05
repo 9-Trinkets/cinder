@@ -230,6 +230,22 @@ impl CinderRuntime {
         Ok(state.followed_actor_id.clone())
     }
 
+    pub fn player_has_item(&self, item_id: &str) -> Result<bool, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for inventory")?;
+        Ok(state.has_item(item_id))
+    }
+
+    pub fn inventory_items(&self) -> Result<Vec<String>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for inventory")?;
+        Ok(state.player_inventory.clone())
+    }
+
     pub fn push_transcript_line(&self, line: &str) -> Result<(), Box<dyn Error>> {
         let mut state = self
             .state
@@ -281,6 +297,15 @@ impl CinderRuntime {
                     id: format!("actor:{}", actor.id),
                     label: actor.name.clone(),
                     command: format!("look at {}", actor.name),
+                });
+            }
+        }
+        for item in &self.content.items {
+            if state.has_item(&item.id) {
+                options.push(LookOptionItem {
+                    id: format!("item:{}", item.id),
+                    label: item.label.clone(),
+                    command: format!("look at {}", item.label),
                 });
             }
         }

@@ -492,6 +492,16 @@ export default function GamePage() {
                 <p className="text-pine font-medium">{uiSnapshot.followed_actor_name}</p>
               </div>
             )}
+            {uiSnapshot.inventory.length > 0 && (
+              <div>
+                <p className="text-xs text-muted uppercase tracking-wider">Inventory</p>
+                <ul className="mt-1 space-y-0.5">
+                  {uiSnapshot.inventory.map((item, i) => (
+                    <li key={i} className="text-text text-xs">• {item}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
             <div>
               <p className="text-xs text-muted uppercase tracking-wider">What now?</p>
               <p className="text-text text-xs leading-relaxed">

@@ -151,7 +151,14 @@ pub async fn session_ui(
     game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id)
         .await
         .map_err(internal)?;
-    let snapshot = game_manager::get_session_ui(&state.sessions, &session_id).map_err(internal)?;
+    let sessions = state.sessions.clone();
+    let sid = session_id.clone();
+    let snapshot = tokio::task::spawn_blocking(move || {
+        game_manager::get_session_ui(&sessions, &sid)
+    })
+    .await
+    .map_err(|e| internal(e.to_string()))?
+    .map_err(internal)?;
     Ok(Json(snapshot))
 }
 

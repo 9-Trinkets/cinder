@@ -116,6 +116,14 @@ pub struct CommandDefinition {
     pub content_event: Option<ContentEventDefinition>,
     #[serde(default)]
     pub player_command: Option<PlayerCommandMetadata>,
+    #[serde(default)]
+    pub allowed_rooms: Vec<String>,
+    #[serde(default)]
+    pub creates_item: Option<String>,
+    #[serde(default)]
+    pub consumes_item: Option<String>,
+    #[serde(default)]
+    pub requires_any: Vec<String>,
 }
 
 impl CommandDefinition {

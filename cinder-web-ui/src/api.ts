@@ -169,6 +169,7 @@ export interface UiSnapshot {
   talk_options: MenuOptionItem[]
   active_menu: ActiveMenuData | null
   yelp_review: YelpReviewData | null
+  inventory: string[]
   ui_text: {
     language_name: string
     menu_button_label: string

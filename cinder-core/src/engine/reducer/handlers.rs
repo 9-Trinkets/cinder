@@ -537,3 +537,46 @@ pub(super) fn apply_content_event(
         handle_menu_opened(state, content, &event.open_menu, lines);
     }
 }
+
+pub(super) fn handle_item_acquired(
+    state: &mut WorldState,
+    content: &ContentPack,
+    item_id: &str,
+    lines: &mut Vec<String>,
+) {
+    let label = content
+        .item(item_id)
+        .map(|i| i.label.as_str())
+        .unwrap_or(item_id);
+    state.add_item(item_id);
+    lines.push(format!("You have {label} ready."));
+}
+
+pub(super) fn handle_item_consumed(
+    state: &mut WorldState,
+    content: &ContentPack,
+    item_id: &str,
+    consumer_name: &str,
+    lines: &mut Vec<String>,
+) {
+    let label = content
+        .item(item_id)
+        .map(|i| i.label.as_str())
+        .unwrap_or(item_id);
+    if state.remove_item(item_id) {
+        lines.push(format!("{consumer_name} accepts the {label}."));
+    }
+}
+
+pub(super) fn handle_item_observed(
+    _state: &mut WorldState,
+    content: &ContentPack,
+    item_id: &str,
+    lines: &mut Vec<String>,
+) {
+    if let Some(item) = content.item(item_id) {
+        lines.push(item.description.clone());
+    } else {
+        lines.push(content.presentation.error_text.feature_unknown.clone());
+    }
+}

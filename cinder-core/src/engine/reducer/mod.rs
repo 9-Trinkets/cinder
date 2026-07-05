@@ -9,9 +9,10 @@ use self::handlers::{
     handle_actor_moved, handle_actor_observed, handle_actor_observed_actor,
     handle_actor_observed_feature, handle_actor_observed_room, handle_actor_relocated,
     handle_actor_spoke, handle_actor_spoke_to_room, handle_current_room_observed,
-    handle_feature_observed, handle_help_shown, handle_menu_choice_made, handle_menu_opened,
-    handle_narrative_line, handle_pair_stat_adjusted, handle_player_moved, handle_session_ended,
-    handle_turn_started, handle_unknown_input,
+    handle_feature_observed, handle_help_shown, handle_item_acquired, handle_item_consumed,
+    handle_item_observed,
+    handle_menu_choice_made, handle_menu_opened, handle_narrative_line, handle_pair_stat_adjusted,
+    handle_player_moved, handle_session_ended, handle_turn_started, handle_unknown_input,
 };
 
 pub(crate) use self::observation::render_actor_speech_line;
@@ -225,6 +226,19 @@ pub fn apply_events(
             }
             WorldEvent::SessionEnded => {
                 handle_session_ended(state, content, &mut lines);
+            }
+            WorldEvent::ItemAcquired { item_id } => {
+                handle_item_acquired(state, content, item_id, &mut lines);
+            }
+            WorldEvent::ItemConsumed {
+                item_id,
+                consumer_name,
+                ..
+            } => {
+                handle_item_consumed(state, content, item_id, consumer_name, &mut lines);
+            }
+            WorldEvent::ItemObserved { item_id } => {
+                handle_item_observed(state, content, item_id, &mut lines);
             }
             WorldEvent::ContentEvent { event_id, payload } => {
                 apply_content_event(state, content, event_id, payload, &mut lines);

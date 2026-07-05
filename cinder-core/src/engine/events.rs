@@ -116,6 +116,17 @@ pub enum WorldEvent {
         raw_input: String,
     },
     SessionEnded,
+    ItemAcquired {
+        item_id: String,
+    },
+    ItemConsumed {
+        item_id: String,
+        consumer_id: String,
+        consumer_name: String,
+    },
+    ItemObserved {
+        item_id: String,
+    },
     ContentEvent {
         event_id: String,
         payload: BTreeMap<String, String>,

@@ -1,0 +1,5 @@
+[
+  { "id": "coffee", "label": "coffee", "description": "A small ceramic cup of perfectly brewed black coffee. A wisp of fragrant steam curls toward the ceiling." },
+  { "id": "tea", "label": "tea", "description": "A delicate porcelain cup filled with amber tea — floral and fragrant, steeped just long enough." },
+  { "id": "pastry", "label": "pastry", "description": "A golden, flaky pastry still faintly warm from the oven. Butter and honey scent the air around it." }
+]
