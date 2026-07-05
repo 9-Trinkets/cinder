@@ -1,9 +1,32 @@
 [
   {
-    "id": "bookstore-cafe",
-    "title": "Bookstore Cafe Office",
+    "id": "entrance-lobby",
+    "title": "Entrance Lobby",
+    "summary": "A quiet lobby with soft lighting, where patients arrive before sessions begin.",
+    "inspect_text": "The lobby feels like a threshold \u2014 warm enough to welcome, quiet enough to settle before stepping further in. A reception desk sits against the far wall with a small lamp. Two armchairs flank a low table with magazines. The door to the cafe is slightly ajar, a sliver of warm light spilling through.",
+    "features": [
+      {
+        "id": "reception-desk",
+        "label": "reception desk",
+        "aliases": ["desk", "counter"],
+        "inspect_text": "An uncluttered desk with a lamp, a notebook, and a small ceramic bowl for keys. Everything suggests that people are expected and welcome."
+      },
+      {
+        "id": "lobby-chairs",
+        "label": "armchairs",
+        "aliases": ["chairs", "seating", "waiting area"],
+        "inspect_text": "Two deep armchairs facing each other across a low table. The magazines are architectural journals. Everything is careful without being clinical."
+      }
+    ],
+    "exits": [
+      { "room_id": "cafe", "label": "Cafe", "aliases": ["cafe", "session room", "office"] }
+    ]
+  },
+  {
+    "id": "cafe",
+    "title": "Cafe",
     "summary": "A warm room lined with books, low music, and one table set for a difficult conversation.",
-    "inspect_text": "The room feels like a cafe until you notice how precisely everything is arranged for listening. Shelves hold marked copies, annotated tabs, and worn spines. A small pastry case sits beside the espresso machine. A reading chair near the window waits for the patient between conversations.",
+    "inspect_text": "The room feels like a cafe until you notice how precisely everything is arranged for listening. Shelves hold marked copies, annotated tabs, and worn spines. A reading chair near the window waits for the patient between conversations.",
     "features": [
       {
         "id": "therapist-table",
@@ -18,24 +41,44 @@
         "inspect_text": "Every book has tabs and penciled notes. Some are comforting. Some are confrontational. None are random."
       },
       {
-        "id": "espresso-bar",
-        "label": "espresso bar",
-        "aliases": ["coffee", "machine"],
-        "inspect_text": "Steam rises in small, controlled bursts. The scent of coffee is steady enough to slow anxious breathing by itself."
-      },
-      {
-        "id": "pastry-case",
-        "label": "pastry case",
-        "aliases": ["pastry", "case"],
-        "inspect_text": "Homemade pastries sit under glass beside simple labels. Nothing ornate, everything intentional."
-      },
-      {
         "id": "reading-nook",
         "label": "reading nook",
         "aliases": ["nook", "chair", "window seat"],
         "inspect_text": "A deep chair by the rain-streaked window. Patients usually sit here once they start reading, and only return to the table when something in the book catches on a deeper wound."
       }
     ],
-    "exits": []
+    "exits": [
+      { "room_id": "entrance-lobby", "label": "Lobby", "aliases": ["lobby", "entrance"] },
+      { "room_id": "kitchen", "label": "Kitchen", "aliases": ["kitchen", "back"] }
+    ]
+  },
+  {
+    "id": "kitchen",
+    "title": "Kitchen",
+    "summary": "A small but well-equipped kitchen where drinks are prepared and pastries are warmed.",
+    "inspect_text": "The kitchen is compact and purposeful. A professional espresso machine sits on the counter, steam wand at the ready. A kettle and a row of loose-leaf teas line the shelf above. The small oven holds a tray of pastries warming. Everything is within arm's reach, arranged for efficiency and quiet ritual.",
+    "features": [
+      {
+        "id": "espresso-bar",
+        "label": "espresso bar",
+        "aliases": ["coffee", "machine", "espresso"],
+        "inspect_text": "Steam rises in small, controlled bursts. The scent of coffee is steady enough to slow anxious breathing by itself."
+      },
+      {
+        "id": "tea-station",
+        "label": "tea station",
+        "aliases": ["tea", "kettle", "teapot"],
+        "inspect_text": "A row of glass jars with handwritten labels: chamomile, earl grey, jasmine, rooibos. The kettle hums quietly, always at the ready."
+      },
+      {
+        "id": "pastry-oven",
+        "label": "pastry oven",
+        "aliases": ["oven", "pastry", "baking"],
+        "inspect_text": "A small countertop oven. A tray of homemade pastries sits inside, kept warm. The scent of butter and browned sugar lingers in the air."
+      }
+    ],
+    "exits": [
+      { "room_id": "cafe", "label": "Cafe", "aliases": ["cafe", "front"] }
+    ]
   }
 ]

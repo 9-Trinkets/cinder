@@ -2,7 +2,7 @@
   {
     "id": "noa",
     "name": "Noa",
-    "room_id": "bookstore-cafe",
+    "room_id": "entrance-lobby",
     "initial_stats": {
       "trust": 3,
       "openness": 3,
@@ -11,7 +11,16 @@
       "outcome_score": 0
     },
     "aliases": ["patient"],
-    "inspect_text": "Noa is in her early thirties, dressed in quiet quality — the kind of clothes chosen not to be noticed. She carries herself with the composure of someone who learned early that visibility is a risk. Her posture shifts between polished attention and the slight hunch of a woman who has spent years making herself smaller. When interrupted mid-thought, she restarts with a safer version.\n\nTrust: {actor.noa.trust}/10 — Openness: {actor.noa.openness}/10 — Focus: {actor.noa.focus}/10 — Resistance: {actor.noa.resistance}/10",
+    "inspect_text": "Noa is in her early thirties, dressed in quiet quality \u2014 the kind of clothes chosen not to be noticed. She carries herself with the composure of someone who learned early that visibility is a risk. Her posture shifts between polished attention and the slight hunch of a woman who has spent years making herself smaller. When interrupted mid-thought, she restarts with a safer version.\n\nTrust: {actor.noa.trust}/10 \u2014 Openness: {actor.noa.openness}/10 \u2014 Focus: {actor.noa.focus}/10 \u2014 Resistance: {actor.noa.resistance}/10",
+    "movement_rules": {
+      "default_target_room_id": "cafe",
+      "target_rules": [
+        {
+          "target_room_id": "entrance-lobby",
+          "when_player_room_id": "entrance-lobby"
+        }
+      ]
+    },
     "prompt_context": {
       "character_notes": [
         "You are Noa, 31, an architect at a midsize firm. You are good at your job and respected by colleagues, but you keep everyone at the same polite distance.",
