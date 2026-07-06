@@ -3,7 +3,7 @@ use super::types::{AggregatedTurn, PlannedTurn, RouteEnvelope};
 use crate::content::types::ContentPack;
 use crate::engine::commands::PlayerCommand;
 use crate::engine::events::WorldEvent;
-use crate::engine::menus::{build_menu_choice_events, resolve_menu_choice};
+use crate::engine::menus::{build_menu_choice_events, resolve_menu_choice, resolve_menu_choice_in_options};
 use crate::engine::state::WorldState;
 
 pub(super) fn build_planned_turn(
@@ -49,7 +49,14 @@ pub(super) fn build_planned_turn(
         PlayerCommand::Unknown => {
             if let Some(menu_id) = planner_state.active_menu_id.as_deref() {
                 if let Some(menu) = content.menu(menu_id) {
-                    if let Some(option) = resolve_menu_choice(menu, &aggregated.command.raw_input) {
+                    let option = planner_state
+                        .generated_menu_options
+                        .get(menu_id)
+                        .and_then(|options| {
+                            resolve_menu_choice_in_options(options, &aggregated.command.raw_input)
+                        })
+                        .or_else(|| resolve_menu_choice(menu, &aggregated.command.raw_input));
+                    if let Some(option) = option {
                         planned
                             .events
                             .extend(build_menu_choice_events(content, menu, option));

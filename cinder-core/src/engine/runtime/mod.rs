@@ -603,15 +603,20 @@ impl CinderRuntime {
             else {
                 continue;
             };
-            let Some(option) = menu.options.iter().find(|option| option.id == selected_id) else {
+            let generated_options = state.generated_menu_options.get(&menu.id);
+            let Some(option_title) = generated_options
+                .and_then(|options| options.iter().find(|option| option.id == selected_id))
+                .or_else(|| menu.options.iter().find(|option| option.id == selected_id))
+                .map(|option| option.title.clone())
+            else {
                 continue;
             };
             state
                 .story_vars
-                .insert(menu.selection_var_key.clone(), option.title.clone());
+                .insert(menu.selection_var_key.clone(), option_title.clone());
             state
                 .story_vars
-                .insert("selection_title".to_string(), option.title.clone());
+                .insert("selection_title".to_string(), option_title);
         }
         Ok(())
     }

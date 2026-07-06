@@ -176,15 +176,22 @@ pub(crate) fn resolve_menu_choice<'a>(
     menu: &'a OpeningMenuDefinition,
     raw_input: &str,
 ) -> Option<&'a crate::content::types::OpeningMenuOptionDefinition> {
+    resolve_menu_choice_in_options(&menu.options, raw_input)
+}
+
+pub(crate) fn resolve_menu_choice_in_options<'a>(
+    options: &'a [crate::content::types::OpeningMenuOptionDefinition],
+    raw_input: &str,
+) -> Option<&'a crate::content::types::OpeningMenuOptionDefinition> {
     let trimmed = raw_input.trim();
     if trimmed.is_empty() {
         return None;
     }
     if let Ok(index) = trimmed.parse::<usize>() {
-        return menu.options.get(index.saturating_sub(1));
+        return options.get(index.saturating_sub(1));
     }
     let lower = trimmed.to_ascii_lowercase();
-    menu.options.iter().find(|option| {
+    options.iter().find(|option| {
         let title = option.title.to_ascii_lowercase();
         let id = option.id.to_ascii_lowercase();
         lower == title || lower == id || title.contains(&lower) || lower.contains(&title)
