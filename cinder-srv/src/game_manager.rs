@@ -4,6 +4,7 @@ use cinder_core::engine::runtime::{ActiveMenuInfo, CinderRuntime, LookOptionItem
 use cinder_core::engine::state::{TurnOutcome, WorldState};
 use serde::Serialize;
 use sqlx::SqlitePool;
+use std::any::Any;
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use uuid::Uuid;
@@ -46,12 +47,12 @@ pub struct UiSnapshot {
     pub talk_options: Vec<MenuOptionData>,
     pub active_menu: Option<ActiveMenuData>,
     pub ui_text: UiTextDefinition,
-    pub yelp_review: Option<YelpReviewData>,
+    pub session_feedback: Option<SessionFeedbackData>,
     pub inventory: Vec<InventoryItem>,
 }
 
 #[derive(Clone, Serialize)]
-pub struct YelpReviewData {
+pub struct SessionFeedbackData {
     pub rating: u32,
     pub review_text: String,
 }
@@ -80,7 +81,7 @@ pub struct CommandResponse {
     pub text: String,
     pub game_over: bool,
     pub movie: Option<MovieData>,
-    pub yelp_review: Option<YelpReviewData>,
+    pub session_feedback: Option<SessionFeedbackData>,
 }
 
 #[derive(Clone, Serialize)]
@@ -237,50 +238,58 @@ pub async fn run_command(
     };
 
     let input = input.to_string();
-    let (result, session, yelp_review) = tokio::task::spawn_blocking(move || {
-        let outcome = session
-            .runtime
-            .run_turn(&input)
-            .map_err(|e| format!("turn error: {e}"));
-        let turn_text = outcome.as_ref().ok().map(|o| o.text.clone());
-        let outcome = match outcome {
-            Ok(turn) if !turn.game_over => {
-                match session.runtime.run_tick() {
-                    Ok(tick) => {
-                        let combined = if tick.text.is_empty() {
-                            turn.text
-                        } else {
-                            format!("{}\n\n{}", turn.text, tick.text)
-                        };
-                        Ok(TurnOutcome {
-                            text: combined,
-                            game_over: turn.game_over || tick.game_over,
-                        })
+    let (session, result, session_feedback) = tokio::task::spawn_blocking(move || {
+        let session = session;
+        let task_result = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            let mut outcome = session
+                .runtime
+                .run_turn(&input)
+                .map_err(|e| format!("turn error: {e}"));
+            let turn_text = outcome.as_ref().ok().map(|o| o.text.clone());
+            outcome = match outcome {
+                Ok(turn) if !turn.game_over => {
+                    match session.runtime.run_tick() {
+                        Ok(tick) => {
+                            let combined = if tick.text.is_empty() {
+                                turn.text
+                            } else {
+                                format!("{}\n\n{}", turn.text, tick.text)
+                            };
+                            Ok(TurnOutcome {
+                                text: combined,
+                                game_over: turn.game_over || tick.game_over,
+                            })
+                        }
+                        Err(e) => Err(format!("tick error: {e}")),
                     }
-                    Err(e) => Err(format!("tick error: {e}")),
                 }
+                other => other,
+            };
+            if let Some(ref text) = turn_text {
+                let _ = session.runtime.push_transcript_line(text);
             }
-            other => other,
+            let session_feedback = outcome.as_ref().ok().and_then(|o| {
+                if o.game_over {
+                    session
+                        .runtime
+                        .session_feedback()
+                        .ok()
+                        .flatten()
+                        .map(|r| SessionFeedbackData {
+                            rating: r.rating,
+                            review_text: r.review_text,
+                        })
+                } else {
+                    None
+                }
+            });
+            (outcome, session_feedback)
+        }));
+        let (result, session_feedback) = match task_result {
+            Ok((outcome, session_feedback)) => (outcome, session_feedback),
+            Err(payload) => (Err(format!("command panicked: {}", panic_payload_message(&payload))), None),
         };
-        if let Some(ref text) = turn_text {
-            let _ = session.runtime.push_transcript_line(text);
-        }
-        let yelp_review = outcome.as_ref().ok().and_then(|o| {
-            if o.game_over {
-                session
-                    .runtime
-                    .yelp_review()
-                    .ok()
-                    .flatten()
-                    .map(|r| YelpReviewData {
-                        rating: r.rating,
-                        review_text: r.review_text,
-                    })
-            } else {
-                None
-            }
-        });
-        (outcome, session, yelp_review)
+        (session, result, session_feedback)
     })
     .await
     .map_err(|e| format!("blocking task failed: {e}"))?;
@@ -298,8 +307,18 @@ pub async fn run_command(
         text: outcome.text,
         game_over: outcome.game_over,
         movie,
-        yelp_review,
+        session_feedback,
     })
+}
+
+fn panic_payload_message(payload: &Box<dyn Any + Send>) -> String {
+    if let Some(message) = payload.downcast_ref::<String>() {
+        message.clone()
+    } else if let Some(message) = payload.downcast_ref::<&'static str>() {
+        (*message).to_string()
+    } else {
+        "unknown panic payload".to_string()
+    }
 }
 
 pub fn consume_projector_sequence(runtime: &CinderRuntime) -> Option<MovieData> {
@@ -686,12 +705,12 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             talk_options,
             active_menu,
             ui_text: content.ui_text.clone(),
-            yelp_review: session
+            session_feedback: session
                 .runtime
-                .yelp_review()
+                .session_feedback()
                 .ok()
                 .flatten()
-                .map(|r| YelpReviewData {
+                .map(|r| SessionFeedbackData {
                     rating: r.rating,
                     review_text: r.review_text,
                 }),

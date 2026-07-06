@@ -30,6 +30,8 @@ use crate::engine::neuron::{
 };
 use serde_json::json;
 use std::path::PathBuf;
+use std::sync::mpsc;
+use std::time::Duration;
 
 const ACTOR_DIALOGUE_ROLE: &str = "actor_dialogue";
 const MENU_INTENT_CLARIFIER_ROLE: &str = "menu_intent_clarifier";
@@ -38,7 +40,8 @@ const CONVERSATION_MEMORY_SUMMARIZER_ROLE: &str = "conversation_memory_summarize
 const CHAPTER_SCRIPT_SUMMARIZER_ROLE: &str = "chapter_script_summarizer";
 const CHAPTER_RELATIONSHIP_SUMMARIZER_ROLE: &str = "chapter_relationship_summarizer";
 const DIRECT_SPEECH_ATTRACTION_INTENT_ROLE: &str = "direct_speech_intent";
-const YELP_REVIEW_ROLE: &str = "yelp_review";
+const SESSION_FEEDBACK_ROLE: &str = "session_feedback";
+const CONVERSATION_MEMORY_SUMMARY_TIMEOUT: Duration = Duration::from_secs(10);
 
 pub trait DialogueGenerator: Send + Sync {
     fn build_prompt(&self, request: &DialogueRequest) -> String {
@@ -100,10 +103,10 @@ pub trait DialogueGenerator: Send + Sync {
         request: &DynamicMenuRequest,
     ) -> Result<Vec<DynamicMenuOptionOutput>, String>;
 
-    fn generate_yelp_review(
+    fn generate_session_feedback(
         &self,
-        request: &YelpReviewRequest,
-    ) -> Result<YelpReview, String>;
+        request: &SessionFeedbackRequest,
+    ) -> Result<SessionFeedback, String>;
 }
 
 pub struct SynapseDialogueGenerator {
@@ -151,6 +154,37 @@ impl SynapseDialogueGenerator {
 
     fn preview_role(&self, role_name: &str) -> Result<RoleMetadata, String> {
         self.service.preview_role(&self.workflow, role_name)
+    }
+
+    fn run_text_role_with_timeout(
+        &self,
+        role_name: &'static str,
+        prompt: String,
+        fallback_system_prompt: String,
+        timeout: Duration,
+    ) -> Result<String, String> {
+        let workflow = self.workflow.clone();
+        let (tx, rx) = mpsc::channel();
+        std::thread::spawn(move || {
+            let result = build_role_service()
+                .and_then(|service| {
+                    service
+                        .execute_role(&workflow, role_name, prompt, Some(fallback_system_prompt))
+                        .map_err(|error| error.to_string())
+                })
+                .map(|text| text.trim().to_string());
+            let _ = tx.send(result);
+        });
+        match rx.recv_timeout(timeout) {
+            Ok(result) => result,
+            Err(mpsc::RecvTimeoutError::Timeout) => Err(format!(
+                "role '{role_name}' timed out after {}s",
+                timeout.as_secs()
+            )),
+            Err(mpsc::RecvTimeoutError::Disconnected) => {
+                Err(format!("role '{role_name}' worker disconnected"))
+            }
+        }
     }
 }
 
@@ -257,12 +291,15 @@ impl DialogueGenerator for SynapseDialogueGenerator {
         &self,
         request: &ConversationMemorySummaryRequest,
     ) -> Result<String, String> {
-        self.run_text_role(
+        let key = format!("{}::{}", request.participant_a_id, request.participant_b_id);
+        self.run_text_role_with_timeout(
             CONVERSATION_MEMORY_SUMMARIZER_ROLE,
             self.build_conversation_memory_summary_prompt(request),
             conversation_memory_summarizer_system_prompt(request).to_string(),
+            CONVERSATION_MEMORY_SUMMARY_TIMEOUT,
         )
         .map(|text| sanitize_statement(&text))
+        .map_err(|error| format!("conversation summary failed for '{key}': {error}"))
     }
 
     fn extract_direct_speech_intent(
@@ -278,10 +315,10 @@ impl DialogueGenerator for SynapseDialogueGenerator {
         parse_direct_speech_intent_label(&response)
     }
 
-    fn generate_yelp_review(
+    fn generate_session_feedback(
         &self,
-        request: &YelpReviewRequest,
-    ) -> Result<YelpReview, String> {
+        request: &SessionFeedbackRequest,
+    ) -> Result<SessionFeedback, String> {
         let prompt = format!(
             r#"Patient: {actor_name}
 Therapist: {other_person_name}
@@ -309,13 +346,13 @@ The review text should be 2-5 sentences in the patient's voice — honest, speci
             relationship_lines = request.relationship_lines.join("\n"),
         );
         let response = self.run_text_role(
-            YELP_REVIEW_ROLE,
+            SESSION_FEEDBACK_ROLE,
             prompt,
             "You write a short Yelp-style review from a patient's perspective. Respond only with valid JSON."
                 .to_string(),
         )?;
-        serde_json::from_str::<YelpReview>(&response)
-            .map_err(|e| format!("failed to parse yelp review: {e}"))
+        serde_json::from_str::<SessionFeedback>(&response)
+            .map_err(|e| format!("failed to parse session feedback: {e}"))
     }
 
     fn generate_dynamic_menu_options(

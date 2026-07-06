@@ -6,7 +6,7 @@ use crate::engine::commands::player_command_help_text;
 use crate::engine::conversation_memory::refresh_conversation_summaries;
 use crate::engine::dialogue::{
     ChapterRelationshipSummaryRequest, ChapterScriptSummaryRequest, DialogueGenerator,
-    SynapseChapterSummaryGenerator, SynapseDialogueGenerator, YelpReview, YelpReviewRequest,
+    SessionFeedbackRequest, SynapseChapterSummaryGenerator, SynapseDialogueGenerator, SessionFeedback,
 };
 use crate::engine::dialogue_grounding::render_story_text;
 use crate::engine::events::{ObservationMode, TimestampedWorldEvent, WorldEvent};
@@ -33,7 +33,7 @@ pub struct CinderRuntime {
     actor_move_workflow: WorkflowDefinition,
     trace_events: bool,
     trace_dir: PathBuf,
-    yelp_review: Mutex<Option<crate::engine::dialogue::YelpReview>>,
+    session_feedback: Mutex<Option<crate::engine::dialogue::SessionFeedback>>,
 }
 
 impl Clone for CinderRuntime {
@@ -47,8 +47,8 @@ impl Clone for CinderRuntime {
             actor_move_workflow: self.actor_move_workflow.clone(),
             trace_events: self.trace_events,
             trace_dir: self.trace_dir.clone(),
-            yelp_review: Mutex::new(
-                self.yelp_review
+            session_feedback: Mutex::new(
+                self.session_feedback
                     .lock()
                     .map(|opt| opt.clone())
                     .unwrap_or(None),
@@ -163,7 +163,7 @@ impl CinderRuntime {
             actor_move_workflow,
             trace_events,
             trace_dir,
-            yelp_review: Mutex::new(None),
+            session_feedback: Mutex::new(None),
         })
     }
 
@@ -456,6 +456,10 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for relationship summary")?;
+        Ok(self.relationship_status_lines_for_state(&state))
+    }
+
+    fn relationship_status_lines_for_state(&self, state: &WorldState) -> Vec<String> {
         let mut lines = self
             .content
             .actors
@@ -500,7 +504,7 @@ impl CinderRuntime {
             })
             .collect::<Vec<_>>();
         lines.sort_by(|left, right| right.cmp(left));
-        Ok(lines.into_iter().map(|(_, line)| line).collect())
+        lines.into_iter().map(|(_, line)| line).collect()
     }
 
     pub fn current_next_chapter_preview(&self) -> Result<Option<String>, Box<dyn Error>> {
@@ -582,7 +586,7 @@ impl CinderRuntime {
             actor_move_workflow: self.actor_move_workflow.clone(),
             trace_events: self.trace_events,
             trace_dir: self.trace_dir.clone(),
-            yelp_review: Mutex::new(None),
+            session_feedback: Mutex::new(None),
         }
     }
 
@@ -785,6 +789,7 @@ impl CinderRuntime {
                             id: opt.id,
                             title: opt.title,
                             menu_text: opt.menu_text,
+                            narrative_lines: vec![],
                         })
                         .collect();
                     state
@@ -878,10 +883,10 @@ impl CinderRuntime {
             .collect())
     }
 
-    pub fn yelp_review(&self) -> Result<Option<YelpReview>, Box<dyn Error>> {
+    pub fn session_feedback(&self) -> Result<Option<SessionFeedback>, Box<dyn Error>> {
         {
             let cached = self
-                .yelp_review
+                .session_feedback
                 .lock()
                 .map_err(|e| e.to_string())?;
             if let Some(review) = cached.as_ref() {
@@ -892,16 +897,16 @@ impl CinderRuntime {
             let state = self
                 .state
                 .lock()
-                .map_err(|_| "failed to lock runtime state for yelp review guard")?;
+                .map_err(|_| "failed to lock runtime state for session feedback guard")?;
             if !state.game_over {
                 return Ok(None);
             }
         }
-        let (stats_context, session_summary, relationship_lines) = {
+        let (current, deltas, stats_context, session_summary, relationship_lines) = {
             let state = self
                 .state
                 .lock()
-                .map_err(|_| "failed to lock runtime state for yelp review")?;
+                .map_err(|_| "failed to lock runtime state for session feedback")?;
             let noa_id = "noa";
             let current = state.actor_stats_snapshot(noa_id);
             let deltas = state.actor_stat_deltas(noa_id).unwrap_or_default();
@@ -922,10 +927,10 @@ impl CinderRuntime {
             .collect::<Vec<_>>()
             .join("\n");
             let session_summary = state.transcript.last().cloned().unwrap_or_default();
-            let relationship_lines = self.relationship_status_lines().unwrap_or_default();
-            (stats_context, session_summary, relationship_lines)
+            let relationship_lines = self.relationship_status_lines_for_state(&state);
+            (current, deltas, stats_context, session_summary, relationship_lines)
         };
-        let request = YelpReviewRequest {
+        let request = SessionFeedbackRequest {
             locale: self.content.locale.clone(),
             system_text: self.content.system_text.clone(),
             actor_name: self
@@ -940,18 +945,68 @@ impl CinderRuntime {
             session_summary,
             relationship_lines,
         };
-        let review = self
-            .dialogue
-            .generate_yelp_review(&request)
-            .map_err(|e| format!("yelp review generation failed: {e}"))?;
+        let review = match self.try_llm_session_feedback(request) {
+            Some(review) => review,
+            None => self.fallback_session_feedback(&current, &deltas),
+        };
         {
             let mut cached = self
-                .yelp_review
+                .session_feedback
                 .lock()
                 .map_err(|e| e.to_string())?;
             *cached = Some(review.clone());
         }
         Ok(Some(review))
+    }
+
+    fn try_llm_session_feedback(
+        &self,
+        request: SessionFeedbackRequest,
+    ) -> Option<SessionFeedback> {
+        let (tx, rx) = std::sync::mpsc::channel();
+        let dialogue = Arc::clone(&self.dialogue);
+        std::thread::spawn(move || {
+            let _ = tx.send(dialogue.generate_session_feedback(&request));
+        });
+        match rx.recv_timeout(std::time::Duration::from_secs(30)) {
+            Ok(Ok(review)) => Some(review),
+            Ok(Err(e)) => {
+                eprintln!("[cinder] session feedback LLM failed: {e}, using stat fallback");
+                None
+            }
+            Err(_) => {
+                eprintln!("[cinder] session feedback LLM timed out, using stat fallback");
+                None
+            }
+        }
+    }
+
+    fn fallback_session_feedback(
+        &self,
+        current: &std::collections::BTreeMap<String, i32>,
+        deltas: &std::collections::BTreeMap<String, i32>,
+    ) -> SessionFeedback {
+        let trust_delta = deltas.get("trust").copied().unwrap_or(0);
+        let openness_delta = deltas.get("openness").copied().unwrap_or(0);
+        let resistance_delta = deltas.get("resistance").copied().unwrap_or(0);
+        let energy_delta = deltas.get("energy").copied().unwrap_or(0);
+        let secrets_found = current.get("secrets_found").copied().unwrap_or(0);
+        let net = trust_delta + openness_delta - resistance_delta + energy_delta + secrets_found * 2;
+        let rating = if net >= 8 {
+            5
+        } else if net >= 4 {
+            4
+        } else if net >= 0 {
+            3
+        } else if net >= -4 {
+            2
+        } else {
+            1
+        };
+        SessionFeedback {
+            rating,
+            review_text: String::new(),
+        }
     }
 
     pub fn follow_actor_options(&self) -> Result<Vec<MenuChoiceOption>, Box<dyn Error>> {
