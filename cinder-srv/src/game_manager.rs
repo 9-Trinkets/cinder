@@ -1,122 +1,16 @@
 use cinder_core::content::loader;
-use cinder_core::content::types::UiTextDefinition;
-use cinder_core::engine::runtime::{ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption};
+use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::{TurnOutcome, WorldState};
-use serde::Serialize;
 use sqlx::SqlitePool;
-use std::any::Any;
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use uuid::Uuid;
 
-#[derive(Clone, Serialize)]
-pub struct LocaleItem {
-    pub code: String,
-    pub label: String,
-}
+mod response;
+mod ui;
 
-#[derive(Clone, Serialize)]
-pub struct ObjectiveItem {
-    pub summary: String,
-    pub message: String,
-}
-
-#[derive(Clone, Serialize)]
-pub struct UiSnapshot {
-    pub title: String,
-    pub time_label: String,
-    pub day_number: u32,
-    pub current_room_name: String,
-    pub followed_actor_name: Option<String>,
-    pub help_text: String,
-    pub about_body: String,
-    pub current_locale: String,
-    pub locale_options: Vec<LocaleItem>,
-    pub objectives: Vec<ObjectiveItem>,
-    pub objective_message: String,
-    pub progress_completed: usize,
-    pub progress_total: usize,
-    pub secrets_found: usize,
-    pub secrets_total: usize,
-    pub rooms: Vec<MenuOptionData>,
-    pub follow_options: Vec<MenuOptionData>,
-    pub channel_surfing_only: bool,
-    pub action_bar_actions: Vec<ActionBarAction>,
-    pub overflow_actions: Vec<OverflowAction>,
-    pub look_options: Vec<LookOptionData>,
-    pub talk_options: Vec<MenuOptionData>,
-    pub active_menu: Option<ActiveMenuData>,
-    pub ui_text: UiTextDefinition,
-    pub session_feedback: Option<SessionFeedbackData>,
-    pub inventory: Vec<InventoryItem>,
-}
-
-#[derive(Clone, Serialize)]
-pub struct SessionFeedbackData {
-    pub rating: u32,
-    pub review_text: String,
-}
-
-#[derive(Clone, Serialize)]
-pub struct InventoryItem {
-    pub label: String,
-    pub count: u32,
-}
-
-#[derive(Clone, Serialize)]
-pub struct MovieFrameData {
-    pub text: String,
-    pub duration_ms: u64,
-}
-
-#[derive(Clone, Serialize)]
-pub struct MovieData {
-    pub title: String,
-    pub frames: Vec<MovieFrameData>,
-    pub narrative_lines: Vec<String>,
-}
-
-#[derive(Clone, Serialize)]
-pub struct CommandResponse {
-    pub text: String,
-    pub game_over: bool,
-    pub movie: Option<MovieData>,
-    pub session_feedback: Option<SessionFeedbackData>,
-}
-
-#[derive(Clone, Serialize)]
-pub struct ActionBarAction {
-    pub id: String,
-    pub label: String,
-}
-
-#[derive(Clone, Serialize)]
-pub struct OverflowAction {
-    pub id: String,
-    pub label: String,
-    pub group: String,
-    pub usage: String,
-}
-
-#[derive(Clone, Serialize)]
-pub struct LookOptionData {
-    pub id: String,
-    pub title: String,
-    pub command: String,
-}
-
-#[derive(Clone, Serialize)]
-pub struct MenuOptionData {
-    pub id: String,
-    pub title: String,
-    pub menu_text: String,
-}
-
-#[derive(Clone, Serialize)]
-pub struct ActiveMenuData {
-    pub prompt: String,
-    pub options: Vec<MenuOptionData>,
-}
+pub use self::response::{CommandResponse, SessionFeedbackData, consume_projector_sequence};
+pub use self::ui::UiSnapshot;
 
 #[derive(Clone)]
 #[allow(dead_code)]
@@ -268,17 +162,9 @@ pub async fn run_command(
             if let Some(ref text) = turn_text {
                 let _ = session.runtime.push_transcript_line(text);
             }
-            let session_feedback = outcome.as_ref().ok().and_then(|o| {
-                if o.game_over {
-                    session
-                        .runtime
-                        .session_feedback()
-                        .ok()
-                        .flatten()
-                        .map(|r| SessionFeedbackData {
-                            rating: r.rating,
-                            review_text: r.review_text,
-                        })
+            let session_feedback = outcome.as_ref().ok().and_then(|outcome| {
+                if outcome.game_over {
+                    response::session_feedback_data(&session.runtime)
                 } else {
                     None
                 }
@@ -287,16 +173,23 @@ pub async fn run_command(
         }));
         let (result, session_feedback) = match task_result {
             Ok((outcome, session_feedback)) => (outcome, session_feedback),
-            Err(payload) => (Err(format!("command panicked: {}", panic_payload_message(&payload))), None),
+            Err(payload) => (
+                Err(format!(
+                    "command panicked: {}",
+                    response::panic_payload_message(&payload)
+                )),
+                None,
+            ),
         };
         (session, result, session_feedback)
     })
     .await
     .map_err(|e| format!("blocking task failed: {e}"))?;
 
-    let movie = result.as_ref().ok().and_then(|_| {
-        consume_projector_sequence(&session.runtime)
-    });
+    let movie = result
+        .as_ref()
+        .ok()
+        .and_then(|_| consume_projector_sequence(&session.runtime));
 
     {
         let mut guard = sessions.lock().map_err(|_| "lock poisoned".to_string())?;
@@ -308,40 +201,6 @@ pub async fn run_command(
         game_over: outcome.game_over,
         movie,
         session_feedback,
-    })
-}
-
-fn panic_payload_message(payload: &Box<dyn Any + Send>) -> String {
-    if let Some(message) = payload.downcast_ref::<String>() {
-        message.clone()
-    } else if let Some(message) = payload.downcast_ref::<&'static str>() {
-        (*message).to_string()
-    } else {
-        "unknown panic payload".to_string()
-    }
-}
-
-pub fn consume_projector_sequence(runtime: &CinderRuntime) -> Option<MovieData> {
-    let raw = runtime.consume_pending_projector_sequence();
-    eprintln!("[web] consume_pending_projector_sequence: raw={:?}", raw.as_ref().err().map(|e| e.to_string()));
-    let sequence = raw.ok()??;
-    let narrative_lines = runtime
-        .consume_pending_projector_narrative_lines()
-        .ok()
-        .unwrap_or_default();
-    eprintln!("[web] frames count: {}, narrative lines: {}", sequence.frames.len(), narrative_lines.len());
-    let frames = sequence
-        .frames
-        .into_iter()
-        .map(|f| MovieFrameData {
-            text: f.text,
-            duration_ms: f.duration_ms,
-        })
-        .collect();
-    Some(MovieData {
-        title: sequence.title,
-        frames,
-        narrative_lines,
     })
 }
 
@@ -407,328 +266,8 @@ pub fn set_locale(
     Ok(changed_text)
 }
 
-fn menu_option_data(opts: Vec<MenuChoiceOption>) -> Vec<MenuOptionData> {
-    opts.into_iter()
-        .map(|o| MenuOptionData {
-            id: o.command,
-            title: o.title,
-            menu_text: o.menu_text,
-        })
-        .collect()
-}
-
 pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnapshot, String> {
-    with_session(sessions, session_id, |session| {
-        let time_label = session
-            .runtime
-            .current_time_label()
-            .map_err(|e| e.to_string())?;
-        let day_number = session
-            .runtime
-            .current_day_number()
-            .map_err(|e| e.to_string())?;
-        let objectives: Vec<ObjectiveItem> = session
-            .runtime
-            .current_objective_summaries()
-            .map_err(|e| e.to_string())?
-            .into_iter()
-            .map(|(s, m)| ObjectiveItem {
-                summary: s,
-                message: m,
-            })
-            .collect();
-        let (progress_completed, progress_total) = session
-            .runtime
-            .current_objective_progress()
-            .map_err(|e| e.to_string())?;
-        let (secrets_found, secrets_total) = session
-            .runtime
-            .current_secret_progress()
-            .map_err(|e| e.to_string())?;
-        let objective_message = objectives
-            .first()
-            .map(|o| o.message.clone())
-            .unwrap_or_default();
-        let locales = loader::available_locales(&loader::pack_dir(&session.pack_id))
-            .map_err(|e| e.to_string())?
-            .into_iter()
-            .map(|l| LocaleItem {
-                code: l.code,
-                label: l.label,
-            })
-            .collect();
-        let content = session.runtime.content();
-
-        let current_room_id = session.runtime.current_room_id().map_err(|e| e.to_string())?;
-        let current_room_name = content
-            .room(&current_room_id)
-            .map(|r| r.title.clone())
-            .unwrap_or(current_room_id);
-        let followed_actor_name = session
-            .runtime
-            .followed_actor_id()
-            .map_err(|e| e.to_string())?
-            .and_then(|id| content.actor(&id).map(|a| a.name.clone()));
-
-        let (action_bar_actions, content_defined_bar) =
-            if !content.ui_text.action_bar.actions.is_empty() {
-                (
-                    content
-                        .ui_text
-                        .action_bar
-                        .actions
-                        .iter()
-                        .map(|a| ActionBarAction {
-                            id: a.id.clone(),
-                            label: a.label.clone(),
-                        })
-                        .collect(),
-                    true,
-                )
-            } else {
-                (
-                    vec![
-                        ActionBarAction {
-                            id: "look".into(),
-                            label: "Look".into(),
-                        },
-                        ActionBarAction {
-                            id: "move".into(),
-                            label: "Move".into(),
-                        },
-                        ActionBarAction {
-                            id: "follow".into(),
-                            label: "Follow".into(),
-                        },
-                    ],
-                    false,
-                )
-            };
-
-        let look_options: Vec<LookOptionData> = session
-            .runtime
-            .current_room_look_options()
-            .map_err(|e| e.to_string())?
-            .into_iter()
-            .map(|o: LookOptionItem| LookOptionData {
-                id: o.id,
-                title: o.label,
-                command: o.command,
-            })
-            .collect();
-
-        let talk_options: Vec<MenuOptionData> = session
-            .runtime
-            .current_room_talk_options()
-            .map_err(|e| e.to_string())?
-            .into_iter()
-            .map(|o: LookOptionItem| MenuOptionData {
-                id: o.id,
-                title: o.label.clone(),
-                menu_text: o.label,
-            })
-            .collect();
-
-        let active_menu: Option<ActiveMenuData> = session
-            .runtime
-            .current_active_menu_info()
-            .map_err(|e| e.to_string())?
-            .map(|info: ActiveMenuInfo| ActiveMenuData {
-                prompt: info.prompt,
-                options: info
-                    .options
-                    .into_iter()
-                    .map(|o| MenuOptionData {
-                        id: o.id,
-                        title: o.title,
-                        menu_text: o.menu_text,
-                    })
-                    .collect(),
-            });
-
-        let mut action_bar_actions = action_bar_actions;
-        if !content_defined_bar
-            && !talk_options.is_empty()
-            && !action_bar_actions.iter().any(|a| a.id == "speak" || a.id == "talk")
-        {
-            action_bar_actions.push(ActionBarAction {
-                id: "talk".into(),
-                label: "Talk".into(),
-            });
-        }
-
-        let bar_ids: Vec<&str> = action_bar_actions.iter().map(|a| a.id.as_str()).collect();
-        let has_talk = bar_ids.contains(&"speak") || bar_ids.contains(&"talk");
-        let modal_covered: Vec<&str> = vec!["inspect_feature", "inspect_actor"];
-        let current_room_id = session
-            .runtime
-            .current_room_id()
-            .unwrap_or_default();
-        let mut overflow_actions: Vec<OverflowAction> = content
-            .commands
-            .actions
-            .iter()
-            .filter(|c| {
-                if !c.player_enabled || bar_ids.contains(&c.id.as_str()) {
-                    return false;
-                }
-                if modal_covered.contains(&c.id.as_str()) {
-                    return false;
-                }
-                if (c.id == "speak" || c.id == "talk") && has_talk {
-                    return false;
-                }
-                if !c.allowed_rooms.is_empty()
-                    && !c.allowed_rooms.contains(&current_room_id)
-                {
-                    return false;
-                }
-                if let Some(item_id) = &c.consumes_item {
-                    if !session
-                        .runtime
-                        .player_has_item(item_id)
-                        .unwrap_or(false)
-                    {
-                        return false;
-                    }
-                }
-                if !c.requires_any.is_empty() || !c.consumes_any.is_empty() {
-                    let has_any = c
-                        .requires_any
-                        .iter()
-                        .chain(c.consumes_any.iter())
-                        .any(|id| {
-                            session
-                                .runtime
-                                .player_has_item(id)
-                                .unwrap_or(false)
-                        });
-                    if !has_any {
-                        return false;
-                    }
-                }
-                if !c.available_during.is_empty() {
-                    let active_stages: Vec<String> = session
-                        .runtime
-                        .active_stage_ids()
-                        .unwrap_or_default();
-                    let matches_stage = c
-                        .available_during
-                        .iter()
-                        .any(|stage_id| active_stages.contains(stage_id));
-                    if !matches_stage {
-                        return false;
-                    }
-                }
-                true
-            })
-            .map(|c| {
-                let label = c
-                    .id
-                    .split('_')
-                    .map(|w| {
-                        let mut chars = w.chars();
-                        chars
-                            .next()
-                            .map(|f| f.to_uppercase().to_string() + chars.as_str())
-                            .unwrap_or_default()
-                    })
-                    .collect::<Vec<_>>()
-                    .join(" ");
-                let usage = c
-                    .player_command
-                    .as_ref()
-                    .map(|p| p.usage.clone())
-                    .unwrap_or_default();
-                OverflowAction {
-                    id: c.id.clone(),
-                    label,
-                    group: c.group.clone(),
-                    usage,
-                }
-            })
-            .collect();
-
-        // Auto-generate overflow actions from stage-associated menus
-        if let Ok(active_stages) = session.runtime.active_stage_ids() {
-            for stage_id in &active_stages {
-                let Some(menu) = content
-                    .menus
-                    .iter()
-                    .find(|m| &m.stage_id == stage_id && !m.options.is_empty())
-                else {
-                    continue;
-                };
-                for option in &menu.options {
-                    overflow_actions.push(OverflowAction {
-                        id: option.id.clone(),
-                        label: option.title.clone(),
-                        group: "support".to_string(),
-                        usage: String::new(),
-                    });
-                }
-            }
-        }
-
-        Ok(UiSnapshot {
-            title: content.opening.title.clone(),
-            time_label,
-            day_number,
-            current_room_name,
-            followed_actor_name,
-            help_text: session.runtime.help_text(),
-            about_body: content.ui_text.about_body.clone(),
-            current_locale: content.locale.clone(),
-            locale_options: locales,
-            objectives,
-            objective_message,
-            progress_completed,
-            progress_total,
-            secrets_found,
-            secrets_total,
-            rooms: menu_option_data(
-                session
-                    .runtime
-                    .room_switch_options()
-                    .map_err(|e| e.to_string())?,
-            ),
-            follow_options: menu_option_data(
-                session
-                    .runtime
-                    .follow_actor_options()
-                    .map_err(|e| e.to_string())?,
-            ),
-            channel_surfing_only: content.settings.channel_surfing_only,
-            action_bar_actions,
-            overflow_actions,
-            look_options,
-            talk_options,
-            active_menu,
-            ui_text: content.ui_text.clone(),
-            session_feedback: session
-                .runtime
-                .session_feedback()
-                .ok()
-                .flatten()
-                .map(|r| SessionFeedbackData {
-                    rating: r.rating,
-                    review_text: r.review_text,
-                }),
-            inventory: session
-                .runtime
-                .inventory_items()
-                .unwrap_or_default()
-                .into_iter()
-                .map(|(id, count)| {
-                    let label = content
-                        .item(&id)
-                        .map(|i| i.label.clone())
-                        .unwrap_or(id);
-                    InventoryItem { label, count }
-                })
-                .collect(),
-        })
-    })
+    with_session(sessions, session_id, |session| ui::build_ui_snapshot(session))
 }
 
 pub fn get_transcript(sessions: &SessionMap, session_id: &str) -> Result<Vec<String>, String> {
