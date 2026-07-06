@@ -273,6 +273,8 @@ pub struct OpeningMenuOptionDefinition {
     pub id: String,
     pub title: String,
     pub menu_text: String,
+    #[serde(default)]
+    pub narrative_lines: Vec<String>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

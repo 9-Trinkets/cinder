@@ -50,17 +50,32 @@
       {
         "id": "quarter-coffee",
         "title": "Serve coffee",
-        "menu_text": "Serve coffee and invite her to keep reading while it's still hot."
+        "menu_text": "Serve coffee and invite her to keep reading while it's still hot.",
+        "narrative_lines": [
+          "You place a warm cup beside her. Steam rises between her and the page. Noa wraps both hands around the mug and exhales — not tension, but threshold crossed.",
+          "\"Thank you,\" she says. Not to the coffee. To the gesture.",
+          "She turns a page before lifting the cup. The reading resumes, steadier than before."
+        ]
       },
       {
         "id": "quarter-pastry",
         "title": "Serve pastry",
-        "menu_text": "Serve a homemade pastry and give her a few minutes of quiet."
+        "menu_text": "Serve a homemade pastry and give her a few minutes of quiet.",
+        "narrative_lines": [
+          "The plate lands softly beside the book. Noa glances at it, then at you, then at it again — as if unsure what to do with kindness that asks for nothing back.",
+          "She breaks off a piece but does not eat it immediately. She holds it, letting the moment land.",
+          "\"My grandmother used to do this,\" she says, quiet. \"Put things in front of me without a reason.\" The silence that follows is not sad. It is full."
+        ]
       },
       {
         "id": "quarter-push-through",
         "title": "Ask her to push through",
-        "menu_text": "Tell her to keep reading first and discuss comfort later."
+        "menu_text": "Tell her to keep reading first and discuss comfort later.",
+        "narrative_lines": [
+          "Noa nods once — a short, sharp motion. She understands the instruction even if something in her shoulders tightens.",
+          "She lowers her gaze back to the page, but her thumb presses harder against the spine.",
+          "The reading continues, but the air around her feels thinner now. She is following the directive. Whether she feels held by it is another question."
+        ]
       }
     ]
   },
@@ -80,17 +95,32 @@
       {
         "id": "half-water-and-breathe",
         "title": "Offer water and breathing space",
-        "menu_text": "Bring water, lower the pressure, and let her settle before continuing."
+        "menu_text": "Bring water, lower the pressure, and let her settle before continuing.",
+        "narrative_lines": [
+          "A glass of water appears at her elbow. Noa looks at it, then closes the book on her finger to keep her place.",
+          "She takes three slow sips. With each one, the set of her jaw softens by a degree.",
+          "\"I forgot I was holding my breath,\" she admits. She places the glass down and reopens the book. The pause has done its work."
+        ]
       },
       {
         "id": "half-brief-reflection",
         "title": "Offer a brief reflection",
-        "menu_text": "Name one pattern you hear and ask if she wants to test it against the next chapter."
+        "menu_text": "Name one pattern you hear and ask if she wants to test it against the next chapter.",
+        "narrative_lines": [
+          "You name it plainly: the character keeps choosing safety over honesty, and Noa keeps turning pages as if recognizing a mirror she did not ask for.",
+          "Noa is still for a moment. Then she nods, slowly.",
+          "\"That is... uncomfortably exact.\" A pause. \"Keep going. I want to see if she breaks it.\" Her voice carries something between fear and hope."
+        ]
       },
       {
         "id": "half-overinterpret",
         "title": "Push a strong interpretation",
-        "menu_text": "Give a firm interpretation and ask her to accept it before continuing."
+        "menu_text": "Give a firm interpretation and ask her to accept it before continuing.",
+        "narrative_lines": [
+          "You tell her what the story really means — not what it says, but what it hides. Your voice carries the weight of certainty.",
+          "Noa's eyes narrow. She does not disagree aloud, but her posture shifts: a subtle retreat, shoulders curling forward.",
+          "\"I think... I need to read it myself,\" she says carefully. She turns a page, but her focus seems to have fractured. The interpretation may have landed on her rather than with her."
+        ]
       }
     ]
   },
@@ -110,17 +140,32 @@
       {
         "id": "threeq-finish-then-talk",
         "title": "Let her finish, then debrief",
-        "menu_text": "Prioritize completion first, then hold a clean reflection space."
+        "menu_text": "Prioritize completion first, then hold a clean reflection space.",
+        "narrative_lines": [
+          "Noa receives the permission like a reprieve. She does not have to hold two things at once — the ending and the meaning.",
+          "She turns to the final pages with renewed focus. Her reading is faster now, more certain. She is no longer parsing for survival but for completion.",
+          "You watch her cross the finish line. The story will land differently once the book is closed, and you will both be there to meet it."
+        ]
       },
       {
         "id": "threeq-short-checkin",
         "title": "Do a short check-in now",
-        "menu_text": "Spend two minutes grounding the insight before she reads the ending."
+        "menu_text": "Spend two minutes grounding the insight before she reads the ending.",
+        "narrative_lines": [
+          "She sets the book down — fully, this time, with a bookmark placed precisely where she stopped. Noa gives you her full attention, which feels different now. Less guarded.",
+          "\"I think I know what it's going to say,\" she offers. \"The ending. And I think I know why it scares me.\"",
+          "She does not elaborate. She does not need to. The naming is the insight. After a measured silence, she picks the book back up. Ready."
+        ]
       },
       {
         "id": "threeq-rush-to-end",
         "title": "Rush to the ending",
-        "menu_text": "Push to finish quickly and postpone emotional processing."
+        "menu_text": "Push to finish quickly and postpone emotional processing.",
+        "narrative_lines": [
+          "Noa hesitates for a fraction of a second, then obeys. Her eyes scan faster, skipping lines now.",
+          "She reaches the ending, but something about the speed has flattened the landing. She closes the book and stares at the cover, not quite present.",
+          "\"That was... fast,\" she says. The words are non-committal. Whatever the story tried to surface, it may need another session to find its way out."
+        ]
       }
     ]
   }

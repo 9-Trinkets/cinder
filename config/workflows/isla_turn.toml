@@ -72,7 +72,7 @@ agent_profile = "cinder_actor_turn_validator"
 
 [synapse.workflows.isla_turn.roles.direct_speech_intent]
 
-[synapse.workflows.isla_turn.roles.yelp_review]
+[synapse.workflows.isla_turn.roles.session_feedback]
 
 [synapse.workflows.isla_turn.roles.turn_reducer]
 handler = "reducer"

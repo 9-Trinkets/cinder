@@ -42,7 +42,7 @@ export default function GamePage() {
   const [input, setInput] = useState('')
   const [gameOver, setGameOver] = useState(false)
   const [busy, setBusy] = useState(false)
-  const [yelpReview, setYelpReview] = useState<api.YelpReviewData | null>(null)
+  const [sessionFeedback, setSessionFeedback] = useState<api.SessionFeedbackData | null>(null)
   const [showMenu, setShowMenu] = useState(false)
   const [showLookModal, setShowLookModal] = useState(false)
   const [showTalkModal, setShowTalkModal] = useState(false)
@@ -215,8 +215,8 @@ export default function GamePage() {
   }, [gameOver])
 
   useEffect(() => {
-    if (gameOver && uiSnapshot?.yelp_review) {
-      setYelpReview(uiSnapshot.yelp_review)
+    if (gameOver && uiSnapshot?.session_feedback) {
+      setSessionFeedback(uiSnapshot.session_feedback)
     }
   }, [gameOver, uiSnapshot])
 
@@ -250,8 +250,8 @@ export default function GamePage() {
         setLines(prev => [...prev, outLine])
       }
       refreshSnapshot()
-      if (res.yelp_review) {
-        setYelpReview(res.yelp_review)
+      if (res.session_feedback) {
+        setSessionFeedback(res.session_feedback)
       }
       if (res.movie) {
         setMovie(res.movie)
@@ -387,29 +387,29 @@ export default function GamePage() {
               </div>
             )}
             {busy && <p className="text-muted text-sm italic">...</p>}
-            {yelpReview && (
+            {sessionFeedback && (
               <div className="fixed inset-0 bg-base/80 flex items-center justify-center z-50">
                 <div className="bg-surface rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl">
                   <h2 className="text-xl font-bold text-center mb-2">Session Complete</h2>
                   <div className="flex justify-center gap-1 text-2xl mb-4">
                     {[1,2,3,4,5].map(n => (
-                      <span key={n} className={n <= yelpReview.rating ? 'text-yellow-400' : 'text-muted'}>
-                        {n <= yelpReview.rating ? '\u2605' : '\u2606'}
+                      <span key={n} className={n <= sessionFeedback.rating ? 'text-yellow-400' : 'text-muted'}>
+                        {n <= sessionFeedback.rating ? '\u2605' : '\u2606'}
                       </span>
                     ))}
                   </div>
                   <p className="text-center text-sm text-muted mb-1">— Noa</p>
-                  <p className="text-center text-balance leading-relaxed">{yelpReview.review_text}</p>
+                  <p className="text-center text-balance leading-relaxed">{sessionFeedback.review_text}</p>
                   <button
                     className="mt-6 w-full py-2 bg-love text-white rounded-lg font-semibold hover:opacity-90"
-                    onClick={() => setYelpReview(null)}
+                    onClick={() => setSessionFeedback(null)}
                   >
                     OK
                   </button>
                 </div>
               </div>
             )}
-            {gameOver && !yelpReview && (
+            {gameOver && !sessionFeedback && (
               <p className="text-love font-semibold text-center pt-4">Game Over</p>
             )}
             <div ref={bottomRef} />

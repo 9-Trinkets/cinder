@@ -76,7 +76,7 @@ export interface CommandResponse {
   text: string
   game_over: boolean
   movie: MovieData | null
-  yelp_review: YelpReviewData | null
+  session_feedback: SessionFeedbackData | null
 }
 
 export function runCommand(token: string, sessionId: string, input: string) {
@@ -140,7 +140,7 @@ export interface ActiveMenuData {
   options: MenuOptionItem[]
 }
 
-export interface YelpReviewData {
+export interface SessionFeedbackData {
   rating: number
   review_text: string
 }
@@ -174,7 +174,7 @@ export interface UiSnapshot {
   look_options: LookOptionData[]
   talk_options: MenuOptionItem[]
   active_menu: ActiveMenuData | null
-  yelp_review: YelpReviewData | null
+  session_feedback: SessionFeedbackData | null
   inventory: InventoryItem[]
   ui_text: {
     language_name: string

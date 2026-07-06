@@ -58,7 +58,7 @@ pub(crate) enum ShellModalSnapshot {
         options: Vec<String>,
         hint: String,
     },
-    YelpReview {
+    SessionFeedback {
         rating: u32,
         review_text: String,
         hint: String,
@@ -336,11 +336,11 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
         ShellModalSnapshot::Detail { title, body, .. } => {
             detail_modal_area(frame.area(), &detail_modal_body_text(title, body))
         }
-        ShellModalSnapshot::YelpReview { .. } => centered_rect(62, 14, frame.area()),
+        ShellModalSnapshot::SessionFeedback { .. } => centered_rect(62, 14, frame.area()),
         _ => centered_rect(62, 12, frame.area()),
     };
     let block_title = match modal {
-        ShellModalSnapshot::YelpReview { .. } => "Session Complete",
+        ShellModalSnapshot::SessionFeedback { .. } => "Session Complete",
         _ => &ui_text.shell_menu_title,
     };
     let sections = modal_block(frame, area, block_title, theme);
@@ -439,7 +439,7 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
                 sections[1],
             );
         }
-        ShellModalSnapshot::YelpReview {
+        ShellModalSnapshot::SessionFeedback {
             rating,
             review_text,
             hint,

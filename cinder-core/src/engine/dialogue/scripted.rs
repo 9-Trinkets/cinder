@@ -4,7 +4,7 @@ use super::types::{
     ActorTurnActionDecision, ActorTurnActionRequest, ConversationMemorySummaryRequest,
     DialogueRequest, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
     DynamicMenuOptionOutput, DynamicMenuRequest, MenuIntentDecision, MenuIntentRequest,
-    YelpReview, YelpReviewRequest,
+    SessionFeedback, SessionFeedbackRequest,
 };
 use std::collections::BTreeMap;
 
@@ -15,7 +15,7 @@ pub struct ScriptedDialogueGenerator {
     actor_turn_actions: BTreeMap<String, ActorTurnActionDecision>,
     memory_summaries: BTreeMap<String, String>,
     attraction_intents: BTreeMap<String, DirectSpeechIntentDecision>,
-    yelp_reviews: BTreeMap<String, YelpReview>,
+    session_feedback: BTreeMap<String, SessionFeedback>,
     requests: std::sync::Arc<std::sync::Mutex<Vec<DialogueRequest>>>,
 }
 
@@ -76,8 +76,8 @@ impl ScriptedDialogueGenerator {
         self
     }
 
-    pub fn with_yelp_review(mut self, actor_id: &str, review: YelpReview) -> Self {
-        self.yelp_reviews.insert(actor_id.to_string(), review);
+    pub fn with_session_feedback(mut self, actor_id: &str, review: SessionFeedback) -> Self {
+        self.session_feedback.insert(actor_id.to_string(), review);
         self
     }
 
@@ -172,13 +172,13 @@ impl DialogueGenerator for ScriptedDialogueGenerator {
             .unwrap_or(DirectSpeechIntentDecision("NONE".to_string())))
     }
 
-    fn generate_yelp_review(
+    fn generate_session_feedback(
         &self,
-        request: &YelpReviewRequest,
-    ) -> Result<YelpReview, String> {
-        self.yelp_reviews
+        request: &SessionFeedbackRequest,
+    ) -> Result<SessionFeedback, String> {
+        self.session_feedback
             .get(&request.actor_name)
             .cloned()
-            .ok_or_else(|| format!("missing scripted yelp review for '{}'", request.actor_name))
+            .ok_or_else(|| format!("missing scripted session feedback for '{}'", request.actor_name))
     }
 }

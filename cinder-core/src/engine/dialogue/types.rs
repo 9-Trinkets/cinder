@@ -276,7 +276,7 @@ pub struct DynamicMenuOptionOutput {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct YelpReviewRequest {
+pub struct SessionFeedbackRequest {
     pub locale: String,
     pub system_text: SystemTextDefinition,
     pub actor_name: String,
@@ -287,7 +287,7 @@ pub struct YelpReviewRequest {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct YelpReview {
+pub struct SessionFeedback {
     pub rating: u32,
     pub review_text: String,
 }

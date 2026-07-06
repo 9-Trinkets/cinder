@@ -222,6 +222,19 @@ pub(crate) fn build_menu_choice_events(
                 ),
             }),
     );
+    events.extend(
+        option.narrative_lines
+            .iter()
+            .map(|line| WorldEvent::NarrativeLine {
+                text: content.render_template(
+                    line,
+                    &[
+                        ("selection_title", option.title.as_str()),
+                        (menu.selection_var_key.as_str(), option.title.as_str()),
+                    ],
+                ),
+            }),
+    );
     events
 }
 
