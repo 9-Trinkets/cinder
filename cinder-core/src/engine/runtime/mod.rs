@@ -8,7 +8,7 @@ use crate::engine::dialogue::{
     ChapterRelationshipSummaryRequest, ChapterScriptSummaryRequest, DialogueGenerator,
     SessionFeedbackRequest, SynapseChapterSummaryGenerator, SynapseDialogueGenerator, SessionFeedback,
 };
-use crate::engine::dialogue_grounding::render_story_text;
+use crate::engine::dialogue_grounding::{render_story_text, viewer_participant_id};
 use crate::engine::events::{ObservationMode, TimestampedWorldEvent, WorldEvent};
 use crate::engine::menus::render_menu_prompt;
 use crate::engine::neuron::{WorkflowDefinition, WorkflowTraceContext, load_workflow};
@@ -507,6 +507,14 @@ impl CinderRuntime {
         lines.into_iter().map(|(_, line)| line).collect()
     }
 
+    fn select_session_feedback_actor_id(&self, state: &WorldState) -> Option<String> {
+        select_session_feedback_actor_id(
+            self.content.as_ref(),
+            state,
+            &viewer_participant_id(self.content.as_ref()),
+        )
+    }
+
     pub fn current_next_chapter_preview(&self) -> Result<Option<String>, Box<dyn Error>> {
         let state = self
             .state
@@ -761,12 +769,16 @@ impl CinderRuntime {
                         .state
                         .lock()
                         .map_err(|_| "failed to lock runtime state for dynamic menu")?;
-                    let conversation_key = format!("{}:{}", menu.actor_id, "isla");
                     state
-                        .conversation_memory
-                        .get(&conversation_key)
-                        .map(|lines| lines.iter().rev().take(10).cloned().collect::<Vec<_>>())
-                        .unwrap_or_default()
+                        .conversation_history(
+                            &menu.actor_id,
+                            &viewer_participant_id(self.content.as_ref()),
+                        )
+                        .iter()
+                        .rev()
+                        .take(10)
+                        .cloned()
+                        .collect::<Vec<_>>()
                 };
                 let role_name = if menu.generation_role.is_empty() {
                     "dynamic_menu"
@@ -907,14 +919,16 @@ impl CinderRuntime {
                 return Ok(None);
             }
         }
-        let (current, deltas, stats_context, session_summary, relationship_lines) = {
+        let (actor_id, current, deltas, stats_context, session_summary, relationship_lines) = {
             let state = self
                 .state
                 .lock()
                 .map_err(|_| "failed to lock runtime state for session feedback")?;
-            let noa_id = "noa";
-            let current = state.actor_stats_snapshot(noa_id);
-            let deltas = state.actor_stat_deltas(noa_id).unwrap_or_default();
+            let Some(actor_id) = self.select_session_feedback_actor_id(&state) else {
+                return Ok(None);
+            };
+            let current = state.actor_stats_snapshot(&actor_id);
+            let deltas = state.actor_stat_deltas(&actor_id).unwrap_or_default();
             let stats_context = [
                 "trust",
                 "openness",
@@ -933,7 +947,7 @@ impl CinderRuntime {
             .join("\n");
             let session_summary = state.transcript.last().cloned().unwrap_or_default();
             let relationship_lines = self.relationship_status_lines_for_state(&state);
-            (current, deltas, stats_context, session_summary, relationship_lines)
+            (actor_id, current, deltas, stats_context, session_summary, relationship_lines)
         };
         let request = SessionFeedbackRequest {
             locale: self.content.locale.clone(),
@@ -942,7 +956,7 @@ impl CinderRuntime {
                 .content
                 .actors
                 .iter()
-                .find(|a| a.id == "noa")
+                .find(|a| a.id == actor_id)
                 .map(|a| a.name.clone())
                 .unwrap_or_else(|| "Patient".to_string()),
             other_person_name: "You".to_string(),
@@ -1294,6 +1308,40 @@ impl CinderRuntime {
             .map_err(std::io::Error::other)?;
         Ok((lines.join("\n\n"), game_over))
     }
+}
+
+fn select_session_feedback_actor_id(
+    content: &ContentPack,
+    state: &WorldState,
+    viewer_id: &str,
+) -> Option<String> {
+    if !content.settings.session_feedback_actor_id.is_empty()
+        && content
+            .actors
+            .iter()
+            .any(|actor| actor.id == content.settings.session_feedback_actor_id)
+    {
+        return Some(content.settings.session_feedback_actor_id.clone());
+    }
+    state
+        .conversation_memory
+        .iter()
+        .filter_map(|(key, lines)| {
+            let (participant_a_id, participant_b_id) = WorldState::conversation_participants(key)?;
+            let actor_id = if participant_a_id == viewer_id {
+                participant_b_id
+            } else if participant_b_id == viewer_id {
+                participant_a_id
+            } else {
+                return None;
+            };
+            content.actor(actor_id)?;
+            let last_sequence = lines.last().map(|line| line.event_sequence).unwrap_or(0);
+            Some((last_sequence, actor_id.to_string()))
+        })
+        .max_by_key(|(last_sequence, _)| *last_sequence)
+        .map(|(_, actor_id)| actor_id)
+        .or_else(|| content.actors.first().map(|actor| actor.id.clone()))
 }
 
 mod stats_trace;

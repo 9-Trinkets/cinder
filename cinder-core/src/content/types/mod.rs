@@ -44,6 +44,12 @@ pub struct ContentSettingsDefinition {
     pub autonomous_actor_dialogue: bool,
     #[serde(default)]
     pub workflow_id: String,
+    #[serde(default)]
+    pub session_feedback_actor_id: String,
+    #[serde(default)]
+    pub fallback_stage_id: String,
+    #[serde(default)]
+    pub fallback_required_story_vars: Vec<String>,
     #[serde(default = "default_speech_stamina_cost_floor")]
     pub speech_stamina_cost_floor: i32,
     #[serde(default = "default_true")]
@@ -93,6 +99,9 @@ impl Default for ContentSettingsDefinition {
             default_language: default_default_language(),
             channel_surfing_only: false,
             autonomous_actor_dialogue: false,
+            session_feedback_actor_id: String::default(),
+            fallback_stage_id: String::default(),
+            fallback_required_story_vars: Vec::new(),
             speech_stamina_cost_floor: default_speech_stamina_cost_floor(),
             workflow_id: String::default(),
             show_day_summary: true,

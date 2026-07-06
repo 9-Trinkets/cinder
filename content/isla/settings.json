@@ -5,6 +5,7 @@
   "default_language": "en",
   "channel_surfing_only": false,
   "autonomous_actor_dialogue": false,
+  "session_feedback_actor_id": "noa",
   "speech_stamina_cost_floor": 0,
   "show_day_summary": false,
   "theme": {

@@ -1,5 +1,7 @@
 {
   "typewriter_char_ms": 10,
   "npc_tick_interval_ms": 2000,
-  "default_language": "en"
+  "default_language": "en",
+  "fallback_stage_id": "go-to-bed",
+  "fallback_required_story_vars": ["movie_title", "snack_title"]
 }

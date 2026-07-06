@@ -1,4 +1,5 @@
 use crate::content::types::{AdvanceCondition, AdvanceEffect, ContentPack};
+use std::collections::BTreeMap;
 use crate::engine::state::WorldState;
 
 pub(super) fn advance_objective_for_signal(
@@ -46,15 +47,12 @@ pub(super) fn advance_objective_for_signal(
             }
             if !next_stage.projector_sequence_var_key.is_empty() {
                 let selected_value = state.story_vars.get(&next_stage.projector_sequence_var_key);
-                eprintln!("[debug] projector check: key={:?}, selected_value={:?}, movies_count={}", 
-                    next_stage.projector_sequence_var_key, selected_value, content.movies.len());
                 if let Some(selected_value) = selected_value
                     && let Some(movie) = content
                         .movies
                         .iter()
                         .find(|movie| movie.match_value == *selected_value)
                 {
-                    eprintln!("[debug] projector matched: movie_id={}", movie.id);
                     state.pending_projector_sequence_id = Some(movie.id.clone());
                     state.current_time_minutes += next_stage.elapsed_minutes;
                     state.pending_projector_narrative_lines = next_stage
@@ -64,7 +62,6 @@ pub(super) fn advance_objective_for_signal(
                         .collect();
                     continue;
                 }
-                eprintln!("[debug] projector no match for key={:?}", next_stage.projector_sequence_var_key);
             }
             state.current_time_minutes += next_stage.elapsed_minutes;
             for line in &next_stage.narrative_lines {
@@ -94,19 +91,90 @@ pub(super) fn advance_objective_for_signal(
     next_active_stage_ids.sort();
     next_active_stage_ids.dedup();
     state.active_objective_stage_ids = next_active_stage_ids;
-    if state.active_objective_stage_ids.is_empty()
-        && !state.game_over
-        && state.story_vars.contains_key("movie_title")
-        && state.story_vars.contains_key("snack_title")
-        && let Some(stage) = content
-            .beats
-            .stages
-            .iter()
-            .find(|stage| stage.id == "go-to-bed")
-    {
-        state.active_objective_stage_ids.push(stage.id.clone());
+    if let Some(stage_id) = fallback_stage_to_activate(
+        &content.settings.fallback_stage_id,
+        &content.settings.fallback_required_story_vars,
+        &content.beats.stages,
+        &state.active_objective_stage_ids,
+        state.game_over,
+        &state.story_vars,
+    ) {
+        state.active_objective_stage_ids.push(stage_id);
     }
     messages
+}
+
+fn fallback_stage_to_activate(
+    fallback_stage_id: &str,
+    fallback_required_story_vars: &[String],
+    stages: &[crate::content::types::BeatDefinition],
+    active_stage_ids: &[String],
+    game_over: bool,
+    story_vars: &BTreeMap<String, String>,
+) -> Option<String> {
+    if game_over || !active_stage_ids.is_empty() || fallback_stage_id.is_empty() {
+        return None;
+    }
+    if !fallback_required_story_vars
+        .iter()
+        .all(|required_key| story_vars.contains_key(required_key))
+    {
+        return None;
+    }
+    stages
+        .iter()
+        .find(|stage| stage.id == fallback_stage_id)
+        .map(|stage| stage.id.clone())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::fallback_stage_to_activate;
+    use crate::content::types::BeatDefinition;
+    use std::collections::BTreeMap;
+
+    #[test]
+    fn fallback_stage_activates_only_when_requirements_are_met() {
+        let stages = vec![BeatDefinition {
+            id: "wind-down".to_string(),
+            ..BeatDefinition::default()
+        }];
+        let story_vars = BTreeMap::from([
+            ("movie_title".to_string(), "A Film".to_string()),
+            ("snack_title".to_string(), "Toast".to_string()),
+        ]);
+
+        let stage_id = fallback_stage_to_activate(
+            "wind-down",
+            &["movie_title".to_string(), "snack_title".to_string()],
+            &stages,
+            &[],
+            false,
+            &story_vars,
+        );
+
+        assert_eq!(stage_id.as_deref(), Some("wind-down"));
+    }
+
+    #[test]
+    fn fallback_stage_does_not_activate_when_any_requirement_is_missing() {
+        let stages = vec![BeatDefinition {
+            id: "wind-down".to_string(),
+            ..BeatDefinition::default()
+        }];
+        let story_vars = BTreeMap::from([("movie_title".to_string(), "A Film".to_string())]);
+
+        let stage_id = fallback_stage_to_activate(
+            "wind-down",
+            &["movie_title".to_string(), "snack_title".to_string()],
+            &stages,
+            &[],
+            false,
+            &story_vars,
+        );
+
+        assert!(stage_id.is_none());
+    }
 }
 
 pub(super) fn advance_conditions_met(state: &WorldState, conditions: &[AdvanceCondition]) -> bool {
