@@ -76,6 +76,7 @@ export interface CommandResponse {
   text: string
   game_over: boolean
   movie: MovieData | null
+  yelp_review: YelpReviewData | null
 }
 
 export function runCommand(token: string, sessionId: string, input: string) {

@@ -58,6 +58,7 @@
         "example": "recommend",
         "advances_time": false
       },
+      "available_during": ["intake"],
       "content_event": {
         "id": "isla.recommendation_started",
         "event_text": "You rest a hand on the shelf and let Noa know you're ready to choose a book together.",
@@ -77,6 +78,7 @@
         "example": "continue",
         "advances_time": true
       },
+      "available_during": ["reading-quarter", "reading-half", "reading-three-quarters"],
       "content_event": {
         "id": "isla.reading_progressed",
         "event_text": "Noa keeps reading while the cafe settles into a quieter rhythm.",
@@ -96,6 +98,7 @@
         "example": "finish reading",
         "advances_time": false
       },
+      "available_during": ["ready-to-finish"],
       "content_event": {
         "id": "isla.reading_complete",
         "event_text": "Noa closes the book and looks up, waiting for what the session means now.",

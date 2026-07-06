@@ -52,7 +52,7 @@
         "She presses her palm flat against the cover as if steadying herself before she speaks."
       ],
       "elapsed_minutes": 3,
-      "advance_signals": ["menu_selected:request-quarter", "reading_step"],
+      "advance_signals": ["menu_selected:request-quarter"],
       "next_stage_id": "reading-half"
     },
     {
@@ -80,7 +80,7 @@
         "She rubs the bridge of her nose before looking up, and you notice her hand is not entirely steady."
       ],
       "elapsed_minutes": 3,
-      "advance_signals": ["menu_selected:request-half", "reading_step"],
+      "advance_signals": ["menu_selected:request-half"],
       "next_stage_id": "reading-three-quarters"
     },
     {
@@ -108,7 +108,7 @@
         "The rain has stopped outside. The cafe feels smaller and more still than it did when she started."
       ],
       "elapsed_minutes": 3,
-      "advance_signals": ["menu_selected:request-three-quarters", "reading_step"],
+      "advance_signals": ["menu_selected:request-three-quarters"],
       "next_stage_id": "ready-to-finish"
     },
     {

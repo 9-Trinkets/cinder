@@ -182,6 +182,7 @@ pub async fn switch_room_handler(
         text: outcome.text,
         game_over: outcome.game_over,
         movie: None,
+        yelp_review: None,
     }))
 }
 
@@ -206,6 +207,7 @@ pub async fn follow_actor_handler(
         text: outcome.text,
         game_over: outcome.game_over,
         movie: None,
+        yelp_review: None,
     }))
 }
 

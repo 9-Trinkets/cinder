@@ -126,6 +126,8 @@ pub struct CommandDefinition {
     pub requires_any: Vec<String>,
     #[serde(default)]
     pub consumes_any: Vec<String>,
+    #[serde(default)]
+    pub available_during: Vec<String>,
 }
 
 impl CommandDefinition {

@@ -66,6 +66,29 @@ pub(super) fn build_planned_turn(
                     });
                     false
                 }
+            } else if let Some(stage_menu) = planner_state
+                .active_objective_stage_ids
+                .iter()
+                .find_map(|stage_id| {
+                    content
+                        .menus
+                        .iter()
+                        .find(|m| m.stage_id == *stage_id && !m.options.is_empty())
+                })
+            {
+                if let Some(option) =
+                    resolve_menu_choice(stage_menu, &aggregated.command.raw_input)
+                {
+                    planned
+                        .events
+                        .extend(build_menu_choice_events(content, stage_menu, option));
+                    true
+                } else {
+                    planned.events.push(WorldEvent::ActionRejected {
+                        message: stage_menu.invalid_choice_text.clone(),
+                    });
+                    false
+                }
             } else {
                 planned.events.push(WorldEvent::UnknownInput {
                     raw_input: aggregated.command.raw_input.clone(),

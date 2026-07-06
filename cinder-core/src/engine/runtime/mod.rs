@@ -247,6 +247,14 @@ impl CinderRuntime {
         Ok(state.player_inventory.clone())
     }
 
+    pub fn active_stage_ids(&self) -> Result<Vec<String>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for stages")?;
+        Ok(state.active_objective_stage_ids.clone())
+    }
+
     pub fn push_transcript_line(&self, line: &str) -> Result<(), Box<dyn Error>> {
         let mut state = self
             .state

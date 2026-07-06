@@ -250,6 +250,9 @@ export default function GamePage() {
         setLines(prev => [...prev, outLine])
       }
       refreshSnapshot()
+      if (res.yelp_review) {
+        setYelpReview(res.yelp_review)
+      }
       if (res.movie) {
         setMovie(res.movie)
         setMovieFrame(0)

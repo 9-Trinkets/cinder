@@ -80,6 +80,7 @@ pub struct CommandResponse {
     pub text: String,
     pub game_over: bool,
     pub movie: Option<MovieData>,
+    pub yelp_review: Option<YelpReviewData>,
 }
 
 #[derive(Clone, Serialize)]
@@ -236,7 +237,7 @@ pub async fn run_command(
     };
 
     let input = input.to_string();
-    let (result, session) = tokio::task::spawn_blocking(move || {
+    let (result, session, yelp_review) = tokio::task::spawn_blocking(move || {
         let outcome = session
             .runtime
             .run_turn(&input)
@@ -264,7 +265,22 @@ pub async fn run_command(
         if let Some(ref text) = turn_text {
             let _ = session.runtime.push_transcript_line(text);
         }
-        (outcome, session)
+        let yelp_review = outcome.as_ref().ok().and_then(|o| {
+            if o.game_over {
+                session
+                    .runtime
+                    .yelp_review()
+                    .ok()
+                    .flatten()
+                    .map(|r| YelpReviewData {
+                        rating: r.rating,
+                        review_text: r.review_text,
+                    })
+            } else {
+                None
+            }
+        });
+        (outcome, session, yelp_review)
     })
     .await
     .map_err(|e| format!("blocking task failed: {e}"))?;
@@ -282,6 +298,7 @@ pub async fn run_command(
         text: outcome.text,
         game_over: outcome.game_over,
         movie,
+        yelp_review,
     })
 }
 
@@ -528,7 +545,7 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
             .runtime
             .current_room_id()
             .unwrap_or_default();
-        let overflow_actions: Vec<OverflowAction> = content
+        let mut overflow_actions: Vec<OverflowAction> = content
             .commands
             .actions
             .iter()
@@ -571,6 +588,19 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
                         return false;
                     }
                 }
+                if !c.available_during.is_empty() {
+                    let active_stages: Vec<String> = session
+                        .runtime
+                        .active_stage_ids()
+                        .unwrap_or_default();
+                    let matches_stage = c
+                        .available_during
+                        .iter()
+                        .any(|stage_id| active_stages.contains(stage_id));
+                    if !matches_stage {
+                        return false;
+                    }
+                }
                 true
             })
             .map(|c| {
@@ -599,6 +629,27 @@ pub fn get_session_ui(sessions: &SessionMap, session_id: &str) -> Result<UiSnaps
                 }
             })
             .collect();
+
+        // Auto-generate overflow actions from stage-associated menus
+        if let Ok(active_stages) = session.runtime.active_stage_ids() {
+            for stage_id in &active_stages {
+                let Some(menu) = content
+                    .menus
+                    .iter()
+                    .find(|m| &m.stage_id == stage_id && !m.options.is_empty())
+                else {
+                    continue;
+                };
+                for option in &menu.options {
+                    overflow_actions.push(OverflowAction {
+                        id: option.id.clone(),
+                        label: option.title.clone(),
+                        group: "support".to_string(),
+                        usage: String::new(),
+                    });
+                }
+            }
+        }
 
         Ok(UiSnapshot {
             title: content.opening.title.clone(),
