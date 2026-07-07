@@ -37,7 +37,7 @@ async fn with_runtime<F, R>(
     session_id: &str,
     player_id: &str,
     f: F,
-) -> Result<R, String>
+) -> Result<(R, u32), String>
 where
     F: FnOnce(&CinderRuntime) -> Result<R, String> + Send + 'static,
     R: Send + 'static,
@@ -49,25 +49,27 @@ where
     let (pack_id, locale, state_json) =
         load_session_row(&mut tx, session_id, player_id, true).await?;
 
-    let (result, persisted_locale, new_state_json) = tokio::task::spawn_blocking(move || {
-        let content = loader::load_named_pack(&pack_id, Some(&locale))
-            .map_err(|e| format!("failed to load pack '{pack_id}' locale '{locale}': {e}"))?;
+    let (result, persisted_locale, new_state_json, turn_number) =
+        tokio::task::spawn_blocking(move || {
+            let content = loader::load_named_pack(&pack_id, Some(&locale))
+                .map_err(|e| format!("failed to load pack '{pack_id}' locale '{locale}': {e}"))?;
 
-        let runtime = build_runtime_impl(content, &state_json)?;
+            let runtime = build_runtime_impl(content, &state_json)?;
 
-        let result = f(&runtime)?;
+            let result = f(&runtime)?;
 
-        let persisted_locale = runtime.content().locale.clone();
-        let new_state = runtime
-            .export_state()
-            .map_err(|e| format!("state export error: {e}"))?;
-        let new_state_json =
-            serde_json::to_string(&new_state).map_err(|e| format!("serialization error: {e}"))?;
+            let persisted_locale = runtime.content().locale.clone();
+            let new_state = runtime
+                .export_state()
+                .map_err(|e| format!("state export error: {e}"))?;
+            let turn_number = new_state.turn_number;
+            let new_state_json =
+                serde_json::to_string(&new_state).map_err(|e| format!("serialization error: {e}"))?;
 
-        Ok::<_, String>((result, persisted_locale, new_state_json))
-    })
-    .await
-    .map_err(|e| format!("blocking task panicked: {e:?}"))??;
+            Ok::<_, String>((result, persisted_locale, new_state_json, turn_number))
+        })
+        .await
+        .map_err(|e| format!("blocking task panicked: {e:?}"))??;
 
     sqlx::query(
         "UPDATE game_sessions SET locale = $1, state_json = $2::jsonb, updated_at = NOW() WHERE id = $3 AND player_id = $4",
@@ -83,41 +85,27 @@ where
         .await
         .map_err(|e| format!("db commit error: {e}"))?;
 
-    Ok(result)
+    Ok((result, turn_number))
 }
 
-/// Load state from Postgres, reconstruct CinderRuntime, run read-only `f`, drop runtime.
-/// Does NOT persist state back.
-async fn with_runtime_readonly<F, R>(
+async fn push_transcript_entry(
     pool: &PgPool,
     session_id: &str,
-    player_id: &str,
-    f: F,
-) -> Result<R, String>
-where
-    F: FnOnce(&CinderRuntime) -> Result<R, String> + Send + 'static,
-    R: Send + 'static,
-{
-    let mut tx = pool
-        .begin()
-        .await
-        .map_err(|e| format!("db begin error: {e}"))?;
-    let (pack_id, locale, state_json) =
-        load_session_row(&mut tx, session_id, player_id, false).await?;
-    tx.rollback()
-        .await
-        .map_err(|e| format!("db rollback error: {e}"))?;
-
-    tokio::task::spawn_blocking(move || {
-        let content = loader::load_named_pack(&pack_id, Some(&locale))
-            .map_err(|e| format!("failed to load pack '{pack_id}' locale '{locale}': {e}"))?;
-
-        let runtime = build_runtime_impl(content, &state_json)?;
-
-        f(&runtime)
-    })
+    turn_number: u32,
+    role: &str,
+    text: &str,
+) -> Result<(), String> {
+    sqlx::query(
+        "INSERT INTO transcript_entries (session_id, turn_number, role, text) VALUES ($1, $2, $3, $4)",
+    )
+    .bind(session_id)
+    .bind(turn_number as i32)
+    .bind(role)
+    .bind(text)
+    .execute(pool)
     .await
-    .map_err(|e| format!("blocking task panicked: {e:?}"))?
+    .map_err(|e| format!("transcript insert error: {e}"))?;
+    Ok(())
 }
 
 // ── Public API ──────────────────────────────────────
@@ -160,6 +148,8 @@ pub async fn create_session(
     .await
     .map_err(|e| format!("db insert error: {e}"))?;
 
+    push_transcript_entry(pool, &session_id, 0, "narrative", &intro_text).await?;
+
     Ok((session_id, title, intro_text))
 }
 
@@ -169,48 +159,54 @@ pub async fn run_command(
     player_id: &str,
     input: &str,
 ) -> Result<CommandResponse, String> {
-    let input = input.to_string();
-    with_runtime(pool, session_id, player_id, move |runtime| {
-        let mut outcome = runtime
-            .run_turn(&input)
-            .map_err(|e| format!("turn error: {e}"))?;
+    let input_owned = input.to_string();
+    let (response, turn_number) =
+        with_runtime(pool, session_id, player_id, move |runtime| {
+            let mut outcome = runtime
+                .run_turn(&input_owned)
+                .map_err(|e| format!("turn error: {e}"))?;
 
-        let turn_text = outcome.text.clone();
+            let turn_text = outcome.text.clone();
 
-        if !outcome.game_over {
-            match runtime.run_tick() {
-                Ok(tick) => {
-                    if !tick.text.is_empty() {
-                        outcome.text = format!("{}\n\n{}", outcome.text, tick.text);
+            if !outcome.game_over {
+                match runtime.run_tick() {
+                    Ok(tick) => {
+                        if !tick.text.is_empty() {
+                            outcome.text = format!("{}\n\n{}", outcome.text, tick.text);
+                        }
+                        outcome.game_over = outcome.game_over || tick.game_over;
                     }
-                    outcome.game_over = outcome.game_over || tick.game_over;
+                    Err(e) => return Err(format!("tick error: {e}")),
                 }
-                Err(e) => return Err(format!("tick error: {e}")),
             }
-        }
 
-        let session_feedback = if outcome.game_over {
-            response::session_feedback_data(runtime)
-        } else {
-            None
-        };
+            let session_feedback = if outcome.game_over {
+                response::session_feedback_data(runtime)
+            } else {
+                None
+            };
 
-        outcome = runtime
-            .continue_after_game_over(outcome)
-            .map_err(|e| format!("appointment rollover error: {e}"))?;
+            outcome = runtime
+                .continue_after_game_over(outcome)
+                .map_err(|e| format!("appointment rollover error: {e}"))?;
 
-        let _ = runtime.push_transcript_line(&turn_text);
+            let _ = runtime.push_transcript_line(&turn_text);
 
-        let movie = consume_projector_sequence(runtime);
+            let movie = consume_projector_sequence(runtime);
 
-        Ok(CommandResponse {
-            text: outcome.text,
-            game_over: outcome.game_over,
-            movie,
-            session_feedback,
+            Ok(CommandResponse {
+                text: outcome.text,
+                game_over: outcome.game_over,
+                movie,
+                session_feedback,
+            })
         })
-    })
-    .await
+        .await?;
+
+    push_transcript_entry(pool, session_id, turn_number, "player", input).await?;
+    push_transcript_entry(pool, session_id, turn_number, "narrative", &response.text).await?;
+
+    Ok(response)
 }
 
 pub async fn switch_room(
@@ -220,14 +216,19 @@ pub async fn switch_room(
     room_id: &str,
 ) -> Result<TurnOutcome, String> {
     let room_id = room_id.to_string();
-    with_runtime(pool, session_id, player_id, move |runtime| {
-        let outcome = runtime
-            .switch_room_view(&room_id)
-            .map_err(|e| format!("room switch error: {e}"))?;
-        let _ = runtime.push_transcript_line(&outcome.text);
-        Ok(outcome)
-    })
-    .await
+    let (outcome, turn_number) =
+        with_runtime(pool, session_id, player_id, move |runtime| {
+            let outcome = runtime
+                .switch_room_view(&room_id)
+                .map_err(|e| format!("room switch error: {e}"))?;
+            let _ = runtime.push_transcript_line(&outcome.text);
+            Ok(outcome)
+        })
+        .await?;
+
+    push_transcript_entry(pool, session_id, turn_number, "narrative", &outcome.text).await?;
+
+    Ok(outcome)
 }
 
 pub async fn follow_actor(
@@ -237,14 +238,19 @@ pub async fn follow_actor(
     actor_id: Option<&str>,
 ) -> Result<TurnOutcome, String> {
     let actor_id = actor_id.map(|s| s.to_string());
-    with_runtime(pool, session_id, player_id, move |runtime| {
-        let outcome = runtime
-            .follow_actor(actor_id.as_deref())
-            .map_err(|e| format!("follow error: {e}"))?;
-        let _ = runtime.push_transcript_line(&outcome.text);
-        Ok(outcome)
-    })
-    .await
+    let (outcome, turn_number) =
+        with_runtime(pool, session_id, player_id, move |runtime| {
+            let outcome = runtime
+                .follow_actor(actor_id.as_deref())
+                .map_err(|e| format!("follow error: {e}"))?;
+            let _ = runtime.push_transcript_line(&outcome.text);
+            Ok(outcome)
+        })
+        .await?;
+
+    push_transcript_entry(pool, session_id, turn_number, "narrative", &outcome.text).await?;
+
+    Ok(outcome)
 }
 
 pub async fn set_locale(
@@ -336,10 +342,19 @@ pub async fn get_transcript(
     session_id: &str,
     player_id: &str,
 ) -> Result<Vec<String>, String> {
-    with_runtime_readonly(pool, session_id, player_id, |runtime| {
-        runtime.transcript_lines().map_err(|e| e.to_string())
-    })
+    let rows = sqlx::query_scalar::<_, String>(
+        "SELECT te.text FROM transcript_entries te
+         JOIN game_sessions s ON s.id = te.session_id
+         WHERE te.session_id = $1 AND s.player_id = $2
+         ORDER BY te.id ASC",
+    )
+    .bind(session_id)
+    .bind(player_id)
+    .fetch_all(pool)
     .await
+    .map_err(|e| format!("transcript query error: {e}"))?;
+
+    Ok(rows)
 }
 
 fn build_runtime_impl(
