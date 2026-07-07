@@ -13,7 +13,6 @@ use tracing_subscriber::EnvFilter;
 
 use crate::config::Config;
 use crate::db::DbPool;
-use crate::game_manager::SessionMap;
 use crate::routes::AppState;
 
 #[derive(Serialize)]
@@ -43,12 +42,10 @@ async fn main() {
             .await
             .expect("failed to initialize database"),
     );
-    let sessions: SessionMap = game_manager::new_session_map();
 
     let state = Arc::new(AppState {
         pool,
         config: config.clone(),
-        sessions,
     });
 
     let app = routes::game::routes(state.clone())

@@ -5,11 +5,10 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
 use crate::auth::{auth_middleware, AuthPlayer};
-use crate::game_manager;
 
 use super::AppState;
 
@@ -36,13 +35,11 @@ pub async fn save_game(
     auth: AuthPlayer,
     Path(session_id): Path<String>,
 ) -> Result<Json<SavedGameInfo>, (StatusCode, String)> {
-    let state_json =
-        game_manager::export_session_state(&state.sessions, &session_id).map_err(internal)?;
-
+    // In the stateless model, state is already persisted after every turn.
+    // Touch updated_at to confirm the save.
     sqlx::query(
-        "UPDATE game_sessions SET state_json = $1, updated_at = NOW() WHERE id = $2 AND player_id = $3",
+        "UPDATE game_sessions SET updated_at = NOW() WHERE id = $1 AND player_id = $2",
     )
-    .bind(&state_json)
     .bind(&session_id)
     .bind(&auth.id)
     .execute(&*state.pool)
@@ -60,25 +57,27 @@ pub async fn list_saves(
     auth: AuthPlayer,
     Path(session_id): Path<String>,
 ) -> Result<Json<Vec<SavedGameInfo>>, (StatusCode, String)> {
-    let rows = sqlx::query_as::<_, (String, String)>(
-        "SELECT id, created_at::text FROM game_sessions WHERE id = $1 AND player_id = $2",
+    let row = sqlx::query_as::<_, (String, String)>(
+        "SELECT id::text, created_at::text FROM game_sessions WHERE id = $1 AND player_id = $2",
     )
     .bind(&session_id)
     .bind(&auth.id)
     .fetch_optional(&*state.pool)
     .await
-    .map_err(internal)?
-    .into_iter()
-    .map(|(id, created_at)| SavedGameInfo {
-        session_id: id,
-        created_at,
-    })
-    .collect::<Vec<_>>();
+    .map_err(internal)?;
+
+    let rows = row
+        .into_iter()
+        .map(|(id, created_at)| SavedGameInfo {
+            session_id: id,
+            created_at,
+        })
+        .collect::<Vec<_>>();
 
     Ok(Json(rows))
 }
 
-#[derive(serde::Deserialize)]
+#[derive(Deserialize)]
 pub struct LoadGameRequest {
     pub session_id: String,
 }
@@ -94,8 +93,8 @@ pub async fn load_game(
     auth: AuthPlayer,
     Json(req): Json<LoadGameRequest>,
 ) -> Result<Json<LoadGameResponse>, (StatusCode, String)> {
-    let row = sqlx::query_as::<_, (String, String, String)>(
-        "SELECT id, pack_id, state_json::text FROM game_sessions WHERE id = $1 AND player_id = $2",
+    let row = sqlx::query_as::<_, (String, String)>(
+        "SELECT id::text, pack_id FROM game_sessions WHERE id = $1 AND player_id = $2",
     )
     .bind(&req.session_id)
     .bind(&auth.id)
@@ -104,20 +103,9 @@ pub async fn load_game(
     .map_err(internal)?
     .ok_or_else(|| (StatusCode::NOT_FOUND, "session not found".to_string()))?;
 
-    let (sid, pack_id, state_json) = row;
+    let (sid, pack_id) = row;
 
-    {
-        let mut guard = state.sessions.lock().map_err(internal)?;
-        guard.remove(&sid);
-    }
-
-    game_manager::create_session(&state.sessions, &auth.id, &pack_id, Some(&state_json))
-        .map_err(internal)?;
-
-    Ok(Json(LoadGameResponse {
-        session_id: sid,
-        pack_id,
-    }))
+    Ok(Json(LoadGameResponse { session_id: sid, pack_id }))
 }
 
 fn now_iso() -> String {

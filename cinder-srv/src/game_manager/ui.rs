@@ -1,8 +1,10 @@
-use super::{ActiveSession, SessionFeedbackData};
 use cinder_core::content::loader;
 use cinder_core::content::types::UiTextDefinition;
-use cinder_core::engine::runtime::{ActiveMenuInfo, LookOptionItem, MenuChoiceOption};
+use cinder_core::engine::runtime::{ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption};
 use serde::Serialize;
+
+use super::response;
+use super::response::SessionFeedbackData;
 
 #[derive(Clone, Serialize)]
 pub struct LocaleItem {
@@ -86,35 +88,30 @@ pub struct UiSnapshot {
     pub inventory: Vec<InventoryItem>,
 }
 
-pub(super) fn build_ui_snapshot(session: &ActiveSession) -> Result<UiSnapshot, String> {
-    let time_label = session
-        .runtime
+pub(super) fn build_ui_snapshot(runtime: &CinderRuntime, pack_id: &str) -> Result<UiSnapshot, String> {
+    let time_label = runtime
         .current_time_label()
         .map_err(|error| error.to_string())?;
-    let day_number = session
-        .runtime
+    let day_number = runtime
         .current_day_number()
         .map_err(|error| error.to_string())?;
-    let objectives: Vec<ObjectiveItem> = session
-        .runtime
+    let objectives: Vec<ObjectiveItem> = runtime
         .current_objective_summaries()
         .map_err(|error| error.to_string())?
         .into_iter()
         .map(|(summary, message)| ObjectiveItem { summary, message })
         .collect();
-    let (progress_completed, progress_total) = session
-        .runtime
+    let (progress_completed, progress_total) = runtime
         .current_objective_progress()
         .map_err(|error| error.to_string())?;
-    let (secrets_found, secrets_total) = session
-        .runtime
+    let (secrets_found, secrets_total) = runtime
         .current_secret_progress()
         .map_err(|error| error.to_string())?;
     let objective_message = objectives
         .first()
         .map(|objective| objective.message.clone())
         .unwrap_or_default();
-    let locales = loader::available_locales(&loader::pack_dir(&session.pack_id))
+    let locales = loader::available_locales(&loader::pack_dir(pack_id))
         .map_err(|error| error.to_string())?
         .into_iter()
         .map(|locale| LocaleItem {
@@ -122,21 +119,19 @@ pub(super) fn build_ui_snapshot(session: &ActiveSession) -> Result<UiSnapshot, S
             label: locale.label,
         })
         .collect();
-    let content = session.runtime.content();
+    let content = runtime.content();
 
-    let current_room_id = session
-        .runtime
+    let current_room_id = runtime
         .current_room_id()
         .map_err(|error| error.to_string())?;
     let current_room_name = content
         .room(&current_room_id)
         .map(|room| room.title.clone())
         .unwrap_or(current_room_id);
-    let followed_actor_name = session
-        .runtime
+    let followed_actor_name = runtime
         .followed_actor_id()
         .map_err(|error| error.to_string())?
-        .and_then(|id| session.runtime.actor_display_name(&id).ok().flatten());
+        .and_then(|id| runtime.actor_display_name(&id).ok().flatten());
 
     let (action_bar_actions, content_defined_bar) = if !content.ui_text.action_bar.actions.is_empty() {
         (
@@ -172,8 +167,7 @@ pub(super) fn build_ui_snapshot(session: &ActiveSession) -> Result<UiSnapshot, S
         )
     };
 
-    let look_options: Vec<LookOptionData> = session
-        .runtime
+    let look_options: Vec<LookOptionData> = runtime
         .current_room_look_options()
         .map_err(|error| error.to_string())?
         .into_iter()
@@ -184,8 +178,7 @@ pub(super) fn build_ui_snapshot(session: &ActiveSession) -> Result<UiSnapshot, S
         })
         .collect();
 
-    let talk_options: Vec<MenuOptionData> = session
-        .runtime
+    let talk_options: Vec<MenuOptionData> = runtime
         .current_room_talk_options()
         .map_err(|error| error.to_string())?
         .into_iter()
@@ -196,8 +189,7 @@ pub(super) fn build_ui_snapshot(session: &ActiveSession) -> Result<UiSnapshot, S
         })
         .collect();
 
-    let active_menu: Option<ActiveMenuData> = session
-        .runtime
+    let active_menu: Option<ActiveMenuData> = runtime
         .current_active_menu_info()
         .map_err(|error| error.to_string())?
         .map(|info: ActiveMenuInfo| ActiveMenuData {
@@ -227,7 +219,7 @@ pub(super) fn build_ui_snapshot(session: &ActiveSession) -> Result<UiSnapshot, S
     let bar_ids: Vec<&str> = action_bar_actions.iter().map(|action| action.id.as_str()).collect();
     let has_talk = bar_ids.contains(&"speak") || bar_ids.contains(&"talk");
     let modal_covered: Vec<&str> = vec!["inspect_feature", "inspect_actor"];
-    let current_room_id = session.runtime.current_room_id().unwrap_or_default();
+    let current_room_id = runtime.current_room_id().unwrap_or_default();
     let mut overflow_actions: Vec<OverflowAction> = content
         .commands
         .actions
@@ -247,7 +239,7 @@ pub(super) fn build_ui_snapshot(session: &ActiveSession) -> Result<UiSnapshot, S
                 return false;
             }
             if let Some(item_id) = &command.consumes_item
-                && !session.runtime.player_has_item(item_id).unwrap_or(false)
+                && !runtime.player_has_item(item_id).unwrap_or(false)
             {
                 return false;
             }
@@ -256,13 +248,13 @@ pub(super) fn build_ui_snapshot(session: &ActiveSession) -> Result<UiSnapshot, S
                     .requires_any
                     .iter()
                     .chain(command.consumes_any.iter())
-                    .any(|id| session.runtime.player_has_item(id).unwrap_or(false));
+                    .any(|id| runtime.player_has_item(id).unwrap_or(false));
                 if !has_any {
                     return false;
                 }
             }
             if !command.available_during.is_empty() {
-                let active_stages: Vec<String> = session.runtime.active_stage_ids().unwrap_or_default();
+                let active_stages: Vec<String> = runtime.active_stage_ids().unwrap_or_default();
                 let matches_stage = command
                     .available_during
                     .iter()
@@ -300,7 +292,7 @@ pub(super) fn build_ui_snapshot(session: &ActiveSession) -> Result<UiSnapshot, S
         })
         .collect();
 
-    if let Ok(active_stages) = session.runtime.active_stage_ids() {
+    if let Ok(active_stages) = runtime.active_stage_ids() {
         for stage_id in &active_stages {
             let Some(menu) = content
                 .menus
@@ -326,7 +318,7 @@ pub(super) fn build_ui_snapshot(session: &ActiveSession) -> Result<UiSnapshot, S
         day_number,
         current_room_name,
         followed_actor_name,
-        help_text: session.runtime.help_text(),
+        help_text: runtime.help_text(),
         about_body: content.ui_text.about_body.clone(),
         current_locale: content.locale.clone(),
         locale_options: locales,
@@ -337,14 +329,12 @@ pub(super) fn build_ui_snapshot(session: &ActiveSession) -> Result<UiSnapshot, S
         secrets_found,
         secrets_total,
         rooms: menu_option_data(
-            session
-                .runtime
+            runtime
                 .room_switch_options()
                 .map_err(|error| error.to_string())?,
         ),
         follow_options: menu_option_data(
-            session
-                .runtime
+            runtime
                 .follow_actor_options()
                 .map_err(|error| error.to_string())?,
         ),
@@ -355,14 +345,13 @@ pub(super) fn build_ui_snapshot(session: &ActiveSession) -> Result<UiSnapshot, S
         talk_options,
         active_menu,
         ui_text: content.ui_text.clone(),
-        session_feedback: super::response::session_feedback_data(&session.runtime),
-        inventory: session
-            .runtime
+        session_feedback: response::session_feedback_data(runtime),
+        inventory: runtime
             .inventory_items()
             .unwrap_or_default()
             .into_iter()
             .map(|(id, count)| {
-                let label = content.item(&id).map(|item| item.label.clone()).unwrap_or(id);
+                let label = content.item(&id).map(|item| item.label.clone()).unwrap_or_else(|| id.clone());
                 InventoryItem { label, count }
             })
             .collect(),

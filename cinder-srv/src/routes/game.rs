@@ -1,19 +1,14 @@
 use axum::{
-    extract::{
-        ws::{Message, WebSocket, WebSocketUpgrade},
-        Path, Query, State,
-    },
+    extract::{Path, State},
     http::StatusCode,
     middleware,
     routing::{delete, get, post},
     Json, Router,
 };
 use serde::{Deserialize, Serialize};
-use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
-use tokio::sync::mpsc;
 
-use crate::auth::{auth_middleware, validate_token, AuthPlayer};
+use crate::auth::{auth_middleware, AuthPlayer};
 use crate::game_manager;
 
 use super::AppState;
@@ -49,8 +44,7 @@ pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/api/games/{id}/follow", post(follow_actor_handler))
         .route("/api/games/{id}/locale", post(set_locale_handler))
         .route("/api/games/{id}", delete(delete_session_handler))
-        .route_layer(middleware::from_fn_with_state(state.clone(), auth_middleware))
-        .route("/api/games/{id}/stream", get(stream_handler))
+        .route_layer(middleware::from_fn_with_state(state, auth_middleware))
 }
 
 pub async fn create_session(
@@ -58,22 +52,10 @@ pub async fn create_session(
     auth: AuthPlayer,
     Json(req): Json<CreateSessionRequest>,
 ) -> Result<Json<SessionInfo>, (StatusCode, String)> {
-    let (session_id, session) = game_manager::create_session(&state.sessions, &auth.id, &req.pack_id, None)
-        .map_err(internal)?;
-
-    sqlx::query(
-        "INSERT INTO game_sessions (id, player_id, pack_id, state_json) VALUES ($1, $2, $3, $4)",
-    )
-    .bind(&session_id)
-    .bind(&auth.id)
-    .bind(&req.pack_id)
-    .bind("{}")
-    .execute(&*state.pool)
-    .await
-    .map_err(internal)?;
-
-    let title = session.runtime.content().opening.title.clone();
-    let intro_text = session.runtime.current_intro_text().map_err(internal)?;
+    let (session_id, title, intro_text) =
+        game_manager::create_session(&state.pool, &auth.id, &req.pack_id)
+            .await
+            .map_err(internal)?;
 
     Ok(Json(SessionInfo {
         session_id,
@@ -90,7 +72,7 @@ pub async fn list_sessions(
     auth: AuthPlayer,
 ) -> Result<Json<Vec<SessionInfo>>, (StatusCode, String)> {
     let rows = sqlx::query_as::<_, (String, String, String, String)>(
-        "SELECT id, pack_id, created_at::text, updated_at::text FROM game_sessions WHERE player_id = $1 ORDER BY updated_at DESC",
+        "SELECT id::text, pack_id, created_at::text, updated_at::text FROM game_sessions WHERE player_id = $1 ORDER BY updated_at DESC",
     )
     .bind(&auth.id)
     .fetch_all(&*state.pool)
@@ -122,10 +104,7 @@ pub async fn run_command(
     Path(session_id): Path<String>,
     Json(req): Json<CommandRequest>,
 ) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
-    game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id)
-        .await
-        .map_err(internal)?;
-    let resp = game_manager::run_command(&state.sessions, &session_id, &req.input)
+    let resp = game_manager::run_command(&state.pool, &session_id, &auth.id, &req.input)
         .await
         .map_err(internal)?;
     Ok(Json(resp))
@@ -136,10 +115,9 @@ pub async fn transcript_handler(
     auth: AuthPlayer,
     Path(session_id): Path<String>,
 ) -> Result<Json<Vec<String>>, (StatusCode, String)> {
-    game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id)
+    let lines = game_manager::get_transcript(&state.pool, &session_id, &auth.id)
         .await
         .map_err(internal)?;
-    let lines = game_manager::get_transcript(&state.sessions, &session_id).map_err(internal)?;
     Ok(Json(lines))
 }
 
@@ -148,17 +126,9 @@ pub async fn session_ui(
     auth: AuthPlayer,
     Path(session_id): Path<String>,
 ) -> Result<Json<game_manager::UiSnapshot>, (StatusCode, String)> {
-    game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id)
+    let snapshot = game_manager::get_session_ui(&state.pool, &session_id, &auth.id)
         .await
         .map_err(internal)?;
-    let sessions = state.sessions.clone();
-    let sid = session_id.clone();
-    let snapshot = tokio::task::spawn_blocking(move || {
-        game_manager::get_session_ui(&sessions, &sid)
-    })
-    .await
-    .map_err(|e| internal(e.to_string()))?
-    .map_err(internal)?;
     Ok(Json(snapshot))
 }
 
@@ -173,10 +143,8 @@ pub async fn switch_room_handler(
     Path(session_id): Path<String>,
     Json(req): Json<RoomSwitchRequest>,
 ) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
-    game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id)
+    let outcome = game_manager::switch_room(&state.pool, &session_id, &auth.id, &req.room_id)
         .await
-        .map_err(internal)?;
-    let outcome = game_manager::switch_room(&state.sessions, &session_id, &req.room_id)
         .map_err(internal)?;
     Ok(Json(game_manager::CommandResponse {
         text: outcome.text,
@@ -197,11 +165,9 @@ pub async fn follow_actor_handler(
     Path(session_id): Path<String>,
     Json(req): Json<FollowRequest>,
 ) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
-    game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id)
-        .await
-        .map_err(internal)?;
     let outcome =
-        game_manager::follow_actor(&state.sessions, &session_id, req.actor_id.as_deref())
+        game_manager::follow_actor(&state.pool, &session_id, &auth.id, req.actor_id.as_deref())
+            .await
             .map_err(internal)?;
     Ok(Json(game_manager::CommandResponse {
         text: outcome.text,
@@ -222,10 +188,8 @@ pub async fn set_locale_handler(
     Path(session_id): Path<String>,
     Json(req): Json<LocaleRequest>,
 ) -> Result<Json<String>, (StatusCode, String)> {
-    game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id)
+    let text = game_manager::set_locale(&state.pool, &session_id, &auth.id, &req.locale)
         .await
-        .map_err(internal)?;
-    let text = game_manager::set_locale(&state.sessions, &session_id, &req.locale)
         .map_err(internal)?;
     Ok(Json(text))
 }
@@ -235,10 +199,6 @@ pub async fn delete_session_handler(
     auth: AuthPlayer,
     Path(session_id): Path<String>,
 ) -> Result<Json<()>, (StatusCode, String)> {
-    game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id)
-        .await
-        .map_err(internal)?;
-    game_manager::delete_session(&state.sessions, &session_id).map_err(internal)?;
     sqlx::query("DELETE FROM game_sessions WHERE id = $1 AND player_id = $2")
         .bind(&session_id)
         .bind(&auth.id)
@@ -255,133 +215,4 @@ fn now_iso() -> String {
         .unwrap()
         .as_secs();
     format!("epoch={d}")
-}
-
-#[derive(Deserialize)]
-pub struct StreamQuery {
-    pub token: String,
-}
-
-pub async fn stream_handler(
-    ws: WebSocketUpgrade,
-    State(state): State<Arc<AppState>>,
-    Path(session_id): Path<String>,
-    Query(query): Query<StreamQuery>,
-) -> Result<impl axum::response::IntoResponse, (StatusCode, String)> {
-    let claims = validate_token(&query.token, state.config.jwt_secret.as_bytes())
-        .map_err(|_| (StatusCode::UNAUTHORIZED, "invalid token".to_string()))?;
-    Ok(ws.on_upgrade(move |socket| {
-        handle_ws(socket, state, AuthPlayer { id: claims.sub }, session_id)
-    }))
-}
-
-async fn handle_ws(
-    mut ws: WebSocket,
-    state: Arc<AppState>,
-    auth: AuthPlayer,
-    session_id: String,
-) {
-    if let Err(e) = game_manager::ensure_session(&state.sessions, &state.pool, &session_id, &auth.id).await
-    {
-        let _ = ws.send(Message::Text(format!(r#"{{"type":"error","text":"{e}"}}"#).into())).await;
-        return;
-    }
-
-    let runtime = match game_manager::get_runtime(&state.sessions, &session_id) {
-        Ok(r) => r,
-        Err(e) => {
-            let _ = ws.send(Message::Text(format!(r#"{{"type":"error","text":"{e}"}}"#).into())).await;
-            return;
-        }
-    };
-
-    let typewriter_char_ms = runtime.content().settings.typewriter_char_ms;
-    let npc_tick_interval_ms = runtime.content().settings.npc_tick_interval_ms;
-
-    let settings_msg =
-        serde_json::json!({ "type": "settings", "typewriter_char_ms": typewriter_char_ms });
-    if ws
-        .send(Message::Text(settings_msg.to_string().into()))
-        .await
-        .is_err()
-    {
-        return;
-    }
-
-    let (tick_tx, mut tick_rx) = mpsc::unbounded_channel::<Result<(String, bool), String>>();
-    let tick_paused = Arc::new(AtomicBool::new(false));
-    let tick_paused_bg = Arc::clone(&tick_paused);
-    let runtime_bg = runtime.clone();
-    eprintln!("[ws] handle_ws started for session={session_id}");
-
-    tokio::task::spawn_blocking(move || {
-        let duration = std::time::Duration::from_millis(npc_tick_interval_ms);
-        loop {
-            std::thread::sleep(duration);
-            if tick_paused_bg.load(Ordering::Relaxed) {
-                continue;
-            }
-            let result = match runtime_bg.run_tick() {
-                Ok(outcome) => Ok((outcome.text, outcome.game_over)),
-                Err(e) => Err(e.to_string()),
-            };
-            if tick_tx.send(result).is_err() {
-                break;
-            }
-        }
-    });
-
-    loop {
-        tokio::select! {
-            maybe_tick = tick_rx.recv() => {
-                match maybe_tick {
-                    Some(Ok((text, game_over))) => {
-                        let movie = game_manager::consume_projector_sequence(&runtime);
-                        if let Some(movie) = movie {
-                            let msg = serde_json::json!({
-                                "type": "movie",
-                                "title": movie.title,
-                                "frames": movie.frames,
-                                "narrative_lines": movie.narrative_lines,
-                            });
-                            if ws.send(Message::Text(msg.to_string().into())).await.is_err() {
-                                break;
-                            }
-                        }
-                        if text.is_empty() {
-                            continue;
-                        }
-                        let msg = serde_json::json!({
-                            "type": "tick",
-                            "text": text,
-                            "game_over": game_over,
-                        });
-                        if ws.send(Message::Text(msg.to_string().into())).await.is_err() {
-                            break;
-                        }
-                    }
-                    Some(Err(e)) => {
-                        let msg = serde_json::json!({ "type": "error", "text": e });
-                        if ws.send(Message::Text(msg.to_string().into())).await.is_err() {
-                            break;
-                        }
-                    }
-                    None => break,
-                }
-            }
-            maybe_msg = ws.recv() => {
-                match maybe_msg {
-                    Some(Ok(Message::Text(text))) => {
-                        if text == "pause" {
-                            tick_paused.store(true, Ordering::Relaxed);
-                        } else if text == "resume" {
-                            tick_paused.store(false, Ordering::Relaxed);
-                        }
-                    }
-                    Some(Ok(Message::Close(_))) | None => break,
-                    _ => {}
-                }
-            }
-        }
-    }
 }

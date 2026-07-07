@@ -1,6 +1,5 @@
 use cinder_core::engine::runtime::CinderRuntime;
 use serde::Serialize;
-use std::any::Any;
 
 #[derive(Clone, Serialize)]
 pub struct SessionFeedbackData {
@@ -28,16 +27,6 @@ pub struct CommandResponse {
     pub game_over: bool,
     pub movie: Option<MovieData>,
     pub session_feedback: Option<SessionFeedbackData>,
-}
-
-pub(super) fn panic_payload_message(payload: &Box<dyn Any + Send>) -> String {
-    if let Some(message) = payload.downcast_ref::<String>() {
-        message.clone()
-    } else if let Some(message) = payload.downcast_ref::<&'static str>() {
-        (*message).to_string()
-    } else {
-        "unknown panic payload".to_string()
-    }
 }
 
 pub(super) fn session_feedback_data(runtime: &CinderRuntime) -> Option<SessionFeedbackData> {
