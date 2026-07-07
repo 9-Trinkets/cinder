@@ -1,7 +1,10 @@
 use crate::content::types::{ActorDefinition, ContentPack, RoomDefinition};
 use crate::engine::dialogue::DialogueRequest;
 use crate::engine::hooks::{actor_state_notes, pair_state_note};
-use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
+use crate::engine::state::{
+    display_actor_name, render_dynamic_story_text, resolved_actor_prompt_context,
+    ConversationMemoryKind, ConversationMemoryLine, WorldState,
+};
 use std::collections::BTreeMap;
 const ROOM_RECENT_MEMORY_LIMIT: usize = 8;
 
@@ -57,12 +60,14 @@ pub(crate) fn build_grounded_dialogue_request_for_exchange(
         other_person_message.as_deref(),
         &current_objective_beat_notes(content, state),
     );
-    let mut response_notes = actor.prompt_context.response_notes.clone();
+    let prompt_context = resolved_actor_prompt_context(state, actor);
+    let actor_name = display_actor_name(state, actor);
+    let mut response_notes = prompt_context.response_notes.clone();
     response_notes.push(content.render_template(
         &content.system_text.prompt_address_other_person_note,
         &[("other_person_name", other_person_name)],
     ));
-    let mut subtext_notes = actor.prompt_context.subtext_notes.clone();
+    let mut subtext_notes = prompt_context.subtext_notes.clone();
     if other_person_id == viewer_participant_id(content) {
         subtext_notes.extend(content.opening.prompt_context.subtext_notes.clone());
     }
@@ -79,17 +84,17 @@ pub(crate) fn build_grounded_dialogue_request_for_exchange(
     subtext_notes.extend(actor_state_notes(content, state, actor_id));
     Ok(DialogueRequest {
         actor_id: actor.id.clone(),
-        actor_name: actor.name.clone(),
+        actor_name,
         current_room_id: current_room_id.to_string(),
         other_person_id: other_person_id.to_string(),
         other_person_name: other_person_name.to_string(),
         locale: content.locale.clone(),
         system_text: content.system_text.clone(),
-        character_notes: actor.prompt_context.character_notes.clone(),
+        character_notes: prompt_context.character_notes,
         setting_notes,
         current_beat_notes,
         subtext_notes,
-        behavior_examples: actor.prompt_context.behavior_examples.clone(),
+        behavior_examples: prompt_context.behavior_examples,
         response_notes,
         other_person_message,
         recent_memory_summary: state
@@ -143,26 +148,28 @@ pub(crate) fn build_grounded_dialogue_request_for_room(
     );
     let setting_notes = build_setting_notes(content, state, actor, room, &current_time_note);
     let current_beat_notes = current_objective_beat_notes(content, state);
-    let mut response_notes = actor.prompt_context.response_notes.clone();
+    let prompt_context = resolved_actor_prompt_context(state, actor);
+    let actor_name = display_actor_name(state, actor);
+    let mut response_notes = prompt_context.response_notes.clone();
     response_notes.push(content.render_template(
         &content.system_text.prompt_address_other_person_note,
         &[("other_person_name", audience_label)],
     ));
-    let mut subtext_notes = actor.prompt_context.subtext_notes.clone();
+    let mut subtext_notes = prompt_context.subtext_notes.clone();
     subtext_notes.extend(actor_state_notes(content, state, actor_id));
     Ok(DialogueRequest {
         actor_id: actor.id.clone(),
-        actor_name: actor.name.clone(),
+        actor_name,
         current_room_id: current_room_id.to_string(),
         other_person_id: format!("room:{current_room_id}"),
         other_person_name: audience_label.to_string(),
         locale: content.locale.clone(),
         system_text: content.system_text.clone(),
-        character_notes: actor.prompt_context.character_notes.clone(),
+        character_notes: prompt_context.character_notes,
         setting_notes,
         current_beat_notes,
         subtext_notes,
-        behavior_examples: actor.prompt_context.behavior_examples.clone(),
+        behavior_examples: prompt_context.behavior_examples,
         response_notes,
         other_person_message: None,
         recent_memory_summary: None,
@@ -233,19 +240,7 @@ pub(crate) fn current_objective_beat_notes(
 }
 
 pub(crate) fn render_story_text(template: &str, state: &WorldState) -> String {
-    let mut rendered = template.to_string();
-    for (key, value) in &state.story_vars {
-        rendered = rendered.replace(&format!("{{{key}}}"), value);
-    }
-    for (actor_id, stats) in &state.actor_stats {
-        for (stat_key, stat_value) in stats {
-            rendered = rendered.replace(
-                &format!("{{actor.{actor_id}.{stat_key}}}"),
-                &stat_value.to_string(),
-            );
-        }
-    }
-    rendered
+    render_dynamic_story_text(template, state)
 }
 
 pub(crate) fn build_setting_notes(
@@ -283,10 +278,11 @@ pub(crate) fn build_setting_notes(
         .filter(|other| {
             state.actor_room_id(&other.id, &other.room_id) == room.id && other.id != actor.id
         })
-        .map(|other| other.name.as_str())
+        .map(|other| display_actor_name(state, other))
         .collect::<Vec<_>>();
     if !other_people.is_empty() {
-        let people = natural_join(&other_people);
+        let people_refs = other_people.iter().map(String::as_str).collect::<Vec<_>>();
+        let people = natural_join(&people_refs);
         notes.push(content.render_template(
             &content.system_text.prompt_people_here_note,
             &[("people", people.as_str())],

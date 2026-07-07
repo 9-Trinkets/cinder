@@ -6,6 +6,7 @@ use crate::engine::dialogue_grounding::viewer_participant_id;
 use crate::engine::events::{ObservationMode, TimestampedWorldEvent, WorldEvent};
 use crate::engine::menus::render_menu_prompt;
 use crate::engine::reducer::apply_events;
+use crate::engine::state::display_actor_name;
 use crate::engine::state::TurnOutcome;
 use std::error::Error;
 
@@ -40,10 +41,11 @@ impl CinderRuntime {
         for actor in &self.content.actors {
             let actor_room = state.actor_room_id(&actor.id, &actor.room_id);
             if actor_room == current_room_id {
+                let actor_name = display_actor_name(&state, actor);
                 options.push(LookOptionItem {
                     id: format!("actor:{}", actor.id),
-                    label: actor.name.clone(),
-                    command: format!("look at {}", actor.name),
+                    label: actor_name,
+                    command: format!("look at {}", actor.id),
                 });
             }
         }
@@ -69,10 +71,11 @@ impl CinderRuntime {
         for actor in &self.content.actors {
             let actor_room = state.actor_room_id(&actor.id, &actor.room_id);
             if actor_room == current_room_id {
+                let actor_name = display_actor_name(&state, actor);
                 options.push(LookOptionItem {
                     id: format!("actor:{}", actor.id),
-                    label: actor.name.clone(),
-                    command: format!("talk to {}", actor.name),
+                    label: actor_name,
+                    command: format!("talk to {}", actor.id),
                 });
             }
         }
@@ -325,12 +328,13 @@ impl CinderRuntime {
                 .room(room_id)
                 .map(|room| room.title.clone())
                 .unwrap_or_else(|| room_id.to_string());
+            let actor_name = display_actor_name(&state, actor);
             MenuChoiceOption {
                 prompt: follow_prompt.clone(),
-                title: actor.name.clone(),
-                menu_text: format!("{} ({room_title})", actor.name),
+                title: actor_name.clone(),
+                menu_text: format!("{} ({room_title})", actor_name),
                 command: actor.id.clone(),
-                transcript_label: Some(actor.name.clone()),
+                transcript_label: Some(actor_name),
             }
         }));
         Ok(options)
@@ -383,10 +387,11 @@ impl CinderRuntime {
                         .content
                         .actor(actor_id)
                         .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
+                    let actor_name = display_actor_name(&state, actor);
                     self.content
                         .ui_text
                         .follow_actor_transcript
-                        .replace("{title}", &actor.name)
+                        .replace("{title}", &actor_name)
                 }
                 None => self.content.ui_text.follow_actor_stop_transcript.clone(),
             }

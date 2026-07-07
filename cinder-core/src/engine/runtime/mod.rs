@@ -7,7 +7,10 @@ use crate::engine::dialogue_grounding::render_story_text;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
 use crate::engine::neuron::{WorkflowDefinition, WorkflowTraceContext, load_workflow};
 use crate::engine::reducer::apply_events;
-use crate::engine::state::{TurnOutcome, WorldState};
+use crate::engine::state::{
+    advance_to_next_appointment, current_appointment_intro, current_patient_name, display_actor_name,
+    initialize_appointment_state, AppointmentFeedbackSummary, TurnOutcome, WorldState,
+};
 use crate::engine::turn_runner;
 use crate::engine::workflows::{
     cinder_npc_tick_workflow_path, cinder_npc_turn_workflow_path, workflow_path_for_id,
@@ -27,7 +30,7 @@ pub struct CinderRuntime {
     actor_move_workflow: WorkflowDefinition,
     trace_events: bool,
     trace_dir: PathBuf,
-    session_feedback: Mutex<Option<crate::engine::dialogue::SessionFeedback>>,
+    session_feedback: Arc<Mutex<Option<crate::engine::dialogue::SessionFeedback>>>,
 }
 
 impl Clone for CinderRuntime {
@@ -41,12 +44,12 @@ impl Clone for CinderRuntime {
             actor_move_workflow: self.actor_move_workflow.clone(),
             trace_events: self.trace_events,
             trace_dir: self.trace_dir.clone(),
-            session_feedback: Mutex::new(
+            session_feedback: Arc::new(Mutex::new(
                 self.session_feedback
                     .lock()
                     .map(|opt| opt.clone())
                     .unwrap_or(None),
-            ),
+            )),
         }
     }
 }
@@ -148,6 +151,8 @@ impl CinderRuntime {
         actor_move_workflow: WorkflowDefinition,
         trace_dir: PathBuf,
     ) -> Result<Self, Box<dyn Error>> {
+        let mut state = state;
+        initialize_appointment_state(&content, &mut state);
         Ok(Self {
             state: Arc::new(Mutex::new(state)),
             content: Arc::new(content),
@@ -157,7 +162,7 @@ impl CinderRuntime {
             actor_move_workflow,
             trace_events,
             trace_dir,
-            session_feedback: Mutex::new(None),
+            session_feedback: Arc::new(Mutex::new(None)),
         })
     }
 
@@ -190,7 +195,75 @@ impl CinderRuntime {
         if !outcome.text.is_empty() {
             self.push_transcript_line(&outcome.text).ok();
         }
-        Ok(outcome)
+        self.continue_after_game_over(outcome)
+    }
+
+    pub fn continue_after_game_over(&self, outcome: TurnOutcome) -> Result<TurnOutcome, Box<dyn Error>> {
+        if !outcome.game_over {
+            return Ok(outcome);
+        }
+        let Some(intro_text) = self.advance_appointment_if_needed()? else {
+            return Ok(outcome);
+        };
+        let text = if outcome.text.is_empty() {
+            intro_text
+        } else {
+            format!("{}\n\n{}", outcome.text, intro_text)
+        };
+        Ok(TurnOutcome {
+            text,
+            game_over: false,
+        })
+    }
+
+    pub fn current_intro_text(&self) -> Result<String, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for intro text")?;
+        Ok(current_appointment_intro(&state).unwrap_or_else(|| self.content.opening.intro_text.clone()))
+    }
+
+    pub fn actor_display_name(&self, actor_id: &str) -> Result<Option<String>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for actor display name")?;
+        Ok(self
+            .content
+            .actor(actor_id)
+            .map(|actor| display_actor_name(&state, actor)))
+    }
+
+    pub fn current_patient_name(&self) -> Result<Option<String>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for patient name")?;
+        Ok(current_patient_name(&state))
+    }
+
+    fn advance_appointment_if_needed(&self) -> Result<Option<String>, Box<dyn Error>> {
+        if !self.content.settings.multi_appointment {
+            return Ok(None);
+        }
+        let feedback = self.session_feedback()?;
+        let feedback_summary = feedback.as_ref().map(|review| AppointmentFeedbackSummary {
+            rating: review.rating,
+            review_text: review.review_text.clone(),
+        });
+        let mut state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for appointment rollover")?;
+        if !state.game_over {
+            return Ok(None);
+        }
+        Ok(advance_to_next_appointment(
+            self.content.as_ref(),
+            &mut state,
+            feedback_summary.as_ref(),
+        ))
     }
 
     pub fn current_time_label(&self) -> Result<String, Box<dyn Error>> {
@@ -346,7 +419,7 @@ impl CinderRuntime {
             actor_move_workflow: self.actor_move_workflow.clone(),
             trace_events: self.trace_events,
             trace_dir: self.trace_dir.clone(),
-            session_feedback: Mutex::new(None),
+            session_feedback: Arc::new(Mutex::new(None)),
         }
     }
 

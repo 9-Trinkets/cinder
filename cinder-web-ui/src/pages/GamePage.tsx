@@ -398,7 +398,7 @@ export default function GamePage() {
                       </span>
                     ))}
                   </div>
-                  <p className="text-center text-sm text-muted mb-1">— Noa</p>
+                  <p className="text-center text-sm text-muted mb-1">— {sessionFeedback.subject_name}</p>
                   <p className="text-center text-balance leading-relaxed">{sessionFeedback.review_text}</p>
                   <button
                     className="mt-6 w-full py-2 bg-love text-white rounded-lg font-semibold hover:opacity-90"

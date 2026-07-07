@@ -6,6 +6,7 @@ use std::any::Any;
 pub struct SessionFeedbackData {
     pub rating: u32,
     pub review_text: String,
+    pub subject_name: String,
 }
 
 #[derive(Clone, Serialize)]
@@ -47,6 +48,11 @@ pub(super) fn session_feedback_data(runtime: &CinderRuntime) -> Option<SessionFe
         .map(|review| SessionFeedbackData {
             rating: review.rating,
             review_text: review.review_text,
+            subject_name: runtime
+                .current_patient_name()
+                .ok()
+                .flatten()
+                .unwrap_or_else(|| "Patient".to_string()),
         })
 }
 

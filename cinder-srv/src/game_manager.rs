@@ -159,9 +159,6 @@ pub async fn run_command(
                 }
                 other => other,
             };
-            if let Some(ref text) = turn_text {
-                let _ = session.runtime.push_transcript_line(text);
-            }
             let session_feedback = outcome.as_ref().ok().and_then(|outcome| {
                 if outcome.game_over {
                     response::session_feedback_data(&session.runtime)
@@ -169,6 +166,15 @@ pub async fn run_command(
                     None
                 }
             });
+            outcome = outcome.and_then(|outcome| {
+                session
+                    .runtime
+                    .continue_after_game_over(outcome)
+                    .map_err(|error| format!("appointment rollover error: {error}"))
+            });
+            if let Some(ref text) = turn_text {
+                let _ = session.runtime.push_transcript_line(text);
+            }
             (outcome, session_feedback)
         }));
         let (result, session_feedback) = match task_result {

@@ -5,7 +5,7 @@ use crate::engine::dialogue::{
     SessionFeedbackRequest, SynapseChapterSummaryGenerator,
 };
 use crate::engine::dialogue_grounding::{render_story_text, viewer_participant_id};
-use crate::engine::state::WorldState;
+use crate::engine::state::{display_actor_name, WorldState};
 use std::collections::BTreeMap;
 use std::error::Error;
 use std::sync::Arc;
@@ -55,8 +55,8 @@ impl CinderRuntime {
                             score,
                             format!(
                                 "{} / {}: {}",
-                                actor.name,
-                                other.name,
+                                display_actor_name(state, actor),
+                                display_actor_name(state, other),
                                 rendered_stats.join(", ")
                             ),
                         ))
@@ -156,7 +156,7 @@ impl CinderRuntime {
                 return Ok(None);
             }
         }
-        let (actor_id, current, deltas, stats_context, session_summary, relationship_lines) = {
+        let (actor_name, current, deltas, stats_context, session_summary, relationship_lines) = {
             let state = self
                 .state
                 .lock()
@@ -164,6 +164,11 @@ impl CinderRuntime {
             let Some(actor_id) = self.select_session_feedback_actor_id(&state) else {
                 return Ok(None);
             };
+            let actor_name = self
+                .content
+                .actor(&actor_id)
+                .map(|actor| display_actor_name(&state, actor))
+                .unwrap_or_else(|| "Patient".to_string());
             let current = state.actor_stats_snapshot(&actor_id);
             let deltas = state.actor_stat_deltas(&actor_id).unwrap_or_default();
             let stats_context = ["trust", "openness", "focus", "resistance", "energy", "secrets_found"]
@@ -178,7 +183,7 @@ impl CinderRuntime {
             let session_summary = state.transcript.last().cloned().unwrap_or_default();
             let relationship_lines = self.relationship_status_lines_for_state(&state);
             (
-                actor_id,
+                actor_name,
                 current,
                 deltas,
                 stats_context,
@@ -189,13 +194,7 @@ impl CinderRuntime {
         let request = SessionFeedbackRequest {
             locale: self.content.locale.clone(),
             system_text: self.content.system_text.clone(),
-            actor_name: self
-                .content
-                .actors
-                .iter()
-                .find(|actor| actor.id == actor_id)
-                .map(|actor| actor.name.clone())
-                .unwrap_or_else(|| "Patient".to_string()),
+            actor_name,
             other_person_name: "You".to_string(),
             stats_context,
             session_summary,

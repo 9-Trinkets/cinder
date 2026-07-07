@@ -73,7 +73,7 @@ pub async fn create_session(
     .map_err(internal)?;
 
     let title = session.runtime.content().opening.title.clone();
-    let intro_text = session.runtime.content().opening.intro_text.clone();
+    let intro_text = session.runtime.current_intro_text().map_err(internal)?;
 
     Ok(Json(SessionInfo {
         session_id,

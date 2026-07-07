@@ -1,6 +1,6 @@
 use crate::content::types::{ActorDefinition, ContentPack};
 use crate::engine::events::ObservationMode;
-use crate::engine::state::WorldState;
+use crate::engine::state::{display_actor_name, WorldState};
 
 pub(super) fn actors_in_room<'a>(
     content: &'a ContentPack,
@@ -44,14 +44,15 @@ pub(super) fn render_room_observation(
     let people = {
         let present = actors_in_room(content, state, room_id)
             .into_iter()
-            .map(|actor| actor.name.as_str())
+            .map(|actor| display_actor_name(state, actor))
             .collect::<Vec<_>>();
         if present.is_empty() {
             String::new()
         } else {
+            let present_refs = present.iter().map(String::as_str).collect::<Vec<_>>();
             content.render_template(
                 &content.presentation.presentation_text.people,
-                &[("people", &present.join(", "))],
+                &[("people", &present_refs.join(", "))],
             )
         }
     };

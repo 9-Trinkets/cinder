@@ -136,7 +136,7 @@ pub(super) fn build_ui_snapshot(session: &ActiveSession) -> Result<UiSnapshot, S
         .runtime
         .followed_actor_id()
         .map_err(|error| error.to_string())?
-        .and_then(|id| content.actor(&id).map(|actor| actor.name.clone()));
+        .and_then(|id| session.runtime.actor_display_name(&id).ok().flatten());
 
     let (action_bar_actions, content_defined_bar) = if !content.ui_text.action_bar.actions.is_empty() {
         (

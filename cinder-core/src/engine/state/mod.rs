@@ -43,6 +43,8 @@ pub struct WorldState {
     pub transcript: Vec<String>,
     #[serde(default)]
     pub player_inventory: HashMap<String, u32>,
+    #[serde(default)]
+    pub appointment_series: Option<AppointmentSeriesState>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -119,6 +121,7 @@ impl WorldState {
             initial_pair_stats: seeded_pair_stats(content, &content.stats.pair),
             transcript: Vec::new(),
             player_inventory: HashMap::new(),
+            appointment_series: None,
         }
     }
 
@@ -594,3 +597,10 @@ pub struct WorldSnapshot {
 
 mod seeding;
 use seeding::{seeded_actor_stats, seeded_feature_consumable_stock, seeded_pair_stats};
+mod appointments;
+pub use appointments::{
+    advance_to_next_appointment, current_appointment_intro, current_patient_name,
+    display_actor_name, initialize_appointment_state, render_dynamic_story_text,
+    resolved_actor_prompt_context, AppointmentFeedbackSummary, AppointmentHistoryEntry,
+    AppointmentSeriesState, PatientRecord,
+};

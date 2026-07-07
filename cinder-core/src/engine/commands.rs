@@ -1,5 +1,5 @@
 use crate::content::types::{ActorDefinition, CommandDefinition, ContentPack};
-use crate::engine::state::WorldState;
+use crate::engine::state::{display_actor_name, WorldState};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -97,7 +97,7 @@ pub(crate) fn resolve_actor_reference_input(
     )
     .map(|(actor, player_message)| ResolvedActorReferenceInput {
         actor_id: actor.id.clone(),
-        actor_name: actor.name.clone(),
+        actor_name: display_actor_name(state, actor),
         player_message,
         actor_in_room: true,
     })
@@ -105,7 +105,7 @@ pub(crate) fn resolve_actor_reference_input(
         match_actor_reference(content.actors.iter(), remainder).map(|(actor, player_message)| {
             ResolvedActorReferenceInput {
                 actor_id: actor.id.clone(),
-                actor_name: actor.name.clone(),
+                actor_name: display_actor_name(state, actor),
                 player_message,
                 actor_in_room: state.actor_room_id(&actor.id, &actor.room_id) == current_room_id,
             }

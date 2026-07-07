@@ -5,7 +5,7 @@ use crate::content::types::{
 use crate::engine::commands::{resolve_actor_reference_input, unknown_target_token};
 use crate::engine::dialogue_grounding::viewer_participant_id;
 use crate::engine::events::{ObservationMode, WorldEvent};
-use crate::engine::state::WorldState;
+use crate::engine::state::{display_actor_name, WorldState};
 use std::collections::BTreeMap;
 
 pub(super) struct PlanningContext<'a> {
@@ -204,7 +204,13 @@ pub(super) fn plan_observe_target(
     context: &PlanningContext<'_>,
     planned: &mut PlannedTurn,
 ) -> bool {
-    if let Some(actor) = content.resolve_actor(target) {
+    if let Some(actor) = content.resolve_actor(target).or_else(|| {
+        content
+            .actors
+            .iter()
+            .find(|actor| display_actor_name(context.planner_state, actor).eq_ignore_ascii_case(target))
+    }) {
+        let actor_name = display_actor_name(context.planner_state, actor);
         if context
             .planner_state
             .actor_room_id(&actor.id, &actor.room_id)
@@ -217,7 +223,7 @@ pub(super) fn plan_observe_target(
             planned.events.push(WorldEvent::ActionRejected {
                 message: content.render_template(
                     &content.presentation.error_text.actor_not_here,
-                    &[("actor_name", actor.name.as_str())],
+                    &[("actor_name", actor_name.as_str())],
                 ),
             });
         }

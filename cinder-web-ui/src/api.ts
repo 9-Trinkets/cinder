@@ -143,6 +143,7 @@ export interface ActiveMenuData {
 export interface SessionFeedbackData {
   rating: number
   review_text: string
+  subject_name: string
 }
 
 export interface InventoryItem {
