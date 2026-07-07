@@ -6,6 +6,7 @@ use axum::{
 };
 use jsonwebtoken::{DecodingKey, EncodingKey, Header, Validation, decode, encode};
 use serde::{Deserialize, Serialize};
+use uuid::Uuid;
 
 use crate::routes::AppState;
 use std::sync::Arc;
@@ -89,6 +90,23 @@ pub async fn auth_middleware(
             "invalid or expired token".to_string(),
         )
     })?;
+
+    let player_id = Uuid::parse_str(&claims.sub).map_err(|_| {
+        (
+            StatusCode::UNAUTHORIZED,
+            "invalid token subject".to_string(),
+        )
+    })?;
+
+    let exists = sqlx::query_scalar::<_, i64>("SELECT COUNT(*)::bigint FROM players WHERE id = $1")
+        .bind(player_id)
+        .fetch_one(&*state.pool)
+        .await
+        .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+
+    if exists == 0 {
+        return Err((StatusCode::UNAUTHORIZED, "player not found".to_string()));
+    }
 
     req.extensions_mut().insert(AuthPlayer { id: claims.sub });
 

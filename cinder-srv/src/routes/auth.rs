@@ -1,6 +1,7 @@
 use axum::{Json, extract::State, http::StatusCode};
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
+use uuid::Uuid;
 
 use crate::auth;
 
@@ -49,26 +50,29 @@ pub async fn signup(
     let password_hash = bcrypt::hash(&req.password, bcrypt::DEFAULT_COST)
         .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
 
-    let player_id = uuid::Uuid::new_v4().to_string();
+    let player_id = Uuid::new_v4();
     sqlx::query("INSERT INTO players (id, username, password_hash) VALUES ($1, $2, $3)")
-        .bind(&player_id)
+        .bind(player_id)
         .bind(&req.username)
         .bind(&password_hash)
         .execute(&*state.pool)
         .await
         .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
 
-    let token = auth::create_token(&player_id, state.config.jwt_secret.as_bytes())
+    let token = auth::create_token(&player_id.to_string(), state.config.jwt_secret.as_bytes())
         .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
 
-    Ok(Json(AuthResponse { token, player_id }))
+    Ok(Json(AuthResponse {
+        token,
+        player_id: player_id.to_string(),
+    }))
 }
 
 pub async fn login(
     State(state): State<Arc<AppState>>,
     Json(req): Json<LoginRequest>,
 ) -> Result<Json<AuthResponse>, (StatusCode, String)> {
-    let row = sqlx::query_as::<_, (String, String)>(
+    let row = sqlx::query_as::<_, (Uuid, String)>(
         "SELECT id, password_hash FROM players WHERE username = $1",
     )
     .bind(&req.username)
@@ -86,8 +90,11 @@ pub async fn login(
         return Err((StatusCode::UNAUTHORIZED, "invalid credentials".to_string()));
     }
 
-    let token = auth::create_token(&player_id, state.config.jwt_secret.as_bytes())
+    let token = auth::create_token(&player_id.to_string(), state.config.jwt_secret.as_bytes())
         .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
 
-    Ok(Json(AuthResponse { token, player_id }))
+    Ok(Json(AuthResponse {
+        token,
+        player_id: player_id.to_string(),
+    }))
 }

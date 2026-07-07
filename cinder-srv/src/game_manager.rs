@@ -2,6 +2,7 @@ use cinder_core::content::loader;
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::{TurnOutcome, WorldState};
 use sqlx::{PgPool, Postgres, Transaction};
+use uuid::Uuid;
 
 mod response;
 mod ui;
@@ -19,8 +20,8 @@ struct PendingTranscriptEntry {
 
 async fn load_session_row(
     tx: &mut Transaction<'_, Postgres>,
-    session_id: &str,
-    player_id: &str,
+    session_id: &Uuid,
+    player_id: &Uuid,
     for_update: bool,
 ) -> Result<SessionRow, String> {
     let query = if for_update {
@@ -40,8 +41,8 @@ async fn load_session_row(
 
 async fn with_runtime<F, R>(
     pool: &PgPool,
-    session_id: &str,
-    player_id: &str,
+    session_id: &Uuid,
+    player_id: &Uuid,
     f: F,
 ) -> Result<R, String>
 where
@@ -104,7 +105,7 @@ where
 
 async fn insert_transcript_entries(
     tx: &mut Transaction<'_, Postgres>,
-    session_id: &str,
+    session_id: &Uuid,
     turn_number: u32,
     entries: &[PendingTranscriptEntry],
 ) -> Result<(), String> {
@@ -134,7 +135,7 @@ fn transcript_lines_from_state_json(state_json: &str) -> Result<Vec<String>, Str
 
 async fn replace_transcript_entries_with_lines(
     tx: &mut Transaction<'_, Postgres>,
-    session_id: &str,
+    session_id: &Uuid,
     lines: &[String],
 ) -> Result<(), String> {
     sqlx::query("DELETE FROM transcript_entries WHERE session_id = $1")
@@ -160,7 +161,7 @@ async fn replace_transcript_entries_with_lines(
 
 async fn backfill_transcript_if_missing(
     tx: &mut Transaction<'_, Postgres>,
-    session_id: &str,
+    session_id: &Uuid,
     state_json: &str,
 ) -> Result<(), String> {
     let existing = sqlx::query_scalar::<_, i64>(
@@ -183,6 +184,10 @@ async fn backfill_transcript_if_missing(
     replace_transcript_entries_with_lines(tx, session_id, &lines).await
 }
 
+fn parse_uuid(value: &str, field: &str) -> Result<Uuid, String> {
+    Uuid::parse_str(value).map_err(|e| format!("invalid {field}: {e}"))
+}
+
 // ── Public API ──────────────────────────────────────
 
 pub async fn create_session(
@@ -190,6 +195,7 @@ pub async fn create_session(
     player_id: &str,
     pack_id: &str,
 ) -> Result<(String, String, String), String> {
+    let player_id = parse_uuid(player_id, "player id")?;
     let content = loader::load_named_pack(pack_id, None)
         .map_err(|e| format!("failed to load pack '{pack_id}': {e}"))?;
 
@@ -210,7 +216,7 @@ pub async fn create_session(
     )
     .map_err(|e| format!("serialization error: {e}"))?;
 
-    let session_id = uuid::Uuid::new_v4().to_string();
+    let session_id = Uuid::new_v4();
     let mut tx = pool
         .begin()
         .await
@@ -219,7 +225,7 @@ pub async fn create_session(
     sqlx::query(
         "INSERT INTO game_sessions (id, player_id, pack_id, locale, state_json) VALUES ($1, $2, $3, $4, $5::jsonb)",
     )
-    .bind(&session_id)
+    .bind(session_id)
     .bind(player_id)
     .bind(pack_id)
     .bind(&locale)
@@ -232,7 +238,7 @@ pub async fn create_session(
         .await
         .map_err(|e| format!("db commit error: {e}"))?;
 
-    Ok((session_id, title, intro_text))
+    Ok((session_id.to_string(), title, intro_text))
 }
 
 pub async fn run_command(
@@ -241,8 +247,10 @@ pub async fn run_command(
     player_id: &str,
     input: &str,
 ) -> Result<CommandResponse, String> {
+    let session_id = parse_uuid(session_id, "session id")?;
+    let player_id = parse_uuid(player_id, "player id")?;
     let input_owned = input.to_string();
-    with_runtime(pool, session_id, player_id, move |runtime| {
+    with_runtime(pool, &session_id, &player_id, move |runtime| {
         let mut outcome = runtime
             .run_turn(&input_owned)
             .map_err(|e| format!("turn error: {e}"))?;
@@ -303,8 +311,10 @@ pub async fn switch_room(
     player_id: &str,
     room_id: &str,
 ) -> Result<TurnOutcome, String> {
+    let session_id = parse_uuid(session_id, "session id")?;
+    let player_id = parse_uuid(player_id, "player id")?;
     let room_id = room_id.to_string();
-    with_runtime(pool, session_id, player_id, move |runtime| {
+    with_runtime(pool, &session_id, &player_id, move |runtime| {
         let outcome = runtime
             .switch_room_view(&room_id)
             .map_err(|e| format!("room switch error: {e}"))?;
@@ -324,8 +334,10 @@ pub async fn follow_actor(
     player_id: &str,
     actor_id: Option<&str>,
 ) -> Result<TurnOutcome, String> {
+    let session_id = parse_uuid(session_id, "session id")?;
+    let player_id = parse_uuid(player_id, "player id")?;
     let actor_id = actor_id.map(|s| s.to_string());
-    with_runtime(pool, session_id, player_id, move |runtime| {
+    with_runtime(pool, &session_id, &player_id, move |runtime| {
         let outcome = runtime
             .follow_actor(actor_id.as_deref())
             .map_err(|e| format!("follow error: {e}"))?;
@@ -345,11 +357,13 @@ pub async fn set_locale(
     player_id: &str,
     locale: &str,
 ) -> Result<String, String> {
+    let session_id = parse_uuid(session_id, "session id")?;
+    let player_id = parse_uuid(player_id, "player id")?;
     let mut tx = pool
         .begin()
         .await
         .map_err(|e| format!("db begin error: {e}"))?;
-    let (pack_id, _, state_json) = load_session_row(&mut tx, session_id, player_id, true).await?;
+    let (pack_id, _, state_json) = load_session_row(&mut tx, &session_id, &player_id, true).await?;
     let locale = locale.to_string();
     let locale_for_runtime = locale.clone();
     let (changed_text, new_state_json) = tokio::task::spawn_blocking(move || {
@@ -401,12 +415,14 @@ pub async fn get_session_ui(
     session_id: &str,
     player_id: &str,
 ) -> Result<UiSnapshot, String> {
+    let session_id = parse_uuid(session_id, "session id")?;
+    let player_id = parse_uuid(player_id, "player id")?;
     let mut tx = pool
         .begin()
         .await
         .map_err(|e| format!("db begin error: {e}"))?;
     let (pack_id, locale, state_json) =
-        load_session_row(&mut tx, session_id, player_id, false).await?;
+        load_session_row(&mut tx, &session_id, &player_id, false).await?;
     tx.rollback()
         .await
         .map_err(|e| format!("db rollback error: {e}"))?;
@@ -428,11 +444,13 @@ pub async fn get_transcript(
     session_id: &str,
     player_id: &str,
 ) -> Result<Vec<String>, String> {
+    let session_id = parse_uuid(session_id, "session id")?;
+    let player_id = parse_uuid(player_id, "player id")?;
     let mut tx = pool
         .begin()
         .await
         .map_err(|e| format!("db begin error: {e}"))?;
-    let (_, _, state_json) = load_session_row(&mut tx, session_id, player_id, false).await?;
+    let (_, _, state_json) = load_session_row(&mut tx, &session_id, &player_id, false).await?;
     let rows = sqlx::query_scalar::<_, String>(
         "SELECT te.text FROM transcript_entries te
          JOIN game_sessions s ON s.id = te.session_id
@@ -448,7 +466,7 @@ pub async fn get_transcript(
     if rows.is_empty() {
         let lines = transcript_lines_from_state_json(&state_json)?;
         if !lines.is_empty() {
-            replace_transcript_entries_with_lines(&mut tx, session_id, &lines).await?;
+            replace_transcript_entries_with_lines(&mut tx, &session_id, &lines).await?;
         }
         tx.commit()
             .await
@@ -481,6 +499,8 @@ pub async fn create_checkpoint(
     session_id: &str,
     player_id: &str,
 ) -> Result<(String, String), String> {
+    let session_id = parse_uuid(session_id, "session id")?;
+    let player_id = parse_uuid(player_id, "player id")?;
     let row = sqlx::query_as::<_, (String, String)>(
         "INSERT INTO checkpoints (session_id, locale, state_json)
          SELECT id, locale, state_json
@@ -503,6 +523,8 @@ pub async fn list_checkpoints(
     session_id: &str,
     player_id: &str,
 ) -> Result<Vec<(String, String)>, String> {
+    let session_id = parse_uuid(session_id, "session id")?;
+    let player_id = parse_uuid(player_id, "player id")?;
     sqlx::query_as::<_, (String, String)>(
         "SELECT c.id::text, c.created_at::text
          FROM checkpoints c
@@ -523,10 +545,12 @@ pub async fn restore_checkpoint(
     player_id: &str,
     checkpoint_id: Option<&str>,
 ) -> Result<String, String> {
+    let session_id = parse_uuid(session_id, "session id")?;
+    let player_id = parse_uuid(player_id, "player id")?;
     let checkpoint_id = match checkpoint_id {
-        Some(checkpoint_id) => checkpoint_id.to_string(),
-        None => sqlx::query_scalar::<_, String>(
-            "SELECT c.id::text
+        Some(checkpoint_id) => parse_uuid(checkpoint_id, "checkpoint id")?,
+        None => sqlx::query_scalar::<_, Uuid>(
+            "SELECT c.id
              FROM checkpoints c
              JOIN game_sessions s ON s.id = c.session_id
              WHERE c.session_id = $1 AND s.player_id = $2
@@ -551,7 +575,7 @@ pub async fn restore_checkpoint(
          JOIN game_sessions s ON s.id = c.session_id
          WHERE c.id = $1 AND c.session_id = $2 AND s.player_id = $3",
     )
-    .bind(&checkpoint_id)
+    .bind(checkpoint_id)
     .bind(session_id)
     .bind(player_id)
     .fetch_optional(&mut *tx)
@@ -573,7 +597,7 @@ pub async fn restore_checkpoint(
     .await
     .map_err(|e| format!("db checkpoint restore error: {e}"))?;
     let lines = transcript_lines_from_state_json(&state_json)?;
-    replace_transcript_entries_with_lines(&mut tx, session_id, &lines).await?;
+    replace_transcript_entries_with_lines(&mut tx, &session_id, &lines).await?;
     tx.commit()
         .await
         .map_err(|e| format!("db commit error: {e}"))?;

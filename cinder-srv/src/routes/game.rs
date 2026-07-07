@@ -7,6 +7,7 @@ use axum::{
 };
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
+use uuid::Uuid;
 
 use crate::auth::{AuthPlayer, auth_middleware};
 use crate::game_manager;
@@ -74,7 +75,7 @@ pub async fn list_sessions(
     let rows = sqlx::query_as::<_, (String, String, String, String)>(
         "SELECT id::text, pack_id, created_at::text, updated_at::text FROM game_sessions WHERE player_id = $1 ORDER BY updated_at DESC",
     )
-    .bind(&auth.id)
+    .bind(Uuid::parse_str(&auth.id).map_err(internal)?)
     .fetch_all(&*state.pool)
     .await
     .map_err(internal)?;
@@ -199,9 +200,11 @@ pub async fn delete_session_handler(
     auth: AuthPlayer,
     Path(session_id): Path<String>,
 ) -> Result<Json<()>, (StatusCode, String)> {
+    let session_id = Uuid::parse_str(&session_id).map_err(internal)?;
+    let player_id = Uuid::parse_str(&auth.id).map_err(internal)?;
     sqlx::query("DELETE FROM game_sessions WHERE id = $1 AND player_id = $2")
-        .bind(&session_id)
-        .bind(&auth.id)
+        .bind(session_id)
+        .bind(player_id)
         .execute(&*state.pool)
         .await
         .map_err(internal)?;

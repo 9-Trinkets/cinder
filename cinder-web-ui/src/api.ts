@@ -10,6 +10,13 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
   })
   if (!res.ok) {
     const text = await res.text().catch(() => res.statusText)
+    if (res.status === 401) {
+      localStorage.removeItem('token')
+      localStorage.removeItem('playerId')
+      if (window.location.pathname !== '/login') {
+        window.location.assign('/login')
+      }
+    }
     throw new Error(text || `HTTP ${res.status}`)
   }
   return res.json()
