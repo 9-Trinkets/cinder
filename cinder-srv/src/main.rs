@@ -6,7 +6,7 @@ mod routes;
 
 use std::sync::Arc;
 
-use axum::{routing::get, Json};
+use axum::{Json, routing::get};
 use serde::Serialize;
 use tower_http::cors::CorsLayer;
 use tracing_subscriber::EnvFilter;
@@ -50,7 +50,10 @@ async fn main() {
 
     let app = routes::game::routes(state.clone())
         .merge(routes::saves::routes(state.clone()))
-        .route("/api/auth/signup", axum::routing::post(routes::auth::signup))
+        .route(
+            "/api/auth/signup",
+            axum::routing::post(routes::auth::signup),
+        )
         .route("/api/auth/login", axum::routing::post(routes::auth::login))
         .route("/", get(health))
         .route("/api/health", get(health))
@@ -64,7 +67,5 @@ async fn main() {
     let listener = tokio::net::TcpListener::bind(&addr)
         .await
         .expect("failed to bind address");
-    axum::serve(listener, app)
-        .await
-        .expect("server error");
+    axum::serve(listener, app).await.expect("server error");
 }

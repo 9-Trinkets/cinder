@@ -1,10 +1,10 @@
 use axum::{
     extract::{FromRequestParts, Request},
-    http::{request::Parts, StatusCode},
+    http::{StatusCode, request::Parts},
     middleware::Next,
     response::Response,
 };
-use jsonwebtoken::{decode, encode, DecodingKey, EncodingKey, Header, Validation};
+use jsonwebtoken::{DecodingKey, EncodingKey, Header, Validation, decode, encode};
 use serde::{Deserialize, Serialize};
 
 use crate::routes::AppState;
@@ -17,10 +17,7 @@ pub struct Claims {
     pub iat: usize,
 }
 
-pub fn create_token(
-    player_id: &str,
-    secret: &[u8],
-) -> Result<String, jsonwebtoken::errors::Error> {
+pub fn create_token(player_id: &str, secret: &[u8]) -> Result<String, jsonwebtoken::errors::Error> {
     let now = std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
         .unwrap()
@@ -37,10 +34,7 @@ pub fn create_token(
     )
 }
 
-pub fn validate_token(
-    token: &str,
-    secret: &[u8],
-) -> Result<Claims, jsonwebtoken::errors::Error> {
+pub fn validate_token(token: &str, secret: &[u8]) -> Result<Claims, jsonwebtoken::errors::Error> {
     decode::<Claims>(
         token,
         &DecodingKey::from_secret(secret),
@@ -57,10 +51,7 @@ pub struct AuthPlayer {
 impl<S: Sync> FromRequestParts<S> for AuthPlayer {
     type Rejection = (StatusCode, &'static str);
 
-    async fn from_request_parts(
-        parts: &mut Parts,
-        _state: &S,
-    ) -> Result<Self, Self::Rejection> {
+    async fn from_request_parts(parts: &mut Parts, _state: &S) -> Result<Self, Self::Rejection> {
         parts
             .extensions
             .get::<AuthPlayer>()
@@ -99,9 +90,7 @@ pub async fn auth_middleware(
         )
     })?;
 
-    req.extensions_mut().insert(AuthPlayer {
-        id: claims.sub,
-    });
+    req.extensions_mut().insert(AuthPlayer { id: claims.sub });
 
     Ok(next.run(req).await)
 }

@@ -1,14 +1,14 @@
 use axum::{
+    Json, Router,
     extract::{Path, State},
     http::StatusCode,
     middleware,
     routing::{get, post},
-    Json, Router,
 };
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
-use crate::auth::{auth_middleware, AuthPlayer};
+use crate::auth::{AuthPlayer, auth_middleware};
 
 use super::AppState;
 
@@ -35,20 +35,14 @@ pub async fn save_game(
     auth: AuthPlayer,
     Path(session_id): Path<String>,
 ) -> Result<Json<SavedGameInfo>, (StatusCode, String)> {
-    // In the stateless model, state is already persisted after every turn.
-    // Touch updated_at to confirm the save.
-    sqlx::query(
-        "UPDATE game_sessions SET updated_at = NOW() WHERE id = $1 AND player_id = $2",
-    )
-    .bind(&session_id)
-    .bind(&auth.id)
-    .execute(&*state.pool)
-    .await
-    .map_err(internal)?;
+    let (checkpoint_id, created_at) =
+        crate::game_manager::create_checkpoint(&state.pool, &session_id, &auth.id)
+            .await
+            .map_err(internal)?;
 
     Ok(Json(SavedGameInfo {
-        session_id,
-        created_at: now_iso(),
+        session_id: checkpoint_id,
+        created_at,
     }))
 }
 
@@ -57,19 +51,12 @@ pub async fn list_saves(
     auth: AuthPlayer,
     Path(session_id): Path<String>,
 ) -> Result<Json<Vec<SavedGameInfo>>, (StatusCode, String)> {
-    let row = sqlx::query_as::<_, (String, String)>(
-        "SELECT id::text, created_at::text FROM game_sessions WHERE id = $1 AND player_id = $2",
-    )
-    .bind(&session_id)
-    .bind(&auth.id)
-    .fetch_optional(&*state.pool)
-    .await
-    .map_err(internal)?;
-
-    let rows = row
+    let rows = crate::game_manager::list_checkpoints(&state.pool, &session_id, &auth.id)
+        .await
+        .map_err(internal)?
         .into_iter()
-        .map(|(id, created_at)| SavedGameInfo {
-            session_id: id,
+        .map(|(checkpoint_id, created_at)| SavedGameInfo {
+            session_id: checkpoint_id,
             created_at,
         })
         .collect::<Vec<_>>();
@@ -80,6 +67,8 @@ pub async fn list_saves(
 #[derive(Deserialize)]
 pub struct LoadGameRequest {
     pub session_id: String,
+    #[serde(default)]
+    pub checkpoint_id: Option<String>,
 }
 
 #[derive(Serialize)]
@@ -93,26 +82,21 @@ pub async fn load_game(
     auth: AuthPlayer,
     Json(req): Json<LoadGameRequest>,
 ) -> Result<Json<LoadGameResponse>, (StatusCode, String)> {
-    let row = sqlx::query_as::<_, (String, String)>(
-        "SELECT id::text, pack_id FROM game_sessions WHERE id = $1 AND player_id = $2",
+    let session_id = req.session_id;
+    let checkpoint_id = req
+        .checkpoint_id
+        .filter(|checkpoint_id| checkpoint_id != &session_id);
+    let pack_id = crate::game_manager::restore_checkpoint(
+        &state.pool,
+        &session_id,
+        &auth.id,
+        checkpoint_id.as_deref(),
     )
-    .bind(&req.session_id)
-    .bind(&auth.id)
-    .fetch_optional(&*state.pool)
     .await
-    .map_err(internal)?
-    .ok_or_else(|| (StatusCode::NOT_FOUND, "session not found".to_string()))?;
+    .map_err(internal)?;
 
-    let (sid, pack_id) = row;
-
-    Ok(Json(LoadGameResponse { session_id: sid, pack_id }))
-}
-
-fn now_iso() -> String {
-    use std::time::{SystemTime, UNIX_EPOCH};
-    let d = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .unwrap()
-        .as_secs();
-    format!("epoch={d}")
+    Ok(Json(LoadGameResponse {
+        session_id,
+        pack_id,
+    }))
 }

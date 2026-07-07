@@ -251,10 +251,10 @@ export interface LoadGameResponse {
   pack_id: string
 }
 
-export function loadGame(token: string, sessionId: string) {
+export function loadGame(token: string, sessionId: string, checkpointId?: string) {
   return req<LoadGameResponse>(`/games/${sessionId}/load`, {
     method: 'POST',
     headers: authHeader(token),
-    body: JSON.stringify({ session_id: sessionId }),
+    body: JSON.stringify({ session_id: sessionId, checkpoint_id: checkpointId }),
   })
 }

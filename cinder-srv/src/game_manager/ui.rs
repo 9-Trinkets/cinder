@@ -1,6 +1,8 @@
 use cinder_core::content::loader;
 use cinder_core::content::types::UiTextDefinition;
-use cinder_core::engine::runtime::{ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption};
+use cinder_core::engine::runtime::{
+    ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption,
+};
 use serde::Serialize;
 
 use super::response;
@@ -88,7 +90,10 @@ pub struct UiSnapshot {
     pub inventory: Vec<InventoryItem>,
 }
 
-pub(super) fn build_ui_snapshot(runtime: &CinderRuntime, pack_id: &str) -> Result<UiSnapshot, String> {
+pub(super) fn build_ui_snapshot(
+    runtime: &CinderRuntime,
+    pack_id: &str,
+) -> Result<UiSnapshot, String> {
     let time_label = runtime
         .current_time_label()
         .map_err(|error| error.to_string())?;
@@ -133,39 +138,40 @@ pub(super) fn build_ui_snapshot(runtime: &CinderRuntime, pack_id: &str) -> Resul
         .map_err(|error| error.to_string())?
         .and_then(|id| runtime.actor_display_name(&id).ok().flatten());
 
-    let (action_bar_actions, content_defined_bar) = if !content.ui_text.action_bar.actions.is_empty() {
-        (
-            content
-                .ui_text
-                .action_bar
-                .actions
-                .iter()
-                .map(|action| ActionBarAction {
-                    id: action.id.clone(),
-                    label: action.label.clone(),
-                })
-                .collect(),
-            true,
-        )
-    } else {
-        (
-            vec![
-                ActionBarAction {
-                    id: "look".into(),
-                    label: "Look".into(),
-                },
-                ActionBarAction {
-                    id: "move".into(),
-                    label: "Move".into(),
-                },
-                ActionBarAction {
-                    id: "follow".into(),
-                    label: "Follow".into(),
-                },
-            ],
-            false,
-        )
-    };
+    let (action_bar_actions, content_defined_bar) =
+        if !content.ui_text.action_bar.actions.is_empty() {
+            (
+                content
+                    .ui_text
+                    .action_bar
+                    .actions
+                    .iter()
+                    .map(|action| ActionBarAction {
+                        id: action.id.clone(),
+                        label: action.label.clone(),
+                    })
+                    .collect(),
+                true,
+            )
+        } else {
+            (
+                vec![
+                    ActionBarAction {
+                        id: "look".into(),
+                        label: "Look".into(),
+                    },
+                    ActionBarAction {
+                        id: "move".into(),
+                        label: "Move".into(),
+                    },
+                    ActionBarAction {
+                        id: "follow".into(),
+                        label: "Follow".into(),
+                    },
+                ],
+                false,
+            )
+        };
 
     let look_options: Vec<LookOptionData> = runtime
         .current_room_look_options()
@@ -208,7 +214,9 @@ pub(super) fn build_ui_snapshot(runtime: &CinderRuntime, pack_id: &str) -> Resul
     let mut action_bar_actions = action_bar_actions;
     if !content_defined_bar
         && !talk_options.is_empty()
-        && !action_bar_actions.iter().any(|action| action.id == "speak" || action.id == "talk")
+        && !action_bar_actions
+            .iter()
+            .any(|action| action.id == "speak" || action.id == "talk")
     {
         action_bar_actions.push(ActionBarAction {
             id: "talk".into(),
@@ -216,7 +224,10 @@ pub(super) fn build_ui_snapshot(runtime: &CinderRuntime, pack_id: &str) -> Resul
         });
     }
 
-    let bar_ids: Vec<&str> = action_bar_actions.iter().map(|action| action.id.as_str()).collect();
+    let bar_ids: Vec<&str> = action_bar_actions
+        .iter()
+        .map(|action| action.id.as_str())
+        .collect();
     let has_talk = bar_ids.contains(&"speak") || bar_ids.contains(&"talk");
     let modal_covered: Vec<&str> = vec!["inspect_feature", "inspect_actor"];
     let current_room_id = runtime.current_room_id().unwrap_or_default();
@@ -234,7 +245,8 @@ pub(super) fn build_ui_snapshot(runtime: &CinderRuntime, pack_id: &str) -> Resul
             if (command.id == "speak" || command.id == "talk") && has_talk {
                 return false;
             }
-            if !command.allowed_rooms.is_empty() && !command.allowed_rooms.contains(&current_room_id)
+            if !command.allowed_rooms.is_empty()
+                && !command.allowed_rooms.contains(&current_room_id)
             {
                 return false;
             }
@@ -351,7 +363,10 @@ pub(super) fn build_ui_snapshot(runtime: &CinderRuntime, pack_id: &str) -> Resul
             .unwrap_or_default()
             .into_iter()
             .map(|(id, count)| {
-                let label = content.item(&id).map(|item| item.label.clone()).unwrap_or_else(|| id.clone());
+                let label = content
+                    .item(&id)
+                    .map(|item| item.label.clone())
+                    .unwrap_or_else(|| id.clone());
                 InventoryItem { label, count }
             })
             .collect(),

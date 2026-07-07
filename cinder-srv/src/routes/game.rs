@@ -1,14 +1,14 @@
 use axum::{
+    Json, Router,
     extract::{Path, State},
     http::StatusCode,
     middleware,
     routing::{delete, get, post},
-    Json, Router,
 };
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
-use crate::auth::{auth_middleware, AuthPlayer};
+use crate::auth::{AuthPlayer, auth_middleware};
 use crate::game_manager;
 
 use super::AppState;

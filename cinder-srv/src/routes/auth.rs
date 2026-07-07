@@ -1,4 +1,4 @@
-use axum::{extract::State, http::StatusCode, Json};
+use axum::{Json, extract::State, http::StatusCode};
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
@@ -35,13 +35,12 @@ pub async fn signup(
         ));
     }
 
-    let exists = sqlx::query_scalar::<_, i64>(
-        "SELECT COUNT(*)::bigint FROM players WHERE username = $1",
-    )
-    .bind(&req.username)
-    .fetch_one(&*state.pool)
-    .await
-    .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
+    let exists =
+        sqlx::query_scalar::<_, i64>("SELECT COUNT(*)::bigint FROM players WHERE username = $1")
+            .bind(&req.username)
+            .fetch_one(&*state.pool)
+            .await
+            .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
 
     if exists > 0 {
         return Err((StatusCode::CONFLICT, "username taken".to_string()));
