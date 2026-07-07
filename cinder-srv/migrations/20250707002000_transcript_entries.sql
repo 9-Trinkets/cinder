@@ -8,4 +8,4 @@ CREATE TABLE IF NOT EXISTS transcript_entries (
 );
 
 CREATE INDEX IF NOT EXISTS idx_transcript_entries_session
-ON transcript_entries(session_id, id ASC);
+ON transcript_entries(session_id, turn_number ASC, id ASC);
