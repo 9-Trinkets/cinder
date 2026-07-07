@@ -6,6 +6,7 @@ pub struct Config {
     pub database_url: String,
     pub host: String,
     pub port: u16,
+    pub cors_origin: Option<String>,
 }
 
 impl Config {
@@ -20,6 +21,7 @@ impl Config {
                 .ok()
                 .and_then(|s| s.parse().ok())
                 .unwrap_or(3000),
+            cors_origin: std::env::var("CINDER_CORS_ORIGIN").ok(),
         }
     }
 }

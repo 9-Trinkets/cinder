@@ -6,9 +6,11 @@ mod routes;
 
 use std::sync::Arc;
 
-use axum::{Json, routing::get};
+use axum::{Json, http::HeaderValue, routing::get};
 use serde::Serialize;
-use tower_http::cors::CorsLayer;
+use tower_governor::governor::GovernorConfigBuilder;
+use tower_governor::GovernorLayer;
+use tower_http::cors::{Any, CorsLayer};
 use tracing_subscriber::EnvFilter;
 
 use crate::config::Config;
@@ -48,16 +50,48 @@ async fn main() {
         config: config.clone(),
     });
 
-    let app = routes::game::routes(state.clone())
-        .merge(routes::saves::routes(state.clone()))
+    if config.jwt_secret == "change-me-in-production" {
+        tracing::warn!("CINDER_JWT_SECRET is using the default value. Set a strong secret for production.");
+    }
+
+    let cors = match &config.cors_origin {
+        Some(origin) => {
+            let parsed = origin
+                .parse::<HeaderValue>()
+                .expect("invalid CINDER_CORS_ORIGIN");
+            CorsLayer::new()
+                .allow_origin(parsed)
+                .allow_methods(Any)
+                .allow_headers(Any)
+        }
+        None => CorsLayer::permissive(),
+    };
+
+    // Rate limiter for auth endpoints (per-IP)
+    let governor_config = Arc::new(
+        GovernorConfigBuilder::default()
+            .per_second(2)
+            .burst_size(5)
+            .finish()
+            .unwrap(),
+    );
+    let auth_routes = axum::Router::new()
         .route(
             "/api/auth/signup",
             axum::routing::post(routes::auth::signup),
         )
-        .route("/api/auth/login", axum::routing::post(routes::auth::login))
+        .route(
+            "/api/auth/login",
+            axum::routing::post(routes::auth::login),
+        )
+        .layer(GovernorLayer::new(governor_config));
+
+    let app = routes::game::routes(state.clone())
+        .merge(routes::saves::routes(state.clone()))
+        .merge(auth_routes)
         .route("/", get(health))
         .route("/api/health", get(health))
-        .layer(CorsLayer::permissive())
+        .layer(cors)
         .with_state(state)
         .fallback(|| async { (axum::http::StatusCode::NOT_FOUND, "not found") });
 
@@ -67,5 +101,10 @@ async fn main() {
     let listener = tokio::net::TcpListener::bind(&addr)
         .await
         .expect("failed to bind address");
-    axum::serve(listener, app).await.expect("server error");
+    axum::serve(
+        listener,
+        app.into_make_service_with_connect_info::<std::net::SocketAddr>(),
+    )
+    .await
+    .expect("server error");
 }
