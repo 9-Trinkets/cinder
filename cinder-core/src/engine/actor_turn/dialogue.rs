@@ -207,7 +207,8 @@ pub(crate) fn actor_to_actor_dialogue(
         spoken_line: text,
     };
     let intents = &content.speech_intents.intents;
-    let attraction_prompt = dialogue.build_direct_speech_intent_prompt(&attraction_request, intents);
+    let attraction_prompt =
+        dialogue.build_direct_speech_intent_prompt(&attraction_request, intents);
     let attraction_backend = dialogue.trace_metadata("direct_speech_intent");
     emit_trace(
         "direct_speech_intent",
@@ -252,7 +253,10 @@ pub(crate) fn actor_to_actor_dialogue(
         room_id: current_room_id.to_string(),
         text: attraction_request.spoken_line.clone(),
     }];
-    if let Some(intent) = intents.iter().find(|i| i.label.eq_ignore_ascii_case(&decision.0)) {
+    if let Some(intent) = intents
+        .iter()
+        .find(|i| i.label.eq_ignore_ascii_case(&decision.0))
+    {
         for effect in &intent.effects {
             match effect {
                 SpeechIntentEffect::ActorStat { stat, delta } => {

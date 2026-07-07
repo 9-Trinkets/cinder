@@ -1,11 +1,11 @@
 use super::DialogueGenerator;
-use crate::content::types::SpeechIntentLabel;
 use super::types::{
     ActorTurnActionDecision, ActorTurnActionRequest, ConversationMemorySummaryRequest,
     DialogueRequest, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
     DynamicMenuOptionOutput, DynamicMenuRequest, MenuIntentDecision, MenuIntentRequest,
     SessionFeedback, SessionFeedbackRequest,
 };
+use crate::content::types::SpeechIntentLabel;
 use std::collections::BTreeMap;
 
 #[derive(Debug, Default)]
@@ -179,6 +179,11 @@ impl DialogueGenerator for ScriptedDialogueGenerator {
         self.session_feedback
             .get(&request.actor_name)
             .cloned()
-            .ok_or_else(|| format!("missing scripted session feedback for '{}'", request.actor_name))
+            .ok_or_else(|| {
+                format!(
+                    "missing scripted session feedback for '{}'",
+                    request.actor_name
+                )
+            })
     }
 }

@@ -23,7 +23,7 @@
       "id": "book-selection",
       "summary": "Choose one of three books.",
       "update_message": "Noa is ready for a recommendation.",
-      "beat_note": "Your recommendation sets the baseline fit of the session. Each book represents a different approach: reaching for unresolved grief, building slow honesty through routine, or hiding behind control disguised as discipline. Consider what Noa revealed during intake.",
+      "beat_note": "Offer three books that fit what surfaced in the conversation. The choice should shape the tone of the reading, but there is no mechanically correct recommendation here; the session outcome still depends on how the relationship unfolds around it.",
       "advance_signals": ["menu_selected:book-recommendation"],
       "next_stage_id": "reading-quarter"
     },

@@ -517,18 +517,11 @@ impl WorldState {
     }
 
     pub fn has_item(&self, item_id: &str) -> bool {
-        self.player_inventory
-            .get(item_id)
-            .copied()
-            .unwrap_or(0)
-            > 0
+        self.player_inventory.get(item_id).copied().unwrap_or(0) > 0
     }
 
     pub fn item_count(&self, item_id: &str) -> u32 {
-        self.player_inventory
-            .get(item_id)
-            .copied()
-            .unwrap_or(0)
+        self.player_inventory.get(item_id).copied().unwrap_or(0)
     }
 
     pub fn add_item(&mut self, item_id: &str) {
@@ -599,8 +592,8 @@ mod seeding;
 use seeding::{seeded_actor_stats, seeded_feature_consumable_stock, seeded_pair_stats};
 mod appointments;
 pub use appointments::{
+    AppointmentFeedbackSummary, AppointmentHistoryEntry, AppointmentSeriesState, PatientRecord,
     advance_to_next_appointment, current_appointment_intro, current_patient_name,
     display_actor_name, initialize_appointment_state, render_dynamic_story_text,
-    resolved_actor_prompt_context, AppointmentFeedbackSummary, AppointmentHistoryEntry,
-    AppointmentSeriesState, PatientRecord,
+    resolved_actor_prompt_context,
 };

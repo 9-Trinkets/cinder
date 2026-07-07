@@ -6,7 +6,7 @@ use crate::engine::dialogue_grounding::{
 };
 use crate::engine::events::WorldEvent;
 use crate::engine::reducer::render_actor_speech_line;
-use crate::engine::state::WorldState;
+use crate::engine::state::{WorldState, display_actor_name, render_dynamic_story_text};
 
 pub(crate) struct PendingMenuDialogue<'a> {
     pub actor_id: &'a str,
@@ -14,24 +14,28 @@ pub(crate) struct PendingMenuDialogue<'a> {
     pub other_person_message: Option<&'a str>,
 }
 
-pub(crate) fn render_menu_prompt(content: &ContentPack, menu: &OpeningMenuDefinition) -> String {
+pub(crate) fn render_menu_prompt(
+    content: &ContentPack,
+    menu: &OpeningMenuDefinition,
+    state: &WorldState,
+) -> String {
     let actor_line = if menu.proposal_line.is_empty() {
         String::new()
     } else {
         let actor_name = content
             .actor(&menu.actor_id)
-            .map(|actor| actor.name.as_str())
-            .unwrap_or(menu.actor_id.as_str());
+            .map(|actor| display_actor_name(state, actor))
+            .unwrap_or_else(|| menu.actor_id.clone());
         render_actor_speech_line(
             content,
-            actor_name,
+            &actor_name,
             Some(&content.opening.title),
             &menu.proposal_line,
         )
     };
     match menu.selection_prompt.is_empty() {
-        false => menu.selection_prompt.clone(),
-        true => actor_line,
+        false => render_dynamic_story_text(&menu.selection_prompt, state),
+        true => render_dynamic_story_text(&actor_line, state),
     }
 }
 
@@ -200,6 +204,7 @@ pub(crate) fn resolve_menu_choice_in_options<'a>(
 
 pub(crate) fn build_menu_choice_events(
     content: &ContentPack,
+    state: &WorldState,
     menu: &OpeningMenuDefinition,
     option: &crate::content::types::OpeningMenuOptionDefinition,
 ) -> Vec<WorldEvent> {
@@ -220,25 +225,32 @@ pub(crate) fn build_menu_choice_events(
         menu.narrative_lines
             .iter()
             .map(|line| WorldEvent::NarrativeLine {
-                text: content.render_template(
-                    line,
-                    &[
-                        ("selection_title", option.title.as_str()),
-                        (menu.selection_var_key.as_str(), option.title.as_str()),
-                    ],
+                text: render_dynamic_story_text(
+                    &content.render_template(
+                        line,
+                        &[
+                            ("selection_title", option.title.as_str()),
+                            (menu.selection_var_key.as_str(), option.title.as_str()),
+                        ],
+                    ),
+                    state,
                 ),
             }),
     );
     events.extend(
-        option.narrative_lines
+        option
+            .narrative_lines
             .iter()
             .map(|line| WorldEvent::NarrativeLine {
-                text: content.render_template(
-                    line,
-                    &[
-                        ("selection_title", option.title.as_str()),
-                        (menu.selection_var_key.as_str(), option.title.as_str()),
-                    ],
+                text: render_dynamic_story_text(
+                    &content.render_template(
+                        line,
+                        &[
+                            ("selection_title", option.title.as_str()),
+                            (menu.selection_var_key.as_str(), option.title.as_str()),
+                        ],
+                    ),
+                    state,
                 ),
             }),
     );
@@ -259,4 +271,55 @@ fn is_movie_agreement_message(message: Option<&str>) -> bool {
         || lower.contains("yes")
         || lower.contains("okay")
         || lower.contains("ok")
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{build_menu_choice_events, render_menu_prompt};
+    use crate::content::loader::load_named_pack;
+    use crate::engine::events::WorldEvent;
+    use crate::engine::state::{
+        WorldState, advance_to_next_appointment, initialize_appointment_state,
+    };
+
+    #[test]
+    fn recommendation_prompt_uses_current_patient_name() {
+        let content = load_named_pack("isla", None).expect("load isla");
+        let mut state = WorldState::new(&content);
+        initialize_appointment_state(&content, &mut state);
+        advance_to_next_appointment(&content, &mut state, None);
+        let menu = content
+            .menu("book-recommendation")
+            .expect("book recommendation menu");
+
+        let prompt = render_menu_prompt(&content, menu, &state);
+
+        assert!(prompt.contains("Awa"));
+        assert!(!prompt.contains("Noa"));
+    }
+
+    #[test]
+    fn menu_narrative_lines_use_current_patient_name() {
+        let content = load_named_pack("isla", None).expect("load isla");
+        let mut state = WorldState::new(&content);
+        initialize_appointment_state(&content, &mut state);
+        advance_to_next_appointment(&content, &mut state, None);
+        let menu = content.menu("request-quarter").expect("quarter menu");
+        let option = menu
+            .options
+            .iter()
+            .find(|option| option.id == "quarter-coffee")
+            .expect("quarter coffee option");
+
+        let events = build_menu_choice_events(&content, &state, menu, option);
+        let narrative_lines = events
+            .into_iter()
+            .filter_map(|event| match event {
+                WorldEvent::NarrativeLine { text } => Some(text),
+                _ => None,
+            })
+            .collect::<Vec<_>>();
+        assert!(narrative_lines.iter().any(|line| line.contains("Awa")));
+        assert!(narrative_lines.iter().all(|line| !line.contains("Noa")));
+    }
 }

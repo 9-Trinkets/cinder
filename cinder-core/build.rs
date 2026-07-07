@@ -5,5 +5,8 @@ fn main() {
     let project_dir = Path::new(&manifest_dir)
         .parent()
         .expect("cinder-core should be one level below project root");
-    println!("cargo::rustc-env=CINDER_PROJECT_DIR={}", project_dir.display());
+    println!(
+        "cargo::rustc-env=CINDER_PROJECT_DIR={}",
+        project_dir.display()
+    );
 }

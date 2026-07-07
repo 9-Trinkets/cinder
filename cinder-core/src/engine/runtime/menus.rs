@@ -2,12 +2,14 @@ use super::{ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption};
 use crate::content::types::{OpeningMenuOptionDefinition, RoomDefinition};
 use crate::engine::conversation_memory::refresh_conversation_summaries;
 use crate::engine::dialogue::DynamicMenuRequest;
+use crate::engine::dialogue_grounding::current_objective_beat_notes;
 use crate::engine::dialogue_grounding::viewer_participant_id;
 use crate::engine::events::{ObservationMode, TimestampedWorldEvent, WorldEvent};
 use crate::engine::menus::render_menu_prompt;
 use crate::engine::reducer::apply_events;
-use crate::engine::state::display_actor_name;
-use crate::engine::state::TurnOutcome;
+use crate::engine::state::{
+    TurnOutcome, display_actor_name, render_dynamic_story_text, resolved_actor_prompt_context,
+};
 use std::error::Error;
 
 impl CinderRuntime {
@@ -96,7 +98,13 @@ impl CinderRuntime {
         let Some(menu) = self.content.menu(menu_id) else {
             return Ok(None);
         };
-        let prompt = menu.selection_prompt.clone();
+        let prompt = {
+            let state = self
+                .state
+                .lock()
+                .map_err(|_| "failed to lock runtime state for active menu prompt")?;
+            render_menu_prompt(self.content.as_ref(), menu, &state)
+        };
         if menu.dynamic {
             let needs_generation = {
                 let state = self
@@ -134,7 +142,8 @@ impl CinderRuntime {
             if menu.selection_var_key.is_empty() || menu.selection_id_var_key.is_empty() {
                 continue;
             }
-            let Some(selected_id) = state.story_vars.get(&menu.selection_id_var_key).cloned() else {
+            let Some(selected_id) = state.story_vars.get(&menu.selection_id_var_key).cloned()
+            else {
                 continue;
             };
             let generated_options = state.generated_menu_options.get(&menu.id);
@@ -179,6 +188,7 @@ impl CinderRuntime {
                     return Ok(Some(render_menu_choice_options(
                         self.content.as_ref(),
                         menu,
+                        &state,
                         options,
                     )));
                 }
@@ -191,35 +201,46 @@ impl CinderRuntime {
                 !state.generated_menu_options.contains_key(menu_id)
             };
             if needs_generation {
-                let actor_name = self
-                    .content
-                    .actors
-                    .iter()
-                    .find(|a| a.id == menu.actor_id)
-                    .map(|a| a.name.clone())
-                    .unwrap_or_default();
-                let character_bio = self
-                    .content
-                    .actors
-                    .iter()
-                    .find(|a| a.id == menu.actor_id)
-                    .map(|a| a.prompt_context.character_notes.join("\n"))
-                    .unwrap_or_default();
-                let recent_memory = {
+                let (menu_prompt, actor_name, character_bio, current_beat_notes, recent_memory) = {
                     let state = self
                         .state
                         .lock()
                         .map_err(|_| "failed to lock runtime state for dynamic menu")?;
-                    state
-                        .conversation_history(
-                            &menu.actor_id,
-                            &viewer_participant_id(self.content.as_ref()),
-                        )
-                        .iter()
-                        .rev()
-                        .take(10)
-                        .cloned()
-                        .collect::<Vec<_>>()
+                    let actor = self
+                        .content
+                        .actor(&menu.actor_id)
+                        .ok_or_else(|| format!("missing actor '{}'", menu.actor_id))?;
+                    let prompt_context = resolved_actor_prompt_context(&state, actor);
+                    let mut beat_notes =
+                        current_objective_beat_notes(self.content.as_ref(), &state);
+                    beat_notes.extend(
+                        menu.narrative_lines
+                            .iter()
+                            .map(|line| render_dynamic_story_text(line, &state)),
+                    );
+                    (
+                        render_menu_prompt(self.content.as_ref(), menu, &state),
+                        display_actor_name(&state, actor),
+                        prompt_context
+                            .character_notes
+                            .iter()
+                            .chain(prompt_context.subtext_notes.iter())
+                            .chain(prompt_context.response_notes.iter())
+                            .cloned()
+                            .collect::<Vec<_>>()
+                            .join("\n"),
+                        beat_notes,
+                        state
+                            .conversation_history(
+                                &menu.actor_id,
+                                &viewer_participant_id(self.content.as_ref()),
+                            )
+                            .iter()
+                            .rev()
+                            .take(10)
+                            .cloned()
+                            .collect::<Vec<_>>(),
+                    )
                 };
                 let role_name = if menu.generation_role.is_empty() {
                     "dynamic_menu"
@@ -232,9 +253,12 @@ impl CinderRuntime {
                         locale: self.content.locale.clone(),
                         system_text: self.content.system_text.clone(),
                         role_name: role_name.to_string(),
+                        menu_id: menu.id.clone(),
+                        menu_prompt,
+                        intent_guidance: menu.intent_guidance.clone(),
                         actor_name,
                         character_bio,
-                        current_beat_notes: menu.narrative_lines.clone(),
+                        current_beat_notes,
                         recent_memory,
                     });
                 let mut state = self
@@ -257,14 +281,20 @@ impl CinderRuntime {
                     return Ok(Some(render_menu_choice_options(
                         self.content.as_ref(),
                         menu,
+                        &state,
                         &options,
                     )));
                 }
             }
         }
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for menu rendering")?;
         Ok(Some(render_menu_choice_options(
             self.content.as_ref(),
             menu,
+            &state,
             &menu.options,
         )))
     }
@@ -283,7 +313,11 @@ impl CinderRuntime {
             .room_switch_prompt
             .replace("{}", &current_room.title);
 
-        let exit_ids: Vec<String> = current_room.exits.iter().map(|e| e.room_id.clone()).collect();
+        let exit_ids: Vec<String> = current_room
+            .exits
+            .iter()
+            .map(|e| e.room_id.clone())
+            .collect();
         let rooms_iter: Box<dyn Iterator<Item = &RoomDefinition>> =
             if self.content.settings.channel_surfing_only {
                 Box::new(self.content.rooms.iter())
@@ -360,10 +394,12 @@ impl CinderRuntime {
                 to_room_id: room.id.clone(),
             }));
         }
-        events.push(TimestampedWorldEvent::now(WorldEvent::CurrentRoomObserved {
-            room_id: room.id.clone(),
-            mode: ObservationMode::Summary,
-        }));
+        events.push(TimestampedWorldEvent::now(
+            WorldEvent::CurrentRoomObserved {
+                room_id: room.id.clone(),
+                mode: ObservationMode::Summary,
+            },
+        ));
         let reduced = apply_events(&mut state, self.content.as_ref(), &events);
         refresh_conversation_summaries(self.content.as_ref(), self.dialogue.as_ref(), &mut state)
             .map_err(std::io::Error::other)?;
@@ -414,10 +450,12 @@ impl CinderRuntime {
                         from_room_id: state.current_room_id.clone(),
                         to_room_id: room_id.clone(),
                     }));
-                    events.push(TimestampedWorldEvent::now(WorldEvent::CurrentRoomObserved {
-                        room_id,
-                        mode: ObservationMode::Summary,
-                    }));
+                    events.push(TimestampedWorldEvent::now(
+                        WorldEvent::CurrentRoomObserved {
+                            room_id,
+                            mode: ObservationMode::Summary,
+                        },
+                    ));
                 }
             }
             None => {
@@ -439,13 +477,14 @@ impl CinderRuntime {
 fn render_menu_choice_options(
     content: &crate::content::types::ContentPack,
     menu: &crate::content::types::OpeningMenuDefinition,
+    state: &crate::engine::state::WorldState,
     options: &[OpeningMenuOptionDefinition],
 ) -> Vec<MenuChoiceOption> {
     options
         .iter()
         .enumerate()
         .map(|(index, option)| MenuChoiceOption {
-            prompt: render_menu_prompt(content, menu),
+            prompt: render_menu_prompt(content, menu, state),
             title: option.title.clone(),
             menu_text: option.menu_text.clone(),
             command: (index + 1).to_string(),

@@ -5,7 +5,7 @@ use crate::engine::dialogue::{
     SessionFeedbackRequest, SynapseChapterSummaryGenerator,
 };
 use crate::engine::dialogue_grounding::{render_story_text, viewer_participant_id};
-use crate::engine::state::{display_actor_name, WorldState};
+use crate::engine::state::{WorldState, display_actor_name};
 use std::collections::BTreeMap;
 use std::error::Error;
 use std::sync::Arc;
@@ -142,7 +142,10 @@ impl CinderRuntime {
 
     pub fn session_feedback(&self) -> Result<Option<SessionFeedback>, Box<dyn Error>> {
         {
-            let cached = self.session_feedback.lock().map_err(|error| error.to_string())?;
+            let cached = self
+                .session_feedback
+                .lock()
+                .map_err(|error| error.to_string())?;
             if let Some(review) = cached.as_ref() {
                 return Ok(Some(review.clone()));
             }
@@ -171,15 +174,22 @@ impl CinderRuntime {
                 .unwrap_or_else(|| "Patient".to_string());
             let current = state.actor_stats_snapshot(&actor_id);
             let deltas = state.actor_stat_deltas(&actor_id).unwrap_or_default();
-            let stats_context = ["trust", "openness", "focus", "resistance", "energy", "secrets_found"]
-                .iter()
-                .filter_map(|key| {
-                    let value = current.get(*key).copied()?;
-                    let delta = deltas.get(*key).copied().unwrap_or(0);
-                    Some(format!("  {key}: {value} ({delta:+})"))
-                })
-                .collect::<Vec<_>>()
-                .join("\n");
+            let stats_context = [
+                "trust",
+                "openness",
+                "focus",
+                "resistance",
+                "energy",
+                "secrets_found",
+            ]
+            .iter()
+            .filter_map(|key| {
+                let value = current.get(*key).copied()?;
+                let delta = deltas.get(*key).copied().unwrap_or(0);
+                Some(format!("  {key}: {value} ({delta:+})"))
+            })
+            .collect::<Vec<_>>()
+            .join("\n");
             let session_summary = state.transcript.last().cloned().unwrap_or_default();
             let relationship_lines = self.relationship_status_lines_for_state(&state);
             (
@@ -205,16 +215,16 @@ impl CinderRuntime {
             None => self.fallback_session_feedback(&current, &deltas),
         };
         {
-            let mut cached = self.session_feedback.lock().map_err(|error| error.to_string())?;
+            let mut cached = self
+                .session_feedback
+                .lock()
+                .map_err(|error| error.to_string())?;
             *cached = Some(review.clone());
         }
         Ok(Some(review))
     }
 
-    fn try_llm_session_feedback(
-        &self,
-        request: SessionFeedbackRequest,
-    ) -> Option<SessionFeedback> {
+    fn try_llm_session_feedback(&self, request: SessionFeedbackRequest) -> Option<SessionFeedback> {
         let (tx, rx) = std::sync::mpsc::channel();
         let dialogue = Arc::clone(&self.dialogue);
         std::thread::spawn(move || {
@@ -243,7 +253,8 @@ impl CinderRuntime {
         let resistance_delta = deltas.get("resistance").copied().unwrap_or(0);
         let energy_delta = deltas.get("energy").copied().unwrap_or(0);
         let secrets_found = current.get("secrets_found").copied().unwrap_or(0);
-        let net = trust_delta + openness_delta - resistance_delta + energy_delta + secrets_found * 2;
+        let net =
+            trust_delta + openness_delta - resistance_delta + energy_delta + secrets_found * 2;
         let rating = if net >= 8 {
             5
         } else if net >= 4 {

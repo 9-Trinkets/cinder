@@ -10,9 +10,9 @@ use self::handlers::{
     handle_actor_observed_feature, handle_actor_observed_room, handle_actor_relocated,
     handle_actor_spoke, handle_actor_spoke_to_room, handle_current_room_observed,
     handle_feature_observed, handle_help_shown, handle_item_acquired, handle_item_consumed,
-    handle_item_observed,
-    handle_menu_choice_made, handle_menu_opened, handle_narrative_line, handle_pair_stat_adjusted,
-    handle_player_moved, handle_session_ended, handle_turn_started, handle_unknown_input,
+    handle_item_observed, handle_menu_choice_made, handle_menu_opened, handle_narrative_line,
+    handle_pair_stat_adjusted, handle_player_moved, handle_session_ended, handle_turn_started,
+    handle_unknown_input,
 };
 
 pub(crate) use self::observation::render_actor_speech_line;
@@ -98,7 +98,11 @@ pub fn apply_events(
                     &mut lines,
                 );
             }
-            WorldEvent::ActorStatAdjusted { actor_id, stat, delta } => {
+            WorldEvent::ActorStatAdjusted {
+                actor_id,
+                stat,
+                delta,
+            } => {
                 if let Err(e) = state.adjust_actor_stat(actor_id, stat, *delta) {
                     eprintln!("[cinder] ActorStatAdjusted error: {e}");
                 }
@@ -235,7 +239,14 @@ pub fn apply_events(
                 consumer_id,
                 consumer_name,
             } => {
-                handle_item_consumed(state, content, item_id, consumer_id, consumer_name, &mut lines);
+                handle_item_consumed(
+                    state,
+                    content,
+                    item_id,
+                    consumer_id,
+                    consumer_name,
+                    &mut lines,
+                );
             }
             WorldEvent::ItemObserved { item_id } => {
                 handle_item_observed(state, content, item_id, &mut lines);

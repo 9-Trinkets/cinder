@@ -56,18 +56,48 @@ impl Default for ThemeDefinition {
     }
 }
 
-fn default_base() -> String { "#232136".into() }
-fn default_surface() -> String { "#2a273f".into() }
-fn default_overlay() -> String { "#393552".into() }
-fn default_muted() -> String { "#6e6a86".into() }
-fn default_text() -> String { "#e0def4".into() }
-fn default_love() -> String { "#eb6f92".into() }
-fn default_gold() -> String { "#f6c177".into() }
-fn default_rose() -> String { "#ea9a97".into() }
-fn default_pine() -> String { "#3e8fb0".into() }
-fn default_foam() -> String { "#9ccfd8".into() }
-fn default_iris() -> String { "#c4a7e7".into() }
-fn default_highlight_high() -> String { "#56526e".into() }
-fn default_crt_glow() -> String { "#a7f3d0".into() }
-fn default_crt_dim() -> String { "#3b8474".into() }
-fn default_crt_bez() -> String { "#12141a".into() }
+fn default_base() -> String {
+    "#232136".into()
+}
+fn default_surface() -> String {
+    "#2a273f".into()
+}
+fn default_overlay() -> String {
+    "#393552".into()
+}
+fn default_muted() -> String {
+    "#6e6a86".into()
+}
+fn default_text() -> String {
+    "#e0def4".into()
+}
+fn default_love() -> String {
+    "#eb6f92".into()
+}
+fn default_gold() -> String {
+    "#f6c177".into()
+}
+fn default_rose() -> String {
+    "#ea9a97".into()
+}
+fn default_pine() -> String {
+    "#3e8fb0".into()
+}
+fn default_foam() -> String {
+    "#9ccfd8".into()
+}
+fn default_iris() -> String {
+    "#c4a7e7".into()
+}
+fn default_highlight_high() -> String {
+    "#56526e".into()
+}
+fn default_crt_glow() -> String {
+    "#a7f3d0".into()
+}
+fn default_crt_dim() -> String {
+    "#3b8474".into()
+}
+fn default_crt_bez() -> String {
+    "#12141a".into()
+}

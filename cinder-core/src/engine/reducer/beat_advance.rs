@@ -1,6 +1,6 @@
 use crate::content::types::{AdvanceCondition, AdvanceEffect, ContentPack};
-use std::collections::BTreeMap;
 use crate::engine::state::WorldState;
+use std::collections::BTreeMap;
 
 pub(super) fn advance_objective_for_signal(
     state: &mut WorldState,
@@ -69,13 +69,24 @@ pub(super) fn advance_objective_for_signal(
             }
             for effect in &next_stage.on_advance_effects {
                 match effect {
-                    AdvanceEffect::AdjustActorStat { actor_id, stat, delta } => {
+                    AdvanceEffect::AdjustActorStat {
+                        actor_id,
+                        stat,
+                        delta,
+                    } => {
                         if let Err(e) = state.adjust_actor_stat(actor_id, stat, *delta) {
                             eprintln!("[cinder] on_advance_effect error: {e}");
                         }
                     }
-                    AdvanceEffect::AdjustPairStat { participant_a_id, participant_b_id, stat, delta } => {
-                        if let Err(e) = state.adjust_pair_stat(participant_a_id, participant_b_id, stat, *delta) {
+                    AdvanceEffect::AdjustPairStat {
+                        participant_a_id,
+                        participant_b_id,
+                        stat,
+                        delta,
+                    } => {
+                        if let Err(e) =
+                            state.adjust_pair_stat(participant_a_id, participant_b_id, stat, *delta)
+                        {
                             eprintln!("[cinder] on_advance_effect error: {e}");
                         }
                     }

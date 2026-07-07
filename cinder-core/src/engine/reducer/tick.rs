@@ -5,7 +5,7 @@ use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
 use serde_json::json;
 
-use super::beat_advance::{advance_objective_for_signal, advance_conditions_met};
+use super::beat_advance::{advance_conditions_met, advance_objective_for_signal};
 use super::observation::actors_in_room;
 
 pub(super) fn advance_actor_stats_on_tick(
@@ -169,7 +169,8 @@ pub(super) fn advance_stat_threshold_objectives(
             continue;
         };
         if stage.advance_signals.iter().any(|signal| {
-            signal.signal() == "stat_threshold" && advance_conditions_met(state, signal.conditions())
+            signal.signal() == "stat_threshold"
+                && advance_conditions_met(state, signal.conditions())
         }) {
             return advance_objective_for_signal(state, content, "stat_threshold");
         }

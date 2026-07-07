@@ -5,7 +5,7 @@ use crate::content::types::{
 use crate::engine::commands::{resolve_actor_reference_input, unknown_target_token};
 use crate::engine::dialogue_grounding::viewer_participant_id;
 use crate::engine::events::{ObservationMode, WorldEvent};
-use crate::engine::state::{display_actor_name, WorldState};
+use crate::engine::state::{WorldState, display_actor_name};
 use std::collections::BTreeMap;
 
 pub(super) struct PlanningContext<'a> {
@@ -56,7 +56,9 @@ pub(super) fn plan_content_command(
 ) -> bool {
     // Check room restrictions
     if !command.allowed_rooms.is_empty()
-        && !command.allowed_rooms.contains(&context.current_room_id.to_string())
+        && !command
+            .allowed_rooms
+            .contains(&context.current_room_id.to_string())
     {
         let needed = command
             .allowed_rooms
@@ -205,10 +207,9 @@ pub(super) fn plan_observe_target(
     planned: &mut PlannedTurn,
 ) -> bool {
     if let Some(actor) = content.resolve_actor(target).or_else(|| {
-        content
-            .actors
-            .iter()
-            .find(|actor| display_actor_name(context.planner_state, actor).eq_ignore_ascii_case(target))
+        content.actors.iter().find(|actor| {
+            display_actor_name(context.planner_state, actor).eq_ignore_ascii_case(target)
+        })
     }) {
         let actor_name = display_actor_name(context.planner_state, actor);
         if context

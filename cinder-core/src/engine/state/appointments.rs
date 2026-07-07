@@ -1,4 +1,4 @@
-use super::{WorldState, MINUTES_PER_DAY};
+use super::{MINUTES_PER_DAY, WorldState};
 use crate::content::types::{
     ActorDefinition, ActorPromptContext, AppointmentPatientDefinition, ContentPack,
 };
@@ -68,7 +68,9 @@ const PATIENT_ACTOR_ID_VAR: &str = "patient_actor_id";
 const PATIENT_SLOT_BASE_NAME_VAR: &str = "patient_slot_base_name";
 
 pub fn initialize_appointment_state(content: &ContentPack, state: &mut WorldState) {
-    if !content.settings.multi_appointment || content.settings.appointment_patient_actor_id.is_empty() {
+    if !content.settings.multi_appointment
+        || content.settings.appointment_patient_actor_id.is_empty()
+    {
         return;
     }
     if state.appointment_series.is_none() {
@@ -77,10 +79,9 @@ pub fn initialize_appointment_state(content: &ContentPack, state: &mut WorldStat
             ..AppointmentSeriesState::default()
         });
     }
-    let needs_bootstrap = state
-        .appointment_series
-        .as_ref()
-        .is_some_and(|series| series.current_appointment_number == 0 || series.current_patient_id.is_empty());
+    let needs_bootstrap = state.appointment_series.as_ref().is_some_and(|series| {
+        series.current_appointment_number == 0 || series.current_patient_id.is_empty()
+    });
     if needs_bootstrap {
         bootstrap_first_appointment(content, state);
     } else {
@@ -101,7 +102,9 @@ pub fn advance_to_next_appointment(
     };
     if series.current_appointment_number == 0 || series.current_patient_id.is_empty() {
         bootstrap_first_appointment(content, state);
-        return Some(current_appointment_intro(state).unwrap_or_else(|| content.opening.intro_text.clone()));
+        return Some(
+            current_appointment_intro(state).unwrap_or_else(|| content.opening.intro_text.clone()),
+        );
     }
 
     if let Some(current) = series.patients.get_mut(&series.current_patient_id) {
@@ -127,7 +130,12 @@ pub fn advance_to_next_appointment(
             .appointment_patients
             .iter()
             .find(|definition| definition.id == next_patient_id)
-            .unwrap_or_else(|| panic!("missing appointment patient definition '{}'", next_patient_id));
+            .unwrap_or_else(|| {
+                panic!(
+                    "missing appointment patient definition '{}'",
+                    next_patient_id
+                )
+            });
         let patient = build_patient_record(content, state, patient_definition);
         series.next_seed_index = series.next_seed_index.saturating_add(1);
         series.patients.insert(patient.id.clone(), patient);
@@ -138,8 +146,8 @@ pub fn advance_to_next_appointment(
     next_state.appointment_series = Some(series);
     next_state.transcript = state.transcript.clone();
     if let Some(series) = next_state.appointment_series.as_ref() {
-        next_state.current_time_minutes =
-            content.opening.start_time_minutes + (series.current_appointment_number.saturating_sub(1) * MINUTES_PER_DAY);
+        next_state.current_time_minutes = content.opening.start_time_minutes
+            + (series.current_appointment_number.saturating_sub(1) * MINUTES_PER_DAY);
     }
     sync_current_patient_story_vars(content, &mut next_state);
     *state = next_state;
@@ -155,7 +163,10 @@ pub fn display_actor_name(state: &WorldState, actor: &ActorDefinition) -> String
     actor.name.clone()
 }
 
-pub fn resolved_actor_prompt_context(state: &WorldState, actor: &ActorDefinition) -> ActorPromptContext {
+pub fn resolved_actor_prompt_context(
+    state: &WorldState,
+    actor: &ActorDefinition,
+) -> ActorPromptContext {
     if !is_patient_actor(state, &actor.id) {
         return actor.prompt_context.clone();
     }
@@ -176,7 +187,10 @@ pub fn resolved_actor_prompt_context(state: &WorldState, actor: &ActorDefinition
     }
     ActorPromptContext {
         character_notes: vec![
-            format!("You are {}, a {}-year-old {}.", patient.name, patient.age, patient.profession),
+            format!(
+                "You are {}, a {}-year-old {}.",
+                patient.name, patient.age, patient.profession
+            ),
             format!("Presenting issue: {}.", patient.presenting_issue),
             format!("Relational pattern: {}.", patient.relational_pattern),
             format!("Formative memory: {}.", patient.formative_memory),
@@ -283,21 +297,58 @@ fn sync_current_patient_story_vars(content: &ContentPack, state: &mut WorldState
         .actor(&series.patient_actor_id)
         .map(|actor| actor.name.clone())
         .unwrap_or_else(|| "Patient".to_string());
-    state.story_vars.insert(PATIENT_ACTOR_ID_VAR.to_string(), series.patient_actor_id.clone());
-    state.story_vars.insert(PATIENT_SLOT_BASE_NAME_VAR.to_string(), base_name);
-    state.story_vars.insert(PATIENT_NAME_VAR.to_string(), patient.name.clone());
-    state.story_vars.insert("appointment_number".to_string(), series.current_appointment_number.to_string());
-    state.story_vars.insert("patient_age".to_string(), patient.age.to_string());
-    state.story_vars.insert("patient_profession".to_string(), patient.profession.clone());
-    state.story_vars.insert("patient_presenting_issue".to_string(), patient.presenting_issue.clone());
-    state.story_vars.insert("patient_relational_pattern".to_string(), patient.relational_pattern.clone());
-    state.story_vars.insert("patient_formative_memory".to_string(), patient.formative_memory.clone());
-    state.story_vars.insert("patient_coping_style".to_string(), patient.coping_style.clone());
-    state.story_vars.insert("patient_desired_change".to_string(), patient.desired_change.clone());
-    state.story_vars.insert("patient_bibliotherapy_fit".to_string(), patient.bibliotherapy_fit.clone());
+    state.story_vars.insert(
+        PATIENT_ACTOR_ID_VAR.to_string(),
+        series.patient_actor_id.clone(),
+    );
+    state
+        .story_vars
+        .insert(PATIENT_SLOT_BASE_NAME_VAR.to_string(), base_name);
+    state
+        .story_vars
+        .insert(PATIENT_NAME_VAR.to_string(), patient.name.clone());
+    state.story_vars.insert(
+        "appointment_number".to_string(),
+        series.current_appointment_number.to_string(),
+    );
+    state
+        .story_vars
+        .insert("patient_age".to_string(), patient.age.to_string());
+    state
+        .story_vars
+        .insert("patient_profession".to_string(), patient.profession.clone());
+    state.story_vars.insert(
+        "patient_presenting_issue".to_string(),
+        patient.presenting_issue.clone(),
+    );
+    state.story_vars.insert(
+        "patient_relational_pattern".to_string(),
+        patient.relational_pattern.clone(),
+    );
+    state.story_vars.insert(
+        "patient_formative_memory".to_string(),
+        patient.formative_memory.clone(),
+    );
+    state.story_vars.insert(
+        "patient_coping_style".to_string(),
+        patient.coping_style.clone(),
+    );
+    state.story_vars.insert(
+        "patient_desired_change".to_string(),
+        patient.desired_change.clone(),
+    );
+    state.story_vars.insert(
+        "patient_bibliotherapy_fit".to_string(),
+        patient.bibliotherapy_fit.clone(),
+    );
     state.story_vars.insert(
         "patient_returning".to_string(),
-        if patient.appointment_count > 0 { "true" } else { "false" }.to_string(),
+        if patient.appointment_count > 0 {
+            "true"
+        } else {
+            "false"
+        }
+        .to_string(),
     );
     if let Some(stats) = state.actor_stats.get_mut(&series.patient_actor_id) {
         *stats = patient.actor_stats.clone();

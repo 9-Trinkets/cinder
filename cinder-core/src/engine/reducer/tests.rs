@@ -411,8 +411,14 @@ fn tick_progression_updates_hunger_without_reducing_stamina() {
 
     apply_events(&mut state, &pack, &events);
 
-    assert_eq!(state.actor_stat_u32(ACTOR_A_ID, "hunger"), starting_hunger + 1);
-    assert_eq!(state.actor_stat_u32(ACTOR_A_ID, "stamina"), starting_stamina);
+    assert_eq!(
+        state.actor_stat_u32(ACTOR_A_ID, "hunger"),
+        starting_hunger + 1
+    );
+    assert_eq!(
+        state.actor_stat_u32(ACTOR_A_ID, "stamina"),
+        starting_stamina
+    );
 }
 
 #[test]

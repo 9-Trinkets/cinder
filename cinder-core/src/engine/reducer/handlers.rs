@@ -8,8 +8,8 @@ use super::observation::{
     render_story_text,
 };
 use super::tick::{
-    advance_actor_stats_on_tick, advance_house_progress_objectives, advance_stat_threshold_objectives,
-    increment_shared_room_safety,
+    advance_actor_stats_on_tick, advance_house_progress_objectives,
+    advance_stat_threshold_objectives, increment_shared_room_safety,
 };
 use crate::content::types::ContentPack;
 use crate::engine::commands::{player_command_help_text, player_command_suggestions};
@@ -513,7 +513,10 @@ pub(super) fn apply_content_event(
         .map(|(key, value)| (key.as_str(), value.as_str()))
         .collect();
     if !event.event_text.is_empty() {
-        lines.push(content.render_template(&event.event_text, &template_values));
+        lines.push(super::observation::render_story_text(
+            &content.render_template(&event.event_text, &template_values),
+            state,
+        ));
     }
     if !event.hook_id.is_empty() {
         let mut input = serde_json::Map::new();
@@ -526,7 +529,10 @@ pub(super) fn apply_content_event(
             .unwrap_or_else(|error| eprintln!("[cinder] hook warning (content_event): {error}"));
     }
     for signal in &event.signals {
-        let rendered_signal = content.render_template(signal, &template_values);
+        let rendered_signal = super::observation::render_story_text(
+            &content.render_template(signal, &template_values),
+            state,
+        );
         lines.extend(advance_objective_for_signal(
             state,
             content,

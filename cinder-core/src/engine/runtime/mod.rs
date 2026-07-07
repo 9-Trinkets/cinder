@@ -8,8 +8,9 @@ use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
 use crate::engine::neuron::{WorkflowDefinition, WorkflowTraceContext, load_workflow};
 use crate::engine::reducer::apply_events;
 use crate::engine::state::{
-    advance_to_next_appointment, current_appointment_intro, current_patient_name, display_actor_name,
-    initialize_appointment_state, AppointmentFeedbackSummary, TurnOutcome, WorldState,
+    AppointmentFeedbackSummary, TurnOutcome, WorldState, advance_to_next_appointment,
+    current_appointment_intro, current_patient_name, display_actor_name,
+    initialize_appointment_state,
 };
 use crate::engine::turn_runner;
 use crate::engine::workflows::{
@@ -198,7 +199,10 @@ impl CinderRuntime {
         self.continue_after_game_over(outcome)
     }
 
-    pub fn continue_after_game_over(&self, outcome: TurnOutcome) -> Result<TurnOutcome, Box<dyn Error>> {
+    pub fn continue_after_game_over(
+        &self,
+        outcome: TurnOutcome,
+    ) -> Result<TurnOutcome, Box<dyn Error>> {
         if !outcome.game_over {
             return Ok(outcome);
         }
@@ -221,7 +225,8 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for intro text")?;
-        Ok(current_appointment_intro(&state).unwrap_or_else(|| self.content.opening.intro_text.clone()))
+        Ok(current_appointment_intro(&state)
+            .unwrap_or_else(|| self.content.opening.intro_text.clone()))
     }
 
     pub fn actor_display_name(&self, actor_id: &str) -> Result<Option<String>, Box<dyn Error>> {
@@ -467,9 +472,7 @@ impl CinderRuntime {
         Ok(found)
     }
 
-    pub fn consume_pending_projector_narrative_lines(
-        &self,
-    ) -> Result<Vec<String>, Box<dyn Error>> {
+    pub fn consume_pending_projector_narrative_lines(&self) -> Result<Vec<String>, Box<dyn Error>> {
         let mut state = self
             .state
             .lock()

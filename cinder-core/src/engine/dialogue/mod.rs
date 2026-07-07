@@ -361,14 +361,28 @@ The review text should be 2-5 sentences in the patient's voice — honest, speci
     ) -> Result<Vec<DynamicMenuOptionOutput>, String> {
         let bio = &request.character_bio;
         let beats = request.current_beat_notes.join("\n");
+        let guidance = request.intent_guidance.trim();
         let recent = request
             .recent_memory
             .iter()
             .map(|m| format!("{}: {}", m.speaker_name, m.text))
             .collect::<Vec<_>>()
             .join("\n");
+        let role_specific_instructions = if request.role_name == "book_recommender" {
+            "Generate exactly 3 fictional book recommendations. Each option must be a plausible novel title paired with a one-line thematic blurb that fits this specific patient and this specific conversation. None of the options should be framed as the correct answer."
+        } else {
+            "Generate exactly 3 options that fit this specific character and this specific conversation."
+        };
         let prompt = format!(
-            r#"Context about {actor_name}:
+            r#"Menu id: {menu_id}
+
+Menu prompt:
+{menu_prompt}
+
+Intent guidance:
+{guidance}
+
+Context about {actor_name}:
 {bio}
 
 Session context:
@@ -377,7 +391,8 @@ Session context:
 Recent conversation:
 {recent}
 
-Based on this context, generate 3 menu options.
+{role_specific_instructions}
+
 Return ONLY valid JSON (no markdown, no backticks) in this exact format:
 [
   {{"id": "kebab-case-option-id", "title": "Short Display Title", "menu_text": "Brief description of this option"}},
@@ -386,8 +401,13 @@ Return ONLY valid JSON (no markdown, no backticks) in this exact format:
 
 The "id" must be a unique kebab-case slug derived from the title.
 The "title" is a short label shown as the option name.
-The "menu_text" is a one-line description shown below the title."#,
+The "menu_text" is a one-line description shown below the title.
+Make the options feel distinct from each other and grounded in the recent conversation rather than generic defaults."#,
+            menu_id = request.menu_id,
+            menu_prompt = request.menu_prompt,
+            guidance = guidance,
             actor_name = request.actor_name,
+            role_specific_instructions = role_specific_instructions,
         );
         let response = self.run_text_role(
             &request.role_name,

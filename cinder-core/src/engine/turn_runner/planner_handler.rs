@@ -3,8 +3,10 @@ use super::types::{AggregatedTurn, PlannedTurn, RouteEnvelope};
 use crate::content::types::ContentPack;
 use crate::engine::commands::PlayerCommand;
 use crate::engine::events::WorldEvent;
-use crate::engine::menus::{build_menu_choice_events, resolve_menu_choice, resolve_menu_choice_in_options};
-use crate::engine::state::WorldState;
+use crate::engine::menus::{
+    build_menu_choice_events, resolve_menu_choice, resolve_menu_choice_in_options,
+};
+use crate::engine::state::{WorldState, render_dynamic_story_text};
 
 pub(super) fn build_planned_turn(
     content: &ContentPack,
@@ -57,13 +59,19 @@ pub(super) fn build_planned_turn(
                         })
                         .or_else(|| resolve_menu_choice(menu, &aggregated.command.raw_input));
                     if let Some(option) = option {
-                        planned
-                            .events
-                            .extend(build_menu_choice_events(content, menu, option));
+                        planned.events.extend(build_menu_choice_events(
+                            content,
+                            planner_state,
+                            menu,
+                            option,
+                        ));
                         true
                     } else {
                         planned.events.push(WorldEvent::ActionRejected {
-                            message: menu.invalid_choice_text.clone(),
+                            message: render_dynamic_story_text(
+                                &menu.invalid_choice_text,
+                                planner_state,
+                            ),
                         });
                         false
                     }
@@ -83,16 +91,21 @@ pub(super) fn build_planned_turn(
                         .find(|m| m.stage_id == *stage_id && !m.options.is_empty())
                 })
             {
-                if let Some(option) =
-                    resolve_menu_choice(stage_menu, &aggregated.command.raw_input)
+                if let Some(option) = resolve_menu_choice(stage_menu, &aggregated.command.raw_input)
                 {
-                    planned
-                        .events
-                        .extend(build_menu_choice_events(content, stage_menu, option));
+                    planned.events.extend(build_menu_choice_events(
+                        content,
+                        planner_state,
+                        stage_menu,
+                        option,
+                    ));
                     true
                 } else {
                     planned.events.push(WorldEvent::ActionRejected {
-                        message: stage_menu.invalid_choice_text.clone(),
+                        message: render_dynamic_story_text(
+                            &stage_menu.invalid_choice_text,
+                            planner_state,
+                        ),
                     });
                     false
                 }

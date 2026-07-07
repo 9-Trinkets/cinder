@@ -24,21 +24,17 @@ fn apply_speech_intent_effects(
         .effects
         .iter()
         .map(|effect| match effect {
-            SpeechIntentEffect::ActorStat { stat, delta } => {
-                WorldEvent::ActorStatAdjusted {
-                    actor_id: actor_id.to_string(),
-                    stat: stat.clone(),
-                    delta: *delta,
-                }
-            }
-            SpeechIntentEffect::PairStat { stat, delta } => {
-                WorldEvent::PairStatAdjusted {
-                    participant_a_id: actor_id.to_string(),
-                    participant_b_id: other_person_id.to_string(),
-                    stat: stat.clone(),
-                    delta: *delta,
-                }
-            }
+            SpeechIntentEffect::ActorStat { stat, delta } => WorldEvent::ActorStatAdjusted {
+                actor_id: actor_id.to_string(),
+                stat: stat.clone(),
+                delta: *delta,
+            },
+            SpeechIntentEffect::PairStat { stat, delta } => WorldEvent::PairStatAdjusted {
+                participant_a_id: actor_id.to_string(),
+                participant_b_id: other_person_id.to_string(),
+                stat: stat.clone(),
+                delta: *delta,
+            },
         })
         .collect()
 }
@@ -126,8 +122,7 @@ pub(super) fn handle_actor_dialogue(
                     "backend": attraction_backend.clone(),
                 }),
             )?;
-            let decision =
-                dialogue.extract_direct_speech_intent(&attraction_request, intents)?;
+            let decision = dialogue.extract_direct_speech_intent(&attraction_request, intents)?;
             emit_trace(
                 "direct_speech_intent",
                 "model.response",

@@ -1,6 +1,6 @@
 use crate::content::types::{ActorDefinition, ContentPack};
 use crate::engine::events::ObservationMode;
-use crate::engine::state::{display_actor_name, WorldState};
+use crate::engine::state::{WorldState, display_actor_name};
 
 pub(super) fn actors_in_room<'a>(
     content: &'a ContentPack,

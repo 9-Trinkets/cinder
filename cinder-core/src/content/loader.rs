@@ -1,9 +1,8 @@
 use crate::content::types::{
     ActorDefinition, AffordancesDefinition, AppointmentPatientDefinition, BeatsDefinition,
-    CommandsDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition,
-    OpeningDefinition, OpeningMenuDefinition, OpeningMovieDefinition, PresentationDefinition,
-    RoomDefinition, SpeechIntentsConfig, StatsDefinition, SystemTextDefinition,
-    UiTextDefinition,
+    CommandsDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition, OpeningDefinition,
+    OpeningMenuDefinition, OpeningMovieDefinition, PresentationDefinition, RoomDefinition,
+    SpeechIntentsConfig, StatsDefinition, SystemTextDefinition, UiTextDefinition,
 };
 use serde::de::DeserializeOwned;
 use serde_json::Value;
@@ -121,13 +120,12 @@ pub fn load_pack_from_dir_with_locale(
     let actors: Vec<ActorDefinition> = serde_json::from_str(&fs::read_to_string(
         localized_file_path(path, &effective_locale, "actors.json"),
     )?)?;
-    let appointment_patients =
-        read_optional_localized_json::<Vec<AppointmentPatientDefinition>>(
-            path,
-            &effective_locale,
-            "patients.json",
-        )?
-        .unwrap_or_default();
+    let appointment_patients = read_optional_localized_json::<Vec<AppointmentPatientDefinition>>(
+        path,
+        &effective_locale,
+        "patients.json",
+    )?
+    .unwrap_or_default();
     let stats = read_optional_json::<StatsDefinition>(path, "stats.json")?.unwrap_or_default();
     let commands =
         read_optional_json::<CommandsDefinition>(path, "commands.json")?.unwrap_or_default();
@@ -137,11 +135,9 @@ pub fn load_pack_from_dir_with_locale(
     let hooks =
         read_optional_json::<BTreeMap<String, Value>>(path, "hooks.json")?.unwrap_or_default();
     let speech_intents: SpeechIntentsConfig =
-        read_optional_json::<SpeechIntentsConfig>(path, "intents.json")?
-            .unwrap_or_default();
+        read_optional_json::<SpeechIntentsConfig>(path, "intents.json")?.unwrap_or_default();
     let items: Vec<ItemDefinition> =
-        read_optional_json::<Vec<ItemDefinition>>(path, "items.json")?
-            .unwrap_or_default();
+        read_optional_json::<Vec<ItemDefinition>>(path, "items.json")?.unwrap_or_default();
 
     let room_index: HashMap<String, usize> = rooms
         .iter()
@@ -228,7 +224,9 @@ pub fn load_pack_from_dir_with_locale(
     }
     if settings.multi_appointment {
         if settings.appointment_patient_actor_id.trim().is_empty() {
-            return Err("multi_appointment content requires settings.appointment_patient_actor_id".into());
+            return Err(
+                "multi_appointment content requires settings.appointment_patient_actor_id".into(),
+            );
         }
         if appointment_patients.is_empty() {
             return Err("multi_appointment content requires localized patients.json".into());
