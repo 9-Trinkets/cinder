@@ -89,6 +89,7 @@ pub(crate) fn resolve_actor_reference_input(
     remainder: &str,
 ) -> Option<ResolvedActorReferenceInput> {
     match_actor_reference(
+        state,
         content
             .actors
             .iter()
@@ -102,7 +103,7 @@ pub(crate) fn resolve_actor_reference_input(
         actor_in_room: true,
     })
     .or_else(|| {
-        match_actor_reference(content.actors.iter(), remainder).map(|(actor, player_message)| {
+        match_actor_reference(state, content.actors.iter(), remainder).map(|(actor, player_message)| {
             ResolvedActorReferenceInput {
                 actor_id: actor.id.clone(),
                 actor_name: display_actor_name(state, actor),
@@ -260,6 +261,7 @@ fn player_command_examples(content: &ContentPack) -> Vec<String> {
 }
 
 fn match_actor_reference<'a>(
+    state: &WorldState,
     actors: impl IntoIterator<Item = &'a ActorDefinition>,
     remainder: &str,
 ) -> Option<(&'a ActorDefinition, Option<String>)> {
@@ -267,7 +269,7 @@ fn match_actor_reference<'a>(
     let lower = trimmed.to_ascii_lowercase();
     let mut best: Option<(&'a ActorDefinition, usize, Option<String>)> = None;
     for actor in actors {
-        for reference in actor_references(actor) {
+        for reference in actor_references(state, actor) {
             let reference_lower = reference.to_ascii_lowercase();
             let exact = lower == reference_lower;
             let prefix = lower
@@ -297,8 +299,29 @@ fn match_actor_reference<'a>(
     best.map(|(actor, _, player_message)| (actor, player_message))
 }
 
-fn actor_references(actor: &ActorDefinition) -> Vec<&str> {
-    let mut refs = vec![actor.name.as_str(), actor.id.as_str()];
-    refs.extend(actor.aliases.iter().map(String::as_str));
+fn actor_references(state: &WorldState, actor: &ActorDefinition) -> Vec<String> {
+    let mut refs = vec![actor.name.clone(), actor.id.clone(), display_actor_name(state, actor)];
+    refs.extend(actor.aliases.iter().cloned());
     refs
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::content::loader::load_named_pack;
+    use crate::engine::state::{advance_to_next_appointment, initialize_appointment_state};
+
+    #[test]
+    fn resolves_dynamic_patient_display_name() {
+        let content = load_named_pack("isla", None).expect("load isla");
+        let mut state = WorldState::new(&content);
+        initialize_appointment_state(&content, &mut state);
+        let _ = advance_to_next_appointment(&content, &mut state, None);
+
+        let resolved = resolve_actor_reference_input(&content, &state, "cafe", "Awa hello there")
+            .expect("resolve dynamic patient");
+        assert_eq!(resolved.actor_id, "noa");
+        assert_eq!(resolved.actor_name, "Awa");
+        assert_eq!(resolved.player_message.as_deref(), Some("hello there"));
+    }
 }

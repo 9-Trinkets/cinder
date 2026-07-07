@@ -83,6 +83,7 @@ fn reducer_test_pack() -> ContentPack {
         test_actor(ACTOR_B_ID, ACTOR_B_NAME, LOUNGE_ID),
         test_actor(ACTOR_C_ID, ACTOR_C_NAME, KITCHEN_ID),
     ];
+    pack.appointment_patients.clear();
     pack.stats = reducer_test_stats();
     pack.commands = CommandsDefinition {
         actions: vec![

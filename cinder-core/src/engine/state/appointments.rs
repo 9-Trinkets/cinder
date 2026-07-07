@@ -1,5 +1,7 @@
 use super::{WorldState, MINUTES_PER_DAY};
-use crate::content::types::{ActorDefinition, ActorPromptContext, ContentPack};
+use crate::content::types::{
+    ActorDefinition, ActorPromptContext, AppointmentPatientDefinition, ContentPack,
+};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -32,6 +34,8 @@ pub struct PatientRecord {
     pub intro_blurb: String,
     pub return_blurb: String,
     #[serde(default)]
+    pub secret_notes: Vec<String>,
+    #[serde(default)]
     pub appointment_count: u32,
     #[serde(default)]
     pub last_seen_appointment: Option<u32>,
@@ -41,6 +45,8 @@ pub struct PatientRecord {
     pub last_feedback_review: Option<String>,
     #[serde(default)]
     pub actor_stats: BTreeMap<String, i32>,
+    #[serde(default)]
+    pub uses_authored_profile: bool,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -115,11 +121,15 @@ pub fn advance_to_next_appointment(
     }
 
     series.current_appointment_number = series.current_appointment_number.saturating_add(1);
-    let next_patient_id = choose_next_patient_id(&series);
+    let next_patient_id = choose_next_patient_id(content, &series);
     if !series.patients.contains_key(&next_patient_id) {
-        let seed_index = series.next_seed_index;
-        let patient = build_patient_record(content, state, seed_index);
-        series.next_seed_index = seed_index.saturating_add(1);
+        let patient_definition = content
+            .appointment_patients
+            .iter()
+            .find(|definition| definition.id == next_patient_id)
+            .unwrap_or_else(|| panic!("missing appointment patient definition '{}'", next_patient_id));
+        let patient = build_patient_record(content, state, patient_definition);
+        series.next_seed_index = series.next_seed_index.saturating_add(1);
         series.patients.insert(patient.id.clone(), patient);
     }
     series.current_patient_id = next_patient_id;
@@ -152,6 +162,9 @@ pub fn resolved_actor_prompt_context(state: &WorldState, actor: &ActorDefinition
     let Some(patient) = current_patient(state) else {
         return actor.prompt_context.clone();
     };
+    if patient.uses_authored_profile {
+        return actor.prompt_context.clone();
+    }
     let appointment_number = current_appointment_number(state);
     let mut response_notes = actor.prompt_context.response_notes.clone();
     response_notes.push(format!(
@@ -171,10 +184,19 @@ pub fn resolved_actor_prompt_context(state: &WorldState, actor: &ActorDefinition
             format!("Desired change: {}.", patient.desired_change),
             format!("Bibliotherapy fit: {}.", patient.bibliotherapy_fit),
         ],
-        subtext_notes: vec![
-            format!("Carry the emotional residue of {}.", patient.intro_blurb),
-            format!("Your tendency under pressure: {}.", patient.coping_style),
-        ],
+        subtext_notes: {
+            let mut notes = vec![
+                format!("Carry the emotional residue of {}.", patient.intro_blurb),
+                format!("Your tendency under pressure: {}.", patient.coping_style),
+            ];
+            notes.extend(
+                patient
+                    .secret_notes
+                    .iter()
+                    .map(|secret| format!("Hidden truth: {secret}")),
+            );
+            notes
+        },
         response_notes,
         behavior_examples: actor.prompt_context.behavior_examples.clone(),
     }
@@ -182,6 +204,9 @@ pub fn resolved_actor_prompt_context(state: &WorldState, actor: &ActorDefinition
 
 pub fn current_appointment_intro(state: &WorldState) -> Option<String> {
     let patient = current_patient(state)?;
+    if patient.uses_authored_profile && patient.appointment_count == 0 {
+        return None;
+    }
     let appointment_number = current_appointment_number(state);
     let returning = patient.appointment_count > 0;
     Some(if returning {
@@ -229,13 +254,19 @@ pub fn render_dynamic_story_text(template: &str, state: &WorldState) -> String {
 }
 
 fn bootstrap_first_appointment(content: &ContentPack, state: &mut WorldState) {
-    let patient_id = "patient-1".to_string();
-    let patient = build_patient_record(content, state, 0);
+    let patient = build_patient_record(
+        content,
+        state,
+        content
+            .appointment_patients
+            .first()
+            .unwrap_or_else(|| panic!("missing appointment patient definitions")),
+    );
     let Some(series) = state.appointment_series.as_mut() else {
         return;
     };
     series.current_appointment_number = 1;
-    series.current_patient_id = patient_id;
+    series.current_patient_id = patient.id.clone();
     series.next_seed_index = 1;
     series.patients.insert(patient.id.clone(), patient);
     sync_current_patient_story_vars(content, state);
@@ -296,29 +327,44 @@ fn is_patient_actor(state: &WorldState, actor_id: &str) -> bool {
         .is_some_and(|series| series.patient_actor_id == actor_id)
 }
 
-fn choose_next_patient_id(series: &AppointmentSeriesState) -> String {
+fn choose_next_patient_id(content: &ContentPack, series: &AppointmentSeriesState) -> String {
     if series.current_appointment_number >= 3 && series.current_appointment_number % 2 == 1 {
         if let Some((patient_id, _)) = series
             .patients
             .iter()
-            .filter(|(patient_id, _)| **patient_id != series.current_patient_id)
+            .filter(|(patient_id, patient)| {
+                **patient_id != series.current_patient_id && !patient.uses_authored_profile
+            })
             .min_by_key(|(_, patient)| patient.last_seen_appointment.unwrap_or(0))
         {
             return patient_id.clone();
         }
     }
-    format!("patient-{}", series.next_seed_index + 1)
+    if let Some(definition) = content.appointment_patients.get(series.next_seed_index) {
+        return definition.id.clone();
+    }
+    series
+        .patients
+        .iter()
+        .filter(|(patient_id, patient)| {
+            **patient_id != series.current_patient_id && !patient.uses_authored_profile
+        })
+        .min_by_key(|(_, patient)| patient.last_seen_appointment.unwrap_or(0))
+        .map(|(patient_id, _)| patient_id.clone())
+        .unwrap_or_else(|| series.current_patient_id.clone())
 }
 
-fn build_patient_record(content: &ContentPack, state: &WorldState, seed_index: usize) -> PatientRecord {
-    let seed = patient_seed(seed_index);
-    let patient_id = format!("patient-{}", seed_index + 1);
+fn build_patient_record(
+    content: &ContentPack,
+    state: &WorldState,
+    definition: &AppointmentPatientDefinition,
+) -> PatientRecord {
     let mut actor_stats = content
         .actor(&content.settings.appointment_patient_actor_id)
         .map(|actor| actor.initial_stats.clone())
         .unwrap_or_default();
-    for (key, value) in seed.actor_stats {
-        actor_stats.insert(key.to_string(), *value);
+    for (key, value) in &definition.actor_stats {
+        actor_stats.insert(key.clone(), *value);
     }
     for (stat_key, definition) in &state.actor_stat_defs {
         actor_stats
@@ -327,90 +373,52 @@ fn build_patient_record(content: &ContentPack, state: &WorldState, seed_index: u
             .or_insert(definition.default);
     }
     PatientRecord {
-        id: patient_id,
-        name: seed.name.to_string(),
-        age: seed.age,
-        profession: seed.profession.to_string(),
-        presenting_issue: seed.presenting_issue.to_string(),
-        relational_pattern: seed.relational_pattern.to_string(),
-        formative_memory: seed.formative_memory.to_string(),
-        coping_style: seed.coping_style.to_string(),
-        desired_change: seed.desired_change.to_string(),
-        bibliotherapy_fit: seed.bibliotherapy_fit.to_string(),
-        inspect_blurb: seed.inspect_blurb.to_string(),
-        intro_blurb: seed.intro_blurb.to_string(),
-        return_blurb: seed.return_blurb.to_string(),
+        id: definition.id.clone(),
+        name: definition.name.clone(),
+        age: definition.age,
+        profession: definition.profession.clone(),
+        presenting_issue: definition.presenting_issue.clone(),
+        relational_pattern: definition.relational_pattern.clone(),
+        formative_memory: definition.formative_memory.clone(),
+        coping_style: definition.coping_style.clone(),
+        desired_change: definition.desired_change.clone(),
+        bibliotherapy_fit: definition.bibliotherapy_fit.clone(),
+        inspect_blurb: definition.inspect_blurb.clone(),
+        intro_blurb: definition.intro_blurb.clone(),
+        return_blurb: definition.return_blurb.clone(),
+        secret_notes: definition.secret_notes.clone(),
         appointment_count: 0,
         last_seen_appointment: None,
         last_feedback_rating: None,
         last_feedback_review: None,
         actor_stats,
+        uses_authored_profile: definition.uses_authored_profile,
     }
 }
 
-struct PatientSeed {
-    name: &'static str,
-    age: u32,
-    profession: &'static str,
-    presenting_issue: &'static str,
-    relational_pattern: &'static str,
-    formative_memory: &'static str,
-    coping_style: &'static str,
-    desired_change: &'static str,
-    bibliotherapy_fit: &'static str,
-    inspect_blurb: &'static str,
-    intro_blurb: &'static str,
-    return_blurb: &'static str,
-    actor_stats: &'static [(&'static str, i32)],
-}
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::content::loader::load_named_pack;
 
-fn patient_seed(seed_index: usize) -> &'static PatientSeed {
-    static PATIENT_SEEDS: &[PatientSeed] = &[
-        PatientSeed {
-            name: "Mira",
-            age: 29,
-            profession: "architect",
-            presenting_issue: "she keeps over-functioning for everyone else and then disappearing when she needs help",
-            relational_pattern: "she anticipates other people’s needs early, then resents them for depending on her",
-            formative_memory: "being the composed older sibling during chaotic family blowups",
-            coping_style: "intellectualizes pain until it leaks out as exhaustion",
-            desired_change: "to ask directly for care without feeling weak",
-            bibliotherapy_fit: "stories about reciprocity and emotional labor tend to reach her",
-            inspect_blurb: "Mira sits neatly but not comfortably, as if relaxing would count as letting something drop.",
-            intro_blurb: "An architect named Mira sits down still wearing the posture of someone who has been holding up a ceiling all day.",
-            return_blurb: "She is a little less guarded than before, but you can feel how quickly she snaps back into competence when emotion comes close.",
-            actor_stats: &[("trust", 46), ("openness", 32), ("focus", 58), ("resistance", 37), ("energy", 41)],
-        },
-        PatientSeed {
-            name: "Jonah",
-            age: 41,
-            profession: "paramedic",
-            presenting_issue: "his life works in emergencies, but he goes numb the moment things become quiet",
-            relational_pattern: "he becomes most affectionate when someone else is in crisis and most distant when intimacy asks for stillness",
-            formative_memory: "growing up in a household where calm usually meant the next explosion was coming",
-            coping_style: "keeps moving, jokes sideways, and avoids naming grief directly",
-            desired_change: "to stay emotionally present without needing a disaster to justify it",
-            bibliotherapy_fit: "he responds to concrete metaphors and stories that reward patience over heroics",
-            inspect_blurb: "Jonah looks sturdy in the practiced way of someone who knows how to stay functional long after his feelings have left the room.",
-            intro_blurb: "Jonah arrives with the restless alertness of someone whose nervous system trusts alarms more than silence.",
-            return_blurb: "He still deflects with humor, but now he pauses afterward as if noticing the dodge in real time.",
-            actor_stats: &[("trust", 38), ("openness", 27), ("focus", 61), ("resistance", 44), ("energy", 49)],
-        },
-        PatientSeed {
-            name: "Leah",
-            age: 35,
-            profession: "middle-school music teacher",
-            presenting_issue: "she feels adored in public and unseen at home, and no longer knows which version of her is real",
-            relational_pattern: "she performs warmth automatically and then feels lonely inside the performance",
-            formative_memory: "learning early that being charming could prevent adults from turning cold",
-            coping_style: "self-edits in real time and mistakes being readable for being loved",
-            desired_change: "to risk honesty before resentment hardens into withdrawal",
-            bibliotherapy_fit: "she connects with stories about voice, masks, and the fear of disappointing people",
-            inspect_blurb: "Leah’s smile arrives on cue, then lingers half a beat too long after the rest of her face has gone tired.",
-            intro_blurb: "Leah enters already trying to make the room easy for you, which is its own kind of confession.",
-            return_blurb: "She is more willing to let silence stand now, though you can still see the impulse to fill it with reassurance.",
-            actor_stats: &[("trust", 42), ("openness", 36), ("focus", 52), ("resistance", 34), ("energy", 45)],
-        },
-    ];
-    &PATIENT_SEEDS[seed_index % PATIENT_SEEDS.len()]
+    #[test]
+    fn first_appointment_preserves_authored_patient() {
+        let content = load_named_pack("isla", None).expect("load isla");
+        let mut state = WorldState::new(&content);
+        initialize_appointment_state(&content, &mut state);
+
+        assert_eq!(current_patient_name(&state).as_deref(), Some("Noa"));
+        assert_eq!(current_appointment_intro(&state), None);
+    }
+
+    #[test]
+    fn second_appointment_uses_first_generated_patient() {
+        let content = load_named_pack("isla", None).expect("load isla");
+        let mut state = WorldState::new(&content);
+        initialize_appointment_state(&content, &mut state);
+
+        let _ = advance_to_next_appointment(&content, &mut state, None);
+
+        assert_eq!(current_patient_name(&state).as_deref(), Some("Awa"));
+    }
 }
