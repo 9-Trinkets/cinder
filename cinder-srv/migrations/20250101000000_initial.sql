@@ -1,19 +1,19 @@
--- Create players table
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
 CREATE TABLE IF NOT EXISTS players (
-    id TEXT PRIMARY KEY NOT NULL,
-    username TEXT NOT NULL UNIQUE,
-    password_hash TEXT NOT NULL,
-    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Create game sessions table (stores serialized world state)
 CREATE TABLE IF NOT EXISTS game_sessions (
-    id TEXT PRIMARY KEY NOT NULL,
-    player_id TEXT NOT NULL REFERENCES players(id),
-    pack_id TEXT NOT NULL,
-    state_json TEXT NOT NULL,
-    created_at TEXT NOT NULL DEFAULT (datetime('now')),
-    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    player_id UUID NOT NULL REFERENCES players(id),
+    pack_id VARCHAR(255) NOT NULL,
+    state_json JSONB NOT NULL DEFAULT '{}',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX idx_game_sessions_player_id ON game_sessions(player_id);
+CREATE INDEX IF NOT EXISTS idx_game_sessions_player_id ON game_sessions(player_id);

@@ -14,7 +14,7 @@ impl Config {
             jwt_secret: std::env::var("CINDER_JWT_SECRET")
                 .unwrap_or_else(|_| "change-me-in-production".to_string()),
             database_url: std::env::var("CINDER_DATABASE_URL")
-                .unwrap_or_else(|_| "sqlite:cinder.db?mode=rwc".to_string()),
+                .unwrap_or_else(|_| "postgres://localhost:5432/cinder".to_string()),
             host: std::env::var("CINDER_HOST").unwrap_or_else(|_| "127.0.0.1".to_string()),
             port: std::env::var("CINDER_PORT")
                 .ok()

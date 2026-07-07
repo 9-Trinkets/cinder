@@ -1,7 +1,7 @@
 use cinder_core::content::loader;
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::{TurnOutcome, WorldState};
-use sqlx::SqlitePool;
+use sqlx::PgPool;
 use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 use uuid::Uuid;
@@ -29,7 +29,7 @@ pub fn new_session_map() -> SessionMap {
 
 pub async fn ensure_session(
     sessions: &SessionMap,
-    pool: &SqlitePool,
+    pool: &PgPool,
     session_id: &str,
     player_id: &str,
 ) -> Result<(), String> {
@@ -40,7 +40,7 @@ pub async fn ensure_session(
         }
     }
     let row = sqlx::query_as::<_, (String, String)>(
-        "SELECT pack_id, state_json FROM game_sessions WHERE id = ? AND player_id = ?",
+        "SELECT pack_id, state_json::text FROM game_sessions WHERE id = $1 AND player_id = $2",
     )
     .bind(session_id)
     .bind(player_id)

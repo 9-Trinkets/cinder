@@ -574,6 +574,7 @@ dependencies = [
  "axum",
  "bcrypt",
  "cinder-core",
+ "dotenvy",
  "jsonwebtoken",
  "serde",
  "serde_json",
@@ -4321,6 +4322,7 @@ dependencies = [
  "tokio-stream",
  "tracing",
  "url",
+ "uuid",
 ]
 
 [[package]]
@@ -4401,6 +4403,7 @@ dependencies = [
  "stringprep",
  "thiserror 1.0.69",
  "tracing",
+ "uuid",
  "whoami",
 ]
 
@@ -4439,6 +4442,7 @@ dependencies = [
  "stringprep",
  "thiserror 1.0.69",
  "tracing",
+ "uuid",
  "whoami",
 ]
 
@@ -4463,6 +4467,7 @@ dependencies = [
  "sqlx-core",
  "tracing",
  "url",
+ "uuid",
 ]
 
 [[package]]

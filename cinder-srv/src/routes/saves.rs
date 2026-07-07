@@ -40,7 +40,7 @@ pub async fn save_game(
         game_manager::export_session_state(&state.sessions, &session_id).map_err(internal)?;
 
     sqlx::query(
-        "UPDATE game_sessions SET state_json = ?, updated_at = datetime('now') WHERE id = ? AND player_id = ?",
+        "UPDATE game_sessions SET state_json = $1, updated_at = NOW() WHERE id = $2 AND player_id = $3",
     )
     .bind(&state_json)
     .bind(&session_id)
@@ -61,7 +61,7 @@ pub async fn list_saves(
     Path(session_id): Path<String>,
 ) -> Result<Json<Vec<SavedGameInfo>>, (StatusCode, String)> {
     let rows = sqlx::query_as::<_, (String, String)>(
-        "SELECT id, created_at FROM game_sessions WHERE id = ? AND player_id = ?",
+        "SELECT id, created_at::text FROM game_sessions WHERE id = $1 AND player_id = $2",
     )
     .bind(&session_id)
     .bind(&auth.id)
@@ -95,7 +95,7 @@ pub async fn load_game(
     Json(req): Json<LoadGameRequest>,
 ) -> Result<Json<LoadGameResponse>, (StatusCode, String)> {
     let row = sqlx::query_as::<_, (String, String, String)>(
-        "SELECT id, pack_id, state_json FROM game_sessions WHERE id = ? AND player_id = ?",
+        "SELECT id, pack_id, state_json::text FROM game_sessions WHERE id = $1 AND player_id = $2",
     )
     .bind(&req.session_id)
     .bind(&auth.id)

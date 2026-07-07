@@ -1,12 +1,12 @@
-use sqlx::sqlite::SqlitePoolOptions;
-use sqlx::SqlitePool;
+use sqlx::postgres::PgPoolOptions;
+use sqlx::PgPool;
 use std::sync::Arc;
 
 use crate::config::Config;
 
-pub async fn init_pool(config: &Config) -> Result<SqlitePool, sqlx::Error> {
-    let pool = SqlitePoolOptions::new()
-        .max_connections(5)
+pub async fn init_pool(config: &Config) -> Result<PgPool, sqlx::Error> {
+    let pool = PgPoolOptions::new()
+        .max_connections(20)
         .connect(&config.database_url)
         .await?;
 
@@ -15,4 +15,4 @@ pub async fn init_pool(config: &Config) -> Result<SqlitePool, sqlx::Error> {
     Ok(pool)
 }
 
-pub type DbPool = Arc<SqlitePool>;
+pub type DbPool = Arc<PgPool>;

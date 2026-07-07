@@ -62,7 +62,7 @@ pub async fn create_session(
         .map_err(internal)?;
 
     sqlx::query(
-        "INSERT INTO game_sessions (id, player_id, pack_id, state_json) VALUES (?, ?, ?, ?)",
+        "INSERT INTO game_sessions (id, player_id, pack_id, state_json) VALUES ($1, $2, $3, $4)",
     )
     .bind(&session_id)
     .bind(&auth.id)
@@ -90,7 +90,7 @@ pub async fn list_sessions(
     auth: AuthPlayer,
 ) -> Result<Json<Vec<SessionInfo>>, (StatusCode, String)> {
     let rows = sqlx::query_as::<_, (String, String, String, String)>(
-        "SELECT id, pack_id, created_at, updated_at FROM game_sessions WHERE player_id = ? ORDER BY updated_at DESC",
+        "SELECT id, pack_id, created_at::text, updated_at::text FROM game_sessions WHERE player_id = $1 ORDER BY updated_at DESC",
     )
     .bind(&auth.id)
     .fetch_all(&*state.pool)
@@ -239,7 +239,7 @@ pub async fn delete_session_handler(
         .await
         .map_err(internal)?;
     game_manager::delete_session(&state.sessions, &session_id).map_err(internal)?;
-    sqlx::query("DELETE FROM game_sessions WHERE id = ? AND player_id = ?")
+    sqlx::query("DELETE FROM game_sessions WHERE id = $1 AND player_id = $2")
         .bind(&session_id)
         .bind(&auth.id)
         .execute(&*state.pool)

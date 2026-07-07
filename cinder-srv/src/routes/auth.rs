@@ -36,7 +36,7 @@ pub async fn signup(
     }
 
     let exists = sqlx::query_scalar::<_, i64>(
-        "SELECT COUNT(*) FROM players WHERE username = ?",
+        "SELECT COUNT(*)::bigint FROM players WHERE username = $1",
     )
     .bind(&req.username)
     .fetch_one(&*state.pool)
@@ -51,7 +51,7 @@ pub async fn signup(
         .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()))?;
 
     let player_id = uuid::Uuid::new_v4().to_string();
-    sqlx::query("INSERT INTO players (id, username, password_hash) VALUES (?, ?, ?)")
+    sqlx::query("INSERT INTO players (id, username, password_hash) VALUES ($1, $2, $3)")
         .bind(&player_id)
         .bind(&req.username)
         .bind(&password_hash)
@@ -70,7 +70,7 @@ pub async fn login(
     Json(req): Json<LoginRequest>,
 ) -> Result<Json<AuthResponse>, (StatusCode, String)> {
     let row = sqlx::query_as::<_, (String, String)>(
-        "SELECT id, password_hash FROM players WHERE username = ?",
+        "SELECT id, password_hash FROM players WHERE username = $1",
     )
     .bind(&req.username)
     .fetch_optional(&*state.pool)
