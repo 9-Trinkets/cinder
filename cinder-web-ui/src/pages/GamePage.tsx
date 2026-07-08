@@ -131,14 +131,11 @@ export default function GamePage() {
     initialized.current = true
     setBusy(true)
 
-    const entries: Line[] = []
+    const titleEntries: Line[] = []
     if (sessionState?.title) {
-      entries.push({ text: `== ${sessionState.title} ==`, key: nextKey.current++ })
+      titleEntries.push({ text: `== ${sessionState.title} ==`, key: nextKey.current++ })
     }
-    if (sessionState?.intro_text) {
-      entries.push({ text: sessionState.intro_text, key: nextKey.current++ })
-    }
-    setLines(entries)
+    setLines(titleEntries)
 
     api.fetchSessionUi(token, id)
       .then(snap => {
@@ -150,12 +147,18 @@ export default function GamePage() {
     api.fetchTranscript(token, id)
       .then(transcript => {
         if (transcript.length > 0) {
-          setLines(prev => [
-            ...prev,
+          setLines([
+            ...titleEntries,
             ...transcript.map(t => ({ text: t, key: nextKey.current++ })),
           ])
           setBusy(false)
           return false
+        }
+        if (sessionState?.intro_text) {
+          setLines([
+            ...titleEntries,
+            { text: sessionState.intro_text, key: nextKey.current++ },
+          ])
         }
         return true
       })
