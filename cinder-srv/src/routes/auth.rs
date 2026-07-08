@@ -29,7 +29,7 @@ pub async fn signup(
     State(state): State<Arc<AppState>>,
     Json(req): Json<SignupRequest>,
 ) -> Result<Json<AuthResponse>, (StatusCode, String)> {
-    let username = req.username.trim().to_lowercase();
+    let username = req.username.trim().to_string();
     let password = req.password;
 
     if username.len() < 3 || username.len() > 32 {
@@ -90,7 +90,7 @@ pub async fn login(
     State(state): State<Arc<AppState>>,
     Json(req): Json<LoginRequest>,
 ) -> Result<Json<AuthResponse>, (StatusCode, String)> {
-    let username = req.username.trim().to_lowercase();
+    let username = req.username.trim().to_string();
     if username.is_empty() || req.password.is_empty() {
         return Err((
             StatusCode::BAD_REQUEST,

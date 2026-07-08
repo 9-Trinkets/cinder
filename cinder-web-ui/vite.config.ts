@@ -12,6 +12,7 @@ export default defineConfig({
       '/api': {
         target: apiProxyTarget,
         ws: true,
+        xfwd: true,
         configure: (proxy) => {
           proxy.on('error', (err, _req, res) => {
             if (err.message?.includes('ECONNREFUSED')) {

@@ -4,12 +4,23 @@ mod db;
 mod game_manager;
 mod routes;
 
-use std::sync::Arc;
+use std::{
+    net::{IpAddr, SocketAddr},
+    sync::Arc,
+};
 
-use axum::{Json, http::HeaderValue, routing::get};
+use axum::{
+    Json,
+    http::{HeaderMap, HeaderValue, Request},
+    routing::get,
+};
 use serde::Serialize;
-use tower_governor::governor::GovernorConfigBuilder;
-use tower_governor::GovernorLayer;
+use tower_governor::{
+    GovernorLayer,
+    errors::GovernorError,
+    governor::GovernorConfigBuilder,
+    key_extractor::KeyExtractor,
+};
 use tower_http::cors::{Any, CorsLayer};
 use tracing_subscriber::EnvFilter;
 
@@ -28,6 +39,52 @@ async fn health() -> Json<HealthResponse> {
         status: "ok".to_string(),
         version: env!("CARGO_PKG_VERSION"),
     })
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+struct TrustedProxyIpKeyExtractor;
+
+impl KeyExtractor for TrustedProxyIpKeyExtractor {
+    type Key = IpAddr;
+
+    fn extract<T>(&self, req: &Request<T>) -> Result<Self::Key, GovernorError> {
+        let peer_ip = req
+            .extensions()
+            .get::<axum::extract::ConnectInfo<SocketAddr>>()
+            .map(|info: &axum::extract::ConnectInfo<SocketAddr>| info.0.ip())
+            .ok_or(GovernorError::UnableToExtractKey)?;
+
+        if is_trusted_proxy(peer_ip) {
+            forwarded_ip(req.headers()).or(Some(peer_ip))
+        } else {
+            Some(peer_ip)
+        }
+        .ok_or(GovernorError::UnableToExtractKey)
+    }
+}
+
+fn forwarded_ip(headers: &HeaderMap) -> Option<IpAddr> {
+    headers
+        .get("x-forwarded-for")
+        .and_then(|value| value.to_str().ok())
+        .and_then(|value| {
+            value
+                .split(',')
+                .find_map(|part| part.trim().parse::<IpAddr>().ok())
+        })
+        .or_else(|| {
+            headers
+                .get("x-real-ip")
+                .and_then(|value| value.to_str().ok())
+                .and_then(|value| value.parse::<IpAddr>().ok())
+        })
+}
+
+fn is_trusted_proxy(ip: IpAddr) -> bool {
+    match ip {
+        IpAddr::V4(ip) => ip.is_private() || ip.is_loopback() || ip.is_link_local(),
+        IpAddr::V6(ip) => ip.is_loopback() || ip.is_unique_local() || ip.is_unicast_link_local(),
+    }
 }
 
 #[tokio::main]
@@ -70,6 +127,7 @@ async fn main() {
     // Rate limiter for auth endpoints (per-IP)
     let governor_config = Arc::new(
         GovernorConfigBuilder::default()
+            .key_extractor(TrustedProxyIpKeyExtractor)
             .per_second(2)
             .burst_size(5)
             .finish()
