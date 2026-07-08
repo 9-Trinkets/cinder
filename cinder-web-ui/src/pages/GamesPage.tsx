@@ -3,6 +3,16 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth'
 import * as api from '../api'
 
+function fmtTime(s: string): string {
+  const n = Number(s)
+  if (!isNaN(n) && n > 1e8) {
+    return new Date(n * 1000).toLocaleString()
+  }
+  const d = new Date(s)
+  if (!isNaN(d.getTime())) return d.toLocaleString()
+  return s
+}
+
 const PACKS = ['ella', 'isla', 'aera']
 
 export default function GamesPage() {
@@ -99,7 +109,7 @@ export default function GamesPage() {
                     className="flex-1 flex items-center justify-between cursor-pointer"
                   >
                     <span className="text-text capitalize">{s.pack_id}</span>
-                    <span className="text-faint text-xs">{s.updated_at}</span>
+                    <span className="text-faint text-xs">{fmtTime(s.updated_at)}</span>
                   </div>
                   <button
                     onClick={e => doDelete(s.session_id, e)}

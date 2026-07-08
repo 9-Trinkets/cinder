@@ -61,8 +61,8 @@ pub async fn create_session(
     Ok(Json(SessionInfo {
         session_id,
         pack_id: req.pack_id,
-        created_at: now_iso(),
-        updated_at: now_iso(),
+        created_at: now_unix_secs(),
+        updated_at: now_unix_secs(),
         title,
         intro_text,
     }))
@@ -72,8 +72,8 @@ pub async fn list_sessions(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
 ) -> Result<Json<Vec<SessionInfo>>, (StatusCode, String)> {
-    let rows = sqlx::query_as::<_, (String, String, String, String)>(
-        "SELECT id::text, pack_id, created_at::text, updated_at::text FROM game_sessions WHERE player_id = $1 ORDER BY updated_at DESC",
+    let rows = sqlx::query_as::<_, (String, String, i64, i64)>(
+        "SELECT id::text, pack_id, EXTRACT(EPOCH FROM created_at)::bigint, EXTRACT(EPOCH FROM updated_at)::bigint FROM game_sessions WHERE player_id = $1 ORDER BY updated_at DESC",
     )
     .bind(Uuid::parse_str(&auth.id).map_err(internal)?)
     .fetch_all(&*state.pool)
@@ -85,8 +85,8 @@ pub async fn list_sessions(
             .map(|(id, pack_id, created_at, updated_at)| SessionInfo {
                 session_id: id,
                 pack_id,
-                created_at,
-                updated_at,
+                created_at: created_at.to_string(),
+                updated_at: updated_at.to_string(),
                 title: String::new(),
                 intro_text: String::new(),
             })
@@ -211,11 +211,10 @@ pub async fn delete_session_handler(
     Ok(Json(()))
 }
 
-fn now_iso() -> String {
-    use std::time::{SystemTime, UNIX_EPOCH};
-    let d = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
+fn now_unix_secs() -> String {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
         .unwrap()
-        .as_secs();
-    format!("epoch={d}")
+        .as_secs()
+        .to_string()
 }
