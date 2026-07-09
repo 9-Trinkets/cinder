@@ -7,6 +7,7 @@ pub struct Config {
     pub host: String,
     pub port: u16,
     pub cors_origin: Option<String>,
+    pub strict_config: bool,
 }
 
 impl Config {
@@ -22,6 +23,9 @@ impl Config {
                 .and_then(|s| s.parse().ok())
                 .unwrap_or(3000),
             cors_origin: std::env::var("CINDER_CORS_ORIGIN").ok(),
+            strict_config: std::env::var("CINDER_STRICT_CONFIG")
+                .map(|value| matches!(value.as_str(), "1" | "true" | "TRUE" | "yes" | "on"))
+                .unwrap_or(false),
         }
     }
 }

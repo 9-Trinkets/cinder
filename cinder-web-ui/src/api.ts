@@ -1,4 +1,7 @@
-const BASE = '/api'
+const configuredBase = import.meta.env.VITE_API_BASE_URL?.trim()
+const BASE = configuredBase
+  ? configuredBase.replace(/\/+$/, '') + '/api'
+  : '/api'
 
 async function req<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
@@ -201,6 +204,14 @@ export interface UiSnapshot {
     about_body: string
     language_modal_title: string
     modal_close_hint: string
+    commands_modal_title: string
+    commands_modal_empty: string
+    commands_group_other: string
+    commands_group_support: string
+    look_modal_title: string
+    talk_modal_title: string
+    talk_modal_prompt: string
+    menu_option_list_title: string
     exit_confirm_title: string
     exit_confirm_body: string
     shell_menu: {

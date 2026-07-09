@@ -2,16 +2,17 @@ services:
   postgres:
     image: postgres:16-alpine
     container_name: cinder-postgres
-    ports:
-      - "5432:5432"
+    restart: unless-stopped
     environment:
-      POSTGRES_USER: cinder
-      POSTGRES_PASSWORD: cinder
-      POSTGRES_DB: cinder
+      POSTGRES_USER: ${POSTGRES_USER:-cinder}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cinder}
+      POSTGRES_DB: ${POSTGRES_DB:-cinder}
     volumes:
       - pgdata:/var/lib/postgresql/data
+    expose:
+      - "5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U cinder"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cinder} -d ${POSTGRES_DB:-cinder}"]
       interval: 5s
       timeout: 3s
       retries: 5
@@ -21,20 +22,19 @@ services:
       context: .
       dockerfile: cinder-srv/Dockerfile
     container_name: cinder-server
+    restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
-    env_file:
-      - .env
     environment:
-      CINDER_DATABASE_URL: postgres://cinder:cinder@postgres:5432/cinder
-      CINDER_JWT_SECRET: change-me-in-production
+      CINDER_DATABASE_URL: postgres://${POSTGRES_USER:-cinder}:${POSTGRES_PASSWORD:-cinder}@postgres:5432/${POSTGRES_DB:-cinder}
+      CINDER_JWT_SECRET: ${CINDER_JWT_SECRET:-local-dev-jwt-secret}
+      CINDER_CORS_ORIGIN: ${CINDER_CORS_ORIGIN:-http://localhost:8081}
+      CINDER_STRICT_CONFIG: ${CINDER_STRICT_CONFIG:-false}
       CINDER_HOST: 0.0.0.0
       CINDER_PORT: 3000
       RUST_LOG: info
-    volumes:
-      - ./.env:/app/.env:ro
-      - ./neuron.toml:/app/neuron.toml:ro
+      OPENAI_API_KEY: ${OPENAI_API_KEY:?OPENAI_API_KEY is required}
     expose:
       - "3000"
 
@@ -43,13 +43,12 @@ services:
       context: .
       dockerfile: cinder-web-ui/Dockerfile
     container_name: cinder-web
+    restart: unless-stopped
     depends_on:
       server:
         condition: service_started
-    environment:
-      VITE_API_PROXY_TARGET: http://server:3000
     ports:
-      - "5173:5173"
+      - "${WEB_PORT:-8081}:80"
 
 volumes:
   pgdata:

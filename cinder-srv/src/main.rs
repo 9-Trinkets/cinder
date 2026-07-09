@@ -108,7 +108,14 @@ async fn main() {
     });
 
     if config.jwt_secret == "change-me-in-production" {
+        if config.strict_config {
+            panic!("CINDER_JWT_SECRET must be set when CINDER_STRICT_CONFIG is enabled");
+        }
         tracing::warn!("CINDER_JWT_SECRET is using the default value. Set a strong secret for production.");
+    }
+
+    if config.strict_config && config.cors_origin.is_none() {
+        panic!("CINDER_CORS_ORIGIN must be set when CINDER_STRICT_CONFIG is enabled");
     }
 
     let cors = match &config.cors_origin {

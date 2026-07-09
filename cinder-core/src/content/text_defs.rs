@@ -126,6 +126,20 @@ pub struct UiTextDefinition {
     pub follow_unknown_actor_name: String,
     #[serde(default = "default_room_switch_prompt")]
     pub room_switch_prompt: String,
+    #[serde(default = "default_commands_modal_title")]
+    pub commands_modal_title: String,
+    #[serde(default = "default_commands_modal_empty")]
+    pub commands_modal_empty: String,
+    #[serde(default = "default_commands_group_other")]
+    pub commands_group_other: String,
+    #[serde(default = "default_commands_group_support")]
+    pub commands_group_support: String,
+    #[serde(default = "default_look_modal_title")]
+    pub look_modal_title: String,
+    #[serde(default = "default_talk_modal_title")]
+    pub talk_modal_title: String,
+    #[serde(default = "default_talk_modal_prompt")]
+    pub talk_modal_prompt: String,
     #[serde(default)]
     pub shell_menu: ShellMenuDefinition,
     #[serde(default)]
@@ -330,6 +344,34 @@ fn default_room_switch_prompt() -> String {
     "Switch channels from {}.".to_string()
 }
 
+fn default_commands_modal_title() -> String {
+    "Commands".to_string()
+}
+
+fn default_commands_modal_empty() -> String {
+    "No additional commands available.".to_string()
+}
+
+fn default_commands_group_other() -> String {
+    "Other".to_string()
+}
+
+fn default_commands_group_support() -> String {
+    "Support".to_string()
+}
+
+fn default_look_modal_title() -> String {
+    "Look".to_string()
+}
+
+fn default_talk_modal_title() -> String {
+    "Talk".to_string()
+}
+
+fn default_talk_modal_prompt() -> String {
+    "Who do you want to talk to?".to_string()
+}
+
 impl Default for UiTextDefinition {
     fn default() -> Self {
         Self {
@@ -382,6 +424,13 @@ impl Default for UiTextDefinition {
             follow_nobody_option: default_follow_nobody_option(),
             follow_unknown_actor_name: default_follow_unknown_actor_name(),
             room_switch_prompt: default_room_switch_prompt(),
+            commands_modal_title: default_commands_modal_title(),
+            commands_modal_empty: default_commands_modal_empty(),
+            commands_group_other: default_commands_group_other(),
+            commands_group_support: default_commands_group_support(),
+            look_modal_title: default_look_modal_title(),
+            talk_modal_title: default_talk_modal_title(),
+            talk_modal_prompt: default_talk_modal_prompt(),
             shell_menu: ShellMenuDefinition::default(),
             action_bar: ActionBarDefinition::default(),
         }

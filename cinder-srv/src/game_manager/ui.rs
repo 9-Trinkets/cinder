@@ -304,26 +304,6 @@ pub(super) fn build_ui_snapshot(
         })
         .collect();
 
-    if let Ok(active_stages) = runtime.active_stage_ids() {
-        for stage_id in &active_stages {
-            let Some(menu) = content
-                .menus
-                .iter()
-                .find(|menu| &menu.stage_id == stage_id && !menu.options.is_empty())
-            else {
-                continue;
-            };
-            for option in &menu.options {
-                overflow_actions.push(OverflowAction {
-                    id: option.id.clone(),
-                    label: option.title.clone(),
-                    group: "support".to_string(),
-                    usage: String::new(),
-                });
-            }
-        }
-    }
-
     Ok(UiSnapshot {
         title: content.opening.title.clone(),
         time_label,

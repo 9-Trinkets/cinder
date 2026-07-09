@@ -1,0 +1,36 @@
+databases:
+  - name: cinder-db
+    databaseName: cinder
+    user: cinder
+    plan: basic-256mb
+    ipAllowList: []
+
+services:
+  - type: web
+    name: cinder-api
+    env: docker
+    plan: starter
+    region: oregon
+    autoDeploy: true
+    healthCheckPath: /api/health
+    dockerfilePath: ./cinder-srv/Dockerfile
+    dockerContext: .
+    envVars:
+      - key: CINDER_DATABASE_URL
+        fromDatabase:
+          name: cinder-db
+          property: connectionString
+      - key: CINDER_JWT_SECRET
+        generateValue: true
+      - key: CINDER_CORS_ORIGIN
+        sync: false
+      - key: CINDER_STRICT_CONFIG
+        value: "true"
+      - key: CINDER_HOST
+        value: 0.0.0.0
+      - key: CINDER_PORT
+        value: "3000"
+      - key: RUST_LOG
+        value: info
+      - key: OPENAI_API_KEY
+        sync: false
