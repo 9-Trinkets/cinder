@@ -47,6 +47,7 @@ export default function GamePage() {
   const [activeMenu, setActiveMenu] = useState<api.ActiveMenuData | null>(null)
   const [menuView, setMenuView] = useState<MenuView>('main')
   const [uiSnapshot, setUiSnapshot] = useState<api.UiSnapshot | null>(null)
+  const [atSuggestions, setAtSuggestions] = useState<api.MenuOptionItem[] | null>(null)
   const channelSurfingOnly = useRef(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const nextKey = useRef(1)
@@ -241,9 +242,13 @@ export default function GamePage() {
   async function send(e: FormEvent) {
     e.preventDefault()
     if (!token || !id || busy || gameOver) return
-    const trimmed = input.trim()
+    let trimmed = input.trim()
     if (!trimmed) return
+    setAtSuggestions(null)
     setInput('')
+    if (trimmed.startsWith('@')) {
+      trimmed = 'talk to ' + trimmed.slice(1).trimStart()
+    }
     if (trimmed === '?') { openMenu(); return }
     if (trimmed.toLowerCase() === 'move' || trimmed.toLowerCase() === 'follow') {
       const snap = uiSnapshot || await api.fetchSessionUi(token, id).catch(() => null)
@@ -329,7 +334,8 @@ export default function GamePage() {
                 const talkOpts = uiSnapshot?.talk_options ?? []
                 if ((action.id === 'speak' || action.id === 'talk') && talkOpts.length > 0) {
                   if (talkOpts.length === 1) {
-                    setInput(`talk to ${talkOpts[0].title} `)
+                    setInput(`@${talkOpts[0].title} `)
+                    setAtSuggestions(null)
                     setTimeout(() => inputRef.current?.focus(), 0)
                     return
                   }
@@ -357,22 +363,53 @@ export default function GamePage() {
           </div>
 
           {!channelSurfingOnly.current && (
-            <form onSubmit={send} className="flex gap-2 border-t border-subtle px-4 py-3 shrink-0">
-              <input
-                ref={inputRef}
-                className="flex-1 px-3 py-2 rounded bg-overlay border border-subtle text-text placeholder-faint focus:outline-none focus:border-pine text-sm"
-                placeholder={gameOver ? 'Game over' : 'What do you do?'}
-                value={input}
-                onChange={e => setInput(e.target.value)}
-                disabled={busy || gameOver}
-                autoFocus
-              />
-              <button
-                type="submit"
-                disabled={busy || gameOver || !input.trim()}
-                className="px-4 py-2 rounded bg-pine text-surface text-sm font-semibold hover:brightness-110 disabled:opacity-50 cursor-pointer"
-              >Send</button>
-            </form>
+            <div className="border-t border-subtle shrink-0 relative">
+              {atSuggestions && atSuggestions.length > 0 && (
+                <div className="absolute bottom-full left-4 right-4 mb-1 rounded border border-subtle bg-overlay shadow-lg overflow-hidden">
+                  {atSuggestions.map(opt => (
+                    <button
+                      key={opt.id}
+                      onMouseDown={e => {
+                        e.preventDefault()
+                        setInput(`@${opt.title} `)
+                        setAtSuggestions(null)
+                        setTimeout(() => inputRef.current?.focus(), 0)
+                      }}
+                      className="block w-full text-left px-3 py-2 text-sm text-text hover:bg-base cursor-pointer"
+                    >@{opt.title}</button>
+                  ))}
+                </div>
+              )}
+              <form onSubmit={send} className="flex gap-2 px-4 py-3">
+                <input
+                  ref={inputRef}
+                  className="flex-1 px-3 py-2 rounded bg-overlay border border-subtle text-text placeholder-faint focus:outline-none focus:border-pine text-sm"
+                  placeholder={gameOver ? 'Game over' : 'What do you do?'}
+                  value={input}
+                  onChange={e => {
+                    const val = e.target.value
+                    setInput(val)
+                    if (val.startsWith('@')) {
+                      const query = val.slice(1).toLowerCase()
+                      const opts = uiSnapshot?.talk_options ?? []
+                      setAtSuggestions(opts.filter(o => o.title.toLowerCase().includes(query)))
+                    } else {
+                      setAtSuggestions(null)
+                    }
+                  }}
+                  onKeyDown={e => {
+                    if (e.key === 'Escape') setAtSuggestions(null)
+                  }}
+                  disabled={busy || gameOver}
+                  autoFocus
+                />
+                <button
+                  type="submit"
+                  disabled={busy || gameOver || !input.trim()}
+                  className="px-4 py-2 rounded bg-pine text-surface text-sm font-semibold hover:brightness-110 disabled:opacity-50 cursor-pointer"
+                >Send</button>
+              </form>
+            </div>
           )}
         </div>
 
@@ -478,7 +515,8 @@ export default function GamePage() {
               key={opt.id}
               onClick={() => {
                 setShowTalkModal(false)
-                setInput(`talk to ${opt.title} `)
+                setInput(`@${opt.title} `)
+                setAtSuggestions(null)
                 setTimeout(() => inputRef.current?.focus(), 0)
               }}
               disabled={busy}

@@ -11,7 +11,7 @@
       "outcome_score": 0
     },
     "aliases": ["patient"],
-    "inspect_text": "Noa is in her early thirties, dressed in quiet quality \u2014 the kind of clothes chosen not to be noticed. She carries herself with the composure of someone who learned early that visibility is a risk. Her posture shifts between polished attention and the slight hunch of a woman who has spent years making herself smaller. When interrupted mid-thought, she restarts with a safer version.\n\nTrust: {actor.noa.trust}/10 \u2014 Openness: {actor.noa.openness}/10 \u2014 Focus: {actor.noa.focus}/10 \u2014 Resistance: {actor.noa.resistance}/10",
+    "inspect_text": "Noa is in her early thirties, dressed in quiet quality \u2014 the kind of clothes chosen not to be noticed. She carries herself with the composure of someone who learned early that visibility is a risk. Her posture shifts between polished attention and the slight hunch of a woman who has spent years making herself smaller. When interrupted mid-thought, she restarts with a safer version.",
     "movement_rules": {
       "default_target_room_id": "cafe",
       "target_rules": [
