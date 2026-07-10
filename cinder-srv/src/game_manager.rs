@@ -269,8 +269,8 @@ pub async fn run_command(
             }
         }
 
-        let session_feedback = if outcome.game_over {
-            response::session_feedback_data(runtime)
+        let session_closure = if outcome.game_over {
+            response::session_closure_data(runtime)
         } else {
             None
         };
@@ -287,7 +287,7 @@ pub async fn run_command(
             text: outcome.text,
             game_over: outcome.game_over,
             movie,
-            session_feedback,
+            session_closure,
         };
         let transcript_entries = vec![
             PendingTranscriptEntry {
@@ -314,8 +314,8 @@ pub async fn run_realtime_tick(
     let player_id = parse_uuid(player_id, "player id")?;
     with_runtime(pool, &session_id, &player_id, move |runtime| {
         let outcome = runtime.run_tick().map_err(|e| format!("tick error: {e}"))?;
-        let session_feedback = if outcome.game_over {
-            response::session_feedback_data(runtime)
+        let session_closure = if outcome.game_over {
+            response::session_closure_data(runtime)
         } else {
             None
         };
@@ -327,7 +327,7 @@ pub async fn run_realtime_tick(
             text: outcome.text.clone(),
             game_over: outcome.game_over,
             movie,
-            session_feedback,
+            session_closure,
         };
         let transcript_entries = if response.text.is_empty() {
             Vec::new()

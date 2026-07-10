@@ -31,7 +31,7 @@ pub struct CinderRuntime {
     actor_move_workflow: WorkflowDefinition,
     trace_events: bool,
     trace_dir: PathBuf,
-    session_feedback: Arc<Mutex<Option<crate::engine::dialogue::SessionFeedback>>>,
+    session_closure: Arc<Mutex<Option<SessionClosure>>>,
 }
 
 impl Clone for CinderRuntime {
@@ -45,8 +45,8 @@ impl Clone for CinderRuntime {
             actor_move_workflow: self.actor_move_workflow.clone(),
             trace_events: self.trace_events,
             trace_dir: self.trace_dir.clone(),
-            session_feedback: Arc::new(Mutex::new(
-                self.session_feedback
+            session_closure: Arc::new(Mutex::new(
+                self.session_closure
                     .lock()
                     .map(|opt| opt.clone())
                     .unwrap_or(None),
@@ -81,6 +81,20 @@ pub struct FinalChapterSummary {
     pub what_happened: String,
     pub relationship_status: String,
     pub next_chapter_preview: String,
+}
+
+#[derive(Debug, Clone, Serialize)]
+pub struct SessionClosure {
+    pub title: String,
+    pub subtitle: Option<String>,
+    pub sections: Vec<SessionClosureSection>,
+}
+
+#[derive(Debug, Clone, Serialize)]
+#[serde(tag = "kind", rename_all = "snake_case")]
+pub enum SessionClosureSection {
+    Text { title: String, body: String },
+    Rating { title: String, value: u32, max: u32 },
 }
 
 impl CinderRuntime {
@@ -163,7 +177,7 @@ impl CinderRuntime {
             actor_move_workflow,
             trace_events,
             trace_dir,
-            session_feedback: Arc::new(Mutex::new(None)),
+            session_closure: Arc::new(Mutex::new(None)),
         })
     }
 
@@ -252,10 +266,10 @@ impl CinderRuntime {
         if !self.content.settings.multi_appointment {
             return Ok(None);
         }
-        let feedback = self.session_feedback()?;
+        let feedback = self.build_perspective_review()?;
         let feedback_summary = feedback.as_ref().map(|review| AppointmentFeedbackSummary {
-            rating: review.rating,
-            review_text: review.review_text.clone(),
+            rating: review.review.rating,
+            review_text: review.review.review_text.clone(),
         });
         let mut state = self
             .state
@@ -424,7 +438,7 @@ impl CinderRuntime {
             actor_move_workflow: self.actor_move_workflow.clone(),
             trace_events: self.trace_events,
             trace_dir: self.trace_dir.clone(),
-            session_feedback: Arc::new(Mutex::new(None)),
+            session_closure: Arc::new(Mutex::new(None)),
         }
     }
 

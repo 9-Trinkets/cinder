@@ -8,7 +8,9 @@ use cinder_core::content::loader::{
     LocaleOption, available_locales, load_pack_from_dir_with_locale, pack_dir,
 };
 use cinder_core::content::types::{ShellMenuItem, UiTextDefinition};
-use cinder_core::{CinderRuntime, MenuChoiceOption, SessionFeedback, TurnOutcome};
+use cinder_core::{
+    CinderRuntime, MenuChoiceOption, SessionClosure, SessionClosureSection, TurnOutcome,
+};
 use crossterm::cursor::SetCursorStyle;
 use crossterm::event::{self, Event, KeyEventKind};
 use crossterm::execute;
@@ -80,7 +82,7 @@ enum ShellModalState {
     About,
     ExitConfirm,
     DaySummary { day_number: u32, body: String },
-    SessionFeedback { data: SessionFeedback },
+    SessionClosure { data: SessionClosure },
     Projector(TimedTextPlayback),
 }
 
@@ -227,12 +229,13 @@ impl TuiApp {
             self.sync_tick_pause();
             return Ok(());
         }
-        let data = self.runtime.session_feedback()?.unwrap_or(SessionFeedback {
-            rating: 0,
-            review_text: "Session ended.".to_string(),
-        });
+        let Some(data) = self.runtime.session_closure()? else {
+            self.pending_final_summary = false;
+            self.sync_tick_pause();
+            return Ok(());
+        };
         self.pending_final_summary = false;
-        self.set_shell_modal(Some(ShellModalState::SessionFeedback { data }));
+        self.set_shell_modal(Some(ShellModalState::SessionClosure { data }));
         self.sync_tick_pause();
         Ok(())
     }
@@ -380,7 +383,7 @@ impl TuiApp {
             Some(ShellModalState::Submenu { .. }) => Some(ShellModalState::Root),
             Some(ShellModalState::ExitConfirm)
             | Some(ShellModalState::DaySummary { .. })
-            | Some(ShellModalState::SessionFeedback { .. }) => None,
+            | Some(ShellModalState::SessionClosure { .. }) => None,
             Some(ShellModalState::Projector(_)) | Some(ShellModalState::Root) | None => None,
         });
         self.sync_tick_pause();
@@ -535,7 +538,7 @@ impl TuiApp {
                 | ShellModalState::ThingsToDo
                 | ShellModalState::About
                 | ShellModalState::DaySummary { .. }
-                | ShellModalState::SessionFeedback { .. }
+                | ShellModalState::SessionClosure { .. }
                 | ShellModalState::Projector(_),
             ) => None,
             Some(ShellModalState::ExitConfirm) => {
@@ -867,7 +870,7 @@ impl TuiApp {
             Some(ShellModalState::DaySummary { day_number, body }) => {
                 Some((self.format_day_summary_title(*day_number), body.clone()))
             }
-            Some(ShellModalState::SessionFeedback { .. }) => None,
+            Some(ShellModalState::SessionClosure { .. }) => None,
             _ => None,
         }
     }
@@ -1191,13 +1194,12 @@ impl TuiApp {
                     scroll: self.shell_modal_scroll,
                 })
             }
-            Some(ShellModalState::SessionFeedback { data }) => {
-                Some(ShellModalSnapshot::SessionFeedback {
-                    rating: data.rating,
-                    review_text: data.review_text.clone(),
-                    hint: self.ui_text.modal_close_hint.clone(),
-                })
-            }
+            Some(ShellModalState::SessionClosure { data }) => Some(ShellModalSnapshot::Detail {
+                title: data.title.clone(),
+                body: render_session_closure_body(data),
+                hint: self.ui_text.modal_close_hint.clone(),
+                scroll: self.shell_modal_scroll,
+            }),
             Some(ShellModalState::Projector(_)) => None,
             None => None,
         }
@@ -1259,6 +1261,42 @@ fn bullet_join(lines: Vec<String>) -> String {
         .map(|line| format!("- {line}"))
         .collect::<Vec<_>>()
         .join("\n")
+}
+
+fn render_session_closure_body(data: &SessionClosure) -> String {
+    let mut blocks = Vec::new();
+    if let Some(subtitle) = data
+        .subtitle
+        .as_ref()
+        .filter(|value| !value.trim().is_empty())
+    {
+        blocks.push(subtitle.clone());
+    }
+    for section in &data.sections {
+        match section {
+            SessionClosureSection::Text { title, body } => {
+                let mut block = String::new();
+                if !title.trim().is_empty() {
+                    block.push_str(title);
+                    block.push_str("\n\n");
+                }
+                block.push_str(body);
+                blocks.push(block);
+            }
+            SessionClosureSection::Rating { title, value, max } => {
+                let stars = (1..=*max)
+                    .map(|index| if index <= *value { '★' } else { '☆' })
+                    .collect::<String>();
+                let block = if title.trim().is_empty() {
+                    stars
+                } else {
+                    format!("{title}\n\n{stars}")
+                };
+                blocks.push(block);
+            }
+        }
+    }
+    blocks.join("\n\n")
 }
 
 fn summarize_day_highlights(transcript: &[String], start_index: usize) -> Vec<String> {

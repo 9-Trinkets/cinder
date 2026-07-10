@@ -1,5 +1,6 @@
 pub use super::text_defs::{
-    ActionBarDefinition, ActionBarItem, ShellMenuDefinition, ShellMenuItem, SystemTextDefinition,
+    ActionBarDefinition, ActionBarItem, SessionClosureDefinition, SessionClosureSectionDefinition,
+    SessionClosureSource, ShellMenuDefinition, ShellMenuItem, SystemTextDefinition,
     UiTextDefinition,
 };
 
@@ -44,8 +45,8 @@ pub struct ContentSettingsDefinition {
     pub autonomous_actor_dialogue: bool,
     #[serde(default)]
     pub workflow_id: String,
-    #[serde(default)]
-    pub session_feedback_actor_id: String,
+    #[serde(default, alias = "session_feedback_actor_id")]
+    pub closure_perspective_actor_id: String,
     #[serde(default)]
     pub multi_appointment: bool,
     #[serde(default)]
@@ -103,7 +104,7 @@ impl Default for ContentSettingsDefinition {
             default_language: default_default_language(),
             channel_surfing_only: false,
             autonomous_actor_dialogue: false,
-            session_feedback_actor_id: String::default(),
+            closure_perspective_actor_id: String::default(),
             multi_appointment: false,
             appointment_patient_actor_id: String::default(),
             fallback_stage_id: String::default(),

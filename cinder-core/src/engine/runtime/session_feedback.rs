@@ -1,11 +1,11 @@
-use super::{CinderRuntime, FinalChapterSummary};
-use crate::content::types::ContentPack;
+use super::{CinderRuntime, FinalChapterSummary, SessionClosure, SessionClosureSection};
+use crate::content::types::{ContentPack, SessionClosureSource};
 use crate::engine::dialogue::{
-    ChapterRelationshipSummaryRequest, ChapterScriptSummaryRequest, SessionFeedback,
-    SessionFeedbackRequest, SynapseChapterSummaryGenerator,
+    ChapterRelationshipSummaryRequest, ChapterScriptSummaryRequest, PerspectiveReview,
+    PerspectiveReviewRequest, SynapseChapterSummaryGenerator,
 };
 use crate::engine::dialogue_grounding::{render_story_text, viewer_participant_id};
-use crate::engine::state::{WorldState, display_actor_name};
+use crate::engine::state::{WorldState, current_patient_name, display_actor_name};
 use std::collections::BTreeMap;
 use std::error::Error;
 use std::sync::Arc;
@@ -67,8 +67,8 @@ impl CinderRuntime {
         lines.into_iter().map(|(_, line)| line).collect()
     }
 
-    fn select_session_feedback_actor_id(&self, state: &WorldState) -> Option<String> {
-        pick_session_feedback_actor_id(
+    fn select_perspective_actor_id(&self, state: &WorldState) -> Option<String> {
+        pick_perspective_actor_id(
             self.content.as_ref(),
             state,
             &viewer_participant_id(self.content.as_ref()),
@@ -96,12 +96,9 @@ impl CinderRuntime {
             }))
     }
 
-    pub fn final_chapter_summary(
-        &self,
-        transcript: &[String],
-        chapter_start_index: usize,
-    ) -> Result<FinalChapterSummary, Box<dyn Error>> {
-        let transcript_lines = chapter_transcript_lines(transcript, chapter_start_index);
+    pub fn final_chapter_summary(&self) -> Result<FinalChapterSummary, Box<dyn Error>> {
+        let transcript_lines = self.transcript_lines()?;
+        let transcript_lines = chapter_transcript_lines(&transcript_lines);
         let relationship_lines = self.relationship_status_lines()?;
         let preview = self
             .current_next_chapter_preview()?
@@ -140,31 +137,151 @@ impl CinderRuntime {
         })
     }
 
-    pub fn session_feedback(&self) -> Result<Option<SessionFeedback>, Box<dyn Error>> {
+    pub fn session_closure(&self) -> Result<Option<SessionClosure>, Box<dyn Error>> {
         {
             let cached = self
-                .session_feedback
+                .session_closure
                 .lock()
                 .map_err(|error| error.to_string())?;
-            if let Some(review) = cached.as_ref() {
-                return Ok(Some(review.clone()));
+            if let Some(closure) = cached.as_ref() {
+                return Ok(Some(closure.clone()));
             }
         }
         {
             let state = self
                 .state
                 .lock()
-                .map_err(|_| "failed to lock runtime state for session feedback guard")?;
+                .map_err(|_| "failed to lock runtime state for session closure guard")?;
             if !state.game_over {
                 return Ok(None);
             }
         }
-        let (actor_name, current, deltas, stats_context, session_summary, relationship_lines) = {
+        let definition = &self.content.ui_text.session_closure;
+        if definition.sections.is_empty() || definition.title.trim().is_empty() {
+            return Ok(None);
+        }
+
+        let summary = definition
+            .sections
+            .iter()
+            .any(|section| {
+                matches!(
+                    section.source,
+                    SessionClosureSource::TranscriptHighlights
+                        | SessionClosureSource::RelationshipSummary
+                        | SessionClosureSource::ContinuationPreview
+                )
+            })
+            .then(|| self.final_chapter_summary())
+            .transpose()?;
+
+        let perspective = definition
+            .sections
+            .iter()
+            .any(|section| {
+                matches!(
+                    section.source,
+                    SessionClosureSource::PerspectiveRating
+                        | SessionClosureSource::PerspectiveReview
+                )
+            })
+            .then(|| self.build_perspective_review())
+            .transpose()?
+            .flatten();
+
+        let subject_name = perspective
+            .as_ref()
+            .map(|review| review.subject_name.clone())
+            .or_else(|| self.current_patient_name().ok().flatten());
+
+        let subtitle = if definition.subtitle_template.trim().is_empty() {
+            None
+        } else {
+            Some(self.content.render_template(
+                &definition.subtitle_template,
+                &[("subject_name", subject_name.as_deref().unwrap_or(""))],
+            ))
+        }
+        .filter(|value| !value.trim().is_empty());
+
+        let sections = definition
+            .sections
+            .iter()
+            .filter_map(|section| match section.source {
+                SessionClosureSource::PerspectiveRating => {
+                    perspective
+                        .as_ref()
+                        .map(|review| SessionClosureSection::Rating {
+                            title: section.title.clone(),
+                            value: review.review.rating,
+                            max: 5,
+                        })
+                }
+                SessionClosureSource::PerspectiveReview => {
+                    perspective
+                        .as_ref()
+                        .map(|review| SessionClosureSection::Text {
+                            title: section.title.clone(),
+                            body: review.review.review_text.clone(),
+                        })
+                }
+                SessionClosureSource::TranscriptHighlights => {
+                    summary.as_ref().map(|summary| SessionClosureSection::Text {
+                        title: section.title.clone(),
+                        body: summary.what_happened.clone(),
+                    })
+                }
+                SessionClosureSource::RelationshipSummary => {
+                    summary.as_ref().map(|summary| SessionClosureSection::Text {
+                        title: section.title.clone(),
+                        body: summary.relationship_status.clone(),
+                    })
+                }
+                SessionClosureSource::ContinuationPreview => {
+                    summary.as_ref().map(|summary| SessionClosureSection::Text {
+                        title: section.title.clone(),
+                        body: summary.next_chapter_preview.clone(),
+                    })
+                }
+            })
+            .collect::<Vec<_>>();
+
+        if sections.is_empty() {
+            return Ok(None);
+        }
+
+        let closure = SessionClosure {
+            title: definition.title.clone(),
+            subtitle,
+            sections,
+        };
+        {
+            let mut cached = self
+                .session_closure
+                .lock()
+                .map_err(|error| error.to_string())?;
+            *cached = Some(closure.clone());
+        }
+        Ok(Some(closure))
+    }
+
+    pub(super) fn build_perspective_review(
+        &self,
+    ) -> Result<Option<CachedPerspectiveReview>, Box<dyn Error>> {
+        let (
+            actor_name,
+            subject_name,
+            current,
+            deltas,
+            stats_context,
+            session_summary,
+            relationship_lines,
+        ) = {
             let state = self
                 .state
                 .lock()
-                .map_err(|_| "failed to lock runtime state for session feedback")?;
-            let Some(actor_id) = self.select_session_feedback_actor_id(&state) else {
+                .map_err(|_| "failed to lock runtime state for perspective review")?;
+            let Some(actor_id) = self.select_perspective_actor_id(&state) else {
                 return Ok(None);
             };
             let actor_name = self
@@ -172,6 +289,7 @@ impl CinderRuntime {
                 .actor(&actor_id)
                 .map(|actor| display_actor_name(&state, actor))
                 .unwrap_or_else(|| "Patient".to_string());
+            let subject_name = current_patient_name(&state).unwrap_or_else(|| actor_name.clone());
             let current = state.actor_stats_snapshot(&actor_id);
             let deltas = state.actor_stat_deltas(&actor_id).unwrap_or_default();
             let stats_context = [
@@ -194,6 +312,7 @@ impl CinderRuntime {
             let relationship_lines = self.relationship_status_lines_for_state(&state);
             (
                 actor_name,
+                subject_name,
                 current,
                 deltas,
                 stats_context,
@@ -201,7 +320,7 @@ impl CinderRuntime {
                 relationship_lines,
             )
         };
-        let request = SessionFeedbackRequest {
+        let request = PerspectiveReviewRequest {
             locale: self.content.locale.clone(),
             system_text: self.content.system_text.clone(),
             actor_name,
@@ -210,44 +329,43 @@ impl CinderRuntime {
             session_summary,
             relationship_lines,
         };
-        let review = match self.try_llm_session_feedback(request) {
+        let review = match self.try_llm_perspective_review(request) {
             Some(review) => review,
-            None => self.fallback_session_feedback(&current, &deltas),
+            None => self.fallback_perspective_review(&current, &deltas),
         };
-        {
-            let mut cached = self
-                .session_feedback
-                .lock()
-                .map_err(|error| error.to_string())?;
-            *cached = Some(review.clone());
-        }
-        Ok(Some(review))
+        Ok(Some(CachedPerspectiveReview {
+            subject_name,
+            review,
+        }))
     }
 
-    fn try_llm_session_feedback(&self, request: SessionFeedbackRequest) -> Option<SessionFeedback> {
+    fn try_llm_perspective_review(
+        &self,
+        request: PerspectiveReviewRequest,
+    ) -> Option<PerspectiveReview> {
         let (tx, rx) = std::sync::mpsc::channel();
         let dialogue = Arc::clone(&self.dialogue);
         std::thread::spawn(move || {
-            let _ = tx.send(dialogue.generate_session_feedback(&request));
+            let _ = tx.send(dialogue.generate_perspective_review(&request));
         });
         match rx.recv_timeout(std::time::Duration::from_secs(30)) {
             Ok(Ok(review)) => Some(review),
             Ok(Err(error)) => {
-                eprintln!("[cinder] session feedback LLM failed: {error}, using stat fallback");
+                eprintln!("[cinder] perspective review LLM failed: {error}, using stat fallback");
                 None
             }
             Err(_) => {
-                eprintln!("[cinder] session feedback LLM timed out, using stat fallback");
+                eprintln!("[cinder] perspective review LLM timed out, using stat fallback");
                 None
             }
         }
     }
 
-    fn fallback_session_feedback(
+    fn fallback_perspective_review(
         &self,
         current: &BTreeMap<String, i32>,
         deltas: &BTreeMap<String, i32>,
-    ) -> SessionFeedback {
+    ) -> PerspectiveReview {
         let trust_delta = deltas.get("trust").copied().unwrap_or(0);
         let openness_delta = deltas.get("openness").copied().unwrap_or(0);
         let resistance_delta = deltas.get("resistance").copied().unwrap_or(0);
@@ -266,53 +384,40 @@ impl CinderRuntime {
         } else {
             1
         };
-        SessionFeedback {
+        PerspectiveReview {
             rating,
             review_text: String::new(),
         }
     }
 }
 
-fn chapter_transcript_lines(transcript: &[String], chapter_start_index: usize) -> Vec<String> {
+#[derive(Debug, Clone)]
+pub(super) struct CachedPerspectiveReview {
+    pub(super) subject_name: String,
+    pub(super) review: PerspectiveReview,
+}
+
+fn chapter_transcript_lines(transcript: &[String]) -> Vec<String> {
     transcript
         .iter()
-        .skip(chapter_start_index)
         .map(|line| line.trim())
         .filter(|line| !line.is_empty() && !line.starts_with('>'))
         .map(ToString::to_string)
         .collect()
 }
 
-fn pick_session_feedback_actor_id(
+fn pick_perspective_actor_id(
     content: &ContentPack,
-    state: &WorldState,
-    viewer_id: &str,
+    _state: &WorldState,
+    _viewer_id: &str,
 ) -> Option<String> {
-    if !content.settings.session_feedback_actor_id.is_empty()
+    if !content.settings.closure_perspective_actor_id.is_empty()
         && content
             .actors
             .iter()
-            .any(|actor| actor.id == content.settings.session_feedback_actor_id)
+            .any(|actor| actor.id == content.settings.closure_perspective_actor_id)
     {
-        return Some(content.settings.session_feedback_actor_id.clone());
+        return Some(content.settings.closure_perspective_actor_id.clone());
     }
-    state
-        .conversation_memory
-        .iter()
-        .filter_map(|(key, lines)| {
-            let (participant_a_id, participant_b_id) = WorldState::conversation_participants(key)?;
-            let actor_id = if participant_a_id == viewer_id {
-                participant_b_id
-            } else if participant_b_id == viewer_id {
-                participant_a_id
-            } else {
-                return None;
-            };
-            content.actor(actor_id)?;
-            let last_sequence = lines.last().map(|line| line.event_sequence).unwrap_or(0);
-            Some((last_sequence, actor_id.to_string()))
-        })
-        .max_by_key(|(last_sequence, _)| *last_sequence)
-        .map(|(_, actor_id)| actor_id)
-        .or_else(|| content.actors.first().map(|actor| actor.id.clone()))
+    None
 }

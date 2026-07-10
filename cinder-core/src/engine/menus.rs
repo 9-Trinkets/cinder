@@ -286,7 +286,7 @@ mod tests {
         ActorTurnActionDecision, ActorTurnActionRequest, ConversationMemorySummaryRequest,
         DialogueRequest, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
         DynamicMenuOptionOutput, DynamicMenuRequest, MenuIntentDecision, MenuIntentRequest,
-        SessionFeedback, SessionFeedbackRequest,
+        PerspectiveReview, PerspectiveReviewRequest,
     };
     use crate::engine::events::WorldEvent;
     use crate::engine::state::{
@@ -336,10 +336,10 @@ mod tests {
             Err("not used in test".to_string())
         }
 
-        fn generate_session_feedback(
+        fn generate_perspective_review(
             &self,
-            _request: &SessionFeedbackRequest,
-        ) -> Result<SessionFeedback, String> {
+            _request: &PerspectiveReviewRequest,
+        ) -> Result<PerspectiveReview, String> {
             Err("not used in test".to_string())
         }
     }

@@ -26,6 +26,34 @@ pub struct ActionBarItem {
     pub label: String,
 }
 
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct SessionClosureDefinition {
+    #[serde(default)]
+    pub title: String,
+    #[serde(default)]
+    pub subtitle_template: String,
+    #[serde(default)]
+    pub sections: Vec<SessionClosureSectionDefinition>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SessionClosureSectionDefinition {
+    #[serde(default)]
+    pub title: String,
+    pub source: SessionClosureSource,
+}
+
+#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum SessionClosureSource {
+    PerspectiveRating,
+    PerspectiveReview,
+    RelationshipSummary,
+    ContinuationPreview,
+    #[default]
+    TranscriptHighlights,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UiTextDefinition {
     #[serde(default = "default_language_name")]
@@ -146,6 +174,8 @@ pub struct UiTextDefinition {
     pub talk_modal_title: String,
     #[serde(default = "default_talk_modal_prompt")]
     pub talk_modal_prompt: String,
+    #[serde(default)]
+    pub session_closure: SessionClosureDefinition,
     #[serde(default)]
     pub shell_menu: ShellMenuDefinition,
     #[serde(default)]
@@ -452,6 +482,7 @@ impl Default for UiTextDefinition {
             look_group_people: default_look_group_people(),
             talk_modal_title: default_talk_modal_title(),
             talk_modal_prompt: default_talk_modal_prompt(),
+            session_closure: SessionClosureDefinition::default(),
             shell_menu: ShellMenuDefinition::default(),
             action_bar: ActionBarDefinition::default(),
         }

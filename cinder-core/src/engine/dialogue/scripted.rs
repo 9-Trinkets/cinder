@@ -3,7 +3,7 @@ use super::types::{
     ActorTurnActionDecision, ActorTurnActionRequest, ConversationMemorySummaryRequest,
     DialogueRequest, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
     DynamicMenuOptionOutput, DynamicMenuRequest, MenuIntentDecision, MenuIntentRequest,
-    SessionFeedback, SessionFeedbackRequest,
+    PerspectiveReview, PerspectiveReviewRequest,
 };
 use crate::content::types::SpeechIntentLabel;
 use std::collections::BTreeMap;
@@ -15,7 +15,7 @@ pub struct ScriptedDialogueGenerator {
     actor_turn_actions: BTreeMap<String, ActorTurnActionDecision>,
     memory_summaries: BTreeMap<String, String>,
     attraction_intents: BTreeMap<String, DirectSpeechIntentDecision>,
-    session_feedback: BTreeMap<String, SessionFeedback>,
+    perspective_reviews: BTreeMap<String, PerspectiveReview>,
     requests: std::sync::Arc<std::sync::Mutex<Vec<DialogueRequest>>>,
 }
 
@@ -76,8 +76,9 @@ impl ScriptedDialogueGenerator {
         self
     }
 
-    pub fn with_session_feedback(mut self, actor_id: &str, review: SessionFeedback) -> Self {
-        self.session_feedback.insert(actor_id.to_string(), review);
+    pub fn with_perspective_review(mut self, actor_id: &str, review: PerspectiveReview) -> Self {
+        self.perspective_reviews
+            .insert(actor_id.to_string(), review);
         self
     }
 
@@ -172,16 +173,16 @@ impl DialogueGenerator for ScriptedDialogueGenerator {
             .unwrap_or(DirectSpeechIntentDecision("NONE".to_string())))
     }
 
-    fn generate_session_feedback(
+    fn generate_perspective_review(
         &self,
-        request: &SessionFeedbackRequest,
-    ) -> Result<SessionFeedback, String> {
-        self.session_feedback
+        request: &PerspectiveReviewRequest,
+    ) -> Result<PerspectiveReview, String> {
+        self.perspective_reviews
             .get(&request.actor_name)
             .cloned()
             .ok_or_else(|| {
                 format!(
-                    "missing scripted session feedback for '{}'",
+                    "missing scripted perspective review for '{}'",
                     request.actor_name
                 )
             })

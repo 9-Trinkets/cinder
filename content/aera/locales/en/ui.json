@@ -36,6 +36,23 @@
   "final_summary_relationships_label": "Where things stand",
   "final_summary_preview_label": "Next chapter",
   "final_summary_empty_preview": "Tomorrow is coming, but the shape of it is still unclear.",
+  "session_closure": {
+    "title": "End of Chapter One",
+    "sections": [
+      {
+        "title": "What happened",
+        "source": "transcript_highlights"
+      },
+      {
+        "title": "Where things stand",
+        "source": "relationship_summary"
+      },
+      {
+        "title": "Next chapter",
+        "source": "continuation_preview"
+      }
+    ]
+  },
   "exit_confirm_title": "Exit session?",
   "exit_confirm_body": "Press Enter to exit to the terminal, or Esc to keep playing.",
   "projector_skip_hint": "Press Enter to skip ahead. Esc closes.",

@@ -1,12 +1,5 @@
-use cinder_core::engine::runtime::CinderRuntime;
+use cinder_core::engine::runtime::{CinderRuntime, SessionClosure};
 use serde::Serialize;
-
-#[derive(Clone, Serialize)]
-pub struct SessionFeedbackData {
-    pub rating: u32,
-    pub review_text: String,
-    pub subject_name: String,
-}
 
 #[derive(Clone, Serialize)]
 pub struct MovieFrameData {
@@ -26,23 +19,11 @@ pub struct CommandResponse {
     pub text: String,
     pub game_over: bool,
     pub movie: Option<MovieData>,
-    pub session_feedback: Option<SessionFeedbackData>,
+    pub session_closure: Option<SessionClosure>,
 }
 
-pub(super) fn session_feedback_data(runtime: &CinderRuntime) -> Option<SessionFeedbackData> {
-    runtime
-        .session_feedback()
-        .ok()
-        .flatten()
-        .map(|review| SessionFeedbackData {
-            rating: review.rating,
-            review_text: review.review_text,
-            subject_name: runtime
-                .current_patient_name()
-                .ok()
-                .flatten()
-                .unwrap_or_else(|| "Patient".to_string()),
-        })
+pub(super) fn session_closure_data(runtime: &CinderRuntime) -> Option<SessionClosure> {
+    runtime.session_closure().ok().flatten()
 }
 
 pub fn consume_projector_sequence(runtime: &CinderRuntime) -> Option<MovieData> {

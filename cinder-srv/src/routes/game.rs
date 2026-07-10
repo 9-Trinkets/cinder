@@ -163,7 +163,7 @@ pub async fn switch_room_handler(
         text: outcome.text,
         game_over: outcome.game_over,
         movie: None,
-        session_feedback: None,
+        session_closure: None,
     }))
 }
 
@@ -186,7 +186,7 @@ pub async fn follow_actor_handler(
         text: outcome.text,
         game_over: outcome.game_over,
         movie: None,
-        session_feedback: None,
+        session_closure: None,
     }))
 }
 

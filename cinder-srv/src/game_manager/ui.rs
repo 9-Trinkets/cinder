@@ -1,12 +1,11 @@
 use cinder_core::content::loader;
 use cinder_core::content::types::UiTextDefinition;
 use cinder_core::engine::runtime::{
-    ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption,
+    ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption, SessionClosure,
 };
 use serde::Serialize;
 
 use super::response;
-use super::response::SessionFeedbackData;
 
 #[derive(Clone, Serialize)]
 pub struct LocaleItem {
@@ -87,7 +86,7 @@ pub struct UiSnapshot {
     pub talk_options: Vec<MenuOptionData>,
     pub active_menu: Option<ActiveMenuData>,
     pub ui_text: UiTextDefinition,
-    pub session_feedback: Option<SessionFeedbackData>,
+    pub session_closure: Option<SessionClosure>,
     pub inventory: Vec<InventoryItem>,
 }
 
@@ -339,7 +338,7 @@ pub(super) fn build_ui_snapshot(
         talk_options,
         active_menu,
         ui_text: content.ui_text.clone(),
-        session_feedback: response::session_feedback_data(runtime),
+        session_closure: response::session_closure_data(runtime),
         inventory: runtime
             .inventory_items()
             .unwrap_or_default()

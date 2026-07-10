@@ -58,11 +58,6 @@ pub(crate) enum ShellModalSnapshot {
         options: Vec<String>,
         hint: String,
     },
-    SessionFeedback {
-        rating: u32,
-        review_text: String,
-        hint: String,
-    },
 }
 
 const SHELL_MODAL_WIDTH_PERCENT: u16 = 72;
@@ -337,14 +332,9 @@ fn render_shell_modal(
         ShellModalSnapshot::Detail { title, body, .. } => {
             detail_modal_area(frame.area(), &detail_modal_body_text(title, body))
         }
-        ShellModalSnapshot::SessionFeedback { .. } => centered_rect(62, 14, frame.area()),
         _ => centered_rect(62, 12, frame.area()),
     };
-    let block_title = match modal {
-        ShellModalSnapshot::SessionFeedback { .. } => "Session Complete",
-        _ => &ui_text.shell_menu_title,
-    };
-    let sections = modal_block(frame, area, block_title, theme);
+    let sections = modal_block(frame, area, &ui_text.shell_menu_title, theme);
     match modal {
         ShellModalSnapshot::Root {
             selected_index,
@@ -417,36 +407,6 @@ fn render_shell_modal(
             let mut state = ListState::default();
             state.select(Some(*selected_index));
             frame.render_stateful_widget(list, list_area, &mut state);
-            frame.render_widget(
-                Paragraph::new(hint.clone())
-                    .alignment(Alignment::Right)
-                    .style(Style::default().fg(theme.muted).bg(theme.overlay)),
-                sections[1],
-            );
-        }
-        ShellModalSnapshot::SessionFeedback {
-            rating,
-            review_text,
-            hint,
-        } => {
-            let inner =
-                Layout::vertical([Constraint::Length(2), Constraint::Fill(1)]).split(sections[0]);
-            let top = inner[0];
-            let review_area = inner[1];
-
-            frame.render_widget(
-                Paragraph::new(format!("  {}", rating_stars(*rating)))
-                    .style(Style::default().fg(theme.gold)),
-                top,
-            );
-
-            frame.render_widget(
-                Paragraph::new(review_text.clone())
-                    .wrap(Wrap { trim: false })
-                    .style(Style::default().fg(theme.text)),
-                review_area,
-            );
-
             frame.render_widget(
                 Paragraph::new(hint.clone())
                     .alignment(Alignment::Right)
@@ -557,12 +517,6 @@ fn centered_rect(width_percent: u16, height: u16, area: Rect) -> Rect {
         .flex(Flex::Center)
         .split(vertical[0]);
     horizontal[0]
-}
-
-fn rating_stars(rating: u32) -> String {
-    let filled = "★".repeat(rating.min(5) as usize);
-    let empty = "☆".repeat((5 - rating.min(5)) as usize);
-    filled + &empty
 }
 
 fn modal_block(frame: &mut Frame, area: Rect, title: &str, theme: &Theme) -> [Rect; 2] {

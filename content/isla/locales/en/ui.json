@@ -36,6 +36,20 @@
   "final_summary_relationships_label": "Where Noa is now",
   "final_summary_preview_label": "Next session",
   "final_summary_empty_preview": "The next session remains unwritten.",
+  "session_closure": {
+    "title": "End of Session",
+    "subtitle_template": "{subject_name}",
+    "sections": [
+      {
+        "title": "Rating",
+        "source": "perspective_rating"
+      },
+      {
+        "title": "Review",
+        "source": "perspective_review"
+      }
+    ]
+  },
   "exit_confirm_title": "Exit session?",
   "exit_confirm_body": "Press Enter to exit to the terminal, or Esc to keep playing.",
   "projector_skip_hint": "Press Enter to skip ahead. Esc closes.",

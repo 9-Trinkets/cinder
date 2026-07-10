@@ -40,7 +40,7 @@ const CONVERSATION_MEMORY_SUMMARIZER_ROLE: &str = "conversation_memory_summarize
 const CHAPTER_SCRIPT_SUMMARIZER_ROLE: &str = "chapter_script_summarizer";
 const CHAPTER_RELATIONSHIP_SUMMARIZER_ROLE: &str = "chapter_relationship_summarizer";
 const DIRECT_SPEECH_ATTRACTION_INTENT_ROLE: &str = "direct_speech_intent";
-const SESSION_FEEDBACK_ROLE: &str = "session_feedback";
+const PERSPECTIVE_REVIEW_ROLE: &str = "session_feedback";
 const CONVERSATION_MEMORY_SUMMARY_TIMEOUT: Duration = Duration::from_secs(10);
 const VALIDATED_ROLE_MAX_ATTEMPTS: usize = 4;
 
@@ -104,10 +104,10 @@ pub trait DialogueGenerator: Send + Sync {
         request: &DynamicMenuRequest,
     ) -> Result<Vec<DynamicMenuOptionOutput>, String>;
 
-    fn generate_session_feedback(
+    fn generate_perspective_review(
         &self,
-        request: &SessionFeedbackRequest,
-    ) -> Result<SessionFeedback, String>;
+        request: &PerspectiveReviewRequest,
+    ) -> Result<PerspectiveReview, String>;
 }
 
 pub struct SynapseDialogueGenerator {
@@ -345,10 +345,10 @@ impl DialogueGenerator for SynapseDialogueGenerator {
         parse_direct_speech_intent_label(&response)
     }
 
-    fn generate_session_feedback(
+    fn generate_perspective_review(
         &self,
-        request: &SessionFeedbackRequest,
-    ) -> Result<SessionFeedback, String> {
+        request: &PerspectiveReviewRequest,
+    ) -> Result<PerspectiveReview, String> {
         let prompt = format!(
             r#"Patient: {actor_name}
 Therapist: {other_person_name}
@@ -376,13 +376,13 @@ The review text should be 2-5 sentences in the patient's voice — honest, speci
             relationship_lines = request.relationship_lines.join("\n"),
         );
         let response = self.run_text_role(
-            SESSION_FEEDBACK_ROLE,
+            PERSPECTIVE_REVIEW_ROLE,
             prompt,
             "You write a short Yelp-style review from a patient's perspective. Respond only with valid JSON."
                 .to_string(),
         )?;
-        serde_json::from_str::<SessionFeedback>(&response)
-            .map_err(|e| format!("failed to parse session feedback: {e}"))
+        serde_json::from_str::<PerspectiveReview>(&response)
+            .map_err(|e| format!("failed to parse perspective review: {e}"))
     }
 
     fn generate_dynamic_menu_options(

@@ -86,7 +86,7 @@ export interface CommandResponse {
   text: string
   game_over: boolean
   movie: MovieData | null
-  session_feedback: SessionFeedbackData | null
+  session_closure: SessionClosureData | null
 }
 
 export function runCommand(token: string, sessionId: string, input: string) {
@@ -157,11 +157,24 @@ export interface ActiveMenuData {
   options: MenuOptionItem[]
 }
 
-export interface SessionFeedbackData {
-  rating: number
-  review_text: string
-  subject_name: string
+export interface SessionClosureData {
+  title: string
+  subtitle: string | null
+  sections: SessionClosureSection[]
 }
+
+export type SessionClosureSection =
+  | {
+      kind: 'text'
+      title: string
+      body: string
+    }
+  | {
+      kind: 'rating'
+      title: string
+      value: number
+      max: number
+    }
 
 export interface InventoryItem {
   label: string
@@ -193,7 +206,7 @@ export interface UiSnapshot {
   look_options: LookOptionData[]
   talk_options: MenuOptionItem[]
   active_menu: ActiveMenuData | null
-  session_feedback: SessionFeedbackData | null
+  session_closure: SessionClosureData | null
   inventory: InventoryItem[]
   ui_text: {
     language_name: string
