@@ -452,7 +452,8 @@ pub async fn get_transcript(
         .map_err(|e| format!("db begin error: {e}"))?;
     let (_, _, state_json) = load_session_row(&mut tx, &session_id, &player_id, false).await?;
     let rows = sqlx::query_scalar::<_, String>(
-        "SELECT te.text FROM transcript_entries te
+        "SELECT CASE WHEN te.role = 'player' THEN '> ' || te.text ELSE te.text END
+         FROM transcript_entries te
          JOIN game_sessions s ON s.id = te.session_id
          WHERE te.session_id = $1 AND s.player_id = $2
          ORDER BY te.turn_number ASC, te.id ASC",

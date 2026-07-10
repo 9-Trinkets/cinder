@@ -569,13 +569,28 @@ export default function GamePage() {
           {groupOverflowActions(uiSnapshot.overflow_actions ?? [], uiSnapshot.ui_text).map(([group, items]) => (
             <div key={group} className="mb-4 last:mb-0">
               <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">{group}</h3>
-              {items.map(action => (
+              {items.map(action => {
+                const handleOverflowClick = () => {
+                  setShowOverflowModal(false)
+                  const talkOpts = uiSnapshot?.talk_options ?? []
+                  if ((action.id === 'speak' || action.id === 'talk') && talkOpts.length > 0) {
+                    if (talkOpts.length === 1) {
+                      setInput(`@${talkOpts[0].title} `)
+                      setAtSuggestions(null)
+                      setTimeout(() => {
+                        inputRef.current?.focus()
+                        inputRef.current?.setSelectionRange(inputRef.current.value.length, inputRef.current.value.length)
+                      }, 0)
+                      return
+                    }
+                    if (talkOpts.length > 1) { setShowTalkModal(true); return }
+                  }
+                  execCommand(action.id)
+                }
+                return (
                 <button
                   key={action.id}
-                  onClick={async () => {
-                    setShowOverflowModal(false)
-                    await execCommand(action.id)
-                  }}
+                  onClick={handleOverflowClick}
                   disabled={busy}
                   className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer mb-1 last:mb-0"
                   title={action.usage}
