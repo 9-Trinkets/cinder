@@ -92,10 +92,7 @@ pub async fn login(
 ) -> Result<Json<AuthResponse>, (StatusCode, String)> {
     let username = req.username.trim().to_string();
     if username.is_empty() || req.password.is_empty() {
-        return Err((
-            StatusCode::BAD_REQUEST,
-            "invalid credentials".to_string(),
-        ));
+        return Err((StatusCode::BAD_REQUEST, "invalid credentials".to_string()));
     }
 
     let row = sqlx::query_as::<_, (Uuid, String)>(

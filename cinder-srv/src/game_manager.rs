@@ -305,6 +305,43 @@ pub async fn run_command(
     .await
 }
 
+pub async fn run_realtime_tick(
+    pool: &PgPool,
+    session_id: &str,
+    player_id: &str,
+) -> Result<CommandResponse, String> {
+    let session_id = parse_uuid(session_id, "session id")?;
+    let player_id = parse_uuid(player_id, "player id")?;
+    with_runtime(pool, &session_id, &player_id, move |runtime| {
+        let outcome = runtime.run_tick().map_err(|e| format!("tick error: {e}"))?;
+        let session_feedback = if outcome.game_over {
+            response::session_feedback_data(runtime)
+        } else {
+            None
+        };
+        let outcome = runtime
+            .continue_after_game_over(outcome)
+            .map_err(|e| format!("appointment rollover error: {e}"))?;
+        let movie = consume_projector_sequence(runtime);
+        let response = CommandResponse {
+            text: outcome.text.clone(),
+            game_over: outcome.game_over,
+            movie,
+            session_feedback,
+        };
+        let transcript_entries = if response.text.is_empty() {
+            Vec::new()
+        } else {
+            vec![PendingTranscriptEntry {
+                role: "narrative".to_string(),
+                text: response.text.clone(),
+            }]
+        };
+        Ok((response, transcript_entries))
+    })
+    .await
+}
+
 pub async fn switch_room(
     pool: &PgPool,
     session_id: &str,

@@ -16,9 +16,7 @@ use axum::{
 };
 use serde::Serialize;
 use tower_governor::{
-    GovernorLayer,
-    errors::GovernorError,
-    governor::GovernorConfigBuilder,
+    GovernorLayer, errors::GovernorError, governor::GovernorConfigBuilder,
     key_extractor::KeyExtractor,
 };
 use tower_http::cors::{Any, CorsLayer};
@@ -111,7 +109,9 @@ async fn main() {
         if config.strict_config {
             panic!("CINDER_JWT_SECRET must be set when CINDER_STRICT_CONFIG is enabled");
         }
-        tracing::warn!("CINDER_JWT_SECRET is using the default value. Set a strong secret for production.");
+        tracing::warn!(
+            "CINDER_JWT_SECRET is using the default value. Set a strong secret for production."
+        );
     }
 
     if config.strict_config && config.cors_origin.is_none() {
@@ -145,10 +145,7 @@ async fn main() {
             "/api/auth/signup",
             axum::routing::post(routes::auth::signup),
         )
-        .route(
-            "/api/auth/login",
-            axum::routing::post(routes::auth::login),
-        )
+        .route("/api/auth/login", axum::routing::post(routes::auth::login))
         .layer(GovernorLayer::new(governor_config));
 
     let app = routes::game::routes(state.clone())

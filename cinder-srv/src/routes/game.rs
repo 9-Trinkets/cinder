@@ -39,6 +39,7 @@ pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
     Router::new()
         .route("/api/games", get(list_sessions).post(create_session))
         .route("/api/games/{id}/command", post(run_command))
+        .route("/api/games/{id}/tick", post(run_tick))
         .route("/api/games/{id}/ui", get(session_ui))
         .route("/api/games/{id}/transcript", get(transcript_handler))
         .route("/api/games/{id}/room", post(switch_room_handler))
@@ -106,6 +107,17 @@ pub async fn run_command(
     Json(req): Json<CommandRequest>,
 ) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
     let resp = game_manager::run_command(&state.pool, &session_id, &auth.id, &req.input)
+        .await
+        .map_err(internal)?;
+    Ok(Json(resp))
+}
+
+pub async fn run_tick(
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+    Path(session_id): Path<String>,
+) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
+    let resp = game_manager::run_realtime_tick(&state.pool, &session_id, &auth.id)
         .await
         .map_err(internal)?;
     Ok(Json(resp))

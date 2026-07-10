@@ -42,6 +42,7 @@ const CHAPTER_RELATIONSHIP_SUMMARIZER_ROLE: &str = "chapter_relationship_summari
 const DIRECT_SPEECH_ATTRACTION_INTENT_ROLE: &str = "direct_speech_intent";
 const SESSION_FEEDBACK_ROLE: &str = "session_feedback";
 const CONVERSATION_MEMORY_SUMMARY_TIMEOUT: Duration = Duration::from_secs(10);
+const VALIDATED_ROLE_MAX_ATTEMPTS: usize = 4;
 
 pub trait DialogueGenerator: Send + Sync {
     fn build_prompt(&self, request: &DialogueRequest) -> String {
@@ -152,6 +153,35 @@ impl SynapseDialogueGenerator {
         )
     }
 
+    fn run_validated_text_role<T, F>(
+        &self,
+        role_name: &'static str,
+        prompt: String,
+        fallback_system_prompt: String,
+        parse: F,
+    ) -> Result<T, String>
+    where
+        F: Fn(&str) -> Result<T, String>,
+    {
+        let mut validation_errors = Vec::new();
+        for attempt in 1..=VALIDATED_ROLE_MAX_ATTEMPTS {
+            let response = self
+                .run_text_role_detailed(role_name, prompt.clone(), fallback_system_prompt.clone())
+                .map_err(format_role_execution_error)?;
+            match parse(&response.text) {
+                Ok(parsed) => return Ok(parsed),
+                Err(error) => validation_errors.push(format!(
+                    "attempt {attempt}: {:?} ({error})",
+                    response.text.trim()
+                )),
+            }
+        }
+        Err(format!(
+            "role '{role_name}' returned invalid output after {VALIDATED_ROLE_MAX_ATTEMPTS} attempts:\n{}",
+            validation_errors.join("\n")
+        ))
+    }
+
     fn preview_role(&self, role_name: &str) -> Result<RoleMetadata, String> {
         self.service.preview_role(&self.workflow, role_name)
     }
@@ -260,29 +290,29 @@ impl DialogueGenerator for SynapseDialogueGenerator {
         &self,
         request: &MenuIntentRequest,
     ) -> Result<MenuIntentDecision, String> {
-        let response = self.run_text_role(
+        self.run_validated_text_role(
             MENU_INTENT_CLARIFIER_ROLE,
             self.build_menu_intent_prompt(request),
             menu_intent_system_prompt(request).to_string(),
-        )?;
-        parse_menu_intent_label(&response)
+            parse_menu_intent_label,
+        )
     }
 
     fn choose_actor_turn_action(
         &self,
         request: &ActorTurnActionRequest,
     ) -> Result<ActorTurnActionDecision, String> {
-        let response = self
-            .run_text_role_detailed(
-                ACTOR_TURN_DECIDER_ROLE,
-                self.build_actor_turn_action_prompt(request),
-                actor_turn_decider_system_prompt(request).to_string(),
-            )
-            .map_err(format_role_execution_error)?;
-        parse_actor_turn_action(
-            &response.text,
-            &ActorTurnActionParseContext {
-                affordances: &request.affordances,
+        self.run_validated_text_role(
+            ACTOR_TURN_DECIDER_ROLE,
+            self.build_actor_turn_action_prompt(request),
+            actor_turn_decider_system_prompt(request).to_string(),
+            |text| {
+                parse_actor_turn_action(
+                    text,
+                    &ActorTurnActionParseContext {
+                        affordances: &request.affordances,
+                    },
+                )
             },
         )
     }

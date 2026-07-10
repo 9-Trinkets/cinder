@@ -136,6 +136,12 @@ pub struct UiTextDefinition {
     pub commands_group_support: String,
     #[serde(default = "default_look_modal_title")]
     pub look_modal_title: String,
+    #[serde(default = "default_look_group_room")]
+    pub look_group_room: String,
+    #[serde(default = "default_look_group_things")]
+    pub look_group_things: String,
+    #[serde(default = "default_look_group_people")]
+    pub look_group_people: String,
     #[serde(default = "default_talk_modal_title")]
     pub talk_modal_title: String,
     #[serde(default = "default_talk_modal_prompt")]
@@ -364,6 +370,18 @@ fn default_look_modal_title() -> String {
     "Look".to_string()
 }
 
+fn default_look_group_room() -> String {
+    "Room".to_string()
+}
+
+fn default_look_group_things() -> String {
+    "Things".to_string()
+}
+
+fn default_look_group_people() -> String {
+    "People".to_string()
+}
+
 fn default_talk_modal_title() -> String {
     "Talk".to_string()
 }
@@ -429,6 +447,9 @@ impl Default for UiTextDefinition {
             commands_group_other: default_commands_group_other(),
             commands_group_support: default_commands_group_support(),
             look_modal_title: default_look_modal_title(),
+            look_group_room: default_look_group_room(),
+            look_group_things: default_look_group_things(),
+            look_group_people: default_look_group_people(),
             talk_modal_title: default_talk_modal_title(),
             talk_modal_prompt: default_talk_modal_prompt(),
             shell_menu: ShellMenuDefinition::default(),

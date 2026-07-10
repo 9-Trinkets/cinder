@@ -64,6 +64,7 @@ pub struct ActiveMenuData {
 pub struct UiSnapshot {
     pub title: String,
     pub time_label: String,
+    pub npc_tick_interval_ms: u64,
     pub day_number: u32,
     pub current_room_name: String,
     pub followed_actor_name: Option<String>,
@@ -231,7 +232,7 @@ pub(super) fn build_ui_snapshot(
     let has_talk = bar_ids.contains(&"speak") || bar_ids.contains(&"talk");
     let modal_covered: Vec<&str> = vec!["inspect_feature", "inspect_actor"];
     let current_room_id = runtime.current_room_id().unwrap_or_default();
-    let mut overflow_actions: Vec<OverflowAction> = content
+    let overflow_actions: Vec<OverflowAction> = content
         .commands
         .actions
         .iter()
@@ -307,6 +308,7 @@ pub(super) fn build_ui_snapshot(
     Ok(UiSnapshot {
         title: content.opening.title.clone(),
         time_label,
+        npc_tick_interval_ms: content.settings.npc_tick_interval_ms,
         day_number,
         current_room_name,
         followed_actor_name,

@@ -22,7 +22,12 @@ pub fn lines(
         if let Some(animation) = animation
             && animation.entry_index == index
         {
-            lines.extend(animated_lines(entry, animation.visible_chars, ui_text, theme));
+            lines.extend(animated_lines(
+                entry,
+                animation.visible_chars,
+                ui_text,
+                theme,
+            ));
         } else if pending_entries.contains(&index) {
             continue;
         } else {
@@ -90,9 +95,7 @@ fn styled_line(line: &str, ui_text: &UiTextDefinition, theme: &Theme) -> Line<'s
     } else if line.starts_with(&ui_text.error_prefix) {
         Style::default().fg(theme.love)
     } else if line.starts_with("== ") && line.ends_with(" ==") {
-        Style::default()
-            .fg(theme.foam)
-            .add_modifier(Modifier::BOLD)
+        Style::default().fg(theme.foam).add_modifier(Modifier::BOLD)
     } else if line.starts_with("You notice:")
         || line.starts_with("People here:")
         || line.starts_with("Exits:")

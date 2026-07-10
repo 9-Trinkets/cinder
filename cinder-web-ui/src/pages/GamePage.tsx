@@ -53,6 +53,7 @@ export default function GamePage() {
   const nextKey = useRef(1)
   const initialized = useRef(false)
   const inputRef = useRef<HTMLInputElement>(null)
+  const tickInFlight = useRef(false)
 
   function refreshSnapshot() {
     if (!token || !id) return
@@ -145,6 +146,22 @@ export default function GamePage() {
     setLines(prev => [...prev, { text, key: nextKey.current++ }])
   }
 
+  function applyCommandResponse(res: api.CommandResponse) {
+    if (res.text) {
+      const outLine: Line = { text: res.text, key: nextKey.current++ }
+      setLines(prev => [...prev, outLine])
+    }
+    refreshSnapshot()
+    if (res.session_feedback) {
+      setSessionFeedback(res.session_feedback)
+    }
+    if (res.movie) {
+      setMovie(res.movie)
+      setMovieFrame(0)
+    }
+    if (res.game_over) setGameOver(true)
+  }
+
   async function execCommand(cmd: string, displayCmd?: string) {
     if (!token || !id || busy || gameOver) return
     setActiveMenu(null)
@@ -155,25 +172,53 @@ export default function GamePage() {
     setLines(prev => [...prev, cmdLine])
     try {
       const res = await api.runCommand(token, id, cmd)
-      if (res.text) {
-        const outLine: Line = { text: res.text, key: nextKey.current++ }
-        setLines(prev => [...prev, outLine])
-      }
-      refreshSnapshot()
-      if (res.session_feedback) {
-        setSessionFeedback(res.session_feedback)
-      }
-      if (res.movie) {
-        setMovie(res.movie)
-        setMovieFrame(0)
-      }
-      if (res.game_over) setGameOver(true)
+      applyCommandResponse(res)
     } catch (err: unknown) {
       addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
     } finally {
       setBusy(false)
     }
   }
+
+  useEffect(() => {
+    if (!token || !id || gameOver) return
+    const intervalMs = uiSnapshot?.npc_tick_interval_ms ?? 0
+    if (intervalMs <= 0) return
+    if (busy || movie || activeMenu || showMenu || showLookModal || showTalkModal || showOverflowModal) {
+      return
+    }
+
+    const timer = window.setInterval(async () => {
+      if (tickInFlight.current) return
+      tickInFlight.current = true
+      try {
+        const res = await api.runRealtimeTick(token, id)
+        if (res.text || res.movie || res.game_over || res.session_feedback) {
+          applyCommandResponse(res)
+        } else {
+          refreshSnapshot()
+        }
+      } catch (error) {
+        console.error('background tick failed', error)
+      } finally {
+        tickInFlight.current = false
+      }
+    }, intervalMs)
+
+    return () => window.clearInterval(timer)
+  }, [
+    token,
+    id,
+    gameOver,
+    uiSnapshot?.npc_tick_interval_ms,
+    busy,
+    movie,
+    activeMenu,
+    showMenu,
+    showLookModal,
+    showTalkModal,
+    showOverflowModal,
+  ])
 
   function closeMovie() {
     if (movie && movie.narrative_lines.length > 0) {
@@ -497,18 +542,25 @@ export default function GamePage() {
           {(uiSnapshot.look_options ?? []).length === 0 ? (
             <p className="text-muted italic">Nothing of particular interest here.</p>
           ) : (
-            uiSnapshot.look_options.map(opt => (
-              <button
-                key={opt.id}
-                onClick={async () => {
-                  setShowLookModal(false)
-                  await execCommand(opt.command)
-                }}
-                disabled={busy}
-                className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
-              >
-                {opt.title}
-              </button>
+            groupLookOptions(uiSnapshot.look_options, uiSnapshot.ui_text).map(([group, options]) => (
+              <div key={group} className="mb-4 last:mb-0">
+                <p className="text-xs text-muted uppercase tracking-wider mb-2">{group}</p>
+                <div className="space-y-2">
+                  {options.map(opt => (
+                    <button
+                      key={opt.id}
+                      onClick={async () => {
+                        setShowLookModal(false)
+                        await execCommand(opt.command)
+                      }}
+                      disabled={busy}
+                      className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
+                    >
+                      {opt.title}
+                    </button>
+                  ))}
+                </div>
+              </div>
             ))
           )}
         </Modal>
@@ -588,17 +640,18 @@ export default function GamePage() {
                   execCommand(action.id)
                 }
                 return (
-                <button
-                  key={action.id}
-                  onClick={handleOverflowClick}
-                  disabled={busy}
-                  className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer mb-1 last:mb-0"
-                  title={action.usage}
-                >
-                  <span className="font-medium">{action.label}</span>
-                  {action.usage && <span className="text-muted text-xs ml-2">— {action.usage}</span>}
-                </button>
-              ))}
+                  <button
+                    key={action.id}
+                    onClick={handleOverflowClick}
+                    disabled={busy}
+                    className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer mb-1 last:mb-0"
+                    title={action.usage}
+                  >
+                    <span className="font-medium">{action.label}</span>
+                    {action.usage && <span className="text-muted text-xs ml-2">— {action.usage}</span>}
+                  </button>
+                )
+              })}
             </div>
           ))}
           {uiSnapshot.overflow_actions?.length === 0 && (
@@ -690,4 +743,32 @@ function localizeCommandGroup(group: string, uiText: api.UiSnapshot['ui_text']):
     default:
       return group
   }
+}
+
+function groupLookOptions(
+  options: api.LookOptionData[],
+  uiText: api.UiSnapshot['ui_text'],
+): [string, api.LookOptionData[]][] {
+  const grouped: [string, api.LookOptionData[]][] = []
+
+  const room = options.filter(option => option.id === '__room__')
+  if (room.length > 0) grouped.push([uiText.look_group_room, room])
+
+  const things = options.filter(option => option.id.startsWith('feature:') || option.id.startsWith('item:'))
+  if (things.length > 0) grouped.push([uiText.look_group_things, things])
+
+  const people = options.filter(option => option.id.startsWith('actor:'))
+  if (people.length > 0) grouped.push([uiText.look_group_people, people])
+
+  const seen = new Set(options.flatMap(option => {
+    if (option.id === '__room__') return [option.id]
+    if (option.id.startsWith('feature:') || option.id.startsWith('item:') || option.id.startsWith('actor:')) {
+      return [option.id]
+    }
+    return []
+  }))
+  const other = options.filter(option => !seen.has(option.id))
+  if (other.length > 0) grouped.push([uiText.commands_group_other, other])
+
+  return grouped
 }

@@ -8,7 +8,7 @@ use cinder_core::content::loader::{
     LocaleOption, available_locales, load_pack_from_dir_with_locale, pack_dir,
 };
 use cinder_core::content::types::{ShellMenuItem, UiTextDefinition};
-use cinder_core::{CinderRuntime, MenuChoiceOption, TurnOutcome, SessionFeedback};
+use cinder_core::{CinderRuntime, MenuChoiceOption, SessionFeedback, TurnOutcome};
 use crossterm::cursor::SetCursorStyle;
 use crossterm::event::{self, Event, KeyEventKind};
 use crossterm::execute;
@@ -1191,11 +1191,13 @@ impl TuiApp {
                     scroll: self.shell_modal_scroll,
                 })
             }
-            Some(ShellModalState::SessionFeedback { data }) => Some(ShellModalSnapshot::SessionFeedback {
-                rating: data.rating,
-                review_text: data.review_text.clone(),
-                hint: self.ui_text.modal_close_hint.clone(),
-            }),
+            Some(ShellModalState::SessionFeedback { data }) => {
+                Some(ShellModalSnapshot::SessionFeedback {
+                    rating: data.rating,
+                    review_text: data.review_text.clone(),
+                    hint: self.ui_text.modal_close_hint.clone(),
+                })
+            }
             Some(ShellModalState::Projector(_)) => None,
             None => None,
         }

@@ -97,6 +97,13 @@ export function runCommand(token: string, sessionId: string, input: string) {
   })
 }
 
+export function runRealtimeTick(token: string, sessionId: string) {
+  return req<CommandResponse>(`/games/${sessionId}/tick`, {
+    method: 'POST',
+    headers: authHeader(token),
+  })
+}
+
 export function saveGame(token: string, sessionId: string) {
   return req<{ session_id: string; created_at: string }>(
     `/games/${sessionId}/save`,
@@ -164,6 +171,7 @@ export interface InventoryItem {
 export interface UiSnapshot {
   title: string
   time_label: string
+  npc_tick_interval_ms: number
   day_number: number
   current_room_name: string
   followed_actor_name: string | null
@@ -209,6 +217,9 @@ export interface UiSnapshot {
     commands_group_other: string
     commands_group_support: string
     look_modal_title: string
+    look_group_room: string
+    look_group_things: string
+    look_group_people: string
     talk_modal_title: string
     talk_modal_prompt: string
     menu_option_list_title: string

@@ -164,7 +164,7 @@ where
                                 "backend": trace_backend,
                             }),
                         )?;
-                        return Err(error);
+                        false
                     }
                 }
             }
@@ -275,12 +275,74 @@ fn is_movie_agreement_message(message: Option<&str>) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use super::{build_menu_choice_events, render_menu_prompt};
+    use super::{
+        PendingMenuDialogue, build_menu_choice_events, menu_to_offer_for_pending_dialogue,
+        render_menu_prompt,
+    };
     use crate::content::loader::load_named_pack;
+    use crate::content::types::SpeechIntentLabel;
+    use crate::engine::dialogue::DialogueGenerator;
+    use crate::engine::dialogue::types::{
+        ActorTurnActionDecision, ActorTurnActionRequest, ConversationMemorySummaryRequest,
+        DialogueRequest, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
+        DynamicMenuOptionOutput, DynamicMenuRequest, MenuIntentDecision, MenuIntentRequest,
+        SessionFeedback, SessionFeedbackRequest,
+    };
     use crate::engine::events::WorldEvent;
     use crate::engine::state::{
         WorldState, advance_to_next_appointment, initialize_appointment_state,
     };
+
+    struct FailingMenuIntentDialogue;
+
+    impl DialogueGenerator for FailingMenuIntentDialogue {
+        fn generate(&self, _request: &DialogueRequest) -> Result<String, String> {
+            Err("not used in test".to_string())
+        }
+
+        fn clarify_menu_intent(
+            &self,
+            _request: &MenuIntentRequest,
+        ) -> Result<MenuIntentDecision, String> {
+            Err("planning rejected too many times".to_string())
+        }
+
+        fn choose_actor_turn_action(
+            &self,
+            _request: &ActorTurnActionRequest,
+        ) -> Result<ActorTurnActionDecision, String> {
+            Err("not used in test".to_string())
+        }
+
+        fn summarize_conversation_memory(
+            &self,
+            _request: &ConversationMemorySummaryRequest,
+        ) -> Result<String, String> {
+            Err("not used in test".to_string())
+        }
+
+        fn extract_direct_speech_intent(
+            &self,
+            _request: &DirectSpeechIntentRequest,
+            _intents: &[SpeechIntentLabel],
+        ) -> Result<DirectSpeechIntentDecision, String> {
+            Err("not used in test".to_string())
+        }
+
+        fn generate_dynamic_menu_options(
+            &self,
+            _request: &DynamicMenuRequest,
+        ) -> Result<Vec<DynamicMenuOptionOutput>, String> {
+            Err("not used in test".to_string())
+        }
+
+        fn generate_session_feedback(
+            &self,
+            _request: &SessionFeedbackRequest,
+        ) -> Result<SessionFeedback, String> {
+            Err("not used in test".to_string())
+        }
+    }
 
     #[test]
     fn recommendation_prompt_uses_current_patient_name() {
@@ -321,5 +383,28 @@ mod tests {
             .collect::<Vec<_>>();
         assert!(narrative_lines.iter().any(|line| line.contains("Awa")));
         assert!(narrative_lines.iter().all(|line| !line.contains("Noa")));
+    }
+
+    #[test]
+    fn menu_intent_failure_falls_back_without_aborting_turn() {
+        let content = load_named_pack("ella", None).expect("load ella");
+        let mut state = WorldState::new(&content);
+        state.current_room_id = "kitchen".to_string();
+        state.active_objective_stage_ids = vec!["talk-with-dad".to_string()];
+
+        let offered = menu_to_offer_for_pending_dialogue(
+            &content,
+            &state,
+            &FailingMenuIntentDialogue,
+            PendingMenuDialogue {
+                actor_id: "dad",
+                current_room_id: "kitchen",
+                other_person_message: Some("Hey Dad."),
+            },
+            |_role, _topic, _payload| Ok(()),
+        )
+        .expect("menu intent failure should not abort");
+
+        assert!(offered.is_none());
     }
 }

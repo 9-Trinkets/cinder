@@ -2,15 +2,15 @@ use crate::effects::{TimedTextPlayback, TranscriptAnimationSnapshot};
 use crate::projector;
 use crate::theme::Theme;
 use crate::transcript;
-use cinder_core::content::types::UiTextDefinition;
 use cinder_core::MenuChoiceOption;
+use cinder_core::content::types::UiTextDefinition;
 use ratatui::Frame;
 use ratatui::layout::{Alignment, Constraint, Flex, Layout, Margin, Position, Rect};
 use ratatui::style::{Modifier, Style};
 use ratatui::text::{Line, Span, Text};
 use ratatui::widgets::{
-    Block, Borders, Clear, List, ListItem, ListState, Paragraph,
-    Scrollbar, ScrollbarOrientation, ScrollbarState, Wrap,
+    Block, Borders, Clear, List, ListItem, ListState, Paragraph, Scrollbar, ScrollbarOrientation,
+    ScrollbarState, Wrap,
 };
 use std::time::Duration;
 
@@ -221,7 +221,13 @@ pub(crate) fn draw(
     frame.render_widget(input, chunks[2]);
 
     if let Some(playback) = projector_playback {
-        projector::render_modal(frame, playback, &snapshot.ui_text, &snapshot.theme, frame_interval);
+        projector::render_modal(
+            frame,
+            playback,
+            &snapshot.ui_text,
+            &snapshot.theme,
+            frame_interval,
+        );
     } else if let Some(shell_modal) = &snapshot.shell_modal {
         render_shell_modal(frame, shell_modal, &snapshot.ui_text, &snapshot.theme);
     } else if let Some(menu) = &snapshot.menu {
@@ -276,7 +282,7 @@ fn word_wrap(text: &str, max_width: usize) -> Vec<Line<'static>> {
     lines
 }
 
- fn render_menu(frame: &mut Frame, menu: &MenuSnapshot, ui_text: &UiTextDefinition, theme: &Theme) {
+fn render_menu(frame: &mut Frame, menu: &MenuSnapshot, ui_text: &UiTextDefinition, theme: &Theme) {
     let inner_width = (frame.area().width * 70 / 100).saturating_sub(6) as usize;
     let wrapped_lines: Vec<Vec<Line>> = menu
         .options
@@ -285,9 +291,7 @@ fn word_wrap(text: &str, max_width: usize) -> Vec<Line<'static>> {
             let mut lines = Vec::new();
             lines.push(Line::from(Span::styled(
                 &option.title,
-                Style::default()
-                    .fg(theme.iris)
-                    .add_modifier(Modifier::BOLD),
+                Style::default().fg(theme.iris).add_modifier(Modifier::BOLD),
             )));
             for wrapped_line in word_wrap(&option.menu_text, inner_width) {
                 lines.push(wrapped_line);
@@ -304,11 +308,7 @@ fn word_wrap(text: &str, max_width: usize) -> Vec<Line<'static>> {
         .map(ListItem::new)
         .collect::<Vec<_>>();
     let list = List::new(items)
-        .style(
-            Style::default()
-                .fg(theme.text)
-                .bg(theme.overlay),
-        )
+        .style(Style::default().fg(theme.text).bg(theme.overlay))
         .highlight_style(
             Style::default()
                 .fg(theme.base)
@@ -322,16 +322,17 @@ fn word_wrap(text: &str, max_width: usize) -> Vec<Line<'static>> {
     frame.render_widget(
         Paragraph::new(ui_text.menu_choice_hint.clone())
             .alignment(Alignment::Right)
-            .style(
-                Style::default()
-                    .fg(theme.muted)
-                    .bg(theme.overlay),
-            ),
+            .style(Style::default().fg(theme.muted).bg(theme.overlay)),
         sections[1],
     );
 }
 
-fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &UiTextDefinition, theme: &Theme) {
+fn render_shell_modal(
+    frame: &mut Frame,
+    modal: &ShellModalSnapshot,
+    ui_text: &UiTextDefinition,
+    theme: &Theme,
+) {
     let area = match modal {
         ShellModalSnapshot::Detail { title, body, .. } => {
             detail_modal_area(frame.area(), &detail_modal_body_text(title, body))
@@ -357,11 +358,7 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
                 })
                 .collect::<Vec<_>>();
             let list = List::new(items)
-                .style(
-                    Style::default()
-                        .fg(theme.text)
-                        .bg(theme.overlay),
-                )
+                .style(Style::default().fg(theme.text).bg(theme.overlay))
                 .highlight_style(
                     Style::default()
                         .fg(theme.base)
@@ -375,11 +372,7 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
             frame.render_widget(
                 Paragraph::new(ui_text.shell_menu_close_hint.clone())
                     .alignment(Alignment::Right)
-                    .style(
-                        Style::default()
-                            .fg(theme.muted)
-                            .bg(theme.overlay),
-                    ),
+                    .style(Style::default().fg(theme.muted).bg(theme.overlay)),
                 sections[1],
             );
         }
@@ -413,11 +406,7 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
                 horizontal: 0,
             });
             let list = List::new(items)
-                .style(
-                    Style::default()
-                        .fg(theme.text)
-                        .bg(theme.overlay),
-                )
+                .style(Style::default().fg(theme.text).bg(theme.overlay))
                 .highlight_style(
                     Style::default()
                         .fg(theme.base)
@@ -431,11 +420,7 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
             frame.render_widget(
                 Paragraph::new(hint.clone())
                     .alignment(Alignment::Right)
-                    .style(
-                        Style::default()
-                            .fg(theme.muted)
-                            .bg(theme.overlay),
-                    ),
+                    .style(Style::default().fg(theme.muted).bg(theme.overlay)),
                 sections[1],
             );
         }
@@ -480,11 +465,7 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
                 Paragraph::new(body_text.clone())
                     .wrap(Wrap { trim: false })
                     .scroll((*scroll, 0))
-                    .style(
-                        Style::default()
-                            .fg(theme.text)
-                            .bg(theme.overlay),
-                    ),
+                    .style(Style::default().fg(theme.text).bg(theme.overlay)),
                 sections[0],
             );
             let mut scrollbar_state =
@@ -506,11 +487,7 @@ fn render_shell_modal(frame: &mut Frame, modal: &ShellModalSnapshot, ui_text: &U
             frame.render_widget(
                 Paragraph::new(hint.clone())
                     .alignment(Alignment::Right)
-                    .style(
-                        Style::default()
-                            .fg(theme.muted)
-                            .bg(theme.overlay),
-                    ),
+                    .style(Style::default().fg(theme.muted).bg(theme.overlay)),
                 sections[1],
             );
         }
@@ -592,11 +569,7 @@ fn modal_block(frame: &mut Frame, area: Rect, title: &str, theme: &Theme) -> [Re
     frame.render_widget(Clear, area);
     let block = Block::default()
         .title(title)
-        .title_style(
-            Style::default()
-                .fg(theme.iris)
-                .add_modifier(Modifier::BOLD),
-        )
+        .title_style(Style::default().fg(theme.iris).add_modifier(Modifier::BOLD))
         .borders(Borders::ALL)
         .border_style(Style::default().fg(theme.iris))
         .style(Style::default().bg(theme.overlay));

@@ -8,7 +8,7 @@ pub(super) struct ActorTurnActionParseContext<'a> {
 }
 
 pub(super) fn parse_menu_intent_label(label: &str) -> Result<MenuIntentDecision, String> {
-    let normalized = label.trim().to_ascii_uppercase();
+    let normalized = normalize_enum_label(label);
     match normalized.as_str() {
         "OPEN" => Ok(MenuIntentDecision {
             should_open: true,
@@ -69,4 +69,35 @@ fn strip_actor_turn_annotation(label: &str) -> &str {
         .map(|(head, _)| head.trim_end())
         .or_else(|| label.split_once(" - ").map(|(head, _)| head.trim_end()))
         .unwrap_or(label)
+}
+
+fn normalize_enum_label(label: &str) -> String {
+    label
+        .trim()
+        .split_whitespace()
+        .next()
+        .unwrap_or("")
+        .trim_end_matches([':', '-', '—'])
+        .to_ascii_uppercase()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::parse_menu_intent_label;
+
+    #[test]
+    fn parses_annotated_open_menu_intent() {
+        let decision = parse_menu_intent_label("OPEN — the player clearly wants a snack")
+            .expect("parse annotated OPEN");
+        assert!(decision.should_open);
+        assert_eq!(decision.label, "OPEN");
+    }
+
+    #[test]
+    fn parses_explained_pass_menu_intent() {
+        let decision =
+            parse_menu_intent_label("PASS because this is only small talk").expect("parse PASS");
+        assert!(!decision.should_open);
+        assert_eq!(decision.label, "PASS");
+    }
 }
