@@ -145,13 +145,13 @@ export default function GamePage() {
     setLines(prev => [...prev, { text, key: nextKey.current++ }])
   }
 
-  async function execCommand(cmd: string) {
+  async function execCommand(cmd: string, displayCmd?: string) {
     if (!token || !id || busy || gameOver) return
     setActiveMenu(null)
     setMovie(null)
     setMovieFrame(0)
     setBusy(true)
-    const cmdLine: Line = { text: `> ${cmd}`, key: nextKey.current++ }
+    const cmdLine: Line = { text: `> ${displayCmd ?? cmd}`, key: nextKey.current++ }
     setLines(prev => [...prev, cmdLine])
     try {
       const res = await api.runCommand(token, id, cmd)
@@ -244,6 +244,7 @@ export default function GamePage() {
     if (!token || !id || busy || gameOver) return
     let trimmed = input.trim()
     if (!trimmed) return
+    const displayInput = trimmed
     setAtSuggestions(null)
     setInput('')
     if (trimmed.startsWith('@')) {
@@ -259,7 +260,7 @@ export default function GamePage() {
         return
       }
     }
-    await execCommand(trimmed)
+    await execCommand(trimmed, displayInput)
   }
 
   return (
@@ -336,7 +337,10 @@ export default function GamePage() {
                   if (talkOpts.length === 1) {
                     setInput(`@${talkOpts[0].title} `)
                     setAtSuggestions(null)
-                    setTimeout(() => inputRef.current?.focus(), 0)
+                    setTimeout(() => {
+                      inputRef.current?.focus()
+                      inputRef.current?.setSelectionRange(inputRef.current.value.length, inputRef.current.value.length)
+                    }, 0)
                     return
                   }
                   if (talkOpts.length > 1) { setShowTalkModal(true); return }
@@ -373,7 +377,10 @@ export default function GamePage() {
                         e.preventDefault()
                         setInput(`@${opt.title} `)
                         setAtSuggestions(null)
-                        setTimeout(() => inputRef.current?.focus(), 0)
+                        setTimeout(() => {
+                          inputRef.current?.focus()
+                          inputRef.current?.setSelectionRange(inputRef.current.value.length, inputRef.current.value.length)
+                        }, 0)
                       }}
                       className="block w-full text-left px-3 py-2 text-sm text-text hover:bg-base cursor-pointer"
                     >@{opt.title}</button>
@@ -517,7 +524,10 @@ export default function GamePage() {
                 setShowTalkModal(false)
                 setInput(`@${opt.title} `)
                 setAtSuggestions(null)
-                setTimeout(() => inputRef.current?.focus(), 0)
+                setTimeout(() => {
+                  inputRef.current?.focus()
+                  inputRef.current?.setSelectionRange(inputRef.current.value.length, inputRef.current.value.length)
+                }, 0)
               }}
               disabled={busy}
               className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"

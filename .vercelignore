@@ -1,0 +1,9 @@
+.git
+.llama-models
+.cinder-state
+target
+node_modules
+cinder-web-ui/node_modules
+cinder-web-ui/dist
+.env
+cinder.db
