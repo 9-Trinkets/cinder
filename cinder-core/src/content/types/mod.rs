@@ -150,8 +150,6 @@ pub struct AppointmentPatientDefinition {
     #[serde(default)]
     pub return_blurb: String,
     #[serde(default)]
-    pub secret_notes: Vec<String>,
-    #[serde(default)]
     pub actor_stats: BTreeMap<String, i32>,
 }
 

@@ -16,7 +16,19 @@
     "secret_2_found": { "default": 0, "min": 0, "max": 1 },
     "secret_3_found": { "default": 0, "min": 0, "max": 1 },
     "secret_4_found": { "default": 0, "min": 0, "max": 1 },
-    "secret_5_found": { "default": 0, "min": 0, "max": 1 }
+    "secret_5_found": { "default": 0, "min": 0, "max": 1 },
+    "awa_secrets_found": { "default": 0, "min": 0, "max": 3 },
+    "awa_secret_1_found": { "default": 0, "min": 0, "max": 1 },
+    "awa_secret_2_found": { "default": 0, "min": 0, "max": 1 },
+    "awa_secret_3_found": { "default": 0, "min": 0, "max": 1 },
+    "jonah_secrets_found": { "default": 0, "min": 0, "max": 3 },
+    "jonah_secret_1_found": { "default": 0, "min": 0, "max": 1 },
+    "jonah_secret_2_found": { "default": 0, "min": 0, "max": 1 },
+    "jonah_secret_3_found": { "default": 0, "min": 0, "max": 1 },
+    "sophea_secrets_found": { "default": 0, "min": 0, "max": 3 },
+    "sophea_secret_1_found": { "default": 0, "min": 0, "max": 1 },
+    "sophea_secret_2_found": { "default": 0, "min": 0, "max": 1 },
+    "sophea_secret_3_found": { "default": 0, "min": 0, "max": 1 }
   },
   "pair": {
     "connection": { "default": 0, "min": 0, "max": 10 },

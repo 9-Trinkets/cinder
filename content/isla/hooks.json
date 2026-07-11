@@ -40,6 +40,96 @@
             { "path": "actor_stats.noa.trust", "operator": "greater_than_or_equal", "value": 9 }
           ],
           "payload_template": "Trust is very high (9+). Noa is in breakthrough territory. Secrets available: The Core Fear (trust 9) — she has never actually been loved, just appreciated for how undemanding she was. The story about her mother at fourteen — the hospitalization, the silence afterward, the lesson that feelings this big break things — is accessible now if the space feels safe enough. She will be raw, uncertain, and unpracticed at this kind of honesty. Her sentences may trail off. She may cry and apologize for crying. Your response in these moments determines whether the session deepens or whether she retreats and rebuilds the wall."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "awa" },
+            { "path": "actor_stats.awa.trust", "operator": "less_than", "value": 3 }
+          ],
+          "payload_template": "Trust is very low. Awa is hyper-vigilant, performing competence, anticipating your needs before you voice them. She will answer questions precisely and redirect attention to practical matters. Her grief and guilt are not reachable yet. Do not push. Let her feel that this space is one more thing she can manage. No secrets have been unlocked."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "awa" },
+            { "path": "actor_stats.awa.trust", "operator": "greater_than_or_equal", "value": 3 },
+            { "path": "actor_stats.awa.trust", "operator": "less_than", "value": 6 }
+          ],
+          "payload_template": "Trust is moderate (3–5). Awa is beginning to show cracks in the caretaker facade. She might deflect with dark humor or redirect to someone else's problems when conversation drifts toward her. She is testing whether you will notice the deflection. Do not call it out; simply hold the space. Secret available at trust 5: The Voicemail — she still listens to her brother's final voicemail and has never told anyone. Let her reach it naturally."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "awa" },
+            { "path": "actor_stats.awa.trust", "operator": "greater_than_or_equal", "value": 6 },
+            { "path": "actor_stats.awa.trust", "operator": "less_than", "value": 9 }
+          ],
+          "payload_template": "Trust is high (6–8). Awa is becoming more vulnerable, less controlled. Her humor gets quieter, her deflections shorter. Secrets available: The Sabotage (trust 7) — she sabotaged a serious relationship to avoid being truly known. She may allude to past relationships ('I had someone once, but I wasn't ready') but stop short of naming what she did. Hold the space. Do not rescue her from the discomfort."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "awa" },
+            { "path": "actor_stats.awa.trust", "operator": "greater_than_or_equal", "value": 9 }
+          ],
+          "payload_template": "Trust is very high (9+). Awa is in breakthrough territory. Secret available: The Guilt (trust 9) — she believes she could have prevented her brother's death. This is the deepest wound, the one her entire caretaking life is built to avoid. She may cry and immediately apologize for crying. She may try to leave. Your response in these moments determines whether the session deepens or whether she rebuilds the wall."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "jonah" },
+            { "path": "actor_stats.jonah.trust", "operator": "less_than", "value": 3 }
+          ],
+          "payload_template": "Trust is very low. Jonah is restless, alert, deflecting with humor. He will answer questions about his work in clinical detail, keeping emotional distance through professional language. His need for crisis is not reachable yet. Do not push. Let him feel that this space is calm and requires nothing of him. No secrets have been unlocked."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "jonah" },
+            { "path": "actor_stats.jonah.trust", "operator": "greater_than_or_equal", "value": 3 },
+            { "path": "actor_stats.jonah.trust", "operator": "less_than", "value": 6 }
+          ],
+          "payload_template": "Trust is moderate (3–5). Jonah is beginning to slow down. His jokes land with less force, his pauses last a beat longer. He might mention his ex-wife casually, as if it's not a loaded subject. He is testing whether you will let the silence stand. Do not rush to fill it. Secret available at trust 5: The Parking Lot — after bad shifts, he drives to his ex-wife's apartment and sits in the car, wanting contact but unable to knock. Let him reach it naturally."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "jonah" },
+            { "path": "actor_stats.jonah.trust", "operator": "greater_than_or_equal", "value": 6 },
+            { "path": "actor_stats.jonah.trust", "operator": "less_than", "value": 9 }
+          ],
+          "payload_template": "Trust is high (6–8). Jonah is becoming more vulnerable, less armored. His language gets quieter, his deflections more transparent. Secrets available: The Teenager (trust 7) — a patient death that still visits him in flashes whenever a room goes quiet. He may allude to it ('There was this kid once') but stop short of the full story. Hold the space. Do not rush him past the pain."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "jonah" },
+            { "path": "actor_stats.jonah.trust", "operator": "greater_than_or_equal", "value": 9 }
+          ],
+          "payload_template": "Trust is very high (9+). Jonah is in breakthrough territory. Secret available: The Crises (trust 9) — he manufactures problems in his personal life because he only knows how to feel necessary when something is breaking. This is the deepest pattern, the one his entire emergency-response identity is built to avoid. He may become very still, very quiet. Your response in these moments determines whether the session deepens or whether he cracks a joke and retreats."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "sophea" },
+            { "path": "actor_stats.sophea.trust", "operator": "less_than", "value": 3 }
+          ],
+          "payload_template": "Trust is very low. Sophea is performing warmth, making the room easy for you. She will smile on cue, ask thoughtful questions, and keep the conversation on safe ground. Her resentment and hidden anger are not reachable yet. Do not push. Let her feel that this space is comfortable and undemanding. No secrets have been unlocked."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "sophea" },
+            { "path": "actor_stats.sophea.trust", "operator": "greater_than_or_equal", "value": 3 },
+            { "path": "actor_stats.sophea.trust", "operator": "less_than", "value": 6 }
+          ],
+          "payload_template": "Trust is moderate (3–5). Sophea is beginning to let the performance crack. She might pause mid-smile, or let silence stand for a beat longer than usual. She may hint at music ('I used to play more than I do now') but frame it as a nostalgic aside. She is testing whether you will hear the longing underneath. Do not rush to interpret. Secret available at trust 5: The Songs — she writes songs she never performs because they are the only place she allows herself to be angry. Let her reach it naturally."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "sophea" },
+            { "path": "actor_stats.sophea.trust", "operator": "greater_than_or_equal", "value": 6 },
+            { "path": "actor_stats.sophea.trust", "operator": "less_than", "value": 9 }
+          ],
+          "payload_template": "Trust is high (6–8). Sophea is becoming more vulnerable, less controlled. Her smile arrives less automatically, her deflections more transparent. Secrets available: The Audition (trust 7) — she deliberately ruined an audition that might have changed her life because succeeding would have forced her to admit she wanted more than being adored for being easy. She may allude to past opportunities ('I could have gone further, but...') but stop short of naming what she did. Hold the space."
+        },
+        {
+          "conditions": [
+            { "path": "actor_id", "operator": "equal", "value": "sophea" },
+            { "path": "actor_stats.sophea.trust", "operator": "greater_than_or_equal", "value": 9 }
+          ],
+          "payload_template": "Trust is very high (9+). Sophea is in breakthrough territory. Secret available: The Resentment (trust 9) — she resents how much her students need her and despises herself for feeling that way. This is the deepest wound, the one her entire warm-and-easy persona is built to avoid. She may cry without warning, then look embarrassed. Your response in these moments determines whether the session deepens or whether she smooths it over and retreats behind the smile."
         }
       ]
     }

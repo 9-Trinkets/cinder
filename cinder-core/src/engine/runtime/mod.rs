@@ -657,6 +657,7 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for secret progress")?;
+        let current_actor_id = state.story_vars.get("patient_actor_id").map(|s| s.as_str());
         let secret_stages: Vec<_> = self
             .content
             .beats
@@ -666,6 +667,18 @@ impl CinderRuntime {
                 s.advance_signals
                     .iter()
                     .any(|sig| sig.signal() == "stat_threshold")
+            })
+            .filter(|s| {
+                match current_actor_id {
+                    None => true,
+                    Some(actor_id) => s.advance_signals.iter().any(|sig| {
+                        sig.conditions().iter().any(|c| {
+                            c.path == "story_vars.patient_actor_id"
+                                && c.operator == "equal"
+                                && c.value.as_str() == Some(actor_id)
+                        })
+                    }),
+                }
             })
             .collect();
         let total = secret_stages.len();

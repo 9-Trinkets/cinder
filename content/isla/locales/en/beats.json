@@ -442,11 +442,6 @@
               "value": 6
             },
             {
-              "path": "actor_stats.noa.secret_1_found",
-              "operator": "gte",
-              "value": 1
-            },
-            {
               "path": "stages_completed",
               "operator": "gte",
               "value": 3
@@ -495,11 +490,6 @@
               "path": "actor_stats.noa.trust",
               "operator": "gte",
               "value": 7
-            },
-            {
-              "path": "actor_stats.noa.secret_2_found",
-              "operator": "gte",
-              "value": 1
             },
             {
               "path": "stages_completed",
@@ -552,11 +542,6 @@
               "value": 8
             },
             {
-              "path": "actor_stats.noa.secret_3_found",
-              "operator": "gte",
-              "value": 1
-            },
-            {
               "path": "stages_completed",
               "operator": "gte",
               "value": 9
@@ -607,11 +592,6 @@
               "value": 9
             },
             {
-              "path": "actor_stats.noa.secret_4_found",
-              "operator": "gte",
-              "value": 1
-            },
-            {
               "path": "stages_completed",
               "operator": "gte",
               "value": 12
@@ -648,6 +628,249 @@
           "stat": "secret_5_found",
           "delta": 1
         }
+      ]
+    },
+    {
+      "id": "secret-awa-1-voicemail",
+      "advance_signals": [
+        {
+          "signal": "stat_threshold",
+          "conditions": [
+            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "awa" },
+            { "path": "actor_stats.awa.trust", "operator": "gte", "value": 5 },
+            { "path": "stages_completed", "operator": "gte", "value": 1 },
+            { "path": "actor_stats.awa.awa_secret_1_found", "operator": "less_than", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_ids": ["secret-awa-1-revealed"]
+    },
+    {
+      "id": "secret-awa-1-revealed",
+      "summary": "Secret 1/3: The Voicemail",
+      "update_message": "Awa reveals she still listens to her brother's final voicemail.",
+      "narrative_lines": [
+        "Awa's hand drifts to her pocket, then stops. 'There's this voicemail,' she says, quieter than before. 'From my brother. The last one he left before the accident. I still listen to it. Not for the words — I know every word by now. I listen because his voice sounds like he's about to come through the door. Like he's just running late.' She looks at her hands. 'I've never told anyone that. It sounds insane, right? Keeping a voicemail like it's a person.'"
+      ],
+      "on_advance_effects": [
+        { "kind": "adjust_actor_stat", "actor_id": "awa", "stat": "awa_secrets_found", "delta": 1 },
+        { "kind": "adjust_actor_stat", "actor_id": "awa", "stat": "awa_secret_1_found", "delta": 1 }
+      ]
+    },
+    {
+      "id": "secret-awa-2-sabotage",
+      "advance_signals": [
+        {
+          "signal": "stat_threshold",
+          "conditions": [
+            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "awa" },
+            { "path": "actor_stats.awa.trust", "operator": "gte", "value": 7 },
+            { "path": "stages_completed", "operator": "gte", "value": 4 },
+            { "path": "actor_stats.awa.awa_secret_2_found", "operator": "less_than", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_ids": ["secret-awa-2-revealed"]
+    },
+    {
+      "id": "secret-awa-2-revealed",
+      "summary": "Secret 2/3: The Sabotage",
+      "update_message": "Awa admits she sabotaged a relationship to avoid being truly known.",
+      "narrative_lines": [
+        "Awa folds her arms. 'I had someone,' she says. 'Good. Patient. The kind of person who actually wanted to know what I was feeling, not just what I was doing.' She pauses. 'The night he was going to ask me to move in, I told him I had a work emergency. I made it up. I sat in my car in the parking lot of a closed office building and told him I was sorry, I couldn't be there.' Her voice tightens. 'I couldn't let him see me need him back.'"
+      ],
+      "on_advance_effects": [
+        { "kind": "adjust_actor_stat", "actor_id": "awa", "stat": "awa_secrets_found", "delta": 1 },
+        { "kind": "adjust_actor_stat", "actor_id": "awa", "stat": "awa_secret_2_found", "delta": 1 }
+      ]
+    },
+    {
+      "id": "secret-awa-3-guilt",
+      "advance_signals": [
+        {
+          "signal": "stat_threshold",
+          "conditions": [
+            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "awa" },
+            { "path": "actor_stats.awa.trust", "operator": "gte", "value": 9 },
+            { "path": "stages_completed", "operator": "gte", "value": 8 },
+            { "path": "actor_stats.awa.awa_secret_3_found", "operator": "less_than", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_ids": ["secret-awa-3-revealed"]
+    },
+    {
+      "id": "secret-awa-3-revealed",
+      "summary": "Secret 3/3: The Guilt",
+      "update_message": "Awa confesses she believes she could have prevented her brother's death.",
+      "narrative_lines": [
+        "Awa's jaw sets. 'The thing I don't say — the thing I can barely think — is that I think I could have stopped it. He was driving exhausted. I knew he was exhausted. I could have called him. I could have said, stay home, I'll handle it.' She swallows. 'But I didn't. Because someone always needed me to handle it, and I was so busy being the one who handles it that I didn't stop my brother from getting behind the wheel.'"
+      ],
+      "on_advance_effects": [
+        { "kind": "adjust_actor_stat", "actor_id": "awa", "stat": "awa_secrets_found", "delta": 1 },
+        { "kind": "adjust_actor_stat", "actor_id": "awa", "stat": "awa_secret_3_found", "delta": 1 }
+      ]
+    },
+    {
+      "id": "secret-jonah-1-ex-wife",
+      "advance_signals": [
+        {
+          "signal": "stat_threshold",
+          "conditions": [
+            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "jonah" },
+            { "path": "actor_stats.jonah.trust", "operator": "gte", "value": 5 },
+            { "path": "stages_completed", "operator": "gte", "value": 1 },
+            { "path": "actor_stats.jonah.jonah_secret_1_found", "operator": "less_than", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_ids": ["secret-jonah-1-revealed"]
+    },
+    {
+      "id": "secret-jonah-1-revealed",
+      "summary": "Secret 1/3: The Parking Lot",
+      "update_message": "Jonah admits he still drives to his ex-wife's apartment after bad shifts.",
+      "narrative_lines": [
+        "Jonah rubs the back of his neck. 'After a bad shift — the ones where someone didn't make it — I sometimes drive to her place. My ex. I park across the street and just... sit there. Wanting to go up. Wanting to knock.' He shakes his head. 'But I don't. Because what would I say? Hey, someone died today, and I need you to make me feel like it didn't happen? She'd let me in. That's the worst part. She'd let me in, and I'd be using her again.'"
+      ],
+      "on_advance_effects": [
+        { "kind": "adjust_actor_stat", "actor_id": "jonah", "stat": "jonah_secrets_found", "delta": 1 },
+        { "kind": "adjust_actor_stat", "actor_id": "jonah", "stat": "jonah_secret_1_found", "delta": 1 }
+      ]
+    },
+    {
+      "id": "secret-jonah-2-overdose",
+      "advance_signals": [
+        {
+          "signal": "stat_threshold",
+          "conditions": [
+            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "jonah" },
+            { "path": "actor_stats.jonah.trust", "operator": "gte", "value": 7 },
+            { "path": "stages_completed", "operator": "gte", "value": 4 },
+            { "path": "actor_stats.jonah.jonah_secret_2_found", "operator": "less_than", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_ids": ["secret-jonah-2-revealed"]
+    },
+    {
+      "id": "secret-jonah-2-revealed",
+      "summary": "Secret 2/3: The Teenager",
+      "update_message": "Jonah reveals the patient death that still haunts him.",
+      "narrative_lines": [
+        "Jonah's voice drops. 'There was a kid. Seventeen. Overdose. The one I joke about — the one who ruined my weekend. That kid.' He stares at the table. 'He was the same age as my little cousin. Same haircut. And when I close my eyes in a quiet room, I still see his face. Not the dying part. The part before, when his mom was on the phone and I was holding pressure and thinking, this is someone's whole world.' He exhales. 'I joke about it because if I don't, I'll hear that mom's voice every time someone goes quiet.'"
+      ],
+      "on_advance_effects": [
+        { "kind": "adjust_actor_stat", "actor_id": "jonah", "stat": "jonah_secrets_found", "delta": 1 },
+        { "kind": "adjust_actor_stat", "actor_id": "jonah", "stat": "jonah_secret_2_found", "delta": 1 }
+      ]
+    },
+    {
+      "id": "secret-jonah-3-crises",
+      "advance_signals": [
+        {
+          "signal": "stat_threshold",
+          "conditions": [
+            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "jonah" },
+            { "path": "actor_stats.jonah.trust", "operator": "gte", "value": 9 },
+            { "path": "stages_completed", "operator": "gte", "value": 8 },
+            { "path": "actor_stats.jonah.jonah_secret_3_found", "operator": "less_than", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_ids": ["secret-jonah-3-revealed"]
+    },
+    {
+      "id": "secret-jonah-3-revealed",
+      "summary": "Secret 3/3: The Crises",
+      "update_message": "Jonah confesses he manufactures problems to feel necessary.",
+      "narrative_lines": [
+        "Jonah leans back. 'I do this thing — I don't know how to explain it — where I create problems. Small ones. Pick a fight. Break something minor. Need to be rescued from something that isn't actually happening.' He rubs his face. 'Because when things are calm, I don't know who I am. I only know who I am when someone needs me to fix something. So I make sure something always needs fixing.'"
+      ],
+      "on_advance_effects": [
+        { "kind": "adjust_actor_stat", "actor_id": "jonah", "stat": "jonah_secrets_found", "delta": 1 },
+        { "kind": "adjust_actor_stat", "actor_id": "jonah", "stat": "jonah_secret_3_found", "delta": 1 }
+      ]
+    },
+    {
+      "id": "secret-sophea-1-songs",
+      "advance_signals": [
+        {
+          "signal": "stat_threshold",
+          "conditions": [
+            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "sophea" },
+            { "path": "actor_stats.sophea.trust", "operator": "gte", "value": 5 },
+            { "path": "stages_completed", "operator": "gte", "value": 1 },
+            { "path": "actor_stats.sophea.sophea_secret_1_found", "operator": "less_than", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_ids": ["secret-sophea-1-revealed"]
+    },
+    {
+      "id": "secret-sophea-1-revealed",
+      "summary": "Secret 1/3: The Songs",
+      "update_message": "Sophea reveals she writes songs she never performs.",
+      "narrative_lines": [
+        "Sophea's eyes drift to the window. 'I write songs,' she says. 'I've been writing them for years. But I've never performed a single one.' She traces the rim of her cup. 'They're the only place I let myself be angry. At my mother. At my students. At every person who ever told me I was so easy to love like it was a compliment.' She smiles, but it doesn't reach her eyes. 'If I sang them, people would hear who I actually am. And I don't think they'd still call me easy.'"
+      ],
+      "on_advance_effects": [
+        { "kind": "adjust_actor_stat", "actor_id": "sophea", "stat": "sophea_secrets_found", "delta": 1 },
+        { "kind": "adjust_actor_stat", "actor_id": "sophea", "stat": "sophea_secret_1_found", "delta": 1 }
+      ]
+    },
+    {
+      "id": "secret-sophea-2-audition",
+      "advance_signals": [
+        {
+          "signal": "stat_threshold",
+          "conditions": [
+            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "sophea" },
+            { "path": "actor_stats.sophea.trust", "operator": "gte", "value": 7 },
+            { "path": "stages_completed", "operator": "gte", "value": 4 },
+            { "path": "actor_stats.sophea.sophea_secret_2_found", "operator": "less_than", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_ids": ["secret-sophea-2-revealed"]
+    },
+    {
+      "id": "secret-sophea-2-revealed",
+      "summary": "Secret 2/3: The Audition",
+      "update_message": "Sophea confesses she deliberately ruined an audition to avoid wanting more.",
+      "narrative_lines": [
+        "Sophea goes still. 'There was an audition. A real one. Regional orchestra, first chair. I had it.' She picks at the edge of her sleeve. 'But if I'd gotten it — if I'd actually succeeded — I would have had to admit that I wanted something for myself. That I wasn't just performing to keep people comfortable. So I botched it. Deliberately. Played flat, rushed the tempo, missed the cadence.' She looks down. 'My teacher said it was a shame. I smiled and said I'd try again next year. I never did.'"
+      ],
+      "on_advance_effects": [
+        { "kind": "adjust_actor_stat", "actor_id": "sophea", "stat": "sophea_secrets_found", "delta": 1 },
+        { "kind": "adjust_actor_stat", "actor_id": "sophea", "stat": "sophea_secret_2_found", "delta": 1 }
+      ]
+    },
+    {
+      "id": "secret-sophea-3-resentment",
+      "advance_signals": [
+        {
+          "signal": "stat_threshold",
+          "conditions": [
+            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "sophea" },
+            { "path": "actor_stats.sophea.trust", "operator": "gte", "value": 9 },
+            { "path": "stages_completed", "operator": "gte", "value": 8 },
+            { "path": "actor_stats.sophea.sophea_secret_3_found", "operator": "less_than", "value": 1 }
+          ]
+        }
+      ],
+      "next_stage_ids": ["secret-sophea-3-revealed"]
+    },
+    {
+      "id": "secret-sophea-3-revealed",
+      "summary": "Secret 3/3: The Resentment",
+      "update_message": "Sophea admits she resents how much her students need her.",
+      "narrative_lines": [
+        "Sophea's voice goes flat, almost clinical. 'I resent them,' she says. 'My students. I resent how much they need me. How they look at me like I'm the only person who will ever understand them. And then I go home and hate myself for feeling that way, because they're children, and they need someone, and I'm supposed to be grateful that I'm that person.' She presses her fingers to her temples. 'But I'm so tired of being needed. I'm so tired of being the safe choice.'"
+      ],
+      "on_advance_effects": [
+        { "kind": "adjust_actor_stat", "actor_id": "sophea", "stat": "sophea_secrets_found", "delta": 1 },
+        { "kind": "adjust_actor_stat", "actor_id": "sophea", "stat": "sophea_secret_3_found", "delta": 1 }
       ]
     }
   ]

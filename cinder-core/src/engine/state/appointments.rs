@@ -34,8 +34,6 @@ pub struct PatientRecord {
     pub intro_blurb: String,
     pub return_blurb: String,
     #[serde(default)]
-    pub secret_notes: Vec<String>,
-    #[serde(default)]
     pub appointment_count: u32,
     #[serde(default)]
     pub last_seen_appointment: Option<u32>,
@@ -189,12 +187,6 @@ pub fn resolved_actor_prompt_context(
         format!("Carry the emotional residue of {}.", patient.intro_blurb),
         format!("Your tendency under pressure: {}.", patient.coping_style),
     ]);
-    subtext_notes.extend(
-        patient
-            .secret_notes
-            .iter()
-            .map(|secret| format!("Hidden truth: {secret}")),
-    );
     let mut response_notes = behavior_actor.prompt_context.response_notes.clone();
     response_notes.push(format!(
         "You are in appointment {appointment_number}. Respond as {} would in therapy, without narrating future sessions.",
@@ -479,7 +471,6 @@ fn build_patient_record(
         inspect_blurb: definition.inspect_blurb.clone(),
         intro_blurb: definition.intro_blurb.clone(),
         return_blurb: definition.return_blurb.clone(),
-        secret_notes: definition.secret_notes.clone(),
         appointment_count: 0,
         last_seen_appointment: None,
         last_feedback_rating: None,

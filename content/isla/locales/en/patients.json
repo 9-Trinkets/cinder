@@ -37,11 +37,6 @@
     "inspect_blurb": "Awa holds herself like someone ready to intercept the next problem before it reaches anyone else, and the vigilance makes even stillness look like work.",
     "intro_blurb": "Awa arrives early, alert and unsmiling, with the contained intensity of someone who spends all day anticipating other people's needs before they can voice them.",
     "return_blurb": "She is still quick with a cutting joke or a practical detour when grief gets close, but now the detour reads more like habit than conviction.",
-    "secret_notes": [
-      "She still listens to the final voicemail her older brother left before the accident, but has never told anyone she keeps replaying it.",
-      "She quietly sabotaged a serious relationship by inventing a work obligation the night her partner was going to ask her to move in.",
-      "Part of her caregiving compulsion is guilt: she believes she should have noticed her brother was driving exhausted and stopped him."
-    ],
     "actor_stats": {
       "trust": 3,
       "openness": 2,
@@ -65,11 +60,6 @@
     "inspect_blurb": "Jonah looks sturdy in the practiced way of someone who knows how to stay functional long after his feelings have left the room.",
     "intro_blurb": "Jonah arrives with the restless alertness of someone whose nervous system trusts alarms more than silence.",
     "return_blurb": "He still deflects with humor, but now he pauses afterward as if noticing the dodge in real time.",
-    "secret_notes": [
-      "He sometimes parks outside his ex-wife's apartment after a difficult shift, wanting contact but unable to make himself knock or call.",
-      "The patient death he jokes about most was a teenage overdose that still visits him in flashes whenever a room goes quiet.",
-      "He manufactures small crises in his personal life because he only knows how to feel necessary when something is breaking."
-    ],
     "actor_stats": {
       "trust": 4,
       "openness": 3,
@@ -93,11 +83,6 @@
     "inspect_blurb": "Sophea's smile arrives on cue, then lingers half a beat too long after the rest of her face has gone tired.",
     "intro_blurb": "Sophea enters already trying to make the room easy for you, which is its own kind of confession.",
     "return_blurb": "She is more willing to let silence stand now, though you can still see the impulse to fill it with reassurance.",
-    "secret_notes": [
-      "She has been writing songs she never performs because they are the only place she allows herself to sound angry at her family.",
-      "She once deliberately ruined an audition that might have changed her life because succeeding would have forced her to admit she wanted more than being adored for being easy.",
-      "She resents how much her students need her and then despises herself for feeling that resentment."
-    ],
     "actor_stats": {
       "trust": 4,
       "openness": 4,
