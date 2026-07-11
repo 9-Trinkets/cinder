@@ -429,33 +429,34 @@ pub async fn set_locale(
     let (pack_id, _, state_json) = load_session_row(&mut tx, &session_id, &player_id, true).await?;
     let locale = locale.to_string();
     let locale_for_runtime = locale.clone();
-    let (changed_text, game_over, ui_snapshot, new_state_json) = tokio::task::spawn_blocking(move || {
-        let localized_pack = loader::load_pack_from_dir_with_locale(
-            &loader::pack_dir(&pack_id),
-            Some(&locale_for_runtime),
-        )
-        .map_err(|e| format!("failed to load locale '{locale_for_runtime}': {e}"))?;
-        let language_name = localized_pack.ui_text.language_name.clone();
-        let runtime = build_runtime_impl(localized_pack, &state_json)?;
-        runtime
-            .relocalize_story_vars()
-            .map_err(|e| format!("relocalize error: {e}"))?;
-        let changed_text = runtime.content().render_template(
-            &runtime.content().ui_text.language_changed_text,
-            &[("language_name", language_name.as_str())],
-        );
-        let ui_snapshot = ui::build_ui_snapshot(&runtime, &pack_id)?;
-        let new_state = runtime
-            .export_state()
-            .map_err(|e| format!("state export error: {e}"))?;
-        let game_over = new_state.game_over;
-        let new_state_json =
-            serde_json::to_string(&new_state).map_err(|e| format!("serialization error: {e}"))?;
+    let (changed_text, game_over, ui_snapshot, new_state_json) =
+        tokio::task::spawn_blocking(move || {
+            let localized_pack = loader::load_pack_from_dir_with_locale(
+                &loader::pack_dir(&pack_id),
+                Some(&locale_for_runtime),
+            )
+            .map_err(|e| format!("failed to load locale '{locale_for_runtime}': {e}"))?;
+            let language_name = localized_pack.ui_text.language_name.clone();
+            let runtime = build_runtime_impl(localized_pack, &state_json)?;
+            runtime
+                .relocalize_story_vars()
+                .map_err(|e| format!("relocalize error: {e}"))?;
+            let changed_text = runtime.content().render_template(
+                &runtime.content().ui_text.language_changed_text,
+                &[("language_name", language_name.as_str())],
+            );
+            let ui_snapshot = ui::build_ui_snapshot(&runtime, &pack_id)?;
+            let new_state = runtime
+                .export_state()
+                .map_err(|e| format!("state export error: {e}"))?;
+            let game_over = new_state.game_over;
+            let new_state_json = serde_json::to_string(&new_state)
+                .map_err(|e| format!("serialization error: {e}"))?;
 
-        Ok::<_, String>((changed_text, game_over, ui_snapshot, new_state_json))
-    })
-    .await
-    .map_err(|e| format!("blocking task panicked: {e:?}"))??;
+            Ok::<_, String>((changed_text, game_over, ui_snapshot, new_state_json))
+        })
+        .await
+        .map_err(|e| format!("blocking task panicked: {e:?}"))??;
 
     sqlx::query(
         "UPDATE game_sessions SET locale = $1, state_json = $2::jsonb, updated_at = NOW() WHERE id = $3 AND player_id = $4",

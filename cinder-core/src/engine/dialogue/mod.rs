@@ -18,7 +18,7 @@ use self::prompts::{
     actor_turn_decider_system_prompt, build_actor_turn_action_prompt,
     build_chapter_relationship_summary_prompt, build_chapter_script_summary_prompt,
     build_conversation_memory_summary_prompt, build_direct_speech_intent_prompt,
-    build_menu_intent_prompt, build_scene_brief_dialogue_prompt,
+    build_menu_intent_prompt, build_scene_brief_dialogue_prompt, build_stage_assignment_prompt,
     chapter_relationship_summarizer_system_prompt, chapter_script_summarizer_system_prompt,
     conversation_memory_summarizer_system_prompt, dialogue_system_prompt,
     direct_speech_intent_system_prompt, menu_intent_system_prompt, sanitize_statement,
@@ -41,6 +41,7 @@ const CHAPTER_SCRIPT_SUMMARIZER_ROLE: &str = "chapter_script_summarizer";
 const CHAPTER_RELATIONSHIP_SUMMARIZER_ROLE: &str = "chapter_relationship_summarizer";
 const DIRECT_SPEECH_ATTRACTION_INTENT_ROLE: &str = "direct_speech_intent";
 const PERSPECTIVE_REVIEW_ROLE: &str = "perspective_review";
+const STAGE_ASSIGNMENT_ROLE: &str = "stage_assignment";
 const CONVERSATION_MEMORY_SUMMARY_TIMEOUT: Duration = Duration::from_secs(10);
 const VALIDATED_ROLE_MAX_ATTEMPTS: usize = 4;
 
@@ -108,6 +109,11 @@ pub trait DialogueGenerator: Send + Sync {
         &self,
         request: &PerspectiveReviewRequest,
     ) -> Result<PerspectiveReview, String>;
+
+    fn assign_stage_participants(
+        &self,
+        request: &StageAssignmentRequest,
+    ) -> Result<StageAssignment, String>;
 }
 
 pub struct SynapseDialogueGenerator {
@@ -383,6 +389,38 @@ The review text should be 2-5 sentences in the patient's voice — honest, speci
         )?;
         serde_json::from_str::<PerspectiveReview>(&response)
             .map_err(|e| format!("failed to parse perspective review: {e}"))
+    }
+
+    fn assign_stage_participants(
+        &self,
+        request: &StageAssignmentRequest,
+    ) -> Result<StageAssignment, String> {
+        self.run_validated_text_role(
+            STAGE_ASSIGNMENT_ROLE,
+            build_stage_assignment_prompt(request),
+            "You rank which characters are most likely to join the selected side of a stage split. Respond only with valid JSON.".to_string(),
+            |text| {
+                let parsed: StageAssignment = serde_json::from_str(text.trim())
+                    .map_err(|error| format!("failed to parse stage assignment: {error}"))?;
+                if parsed.assignments.len() != request.candidates.len() {
+                    return Err(format!(
+                        "expected {} assignments, got {}",
+                        request.candidates.len(),
+                        parsed.assignments.len()
+                    ));
+                }
+                for assignment in &parsed.assignments {
+                    if !request
+                        .candidates
+                        .iter()
+                        .any(|candidate| candidate.actor_id == assignment.actor_id)
+                    {
+                        return Err(format!("unknown actor_id '{}'", assignment.actor_id));
+                    }
+                }
+                Ok(parsed)
+            },
+        )
     }
 
     fn generate_dynamic_menu_options(

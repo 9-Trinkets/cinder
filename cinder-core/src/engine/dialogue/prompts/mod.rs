@@ -2,7 +2,7 @@ use super::{
     ActorTurnActionRequest, ActorTurnAffordanceOption, ActorTurnAffordanceTarget,
     ActorTurnCommandInvocation, ActorTurnSpeakCandidate, ChapterRelationshipSummaryRequest,
     ChapterScriptSummaryRequest, ConversationMemorySummaryRequest, DialogueRequest,
-    DirectSpeechIntentRequest, MenuIntentRequest,
+    DirectSpeechIntentRequest, MenuIntentRequest, StageAssignmentRequest,
 };
 use crate::content::types::SpeechIntentLabel;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine};
@@ -249,6 +249,47 @@ pub(crate) fn build_direct_speech_intent_prompt(
     )
 }
 
+pub(crate) fn build_stage_assignment_prompt(request: &StageAssignmentRequest) -> String {
+    let candidate_lines = request
+        .candidates
+        .iter()
+        .map(|candidate| {
+            let actor_stats = format_stat_map(&candidate.actor_stats);
+            let pair_stats = format_stat_map(&candidate.pair_stats_with_initiator);
+            format!(
+                "- actor_id: {actor_id}\n  name: {actor_name}\n  current_room: {current_room_title}\n  actor_stats: {actor_stats}\n  pair_stats_with_{initiator_actor_id}: {pair_stats}",
+                actor_id = candidate.actor_id,
+                actor_name = candidate.actor_name,
+                current_room_title = candidate.current_room_title,
+                actor_stats = actor_stats,
+                initiator_actor_id = request.initiator_actor_id,
+                pair_stats = pair_stats,
+            )
+        })
+        .collect::<Vec<_>>()
+        .join("\n");
+
+    format!(
+        "You are deciding how to split a stage's characters between two possible room outcomes.\n\nStage: {stage_id}\nSelection: {selection_label}\nInitiator: {initiator_actor_name}\nSelected room: {selected_room_title}\nRemaining room: {remaining_room_title}\n\nCurrent beat notes:\n{beat_note}\n\nContent-specific instructions:\n{prompt_instructions}\n\nFor each candidate below, assign an integer selection_score from 0 to 100 for how likely they are to join {initiator_actor_name} in {selected_room_title} for this stage split right now.\nUse only the candidate's stats, their pair stats with the initiator, and the content instructions above. Higher score means more likely to join the selected room.\n\nReturn JSON in exactly this shape:\n{{\"assignments\":[{{\"actor_id\":\"...\",\"selection_score\":72,\"rationale\":\"short reason\"}}]}}\n\nCandidates:\n{candidate_lines}\n",
+        stage_id = request.stage_id,
+        selection_label = request.selection_label,
+        initiator_actor_name = request.initiator_actor_name,
+        selected_room_title = request.selected_room_title,
+        remaining_room_title = request.remaining_room_title,
+        beat_note = if request.beat_note.trim().is_empty() {
+            "(none)"
+        } else {
+            request.beat_note.trim()
+        },
+        prompt_instructions = if request.prompt_instructions.trim().is_empty() {
+            "(none)"
+        } else {
+            request.prompt_instructions.trim()
+        },
+        candidate_lines = candidate_lines,
+    )
+}
+
 mod actor_turn;
 pub(crate) use actor_turn::{
     actor_turn_decider_system_prompt, chapter_relationship_summarizer_system_prompt,
@@ -276,6 +317,17 @@ pub(super) fn format_bullets(lines: &[String], empty_message: &str) -> String {
         .map(|line| format!("- {}", sanitize_statement(line)))
         .collect::<Vec<_>>()
         .join("\n")
+}
+
+fn format_stat_map(stats: &std::collections::BTreeMap<String, i32>) -> String {
+    if stats.is_empty() {
+        return "(none)".to_string();
+    }
+    stats
+        .iter()
+        .map(|(key, value)| format!("{key}={value}"))
+        .collect::<Vec<_>>()
+        .join(", ")
 }
 
 fn format_chapter_lines(lines: &[String], empty_message: &str) -> String {

@@ -3,7 +3,7 @@ use super::types::{
     ActorTurnActionDecision, ActorTurnActionRequest, ConversationMemorySummaryRequest,
     DialogueRequest, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
     DynamicMenuOptionOutput, DynamicMenuRequest, MenuIntentDecision, MenuIntentRequest,
-    PerspectiveReview, PerspectiveReviewRequest,
+    PerspectiveReview, PerspectiveReviewRequest, StageAssignment, StageAssignmentRequest,
 };
 use crate::content::types::SpeechIntentLabel;
 use std::collections::BTreeMap;
@@ -16,6 +16,7 @@ pub struct ScriptedDialogueGenerator {
     memory_summaries: BTreeMap<String, String>,
     attraction_intents: BTreeMap<String, DirectSpeechIntentDecision>,
     perspective_reviews: BTreeMap<String, PerspectiveReview>,
+    stage_assignments: BTreeMap<String, StageAssignment>,
     requests: std::sync::Arc<std::sync::Mutex<Vec<DialogueRequest>>>,
 }
 
@@ -79,6 +80,12 @@ impl ScriptedDialogueGenerator {
     pub fn with_perspective_review(mut self, actor_id: &str, review: PerspectiveReview) -> Self {
         self.perspective_reviews
             .insert(actor_id.to_string(), review);
+        self
+    }
+
+    pub fn with_stage_assignment(mut self, stage_id: &str, assignment: StageAssignment) -> Self {
+        self.stage_assignments
+            .insert(stage_id.to_string(), assignment);
         self
     }
 
@@ -184,6 +191,21 @@ impl DialogueGenerator for ScriptedDialogueGenerator {
                 format!(
                     "missing scripted perspective review for '{}'",
                     request.actor_name
+                )
+            })
+    }
+
+    fn assign_stage_participants(
+        &self,
+        request: &StageAssignmentRequest,
+    ) -> Result<StageAssignment, String> {
+        self.stage_assignments
+            .get(&request.stage_id)
+            .cloned()
+            .ok_or_else(|| {
+                format!(
+                    "missing scripted stage assignment for '{}'",
+                    request.stage_id
                 )
             })
     }

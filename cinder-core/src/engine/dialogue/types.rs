@@ -294,3 +294,42 @@ pub struct PerspectiveReview {
     pub rating: u32,
     pub review_text: String,
 }
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StageAssignmentRequest {
+    pub locale: String,
+    pub system_text: SystemTextDefinition,
+    pub stage_id: String,
+    pub selection_label: String,
+    pub prompt_instructions: String,
+    pub initiator_actor_id: String,
+    pub initiator_actor_name: String,
+    pub selected_room_id: String,
+    pub selected_room_title: String,
+    pub remaining_room_id: String,
+    pub remaining_room_title: String,
+    pub beat_note: String,
+    pub candidates: Vec<StageAssignmentCandidate>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StageAssignmentCandidate {
+    pub actor_id: String,
+    pub actor_name: String,
+    pub current_room_id: String,
+    pub current_room_title: String,
+    pub actor_stats: BTreeMap<String, i32>,
+    pub pair_stats_with_initiator: BTreeMap<String, i32>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StageAssignment {
+    pub assignments: Vec<StageAssignmentScore>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct StageAssignmentScore {
+    pub actor_id: String,
+    pub selection_score: i32,
+    pub rationale: String,
+}

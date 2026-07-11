@@ -286,7 +286,7 @@ mod tests {
         ActorTurnActionDecision, ActorTurnActionRequest, ConversationMemorySummaryRequest,
         DialogueRequest, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
         DynamicMenuOptionOutput, DynamicMenuRequest, MenuIntentDecision, MenuIntentRequest,
-        PerspectiveReview, PerspectiveReviewRequest,
+        PerspectiveReview, PerspectiveReviewRequest, StageAssignment, StageAssignmentRequest,
     };
     use crate::engine::events::WorldEvent;
     use crate::engine::state::{
@@ -340,6 +340,13 @@ mod tests {
             &self,
             _request: &PerspectiveReviewRequest,
         ) -> Result<PerspectiveReview, String> {
+            Err("not used in test".to_string())
+        }
+
+        fn assign_stage_participants(
+            &self,
+            _request: &StageAssignmentRequest,
+        ) -> Result<StageAssignment, String> {
             Err("not used in test".to_string())
         }
     }

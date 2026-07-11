@@ -182,6 +182,44 @@ pub fn load_pack_from_dir_with_locale(
         "array_contains",
     ];
     for stage in &beats.stages {
+        if let Some(config) = &stage.stage_assignment {
+            if !config.initiator_actor_id.trim().is_empty() {
+                require_known_id(
+                    &config.initiator_actor_id,
+                    &actors
+                        .iter()
+                        .map(|actor| actor.id.as_str())
+                        .collect::<Vec<_>>(),
+                    &format!(
+                        "beat '{}' stage_assignment initiator_actor_id '{}'",
+                        stage.id, config.initiator_actor_id
+                    ),
+                    "actors",
+                )?;
+            }
+            if !config.selected_room_id.trim().is_empty() {
+                require_known_id(
+                    &config.selected_room_id,
+                    &room_index.keys().map(String::as_str).collect::<Vec<_>>(),
+                    &format!(
+                        "beat '{}' stage_assignment selected_room_id '{}'",
+                        stage.id, config.selected_room_id
+                    ),
+                    "rooms",
+                )?;
+            }
+            if !config.remaining_room_id.trim().is_empty() {
+                require_known_id(
+                    &config.remaining_room_id,
+                    &room_index.keys().map(String::as_str).collect::<Vec<_>>(),
+                    &format!(
+                        "beat '{}' stage_assignment remaining_room_id '{}'",
+                        stage.id, config.remaining_room_id
+                    ),
+                    "rooms",
+                )?;
+            }
+        }
         for id in &stage.next_stage_ids {
             require_known_id(
                 id,

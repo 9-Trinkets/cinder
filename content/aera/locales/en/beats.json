@@ -12,16 +12,41 @@
         "time_reached:18:00"
       ],
       "next_stage_ids": [
+        "dinner-prep"
+      ]
+    },
+    {
+      "id": "dinner-prep",
+      "summary": "Dinner prep: Ren starts getting food ready while the house naturally splits between the kitchen and lounge.",
+      "update_message": "It is 6 PM. Ren heads into the kitchen to get dinner going, and everyone else has to decide whether to help or hang back in the lounge.",
+      "beat_note": "Ren takes the lead on dinner prep, but the point is not chores for their own sake. This split creates the house's first genuinely simultaneous scenes. The kitchen should feel warmer, more practical, and slightly more intimate because there is a task to share; the lounge should feel looser, more observant, and a little more performative because people can sit back and watch what forms elsewhere. Let the people who drift into the kitchen show what kind of closeness they seek through usefulness, comfort, curiosity, or flirtation. Let the people who stay behind react to the split, fill the space in a different way, and notice who chose whom.",
+      "advance_signals": [
+        "time_reached:18:30"
+      ],
+      "stage_assignment": {
+        "selection_label": "dinner prep",
+        "prompt_instructions": "Score how likely each candidate is to join Ren in the kitchen during dinner prep instead of remaining in the lounge. Favor candidates who would seek closeness through usefulness, comfort, curiosity, flirtation, or an easy practical rhythm with Ren. Lower the score when a candidate would rather observe, hold the room socially, avoid domestic intimacy, or wait to see what forms elsewhere.",
+        "initiator_actor_id": "ren",
+        "selected_room_id": "kitchen",
+        "remaining_room_id": "lounge",
+        "max_selected_actors": 2,
+        "min_selected_actors": 1,
+        "score_threshold": 50,
+        "initiator_line_template": "{initiator_name} heads to the {selected_room_title} to start {selection_label}.",
+        "selected_line_template": "{selected_names} join in the {selected_room_title}.",
+        "remaining_line_template": "{remaining_names} stay in the {remaining_room_title}."
+      },
+      "next_stage_ids": [
         "share-dinner-in-kitchen"
       ]
     },
     {
       "id": "share-dinner-in-kitchen",
       "summary": "Dinner in the kitchen: the house gathers around food and eats together.",
-      "update_message": "It is 6 PM. Everyone drifts to the kitchen where dinner is already spread out and waiting.",
-      "beat_note": "Dinner is premade and laid out. This is the first time the whole house shares a meal, and food gives everyone a reason to hover, reach past each other, claim a spot, and talk without it feeling forced. Let eating together do the social work: who sits close to whom, who serves others without being asked, who is particular about what they take, who uses the food as an excuse to stay near someone. Let conversation move between the practical and the personal. Someone might compliment the spread, someone might make a dietary comment, someone might use the act of eating to avoid or invite closeness. Make the meal feel communal, a little charged, and emotionally useful.",
+      "update_message": "It is 6:30 PM. Prep turns into a shared meal as everyone ends up back in the kitchen together.",
+      "beat_note": "Dinner follows directly from the prep split. The meal should carry forward whatever alignment the kitchen and lounge just created: who already feels easy together, who is arriving from a separate vibe, who now has to bridge a gap, and who uses food to keep a promising thread going. Let eating together do the social work: who sits close to whom, who serves others without being asked, who is particular about what they take, who uses the meal to stay near someone, and who arrives already feeling left out or newly included. Make the communal dinner feel a little more charged because the house has already had a chance to divide and recombine.",
       "advance_signals": [
-        "time_reached:19:00"
+        "time_reached:19:30"
       ],
       "next_stage_ids": [
         "talk-after-dinner"
@@ -30,12 +55,12 @@
     {
       "id": "talk-after-dinner",
       "summary": "Talk after dinner: the house lingers at the dining table and the conversation gets less guarded.",
-      "update_message": "It is 7 PM. Dinner is done. Everyone has drifted to the dining table and the conversation is still going.",
+      "update_message": "It is 7:30 PM. Dinner is done. Everyone has drifted to the dining table and the conversation is still going.",
       "beat_note": "This is the first real settling. The meal is finished, the kitchen noise is gone, and now there is just the table, the light, and whatever people choose to fill the quiet with. Let conversation slow down and get a little more revealing. Someone might bring up something from earlier in the evening, replay a moment that stuck with them, admit something small, or start testing a connection more openly. This is also where the first cracks in group harmony might show, or the first time two people look at each other and realize they want to keep talking after everyone else stops. Push for honesty by default, depth where the pair stats support it, and one moment per conversation that would feel too honest for the kitchen.",
       "advance_signals": [
-        "time_reached:20:00",
+        "time_reached:20:30",
         {
-          "signal": "time_reached:19:30",
+          "signal": "time_reached:20:00",
           "conditions": [
             {
               "path": "pair_stats.aera.ren.connection",
@@ -52,10 +77,10 @@
     {
       "id": "debrief-in-bedrooms",
       "summary": "Debrief in bedrooms: split by room and compare impressions from the evening.",
-      "update_message": "It is 7 PM. The housemates drift to bedrooms to debrief and compare impressions from dinner and the evening.",
+      "update_message": "It is 8 PM. The housemates drift to bedrooms to debrief and compare impressions from dinner and the evening.",
       "beat_note": "After dinner, split the house into smaller bedroom conversations and let the public group energy turn into private interpretation. This is where actors compare notes, test first loyalties, admit surprise, and say things they would not say in the kitchen. Encourage softer but sharper conversation: who made the strongest impression, who feels safest, who may be hiding something, who seems attractive, who seems exhausting, who might become an ally, and who might become trouble. Let people replay moments from dinner, defend or question each other, and start building early social narratives.",
       "advance_signals": [
-        "time_reached:21:00"
+        "time_reached:21:30"
       ],
       "next_stage_ids": [
         "sleep-end-first-day"
@@ -64,7 +89,7 @@
     {
       "id": "sleep-end-first-day",
       "summary": "Sleep and end of first day.",
-      "update_message": "It is 9 PM. The first day winds down toward sleep.",
+      "update_message": "It is 9:30 PM. The first day winds down toward sleep.",
       "beat_note": "This is the last emotional beat before lights out. Let conversations taper into final glances, unfinished thoughts, quiet vulnerability, and the sense that today's first impressions will carry into tomorrow. Actors should settle toward sleep while holding onto one clear feeling about the night: excitement, relief, attraction, suspicion, comfort, regret, or anticipation. End with the sense that the house has started choosing its first bonds and tensions, even if no one can fully name them yet.",
       "next_chapter_preview": "Tomorrow morning is when the house stops feeling like an arrival and starts feeling like a real social map. First routines, first private check-ins, and the first clear pulls between people will start to show.",
       "end_session": true

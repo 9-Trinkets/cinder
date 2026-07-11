@@ -208,6 +208,44 @@ pub enum AdvanceEffect {
     },
 }
 
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct StageAssignmentDefinition {
+    #[serde(default)]
+    pub selection_label: String,
+    #[serde(default)]
+    pub prompt_instructions: String,
+    #[serde(default)]
+    pub initiator_actor_id: String,
+    #[serde(default)]
+    pub selected_room_id: String,
+    #[serde(default)]
+    pub remaining_room_id: String,
+    #[serde(default = "default_stage_assignment_max_selected")]
+    pub max_selected_actors: usize,
+    #[serde(default = "default_stage_assignment_min_selected")]
+    pub min_selected_actors: usize,
+    #[serde(default = "default_stage_assignment_score_threshold")]
+    pub score_threshold: i32,
+    #[serde(default)]
+    pub initiator_line_template: String,
+    #[serde(default)]
+    pub selected_line_template: String,
+    #[serde(default)]
+    pub remaining_line_template: String,
+}
+
+fn default_stage_assignment_max_selected() -> usize {
+    2
+}
+
+fn default_stage_assignment_min_selected() -> usize {
+    1
+}
+
+fn default_stage_assignment_score_threshold() -> i32 {
+    50
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum SpeechIntentEffect {
@@ -264,6 +302,8 @@ pub struct BeatDefinition {
     pub next_stage_ids: Vec<String>,
     #[serde(default)]
     pub on_advance_effects: Vec<AdvanceEffect>,
+    #[serde(default)]
+    pub stage_assignment: Option<StageAssignmentDefinition>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]

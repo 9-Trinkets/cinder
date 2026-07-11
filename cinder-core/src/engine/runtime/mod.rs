@@ -2,7 +2,10 @@ use crate::content::types::{ContentPack, OpeningMenuOptionDefinition, OpeningMov
 use crate::engine::actor_tick::{ActorTickError, run_actor_tick};
 use crate::engine::commands::player_command_help_text;
 use crate::engine::conversation_memory::refresh_conversation_summaries;
-use crate::engine::dialogue::{DialogueGenerator, SynapseDialogueGenerator};
+use crate::engine::dialogue::{
+    DialogueGenerator, StageAssignment, StageAssignmentCandidate, StageAssignmentRequest,
+    StageAssignmentScore, SynapseDialogueGenerator,
+};
 use crate::engine::dialogue_grounding::render_story_text;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
 use crate::engine::neuron::{WorkflowDefinition, WorkflowTraceContext, load_workflow};
@@ -176,7 +179,7 @@ impl CinderRuntime {
     }
 
     pub fn run_turn(&self, raw_input: &str) -> Result<TurnOutcome, Box<dyn Error>> {
-        turn_runner::run_turn(
+        let outcome = turn_runner::run_turn(
             Arc::clone(&self.content),
             Arc::clone(&self.dialogue),
             Arc::clone(&self.state),
@@ -184,7 +187,8 @@ impl CinderRuntime {
             self.trace_events,
             &self.trace_dir,
             raw_input,
-        )
+        )?;
+        self.apply_stage_assignments(outcome)
     }
 
     pub fn run_tick(&self) -> Result<TurnOutcome, Box<dyn Error>> {
@@ -201,10 +205,12 @@ impl CinderRuntime {
                 }
             }
         };
+        let outcome = self.continue_after_game_over(outcome)?;
+        let outcome = self.apply_stage_assignments(outcome)?;
         if !outcome.text.is_empty() {
             self.push_transcript_line(&outcome.text).ok();
         }
-        self.continue_after_game_over(outcome)
+        Ok(outcome)
     }
 
     pub fn continue_after_game_over(
@@ -254,6 +260,258 @@ impl CinderRuntime {
             .lock()
             .map_err(|_| "failed to lock runtime state for patient name")?;
         Ok(current_patient_name(&state))
+    }
+
+    fn apply_stage_assignments(&self, outcome: TurnOutcome) -> Result<TurnOutcome, Box<dyn Error>> {
+        let Some((request, config)) = self.stage_assignment_request()? else {
+            return Ok(outcome);
+        };
+        let assignment = self
+            .dialogue
+            .assign_stage_participants(&request)
+            .unwrap_or_else(|error| {
+                eprintln!(
+                    "[cinder] stage assignment failed for '{}': {error}, using deterministic fallback",
+                    request.stage_id
+                );
+                self.fallback_stage_assignment(&request)
+            });
+        let summary = self.commit_stage_assignment(&request, &assignment, &config)?;
+        if summary.is_empty() {
+            return Ok(outcome);
+        }
+        let text = if outcome.text.is_empty() {
+            summary
+        } else {
+            format!("{}\n\n{}", outcome.text, summary)
+        };
+        Ok(TurnOutcome {
+            text,
+            game_over: outcome.game_over,
+        })
+    }
+
+    fn stage_assignment_request(
+        &self,
+    ) -> Result<
+        Option<(
+            StageAssignmentRequest,
+            crate::content::types::StageAssignmentDefinition,
+        )>,
+        Box<dyn Error>,
+    > {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for stage assignment")?;
+        for stage_id in &state.active_objective_stage_ids {
+            let Some(stage) = self
+                .content
+                .beats
+                .stages
+                .iter()
+                .find(|stage| &stage.id == stage_id)
+            else {
+                continue;
+            };
+            let Some(config) = stage.stage_assignment.as_ref() else {
+                continue;
+            };
+            if config.initiator_actor_id.trim().is_empty()
+                || config.selected_room_id.trim().is_empty()
+                || config.remaining_room_id.trim().is_empty()
+            {
+                continue;
+            }
+            let applied_flag = format!("stage_assignment_applied:{}", stage.id);
+            if state
+                .story_vars
+                .get(&applied_flag)
+                .is_some_and(|value| value == "true")
+            {
+                continue;
+            }
+            let Some(initiator) = self.content.actor(&config.initiator_actor_id) else {
+                continue;
+            };
+            let selected_room_title = self
+                .content
+                .room(&config.selected_room_id)
+                .map(|room| room.title.clone())
+                .unwrap_or_else(|| config.selected_room_id.clone());
+            let remaining_room_title = self
+                .content
+                .room(&config.remaining_room_id)
+                .map(|room| room.title.clone())
+                .unwrap_or_else(|| config.remaining_room_id.clone());
+            let candidates = self
+                .content
+                .actors
+                .iter()
+                .filter(|actor| actor.id != initiator.id)
+                .map(|actor| StageAssignmentCandidate {
+                    actor_id: actor.id.clone(),
+                    actor_name: display_actor_name(&state, actor),
+                    current_room_id: state.actor_room_id(&actor.id, &actor.room_id).to_string(),
+                    current_room_title: self
+                        .content
+                        .room(state.actor_room_id(&actor.id, &actor.room_id))
+                        .map(|room| room.title.clone())
+                        .unwrap_or_else(|| {
+                            state.actor_room_id(&actor.id, &actor.room_id).to_string()
+                        }),
+                    actor_stats: state.actor_stats_snapshot(&actor.id),
+                    pair_stats_with_initiator: state.pair_stats_snapshot(&actor.id, &initiator.id),
+                })
+                .collect::<Vec<_>>();
+            if candidates.is_empty() {
+                continue;
+            }
+            let request = StageAssignmentRequest {
+                locale: self.content.locale.clone(),
+                system_text: self.content.system_text.clone(),
+                stage_id: stage.id.clone(),
+                selection_label: if config.selection_label.trim().is_empty() {
+                    stage.summary.clone()
+                } else {
+                    config.selection_label.clone()
+                },
+                prompt_instructions: config.prompt_instructions.clone(),
+                initiator_actor_id: initiator.id.clone(),
+                initiator_actor_name: display_actor_name(&state, initiator),
+                selected_room_id: config.selected_room_id.clone(),
+                selected_room_title,
+                remaining_room_id: config.remaining_room_id.clone(),
+                remaining_room_title,
+                beat_note: stage.beat_note.clone(),
+                candidates,
+            };
+            return Ok(Some((request, config.clone())));
+        }
+        Ok(None)
+    }
+
+    fn fallback_stage_assignment(&self, request: &StageAssignmentRequest) -> StageAssignment {
+        let assignments = request
+            .candidates
+            .iter()
+            .enumerate()
+            .map(|(index, candidate)| StageAssignmentScore {
+                actor_id: candidate.actor_id.clone(),
+                selection_score: if candidate.current_room_id == request.selected_room_id {
+                    100
+                } else {
+                    100 - index as i32
+                },
+                rationale: "deterministic fallback".to_string(),
+            })
+            .collect();
+        StageAssignment { assignments }
+    }
+
+    fn commit_stage_assignment(
+        &self,
+        request: &StageAssignmentRequest,
+        assignment: &StageAssignment,
+        config: &crate::content::types::StageAssignmentDefinition,
+    ) -> Result<String, Box<dyn Error>> {
+        let mut scored = assignment.assignments.clone();
+        scored.sort_by(|left, right| {
+            right
+                .selection_score
+                .cmp(&left.selection_score)
+                .then_with(|| left.actor_id.cmp(&right.actor_id))
+        });
+        let selected_count = scored
+            .iter()
+            .filter(|entry| entry.selection_score >= config.score_threshold)
+            .count()
+            .max(config.min_selected_actors)
+            .min(config.max_selected_actors)
+            .min(scored.len());
+        let chosen = scored
+            .into_iter()
+            .take(selected_count)
+            .map(|entry| entry.actor_id)
+            .collect::<std::collections::BTreeSet<_>>();
+
+        let mut state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state to commit stage assignment")?;
+        let applied_flag = format!("stage_assignment_applied:{}", request.stage_id);
+        if state
+            .story_vars
+            .get(&applied_flag)
+            .is_some_and(|value| value == "true")
+        {
+            return Ok(String::new());
+        }
+        state.actor_room_overrides.insert(
+            request.initiator_actor_id.clone(),
+            request.selected_room_id.clone(),
+        );
+        for candidate in &request.candidates {
+            let room_id = if chosen.contains(&candidate.actor_id) {
+                &request.selected_room_id
+            } else {
+                &request.remaining_room_id
+            };
+            state
+                .actor_room_overrides
+                .insert(candidate.actor_id.clone(), room_id.clone());
+        }
+        state.story_vars.insert(applied_flag, "true".to_string());
+
+        let selected_names = request
+            .candidates
+            .iter()
+            .filter(|candidate| chosen.contains(&candidate.actor_id))
+            .map(|candidate| candidate.actor_name.clone())
+            .collect::<Vec<_>>();
+        let remaining_names = request
+            .candidates
+            .iter()
+            .filter(|candidate| !chosen.contains(&candidate.actor_id))
+            .map(|candidate| candidate.actor_name.clone())
+            .collect::<Vec<_>>();
+        let mut lines = Vec::new();
+        if !config.initiator_line_template.trim().is_empty() {
+            lines.push(self.content.render_template(
+                &config.initiator_line_template,
+                &[
+                    ("initiator_name", &request.initiator_actor_name),
+                    ("selection_label", &request.selection_label),
+                    ("selected_room_title", &request.selected_room_title),
+                    ("remaining_room_title", &request.remaining_room_title),
+                ],
+            ));
+        }
+        if !selected_names.is_empty() && !config.selected_line_template.trim().is_empty() {
+            let selected_names = join_with_and(&selected_names);
+            lines.push(self.content.render_template(
+                &config.selected_line_template,
+                &[
+                    ("selected_names", &selected_names),
+                    ("selection_label", &request.selection_label),
+                    ("selected_room_title", &request.selected_room_title),
+                    ("remaining_room_title", &request.remaining_room_title),
+                ],
+            ));
+        }
+        if !remaining_names.is_empty() && !config.remaining_line_template.trim().is_empty() {
+            let remaining_names = join_with_and(&remaining_names);
+            lines.push(self.content.render_template(
+                &config.remaining_line_template,
+                &[
+                    ("remaining_names", &remaining_names),
+                    ("selection_label", &request.selection_label),
+                    ("selected_room_title", &request.selected_room_title),
+                    ("remaining_room_title", &request.remaining_room_title),
+                ],
+            ));
+        }
+        Ok(lines.join(" "))
     }
 
     fn advance_appointment_if_needed(&self) -> Result<Option<String>, Box<dyn Error>> {
@@ -645,9 +903,303 @@ impl CinderRuntime {
     }
 }
 
+fn join_with_and(items: &[String]) -> String {
+    match items {
+        [] => String::new(),
+        [only] => only.clone(),
+        [first, second] => format!("{first} and {second}"),
+        _ => {
+            let mut result = items[..items.len() - 1].join(", ");
+            result.push_str(", and ");
+            result.push_str(&items[items.len() - 1]);
+            result
+        }
+    }
+}
+
 mod menus;
 mod perspective_review;
 mod session_closure;
 mod stats_trace;
 pub use self::session_closure::FinalChapterSummary;
 use self::stats_trace::stats_trace_snapshot;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::content::loader::load_pack_from_dir;
+    use crate::engine::dialogue::ScriptedDialogueGenerator;
+    use std::fs;
+    use std::sync::Arc;
+    use std::time::{SystemTime, UNIX_EPOCH};
+
+    #[test]
+    fn stage_assignment_caps_selected_actors_and_marks_stage_complete() {
+        let pack_dir = write_stage_assignment_test_pack();
+        let content = load_pack_from_dir(&pack_dir).expect("load test pack");
+        let state = WorldState::new(&content);
+        let dialogue = Arc::new(ScriptedDialogueGenerator::new().with_stage_assignment(
+            "dinner-prep",
+            StageAssignment {
+                assignments: vec![
+                    StageAssignmentScore {
+                        actor_id: "aera".to_string(),
+                        selection_score: 90,
+                        rationale: "already leaning toward Ren".to_string(),
+                    },
+                    StageAssignmentScore {
+                        actor_id: "mio".to_string(),
+                        selection_score: 82,
+                        rationale: "likes the energy in the kitchen".to_string(),
+                    },
+                    StageAssignmentScore {
+                        actor_id: "daichi".to_string(),
+                        selection_score: 15,
+                        rationale: "hangs back in the lounge".to_string(),
+                    },
+                ],
+            },
+        ));
+        let runtime = CinderRuntime::new_with_dialogue_generator_and_workflows(
+            content,
+            state,
+            false,
+            dialogue,
+            load_workflow(&workflow_path_for_id("cinder_turn")).expect("load turn workflow"),
+            load_workflow(&cinder_npc_tick_workflow_path()).expect("load npc tick workflow"),
+            load_workflow(&cinder_npc_turn_workflow_path()).expect("load npc move workflow"),
+            std::env::temp_dir(),
+        )
+        .expect("build runtime");
+
+        let first = runtime
+            .apply_stage_assignments(TurnOutcome {
+                text: String::new(),
+                game_over: false,
+            })
+            .expect("apply assignment");
+        let exported = runtime.export_state().expect("export state");
+
+        assert!(
+            first
+                .text
+                .contains("Ren heads to the Kitchen to start dinner prep.")
+        );
+        assert_eq!(
+            exported.actor_room_overrides.get("ren").map(String::as_str),
+            Some("kitchen")
+        );
+        assert_eq!(
+            exported
+                .actor_room_overrides
+                .get("aera")
+                .map(String::as_str),
+            Some("kitchen")
+        );
+        assert_eq!(
+            exported.actor_room_overrides.get("mio").map(String::as_str),
+            Some("kitchen")
+        );
+        assert_eq!(
+            exported
+                .actor_room_overrides
+                .get("daichi")
+                .map(String::as_str),
+            Some("lounge")
+        );
+        assert_eq!(
+            exported
+                .story_vars
+                .get("stage_assignment_applied:dinner-prep")
+                .map(String::as_str),
+            Some("true")
+        );
+
+        let second = runtime
+            .apply_stage_assignments(TurnOutcome {
+                text: String::new(),
+                game_over: false,
+            })
+            .expect("reapply assignment");
+        assert!(second.text.is_empty());
+    }
+
+    fn write_stage_assignment_test_pack() -> std::path::PathBuf {
+        let unique = SystemTime::now()
+            .duration_since(UNIX_EPOCH)
+            .expect("clock")
+            .as_nanos();
+        let base = std::env::temp_dir().join(format!("cinder-stage-assignment-{unique}"));
+        let locale_dir = base.join("locales").join("en");
+        fs::create_dir_all(&locale_dir).expect("create locale dir");
+        fs::write(base.join("settings.json"), "{}").expect("write settings");
+        fs::write(locale_dir.join("ui.json"), "{}").expect("write ui");
+        fs::write(locale_dir.join("system.json"), minimal_system_text_json())
+            .expect("write system");
+        fs::write(
+            locale_dir.join("opening.json"),
+            r#"{
+  "id": "opening",
+  "title": "Test Opening",
+  "start_room_id": "lounge",
+  "start_time_minutes": 1080,
+  "intro_text": "Intro",
+  "help_text": "Help"
+}"#,
+        )
+        .expect("write opening");
+        fs::write(
+            locale_dir.join("rooms.json"),
+            r#"[
+  {
+    "id": "lounge",
+    "title": "Lounge",
+    "summary": "A shared lounge.",
+    "inspect_text": "A shared lounge.",
+    "features": [],
+    "exits": []
+  },
+  {
+    "id": "kitchen",
+    "title": "Kitchen",
+    "summary": "A warm kitchen.",
+    "inspect_text": "A warm kitchen.",
+    "features": [],
+    "exits": []
+  }
+]"#,
+        )
+        .expect("write rooms");
+        fs::write(
+            locale_dir.join("actors.json"),
+            r#"[
+  {
+    "id": "ren",
+    "name": "Ren",
+    "room_id": "lounge",
+    "initial_stats": { "confidence": 5, "stamina": 8, "hunger": 3 },
+    "prompt_context": {}
+  },
+  {
+    "id": "aera",
+    "name": "Aera",
+    "room_id": "lounge",
+    "initial_stats": { "confidence": 3, "stamina": 6, "hunger": 5 },
+    "initial_pair_stats": { "ren": { "connection": 4, "attraction": 2, "safety": 3 } },
+    "prompt_context": {}
+  },
+  {
+    "id": "mio",
+    "name": "Mio",
+    "room_id": "lounge",
+    "initial_stats": { "confidence": 7, "stamina": 7, "hunger": 4 },
+    "initial_pair_stats": { "ren": { "connection": 2, "attraction": 3, "safety": 1 } },
+    "prompt_context": {}
+  },
+  {
+    "id": "daichi",
+    "name": "Daichi",
+    "room_id": "lounge",
+    "initial_stats": { "confidence": 1, "stamina": 9, "hunger": 2 },
+    "initial_pair_stats": { "ren": { "connection": 1, "attraction": 0, "safety": 2 } },
+    "prompt_context": {}
+  }
+]"#,
+        )
+        .expect("write actors");
+        fs::write(
+            locale_dir.join("beats.json"),
+            r#"{
+  "initial_stage_ids": ["dinner-prep"],
+  "stages": [
+    {
+      "id": "dinner-prep",
+      "summary": "Prep",
+      "update_message": "Prep starts.",
+      "beat_note": "Split the house.",
+      "stage_assignment": {
+        "selection_label": "dinner prep",
+        "prompt_instructions": "Prefer the kitchen when someone would want to be near Ren through useful, practical closeness.",
+        "initiator_actor_id": "ren",
+        "selected_room_id": "kitchen",
+        "remaining_room_id": "lounge",
+        "max_selected_actors": 2,
+        "min_selected_actors": 1,
+        "score_threshold": 50,
+        "initiator_line_template": "{initiator_name} heads to the {selected_room_title} to start {selection_label}.",
+        "selected_line_template": "{selected_names} join in the {selected_room_title}.",
+        "remaining_line_template": "{remaining_names} stay in the {remaining_room_title}."
+      },
+      "next_stage_ids": ["dinner"]
+    },
+    {
+      "id": "dinner",
+      "summary": "Dinner",
+      "update_message": "Dinner starts."
+    }
+  ]
+}"#,
+        )
+        .expect("write beats");
+        fs::write(
+            base.join("stats.json"),
+            r#"{
+  "actor": {
+    "confidence": { "default": 0 },
+    "stamina": { "default": 0 },
+    "hunger": { "default": 0 }
+  },
+  "pair": {
+    "connection": { "default": 0 },
+    "attraction": { "default": 0 },
+    "safety": { "default": 0 }
+  }
+}"#,
+        )
+        .expect("write stats");
+        base
+    }
+
+    fn minimal_system_text_json() -> &'static str {
+        r#"{
+  "dialogue_system_prompt": "",
+  "dialogue_section_character": "",
+  "dialogue_section_setting": "",
+  "dialogue_section_current_beat": "",
+  "dialogue_section_subtext": "",
+  "dialogue_section_recent_memory": "",
+  "dialogue_latest_line_label": "",
+  "dialogue_section_response": "",
+  "dialogue_no_direct_question": "",
+  "dialogue_no_character_facts": "",
+  "dialogue_no_setting_facts": "",
+  "dialogue_no_current_beat_facts": "",
+  "dialogue_no_subtext_facts": "",
+  "dialogue_no_recent_memory": "",
+  "dialogue_response_fallback": "",
+  "menu_intent_system_prompt": "",
+  "menu_section_title": "",
+  "menu_id_label": "",
+  "menu_offered_by_label": "",
+  "menu_intent_guidance_label": "",
+  "menu_available_options_label": "",
+  "menu_section_setting": "",
+  "menu_section_current_beat": "",
+  "menu_section_recent_memory": "",
+  "menu_latest_line_label": "",
+  "menu_decision_label": "",
+  "menu_no_direct_request": "",
+  "menu_no_authored_options": "",
+  "menu_decision_instruction": "",
+  "prompt_time_note": "",
+  "prompt_current_room_note": "",
+  "prompt_visible_features_note": "",
+  "prompt_people_here_note": "",
+  "prompt_exits_note": "",
+  "prompt_current_speaker_note": "",
+  "prompt_shared_room_note": "",
+  "prompt_latest_words_note": "",
+  "prompt_address_other_person_note": ""
+}"#
+    }
+}
