@@ -459,21 +459,40 @@ pub async fn get_session_ui(
         .await
         .map_err(|e| format!("db begin error: {e}"))?;
     let (pack_id, locale, state_json) =
-        load_session_row(&mut tx, &session_id, &player_id, false).await?;
-    tx.rollback()
-        .await
-        .map_err(|e| format!("db rollback error: {e}"))?;
+        load_session_row(&mut tx, &session_id, &player_id, true).await?;
 
-    tokio::task::spawn_blocking(move || {
+    let (snapshot, persisted_locale, new_state_json) = tokio::task::spawn_blocking(move || {
         let content = loader::load_named_pack(&pack_id, Some(&locale))
             .map_err(|e| format!("failed to load pack '{pack_id}' locale '{locale}': {e}"))?;
-
         let runtime = build_runtime_impl(content, &state_json)?;
-
-        ui::build_ui_snapshot(&runtime, &pack_id)
+        let snapshot = ui::build_ui_snapshot(&runtime, &pack_id)?;
+        let persisted_locale = runtime.content().locale.clone();
+        let new_state_json = serde_json::to_string(
+            &runtime
+                .export_state()
+                .map_err(|e| format!("state export error: {e}"))?,
+        )
+        .map_err(|e| format!("serialization error: {e}"))?;
+        Ok::<_, String>((snapshot, persisted_locale, new_state_json))
     })
     .await
-    .map_err(|e| format!("blocking task panicked: {e:?}"))?
+    .map_err(|e| format!("blocking task panicked: {e:?}"))??;
+
+    sqlx::query(
+        "UPDATE game_sessions SET locale = $1, state_json = $2::jsonb, updated_at = NOW() WHERE id = $3 AND player_id = $4",
+    )
+    .bind(&persisted_locale)
+    .bind(&new_state_json)
+    .bind(session_id)
+    .bind(player_id)
+    .execute(&mut *tx)
+    .await
+    .map_err(|e| format!("db update error: {e}"))?;
+    tx.commit()
+        .await
+        .map_err(|e| format!("db commit error: {e}"))?;
+
+    Ok(snapshot)
 }
 
 pub async fn get_transcript(
