@@ -375,6 +375,14 @@ fn append_stage_menu_overflow_actions(
     active_stages: &[String],
 ) {
     for stage_id in active_stages {
+        let Some(stage) = content
+            .beats
+            .stages
+            .iter()
+            .find(|stage| &stage.id == stage_id)
+        else {
+            continue;
+        };
         let Some(menu) = content
             .menus
             .iter()
@@ -382,6 +390,13 @@ fn append_stage_menu_overflow_actions(
         else {
             continue;
         };
+        let waits_for_menu_selection = stage
+            .advance_signals
+            .iter()
+            .any(|signal| signal.signal() == format!("menu_selected:{}", menu.id));
+        if !waits_for_menu_selection {
+            continue;
+        }
         for option in &menu.options {
             if overflow_actions.iter().any(|action| action.id == option.id) {
                 continue;
@@ -444,5 +459,24 @@ mod tests {
 
         assert_eq!(overflow.len(), 1);
         assert_eq!(overflow[0].id, "recommend_book");
+    }
+
+    #[test]
+    fn intent_gated_stage_does_not_add_options_before_menu_opens() {
+        let content = load_named_pack("ella", None).expect("load ella");
+        let mut overflow = Vec::new();
+
+        append_stage_menu_overflow_actions(
+            &mut overflow,
+            &content,
+            &[String::from("talk-with-dad")],
+        );
+        append_stage_menu_overflow_actions(
+            &mut overflow,
+            &content,
+            &[String::from("talk-with-mom")],
+        );
+
+        assert!(overflow.is_empty());
     }
 }
