@@ -1,4 +1,4 @@
-import { Component, useEffect, useState, useRef, type FormEvent, type ReactNode } from 'react'
+import { Component, memo, useCallback, useEffect, useState, useRef, type FormEvent, type MutableRefObject, type ReactNode, type UIEvent } from 'react'
 import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../auth'
 import * as api from '../api'
@@ -65,6 +65,7 @@ export default function GamePage() {
   const refreshQueuedRef = useRef(false)
   const lastInteractionAtRef = useRef(0)
   const busy = initializing || commandPending || panelBusy
+  const busyLabel = commandPending ? 'Sending…' : panelBusy ? 'Updating…' : initializing ? 'Loading…' : null
 
   function focusInputToEnd() {
     requestAnimationFrame(() => {
@@ -108,6 +109,12 @@ export default function GamePage() {
       ...texts.map(text => ({ text, key: nextKey.current++ })),
     ])
   }
+
+  const handleTranscriptScroll = useCallback((e: UIEvent<HTMLDivElement>) => {
+    const el = e.currentTarget
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight
+    autoScrollRef.current = distanceFromBottom < 80
+  }, [])
 
   useEffect(() => {
     if (!autoScrollRef.current) return
@@ -440,68 +447,16 @@ export default function GamePage() {
 
       <div className="flex-1 flex overflow-hidden">
         <div className="flex-1 flex flex-col overflow-hidden">
-          <div
-            ref={transcriptRef}
-            onScroll={e => {
-              const el = e.currentTarget
-              const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight
-              autoScrollRef.current = distanceFromBottom < 80
-            }}
-            className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
-          >
-            {lines.map(line => (
-              <div key={line.key} className="whitespace-pre-wrap text-sm leading-relaxed">
-                {line.text.startsWith('> ') ? (
-                  <span className="text-foam">{line.text}</span>
-                ) : line.text.startsWith('== ') ? (
-                  <span className="text-iris font-bold">{line.text}</span>
-                ) : (
-                  <span className="text-text">{line.text}</span>
-                )}
-              </div>
-            ))}
-            {busy && <p className="text-muted text-sm italic">{commandPending ? 'Sending…' : panelBusy ? 'Updating…' : 'Loading…'}</p>}
-            {sessionClosure && (
-              <div className="fixed inset-0 bg-base/80 flex items-center justify-center z-50">
-                <div className="bg-surface rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl">
-                  <h2 className="text-xl font-bold text-center mb-2">{sessionClosure.title}</h2>
-                  {sessionClosure.subtitle && (
-                    <p className="text-center text-sm text-muted mb-4">— {sessionClosure.subtitle}</p>
-                  )}
-                  <div className="space-y-4">
-                    {sessionClosure.sections.map((section, index) => (
-                      <div key={`${section.kind}-${index}`}>
-                        {section.title && (
-                          <p className="text-xs text-muted uppercase tracking-wider mb-2">{section.title}</p>
-                        )}
-                        {section.kind === 'rating' ? (
-                          <div className="flex justify-center gap-1 text-2xl">
-                            {Array.from({ length: section.max }, (_, i) => i + 1).map(n => (
-                              <span key={n} className={n <= section.value ? 'text-yellow-400' : 'text-muted'}>
-                                {n <= section.value ? '\u2605' : '\u2606'}
-                              </span>
-                            ))}
-                          </div>
-                        ) : (
-                          <p className="text-center text-balance leading-relaxed whitespace-pre-wrap">{section.body}</p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                  <button
-                    className="mt-6 w-full py-2 bg-love text-white rounded-lg font-semibold hover:opacity-90"
-                    onClick={() => setSessionClosure(null)}
-                  >
-                    OK
-                  </button>
-                </div>
-              </div>
-            )}
-            {gameOver && !sessionClosure && (
-              <p className="text-love font-semibold text-center pt-4">Game Over</p>
-            )}
-            <div ref={bottomRef} />
-          </div>
+          <TranscriptPane
+            lines={lines}
+            busyLabel={busyLabel}
+            sessionClosure={sessionClosure}
+            gameOver={gameOver}
+            transcriptRef={transcriptRef}
+            bottomRef={bottomRef}
+            onScroll={handleTranscriptScroll}
+            onDismissClosure={() => setSessionClosure(null)}
+          />
 
           <div className="flex flex-wrap gap-2 px-4 py-2 border-t border-subtle shrink-0">
             {(uiSnapshot?.action_bar_actions ?? [
@@ -758,6 +713,105 @@ export default function GamePage() {
     </ErrorBoundary>
   )
 }
+
+const TranscriptPane = memo(function TranscriptPane({
+  lines,
+  busyLabel,
+  sessionClosure,
+  gameOver,
+  transcriptRef,
+  bottomRef,
+  onScroll,
+  onDismissClosure,
+}: {
+  lines: Line[]
+  busyLabel: string | null
+  sessionClosure: api.SessionClosureData | null
+  gameOver: boolean
+  transcriptRef: MutableRefObject<HTMLDivElement | null>
+  bottomRef: MutableRefObject<HTMLDivElement | null>
+  onScroll: (event: UIEvent<HTMLDivElement>) => void
+  onDismissClosure: () => void
+}) {
+  return (
+    <div
+      ref={transcriptRef}
+      onScroll={onScroll}
+      className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
+    >
+      {lines.map(line => (
+        <TranscriptLine key={line.key} line={line} />
+      ))}
+      {busyLabel && <p className="text-muted text-sm italic">{busyLabel}</p>}
+      {sessionClosure && (
+        <SessionClosureModal sessionClosure={sessionClosure} onDismiss={onDismissClosure} />
+      )}
+      {gameOver && !sessionClosure && (
+        <p className="text-love font-semibold text-center pt-4">Game Over</p>
+      )}
+      <div ref={bottomRef} />
+    </div>
+  )
+})
+
+const TranscriptLine = memo(function TranscriptLine({ line }: { line: Line }) {
+  return (
+    <div className="whitespace-pre-wrap text-sm leading-relaxed">
+      {line.text.startsWith('> ') ? (
+        <span className="text-foam">{line.text}</span>
+      ) : line.text.startsWith('== ') ? (
+        <span className="text-iris font-bold">{line.text}</span>
+      ) : (
+        <span className="text-text">{line.text}</span>
+      )}
+    </div>
+  )
+})
+
+const SessionClosureModal = memo(function SessionClosureModal({
+  sessionClosure,
+  onDismiss,
+}: {
+  sessionClosure: api.SessionClosureData
+  onDismiss: () => void
+}) {
+  return (
+    <div className="fixed inset-0 bg-base/80 flex items-center justify-center z-50">
+      <div className="bg-surface rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl">
+        <h2 className="text-xl font-bold text-center mb-2">{sessionClosure.title}</h2>
+        {sessionClosure.subtitle && (
+          <p className="text-center text-sm text-muted mb-4">— {sessionClosure.subtitle}</p>
+        )}
+        <div className="space-y-4">
+          {sessionClosure.sections.map((section, index) => (
+            <div key={`${section.kind}-${index}`}>
+              {section.title && (
+                <p className="text-xs text-muted uppercase tracking-wider mb-2">{section.title}</p>
+              )}
+              {section.kind === 'rating' ? (
+                <div className="flex justify-center gap-1 text-2xl">
+                  {Array.from({ length: section.max }, (_, i) => i + 1).map(n => (
+                    <span key={n} className={n <= section.value ? 'text-yellow-400' : 'text-muted'}>
+                      {n <= section.value ? '\u2605' : '\u2606'}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-balance leading-relaxed whitespace-pre-wrap">{section.body}</p>
+              )}
+            </div>
+          ))}
+        </div>
+        <button
+          className="mt-6 w-full py-2 bg-love text-white rounded-lg font-semibold hover:opacity-90"
+          onClick={onDismiss}
+        >
+          OK
+        </button>
+      </div>
+    </div>
+  )
+})
 
 function StatusPanel({ uiSnapshot }: { uiSnapshot: api.UiSnapshot }) {
   return (
