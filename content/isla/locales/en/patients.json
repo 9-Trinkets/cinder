@@ -43,11 +43,11 @@
       "Part of her caregiving compulsion is guilt: she believes she should have noticed her brother was driving exhausted and stopped him."
     ],
     "actor_stats": {
-      "trust": 33,
-      "openness": 20,
-      "focus": 67,
-      "resistance": 49,
-      "energy": 38
+      "trust": 3,
+      "openness": 2,
+      "focus": 7,
+      "resistance": 5,
+      "energy": 4
     }
   },
   {
@@ -71,11 +71,11 @@
       "He manufactures small crises in his personal life because he only knows how to feel necessary when something is breaking."
     ],
     "actor_stats": {
-      "trust": 38,
-      "openness": 27,
-      "focus": 61,
-      "resistance": 44,
-      "energy": 49
+      "trust": 4,
+      "openness": 3,
+      "focus": 6,
+      "resistance": 4,
+      "energy": 5
     }
   },
   {
@@ -99,11 +99,11 @@
       "She resents how much her students need her and then despises herself for feeling that resentment."
     ],
     "actor_stats": {
-      "trust": 42,
-      "openness": 36,
-      "focus": 52,
-      "resistance": 34,
-      "energy": 45
+      "trust": 4,
+      "openness": 4,
+      "focus": 5,
+      "resistance": 3,
+      "energy": 5
     }
   }
 ]

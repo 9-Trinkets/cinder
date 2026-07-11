@@ -62,11 +62,11 @@
     "name": "Awa",
     "room_id": "cafe",
     "initial_stats": {
-      "trust": 33,
-      "openness": 20,
-      "focus": 67,
-      "resistance": 49,
-      "energy": 38
+      "trust": 3,
+      "openness": 2,
+      "focus": 7,
+      "resistance": 5,
+      "energy": 4
     },
     "aliases": [],
     "inspect_text": "Awa holds herself like someone ready to intercept the next problem before it reaches anyone else, and the vigilance makes even stillness look like work.",
@@ -112,11 +112,11 @@
     "name": "Jonah",
     "room_id": "cafe",
     "initial_stats": {
-      "trust": 38,
-      "openness": 27,
-      "focus": 61,
-      "resistance": 44,
-      "energy": 49
+      "trust": 4,
+      "openness": 3,
+      "focus": 6,
+      "resistance": 4,
+      "energy": 5
     },
     "aliases": [],
     "inspect_text": "Jonah looks sturdy in the practiced way of someone who knows how to stay functional long after his feelings have left the room.",
@@ -162,11 +162,11 @@
     "name": "Sophea",
     "room_id": "cafe",
     "initial_stats": {
-      "trust": 42,
-      "openness": 36,
-      "focus": 52,
-      "resistance": 34,
-      "energy": 45
+      "trust": 4,
+      "openness": 4,
+      "focus": 5,
+      "resistance": 3,
+      "energy": 5
     },
     "aliases": [],
     "inspect_text": "Sophea's smile arrives on cue, then lingers half a beat too long after the rest of her face has gone tired.",
