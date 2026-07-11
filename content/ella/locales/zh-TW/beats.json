@@ -12,7 +12,9 @@
       "advance_signals": [
         "room_entered:living-room"
       ],
-      "next_stage_id": "talk-with-mom"
+      "next_stage_ids": [
+        "talk-with-mom"
+      ]
     },
     {
       "id": "talk-with-mom",
@@ -22,7 +24,9 @@
       "advance_signals": [
         "menu_opened:movie-night"
       ],
-      "next_stage_id": "choose-movie"
+      "next_stage_ids": [
+        "choose-movie"
+      ]
     },
     {
       "id": "choose-movie",
@@ -32,7 +36,9 @@
       "advance_signals": [
         "menu_selected:movie-night"
       ],
-      "next_stage_id": "dad-brings-fruit"
+      "next_stage_ids": [
+        "dad-brings-fruit"
+      ]
     },
     {
       "id": "dad-brings-fruit",
@@ -42,7 +48,9 @@
       "advance_signals": [
         "actor_entered:dad:living-room"
       ],
-      "next_stage_id": "movie-afterglow"
+      "next_stage_ids": [
+        "movie-afterglow"
+      ]
     },
     {
       "id": "movie-afterglow",
@@ -71,7 +79,9 @@
       "advance_signals": [
         "room_entered:kitchen"
       ],
-      "next_stage_id": "talk-with-dad"
+      "next_stage_ids": [
+        "talk-with-dad"
+      ]
     },
     {
       "id": "talk-with-dad",
@@ -87,7 +97,9 @@
       "advance_signals": [
         "menu_opened:late-night-snack"
       ],
-      "next_stage_id": "choose-snack"
+      "next_stage_ids": [
+        "choose-snack"
+      ]
     },
     {
       "id": "choose-snack",
@@ -97,7 +109,9 @@
       "advance_signals": [
         "menu_selected:late-night-snack"
       ],
-      "next_stage_id": "snack-afterglow"
+      "next_stage_ids": [
+        "snack-afterglow"
+      ]
     },
     {
       "id": "snack-afterglow",
@@ -117,7 +131,9 @@
       "advance_signals": [
         "room_entered:bedroom"
       ],
-      "next_stage_id": "goodnight-ending"
+      "next_stage_ids": [
+        "goodnight-ending"
+      ]
     },
     {
       "id": "goodnight-ending",

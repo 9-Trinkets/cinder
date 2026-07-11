@@ -154,26 +154,26 @@ pub struct UiTextDefinition {
     pub follow_unknown_actor_name: String,
     #[serde(default = "default_room_switch_prompt")]
     pub room_switch_prompt: String,
-    #[serde(default = "default_commands_modal_title")]
-    pub commands_modal_title: String,
-    #[serde(default = "default_commands_modal_empty")]
-    pub commands_modal_empty: String,
+    #[serde(default = "default_commands_panel_title")]
+    pub commands_panel_title: String,
+    #[serde(default = "default_commands_panel_empty")]
+    pub commands_panel_empty: String,
     #[serde(default = "default_commands_group_other")]
     pub commands_group_other: String,
     #[serde(default = "default_commands_group_support")]
     pub commands_group_support: String,
-    #[serde(default = "default_look_modal_title")]
-    pub look_modal_title: String,
+    #[serde(default = "default_look_panel_title")]
+    pub look_panel_title: String,
     #[serde(default = "default_look_group_room")]
     pub look_group_room: String,
     #[serde(default = "default_look_group_things")]
     pub look_group_things: String,
     #[serde(default = "default_look_group_people")]
     pub look_group_people: String,
-    #[serde(default = "default_talk_modal_title")]
-    pub talk_modal_title: String,
-    #[serde(default = "default_talk_modal_prompt")]
-    pub talk_modal_prompt: String,
+    #[serde(default = "default_talk_panel_title")]
+    pub talk_panel_title: String,
+    #[serde(default = "default_talk_panel_prompt")]
+    pub talk_panel_prompt: String,
     #[serde(default)]
     pub session_closure: SessionClosureDefinition,
     #[serde(default)]
@@ -380,11 +380,11 @@ fn default_room_switch_prompt() -> String {
     "Switch channels from {}.".to_string()
 }
 
-fn default_commands_modal_title() -> String {
+fn default_commands_panel_title() -> String {
     "Commands".to_string()
 }
 
-fn default_commands_modal_empty() -> String {
+fn default_commands_panel_empty() -> String {
     "No additional commands available.".to_string()
 }
 
@@ -396,7 +396,7 @@ fn default_commands_group_support() -> String {
     "Support".to_string()
 }
 
-fn default_look_modal_title() -> String {
+fn default_look_panel_title() -> String {
     "Look".to_string()
 }
 
@@ -412,11 +412,11 @@ fn default_look_group_people() -> String {
     "People".to_string()
 }
 
-fn default_talk_modal_title() -> String {
+fn default_talk_panel_title() -> String {
     "Talk".to_string()
 }
 
-fn default_talk_modal_prompt() -> String {
+fn default_talk_panel_prompt() -> String {
     "Who do you want to talk to?".to_string()
 }
 
@@ -472,16 +472,16 @@ impl Default for UiTextDefinition {
             follow_nobody_option: default_follow_nobody_option(),
             follow_unknown_actor_name: default_follow_unknown_actor_name(),
             room_switch_prompt: default_room_switch_prompt(),
-            commands_modal_title: default_commands_modal_title(),
-            commands_modal_empty: default_commands_modal_empty(),
+            commands_panel_title: default_commands_panel_title(),
+            commands_panel_empty: default_commands_panel_empty(),
             commands_group_other: default_commands_group_other(),
             commands_group_support: default_commands_group_support(),
-            look_modal_title: default_look_modal_title(),
+            look_panel_title: default_look_panel_title(),
             look_group_room: default_look_group_room(),
             look_group_things: default_look_group_things(),
             look_group_people: default_look_group_people(),
-            talk_modal_title: default_talk_modal_title(),
-            talk_modal_prompt: default_talk_modal_prompt(),
+            talk_panel_title: default_talk_panel_title(),
+            talk_panel_prompt: default_talk_panel_prompt(),
             session_closure: SessionClosureDefinition::default(),
             shell_menu: ShellMenuDefinition::default(),
             action_bar: ActionBarDefinition::default(),

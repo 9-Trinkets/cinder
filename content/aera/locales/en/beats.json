@@ -11,7 +11,9 @@
       "advance_signals": [
         "time_reached:18:00"
       ],
-      "next_stage_id": "share-dinner-in-kitchen"
+      "next_stage_ids": [
+        "share-dinner-in-kitchen"
+      ]
     },
     {
       "id": "share-dinner-in-kitchen",
@@ -21,7 +23,9 @@
       "advance_signals": [
         "time_reached:19:00"
       ],
-      "next_stage_id": "talk-after-dinner"
+      "next_stage_ids": [
+        "talk-after-dinner"
+      ]
     },
     {
       "id": "talk-after-dinner",
@@ -41,7 +45,9 @@
           ]
         }
       ],
-      "next_stage_id": "debrief-in-bedrooms"
+      "next_stage_ids": [
+        "debrief-in-bedrooms"
+      ]
     },
     {
       "id": "debrief-in-bedrooms",
@@ -51,7 +57,9 @@
       "advance_signals": [
         "time_reached:21:00"
       ],
-      "next_stage_id": "sleep-end-first-day"
+      "next_stage_ids": [
+        "sleep-end-first-day"
+      ]
     },
     {
       "id": "sleep-end-first-day",

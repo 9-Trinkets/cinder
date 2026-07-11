@@ -1,6 +1,5 @@
 pub mod auth;
 pub mod game;
-pub mod saves;
 
 use std::sync::Arc;
 

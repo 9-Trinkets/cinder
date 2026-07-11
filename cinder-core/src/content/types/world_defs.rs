@@ -1,4 +1,4 @@
-use super::{BeatDefinition, default_actor_targeted_speech, default_stat_default_value};
+use super::{default_actor_targeted_speech, default_stat_default_value};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -90,19 +90,6 @@ pub struct RoomFeatureDefinition {
     pub inspect_text: String,
 }
 
-impl BeatDefinition {
-    /// Returns the resolved list of next stage IDs for this beat.
-    /// `next_stage_ids` takes priority; `next_stage_id` is a fallback for
-    /// backwards-compatible single-value authored content.
-    pub fn resolved_next_stage_ids(&self) -> Vec<String> {
-        if !self.next_stage_ids.is_empty() {
-            self.next_stage_ids.clone()
-        } else {
-            self.next_stage_id.clone().into_iter().collect()
-        }
-    }
-}
-
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum ConsumableKind {
@@ -156,7 +143,7 @@ pub struct ActorDefinition {
     #[serde(default)]
     pub required_consumable_tags: Vec<String>,
     pub prompt_context: ActorPromptContext,
-    #[serde(default, alias = "npc_rules")]
+    #[serde(default)]
     pub movement_rules: Option<ActorMovementRulesDefinition>,
 }
 

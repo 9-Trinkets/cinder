@@ -182,11 +182,11 @@ pub fn load_pack_from_dir_with_locale(
         "array_contains",
     ];
     for stage in &beats.stages {
-        for id in stage.resolved_next_stage_ids() {
+        for id in &stage.next_stage_ids {
             require_known_id(
-                &id,
+                id,
                 &stage_ids,
-                &format!("beat '{}' next_stage_id '{id}'", stage.id),
+                &format!("beat '{}' next_stage_ids contains '{id}'", stage.id),
                 "beats.stages",
             )?;
         }

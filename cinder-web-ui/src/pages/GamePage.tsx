@@ -748,17 +748,17 @@ const QuickActionPanel = memo(function QuickActionPanel({
           <div>
             <h3 className="text-sm font-semibold text-text">
               {panel === 'look'
-                ? uiSnapshot.ui_text.look_modal_title
+                ? uiSnapshot.ui_text.look_panel_title
                 : panel === 'talk'
-                  ? uiSnapshot.ui_text.talk_modal_title
+                  ? uiSnapshot.ui_text.talk_panel_title
                   : panel === 'rooms'
                     ? uiSnapshot.ui_text.room_switcher_title
                     : panel === 'follow'
                       ? uiSnapshot.ui_text.follow_actor_title
-                  : uiSnapshot.ui_text.commands_modal_title}
+                  : uiSnapshot.ui_text.commands_panel_title}
             </h3>
             {panel === 'talk' && (
-              <p className="text-xs text-muted mt-0.5">{uiSnapshot.ui_text.talk_modal_prompt}</p>
+              <p className="text-xs text-muted mt-0.5">{uiSnapshot.ui_text.talk_panel_prompt}</p>
             )}
           </div>
           <button
@@ -843,7 +843,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
 
           {panel === 'overflow' && (
             (uiSnapshot.overflow_actions ?? []).length === 0 ? (
-              <p className="text-muted italic text-sm px-1">{uiSnapshot.ui_text.commands_modal_empty}</p>
+              <p className="text-muted italic text-sm px-1">{uiSnapshot.ui_text.commands_panel_empty}</p>
             ) : (
               groupOverflowActions(uiSnapshot.overflow_actions ?? [], uiSnapshot.ui_text).map(([group, items]) => (
                 <div key={group} className="space-y-2">

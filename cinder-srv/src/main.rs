@@ -149,7 +149,6 @@ async fn main() {
         .layer(GovernorLayer::new(governor_config));
 
     let app = routes::game::routes(state.clone())
-        .merge(routes::saves::routes(state.clone()))
         .merge(auth_routes)
         .route("/", get(health))
         .route("/api/health", get(health))

@@ -19,16 +19,11 @@
   "language_modal_title": "顯示語言",
   "language_changed_text": "顯示語言已切換為 {language_name}。",
   "modal_close_hint": "按 Enter 或 Esc 關閉。",
-  "commands_modal_title": "指令",
-  "commands_modal_empty": "目前沒有其他可用指令。",
   "commands_group_other": "其他",
   "commands_group_support": "互動",
-  "look_modal_title": "查看",
   "look_group_room": "地點",
   "look_group_things": "物件",
   "look_group_people": "人物",
-  "talk_modal_title": "交談",
-  "talk_modal_prompt": "你想跟誰說話？",
   "day_summary_title": "第 {day_number} 天總結",
   "day_summary_current_focus_label": "目前焦點",
   "day_summary_highlights_label": "重點回顧",
@@ -50,8 +45,19 @@
   "npc_tick_soft_error": "{actor_name} 恍神了一下，神情看起來有點困惑。",
   "action_bar": {
     "actions": [
-      { "id": "look", "label": "查看" },
-      { "id": "move", "label": "移動" }
+      {
+        "id": "look",
+        "label": "查看"
+      },
+      {
+        "id": "move",
+        "label": "移動"
+      }
     ]
-  }
+  },
+  "commands_panel_title": "指令",
+  "commands_panel_empty": "目前沒有其他可用指令。",
+  "look_panel_title": "查看",
+  "talk_panel_title": "交談",
+  "talk_panel_prompt": "你想跟誰說話？"
 }

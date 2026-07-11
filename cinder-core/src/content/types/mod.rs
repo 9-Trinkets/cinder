@@ -261,8 +261,6 @@ pub struct BeatDefinition {
     #[serde(default)]
     pub advance_signals: Vec<AdvanceSignal>,
     #[serde(default)]
-    pub next_stage_id: Option<String>,
-    #[serde(default)]
     pub next_stage_ids: Vec<String>,
     #[serde(default)]
     pub on_advance_effects: Vec<AdvanceEffect>,

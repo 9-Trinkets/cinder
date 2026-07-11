@@ -19,12 +19,9 @@
   "language_modal_title": "Display language",
   "language_changed_text": "Display language changed to {language_name}.",
   "modal_close_hint": "Press Enter or Esc to close.",
-  "look_modal_title": "Look",
   "look_group_room": "Room",
   "look_group_things": "Things",
   "look_group_people": "People",
-  "talk_modal_title": "Talk",
-  "talk_modal_prompt": "Who do you want to talk to?",
   "day_summary_title": "End of Day {day_number}",
   "day_summary_current_focus_label": "Current focus",
   "day_summary_highlights_label": "Highlights",
@@ -46,8 +43,17 @@
   "npc_tick_soft_error": "{actor_name} blanks for a second, looking briefly confused.",
   "action_bar": {
     "actions": [
-      { "id": "look", "label": "Look" },
-      { "id": "move", "label": "Move" }
+      {
+        "id": "look",
+        "label": "Look"
+      },
+      {
+        "id": "move",
+        "label": "Move"
+      }
     ]
-  }
+  },
+  "look_panel_title": "Look",
+  "talk_panel_title": "Talk",
+  "talk_panel_prompt": "Who do you want to talk to?"
 }

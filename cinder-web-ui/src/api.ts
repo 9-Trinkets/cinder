@@ -105,20 +105,6 @@ export function runRealtimeTick(token: string, sessionId: string) {
   })
 }
 
-export function saveGame(token: string, sessionId: string) {
-  return req<{ session_id: string; created_at: string }>(
-    `/games/${sessionId}/save`,
-    { method: 'POST', headers: authHeader(token) },
-  )
-}
-
-export function listSaves(token: string, sessionId: string) {
-  return req<{ session_id: string; created_at: string }[]>(
-    `/games/${sessionId}/saves`,
-    { headers: authHeader(token) },
-  )
-}
-
 export interface LocaleItem {
   code: string
   label: string
@@ -226,16 +212,16 @@ export interface UiSnapshot {
     about_body: string
     language_modal_title: string
     modal_close_hint: string
-    commands_modal_title: string
-    commands_modal_empty: string
+    commands_panel_title: string
+    commands_panel_empty: string
     commands_group_other: string
     commands_group_support: string
-    look_modal_title: string
+    look_panel_title: string
     look_group_room: string
     look_group_things: string
     look_group_people: string
-    talk_modal_title: string
-    talk_modal_prompt: string
+    talk_panel_title: string
+    talk_panel_prompt: string
     menu_option_list_title: string
     exit_confirm_title: string
     exit_confirm_body: string
@@ -286,18 +272,5 @@ export function deleteSession(token: string, sessionId: string) {
   return req<void>(`/games/${sessionId}`, {
     method: 'DELETE',
     headers: authHeader(token),
-  })
-}
-
-export interface LoadGameResponse {
-  session_id: string
-  pack_id: string
-}
-
-export function loadGame(token: string, sessionId: string, checkpointId?: string) {
-  return req<LoadGameResponse>(`/games/${sessionId}/load`, {
-    method: 'POST',
-    headers: authHeader(token),
-    body: JSON.stringify({ session_id: sessionId, checkpoint_id: checkpointId }),
   })
 }

@@ -26,17 +26,16 @@ pub(super) fn advance_objective_for_signal(
             continue;
         }
         state.stages_completed += 1;
-        let next_stage_ids = current_stage.resolved_next_stage_ids();
-        if next_stage_ids.is_empty() {
+        if current_stage.next_stage_ids.is_empty() {
             continue;
         }
-        for next_stage_id in next_stage_ids {
+        for next_stage_id in &current_stage.next_stage_ids {
             next_active_stage_ids.push(next_stage_id.clone());
             let Some(next_stage) = content
                 .beats
                 .stages
                 .iter()
-                .find(|stage| stage.id == next_stage_id)
+                .find(|stage| stage.id == *next_stage_id)
             else {
                 continue;
             };
