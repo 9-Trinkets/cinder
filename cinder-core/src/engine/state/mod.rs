@@ -235,6 +235,7 @@ impl WorldState {
     }
 
     pub fn actor_stat(&self, actor_id: &str, stat_key: &str) -> i32 {
+        let actor_id = remap_story_actor_id(self, actor_id);
         self.actor_stats
             .get(actor_id)
             .and_then(|stats| stats.get(stat_key))
@@ -252,6 +253,7 @@ impl WorldState {
     }
 
     pub fn actor_stats_snapshot(&self, actor_id: &str) -> BTreeMap<String, i32> {
+        let actor_id = remap_story_actor_id(self, actor_id);
         self.actor_stat_defs
             .keys()
             .map(|stat_key| (stat_key.clone(), self.actor_stat(actor_id, stat_key)))
@@ -275,6 +277,7 @@ impl WorldState {
     }
 
     pub fn actor_stat_deltas(&self, actor_id: &str) -> Option<BTreeMap<String, i32>> {
+        let actor_id = remap_story_actor_id(self, actor_id);
         let initial = self.initial_actor_stats.get(actor_id)?;
         Some(
             initial
@@ -349,12 +352,13 @@ impl WorldState {
         stat_key: &str,
         delta: i32,
     ) -> Result<(), String> {
+        let actor_id = remap_story_actor_id(self, actor_id).to_string();
         let definition = self
             .actor_stat_defs
             .get(stat_key)
             .ok_or_else(|| format!("unknown actor stat '{stat_key}'"))?
             .clone();
-        let stats = self.actor_stats.entry(actor_id.to_string()).or_default();
+        let stats = self.actor_stats.entry(actor_id).or_default();
         let value = stats
             .entry(stat_key.to_string())
             .or_insert(definition.default);
@@ -593,7 +597,7 @@ use seeding::{seeded_actor_stats, seeded_feature_consumable_stock, seeded_pair_s
 mod appointments;
 pub use appointments::{
     AppointmentFeedbackSummary, AppointmentHistoryEntry, AppointmentSeriesState, PatientRecord,
-    advance_to_next_appointment, current_appointment_intro, current_patient_name,
-    display_actor_name, initialize_appointment_state, render_dynamic_story_text,
-    resolved_actor_prompt_context,
+    advance_to_next_appointment, current_appointment_intro, current_patient_actor_id,
+    current_patient_name, display_actor_name, initialize_appointment_state, remap_story_actor_id,
+    render_dynamic_story_text, resolved_actor_prompt_context, story_actor_matches,
 };

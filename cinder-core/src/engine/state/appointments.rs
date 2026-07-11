@@ -7,7 +7,6 @@ use std::collections::BTreeMap;
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct AppointmentSeriesState {
-    pub patient_actor_id: String,
     pub current_appointment_number: u32,
     pub current_patient_id: String,
     #[serde(default)]
@@ -22,6 +21,7 @@ pub struct AppointmentSeriesState {
 pub struct PatientRecord {
     pub id: String,
     pub name: String,
+    pub actor_id: String,
     pub age: u32,
     pub profession: String,
     pub presenting_issue: String,
@@ -45,8 +45,6 @@ pub struct PatientRecord {
     pub last_feedback_review: Option<String>,
     #[serde(default)]
     pub actor_stats: BTreeMap<String, i32>,
-    #[serde(default)]
-    pub uses_authored_profile: bool,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -65,19 +63,16 @@ pub struct AppointmentFeedbackSummary {
 
 const PATIENT_NAME_VAR: &str = "patient_name";
 const PATIENT_ACTOR_ID_VAR: &str = "patient_actor_id";
+const PATIENT_TEMPLATE_ACTOR_ID_VAR: &str = "patient_template_actor_id";
 const PATIENT_SLOT_BASE_NAME_VAR: &str = "patient_slot_base_name";
+const APPOINTMENT_OFFSTAGE_ROOM_ID: &str = "appointments-offstage";
 
 pub fn initialize_appointment_state(content: &ContentPack, state: &mut WorldState) {
-    if !content.settings.multi_appointment
-        || content.settings.appointment_patient_actor_id.is_empty()
-    {
+    if !content.settings.multi_appointment || content.appointment_patients.is_empty() {
         return;
     }
     if state.appointment_series.is_none() {
-        state.appointment_series = Some(AppointmentSeriesState {
-            patient_actor_id: content.settings.appointment_patient_actor_id.clone(),
-            ..AppointmentSeriesState::default()
-        });
+        state.appointment_series = Some(AppointmentSeriesState::default());
     }
     let needs_bootstrap = state.appointment_series.as_ref().is_some_and(|series| {
         series.current_appointment_number == 0 || series.current_patient_id.is_empty()
@@ -112,7 +107,7 @@ pub fn advance_to_next_appointment(
         current.last_seen_appointment = Some(series.current_appointment_number);
         current.last_feedback_rating = feedback.map(|summary| summary.rating);
         current.last_feedback_review = feedback.map(|summary| summary.review_text.clone());
-        current.actor_stats = state.actor_stats_snapshot(&series.patient_actor_id);
+        current.actor_stats = state.actor_stats_snapshot(&current.actor_id);
     }
     if let Some(current) = series.patients.get(&series.current_patient_id) {
         series.appointment_history.push(AppointmentHistoryEntry {
@@ -155,7 +150,7 @@ pub fn advance_to_next_appointment(
 }
 
 pub fn display_actor_name(state: &WorldState, actor: &ActorDefinition) -> String {
-    if is_patient_actor(state, &actor.id)
+    if is_current_patient_reference(state, &actor.id)
         && let Some(name) = state.story_vars.get(PATIENT_NAME_VAR)
     {
         return name.clone();
@@ -164,20 +159,43 @@ pub fn display_actor_name(state: &WorldState, actor: &ActorDefinition) -> String
 }
 
 pub fn resolved_actor_prompt_context(
+    content: &ContentPack,
     state: &WorldState,
     actor: &ActorDefinition,
 ) -> ActorPromptContext {
-    if !is_patient_actor(state, &actor.id) {
+    if !is_current_patient_reference(state, &actor.id) {
         return actor.prompt_context.clone();
     }
     let Some(patient) = current_patient(state) else {
         return actor.prompt_context.clone();
     };
-    if patient.uses_authored_profile {
-        return actor.prompt_context.clone();
-    }
+    let behavior_actor = content.actor(&patient.actor_id).unwrap_or(actor);
     let appointment_number = current_appointment_number(state);
-    let mut response_notes = actor.prompt_context.response_notes.clone();
+    let mut character_notes = behavior_actor.prompt_context.character_notes.clone();
+    character_notes.extend([
+        format!(
+            "You are {}, a {}-year-old {}.",
+            patient.name, patient.age, patient.profession
+        ),
+        format!("Presenting issue: {}.", patient.presenting_issue),
+        format!("Relational pattern: {}.", patient.relational_pattern),
+        format!("Formative memory: {}.", patient.formative_memory),
+        format!("Coping style: {}.", patient.coping_style),
+        format!("Desired change: {}.", patient.desired_change),
+        format!("Bibliotherapy fit: {}.", patient.bibliotherapy_fit),
+    ]);
+    let mut subtext_notes = behavior_actor.prompt_context.subtext_notes.clone();
+    subtext_notes.extend([
+        format!("Carry the emotional residue of {}.", patient.intro_blurb),
+        format!("Your tendency under pressure: {}.", patient.coping_style),
+    ]);
+    subtext_notes.extend(
+        patient
+            .secret_notes
+            .iter()
+            .map(|secret| format!("Hidden truth: {secret}")),
+    );
+    let mut response_notes = behavior_actor.prompt_context.response_notes.clone();
     response_notes.push(format!(
         "You are in appointment {appointment_number}. Respond as {} would in therapy, without narrating future sessions.",
         patient.name
@@ -186,39 +204,16 @@ pub fn resolved_actor_prompt_context(
         response_notes.push(format!("Last appointment takeaway: {review}"));
     }
     ActorPromptContext {
-        character_notes: vec![
-            format!(
-                "You are {}, a {}-year-old {}.",
-                patient.name, patient.age, patient.profession
-            ),
-            format!("Presenting issue: {}.", patient.presenting_issue),
-            format!("Relational pattern: {}.", patient.relational_pattern),
-            format!("Formative memory: {}.", patient.formative_memory),
-            format!("Coping style: {}.", patient.coping_style),
-            format!("Desired change: {}.", patient.desired_change),
-            format!("Bibliotherapy fit: {}.", patient.bibliotherapy_fit),
-        ],
-        subtext_notes: {
-            let mut notes = vec![
-                format!("Carry the emotional residue of {}.", patient.intro_blurb),
-                format!("Your tendency under pressure: {}.", patient.coping_style),
-            ];
-            notes.extend(
-                patient
-                    .secret_notes
-                    .iter()
-                    .map(|secret| format!("Hidden truth: {secret}")),
-            );
-            notes
-        },
+        character_notes,
+        subtext_notes,
         response_notes,
-        behavior_examples: actor.prompt_context.behavior_examples.clone(),
+        behavior_examples: behavior_actor.prompt_context.behavior_examples.clone(),
     }
 }
 
 pub fn current_appointment_intro(state: &WorldState) -> Option<String> {
     let patient = current_patient(state)?;
-    if patient.uses_authored_profile && patient.appointment_count == 0 {
+    if current_appointment_number(state) == 1 && patient.appointment_count == 0 {
         return None;
     }
     let appointment_number = current_appointment_number(state);
@@ -246,6 +241,30 @@ pub fn current_appointment_intro(state: &WorldState) -> Option<String> {
 
 pub fn current_patient_name(state: &WorldState) -> Option<String> {
     current_patient(state).map(|patient| patient.name.clone())
+}
+
+pub fn current_patient_actor_id(state: &WorldState) -> Option<&str> {
+    current_patient(state).map(|patient| patient.actor_id.as_str())
+}
+
+pub fn remap_story_actor_id<'a>(state: &'a WorldState, actor_id: &'a str) -> &'a str {
+    match (
+        state.story_vars.get(PATIENT_TEMPLATE_ACTOR_ID_VAR),
+        state.story_vars.get(PATIENT_ACTOR_ID_VAR),
+    ) {
+        (Some(template_actor_id), Some(current_actor_id)) if template_actor_id == actor_id => {
+            current_actor_id
+        }
+        _ => actor_id,
+    }
+}
+
+pub fn story_actor_matches(
+    state: &WorldState,
+    runtime_actor_id: &str,
+    authored_actor_id: &str,
+) -> bool {
+    remap_story_actor_id(state, authored_actor_id) == runtime_actor_id
 }
 
 pub fn render_dynamic_story_text(template: &str, state: &WorldState) -> String {
@@ -297,13 +316,17 @@ fn sync_current_patient_story_vars(content: &ContentPack, state: &mut WorldState
     let Some(patient) = series.patients.get(&series.current_patient_id) else {
         return;
     };
+    let template_actor_id = appointment_template_actor_id(content).unwrap_or(&patient.actor_id);
     let base_name = content
-        .actor(&series.patient_actor_id)
+        .actor(template_actor_id)
         .map(|actor| actor.name.clone())
         .unwrap_or_else(|| "Patient".to_string());
+    state
+        .story_vars
+        .insert(PATIENT_ACTOR_ID_VAR.to_string(), patient.actor_id.clone());
     state.story_vars.insert(
-        PATIENT_ACTOR_ID_VAR.to_string(),
-        series.patient_actor_id.clone(),
+        PATIENT_TEMPLATE_ACTOR_ID_VAR.to_string(),
+        template_actor_id.to_string(),
     );
     state
         .story_vars
@@ -354,11 +377,26 @@ fn sync_current_patient_story_vars(content: &ContentPack, state: &mut WorldState
         }
         .to_string(),
     );
-    if let Some(stats) = state.actor_stats.get_mut(&series.patient_actor_id) {
+    if let Some(stats) = state.actor_stats.get_mut(&patient.actor_id) {
         *stats = patient.actor_stats.clone();
     }
-    if let Some(initial_stats) = state.initial_actor_stats.get_mut(&series.patient_actor_id) {
+    if let Some(initial_stats) = state.initial_actor_stats.get_mut(&patient.actor_id) {
         *initial_stats = patient.actor_stats.clone();
+    }
+    let patient_actor_ids = content
+        .appointment_patients
+        .iter()
+        .map(|definition| definition.actor_id.as_str())
+        .collect::<Vec<_>>();
+    for actor_id in patient_actor_ids {
+        if actor_id == patient.actor_id {
+            state.actor_room_overrides.remove(actor_id);
+        } else {
+            state.actor_room_overrides.insert(
+                actor_id.to_string(),
+                APPOINTMENT_OFFSTAGE_ROOM_ID.to_string(),
+            );
+        }
     }
 }
 
@@ -375,11 +413,14 @@ fn current_appointment_number(state: &WorldState) -> u32 {
         .unwrap_or(1)
 }
 
-fn is_patient_actor(state: &WorldState, actor_id: &str) -> bool {
-    state
-        .appointment_series
-        .as_ref()
-        .is_some_and(|series| series.patient_actor_id == actor_id)
+fn is_current_patient_reference(state: &WorldState, actor_id: &str) -> bool {
+    current_patient_actor_id(state).is_some_and(|current_actor_id| {
+        current_actor_id == actor_id
+            || state
+                .story_vars
+                .get(PATIENT_TEMPLATE_ACTOR_ID_VAR)
+                .is_some_and(|template_actor_id| template_actor_id == actor_id)
+    })
 }
 
 fn choose_next_patient_id(content: &ContentPack, series: &AppointmentSeriesState) -> String {
@@ -387,9 +428,7 @@ fn choose_next_patient_id(content: &ContentPack, series: &AppointmentSeriesState
         if let Some((patient_id, _)) = series
             .patients
             .iter()
-            .filter(|(patient_id, patient)| {
-                **patient_id != series.current_patient_id && !patient.uses_authored_profile
-            })
+            .filter(|(patient_id, _)| **patient_id != series.current_patient_id)
             .min_by_key(|(_, patient)| patient.last_seen_appointment.unwrap_or(0))
         {
             return patient_id.clone();
@@ -401,9 +440,7 @@ fn choose_next_patient_id(content: &ContentPack, series: &AppointmentSeriesState
     series
         .patients
         .iter()
-        .filter(|(patient_id, patient)| {
-            **patient_id != series.current_patient_id && !patient.uses_authored_profile
-        })
+        .filter(|(patient_id, _)| **patient_id != series.current_patient_id)
         .min_by_key(|(_, patient)| patient.last_seen_appointment.unwrap_or(0))
         .map(|(patient_id, _)| patient_id.clone())
         .unwrap_or_else(|| series.current_patient_id.clone())
@@ -415,7 +452,7 @@ fn build_patient_record(
     definition: &AppointmentPatientDefinition,
 ) -> PatientRecord {
     let mut actor_stats = content
-        .actor(&content.settings.appointment_patient_actor_id)
+        .actor(&definition.actor_id)
         .map(|actor| actor.initial_stats.clone())
         .unwrap_or_default();
     for (key, value) in &definition.actor_stats {
@@ -430,6 +467,7 @@ fn build_patient_record(
     PatientRecord {
         id: definition.id.clone(),
         name: definition.name.clone(),
+        actor_id: definition.actor_id.clone(),
         age: definition.age,
         profession: definition.profession.clone(),
         presenting_issue: definition.presenting_issue.clone(),
@@ -447,8 +485,14 @@ fn build_patient_record(
         last_feedback_rating: None,
         last_feedback_review: None,
         actor_stats,
-        uses_authored_profile: definition.uses_authored_profile,
     }
+}
+
+fn appointment_template_actor_id(content: &ContentPack) -> Option<&str> {
+    content
+        .appointment_patients
+        .first()
+        .map(|patient| patient.actor_id.as_str())
 }
 
 #[cfg(test)]
@@ -475,8 +519,32 @@ mod tests {
         let _ = advance_to_next_appointment(&content, &mut state, None);
 
         assert_eq!(current_patient_name(&state).as_deref(), Some("Awa"));
+        assert_eq!(current_patient_actor_id(&state), Some("awa"));
         let intro = current_appointment_intro(&state).expect("appointment intro");
         assert!(intro.contains("Appointment 2: Awa"));
         assert!(intro.contains("━━━━━━━━━━━━━━━━━━━━"));
+    }
+
+    #[test]
+    fn current_patient_reference_uses_distinct_actor_prompt_context() {
+        let content = load_named_pack("isla", None).expect("load isla");
+        let mut state = WorldState::new(&content);
+        initialize_appointment_state(&content, &mut state);
+        let _ = advance_to_next_appointment(&content, &mut state, None);
+
+        let proxy_actor = content.actor("noa").expect("proxy actor");
+        let prompt_context = resolved_actor_prompt_context(&content, &state, proxy_actor);
+        let joined = prompt_context
+            .character_notes
+            .iter()
+            .chain(prompt_context.subtext_notes.iter())
+            .chain(prompt_context.response_notes.iter())
+            .cloned()
+            .collect::<Vec<_>>()
+            .join("\n");
+
+        assert!(joined.contains("You are Awa"));
+        assert!(joined.contains("home health aide"));
+        assert!(joined.contains("dry, sharp, and defensive"));
     }
 }

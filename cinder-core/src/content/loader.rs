@@ -261,21 +261,41 @@ pub fn load_pack_from_dir_with_locale(
         }
     }
     if settings.multi_appointment {
-        if settings.appointment_patient_actor_id.trim().is_empty() {
-            return Err(
-                "multi_appointment content requires settings.appointment_patient_actor_id".into(),
-            );
-        }
         if appointment_patients.is_empty() {
             return Err("multi_appointment content requires localized patients.json".into());
         }
         let mut seen_patient_ids = std::collections::BTreeSet::new();
+        let mut seen_patient_actor_ids = std::collections::BTreeSet::new();
         for patient in &appointment_patients {
             if patient.id.trim().is_empty() {
                 return Err("appointment patient definition is missing id".into());
             }
             if !seen_patient_ids.insert(patient.id.clone()) {
                 return Err(format!("duplicate appointment patient id '{}'", patient.id).into());
+            }
+            if patient.actor_id.trim().is_empty() {
+                return Err(
+                    format!("appointment patient '{}' is missing actor_id", patient.id).into(),
+                );
+            }
+            require_known_id(
+                &patient.actor_id,
+                &actors
+                    .iter()
+                    .map(|actor| actor.id.as_str())
+                    .collect::<Vec<_>>(),
+                &format!(
+                    "appointment patient '{}' actor_id '{}'",
+                    patient.id, patient.actor_id
+                ),
+                "actors",
+            )?;
+            if !seen_patient_actor_ids.insert(patient.actor_id.clone()) {
+                return Err(format!(
+                    "appointment patients must not reuse actor_id '{}'",
+                    patient.actor_id
+                )
+                .into());
             }
         }
     }

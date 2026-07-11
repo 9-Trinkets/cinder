@@ -3,7 +3,7 @@ use crate::engine::dialogue::DialogueRequest;
 use crate::engine::hooks::{actor_state_notes, pair_state_note};
 use crate::engine::state::{
     ConversationMemoryKind, ConversationMemoryLine, WorldState, display_actor_name,
-    render_dynamic_story_text, resolved_actor_prompt_context,
+    remap_story_actor_id, render_dynamic_story_text, resolved_actor_prompt_context,
 };
 use std::collections::BTreeMap;
 const ROOM_RECENT_MEMORY_LIMIT: usize = 8;
@@ -35,6 +35,7 @@ pub(crate) fn build_grounded_dialogue_request_for_exchange(
     other_person_name: &str,
     other_person_message: Option<String>,
 ) -> Result<DialogueRequest, String> {
+    let actor_id = remap_story_actor_id(state, actor_id);
     let actor = content
         .actor(actor_id)
         .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
@@ -60,7 +61,7 @@ pub(crate) fn build_grounded_dialogue_request_for_exchange(
         other_person_message.as_deref(),
         &current_objective_beat_notes(content, state),
     );
-    let prompt_context = resolved_actor_prompt_context(state, actor);
+    let prompt_context = resolved_actor_prompt_context(content, state, actor);
     let actor_name = display_actor_name(state, actor);
     let mut response_notes = prompt_context.response_notes.clone();
     response_notes.push(content.render_template(
@@ -136,6 +137,7 @@ pub(crate) fn build_grounded_dialogue_request_for_room(
     current_room_id: &str,
     audience_label: &str,
 ) -> Result<DialogueRequest, String> {
+    let actor_id = remap_story_actor_id(state, actor_id);
     let actor = content
         .actor(actor_id)
         .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
@@ -148,7 +150,7 @@ pub(crate) fn build_grounded_dialogue_request_for_room(
     );
     let setting_notes = build_setting_notes(content, state, actor, room, &current_time_note);
     let current_beat_notes = current_objective_beat_notes(content, state);
-    let prompt_context = resolved_actor_prompt_context(state, actor);
+    let prompt_context = resolved_actor_prompt_context(content, state, actor);
     let actor_name = display_actor_name(state, actor);
     let mut response_notes = prompt_context.response_notes.clone();
     response_notes.push(content.render_template(

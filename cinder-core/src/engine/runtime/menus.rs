@@ -8,7 +8,8 @@ use crate::engine::events::{ObservationMode, TimestampedWorldEvent, WorldEvent};
 use crate::engine::menus::render_menu_prompt;
 use crate::engine::reducer::apply_events;
 use crate::engine::state::{
-    TurnOutcome, display_actor_name, render_dynamic_story_text, resolved_actor_prompt_context,
+    TurnOutcome, display_actor_name, remap_story_actor_id, render_dynamic_story_text,
+    resolved_actor_prompt_context,
 };
 use std::error::Error;
 
@@ -208,9 +209,10 @@ impl CinderRuntime {
                         .map_err(|_| "failed to lock runtime state for dynamic menu")?;
                     let actor = self
                         .content
-                        .actor(&menu.actor_id)
+                        .actor(remap_story_actor_id(&state, &menu.actor_id))
                         .ok_or_else(|| format!("missing actor '{}'", menu.actor_id))?;
-                    let prompt_context = resolved_actor_prompt_context(&state, actor);
+                    let prompt_context =
+                        resolved_actor_prompt_context(self.content.as_ref(), &state, actor);
                     let mut beat_notes =
                         current_objective_beat_notes(self.content.as_ref(), &state);
                     beat_notes.extend(
@@ -232,7 +234,7 @@ impl CinderRuntime {
                         beat_notes,
                         state
                             .conversation_history(
-                                &menu.actor_id,
+                                remap_story_actor_id(&state, &menu.actor_id),
                                 &viewer_participant_id(self.content.as_ref()),
                             )
                             .iter()

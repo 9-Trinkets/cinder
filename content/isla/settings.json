@@ -7,7 +7,6 @@
   "autonomous_actor_dialogue": false,
   "closure_perspective_actor_id": "noa",
   "multi_appointment": true,
-  "appointment_patient_actor_id": "noa",
   "speech_stamina_cost_floor": 0,
   "show_day_summary": false,
   "theme": {

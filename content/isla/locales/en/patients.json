@@ -2,6 +2,7 @@
   {
     "id": "noa",
     "name": "Noa",
+    "actor_id": "noa",
     "age": 31,
     "profession": "architect",
     "presenting_issue": "she keeps everyone at a polite distance and disappears emotionally in close relationships",
@@ -19,12 +20,12 @@
       "focus": 6,
       "resistance": 4,
       "outcome_score": 0
-    },
-    "uses_authored_profile": true
+    }
   },
   {
     "id": "mira",
     "name": "Awa",
+    "actor_id": "awa",
     "age": 29,
     "profession": "home health aide",
     "presenting_issue": "she lives with avoidant personality disorder, compulsively holding her family together while believing her own needs only become a burden",
@@ -52,6 +53,7 @@
   {
     "id": "jonah",
     "name": "Jonah",
+    "actor_id": "jonah",
     "age": 41,
     "profession": "paramedic",
     "presenting_issue": "his life works in emergencies, but he goes numb the moment things become quiet",
@@ -79,6 +81,7 @@
   {
     "id": "leah",
     "name": "Sophea",
+    "actor_id": "sophea",
     "age": 35,
     "profession": "middle-school music teacher",
     "presenting_issue": "she feels adored in public and unseen at home, and no longer knows which version of her is real",

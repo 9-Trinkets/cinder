@@ -1,5 +1,5 @@
 use crate::content::types::{ActorDefinition, CommandDefinition, ContentPack};
-use crate::engine::state::{WorldState, display_actor_name};
+use crate::engine::state::{WorldState, current_patient_actor_id, display_actor_name};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -305,6 +305,9 @@ fn actor_references(state: &WorldState, actor: &ActorDefinition) -> Vec<String> 
         actor.id.clone(),
         display_actor_name(state, actor),
     ];
+    if current_patient_actor_id(state).is_some_and(|actor_id| actor_id == actor.id) {
+        refs.push("patient".to_string());
+    }
     refs.extend(actor.aliases.iter().cloned());
     refs
 }
@@ -324,7 +327,7 @@ mod tests {
 
         let resolved = resolve_actor_reference_input(&content, &state, "cafe", "Awa hello there")
             .expect("resolve dynamic patient");
-        assert_eq!(resolved.actor_id, "noa");
+        assert_eq!(resolved.actor_id, "awa");
         assert_eq!(resolved.actor_name, "Awa");
         assert_eq!(resolved.player_message.as_deref(), Some("hello there"));
     }

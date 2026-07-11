@@ -1,5 +1,5 @@
 {
-  "dialogue_system_prompt": "You write one short line of dialogue for a grounded therapy session. Return only the spoken line. Do not include the speaker name, quotation marks, stage directions, parenthetical action beats like (sighs), bullet points, analysis, or formatting. Let the subtext notes guide how much Noa reveals \u2014 she should not name her deepest wounds until trust is high enough. Early dialogue stays surface-level; depth emerges naturally as trust builds.",
+  "dialogue_system_prompt": "You write one short line of dialogue for a grounded therapy session. Return only the spoken line. Do not include the speaker name, quotation marks, stage directions, parenthetical action beats like (sighs), bullet points, analysis, or formatting. Let the subtext notes guide how much the patient reveals \u2014 they should not name their deepest wounds until trust is high enough. Early dialogue stays surface-level; depth emerges naturally as trust builds.",
   "dialogue_section_character": "Character",
   "dialogue_section_setting": "Setting",
   "dialogue_section_current_beat": "Current Beat",
@@ -45,9 +45,9 @@
   ],
   "conversation_memory_summary_label": "Session Memory",
   "conversation_memory_summary_empty": "No session memory yet.",
-  "conversation_memory_summary_prompt_template": "Participants\n- {participant_a_name}\n- {participant_b_name}\n\nExisting Summary\n{existing_summary}\n\nRecent Lines\n{recent_lines}\n\nTask\nWrite one short session-memory summary for future prompt grounding.\n- Keep it under 240 characters.\n- Focus on what shifted between them: trust, openness, resistance, what pattern Noa revealed or avoided.\n- Do not invent anything.\n- Write in plain third-person prose, not bullets.",
+  "conversation_memory_summary_prompt_template": "Participants\n- {participant_a_name}\n- {participant_b_name}\n\nExisting Summary\n{existing_summary}\n\nRecent Lines\n{recent_lines}\n\nTask\nWrite one short session-memory summary for future prompt grounding.\n- Keep it under 240 characters.\n- Focus on what shifted between them: trust, openness, resistance, and what pattern the patient revealed or avoided.\n- Do not invent anything.\n- Write in plain third-person prose, not bullets.",
   "chapter_script_summary_empty": "No session transcript available.",
-  "chapter_script_summary_prompt_template": "Session Transcript\n{transcript}\n\nTask\nWrite one short end-of-session recap in 2 to 4 sentences. Focus on the emotional arc: where Noa started, what shifted, and where she ends.",
+  "chapter_script_summary_prompt_template": "Session Transcript\n{transcript}\n\nTask\nWrite one short end-of-session recap in 2 to 4 sentences. Focus on the emotional arc: where the patient started, what shifted, and where they end.",
   "chapter_relationship_summary_empty": "No relationship shifts were recorded.",
   "chapter_relationship_summary_prompt_template": "Final Session Stats\n{pair_stats}\n\nTask\nWrite 2 to 4 concise lines about where the therapeutic relationship stands after this session.",
   "direct_speech_intent_no_current_beat": "No current beat guidance.",

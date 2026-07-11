@@ -50,8 +50,6 @@ pub struct ContentSettingsDefinition {
     #[serde(default)]
     pub multi_appointment: bool,
     #[serde(default)]
-    pub appointment_patient_actor_id: String,
-    #[serde(default)]
     pub fallback_stage_id: String,
     #[serde(default)]
     pub fallback_required_story_vars: Vec<String>,
@@ -106,7 +104,6 @@ impl Default for ContentSettingsDefinition {
             autonomous_actor_dialogue: false,
             closure_perspective_actor_id: String::default(),
             multi_appointment: false,
-            appointment_patient_actor_id: String::default(),
             fallback_stage_id: String::default(),
             fallback_required_story_vars: Vec::new(),
             speech_stamina_cost_floor: default_speech_stamina_cost_floor(),
@@ -129,6 +126,7 @@ pub struct OpeningPromptContext {
 pub struct AppointmentPatientDefinition {
     pub id: String,
     pub name: String,
+    pub actor_id: String,
     #[serde(default)]
     pub age: u32,
     #[serde(default)]
@@ -155,8 +153,6 @@ pub struct AppointmentPatientDefinition {
     pub secret_notes: Vec<String>,
     #[serde(default)]
     pub actor_stats: BTreeMap<String, i32>,
-    #[serde(default)]
-    pub uses_authored_profile: bool,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

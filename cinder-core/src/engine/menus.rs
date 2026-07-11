@@ -6,7 +6,10 @@ use crate::engine::dialogue_grounding::{
 };
 use crate::engine::events::WorldEvent;
 use crate::engine::reducer::render_actor_speech_line;
-use crate::engine::state::{WorldState, display_actor_name, render_dynamic_story_text};
+use crate::engine::state::{
+    WorldState, display_actor_name, remap_story_actor_id, render_dynamic_story_text,
+    story_actor_matches,
+};
 
 pub(crate) struct PendingMenuDialogue<'a> {
     pub actor_id: &'a str,
@@ -23,7 +26,7 @@ pub(crate) fn render_menu_prompt(
         String::new()
     } else {
         let actor_name = content
-            .actor(&menu.actor_id)
+            .actor(remap_story_actor_id(state, &menu.actor_id))
             .map(|actor| display_actor_name(state, actor))
             .unwrap_or_else(|| menu.actor_id.clone());
         render_actor_speech_line(
@@ -57,7 +60,7 @@ where
                 .active_objective_stage_ids
                 .iter()
                 .any(|stage_id| stage_id == &menu.stage_id)
-                && pending.actor_id == menu.actor_id
+                && story_actor_matches(state, pending.actor_id, &menu.actor_id)
         })
         .collect::<Vec<_>>();
     let objective_notes = current_objective_beat_notes(content, state);
@@ -65,15 +68,16 @@ where
         &content.system_text.prompt_time_note,
         &[("current_time", state.current_time_label().as_str())],
     );
+    let actor_id = remap_story_actor_id(state, pending.actor_id);
     let actor = content
-        .actor(pending.actor_id)
-        .ok_or_else(|| format!("missing actor '{}'", pending.actor_id))?;
+        .actor(actor_id)
+        .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
     let room = content
         .room(pending.current_room_id)
         .ok_or_else(|| format!("missing room '{}'", pending.current_room_id))?;
     let viewer_id = viewer_participant_id(content);
     let recent_memory = state
-        .conversation_history(pending.actor_id, &viewer_id)
+        .conversation_history(actor_id, &viewer_id)
         .iter()
         .rev()
         .filter(|line| {

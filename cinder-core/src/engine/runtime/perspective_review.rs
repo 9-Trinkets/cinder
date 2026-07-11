@@ -2,7 +2,10 @@ use super::CinderRuntime;
 use crate::content::types::ContentPack;
 use crate::engine::dialogue::{PerspectiveReview, PerspectiveReviewRequest};
 use crate::engine::dialogue_grounding::viewer_participant_id;
-use crate::engine::state::{WorldState, current_patient_name, display_actor_name};
+use crate::engine::state::{
+    WorldState, current_patient_actor_id, current_patient_name, display_actor_name,
+    remap_story_actor_id,
+};
 use std::collections::BTreeMap;
 use std::error::Error;
 use std::sync::Arc;
@@ -150,16 +153,20 @@ pub(super) struct CachedPerspectiveReview {
 
 fn pick_perspective_actor_id(
     content: &ContentPack,
-    _state: &WorldState,
+    state: &WorldState,
     _viewer_id: &str,
 ) -> Option<String> {
+    if let Some(actor_id) = current_patient_actor_id(state) {
+        return Some(actor_id.to_string());
+    }
     if !content.settings.closure_perspective_actor_id.is_empty()
-        && content
-            .actors
-            .iter()
-            .any(|actor| actor.id == content.settings.closure_perspective_actor_id)
+        && content.actors.iter().any(|actor| {
+            actor.id == remap_story_actor_id(state, &content.settings.closure_perspective_actor_id)
+        })
     {
-        return Some(content.settings.closure_perspective_actor_id.clone());
+        return Some(
+            remap_story_actor_id(state, &content.settings.closure_perspective_actor_id).to_string(),
+        );
     }
     None
 }

@@ -80,5 +80,13 @@
     "exits": [
       { "room_id": "cafe", "label": "Cafe", "aliases": ["cafe", "front"] }
     ]
+  },
+  {
+    "id": "appointments-offstage",
+    "title": "Appointments Offstage",
+    "summary": "A hidden holding space for patients who are not part of the current appointment.",
+    "inspect_text": "This room exists only to keep inactive appointment patients out of the current scene.",
+    "features": [],
+    "exits": []
   }
 ]
