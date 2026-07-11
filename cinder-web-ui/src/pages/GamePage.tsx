@@ -26,6 +26,7 @@ interface Line {
 }
 
 type MenuView = 'main' | 'about' | 'rooms' | 'follow' | 'language'
+type QuickPanel = 'look' | 'talk' | 'overflow' | null
 
 export default function GamePage() {
   const { id } = useParams<{ id: string }>()
@@ -41,9 +42,7 @@ export default function GamePage() {
   const [panelBusy, setPanelBusy] = useState(false)
   const [sessionClosure, setSessionClosure] = useState<api.SessionClosureData | null>(null)
   const [showMenu, setShowMenu] = useState(false)
-  const [showLookModal, setShowLookModal] = useState(false)
-  const [showTalkModal, setShowTalkModal] = useState(false)
-  const [showOverflowModal, setShowOverflowModal] = useState(false)
+  const [quickPanel, setQuickPanel] = useState<QuickPanel>(null)
   const [showStatusModal, setShowStatusModal] = useState(false)
   const [movie, setMovie] = useState<api.MovieData | null>(null)
   const [movieFrame, setMovieFrame] = useState(0)
@@ -192,6 +191,7 @@ export default function GamePage() {
   }, [gameOver, uiSnapshot])
 
   function openMenu() {
+    setQuickPanel(null)
     setMenuView('main')
     setShowMenu(true)
     if (token && id) {
@@ -233,6 +233,7 @@ export default function GamePage() {
     setActiveMenu(null)
     setMovie(null)
     setMovieFrame(0)
+    setQuickPanel(null)
     setCommandPending(true)
     lastInteractionAtRef.current = Date.now()
     autoScrollRef.current = true
@@ -258,9 +259,7 @@ export default function GamePage() {
       movie ||
       activeMenu ||
       showMenu ||
-      showLookModal ||
-      showTalkModal ||
-      showOverflowModal ||
+      quickPanel !== null ||
       showStatusModal ||
       input.trim().length > 0
     ) {
@@ -312,9 +311,7 @@ export default function GamePage() {
     movie,
     activeMenu,
     showMenu,
-    showLookModal,
-    showTalkModal,
-    showOverflowModal,
+    quickPanel,
     showStatusModal,
     input,
   ])
@@ -419,7 +416,10 @@ export default function GamePage() {
           >&#9776; Menu</button>
           {uiSnapshot && (
             <button
-              onClick={() => setShowStatusModal(true)}
+              onClick={() => {
+                setQuickPanel(null)
+                setShowStatusModal(true)
+              }}
               className="lg:hidden text-sm px-2 py-1 rounded bg-overlay border border-subtle text-text transition duration-200 hover:brightness-110 active:scale-[0.98] cursor-pointer"
             >
               Status
@@ -458,7 +458,42 @@ export default function GamePage() {
             onDismissClosure={() => setSessionClosure(null)}
           />
 
-          <div className="flex flex-wrap gap-2 px-4 py-2 border-t border-subtle shrink-0">
+          <div className="relative border-t border-subtle shrink-0">
+            <QuickActionPanel
+              panel={quickPanel}
+              uiSnapshot={uiSnapshot}
+              busy={busy}
+              onClose={() => setQuickPanel(null)}
+              onLook={async command => {
+                setQuickPanel(null)
+                await execCommand(command)
+              }}
+              onTalk={title => {
+                setQuickPanel(null)
+                setInput(`@${title} `)
+                setAtSuggestions(null)
+                focusInputToEnd()
+              }}
+              onOverflow={action => {
+                const talkOpts = uiSnapshot?.talk_options ?? []
+                if ((action.id === 'speak' || action.id === 'talk') && talkOpts.length > 0) {
+                  if (talkOpts.length === 1) {
+                    setQuickPanel(null)
+                    setInput(`@${talkOpts[0].title} `)
+                    setAtSuggestions(null)
+                    focusInputToEnd()
+                    return
+                  }
+                  if (talkOpts.length > 1) {
+                    setQuickPanel('talk')
+                    return
+                  }
+                }
+                setQuickPanel(null)
+                void execCommand(action.id)
+              }}
+            />
+          <div className="flex flex-wrap gap-2 px-4 py-2">
             {(uiSnapshot?.action_bar_actions ?? [
               { id: 'look', label: 'Look' },
               { id: 'move', label: 'Move' },
@@ -466,7 +501,10 @@ export default function GamePage() {
             ]).map(action => {
               const handleClick = () => {
                 if (busy || gameOver) return
-                if (action.id === 'look') { setShowLookModal(true); return }
+                if (action.id === 'look') {
+                  setQuickPanel(current => current === 'look' ? null : 'look')
+                  return
+                }
                 if (action.id === 'move') { setMenuView('rooms'); setShowMenu(true); return }
                 if (action.id === 'follow') { setMenuView('follow'); setShowMenu(true); return }
                 const talkOpts = uiSnapshot?.talk_options ?? []
@@ -477,7 +515,10 @@ export default function GamePage() {
                     focusInputToEnd()
                     return
                   }
-                  if (talkOpts.length > 1) { setShowTalkModal(true); return }
+                  if (talkOpts.length > 1) {
+                    setQuickPanel(current => current === 'talk' ? null : 'talk')
+                    return
+                  }
                 }
                 execCommand(action.id)
               }
@@ -492,12 +533,13 @@ export default function GamePage() {
             })}
             {uiSnapshot && uiSnapshot.overflow_actions?.length > 0 && (
               <button
-                onClick={() => setShowOverflowModal(true)}
+                onClick={() => setQuickPanel(current => current === 'overflow' ? null : 'overflow')}
                 disabled={busy || gameOver}
                 className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
                 title="More actions"
               >...</button>
             )}
+          </div>
           </div>
 
           {!channelSurfingOnly.current && (
@@ -572,56 +614,6 @@ export default function GamePage() {
         />
       )}
 
-      {showLookModal && uiSnapshot && (
-        <Modal title={uiSnapshot.ui_text.look_modal_title} onClose={() => setShowLookModal(false)}>
-          {(uiSnapshot.look_options ?? []).length === 0 ? (
-            <p className="text-muted italic">Nothing of particular interest here.</p>
-          ) : (
-            groupLookOptions(uiSnapshot.look_options, uiSnapshot.ui_text).map(([group, options]) => (
-              <div key={group} className="mb-4 last:mb-0">
-                <p className="text-xs text-muted uppercase tracking-wider mb-2">{group}</p>
-                <div className="space-y-2">
-                  {options.map(opt => (
-                    <button
-                      key={opt.id}
-                      onClick={async () => {
-                        setShowLookModal(false)
-                        await execCommand(opt.command)
-                      }}
-                      disabled={busy}
-                      className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
-                    >
-                      {opt.title}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))
-          )}
-        </Modal>
-      )}
-
-      {showTalkModal && uiSnapshot && (
-        <Modal title={uiSnapshot.ui_text.talk_modal_title} onClose={() => setShowTalkModal(false)}>
-          <p className="text-sm text-muted mb-3">{uiSnapshot.ui_text.talk_modal_prompt}</p>
-          {uiSnapshot.talk_options.map(opt => (
-            <button
-              key={opt.id}
-              onClick={() => {
-                setShowTalkModal(false)
-                setInput(`@${opt.title} `)
-                setAtSuggestions(null)
-                focusInputToEnd()
-              }}
-              disabled={busy}
-              className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
-            >
-              {opt.title}
-            </button>
-          ))}
-        </Modal>
-      )}
-
       {activeMenu && (
         <Modal title={uiSnapshot?.ui_text.menu_option_list_title ?? 'Choose'} onClose={() => setActiveMenu(null)}>
           {activeMenu.prompt && (
@@ -644,47 +636,6 @@ export default function GamePage() {
                 {opt.menu_text && <span className="text-muted ml-2">— {opt.menu_text}</span>}
               </button>
             ))
-          )}
-        </Modal>
-      )}
-
-      {showOverflowModal && uiSnapshot && (
-        <Modal title={uiSnapshot.ui_text.commands_modal_title} onClose={() => setShowOverflowModal(false)}>
-          {groupOverflowActions(uiSnapshot.overflow_actions ?? [], uiSnapshot.ui_text).map(([group, items]) => (
-            <div key={group} className="mb-4 last:mb-0">
-              <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-2">{group}</h3>
-              {items.map(action => {
-                const handleOverflowClick = () => {
-                  setShowOverflowModal(false)
-                  const talkOpts = uiSnapshot?.talk_options ?? []
-                  if ((action.id === 'speak' || action.id === 'talk') && talkOpts.length > 0) {
-                    if (talkOpts.length === 1) {
-                      setInput(`@${talkOpts[0].title} `)
-                      setAtSuggestions(null)
-                      focusInputToEnd()
-                      return
-                    }
-                    if (talkOpts.length > 1) { setShowTalkModal(true); return }
-                  }
-                  execCommand(action.id)
-                }
-                return (
-                  <button
-                    key={action.id}
-                    onClick={handleOverflowClick}
-                    disabled={busy}
-                    className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer mb-1 last:mb-0"
-                    title={action.usage}
-                  >
-                    <span className="font-medium">{action.label}</span>
-                    {action.usage && <span className="text-muted text-xs ml-2">— {action.usage}</span>}
-                  </button>
-                )
-              })}
-            </div>
-          ))}
-          {uiSnapshot.overflow_actions?.length === 0 && (
-            <p className="text-muted italic">{uiSnapshot.ui_text.commands_modal_empty}</p>
           )}
         </Modal>
       )}
@@ -750,6 +701,118 @@ const TranscriptPane = memo(function TranscriptPane({
         <p className="text-love font-semibold text-center pt-4">Game Over</p>
       )}
       <div ref={bottomRef} />
+    </div>
+  )
+})
+
+const QuickActionPanel = memo(function QuickActionPanel({
+  panel,
+  uiSnapshot,
+  busy,
+  onClose,
+  onLook,
+  onTalk,
+  onOverflow,
+}: {
+  panel: QuickPanel
+  uiSnapshot: api.UiSnapshot | null
+  busy: boolean
+  onClose: () => void
+  onLook: (command: string) => Promise<void>
+  onTalk: (title: string) => void
+  onOverflow: (action: api.OverflowAction) => void
+}) {
+  if (!panel || !uiSnapshot) return null
+
+  return (
+    <div className="absolute bottom-full inset-x-0 z-20 px-4 pb-2">
+      <div className="rounded-2xl border border-subtle bg-surface/98 shadow-2xl backdrop-blur-sm">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-subtle">
+          <div>
+            <h3 className="text-sm font-semibold text-text">
+              {panel === 'look'
+                ? uiSnapshot.ui_text.look_modal_title
+                : panel === 'talk'
+                  ? uiSnapshot.ui_text.talk_modal_title
+                  : uiSnapshot.ui_text.commands_modal_title}
+            </h3>
+            {panel === 'talk' && (
+              <p className="text-xs text-muted mt-0.5">{uiSnapshot.ui_text.talk_modal_prompt}</p>
+            )}
+          </div>
+          <button
+            onClick={onClose}
+            className="text-muted hover:text-text text-lg leading-none transition duration-200 active:scale-95 cursor-pointer"
+          >
+            &times;
+          </button>
+        </div>
+
+        <div className="max-h-[40dvh] overflow-y-auto p-3 space-y-3">
+          {panel === 'look' && (
+            (uiSnapshot.look_options ?? []).length === 0 ? (
+              <p className="text-muted italic text-sm px-1">Nothing of particular interest here.</p>
+            ) : (
+              groupLookOptions(uiSnapshot.look_options, uiSnapshot.ui_text).map(([group, options]) => (
+                <div key={group} className="space-y-2">
+                  <p className="text-[11px] text-muted uppercase tracking-wider px-1">{group}</p>
+                  <div className="grid gap-2 sm:grid-cols-2">
+                    {options.map(opt => (
+                      <button
+                        key={opt.id}
+                        onClick={() => { void onLook(opt.command) }}
+                        disabled={busy}
+                        className="block w-full text-left px-3 py-2 rounded-xl hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
+                      >
+                        {opt.title}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))
+            )
+          )}
+
+          {panel === 'talk' && (
+            <div className="grid gap-2 sm:grid-cols-2">
+              {uiSnapshot.talk_options.map(opt => (
+                <button
+                  key={opt.id}
+                  onClick={() => onTalk(opt.title)}
+                  disabled={busy}
+                  className="block w-full text-left px-3 py-2 rounded-xl hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
+                >
+                  {opt.title}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {panel === 'overflow' && (
+            (uiSnapshot.overflow_actions ?? []).length === 0 ? (
+              <p className="text-muted italic text-sm px-1">{uiSnapshot.ui_text.commands_modal_empty}</p>
+            ) : (
+              groupOverflowActions(uiSnapshot.overflow_actions ?? [], uiSnapshot.ui_text).map(([group, items]) => (
+                <div key={group} className="space-y-2">
+                  <p className="text-[11px] font-semibold text-muted uppercase tracking-wider px-1">{group}</p>
+                  {items.map(action => (
+                    <button
+                      key={action.id}
+                      onClick={() => onOverflow(action)}
+                      disabled={busy}
+                      className="block w-full text-left px-3 py-2 rounded-xl hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
+                      title={action.usage}
+                    >
+                      <span className="font-medium">{action.label}</span>
+                      {action.usage && <span className="text-muted text-xs ml-2">— {action.usage}</span>}
+                    </button>
+                  ))}
+                </div>
+              ))
+            )
+          )}
+        </div>
+      </div>
     </div>
   )
 })
