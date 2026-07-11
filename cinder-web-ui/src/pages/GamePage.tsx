@@ -26,7 +26,7 @@ interface Line {
 }
 
 type MenuView = 'main' | 'about' | 'rooms' | 'follow' | 'language'
-type QuickPanel = 'look' | 'talk' | 'overflow' | null
+type QuickPanel = 'look' | 'talk' | 'overflow' | 'rooms' | 'follow' | null
 
 export default function GamePage() {
   const { id } = useParams<{ id: string }>()
@@ -395,8 +395,7 @@ export default function GamePage() {
       const snap = uiSnapshot || await api.fetchSessionUi(token, id).catch(() => null)
       if (snap?.channel_surfing_only) {
         setUiSnapshot(snap)
-        setMenuView(trimmed.toLowerCase() === 'move' ? 'rooms' : 'follow')
-        setShowMenu(true)
+        setQuickPanel(trimmed.toLowerCase() === 'move' ? 'rooms' : 'follow')
         return
       }
     }
@@ -468,6 +467,14 @@ export default function GamePage() {
                 setQuickPanel(null)
                 await execCommand(command)
               }}
+              onSwitchRoom={roomId => {
+                setQuickPanel(null)
+                void doSwitchRoom(roomId)
+              }}
+              onFollowActor={actorId => {
+                setQuickPanel(null)
+                void doFollowActor(actorId)
+              }}
               onTalk={title => {
                 setQuickPanel(null)
                 setInput(`@${title} `)
@@ -505,8 +512,14 @@ export default function GamePage() {
                   setQuickPanel(current => current === 'look' ? null : 'look')
                   return
                 }
-                if (action.id === 'move') { setMenuView('rooms'); setShowMenu(true); return }
-                if (action.id === 'follow') { setMenuView('follow'); setShowMenu(true); return }
+                if (action.id === 'move') {
+                  setQuickPanel(current => current === 'rooms' ? null : 'rooms')
+                  return
+                }
+                if (action.id === 'follow') {
+                  setQuickPanel(current => current === 'follow' ? null : 'follow')
+                  return
+                }
                 const talkOpts = uiSnapshot?.talk_options ?? []
                 if ((action.id === 'speak' || action.id === 'talk') && talkOpts.length > 0) {
                   if (talkOpts.length === 1) {
@@ -711,6 +724,8 @@ const QuickActionPanel = memo(function QuickActionPanel({
   busy,
   onClose,
   onLook,
+  onSwitchRoom,
+  onFollowActor,
   onTalk,
   onOverflow,
 }: {
@@ -719,6 +734,8 @@ const QuickActionPanel = memo(function QuickActionPanel({
   busy: boolean
   onClose: () => void
   onLook: (command: string) => Promise<void>
+  onSwitchRoom: (roomId: string) => void
+  onFollowActor: (actorId: string | null) => void
   onTalk: (title: string) => void
   onOverflow: (action: api.OverflowAction) => void
 }) {
@@ -734,6 +751,10 @@ const QuickActionPanel = memo(function QuickActionPanel({
                 ? uiSnapshot.ui_text.look_modal_title
                 : panel === 'talk'
                   ? uiSnapshot.ui_text.talk_modal_title
+                  : panel === 'rooms'
+                    ? uiSnapshot.ui_text.room_switcher_title
+                    : panel === 'follow'
+                      ? uiSnapshot.ui_text.follow_actor_title
                   : uiSnapshot.ui_text.commands_modal_title}
             </h3>
             {panel === 'talk' && (
@@ -783,6 +804,38 @@ const QuickActionPanel = memo(function QuickActionPanel({
                   className="block w-full text-left px-3 py-2 rounded-xl hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
                 >
                   {opt.title}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {panel === 'rooms' && (
+            <div className="grid gap-2 sm:grid-cols-2">
+              {uiSnapshot.rooms.map(room => (
+                <button
+                  key={room.id}
+                  onClick={() => onSwitchRoom(room.id)}
+                  disabled={busy}
+                  className="block w-full text-left px-3 py-2 rounded-xl hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
+                >
+                  <span className="font-medium">{room.title}</span>
+                  {room.menu_text && <span className="text-muted text-xs ml-2">{room.menu_text}</span>}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {panel === 'follow' && (
+            <div className="grid gap-2 sm:grid-cols-2">
+              {uiSnapshot.follow_options.map(actor => (
+                <button
+                  key={actor.id}
+                  onClick={() => onFollowActor(actor.id === 'none' ? null : actor.id)}
+                  disabled={busy}
+                  className="block w-full text-left px-3 py-2 rounded-xl hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
+                >
+                  <span className="font-medium">{actor.title}</span>
+                  {actor.menu_text && <span className="text-muted text-xs ml-2">{actor.menu_text}</span>}
                 </button>
               ))}
             </div>
