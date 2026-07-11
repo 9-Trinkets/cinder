@@ -404,8 +404,8 @@ export default function GamePage() {
 
   return (
     <ErrorBoundary>
-    <div className="min-h-dvh flex flex-col bg-surface">
-      <header className="flex items-center justify-between gap-3 px-4 py-3 border-b border-subtle shrink-0">
+    <div className="h-dvh flex flex-col bg-surface overflow-hidden">
+      <header className="sticky top-0 z-10 bg-surface flex items-center justify-between gap-3 px-4 py-3 border-b border-subtle shrink-0">
         <div className="flex items-center gap-2">
           <button onClick={() => navigate('/games')} className="text-sm text-muted hover:text-text cursor-pointer">&larr; Sessions</button>
           <button
@@ -607,7 +607,7 @@ export default function GamePage() {
         </div>
 
         {uiSnapshot && (
-          <aside className="hidden lg:flex w-72 shrink-0 border-l border-subtle p-4 flex-col gap-4 text-sm overflow-y-auto">
+          <aside className="hidden lg:flex w-72 shrink-0 border-l border-subtle p-4 flex-col gap-4 text-sm overflow-y-auto self-start max-h-full">
             <StatusPanel uiSnapshot={uiSnapshot} />
           </aside>
         )}
