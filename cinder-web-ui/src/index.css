@@ -19,11 +19,22 @@
   --color-subtle: #3c3a52;
 }
 
-html, body, #root {
+html {
+  background: var(--color-surface);
+  color: var(--color-text);
+  scroll-behavior: smooth;
+}
+
+body, #root {
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100dvh;
   background: var(--color-surface);
   color: var(--color-text);
   font-family: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+body {
+  overscroll-behavior-y: none;
 }
