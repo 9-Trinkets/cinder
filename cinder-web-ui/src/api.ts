@@ -87,6 +87,7 @@ export interface CommandResponse {
   game_over: boolean
   movie: MovieData | null
   session_closure: SessionClosureData | null
+  ui_snapshot: UiSnapshot | null
 }
 
 export function runCommand(token: string, sessionId: string, input: string) {
@@ -268,7 +269,7 @@ export function followActor(token: string, sessionId: string, actorId: string | 
 }
 
 export function setLocale(token: string, sessionId: string, locale: string) {
-  return req<string>(`/games/${sessionId}/locale`, {
+  return req<CommandResponse>(`/games/${sessionId}/locale`, {
     method: 'POST',
     headers: authHeader(token),
     body: JSON.stringify({ locale }),

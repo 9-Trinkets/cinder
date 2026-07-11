@@ -163,8 +163,7 @@ export default function GamePage() {
         if (!shouldLook) return
         api.runCommand(token, id, 'look')
           .then(res => {
-            appendLines([res.text], 'auto')
-            if (res.game_over) setGameOver(true)
+            applyCommandResponse(res, 'auto')
           })
           .catch(err => {
             appendLines([`[error: ${err instanceof Error ? err.message : 'failed to load'}]`], 'auto')
@@ -205,7 +204,13 @@ export default function GamePage() {
     if (res.text) {
       appendLines([res.text], behavior)
     }
-    refreshSnapshot()
+    if (res.ui_snapshot) {
+      channelSurfingOnly.current = res.ui_snapshot.channel_surfing_only
+      setUiSnapshot(res.ui_snapshot)
+      setActiveMenu(res.ui_snapshot.active_menu ?? null)
+    } else {
+      refreshSnapshot()
+    }
     if (res.session_closure) {
       setSessionClosure(res.session_closure)
     }
@@ -324,9 +329,7 @@ export default function GamePage() {
     lastInteractionAtRef.current = Date.now()
     try {
       const res = await api.switchRoom(token, id, roomId)
-      appendLines([res.text], 'smooth')
-      refreshSnapshot()
-      if (res.game_over) setGameOver(true)
+      applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
       addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
     } finally {
@@ -342,9 +345,7 @@ export default function GamePage() {
     lastInteractionAtRef.current = Date.now()
     try {
       const res = await api.followActor(token, id, actorId)
-      appendLines([res.text], 'smooth')
-      refreshSnapshot()
-      if (res.game_over) setGameOver(true)
+      applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
       addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
     } finally {
@@ -359,9 +360,8 @@ export default function GamePage() {
     setPanelBusy(true)
     lastInteractionAtRef.current = Date.now()
     try {
-      const text = await api.setLocale(token, id, locale)
-      addOutcome(text)
-      refreshSnapshot()
+      const res = await api.setLocale(token, id, locale)
+      applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
       addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
     } finally {

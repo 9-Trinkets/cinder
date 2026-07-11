@@ -159,12 +159,7 @@ pub async fn switch_room_handler(
     let outcome = game_manager::switch_room(&state.pool, &session_id, &auth.id, &req.room_id)
         .await
         .map_err(internal)?;
-    Ok(Json(game_manager::CommandResponse {
-        text: outcome.text,
-        game_over: outcome.game_over,
-        movie: None,
-        session_closure: None,
-    }))
+    Ok(Json(outcome))
 }
 
 #[derive(Deserialize)]
@@ -182,12 +177,7 @@ pub async fn follow_actor_handler(
         game_manager::follow_actor(&state.pool, &session_id, &auth.id, req.actor_id.as_deref())
             .await
             .map_err(internal)?;
-    Ok(Json(game_manager::CommandResponse {
-        text: outcome.text,
-        game_over: outcome.game_over,
-        movie: None,
-        session_closure: None,
-    }))
+    Ok(Json(outcome))
 }
 
 #[derive(Deserialize)]
@@ -200,11 +190,11 @@ pub async fn set_locale_handler(
     auth: AuthPlayer,
     Path(session_id): Path<String>,
     Json(req): Json<LocaleRequest>,
-) -> Result<Json<String>, (StatusCode, String)> {
-    let text = game_manager::set_locale(&state.pool, &session_id, &auth.id, &req.locale)
+) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
+    let response = game_manager::set_locale(&state.pool, &session_id, &auth.id, &req.locale)
         .await
         .map_err(internal)?;
-    Ok(Json(text))
+    Ok(Json(response))
 }
 
 pub async fn delete_session_handler(

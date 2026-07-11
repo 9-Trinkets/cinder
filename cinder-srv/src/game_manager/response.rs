@@ -1,6 +1,8 @@
 use cinder_core::engine::runtime::{CinderRuntime, SessionClosure};
 use serde::Serialize;
 
+use super::ui::UiSnapshot;
+
 #[derive(Clone, Serialize)]
 pub struct MovieFrameData {
     pub text: String,
@@ -20,6 +22,7 @@ pub struct CommandResponse {
     pub game_over: bool,
     pub movie: Option<MovieData>,
     pub session_closure: Option<SessionClosure>,
+    pub ui_snapshot: Option<UiSnapshot>,
 }
 
 pub(super) fn session_closure_data(runtime: &CinderRuntime) -> Option<SessionClosure> {
