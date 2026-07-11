@@ -319,7 +319,6 @@
       "summary": "Transformative fit.",
       "update_message": "Noa closes the book with steadier breath and clearer language for what hurt her.",
       "narrative_lines": [
-        "Outcome: Transformative.",
         "She says the story did not solve her life, but it gave her a way to stop repeating it blindly.",
         "Before leaving, Noa asks if she can come back next week and continue from this exact point."
       ],
@@ -331,7 +330,6 @@
       "summary": "Partial fit.",
       "update_message": "Noa closes the book with mixed feelings: clearer in some places, defended in others.",
       "narrative_lines": [
-        "Outcome: Partial.",
         "She can name one pattern she wants to change, but not yet the fear underneath it.",
         "She thanks you for the session and leaves with a cautious kind of hope."
       ],
@@ -343,7 +341,6 @@
       "summary": "Misaligned fit.",
       "update_message": "Noa closes the book politely, but the distance between words and feeling remains.",
       "narrative_lines": [
-        "Outcome: Misaligned.",
         "She says she appreciated the space, though her voice suggests the book missed something central.",
         "When the door chime fades, you are left with the sense that care without fit can still fail."
       ],
@@ -355,7 +352,6 @@
       "summary": "Session reached its natural end with strong progress.",
       "update_message": "Noa has read deep into the book, but the final pages remain. The absorption has done its work, even if the story is not fully closed.",
       "narrative_lines": [
-        "Outcome: Absorption (Strong Progress).",
         "Noa has not reached the final page, but she leaves with language she did not have when she arrived. The book has already changed something.",
         "She asks if she can come back to finish. The door chime sounds, soft and final."
       ],
@@ -367,7 +363,6 @@
       "summary": "Session reached its natural end with mixed progress.",
       "update_message": "Noa read through the middle, but the absorption never fully took hold. The session ends with partial insight.",
       "narrative_lines": [
-        "Outcome: Absorption (Partial).",
         "Noa can name one pattern she wants to change, but not yet the fear underneath it. The book reached her, but not all the way.",
         "She thanks you and leaves with a cautious kind of hope. The door chime fades into the rain."
       ],
@@ -379,7 +374,6 @@
       "summary": "Session reached its natural end with low progress.",
       "update_message": "Noa read, but the disconnect never happened. The outside world stayed too close.",
       "narrative_lines": [
-        "Outcome: Absorption (Low Progress).",
         "Noa thanks you courteously, but her posture says the session never reached the real wound. The book was a miss, or the timing was off.",
         "The door chime sounds. You are left with a clean cafe and the feeling that care without fit can still fail."
       ],

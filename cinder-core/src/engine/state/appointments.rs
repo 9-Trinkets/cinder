@@ -223,18 +223,22 @@ pub fn current_appointment_intro(state: &WorldState) -> Option<String> {
     }
     let appointment_number = current_appointment_number(state);
     let returning = patient.appointment_count > 0;
+    let header = format!(
+        "━━━━━━━━━━━━━━━━━━━━\nAppointment {appointment_number}: {}\n━━━━━━━━━━━━━━━━━━━━",
+        patient.name
+    );
     Some(if returning {
         let prior_note = patient
             .last_feedback_review
             .as_deref()
             .unwrap_or("they are still sorting through what happened last time");
         format!(
-            "Day {appointment_number}.\n\n{} returns for another appointment. {} They arrive carrying the aftertaste of last time: {}",
+            "{header}\n\n{} returns for another appointment. {} They arrive carrying the aftertaste of last time: {}",
             patient.name, patient.return_blurb, prior_note
         )
     } else {
         format!(
-            "Day {appointment_number}.\n\n{} arrives for a first appointment. {}",
+            "{header}\n\n{} arrives for a first appointment. {}",
             patient.name, patient.intro_blurb
         )
     })
@@ -471,5 +475,8 @@ mod tests {
         let _ = advance_to_next_appointment(&content, &mut state, None);
 
         assert_eq!(current_patient_name(&state).as_deref(), Some("Awa"));
+        let intro = current_appointment_intro(&state).expect("appointment intro");
+        assert!(intro.contains("Appointment 2: Awa"));
+        assert!(intro.contains("━━━━━━━━━━━━━━━━━━━━"));
     }
 }
