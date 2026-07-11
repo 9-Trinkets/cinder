@@ -11,7 +11,7 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | 
   render() {
     if (this.state.error) {
       return (
-        <div className="h-screen flex items-center justify-center bg-surface text-text p-8">
+        <div className="min-h-dvh flex items-center justify-center bg-surface text-text p-8">
           <p className="text-love">Something went wrong. Please reload the page.</p>
         </div>
       )
@@ -36,45 +36,95 @@ export default function GamePage() {
   const [lines, setLines] = useState<Line[]>([])
   const [input, setInput] = useState('')
   const [gameOver, setGameOver] = useState(false)
-  const [busy, setBusy] = useState(false)
+  const [initializing, setInitializing] = useState(false)
+  const [commandPending, setCommandPending] = useState(false)
+  const [panelBusy, setPanelBusy] = useState(false)
   const [sessionClosure, setSessionClosure] = useState<api.SessionClosureData | null>(null)
   const [showMenu, setShowMenu] = useState(false)
   const [showLookModal, setShowLookModal] = useState(false)
   const [showTalkModal, setShowTalkModal] = useState(false)
   const [showOverflowModal, setShowOverflowModal] = useState(false)
+  const [showStatusModal, setShowStatusModal] = useState(false)
   const [movie, setMovie] = useState<api.MovieData | null>(null)
   const [movieFrame, setMovieFrame] = useState(0)
   const [activeMenu, setActiveMenu] = useState<api.ActiveMenuData | null>(null)
   const [menuView, setMenuView] = useState<MenuView>('main')
   const [uiSnapshot, setUiSnapshot] = useState<api.UiSnapshot | null>(null)
   const [atSuggestions, setAtSuggestions] = useState<api.MenuOptionItem[] | null>(null)
+  const [documentVisible, setDocumentVisible] = useState(document.visibilityState === 'visible')
   const channelSurfingOnly = useRef(false)
   const bottomRef = useRef<HTMLDivElement>(null)
+  const transcriptRef = useRef<HTMLDivElement>(null)
   const nextKey = useRef(1)
   const initialized = useRef(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const tickInFlight = useRef(false)
+  const autoScrollRef = useRef(true)
+  const scrollBehaviorRef = useRef<ScrollBehavior>('auto')
+  const refreshInFlightRef = useRef(false)
+  const refreshQueuedRef = useRef(false)
+  const lastInteractionAtRef = useRef(0)
+  const busy = initializing || commandPending || panelBusy
+
+  function focusInputToEnd() {
+    requestAnimationFrame(() => {
+      inputRef.current?.focus()
+      inputRef.current?.setSelectionRange(inputRef.current.value.length, inputRef.current.value.length)
+    })
+  }
 
   function refreshSnapshot() {
     if (!token || !id) return
+    if (refreshInFlightRef.current) {
+      refreshQueuedRef.current = true
+      return
+    }
+    refreshInFlightRef.current = true
     api.fetchSessionUi(token, id).then(snap => {
+      channelSurfingOnly.current = snap.channel_surfing_only
       setUiSnapshot(snap)
-      if (snap.active_menu) {
-        setActiveMenu(snap.active_menu)
-      } else {
-        setActiveMenu(null)
+      setActiveMenu(snap.active_menu ?? null)
+    }).catch(() => {}).finally(() => {
+      refreshInFlightRef.current = false
+      if (refreshQueuedRef.current) {
+        refreshQueuedRef.current = false
+        refreshSnapshot()
       }
-    }).catch(() => {})
+    })
+  }
+
+  function queueScroll(behavior: ScrollBehavior) {
+    scrollBehaviorRef.current = behavior
+  }
+
+  function appendLines(texts: string[], behavior: ScrollBehavior = 'auto') {
+    if (texts.length === 0) return
+    if (behavior === 'smooth') {
+      autoScrollRef.current = true
+    }
+    queueScroll(behavior)
+    setLines(prev => [
+      ...prev,
+      ...texts.map(text => ({ text, key: nextKey.current++ })),
+    ])
   }
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (!autoScrollRef.current) return
+    bottomRef.current?.scrollIntoView({ behavior: scrollBehaviorRef.current })
+    scrollBehaviorRef.current = 'auto'
   }, [lines])
+
+  useEffect(() => {
+    const onVisibilityChange = () => setDocumentVisible(document.visibilityState === 'visible')
+    document.addEventListener('visibilitychange', onVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange)
+  }, [])
 
   useEffect(() => {
     if (initialized.current || !token || !id) return
     initialized.current = true
-    setBusy(true)
+    setInitializing(true)
 
     const titleEntries: Line[] = []
     if (sessionState?.title) {
@@ -86,6 +136,7 @@ export default function GamePage() {
       .then(snap => {
         channelSurfingOnly.current = snap.channel_surfing_only
         setUiSnapshot(snap)
+        setActiveMenu(snap.active_menu ?? null)
       })
       .catch(() => {})
 
@@ -96,7 +147,7 @@ export default function GamePage() {
             ...titleEntries,
             ...transcript.map(t => ({ text: t, key: nextKey.current++ })),
           ])
-          setBusy(false)
+          setInitializing(false)
           return false
         }
         if (sessionState?.intro_text) {
@@ -112,13 +163,13 @@ export default function GamePage() {
         if (!shouldLook) return
         api.runCommand(token, id, 'look')
           .then(res => {
-            setLines(prev => [...prev, { text: res.text, key: nextKey.current++ }])
+            appendLines([res.text], 'auto')
             if (res.game_over) setGameOver(true)
           })
           .catch(err => {
-            setLines(prev => [...prev, { text: `[error: ${err instanceof Error ? err.message : 'failed to load'}]`, key: nextKey.current++ }])
+            appendLines([`[error: ${err instanceof Error ? err.message : 'failed to load'}]`], 'auto')
           })
-          .finally(() => setBusy(false))
+          .finally(() => setInitializing(false))
       })
   }, [token, id])
 
@@ -138,18 +189,21 @@ export default function GamePage() {
     setMenuView('main')
     setShowMenu(true)
     if (token && id) {
-      api.fetchSessionUi(token, id).then(setUiSnapshot).catch(() => {})
+      api.fetchSessionUi(token, id).then(snap => {
+        channelSurfingOnly.current = snap.channel_surfing_only
+        setUiSnapshot(snap)
+        setActiveMenu(snap.active_menu ?? null)
+      }).catch(() => {})
     }
   }
 
   function addOutcome(text: string) {
-    setLines(prev => [...prev, { text, key: nextKey.current++ }])
+    appendLines([text], 'auto')
   }
 
-  function applyCommandResponse(res: api.CommandResponse) {
+  function applyCommandResponse(res: api.CommandResponse, behavior: ScrollBehavior = 'auto') {
     if (res.text) {
-      const outLine: Line = { text: res.text, key: nextKey.current++ }
-      setLines(prev => [...prev, outLine])
+      appendLines([res.text], behavior)
     }
     refreshSnapshot()
     if (res.session_closure) {
@@ -163,53 +217,84 @@ export default function GamePage() {
   }
 
   async function execCommand(cmd: string, displayCmd?: string) {
-    if (!token || !id || busy || gameOver) return
+    if (!token || !id || commandPending || gameOver) return
     setActiveMenu(null)
     setMovie(null)
     setMovieFrame(0)
-    setBusy(true)
+    setCommandPending(true)
+    lastInteractionAtRef.current = Date.now()
+    autoScrollRef.current = true
     const cmdLine: Line = { text: `> ${displayCmd ?? cmd}`, key: nextKey.current++ }
+    queueScroll('smooth')
     setLines(prev => [...prev, cmdLine])
     try {
       const res = await api.runCommand(token, id, cmd)
-      applyCommandResponse(res)
+      applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
       addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
     } finally {
-      setBusy(false)
+      setCommandPending(false)
     }
   }
 
   useEffect(() => {
-    if (!token || !id || gameOver) return
+    if (!token || !id || gameOver || !documentVisible) return
     const intervalMs = uiSnapshot?.npc_tick_interval_ms ?? 0
     if (intervalMs <= 0) return
-    if (busy || movie || activeMenu || showMenu || showLookModal || showTalkModal || showOverflowModal) {
+    if (
+      busy ||
+      movie ||
+      activeMenu ||
+      showMenu ||
+      showLookModal ||
+      showTalkModal ||
+      showOverflowModal ||
+      showStatusModal ||
+      input.trim().length > 0
+    ) {
       return
     }
 
-    const timer = window.setInterval(async () => {
-      if (tickInFlight.current) return
-      tickInFlight.current = true
-      try {
-        const res = await api.runRealtimeTick(token, id)
-        if (res.text || res.movie || res.game_over || res.session_closure) {
-          applyCommandResponse(res)
-        } else {
-          refreshSnapshot()
-        }
-      } catch (error) {
-        console.error('background tick failed', error)
-      } finally {
-        tickInFlight.current = false
-      }
-    }, intervalMs)
+    let cancelled = false
+    let timer: number | undefined
 
-    return () => window.clearInterval(timer)
+    const schedule = (delay: number) => {
+      timer = window.setTimeout(async () => {
+        if (cancelled) return
+        if (Date.now() - lastInteractionAtRef.current < intervalMs) {
+          schedule(intervalMs)
+          return
+        }
+        if (tickInFlight.current) {
+          schedule(intervalMs)
+          return
+        }
+        tickInFlight.current = true
+        try {
+          const res = await api.runRealtimeTick(token, id)
+          if (res.text || res.movie || res.game_over || res.session_closure) {
+            applyCommandResponse(res, 'auto')
+          }
+        } catch (error) {
+          console.error('background tick failed', error)
+        } finally {
+          tickInFlight.current = false
+          if (!cancelled) schedule(intervalMs)
+        }
+      }, delay)
+    }
+
+    schedule(intervalMs)
+
+    return () => {
+      cancelled = true
+      if (timer !== undefined) window.clearTimeout(timer)
+    }
   }, [
     token,
     id,
     gameOver,
+    documentVisible,
     uiSnapshot?.npc_tick_interval_ms,
     busy,
     movie,
@@ -218,14 +303,13 @@ export default function GamePage() {
     showLookModal,
     showTalkModal,
     showOverflowModal,
+    showStatusModal,
+    input,
   ])
 
   function closeMovie() {
     if (movie && movie.narrative_lines.length > 0) {
-      setLines(prev => [
-        ...prev,
-        ...movie.narrative_lines.map(t => ({ text: t, key: nextKey.current++ })),
-      ])
+      appendLines(movie.narrative_lines, 'auto')
     }
     setMovie(null)
     setMovieFrame(0)
@@ -235,46 +319,53 @@ export default function GamePage() {
   async function doSwitchRoom(roomId: string) {
     if (!token || !id) return
     setShowMenu(false)
-    setBusy(true)
+    setShowStatusModal(false)
+    setPanelBusy(true)
+    lastInteractionAtRef.current = Date.now()
     try {
       const res = await api.switchRoom(token, id, roomId)
-      addOutcome(res.text)
+      appendLines([res.text], 'smooth')
       refreshSnapshot()
       if (res.game_over) setGameOver(true)
     } catch (err: unknown) {
       addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
     } finally {
-      setBusy(false)
+      setPanelBusy(false)
     }
   }
 
   async function doFollowActor(actorId: string | null) {
     if (!token || !id) return
     setShowMenu(false)
-    setBusy(true)
+    setShowStatusModal(false)
+    setPanelBusy(true)
+    lastInteractionAtRef.current = Date.now()
     try {
       const res = await api.followActor(token, id, actorId)
-      addOutcome(res.text)
+      appendLines([res.text], 'smooth')
       refreshSnapshot()
       if (res.game_over) setGameOver(true)
     } catch (err: unknown) {
       addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
     } finally {
-      setBusy(false)
+      setPanelBusy(false)
     }
   }
 
   async function doChangeLocale(locale: string) {
     if (!token || !id) return
     setShowMenu(false)
-    setBusy(true)
+    setShowStatusModal(false)
+    setPanelBusy(true)
+    lastInteractionAtRef.current = Date.now()
     try {
       const text = await api.setLocale(token, id, locale)
       addOutcome(text)
+      refreshSnapshot()
     } catch (err: unknown) {
       addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
     } finally {
-      setBusy(false)
+      setPanelBusy(false)
     }
   }
 
@@ -286,7 +377,7 @@ export default function GamePage() {
 
   async function send(e: FormEvent) {
     e.preventDefault()
-    if (!token || !id || busy || gameOver) return
+    if (!token || !id || commandPending || gameOver) return
     let trimmed = input.trim()
     if (!trimmed) return
     const displayInput = trimmed
@@ -310,22 +401,54 @@ export default function GamePage() {
 
   return (
     <ErrorBoundary>
-    <div className="h-screen flex flex-col bg-surface">
-      <header className="flex items-center justify-between px-4 py-2 border-b border-subtle shrink-0">
+    <div className="min-h-dvh flex flex-col bg-surface">
+      <header className="flex items-center justify-between gap-3 px-4 py-3 border-b border-subtle shrink-0">
         <div className="flex items-center gap-2">
           <button onClick={() => navigate('/games')} className="text-sm text-muted hover:text-text cursor-pointer">&larr; Sessions</button>
           <button
             onClick={openMenu}
             disabled={busy}
-            className="text-sm px-2 py-1 rounded bg-overlay border border-subtle text-text hover:brightness-110 disabled:opacity-50 cursor-pointer"
+            className="text-sm px-2 py-1 rounded bg-overlay border border-subtle text-text transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
           >&#9776; Menu</button>
+          {uiSnapshot && (
+            <button
+              onClick={() => setShowStatusModal(true)}
+              className="lg:hidden text-sm px-2 py-1 rounded bg-overlay border border-subtle text-text transition duration-200 hover:brightness-110 active:scale-[0.98] cursor-pointer"
+            >
+              Status
+            </button>
+          )}
         </div>
-        <button onClick={logout} className="text-sm text-muted hover:text-love cursor-pointer">Log out</button>
+        <button onClick={logout} className="text-sm text-muted transition duration-200 hover:text-love active:scale-[0.98] cursor-pointer">Log out</button>
       </header>
+
+      {uiSnapshot && (
+        <div className="lg:hidden px-4 py-2 border-b border-subtle bg-base/40">
+          <div className="flex items-center gap-2 text-xs text-muted overflow-x-auto">
+            <span className="shrink-0 rounded-full bg-overlay px-2 py-1 text-text">{uiSnapshot.current_room_name}</span>
+            <span className="shrink-0 rounded-full bg-overlay px-2 py-1 text-text">
+              Day {uiSnapshot.day_number}{uiSnapshot.time_label ? ` — ${uiSnapshot.time_label}` : ''}
+            </span>
+            {uiSnapshot.followed_actor_name && (
+              <span className="shrink-0 rounded-full bg-pine/20 px-2 py-1 text-foam">
+                Following {uiSnapshot.followed_actor_name}
+              </span>
+            )}
+          </div>
+        </div>
+      )}
 
       <div className="flex-1 flex overflow-hidden">
         <div className="flex-1 flex flex-col overflow-hidden">
-          <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+          <div
+            ref={transcriptRef}
+            onScroll={e => {
+              const el = e.currentTarget
+              const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight
+              autoScrollRef.current = distanceFromBottom < 80
+            }}
+            className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
+          >
             {lines.map(line => (
               <div key={line.key} className="whitespace-pre-wrap text-sm leading-relaxed">
                 {line.text.startsWith('> ') ? (
@@ -337,7 +460,7 @@ export default function GamePage() {
                 )}
               </div>
             ))}
-            {busy && <p className="text-muted text-sm italic">...</p>}
+            {busy && <p className="text-muted text-sm italic">{commandPending ? 'Sending…' : panelBusy ? 'Updating…' : 'Loading…'}</p>}
             {sessionClosure && (
               <div className="fixed inset-0 bg-base/80 flex items-center justify-center z-50">
                 <div className="bg-surface rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl">
@@ -380,7 +503,7 @@ export default function GamePage() {
             <div ref={bottomRef} />
           </div>
 
-          <div className="flex gap-2 px-4 py-2 border-t border-subtle shrink-0">
+          <div className="flex flex-wrap gap-2 px-4 py-2 border-t border-subtle shrink-0">
             {(uiSnapshot?.action_bar_actions ?? [
               { id: 'look', label: 'Look' },
               { id: 'move', label: 'Move' },
@@ -396,10 +519,7 @@ export default function GamePage() {
                   if (talkOpts.length === 1) {
                     setInput(`@${talkOpts[0].title} `)
                     setAtSuggestions(null)
-                    setTimeout(() => {
-                      inputRef.current?.focus()
-                      inputRef.current?.setSelectionRange(inputRef.current.value.length, inputRef.current.value.length)
-                    }, 0)
+                    focusInputToEnd()
                     return
                   }
                   if (talkOpts.length > 1) { setShowTalkModal(true); return }
@@ -411,7 +531,7 @@ export default function GamePage() {
                   key={action.id}
                   onClick={handleClick}
                   disabled={busy || gameOver}
-                  className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm hover:brightness-110 disabled:opacity-50 cursor-pointer"
+                  className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
                 >{action.label}</button>
               )
             })}
@@ -419,7 +539,7 @@ export default function GamePage() {
               <button
                 onClick={() => setShowOverflowModal(true)}
                 disabled={busy || gameOver}
-                className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm hover:brightness-110 disabled:opacity-50 cursor-pointer"
+                className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
                 title="More actions"
               >...</button>
             )}
@@ -436,12 +556,9 @@ export default function GamePage() {
                         e.preventDefault()
                         setInput(`@${opt.title} `)
                         setAtSuggestions(null)
-                        setTimeout(() => {
-                          inputRef.current?.focus()
-                          inputRef.current?.setSelectionRange(inputRef.current.value.length, inputRef.current.value.length)
-                        }, 0)
+                        focusInputToEnd()
                       }}
-                      className="block w-full text-left px-3 py-2 text-sm text-text hover:bg-base cursor-pointer"
+                      className="block w-full text-left px-3 py-2 text-sm text-text transition duration-200 hover:bg-base cursor-pointer"
                     >@{opt.title}</button>
                   ))}
                 </div>
@@ -472,7 +589,7 @@ export default function GamePage() {
                 <button
                   type="submit"
                   disabled={busy || gameOver || !input.trim()}
-                  className="px-4 py-2 rounded bg-pine text-surface text-sm font-semibold hover:brightness-110 disabled:opacity-50 cursor-pointer"
+                  className="px-4 py-2 rounded bg-pine text-surface text-sm font-semibold transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
                 >Send</button>
               </form>
             </div>
@@ -480,59 +597,8 @@ export default function GamePage() {
         </div>
 
         {uiSnapshot && (
-          <aside className="w-60 shrink-0 border-l border-subtle p-4 flex flex-col gap-4 text-sm overflow-y-auto">
-            <div>
-              <p className="text-xs text-muted uppercase tracking-wider">Location</p>
-              <p className="text-text font-medium">{uiSnapshot.current_room_name}</p>
-            </div>
-            <div>
-              <p className="text-xs text-muted uppercase tracking-wider">Time</p>
-              <p className="text-text">
-                Day {uiSnapshot.day_number}
-                {uiSnapshot.time_label ? <span className="text-muted ml-1">— {uiSnapshot.time_label}</span> : null}
-              </p>
-            </div>
-            {uiSnapshot.followed_actor_name && (
-              <div>
-                <p className="text-xs text-muted uppercase tracking-wider">Following</p>
-                <p className="text-pine font-medium">{uiSnapshot.followed_actor_name}</p>
-              </div>
-            )}
-            {uiSnapshot.inventory.length > 0 && (
-              <div>
-                <p className="text-xs text-muted uppercase tracking-wider">Inventory</p>
-                <ul className="mt-1 space-y-0.5">
-                  {uiSnapshot.inventory.map((item, i) => (
-                    <li key={i} className="text-text text-xs">
-                      • {item.label}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <div>
-              <p className="text-xs text-muted uppercase tracking-wider">What now?</p>
-              <p className="text-text text-xs leading-relaxed">
-                {uiSnapshot.objective_message || 'No current objective.'}
-              </p>
-            </div>
-            {uiSnapshot.progress_total > 0 && (
-              <div>
-                <p className="text-xs text-muted uppercase tracking-wider">Progress</p>
-                <div className="mt-1 h-1.5 w-full bg-overlay rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-pine rounded-full transition-all duration-500"
-                    style={{ width: `${(uiSnapshot.progress_completed / uiSnapshot.progress_total) * 100}%` }}
-                  />
-                </div>
-              </div>
-            )}
-            {uiSnapshot.secrets_total > 0 && (
-              <div>
-                <p className="text-xs text-muted uppercase tracking-wider">Secrets Found</p>
-                <p className="text-text font-medium">{uiSnapshot.secrets_found} / {uiSnapshot.secrets_total}</p>
-              </div>
-            )}
+          <aside className="hidden lg:flex w-72 shrink-0 border-l border-subtle p-4 flex-col gap-4 text-sm overflow-y-auto">
+            <StatusPanel uiSnapshot={uiSnapshot} />
           </aside>
         )}
       </div>
@@ -590,10 +656,7 @@ export default function GamePage() {
                 setShowTalkModal(false)
                 setInput(`@${opt.title} `)
                 setAtSuggestions(null)
-                setTimeout(() => {
-                  inputRef.current?.focus()
-                  inputRef.current?.setSelectionRange(inputRef.current.value.length, inputRef.current.value.length)
-                }, 0)
+                focusInputToEnd()
               }}
               disabled={busy}
               className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
@@ -643,10 +706,7 @@ export default function GamePage() {
                     if (talkOpts.length === 1) {
                       setInput(`@${talkOpts[0].title} `)
                       setAtSuggestions(null)
-                      setTimeout(() => {
-                        inputRef.current?.focus()
-                        inputRef.current?.setSelectionRange(inputRef.current.value.length, inputRef.current.value.length)
-                      }, 0)
+                      focusInputToEnd()
                       return
                     }
                     if (talkOpts.length > 1) { setShowTalkModal(true); return }
@@ -688,8 +748,73 @@ export default function GamePage() {
           onClose={closeMovie}
         />
       )}
+
+      {showStatusModal && uiSnapshot && (
+        <Modal title="Status" onClose={() => setShowStatusModal(false)}>
+          <StatusPanel uiSnapshot={uiSnapshot} />
+        </Modal>
+      )}
     </div>
     </ErrorBoundary>
+  )
+}
+
+function StatusPanel({ uiSnapshot }: { uiSnapshot: api.UiSnapshot }) {
+  return (
+    <div className="space-y-4">
+      <div>
+        <p className="text-xs text-muted uppercase tracking-wider">Location</p>
+        <p className="text-text font-medium">{uiSnapshot.current_room_name}</p>
+      </div>
+      <div>
+        <p className="text-xs text-muted uppercase tracking-wider">Time</p>
+        <p className="text-text">
+          Day {uiSnapshot.day_number}
+          {uiSnapshot.time_label ? <span className="text-muted ml-1">— {uiSnapshot.time_label}</span> : null}
+        </p>
+      </div>
+      {uiSnapshot.followed_actor_name && (
+        <div>
+          <p className="text-xs text-muted uppercase tracking-wider">Following</p>
+          <p className="text-pine font-medium">{uiSnapshot.followed_actor_name}</p>
+        </div>
+      )}
+      {uiSnapshot.inventory.length > 0 && (
+        <div>
+          <p className="text-xs text-muted uppercase tracking-wider">Inventory</p>
+          <ul className="mt-1 space-y-0.5">
+            {uiSnapshot.inventory.map((item, i) => (
+              <li key={i} className="text-text text-xs">
+                • {item.label}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      <div>
+        <p className="text-xs text-muted uppercase tracking-wider">What now?</p>
+        <p className="text-text text-xs leading-relaxed">
+          {uiSnapshot.objective_message || 'No current objective.'}
+        </p>
+      </div>
+      {uiSnapshot.progress_total > 0 && (
+        <div>
+          <p className="text-xs text-muted uppercase tracking-wider">Progress</p>
+          <div className="mt-1 h-1.5 w-full bg-overlay rounded-full overflow-hidden">
+            <div
+              className="h-full bg-pine rounded-full transition-all duration-500"
+              style={{ width: `${(uiSnapshot.progress_completed / uiSnapshot.progress_total) * 100}%` }}
+            />
+          </div>
+        </div>
+      )}
+      {uiSnapshot.secrets_total > 0 && (
+        <div>
+          <p className="text-xs text-muted uppercase tracking-wider">Secrets Found</p>
+          <p className="text-text font-medium">{uiSnapshot.secrets_found} / {uiSnapshot.secrets_total}</p>
+        </div>
+      )}
+    </div>
   )
 }
 
