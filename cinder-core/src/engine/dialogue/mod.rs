@@ -40,7 +40,7 @@ const CONVERSATION_MEMORY_SUMMARIZER_ROLE: &str = "conversation_memory_summarize
 const CHAPTER_SCRIPT_SUMMARIZER_ROLE: &str = "chapter_script_summarizer";
 const CHAPTER_RELATIONSHIP_SUMMARIZER_ROLE: &str = "chapter_relationship_summarizer";
 const DIRECT_SPEECH_ATTRACTION_INTENT_ROLE: &str = "direct_speech_intent";
-const PERSPECTIVE_REVIEW_ROLE: &str = "session_feedback";
+const PERSPECTIVE_REVIEW_ROLE: &str = "perspective_review";
 const CONVERSATION_MEMORY_SUMMARY_TIMEOUT: Duration = Duration::from_secs(10);
 const VALIDATED_ROLE_MAX_ATTEMPTS: usize = 4;
 

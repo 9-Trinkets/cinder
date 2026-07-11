@@ -45,7 +45,7 @@ pub struct ContentSettingsDefinition {
     pub autonomous_actor_dialogue: bool,
     #[serde(default)]
     pub workflow_id: String,
-    #[serde(default, alias = "session_feedback_actor_id")]
+    #[serde(default)]
     pub closure_perspective_actor_id: String,
     #[serde(default)]
     pub multi_appointment: bool,

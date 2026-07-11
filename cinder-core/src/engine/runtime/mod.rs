@@ -77,12 +77,6 @@ pub struct MenuChoiceOption {
     pub transcript_label: Option<String>,
 }
 
-pub struct FinalChapterSummary {
-    pub what_happened: String,
-    pub relationship_status: String,
-    pub next_chapter_preview: String,
-}
-
 #[derive(Debug, Clone, Serialize)]
 pub struct SessionClosure {
     pub title: String,
@@ -652,6 +646,8 @@ impl CinderRuntime {
 }
 
 mod menus;
-mod session_feedback;
+mod perspective_review;
+mod session_closure;
 mod stats_trace;
+pub use self::session_closure::FinalChapterSummary;
 use self::stats_trace::stats_trace_snapshot;
