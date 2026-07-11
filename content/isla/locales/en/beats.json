@@ -57,7 +57,7 @@
       "id": "request-quarter",
       "summary": "First reading checkpoint — reflection and support.",
       "update_message": "Noa pauses at the end of the first quarter. Let her reflect before deciding how to continue.",
-      "beat_note": "Noa has read enough to know whether the book fits. She should share an honest reflection about what the early chapters stirred in her — the depth depends on current trust level (actor.state_notes). This is a moment for genuine exchange, not just a menu. After the reflection lands and the player responds, guide naturally toward requesting support or returning to the book. Use 'continue' or the support menu to advance when ready.",
+      "beat_note": "Noa has read enough to know whether the book fits. She should share an honest reflection about what the early chapters stirred in her — the depth depends on current trust level (actor.state_notes). This is a moment for genuine exchange, not just a menu. After the reflection lands and the player responds, guide naturally toward requesting support before returning to the book.",
       "narrative_lines": [
         "Noa closes the book on her finger and looks up. She has made it through the first quarter.",
         "The early chapters have landed enough for her to want to continue, but something in her expression is guarded.",
@@ -93,7 +93,7 @@
       "id": "request-half",
       "summary": "Second reading checkpoint — reflection and regulation.",
       "update_message": "Noa reaches the halfway point. Give space for the reflection before moving forward.",
-      "beat_note": "The middle chapters have likely hit harder than Noa expected. She should reflect on what surfaced — the depth of revelation depends on current trust (actor.state_notes). This checkpoint is where the session pivots from reading to real processing. Let the reflection breathe. After the conversation, guide toward requesting a regulation pause or continuing. Use 'continue' or the support menu to advance.",
+      "beat_note": "The middle chapters have likely hit harder than Noa expected. She should reflect on what surfaced — the depth of revelation depends on current trust (actor.state_notes). This checkpoint is where the session pivots from reading to real processing. Let the reflection breathe. After the conversation, guide toward requesting a regulation pause before continuing.",
       "narrative_lines": [
         "Noa sets the book face-down on the arm of the chair, careful to keep her place.",
         "The middle section has clearly reached her. She is quieter now, her usual composure frayed at the edges.",
@@ -129,7 +129,7 @@
       "id": "request-three-quarters",
       "summary": "Final reading checkpoint — reflection and pacing decision.",
       "update_message": "The book is nearly done. Noa needs to decide how to handle the final stretch.",
-      "beat_note": "This is the last decision point before the ending. Noa should reflect on what the full journey of the book has meant — the depth depends on current trust (actor.state_notes). She is asking you to help her regulate the landing. After reflection, guide toward deciding whether to finish first and then talk, or pause briefly before the ending. Use 'continue' or the pacing menu to advance.",
+      "beat_note": "This is the last decision point before the ending. Noa should reflect on what the full journey of the book has meant — the depth depends on current trust (actor.state_notes). She is asking you to help her regulate the landing. After reflection, guide toward deciding whether to finish first and then talk, or pause briefly before the ending.",
       "narrative_lines": [
         "Noa is holding the book open near the end, her thumb marking a spot three pages from the final chapter.",
         "She looks exhausted in a way that has nothing to do with the hour. The book has done its work.",

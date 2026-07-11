@@ -231,7 +231,7 @@ pub(super) fn build_ui_snapshot(
     let has_talk = bar_ids.contains(&"speak") || bar_ids.contains(&"talk");
     let modal_covered: Vec<&str> = vec!["inspect_feature", "inspect_actor"];
     let current_room_id = runtime.current_room_id().unwrap_or_default();
-    let overflow_actions: Vec<OverflowAction> = content
+    let mut overflow_actions: Vec<OverflowAction> = content
         .commands
         .actions
         .iter()
@@ -304,6 +304,10 @@ pub(super) fn build_ui_snapshot(
         })
         .collect();
 
+    if let Ok(active_stages) = runtime.active_stage_ids() {
+        append_stage_menu_overflow_actions(&mut overflow_actions, content, &active_stages);
+    }
+
     Ok(UiSnapshot {
         title: content.opening.title.clone(),
         time_label,
@@ -363,4 +367,82 @@ fn menu_option_data(options: Vec<MenuChoiceOption>) -> Vec<MenuOptionData> {
             menu_text: option.menu_text,
         })
         .collect()
+}
+
+fn append_stage_menu_overflow_actions(
+    overflow_actions: &mut Vec<OverflowAction>,
+    content: &cinder_core::content::types::ContentPack,
+    active_stages: &[String],
+) {
+    for stage_id in active_stages {
+        let Some(menu) = content
+            .menus
+            .iter()
+            .find(|menu| &menu.stage_id == stage_id && !menu.dynamic && !menu.options.is_empty())
+        else {
+            continue;
+        };
+        for option in &menu.options {
+            if overflow_actions.iter().any(|action| action.id == option.id) {
+                continue;
+            }
+            overflow_actions.push(OverflowAction {
+                id: option.id.clone(),
+                label: option.title.clone(),
+                group: "support".to_string(),
+                usage: String::new(),
+            });
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::{OverflowAction, append_stage_menu_overflow_actions};
+    use cinder_core::content::loader::load_named_pack;
+
+    #[test]
+    fn request_stage_adds_support_options_to_overflow() {
+        let content = load_named_pack("isla", None).expect("load isla");
+        let mut overflow = Vec::new();
+
+        append_stage_menu_overflow_actions(
+            &mut overflow,
+            &content,
+            &[String::from("request-quarter")],
+        );
+
+        let ids = overflow
+            .into_iter()
+            .map(|action| action.id)
+            .collect::<Vec<_>>();
+        assert_eq!(
+            ids,
+            vec![
+                "quarter-coffee".to_string(),
+                "quarter-pastry".to_string(),
+                "quarter-push-through".to_string(),
+            ]
+        );
+    }
+
+    #[test]
+    fn dynamic_stage_menu_does_not_add_static_overflow_options() {
+        let content = load_named_pack("isla", None).expect("load isla");
+        let mut overflow = vec![OverflowAction {
+            id: "recommend_book".to_string(),
+            label: "Recommend Book".to_string(),
+            group: "book".to_string(),
+            usage: "recommend".to_string(),
+        }];
+
+        append_stage_menu_overflow_actions(
+            &mut overflow,
+            &content,
+            &[String::from("book-selection")],
+        );
+
+        assert_eq!(overflow.len(), 1);
+        assert_eq!(overflow[0].id, "recommend_book");
+    }
 }
