@@ -11,7 +11,7 @@ import SessionClosureModal from '../components/SessionClosureModal'
 import QuickActionPanel, { type QuickPanel } from '../components/QuickActionPanel'
 import ConfirmDialog from '../components/ConfirmDialog'
 import type { Line } from '../components/TranscriptLine'
-import { applyTheme } from '../utils/theme'
+import { themeVars } from '../utils/theme'
 
 class ErrorBoundary extends Component<{ children: React.ReactNode }, { error: Error | null }> {
   state = { error: null }
@@ -128,12 +128,6 @@ export default function GamePage() {
     document.addEventListener('visibilitychange', onVisibilityChange)
     return () => document.removeEventListener('visibilitychange', onVisibilityChange)
   }, [])
-
-  useEffect(() => {
-    if (uiSnapshot?.theme) {
-      applyTheme(uiSnapshot.theme)
-    }
-  }, [uiSnapshot?.theme])
 
   useEffect(() => {
     if (initialized.current || !token || !id) return
@@ -398,6 +392,7 @@ export default function GamePage() {
   return (
     <ErrorBoundary>
     <div className="h-dvh flex flex-col bg-surface overflow-hidden">
+      <div style={uiSnapshot?.theme ? themeVars(uiSnapshot.theme) : undefined} className="contents">
       <header className="sticky top-0 z-10 bg-surface flex items-center justify-between gap-3 px-4 py-3 border-b border-subtle shrink-0">
         <div className="flex items-center gap-2">
           <button onClick={() => navigate('/games')} className="text-sm text-muted hover:text-text cursor-pointer">&larr; Sessions</button>
@@ -605,6 +600,7 @@ export default function GamePage() {
             <StatusPanel uiSnapshot={uiSnapshot} />
           </aside>
         )}
+      </div>
       </div>
 
       {showMenu && uiSnapshot && (
