@@ -1,15 +1,16 @@
 use axum::{
     Json, Router,
-    extract::{Path, State},
+    extract::{Path, Query, State, ws::WebSocketUpgrade},
     http::StatusCode,
     middleware,
+    response::IntoResponse,
     routing::{delete, get, post},
 };
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 use uuid::Uuid;
 
-use crate::auth::{AuthPlayer, auth_middleware};
+use crate::auth::{AuthPlayer, auth_middleware, validate_token};
 use crate::game_manager;
 
 use super::AppState;
@@ -36,7 +37,7 @@ pub struct CreateSessionRequest {
 }
 
 pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
-    Router::new()
+    let auth_routes = Router::new()
         .route("/api/packs", get(list_packs))
         .route("/api/games", get(list_sessions).post(create_session))
         .route("/api/games/{id}/command", post(run_command))
@@ -47,7 +48,13 @@ pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/api/games/{id}/follow", post(follow_actor_handler))
         .route("/api/games/{id}/locale", post(set_locale_handler))
         .route("/api/games/{id}", delete(delete_session_handler))
-        .route_layer(middleware::from_fn_with_state(state, auth_middleware))
+        .route_layer(middleware::from_fn_with_state(state.clone(), auth_middleware));
+
+    let ws_routes = Router::new()
+        .route("/api/games/{id}/ws", get(ws_tick_handler))
+        .with_state(state);
+
+    auth_routes.merge(ws_routes)
 }
 
 pub async fn create_session(
@@ -234,4 +241,78 @@ fn now_unix_secs() -> String {
         .unwrap()
         .as_secs()
         .to_string()
+}
+
+#[derive(Deserialize)]
+pub struct WsQuery {
+    pub token: String,
+}
+
+pub async fn ws_tick_handler(
+    State(state): State<Arc<AppState>>,
+    Path(session_id): Path<String>,
+    Query(query): Query<WsQuery>,
+    ws: WebSocketUpgrade,
+) -> Result<impl IntoResponse, (StatusCode, String)> {
+    let claims =
+        validate_token(&query.token, state.config.jwt_secret.as_bytes()).map_err(|_| {
+            (
+                StatusCode::UNAUTHORIZED,
+                "invalid or expired token".to_string(),
+            )
+        })?;
+
+    let session_id = Uuid::parse_str(&session_id).map_err(internal)?;
+    let player_id = Uuid::parse_str(&claims.sub).map_err(internal)?;
+
+    let pool = state.pool.clone();
+    let session_id_str = session_id.to_string();
+    let player_id_str = player_id.to_string();
+
+    Ok(ws.on_upgrade(move |socket| handle_ws(socket, pool, session_id_str, player_id_str)))
+}
+
+async fn handle_ws(
+    mut socket: axum::extract::ws::WebSocket,
+    pool: crate::db::DbPool,
+    session_id: String,
+    player_id: String,
+) {
+    use axum::extract::ws::Message;
+    use futures_util::StreamExt;
+
+    let mut interval = tokio::time::interval(std::time::Duration::from_secs(5));
+    interval.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Delay);
+
+    loop {
+        tokio::select! {
+            _ = interval.tick() => {
+                match game_manager::run_realtime_tick(&pool, &session_id, &player_id).await {
+                    Ok(resp) => {
+                        if resp.text.is_empty() && resp.movie.is_none() && !resp.game_over && resp.session_closure.is_none() {
+                            continue;
+                        }
+                        match serde_json::to_string(&resp) {
+                            Ok(json) => {
+                                if socket.send(Message::Text(json.into())).await.is_err() {
+                                    break;
+                                }
+                            }
+                            Err(_) => break,
+                        }
+                    }
+                    Err(e) => {
+                        tracing::error!("ws tick error: {e}");
+                        break;
+                    }
+                }
+            }
+            msg = socket.next() => {
+                match msg {
+                    Some(Ok(Message::Close(_))) | None => break,
+                    _ => {}
+                }
+            }
+        }
+    }
 }
