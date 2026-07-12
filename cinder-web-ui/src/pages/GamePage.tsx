@@ -601,7 +601,7 @@ export default function GamePage() {
         </div>
 
         {uiSnapshot && (
-          <aside className="hidden lg:flex w-72 shrink-0 border-l border-subtle p-4 flex-col gap-4 text-sm overflow-y-auto self-start max-h-full">
+          <aside className="hidden lg:flex w-72 shrink-0 border-l border-subtle p-4 flex-col gap-4 text-sm overflow-y-auto self-stretch">
             <StatusPanel uiSnapshot={uiSnapshot} />
           </aside>
         )}
