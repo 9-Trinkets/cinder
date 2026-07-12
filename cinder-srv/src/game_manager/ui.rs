@@ -88,6 +88,7 @@ pub struct UiSnapshot {
     pub ui_text: UiTextDefinition,
     pub session_closure: Option<SessionClosure>,
     pub inventory: Vec<InventoryItem>,
+    pub theme: cinder_core::content::types::ThemeDefinition,
 }
 
 pub(super) fn build_ui_snapshot(
@@ -355,6 +356,7 @@ pub(super) fn build_ui_snapshot(
                 InventoryItem { label, count }
             })
             .collect(),
+        theme: content.settings.theme.clone(),
     })
 }
 

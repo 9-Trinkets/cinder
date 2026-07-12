@@ -44,6 +44,26 @@ pub fn default_pack_dir() -> PathBuf {
     pack_dir("ella")
 }
 
+pub fn available_packs() -> Vec<String> {
+    let dir = content_dir();
+    let mut packs: Vec<String> = Vec::new();
+    if let Ok(entries) = fs::read_dir(&dir) {
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if path.is_dir() {
+                let settings_path = path.join("settings.json");
+                if settings_path.exists() {
+                    if let Some(name) = path.file_name().and_then(|n| n.to_str()) {
+                        packs.push(name.to_string());
+                    }
+                }
+            }
+        }
+    }
+    packs.sort();
+    packs
+}
+
 pub fn load_pack_from_dir(path: &Path) -> Result<ContentPack, Box<dyn Error>> {
     load_pack_from_dir_with_locale(path, None)
 }

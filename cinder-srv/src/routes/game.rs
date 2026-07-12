@@ -37,6 +37,7 @@ pub struct CreateSessionRequest {
 
 pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
     Router::new()
+        .route("/api/packs", get(list_packs))
         .route("/api/games", get(list_sessions).post(create_session))
         .route("/api/games/{id}/command", post(run_command))
         .route("/api/games/{id}/tick", post(run_tick))
@@ -67,6 +68,20 @@ pub async fn create_session(
         title,
         intro_text,
     }))
+}
+
+#[derive(Serialize)]
+pub struct PackInfo {
+    pub id: String,
+}
+
+pub async fn list_packs() -> Json<Vec<PackInfo>> {
+    Json(
+        cinder_core::content::loader::available_packs()
+            .into_iter()
+            .map(|id| PackInfo { id })
+            .collect(),
+    )
 }
 
 pub async fn list_sessions(
