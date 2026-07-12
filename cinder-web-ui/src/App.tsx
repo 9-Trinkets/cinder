@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './auth'
+import { ToastProvider } from './components/Toast'
 import LoginPage from './pages/LoginPage'
 import GamesPage from './pages/GamesPage'
 import GamePage from './pages/GamePage'
@@ -19,12 +20,14 @@ function RedirectIfLoggedIn() {
 export default function App() {
   return (
     <AuthProvider>
-      <Routes>
-        <Route path="/login" element={<RedirectIfLoggedIn />} />
-        <Route path="/games" element={<ProtectedRoute><GamesPage /></ProtectedRoute>} />
-        <Route path="/games/:id" element={<ProtectedRoute><GamePage /></ProtectedRoute>} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
+      <ToastProvider>
+        <Routes>
+          <Route path="/login" element={<RedirectIfLoggedIn />} />
+          <Route path="/games" element={<ProtectedRoute><GamesPage /></ProtectedRoute>} />
+          <Route path="/games/:id" element={<ProtectedRoute><GamePage /></ProtectedRoute>} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </ToastProvider>
     </AuthProvider>
   )
 }

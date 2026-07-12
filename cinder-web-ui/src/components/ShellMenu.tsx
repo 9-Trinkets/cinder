@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import Modal from './Modal'
+import Button from './Button'
+import Badge from './Badge'
 import type { UiSnapshot } from '../api'
 
 type View = 'main' | 'about' | 'rooms' | 'follow' | 'language'
@@ -84,15 +86,16 @@ export default function ShellMenu({
       <Modal title={t.room_switcher_title} onClose={onClose}>
         <MenuBackButton onClick={() => onViewChange('main')} />
         {ui.rooms.map((r) => (
-          <button
+          <Button
             key={r.id}
+            variant="secondary"
+            className="block w-full text-left"
             onClick={() => onSwitchRoom(r.id)}
             disabled={busy}
-            className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle transition duration-200 active:scale-[0.99] disabled:opacity-50 cursor-pointer"
           >
             <span className="font-medium">{r.title}</span>
             {r.menu_text && <span className="text-muted text-xs ml-2">{r.menu_text}</span>}
-          </button>
+          </Button>
         ))}
       </Modal>
     )
@@ -103,15 +106,16 @@ export default function ShellMenu({
       <Modal title={t.follow_actor_title} onClose={onClose}>
         <MenuBackButton onClick={() => onViewChange('main')} />
         {ui.follow_options.map((a) => (
-          <button
+          <Button
             key={a.id}
+            variant="secondary"
+            className="block w-full text-left"
             onClick={() => onFollowActor(a.id === 'none' ? null : a.id)}
             disabled={busy}
-            className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle transition duration-200 active:scale-[0.99] disabled:opacity-50 cursor-pointer"
           >
             <span className="font-medium">{a.title}</span>
             {a.menu_text && <span className="text-muted text-xs ml-2">{a.menu_text}</span>}
-          </button>
+          </Button>
         ))}
       </Modal>
     )
@@ -122,17 +126,16 @@ export default function ShellMenu({
       <Modal title={t.language_modal_title} onClose={onClose}>
         <MenuBackButton onClick={() => onViewChange('main')} />
         {ui.locale_options.map((l) => (
-          <button
+          <Button
             key={l.code}
+            variant="secondary"
+            className={`block w-full text-left ${l.code === ui.current_locale ? '!bg-pine/20 !border-pine' : ''}`}
             onClick={() => onChangeLocale(l.code)}
             disabled={busy || l.code === ui.current_locale}
-            className={`block w-full text-left px-3 py-2 rounded border border-subtle transition duration-200 active:scale-[0.99] disabled:opacity-50 cursor-pointer ${
-              l.code === ui.current_locale ? 'bg-pine/20 border-pine' : 'hover:bg-overlay'
-            }`}
           >
             <span className="font-medium">{l.label}</span>
             {l.code === ui.current_locale && <span className="text-pine text-xs ml-2">(current)</span>}
-          </button>
+          </Button>
         ))}
       </Modal>
     )
@@ -168,13 +171,14 @@ function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy }: MainMen
       <Modal title={submenuTitle} onClose={onClose}>
         <MenuBackButton onClick={() => { setSubmenu(null); setSubmenuTitle('') }} />
         {submenu.map((child) => (
-          <button
+          <Button
             key={child.id}
+            variant="secondary"
+            className="block w-full text-left"
             onClick={() => handleItemClick(child.id, onViewChange, onClose, onExit)}
-            className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle transition duration-200 active:scale-[0.99] cursor-pointer text-sm"
           >
             {child.label}
-          </button>
+          </Button>
         ))}
       </Modal>
     )
@@ -184,14 +188,14 @@ function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy }: MainMen
     <Modal title={t.shell_menu_title} onClose={onClose}>
       <div className="rounded-lg border border-subtle bg-base/30 px-3 py-3 text-xs text-muted">
         <div className="flex flex-wrap gap-2">
-          <span className="rounded-full bg-overlay px-2 py-1 text-text">{ui.current_room_name}</span>
-          <span className="rounded-full bg-overlay px-2 py-1 text-text">
+          <Badge>{ui.current_room_name}</Badge>
+          <Badge>
             Day {ui.day_number}{ui.time_label ? ` — ${ui.time_label}` : ''}
-          </span>
+          </Badge>
           {ui.followed_actor_name && (
-            <span className="rounded-full bg-pine/20 px-2 py-1 text-foam">
+            <Badge color="success">
               Following {ui.followed_actor_name}
-            </span>
+            </Badge>
           )}
         </div>
       </div>
@@ -203,53 +207,57 @@ function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy }: MainMen
           return (
             <div key={item.id}>
               <hr className="border-subtle my-2" />
-              <button
+              <Button
+                variant="secondary"
+                className="block w-full text-left"
                 onClick={onExit}
-                className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle transition duration-200 active:scale-[0.99] cursor-pointer text-sm"
               >
                 {item.label}
-              </button>
+              </Button>
             </div>
           )
         }
 
         if (item.id === 'resume') {
           return (
-            <button
+            <Button
               key={item.id}
+              variant="secondary"
+              className="block w-full text-left"
               onClick={onClose}
-              className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle transition duration-200 active:scale-[0.99] cursor-pointer text-sm"
             >
               {item.label}
-            </button>
+            </Button>
           )
         }
 
         if (hasChildren) {
           const children = packItem!.children!
           return (
-            <button
+            <Button
               key={item.id}
+              variant="secondary"
+              className="block w-full text-left"
               onClick={() => {
                 setSubmenu(children)
                 setSubmenuTitle(item.label)
               }}
-              className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle transition duration-200 active:scale-[0.99] cursor-pointer text-sm"
             >
               {item.label} &rarr;
-            </button>
+            </Button>
           )
         }
 
         return (
-          <button
+          <Button
             key={item.id}
+            variant="secondary"
+            className="block w-full text-left"
             onClick={() => handleItemClick(item.id, onViewChange, onClose, onExit)}
             disabled={busy}
-            className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle transition duration-200 active:scale-[0.99] disabled:opacity-50 cursor-pointer text-sm"
           >
             {item.label}
-          </button>
+          </Button>
         )
       })}
     </Modal>
@@ -258,12 +266,13 @@ function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy }: MainMen
 
 function MenuBackButton({ onClick }: { onClick: () => void }) {
   return (
-    <button
+    <Button
+      variant="secondary"
+      className="block w-full text-left mb-2"
       onClick={onClick}
-      className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle transition duration-200 active:scale-[0.99] cursor-pointer text-sm mb-2"
     >
       &larr; Back
-    </button>
+    </Button>
   )
 }
 

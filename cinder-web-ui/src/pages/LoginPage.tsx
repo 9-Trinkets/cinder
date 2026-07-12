@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { useAuth } from '../auth'
+import Button from '../components/Button'
+import Input from '../components/Input'
 
 export default function LoginPage() {
   const { login, signup } = useAuth()
@@ -30,15 +32,13 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-surface">
       <form className="flex flex-col gap-4 w-80 p-8 rounded-lg border border-subtle bg-overlay">
         <h1 className="text-xl font-bold text-iris text-center">Cinder</h1>
-        <input
-          className="px-3 py-2 rounded bg-base border border-subtle text-text placeholder-faint focus:outline-none focus:border-pine"
+        <Input
           placeholder="Username"
           value={username}
           onChange={e => setUsername(e.target.value)}
           disabled={busy}
         />
-        <input
-          className="px-3 py-2 rounded bg-base border border-subtle text-text placeholder-faint focus:outline-none focus:border-pine"
+        <Input
           type="password"
           placeholder="Password"
           value={password}
@@ -47,20 +47,24 @@ export default function LoginPage() {
         />
         {error && <p className="text-love text-sm">{error}</p>}
         <div className="flex gap-2">
-          <button
+          <Button
+            variant="primary"
+            size="md"
+            className="flex-1"
             onClick={e => handleSubmit(e, 'login')}
             disabled={busy || !username || !password}
-            className="flex-1 px-4 py-2 rounded bg-pine text-surface font-semibold hover:brightness-110 disabled:opacity-50 cursor-pointer"
           >
             {busy ? '...' : 'Login'}
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="secondary"
+            size="md"
+            className="flex-1"
             onClick={e => handleSubmit(e, 'signup')}
             disabled={busy || !username || !password}
-            className="flex-1 px-4 py-2 rounded bg-iris text-surface font-semibold hover:brightness-110 disabled:opacity-50 cursor-pointer"
           >
             {busy ? '...' : 'Sign up'}
-          </button>
+          </Button>
         </div>
       </form>
     </div>
