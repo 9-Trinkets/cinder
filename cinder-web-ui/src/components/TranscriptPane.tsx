@@ -2,6 +2,7 @@ import { memo, type MutableRefObject, type UIEvent } from 'react'
 import * as api from '../api'
 import TranscriptLine, { type Line } from './TranscriptLine'
 import SessionClosureModal from './SessionClosureModal'
+import Skeleton from './Skeleton'
 
 const TranscriptPane = memo(function TranscriptPane({
   lines,
@@ -31,6 +32,7 @@ const TranscriptPane = memo(function TranscriptPane({
       {lines.map(line => (
         <TranscriptLine key={line.key} line={line} />
       ))}
+      {busyLabel && lines.length === 0 && <Skeleton lines={4} className="mb-2" />}
       {busyLabel && <p className="text-muted text-sm italic">{busyLabel}</p>}
       {sessionClosure && (
         <SessionClosureModal sessionClosure={sessionClosure} onDismiss={onDismissClosure} />
