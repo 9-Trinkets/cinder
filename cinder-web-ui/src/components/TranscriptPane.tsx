@@ -27,6 +27,8 @@ const TranscriptPane = memo(function TranscriptPane({
     <div
       ref={transcriptRef}
       onScroll={onScroll}
+      aria-live="polite"
+      aria-label="Transcript"
       className="flex-1 overflow-y-auto px-4 py-4 space-y-3"
     >
       {lines.map(line => (

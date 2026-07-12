@@ -55,7 +55,7 @@ function ToastItem({ toast, onDismiss }: { toast: Toast; onDismiss: () => void }
 
   return (
     <div
-      role="alert"
+      role={toast.kind === 'error' ? 'alert' : 'status'}
       className={`px-4 py-3 rounded border text-sm ${kindClasses[toast.kind]} shadow-lg`}
       onClick={onDismiss}
     >

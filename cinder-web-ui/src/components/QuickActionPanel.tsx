@@ -49,6 +49,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
           </div>
           <button
             onClick={onClose}
+            aria-label="Close"
             className="text-muted hover:text-text text-lg leading-none transition duration-200 active:scale-95 cursor-pointer"
           >
             &times;

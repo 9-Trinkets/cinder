@@ -43,6 +43,10 @@ export default function StatusPanel({ uiSnapshot }: { uiSnapshot: api.UiSnapshot
           <p className="text-xs text-muted uppercase tracking-wider">Progress</p>
           <div className="mt-1 h-1.5 w-full bg-overlay rounded-full overflow-hidden">
             <div
+              role="progressbar"
+              aria-valuenow={uiSnapshot.progress_completed}
+              aria-valuemin={0}
+              aria-valuemax={uiSnapshot.progress_total}
               className="h-full bg-pine rounded-full transition-all duration-500"
               style={{ width: `${(uiSnapshot.progress_completed / uiSnapshot.progress_total) * 100}%` }}
             />

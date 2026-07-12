@@ -548,8 +548,8 @@ export default function GamePage() {
               <button
                 onClick={() => setQuickPanel(current => current === 'overflow' ? null : 'overflow')}
                 disabled={busy || gameOver}
+                aria-label="More actions"
                 className="px-3 py-1.5 rounded bg-overlay border border-subtle text-text text-sm transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
-                title="More actions"
               >...</button>
             )}
           </div>
@@ -558,10 +558,11 @@ export default function GamePage() {
           {!channelSurfingOnly.current && (
             <div className="border-t border-subtle shrink-0 relative">
               {atSuggestions && atSuggestions.length > 0 && (
-                <div className="absolute bottom-full left-4 right-4 mb-1 rounded border border-subtle bg-overlay shadow-lg overflow-hidden">
+                <div role="listbox" aria-label="Talk to" className="absolute bottom-full left-4 right-4 mb-1 rounded border border-subtle bg-overlay shadow-lg overflow-hidden">
                   {atSuggestions.map(opt => (
                     <button
                       key={opt.id}
+                      role="option"
                       onMouseDown={e => {
                         e.preventDefault()
                         setInput(`@${opt.title} `)
