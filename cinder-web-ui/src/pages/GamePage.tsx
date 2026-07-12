@@ -274,8 +274,8 @@ export default function GamePage() {
       return
     }
 
-    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const wsUrl = `${proto}//${location.host}/api/games/${id}/ws?token=${token}`
+    const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
+    const wsUrl = `${proto}//${window.location.host}/api/games/${id}/ws?token=${token}`
     const ws = new WebSocket(wsUrl)
 
     ws.onmessage = (event) => {
@@ -309,8 +309,6 @@ export default function GamePage() {
     quickPanel,
     showStatusModal,
     input,
-    location.host,
-    location.protocol,
   ])
 
   function closeMovie() {
@@ -672,7 +670,8 @@ export default function GamePage() {
 
       {showExitConfirm && (
         <ConfirmDialog
-          message="Exit game?"
+          title="Exit game?"
+          message="Return to session list?"
           onConfirm={() => navigate('/games')}
           onCancel={() => setShowExitConfirm(false)}
         />
