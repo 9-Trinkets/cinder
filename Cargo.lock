@@ -575,6 +575,7 @@ dependencies = [
  "bcrypt",
  "cinder-core",
  "dotenvy",
+ "futures-util",
  "jsonwebtoken",
  "serde",
  "serde_json",
