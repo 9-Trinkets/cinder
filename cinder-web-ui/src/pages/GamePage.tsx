@@ -11,6 +11,7 @@ import SessionClosureModal from '../components/SessionClosureModal'
 import QuickActionPanel, { type QuickPanel } from '../components/QuickActionPanel'
 import ConfirmDialog from '../components/ConfirmDialog'
 import type { Line } from '../components/TranscriptLine'
+import { applyTheme } from '../utils/theme'
 
 class ErrorBoundary extends Component<{ children: React.ReactNode }, { error: Error | null }> {
   state = { error: null }
@@ -128,6 +129,12 @@ export default function GamePage() {
     document.addEventListener('visibilitychange', onVisibilityChange)
     return () => document.removeEventListener('visibilitychange', onVisibilityChange)
   }, [])
+
+  useEffect(() => {
+    if (uiSnapshot?.theme) {
+      applyTheme(uiSnapshot.theme)
+    }
+  }, [uiSnapshot?.theme])
 
   useEffect(() => {
     if (initialized.current || !token || !id) return

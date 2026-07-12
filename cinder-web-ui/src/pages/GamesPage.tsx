@@ -18,14 +18,13 @@ function fmtTime(s: string): string {
   return s
 }
 
-const PACKS = ['ella', 'isla', 'aera']
-
 export default function GamesPage() {
   const { token, logout } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
   const { showToast } = useToast()
   const [sessions, setSessions] = useState<api.SessionInfo[]>([])
+  const [packs, setPacks] = useState<api.PackInfo[]>([])
   const [loading, setLoading] = useState(true)
   const [creating, setCreating] = useState(false)
   const [deleting, setDeleting] = useState<string | null>(null)
@@ -36,8 +35,12 @@ export default function GamesPage() {
     if (!token) return
     setError(null)
     try {
-      const list = await api.listSessions(token)
+      const [list, packList] = await Promise.all([
+        api.listSessions(token),
+        api.listPacks(token),
+      ])
       setSessions(list)
+      setPacks(packList)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'failed to load')
     } finally {
@@ -85,16 +88,19 @@ export default function GamesPage() {
         <section>
           <h2 className="text-lg font-semibold text-text mb-4">New Game</h2>
           <div className="flex gap-3">
-            {PACKS.map(p => (
+            {packs.map(p => (
               <Button
-                key={p}
-                onClick={() => create(p)}
+                key={p.id}
+                onClick={() => create(p.id)}
                 disabled={creating}
                 className="px-5 py-3 capitalize"
               >
-                {p}
+                {p.id}
               </Button>
             ))}
+            {packs.length === 0 && !loading && (
+              <p className="text-muted text-sm">No packs available.</p>
+            )}
           </div>
         </section>
 

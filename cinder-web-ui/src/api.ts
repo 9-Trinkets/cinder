@@ -168,6 +168,24 @@ export interface InventoryItem {
   count: number
 }
 
+export interface ThemeDefinition {
+  base: string
+  surface: string
+  overlay: string
+  muted: string
+  text: string
+  love: string
+  gold: string
+  rose: string
+  pine: string
+  foam: string
+  iris: string
+  highlight_high: string
+  crt_glow: string
+  crt_dim: string
+  crt_bez: string
+}
+
 export interface UiSnapshot {
   title: string
   time_label: string
@@ -195,6 +213,7 @@ export interface UiSnapshot {
   active_menu: ActiveMenuData | null
   session_closure: SessionClosureData | null
   inventory: InventoryItem[]
+  theme: ThemeDefinition
   ui_text: {
     language_name: string
     menu_button_label: string
@@ -271,6 +290,16 @@ export function fetchTranscript(token: string, sessionId: string) {
 export function deleteSession(token: string, sessionId: string) {
   return req<void>(`/games/${sessionId}`, {
     method: 'DELETE',
+    headers: authHeader(token),
+  })
+}
+
+export interface PackInfo {
+  id: string
+}
+
+export function listPacks(token: string) {
+  return req<PackInfo[]>('/packs', {
     headers: authHeader(token),
   })
 }
