@@ -9,6 +9,7 @@ import StatusPanel from '../components/StatusPanel'
 import MovieModal from '../components/MovieModal'
 import SessionClosureModal from '../components/SessionClosureModal'
 import QuickActionPanel, { type QuickPanel } from '../components/QuickActionPanel'
+import ConfirmDialog from '../components/ConfirmDialog'
 import type { Line } from '../components/TranscriptLine'
 
 class ErrorBoundary extends Component<{ children: React.ReactNode }, { error: Error | null }> {
@@ -51,6 +52,7 @@ export default function GamePage() {
   const [uiSnapshot, setUiSnapshot] = useState<api.UiSnapshot | null>(null)
   const [atSuggestions, setAtSuggestions] = useState<api.MenuOptionItem[] | null>(null)
   const [documentVisible, setDocumentVisible] = useState(document.visibilityState === 'visible')
+  const [showExitConfirm, setShowExitConfirm] = useState(false)
   const channelSurfingOnly = useRef(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const transcriptRef = useRef<HTMLDivElement>(null)
@@ -374,9 +376,7 @@ export default function GamePage() {
   }
 
   function doExit() {
-    if (confirm('Exit game?')) {
-      navigate('/games')
-    }
+    setShowExitConfirm(true)
   }
 
   async function send(e: FormEvent) {
@@ -672,6 +672,14 @@ export default function GamePage() {
         <Modal title="Status" onClose={() => setShowStatusModal(false)}>
           <StatusPanel uiSnapshot={uiSnapshot} />
         </Modal>
+      )}
+
+      {showExitConfirm && (
+        <ConfirmDialog
+          message="Exit game?"
+          onConfirm={() => navigate('/games')}
+          onCancel={() => setShowExitConfirm(false)}
+        />
       )}
     </div>
     </ErrorBoundary>
