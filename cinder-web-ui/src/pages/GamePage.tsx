@@ -60,7 +60,6 @@ export default function GamePage() {
   const nextKey = useRef(1)
   const initialized = useRef(false)
   const inputRef = useRef<HTMLInputElement>(null)
-  const tickInFlight = useRef(false)
   const autoScrollRef = useRef(true)
   const scrollBehaviorRef = useRef<ScrollBehavior>('auto')
   const refreshInFlightRef = useRef(false)
@@ -275,40 +274,27 @@ export default function GamePage() {
       return
     }
 
-    let cancelled = false
-    let timer: number | undefined
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:'
+    const wsUrl = `${proto}//${location.host}/api/games/${id}/ws?token=${token}`
+    const ws = new WebSocket(wsUrl)
 
-    const schedule = (delay: number) => {
-      timer = window.setTimeout(async () => {
-        if (cancelled) return
-        if (Date.now() - lastInteractionAtRef.current < intervalMs) {
-          schedule(intervalMs)
-          return
+    ws.onmessage = (event) => {
+      try {
+        const res: api.CommandResponse = JSON.parse(event.data)
+        if (res.text || res.movie || res.game_over || res.session_closure) {
+          applyCommandResponse(res, 'auto')
         }
-        if (tickInFlight.current) {
-          schedule(intervalMs)
-          return
-        }
-        tickInFlight.current = true
-        try {
-          const res = await api.runRealtimeTick(token, id)
-          if (res.text || res.movie || res.game_over || res.session_closure) {
-            applyCommandResponse(res, 'auto')
-          }
-        } catch (error) {
-          console.error('background tick failed', error)
-        } finally {
-          tickInFlight.current = false
-          if (!cancelled) schedule(intervalMs)
-        }
-      }, delay)
+      } catch {
+        console.error('ws: failed to parse tick message')
+      }
     }
 
-    schedule(intervalMs)
+    ws.onerror = () => {
+      ws.close()
+    }
 
     return () => {
-      cancelled = true
-      if (timer !== undefined) window.clearTimeout(timer)
+      ws.close()
     }
   }, [
     token,
@@ -323,6 +309,8 @@ export default function GamePage() {
     quickPanel,
     showStatusModal,
     input,
+    location.host,
+    location.protocol,
   ])
 
   function closeMovie() {
