@@ -1,7 +1,7 @@
 {
   "title": "Ella",
-  "tagline": "Movie night, snacks, and getting to bed on time.",
-  "description": "A cozy bedtime routine game — pick a movie, pick a snack, and see if you can wind down before lights out.",
+  "tagline": "The last night home before everything changes.",
+  "description": "It's the night before Ella leaves for college. In a small apartment with her Taiwanese immigrant parents, love gets said through food and small gestures more than words — see what finally gets spoken before she walks out the door.",
   "typewriter_char_ms": 10,
   "npc_tick_interval_ms": 2000,
   "default_language": "en",

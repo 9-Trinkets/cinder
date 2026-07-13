@@ -55,6 +55,8 @@ export interface SessionInfo {
   updated_at: string
   title: string
   intro_text: string
+  day_number: number
+  current_room_name: string
 }
 
 export function createSession(token: string, packId: string) {

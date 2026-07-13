@@ -1,7 +1,7 @@
 {
   "title": "Aera",
-  "tagline": "Drift between channels and see who's home.",
-  "description": "A channel-surfing world where the people around you keep living their own lives, whether you're watching or not.",
+  "tagline": "Four strangers, one house, cameras nobody's supposed to notice.",
+  "description": "You're the unseen eye behind a seven-day documentary experiment, watching four housemates navigate attraction, trust, and the strange pressure of being watched while pretending not to be.",
   "typewriter_char_ms": 7,
   "npc_tick_interval_ms": 4000,
   "tick_minutes_per_turn": 10,

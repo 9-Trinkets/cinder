@@ -124,7 +124,11 @@ export default function PackDetailPage() {
                         onClick={() => navigate(`/games/${s.session_id}`)}
                         className="flex-1 flex items-center justify-between cursor-pointer"
                       >
-                        <span className="text-text">{s.title || `Session started ${fmtTime(s.created_at)}`}</span>
+                        <span className="text-text">
+                          {s.current_room_name
+                            ? `Day ${s.day_number} — ${s.current_room_name}`
+                            : `Session started ${fmtTime(s.created_at)}`}
+                        </span>
                         <span className="text-faint text-xs">{fmtTime(s.updated_at)}</span>
                       </div>
                       <Button

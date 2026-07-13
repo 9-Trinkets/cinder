@@ -29,6 +29,10 @@ pub struct SessionInfo {
     pub title: String,
     #[serde(default)]
     pub intro_text: String,
+    #[serde(default)]
+    pub day_number: u32,
+    #[serde(default)]
+    pub current_room_name: String,
 }
 
 #[derive(Deserialize)]
@@ -72,6 +76,8 @@ pub async fn create_session(
         pack_id: req.pack_id,
         created_at: now_unix_secs(),
         updated_at: now_unix_secs(),
+        day_number: 1,
+        current_room_name: String::new(),
         title,
         intro_text,
     }))
@@ -114,23 +120,50 @@ pub async fn list_sessions(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
 ) -> Result<Json<Vec<SessionInfo>>, (StatusCode, String)> {
-    let rows = sqlx::query_as::<_, (String, String, i64, i64)>(
-        "SELECT id::text, pack_id, EXTRACT(EPOCH FROM created_at)::bigint, EXTRACT(EPOCH FROM updated_at)::bigint FROM game_sessions WHERE player_id = $1 ORDER BY updated_at DESC",
+    let rows = sqlx::query_as::<_, (String, String, i64, i64, Option<String>, Option<i64>)>(
+        "SELECT id::text, pack_id, EXTRACT(EPOCH FROM created_at)::bigint, EXTRACT(EPOCH FROM updated_at)::bigint, \
+         state_json->>'current_room_id', (state_json->>'current_time_minutes')::bigint \
+         FROM game_sessions WHERE player_id = $1 ORDER BY updated_at DESC",
     )
     .bind(Uuid::parse_str(&auth.id).map_err(internal)?)
     .fetch_all(&*state.pool)
     .await
     .map_err(internal)?;
 
+    let mut room_titles: std::collections::HashMap<String, std::collections::HashMap<String, String>> =
+        std::collections::HashMap::new();
+
     Ok(Json(
         rows.into_iter()
-            .map(|(id, pack_id, created_at, updated_at)| SessionInfo {
-                session_id: id,
-                pack_id,
-                created_at: created_at.to_string(),
-                updated_at: updated_at.to_string(),
-                title: String::new(),
-                intro_text: String::new(),
+            .map(|(id, pack_id, created_at, updated_at, room_id, time_minutes)| {
+                let day_number = time_minutes
+                    .map(|minutes| (minutes as u32 / (24 * 60)) + 1)
+                    .unwrap_or(0);
+                let current_room_name = room_id
+                    .map(|room_id| {
+                        let titles = room_titles.entry(pack_id.clone()).or_insert_with(|| {
+                            cinder_core::content::loader::load_named_pack(&pack_id, None)
+                                .map(|pack| {
+                                    pack.rooms
+                                        .into_iter()
+                                        .map(|room| (room.id, room.title))
+                                        .collect()
+                                })
+                                .unwrap_or_default()
+                        });
+                        titles.get(&room_id).cloned().unwrap_or(room_id)
+                    })
+                    .unwrap_or_default();
+                SessionInfo {
+                    session_id: id,
+                    pack_id,
+                    created_at: created_at.to_string(),
+                    updated_at: updated_at.to_string(),
+                    title: String::new(),
+                    intro_text: String::new(),
+                    day_number,
+                    current_room_name,
+                }
             })
             .collect(),
     ))
