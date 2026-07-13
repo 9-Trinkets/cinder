@@ -1,4 +1,7 @@
 {
+  "title": "Ella",
+  "tagline": "Movie night, snacks, and getting to bed on time.",
+  "description": "A cozy bedtime routine game — pick a movie, pick a snack, and see if you can wind down before lights out.",
   "typewriter_char_ms": 10,
   "npc_tick_interval_ms": 2000,
   "default_language": "en",

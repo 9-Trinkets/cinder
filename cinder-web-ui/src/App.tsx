@@ -3,6 +3,7 @@ import { AuthProvider, useAuth } from './auth'
 import { ToastProvider } from './components/Toast'
 import LoginPage from './pages/LoginPage'
 import GamesPage from './pages/GamesPage'
+import PackDetailPage from './pages/PackDetailPage'
 import GamePage from './pages/GamePage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -24,6 +25,7 @@ export default function App() {
         <Routes>
           <Route path="/login" element={<RedirectIfLoggedIn />} />
           <Route path="/games" element={<ProtectedRoute><GamesPage /></ProtectedRoute>} />
+          <Route path="/games/pack/:packId" element={<ProtectedRoute><PackDetailPage /></ProtectedRoute>} />
           <Route path="/games/:id" element={<ProtectedRoute><GamePage /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>

@@ -31,6 +31,12 @@ fn default_opening_start_time_minutes() -> u32 {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContentSettingsDefinition {
+    #[serde(default)]
+    pub title: String,
+    #[serde(default)]
+    pub tagline: String,
+    #[serde(default)]
+    pub description: String,
     #[serde(default = "default_typewriter_char_ms")]
     pub typewriter_char_ms: u64,
     #[serde(default = "default_npc_tick_interval_ms")]
@@ -96,6 +102,9 @@ pub(super) fn default_true() -> bool {
 impl Default for ContentSettingsDefinition {
     fn default() -> Self {
         Self {
+            title: String::default(),
+            tagline: String::default(),
+            description: String::default(),
             typewriter_char_ms: default_typewriter_char_ms(),
             npc_tick_interval_ms: default_npc_tick_interval_ms(),
             tick_minutes_per_turn: default_tick_minutes_per_turn(),

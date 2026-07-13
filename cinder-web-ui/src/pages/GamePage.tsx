@@ -10,6 +10,7 @@ import MovieModal from '../components/MovieModal'
 import SessionClosureModal from '../components/SessionClosureModal'
 import QuickActionPanel, { type QuickPanel } from '../components/QuickActionPanel'
 import ConfirmDialog from '../components/ConfirmDialog'
+import { useToast } from '../components/Toast'
 import type { Line } from '../components/TranscriptLine'
 import { themeVars } from '../utils/theme'
 
@@ -33,6 +34,7 @@ type MenuView = 'main' | 'about' | 'rooms' | 'follow' | 'language'
 export default function GamePage() {
   const { id } = useParams<{ id: string }>()
   const { token, logout } = useAuth()
+  const { showToast } = useToast()
   const navigate = useNavigate()
   const location = useLocation()
   const sessionState = location.state as { title?: string; intro_text?: string } | null
@@ -65,6 +67,9 @@ export default function GamePage() {
   const refreshInFlightRef = useRef(false)
   const refreshQueuedRef = useRef(false)
   const lastInteractionAtRef = useRef(0)
+  const commandHistoryRef = useRef<string[]>([])
+  const historyIndexRef = useRef<number | null>(null)
+  const draftInputRef = useRef('')
   const busy = initializing || commandPending || panelBusy
   const busyLabel = commandPending ? 'Sending…' : panelBusy ? 'Updating…' : initializing ? 'Loading…' : null
 
@@ -174,7 +179,7 @@ export default function GamePage() {
             applyCommandResponse(res, 'auto')
           })
           .catch(err => {
-            appendLines([`[error: ${err instanceof Error ? err.message : 'failed to load'}]`], 'auto')
+            showToast(err instanceof Error ? err.message : 'failed to load', 'error')
           })
           .finally(() => setInitializing(false))
       })
@@ -203,10 +208,6 @@ export default function GamePage() {
         setActiveMenu(snap.active_menu ?? null)
       }).catch(() => {})
     }
-  }
-
-  function addOutcome(text: string) {
-    appendLines([text], 'auto')
   }
 
   function applyCommandResponse(res: api.CommandResponse, behavior: ScrollBehavior = 'auto') {
@@ -246,7 +247,7 @@ export default function GamePage() {
       const res = await api.runCommand(token, id, cmd)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
-      addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
+      showToast(err instanceof Error ? err.message : 'request failed', 'error')
     } finally {
       setCommandPending(false)
     }
@@ -324,7 +325,7 @@ export default function GamePage() {
       const res = await api.switchRoom(token, id, roomId)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
-      addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
+      showToast(err instanceof Error ? err.message : 'request failed', 'error')
     } finally {
       setPanelBusy(false)
     }
@@ -340,7 +341,7 @@ export default function GamePage() {
       const res = await api.followActor(token, id, actorId)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
-      addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
+      showToast(err instanceof Error ? err.message : 'request failed', 'error')
     } finally {
       setPanelBusy(false)
     }
@@ -356,7 +357,7 @@ export default function GamePage() {
       const res = await api.setLocale(token, id, locale)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
-      addOutcome(`[error: ${err instanceof Error ? err.message : 'request failed'}]`)
+      showToast(err instanceof Error ? err.message : 'request failed', 'error')
     } finally {
       setPanelBusy(false)
     }
@@ -374,6 +375,11 @@ export default function GamePage() {
     const displayInput = trimmed
     setAtSuggestions(null)
     setInput('')
+    if (commandHistoryRef.current[commandHistoryRef.current.length - 1] !== displayInput) {
+      commandHistoryRef.current.push(displayInput)
+    }
+    historyIndexRef.current = null
+    draftInputRef.current = ''
     if (trimmed.startsWith('@')) {
       trimmed = 'talk to ' + trimmed.slice(1).trimStart()
     }
@@ -395,29 +401,24 @@ export default function GamePage() {
       <div style={uiSnapshot?.theme ? themeVars(uiSnapshot.theme) : undefined} className="contents">
       <header className="sticky top-0 z-10 bg-surface flex items-center justify-between gap-3 px-4 py-3 border-b border-subtle shrink-0">
         <div className="flex items-center gap-2">
-          <button onClick={() => navigate('/games')} className="text-sm text-muted hover:text-text cursor-pointer">&larr; Sessions</button>
+          <button onClick={() => navigate('/games')} className="text-sm text-muted hover:text-text cursor-pointer">&larr; Games</button>
           <button
             onClick={openMenu}
             disabled={busy}
             className="text-sm px-2 py-1 rounded bg-overlay border border-subtle text-text transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
           >&#9776; Menu</button>
-          {uiSnapshot && (
-            <button
-              onClick={() => {
-                setQuickPanel(null)
-                setShowStatusModal(true)
-              }}
-              className="lg:hidden text-sm px-2 py-1 rounded bg-overlay border border-subtle text-text transition duration-200 hover:brightness-110 active:scale-[0.98] cursor-pointer"
-            >
-              Status
-            </button>
-          )}
         </div>
         <button onClick={logout} className="text-sm text-muted transition duration-200 hover:text-love active:scale-[0.98] cursor-pointer">Log out</button>
       </header>
 
       {uiSnapshot && (
-        <div className="lg:hidden px-4 py-2 border-b border-subtle bg-base/40">
+        <button
+          onClick={() => {
+            setQuickPanel(null)
+            setShowStatusModal(true)
+          }}
+          className="lg:hidden w-full text-left px-4 py-2 border-b border-subtle bg-base/40 cursor-pointer"
+        >
           <div className="flex items-center gap-2 text-xs text-muted overflow-x-auto">
             <span className="shrink-0 rounded-full bg-overlay px-2 py-1 text-text">{uiSnapshot.current_room_name}</span>
             <span className="shrink-0 rounded-full bg-overlay px-2 py-1 text-text">
@@ -429,7 +430,7 @@ export default function GamePage() {
               </span>
             )}
           </div>
-        </div>
+        </button>
       )}
 
       <div className="flex-1 flex overflow-hidden">
@@ -581,6 +582,28 @@ export default function GamePage() {
                   }}
                   onKeyDown={e => {
                     if (e.key === 'Escape') setAtSuggestions(null)
+                    const history = commandHistoryRef.current
+                    if (e.key === 'ArrowUp' && !atSuggestions?.length) {
+                      if (history.length === 0) return
+                      e.preventDefault()
+                      if (historyIndexRef.current === null) {
+                        draftInputRef.current = input
+                        historyIndexRef.current = history.length - 1
+                      } else if (historyIndexRef.current > 0) {
+                        historyIndexRef.current -= 1
+                      }
+                      setInput(history[historyIndexRef.current])
+                    } else if (e.key === 'ArrowDown' && !atSuggestions?.length) {
+                      if (historyIndexRef.current === null) return
+                      e.preventDefault()
+                      if (historyIndexRef.current < history.length - 1) {
+                        historyIndexRef.current += 1
+                        setInput(history[historyIndexRef.current])
+                      } else {
+                        historyIndexRef.current = null
+                        setInput(draftInputRef.current)
+                      }
+                    }
                   }}
                   disabled={busy || gameOver}
                   autoFocus

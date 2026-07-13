@@ -1,4 +1,7 @@
 {
+  "title": "Isla",
+  "tagline": "A bibliotherapy session, one conversation at a time.",
+  "description": "Sit with Isla and work through what's on your mind, guided by story and reflection rather than a script.",
   "typewriter_char_ms": 8,
   "npc_tick_interval_ms": 60000,
   "tick_minutes_per_turn": 1,

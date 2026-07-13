@@ -296,6 +296,10 @@ export function deleteSession(token: string, sessionId: string) {
 
 export interface PackInfo {
   id: string
+  title: string
+  tagline: string
+  description: string
+  theme: ThemeDefinition
 }
 
 export function listPacks(token: string) {

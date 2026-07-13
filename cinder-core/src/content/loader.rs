@@ -64,6 +64,17 @@ pub fn available_packs() -> Vec<String> {
     packs
 }
 
+pub fn load_pack_settings(pack_id: &str) -> Result<ContentSettingsDefinition, Box<dyn Error>> {
+    let settings_path = pack_dir(pack_id).join("settings.json");
+    match fs::read_to_string(&settings_path) {
+        Ok(contents) => Ok(serde_json::from_str(&contents)?),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
+            Ok(ContentSettingsDefinition::default())
+        }
+        Err(error) => Err(error.into()),
+    }
+}
+
 pub fn load_pack_from_dir(path: &Path) -> Result<ContentPack, Box<dyn Error>> {
     load_pack_from_dir_with_locale(path, None)
 }

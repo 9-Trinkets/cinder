@@ -80,13 +80,32 @@ pub async fn create_session(
 #[derive(Serialize)]
 pub struct PackInfo {
     pub id: String,
+    pub title: String,
+    pub tagline: String,
+    pub description: String,
+    pub theme: cinder_core::content::types::ThemeDefinition,
 }
 
 pub async fn list_packs() -> Json<Vec<PackInfo>> {
     Json(
         cinder_core::content::loader::available_packs()
             .into_iter()
-            .map(|id| PackInfo { id })
+            .map(|id| {
+                let settings = cinder_core::content::loader::load_pack_settings(&id)
+                    .unwrap_or_default();
+                let title = if settings.title.is_empty() {
+                    id.clone()
+                } else {
+                    settings.title
+                };
+                PackInfo {
+                    id,
+                    title,
+                    tagline: settings.tagline,
+                    description: settings.description,
+                    theme: settings.theme,
+                }
+            })
             .collect(),
     )
 }
