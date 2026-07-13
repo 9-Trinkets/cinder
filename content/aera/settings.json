@@ -1,7 +1,7 @@
 {
   "title": "Aera",
-  "tagline": "Four strangers, one house, cameras nobody's supposed to notice.",
-  "description": "You're the unseen eye behind a seven-day documentary experiment, watching four housemates navigate attraction, trust, and the strange pressure of being watched while pretending not to be.",
+  "tagline": "Four strangers, one house, and you calling the shots from the control room.",
+  "description": "You're the director behind a reality show house, watching four strangers navigate attraction and trust over seven days. Mostly you stay silent and let it play out — but a quiet instruction or a well-timed twist is enough to push the story where you want it to go.",
   "typewriter_char_ms": 7,
   "npc_tick_interval_ms": 4000,
   "tick_minutes_per_turn": 10,
