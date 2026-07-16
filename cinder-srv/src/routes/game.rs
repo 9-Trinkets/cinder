@@ -298,6 +298,7 @@ fn now_unix_secs() -> String {
 #[derive(Deserialize)]
 pub struct WsQuery {
     pub token: String,
+    pub tick_ms: Option<u64>,
 }
 
 pub async fn ws_tick_handler(
@@ -320,8 +321,9 @@ pub async fn ws_tick_handler(
     let pool = state.pool.clone();
     let session_id_str = session_id.to_string();
     let player_id_str = player_id.to_string();
+    let tick_ms = query.tick_ms.unwrap_or(2000);
 
-    Ok(ws.on_upgrade(move |socket| handle_ws(socket, pool, session_id_str, player_id_str)))
+    Ok(ws.on_upgrade(move |socket| handle_ws(socket, pool, session_id_str, player_id_str, tick_ms)))
 }
 
 async fn handle_ws(
@@ -329,13 +331,11 @@ async fn handle_ws(
     pool: crate::db::DbPool,
     session_id: String,
     player_id: String,
+    tick_ms: u64,
 ) {
     use axum::extract::ws::Message;
     use futures_util::StreamExt;
 
-    let tick_ms = game_manager::session_tick_interval_ms(&pool, &session_id, &player_id)
-        .await
-        .unwrap_or(2000);
     let mut interval = tokio::time::interval(std::time::Duration::from_millis(tick_ms));
     interval.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Delay);
 

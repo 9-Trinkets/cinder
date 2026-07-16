@@ -269,7 +269,7 @@ export default function GamePage() {
     }
 
     const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const wsUrl = `${proto}//${window.location.host}/api/games/${id}/ws?token=${token}`
+    const wsUrl = `${proto}//${window.location.host}/api/games/${id}/ws?token=${token}&tick_ms=${intervalMs}`
     const ws = new WebSocket(wsUrl)
 
     ws.onmessage = (event) => {

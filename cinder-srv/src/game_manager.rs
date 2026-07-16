@@ -348,24 +348,6 @@ pub async fn run_realtime_tick(
     .await
 }
 
-pub async fn session_tick_interval_ms(
-    pool: &PgPool,
-    session_id: &str,
-    player_id: &str,
-) -> Result<u64, String> {
-    let session_id = parse_uuid(session_id, "session id")?;
-    let player_id = parse_uuid(player_id, "player id")?;
-    let mut tx = pool
-        .begin()
-        .await
-        .map_err(|e| format!("db begin error: {e}"))?;
-    let (pack_id, locale, _) = load_session_row(&mut tx, &session_id, &player_id, false).await?;
-    drop(tx);
-    let content = loader::load_named_pack(&pack_id, Some(&locale))
-        .map_err(|e| format!("failed to load pack '{pack_id}': {e}"))?;
-    Ok(content.settings.npc_tick_interval_ms)
-}
-
 pub async fn switch_room(
     pool: &PgPool,
     session_id: &str,
