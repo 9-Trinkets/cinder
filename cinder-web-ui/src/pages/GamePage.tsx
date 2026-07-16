@@ -263,8 +263,7 @@ export default function GamePage() {
       activeMenu ||
       showMenu ||
       quickPanel !== null ||
-      showStatusModal ||
-      input.trim().length > 0
+      showStatusModal
     ) {
       return
     }
@@ -274,6 +273,7 @@ export default function GamePage() {
     const ws = new WebSocket(wsUrl)
 
     ws.onmessage = (event) => {
+      if (input.trim().length > 0) return
       try {
         const res: api.CommandResponse = JSON.parse(event.data)
         if (res.text || res.movie || res.game_over || res.session_closure) {
@@ -303,7 +303,6 @@ export default function GamePage() {
     showMenu,
     quickPanel,
     showStatusModal,
-    input,
   ])
 
   function closeMovie() {

@@ -333,7 +333,10 @@ async fn handle_ws(
     use axum::extract::ws::Message;
     use futures_util::StreamExt;
 
-    let mut interval = tokio::time::interval(std::time::Duration::from_secs(5));
+    let tick_ms = game_manager::session_tick_interval_ms(&pool, &session_id, &player_id)
+        .await
+        .unwrap_or(2000);
+    let mut interval = tokio::time::interval(std::time::Duration::from_millis(tick_ms));
     interval.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Delay);
 
     loop {
