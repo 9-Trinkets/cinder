@@ -1,28 +1,22 @@
 {
-  "initial_stage_ids": [
-    "introduce-everyone-first-evening"
-  ],
+  "initial_stage_ids": ["introduce-everyone-first-evening"],
   "stages": [
+
     {
       "id": "introduce-everyone-first-evening",
       "summary": "Introduction: everyone arrives in the lounge and settles in.",
       "update_message": "It is 5 PM. Everyone is arriving and introducing themselves in the lounge.",
       "beat_note": "This is first-impression hour. Keep everyone in the lounge and make the energy feel like a new cast settling into the same house for the first time. Let each actor show what kind of entrance they make, who they naturally notice first, what detail they comment on, and whether they play warm, cool, awkward, curious, or a little performative. Push for clear introductions, quick reads on each other, small offers of help or humor, and the first tiny sparks of comfort, friction, or intrigue.",
-      "advance_signals": [
-        "time_reached:18:00"
-      ],
-      "next_stage_ids": [
-        "dinner-prep"
-      ]
+      "advance_signals": ["time_reached:18:00"],
+      "next_stage_ids": ["dinner-prep"]
     },
+
     {
       "id": "dinner-prep",
-      "summary": "Dinner prep: Ren starts getting food ready while the house naturally splits between the kitchen and lounge.",
-      "update_message": "It is 6 PM. Ren heads into the kitchen to get dinner going, and everyone else has to decide whether to help or hang back in the lounge.",
+      "summary": "Dinner prep: Ren starts getting food ready while the house naturally splits.",
+      "update_message": "It is 6 PM. Ren heads into the kitchen to get dinner going, and everyone else has to decide whether to help or hang back.",
       "beat_note": "Ren takes the lead on dinner prep, but the point is not chores for their own sake. This split creates the house's first genuinely simultaneous scenes. The kitchen should feel warmer, more practical, and slightly more intimate because there is a task to share; the lounge should feel looser, more observant, and a little more performative because people can sit back and watch what forms elsewhere. Let the people who drift into the kitchen show what kind of closeness they seek through usefulness, comfort, curiosity, or flirtation. Let the people who stay behind react to the split, fill the space in a different way, and notice who chose whom.",
-      "advance_signals": [
-        "time_reached:18:30"
-      ],
+      "advance_signals": ["time_reached:18:30"],
       "stage_assignment": {
         "selection_label": "dinner prep",
         "prompt_instructions": "Score how likely each candidate is to join Ren in the kitchen during dinner prep instead of remaining in the lounge. Favor candidates who would seek closeness through usefulness, comfort, curiosity, flirtation, or an easy practical rhythm with Ren. Lower the score when a candidate would rather observe, hold the room socially, avoid domestic intimacy, or wait to see what forms elsewhere.",
@@ -36,25 +30,21 @@
         "selected_line_template": "{selected_names} join in the {selected_room_title}.",
         "remaining_line_template": "{remaining_names} stay in the {remaining_room_title}."
       },
-      "next_stage_ids": [
-        "share-dinner-in-kitchen"
-      ]
+      "next_stage_ids": ["share-dinner-in-kitchen"]
     },
+
     {
       "id": "share-dinner-in-kitchen",
       "summary": "Dinner in the kitchen: the house gathers around food and eats together.",
       "update_message": "It is 6:30 PM. Prep turns into a shared meal as everyone ends up back in the kitchen together.",
       "beat_note": "Dinner follows directly from the prep split. The meal should carry forward whatever alignment the kitchen and lounge just created: who already feels easy together, who is arriving from a separate vibe, who now has to bridge a gap, and who uses food to keep a promising thread going. Let eating together do the social work: who sits close to whom, who serves others without being asked, who is particular about what they take, who uses the meal to stay near someone, and who arrives already feeling left out or newly included. Make the communal dinner feel a little more charged because the house has already had a chance to divide and recombine.",
-      "advance_signals": [
-        "time_reached:19:30"
-      ],
-      "next_stage_ids": [
-        "talk-after-dinner"
-      ]
+      "advance_signals": ["time_reached:19:30"],
+      "next_stage_ids": ["talk-after-dinner"]
     },
+
     {
       "id": "talk-after-dinner",
-      "summary": "Talk after dinner: the house lingers at the dining table and the conversation gets less guarded.",
+      "summary": "Talk after dinner: the house lingers at the dining table and conversation gets less guarded.",
       "update_message": "It is 7:30 PM. Dinner is done. Everyone has drifted to the dining table and the conversation is still going.",
       "beat_note": "This is the first real settling. The meal is finished, the kitchen noise is gone, and now there is just the table, the light, and whatever people choose to fill the quiet with. Let conversation slow down and get a little more revealing. Someone might bring up something from earlier in the evening, replay a moment that stuck with them, admit something small, or start testing a connection more openly. This is also where the first cracks in group harmony might show, or the first time two people look at each other and realize they want to keep talking after everyone else stops. Push for honesty by default, depth where the pair stats support it, and one moment per conversation that would feel too honest for the kitchen.",
       "advance_signals": [
@@ -70,28 +60,610 @@
           ]
         }
       ],
-      "next_stage_ids": [
-        "debrief-in-bedrooms"
-      ]
+      "next_stage_ids": ["debrief-in-bedrooms"]
     },
+
     {
       "id": "debrief-in-bedrooms",
-      "summary": "Debrief in bedrooms: split by room and compare impressions from the evening.",
+      "summary": "Debrief in bedrooms: split by room and compare impressions.",
       "update_message": "It is 8 PM. The housemates drift to bedrooms to debrief and compare impressions from dinner and the evening.",
       "beat_note": "After dinner, split the house into smaller bedroom conversations and let the public group energy turn into private interpretation. This is where actors compare notes, test first loyalties, admit surprise, and say things they would not say in the kitchen. Encourage softer but sharper conversation: who made the strongest impression, who feels safest, who may be hiding something, who seems attractive, who seems exhausting, who might become an ally, and who might become trouble. Let people replay moments from dinner, defend or question each other, and start building early social narratives.",
-      "advance_signals": [
-        "time_reached:21:30"
-      ],
-      "next_stage_ids": [
-        "sleep-end-first-day"
-      ]
+      "advance_signals": ["time_reached:21:00"],
+      "next_stage_ids": ["plan-day2"]
     },
+
+    {
+      "id": "plan-day2",
+      "summary": "End of Day 1: the director chooses tomorrow's activity.",
+      "update_message": "It is 9 PM. The first day is winding down. You review tomorrow's schedule.",
+      "beat_note": "The house is settling into its first night. Bedrooms are quiet or murmuring. The player now has a chance to shape tomorrow by choosing the morning's main activity. This is a planning phase — no NPC action, just the director's note appearing on screen. Let the house breathe while the player decides. After the selection, close the day with the sense that tomorrow will feel different because of what the player just set in motion.",
+      "advance_signals": ["menu_selected:day2-plan"],
+      "next_stage_ids": ["sleep-end-first-day"]
+    },
+
     {
       "id": "sleep-end-first-day",
       "summary": "Sleep and end of first day.",
       "update_message": "It is 9:30 PM. The first day winds down toward sleep.",
       "beat_note": "This is the last emotional beat before lights out. Let conversations taper into final glances, unfinished thoughts, quiet vulnerability, and the sense that today's first impressions will carry into tomorrow. Actors should settle toward sleep while holding onto one clear feeling about the night: excitement, relief, attraction, suspicion, comfort, regret, or anticipation. End with the sense that the house has started choosing its first bonds and tensions, even if no one can fully name them yet.",
-      "next_chapter_preview": "Tomorrow morning is when the house stops feeling like an arrival and starts feeling like a real social map. First routines, first private check-ins, and the first clear pulls between people will start to show.",
+      "next_chapter_preview": "Tomorrow morning the house shifts from arrival to routine. The first real day begins with whatever the director has chosen for them.",
+      "end_session": true
+    },
+
+    {
+      "id": "day2-morning",
+      "summary": "Day 2 opens: the house wakes into its first full day.",
+      "update_message": "It is 7 AM. Day 2 begins. The house is waking up.",
+      "beat_note": "Morning light, kitchen sounds, someone already moving. This is the transition from 'new house' to 'shared life.' Let the actors show their morning personalities: who rises early and silently, who lingers in bed, who gravitates toward coffee or the patio. The planned activity looms — whoever is leading it should start signaling readiness. Keep the energy low-key but purposeful. The house is no longer brand new, but it is not yet routine.",
+      "advance_signals": ["time_reached:09:00"],
+      "next_stage_ids": ["day2-event-cooking", "day2-event-run", "day2-event-edit"]
+    },
+
+    {
+      "id": "day2-event-cooking",
+      "summary": "Day 2 event: Ren teaches someone to cook.",
+      "update_message": "It is 9 AM. Ren is in the kitchen, setting up a cooking lesson.",
+      "beat_note": "Ren has taken over the kitchen with the quiet confidence of someone who cooks to connect. He is teaching a dish — something that requires proximity: standing side by side, reaching for the same shelf, tasting from the same spoon. The lesson should feel like a series of small, almost accidental intimacies. Let Ren show care through instruction — adjusting a grip, explaining why this ingredient matters, pausing to let someone try. The person learning should reveal something about themselves through how they learn: careful or reckless, asking questions or figuring it out, focused on the task or on the person teaching. The kitchen should feel like the only room in the house for the duration of this scene. Other rooms are quieter, slower, watching from a distance.",
+      "advance_signals": ["time_reached:12:00"],
+      "stage_assignment": {
+        "selection_label": "cooking lesson",
+        "prompt_instructions": "Score how likely each candidate is to join Ren for a hands-on cooking lesson. Favor candidates who seek closeness through shared domestic activity, enjoy learning from someone competent, or are drawn to Ren's warmth. Lower scores for candidates who would rather keep distance, feel awkward in kitchen settings, or prefer to observe from elsewhere.",
+        "initiator_actor_id": "ren",
+        "selected_room_id": "kitchen",
+        "remaining_room_id": "lounge",
+        "max_selected_actors": 1,
+        "min_selected_actors": 1,
+        "score_threshold": 50,
+        "initiator_line_template": "{initiator_name} sets up the kitchen for a lesson.",
+        "selected_line_template": "{selected_names} join{selected Verb} in the {selected_room_title}.",
+        "remaining_line_template": "{remaining_names} stay{remaining_verb} in the {remaining_room_title}."
+      },
+      "next_stage_ids": ["day2-aftermath"]
+    },
+
+    {
+      "id": "day2-event-run",
+      "summary": "Day 2 event: Daichi invites someone to train.",
+      "update_message": "It is 9 AM. Daichi is on the patio, stretching.",
+      "beat_note": "Daichi does not announce his run. He just starts warming up on the patio, and whoever notices can decide whether to join. Running together is a different kind of intimacy — side by side, breathing in rhythm, talking only when there is something worth saying. Let Daichi lead by example rather than invitation. The person who joins should discover that Daichi is more open when his body is moving — he says things during a run that he would never say sitting down. The non-runners should notice the absence and wonder what was said. Keep the scene physical: sweat, pace, the sound of feet on pavement, the silence between words.",
+      "advance_signals": ["time_reached:12:00"],
+      "stage_assignment": {
+        "selection_label": "morning run",
+        "prompt_instructions": "Score how likely each candidate is to join Daichi for a morning run or training session. Favor candidates who respect discipline, enjoy physical challenge, or are curious about Daichi's quiet intensity. Lower scores for candidates who dislike exercise, would rather rest, or feel intimidated by Daichi's physicality.",
+        "initiator_actor_id": "daichi",
+        "selected_room_id": "patio",
+        "remaining_room_id": "lounge",
+        "max_selected_actors": 1,
+        "min_selected_actors": 1,
+        "score_threshold": 50,
+        "initiator_line_template": "{initiator_name} starts warming up on the {selected_room_title}.",
+        "selected_line_template": "{selected_names} join{selected_verb} for the workout.",
+        "remaining_line_template": "{remaining_names} stay{remaining_verb} inside."
+      },
+      "next_stage_ids": ["day2-aftermath"]
+    },
+
+    {
+      "id": "day2-event-edit",
+      "summary": "Day 2 event: Aera reviews footage with someone.",
+      "update_message": "It is 9 AM. Aera opens her laptop in the studio.",
+      "beat_note": "Aera has been quietly compiling footage from Day 1. She invites someone to watch — not for feedback, but for company while she works. The footage shows the house from the outside: angles no one knew they were being filmed from. Watching yourself on screen through someone else's eyes is either flattering or terrifying. Let Aera remain professional and focused, letting her guard down only in small moments — a laugh at something unexpected, a pause on a frame she finds beautiful. The person watching should react to seeing themselves: do they lean in or pull back, joke or go quiet, ask to see more or ask to stop? The studio should feel like a private screening room, separated from the rest of the house.",
+      "advance_signals": ["time_reached:12:00"],
+      "stage_assignment": {
+        "selection_label": "editing session",
+        "prompt_instructions": "Score how likely each candidate is to join Aera for a private editing session. Favor candidates who are curious about how they appear on camera, comfortable with Aera's quiet intensity, or drawn to creative collaboration. Lower scores for candidates who dislike being watched, feel self-conscious on camera, or would rather be elsewhere.",
+        "initiator_actor_id": "aera",
+        "selected_room_id": "studio",
+        "remaining_room_id": "lounge",
+        "max_selected_actors": 1,
+        "min_selected_actors": 1,
+        "score_threshold": 50,
+        "initiator_line_template": "{initiator_name} opens her laptop in the {selected_room_title}.",
+        "selected_line_template": "{selected_names} join{selected_verb} for the screening.",
+        "remaining_line_template": "{remaining_names} stay{remaining_verb} in the {remaining_room_title}."
+      },
+      "next_stage_ids": ["day2-aftermath"]
+    },
+
+    {
+      "id": "day2-aftermath",
+      "summary": "Day 2 afternoon: the event settles into the house's memory.",
+      "update_message": "It is noon. The morning activity is over. The house reconvenes.",
+      "beat_note": "The event is done, but its energy lingers. If someone cooked together, the kitchen smells like what they made and the conversation is easier now. If someone ran, there is a shared tiredness and a new looseness. If someone watched footage, there is a self-consciousness that has not yet faded. Let the aftermath be about the ripple: who references the morning activity, who asks what happened in the other room, who uses the shared experience as an excuse to stay close. The house should feel slightly different than it did at breakfast — one degree warmer or more uncertain, depending on what happened.",
+      "advance_signals": ["time_reached:18:00"],
+      "next_stage_ids": ["day2-dinner"]
+    },
+
+    {
+      "id": "day2-dinner",
+      "summary": "Day 2 dinner: the house eats together again.",
+      "update_message": "It is 6 PM. Dinner time. The house gathers in the kitchen.",
+      "beat_note": "This is the second dinner, and it should feel different from the first. Yesterday was introduction. Today is the beginning of pattern. Let the actors settle into roles they are starting to discover: who cooks, who sets the table, who sits where, who gravitates toward whom without thinking about it. The meal should carry forward whatever the morning event created — inside jokes, unresolved tension, new curiosity. Let the food be simpler this time. The conversation should be too.",
+      "advance_signals": ["time_reached:19:30"],
+      "next_stage_ids": ["day2-debrief"]
+    },
+
+    {
+      "id": "day2-debrief",
+      "summary": "Day 2 night: bedrooms, private conversations, and the plan for tomorrow.",
+      "update_message": "It is 8 PM. The house drifts to bedrooms and quiet spaces.",
+      "beat_note": "End of the second day. The house is starting to have a shape — alliances, tensions, routines forming. Let the bedroom conversations be sharper than last night: people now have two days of material to work with. Someone replayed a moment from the morning. Someone is quietly jealous of who got invited where. Someone is starting to wonder whether they came here for the right reason. Push for one revelation per room — something the speaker has not said aloud before. End the night with the sense that the house is beginning to choose its fault lines.",
+      "advance_signals": ["time_reached:21:00"],
+      "next_stage_ids": ["plan-day3"]
+    },
+
+    {
+      "id": "plan-day3",
+      "summary": "End of Day 2: the director chooses Day 3's centerpiece.",
+      "update_message": "It is 9 PM. Day 2 is ending. You review tomorrow's schedule.",
+      "beat_note": "The house is settling. The player now chooses the main event for Day 3 — a full-house activity that will test the group's dynamic. This is the moment where the director decides whether the house gets a collaborative project, a competitive game, or a shared creative experience. The selection shapes the emotional texture of the next day.",
+      "advance_signals": ["menu_selected:day3-plan"],
+      "next_stage_ids": ["sleep-end-day2"]
+    },
+
+    {
+      "id": "sleep-end-day2",
+      "summary": "End of Day 2.",
+      "update_message": "It is 9:30 PM. Day 2 ends.",
+      "beat_note": "A shorter close than last night. The house is tired. Let the final moments be small: a goodnight that lingers a beat too long, a door left slightly open, someone staring at the ceiling. The house has two days of shared memory now. Bonds are forming, even if no one has named them yet.",
+      "next_chapter_preview": "Tomorrow the house faces its first group challenge. The director has chosen the activity. How the house responds will reveal who they are becoming to each other.",
+      "end_session": true
+    },
+
+    {
+      "id": "day3-morning",
+      "summary": "Day 3 opens: anticipation for the planned event.",
+      "update_message": "It is 7 AM. Day 3 begins. The planned event looms.",
+      "beat_note": "Morning routines are faster now. People know where the coffee is, who sleeps late, who is already up. There is a sense of anticipation — someone knows what today's activity is (the news has spread, or the initiator has started preparing). Let the morning feel like the breath before a dive. The house is about to be tested as a group for the first time.",
+      "advance_signals": ["time_reached:09:00"],
+      "next_stage_ids": ["day3-event-dinner-party", "day3-event-art", "day3-event-games"]
+    },
+
+    {
+      "id": "day3-event-dinner-party",
+      "summary": "Day 3 event: themed dinner party, Ren leads.",
+      "update_message": "It is 9 AM. Ren announces a cooking challenge with a theme.",
+      "beat_note": "Ren has chosen a theme and laid out ingredients. This is a full-house activity — everyone cooks together, but the theme creates constraints. Let Ren set the standard and the pace. Collaboration stress surfaces who leads naturally, who follows without resentment, and who resists being told what to do. The kitchen should feel like a pressure cooker: the stove is hot, the counter is crowded, and everyone's elbows are in everyone else's space. Let the cooking reveal personality: who is precise, who is improvisational, who tastes as they go, who follows the recipe exactly. Small conflicts over technique or ingredient choices should escalate into something more personal than cooking.",
+      "advance_signals": ["time_reached:12:00"],
+      "stage_assignment": {
+        "selection_label": "themed dinner party",
+        "prompt_instructions": "Score how likely each candidate is to actively participate in Ren's themed cooking challenge. Favor candidates who enjoy group cooking, want to impress Ren, or thrive in collaborative creative tasks. Lower scores for candidates who dislike kitchen chaos, prefer to observe, or feel overshadowed by Ren's competence.",
+        "initiator_actor_id": "ren",
+        "selected_room_id": "kitchen",
+        "remaining_room_id": "lounge",
+        "max_selected_actors": 3,
+        "min_selected_actors": 2,
+        "score_threshold": 50,
+        "initiator_line_template": "{initiator_name} announces the theme and starts prepping.",
+        "selected_line_template": "{selected_names} jump in to help.",
+        "remaining_line_template": "{remaining_names} hang back in the {remaining_room_title}."
+      },
+      "next_stage_ids": ["day3-aftermath"]
+    },
+
+    {
+      "id": "day3-event-art",
+      "summary": "Day 3 event: collaborative art project, Aera leads.",
+      "update_message": "It is 9 AM. Aera proposes a short film project.",
+      "beat_note": "Aera has a concept: a short film or photo series made by the whole house. She sets up the equipment and assigns loosely defined roles. The project should feel like a Rorschach test — the creative differences that surface reveal how people see themselves and each other. Let Aera direct quietly, offering suggestions rather than commands. The conflict comes from competing visions: someone wants to be serious, someone wants to be playful, someone does not want to be filmed at all. The studio should feel like a creative battleground that is also, secretly, a place where people show who they really are.",
+      "advance_signals": ["time_reached:12:00"],
+      "stage_assignment": {
+        "selection_label": "art project",
+        "prompt_instructions": "Score how likely each candidate is to participate in Aera's collaborative film project. Favor candidates who enjoy creative expression, are comfortable on camera, or want to work closely with Aera. Lower scores for candidates who dislike being directed, feel self-conscious on camera, or prefer physical tasks over creative ones.",
+        "initiator_actor_id": "aera",
+        "selected_room_id": "studio",
+        "remaining_room_id": "lounge",
+        "max_selected_actors": 3,
+        "min_selected_actors": 2,
+        "score_threshold": 50,
+        "initiator_line_template": "{initiator_name} sets up the studio for a shoot.",
+        "selected_line_template": "{selected_names} join the project.",
+        "remaining_line_template": "{remaining_names} opt out and stay in the {remaining_room_title}."
+      },
+      "next_stage_ids": ["day3-aftermath"]
+    },
+
+    {
+      "id": "day3-event-games",
+      "summary": "Day 3 event: game night, Mio leads.",
+      "update_message": "It is 9 AM. Mio breaks out a game.",
+      "beat_note": "Mio has found or chosen a game — something social, slightly competitive, and revealing. She is the natural host: charming, quick to laugh, good at reading the room. But game night is a minefield. Alliances form. Someone takes it too seriously. Someone performs being a good sport while quietly keeping score. Let the game be the surface layer while the real game happens underneath: who partners with whom, who is cutthroat when the stakes are low, who cannot handle losing, and who uses the game as cover for flirtation. The lounge should feel like a pressure cooker of playful tension.",
+      "advance_signals": ["time_reached:12:00"],
+      "stage_assignment": {
+        "selection_label": "game night",
+        "prompt_instructions": "Score how likely each candidate is to actively engage in Mio's game night. Favor candidates who enjoy competition, are socially playful, or want to be near Mio. Lower scores for candidates who dislike games, feel competitive in uncomfortable ways, or would rather have a quiet conversation elsewhere.",
+        "initiator_actor_id": "mio",
+        "selected_room_id": "lounge",
+        "remaining_room_id": "patio",
+        "max_selected_actors": 3,
+        "min_selected_actors": 2,
+        "score_threshold": 50,
+        "initiator_line_template": "{initiator_name} sets up the game in the {selected_room_title}.",
+        "selected_line_template": "{selected_names} pull up chairs.",
+        "remaining_line_template": "{remaining_names} drift to the {remaining_room_title}."
+      },
+      "next_stage_ids": ["day3-aftermath"]
+    },
+
+    {
+      "id": "day3-aftermath",
+      "summary": "Day 3 afternoon: the group event reverberates.",
+      "update_message": "It is noon. The activity is over. The house processes what happened.",
+      "beat_note": "The group activity has cracked something open. Let the aftermath be about fallout: alliances that formed during the activity, tensions that surfaced, moments that felt charged. Someone is replaying a moment. Someone is quietly hurt. Someone is surprised by who they enjoyed being near. The house should feel different than it did at breakfast — the group dynamic has shifted, and everyone can feel it even if no one names it.",
+      "advance_signals": ["time_reached:18:00"],
+      "next_stage_ids": ["day3-dinner"]
+    },
+
+    {
+      "id": "day3-dinner",
+      "summary": "Day 3 dinner: the third meal together.",
+      "update_message": "It is 6 PM. Dinner. The house gathers again.",
+      "beat_note": "The third dinner. Patterns are setting in. Let the seating be more deliberate — people choosing spots based on two days of accumulated proximity. The conversation should reference the day's activity without rehashing it. Someone makes a callback joke. Someone avoids eye contact with someone they competed against. The meal should feel like the house is starting to have a shared language.",
+      "advance_signals": ["time_reached:19:30"],
+      "next_stage_ids": ["day3-debrief"]
+    },
+
+    {
+      "id": "day3-debrief",
+      "summary": "Day 3 night: the first real tensions surface.",
+      "update_message": "It is 8 PM. Bedrooms. The house splits for the night.",
+      "beat_note": "Three days in. The novelty is wearing off and the real dynamics are showing. Let the bedroom conversations be more honest and more charged than before. Someone is frustrated. Someone is falling for someone who is falling for someone else. Someone is starting to wonder if they belong here. Push for one moment per room that shifts the emotional landscape: a confession, a confrontation, a quiet admission that changes the speaker's position in the house. End the night with the sense that something is about to break — or shift — on Day 4.",
+      "advance_signals": ["time_reached:21:00"],
+      "next_stage_ids": ["plan-day4"]
+    },
+
+    {
+      "id": "plan-day4",
+      "summary": "End of Day 3: the director introduces friction.",
+      "update_message": "It is 9 PM. Day 3 ends. The house is restless.",
+      "beat_note": "The house has been together for three days. Comfort is growing, but so are the tensions that comfort reveals. The player now chooses how to apply pressure on Day 4. This is the turning point — the event choice determines whether the house fractures, confesses, or loses someone temporarily. The note should feel heavier than previous nights.",
+      "advance_signals": ["menu_selected:day4-plan"],
+      "next_stage_ids": ["sleep-end-day3"]
+    },
+
+    {
+      "id": "sleep-end-day3",
+      "summary": "End of Day 3.",
+      "update_message": "It is 9:30 PM. Day 3 ends.",
+      "beat_note": "The house is more lived-in now. Shoes are not by the door. Someone left a glass on the counter. The energy should feel like a coiled spring — something is building, and the characters can sense it even if they cannot name it. End with a single detail that signals the shift: a glance that lasts too long, a door closed harder than necessary, a silence where there should be a goodnight.",
+      "next_chapter_preview": "Tomorrow the director introduces pressure. The house will have to decide what it is made of.",
+      "end_session": true
+    },
+
+    {
+      "id": "day4-morning",
+      "summary": "Day 4 opens: the house wakes into tension.",
+      "update_message": "It is 7 AM. Day 4. Something feels different.",
+      "beat_note": "Morning should feel heavier. The routines are established but the ease is gone. Someone is quieter than usual. Someone is performing normalcy a little too hard. The planned event is about to disrupt whatever fragile equilibrium the house has built. Let the morning carry a sense of anticipation or dread — the characters may not know what is coming, but the atmosphere should signal that today is not like yesterday.",
+      "advance_signals": ["time_reached:09:00"],
+      "next_stage_ids": ["day4-event-outage", "day4-event-truth", "day4-event-absence"]
+    },
+
+    {
+      "id": "day4-event-outage",
+      "summary": "Day 4 event: power outage splits the house.",
+      "update_message": "It is 9 AM. The power cuts out. The house goes dark.",
+      "beat_note": "The power outage is a reset. No screens, no distractions, no escape. The house divides into two groups in different rooms — candlelight, phone flashlights, the sound of rain or wind outside. Forced proximity strips away the social performances. People say things in the dark they would not say in daylight. Let the two rooms feel like separate worlds: one room might be warm and confessional, the other sharp and confrontational. The darkness should feel intimate and slightly dangerous. Let the power outage last through the afternoon, forcing the house to sit with itself.",
+      "advance_signals": ["time_reached:18:00"],
+      "stage_assignment": {
+        "selection_label": "power outage",
+        "prompt_instructions": "The power is out. Score how each candidate groups themselves during the outage. Favor candidates who seek comfort in small groups, are drawn to candlelight intimacy, or want to be near specific people. Lower scores for candidates who handle isolation well or prefer to be alone during stress.",
+        "initiator_actor_id": "mio",
+        "selected_room_id": "lounge",
+        "remaining_room_id": "patio",
+        "max_selected_actors": 2,
+        "min_selected_actors": 1,
+        "score_threshold": 50,
+        "initiator_line_template": "The power goes out. The house scrambles for light.",
+        "selected_line_template": "{selected_names} gather in the {selected_room_title} with candles.",
+        "remaining_line_template": "{remaining_names} find the {remaining_room_title}."
+      },
+      "next_stage_ids": ["day4-aftermath"]
+    },
+
+    {
+      "id": "day4-event-truth",
+      "summary": "Day 4 event: truth circle in the lounge.",
+      "update_message": "It is 9 AM. Mio proposes a truth-telling game.",
+      "beat_note": "Mio suggests a circle in the lounge. The rules are simple: answer the question honestly or pass. But passing has a cost — everyone notices. Let the questions start light and escalate. Each person's answer should reveal something they have been protecting. The circle should feel like a confessional with witnesses. Let the honesty be uneven: some people crack open easily, others resist, and the resistance itself becomes revealing. By the end, the group knows each other in a way that cannot be undone.",
+      "advance_signals": ["time_reached:18:00"],
+      "stage_assignment": {
+        "selection_label": "truth circle",
+        "prompt_instructions": "Mio proposes a truth circle. Score how likely each candidate is to participate genuinely. Favor candidates who value honesty, are drawn to vulnerability, or feel safe enough in the group to share. Lower scores for candidates who guard themselves tightly, distrust group pressure, or would rather keep their walls up.",
+        "initiator_actor_id": "mio",
+        "selected_room_id": "lounge",
+        "remaining_room_id": "patio",
+        "max_selected_actors": 3,
+        "min_selected_actors": 2,
+        "score_threshold": 50,
+        "initiator_line_template": "{initiator_name} sits cross-legged on the floor and starts the circle.",
+        "selected_line_template": "{selected_names} join the circle.",
+        "remaining_line_template": "{remaining_names} step away to the {remaining_room_title}."
+      },
+      "next_stage_ids": ["day4-aftermath"]
+    },
+
+    {
+      "id": "day4-event-absence",
+      "summary": "Day 4 event: one housemate is called away.",
+      "update_message": "It is 9 AM. One housemate receives a call and has to leave for the day.",
+      "beat_note": "The absence is the event. One person is gone, and the remaining three must navigate the space they leave behind. Let the departure feel real — a bag packed, a goodbye at the door, the sound of the front door closing. The remaining three should react differently: relief, guilt, curiosity about what was said in the private goodbye, or the strange freedom of a house with one fewer person. The absent person should be referenced constantly — not as a absence but as a presence shaped by absence. The house is different with three. Let the day explore what the missing person usually holds together, and what falls apart without them.",
+      "advance_signals": ["time_reached:18:00"],
+      "stage_assignment": {
+        "selection_label": "absence",
+        "prompt_instructions": "One housemate is called away. Score how each remaining candidate handles the absence. Favor candidates who use the space to reconnect with others, explore the house differently, or reveal what they are like when someone specific is not watching.",
+        "initiator_actor_id": "ren",
+        "selected_room_id": "lounge",
+        "remaining_room_id": "kitchen",
+        "max_selected_actors": 2,
+        "min_selected_actors": 1,
+        "score_threshold": 50,
+        "initiator_line_template": "The front door closes behind the departing housemate.",
+        "selected_line_template": "{selected_names} stay in the {selected_room_title}, processing.",
+        "remaining_line_template": "{remaining_names} drift to the {remaining_room_title}."
+      },
+      "next_stage_ids": ["day4-aftermath"]
+    },
+
+    {
+      "id": "day4-aftermath",
+      "summary": "Day 4 evening: the disruption settles.",
+      "update_message": "It is 6 PM. The day's disruption is over. The house reconvenes.",
+      "beat_note": "The disruption has changed the house's emotional temperature. Let the aftermath be about recalibration: who reaches out to whom, who avoids whom, who pretends nothing happened. The dinner should feel tentative — the house is reassembling itself after being taken apart. Let the meal be quieter than usual, with conversations that circle around what happened without naming it directly.",
+      "advance_signals": ["time_reached:19:30"],
+      "next_stage_ids": ["day4-debrief"]
+    },
+
+    {
+      "id": "day4-debrief",
+      "summary": "Day 4 night: after the breaking point.",
+      "update_message": "It is 8 PM. Bedrooms. The house is raw.",
+      "beat_note": "This is the most charged night so far. The disruption has left everyone exposed. Let the bedroom conversations be raw and unguarded. Someone is crying. Someone is angry. Someone is surprised by how much they care about people they met four days ago. Push for one conversation that changes a relationship's direction — a confession that shifts the power, an apology that lands, or a silence that says more than words. End the night with the sense that the house has been cracked open and will not close the same way.",
+      "advance_signals": ["time_reached:21:00"],
+      "next_stage_ids": ["plan-day5"]
+    },
+
+    {
+      "id": "plan-day5",
+      "summary": "End of Day 4: the director decides on repair.",
+      "update_message": "It is 9 PM. Day 4 ends. The house is bruised.",
+      "beat_note": "After the breaking point, the player chooses whether Day 5 is about repair, connection, or confrontation. The note should acknowledge the weight of yesterday. The choice is not just about activity — it is about emotional direction. The house needs something, and the player decides what.",
+      "advance_signals": ["menu_selected:day5-plan"],
+      "next_stage_ids": ["sleep-end-day4"]
+    },
+
+    {
+      "id": "sleep-end-day4",
+      "summary": "End of Day 4.",
+      "update_message": "It is 9:30 PM. Day 4 ends.",
+      "beat_note": "The house is quiet in a different way tonight — not the quiet of strangers, but the quiet of people who have seen each other clearly and are not sure what to do with what they saw. End with stillness. A light left on in the hallway. Someone awake in the dark. The house holding its breath.",
+      "next_chapter_preview": "Tomorrow the house begins to mend — or fracture further. The director chooses the direction.",
+      "end_session": true
+    },
+
+    {
+      "id": "day5-morning",
+      "summary": "Day 5 opens: the morning after the breaking point.",
+      "update_message": "It is 7 AM. Day 5. The house is careful.",
+      "beat_note": "Morning routines are slower. Eye contact is deliberate. Someone makes coffee for someone else without being asked — a small peace offering. The planned activity is about to begin, and the house is approaching it with the caution of people who learned yesterday that this can hurt. Let the morning feel like a held breath. The activity chosen will determine whether the house moves toward each other or away.",
+      "advance_signals": ["time_reached:09:00"],
+      "next_stage_ids": ["day5-event-cooking-pairs", "day5-event-walk", "day5-event-screening"]
+    },
+
+    {
+      "id": "day5-event-cooking-pairs",
+      "summary": "Day 5 event: paired cooking challenge.",
+      "update_message": "It is 9 AM. Two teams, two stations, one kitchen.",
+      "beat_note": "The kitchen is divided. Two teams of two, cooking head-to-head. The competition should feel like a relief after yesterday's intensity — a structured way to be together without having to talk about what happened. But competition reveals loyalties: who chose to pair with whom, who resents their partner, who is cooking to win and who is cooking to connect. Let the kitchen be loud and hot and full of movement. The scoring does not matter. What matters is who reaches for the same spoon, who tastes their partner's sauce, and who burns something because they were looking at the wrong person.",
+      "advance_signals": ["time_reached:12:00"],
+      "stage_assignment": {
+        "selection_label": "paired cooking challenge",
+        "prompt_instructions": "Two teams of two, cooking competitively. Score how likely each candidate is to participate actively. Favor candidates who enjoy friendly competition, want to repair through shared activity, or are drawn to the person they are paired with. Lower scores for candidates who are still withdrawn from yesterday's events.",
+        "initiator_actor_id": "ren",
+        "selected_room_id": "kitchen",
+        "remaining_room_id": "patio",
+        "max_selected_actors": 3,
+        "min_selected_actors": 2,
+        "score_threshold": 50,
+        "initiator_line_template": "{initiator_name} divides the kitchen into two stations.",
+        "selected_line_template": "{selected_names} take their positions.",
+        "remaining_line_template": "{remaining_names} watch from the {remaining_room_title}."
+      },
+      "next_stage_ids": ["day5-aftermath"]
+    },
+
+    {
+      "id": "day5-event-walk",
+      "summary": "Day 5 event: morning walks in pairs.",
+      "update_message": "It is 9 AM. Two pairs walk at different times.",
+      "beat_note": "Walking side by side is different from sitting across a table. The conversation changes when you are both looking forward. Let the walks be quiet and unhurried — the point is proximity, not performance. Each pair should discover something about themselves through the rhythm of walking: who matches pace, who talks in comfortable silence, who says something important only when there is no eye contact to manage. The non-walking pair should wait in the house, aware that something is happening outside that they are not part of.",
+      "advance_signals": ["time_reached:12:00"],
+      "stage_assignment": {
+        "selection_label": "morning walk",
+        "prompt_instructions": "Two pairs walk at different times. Score how likely each candidate is to want to walk with someone. Favor candidates who are ready to talk privately, enjoy physical movement, or need space away from the house. Lower scores for candidates who prefer to stay where the group is.",
+        "initiator_actor_id": "daichi",
+        "selected_room_id": "patio",
+        "remaining_room_id": "lounge",
+        "max_selected_actors": 3,
+        "min_selected_actors": 2,
+        "score_threshold": 50,
+        "initiator_line_template": "{initiator_name} heads out the front door.",
+        "selected_line_template": "{selected_names} join for the walk.",
+        "remaining_line_template": "{remaining_names} stay in the {remaining_room_title}."
+      },
+      "next_stage_ids": ["day5-aftermath"]
+    },
+
+    {
+      "id": "day5-event-screening",
+      "summary": "Day 5 event: Aera screens the week's footage.",
+      "update_message": "It is 9 AM. Aera sets up a screening in the lounge.",
+      "beat_note": "Aera has been editing all week. Now she shows the house what she has made. The footage is intimate — close-ups, unguarded moments, scenes the subjects did not know were being filmed. Watching yourself through someone else's eyes is a vulnerability. Let the screening be a shared experience that is also deeply private: each person watching their own performance, their own unguarded face, the moment they thought no one was looking. Reactions should range from pride to discomfort to anger to recognition. Aera's editorial choices are themselves a statement about who she sees and how she sees them.",
+      "advance_signals": ["time_reached:12:00"],
+      "stage_assignment": {
+        "selection_label": "footage screening",
+        "prompt_instructions": "Aera screens edited footage of the week. Score how likely each candidate is to watch openly. Favor candidates who are curious about how they appear, trust Aera's eye, or want to share the experience. Lower scores for candidates who dread being watched or distrust Aera's editorial choices.",
+        "initiator_actor_id": "aera",
+        "selected_room_id": "lounge",
+        "remaining_room_id": "patio",
+        "max_selected_actors": 3,
+        "min_selected_actors": 2,
+        "score_threshold": 50,
+        "initiator_line_template": "{initiator_name} dims the lights and presses play.",
+        "selected_line_template": "{selected_names} settle in to watch.",
+        "remaining_line_template": "{remaining_names} step outside to the {remaining_room_title}."
+      },
+      "next_stage_ids": ["day5-aftermath"]
+    },
+
+    {
+      "id": "day5-aftermath",
+      "summary": "Day 5 afternoon: repair or further fracture.",
+      "update_message": "It is noon. The activity is over. The house decides what comes next.",
+      "beat_note": "Day 5's activity was designed to repair, connect, or confront. Let the aftermath show whether it worked. If the paired cooking was warm, the kitchen should feel like a place people want to return to. If the walks were honest, the house should feel slightly more open. If the footage screening was uncomfortable, there should be new distance. The afternoon should feel like a turning point — the house is either coming back together or drifting further apart.",
+      "advance_signals": ["time_reached:18:00"],
+      "next_stage_ids": ["day5-dinner"]
+    },
+
+    {
+      "id": "day5-dinner",
+      "summary": "Day 5 dinner: the penultimate meal.",
+      "update_message": "It is 6 PM. Dinner. Tomorrow is the last full day.",
+      "beat_note": "Fifth dinner. The house knows tomorrow is the last full day. This knowledge should sit underneath the meal like a low hum. Let the conversation be both present and anticipatory — people savoring the meal while already thinking about what they will say tomorrow night. Let the seating be the most deliberate yet: people choosing to sit next to the person they want to be closest to before it ends. The food should be good. The silences should be comfortable. The eye contact should linger.",
+      "advance_signals": ["time_reached:19:30"],
+      "next_stage_ids": ["day5-debrief"]
+    },
+
+    {
+      "id": "day5-debrief",
+      "summary": "Day 5 night: the eve of the last day.",
+      "update_message": "It is 8 PM. Bedrooms. Tomorrow is the last full day.",
+      "beat_note": "The second-to-last night. Let the conversations be tender and honest. People are starting to count the hours. Someone says something they have been holding all week. Someone asks a question they are afraid to hear the answer to. Someone makes a plan for after the house — or pointedly does not. Push for one moment that feels like a promise, a confession, or a goodbye disguised as something smaller. End with the awareness that tomorrow is the last chance.",
+      "advance_signals": ["time_reached:21:00"],
+      "next_stage_ids": ["plan-day6"]
+    },
+
+    {
+      "id": "plan-day6",
+      "summary": "End of Day 5: the director plans the last night.",
+      "update_message": "It is 9 PM. Day 5 ends. Tomorrow is the last full day.",
+      "beat_note": "The player now chooses how the last night will unfold. This is the final directorial decision before the fixed ending. The note should carry the weight of finality. The choice determines whether the last night is communal, intimate, or reflective.",
+      "advance_signals": ["menu_selected:day6-plan"],
+      "next_stage_ids": ["sleep-end-day5"]
+    },
+
+    {
+      "id": "sleep-end-day5",
+      "summary": "End of Day 5.",
+      "update_message": "It is 9:30 PM. Day 5 ends.",
+      "beat_note": "The house is warm and sad. Someone is already packing, even though it is too early. Someone is lying on the floor of the lounge, staring at the ceiling, not ready for sleep. Let the night be quiet and full of unspoken goodbyes. The house has become something — a home, a memory, a chapter — and everyone can feel it ending.",
+      "next_chapter_preview": "Tomorrow is the last full day. The director has planned the final night. Everything after this is departure.",
+      "end_session": true
+    },
+
+    {
+      "id": "day6-morning",
+      "summary": "Day 6 opens: the last full day begins.",
+      "update_message": "It is 7 AM. Day 6. The last full day.",
+      "beat_note": "The final morning should feel slower, heavier, more deliberate. Every routine is being performed for the last time: the last coffee made in this kitchen, the last time walking to the patio, the last morning light through these windows. Let the actors show how they handle finality: who clings to routine, who becomes unusually present, who starts to withdraw, who becomes more affectionate. The day ahead is shaped by the player's choice, and the house should feel like it knows.",
+      "advance_signals": ["time_reached:09:00"],
+      "next_stage_ids": ["day6-event-final-dinner", "day6-event-confessionals", "day6-event-stargazing"]
+    },
+
+    {
+      "id": "day6-event-final-dinner",
+      "summary": "Day 6 event: final group dinner, everyone cooks together.",
+      "update_message": "It is 9 AM. Everyone starts preparing the last dinner together.",
+      "beat_note": "This is the last time the kitchen will be full of all four of them. Let the cooking be slow, deliberate, and full of unspoken affection. Every shared task carries weight: passing a knife, stirring a pot, tasting someone's seasoning. The kitchen should feel like a home — because it has become one, and today it ends. Let the conversation be both present and elegiac: jokes that reference earlier in the week, callbacks to Day 1, quiet acknowledgments that this mattered. The food should be the best they have made together.",
+      "advance_signals": ["time_reached:18:00"],
+      "stage_assignment": {
+        "selection_label": "final dinner",
+        "prompt_instructions": "The last dinner. Everyone cooks together. Score how likely each candidate is to be present and engaged. Favor candidates who want to mark the occasion, are comfortable with emotional weight, or want to be close to specific people during the final meal.",
+        "initiator_actor_id": "ren",
+        "selected_room_id": "kitchen",
+        "remaining_room_id": "lounge",
+        "max_selected_actors": 3,
+        "min_selected_actors": 3,
+        "score_threshold": 30,
+        "initiator_line_template": "{initiator_name} starts the last dinner.",
+        "selected_line_template": "Everyone gathers in the kitchen.",
+        "remaining_line_template": "{remaining_names} linger in the {remaining_room_title} before joining."
+      },
+      "next_stage_ids": ["day6-aftermath"]
+    },
+
+    {
+      "id": "day6-event-confessionals",
+      "summary": "Day 6 event: private confessional interviews.",
+      "update_message": "It is 9 AM. The confessional chair is set up.",
+      "beat_note": "The confessional is a small room with one chair and one lens. Two people will sit in it today. The player chose who. Let each confessional be a solo scene — the character alone with the camera, saying things they have not said to anyone in the house. Some will perform. Some will break. Both are worth watching. The other housemates should notice who was called and wonder what was said. The confessionals should feel like a privilege and an invasion simultaneously.",
+      "advance_signals": ["time_reached:18:00"],
+      "next_stage_ids": ["day6-aftermath"]
+    },
+
+    {
+      "id": "day6-event-stargazing",
+      "summary": "Day 6 event: stargazing on the patio.",
+      "update_message": "It is 9 AM. The house drifts outside as the day unfolds.",
+      "beat_note": "No plan, no agenda. The house drifts to the patio as the day goes on, and the conversation slows to the pace of breathing. This is the most open-ended event — the point is presence, not activity. Let the day feel like a long exhale: people moving between the patio and the house, gravitating toward each other, sitting in silences that feel like gifts. The sky changes. The light shifts. Goodbyes begin before anyone says the word. Let the patio feel like the edge of something — the last threshold before departure.",
+      "advance_signals": ["time_reached:18:00"],
+      "stage_assignment": {
+        "selection_label": "stargazing",
+        "prompt_instructions": "A slow day on the patio. Score how likely each candidate is to be present and open. Favor candidates who are ready to be vulnerable, want quiet closeness, or are drawn to the reflective mood.",
+        "initiator_actor_id": "mio",
+        "selected_room_id": "patio",
+        "remaining_room_id": "lounge",
+        "max_selected_actors": 3,
+        "min_selected_actors": 2,
+        "score_threshold": 30,
+        "initiator_line_template": "Someone carries a blanket to the {selected_room_title}.",
+        "selected_line_template": "{selected_names} settle in outside.",
+        "remaining_line_template": "{remaining_names} drift between the {remaining_room_title} and outside."
+      },
+      "next_stage_ids": ["day6-aftermath"]
+    },
+
+    {
+      "id": "day6-aftermath",
+      "summary": "Day 6 evening: the last dinner and last conversations.",
+      "update_message": "It is 6 PM. The last evening begins.",
+      "beat_note": "This is the last evening. The house is full of the weight of ending. Let the dinner be the most charged meal of the week — every glance, every silence, every touch carries the awareness that this is the last time. People say things at the table that they have been saving. Someone makes a toast. Someone cries. Someone is impossibly, defiantly cheerful. The meal should feel like a celebration and a funeral at the same time.",
+      "advance_signals": ["time_reached:21:00"],
+      "next_stage_ids": ["day6-final-night"]
+    },
+
+    {
+      "id": "day6-final-night",
+      "summary": "Day 6 night: the last night. Goodbyes begin.",
+      "update_message": "It is 9 PM. The last night. Everyone is awake.",
+      "beat_note": "No one wants to sleep because sleeping means tomorrow. Let the house be awake in its various rooms, in its various states of readiness to end. Some people are packing. Some people are sitting with someone they will miss. Some people are alone, rehearsing what they will say tomorrow. Push for one conversation that feels like a thesis statement for the entire week — the thing one person needed to say before they left. End with the house quiet but not asleep, holding the last night like a held breath.",
+      "next_chapter_preview": "Tomorrow they leave. The director watches. The house empties. And whatever was built here becomes a memory.",
+      "end_session": true
+    },
+
+    {
+      "id": "day7-morning",
+      "summary": "Day 7 opens: departure day.",
+      "update_message": "It is 7 AM. The last morning.",
+      "beat_note": "The final morning. Bags are packed. The house looks different when it is full of suitcases. Let the morning routines be performed one last time, each one carrying the weight of finality: the last shower, the last coffee, the last look in the mirror. Some people are ready. Some are not. Some are pretending to be ready. The house should feel like a held breath — everyone waiting for the departures to begin, no one wanting to be the first to say 'I'm leaving.'",
+      "advance_signals": ["time_reached:09:00"],
+      "next_stage_ids": ["day7-departures"]
+    },
+
+    {
+      "id": "day7-departures",
+      "summary": "Day 7: the house empties.",
+      "update_message": "It is 9 AM. One by one, they leave.",
+      "beat_note": "The departures should happen in sequence, not all at once. Each goodbye is its own scene: who seeks out whom for a final word, who avoids a goodbye by leaving early, who lingers at the door, who walks out without looking back. Let each departure feel like a small ending within the larger one. The house gets quieter with each person who leaves. The rooms feel bigger. The silence is louder. By the time the last two people are standing in the lounge, the house is almost empty, and whatever was here is already becoming memory.",
+      "advance_signals": ["time_reached:12:00"],
+      "next_stage_ids": ["day7-ending"]
+    },
+
+    {
+      "id": "day7-ending",
+      "summary": "Day 7: the final shot. The player chooses who to follow.",
+      "update_message": "It is noon. The last two people are about to leave.",
+      "beat_note": "Two people remain. The player chooses which pair to follow as the last two leave. This is the final image of the documentary: the last goodbye, the door closing, the house empty. Let the ending be whatever the week built toward — warm, bittersweet, unresolved, or quietly devastating. The camera holds on the door after it closes. The house is empty. The documentary is over. But the people who lived here carry something out with them that the camera cannot see.",
       "end_session": true
     }
   ]

@@ -1,0 +1,207 @@
+[
+  {
+    "id": "day2-plan",
+    "stage_id": "plan-day2",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "proposal_line": "A producer's note appears on your monitor: \"Tomorrow's schedule is open. Pick the first activity to set the tone for Day 2.\"",
+    "selection_prompt": "Choose tomorrow's activity:",
+    "invalid_choice_text": "Pick one of the listed activities.",
+    "selection_confirmation": "Scheduled: {selection_title}",
+    "selection_var_key": "day2_event",
+    "selection_id_var_key": "day2_event_id",
+    "narrative_lines": [
+      "The note blinks once, then fades. The house below continues its quiet evening, unaware of what you have chosen for them."
+    ],
+    "options": [
+      {
+        "id": "day2-cooking-lesson",
+        "title": "Cooking Lesson with Ren",
+        "menu_text": "Ren teaches someone his signature dish — intimacy through shared focus in the kitchen.",
+        "narrative_lines": [
+          "A casual morning lesson. Ren finds a reason to stand close, to correct a grip on a knife, to taste what someone else has made."
+        ]
+      },
+      {
+        "id": "day2-morning-run",
+        "title": "Morning Run with Daichi",
+        "menu_text": "Daichi invites someone to train on the patio — connection through physical effort and shared silence.",
+        "narrative_lines": [
+          "Daichi does not offer encouragement. He just starts, and whoever follows him discovers how much can be said without words."
+        ]
+      },
+      {
+        "id": "day2-editing-session",
+        "title": "Editing Session with Aera",
+        "menu_text": "Aera reviews footage with someone — intimacy through being truly seen on screen.",
+        "narrative_lines": [
+          "Aera pulls up clips from the first day. Watching yourself through someone else's eyes is either flattering or terrifying. Sometimes both."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "day3-plan",
+    "stage_id": "plan-day3",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "proposal_line": "A producer's note: \"Day 3 needs a centerpiece. What kind of group energy do you want to create?\"",
+    "selection_prompt": "Choose the day's main event:",
+    "invalid_choice_text": "Pick one of the listed events.",
+    "selection_confirmation": "Scheduled: {selection_title}",
+    "selection_var_key": "day3_event",
+    "selection_id_var_key": "day3_event_id",
+    "narrative_lines": [
+      "The note disappears. Somewhere in the house, Ren is already reaching for a cutting board, Aera is opening her laptop, and Mio is looking for a deck of cards. They do not yet know which version of today they are about to live."
+    ],
+    "options": [
+      {
+        "id": "day3-themed-dinner",
+        "title": "Themed Dinner Party",
+        "menu_text": "Ren proposes a cuisine theme. Everyone cooks together. Collaboration stress reveals who leads, who follows, who resists.",
+        "narrative_lines": [
+          "A dinner where the menu is a statement and the cooking is a negotiation. Ren sets the standard, and everyone else decides how close they want to stand to it."
+        ]
+      },
+      {
+        "id": "day3-art-project",
+        "title": "Collaborative Art Project",
+        "menu_text": "Aera proposes a short film or photo series. Everyone contributes. Creative differences surface fast.",
+        "narrative_lines": [
+          "Aera sets up the shot. Everyone else decides what they are willing to show — and what they would rather keep out of frame."
+        ]
+      },
+      {
+        "id": "day3-game-night",
+        "title": "Game Night",
+        "menu_text": "Mio picks a game. Competition, alliances, and the revelation of who is secretly cutthroat.",
+        "narrative_lines": [
+          "Mio finds a game that rewards charm and risk. By the second round, everyone has shown something they did not plan to."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "day4-plan",
+    "stage_id": "plan-day4",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "proposal_line": "A producer's note: \"Day 4. The house is restless. Time to introduce friction. What kind of pressure do you want to apply?\"",
+    "selection_prompt": "Choose the day's disruption:",
+    "invalid_choice_text": "Pick one of the listed disruptions.",
+    "selection_confirmation": "Scheduled: {selection_title}",
+    "selection_var_key": "day4_event",
+    "selection_id_var_key": "day4_event_id",
+    "narrative_lines": [
+      "The note holds on screen a beat longer than usual. Below, the house is mid-breakfast, unaware that the rules are about to change."
+    ],
+    "options": [
+      {
+        "id": "day4-power-outage",
+        "title": "Power Outage",
+        "menu_text": "The power cuts out at dusk. The house splits into two candlelit groups. Forced proximity reveals what daylight hides.",
+        "narrative_lines": [
+          "No screens. No escape. Just faces in candlelight and whatever people say when they forget they are being watched."
+        ]
+      },
+      {
+        "id": "day4-truth-circle",
+        "title": "Truth Circle",
+        "menu_text": "Mio proposes a late-night question game. Everyone must answer honestly. The price of admission is a secret.",
+        "narrative_lines": [
+          "The rules are simple: answer or leave the circle. No one leaves. But the questions get harder fast."
+        ]
+      },
+      {
+        "id": "day4-one-leaves",
+        "title": "One Person Leaves for the Day",
+        "menu_text": "One housemate is called away. The remaining three navigate the absence — who misses them, who thrives without them.",
+        "narrative_lines": [
+          "The front door closes behind them. The house exhales. And the three remaining discover who they are when the fourth is not in the room."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "day5-plan",
+    "stage_id": "plan-day5",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "proposal_line": "A producer's note: \"Day 5. After the friction of yesterday, the house needs a reset. Or does it? Your call.\"",
+    "selection_prompt": "Choose the day's activity:",
+    "invalid_choice_text": "Pick one of the listed activities.",
+    "selection_confirmation": "Scheduled: {selection_title}",
+    "selection_var_key": "day5_event",
+    "selection_id_var_key": "day5_event_id",
+    "narrative_lines": [
+      "The note is shorter than usual. The producer is running out of patience — or running out of script. Either way, the house is yours to shape."
+    ],
+    "options": [
+      {
+        "id": "day5-paired-cooking",
+        "title": "Paired Cooking Challenge",
+        "menu_text": "Two teams of two, cooking head-to-head. You choose the teams. Competition reveals loyalties and surprising chemistry.",
+        "narrative_lines": [
+          "Two cutting boards, two stoves, four people who are not sure whether they are competing with each other or for each other."
+        ]
+      },
+      {
+        "id": "day5-morning-walk",
+        "title": "Morning Walk in Pairs",
+        "menu_text": "Two pairs walk at different times. Side-by-side walking lowers defenses. You choose who walks with whom.",
+        "narrative_lines": [
+          "The street is quiet. Walking next to someone is different from sitting across from them. The conversation changes when you are both looking forward."
+        ]
+      },
+      {
+        "id": "day5-footage-screening",
+        "title": "Aera Screens the Footage",
+        "menu_text": "Aera shows edited clips from the week. Everyone watches themselves through her eyes. Reactions range from recognition to discomfort.",
+        "narrative_lines": [
+          "Aera has been watching all along. Now everyone else gets to see what she saw — and what she chose not to show."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "day6-plan",
+    "stage_id": "plan-day6",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "proposal_line": "A producer's note: \"Last night. Tomorrow they leave. Make it count.\"",
+    "selection_prompt": "Choose how the last night unfolds:",
+    "invalid_choice_text": "Pick one of the listed options.",
+    "selection_confirmation": "Scheduled: {selection_title}",
+    "selection_var_key": "day6_event",
+    "selection_id_var_key": "day6_event_id",
+    "narrative_lines": [
+      "The note stays on screen. Below, the house moves through its last full day, and every gesture already feels like a memory."
+    ],
+    "options": [
+      {
+        "id": "day6-final-dinner",
+        "title": "Final Group Dinner",
+        "menu_text": "Everyone cooks together one last time. Every shared task, every glance across the counter, carries the weight of goodbye.",
+        "narrative_lines": [
+          "The kitchen is warm. The chopping is slower. No one mentions that this is the last time, but everyone knows."
+        ]
+      },
+      {
+        "id": "day6-confessionals",
+        "title": "Confessional Round",
+        "menu_text": "Two private interviews. You choose who gets the spotlight. What they say in the chair is between them and the camera.",
+        "narrative_lines": [
+          "The confessional is a small room with one chair and one lens. Some people perform. Some people break. Both are worth watching."
+        ]
+      },
+      {
+        "id": "day6-stargazing",
+        "title": "Stargazing on the Patio",
+        "menu_text": "The whole house drifts outside. No agenda. The conversation slows to the pace of breathing. Goodbyes begin before anyone says the word.",
+        "narrative_lines": [
+          "The patio is narrow and the sky is wide. Someone brings a blanket. No one checks their phone."
+        ]
+      }
+    ]
+  }
+]

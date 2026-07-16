@@ -306,25 +306,6 @@
         {
           "conditions": [
             {
-              "path": "actor_stats.stamina",
-              "operator": "less_than",
-              "value": 4
-            },
-            {
-              "path": "affordances.rest.available",
-              "operator": "equal",
-              "value": true
-            }
-          ],
-          "payload_template": {
-            "kind": "prioritize_affordance",
-            "affordance_id": "rest",
-            "by": 20
-          }
-        },
-        {
-          "conditions": [
-            {
               "path": "affordances.hug.available",
               "operator": "equal",
               "value": true
@@ -683,6 +664,246 @@
           ],
           "payload_template": {
             "value": true
+          }
+        }
+      ]
+    }
+  },
+  "menu.day2-plan.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day2-cooking-lesson" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "ren",
+            "stat": "confidence",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day2-morning-run" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "daichi",
+            "stat": "confidence",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day2-editing-session" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "aera",
+            "stat": "confidence",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.day3-plan.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day3-themed-dinner" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "ren",
+            "stat": "confidence",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day3-art-project" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "aera",
+            "stat": "confidence",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day3-game-night" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "mio",
+            "stat": "confidence",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.day4-plan.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day4-power-outage" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "mio",
+            "stat": "confidence",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day4-truth-circle" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "mio",
+            "stat": "confidence",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day4-one-leaves" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "daichi",
+            "stat": "confidence",
+            "delta": -1
+          }
+        }
+      ]
+    }
+  },
+  "menu.day5-plan.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day5-paired-cooking" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "ren",
+            "stat": "confidence",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day5-morning-walk" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "daichi",
+            "stat": "confidence",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day5-footage-screening" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "aera",
+            "stat": "confidence",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "menu.day6-plan.selected": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day6-final-dinner" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "ren",
+            "stat": "confidence",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day6-confessionals" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "aera",
+            "stat": "confidence",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "option_id", "operator": "equal", "value": "day6-stargazing" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "mio",
+            "stat": "confidence",
+            "delta": 1
           }
         }
       ]

@@ -331,4 +331,12 @@ mod tests {
         assert_eq!(resolved.actor_name, "Awa");
         assert_eq!(resolved.player_message.as_deref(), Some("hello there"));
     }
+
+    #[test]
+    fn loads_aera_pack() {
+        let content = load_named_pack("aera", None).expect("load aera");
+        assert_eq!(content.actors.len(), 4);
+        assert_eq!(content.rooms.len(), 8);
+        assert!(content.beats.stages.len() > 6);
+    }
 }
