@@ -66,6 +66,9 @@ pub(super) fn advance_objective_for_signal(
             for line in &next_stage.narrative_lines {
                 messages.push(super::observation::render_story_text(line, state));
             }
+            if !next_stage.open_menu.is_empty() {
+                state.active_menu_id = Some(next_stage.open_menu.clone());
+            }
             for effect in &next_stage.on_advance_effects {
                 match effect {
                     AdvanceEffect::AdjustActorStat {

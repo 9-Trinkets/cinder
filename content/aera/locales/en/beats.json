@@ -78,7 +78,8 @@
       "update_message": "It is 9 PM. The first day is winding down. You review tomorrow's schedule.",
       "beat_note": "The house is settling into its first night. Bedrooms are quiet or murmuring. The player now has a chance to shape tomorrow by choosing the morning's main activity. This is a planning phase — no NPC action, just the director's note appearing on screen. Let the house breathe while the player decides. After the selection, close the day with the sense that tomorrow will feel different because of what the player just set in motion.",
       "advance_signals": ["menu_selected:day2-plan"],
-      "next_stage_ids": ["sleep-end-first-day"]
+      "next_stage_ids": ["sleep-end-first-day"],
+      "open_menu": "day2-plan"
     },
 
     {
@@ -198,7 +199,8 @@
       "update_message": "It is 9 PM. Day 2 is ending. You review tomorrow's schedule.",
       "beat_note": "The house is settling. The player now chooses the main event for Day 3 — a full-house activity that will test the group's dynamic. This is the moment where the director decides whether the house gets a collaborative project, a competitive game, or a shared creative experience. The selection shapes the emotional texture of the next day.",
       "advance_signals": ["menu_selected:day3-plan"],
-      "next_stage_ids": ["sleep-end-day2"]
+      "next_stage_ids": ["sleep-end-day2"],
+      "open_menu": "day3-plan"
     },
 
     {
@@ -318,7 +320,8 @@
       "update_message": "It is 9 PM. Day 3 ends. The house is restless.",
       "beat_note": "The house has been together for three days. Comfort is growing, but so are the tensions that comfort reveals. The player now chooses how to apply pressure on Day 4. This is the turning point — the event choice determines whether the house fractures, confesses, or loses someone temporarily. The note should feel heavier than previous nights.",
       "advance_signals": ["menu_selected:day4-plan"],
-      "next_stage_ids": ["sleep-end-day3"]
+      "next_stage_ids": ["sleep-end-day3"],
+      "open_menu": "day4-plan"
     },
 
     {
@@ -429,7 +432,8 @@
       "update_message": "It is 9 PM. Day 4 ends. The house is bruised.",
       "beat_note": "After the breaking point, the player chooses whether Day 5 is about repair, connection, or confrontation. The note should acknowledge the weight of yesterday. The choice is not just about activity — it is about emotional direction. The house needs something, and the player decides what.",
       "advance_signals": ["menu_selected:day5-plan"],
-      "next_stage_ids": ["sleep-end-day4"]
+      "next_stage_ids": ["sleep-end-day4"],
+      "open_menu": "day5-plan"
     },
 
     {
@@ -549,7 +553,8 @@
       "update_message": "It is 9 PM. Day 5 ends. Tomorrow is the last full day.",
       "beat_note": "The player now chooses how the last night will unfold. This is the final directorial decision before the fixed ending. The note should carry the weight of finality. The choice determines whether the last night is communal, intimate, or reflective.",
       "advance_signals": ["menu_selected:day6-plan"],
-      "next_stage_ids": ["sleep-end-day5"]
+      "next_stage_ids": ["sleep-end-day5"],
+      "open_menu": "day6-plan"
     },
 
     {

@@ -307,6 +307,8 @@ pub struct BeatDefinition {
     pub on_advance_effects: Vec<AdvanceEffect>,
     #[serde(default)]
     pub stage_assignment: Option<StageAssignmentDefinition>,
+    #[serde(default)]
+    pub open_menu: String,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
