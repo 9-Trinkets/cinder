@@ -34,12 +34,6 @@ pub(super) fn build_planned_turn(
             },
             &mut planned,
         ),
-        PlayerCommand::Unknown if channel_surfing_only => {
-            planned.events.push(WorldEvent::UnknownInput {
-                raw_input: aggregated.command.raw_input.clone(),
-            });
-            false
-        }
         PlayerCommand::Help => {
             planned.events.push(WorldEvent::HelpShown);
             false
