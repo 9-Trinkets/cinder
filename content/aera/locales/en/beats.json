@@ -145,7 +145,7 @@
         "min_selected_actors": 1,
         "score_threshold": 50,
         "initiator_line_template": "{initiator_name} sets up the kitchen for a lesson.",
-        "selected_line_template": "{selected_names} join{selected Verb} in the {selected_room_title}.",
+        "selected_line_template": "{selected_names} join in the {selected_room_title}.",
         "remaining_line_template": "{remaining_names} stay in the {remaining_room_title}."
       },
       "next_stage_ids": [
