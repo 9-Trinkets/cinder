@@ -11,7 +11,7 @@ use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
 use crate::engine::neuron::{WorkflowDefinition, WorkflowTraceContext, load_workflow};
 use crate::engine::reducer::apply_events;
 use crate::engine::state::{
-    AppointmentFeedbackSummary, TurnOutcome, WorldState, advance_to_next_appointment,
+    AppointmentFeedbackSummary, GamePhase, TurnOutcome, WorldState, advance_to_next_appointment,
     current_appointment_intro, current_patient_name, display_actor_name,
     initialize_appointment_state,
 };
@@ -35,6 +35,7 @@ pub struct CinderRuntime {
     trace_events: bool,
     trace_dir: PathBuf,
     session_closure: Arc<Mutex<Option<SessionClosure>>>,
+    game_closure: Arc<Mutex<Option<SessionClosure>>>,
 }
 
 impl Clone for CinderRuntime {
@@ -50,6 +51,12 @@ impl Clone for CinderRuntime {
             trace_dir: self.trace_dir.clone(),
             session_closure: Arc::new(Mutex::new(
                 self.session_closure
+                    .lock()
+                    .map(|opt| opt.clone())
+                    .unwrap_or(None),
+            )),
+            game_closure: Arc::new(Mutex::new(
+                self.game_closure
                     .lock()
                     .map(|opt| opt.clone())
                     .unwrap_or(None),
@@ -175,6 +182,7 @@ impl CinderRuntime {
             trace_events,
             trace_dir,
             session_closure: Arc::new(Mutex::new(None)),
+            game_closure: Arc::new(Mutex::new(None)),
         })
     }
 
@@ -193,12 +201,13 @@ impl CinderRuntime {
 
     pub fn run_tick(&self) -> Result<TurnOutcome, Box<dyn Error>> {
         let outcome = match self.run_actor_turns() {
-            Ok((text, game_over)) => TurnOutcome { text, game_over },
+            Ok((text, game_over, phase)) => TurnOutcome { text, game_over, phase },
             Err(error) => {
                 if let Some(actor_tick_error) = error.downcast_ref::<ActorTickError>() {
                     TurnOutcome {
                         text: self.actor_tick_soft_error_text(actor_tick_error),
                         game_over: false,
+                        phase: GamePhase::Active,
                     }
                 } else {
                     return Err(error);
@@ -231,7 +240,42 @@ impl CinderRuntime {
         Ok(TurnOutcome {
             text,
             game_over: false,
+            phase: GamePhase::Active,
         })
+    }
+
+    pub fn continue_after_session(&self) -> Result<(), Box<dyn Error>> {
+        {
+            let mut state = self
+                .state
+                .lock()
+                .map_err(|_| "failed to lock runtime state for session continuation")?;
+            if state.phase != GamePhase::SessionEnded {
+                return Ok(());
+            }
+            state.phase = GamePhase::Active;
+            state.game_over = false;
+        }
+        self.clear_session_closure_cache()?;
+        Ok(())
+    }
+
+    fn clear_session_closure_cache(&self) -> Result<(), Box<dyn Error>> {
+        {
+            let mut cached = self
+                .session_closure
+                .lock()
+                .map_err(|error| error.to_string())?;
+            *cached = None;
+        }
+        {
+            let mut cached = self
+                .game_closure
+                .lock()
+                .map_err(|error| error.to_string())?;
+            *cached = None;
+        }
+        Ok(())
     }
 
     pub fn current_intro_text(&self) -> Result<String, Box<dyn Error>> {
@@ -288,6 +332,7 @@ impl CinderRuntime {
         Ok(TurnOutcome {
             text,
             game_over: outcome.game_over,
+            phase: outcome.phase,
         })
     }
 
@@ -704,6 +749,7 @@ impl CinderRuntime {
             trace_events: self.trace_events,
             trace_dir: self.trace_dir.clone(),
             session_closure: Arc::new(Mutex::new(None)),
+            game_closure: Arc::new(Mutex::new(None)),
         }
     }
 
@@ -773,7 +819,7 @@ impl CinderRuntime {
             .collect())
     }
 
-    fn run_actor_turns(&self) -> Result<(String, bool), Box<dyn Error>> {
+    fn run_actor_turns(&self) -> Result<(String, bool, GamePhase), Box<dyn Error>> {
         let mut lines = Vec::new();
         let tracer = WorkflowTraceContext::new(self.trace_events, &self.trace_dir)?;
         tracer
@@ -793,7 +839,8 @@ impl CinderRuntime {
                 .lock()
                 .map_err(|_| "failed to lock runtime state to start npc tick")?;
             if state.game_over {
-                return Ok((String::new(), true));
+                let phase = state.phase.clone();
+                return Ok((String::new(), true, phase));
             }
             let tick_start = [TimestampedWorldEvent::now(WorldEvent::TurnStarted {
                 turn_number: state.turn_number + 1,
@@ -815,7 +862,8 @@ impl CinderRuntime {
                 .lock()
                 .map_err(|_| "failed to lock runtime state for npc turns")?;
             if state.game_over {
-                return Ok((lines.join("\n\n"), true));
+                let phase = state.phase.clone();
+                return Ok((lines.join("\n\n"), true, phase));
             }
             state.clone()
         };
@@ -868,7 +916,8 @@ impl CinderRuntime {
                 .lock()
                 .map_err(|_| "failed to lock runtime state to apply npc events")?;
             if state.game_over {
-                return Ok((lines.join("\n\n"), true));
+                let phase = state.phase.clone();
+                return Ok((lines.join("\n\n"), true, phase));
             }
             let logged_events = tick
                 .events
@@ -890,6 +939,7 @@ impl CinderRuntime {
             .map_err(|_| "failed to lock runtime state after npc turns")?
             .clone();
         let game_over = final_state.game_over;
+        let phase = final_state.phase.clone();
         let final_stats = stats_trace_snapshot(&final_state);
         tracer
             .emit(
@@ -912,7 +962,7 @@ impl CinderRuntime {
                 }),
             )
             .map_err(std::io::Error::other)?;
-        Ok((lines.join("\n\n"), game_over))
+        Ok((lines.join("\n\n"), game_over, phase))
     }
 }
 
@@ -989,6 +1039,7 @@ mod tests {
             .apply_stage_assignments(TurnOutcome {
                 text: String::new(),
                 game_over: false,
+                phase: GamePhase::Active,
             })
             .expect("apply assignment");
         let exported = runtime.export_state().expect("export state");
@@ -1032,6 +1083,7 @@ mod tests {
             .apply_stage_assignments(TurnOutcome {
                 text: String::new(),
                 game_over: false,
+                phase: GamePhase::Active,
             })
             .expect("reapply assignment");
         assert!(second.text.is_empty());

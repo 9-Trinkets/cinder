@@ -408,6 +408,7 @@ impl CinderRuntime {
         Ok(TurnOutcome {
             text: reduced.lines.join("\n\n"),
             game_over: reduced.game_over,
+            phase: reduced.phase,
         })
     }
 
@@ -472,6 +473,7 @@ impl CinderRuntime {
         Ok(TurnOutcome {
             text: lines.join("\n\n"),
             game_over: reduced.game_over,
+            phase: reduced.phase,
         })
     }
 }

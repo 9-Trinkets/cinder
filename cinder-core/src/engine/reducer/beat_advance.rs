@@ -1,5 +1,5 @@
 use crate::content::types::{AdvanceCondition, AdvanceEffect, ContentPack};
-use crate::engine::state::WorldState;
+use crate::engine::state::{GamePhase, WorldState};
 use std::collections::BTreeMap;
 
 pub(super) fn advance_objective_for_signal(
@@ -97,7 +97,13 @@ pub(super) fn advance_objective_for_signal(
             if next_stage.end_session {
                 state.stages_completed += 1;
                 state.game_over = true;
+                state.phase = GamePhase::SessionEnded;
                 messages.push(content.presentation.presentation_text.session_ended.clone());
+            }
+            if next_stage.end_game {
+                state.stages_completed += 1;
+                state.game_over = true;
+                state.phase = GamePhase::GameEnded;
             }
         }
     }

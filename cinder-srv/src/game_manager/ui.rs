@@ -87,6 +87,7 @@ pub struct UiSnapshot {
     pub active_menu: Option<ActiveMenuData>,
     pub ui_text: UiTextDefinition,
     pub session_closure: Option<SessionClosure>,
+    pub game_closure: Option<SessionClosure>,
     pub inventory: Vec<InventoryItem>,
     pub theme: cinder_core::content::types::ThemeDefinition,
 }
@@ -344,6 +345,7 @@ pub(super) fn build_ui_snapshot(
         active_menu,
         ui_text: content.ui_text.clone(),
         session_closure: response::session_closure_data(runtime),
+        game_closure: response::game_closure_data(runtime),
         inventory: runtime
             .inventory_items()
             .unwrap_or_default()

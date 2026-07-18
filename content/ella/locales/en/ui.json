@@ -55,5 +55,19 @@
   },
   "look_panel_title": "Look",
   "talk_panel_title": "Talk",
-  "talk_panel_prompt": "Who do you want to talk to?"
+  "talk_panel_prompt": "Who do you want to talk to?",
+  "game_closure": {
+    "title": "Goodnight",
+    "subtitle_template": "",
+    "sections": [
+      {
+        "title": "What happened",
+        "source": "transcript_highlights"
+      },
+      {
+        "title": "Where things stand",
+        "source": "relationship_summary"
+      }
+    ]
+  }
 }

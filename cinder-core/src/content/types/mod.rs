@@ -300,6 +300,8 @@ pub struct BeatDefinition {
     #[serde(default)]
     pub end_session: bool,
     #[serde(default)]
+    pub end_game: bool,
+    #[serde(default)]
     pub advance_signals: Vec<AdvanceSignal>,
     #[serde(default)]
     pub next_stage_ids: Vec<String>,

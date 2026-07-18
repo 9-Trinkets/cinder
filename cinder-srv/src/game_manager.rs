@@ -266,13 +266,22 @@ pub async fn run_command(
                         outcome.text = format!("{}\n\n{}", outcome.text, tick.text);
                     }
                     outcome.game_over = outcome.game_over || tick.game_over;
+                    if tick.phase != cinder_core::engine::state::GamePhase::Active {
+                        outcome.phase = tick.phase;
+                    }
                 }
                 Err(e) => return Err(format!("tick error: {e}")),
             }
         }
 
-        let session_closure = if outcome.game_over {
+        use cinder_core::engine::state::GamePhase;
+        let session_closure = if outcome.phase == GamePhase::SessionEnded {
             response::session_closure_data(runtime)
+        } else {
+            None
+        };
+        let game_closure = if outcome.phase == GamePhase::GameEnded {
+            response::game_closure_data(runtime)
         } else {
             None
         };
@@ -291,6 +300,7 @@ pub async fn run_command(
             game_over: outcome.game_over,
             movie,
             session_closure,
+            game_closure,
             ui_snapshot: Some(ui_snapshot),
         };
         let transcript_entries = vec![
@@ -318,8 +328,14 @@ pub async fn run_realtime_tick(
     let player_id = parse_uuid(player_id, "player id")?;
     with_runtime(pool, &session_id, &player_id, move |runtime, pack_id| {
         let outcome = runtime.run_tick().map_err(|e| format!("tick error: {e}"))?;
-        let session_closure = if outcome.game_over {
+        use cinder_core::engine::state::GamePhase;
+        let session_closure = if outcome.phase == GamePhase::SessionEnded {
             response::session_closure_data(runtime)
+        } else {
+            None
+        };
+        let game_closure = if outcome.phase == GamePhase::GameEnded {
+            response::game_closure_data(runtime)
         } else {
             None
         };
@@ -333,6 +349,7 @@ pub async fn run_realtime_tick(
             game_over: outcome.game_over,
             movie,
             session_closure,
+            game_closure,
             ui_snapshot: Some(ui_snapshot),
         };
         let transcript_entries = if response.text.is_empty() {
@@ -373,6 +390,7 @@ pub async fn switch_room(
                 game_over: outcome.game_over,
                 movie: None,
                 session_closure: None,
+                game_closure: None,
                 ui_snapshot: Some(ui_snapshot),
             },
             transcript_entries,
@@ -406,6 +424,7 @@ pub async fn follow_actor(
                 game_over: outcome.game_over,
                 movie: None,
                 session_closure: None,
+                game_closure: None,
                 ui_snapshot: Some(ui_snapshot),
             },
             transcript_entries,
@@ -477,6 +496,7 @@ pub async fn set_locale(
         game_over,
         movie: None,
         session_closure: ui_snapshot.session_closure.clone(),
+        game_closure: ui_snapshot.game_closure.clone(),
         ui_snapshot: Some(ui_snapshot),
     })
 }
@@ -569,6 +589,33 @@ pub async fn get_transcript(
         .await
         .map_err(|e| format!("db rollback error: {e}"))?;
     Ok(rows)
+}
+
+pub async fn continue_session(
+    pool: &PgPool,
+    session_id: &str,
+    player_id: &str,
+) -> Result<CommandResponse, String> {
+    let session_id = parse_uuid(session_id, "session id")?;
+    let player_id = parse_uuid(player_id, "player id")?;
+    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id| {
+        runtime
+            .continue_after_session()
+            .map_err(|e| format!("session continuation error: {e}"))?;
+        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id)?;
+        Ok((
+            CommandResponse {
+                text: String::new(),
+                game_over: false,
+                movie: None,
+                session_closure: None,
+                game_closure: None,
+                ui_snapshot: Some(ui_snapshot),
+            },
+            Vec::new(),
+        ))
+    })
+    .await
 }
 
 fn build_runtime_impl(

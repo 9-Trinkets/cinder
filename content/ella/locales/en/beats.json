@@ -152,7 +152,7 @@
         }
       ],
       "elapsed_minutes": 8,
-      "end_session": true,
+      "end_session": false,
       "narrative_lines": [
         "A few minutes later, Mom taps softly on the doorframe and Dad appears just behind her.",
         "Mom crosses the room first, cups Ella's face for a second like she is memorizing it, and kisses her good night.",
@@ -160,7 +160,8 @@
         "Mom smiles, damp-eyed but steady. \"We're so proud of you. Tomorrow can be big without you having to hold all of it at once.\"",
         "Dad gives Ella's shoulder a squeeze. \"Your room is still your room. That part doesn't change.\"",
         "They linger for one last second, then leave her with the kind of quiet that only settles over a house after everyone has finally said what they needed to say."
-      ]
+      ],
+      "end_game": true
     }
   ]
 }

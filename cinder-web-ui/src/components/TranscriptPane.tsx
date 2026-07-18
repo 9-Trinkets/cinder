@@ -8,20 +8,24 @@ const TranscriptPane = memo(function TranscriptPane({
   lines,
   busyLabel,
   sessionClosure,
+  gameClosure,
   gameOver,
   transcriptRef,
   bottomRef,
   onScroll,
   onDismissClosure,
+  onDismissGameClosure,
 }: {
   lines: Line[]
   busyLabel: string | null
   sessionClosure: api.SessionClosureData | null
+  gameClosure: api.SessionClosureData | null
   gameOver: boolean
   transcriptRef: MutableRefObject<HTMLDivElement | null>
   bottomRef: MutableRefObject<HTMLDivElement | null>
   onScroll: (event: UIEvent<HTMLDivElement>) => void
   onDismissClosure: () => void
+  onDismissGameClosure: () => void
 }) {
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -79,7 +83,10 @@ const TranscriptPane = memo(function TranscriptPane({
         {sessionClosure && (
           <SessionClosureModal sessionClosure={sessionClosure} onDismiss={onDismissClosure} />
         )}
-        {gameOver && !sessionClosure && (
+        {gameClosure && (
+          <SessionClosureModal sessionClosure={gameClosure} onDismiss={onDismissGameClosure} />
+        )}
+        {gameOver && !sessionClosure && !gameClosure && (
           <p className="text-love font-semibold text-center pt-4">Game Over</p>
         )}
         <div ref={bottomRef} />

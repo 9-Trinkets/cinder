@@ -22,11 +22,16 @@ pub struct CommandResponse {
     pub game_over: bool,
     pub movie: Option<MovieData>,
     pub session_closure: Option<SessionClosure>,
+    pub game_closure: Option<SessionClosure>,
     pub ui_snapshot: Option<UiSnapshot>,
 }
 
 pub(super) fn session_closure_data(runtime: &CinderRuntime) -> Option<SessionClosure> {
     runtime.session_closure().ok().flatten()
+}
+
+pub(super) fn game_closure_data(runtime: &CinderRuntime) -> Option<SessionClosure> {
+    runtime.game_closure().ok().flatten()
 }
 
 pub fn consume_projector_sequence(runtime: &CinderRuntime) -> Option<MovieData> {

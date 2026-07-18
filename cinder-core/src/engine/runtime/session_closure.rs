@@ -4,7 +4,7 @@ use crate::engine::dialogue::{
     ChapterRelationshipSummaryRequest, ChapterScriptSummaryRequest, SynapseChapterSummaryGenerator,
 };
 use crate::engine::dialogue_grounding::render_story_text;
-use crate::engine::state::WorldState;
+use crate::engine::state::{GamePhase, WorldState};
 use std::error::Error;
 
 pub struct FinalChapterSummary {
@@ -147,7 +147,7 @@ impl CinderRuntime {
                 .state
                 .lock()
                 .map_err(|_| "failed to lock runtime state for session closure guard")?;
-            if !state.game_over {
+            if state.phase != GamePhase::SessionEnded {
                 return Ok(None);
             }
         }
@@ -253,6 +253,134 @@ impl CinderRuntime {
         {
             let mut cached = self
                 .session_closure
+                .lock()
+                .map_err(|error| error.to_string())?;
+            *cached = Some(closure.clone());
+        }
+        Ok(Some(closure))
+    }
+
+    pub fn game_closure(&self) -> Result<Option<SessionClosure>, Box<dyn Error>> {
+        {
+            let cached = self
+                .game_closure
+                .lock()
+                .map_err(|error| error.to_string())?;
+            if let Some(closure) = cached.as_ref() {
+                return Ok(Some(closure.clone()));
+            }
+        }
+        {
+            let state = self
+                .state
+                .lock()
+                .map_err(|_| "failed to lock runtime state for game closure guard")?;
+            if state.phase != GamePhase::GameEnded {
+                return Ok(None);
+            }
+        }
+        let definition = &self.content.ui_text.game_closure;
+        if definition.sections.is_empty() || definition.title.trim().is_empty() {
+            return Ok(None);
+        }
+
+        let summary = definition
+            .sections
+            .iter()
+            .any(|section| {
+                matches!(
+                    section.source,
+                    SessionClosureSource::TranscriptHighlights
+                        | SessionClosureSource::RelationshipSummary
+                        | SessionClosureSource::ContinuationPreview
+                )
+            })
+            .then(|| self.final_chapter_summary())
+            .transpose()?;
+
+        let perspective = definition
+            .sections
+            .iter()
+            .any(|section| {
+                matches!(
+                    section.source,
+                    SessionClosureSource::PerspectiveRating
+                        | SessionClosureSource::PerspectiveReview
+                )
+            })
+            .then(|| self.build_perspective_review())
+            .transpose()?
+            .flatten();
+
+        let subject_name = perspective
+            .as_ref()
+            .map(|review| review.subject_name.clone())
+            .or_else(|| self.current_patient_name().ok().flatten());
+
+        let subtitle = if definition.subtitle_template.trim().is_empty() {
+            None
+        } else {
+            Some(self.content.render_template(
+                &definition.subtitle_template,
+                &[("subject_name", subject_name.as_deref().unwrap_or(""))],
+            ))
+        }
+        .filter(|value| !value.trim().is_empty());
+
+        let sections = definition
+            .sections
+            .iter()
+            .filter_map(|section| match section.source {
+                SessionClosureSource::PerspectiveRating => {
+                    perspective
+                        .as_ref()
+                        .map(|review| SessionClosureSection::Rating {
+                            title: section.title.clone(),
+                            value: review.review.rating,
+                            max: 5,
+                        })
+                }
+                SessionClosureSource::PerspectiveReview => {
+                    perspective
+                        .as_ref()
+                        .map(|review| SessionClosureSection::Text {
+                            title: section.title.clone(),
+                            body: review.review.review_text.clone(),
+                        })
+                }
+                SessionClosureSource::TranscriptHighlights => {
+                    summary.as_ref().map(|summary| SessionClosureSection::Text {
+                        title: section.title.clone(),
+                        body: summary.what_happened.clone(),
+                    })
+                }
+                SessionClosureSource::RelationshipSummary => {
+                    summary.as_ref().map(|summary| SessionClosureSection::Text {
+                        title: section.title.clone(),
+                        body: summary.relationship_status.clone(),
+                    })
+                }
+                SessionClosureSource::ContinuationPreview => {
+                    summary.as_ref().map(|summary| SessionClosureSection::Text {
+                        title: section.title.clone(),
+                        body: summary.next_chapter_preview.clone(),
+                    })
+                }
+            })
+            .collect::<Vec<_>>();
+
+        if sections.is_empty() {
+            return Ok(None);
+        }
+
+        let closure = SessionClosure {
+            title: definition.title.clone(),
+            subtitle,
+            sections,
+        };
+        {
+            let mut cached = self
+                .game_closure
                 .lock()
                 .map_err(|error| error.to_string())?;
             *cached = Some(closure.clone());

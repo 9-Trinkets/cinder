@@ -306,6 +306,7 @@ impl CinderRoleRunner {
             message: serde_json::to_string(&TurnOutcome {
                 text: reduced.lines.join("\n\n"),
                 game_over: reduced.game_over,
+                phase: reduced.phase,
             })
             .map_err(|error| error.to_string())?,
         })

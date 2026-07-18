@@ -45,6 +45,7 @@ export default function GamePage() {
   const [commandPending, setCommandPending] = useState(false)
   const [panelBusy, setPanelBusy] = useState(false)
   const [sessionClosure, setSessionClosure] = useState<api.SessionClosureData | null>(null)
+  const [gameClosure, setGameClosure] = useState<api.SessionClosureData | null>(null)
   const [showMenu, setShowMenu] = useState(false)
   const [quickPanel, setQuickPanel] = useState<QuickPanel>(null)
   const [showStatusModal, setShowStatusModal] = useState(false)
@@ -195,6 +196,9 @@ export default function GamePage() {
     if (gameOver && uiSnapshot?.session_closure) {
       setSessionClosure(uiSnapshot.session_closure)
     }
+    if (gameOver && uiSnapshot?.game_closure) {
+      setGameClosure(uiSnapshot.game_closure)
+    }
   }, [gameOver, uiSnapshot])
 
   function openMenu() {
@@ -223,6 +227,9 @@ export default function GamePage() {
     }
     if (res.session_closure) {
       setSessionClosure(res.session_closure)
+    }
+    if (res.game_closure) {
+      setGameClosure(res.game_closure)
     }
     if (res.movie) {
       setMovie(res.movie)
@@ -276,7 +283,7 @@ export default function GamePage() {
       if (input.trim().length > 0) return
       try {
         const res: api.CommandResponse = JSON.parse(event.data)
-        if (res.text || res.movie || res.game_over || res.session_closure) {
+        if (res.text || res.movie || res.game_over || res.session_closure || res.game_closure) {
           applyCommandResponse(res, 'auto')
         }
       } catch {
@@ -438,11 +445,20 @@ export default function GamePage() {
             lines={lines}
             busyLabel={busyLabel}
             sessionClosure={sessionClosure}
+            gameClosure={gameClosure}
             gameOver={gameOver}
             transcriptRef={transcriptRef}
             bottomRef={bottomRef}
             onScroll={handleTranscriptScroll}
-            onDismissClosure={() => setSessionClosure(null)}
+            onDismissClosure={() => {
+              setSessionClosure(null)
+              if (token && id) {
+                api.continueSession(token, id).then(res => {
+                  applyCommandResponse(res)
+                }).catch(() => {})
+              }
+            }}
+            onDismissGameClosure={() => setGameClosure(null)}
           />
 
           <div className="relative border-t border-subtle shrink-0">

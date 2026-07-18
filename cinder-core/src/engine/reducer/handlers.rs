@@ -495,6 +495,7 @@ pub(super) fn handle_session_ended(
     lines: &mut Vec<String>,
 ) {
     state.game_over = true;
+    state.phase = crate::engine::state::GamePhase::SessionEnded;
     lines.push(content.presentation.presentation_text.session_ended.clone());
 }
 

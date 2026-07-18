@@ -177,6 +177,8 @@ pub struct UiTextDefinition {
     #[serde(default)]
     pub session_closure: SessionClosureDefinition,
     #[serde(default)]
+    pub game_closure: SessionClosureDefinition,
+    #[serde(default)]
     pub shell_menu: ShellMenuDefinition,
     #[serde(default)]
     pub action_bar: ActionBarDefinition,
@@ -483,6 +485,7 @@ impl Default for UiTextDefinition {
             talk_panel_title: default_talk_panel_title(),
             talk_panel_prompt: default_talk_panel_prompt(),
             session_closure: SessionClosureDefinition::default(),
+            game_closure: SessionClosureDefinition::default(),
             shell_menu: ShellMenuDefinition::default(),
             action_bar: ActionBarDefinition::default(),
         }

@@ -151,7 +151,7 @@ fn default_chapter_script_summary_empty() -> String {
 }
 
 fn default_chapter_script_summary_prompt_template() -> String {
-    "Chapter Transcript\n{transcript}\n\nTask\nWrite one short end-of-chapter recap.\n- Use only the transcript.\n- Sound like a sharp reality TV episode recap: specific, vivid, socially observant, and a little juicy without turning campy.\n- Keep it to one tight paragraph of 2 to 4 sentences.\n- Lead with the most important turn of the night, then name the strongest connection, the sharpest awkward beat, or the mood that settled over the house.\n- End on what tension or possibility is still hanging in the air.\n- Do not invent off-screen events, inner thoughts, or future outcomes.\n- Use the same language as the transcript.".to_string()
+    "Chapter Transcript\n{transcript}\n\nTask\nYou are the commentary panel recapping tonight's episode for viewers.\n- Write one tight paragraph of 2 to 4 sentences.\n- Lead with the most charged moment of the night: who made a move, who pulled back, what shifted in the room.\n- Name the strongest connection, the sharpest awkward beat, or the mood that settled over the house.\n- End on the tension or possibility still hanging in the air.\n- Sound specific and socially observant, like hosts who just watched the footage together and have opinions.\n- Do not invent off-screen events, inner thoughts, or future outcomes.\n- Use the same language as the transcript.".to_string()
 }
 
 fn default_chapter_relationship_summary_empty() -> String {
@@ -159,7 +159,7 @@ fn default_chapter_relationship_summary_empty() -> String {
 }
 
 fn default_chapter_relationship_summary_prompt_template() -> String {
-    "Final Relationship Stats\n{pair_stats}\n\nTask\nWrite the relationship-status segment for the end of the chapter.\n- Base it only on these stat lines.\n- Return 2 to 4 short lines, with one pair per line when possible.\n- Start each line with the pair name exactly as given, then an em dash, then the status update.\n- Keep the tone sharp and readable, like a reality TV host giving the latest status board.\n- Mention uncertainty when the numbers are mild instead of overselling them.\n- Do not invent scenes or promises that are not supported by the stats.\n- Use the same language as the stat labels.".to_string()
+    "Pair Dynamics (background data — do not quote numbers)\n{pair_stats}\n\nTask\nYou are the commentary panel updating the relationship board after tonight's episode.\n- Write 2 to 4 short lines, one pair per line when possible.\n- Start each line with the pair name exactly as given, then an em dash, then your observation.\n- Interpret the data as gossip: what does the panel see in how these two are doing? Are they warming up, stalling, pulling apart, circling each other?\n- Never mention numbers, scores, stat names, or ratings. Translate everything into body language, vibe, and behavior.\n- Sound like a panel of hosts who watched the footage and have a read on the situation.\n- Mention uncertainty when the data is ambiguous — 'hard to tell yet' is fine.\n- Do not invent scenes or promises not supported by the data.".to_string()
 }
 
 fn default_direct_speech_intent_no_current_beat() -> String {

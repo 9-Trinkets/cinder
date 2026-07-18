@@ -89,6 +89,7 @@ export interface CommandResponse {
   game_over: boolean
   movie: MovieData | null
   session_closure: SessionClosureData | null
+  game_closure: SessionClosureData | null
   ui_snapshot: UiSnapshot | null
 }
 
@@ -214,6 +215,7 @@ export interface UiSnapshot {
   talk_options: MenuOptionItem[]
   active_menu: ActiveMenuData | null
   session_closure: SessionClosureData | null
+  game_closure: SessionClosureData | null
   inventory: InventoryItem[]
   theme: ThemeDefinition
   ui_text: {
@@ -280,6 +282,13 @@ export function setLocale(token: string, sessionId: string, locale: string) {
     method: 'POST',
     headers: authHeader(token),
     body: JSON.stringify({ locale }),
+  })
+}
+
+export function continueSession(token: string, sessionId: string) {
+  return req<CommandResponse>(`/games/${sessionId}/continue`, {
+    method: 'POST',
+    headers: authHeader(token),
   })
 }
 

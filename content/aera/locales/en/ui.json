@@ -24,28 +24,28 @@
   "look_group_people": "People",
   "day_summary_title": "End of Day {day_number}",
   "day_summary_current_focus_label": "Current focus",
-  "day_summary_highlights_label": "Highlights",
-  "day_summary_relationships_label": "Relationship status",
+  "day_summary_highlights_label": "Tonight on Aera",
+  "day_summary_relationships_label": "The Relationship Board",
   "day_summary_empty_highlights": "A quiet stretch, mostly observation and drift.",
   "day_summary_empty_relationships": "No clear relationship shifts yet.",
   "final_summary_title": "End of Chapter One",
-  "final_summary_highlights_label": "What happened",
-  "final_summary_relationships_label": "Where things stand",
-  "final_summary_preview_label": "Next chapter",
+  "final_summary_highlights_label": "Tonight on Aera",
+  "final_summary_relationships_label": "The Relationship Board",
+  "final_summary_preview_label": "Coming up",
   "final_summary_empty_preview": "Tomorrow is coming, but the shape of it is still unclear.",
   "session_closure": {
     "title": "End of Chapter One",
     "sections": [
       {
-        "title": "What happened",
+        "title": "Tonight on Aera",
         "source": "transcript_highlights"
       },
       {
-        "title": "Where things stand",
+        "title": "The Relationship Board",
         "source": "relationship_summary"
       },
       {
-        "title": "Next chapter",
+        "title": "Coming up",
         "source": "continuation_preview"
       }
     ]
@@ -76,5 +76,19 @@
   },
   "look_panel_title": "Look",
   "talk_panel_title": "Talk",
-  "talk_panel_prompt": "Who do you want to talk to?"
+  "talk_panel_prompt": "Who do you want to talk to?",
+  "game_closure": {
+    "title": "That's Aera",
+    "subtitle_template": "",
+    "sections": [
+      {
+        "title": "Tonight on Aera",
+        "source": "transcript_highlights"
+      },
+      {
+        "title": "The Relationship Board",
+        "source": "relationship_summary"
+      }
+    ]
+  }
 }

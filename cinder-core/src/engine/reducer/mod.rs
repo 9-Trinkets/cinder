@@ -19,13 +19,14 @@ pub(crate) use self::observation::render_actor_speech_line;
 
 use crate::content::types::ContentPack;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
-use crate::engine::state::WorldState;
+use crate::engine::state::{GamePhase, WorldState};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReducerOutput {
     pub lines: Vec<String>,
     pub game_over: bool,
+    pub phase: GamePhase,
 }
 
 pub fn apply_events(
@@ -259,6 +260,7 @@ pub fn apply_events(
     ReducerOutput {
         lines,
         game_over: state.game_over,
+        phase: state.phase.clone(),
     }
 }
 

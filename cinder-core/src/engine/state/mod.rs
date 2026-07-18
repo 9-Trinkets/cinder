@@ -4,12 +4,23 @@ use crate::content::types::{
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum GamePhase {
+    #[default]
+    Active,
+    SessionEnded,
+    GameEnded,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WorldState {
     pub current_room_id: String,
     pub turn_number: u32,
     pub current_time_minutes: u32,
     pub game_over: bool,
+    #[serde(default)]
+    pub phase: GamePhase,
     pub conversation_event_sequence: u64,
     pub conversation_memory: BTreeMap<String, Vec<ConversationMemoryLine>>,
     pub conversation_summaries: BTreeMap<String, ConversationSummaryState>,
@@ -90,6 +101,7 @@ impl WorldState {
             turn_number: 0,
             current_time_minutes: content.opening.start_time_minutes,
             game_over: false,
+            phase: GamePhase::Active,
             conversation_event_sequence: 0,
             conversation_memory: BTreeMap::new(),
             conversation_summaries: BTreeMap::new(),
@@ -584,6 +596,7 @@ fn format_clock_time(total_minutes: u32) -> String {
 pub struct TurnOutcome {
     pub text: String,
     pub game_over: bool,
+    pub phase: GamePhase,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
