@@ -193,10 +193,10 @@ export default function GamePage() {
   }, [gameOver])
 
   useEffect(() => {
-    if (gameOver && uiSnapshot?.session_closure) {
+    if (gameOver && uiSnapshot?.session_closure && !sessionClosure) {
       setSessionClosure(uiSnapshot.session_closure)
     }
-    if (gameOver && uiSnapshot?.game_closure) {
+    if (gameOver && uiSnapshot?.game_closure && !gameClosure) {
       setGameClosure(uiSnapshot.game_closure)
     }
   }, [gameOver, uiSnapshot])
