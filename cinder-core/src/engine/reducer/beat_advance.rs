@@ -213,6 +213,7 @@ pub(super) fn world_state_condition_input(state: &WorldState) -> serde_json::Val
         "stages_completed": state.stages_completed,
         "actor_stats": state.actor_stats,
         "pair_stats": state.pair_stats,
+        "story_vars": state.story_vars,
     })
 }
 

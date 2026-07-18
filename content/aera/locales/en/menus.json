@@ -173,5 +173,137 @@
         "narrative_lines": []
       }
     ]
+  },
+  {
+    "id": "day2-plan-b",
+    "stage_id": "plan-day2-b",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "proposal_line": "A producer's note appears: \"Pick the second activity for tomorrow morning. You already chose Cooking Lesson with Ren — who else should do what?\"",
+    "selection_prompt": "Choose the second morning activity:",
+    "invalid_choice_text": "Pick one of the listed activities.",
+    "selection_confirmation": "Scheduled: {{selection_title}}",
+    "selection_var_key": "day2_event2",
+    "selection_id_var_key": "day2_event2_id",
+    "narrative_lines": [],
+    "options": [
+      {
+        "id": "day2-cooking-lesson-b",
+        "title": "Cooking Lesson with Ren",
+        "menu_text": "Ren teaches someone his signature dish — intimacy through shared focus in the kitchen.",
+        "narrative_lines": []
+      },
+      {
+        "id": "day2-morning-run-b",
+        "title": "Morning Run with Daichi",
+        "menu_text": "Daichi invites someone to train on the patio — connection through physical effort and shared silence.",
+        "narrative_lines": []
+      },
+      {
+        "id": "day2-editing-session-b",
+        "title": "Editing Session with Aera",
+        "menu_text": "Aera reviews footage with someone — intimacy through being truly seen on screen.",
+        "narrative_lines": []
+      }
+    ]
+  },
+  {
+    "id": "day3-plan-b",
+    "stage_id": "plan-day3-b",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "proposal_line": "A producer's note appears: \"Pick the second activity for tomorrow morning. You already chose Themed Dinner Party — who else should do what?\"",
+    "selection_prompt": "Choose the second morning activity:",
+    "invalid_choice_text": "Pick one of the listed activities.",
+    "selection_confirmation": "Scheduled: {{selection_title}}",
+    "selection_var_key": "day3_event2",
+    "selection_id_var_key": "day3_event2_id",
+    "narrative_lines": [],
+    "options": [
+      {
+        "id": "day3-themed-dinner-b",
+        "title": "Themed Dinner Party",
+        "menu_text": "Ren proposes a cuisine theme. Everyone cooks together. Collaboration stress reveals who leads, who follows, who resists.",
+        "narrative_lines": []
+      },
+      {
+        "id": "day3-art-project-b",
+        "title": "Collaborative Art Project",
+        "menu_text": "Aera proposes a short film or photo series. Everyone contributes. Creative differences surface fast.",
+        "narrative_lines": []
+      },
+      {
+        "id": "day3-game-night-b",
+        "title": "Game Night",
+        "menu_text": "Mio picks a game. Competition, alliances, and the revelation of who is secretly cutthroat.",
+        "narrative_lines": []
+      }
+    ]
+  },
+  {
+    "id": "day4-plan-b",
+    "stage_id": "plan-day4-b",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "proposal_line": "A producer's note appears: \"Pick the second activity for tomorrow morning. You already chose Power Outage — who else should do what?\"",
+    "selection_prompt": "Choose the second morning activity:",
+    "invalid_choice_text": "Pick one of the listed activities.",
+    "selection_confirmation": "Scheduled: {{selection_title}}",
+    "selection_var_key": "day4_event2",
+    "selection_id_var_key": "day4_event2_id",
+    "narrative_lines": [],
+    "options": [
+      {
+        "id": "day4-power-outage-b",
+        "title": "Power Outage",
+        "menu_text": "The power cuts out at dusk. The house splits into two candlelit groups. Forced proximity reveals what daylight hides.",
+        "narrative_lines": []
+      },
+      {
+        "id": "day4-truth-circle-b",
+        "title": "Truth Circle",
+        "menu_text": "Mio proposes a late-night question game. Everyone must answer honestly. The price of admission is a secret.",
+        "narrative_lines": []
+      },
+      {
+        "id": "day4-one-leaves-b",
+        "title": "One Person Leaves for the Day",
+        "menu_text": "One housemate is called away. The remaining three navigate the absence — who misses them, who thrives without them.",
+        "narrative_lines": []
+      }
+    ]
+  },
+  {
+    "id": "day5-plan-b",
+    "stage_id": "plan-day5-b",
+    "trigger_mode": "any_speak",
+    "dynamic": false,
+    "proposal_line": "A producer's note appears: \"Pick the second activity for tomorrow morning. You already chose Paired Cooking Challenge — who else should do what?\"",
+    "selection_prompt": "Choose the second morning activity:",
+    "invalid_choice_text": "Pick one of the listed activities.",
+    "selection_confirmation": "Scheduled: {{selection_title}}",
+    "selection_var_key": "day5_event2",
+    "selection_id_var_key": "day5_event2_id",
+    "narrative_lines": [],
+    "options": [
+      {
+        "id": "day5-paired-cooking-b",
+        "title": "Paired Cooking Challenge",
+        "menu_text": "Two teams of two, cooking head-to-head. You choose the teams. Competition reveals loyalties and surprising chemistry.",
+        "narrative_lines": []
+      },
+      {
+        "id": "day5-morning-walk-b",
+        "title": "Morning Walk in Pairs",
+        "menu_text": "Two pairs walk at different times. Side-by-side walking lowers defenses. You choose who walks with whom.",
+        "narrative_lines": []
+      },
+      {
+        "id": "day5-footage-screening-b",
+        "title": "Aera Screens the Footage",
+        "menu_text": "Aera shows edited clips from the week. Everyone watches themselves through her eyes. Reactions range from recognition to discomfort.",
+        "narrative_lines": []
+      }
+    ]
   }
 ]

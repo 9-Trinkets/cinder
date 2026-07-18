@@ -214,7 +214,7 @@ impl CinderRuntime {
                     let prompt_context =
                         resolved_actor_prompt_context(self.content.as_ref(), &state, actor);
                     let mut beat_notes =
-                        current_objective_beat_notes(self.content.as_ref(), &state);
+                        current_objective_beat_notes(self.content.as_ref(), &state, Some(actor.id.as_str()));
                     beat_notes.extend(
                         menu.narrative_lines
                             .iter()

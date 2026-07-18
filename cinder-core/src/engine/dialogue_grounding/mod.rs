@@ -59,7 +59,7 @@ pub(crate) fn build_grounded_dialogue_request_for_exchange(
         other_person_id,
         other_person_name,
         other_person_message.as_deref(),
-        &current_objective_beat_notes(content, state),
+        &current_objective_beat_notes(content, state, Some(actor_id)),
     );
     let prompt_context = resolved_actor_prompt_context(content, state, actor);
     let actor_name = display_actor_name(state, actor);
@@ -149,7 +149,7 @@ pub(crate) fn build_grounded_dialogue_request_for_room(
         &[("current_time", state.current_time_label().as_str())],
     );
     let setting_notes = build_setting_notes(content, state, actor, room, &current_time_note);
-    let current_beat_notes = current_objective_beat_notes(content, state);
+    let current_beat_notes = current_objective_beat_notes(content, state, Some(actor_id));
     let prompt_context = resolved_actor_prompt_context(content, state, actor);
     let actor_name = display_actor_name(state, actor);
     let mut response_notes = prompt_context.response_notes.clone();
@@ -225,6 +225,7 @@ pub(crate) fn viewer_participant_id(content: &ContentPack) -> String {
 pub(crate) fn current_objective_beat_notes(
     content: &ContentPack,
     state: &WorldState,
+    actor_id: Option<&str>,
 ) -> Vec<String> {
     state
         .active_objective_stage_ids
@@ -235,6 +236,22 @@ pub(crate) fn current_objective_beat_notes(
                 .stages
                 .iter()
                 .find(|stage| stage.id == *stage_id)
+        })
+        .filter(|stage| {
+            if stage.target_actor_story_var.is_empty() {
+                return true;
+            }
+            let Some(actor_id) = actor_id else {
+                return true;
+            };
+            state
+                .story_vars
+                .get(&stage.target_actor_story_var)
+                .map(|ids| {
+                    ids.split(',')
+                        .any(|id| id.trim() == actor_id)
+                })
+                .unwrap_or(false)
         })
         .map(|stage| render_story_text(&stage.beat_note, state))
         .filter(|note| !note.is_empty())

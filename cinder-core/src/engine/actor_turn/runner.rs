@@ -503,7 +503,7 @@ pub fn run_actor_turn(
         system_text: content.system_text.clone(),
         character_notes: actor.prompt_context.character_notes.clone(),
         setting_notes: actor_turn_setting_notes(content.as_ref(), state, actor, &current_room_id),
-        current_beat_notes: current_objective_beat_notes(content.as_ref(), state),
+        current_beat_notes: current_objective_beat_notes(content.as_ref(), state, Some(&actor.id)),
         subtext_notes: {
             let mut notes = actor.prompt_context.subtext_notes.clone();
             notes.extend(actor_state_notes(content.as_ref(), state, &actor.id));

@@ -428,7 +428,7 @@ impl CinderRuntime {
                 selected_room_title,
                 remaining_room_id: config.remaining_room_id.clone(),
                 remaining_room_title,
-                beat_note: stage.beat_note.clone(),
+                beat_note: render_story_text(&stage.beat_note, &state),
                 candidates,
             };
             return Ok(Some((request, config.clone())));
@@ -507,6 +507,24 @@ impl CinderRuntime {
                 .insert(candidate.actor_id.clone(), room_id.clone());
         }
         state.story_vars.insert(applied_flag, "true".to_string());
+        if !config.group_story_var_key.trim().is_empty() {
+            let group_ids = chosen.iter().cloned().collect::<Vec<_>>().join(",");
+            state
+                .story_vars
+                .insert(config.group_story_var_key.clone(), group_ids);
+        }
+        if !config.remaining_group_story_var_key.trim().is_empty() {
+            let remaining_ids = request
+                .candidates
+                .iter()
+                .filter(|candidate| !chosen.contains(&candidate.actor_id))
+                .map(|candidate| candidate.actor_id.clone())
+                .collect::<Vec<_>>()
+                .join(",");
+            state
+                .story_vars
+                .insert(config.remaining_group_story_var_key.clone(), remaining_ids);
+        }
 
         let selected_names = request
             .candidates

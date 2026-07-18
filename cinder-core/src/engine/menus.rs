@@ -63,7 +63,7 @@ where
                 && story_actor_matches(state, pending.actor_id, &menu.actor_id)
         })
         .collect::<Vec<_>>();
-    let objective_notes = current_objective_beat_notes(content, state);
+    let objective_notes = current_objective_beat_notes(content, state, Some(pending.actor_id));
     let current_time_note = content.render_template(
         &content.system_text.prompt_time_note,
         &[("current_time", state.current_time_label().as_str())],

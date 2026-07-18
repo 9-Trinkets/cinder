@@ -235,6 +235,10 @@ pub struct StageAssignmentDefinition {
     pub selected_line_template: String,
     #[serde(default)]
     pub remaining_line_template: String,
+    #[serde(default)]
+    pub group_story_var_key: String,
+    #[serde(default)]
+    pub remaining_group_story_var_key: String,
 }
 
 fn default_stage_assignment_max_selected() -> usize {
@@ -311,6 +315,8 @@ pub struct BeatDefinition {
     pub stage_assignment: Option<StageAssignmentDefinition>,
     #[serde(default)]
     pub open_menu: String,
+    #[serde(default)]
+    pub target_actor_story_var: String,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
