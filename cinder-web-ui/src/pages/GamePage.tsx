@@ -235,7 +235,7 @@ export default function GamePage() {
       setMovie(res.movie)
       setMovieFrame(0)
     }
-    if (res.game_over) setGameOver(true)
+    setGameOver(res.game_over)
   }
 
   async function execCommand(cmd: string, displayCmd?: string) {
