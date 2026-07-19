@@ -401,6 +401,7 @@ pub(super) fn handle_menu_opened(
     lines: &mut Vec<String>,
 ) {
     state.active_menu_id = Some(menu_id.to_string());
+    state.pending_menu_selections.clear();
     lines.extend(advance_objective_for_signal(
         state,
         content,
@@ -418,23 +419,62 @@ pub(super) fn handle_menu_choice_made(
 ) {
     state.active_menu_id = None;
     if let Some(menu) = content.menu(menu_id) {
-        state
-            .story_vars
-            .insert("selection_title".to_string(), title.to_string());
-        if !menu.selection_var_key.is_empty() {
+        let is_multi_select = menu.max_selections > 0;
+        if is_multi_select && option_id == "done" {
+            let selected_ids: Vec<String> = state.pending_menu_selections.clone();
+            let selected_titles: Vec<String> = selected_ids
+                .iter()
+                .filter_map(|id| {
+                    menu.options
+                        .iter()
+                        .find(|opt| opt.id == *id)
+                        .map(|opt| opt.title.clone())
+                })
+                .collect();
+            let joined_titles = selected_titles.join(", ");
+            let joined_ids = selected_ids.join(", ");
             state
                 .story_vars
-                .insert(menu.selection_var_key.clone(), title.to_string());
-        }
-        if !menu.selection_id_var_key.is_empty() {
+                .insert("selection_title".to_string(), joined_titles.clone());
+            if !menu.multi_selection_var_keys.is_empty() {
+                for (i, var_key) in menu.multi_selection_var_keys.iter().enumerate() {
+                    let value = selected_titles.get(i).cloned().unwrap_or_default();
+                    state.story_vars.insert(var_key.clone(), value);
+                }
+            } else if !menu.selection_var_key.is_empty() {
+                state
+                    .story_vars
+                    .insert(menu.selection_var_key.clone(), joined_titles);
+            }
+            if !menu.selection_id_var_key.is_empty() {
+                state
+                    .story_vars
+                    .insert(menu.selection_id_var_key.clone(), joined_ids);
+            }
+            lines.push(super::observation::render_story_text(
+                &menu.selection_confirmation,
+                state,
+            ));
+        } else {
             state
                 .story_vars
-                .insert(menu.selection_id_var_key.clone(), option_id.to_string());
+                .insert("selection_title".to_string(), title.to_string());
+            if !menu.selection_var_key.is_empty() {
+                state
+                    .story_vars
+                    .insert(menu.selection_var_key.clone(), title.to_string());
+            }
+            if !menu.selection_id_var_key.is_empty() {
+                state
+                    .story_vars
+                    .insert(menu.selection_id_var_key.clone(), option_id.to_string());
+            }
+            lines.push(super::observation::render_story_text(
+                &menu.selection_confirmation,
+                state,
+            ));
         }
-        lines.push(super::observation::render_story_text(
-            &menu.selection_confirmation,
-            state,
-        ));
+        state.pending_menu_selections.clear();
     }
     apply_world_hook_effects(
         state,
@@ -452,6 +492,38 @@ pub(super) fn handle_menu_choice_made(
         content,
         &format!("menu_selected:{menu_id}"),
     ));
+}
+
+pub(super) fn handle_menu_selection_toggled(
+    state: &mut WorldState,
+    content: &ContentPack,
+    menu_id: &str,
+    option_id: &str,
+    selected: bool,
+    lines: &mut Vec<String>,
+) {
+    if let Some(menu) = content.menu(menu_id) {
+        let max = menu.max_selections;
+        if selected {
+            if max > 0 && state.pending_menu_selections.len() >= max {
+                lines.push(format!(
+                    "You can select up to {} option{}.",
+                    max,
+                    if max == 1 { "" } else { "s" }
+                ));
+                return;
+            }
+            if !state.pending_menu_selections.contains(&option_id.to_string()) {
+                state
+                    .pending_menu_selections
+                    .push(option_id.to_string());
+            }
+        } else {
+            state
+                .pending_menu_selections
+                .retain(|id| id != option_id);
+        }
+    }
 }
 
 pub(super) fn handle_narrative_line(text: &str, lines: &mut Vec<String>) {

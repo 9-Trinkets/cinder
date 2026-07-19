@@ -52,6 +52,7 @@ export default function GamePage() {
   const [movie, setMovie] = useState<api.MovieData | null>(null)
   const [movieFrame, setMovieFrame] = useState(0)
   const [activeMenu, setActiveMenu] = useState<api.ActiveMenuData | null>(null)
+  const [menuSelections, setMenuSelections] = useState<Set<string>>(new Set())
   const [menuView, setMenuView] = useState<MenuView>('main')
   const [uiSnapshot, setUiSnapshot] = useState<api.UiSnapshot | null>(null)
   const [atSuggestions, setAtSuggestions] = useState<api.MenuOptionItem[] | null>(null)
@@ -73,6 +74,14 @@ export default function GamePage() {
   const draftInputRef = useRef('')
   const busy = initializing || commandPending || panelBusy
   const busyLabel = commandPending ? 'Sending…' : panelBusy ? 'Updating…' : initializing ? 'Loading…' : null
+
+  useEffect(() => {
+    if (activeMenu?.max_selections && activeMenu.max_selections > 0) {
+      setMenuSelections(new Set(activeMenu.selected_ids ?? []))
+    } else {
+      setMenuSelections(new Set())
+    }
+  }, [activeMenu])
 
   function focusInputToEnd() {
     requestAnimationFrame(() => {
@@ -241,6 +250,7 @@ export default function GamePage() {
   async function execCommand(cmd: string, displayCmd?: string) {
     if (!token || !id || commandPending || gameOver) return
     setActiveMenu(null)
+    setMenuSelections(new Set())
     setMovie(null)
     setMovieFrame(0)
     setQuickPanel(null)
@@ -252,6 +262,28 @@ export default function GamePage() {
     setLines(prev => [...prev, cmdLine])
     try {
       const res = await api.runCommand(token, id, cmd)
+      applyCommandResponse(res, 'smooth')
+    } catch (err: unknown) {
+      showToast(err instanceof Error ? err.message : 'request failed', 'error')
+    } finally {
+      setCommandPending(false)
+    }
+  }
+
+  async function toggleMenuOption(optionId: string) {
+    if (!token || !id || commandPending || gameOver) return
+    setMenuSelections(prev => {
+      const next = new Set(prev)
+      if (next.has(optionId)) {
+        next.delete(optionId)
+      } else {
+        next.add(optionId)
+      }
+      return next
+    })
+    setCommandPending(true)
+    try {
+      const res = await api.runCommand(token, id, `toggle:${optionId}`)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
       showToast(err instanceof Error ? err.message : 'request failed', 'error')
@@ -377,7 +409,13 @@ export default function GamePage() {
     e.preventDefault()
     if (!token || !id || commandPending || gameOver) return
     let trimmed = input.trim()
-    if (!trimmed) return
+    if (!trimmed) {
+      if (activeMenu && (activeMenu.max_selections ?? 0) > 0 && menuSelections.size > 0) {
+        setInput('')
+        await execCommand('done', 'Done')
+      }
+      return
+    }
     const displayInput = trimmed
     setAtSuggestions(null)
     setInput('')
@@ -660,23 +698,68 @@ export default function GamePage() {
           {activeMenu.prompt && (
             <p className="text-sm text-text whitespace-pre-wrap mb-3">{activeMenu.prompt}</p>
           )}
+          {activeMenu.max_selections && activeMenu.max_selections > 0 && (
+            <p className="text-xs text-muted mb-2">
+              Select up to {activeMenu.max_selections} option{activeMenu.max_selections === 1 ? '' : 's'}
+              {activeMenu.min_selections && activeMenu.min_selections > 0
+                ? ` (at least ${activeMenu.min_selections})`
+                : ''}
+              {menuSelections.size > 0 ? ` — ${menuSelections.size} selected` : ''}
+            </p>
+          )}
           {activeMenu.options.length === 0 ? (
             <p className="text-muted italic">No options available.</p>
           ) : (
-            activeMenu.options.map((opt, i) => (
-              <button
-                key={opt.id}
-                onClick={async () => {
-                  await execCommand((i + 1).toString())
-                }}
-                disabled={busy}
-                className="block w-full text-left px-3 py-2 rounded hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
-              >
-                <span className="text-muted mr-2">{(i + 1).toString()}.</span>
-                <span className="font-medium">{opt.title}</span>
-                {opt.menu_text && <span className="text-muted ml-2">— {opt.menu_text}</span>}
-              </button>
-            ))
+            activeMenu.options.map((opt, i) => {
+              const isMultiSelect = (activeMenu.max_selections ?? 0) > 0
+              const isSelected = menuSelections.has(opt.id)
+              return (
+                <button
+                  key={opt.id}
+                  onClick={async () => {
+                    if (isMultiSelect) {
+                      await toggleMenuOption(opt.id)
+                    } else {
+                      await execCommand((i + 1).toString())
+                    }
+                  }}
+                  disabled={busy}
+                  className={`block w-full text-left px-3 py-2 rounded border disabled:opacity-50 cursor-pointer transition duration-150 ${
+                    isSelected
+                      ? 'bg-pine/15 border-pine text-text'
+                      : 'hover:bg-overlay border-subtle text-text'
+                  }`}
+                >
+                  {isMultiSelect && (
+                    <span className={`inline-block w-4 h-4 mr-2 rounded border align-middle ${
+                      isSelected
+                        ? 'bg-pine border-pine'
+                        : 'border-subtle'
+                    }`}>
+                      {isSelected && (
+                        <span className="block text-surface text-xs text-center leading-4">✓</span>
+                      )}
+                    </span>
+                  )}
+                  {!isMultiSelect && (
+                    <span className="text-muted mr-2">{(i + 1).toString()}.</span>
+                  )}
+                  <span className="font-medium">{opt.title}</span>
+                  {opt.menu_text && <span className="text-muted ml-2">— {opt.menu_text}</span>}
+                </button>
+              )
+            })
+          )}
+          {(activeMenu.max_selections ?? 0) > 0 && (
+            <button
+              onClick={async () => {
+                await execCommand('done', 'Done')
+              }}
+              disabled={busy || menuSelections.size === 0}
+              className="mt-3 w-full px-3 py-2 rounded bg-pine text-surface text-sm font-semibold transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
+            >
+              Done
+            </button>
           )}
         </Modal>
       )}

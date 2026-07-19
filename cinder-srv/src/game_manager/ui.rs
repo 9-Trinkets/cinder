@@ -57,6 +57,12 @@ pub struct MenuOptionData {
 pub struct ActiveMenuData {
     pub prompt: String,
     pub options: Vec<MenuOptionData>,
+    #[serde(default)]
+    pub max_selections: usize,
+    #[serde(default)]
+    pub min_selections: usize,
+    #[serde(default)]
+    pub selected_ids: Vec<String>,
 }
 
 #[derive(Clone, Serialize)]
@@ -202,6 +208,9 @@ pub(super) fn build_ui_snapshot(
         .map_err(|error| error.to_string())?
         .map(|info: ActiveMenuInfo| ActiveMenuData {
             prompt: info.prompt,
+            max_selections: info.max_selections,
+            min_selections: info.min_selections,
+            selected_ids: info.selected_ids,
             options: info
                 .options
                 .into_iter()

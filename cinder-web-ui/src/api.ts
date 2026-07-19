@@ -145,6 +145,9 @@ export interface LookOptionData {
 export interface ActiveMenuData {
   prompt: string
   options: MenuOptionItem[]
+  max_selections?: number
+  min_selections?: number
+  selected_ids?: string[]
 }
 
 export interface SessionClosureData {

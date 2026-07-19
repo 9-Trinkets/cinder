@@ -105,6 +105,11 @@ pub enum WorldEvent {
         option_id: String,
         title: String,
     },
+    MenuSelectionToggled {
+        menu_id: String,
+        option_id: String,
+        selected: bool,
+    },
     NarrativeLine {
         text: String,
     },

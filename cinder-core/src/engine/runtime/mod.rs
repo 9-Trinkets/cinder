@@ -8,6 +8,8 @@ use crate::engine::dialogue::{
 };
 use crate::engine::dialogue_grounding::render_story_text;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
+use crate::engine::hook_ids;
+use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::neuron::{WorkflowDefinition, WorkflowTraceContext, load_workflow};
 use crate::engine::reducer::apply_events;
 use crate::engine::state::{
@@ -76,6 +78,12 @@ pub struct LookOptionItem {
 pub struct ActiveMenuInfo {
     pub prompt: String,
     pub options: Vec<OpeningMenuOptionDefinition>,
+    #[serde(default)]
+    pub max_selections: usize,
+    #[serde(default)]
+    pub min_selections: usize,
+    #[serde(default)]
+    pub selected_ids: Vec<String>,
 }
 
 #[derive(Debug, Clone)]
@@ -492,19 +500,58 @@ impl CinderRuntime {
         {
             return Ok(String::new());
         }
+        let initiator_from_room = state
+            .actor_room_overrides
+            .get(&request.initiator_actor_id)
+            .cloned()
+            .unwrap_or_default();
         state.actor_room_overrides.insert(
             request.initiator_actor_id.clone(),
             request.selected_room_id.clone(),
         );
+        let mut moved_actors: Vec<(String, String, String, String)> = Vec::new();
+        if initiator_from_room != request.selected_room_id {
+            moved_actors.push((
+                request.initiator_actor_id.clone(),
+                request.initiator_actor_name.clone(),
+                initiator_from_room,
+                request.selected_room_id.clone(),
+            ));
+        }
         for candidate in &request.candidates {
             let room_id = if chosen.contains(&candidate.actor_id) {
                 &request.selected_room_id
             } else {
                 &request.remaining_room_id
             };
+            let from_room_id = state
+                .actor_room_overrides
+                .get(&candidate.actor_id)
+                .cloned()
+                .unwrap_or_default();
             state
                 .actor_room_overrides
                 .insert(candidate.actor_id.clone(), room_id.clone());
+            if from_room_id != *room_id {
+                moved_actors.push((
+                    candidate.actor_id.clone(),
+                    candidate.actor_name.clone(),
+                    from_room_id,
+                    room_id.clone(),
+                ));
+            }
+        }
+        for (actor_id, _actor_name, from_room_id, to_room_id) in &moved_actors {
+            let _ = apply_world_hook_effects(
+                &mut *state,
+                self.content.as_ref(),
+                hook_ids::ACTOR_MOVED,
+                serde_json::json!({
+                    "actor_id": actor_id,
+                    "from_room_id": from_room_id,
+                    "to_room_id": to_room_id,
+                }),
+            );
         }
         state.story_vars.insert(applied_flag, "true".to_string());
         if !config.group_story_var_key.trim().is_empty() {

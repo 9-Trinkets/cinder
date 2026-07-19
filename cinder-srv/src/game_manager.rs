@@ -259,7 +259,12 @@ pub async fn run_command(
 
         let turn_text = outcome.text.clone();
 
-        if !outcome.game_over {
+        let menu_active = runtime
+            .export_state()
+            .map(|s| s.active_menu_id.is_some())
+            .unwrap_or(false);
+
+        if !outcome.game_over && !menu_active {
             match runtime.run_tick() {
                 Ok(tick) => {
                     if !tick.text.is_empty() {

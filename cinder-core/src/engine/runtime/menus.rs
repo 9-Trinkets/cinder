@@ -86,12 +86,27 @@ impl CinderRuntime {
     }
 
     pub fn current_active_menu_info(&self) -> Result<Option<ActiveMenuInfo>, Box<dyn Error>> {
-        let menu_id = {
+        let (menu_id, max_selections, min_selections, selected_ids) = {
             let state = self
                 .state
                 .lock()
                 .map_err(|_| "failed to lock runtime state for active menu")?;
-            state.active_menu_id.clone()
+            (
+                state.active_menu_id.clone(),
+                state
+                    .active_menu_id
+                    .as_ref()
+                    .and_then(|id| self.content.menu(id))
+                    .map(|m| m.max_selections)
+                    .unwrap_or(0),
+                state
+                    .active_menu_id
+                    .as_ref()
+                    .and_then(|id| self.content.menu(id))
+                    .map(|m| m.min_selections)
+                    .unwrap_or(0),
+                state.pending_menu_selections.clone(),
+            )
         };
         let Some(ref menu_id) = menu_id else {
             return Ok(None);
@@ -126,11 +141,20 @@ impl CinderRuntime {
                 .get(menu_id.as_str())
                 .cloned()
                 .unwrap_or_default();
-            return Ok(Some(ActiveMenuInfo { prompt, options }));
+            return Ok(Some(ActiveMenuInfo {
+                prompt,
+                options,
+                max_selections,
+                min_selections,
+                selected_ids,
+            }));
         }
         Ok(Some(ActiveMenuInfo {
             prompt,
             options: menu.options.clone(),
+            max_selections,
+            min_selections,
+            selected_ids,
         }))
     }
 
@@ -484,7 +508,7 @@ fn render_menu_choice_options(
     state: &crate::engine::state::WorldState,
     options: &[OpeningMenuOptionDefinition],
 ) -> Vec<MenuChoiceOption> {
-    options
+    let mut result: Vec<MenuChoiceOption> = options
         .iter()
         .enumerate()
         .map(|(index, option)| MenuChoiceOption {
@@ -494,5 +518,15 @@ fn render_menu_choice_options(
             command: (index + 1).to_string(),
             transcript_label: None,
         })
-        .collect()
+        .collect();
+    if menu.max_selections > 0 {
+        result.push(MenuChoiceOption {
+            prompt: render_menu_prompt(content, menu, state),
+            title: "Done".to_string(),
+            menu_text: "Confirm selection".to_string(),
+            command: "done".to_string(),
+            transcript_label: None,
+        });
+    }
+    result
 }

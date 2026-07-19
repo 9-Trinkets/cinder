@@ -45,29 +45,53 @@ pub(super) fn build_planned_turn(
         PlayerCommand::Unknown => {
             if let Some(menu_id) = planner_state.active_menu_id.as_deref() {
                 if let Some(menu) = content.menu(menu_id) {
-                    let option = planner_state
-                        .generated_menu_options
-                        .get(menu_id)
-                        .and_then(|options| {
-                            resolve_menu_choice_in_options(options, &aggregated.command.raw_input)
-                        })
-                        .or_else(|| resolve_menu_choice(menu, &aggregated.command.raw_input));
-                    if let Some(option) = option {
-                        planned.events.extend(build_menu_choice_events(
-                            content,
-                            planner_state,
-                            menu,
-                            option,
-                        ));
+                    let raw = aggregated.command.raw_input.trim();
+                    let is_multi_select = menu.max_selections > 0;
+                    if is_multi_select && raw == "done" {
+                        let option_id = "done".to_string();
+                        let title = "Done".to_string();
+                        planned.events.push(WorldEvent::MenuChoiceMade {
+                            menu_id: menu_id.to_string(),
+                            option_id,
+                            title,
+                        });
                         true
-                    } else {
-                        planned.events.push(WorldEvent::ActionRejected {
-                            message: render_dynamic_story_text(
-                                &menu.invalid_choice_text,
-                                planner_state,
-                            ),
+                    } else if is_multi_select && raw.starts_with("toggle:") {
+                        let option_id = raw["toggle:".len()..].to_string();
+                        let selected = !planner_state
+                            .pending_menu_selections
+                            .contains(&option_id);
+                        planned.events.push(WorldEvent::MenuSelectionToggled {
+                            menu_id: menu_id.to_string(),
+                            option_id,
+                            selected,
                         });
                         false
+                    } else {
+                        let option = planner_state
+                            .generated_menu_options
+                            .get(menu_id)
+                            .and_then(|options| {
+                                resolve_menu_choice_in_options(options, &aggregated.command.raw_input)
+                            })
+                            .or_else(|| resolve_menu_choice(menu, &aggregated.command.raw_input));
+                        if let Some(option) = option {
+                            planned.events.extend(build_menu_choice_events(
+                                content,
+                                planner_state,
+                                menu,
+                                option,
+                            ));
+                            true
+                        } else {
+                            planned.events.push(WorldEvent::ActionRejected {
+                                message: render_dynamic_story_text(
+                                    &menu.invalid_choice_text,
+                                    planner_state,
+                                ),
+                            });
+                            false
+                        }
                     }
                 } else {
                     planned.events.push(WorldEvent::ActionRejected {

@@ -37,6 +37,8 @@ pub struct WorldState {
     pub followed_actor_id: Option<String>,
     pub active_menu_id: Option<String>,
     #[serde(default)]
+    pub pending_menu_selections: Vec<String>,
+    #[serde(default)]
     pub generated_menu_options: HashMap<String, Vec<OpeningMenuOptionDefinition>>,
     pub pending_projector_sequence_id: Option<String>,
     pub pending_projector_narrative_lines: Vec<String>,
@@ -116,6 +118,7 @@ impl WorldState {
             feature_consumable_stock: seeded_feature_consumable_stock(content),
             followed_actor_id: None,
             active_menu_id: None,
+            pending_menu_selections: Vec::new(),
             generated_menu_options: HashMap::new(),
             pending_projector_sequence_id: None,
             pending_projector_narrative_lines: Vec::new(),

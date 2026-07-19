@@ -356,6 +356,12 @@ pub struct OpeningMenuDefinition {
     #[serde(default)]
     pub selection_id_var_key: String,
     #[serde(default)]
+    pub max_selections: usize,
+    #[serde(default)]
+    pub min_selections: usize,
+    #[serde(default)]
+    pub multi_selection_var_keys: Vec<String>,
+    #[serde(default)]
     pub actor_relocations: Vec<ActorRelocationDefinition>,
     #[serde(default)]
     pub narrative_lines: Vec<String>,
