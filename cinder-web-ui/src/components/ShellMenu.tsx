@@ -4,7 +4,7 @@ import Button from './Button'
 import Badge from './Badge'
 import type { UiSnapshot } from '../api'
 
-type View = 'main' | 'about' | 'rooms' | 'follow' | 'language'
+type View = 'main' | 'rooms' | 'follow' | 'language'
 
 interface ShellMenuProps {
   ui: UiSnapshot
@@ -24,17 +24,15 @@ interface FlatItem {
 }
 
 const CANONICAL_ORDER: string[] = [
-  'rooms', 'follow', 'language', 'about', 'exit',
+  'rooms', 'follow', 'language', 'exit',
 ]
 
 const CANONICAL_FALLBACK: { id: string; labelKey: string }[] = [
   { id: 'language', labelKey: 'language_menu_label' },
-  { id: 'about', labelKey: 'about_label' },
   { id: 'exit', labelKey: 'exit_label' },
 ]
 
 const KNOWN_IDS = new Set([
-  'about',
   'rooms', 'follow', 'language',
 ])
 
@@ -69,15 +67,6 @@ export default function ShellMenu({
 }: ShellMenuProps) {
   const t = ui.ui_text
   const items = flattenItems(t)
-
-  if (view === 'about') {
-    return (
-      <Modal title={t.about_label} onClose={onClose}>
-        <MenuBackButton onClick={() => onViewChange('main')} />
-        <p className="whitespace-pre-wrap leading-relaxed text-sm">{ui.about_body}</p>
-      </Modal>
-    )
-  }
 
   if (view === 'rooms') {
     return (
@@ -262,7 +251,6 @@ function MenuBackButton({ onClick }: { onClick: () => void }) {
 }
 
 const VIEW_ROUTE: Record<string, View> = {
-  about: 'about',
   rooms: 'rooms',
   follow: 'follow',
   language: 'language',

@@ -29,7 +29,7 @@ class ErrorBoundary extends Component<{ children: React.ReactNode }, { error: Er
   }
 }
 
-type MenuView = 'main' | 'about' | 'rooms' | 'follow' | 'language'
+type MenuView = 'main' | 'rooms' | 'follow' | 'language'
 
 export default function GamePage() {
   const { id } = useParams<{ id: string }>()
