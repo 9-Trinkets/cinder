@@ -94,6 +94,9 @@
       "summary": "Sleep and end of first day.",
       "update_message": "The first day winds down toward sleep.",
       "beat_note": "This is the last emotional beat before lights out. Let conversations taper into final glances, unfinished thoughts, quiet vulnerability, and the sense that today's first impressions will carry into tomorrow. Actors should settle toward sleep while holding onto one clear feeling about the night: excitement, relief, attraction, suspicion, comfort, regret, or anticipation. End with the sense that the house has started choosing its first bonds and tensions, even if no one can fully name them yet.",
+      "narrative_lines": [
+        "The house settles. Lights dim down the hallway, one by one. Somewhere a door clicks shut. The first day is over — full of introductions, half-read glances, and the kind of silence that happens when eight people are still learning how to share the same air. The cameras stop rolling but the house doesn't sleep. Not yet. There is too much to replay behind closed eyes."
+      ],
       "advance_signals": [
         "time_reached:22:00"
       ],
@@ -107,6 +110,9 @@
       "summary": "Day 2 morning: the house wakes up.",
       "update_message": "Morning of Day 2. The house is waking up.",
       "elapsed_minutes": 660,
+      "narrative_lines": [
+        "Morning light pushes through the blinds. The house stirs — kettle whistling, bare feet on hardwood, someone squinting into the kitchen with last night still written on their face. Day two. The documentary crew is already in position. Today the house splits into groups, and the producers want the player to decide how."
+      ],
       "beat_note": "Morning light fills the house. People are waking up, making coffee, stretching. Today there will be two separate activities — the house will split into groups.",
       "advance_signals": [
         "time_reached:09:00"
@@ -210,6 +216,9 @@
       "summary": "End of Day 2.",
       "update_message": "It is 9:30 PM. Day 2 ends.",
       "beat_note": "A shorter close than last night. The house is tired. Let the final moments be small: a goodnight that lingers a beat too long, a door left slightly open, someone staring at the ceiling. The house has two days of shared memory now. Bonds are forming, even if no one has named them yet.",
+      "narrative_lines": [
+        "The second night falls softer than the first. Conversations trail off mid-sentence. People know each other's silences now, or think they do. The house hums with the low frequency of almost-said things. Tomorrow is the last day — the cameras will pack up, the doors will open, and everyone will have to decide what this was."
+      ],
       "advance_signals": [
         "time_reached:21:20"
       ],
@@ -220,8 +229,11 @@
     },
     {
       "id": "day3-departure",
-      "summary": "Day 3: the house empties.",
+      "summary": "Day 3 departure: the house empties.",
       "update_message": "It is 7 AM. The last morning. Bags are packed by the door.",
+      "narrative_lines": [
+        "The last morning. Sunlight hits the suitcases lined up in the hallway and for a moment the whole house looks like a waiting room. Coffee brews for the final time. Someone takes a photo of the kitchen. No one says why."
+      ],
       "elapsed_minutes": 600,
       "beat_note": "The final morning. Bags are lined up in the hallway. The house looks different when it is full of suitcases — the same rooms, but already becoming memory. Let the morning routines be performed one last time: the last shower, the last coffee, the last look in the mirror. Each goodbye is its own scene: who seeks out whom for a final word, who avoids a goodbye by leaving early, who lingers at the door. The departures should happen in sequence, not all at once. The house gets quieter with each person who leaves. By the time the last two people are standing in the lounge, the rooms feel bigger and the silence is louder. The camera holds on the door after it closes. The house is empty. The documentary is over. But the people who lived here carry something out with them that the camera cannot see.",
       "advance_signals": [

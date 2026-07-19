@@ -201,15 +201,6 @@ export default function GamePage() {
     }
   }, [gameOver])
 
-  useEffect(() => {
-    if (gameOver && uiSnapshot?.session_closure && !sessionClosure) {
-      setSessionClosure(uiSnapshot.session_closure)
-    }
-    if (gameOver && uiSnapshot?.game_closure && !gameClosure) {
-      setGameClosure(uiSnapshot.game_closure)
-    }
-  }, [gameOver, uiSnapshot])
-
   function openMenu() {
     setQuickPanel(null)
     setMenuView('main')
@@ -235,10 +226,10 @@ export default function GamePage() {
       refreshSnapshot()
     }
     if (res.session_closure) {
-      setSessionClosure(res.session_closure)
+      setSessionClosure(prev => prev ?? res.session_closure)
     }
     if (res.game_closure) {
-      setGameClosure(res.game_closure)
+      setGameClosure(prev => prev ?? res.game_closure)
     }
     if (res.movie) {
       setMovie(res.movie)

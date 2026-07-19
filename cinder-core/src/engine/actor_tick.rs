@@ -134,6 +134,19 @@ pub(crate) fn decide_movement(
     current_room_id: &str,
     preferred_target_room_id: Option<&str>,
 ) -> Result<Vec<WorldEvent>, Box<dyn Error>> {
+    if let Some(target_room_id) = evaluate_target_rules(state, current_room_id, &rules.target_rules) {
+        if target_room_id != current_room_id {
+            if let Some(next_room) = next_room_toward(&content, current_room_id, &target_room_id) {
+                let events = vec![WorldEvent::ActorMoved {
+                    actor_id: actor.id.clone(),
+                    from_room_id: current_room_id.to_string(),
+                    to_room_id: next_room,
+                }];
+                return Ok(events);
+            }
+        }
+        return Ok(vec![]);
+    }
     let input = ActorTurnWorkflowInput {
         actor_id: actor.id.clone(),
         current_room_id: current_room_id.to_string(),
@@ -642,6 +655,35 @@ fn complete_tick_workflow(events: &[WorldEvent]) -> Result<String, String> {
         .map_err(|error| error.to_string())?,
     })
     .map_err(|error| error.to_string())
+}
+
+fn evaluate_target_rules(
+    state: &WorldState,
+    current_room_id: &str,
+    target_rules: &[ActorMovementTargetRuleDefinition],
+) -> Option<String> {
+    for rule in target_rules {
+        if !rule.when_player_room_id.is_empty()
+            && rule.when_player_room_id != state.current_room_id
+        {
+            continue;
+        }
+        if !rule.required_story_var.is_empty()
+            && !state.story_vars.contains_key(&rule.required_story_var)
+        {
+            continue;
+        }
+        if !rule.any_active_stage_ids.is_empty()
+            && !rule
+                .any_active_stage_ids
+                .iter()
+                .any(|id| state.active_objective_stage_ids.contains(id))
+        {
+            continue;
+        }
+        return Some(rule.target_room_id.clone());
+    }
+    None
 }
 
 fn build_decision_cases(
