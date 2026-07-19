@@ -24,12 +24,10 @@ interface FlatItem {
 }
 
 const CANONICAL_ORDER: string[] = [
-  'resume',
   'rooms', 'follow', 'language', 'about', 'exit',
 ]
 
 const CANONICAL_FALLBACK: { id: string; labelKey: string }[] = [
-  { id: 'resume', labelKey: 'resume_label' },
   { id: 'language', labelKey: 'language_menu_label' },
   { id: 'about', labelKey: 'about_label' },
   { id: 'exit', labelKey: 'exit_label' },
@@ -41,7 +39,7 @@ const KNOWN_IDS = new Set([
 ])
 
 function isKnownMenuItem(id: string): boolean {
-  return id === 'resume' || id === 'exit' || KNOWN_IDS.has(id) || !!VIEW_ROUTE[id]
+  return id === 'exit' || KNOWN_IDS.has(id) || !!VIEW_ROUTE[id]
 }
 
 function flattenItems(t: UiSnapshot['ui_text']): FlatItem[] {
@@ -218,19 +216,6 @@ function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy }: MainMen
           )
         }
 
-        if (item.id === 'resume') {
-          return (
-            <Button
-              key={item.id}
-              variant="secondary"
-              className="block w-full text-left"
-              onClick={onClose}
-            >
-              {item.label}
-            </Button>
-          )
-        }
-
         if (hasChildren) {
           const children = packItem!.children!
           return (
@@ -290,7 +275,6 @@ function handleItemClick(
   onExit: () => void,
 ) {
   if (id === 'exit') { onExit(); return }
-  if (id === 'resume') { onClose(); return }
   const view = VIEW_ROUTE[id]
   if (view) onViewChange(view)
 }

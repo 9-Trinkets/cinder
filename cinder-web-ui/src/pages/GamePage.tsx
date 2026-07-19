@@ -201,6 +201,17 @@ export default function GamePage() {
     }
   }, [gameOver])
 
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape' && !showMenu) {
+        e.preventDefault()
+        openMenu()
+      }
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [showMenu])
+
   function openMenu() {
     setQuickPanel(null)
     setMenuView('main')
