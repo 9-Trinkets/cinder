@@ -22,7 +22,7 @@ use crate::engine::workflows::{
     cinder_npc_tick_workflow_path, cinder_npc_turn_workflow_path, workflow_path_for_id,
 };
 use serde::Serialize;
-use std::collections::HashMap;
+use std::collections::{BTreeMap, HashMap};
 use std::error::Error;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
@@ -693,6 +693,14 @@ impl CinderRuntime {
             .lock()
             .map_err(|_| "failed to lock runtime state for inventory")?;
         Ok(state.player_inventory.clone())
+    }
+
+    pub fn feature_consumable_stock(&self) -> Result<BTreeMap<String, u32>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for consumable stock")?;
+        Ok(state.feature_consumable_stock.clone())
     }
 
     pub fn active_stage_ids(&self) -> Result<Vec<String>, Box<dyn Error>> {

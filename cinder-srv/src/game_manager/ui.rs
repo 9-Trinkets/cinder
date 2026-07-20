@@ -26,6 +26,20 @@ pub struct InventoryItem {
 }
 
 #[derive(Clone, Serialize)]
+pub struct ConsumableInfo {
+    pub id: String,
+    pub label: String,
+    pub kind: String,
+    pub stock: u32,
+}
+
+#[derive(Clone, Serialize)]
+pub struct RoomConsumableGroup {
+    pub feature_label: String,
+    pub items: Vec<ConsumableInfo>,
+}
+
+#[derive(Clone, Serialize)]
 pub struct ActionBarAction {
     pub id: String,
     pub label: String,
@@ -95,6 +109,7 @@ pub struct UiSnapshot {
     pub session_closure: Option<SessionClosure>,
     pub game_closure: Option<SessionClosure>,
     pub inventory: Vec<InventoryItem>,
+    pub room_consumables: Vec<RoomConsumableGroup>,
     pub theme: cinder_core::content::types::ThemeDefinition,
 }
 
@@ -367,6 +382,39 @@ pub(super) fn build_ui_snapshot(
                 InventoryItem { label, count }
             })
             .collect(),
+        room_consumables: {
+            let stock = runtime.feature_consumable_stock().unwrap_or_default();
+            content
+                .room_consumables(&current_room_id)
+                .into_iter()
+                .filter(|c| {
+                    let key = format!("{}::{}::{}", current_room_id, c.feature.id, c.consumable.id);
+                    stock.get(&key).copied().unwrap_or(0) > 0
+                })
+                .fold(Vec::<RoomConsumableGroup>::new(), |mut groups, c| {
+                    let key = format!("{}::{}::{}", current_room_id, c.feature.id, c.consumable.id);
+                    let remaining = stock.get(&key).copied().unwrap_or(0);
+                    if let Some(group) = groups.iter_mut().find(|g| g.feature_label == c.feature.label) {
+                        group.items.push(ConsumableInfo {
+                            id: c.consumable.id.clone(),
+                            label: c.consumable.label.clone(),
+                            kind: format!("{:?}", c.consumable.kind).to_lowercase(),
+                            stock: remaining,
+                        });
+                    } else {
+                        groups.push(RoomConsumableGroup {
+                            feature_label: c.feature.label.clone(),
+                            items: vec![ConsumableInfo {
+                                id: c.consumable.id.clone(),
+                                label: c.consumable.label.clone(),
+                                kind: format!("{:?}", c.consumable.kind).to_lowercase(),
+                                stock: remaining,
+                            }],
+                        });
+                    }
+                    groups
+                })
+        },
         theme: content.settings.theme.clone(),
     })
 }

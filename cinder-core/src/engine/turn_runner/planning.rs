@@ -157,6 +157,27 @@ pub(super) fn plan_content_command(
             item_id: item_id.clone(),
         });
     }
+    if let Some(spec) = &command.creates_consumable {
+        let consumable_id = spec
+            .story_var
+            .as_ref()
+            .and_then(|var_key| context.planner_state.story_vars.get(var_key))
+            .map(|v| v.as_str())
+            .unwrap_or(&spec.consumable_id);
+        if let Some(room) = content.room(context.current_room_id) {
+            if let Some(feature) = room.features.iter().find(|f| {
+                f.consumables
+                    .iter()
+                    .any(|c| c.id == consumable_id)
+            }) {
+                planned.events.push(WorldEvent::ConsumableCreated {
+                    room_id: context.current_room_id.to_string(),
+                    feature_id: feature.id.clone(),
+                    consumable_id: consumable_id.to_string(),
+                });
+            }
+        }
+    }
     if let Some(item_id) = &command.consumes_item {
         // Use the first actor in the room as the recipient
         let recipient = content

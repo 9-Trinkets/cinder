@@ -267,6 +267,7 @@ fn test_command() -> CommandDefinition {
         player_command: None,
         allowed_rooms: vec![],
         creates_item: None,
+        creates_consumable: None,
         consumes_item: None,
         requires_any: vec![],
         consumes_any: vec![],

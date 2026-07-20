@@ -631,6 +631,22 @@ pub(super) fn handle_item_acquired(
     lines.push(format!("You have {label} ready."));
 }
 
+pub(super) fn handle_consumable_created(
+    state: &mut WorldState,
+    content: &ContentPack,
+    room_id: &str,
+    feature_id: &str,
+    consumable_id: &str,
+    lines: &mut Vec<String>,
+) {
+    let label = content
+        .room_consumable(room_id, feature_id, consumable_id)
+        .map(|r| r.consumable.label.clone())
+        .unwrap_or_else(|| consumable_id.to_string());
+    state.restock_feature_consumable(room_id, feature_id, consumable_id, 1);
+    lines.push(format!("A fresh {label} is ready."));
+}
+
 pub(super) fn handle_item_consumed(
     state: &mut WorldState,
     content: &ContentPack,

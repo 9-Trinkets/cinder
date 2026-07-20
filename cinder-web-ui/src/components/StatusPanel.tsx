@@ -32,6 +32,23 @@ export default function StatusPanel({ uiSnapshot }: { uiSnapshot: api.UiSnapshot
           </ul>
         </div>
       )}
+      {uiSnapshot.room_consumables.length > 0 && (
+        <div>
+          <p className="text-xs text-muted uppercase tracking-wider">Available</p>
+          {uiSnapshot.room_consumables.map((group, gi) => (
+            <div key={gi} className="mt-1">
+              <p className="text-text text-xs font-medium">{group.feature_label}</p>
+              <ul className="space-y-0.5">
+                {group.items.map((item) => (
+                  <li key={item.id} className="text-text text-xs">
+                    • {item.label}{item.stock > 1 ? <span className="text-muted ml-1">×{item.stock}</span> : null}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )}
       <div>
         <p className="text-xs text-muted uppercase tracking-wider">What now?</p>
         <p className="text-text text-xs leading-relaxed">

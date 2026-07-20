@@ -410,6 +410,19 @@ impl WorldState {
         true
     }
 
+    pub fn restock_feature_consumable(
+        &mut self,
+        room_id: &str,
+        feature_id: &str,
+        consumable_id: &str,
+        amount: u32,
+    ) -> bool {
+        let key = consumable_key(room_id, feature_id, consumable_id);
+        let entry = self.feature_consumable_stock.entry(key).or_insert(0);
+        *entry += amount;
+        true
+    }
+
     pub fn set_pending_reply(
         &mut self,
         speaker_id: &str,

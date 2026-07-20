@@ -131,31 +131,44 @@
         ],
         "consumables": [
           {
-            "id": "soy-ginger-noodles",
-            "label": "soy-ginger noodles",
+            "id": "garlic-noodles",
+            "label": "garlic butter noodles",
             "aliases": [
               "noodles",
-              "dinner noodles"
+              "garlic noodles"
             ],
             "tags": [
               "vegan"
             ],
             "kind": "eat",
-            "initial_stock": 6,
+            "initial_stock": 0,
             "hunger_recovery": 8
           },
           {
-            "id": "roasted-vegetables",
-            "label": "roasted vegetables",
+            "id": "miso-salmon",
+            "label": "miso-glazed salmon",
             "aliases": [
-              "vegetables",
-              "veg"
+              "salmon",
+              "miso salmon"
+            ],
+            "tags": [],
+            "kind": "eat",
+            "initial_stock": 0,
+            "hunger_recovery": 9
+          },
+          {
+            "id": "vegetable-stir-fry",
+            "label": "vegetable stir-fry",
+            "aliases": [
+              "stir-fry",
+              "stir fry",
+              "veg stir-fry"
             ],
             "tags": [
               "vegan"
             ],
             "kind": "eat",
-            "initial_stock": 6,
+            "initial_stock": 0,
             "hunger_recovery": 6
           },
           {
@@ -172,9 +185,39 @@
             "initial_stock": 6,
             "hunger_recovery": 2,
             "stamina_recovery": 2
+          },
+          {
+            "id": "yuzu-lemonade",
+            "label": "yuzu lemonade",
+            "aliases": [
+              "lemonade",
+              "yuzu"
+            ],
+            "tags": [
+              "vegan"
+            ],
+            "kind": "drink",
+            "initial_stock": 0,
+            "hunger_recovery": 2,
+            "stamina_recovery": 2
+          },
+          {
+            "id": "iced-matcha",
+            "label": "iced matcha latte",
+            "aliases": [
+              "matcha",
+              "iced matcha"
+            ],
+            "tags": [
+              "vegan"
+            ],
+            "kind": "drink",
+            "initial_stock": 0,
+            "hunger_recovery": 1,
+            "stamina_recovery": 3
           }
         ],
-        "inspect_text": "The island practically demands shared prep work. Tonight it also holds the first real dinner spread: glossy noodles, roasted vegetables, and a pitcher of citrus iced tea waiting for people to finally stop hovering and eat."
+        "inspect_text": "The island practically demands shared prep work. A cutting board and knife sit ready, and the counter has space for whatever tonight's cook decides to make."
       },
       {
         "id": "fridge",
@@ -184,19 +227,6 @@
           "refrigerator"
         ],
         "consumables": [
-          {
-            "id": "cut-fruit",
-            "label": "cut fruit",
-            "aliases": [
-              "fruit"
-            ],
-            "tags": [
-              "vegan"
-            ],
-            "kind": "eat",
-            "initial_stock": 4,
-            "hunger_recovery": 2
-          },
           {
             "id": "sparkling-water",
             "label": "sparkling water",
@@ -212,21 +242,21 @@
             "stamina_recovery": 1
           },
           {
-            "id": "energy-gel",
-            "label": "energy gel",
+            "id": "herbal-tea",
+            "label": "herbal tea",
             "aliases": [
-              "gel"
+              "tea"
             ],
             "tags": [
               "vegan"
             ],
-            "kind": "consume",
-            "initial_stock": 4,
+            "kind": "drink",
+            "initial_stock": 0,
             "hunger_recovery": 1,
-            "stamina_recovery": 2
+            "stamina_recovery": 3
           }
         ],
-        "inspect_text": "The fridge is still full of first-week optimism: ingredients, sparkling water, careful purchases, and the fantasy that strangers can become a household through logistics."
+        "inspect_text": "The fridge hums steadily, stocked with sparkling water and whatever fresh ingredients the household has gathered."
       }
     ],
     "exits": [

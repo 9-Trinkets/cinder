@@ -88,6 +88,13 @@ pub struct PlayerCommandMetadata {
     pub input: Option<PlayerCommandInputMetadata>,
 }
 
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct CreatesConsumableSpec {
+    pub consumable_id: String,
+    #[serde(default)]
+    pub story_var: Option<String>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct CommandDefinition {
     pub id: String,
@@ -120,6 +127,8 @@ pub struct CommandDefinition {
     pub allowed_rooms: Vec<String>,
     #[serde(default)]
     pub creates_item: Option<String>,
+    #[serde(default)]
+    pub creates_consumable: Option<CreatesConsumableSpec>,
     #[serde(default)]
     pub consumes_item: Option<String>,
     #[serde(default)]

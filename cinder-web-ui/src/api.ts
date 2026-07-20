@@ -174,6 +174,18 @@ export interface InventoryItem {
   count: number
 }
 
+export interface ConsumableInfo {
+  id: string
+  label: string
+  kind: string
+  stock: number
+}
+
+export interface RoomConsumableGroup {
+  feature_label: string
+  items: ConsumableInfo[]
+}
+
 export interface ThemeDefinition {
   base: string
   surface: string
@@ -220,6 +232,7 @@ export interface UiSnapshot {
   session_closure: SessionClosureData | null
   game_closure: SessionClosureData | null
   inventory: InventoryItem[]
+  room_consumables: RoomConsumableGroup[]
   theme: ThemeDefinition
   ui_text: {
     language_name: string

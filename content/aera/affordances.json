@@ -80,6 +80,22 @@
       "command_id": "act",
       "sort_order": 9,
       "visible_by_default": true
+    },
+    {
+      "id": "cook",
+      "group": "kitchen",
+      "prompt_verb": "cook",
+      "command_id": "cook",
+      "sort_order": 10,
+      "visible_by_default": true
+    },
+    {
+      "id": "brew",
+      "group": "kitchen",
+      "prompt_verb": "brew",
+      "command_id": "brew",
+      "sort_order": 11,
+      "visible_by_default": true
     }
   ]
 }

@@ -124,6 +124,11 @@ pub enum WorldEvent {
     ItemAcquired {
         item_id: String,
     },
+    ConsumableCreated {
+        room_id: String,
+        feature_id: String,
+        consumable_id: String,
+    },
     ItemConsumed {
         item_id: String,
         consumer_id: String,

@@ -124,6 +124,32 @@
       "target_mode": "none",
       "input_mode": "freeform_text",
       "effects": ["remember_in_room"]
+    },
+    {
+      "id": "cook",
+      "command": "COOK",
+      "target_mode": "none",
+      "effects": ["remember_in_room"],
+      "hook_id": "actor.cooked",
+      "event_text": "{actor_name} works the kitchen with quiet focus, the pan hissing as ingredients come together.",
+      "allowed_rooms": ["kitchen"],
+      "creates_consumable": {
+        "consumable_id": "garlic-noodles",
+        "story_var": "cook_recipe"
+      }
+    },
+    {
+      "id": "brew",
+      "command": "BREW",
+      "target_mode": "none",
+      "effects": ["remember_in_room"],
+      "hook_id": "actor.brewed",
+      "event_text": "{actor_name} puts together a fresh drink, the kitchen filling with something light and cool.",
+      "allowed_rooms": ["kitchen"],
+      "creates_consumable": {
+        "consumable_id": "yuzu-lemonade",
+        "story_var": "brew_recipe"
+      }
     }
   ]
 }
