@@ -78,6 +78,27 @@ pub(super) fn handle_actor_command_used(
     )?;
     record_actor_command_memory(state, content, command, &command_context, &command_text);
     apply_actor_command_effects(state, content, command, &command_context);
+    if let Some(spec) = &command.creates_consumable {
+        let resolved_id = spec
+            .story_var
+            .as_ref()
+            .and_then(|var_key| state.story_vars.get(var_key).map(|v| v.as_str()))
+            .unwrap_or(&spec.consumable_id);
+        let resolved_id = resolved_id.to_string();
+        let target_feature_id = content.room(command_context.room_id).and_then(|room| {
+            room.features.iter().find(|f| {
+                f.consumables.iter().any(|c| c.id == resolved_id)
+            }).map(|f| f.id.clone())
+        });
+        if let Some(target_feature_id) = target_feature_id {
+            state.restock_feature_consumable(
+                command_context.room_id,
+                &target_feature_id,
+                &resolved_id,
+                1,
+            );
+        }
+    }
     if command.has_effect(CommandEffect::MoveActor) {
         if let Some(target_room_id) = target_room_id {
             apply_actor_move_transition(

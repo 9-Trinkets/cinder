@@ -552,6 +552,9 @@ impl CinderRuntime {
                     "to_room_id": to_room_id,
                 }),
             );
+            if state.followed_actor_id.as_deref() == Some(actor_id.as_str()) {
+                state.current_room_id = to_room_id.clone();
+            }
         }
         state.story_vars.insert(applied_flag, "true".to_string());
         if !config.group_story_var_key.trim().is_empty() {
