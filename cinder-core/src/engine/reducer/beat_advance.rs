@@ -92,6 +92,9 @@ pub(super) fn advance_objective_for_signal(
                             eprintln!("[cinder] on_advance_effect error: {e}");
                         }
                     }
+                    AdvanceEffect::SetStoryVar { key, value } => {
+                        state.story_vars.insert(key.clone(), value.clone());
+                    }
                 }
             }
             if next_stage.end_session {

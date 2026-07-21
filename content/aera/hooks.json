@@ -760,14 +760,19 @@
         {
           "conditions": [
             {
-              "path": "hunger",
-              "operator": "greater_than",
-              "value": 4
+              "path": "cooking_needed",
+              "operator": "equal",
+              "value": true
             },
             {
-              "path": "has_food_consumable",
+              "path": "has_cook_affordance",
               "operator": "equal",
-              "value": false
+              "value": true
+            },
+            {
+              "path": "food_stock_deficit",
+              "operator": "greater_than",
+              "value": 0
             }
           ],
           "payload_template": {

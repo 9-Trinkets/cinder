@@ -2,7 +2,8 @@ use crate::content::types::{ActorDefinition, ActorMovementRulesDefinition, Conte
 use crate::engine::actor_tick::decide_movement;
 use crate::engine::dialogue::{
     ActorTurnActionDecision, ActorTurnActionRequest, ActorTurnAffordanceTarget,
-    ActorTurnSpeakCandidate, DialogueGenerator, build_actor_turn_affordance_option,
+    ActorTurnCommandInvocation, ActorTurnSpeakCandidate, DialogueGenerator,
+    build_actor_turn_affordance_option,
 };
 use crate::engine::dialogue_grounding::{
     current_objective_beat_notes, latest_other_person_message, recent_exchange_memory,
@@ -518,6 +519,24 @@ pub fn run_actor_turn(
         has_food_consumable: consume_candidates
             .iter()
             .any(|candidate| candidate.kind == crate::content::types::ConsumableKind::Eat),
+        has_cook_affordance: affordances.iter().any(|affordance| {
+            matches!(
+                &affordance.option.invocation,
+                ActorTurnCommandInvocation::Command {
+                    command_id, ..
+                } if command_id == "cook" || command_id == "brew"
+            )
+        }),
+        cooking_needed: state
+            .story_vars
+            .get("cooking_needed")
+            .map(|v| v == "true")
+            .unwrap_or(false),
+        food_stock: consume_candidates
+            .iter()
+            .filter(|c| c.kind == crate::content::types::ConsumableKind::Eat)
+            .count(),
+        actor_count: state.actor_stats.len(),
         consume_target_item_id: preferred_hunger_recovery_consume_item_id(&consume_candidates),
         has_pending_movement_target: resolved_movement_rule_target_room_id(state, rules)
             .is_some_and(|target_room_id| target_room_id != current_room_id),

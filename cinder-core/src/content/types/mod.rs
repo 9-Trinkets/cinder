@@ -209,6 +209,10 @@ pub enum AdvanceEffect {
         stat: String,
         delta: i32,
     },
+    SetStoryVar {
+        key: String,
+        value: String,
+    },
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

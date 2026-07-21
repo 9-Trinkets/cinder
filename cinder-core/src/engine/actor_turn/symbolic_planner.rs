@@ -33,6 +33,10 @@ pub struct SymbolicPlannerInput {
     pub has_rest_affordance: bool,
     pub has_hunger_recovery_consumable: bool,
     pub has_food_consumable: bool,
+    pub has_cook_affordance: bool,
+    pub cooking_needed: bool,
+    pub food_stock: usize,
+    pub food_stock_deficit: i32,
     pub has_pending_movement_target: bool,
     pub has_move_affordance: bool,
     pub has_speak_room_affordance: bool,
@@ -263,6 +267,10 @@ pub fn build_symbolic_action_planner_input(
         has_rest_affordance: request.has_rest_affordance,
         has_hunger_recovery_consumable: request.has_hunger_recovery_consumable,
         has_food_consumable: request.has_food_consumable,
+        has_cook_affordance: request.has_cook_affordance,
+        cooking_needed: request.cooking_needed,
+        food_stock: request.food_stock,
+        food_stock_deficit: request.actor_count as i32 - request.food_stock as i32,
         has_pending_movement_target: request.has_pending_movement_target,
         has_move_affordance: request.affordances.iter().any(|affordance| {
             matches!(

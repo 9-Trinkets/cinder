@@ -23,6 +23,13 @@
       "advance_signals": [
         "time_reached:18:30"
       ],
+      "on_advance_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "cooking_needed",
+          "value": "true"
+        }
+      ],
       "stage_assignment": {
         "selection_label": "dinner prep",
         "prompt_instructions": "Score how likely each candidate is to join Ren in the kitchen during dinner prep instead of remaining in the lounge. Favor candidates who would seek closeness through usefulness, comfort, curiosity, flirtation, or an easy practical rhythm with Ren. Lower the score when a candidate would rather observe, hold the room socially, avoid domestic intimacy, or wait to see what forms elsewhere.",
@@ -47,6 +54,13 @@
       "beat_note": "Dinner follows directly from the prep split. The meal should carry forward whatever alignment the kitchen and lounge just created: who already feels easy together, who is arriving from a separate vibe, who now has to bridge a gap, and who uses food to keep a promising thread going. Let eating together do the social work: who sits close to whom, who serves others without being asked, who is particular about what they take, who uses the meal to stay near someone, and who arrives already feeling left out or newly included. Make the communal dinner feel a little more charged because the house has already had a chance to divide and recombine.",
       "advance_signals": [
         "time_reached:19:30"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "cooking_needed",
+          "value": "false"
+        }
       ],
       "next_stage_ids": [
         "talk-after-dinner"
