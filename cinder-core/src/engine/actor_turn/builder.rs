@@ -401,6 +401,28 @@ pub fn build_actor_turn(
             ),
         ));
     }
+    for affordance in &content.affordances.actions {
+        if let Some(command) = content.command(&affordance.command_id)
+            && !command.allowed_rooms.is_empty()
+            && command.allowed_rooms.contains(&current_room_id)
+            && !affordance_candidates
+                .iter()
+                .any(|c| c.option.affordance_id == affordance.id)
+        {
+            affordance_candidates.push(ActorAffordanceCandidate::new(
+                affordance,
+                build_actor_turn_affordance_option(
+                    &content.system_text,
+                    &affordance.id,
+                    &affordance.group,
+                    &affordance.prompt_verb,
+                    None,
+                    command,
+                    ActorTurnAffordanceTarget::Act,
+                ),
+            ));
+        }
+    }
     let guidance_affordances = guidance_affordance_inputs(content.as_ref(), &affordance_candidates);
     let guidance = actor_turn_guidance(
         content.as_ref(),
