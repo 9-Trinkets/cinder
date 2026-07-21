@@ -447,7 +447,7 @@ export default function GamePage() {
       <div style={uiSnapshot?.theme ? themeVars(uiSnapshot.theme) : undefined} className="contents">
       <header className="sticky top-0 z-10 bg-surface flex items-center justify-between gap-3 px-4 py-3 border-b border-subtle shrink-0">
         <div className="flex items-center gap-2">
-          <button onClick={() => navigate('/games')} className="text-sm text-muted hover:text-text cursor-pointer">&larr; Games</button>
+          <button onClick={() => navigate(`/games/pack/${uiSnapshot?.pack_id}`)} className="text-sm text-muted hover:text-text cursor-pointer">&larr; Back</button>
           <button
             onClick={openMenu}
             disabled={busy}

@@ -205,6 +205,7 @@ export interface ThemeDefinition {
 }
 
 export interface UiSnapshot {
+  pack_id: string
   title: string
   time_label: string
   npc_tick_interval_ms: number

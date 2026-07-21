@@ -81,6 +81,7 @@ pub struct ActiveMenuData {
 
 #[derive(Clone, Serialize)]
 pub struct UiSnapshot {
+    pub pack_id: String,
     pub title: String,
     pub time_label: String,
     pub npc_tick_interval_ms: u64,
@@ -335,6 +336,7 @@ pub(super) fn build_ui_snapshot(
     }
 
     Ok(UiSnapshot {
+        pack_id: pack_id.to_string(),
         title: content.opening.title.clone(),
         time_label,
         npc_tick_interval_ms: content.settings.npc_tick_interval_ms,
