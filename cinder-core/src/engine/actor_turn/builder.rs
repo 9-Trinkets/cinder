@@ -488,6 +488,9 @@ pub fn build_actor_turn(
         has_hunger_recovery_consumable: consume_candidates
             .iter()
             .any(|candidate| candidate.hunger_recovery > 0),
+        has_food_consumable: consume_candidates
+            .iter()
+            .any(|candidate| candidate.kind == crate::content::types::ConsumableKind::Eat),
         consume_target_item_id: preferred_hunger_recovery_consume_item_id(&consume_candidates),
         has_pending_movement_target: resolved_movement_rule_target_room_id(state, rules)
             .is_some_and(|target_room_id| target_room_id != current_room_id),

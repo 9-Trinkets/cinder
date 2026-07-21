@@ -108,6 +108,34 @@ pub fn consume_decision_for_item(
         })
 }
 
+pub fn cook_decision(request: &ActorTurnActionRequest) -> Option<ActorTurnActionDecision> {
+    request
+        .affordances
+        .iter()
+        .find_map(|affordance| match &affordance.invocation {
+            ActorTurnCommandInvocation::Command {
+                command_id,
+                target_room_id,
+                target_actor_id,
+                feature_id,
+                consumable_id,
+                context_label,
+                input_mode: CommandInputMode::None,
+            } if command_id == "cook" || command_id == "brew" => {
+                Some(ActorTurnActionDecision::Command {
+                    command_id: command_id.clone(),
+                    target_room_id: target_room_id.clone(),
+                    target_actor_id: target_actor_id.clone(),
+                    feature_id: feature_id.clone(),
+                    consumable_id: consumable_id.clone(),
+                    context_label: context_label.clone(),
+                    freeform_text: None,
+                })
+            }
+            _ => None,
+        })
+}
+
 pub fn directly_addressed_target_actor_id(request: &ActorTurnActionRequest) -> Option<String> {
     request
         .speak_candidates

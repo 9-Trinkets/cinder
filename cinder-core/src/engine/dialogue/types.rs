@@ -114,6 +114,7 @@ pub struct ActorTurnActionRequest {
     pub actor_stats: BTreeMap<String, i32>,
     pub has_rest_affordance: bool,
     pub has_hunger_recovery_consumable: bool,
+    pub has_food_consumable: bool,
     pub consume_target_item_id: Option<String>,
     pub has_pending_movement_target: bool,
     pub move_target_room_id: Option<String>,

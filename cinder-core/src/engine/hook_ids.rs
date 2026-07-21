@@ -9,6 +9,7 @@ pub const TURN_ACTION_GUIDANCE: &str = "actor.turn_action_guidance";
 pub const TURN_SHOULD_SPEAK: &str = "actor.turn_should_speak";
 pub const TURN_SHOULD_REST: &str = "actor.turn_should_rest";
 pub const TURN_SHOULD_CONSUME: &str = "actor.turn_should_consume";
+pub const TURN_SHOULD_COOK: &str = "actor.turn_should_cook";
 pub const TURN_SHOULD_MOVE: &str = "actor.turn_should_move";
 pub const TURN_SHOULD_DIRECT_SPEECH: &str = "actor.turn_should_direct_speech";
 pub const STATE_NOTES: &str = "actor.state_notes";

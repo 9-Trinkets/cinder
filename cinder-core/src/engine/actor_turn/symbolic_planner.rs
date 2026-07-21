@@ -8,8 +8,9 @@ use serde::{Deserialize, Serialize};
 use std::error::Error;
 
 use super::decisions::{
-    consume_decision_for_item, directly_addressed_target_actor_id, has_clearly_preferred_target,
-    preferred_target_actor_id, quiet_room_action_decision, rest_decision,
+    consume_decision_for_item, cook_decision, directly_addressed_target_actor_id,
+    has_clearly_preferred_target, preferred_target_actor_id, quiet_room_action_decision,
+    rest_decision,
 };
 
 #[derive(Debug, Clone, Serialize)]
@@ -31,6 +32,7 @@ pub struct SymbolicPlannerInput {
     pub hunger: i32,
     pub has_rest_affordance: bool,
     pub has_hunger_recovery_consumable: bool,
+    pub has_food_consumable: bool,
     pub has_pending_movement_target: bool,
     pub has_move_affordance: bool,
     pub has_speak_room_affordance: bool,
@@ -69,6 +71,18 @@ pub fn select_symbolic_actor_turn_action(
     if should_consume
         && let Some(item_id) = request.consume_target_item_id.as_deref()
         && let Some(decision) = consume_decision_for_item(request, item_id)
+    {
+        return Ok(decision);
+    }
+    let should_cook = content
+        .hook(hook_ids::TURN_SHOULD_COOK)
+        .map(|config| {
+            evaluate_symbolic_boolean_rule(config.clone(), serde_json::to_value(symbolic_input)?)
+        })
+        .transpose()?
+        .unwrap_or(false);
+    if should_cook
+        && let Some(decision) = cook_decision(request)
     {
         return Ok(decision);
     }
@@ -248,6 +262,7 @@ pub fn build_symbolic_action_planner_input(
             .unwrap_or_default(),
         has_rest_affordance: request.has_rest_affordance,
         has_hunger_recovery_consumable: request.has_hunger_recovery_consumable,
+        has_food_consumable: request.has_food_consumable,
         has_pending_movement_target: request.has_pending_movement_target,
         has_move_affordance: request.affordances.iter().any(|affordance| {
             matches!(
