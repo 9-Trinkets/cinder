@@ -158,12 +158,24 @@ pub(super) fn plan_content_command(
         });
     }
     if let Some(spec) = &command.creates_consumable {
-        let consumable_id = spec
-            .story_var
-            .as_ref()
-            .and_then(|var_key| context.planner_state.story_vars.get(var_key))
-            .map(|v| v.as_str())
-            .unwrap_or(&spec.consumable_id);
+        let consumable_id = if spec.resolve_from_target {
+            let input_val = input.unwrap_or_default().trim();
+            resolve_actor_reference_input(
+                content,
+                context.planner_state,
+                context.current_room_id,
+                input_val,
+            )
+            .map(|resolved| format!("clip-{}", resolved.actor_id))
+            .unwrap_or_else(|| spec.consumable_id.clone())
+        } else {
+            spec.story_var
+                .as_ref()
+                .and_then(|var_key| context.planner_state.story_vars.get(var_key))
+                .map(|v| v.as_str())
+                .unwrap_or(&spec.consumable_id)
+                .to_string()
+        };
         if let Some(room) = content.room(context.current_room_id) {
             if let Some(feature) = room.features.iter().find(|f| {
                 f.consumables
@@ -173,7 +185,7 @@ pub(super) fn plan_content_command(
                 planned.events.push(WorldEvent::ConsumableCreated {
                     room_id: context.current_room_id.to_string(),
                     feature_id: feature.id.clone(),
-                    consumable_id: consumable_id.to_string(),
+                    consumable_id,
                 });
             }
         }

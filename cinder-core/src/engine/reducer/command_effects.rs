@@ -79,12 +79,18 @@ pub(super) fn handle_actor_command_used(
     record_actor_command_memory(state, content, command, &command_context, &command_text);
     apply_actor_command_effects(state, content, command, &command_context);
     if let Some(spec) = &command.creates_consumable {
-        let resolved_id = spec
-            .story_var
-            .as_ref()
-            .and_then(|var_key| state.story_vars.get(var_key).map(|v| v.as_str()))
-            .unwrap_or(&spec.consumable_id);
-        let resolved_id = resolved_id.to_string();
+        let resolved_id = if spec.resolve_from_target {
+            command_context
+                .target_actor_id
+                .map(|tid| format!("clip-{}", tid))
+                .unwrap_or_else(|| spec.consumable_id.clone())
+        } else {
+            spec.story_var
+                .as_ref()
+                .and_then(|var_key| state.story_vars.get(var_key).map(|v| v.as_str()))
+                .unwrap_or(&spec.consumable_id)
+                .to_string()
+        };
         let target_feature_id = content.room(command_context.room_id).and_then(|room| {
             room.features.iter().find(|f| {
                 f.consumables.iter().any(|c| c.id == resolved_id)

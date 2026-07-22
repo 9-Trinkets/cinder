@@ -348,7 +348,41 @@
           "desk",
           "computer"
         ],
-        "inspect_text": "The desk is crowded with headphones, adapters, notebooks, and careful disorder. It belongs to someone whose work depends on seeing patterns other people miss."
+        "inspect_text": "The desk is crowded with headphones, adapters, notebooks, and careful disorder. It belongs to someone whose work depends on seeing patterns other people miss.",
+        "consumables": [
+          {
+            "id": "clip-ren",
+            "label": "clip of Ren",
+            "aliases": ["ren clip", "ren footage"],
+            "tags": ["video-clip"],
+            "kind": "video_clip",
+            "initial_stock": 0
+          },
+          {
+            "id": "clip-aera",
+            "label": "clip of Aera",
+            "aliases": ["aera clip", "aera footage"],
+            "tags": ["video-clip"],
+            "kind": "video_clip",
+            "initial_stock": 0
+          },
+          {
+            "id": "clip-mio",
+            "label": "clip of Mio",
+            "aliases": ["mio clip", "mio footage"],
+            "tags": ["video-clip"],
+            "kind": "video_clip",
+            "initial_stock": 0
+          },
+          {
+            "id": "clip-daichi",
+            "label": "clip of Daichi",
+            "aliases": ["daichi clip", "daichi footage"],
+            "tags": ["video-clip"],
+            "kind": "video_clip",
+            "initial_stock": 0
+          }
+        ]
       }
     ],
     "exits": [

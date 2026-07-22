@@ -308,16 +308,22 @@ pub async fn run_command(
             game_closure,
             ui_snapshot: Some(ui_snapshot),
         };
-        let transcript_entries = vec![
-            PendingTranscriptEntry {
+        let transcript_entries = {
+            let mut entries = vec![PendingTranscriptEntry {
                 role: "player".to_string(),
                 text: input_owned.clone(),
-            },
-            PendingTranscriptEntry {
-                role: "narrative".to_string(),
-                text: response.text.clone(),
-            },
-        ];
+            }];
+            for line in response.text.split("\n\n") {
+                let trimmed = line.trim();
+                if !trimmed.is_empty() {
+                    entries.push(PendingTranscriptEntry {
+                        role: "narrative".to_string(),
+                        text: trimmed.to_string(),
+                    });
+                }
+            }
+            entries
+        };
 
         Ok((response, transcript_entries))
     })
@@ -357,14 +363,16 @@ pub async fn run_realtime_tick(
             game_closure,
             ui_snapshot: Some(ui_snapshot),
         };
-        let transcript_entries = if response.text.is_empty() {
-            Vec::new()
-        } else {
-            vec![PendingTranscriptEntry {
+        let transcript_entries: Vec<PendingTranscriptEntry> = response
+            .text
+            .split("\n\n")
+            .map(|line| line.trim())
+            .filter(|line| !line.is_empty())
+            .map(|line| PendingTranscriptEntry {
                 role: "narrative".to_string(),
-                text: response.text.clone(),
-            }]
-        };
+                text: line.to_string(),
+            })
+            .collect();
         Ok((response, transcript_entries))
     })
     .await

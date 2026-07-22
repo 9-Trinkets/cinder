@@ -781,5 +781,139 @@
         }
       ]
     }
+  },
+  "actor.yoga": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "stamina",
+            "delta": 2
+          }
+        },
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "confidence",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "actor.stretched": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "stamina",
+            "delta": 1
+          }
+        }
+      ]
+    }
+  },
+  "actor.edited": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
+  "actor.watched": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "consumable_id", "operator": "equal", "value": "clip-ren" }
+          ],
+          "payload_template": {
+            "kind": "adjust_pair_stat",
+            "participant_a_id": "$input.actor_id",
+            "participant_b_id": "ren",
+            "stat": "connection",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "consumable_id", "operator": "equal", "value": "clip-aera" }
+          ],
+          "payload_template": {
+            "kind": "adjust_pair_stat",
+            "participant_a_id": "$input.actor_id",
+            "participant_b_id": "aera",
+            "stat": "connection",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "consumable_id", "operator": "equal", "value": "clip-mio" }
+          ],
+          "payload_template": {
+            "kind": "adjust_pair_stat",
+            "participant_a_id": "$input.actor_id",
+            "participant_b_id": "mio",
+            "stat": "connection",
+            "delta": 1
+          }
+        },
+        {
+          "conditions": [
+            { "path": "consumable_id", "operator": "equal", "value": "clip-daichi" }
+          ],
+          "payload_template": {
+            "kind": "adjust_pair_stat",
+            "participant_a_id": "$input.actor_id",
+            "participant_b_id": "daichi",
+            "stat": "connection",
+            "delta": 1
+          }
+        }
+      ]
+    }
   }
 }

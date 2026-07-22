@@ -93,6 +93,8 @@ pub struct CreatesConsumableSpec {
     pub consumable_id: String,
     #[serde(default)]
     pub story_var: Option<String>,
+    #[serde(default)]
+    pub resolve_from_target: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

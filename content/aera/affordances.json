@@ -96,6 +96,38 @@
       "command_id": "brew",
       "sort_order": 11,
       "visible_by_default": true
+    },
+    {
+      "id": "yoga",
+      "group": "patio",
+      "prompt_verb": "yoga",
+      "command_id": "yoga",
+      "sort_order": 12,
+      "visible_by_default": true
+    },
+    {
+      "id": "stretch",
+      "group": "patio",
+      "prompt_verb": "stretch",
+      "command_id": "stretch",
+      "sort_order": 13,
+      "visible_by_default": true
+    },
+    {
+      "id": "edit",
+      "group": "studio",
+      "prompt_verb": "edit",
+      "command_id": "edit",
+      "sort_order": 14,
+      "visible_by_default": true
+    },
+    {
+      "id": "watch",
+      "group": "studio",
+      "prompt_verb": "watch",
+      "command_id": "watch",
+      "sort_order": 15,
+      "visible_by_default": true
     }
   ]
 }

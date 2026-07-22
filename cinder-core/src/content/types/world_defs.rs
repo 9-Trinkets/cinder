@@ -96,6 +96,7 @@ pub enum ConsumableKind {
     Eat,
     Drink,
     Consume,
+    VideoClip,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

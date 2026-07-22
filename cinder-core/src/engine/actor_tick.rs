@@ -134,7 +134,7 @@ pub(crate) fn decide_movement(
     current_room_id: &str,
     preferred_target_room_id: Option<&str>,
 ) -> Result<Vec<WorldEvent>, Box<dyn Error>> {
-    if let Some(target_room_id) = evaluate_target_rules(state, current_room_id, &rules.target_rules) {
+    if let Some(target_room_id) = evaluate_target_rules(state, &rules.target_rules) {
         if target_room_id != current_room_id {
             if let Some(next_room) = next_room_toward(&content, current_room_id, &target_room_id) {
                 let events = vec![WorldEvent::ActorMoved {
@@ -659,7 +659,6 @@ fn complete_tick_workflow(events: &[WorldEvent]) -> Result<String, String> {
 
 fn evaluate_target_rules(
     state: &WorldState,
-    current_room_id: &str,
     target_rules: &[ActorMovementTargetRuleDefinition],
 ) -> Option<String> {
     for rule in target_rules {

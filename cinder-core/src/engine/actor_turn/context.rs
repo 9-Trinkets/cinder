@@ -145,6 +145,7 @@ pub(crate) fn preferred_hunger_recovery_consume_item_id(
                     ConsumableKind::Eat => 2,
                     ConsumableKind::Drink => 1,
                     ConsumableKind::Consume => 0,
+                    ConsumableKind::VideoClip => 0,
                 },
             )
         })

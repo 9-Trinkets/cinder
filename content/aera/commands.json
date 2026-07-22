@@ -150,6 +150,48 @@
         "consumable_id": "yuzu-lemonade",
         "story_var": "brew_recipe"
       }
+    },
+    {
+      "id": "yoga",
+      "command": "YOGA",
+      "target_mode": "none",
+      "hook_id": "actor.yoga",
+      "event_text": "{actor_name} flows through a slow sequence on the patio, breath steady, shoulders dropping.",
+      "allowed_rooms": ["patio"],
+      "player_enabled": false
+    },
+    {
+      "id": "stretch",
+      "command": "STRETCH",
+      "target_mode": "none",
+      "hook_id": "actor.stretched",
+      "event_text": "{actor_name} stretches out against the morning air, finding space in the movement.",
+      "allowed_rooms": ["patio"],
+      "player_enabled": false
+    },
+    {
+      "id": "edit",
+      "command": "EDIT",
+      "target_mode": "actor",
+      "hook_id": "actor.edited",
+      "event_text": "{actor_name} clips through footage on the editing desk, pulling a moment of {target_actor_name} out of the timeline.",
+      "allowed_rooms": ["studio"],
+      "player_enabled": false,
+      "creates_consumable": {
+        "consumable_id": "clip-ren",
+        "resolve_from_target": true
+      }
+    },
+    {
+      "id": "watch",
+      "command": "WATCH",
+      "target_mode": "consumable",
+      "consumable_kind": "video_clip",
+      "effects": ["consume_targeted_consumable"],
+      "hook_id": "actor.watched",
+      "event_text": "{actor_name} watches the clip on the monitor, the room going quiet around the footage.",
+      "allowed_rooms": ["studio"],
+      "player_enabled": false
     }
   ]
 }
