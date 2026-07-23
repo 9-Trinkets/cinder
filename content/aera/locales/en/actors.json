@@ -74,6 +74,14 @@
           "any_active_stage_ids": [
             "share-dinner-in-kitchen"
           ]
+        },
+        {
+          "any_active_stage_ids": [
+            "day2-event-a",
+            "day2-event-b"
+          ],
+          "required_story_var": "aera_assigned_room",
+          "target_from_story_var": "aera_assigned_room"
         }
       ]
     }
@@ -148,6 +156,14 @@
           "any_active_stage_ids": [
             "share-dinner-in-kitchen"
           ]
+        },
+        {
+          "any_active_stage_ids": [
+            "day2-event-a",
+            "day2-event-b"
+          ],
+          "required_story_var": "ren_assigned_room",
+          "target_from_story_var": "ren_assigned_room"
         }
       ]
     }
@@ -226,6 +242,14 @@
           "any_active_stage_ids": [
             "share-dinner-in-kitchen"
           ]
+        },
+        {
+          "any_active_stage_ids": [
+            "day2-event-a",
+            "day2-event-b"
+          ],
+          "required_story_var": "mio_assigned_room",
+          "target_from_story_var": "mio_assigned_room"
         }
       ]
     }
@@ -302,6 +326,14 @@
           "any_active_stage_ids": [
             "share-dinner-in-kitchen"
           ]
+        },
+        {
+          "any_active_stage_ids": [
+            "day2-event-a",
+            "day2-event-b"
+          ],
+          "required_story_var": "daichi_assigned_room",
+          "target_from_story_var": "daichi_assigned_room"
         }
       ]
     }

@@ -212,6 +212,10 @@ impl CinderRuntime {
             Ok((text, game_over, phase)) => TurnOutcome { text, game_over, phase },
             Err(error) => {
                 if let Some(actor_tick_error) = error.downcast_ref::<ActorTickError>() {
+                    eprintln!(
+                        "[cinder] actor tick error: {}",
+                        actor_tick_error.message
+                    );
                     TurnOutcome {
                         text: self.actor_tick_soft_error_text(actor_tick_error),
                         game_over: false,
@@ -370,10 +374,28 @@ impl CinderRuntime {
             let Some(config) = stage.stage_assignment.as_ref() else {
                 continue;
             };
-            if config.initiator_actor_id.trim().is_empty()
-                || config.selected_room_id.trim().is_empty()
-                || config.remaining_room_id.trim().is_empty()
-            {
+            if config.initiator_actor_id.trim().is_empty() {
+                continue;
+            }
+            let selected_room_id = if !config.selected_room_story_var.is_empty() {
+                state
+                    .story_vars
+                    .get(&config.selected_room_story_var)
+                    .cloned()
+                    .unwrap_or_else(|| config.selected_room_id.clone())
+            } else {
+                config.selected_room_id.clone()
+            };
+            let remaining_room_id = if !config.remaining_room_story_var.is_empty() {
+                state
+                    .story_vars
+                    .get(&config.remaining_room_story_var)
+                    .cloned()
+                    .unwrap_or_else(|| config.remaining_room_id.clone())
+            } else {
+                config.remaining_room_id.clone()
+            };
+            if selected_room_id.trim().is_empty() || remaining_room_id.trim().is_empty() {
                 continue;
             }
             let applied_flag = format!("stage_assignment_applied:{}", stage.id);
@@ -389,14 +411,14 @@ impl CinderRuntime {
             };
             let selected_room_title = self
                 .content
-                .room(&config.selected_room_id)
+                .room(&selected_room_id)
                 .map(|room| room.title.clone())
-                .unwrap_or_else(|| config.selected_room_id.clone());
+                .unwrap_or_else(|| selected_room_id.clone());
             let remaining_room_title = self
                 .content
-                .room(&config.remaining_room_id)
+                .room(&remaining_room_id)
                 .map(|room| room.title.clone())
-                .unwrap_or_else(|| config.remaining_room_id.clone());
+                .unwrap_or_else(|| remaining_room_id.clone());
             let candidates = self
                 .content
                 .actors
@@ -432,9 +454,9 @@ impl CinderRuntime {
                 prompt_instructions: config.prompt_instructions.clone(),
                 initiator_actor_id: initiator.id.clone(),
                 initiator_actor_name: display_actor_name(&state, initiator),
-                selected_room_id: config.selected_room_id.clone(),
+                selected_room_id: selected_room_id.clone(),
                 selected_room_title,
-                remaining_room_id: config.remaining_room_id.clone(),
+                remaining_room_id: remaining_room_id.clone(),
                 remaining_room_title,
                 beat_note: render_story_text(&stage.beat_note, &state),
                 candidates,
@@ -574,6 +596,17 @@ impl CinderRuntime {
             state
                 .story_vars
                 .insert(config.remaining_group_story_var_key.clone(), remaining_ids);
+        }
+        for candidate in &request.candidates {
+            let room_id = if chosen.contains(&candidate.actor_id) {
+                &request.selected_room_id
+            } else {
+                &request.remaining_room_id
+            };
+            state.story_vars.insert(
+                format!("{}_assigned_room", candidate.actor_id),
+                room_id.clone(),
+            );
         }
 
         let selected_names = request

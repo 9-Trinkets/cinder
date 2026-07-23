@@ -13,6 +13,7 @@
     "selection_var_key": "day2_event",
     "selection_id_var_key": "day2_event_id",
     "multi_selection_var_keys": ["day2_event", "day2_event2"],
+    "multi_selection_room_var_keys": ["day2_event_room", "day2_event2_room"],
     "narrative_lines": [
       "The note blinks once, then fades. The house below continues its quiet evening, unaware of what you have chosen for them."
     ],
@@ -21,19 +22,22 @@
         "id": "day2-cooking-lesson",
         "title": "Cooking Lesson with Ren",
         "menu_text": "Ren teaches someone his signature dish — intimacy through shared focus in the kitchen.",
-        "narrative_lines": []
+        "narrative_lines": [],
+        "room_id": "kitchen"
       },
       {
         "id": "day2-morning-run",
         "title": "Patio Workout with Daichi",
         "menu_text": "Daichi leads someone through stretches and yoga on the patio — connection through movement and shared breath.",
-        "narrative_lines": []
+        "narrative_lines": [],
+        "room_id": "patio"
       },
       {
         "id": "day2-editing-session",
         "title": "Editing Session with Aera",
         "menu_text": "Aera reviews footage with someone — intimacy through being truly seen on screen.",
-        "narrative_lines": []
+        "narrative_lines": [],
+        "room_id": "studio"
       }
     ]
   }

@@ -227,6 +227,10 @@ pub struct StageAssignmentDefinition {
     pub selected_room_id: String,
     #[serde(default)]
     pub remaining_room_id: String,
+    #[serde(default)]
+    pub selected_room_story_var: String,
+    #[serde(default)]
+    pub remaining_room_story_var: String,
     #[serde(default = "default_stage_assignment_max_selected")]
     pub max_selected_actors: usize,
     #[serde(default = "default_stage_assignment_min_selected")]
@@ -366,6 +370,8 @@ pub struct OpeningMenuDefinition {
     #[serde(default)]
     pub multi_selection_var_keys: Vec<String>,
     #[serde(default)]
+    pub multi_selection_room_var_keys: Vec<String>,
+    #[serde(default)]
     pub actor_relocations: Vec<ActorRelocationDefinition>,
     #[serde(default)]
     pub narrative_lines: Vec<String>,
@@ -386,6 +392,8 @@ pub struct OpeningMenuOptionDefinition {
     pub menu_text: String,
     #[serde(default)]
     pub narrative_lines: Vec<String>,
+    #[serde(default)]
+    pub room_id: String,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

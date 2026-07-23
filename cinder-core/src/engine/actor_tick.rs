@@ -680,6 +680,11 @@ fn evaluate_target_rules(
         {
             continue;
         }
+        if !rule.target_from_story_var.is_empty() {
+            if let Some(resolved) = state.story_vars.get(&rule.target_from_story_var) {
+                return Some(resolved.clone());
+            }
+        }
         return Some(rule.target_room_id.clone());
     }
     None

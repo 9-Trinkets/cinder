@@ -128,6 +128,8 @@
         "initiator_actor_id": "ren",
         "selected_room_id": "kitchen",
         "remaining_room_id": "patio",
+        "selected_room_story_var": "day2_event_room",
+        "remaining_room_story_var": "day2_event2_room",
         "max_selected_actors": 1,
         "min_selected_actors": 1,
         "score_threshold": 0,

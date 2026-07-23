@@ -441,7 +441,24 @@ pub(super) fn handle_menu_choice_made(
                     let value = selected_titles.get(i).cloned().unwrap_or_default();
                     state.story_vars.insert(var_key.clone(), value);
                 }
-            } else if !menu.selection_var_key.is_empty() {
+            }
+            if !menu.multi_selection_room_var_keys.is_empty() {
+                let selected_rooms: Vec<String> = selected_ids
+                    .iter()
+                    .filter_map(|id| {
+                        menu.options
+                            .iter()
+                            .find(|opt| opt.id == *id)
+                            .filter(|opt| !opt.room_id.is_empty())
+                            .map(|opt| opt.room_id.clone())
+                    })
+                    .collect();
+                for (i, var_key) in menu.multi_selection_room_var_keys.iter().enumerate() {
+                    let value = selected_rooms.get(i).cloned().unwrap_or_default();
+                    state.story_vars.insert(var_key.clone(), value);
+                }
+            }
+            if menu.multi_selection_var_keys.is_empty() && !menu.selection_var_key.is_empty() {
                 state
                     .story_vars
                     .insert(menu.selection_var_key.clone(), joined_titles);
