@@ -167,7 +167,7 @@ impl CinderRuntime {
             if menu.selection_var_key.is_empty() || menu.selection_id_var_key.is_empty() {
                 continue;
             }
-            let Some(selected_id) = state.story_vars.get(&menu.selection_id_var_key).cloned()
+            let Some(selected_id) = state.story_vars.get(&menu.selection_id_var_key).map(|s| s.to_string())
             else {
                 continue;
             };
@@ -181,10 +181,10 @@ impl CinderRuntime {
             };
             state
                 .story_vars
-                .insert(menu.selection_var_key.clone(), option_title.clone());
+                .set_unchecked(&menu.selection_var_key, &option_title);
             state
                 .story_vars
-                .insert("selection_title".to_string(), option_title);
+                .set_unchecked("selection_title", &option_title);
         }
         Ok(())
     }

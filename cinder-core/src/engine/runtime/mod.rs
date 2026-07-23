@@ -267,6 +267,9 @@ impl CinderRuntime {
             }
             state.phase = GamePhase::Active;
             state.game_over = false;
+            state
+                .story_vars
+                .clear_scoped(crate::engine::state::VariableScope::Session);
         }
         self.clear_session_closure_cache()?;
         Ok(())
@@ -381,7 +384,7 @@ impl CinderRuntime {
                 state
                     .story_vars
                     .get(&config.selected_room_story_var)
-                    .cloned()
+                    .map(|s| s.to_string())
                     .unwrap_or_else(|| config.selected_room_id.clone())
             } else {
                 config.selected_room_id.clone()
@@ -390,7 +393,7 @@ impl CinderRuntime {
                 state
                     .story_vars
                     .get(&config.remaining_room_story_var)
-                    .cloned()
+                    .map(|s| s.to_string())
                     .unwrap_or_else(|| config.remaining_room_id.clone())
             } else {
                 config.remaining_room_id.clone()
@@ -578,12 +581,12 @@ impl CinderRuntime {
                 state.current_room_id = to_room_id.clone();
             }
         }
-        state.story_vars.insert(applied_flag, "true".to_string());
+        state.story_vars.set_unchecked(&applied_flag, "true");
         if !config.group_story_var_key.trim().is_empty() {
             let group_ids = chosen.iter().cloned().collect::<Vec<_>>().join(",");
             state
                 .story_vars
-                .insert(config.group_story_var_key.clone(), group_ids);
+                .set_unchecked(&config.group_story_var_key, &group_ids);
         }
         if !config.remaining_group_story_var_key.trim().is_empty() {
             let remaining_ids = request
@@ -595,7 +598,7 @@ impl CinderRuntime {
                 .join(",");
             state
                 .story_vars
-                .insert(config.remaining_group_story_var_key.clone(), remaining_ids);
+                .set_unchecked(&config.remaining_group_story_var_key, &remaining_ids);
         }
         for candidate in &request.candidates {
             let room_id = if chosen.contains(&candidate.actor_id) {
@@ -603,10 +606,8 @@ impl CinderRuntime {
             } else {
                 &request.remaining_room_id
             };
-            state.story_vars.insert(
-                format!("{}_assigned_room", candidate.actor_id),
-                room_id.clone(),
-            );
+            let key = format!("{}_assigned_room", candidate.actor_id);
+            state.story_vars.set_unchecked(&key, room_id);
         }
 
         let selected_names = request
@@ -811,7 +812,7 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for secret progress")?;
-        let current_actor_id = state.story_vars.get("patient_actor_id").map(|s| s.as_str());
+        let current_actor_id = state.story_vars.get("patient_actor_id");
         let secret_stages: Vec<_> = self
             .content
             .beats
@@ -1183,8 +1184,7 @@ mod tests {
         assert_eq!(
             exported
                 .story_vars
-                .get("stage_assignment_applied:dinner-prep")
-                .map(String::as_str),
+                .get("stage_assignment_applied:dinner-prep"),
             Some("true")
         );
 

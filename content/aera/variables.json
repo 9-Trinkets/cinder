@@ -1,0 +1,59 @@
+{
+  "cooking_needed": {
+    "var_type": "bool",
+    "default": "false",
+    "scope": "stage"
+  },
+  "day2_event": {
+    "var_type": "string",
+    "scope": "game"
+  },
+  "day2_event_id": {
+    "var_type": "string",
+    "scope": "game"
+  },
+  "day2_event2": {
+    "var_type": "string",
+    "scope": "game"
+  },
+  "day2_event_room": {
+    "var_type": "string",
+    "scope": "game"
+  },
+  "day2_event2_room": {
+    "var_type": "string",
+    "scope": "game"
+  },
+  "day2_group_a": {
+    "var_type": "string",
+    "scope": "game"
+  },
+  "day2_group_b": {
+    "var_type": "string",
+    "scope": "game"
+  },
+  "aera_assigned_room": {
+    "var_type": "string",
+    "scope": "game"
+  },
+  "ren_assigned_room": {
+    "var_type": "string",
+    "scope": "game"
+  },
+  "mio_assigned_room": {
+    "var_type": "string",
+    "scope": "game"
+  },
+  "daichi_assigned_room": {
+    "var_type": "string",
+    "scope": "game"
+  },
+  "cook_recipe": {
+    "var_type": "string",
+    "scope": "stage"
+  },
+  "brew_recipe": {
+    "var_type": "string",
+    "scope": "stage"
+  }
+}

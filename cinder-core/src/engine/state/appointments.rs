@@ -151,7 +151,7 @@ pub fn display_actor_name(state: &WorldState, actor: &ActorDefinition) -> String
     if is_current_patient_reference(state, &actor.id)
         && let Some(name) = state.story_vars.get(PATIENT_NAME_VAR)
     {
-        return name.clone();
+        return name.to_string();
     }
     actor.name.clone()
 }
@@ -260,10 +260,7 @@ pub fn story_actor_matches(
 }
 
 pub fn render_dynamic_story_text(template: &str, state: &WorldState) -> String {
-    let mut rendered = template.to_string();
-    for (key, value) in &state.story_vars {
-        rendered = rendered.replace(&format!("{{{key}}}"), value);
-    }
+    let mut rendered = state.story_vars.render_template(template);
     if let (Some(base_name), Some(current_name)) = (
         state.story_vars.get(PATIENT_SLOT_BASE_NAME_VAR),
         state.story_vars.get(PATIENT_NAME_VAR),
@@ -315,59 +312,58 @@ fn sync_current_patient_story_vars(content: &ContentPack, state: &mut WorldState
         .unwrap_or_else(|| "Patient".to_string());
     state
         .story_vars
-        .insert(PATIENT_ACTOR_ID_VAR.to_string(), patient.actor_id.clone());
-    state.story_vars.insert(
-        PATIENT_TEMPLATE_ACTOR_ID_VAR.to_string(),
-        template_actor_id.to_string(),
+        .set_unchecked(PATIENT_ACTOR_ID_VAR, &patient.actor_id);
+    state.story_vars.set_unchecked(
+        PATIENT_TEMPLATE_ACTOR_ID_VAR,
+        template_actor_id,
     );
     state
         .story_vars
-        .insert(PATIENT_SLOT_BASE_NAME_VAR.to_string(), base_name);
+        .set_unchecked(PATIENT_SLOT_BASE_NAME_VAR, &base_name);
     state
         .story_vars
-        .insert(PATIENT_NAME_VAR.to_string(), patient.name.clone());
-    state.story_vars.insert(
-        "appointment_number".to_string(),
-        series.current_appointment_number.to_string(),
+        .set_unchecked(PATIENT_NAME_VAR, &patient.name);
+    state.story_vars.set_unchecked(
+        "appointment_number",
+        &series.current_appointment_number.to_string(),
     );
     state
         .story_vars
-        .insert("patient_age".to_string(), patient.age.to_string());
+        .set_unchecked("patient_age", &patient.age.to_string());
     state
         .story_vars
-        .insert("patient_profession".to_string(), patient.profession.clone());
-    state.story_vars.insert(
-        "patient_presenting_issue".to_string(),
-        patient.presenting_issue.clone(),
+        .set_unchecked("patient_profession", &patient.profession);
+    state.story_vars.set_unchecked(
+        "patient_presenting_issue",
+        &patient.presenting_issue,
     );
-    state.story_vars.insert(
-        "patient_relational_pattern".to_string(),
-        patient.relational_pattern.clone(),
+    state.story_vars.set_unchecked(
+        "patient_relational_pattern",
+        &patient.relational_pattern,
     );
-    state.story_vars.insert(
-        "patient_formative_memory".to_string(),
-        patient.formative_memory.clone(),
+    state.story_vars.set_unchecked(
+        "patient_formative_memory",
+        &patient.formative_memory,
     );
-    state.story_vars.insert(
-        "patient_coping_style".to_string(),
-        patient.coping_style.clone(),
+    state.story_vars.set_unchecked(
+        "patient_coping_style",
+        &patient.coping_style,
     );
-    state.story_vars.insert(
-        "patient_desired_change".to_string(),
-        patient.desired_change.clone(),
+    state.story_vars.set_unchecked(
+        "patient_desired_change",
+        &patient.desired_change,
     );
-    state.story_vars.insert(
-        "patient_bibliotherapy_fit".to_string(),
-        patient.bibliotherapy_fit.clone(),
+    state.story_vars.set_unchecked(
+        "patient_bibliotherapy_fit",
+        &patient.bibliotherapy_fit,
     );
-    state.story_vars.insert(
-        "patient_returning".to_string(),
+    state.story_vars.set_unchecked(
+        "patient_returning",
         if patient.appointment_count > 0 {
             "true"
         } else {
             "false"
-        }
-        .to_string(),
+        },
     );
     if let Some(stats) = state.actor_stats.get_mut(&patient.actor_id) {
         *stats = patient.actor_stats.clone();

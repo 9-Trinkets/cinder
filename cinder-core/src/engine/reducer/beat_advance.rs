@@ -1,6 +1,5 @@
 use crate::content::types::{AdvanceCondition, AdvanceEffect, ContentPack};
-use crate::engine::state::{GamePhase, WorldState};
-use std::collections::BTreeMap;
+use crate::engine::state::{GamePhase, VariableStore, WorldState};
 
 pub(super) fn advance_objective_for_signal(
     state: &mut WorldState,
@@ -93,7 +92,7 @@ pub(super) fn advance_objective_for_signal(
                         }
                     }
                     AdvanceEffect::SetStoryVar { key, value } => {
-                        state.story_vars.insert(key.clone(), value.clone());
+                        state.story_vars.set_unchecked(key, value);
                     }
                 }
             }
@@ -113,6 +112,9 @@ pub(super) fn advance_objective_for_signal(
     next_active_stage_ids.sort();
     next_active_stage_ids.dedup();
     state.active_objective_stage_ids = next_active_stage_ids;
+    state
+        .story_vars
+        .clear_scoped(crate::engine::state::VariableScope::Stage);
     if let Some(stage_id) = fallback_stage_to_activate(
         &content.settings.fallback_stage_id,
         &content.settings.fallback_required_story_vars,
@@ -132,14 +134,14 @@ fn fallback_stage_to_activate(
     stages: &[crate::content::types::BeatDefinition],
     active_stage_ids: &[String],
     game_over: bool,
-    story_vars: &BTreeMap<String, String>,
+    story_vars: &VariableStore,
 ) -> Option<String> {
     if game_over || !active_stage_ids.is_empty() || fallback_stage_id.is_empty() {
         return None;
     }
     if !fallback_required_story_vars
         .iter()
-        .all(|required_key| story_vars.contains_key(required_key))
+        .all(|required_key| story_vars.has(required_key))
     {
         return None;
     }
@@ -153,7 +155,7 @@ fn fallback_stage_to_activate(
 mod tests {
     use super::fallback_stage_to_activate;
     use crate::content::types::BeatDefinition;
-    use std::collections::BTreeMap;
+    use crate::engine::state::VariableStore;
 
     #[test]
     fn fallback_stage_activates_only_when_requirements_are_met() {
@@ -161,10 +163,9 @@ mod tests {
             id: "wind-down".to_string(),
             ..BeatDefinition::default()
         }];
-        let story_vars = BTreeMap::from([
-            ("movie_title".to_string(), "A Film".to_string()),
-            ("snack_title".to_string(), "Toast".to_string()),
-        ]);
+        let mut story_vars = VariableStore::default();
+        story_vars.set_unchecked("movie_title", "A Film");
+        story_vars.set_unchecked("snack_title", "Toast");
 
         let stage_id = fallback_stage_to_activate(
             "wind-down",
@@ -184,7 +185,8 @@ mod tests {
             id: "wind-down".to_string(),
             ..BeatDefinition::default()
         }];
-        let story_vars = BTreeMap::from([("movie_title".to_string(), "A Film".to_string())]);
+        let mut story_vars = VariableStore::default();
+        story_vars.set_unchecked("movie_title", "A Film");
 
         let stage_id = fallback_stage_to_activate(
             "wind-down",

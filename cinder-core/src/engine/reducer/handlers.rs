@@ -435,11 +435,11 @@ pub(super) fn handle_menu_choice_made(
             let joined_ids = selected_ids.join(", ");
             state
                 .story_vars
-                .insert("selection_title".to_string(), joined_titles.clone());
+                .set_unchecked("selection_title", &joined_titles);
             if !menu.multi_selection_var_keys.is_empty() {
                 for (i, var_key) in menu.multi_selection_var_keys.iter().enumerate() {
                     let value = selected_titles.get(i).cloned().unwrap_or_default();
-                    state.story_vars.insert(var_key.clone(), value);
+                    state.story_vars.set_unchecked(var_key, &value);
                 }
             }
             if !menu.multi_selection_room_var_keys.is_empty() {
@@ -455,18 +455,18 @@ pub(super) fn handle_menu_choice_made(
                     .collect();
                 for (i, var_key) in menu.multi_selection_room_var_keys.iter().enumerate() {
                     let value = selected_rooms.get(i).cloned().unwrap_or_default();
-                    state.story_vars.insert(var_key.clone(), value);
+                    state.story_vars.set_unchecked(var_key, &value);
                 }
             }
             if menu.multi_selection_var_keys.is_empty() && !menu.selection_var_key.is_empty() {
                 state
                     .story_vars
-                    .insert(menu.selection_var_key.clone(), joined_titles);
+                    .set_unchecked(&menu.selection_var_key, &joined_titles);
             }
             if !menu.selection_id_var_key.is_empty() {
                 state
                     .story_vars
-                    .insert(menu.selection_id_var_key.clone(), joined_ids);
+                    .set_unchecked(&menu.selection_id_var_key, &joined_ids);
             }
             lines.push(super::observation::render_story_text(
                 &menu.selection_confirmation,
@@ -475,16 +475,16 @@ pub(super) fn handle_menu_choice_made(
         } else {
             state
                 .story_vars
-                .insert("selection_title".to_string(), title.to_string());
+                .set_unchecked("selection_title", title);
             if !menu.selection_var_key.is_empty() {
                 state
                     .story_vars
-                    .insert(menu.selection_var_key.clone(), title.to_string());
+                    .set_unchecked(&menu.selection_var_key, title);
             }
             if !menu.selection_id_var_key.is_empty() {
                 state
                     .story_vars
-                    .insert(menu.selection_id_var_key.clone(), option_id.to_string());
+                    .set_unchecked(&menu.selection_id_var_key, option_id);
             }
             lines.push(super::observation::render_story_text(
                 &menu.selection_confirmation,

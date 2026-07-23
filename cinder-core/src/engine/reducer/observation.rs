@@ -160,10 +160,7 @@ pub(crate) fn render_actor_speech_line(
 }
 
 pub(super) fn render_story_text(template: &str, state: &WorldState) -> String {
-    let mut rendered = template.to_string();
-    for (key, value) in &state.story_vars {
-        rendered = rendered.replace(&format!("{{{key}}}"), value);
-    }
+    let mut rendered = state.story_vars.render_template(template);
     for (actor_id, stats) in &state.actor_stats {
         for (stat_key, stat_value) in stats {
             rendered = rendered.replace(

@@ -584,7 +584,7 @@ struct ActorTurnWorkflowInput {
     current_room_id: String,
     player_room_id: String,
     active_stage_ids: Vec<String>,
-    story_vars: BTreeMap<String, String>,
+    story_vars: crate::engine::state::VariableStore,
     default_target_room_id: String,
     rules: Vec<ActorDecisionCase>,
 }
@@ -668,7 +668,7 @@ fn evaluate_target_rules(
             continue;
         }
         if !rule.required_story_var.is_empty()
-            && !state.story_vars.contains_key(&rule.required_story_var)
+            && !state.story_vars.has(&rule.required_story_var)
         {
             continue;
         }
@@ -682,7 +682,7 @@ fn evaluate_target_rules(
         }
         if !rule.target_from_story_var.is_empty() {
             if let Some(resolved) = state.story_vars.get(&rule.target_from_story_var) {
-                return Some(resolved.clone());
+                return Some(resolved.to_string());
             }
         }
         return Some(rule.target_room_id.clone());

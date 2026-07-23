@@ -114,7 +114,7 @@ fn movement_target_rule_matches(
 ) -> bool {
     (rule.when_player_room_id.is_empty() || rule.when_player_room_id == state.current_room_id)
         && (rule.required_story_var.is_empty()
-            || state.story_vars.contains_key(&rule.required_story_var))
+            || state.story_vars.has(&rule.required_story_var))
         && (rule.any_active_stage_ids.is_empty()
             || rule
                 .any_active_stage_ids

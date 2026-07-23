@@ -4,6 +4,9 @@ use crate::content::types::{
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
+pub mod variable_store;
+pub use variable_store::{VariableDeclaration, VariableError, VariableScope, VariableStore, VariableType};
+
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum GamePhase {
@@ -42,7 +45,7 @@ pub struct WorldState {
     pub generated_menu_options: HashMap<String, Vec<OpeningMenuOptionDefinition>>,
     pub pending_projector_sequence_id: Option<String>,
     pub pending_projector_narrative_lines: Vec<String>,
-    pub story_vars: BTreeMap<String, String>,
+    pub story_vars: VariableStore,
     pub actor_known_room_ids: BTreeMap<String, BTreeSet<String>>,
     pub actor_observed_room_ids: BTreeMap<String, BTreeSet<String>>,
     pub actor_known_feature_ids: BTreeMap<String, BTreeSet<String>>,
@@ -122,7 +125,7 @@ impl WorldState {
             generated_menu_options: HashMap::new(),
             pending_projector_sequence_id: None,
             pending_projector_narrative_lines: Vec::new(),
-            story_vars: BTreeMap::new(),
+            story_vars: VariableStore::new(content.variables.clone()),
             actor_known_room_ids: content
                 .actors
                 .iter()

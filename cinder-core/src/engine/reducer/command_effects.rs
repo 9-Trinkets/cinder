@@ -87,7 +87,7 @@ pub(super) fn handle_actor_command_used(
         } else {
             spec.story_var
                 .as_ref()
-                .and_then(|var_key| state.story_vars.get(var_key).map(|v| v.as_str()))
+                .and_then(|var_key| state.story_vars.get(var_key))
                 .unwrap_or(&spec.consumable_id)
                 .to_string()
         };

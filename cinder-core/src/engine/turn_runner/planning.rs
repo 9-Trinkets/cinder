@@ -172,9 +172,8 @@ pub(super) fn plan_content_command(
             spec.story_var
                 .as_ref()
                 .and_then(|var_key| context.planner_state.story_vars.get(var_key))
-                .map(|v| v.as_str())
-                .unwrap_or(&spec.consumable_id)
-                .to_string()
+                .map(|v| v.to_string())
+                .unwrap_or(spec.consumable_id.clone())
         };
         if let Some(room) = content.room(context.current_room_id) {
             if let Some(feature) = room.features.iter().find(|f| {

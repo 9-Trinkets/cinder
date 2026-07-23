@@ -1,6 +1,6 @@
 use super::*;
 use crate::content::text_defs::{SystemTextDefinition, UiTextDefinition};
-use crate::engine::state::WorldState;
+use crate::engine::state::{VariableDeclaration, WorldState};
 
 #[derive(Debug, Clone)]
 pub struct ContentPack {
@@ -22,6 +22,7 @@ pub struct ContentPack {
     pub hooks: BTreeMap<String, Value>,
     pub speech_intents: SpeechIntentsConfig,
     pub items: Vec<ItemDefinition>,
+    pub variables: BTreeMap<String, VariableDeclaration>,
     pub room_index: HashMap<String, usize>,
     pub actor_index: HashMap<String, usize>,
     pub command_index: HashMap<String, usize>,

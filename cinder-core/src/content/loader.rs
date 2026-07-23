@@ -169,6 +169,12 @@ pub fn load_pack_from_dir_with_locale(
         read_optional_json::<SpeechIntentsConfig>(path, "intents.json")?.unwrap_or_default();
     let items: Vec<ItemDefinition> =
         read_optional_json::<Vec<ItemDefinition>>(path, "items.json")?.unwrap_or_default();
+    let variables: BTreeMap<String, crate::engine::state::VariableDeclaration> =
+        read_optional_json::<BTreeMap<String, crate::engine::state::VariableDeclaration>>(
+            path,
+            "variables.json",
+        )?
+        .unwrap_or_default();
 
     let room_index: HashMap<String, usize> = rooms
         .iter()
@@ -350,6 +356,7 @@ pub fn load_pack_from_dir_with_locale(
         hooks,
         speech_intents,
         items,
+        variables,
         room_index,
         actor_index,
         command_index,
