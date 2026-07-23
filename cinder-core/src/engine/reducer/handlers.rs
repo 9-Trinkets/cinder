@@ -500,17 +500,11 @@ pub(super) fn handle_menu_selection_toggled(
     menu_id: &str,
     option_id: &str,
     selected: bool,
-    lines: &mut Vec<String>,
 ) {
     if let Some(menu) = content.menu(menu_id) {
         let max = menu.max_selections;
         if selected {
             if max > 0 && state.pending_menu_selections.len() >= max {
-                lines.push(format!(
-                    "You can select up to {} option{}.",
-                    max,
-                    if max == 1 { "" } else { "s" }
-                ));
                 return;
             }
             if !state.pending_menu_selections.contains(&option_id.to_string()) {

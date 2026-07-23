@@ -173,7 +173,7 @@
             "kind": "adjust_actor_stat",
             "actor_id": "$input.actor_id",
             "stat": "stamina",
-            "delta": 1
+            "delta": 2
           }
         }
       ]

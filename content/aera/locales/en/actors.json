@@ -5,7 +5,7 @@
     "room_id": "lounge",
     "initial_stats": {
       "confidence": 2,
-      "stamina": 7,
+      "stamina": 10,
       "hunger": 4
     },
     "initial_pair_stats": {
@@ -59,7 +59,7 @@
           "target_room_id": "girls-room",
           "any_active_stage_ids": [
             "debrief-in-bedrooms",
-            "sleep-end-first-day",
+            "plan-day2",
             "sleep-end-day2"
           ]
         },
@@ -84,7 +84,7 @@
     "room_id": "lounge",
     "initial_stats": {
       "confidence": 5,
-      "stamina": 8,
+      "stamina": 10,
       "hunger": 3
     },
     "initial_pair_stats": {
@@ -133,7 +133,7 @@
           "target_room_id": "guys-room",
           "any_active_stage_ids": [
             "debrief-in-bedrooms",
-            "sleep-end-first-day",
+            "plan-day2",
             "sleep-end-day2"
           ]
         },
@@ -158,7 +158,7 @@
     "room_id": "lounge",
     "initial_stats": {
       "confidence": 8,
-      "stamina": 7,
+      "stamina": 10,
       "hunger": 5
     },
     "initial_pair_stats": {
@@ -211,7 +211,7 @@
           "target_room_id": "girls-room",
           "any_active_stage_ids": [
             "debrief-in-bedrooms",
-            "sleep-end-first-day",
+            "plan-day2",
             "sleep-end-day2"
           ]
         },
@@ -236,7 +236,7 @@
     "room_id": "lounge",
     "initial_stats": {
       "confidence": 1,
-      "stamina": 9,
+      "stamina": 10,
       "hunger": 4
     },
     "initial_pair_stats": {
@@ -287,7 +287,7 @@
           "target_room_id": "guys-room",
           "any_active_stage_ids": [
             "debrief-in-bedrooms",
-            "sleep-end-first-day",
+            "plan-day2",
             "sleep-end-day2"
           ]
         },

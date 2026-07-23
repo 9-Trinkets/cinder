@@ -222,7 +222,7 @@ pub fn apply_events(
                 option_id,
                 selected,
             } => {
-                handle_menu_selection_toggled(state, content, menu_id, option_id, *selected, &mut lines);
+                handle_menu_selection_toggled(state, content, menu_id, option_id, *selected);
             }
             WorldEvent::NarrativeLine { text } => {
                 handle_narrative_line(text, &mut lines);

@@ -94,52 +94,27 @@
       "id": "plan-day2",
       "summary": "End of Day 1: the director chooses tomorrow's activity.",
       "update_message": "The first day is winding down. You review tomorrow's schedule.",
-      "beat_note": "The house is settling into its first night. Bedrooms are quiet or murmuring. The player now has a chance to shape tomorrow by choosing the morning's main activity. This is a planning phase — no NPC action, just the director's note appearing on screen. Let the house breathe while the player decides. After the selection, close the day with the sense that tomorrow will feel different because of what the player just set in motion.",
-      "advance_signals": [
-        "menu_selected:day2-plan"
-      ],
-      "next_stage_ids": [
-        "sleep-end-first-day"
-      ],
-      "open_menu": "day2-plan"
-    },
-    {
-      "id": "sleep-end-first-day",
-      "summary": "Sleep and end of first day.",
-      "update_message": "The first day winds down toward sleep.",
-      "beat_note": "This is the last emotional beat before lights out. Let conversations taper into final glances, unfinished thoughts, quiet vulnerability, and the sense that today's first impressions will carry into tomorrow. Actors should settle toward sleep while holding onto one clear feeling about the night: excitement, relief, attraction, suspicion, comfort, regret, or anticipation. End with the sense that the house has started choosing its first bonds and tensions, even if no one can fully name them yet.",
+      "beat_note": "The house is settling into its first night. Bedrooms are quiet or murmuring. The player now has a chance to shape tomorrow by choosing the morning's main activity. This is a planning phase — no NPC action, just the director's note appearing on screen. Let the house breathe while the player decides. After the selection, close the day with the sense that tomorrow will feel different because of what the player just set in motion. This is the last emotional beat before lights out. Let conversations taper into final glances, unfinished thoughts, quiet vulnerability, and the sense that today's first impressions will carry into tomorrow. Actors should settle toward sleep while holding onto one clear feeling about the night: excitement, relief, attraction, suspicion, comfort, regret, or anticipation. End with the sense that the house has started choosing its first bonds and tensions, even if no one can fully name them yet.",
       "narrative_lines": [
         "The house settles. Lights dim down the hallway, one by one. Somewhere a door clicks shut. The first day is over — full of introductions, half-read glances, and the kind of silence that happens when eight people are still learning how to share the same air. The cameras stop rolling but the house doesn't sleep. Not yet. There is too much to replay behind closed eyes."
       ],
       "advance_signals": [
-        "time_reached:22:00"
-      ],
-      "next_stage_ids": [
-        "day2-morning"
-      ],
-      "end_session": true
-    },
-    {
-      "id": "day2-morning",
-      "summary": "Day 2 morning: the house wakes up.",
-      "update_message": "Morning of Day 2. The house is waking up.",
-      "elapsed_minutes": 660,
-      "narrative_lines": [
-        "Morning light pushes through the blinds. The house stirs — kettle whistling, bare feet on hardwood, someone squinting into the kitchen with last night still written on their face. Day two. The documentary crew is already in position. Today the house splits into groups, and the producers want the player to decide how."
-      ],
-      "beat_note": "Morning light fills the house. People are waking up, making coffee, stretching. Today there will be two separate activities — the house will split into groups.",
-      "advance_signals": [
-        "time_reached:09:00"
+        "menu_selected:day2-plan"
       ],
       "next_stage_ids": [
         "day2-assignment"
-      ]
+      ],
+      "open_menu": "day2-plan"
     },
     {
       "id": "day2-assignment",
       "summary": "Day 2: the house divides into two groups for separate activities.",
       "update_message": "The house splits into two groups for the morning activities.",
-      "beat_note": "Two activities are happening this morning. The group in the kitchen will do a cooking-related activity. The group on the patio will do an outdoor activity. The house divides naturally — who goes where depends on who is drawn to which activity.",
+      "elapsed_minutes": 660,
+      "narrative_lines": [
+        "Morning light pushes through the blinds. The house stirs — kettle whistling, bare feet on hardwood, someone squinting into the kitchen with last night still written on their face. Day two. The documentary crew is already in position. Today the house splits into groups, and the producers want the player to decide how."
+      ],
+      "beat_note": "Morning light fills the house. People are waking up, making coffee, stretching. Today there will be two separate activities — the house will split into groups. The group in the kitchen will do a cooking-related activity. The group on the patio will do an outdoor activity. The house divides naturally — who goes where depends on who is drawn to which activity.",
       "advance_signals": [
         "time_reached:09:30"
       ],
@@ -161,7 +136,8 @@
         "remaining_line_template": "",
         "group_story_var_key": "day2_group_a",
         "remaining_group_story_var_key": "day2_group_b"
-      }
+      },
+      "end_session": true
     },
     {
       "id": "day2-event-a",
