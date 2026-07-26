@@ -289,14 +289,14 @@ pub async fn run_command(
             .map(|s| s.active_menu_id.is_some())
             .unwrap_or(false);
 
-        if !outcome.game_over && !menu_active {
+        use cinder_core::engine::state::GamePhase;
+        if outcome.phase == GamePhase::Active && !menu_active {
             match runtime.run_tick() {
                 Ok(tick) => {
                     if !tick.text.is_empty() {
                         outcome.text = format!("{}\n\n{}", outcome.text, tick.text);
                     }
-                    outcome.game_over = outcome.game_over || tick.game_over;
-                    if tick.phase != cinder_core::engine::state::GamePhase::Active {
+                    if tick.phase != GamePhase::Active {
                         outcome.phase = tick.phase;
                     }
                 }
@@ -304,7 +304,6 @@ pub async fn run_command(
             }
         }
 
-        use cinder_core::engine::state::GamePhase;
         let session_closure = if outcome.phase == GamePhase::SessionEnded {
             response::session_closure_data(runtime, transcript_lines)
         } else {
@@ -316,18 +315,27 @@ pub async fn run_command(
             None
         };
 
-        outcome = runtime
-            .continue_after_game_over(outcome)
-            .map_err(|e| format!("appointment rollover error: {e}"))?;
+        if outcome.phase == GamePhase::SessionEnded {
+            if let Some(intro_text) = runtime
+                .advance_appointment()
+                .map_err(|e| format!("appointment rollover error: {e}"))?
+            {
+                if !intro_text.is_empty() {
+                    outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
+                }
+                outcome.phase = GamePhase::Active;
+            }
+        }
 
         let _ = runtime.push_transcript_line(&turn_text);
 
         let movie = consume_projector_sequence(runtime);
         let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, transcript_lines)?;
 
+        let is_game_over = outcome.phase != GamePhase::Active;
         let response = CommandResponse {
             text: outcome.text,
-            game_over: outcome.game_over,
+            game_over: is_game_over,
             movie,
             session_closure,
             game_closure,
@@ -363,7 +371,7 @@ pub async fn run_realtime_tick(
     let session_id = parse_uuid(session_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     with_runtime(pool, &session_id, &player_id, move |runtime, pack_id, transcript_lines| {
-        let outcome = runtime.run_tick().map_err(|e| format!("tick error: {e}"))?;
+        let mut outcome = runtime.run_tick().map_err(|e| format!("tick error: {e}"))?;
         use cinder_core::engine::state::GamePhase;
         let session_closure = if outcome.phase == GamePhase::SessionEnded {
             response::session_closure_data(runtime, transcript_lines)
@@ -375,14 +383,23 @@ pub async fn run_realtime_tick(
         } else {
             None
         };
-        let outcome = runtime
-            .continue_after_game_over(outcome)
-            .map_err(|e| format!("appointment rollover error: {e}"))?;
+        if outcome.phase == GamePhase::SessionEnded {
+            if let Some(intro_text) = runtime
+                .advance_appointment()
+                .map_err(|e| format!("appointment rollover error: {e}"))?
+            {
+                if !intro_text.is_empty() {
+                    outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
+                }
+                outcome.phase = GamePhase::Active;
+            }
+        }
         let movie = consume_projector_sequence(runtime);
         let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, transcript_lines)?;
+        let is_game_over = outcome.phase != GamePhase::Active;
         let response = CommandResponse {
             text: outcome.text.clone(),
-            game_over: outcome.game_over,
+            game_over: is_game_over,
             movie,
             session_closure,
             game_closure,
@@ -425,7 +442,7 @@ pub async fn switch_room(
         Ok((
             CommandResponse {
                 text: outcome.text,
-                game_over: outcome.game_over,
+                game_over: outcome.phase != cinder_core::engine::state::GamePhase::Active,
                 movie: None,
                 session_closure: None,
                 game_closure: None,
@@ -459,7 +476,7 @@ pub async fn follow_actor(
         Ok((
             CommandResponse {
                 text: outcome.text,
-                game_over: outcome.game_over,
+                game_over: outcome.phase != cinder_core::engine::state::GamePhase::Active,
                 movie: None,
                 session_closure: None,
                 game_closure: None,
@@ -486,7 +503,7 @@ pub async fn set_locale(
     let (pack_id, _, state_json) = load_session_row(&mut tx, &session_id, &player_id, true).await?;
     let locale = locale.to_string();
     let locale_for_runtime = locale.clone();
-    let (changed_text, game_over, ui_snapshot, new_state_json) =
+    let (changed_text, is_game_over, ui_snapshot, new_state_json) =
         tokio::task::spawn_blocking(move || {
             let localized_pack = loader::load_pack_from_dir_with_locale(
                 &loader::pack_dir(&pack_id),
@@ -506,11 +523,11 @@ pub async fn set_locale(
             let new_state = runtime
                 .export_state()
                 .map_err(|e| format!("state export error: {e}"))?;
-            let game_over = new_state.game_over;
+            let is_game_over = new_state.phase != cinder_core::engine::state::GamePhase::Active;
             let new_state_json = serde_json::to_string(&new_state)
                 .map_err(|e| format!("serialization error: {e}"))?;
 
-            Ok::<_, String>((changed_text, game_over, ui_snapshot, new_state_json))
+            Ok::<_, String>((changed_text, is_game_over, ui_snapshot, new_state_json))
         })
         .await
         .map_err(|e| format!("blocking task panicked: {e:?}"))??;
@@ -531,7 +548,7 @@ pub async fn set_locale(
 
     Ok(CommandResponse {
         text: changed_text,
-        game_over,
+        game_over: is_game_over,
         movie: None,
         session_closure: ui_snapshot.session_closure.clone(),
         game_closure: ui_snapshot.game_closure.clone(),

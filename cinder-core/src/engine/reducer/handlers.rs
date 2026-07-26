@@ -574,12 +574,10 @@ pub(super) fn handle_unknown_input(
 
 pub(super) fn handle_session_ended(
     state: &mut WorldState,
-    content: &ContentPack,
-    lines: &mut Vec<String>,
+    _content: &ContentPack,
+    _lines: &mut Vec<String>,
 ) {
-    state.game_over = true;
     state.phase = crate::engine::state::GamePhase::SessionEnded;
-    lines.push(content.presentation.presentation_text.session_ended.clone());
 }
 
 pub(super) fn apply_content_event(

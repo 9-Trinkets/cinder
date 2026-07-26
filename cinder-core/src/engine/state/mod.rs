@@ -21,7 +21,6 @@ pub struct WorldState {
     pub current_room_id: String,
     pub turn_number: u32,
     pub current_time_minutes: u32,
-    pub game_over: bool,
     #[serde(default)]
     pub phase: GamePhase,
     pub conversation_event_sequence: u64,
@@ -107,7 +106,6 @@ impl WorldState {
             current_room_id: content.opening.start_room_id.clone(),
             turn_number: 0,
             current_time_minutes: content.opening.start_time_minutes,
-            game_over: false,
             phase: GamePhase::Active,
             conversation_event_sequence: 0,
             conversation_memory: BTreeMap::new(),
@@ -617,7 +615,6 @@ fn format_clock_time(total_minutes: u32) -> String {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TurnOutcome {
     pub text: String,
-    pub game_over: bool,
     pub phase: GamePhase,
 }
 

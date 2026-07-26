@@ -720,8 +720,8 @@ impl TuiApp {
         if !outcome.text.trim().is_empty() {
             self.push_transcript(outcome.text);
         }
-        self.game_over = outcome.game_over;
-        if outcome.game_over {
+        self.game_over = outcome.phase != cinder_core::engine::state::GamePhase::Active;
+        if self.game_over {
             self.pending_final_summary = true;
         }
         if let Some(options) = self.menu_options().ok().flatten() {
@@ -730,7 +730,7 @@ impl TuiApp {
             self.menu_index = 0;
         }
         self.maybe_open_projector_sequence();
-        if !outcome.game_over
+        if !self.game_over
             && let Err(error) = self.queue_day_summaries()
         {
             self.push_transcript(format!("{} {error}", self.ui_text.error_prefix));

@@ -204,12 +204,25 @@ impl CinderRuntime {
             &self.trace_dir,
             raw_input,
         )?;
-        self.apply_stage_assignments(outcome)
+        let outcome = self.apply_stage_assignments(outcome)?;
+        let outcome = match outcome.phase {
+            GamePhase::SessionEnded | GamePhase::GameEnded => {
+                let ended_text = &self.content.presentation.presentation_text.session_ended;
+                let text = if outcome.text.is_empty() {
+                    ended_text.clone()
+                } else {
+                    format!("{}\n\n{}", outcome.text, ended_text)
+                };
+                TurnOutcome { text, ..outcome }
+            }
+            GamePhase::Active => outcome,
+        };
+        Ok(outcome)
     }
 
     pub fn run_tick(&self) -> Result<TurnOutcome, Box<dyn Error>> {
         let outcome = match self.run_actor_turns() {
-            Ok((text, game_over, phase)) => TurnOutcome { text, game_over, phase },
+            Ok((text, phase)) => TurnOutcome { text, phase },
             Err(error) => {
                 if let Some(actor_tick_error) = error.downcast_ref::<ActorTickError>() {
                     eprintln!(
@@ -218,7 +231,6 @@ impl CinderRuntime {
                     );
                     TurnOutcome {
                         text: self.actor_tick_soft_error_text(actor_tick_error),
-                        game_over: false,
                         phase: GamePhase::Active,
                     }
                 } else {
@@ -226,34 +238,32 @@ impl CinderRuntime {
                 }
             }
         };
-        let outcome = self.continue_after_game_over(outcome)?;
         let outcome = self.apply_stage_assignments(outcome)?;
+        let outcome = match outcome.phase {
+            GamePhase::SessionEnded => {
+                let ended_text = &self.content.presentation.presentation_text.session_ended;
+                let text = if outcome.text.is_empty() {
+                    ended_text.clone()
+                } else {
+                    format!("{}\n\n{}", outcome.text, ended_text)
+                };
+                TurnOutcome { text, ..outcome }
+            }
+            GamePhase::GameEnded => {
+                let ended_text = &self.content.presentation.presentation_text.session_ended;
+                let text = if outcome.text.is_empty() {
+                    ended_text.clone()
+                } else {
+                    format!("{}\n\n{}", outcome.text, ended_text)
+                };
+                TurnOutcome { text, ..outcome }
+            }
+            GamePhase::Active => outcome,
+        };
         if !outcome.text.is_empty() {
             self.push_transcript_line(&outcome.text).ok();
         }
         Ok(outcome)
-    }
-
-    pub fn continue_after_game_over(
-        &self,
-        outcome: TurnOutcome,
-    ) -> Result<TurnOutcome, Box<dyn Error>> {
-        if !outcome.game_over {
-            return Ok(outcome);
-        }
-        let Some(intro_text) = self.advance_appointment_if_needed()? else {
-            return Ok(outcome);
-        };
-        let text = if outcome.text.is_empty() {
-            intro_text
-        } else {
-            format!("{}\n\n{}", outcome.text, intro_text)
-        };
-        Ok(TurnOutcome {
-            text,
-            game_over: false,
-            phase: GamePhase::Active,
-        })
     }
 
     pub fn continue_after_session(&self) -> Result<(), Box<dyn Error>> {
@@ -266,13 +276,35 @@ impl CinderRuntime {
                 return Ok(());
             }
             state.phase = GamePhase::Active;
-            state.game_over = false;
             state
                 .story_vars
                 .clear_scoped(crate::engine::state::VariableScope::Session);
         }
         self.clear_session_closure_cache()?;
         Ok(())
+    }
+
+    pub fn advance_appointment(&self) -> Result<Option<String>, Box<dyn Error>> {
+        if !self.content.settings.multi_appointment {
+            return Ok(None);
+        }
+        let feedback = self.build_perspective_review()?;
+        let feedback_summary = feedback.as_ref().map(|review| AppointmentFeedbackSummary {
+            rating: review.review.rating,
+            review_text: review.review.review_text.clone(),
+        });
+        let mut state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for appointment rollover")?;
+        if state.phase != GamePhase::SessionEnded {
+            return Ok(None);
+        }
+        Ok(advance_to_next_appointment(
+            self.content.as_ref(),
+            &mut state,
+            feedback_summary.as_ref(),
+        ))
     }
 
     fn clear_session_closure_cache(&self) -> Result<(), Box<dyn Error>> {
@@ -346,7 +378,6 @@ impl CinderRuntime {
         };
         Ok(TurnOutcome {
             text,
-            game_over: outcome.game_over,
             phase: outcome.phase,
         })
     }
@@ -661,29 +692,6 @@ impl CinderRuntime {
         Ok(lines.join(" "))
     }
 
-    fn advance_appointment_if_needed(&self) -> Result<Option<String>, Box<dyn Error>> {
-        if !self.content.settings.multi_appointment {
-            return Ok(None);
-        }
-        let feedback = self.build_perspective_review()?;
-        let feedback_summary = feedback.as_ref().map(|review| AppointmentFeedbackSummary {
-            rating: review.review.rating,
-            review_text: review.review.review_text.clone(),
-        });
-        let mut state = self
-            .state
-            .lock()
-            .map_err(|_| "failed to lock runtime state for appointment rollover")?;
-        if !state.game_over {
-            return Ok(None);
-        }
-        Ok(advance_to_next_appointment(
-            self.content.as_ref(),
-            &mut state,
-            feedback_summary.as_ref(),
-        ))
-    }
-
     pub fn current_time_label(&self) -> Result<String, Box<dyn Error>> {
         let state = self
             .state
@@ -929,7 +937,7 @@ impl CinderRuntime {
             .collect())
     }
 
-    fn run_actor_turns(&self) -> Result<(String, bool, GamePhase), Box<dyn Error>> {
+    fn run_actor_turns(&self) -> Result<(String, GamePhase), Box<dyn Error>> {
         let mut lines = Vec::new();
         let tracer = WorkflowTraceContext::new(self.trace_events, &self.trace_dir)?;
         tracer
@@ -948,9 +956,9 @@ impl CinderRuntime {
                 .state
                 .lock()
                 .map_err(|_| "failed to lock runtime state to start npc tick")?;
-            if state.game_over {
+            if state.phase != GamePhase::Active {
                 let phase = state.phase.clone();
-                return Ok((String::new(), true, phase));
+                return Ok((String::new(), phase));
             }
             let tick_start = [TimestampedWorldEvent::now(WorldEvent::TurnStarted {
                 turn_number: state.turn_number + 1,
@@ -971,9 +979,9 @@ impl CinderRuntime {
                 .state
                 .lock()
                 .map_err(|_| "failed to lock runtime state for npc turns")?;
-            if state.game_over {
+            if state.phase != GamePhase::Active {
                 let phase = state.phase.clone();
-                return Ok((lines.join("\n\n"), true, phase));
+                return Ok((lines.join("\n\n"), phase));
             }
             state.clone()
         };
@@ -1025,9 +1033,9 @@ impl CinderRuntime {
                 .state
                 .lock()
                 .map_err(|_| "failed to lock runtime state to apply npc events")?;
-            if state.game_over {
+            if state.phase != GamePhase::Active {
                 let phase = state.phase.clone();
-                return Ok((lines.join("\n\n"), true, phase));
+                return Ok((lines.join("\n\n"), phase));
             }
             let logged_events = tick
                 .events
@@ -1048,7 +1056,6 @@ impl CinderRuntime {
             .lock()
             .map_err(|_| "failed to lock runtime state after npc turns")?
             .clone();
-        let game_over = final_state.game_over;
         let phase = final_state.phase.clone();
         let final_stats = stats_trace_snapshot(&final_state);
         tracer
@@ -1066,13 +1073,13 @@ impl CinderRuntime {
                 "npc_tick",
                 "workflow.complete",
                 serde_json::json!({
-                    "game_over": game_over,
+                    "phase": format!("{:?}", phase),
                     "text": lines.join("\n\n"),
                     "stats": final_stats,
                 }),
             )
             .map_err(std::io::Error::other)?;
-        Ok((lines.join("\n\n"), game_over, phase))
+        Ok((lines.join("\n\n"), phase))
     }
 }
 
@@ -1148,7 +1155,6 @@ mod tests {
         let first = runtime
             .apply_stage_assignments(TurnOutcome {
                 text: String::new(),
-                game_over: false,
                 phase: GamePhase::Active,
             })
             .expect("apply assignment");
@@ -1191,7 +1197,6 @@ mod tests {
         let second = runtime
             .apply_stage_assignments(TurnOutcome {
                 text: String::new(),
-                game_over: false,
                 phase: GamePhase::Active,
             })
             .expect("reapply assignment");

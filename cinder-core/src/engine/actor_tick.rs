@@ -280,7 +280,7 @@ impl ActorTickRoleRunner {
         let mut workflow_state: ActorTickWorkflowState =
             serde_json::from_str(&inbound).map_err(|error| error.to_string())?;
         workflow_state.current_actor_id = None;
-        if workflow_state.state.game_over {
+        if workflow_state.state.phase != crate::engine::state::GamePhase::Active {
             return complete_tick_workflow(&workflow_state.emitted_events);
         }
         while let Some(actor_id) = workflow_state.remaining_actor_ids.first().cloned() {

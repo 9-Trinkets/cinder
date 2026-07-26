@@ -98,13 +98,10 @@ pub(super) fn advance_objective_for_signal(
             }
             if next_stage.end_session {
                 state.stages_completed += 1;
-                state.game_over = true;
                 state.phase = GamePhase::SessionEnded;
-                messages.push(content.presentation.presentation_text.session_ended.clone());
             }
             if next_stage.end_game {
                 state.stages_completed += 1;
-                state.game_over = true;
                 state.phase = GamePhase::GameEnded;
             }
         }
@@ -120,7 +117,7 @@ pub(super) fn advance_objective_for_signal(
         &content.settings.fallback_required_story_vars,
         &content.beats.stages,
         &state.active_objective_stage_ids,
-        state.game_over,
+        state.phase != GamePhase::Active,
         &state.story_vars,
     ) {
         state.active_objective_stage_ids.push(stage_id);

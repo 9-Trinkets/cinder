@@ -25,7 +25,6 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReducerOutput {
     pub lines: Vec<String>,
-    pub game_over: bool,
     pub phase: GamePhase,
 }
 
@@ -45,7 +44,7 @@ pub fn apply_events(
                 handle_turn_started(state, content, *turn_number, *advances_time, &mut lines);
             }
             WorldEvent::CurrentRoomObserved { room_id, mode } => {
-                if state.game_over {
+                if state.phase != GamePhase::Active {
                     continue;
                 }
                 handle_current_room_observed(state, content, room_id, mode.clone(), &mut lines);
@@ -280,7 +279,6 @@ pub fn apply_events(
     }
     ReducerOutput {
         lines,
-        game_over: state.game_over,
         phase: state.phase.clone(),
     }
 }

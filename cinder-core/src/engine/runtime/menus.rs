@@ -432,7 +432,6 @@ impl CinderRuntime {
             .map_err(std::io::Error::other)?;
         Ok(TurnOutcome {
             text: reduced.lines.join("\n\n"),
-            game_over: reduced.game_over,
             phase: reduced.phase,
         })
     }
@@ -497,7 +496,6 @@ impl CinderRuntime {
         lines.extend(reduced.lines);
         Ok(TurnOutcome {
             text: lines.join("\n\n"),
-            game_over: reduced.game_over,
             phase: reduced.phase,
         })
     }
