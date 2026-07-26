@@ -137,7 +137,7 @@ pub fn advance_to_next_appointment(
 
     let mut next_state = WorldState::new(content);
     next_state.appointment_series = Some(series);
-    next_state.transcript = state.transcript.clone();
+    next_state.last_transcript_line = state.last_transcript_line.clone();
     if let Some(series) = next_state.appointment_series.as_ref() {
         next_state.current_time_minutes = content.opening.start_time_minutes
             + (series.current_appointment_number.saturating_sub(1) * MINUTES_PER_DAY);

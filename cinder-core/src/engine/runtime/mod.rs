@@ -753,16 +753,16 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for transcript")?;
-        state.transcript.push(line.to_string());
+        state.last_transcript_line = Some(line.to_string());
         Ok(())
     }
 
-    pub fn transcript_lines(&self) -> Result<Vec<String>, Box<dyn Error>> {
+    pub fn last_transcript_line(&self) -> Result<Option<String>, Box<dyn Error>> {
         let state = self
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for transcript")?;
-        Ok(state.transcript.clone())
+        Ok(state.last_transcript_line.clone())
     }
 
     pub fn help_text(&self) -> String {

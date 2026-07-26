@@ -91,9 +91,11 @@ impl CinderRuntime {
             }))
     }
 
-    pub fn final_chapter_summary(&self) -> Result<FinalChapterSummary, Box<dyn Error>> {
-        let transcript_lines = self.transcript_lines()?;
-        let transcript_lines = chapter_transcript_lines(&transcript_lines);
+    pub(super) fn final_chapter_summary(
+        &self,
+        transcript_lines: &[String],
+    ) -> Result<FinalChapterSummary, Box<dyn Error>> {
+        let transcript_lines = chapter_transcript_lines(transcript_lines);
         let relationship_lines = self.relationship_status_lines()?;
         let preview = self
             .current_next_chapter_preview()?
@@ -132,7 +134,10 @@ impl CinderRuntime {
         })
     }
 
-    pub fn session_closure(&self) -> Result<Option<SessionClosure>, Box<dyn Error>> {
+    pub fn session_closure(
+        &self,
+        transcript_lines: &[String],
+    ) -> Result<Option<SessionClosure>, Box<dyn Error>> {
         {
             let cached = self
                 .session_closure
@@ -167,7 +172,7 @@ impl CinderRuntime {
                         | SessionClosureSource::ContinuationPreview
                 )
             })
-            .then(|| self.final_chapter_summary())
+            .then(|| self.final_chapter_summary(transcript_lines))
             .transpose()?;
 
         let perspective = definition
@@ -260,7 +265,10 @@ impl CinderRuntime {
         Ok(Some(closure))
     }
 
-    pub fn game_closure(&self) -> Result<Option<SessionClosure>, Box<dyn Error>> {
+    pub fn game_closure(
+        &self,
+        transcript_lines: &[String],
+    ) -> Result<Option<SessionClosure>, Box<dyn Error>> {
         {
             let cached = self
                 .game_closure
@@ -295,7 +303,7 @@ impl CinderRuntime {
                         | SessionClosureSource::ContinuationPreview
                 )
             })
-            .then(|| self.final_chapter_summary())
+            .then(|| self.final_chapter_summary(transcript_lines))
             .transpose()?;
 
         let perspective = definition

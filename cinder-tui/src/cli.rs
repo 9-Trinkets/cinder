@@ -229,7 +229,7 @@ impl TuiApp {
             self.sync_tick_pause();
             return Ok(());
         }
-        let Some(data) = self.runtime.session_closure()? else {
+        let Some(data) = self.runtime.session_closure(&[])? else {
             self.pending_final_summary = false;
             self.sync_tick_pause();
             return Ok(());

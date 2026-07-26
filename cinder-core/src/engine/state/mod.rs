@@ -55,8 +55,10 @@ pub struct WorldState {
     pub initial_actor_stats: BTreeMap<String, BTreeMap<String, i32>>,
     #[serde(default)]
     pub initial_pair_stats: BTreeMap<String, BTreeMap<String, i32>>,
-    #[serde(default)]
+    #[serde(default, skip_serializing)]
     pub transcript: Vec<String>,
+    #[serde(default)]
+    pub last_transcript_line: Option<String>,
     #[serde(default)]
     pub player_inventory: HashMap<String, u32>,
     #[serde(default)]
@@ -138,6 +140,7 @@ impl WorldState {
             initial_actor_stats: seeded_actor_stats(content, &content.stats.actor),
             initial_pair_stats: seeded_pair_stats(content, &content.stats.pair),
             transcript: Vec::new(),
+            last_transcript_line: None,
             player_inventory: HashMap::new(),
             appointment_series: None,
         }

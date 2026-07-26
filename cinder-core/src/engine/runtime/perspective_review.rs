@@ -62,7 +62,7 @@ impl CinderRuntime {
             })
             .collect::<Vec<_>>()
             .join("\n");
-            let session_summary = state.transcript.last().cloned().unwrap_or_default();
+            let session_summary = state.last_transcript_line.clone().unwrap_or_default();
             let relationship_lines = self.relationship_status_lines_for_state(&state);
             (
                 actor_name,

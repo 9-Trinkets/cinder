@@ -26,12 +26,18 @@ pub struct CommandResponse {
     pub ui_snapshot: Option<UiSnapshot>,
 }
 
-pub(super) fn session_closure_data(runtime: &CinderRuntime) -> Option<SessionClosure> {
-    runtime.session_closure().ok().flatten()
+pub(super) fn session_closure_data(
+    runtime: &CinderRuntime,
+    transcript_lines: &[String],
+) -> Option<SessionClosure> {
+    runtime.session_closure(transcript_lines).ok().flatten()
 }
 
-pub(super) fn game_closure_data(runtime: &CinderRuntime) -> Option<SessionClosure> {
-    runtime.game_closure().ok().flatten()
+pub(super) fn game_closure_data(
+    runtime: &CinderRuntime,
+    transcript_lines: &[String],
+) -> Option<SessionClosure> {
+    runtime.game_closure(transcript_lines).ok().flatten()
 }
 
 pub fn consume_projector_sequence(runtime: &CinderRuntime) -> Option<MovieData> {

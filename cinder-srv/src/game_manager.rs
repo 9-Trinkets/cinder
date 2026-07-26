@@ -46,7 +46,7 @@ async fn with_runtime<F, R>(
     f: F,
 ) -> Result<R, String>
 where
-    F: FnOnce(&CinderRuntime, &str) -> Result<(R, Vec<PendingTranscriptEntry>), String>
+    F: FnOnce(&CinderRuntime, &str, &[String]) -> Result<(R, Vec<PendingTranscriptEntry>), String>
         + Send
         + 'static,
     R: Send + 'static,
@@ -58,6 +58,7 @@ where
     let (pack_id, locale, state_json) =
         load_session_row(&mut tx, session_id, player_id, true).await?;
     backfill_transcript_if_missing(&mut tx, session_id, &state_json).await?;
+    let transcript_lines = fetch_transcript_in_tx(&mut tx, session_id, player_id).await?;
 
     let (result, transcript_entries, persisted_locale, new_state_json, turn_number) =
         tokio::task::spawn_blocking(move || {
@@ -66,7 +67,7 @@ where
 
             let runtime = build_runtime_impl(content, &state_json)?;
 
-            let (result, transcript_entries) = f(&runtime, &pack_id)?;
+            let (result, transcript_entries) = f(&runtime, &pack_id, &transcript_lines)?;
 
             let persisted_locale = runtime.content().locale.clone();
             let new_state = runtime
@@ -161,6 +162,30 @@ async fn replace_transcript_entries_with_lines(
     Ok(())
 }
 
+const MAX_TRANSCRIPT_LINES: i64 = 200;
+
+async fn fetch_transcript_in_tx(
+    tx: &mut Transaction<'_, Postgres>,
+    session_id: &Uuid,
+    player_id: &Uuid,
+) -> Result<Vec<String>, String> {
+    let rows = sqlx::query_scalar::<_, String>(
+        "SELECT CASE WHEN te.role = 'player' THEN '> ' || te.text ELSE te.text END
+         FROM transcript_entries te
+         JOIN game_sessions s ON s.id = te.session_id
+         WHERE te.session_id = $1 AND s.player_id = $2
+         ORDER BY te.turn_number ASC, te.id ASC
+         LIMIT $3",
+    )
+    .bind(session_id)
+    .bind(player_id)
+    .bind(MAX_TRANSCRIPT_LINES)
+    .fetch_all(&mut **tx)
+    .await
+    .map_err(|e| format!("transcript query error: {e}"))?;
+    Ok(rows)
+}
+
 async fn backfill_transcript_if_missing(
     tx: &mut Transaction<'_, Postgres>,
     session_id: &Uuid,
@@ -252,7 +277,7 @@ pub async fn run_command(
     let session_id = parse_uuid(session_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let input_owned = input.to_string();
-    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id| {
+    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id, transcript_lines| {
         let mut outcome = runtime
             .run_turn(&input_owned)
             .map_err(|e| format!("turn error: {e}"))?;
@@ -281,12 +306,12 @@ pub async fn run_command(
 
         use cinder_core::engine::state::GamePhase;
         let session_closure = if outcome.phase == GamePhase::SessionEnded {
-            response::session_closure_data(runtime)
+            response::session_closure_data(runtime, transcript_lines)
         } else {
             None
         };
         let game_closure = if outcome.phase == GamePhase::GameEnded {
-            response::game_closure_data(runtime)
+            response::game_closure_data(runtime, transcript_lines)
         } else {
             None
         };
@@ -298,7 +323,7 @@ pub async fn run_command(
         let _ = runtime.push_transcript_line(&turn_text);
 
         let movie = consume_projector_sequence(runtime);
-        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id)?;
+        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, transcript_lines)?;
 
         let response = CommandResponse {
             text: outcome.text,
@@ -337,16 +362,16 @@ pub async fn run_realtime_tick(
 ) -> Result<CommandResponse, String> {
     let session_id = parse_uuid(session_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
-    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id| {
+    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id, transcript_lines| {
         let outcome = runtime.run_tick().map_err(|e| format!("tick error: {e}"))?;
         use cinder_core::engine::state::GamePhase;
         let session_closure = if outcome.phase == GamePhase::SessionEnded {
-            response::session_closure_data(runtime)
+            response::session_closure_data(runtime, transcript_lines)
         } else {
             None
         };
         let game_closure = if outcome.phase == GamePhase::GameEnded {
-            response::game_closure_data(runtime)
+            response::game_closure_data(runtime, transcript_lines)
         } else {
             None
         };
@@ -354,7 +379,7 @@ pub async fn run_realtime_tick(
             .continue_after_game_over(outcome)
             .map_err(|e| format!("appointment rollover error: {e}"))?;
         let movie = consume_projector_sequence(runtime);
-        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id)?;
+        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, transcript_lines)?;
         let response = CommandResponse {
             text: outcome.text.clone(),
             game_over: outcome.game_over,
@@ -387,12 +412,12 @@ pub async fn switch_room(
     let session_id = parse_uuid(session_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let room_id = room_id.to_string();
-    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id| {
+    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id, _transcript_lines| {
         let outcome = runtime
             .switch_room_view(&room_id)
             .map_err(|e| format!("room switch error: {e}"))?;
         let _ = runtime.push_transcript_line(&outcome.text);
-        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id)?;
+        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
         let transcript_entries = vec![PendingTranscriptEntry {
             role: "narrative".to_string(),
             text: outcome.text.clone(),
@@ -421,12 +446,12 @@ pub async fn follow_actor(
     let session_id = parse_uuid(session_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let actor_id = actor_id.map(|s| s.to_string());
-    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id| {
+    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id, _transcript_lines| {
         let outcome = runtime
             .follow_actor(actor_id.as_deref())
             .map_err(|e| format!("follow error: {e}"))?;
         let _ = runtime.push_transcript_line(&outcome.text);
-        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id)?;
+        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
         let transcript_entries = vec![PendingTranscriptEntry {
             role: "narrative".to_string(),
             text: outcome.text.clone(),
@@ -477,7 +502,7 @@ pub async fn set_locale(
                 &runtime.content().ui_text.language_changed_text,
                 &[("language_name", language_name.as_str())],
             );
-            let ui_snapshot = ui::build_ui_snapshot(&runtime, &pack_id)?;
+            let ui_snapshot = ui::build_ui_snapshot(&runtime, &pack_id, &[])?;
             let new_state = runtime
                 .export_state()
                 .map_err(|e| format!("state export error: {e}"))?;
@@ -527,12 +552,13 @@ pub async fn get_session_ui(
         .map_err(|e| format!("db begin error: {e}"))?;
     let (pack_id, locale, state_json) =
         load_session_row(&mut tx, &session_id, &player_id, true).await?;
+    let transcript_lines = fetch_transcript_in_tx(&mut tx, &session_id, &player_id).await?;
 
     let (snapshot, persisted_locale, new_state_json) = tokio::task::spawn_blocking(move || {
         let content = loader::load_named_pack(&pack_id, Some(&locale))
             .map_err(|e| format!("failed to load pack '{pack_id}' locale '{locale}': {e}"))?;
         let runtime = build_runtime_impl(content, &state_json)?;
-        let snapshot = ui::build_ui_snapshot(&runtime, &pack_id)?;
+        let snapshot = ui::build_ui_snapshot(&runtime, &pack_id, &transcript_lines)?;
         let persisted_locale = runtime.content().locale.clone();
         let new_state_json = serde_json::to_string(
             &runtime
@@ -611,11 +637,11 @@ pub async fn continue_session(
 ) -> Result<CommandResponse, String> {
     let session_id = parse_uuid(session_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
-    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id| {
+    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id, _transcript_lines| {
         runtime
             .continue_after_session()
             .map_err(|e| format!("session continuation error: {e}"))?;
-        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id)?;
+        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
         Ok((
             CommandResponse {
                 text: String::new(),

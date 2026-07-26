@@ -117,6 +117,7 @@ pub struct UiSnapshot {
 pub(super) fn build_ui_snapshot(
     runtime: &CinderRuntime,
     pack_id: &str,
+    transcript_lines: &[String],
 ) -> Result<UiSnapshot, String> {
     let time_label = runtime
         .current_time_label()
@@ -370,8 +371,8 @@ pub(super) fn build_ui_snapshot(
         talk_options,
         active_menu,
         ui_text: content.ui_text.clone(),
-        session_closure: response::session_closure_data(runtime),
-        game_closure: response::game_closure_data(runtime),
+        session_closure: response::session_closure_data(runtime, transcript_lines),
+        game_closure: response::game_closure_data(runtime, transcript_lines),
         inventory: runtime
             .inventory_items()
             .unwrap_or_default()
