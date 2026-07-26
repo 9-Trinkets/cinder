@@ -111,6 +111,8 @@ pub struct UiSnapshot {
     pub game_closure: Option<SessionClosure>,
     pub inventory: Vec<InventoryItem>,
     pub room_consumables: Vec<RoomConsumableGroup>,
+    pub show_relationship_sidebar: bool,
+    pub relationship_pairs: Vec<cinder_core::engine::runtime::RelationshipPair>,
     pub theme: cinder_core::content::types::ThemeDefinition,
 }
 
@@ -417,6 +419,12 @@ pub(super) fn build_ui_snapshot(
                     }
                     groups
                 })
+        },
+        show_relationship_sidebar: content.settings.show_relationship_sidebar,
+        relationship_pairs: if content.settings.show_relationship_sidebar {
+            runtime.relationship_pairs().unwrap_or_default()
+        } else {
+            Vec::new()
         },
         theme: content.settings.theme.clone(),
     })

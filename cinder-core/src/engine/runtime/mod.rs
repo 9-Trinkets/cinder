@@ -1102,6 +1102,7 @@ mod perspective_review;
 mod session_closure;
 mod stats_trace;
 pub use self::session_closure::FinalChapterSummary;
+pub use self::session_closure::RelationshipPair;
 use self::stats_trace::stats_trace_snapshot;
 
 #[cfg(test)]

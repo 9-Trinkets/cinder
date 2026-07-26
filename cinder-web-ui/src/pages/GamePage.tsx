@@ -6,6 +6,7 @@ import ShellMenu from '../components/ShellMenu'
 import Modal from '../components/Modal'
 import TranscriptPane from '../components/TranscriptPane'
 import StatusPanel from '../components/StatusPanel'
+import RelationshipChart from '../components/RelationshipChart'
 import MovieModal from '../components/MovieModal'
 import SessionClosureModal from '../components/SessionClosureModal'
 import QuickActionPanel, { type QuickPanel } from '../components/QuickActionPanel'
@@ -676,6 +677,9 @@ export default function GamePage() {
         {uiSnapshot && (
           <aside className="hidden lg:flex w-72 shrink-0 border-l border-subtle p-4 flex-col gap-4 text-sm overflow-y-auto self-stretch">
             <StatusPanel uiSnapshot={uiSnapshot} />
+            {uiSnapshot.show_relationship_sidebar && uiSnapshot.relationship_pairs.length > 0 && (
+              <RelationshipChart pairs={uiSnapshot.relationship_pairs} />
+            )}
           </aside>
         )}
       </div>

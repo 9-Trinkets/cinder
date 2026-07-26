@@ -5,7 +5,17 @@ use crate::engine::dialogue::{
 };
 use crate::engine::dialogue_grounding::render_story_text;
 use crate::engine::state::{GamePhase, WorldState};
+use serde::Serialize;
 use std::error::Error;
+
+#[derive(Debug, Clone, Serialize)]
+pub struct RelationshipPair {
+    pub actor_a: String,
+    pub actor_b: String,
+    pub connection: i32,
+    pub attraction: i32,
+    pub safety: i32,
+}
 
 pub struct FinalChapterSummary {
     pub what_happened: String,
@@ -14,6 +24,35 @@ pub struct FinalChapterSummary {
 }
 
 impl CinderRuntime {
+    pub fn relationship_pairs(&self) -> Result<Vec<RelationshipPair>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for relationship pairs")?;
+        let mut pairs = Vec::new();
+        for (index, actor) in self.content.actors.iter().enumerate() {
+            for other in self.content.actors.iter().skip(index + 1) {
+                let stats = state.pair_stats_snapshot(&actor.id, &other.id);
+                if stats.is_empty() {
+                    continue;
+                }
+                let connection = stats.get("connection").copied().unwrap_or(0);
+                if connection == 0 {
+                    continue;
+                }
+                pairs.push(RelationshipPair {
+                    actor_a: self.display_actor_name_for_state(&state, &actor.id),
+                    actor_b: self.display_actor_name_for_state(&state, &other.id),
+                    connection,
+                    attraction: stats.get("attraction").copied().unwrap_or(0),
+                    safety: stats.get("safety").copied().unwrap_or(0),
+                });
+            }
+        }
+        pairs.sort_by(|a, b| b.connection.cmp(&a.connection));
+        Ok(pairs)
+    }
+
     pub fn relationship_status_lines(&self) -> Result<Vec<String>, Box<dyn Error>> {
         let state = self
             .state

@@ -186,6 +186,14 @@ export interface RoomConsumableGroup {
   items: ConsumableInfo[]
 }
 
+export interface RelationshipPair {
+  actor_a: string
+  actor_b: string
+  connection: number
+  attraction: number
+  safety: number
+}
+
 export interface ThemeDefinition {
   base: string
   surface: string
@@ -234,6 +242,8 @@ export interface UiSnapshot {
   game_closure: SessionClosureData | null
   inventory: InventoryItem[]
   room_consumables: RoomConsumableGroup[]
+  show_relationship_sidebar: boolean
+  relationship_pairs: RelationshipPair[]
   theme: ThemeDefinition
   ui_text: {
     language_name: string
