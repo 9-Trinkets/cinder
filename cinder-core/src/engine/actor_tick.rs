@@ -740,6 +740,13 @@ fn build_conditions(rule: &ActorMovementTargetRuleDefinition) -> Vec<ActorDecisi
     conditions
 }
 
+fn sanitize_json_control_chars(input: &str) -> String {
+    input
+        .chars()
+        .filter(|c| !c.is_control())
+        .collect()
+}
+
 fn extract_inbound_message(prompt: &str) -> Result<String, String> {
     let (marker, json_encoded) = if prompt.contains("INBOUND_MESSAGE_JSON:\n") {
         ("INBOUND_MESSAGE_JSON:\n", true)
@@ -756,7 +763,8 @@ fn extract_inbound_message(prompt: &str) -> Result<String, String> {
         .ok_or_else(|| "missing ROUTING_PROTOCOL block".to_string())?;
     let inbound = &rest[..end];
     if json_encoded {
-        serde_json::from_str(inbound).map_err(|error| error.to_string())
+        let sanitized = sanitize_json_control_chars(inbound);
+        serde_json::from_str(&sanitized).map_err(|error| error.to_string())
     } else {
         Ok(inbound.to_string())
     }
