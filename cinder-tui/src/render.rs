@@ -4,7 +4,6 @@ use crate::theme::Theme;
 use crate::transcript;
 use cinder_core::MenuChoiceOption;
 use cinder_core::content::types::UiTextDefinition;
-use cinder_core::engine::runtime::RelationshipPair;
 use ratatui::Frame;
 use ratatui::layout::{Alignment, Constraint, Flex, Layout, Margin, Position, Rect};
 use ratatui::style::{Modifier, Style};
@@ -29,8 +28,6 @@ pub(crate) struct RenderSnapshot {
     pub game_over: bool,
     pub menu: Option<MenuSnapshot>,
     pub shell_modal: Option<ShellModalSnapshot>,
-    pub show_relationship_sidebar: bool,
-    pub relationship_chart: Vec<RelationshipPair>,
 }
 
 pub(crate) struct MenuSnapshot {
@@ -114,17 +111,6 @@ pub(crate) fn draw(
         chunks[0],
     );
 
-    let (transcript_area, sidebar_area) = if snapshot.show_relationship_sidebar {
-        let mid = Layout::horizontal([
-            Constraint::Min(40),
-            Constraint::Length(18),
-        ])
-        .split(chunks[1]);
-        (mid[0], Some(mid[1]))
-    } else {
-        (chunks[1], None)
-    };
-
     let transcript_text = Text::from(transcript::lines(
         &snapshot.transcript,
         snapshot.transcript_animation,
@@ -152,8 +138,8 @@ pub(crate) fn draw(
         )
         .wrap(Wrap { trim: false })
         .scroll((snapshot.transcript_scroll, 0));
-    frame.render_widget(transcript, transcript_area);
-    let transcript_lines = transcript::content_lines(&snapshot.transcript, transcript_area.width);
+    frame.render_widget(transcript, chunks[1]);
+    let transcript_lines = transcript::content_lines(&snapshot.transcript, chunks[1].width);
     let mut scrollbar_state =
         ScrollbarState::new(transcript_lines).position(snapshot.transcript_scroll as usize);
     let scrollbar = Scrollbar::new(ScrollbarOrientation::VerticalRight)
@@ -163,16 +149,12 @@ pub(crate) fn draw(
         .end_symbol(None);
     frame.render_stateful_widget(
         scrollbar,
-        transcript_area.inner(Margin {
+        chunks[1].inner(Margin {
             vertical: 1,
             horizontal: 0,
         }),
         &mut scrollbar_state,
     );
-
-    if let Some(area) = sidebar_area {
-        render_relationship_chart(frame, area, snapshot);
-    }
 
     let input_title = if snapshot.game_over {
         Some(snapshot.ui_text.session_ended_title.as_str())
@@ -273,106 +255,6 @@ pub(crate) fn draw(
             let row = row.min(max_row);
             frame.set_cursor_position(Position::new(chunks[2].x + 1 + col, chunks[2].y + 1 + row));
         }
-    }
-}
-
-const SIDEBAR_BAR_WIDTH: u16 = 5;
-
-fn render_relationship_chart(frame: &mut Frame, area: Rect, snapshot: &RenderSnapshot) {
-    let block = Block::default()
-        .borders(Borders::ALL)
-        .border_style(Style::default().fg(snapshot.theme.highlight_high))
-        .title(" Relationships")
-        .title_style(
-            Style::default()
-                .fg(snapshot.theme.love)
-                .add_modifier(Modifier::BOLD),
-        )
-        .style(Style::default().bg(snapshot.theme.surface));
-
-    let inner = block.inner(area);
-    frame.render_widget(block, area);
-
-    let mut lines: Vec<Line<'static>> = Vec::new();
-    lines.push(Line::from(""));
-
-    for pair in &snapshot.relationship_chart {
-        if lines.len() + 3 > inner.height as usize {
-            break;
-        }
-
-        let heart = match pair.connection {
-            0..=2 => Span::styled(" \u{2661} ", Style::default().fg(snapshot.theme.muted)),
-            3..=5 => Span::styled(" \u{2665} ", Style::default().fg(snapshot.theme.rose)),
-            6..=8 => Span::styled(" \u{2665} ", Style::default().fg(snapshot.theme.love)),
-            _ => Span::styled(" \u{2665} ", Style::default().fg(snapshot.theme.gold)),
-        };
-
-        let filled = (pair.attraction as u16).min(SIDEBAR_BAR_WIDTH);
-        let empty = SIDEBAR_BAR_WIDTH.saturating_sub(filled);
-        let bar = format!("{}{}", "\u{2588}".repeat(filled as usize), "\u{2591}".repeat(empty as usize));
-
-        let bar_color = if pair.attraction >= 7 {
-            snapshot.theme.love
-        } else if pair.attraction >= 3 {
-            snapshot.theme.rose
-        } else {
-            snapshot.theme.muted
-        };
-
-        let safety_suffix = if pair.safety != 0 {
-            let sign = if pair.safety > 0 { "+" } else { "" };
-            Some(Span::styled(
-                format!(" {sign}{}", pair.safety),
-                Style::default().fg(if pair.safety > 0 {
-                    snapshot.theme.pine
-                } else {
-                    snapshot.theme.muted
-                }),
-            ))
-        } else {
-            None
-        };
-
-        let name_a = truncate_name(&pair.actor_a, 5);
-        let name_b = truncate_name(&pair.actor_b, 5);
-
-        let mut pair_line = Vec::new();
-        pair_line.push(Span::styled(
-            format!(" {name_a}"),
-            Style::default().fg(snapshot.theme.text),
-        ));
-        pair_line.push(heart);
-        pair_line.push(Span::styled(
-            format!("{name_b}"),
-            Style::default().fg(snapshot.theme.text),
-        ));
-        lines.push(Line::from(pair_line));
-
-        let mut stat_line = Vec::new();
-        stat_line.push(Span::styled(
-            format!("  {bar}"),
-            Style::default().fg(bar_color),
-        ));
-        if let Some(safety) = safety_suffix {
-            stat_line.push(safety);
-        }
-        lines.push(Line::from(stat_line));
-        lines.push(Line::from(""));
-    }
-
-    let paragraph = Paragraph::new(lines)
-        .wrap(Wrap { trim: false })
-        .style(Style::default().bg(snapshot.theme.surface));
-    frame.render_widget(paragraph, inner);
-}
-
-fn truncate_name(name: &str, max_chars: usize) -> String {
-    if name.chars().count() <= max_chars {
-        name.to_string()
-    } else {
-        let truncated: String = name.chars().take(max_chars.saturating_sub(1)).collect();
-        format!("{truncated}\u{2026}")
     }
 }
 

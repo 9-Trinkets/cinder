@@ -1101,7 +1101,7 @@ mod menus;
 mod perspective_review;
 mod session_closure;
 mod stats_trace;
-pub use self::session_closure::{FinalChapterSummary, RelationshipPair};
+pub use self::session_closure::FinalChapterSummary;
 use self::stats_trace::stats_trace_snapshot;
 
 #[cfg(test)]

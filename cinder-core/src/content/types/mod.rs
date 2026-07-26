@@ -64,8 +64,6 @@ pub struct ContentSettingsDefinition {
     #[serde(default = "default_true")]
     pub show_day_summary: bool,
     #[serde(default)]
-    pub show_relationship_sidebar: bool,
-    #[serde(default)]
     pub theme: ThemeDefinition,
 }
 
@@ -120,7 +118,6 @@ impl Default for ContentSettingsDefinition {
             speech_stamina_cost_floor: default_speech_stamina_cost_floor(),
             workflow_id: String::default(),
             show_day_summary: true,
-            show_relationship_sidebar: false,
             theme: ThemeDefinition::default(),
         }
     }

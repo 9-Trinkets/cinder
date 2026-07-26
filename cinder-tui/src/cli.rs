@@ -776,13 +776,6 @@ impl TuiApp {
                 options,
             });
         let shell_modal = self.shell_modal_snapshot();
-        let show_relationship_sidebar =
-            self.runtime.content().settings.show_relationship_sidebar;
-        let relationship_chart = if show_relationship_sidebar {
-            self.runtime.relationship_pairs().unwrap_or_default()
-        } else {
-            Vec::new()
-        };
         RenderSnapshot {
             title: self.runtime.content().opening.title.clone(),
             time: self
@@ -800,8 +793,6 @@ impl TuiApp {
             game_over: self.game_over,
             menu,
             shell_modal,
-            show_relationship_sidebar,
-            relationship_chart,
         }
     }
 
