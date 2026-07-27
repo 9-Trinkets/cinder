@@ -8,6 +8,6 @@ pub use content::types::{
 pub use engine::dialogue::PerspectiveReview;
 pub use engine::runtime::{
     ActiveMenuInfo, CinderRuntime, FinalChapterSummary, LookOptionItem, MenuChoiceOption,
-    SessionClosure, SessionClosureSection,
+    ActClosure, ActClosureSection,
 };
 pub use engine::state::{TurnOutcome, WorldState};

@@ -36,8 +36,8 @@ pub struct CinderRuntime {
     actor_move_workflow: WorkflowDefinition,
     trace_events: bool,
     trace_dir: PathBuf,
-    session_closure: Arc<Mutex<Option<SessionClosure>>>,
-    game_closure: Arc<Mutex<Option<SessionClosure>>>,
+    act_closure: Arc<Mutex<Option<ActClosure>>>,
+    game_closure: Arc<Mutex<Option<ActClosure>>>,
 }
 
 impl Clone for CinderRuntime {
@@ -51,8 +51,8 @@ impl Clone for CinderRuntime {
             actor_move_workflow: self.actor_move_workflow.clone(),
             trace_events: self.trace_events,
             trace_dir: self.trace_dir.clone(),
-            session_closure: Arc::new(Mutex::new(
-                self.session_closure
+            act_closure: Arc::new(Mutex::new(
+                self.act_closure
                     .lock()
                     .map(|opt| opt.clone())
                     .unwrap_or(None),
@@ -96,15 +96,15 @@ pub struct MenuChoiceOption {
 }
 
 #[derive(Debug, Clone, Serialize)]
-pub struct SessionClosure {
+pub struct ActClosure {
     pub title: String,
     pub subtitle: Option<String>,
-    pub sections: Vec<SessionClosureSection>,
+    pub sections: Vec<ActClosureSection>,
 }
 
 #[derive(Debug, Clone, Serialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
-pub enum SessionClosureSection {
+pub enum ActClosureSection {
     Text { title: String, body: String },
     Rating { title: String, value: u32, max: u32 },
 }
@@ -189,7 +189,7 @@ impl CinderRuntime {
             actor_move_workflow,
             trace_events,
             trace_dir,
-            session_closure: Arc::new(Mutex::new(None)),
+            act_closure: Arc::new(Mutex::new(None)),
             game_closure: Arc::new(Mutex::new(None)),
         })
     }
@@ -280,7 +280,7 @@ impl CinderRuntime {
                 .story_vars
                 .clear_scoped(crate::engine::state::VariableScope::Act);
         }
-        self.clear_session_closure_cache()?;
+        self.clear_act_closure_cache()?;
         Ok(())
     }
 
@@ -307,10 +307,10 @@ impl CinderRuntime {
         ))
     }
 
-    fn clear_session_closure_cache(&self) -> Result<(), Box<dyn Error>> {
+    fn clear_act_closure_cache(&self) -> Result<(), Box<dyn Error>> {
         {
             let mut cached = self
-                .session_closure
+                .act_closure
                 .lock()
                 .map_err(|error| error.to_string())?;
             *cached = None;
@@ -866,7 +866,7 @@ impl CinderRuntime {
             actor_move_workflow: self.actor_move_workflow.clone(),
             trace_events: self.trace_events,
             trace_dir: self.trace_dir.clone(),
-            session_closure: Arc::new(Mutex::new(None)),
+            act_closure: Arc::new(Mutex::new(None)),
             game_closure: Arc::new(Mutex::new(None)),
         }
     }

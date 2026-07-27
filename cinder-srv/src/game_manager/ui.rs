@@ -1,7 +1,7 @@
 use cinder_core::content::loader;
 use cinder_core::content::types::UiTextDefinition;
 use cinder_core::engine::runtime::{
-    ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption, SessionClosure,
+    ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption, ActClosure,
 };
 use serde::Serialize;
 
@@ -107,8 +107,8 @@ pub struct UiSnapshot {
     pub talk_options: Vec<MenuOptionData>,
     pub active_menu: Option<ActiveMenuData>,
     pub ui_text: UiTextDefinition,
-    pub session_closure: Option<SessionClosure>,
-    pub game_closure: Option<SessionClosure>,
+    pub act_closure: Option<ActClosure>,
+    pub game_closure: Option<ActClosure>,
     pub inventory: Vec<InventoryItem>,
     pub room_consumables: Vec<RoomConsumableGroup>,
     pub show_relationship_sidebar: bool,
@@ -373,8 +373,8 @@ pub(super) fn build_ui_snapshot(
         talk_options,
         active_menu,
         ui_text: content.ui_text.clone(),
-        session_closure: if content.settings.show_session_closure {
-            response::session_closure_data(runtime, transcript_lines)
+        act_closure: if content.settings.show_session_closure {
+            response::act_closure_data(runtime, transcript_lines)
         } else {
             None
         },

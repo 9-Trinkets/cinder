@@ -8,7 +8,7 @@ import TranscriptPane from '../components/TranscriptPane'
 import StatusPanel from '../components/StatusPanel'
 import RelationshipChart from '../components/RelationshipChart'
 import MovieModal from '../components/MovieModal'
-import SessionClosureModal from '../components/SessionClosureModal'
+import ActClosureModal from '../components/ActClosureModal'
 import QuickActionPanel, { type QuickPanel } from '../components/QuickActionPanel'
 import ConfirmDialog from '../components/ConfirmDialog'
 import { useToast } from '../components/Toast'
@@ -45,8 +45,8 @@ export default function GamePage() {
   const [initializing, setInitializing] = useState(false)
   const [commandPending, setCommandPending] = useState(false)
   const [panelBusy, setPanelBusy] = useState(false)
-  const [sessionClosure, setSessionClosure] = useState<api.SessionClosureData | null>(null)
-  const [gameClosure, setGameClosure] = useState<api.SessionClosureData | null>(null)
+  const [actClosure, setSessionClosure] = useState<api.ActClosureData | null>(null)
+  const [gameClosure, setGameClosure] = useState<api.ActClosureData | null>(null)
   const [showMenu, setShowMenu] = useState(false)
   const [quickPanel, setQuickPanel] = useState<QuickPanel>(null)
   const [showStatusModal, setShowStatusModal] = useState(false)
@@ -237,8 +237,8 @@ export default function GamePage() {
     } else {
       refreshSnapshot()
     }
-    if (res.session_closure) {
-      setSessionClosure(prev => prev ?? res.session_closure)
+    if (res.act_closure) {
+      setSessionClosure(prev => prev ?? res.act_closure)
     }
     if (res.game_closure) {
       setGameClosure(prev => prev ?? res.game_closure)
@@ -318,7 +318,7 @@ export default function GamePage() {
       if (input.trim().length > 0) return
       try {
         const res: api.CommandResponse = JSON.parse(event.data)
-        if (res.text || res.movie || res.game_over || res.session_closure || res.game_closure) {
+        if (res.text || res.movie || res.game_over || res.act_closure || res.game_closure) {
           applyCommandResponse(res, 'auto')
         }
       } catch {
@@ -485,7 +485,7 @@ export default function GamePage() {
           <TranscriptPane
             lines={lines}
             busyLabel={busyLabel}
-            sessionClosure={sessionClosure}
+            actClosure={actClosure}
             gameClosure={gameClosure}
             gameOver={gameOver}
             transcriptRef={transcriptRef}

@@ -1,5 +1,5 @@
-use super::{CinderRuntime, SessionClosure, SessionClosureSection};
-use crate::content::types::SessionClosureSource;
+use super::{CinderRuntime, ActClosure, ActClosureSection};
+use crate::content::types::ActClosureSource;
 use crate::engine::dialogue::{
     ChapterRelationshipSummaryRequest, ChapterScriptSummaryRequest, SynapseChapterSummaryGenerator,
 };
@@ -144,7 +144,7 @@ impl CinderRuntime {
             .map_err(|error| format!("failed to configure chapter summary roles: {error}"))?;
 
         let what_happened = if transcript_lines.is_empty() {
-            self.content.ui_text.session_closure_empty_highlights.clone()
+            self.content.ui_text.act_closure_empty_highlights.clone()
         } else {
             summary_generator
                 .summarize_script(&ChapterScriptSummaryRequest {
@@ -155,7 +155,7 @@ impl CinderRuntime {
                 .map_err(std::io::Error::other)?
         };
         let relationship_status = if relationship_lines.is_empty() {
-            self.content.ui_text.session_closure_empty_relationships.clone()
+            self.content.ui_text.act_closure_empty_relationships.clone()
         } else {
             summary_generator
                 .summarize_relationships(&ChapterRelationshipSummaryRequest {
@@ -173,13 +173,13 @@ impl CinderRuntime {
         })
     }
 
-    pub fn session_closure(
+    pub fn act_closure(
         &self,
         transcript_lines: &[String],
-    ) -> Result<Option<SessionClosure>, Box<dyn Error>> {
+    ) -> Result<Option<ActClosure>, Box<dyn Error>> {
         {
             let cached = self
-                .session_closure
+                .act_closure
                 .lock()
                 .map_err(|error| error.to_string())?;
             if let Some(closure) = cached.as_ref() {
@@ -195,7 +195,7 @@ impl CinderRuntime {
                 return Ok(None);
             }
         }
-        let definition = &self.content.ui_text.session_closure;
+        let definition = &self.content.ui_text.act_closure;
         if definition.sections.is_empty() || definition.title.trim().is_empty() {
             return Ok(None);
         }
@@ -206,9 +206,9 @@ impl CinderRuntime {
             .any(|section| {
                 matches!(
                     section.source,
-                    SessionClosureSource::TranscriptHighlights
-                        | SessionClosureSource::RelationshipSummary
-                        | SessionClosureSource::ContinuationPreview
+                    ActClosureSource::TranscriptHighlights
+                        | ActClosureSource::RelationshipSummary
+                        | ActClosureSource::ContinuationPreview
                 )
             })
             .then(|| self.final_chapter_summary(transcript_lines))
@@ -220,8 +220,8 @@ impl CinderRuntime {
             .any(|section| {
                 matches!(
                     section.source,
-                    SessionClosureSource::PerspectiveRating
-                        | SessionClosureSource::PerspectiveReview
+                    ActClosureSource::PerspectiveRating
+                        | ActClosureSource::PerspectiveReview
                 )
             })
             .then(|| self.build_perspective_review())
@@ -247,37 +247,37 @@ impl CinderRuntime {
             .sections
             .iter()
             .filter_map(|section| match section.source {
-                SessionClosureSource::PerspectiveRating => {
+                ActClosureSource::PerspectiveRating => {
                     perspective
                         .as_ref()
-                        .map(|review| SessionClosureSection::Rating {
+                        .map(|review| ActClosureSection::Rating {
                             title: section.title.clone(),
                             value: review.review.rating,
                             max: 5,
                         })
                 }
-                SessionClosureSource::PerspectiveReview => {
+                ActClosureSource::PerspectiveReview => {
                     perspective
                         .as_ref()
-                        .map(|review| SessionClosureSection::Text {
+                        .map(|review| ActClosureSection::Text {
                             title: section.title.clone(),
                             body: review.review.review_text.clone(),
                         })
                 }
-                SessionClosureSource::TranscriptHighlights => {
-                    summary.as_ref().map(|summary| SessionClosureSection::Text {
+                ActClosureSource::TranscriptHighlights => {
+                    summary.as_ref().map(|summary| ActClosureSection::Text {
                         title: section.title.clone(),
                         body: summary.what_happened.clone(),
                     })
                 }
-                SessionClosureSource::RelationshipSummary => {
-                    summary.as_ref().map(|summary| SessionClosureSection::Text {
+                ActClosureSource::RelationshipSummary => {
+                    summary.as_ref().map(|summary| ActClosureSection::Text {
                         title: section.title.clone(),
                         body: summary.relationship_status.clone(),
                     })
                 }
-                SessionClosureSource::ContinuationPreview => {
-                    summary.as_ref().map(|summary| SessionClosureSection::Text {
+                ActClosureSource::ContinuationPreview => {
+                    summary.as_ref().map(|summary| ActClosureSection::Text {
                         title: section.title.clone(),
                         body: summary.next_chapter_preview.clone(),
                     })
@@ -289,14 +289,14 @@ impl CinderRuntime {
             return Ok(None);
         }
 
-        let closure = SessionClosure {
+        let closure = ActClosure {
             title: definition.title.clone(),
             subtitle,
             sections,
         };
         {
             let mut cached = self
-                .session_closure
+                .act_closure
                 .lock()
                 .map_err(|error| error.to_string())?;
             *cached = Some(closure.clone());
@@ -307,7 +307,7 @@ impl CinderRuntime {
     pub fn game_closure(
         &self,
         transcript_lines: &[String],
-    ) -> Result<Option<SessionClosure>, Box<dyn Error>> {
+    ) -> Result<Option<ActClosure>, Box<dyn Error>> {
         {
             let cached = self
                 .game_closure
@@ -337,9 +337,9 @@ impl CinderRuntime {
             .any(|section| {
                 matches!(
                     section.source,
-                    SessionClosureSource::TranscriptHighlights
-                        | SessionClosureSource::RelationshipSummary
-                        | SessionClosureSource::ContinuationPreview
+                    ActClosureSource::TranscriptHighlights
+                        | ActClosureSource::RelationshipSummary
+                        | ActClosureSource::ContinuationPreview
                 )
             })
             .then(|| self.final_chapter_summary(transcript_lines))
@@ -351,8 +351,8 @@ impl CinderRuntime {
             .any(|section| {
                 matches!(
                     section.source,
-                    SessionClosureSource::PerspectiveRating
-                        | SessionClosureSource::PerspectiveReview
+                    ActClosureSource::PerspectiveRating
+                        | ActClosureSource::PerspectiveReview
                 )
             })
             .then(|| self.build_perspective_review())
@@ -378,37 +378,37 @@ impl CinderRuntime {
             .sections
             .iter()
             .filter_map(|section| match section.source {
-                SessionClosureSource::PerspectiveRating => {
+                ActClosureSource::PerspectiveRating => {
                     perspective
                         .as_ref()
-                        .map(|review| SessionClosureSection::Rating {
+                        .map(|review| ActClosureSection::Rating {
                             title: section.title.clone(),
                             value: review.review.rating,
                             max: 5,
                         })
                 }
-                SessionClosureSource::PerspectiveReview => {
+                ActClosureSource::PerspectiveReview => {
                     perspective
                         .as_ref()
-                        .map(|review| SessionClosureSection::Text {
+                        .map(|review| ActClosureSection::Text {
                             title: section.title.clone(),
                             body: review.review.review_text.clone(),
                         })
                 }
-                SessionClosureSource::TranscriptHighlights => {
-                    summary.as_ref().map(|summary| SessionClosureSection::Text {
+                ActClosureSource::TranscriptHighlights => {
+                    summary.as_ref().map(|summary| ActClosureSection::Text {
                         title: section.title.clone(),
                         body: summary.what_happened.clone(),
                     })
                 }
-                SessionClosureSource::RelationshipSummary => {
-                    summary.as_ref().map(|summary| SessionClosureSection::Text {
+                ActClosureSource::RelationshipSummary => {
+                    summary.as_ref().map(|summary| ActClosureSection::Text {
                         title: section.title.clone(),
                         body: summary.relationship_status.clone(),
                     })
                 }
-                SessionClosureSource::ContinuationPreview => {
-                    summary.as_ref().map(|summary| SessionClosureSection::Text {
+                ActClosureSource::ContinuationPreview => {
+                    summary.as_ref().map(|summary| ActClosureSection::Text {
                         title: section.title.clone(),
                         body: summary.next_chapter_preview.clone(),
                     })
@@ -420,7 +420,7 @@ impl CinderRuntime {
             return Ok(None);
         }
 
-        let closure = SessionClosure {
+        let closure = ActClosure {
             title: definition.title.clone(),
             subtitle,
             sections,

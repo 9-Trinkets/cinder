@@ -1,13 +1,13 @@
 import { memo, useState, type MutableRefObject, type UIEvent } from 'react'
 import * as api from '../api'
 import TranscriptLine, { type Line } from './TranscriptLine'
-import SessionClosureModal from './SessionClosureModal'
+import ActClosureModal from './ActClosureModal'
 import Skeleton from './Skeleton'
 
 const TranscriptPane = memo(function TranscriptPane({
   lines,
   busyLabel,
-  sessionClosure,
+  actClosure,
   gameClosure,
   gameOver,
   transcriptRef,
@@ -18,8 +18,8 @@ const TranscriptPane = memo(function TranscriptPane({
 }: {
   lines: Line[]
   busyLabel: string | null
-  sessionClosure: api.SessionClosureData | null
-  gameClosure: api.SessionClosureData | null
+  actClosure: api.ActClosureData | null
+  gameClosure: api.ActClosureData | null
   gameOver: boolean
   transcriptRef: MutableRefObject<HTMLDivElement | null>
   bottomRef: MutableRefObject<HTMLDivElement | null>
@@ -80,13 +80,13 @@ const TranscriptPane = memo(function TranscriptPane({
         ))}
         {busyLabel && lines.length === 0 && <Skeleton lines={4} className="mb-2" />}
         {busyLabel && <p className="text-muted text-sm italic">{busyLabel}</p>}
-        {sessionClosure && (
-          <SessionClosureModal sessionClosure={sessionClosure} onDismiss={onDismissClosure} />
+        {actClosure && (
+          <ActClosureModal actClosure={actClosure} onDismiss={onDismissClosure} />
         )}
         {gameClosure && (
-          <SessionClosureModal sessionClosure={gameClosure} onDismiss={onDismissGameClosure} />
+          <ActClosureModal actClosure={gameClosure} onDismiss={onDismissGameClosure} />
         )}
-        {gameOver && !sessionClosure && !gameClosure && (
+        {gameOver && !actClosure && !gameClosure && (
           <p className="text-love font-semibold text-center pt-4">Game Over</p>
         )}
         <div ref={bottomRef} />

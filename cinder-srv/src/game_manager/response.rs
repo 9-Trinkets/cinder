@@ -1,4 +1,4 @@
-use cinder_core::engine::runtime::{CinderRuntime, SessionClosure};
+use cinder_core::engine::runtime::{CinderRuntime, ActClosure};
 use serde::Serialize;
 
 use super::ui::UiSnapshot;
@@ -21,22 +21,22 @@ pub struct CommandResponse {
     pub text: String,
     pub game_over: bool,
     pub movie: Option<MovieData>,
-    pub session_closure: Option<SessionClosure>,
-    pub game_closure: Option<SessionClosure>,
+    pub act_closure: Option<ActClosure>,
+    pub game_closure: Option<ActClosure>,
     pub ui_snapshot: Option<UiSnapshot>,
 }
 
-pub(super) fn session_closure_data(
+pub(super) fn act_closure_data(
     runtime: &CinderRuntime,
     transcript_lines: &[String],
-) -> Option<SessionClosure> {
-    runtime.session_closure(transcript_lines).ok().flatten()
+) -> Option<ActClosure> {
+    runtime.act_closure(transcript_lines).ok().flatten()
 }
 
 pub(super) fn game_closure_data(
     runtime: &CinderRuntime,
     transcript_lines: &[String],
-) -> Option<SessionClosure> {
+) -> Option<ActClosure> {
     runtime.game_closure(transcript_lines).ok().flatten()
 }
 

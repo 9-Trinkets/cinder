@@ -1,23 +1,23 @@
 import { memo } from 'react'
 import * as api from '../api'
 
-const SessionClosureModal = memo(function SessionClosureModal({
-  sessionClosure,
+const ActClosureModal = memo(function ActClosureModal({
+  actClosure,
   onDismiss,
 }: {
-  sessionClosure: api.SessionClosureData
+  actClosure: api.ActClosureData
   onDismiss: () => void
 }) {
   return (
     <div className="fixed inset-0 bg-base/80 flex items-center justify-center z-50">
       <div className="bg-surface rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl max-h-[80dvh] flex flex-col">
         <div className="overflow-y-auto flex-1 pr-1">
-          <h2 className="text-xl font-bold text-center mb-2">{sessionClosure.title}</h2>
-          {sessionClosure.subtitle && (
-            <p className="text-center text-sm text-muted mb-4">— {sessionClosure.subtitle}</p>
+          <h2 className="text-xl font-bold text-center mb-2">{actClosure.title}</h2>
+          {actClosure.subtitle && (
+            <p className="text-center text-sm text-muted mb-4">— {actClosure.subtitle}</p>
           )}
           <div className="space-y-4">
-            {sessionClosure.sections.map((section, index) => (
+            {actClosure.sections.map((section, index) => (
               <div key={`${section.kind}-${index}`}>
                 {section.title && (
                   <p className="text-xs text-muted uppercase tracking-wider mb-2">{section.title}</p>
@@ -48,4 +48,4 @@ const SessionClosureModal = memo(function SessionClosureModal({
   )
 })
 
-export default SessionClosureModal
+export default ActClosureModal

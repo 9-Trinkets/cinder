@@ -356,7 +356,7 @@ async fn handle_ws(
             _ = interval.tick() => {
                 match game_manager::run_realtime_tick(&pool, &session_id, &player_id).await {
                     Ok(resp) => {
-                        if resp.text.is_empty() && resp.movie.is_none() && !resp.game_over && resp.session_closure.is_none() {
+                        if resp.text.is_empty() && resp.movie.is_none() && !resp.game_over && resp.act_closure.is_none() {
                             continue;
                         }
                         match serde_json::to_string(&resp) {

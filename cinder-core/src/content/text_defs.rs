@@ -27,25 +27,25 @@ pub struct ActionBarItem {
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct SessionClosureDefinition {
+pub struct ActClosureDefinition {
     #[serde(default)]
     pub title: String,
     #[serde(default)]
     pub subtitle_template: String,
     #[serde(default)]
-    pub sections: Vec<SessionClosureSectionDefinition>,
+    pub sections: Vec<ActClosureSectionDefinition>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SessionClosureSectionDefinition {
+pub struct ActClosureSectionDefinition {
     #[serde(default)]
     pub title: String,
-    pub source: SessionClosureSource,
+    pub source: ActClosureSource,
 }
 
 #[derive(Debug, Clone, Copy, Default, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
-pub enum SessionClosureSource {
+pub enum ActClosureSource {
     PerspectiveRating,
     PerspectiveReview,
     RelationshipSummary,
@@ -108,18 +108,18 @@ pub struct UiTextDefinition {
     pub language_changed_text: String,
     #[serde(default = "default_modal_close_hint")]
     pub modal_close_hint: String,
-    #[serde(default = "default_session_closure_title")]
-    pub session_closure_title: String,
-    #[serde(default = "default_session_closure_current_focus_label")]
-    pub session_closure_current_focus_label: String,
-    #[serde(default = "default_session_closure_highlights_label")]
-    pub session_closure_highlights_label: String,
-    #[serde(default = "default_session_closure_relationships_label")]
-    pub session_closure_relationships_label: String,
-    #[serde(default = "default_session_closure_empty_highlights")]
-    pub session_closure_empty_highlights: String,
-    #[serde(default = "default_session_closure_empty_relationships")]
-    pub session_closure_empty_relationships: String,
+    #[serde(default = "default_act_closure_title")]
+    pub act_closure_title: String,
+    #[serde(default = "default_act_closure_current_focus_label")]
+    pub act_closure_current_focus_label: String,
+    #[serde(default = "default_act_closure_highlights_label")]
+    pub act_closure_highlights_label: String,
+    #[serde(default = "default_act_closure_relationships_label")]
+    pub act_closure_relationships_label: String,
+    #[serde(default = "default_act_closure_empty_highlights")]
+    pub act_closure_empty_highlights: String,
+    #[serde(default = "default_act_closure_empty_relationships")]
+    pub act_closure_empty_relationships: String,
     #[serde(default = "default_final_summary_title")]
     pub final_summary_title: String,
     #[serde(default = "default_final_summary_highlights_label")]
@@ -175,9 +175,9 @@ pub struct UiTextDefinition {
     #[serde(default = "default_talk_panel_prompt")]
     pub talk_panel_prompt: String,
     #[serde(default)]
-    pub session_closure: SessionClosureDefinition,
+    pub act_closure: ActClosureDefinition,
     #[serde(default)]
-    pub game_closure: SessionClosureDefinition,
+    pub game_closure: ActClosureDefinition,
     #[serde(default)]
     pub shell_menu: ShellMenuDefinition,
     #[serde(default)]
@@ -290,27 +290,27 @@ fn default_modal_close_hint() -> String {
     "Press Enter or Esc to close.".to_string()
 }
 
-fn default_session_closure_title() -> String {
+fn default_act_closure_title() -> String {
     "End of Day {day_number}".to_string()
 }
 
-fn default_session_closure_current_focus_label() -> String {
+fn default_act_closure_current_focus_label() -> String {
     "Current focus".to_string()
 }
 
-fn default_session_closure_highlights_label() -> String {
+fn default_act_closure_highlights_label() -> String {
     "Highlights".to_string()
 }
 
-fn default_session_closure_relationships_label() -> String {
+fn default_act_closure_relationships_label() -> String {
     "Relationship status".to_string()
 }
 
-fn default_session_closure_empty_highlights() -> String {
+fn default_act_closure_empty_highlights() -> String {
     "A quiet stretch, mostly observation and drift.".to_string()
 }
 
-fn default_session_closure_empty_relationships() -> String {
+fn default_act_closure_empty_relationships() -> String {
     "No clear relationship shifts yet.".to_string()
 }
 
@@ -451,12 +451,12 @@ impl Default for UiTextDefinition {
             language_modal_title: default_language_modal_title(),
             language_changed_text: default_language_changed_text(),
             modal_close_hint: default_modal_close_hint(),
-            session_closure_title: default_session_closure_title(),
-            session_closure_current_focus_label: default_session_closure_current_focus_label(),
-            session_closure_highlights_label: default_session_closure_highlights_label(),
-            session_closure_relationships_label: default_session_closure_relationships_label(),
-            session_closure_empty_highlights: default_session_closure_empty_highlights(),
-            session_closure_empty_relationships: default_session_closure_empty_relationships(),
+            act_closure_title: default_act_closure_title(),
+            act_closure_current_focus_label: default_act_closure_current_focus_label(),
+            act_closure_highlights_label: default_act_closure_highlights_label(),
+            act_closure_relationships_label: default_act_closure_relationships_label(),
+            act_closure_empty_highlights: default_act_closure_empty_highlights(),
+            act_closure_empty_relationships: default_act_closure_empty_relationships(),
             final_summary_title: default_final_summary_title(),
             final_summary_highlights_label: default_final_summary_highlights_label(),
             final_summary_relationships_label: default_final_summary_relationships_label(),
@@ -484,8 +484,8 @@ impl Default for UiTextDefinition {
             look_group_people: default_look_group_people(),
             talk_panel_title: default_talk_panel_title(),
             talk_panel_prompt: default_talk_panel_prompt(),
-            session_closure: SessionClosureDefinition::default(),
-            game_closure: SessionClosureDefinition::default(),
+            act_closure: ActClosureDefinition::default(),
+            game_closure: ActClosureDefinition::default(),
             shell_menu: ShellMenuDefinition::default(),
             action_bar: ActionBarDefinition::default(),
         }

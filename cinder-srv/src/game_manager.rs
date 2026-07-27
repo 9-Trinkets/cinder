@@ -304,8 +304,8 @@ pub async fn run_command(
             }
         }
 
-        let session_closure = if outcome.phase == GamePhase::ActEnded {
-            response::session_closure_data(runtime, transcript_lines)
+        let act_closure = if outcome.phase == GamePhase::ActEnded {
+            response::act_closure_data(runtime, transcript_lines)
         } else {
             None
         };
@@ -337,7 +337,7 @@ pub async fn run_command(
             text: outcome.text,
             game_over: is_game_over,
             movie,
-            session_closure,
+            act_closure,
             game_closure,
             ui_snapshot: Some(ui_snapshot),
         };
@@ -373,8 +373,8 @@ pub async fn run_realtime_tick(
     with_runtime(pool, &session_id, &player_id, move |runtime, pack_id, transcript_lines| {
         let mut outcome = runtime.run_tick().map_err(|e| format!("tick error: {e}"))?;
         use cinder_core::engine::state::GamePhase;
-        let session_closure = if outcome.phase == GamePhase::ActEnded {
-            response::session_closure_data(runtime, transcript_lines)
+        let act_closure = if outcome.phase == GamePhase::ActEnded {
+            response::act_closure_data(runtime, transcript_lines)
         } else {
             None
         };
@@ -401,7 +401,7 @@ pub async fn run_realtime_tick(
             text: outcome.text.clone(),
             game_over: is_game_over,
             movie,
-            session_closure,
+            act_closure,
             game_closure,
             ui_snapshot: Some(ui_snapshot),
         };
@@ -444,7 +444,7 @@ pub async fn switch_room(
                 text: outcome.text,
                 game_over: outcome.phase != cinder_core::engine::state::GamePhase::Active,
                 movie: None,
-                session_closure: None,
+                act_closure: None,
                 game_closure: None,
                 ui_snapshot: Some(ui_snapshot),
             },
@@ -478,7 +478,7 @@ pub async fn follow_actor(
                 text: outcome.text,
                 game_over: outcome.phase != cinder_core::engine::state::GamePhase::Active,
                 movie: None,
-                session_closure: None,
+                act_closure: None,
                 game_closure: None,
                 ui_snapshot: Some(ui_snapshot),
             },
@@ -550,7 +550,7 @@ pub async fn set_locale(
         text: changed_text,
         game_over: is_game_over,
         movie: None,
-        session_closure: ui_snapshot.session_closure.clone(),
+        act_closure: ui_snapshot.act_closure.clone(),
         game_closure: ui_snapshot.game_closure.clone(),
         ui_snapshot: Some(ui_snapshot),
     })
@@ -664,7 +664,7 @@ pub async fn continue_session(
                 text: String::new(),
                 game_over: false,
                 movie: None,
-                session_closure: None,
+                act_closure: None,
                 game_closure: None,
                 ui_snapshot: Some(ui_snapshot),
             },

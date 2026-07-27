@@ -22,18 +22,18 @@
   "look_group_room": "Room",
   "look_group_things": "Things",
   "look_group_people": "People",
-  "session_closure_title": "End of Day {day_number}",
-  "session_closure_current_focus_label": "Current focus",
-  "session_closure_highlights_label": "Tonight on Aera",
-  "session_closure_relationships_label": "The Relationship Board",
-  "session_closure_empty_highlights": "A quiet stretch, mostly observation and drift.",
-  "session_closure_empty_relationships": "No clear relationship shifts yet.",
+  "act_closure_title": "End of Day {day_number}",
+  "act_closure_current_focus_label": "Current focus",
+  "act_closure_highlights_label": "Tonight on Aera",
+  "act_closure_relationships_label": "The Relationship Board",
+  "act_closure_empty_highlights": "A quiet stretch, mostly observation and drift.",
+  "act_closure_empty_relationships": "No clear relationship shifts yet.",
   "final_summary_title": "End of Chapter One",
   "final_summary_highlights_label": "Tonight on Aera",
   "final_summary_relationships_label": "The Relationship Board",
   "final_summary_preview_label": "Coming up",
   "final_summary_empty_preview": "Tomorrow is coming, but the shape of it is still unclear.",
-  "session_closure": {
+  "act_closure": {
     "title": "End of Chapter One",
     "sections": [
       {

@@ -1,6 +1,6 @@
 pub use super::text_defs::{
-    ActionBarDefinition, ActionBarItem, SessionClosureDefinition, SessionClosureSectionDefinition,
-    SessionClosureSource, ShellMenuDefinition, ShellMenuItem, SystemTextDefinition,
+    ActionBarDefinition, ActionBarItem, ActClosureDefinition, ActClosureSectionDefinition,
+    ActClosureSource, ShellMenuDefinition, ShellMenuItem, SystemTextDefinition,
     UiTextDefinition,
 };
 

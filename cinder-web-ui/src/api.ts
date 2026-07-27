@@ -88,8 +88,8 @@ export interface CommandResponse {
   text: string
   game_over: boolean
   movie: MovieData | null
-  session_closure: SessionClosureData | null
-  game_closure: SessionClosureData | null
+  act_closure: ActClosureData | null
+  game_closure: ActClosureData | null
   ui_snapshot: UiSnapshot | null
 }
 
@@ -150,13 +150,13 @@ export interface ActiveMenuData {
   selected_ids?: string[]
 }
 
-export interface SessionClosureData {
+export interface ActClosureData {
   title: string
   subtitle: string | null
-  sections: SessionClosureSection[]
+  sections: ActClosureSection[]
 }
 
-export type SessionClosureSection =
+export type ActClosureSection =
   | {
       kind: 'text'
       title: string
@@ -238,8 +238,8 @@ export interface UiSnapshot {
   look_options: LookOptionData[]
   talk_options: MenuOptionItem[]
   active_menu: ActiveMenuData | null
-  session_closure: SessionClosureData | null
-  game_closure: SessionClosureData | null
+  act_closure: ActClosureData | null
+  game_closure: ActClosureData | null
   inventory: InventoryItem[]
   room_consumables: RoomConsumableGroup[]
   show_relationship_sidebar: boolean

@@ -9,7 +9,7 @@ use cinder_core::content::loader::{
 };
 use cinder_core::content::types::{ShellMenuItem, UiTextDefinition};
 use cinder_core::{
-    CinderRuntime, MenuChoiceOption, SessionClosure, SessionClosureSection, TurnOutcome,
+    CinderRuntime, MenuChoiceOption, ActClosure, ActClosureSection, TurnOutcome,
 };
 use crossterm::cursor::SetCursorStyle;
 use crossterm::event::{self, Event, KeyEventKind};
@@ -63,7 +63,7 @@ struct TuiApp {
     last_seen_day: u32,
     chapter_start_transcript_index: usize,
     day_start_transcript_index: usize,
-    pending_session_closure_days: VecDeque<u32>,
+    pending_act_closure_days: VecDeque<u32>,
     pending_final_summary: bool,
     shell_modal_scroll: u16,
     shell_modal: Option<ShellModalState>,
@@ -82,7 +82,7 @@ enum ShellModalState {
     About,
     ExitConfirm,
     DaySummary { day_number: u32, body: String },
-    SessionClosure { data: SessionClosure },
+    ActClosure { data: ActClosure },
     Projector(TimedTextPlayback),
 }
 
@@ -129,7 +129,7 @@ impl TuiApp {
             last_seen_day,
             chapter_start_transcript_index: 0,
             day_start_transcript_index: 0,
-            pending_session_closure_days: VecDeque::new(),
+            pending_act_closure_days: VecDeque::new(),
             pending_final_summary: false,
             shell_modal_scroll: 0,
             shell_modal: None,
@@ -173,17 +173,17 @@ impl TuiApp {
         );
     }
 
-    fn format_session_closure_title(&self, day_number: u32) -> String {
+    fn format_act_closure_title(&self, day_number: u32) -> String {
         let day_number = day_number.to_string();
         self.runtime.content().render_template(
-            &self.ui_text.session_closure_title,
+            &self.ui_text.act_closure_title,
             &[("day_number", day_number.as_str())],
         )
     }
 
     fn queue_day_summaries(&mut self) -> Result<(), Box<dyn Error>> {
         if !self.runtime.content().settings.show_session_closure {
-            self.pending_session_closure_days.clear();
+            self.pending_act_closure_days.clear();
             return Ok(());
         }
         let current_day = self.runtime.current_day_number()?;
@@ -191,22 +191,22 @@ impl TuiApp {
             return Ok(());
         }
         for completed_day in self.last_seen_day..current_day {
-            self.pending_session_closure_days.push_back(completed_day);
+            self.pending_act_closure_days.push_back(completed_day);
         }
         self.last_seen_day = current_day;
         Ok(())
     }
 
-    fn maybe_open_queued_session_closure(&mut self) -> Result<(), Box<dyn Error>> {
+    fn maybe_open_queued_act_closure(&mut self) -> Result<(), Box<dyn Error>> {
         if self.shell_modal.is_some() {
             self.sync_tick_pause();
             return Ok(());
         }
-        let Some(day_number) = self.pending_session_closure_days.pop_front() else {
+        let Some(day_number) = self.pending_act_closure_days.pop_front() else {
             self.sync_tick_pause();
             return Ok(());
         };
-        let body = self.build_session_closure_body()?;
+        let body = self.build_act_closure_body()?;
         self.day_start_transcript_index = self.transcript.len();
         self.set_shell_modal(Some(ShellModalState::DaySummary { day_number, body }));
         self.sync_tick_pause();
@@ -217,7 +217,7 @@ impl TuiApp {
         if self.pending_final_summary {
             return self.maybe_open_final_summary();
         }
-        self.maybe_open_queued_session_closure()
+        self.maybe_open_queued_act_closure()
     }
 
     fn maybe_open_final_summary(&mut self) -> Result<(), Box<dyn Error>> {
@@ -229,43 +229,43 @@ impl TuiApp {
             self.sync_tick_pause();
             return Ok(());
         }
-        let Some(data) = self.runtime.session_closure(&[])? else {
+        let Some(data) = self.runtime.act_closure(&[])? else {
             self.pending_final_summary = false;
             self.sync_tick_pause();
             return Ok(());
         };
         self.pending_final_summary = false;
-        self.set_shell_modal(Some(ShellModalState::SessionClosure { data }));
+        self.set_shell_modal(Some(ShellModalState::ActClosure { data }));
         self.sync_tick_pause();
         Ok(())
     }
 
-    fn build_session_closure_body(&self) -> Result<String, Box<dyn Error>> {
+    fn build_act_closure_body(&self) -> Result<String, Box<dyn Error>> {
         let focus_lines = self.runtime.current_objective_summaries()?;
         let focus_lines: Vec<String> = focus_lines.into_iter().map(|(s, _)| s).collect();
         let highlight_lines =
             summarize_day_highlights(&self.transcript, self.day_start_transcript_index);
         let relationship_lines = self.runtime.relationship_status_lines()?;
         let relationship_lines = if relationship_lines.is_empty() {
-            vec![self.ui_text.session_closure_empty_relationships.clone()]
+            vec![self.ui_text.act_closure_empty_relationships.clone()]
         } else {
             relationship_lines.into_iter().take(6).collect()
         };
         Ok(format!(
             "{}\n{}\n\n{}\n{}\n\n{}\n{}",
-            self.ui_text.session_closure_current_focus_label,
+            self.ui_text.act_closure_current_focus_label,
             bullet_join(if focus_lines.is_empty() {
                 vec![self.ui_text.things_to_do_empty.clone()]
             } else {
                 focus_lines
             }),
-            self.ui_text.session_closure_highlights_label,
+            self.ui_text.act_closure_highlights_label,
             bullet_join(if highlight_lines.is_empty() {
-                vec![self.ui_text.session_closure_empty_highlights.clone()]
+                vec![self.ui_text.act_closure_empty_highlights.clone()]
             } else {
                 highlight_lines
             }),
-            self.ui_text.session_closure_relationships_label,
+            self.ui_text.act_closure_relationships_label,
             bullet_join(relationship_lines)
         ))
     }
@@ -383,7 +383,7 @@ impl TuiApp {
             Some(ShellModalState::Submenu { .. }) => Some(ShellModalState::Root),
             Some(ShellModalState::ExitConfirm)
             | Some(ShellModalState::DaySummary { .. })
-            | Some(ShellModalState::SessionClosure { .. }) => None,
+            | Some(ShellModalState::ActClosure { .. }) => None,
             Some(ShellModalState::Projector(_)) | Some(ShellModalState::Root) | None => None,
         });
         self.sync_tick_pause();
@@ -538,7 +538,7 @@ impl TuiApp {
                 | ShellModalState::ThingsToDo
                 | ShellModalState::About
                 | ShellModalState::DaySummary { .. }
-                | ShellModalState::SessionClosure { .. }
+                | ShellModalState::ActClosure { .. }
                 | ShellModalState::Projector(_),
             ) => None,
             Some(ShellModalState::ExitConfirm) => {
@@ -651,7 +651,7 @@ impl TuiApp {
         if playback.is_finished() {
             self.set_shell_modal(None);
             self.flush_projector_narrative()?;
-            self.maybe_open_queued_session_closure()?;
+            self.maybe_open_queued_act_closure()?;
         } else {
             playback.finish();
         }
@@ -868,9 +868,9 @@ impl TuiApp {
                 self.ui_text.exit_confirm_body.clone(),
             )),
             Some(ShellModalState::DaySummary { day_number, body }) => {
-                Some((self.format_session_closure_title(*day_number), body.clone()))
+                Some((self.format_act_closure_title(*day_number), body.clone()))
             }
-            Some(ShellModalState::SessionClosure { .. }) => None,
+            Some(ShellModalState::ActClosure { .. }) => None,
             _ => None,
         }
     }
@@ -1188,15 +1188,15 @@ impl TuiApp {
             }),
             Some(ShellModalState::DaySummary { day_number, body }) => {
                 Some(ShellModalSnapshot::Detail {
-                    title: self.format_session_closure_title(*day_number),
+                    title: self.format_act_closure_title(*day_number),
                     body: body.clone(),
                     hint: self.ui_text.modal_close_hint.clone(),
                     scroll: self.shell_modal_scroll,
                 })
             }
-            Some(ShellModalState::SessionClosure { data }) => Some(ShellModalSnapshot::Detail {
+            Some(ShellModalState::ActClosure { data }) => Some(ShellModalSnapshot::Detail {
                 title: data.title.clone(),
-                body: render_session_closure_body(data),
+                body: render_act_closure_body(data),
                 hint: self.ui_text.modal_close_hint.clone(),
                 scroll: self.shell_modal_scroll,
             }),
@@ -1263,7 +1263,7 @@ fn bullet_join(lines: Vec<String>) -> String {
         .join("\n")
 }
 
-fn render_session_closure_body(data: &SessionClosure) -> String {
+fn render_act_closure_body(data: &ActClosure) -> String {
     let mut blocks = Vec::new();
     if let Some(subtitle) = data
         .subtitle
@@ -1274,7 +1274,7 @@ fn render_session_closure_body(data: &SessionClosure) -> String {
     }
     for section in &data.sections {
         match section {
-            SessionClosureSection::Text { title, body } => {
+            ActClosureSection::Text { title, body } => {
                 let mut block = String::new();
                 if !title.trim().is_empty() {
                     block.push_str(title);
@@ -1283,7 +1283,7 @@ fn render_session_closure_body(data: &SessionClosure) -> String {
                 block.push_str(body);
                 blocks.push(block);
             }
-            SessionClosureSection::Rating { title, value, max } => {
+            ActClosureSection::Rating { title, value, max } => {
                 let stars = (1..=*max)
                     .map(|index| if index <= *value { '★' } else { '☆' })
                     .collect::<String>();
