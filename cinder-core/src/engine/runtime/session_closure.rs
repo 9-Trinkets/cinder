@@ -191,7 +191,7 @@ impl CinderRuntime {
                 .state
                 .lock()
                 .map_err(|_| "failed to lock runtime state for session closure guard")?;
-            if state.phase != GamePhase::SessionEnded {
+            if state.phase != GamePhase::ActEnded {
                 return Ok(None);
             }
         }

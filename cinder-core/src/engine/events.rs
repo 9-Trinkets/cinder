@@ -120,7 +120,7 @@ pub enum WorldEvent {
     UnknownInput {
         raw_input: String,
     },
-    SessionEnded,
+    ActEnded,
     ItemAcquired {
         item_id: String,
     },

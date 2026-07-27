@@ -98,7 +98,7 @@ pub(super) fn advance_objective_for_signal(
             }
             if next_stage.end_session {
                 state.stages_completed += 1;
-                state.phase = GamePhase::SessionEnded;
+                state.phase = GamePhase::ActEnded;
             }
             if next_stage.end_game {
                 state.stages_completed += 1;

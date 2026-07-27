@@ -39,7 +39,7 @@ pub(super) fn build_planned_turn(
             false
         }
         PlayerCommand::Quit => {
-            planned.events.push(WorldEvent::SessionEnded);
+            planned.events.push(WorldEvent::ActEnded);
             false
         }
         PlayerCommand::Unknown => {

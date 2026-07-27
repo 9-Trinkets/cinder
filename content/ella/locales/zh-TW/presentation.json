@@ -19,6 +19,6 @@
     "actor_targeted_speech": "{actor_name}（對 {target_name}）：{text}",
     "actor_departed": "{actor_name}往{room_title}那邊去了。",
     "actor_arrived": "{actor_name}從{room_title}那頭走了進來。",
-    "session_ended": "整個家又安靜了下來。"
+    "act_ended": "整個家又安靜了下來。"
   }
 }

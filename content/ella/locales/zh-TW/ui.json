@@ -1,7 +1,7 @@
 {
   "language_name": "繁體中文（台灣）",
   "menu_button_label": "? 選單",
-  "session_ended_title": "旅程結束",
+  "act_ended_title": "旅程結束",
   "game_over_hint": "↑/↓ 或 PageUp/PageDown 捲動 • q 離開",
   "menu_option_list_title": "請選擇一個選項",
   "menu_choice_hint": "使用 ↑/↓ 選擇，按 Enter 確認。",

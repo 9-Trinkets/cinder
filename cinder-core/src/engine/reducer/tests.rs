@@ -194,7 +194,7 @@ fn reducer_test_presentation() -> PresentationDefinition {
         "{actor_name} comes in from the {room_title}.".to_string();
     presentation.presentation_text.actor_departed =
         "{actor_name} heads toward the {room_title}.".to_string();
-    presentation.presentation_text.session_ended = "Session ended.".to_string();
+    presentation.presentation_text.act_ended = "Session ended.".to_string();
     presentation.error_text.room_missing = "missing room".to_string();
     presentation.error_text.actor_unknown = "unknown actor".to_string();
     presentation.error_text.feature_unknown = "unknown feature".to_string();

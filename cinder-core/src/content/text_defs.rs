@@ -60,8 +60,8 @@ pub struct UiTextDefinition {
     pub language_name: String,
     #[serde(default = "default_menu_button_label")]
     pub menu_button_label: String,
-    #[serde(default = "default_session_ended_title")]
-    pub session_ended_title: String,
+    #[serde(default = "default_act_ended_title")]
+    pub act_ended_title: String,
     #[serde(default = "default_game_over_hint")]
     pub game_over_hint: String,
     #[serde(default = "default_menu_option_list_title")]
@@ -194,7 +194,7 @@ fn default_menu_button_label() -> String {
     "? Menu".to_string()
 }
 
-fn default_session_ended_title() -> String {
+fn default_act_ended_title() -> String {
     "Session Ended".to_string()
 }
 
@@ -427,7 +427,7 @@ impl Default for UiTextDefinition {
         Self {
             language_name: default_language_name(),
             menu_button_label: default_menu_button_label(),
-            session_ended_title: default_session_ended_title(),
+            act_ended_title: default_act_ended_title(),
             game_over_hint: default_game_over_hint(),
             menu_option_list_title: default_menu_option_list_title(),
             menu_choice_hint: default_menu_choice_hint(),

@@ -157,7 +157,7 @@ pub(crate) fn draw(
     );
 
     let input_title = if snapshot.game_over {
-        Some(snapshot.ui_text.session_ended_title.as_str())
+        Some(snapshot.ui_text.act_ended_title.as_str())
     } else {
         None
     };

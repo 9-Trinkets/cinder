@@ -12,7 +12,7 @@ pub use variable_store::{VariableDeclaration, VariableError, VariableScope, Vari
 pub enum GamePhase {
     #[default]
     Active,
-    SessionEnded,
+    ActEnded,
     GameEnded,
 }
 

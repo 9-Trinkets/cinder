@@ -206,8 +206,8 @@ impl CinderRuntime {
         )?;
         let outcome = self.apply_stage_assignments(outcome)?;
         let outcome = match outcome.phase {
-            GamePhase::SessionEnded | GamePhase::GameEnded => {
-                let ended_text = &self.content.presentation.presentation_text.session_ended;
+            GamePhase::ActEnded | GamePhase::GameEnded => {
+                let ended_text = &self.content.presentation.presentation_text.act_ended;
                 let text = if outcome.text.is_empty() {
                     ended_text.clone()
                 } else {
@@ -240,8 +240,8 @@ impl CinderRuntime {
         };
         let outcome = self.apply_stage_assignments(outcome)?;
         let outcome = match outcome.phase {
-            GamePhase::SessionEnded => {
-                let ended_text = &self.content.presentation.presentation_text.session_ended;
+            GamePhase::ActEnded => {
+                let ended_text = &self.content.presentation.presentation_text.act_ended;
                 let text = if outcome.text.is_empty() {
                     ended_text.clone()
                 } else {
@@ -250,7 +250,7 @@ impl CinderRuntime {
                 TurnOutcome { text, ..outcome }
             }
             GamePhase::GameEnded => {
-                let ended_text = &self.content.presentation.presentation_text.session_ended;
+                let ended_text = &self.content.presentation.presentation_text.act_ended;
                 let text = if outcome.text.is_empty() {
                     ended_text.clone()
                 } else {
@@ -272,7 +272,7 @@ impl CinderRuntime {
                 .state
                 .lock()
                 .map_err(|_| "failed to lock runtime state for session continuation")?;
-            if state.phase != GamePhase::SessionEnded {
+            if state.phase != GamePhase::ActEnded {
                 return Ok(());
             }
             state.phase = GamePhase::Active;
@@ -297,7 +297,7 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for appointment rollover")?;
-        if state.phase != GamePhase::SessionEnded {
+        if state.phase != GamePhase::ActEnded {
             return Ok(None);
         }
         Ok(advance_to_next_appointment(

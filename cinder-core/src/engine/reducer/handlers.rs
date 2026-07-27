@@ -572,12 +572,12 @@ pub(super) fn handle_unknown_input(
     ));
 }
 
-pub(super) fn handle_session_ended(
+pub(super) fn handle_act_ended(
     state: &mut WorldState,
     _content: &ContentPack,
     _lines: &mut Vec<String>,
 ) {
-    state.phase = crate::engine::state::GamePhase::SessionEnded;
+    state.phase = crate::engine::state::GamePhase::ActEnded;
 }
 
 pub(super) fn apply_content_event(

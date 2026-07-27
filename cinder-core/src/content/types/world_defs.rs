@@ -48,7 +48,7 @@ pub struct PresentationTextDefinition {
     pub actor_targeted_speech: String,
     pub actor_departed: String,
     pub actor_arrived: String,
-    pub session_ended: String,
+    pub act_ended: String,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

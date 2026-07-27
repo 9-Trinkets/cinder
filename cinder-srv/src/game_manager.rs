@@ -304,7 +304,7 @@ pub async fn run_command(
             }
         }
 
-        let session_closure = if outcome.phase == GamePhase::SessionEnded {
+        let session_closure = if outcome.phase == GamePhase::ActEnded {
             response::session_closure_data(runtime, transcript_lines)
         } else {
             None
@@ -315,7 +315,7 @@ pub async fn run_command(
             None
         };
 
-        if outcome.phase == GamePhase::SessionEnded {
+        if outcome.phase == GamePhase::ActEnded {
             if let Some(intro_text) = runtime
                 .advance_appointment()
                 .map_err(|e| format!("appointment rollover error: {e}"))?
@@ -373,7 +373,7 @@ pub async fn run_realtime_tick(
     with_runtime(pool, &session_id, &player_id, move |runtime, pack_id, transcript_lines| {
         let mut outcome = runtime.run_tick().map_err(|e| format!("tick error: {e}"))?;
         use cinder_core::engine::state::GamePhase;
-        let session_closure = if outcome.phase == GamePhase::SessionEnded {
+        let session_closure = if outcome.phase == GamePhase::ActEnded {
             response::session_closure_data(runtime, transcript_lines)
         } else {
             None
@@ -383,7 +383,7 @@ pub async fn run_realtime_tick(
         } else {
             None
         };
-        if outcome.phase == GamePhase::SessionEnded {
+        if outcome.phase == GamePhase::ActEnded {
             if let Some(intro_text) = runtime
                 .advance_appointment()
                 .map_err(|e| format!("appointment rollover error: {e}"))?
