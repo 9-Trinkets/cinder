@@ -11,7 +11,7 @@
   "closure_perspective_actor_id": "noa",
   "multi_appointment": true,
   "speech_stamina_cost_floor": 0,
-  "show_day_summary": false,
+  "show_session_closure": false,
   "theme": {
     "base": "#1c1820",
     "surface": "#2a2521",

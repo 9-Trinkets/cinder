@@ -22,9 +22,6 @@ export default function RelationshipChart({ pairs }: { pairs: api.RelationshipPa
               <span className="text-text truncate">
                 {pair.actor_a} & {pair.actor_b}
               </span>
-              <span className="text-love ml-1 shrink-0">
-                {'♥'.repeat(Math.min(pair.connection, 5)) || '·'}
-              </span>
             </div>
             <div className="flex items-center gap-1">
               <div className="flex gap-0.5">
