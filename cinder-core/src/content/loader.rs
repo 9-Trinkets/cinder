@@ -297,9 +297,9 @@ pub fn load_pack_from_dir_with_locale(
             .into());
         }
     }
-    if settings.multi_appointment {
+    if settings.multi_act {
         if appointment_patients.is_empty() {
-            return Err("multi_appointment content requires localized patients.json".into());
+            return Err("multi_act content requires localized patients.json".into());
         }
         let mut seen_patient_ids = std::collections::BTreeSet::new();
         let mut seen_patient_actor_ids = std::collections::BTreeSet::new();

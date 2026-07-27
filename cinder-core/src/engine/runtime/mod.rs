@@ -285,7 +285,7 @@ impl CinderRuntime {
     }
 
     pub fn advance_appointment(&self) -> Result<Option<String>, Box<dyn Error>> {
-        if !self.content.settings.multi_appointment {
+        if !self.content.settings.multi_act {
             return Ok(None);
         }
         let feedback = self.build_perspective_review()?;

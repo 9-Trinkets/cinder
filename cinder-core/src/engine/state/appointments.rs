@@ -66,7 +66,7 @@ const PATIENT_SLOT_BASE_NAME_VAR: &str = "patient_slot_base_name";
 const APPOINTMENT_OFFSTAGE_ROOM_ID: &str = "appointments-offstage";
 
 pub fn initialize_appointment_state(content: &ContentPack, state: &mut WorldState) {
-    if !content.settings.multi_appointment || content.appointment_patients.is_empty() {
+    if !content.settings.multi_act || content.appointment_patients.is_empty() {
         return;
     }
     if state.appointment_series.is_none() {
@@ -87,7 +87,7 @@ pub fn advance_to_next_appointment(
     state: &mut WorldState,
     feedback: Option<&AppointmentFeedbackSummary>,
 ) -> Option<String> {
-    if !content.settings.multi_appointment {
+    if !content.settings.multi_act {
         return None;
     }
     let Some(mut series) = state.appointment_series.clone() else {
