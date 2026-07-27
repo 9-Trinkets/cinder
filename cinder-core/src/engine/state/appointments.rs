@@ -53,10 +53,10 @@ pub struct ActFeedbackSummary {
     pub review_text: String,
 }
 
-const PATIENT_NAME_VAR: &str = "patient_name";
+const ACT_CAST_NAME_VAR: &str = "act_cast_name";
 const PATIENT_ACTOR_ID_VAR: &str = "patient_actor_id";
 const PATIENT_TEMPLATE_ACTOR_ID_VAR: &str = "patient_template_actor_id";
-const PATIENT_SLOT_BASE_NAME_VAR: &str = "patient_slot_base_name";
+const ACT_CAST_SLOT_BASE_NAME_VAR: &str = "act_cast_slot_base_name";
 const ACT_OFFSTAGE_ROOM_ID: &str = "acts-offstage";
 
 pub fn initialize_act_state(content: &ContentPack, state: &mut WorldState) {
@@ -72,7 +72,7 @@ pub fn initialize_act_state(content: &ContentPack, state: &mut WorldState) {
     if needs_bootstrap {
         bootstrap_first_act(content, state);
     } else {
-        sync_current_patient_story_vars(content, state);
+        inject_act_cast_vars(content, state);
     }
 }
 
@@ -136,14 +136,14 @@ pub fn advance_to_next_act(
         next_state.current_time_minutes = content.opening.start_time_minutes
             + (series.current_act_number.saturating_sub(1) * MINUTES_PER_DAY);
     }
-    sync_current_patient_story_vars(content, &mut next_state);
+    inject_act_cast_vars(content, &mut next_state);
     *state = next_state;
     Some(current_act_intro(state).unwrap_or_else(|| content.opening.intro_text.clone()))
 }
 
 pub fn display_actor_name(state: &WorldState, actor: &ActorDefinition) -> String {
     if is_current_patient_reference(state, &actor.id)
-        && let Some(name) = state.story_vars.get(PATIENT_NAME_VAR)
+        && let Some(name) = state.story_vars.get(ACT_CAST_NAME_VAR)
     {
         return name.to_string();
     }
@@ -257,8 +257,8 @@ pub fn story_actor_matches(
 pub fn render_dynamic_story_text(template: &str, state: &WorldState) -> String {
     let mut rendered = state.story_vars.render_template(template);
     if let (Some(base_name), Some(current_name)) = (
-        state.story_vars.get(PATIENT_SLOT_BASE_NAME_VAR),
-        state.story_vars.get(PATIENT_NAME_VAR),
+        state.story_vars.get(ACT_CAST_SLOT_BASE_NAME_VAR),
+        state.story_vars.get(ACT_CAST_NAME_VAR),
     ) && base_name != current_name
     {
         rendered = rendered.replace(base_name, current_name);
@@ -290,10 +290,10 @@ fn bootstrap_first_act(content: &ContentPack, state: &mut WorldState) {
     series.current_patient_id = patient.id.clone();
     series.next_seed_index = 1;
     series.patients.insert(patient.id.clone(), patient);
-    sync_current_patient_story_vars(content, state);
+    inject_act_cast_vars(content, state);
 }
 
-fn sync_current_patient_story_vars(content: &ContentPack, state: &mut WorldState) {
+fn inject_act_cast_vars(content: &ContentPack, state: &mut WorldState) {
     let Some(series) = state.act_series.as_ref() else {
         return;
     };
@@ -314,10 +314,10 @@ fn sync_current_patient_story_vars(content: &ContentPack, state: &mut WorldState
     );
     state
         .story_vars
-        .set_unchecked(PATIENT_SLOT_BASE_NAME_VAR, &base_name);
+        .set_unchecked(ACT_CAST_SLOT_BASE_NAME_VAR, &base_name);
     state
         .story_vars
-        .set_unchecked(PATIENT_NAME_VAR, &patient.name);
+        .set_unchecked(ACT_CAST_NAME_VAR, &patient.name);
     state
         .story_vars
         .set_unchecked("act_number", &series.current_act_number.to_string());
