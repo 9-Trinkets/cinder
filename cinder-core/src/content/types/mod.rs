@@ -137,27 +137,13 @@ pub struct ActCastMember {
     pub name: String,
     pub actor_id: String,
     #[serde(default)]
-    pub age: u32,
-    #[serde(default)]
-    pub profession: String,
-    #[serde(default)]
-    pub presenting_issue: String,
-    #[serde(default)]
-    pub relational_pattern: String,
-    #[serde(default)]
-    pub formative_memory: String,
-    #[serde(default)]
-    pub coping_style: String,
-    #[serde(default)]
-    pub desired_change: String,
-    #[serde(default)]
-    pub bibliotherapy_fit: String,
-    #[serde(default)]
     pub inspect_blurb: String,
     #[serde(default)]
     pub intro_blurb: String,
     #[serde(default)]
     pub return_blurb: String,
+    #[serde(default)]
+    pub metadata: BTreeMap<String, String>,
     #[serde(default)]
     pub actor_stats: BTreeMap<String, i32>,
 }

@@ -22,17 +22,11 @@ pub struct CastMemberRecord {
     pub id: String,
     pub name: String,
     pub actor_id: String,
-    pub age: u32,
-    pub profession: String,
-    pub presenting_issue: String,
-    pub relational_pattern: String,
-    pub formative_memory: String,
-    pub coping_style: String,
-    pub desired_change: String,
-    pub bibliotherapy_fit: String,
     pub inspect_blurb: String,
     pub intro_blurb: String,
     pub return_blurb: String,
+    #[serde(default)]
+    pub metadata: BTreeMap<String, String>,
     #[serde(default)]
     pub act_count: u32,
     #[serde(default)]
@@ -170,23 +164,24 @@ pub fn resolved_actor_prompt_context(
     let behavior_actor = content.actor(&patient.actor_id).unwrap_or(actor);
     let act_number = current_act_number(state);
     let mut character_notes = behavior_actor.prompt_context.character_notes.clone();
-    character_notes.extend([
-        format!(
-            "You are {}, a {}-year-old {}.",
-            patient.name, patient.age, patient.profession
-        ),
-        format!("Presenting issue: {}.", patient.presenting_issue),
-        format!("Relational pattern: {}.", patient.relational_pattern),
-        format!("Formative memory: {}.", patient.formative_memory),
-        format!("Coping style: {}.", patient.coping_style),
-        format!("Desired change: {}.", patient.desired_change),
-        format!("Bibliotherapy fit: {}.", patient.bibliotherapy_fit),
-    ]);
+    character_notes.push(format!(
+        "You are {}.",
+        patient.name
+    ));
+    for (key, value) in &patient.metadata {
+        if key.starts_with("char_") {
+            let label = key.strip_prefix("char_").unwrap_or(key);
+            character_notes.push(format!("{}: {}.", label, value));
+        }
+    }
     let mut subtext_notes = behavior_actor.prompt_context.subtext_notes.clone();
-    subtext_notes.extend([
-        format!("Carry the emotional residue of {}.", patient.intro_blurb),
-        format!("Your tendency under pressure: {}.", patient.coping_style),
-    ]);
+    subtext_notes.push(format!("Carry the emotional residue of {}.", patient.intro_blurb));
+    for (key, value) in &patient.metadata {
+        if key.starts_with("sub_") {
+            let label = key.strip_prefix("sub_").unwrap_or(key);
+            subtext_notes.push(format!("{}: {}.", label, value));
+        }
+    }
     let mut response_notes = behavior_actor.prompt_context.response_notes.clone();
     response_notes.push(format!(
         "You are in act {act_number}. Respond as {} would, without narrating future sessions.",
@@ -323,40 +318,12 @@ fn sync_current_patient_story_vars(content: &ContentPack, state: &mut WorldState
     state
         .story_vars
         .set_unchecked(PATIENT_NAME_VAR, &patient.name);
-    state.story_vars.set_unchecked(
-        "act_number",
-        &series.current_act_number.to_string(),
-    );
     state
         .story_vars
-        .set_unchecked("patient_age", &patient.age.to_string());
-    state
-        .story_vars
-        .set_unchecked("patient_profession", &patient.profession);
-    state.story_vars.set_unchecked(
-        "patient_presenting_issue",
-        &patient.presenting_issue,
-    );
-    state.story_vars.set_unchecked(
-        "patient_relational_pattern",
-        &patient.relational_pattern,
-    );
-    state.story_vars.set_unchecked(
-        "patient_formative_memory",
-        &patient.formative_memory,
-    );
-    state.story_vars.set_unchecked(
-        "patient_coping_style",
-        &patient.coping_style,
-    );
-    state.story_vars.set_unchecked(
-        "patient_desired_change",
-        &patient.desired_change,
-    );
-    state.story_vars.set_unchecked(
-        "patient_bibliotherapy_fit",
-        &patient.bibliotherapy_fit,
-    );
+        .set_unchecked("act_number", &series.current_act_number.to_string());
+    for (key, value) in &patient.metadata {
+        state.story_vars.set_unchecked(&format!("patient_{key}"), value);
+    }
     state.story_vars.set_unchecked(
         "patient_returning",
         if patient.act_count > 0 {
@@ -456,17 +423,10 @@ fn build_patient_record(
         id: definition.id.clone(),
         name: definition.name.clone(),
         actor_id: definition.actor_id.clone(),
-        age: definition.age,
-        profession: definition.profession.clone(),
-        presenting_issue: definition.presenting_issue.clone(),
-        relational_pattern: definition.relational_pattern.clone(),
-        formative_memory: definition.formative_memory.clone(),
-        coping_style: definition.coping_style.clone(),
-        desired_change: definition.desired_change.clone(),
-        bibliotherapy_fit: definition.bibliotherapy_fit.clone(),
         inspect_blurb: definition.inspect_blurb.clone(),
         intro_blurb: definition.intro_blurb.clone(),
         return_blurb: definition.return_blurb.clone(),
+        metadata: definition.metadata.clone(),
         act_count: 0,
         last_seen_act: None,
         last_feedback_rating: None,
