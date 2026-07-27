@@ -294,7 +294,7 @@ mod tests {
     };
     use crate::engine::events::WorldEvent;
     use crate::engine::state::{
-        WorldState, advance_to_next_appointment, initialize_appointment_state,
+        WorldState, advance_to_next_act, initialize_act_state,
     };
 
     struct FailingMenuIntentDialogue;
@@ -359,8 +359,8 @@ mod tests {
     fn recommendation_prompt_uses_current_patient_name() {
         let content = load_named_pack("isla", None).expect("load isla");
         let mut state = WorldState::new(&content);
-        initialize_appointment_state(&content, &mut state);
-        advance_to_next_appointment(&content, &mut state, None);
+        initialize_act_state(&content, &mut state);
+        advance_to_next_act(&content, &mut state, None);
         let menu = content
             .menu("book-recommendation")
             .expect("book recommendation menu");
@@ -375,8 +375,8 @@ mod tests {
     fn menu_narrative_lines_use_current_patient_name() {
         let content = load_named_pack("isla", None).expect("load isla");
         let mut state = WorldState::new(&content);
-        initialize_appointment_state(&content, &mut state);
-        advance_to_next_appointment(&content, &mut state, None);
+        initialize_act_state(&content, &mut state);
+        advance_to_next_act(&content, &mut state, None);
         let menu = content.menu("request-quarter").expect("quarter menu");
         let option = menu
             .options

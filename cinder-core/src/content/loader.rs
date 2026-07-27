@@ -1,5 +1,5 @@
 use crate::content::types::{
-    ActorDefinition, AffordancesDefinition, AppointmentPatientDefinition, BeatsDefinition,
+    ActorDefinition, AffordancesDefinition, ActCastMember, BeatsDefinition,
     CommandsDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition, OpeningDefinition,
     OpeningMenuDefinition, OpeningMovieDefinition, PresentationDefinition, RoomDefinition,
     SpeechIntentsConfig, StatsDefinition, SystemTextDefinition, UiTextDefinition,
@@ -151,7 +151,7 @@ pub fn load_pack_from_dir_with_locale(
     let actors: Vec<ActorDefinition> = serde_json::from_str(&fs::read_to_string(
         localized_file_path(path, &effective_locale, "actors.json"),
     )?)?;
-    let appointment_patients = read_optional_localized_json::<Vec<AppointmentPatientDefinition>>(
+    let act_cast = read_optional_localized_json::<Vec<ActCastMember>>(
         path,
         &effective_locale,
         "patients.json",
@@ -298,21 +298,21 @@ pub fn load_pack_from_dir_with_locale(
         }
     }
     if settings.multi_act {
-        if appointment_patients.is_empty() {
+        if act_cast.is_empty() {
             return Err("multi_act content requires localized patients.json".into());
         }
         let mut seen_patient_ids = std::collections::BTreeSet::new();
         let mut seen_patient_actor_ids = std::collections::BTreeSet::new();
-        for patient in &appointment_patients {
+        for patient in &act_cast {
             if patient.id.trim().is_empty() {
-                return Err("appointment patient definition is missing id".into());
+                return Err("act_cast member definition is missing id".into());
             }
             if !seen_patient_ids.insert(patient.id.clone()) {
-                return Err(format!("duplicate appointment patient id '{}'", patient.id).into());
+                return Err(format!("duplicate act_cast member id '{}'", patient.id).into());
             }
             if patient.actor_id.trim().is_empty() {
                 return Err(
-                    format!("appointment patient '{}' is missing actor_id", patient.id).into(),
+                    format!("act_cast member '{}' is missing actor_id", patient.id).into(),
                 );
             }
             require_known_id(
@@ -322,14 +322,14 @@ pub fn load_pack_from_dir_with_locale(
                     .map(|actor| actor.id.as_str())
                     .collect::<Vec<_>>(),
                 &format!(
-                    "appointment patient '{}' actor_id '{}'",
+                    "act_cast member '{}' actor_id '{}'",
                     patient.id, patient.actor_id
                 ),
                 "actors",
             )?;
             if !seen_patient_actor_ids.insert(patient.actor_id.clone()) {
                 return Err(format!(
-                    "appointment patients must not reuse actor_id '{}'",
+                    "act_cast members must not reuse actor_id '{}'",
                     patient.actor_id
                 )
                 .into());
@@ -349,7 +349,7 @@ pub fn load_pack_from_dir_with_locale(
         presentation,
         rooms,
         actors,
-        appointment_patients,
+        act_cast,
         stats,
         commands,
         affordances,

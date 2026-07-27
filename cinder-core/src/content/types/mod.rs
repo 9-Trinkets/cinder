@@ -135,7 +135,7 @@ pub struct OpeningPromptContext {
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct AppointmentPatientDefinition {
+pub struct ActCastMember {
     pub id: String,
     pub name: String,
     pub actor_id: String,

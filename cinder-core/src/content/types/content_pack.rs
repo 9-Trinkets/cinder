@@ -15,7 +15,7 @@ pub struct ContentPack {
     pub presentation: PresentationDefinition,
     pub rooms: Vec<RoomDefinition>,
     pub actors: Vec<ActorDefinition>,
-    pub appointment_patients: Vec<AppointmentPatientDefinition>,
+    pub act_cast: Vec<ActCastMember>,
     pub stats: StatsDefinition,
     pub commands: CommandsDefinition,
     pub affordances: AffordancesDefinition,

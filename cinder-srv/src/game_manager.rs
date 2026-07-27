@@ -317,8 +317,8 @@ pub async fn run_command(
 
         if outcome.phase == GamePhase::ActEnded {
             if let Some(intro_text) = runtime
-                .advance_appointment()
-                .map_err(|e| format!("appointment rollover error: {e}"))?
+                .advance_act()
+                .map_err(|e| format!("act rollover error: {e}"))?
             {
                 if !intro_text.is_empty() {
                     outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
@@ -385,8 +385,8 @@ pub async fn run_realtime_tick(
         };
         if outcome.phase == GamePhase::ActEnded {
             if let Some(intro_text) = runtime
-                .advance_appointment()
-                .map_err(|e| format!("appointment rollover error: {e}"))?
+                .advance_act()
+                .map_err(|e| format!("act rollover error: {e}"))?
             {
                 if !intro_text.is_empty() {
                     outcome.text = format!("{}\n\n{}", outcome.text, intro_text);

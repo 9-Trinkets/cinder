@@ -1,24 +1,24 @@
 use super::{MINUTES_PER_DAY, WorldState};
 use crate::content::types::{
-    ActorDefinition, ActorPromptContext, AppointmentPatientDefinition, ContentPack,
+    ActorDefinition, ActorPromptContext, ActCastMember, ContentPack,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct AppointmentSeriesState {
-    pub current_appointment_number: u32,
+pub struct ActSeriesState {
+    pub current_act_number: u32,
     pub current_patient_id: String,
     #[serde(default)]
     pub next_seed_index: usize,
     #[serde(default)]
-    pub patients: BTreeMap<String, PatientRecord>,
+    pub patients: BTreeMap<String, CastMemberRecord>,
     #[serde(default)]
-    pub appointment_history: Vec<AppointmentHistoryEntry>,
+    pub act_history: Vec<ActHistoryEntry>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct PatientRecord {
+pub struct CastMemberRecord {
     pub id: String,
     pub name: String,
     pub actor_id: String,
@@ -34,9 +34,9 @@ pub struct PatientRecord {
     pub intro_blurb: String,
     pub return_blurb: String,
     #[serde(default)]
-    pub appointment_count: u32,
+    pub act_count: u32,
     #[serde(default)]
-    pub last_seen_appointment: Option<u32>,
+    pub last_seen_act: Option<u32>,
     #[serde(default)]
     pub last_feedback_rating: Option<u32>,
     #[serde(default)]
@@ -46,15 +46,15 @@ pub struct PatientRecord {
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct AppointmentHistoryEntry {
-    pub appointment_number: u32,
+pub struct ActHistoryEntry {
+    pub act_number: u32,
     pub patient_id: String,
     pub patient_name: String,
     pub feedback_rating: Option<u32>,
 }
 
 #[derive(Debug, Clone)]
-pub struct AppointmentFeedbackSummary {
+pub struct ActFeedbackSummary {
     pub rating: u32,
     pub review_text: String,
 }
@@ -63,69 +63,69 @@ const PATIENT_NAME_VAR: &str = "patient_name";
 const PATIENT_ACTOR_ID_VAR: &str = "patient_actor_id";
 const PATIENT_TEMPLATE_ACTOR_ID_VAR: &str = "patient_template_actor_id";
 const PATIENT_SLOT_BASE_NAME_VAR: &str = "patient_slot_base_name";
-const APPOINTMENT_OFFSTAGE_ROOM_ID: &str = "appointments-offstage";
+const ACT_OFFSTAGE_ROOM_ID: &str = "acts-offstage";
 
-pub fn initialize_appointment_state(content: &ContentPack, state: &mut WorldState) {
-    if !content.settings.multi_act || content.appointment_patients.is_empty() {
+pub fn initialize_act_state(content: &ContentPack, state: &mut WorldState) {
+    if !content.settings.multi_act || content.act_cast.is_empty() {
         return;
     }
-    if state.appointment_series.is_none() {
-        state.appointment_series = Some(AppointmentSeriesState::default());
+    if state.act_series.is_none() {
+        state.act_series = Some(ActSeriesState::default());
     }
-    let needs_bootstrap = state.appointment_series.as_ref().is_some_and(|series| {
-        series.current_appointment_number == 0 || series.current_patient_id.is_empty()
+    let needs_bootstrap = state.act_series.as_ref().is_some_and(|series| {
+        series.current_act_number == 0 || series.current_patient_id.is_empty()
     });
     if needs_bootstrap {
-        bootstrap_first_appointment(content, state);
+        bootstrap_first_act(content, state);
     } else {
         sync_current_patient_story_vars(content, state);
     }
 }
 
-pub fn advance_to_next_appointment(
+pub fn advance_to_next_act(
     content: &ContentPack,
     state: &mut WorldState,
-    feedback: Option<&AppointmentFeedbackSummary>,
+    feedback: Option<&ActFeedbackSummary>,
 ) -> Option<String> {
     if !content.settings.multi_act {
         return None;
     }
-    let Some(mut series) = state.appointment_series.clone() else {
+    let Some(mut series) = state.act_series.clone() else {
         return None;
     };
-    if series.current_appointment_number == 0 || series.current_patient_id.is_empty() {
-        bootstrap_first_appointment(content, state);
+    if series.current_act_number == 0 || series.current_patient_id.is_empty() {
+        bootstrap_first_act(content, state);
         return Some(
-            current_appointment_intro(state).unwrap_or_else(|| content.opening.intro_text.clone()),
+            current_act_intro(state).unwrap_or_else(|| content.opening.intro_text.clone()),
         );
     }
 
     if let Some(current) = series.patients.get_mut(&series.current_patient_id) {
-        current.appointment_count = current.appointment_count.saturating_add(1);
-        current.last_seen_appointment = Some(series.current_appointment_number);
+        current.act_count = current.act_count.saturating_add(1);
+        current.last_seen_act = Some(series.current_act_number);
         current.last_feedback_rating = feedback.map(|summary| summary.rating);
         current.last_feedback_review = feedback.map(|summary| summary.review_text.clone());
         current.actor_stats = state.actor_stats_snapshot(&current.actor_id);
     }
     if let Some(current) = series.patients.get(&series.current_patient_id) {
-        series.appointment_history.push(AppointmentHistoryEntry {
-            appointment_number: series.current_appointment_number,
+        series.act_history.push(ActHistoryEntry {
+            act_number: series.current_act_number,
             patient_id: current.id.clone(),
             patient_name: current.name.clone(),
             feedback_rating: feedback.map(|summary| summary.rating),
         });
     }
 
-    series.current_appointment_number = series.current_appointment_number.saturating_add(1);
+    series.current_act_number = series.current_act_number.saturating_add(1);
     let next_patient_id = choose_next_patient_id(content, &series);
     if !series.patients.contains_key(&next_patient_id) {
         let patient_definition = content
-            .appointment_patients
+            .act_cast
             .iter()
             .find(|definition| definition.id == next_patient_id)
             .unwrap_or_else(|| {
                 panic!(
-                    "missing appointment patient definition '{}'",
+                    "missing act_cast member definition '{}'",
                     next_patient_id
                 )
             });
@@ -136,15 +136,15 @@ pub fn advance_to_next_appointment(
     series.current_patient_id = next_patient_id;
 
     let mut next_state = WorldState::new(content);
-    next_state.appointment_series = Some(series);
+    next_state.act_series = Some(series);
     next_state.last_transcript_line = state.last_transcript_line.clone();
-    if let Some(series) = next_state.appointment_series.as_ref() {
+    if let Some(series) = next_state.act_series.as_ref() {
         next_state.current_time_minutes = content.opening.start_time_minutes
-            + (series.current_appointment_number.saturating_sub(1) * MINUTES_PER_DAY);
+            + (series.current_act_number.saturating_sub(1) * MINUTES_PER_DAY);
     }
     sync_current_patient_story_vars(content, &mut next_state);
     *state = next_state;
-    Some(current_appointment_intro(state).unwrap_or_else(|| content.opening.intro_text.clone()))
+    Some(current_act_intro(state).unwrap_or_else(|| content.opening.intro_text.clone()))
 }
 
 pub fn display_actor_name(state: &WorldState, actor: &ActorDefinition) -> String {
@@ -168,7 +168,7 @@ pub fn resolved_actor_prompt_context(
         return actor.prompt_context.clone();
     };
     let behavior_actor = content.actor(&patient.actor_id).unwrap_or(actor);
-    let appointment_number = current_appointment_number(state);
+    let act_number = current_act_number(state);
     let mut character_notes = behavior_actor.prompt_context.character_notes.clone();
     character_notes.extend([
         format!(
@@ -189,11 +189,11 @@ pub fn resolved_actor_prompt_context(
     ]);
     let mut response_notes = behavior_actor.prompt_context.response_notes.clone();
     response_notes.push(format!(
-        "You are in appointment {appointment_number}. Respond as {} would in therapy, without narrating future sessions.",
+        "You are in act {act_number}. Respond as {} would, without narrating future sessions.",
         patient.name
     ));
     if let Some(review) = patient.last_feedback_review.as_deref() {
-        response_notes.push(format!("Last appointment takeaway: {review}"));
+        response_notes.push(format!("Last act takeaway: {review}"));
     }
     ActorPromptContext {
         character_notes,
@@ -203,15 +203,15 @@ pub fn resolved_actor_prompt_context(
     }
 }
 
-pub fn current_appointment_intro(state: &WorldState) -> Option<String> {
+pub fn current_act_intro(state: &WorldState) -> Option<String> {
     let patient = current_patient(state)?;
-    if current_appointment_number(state) == 1 && patient.appointment_count == 0 {
+    if current_act_number(state) == 1 && patient.act_count == 0 {
         return None;
     }
-    let appointment_number = current_appointment_number(state);
-    let returning = patient.appointment_count > 0;
+    let act_number = current_act_number(state);
+    let returning = patient.act_count > 0;
     let header = format!(
-        "━━━━━━━━━━━━━━━━━━━━\nAppointment {appointment_number}: {}\n━━━━━━━━━━━━━━━━━━━━",
+        "━━━━━━━━━━━━━━━━━━━━\nAct {act_number}: {}\n━━━━━━━━━━━━━━━━━━━━",
         patient.name
     );
     Some(if returning {
@@ -220,12 +220,12 @@ pub fn current_appointment_intro(state: &WorldState) -> Option<String> {
             .as_deref()
             .unwrap_or("they are still sorting through what happened last time");
         format!(
-            "{header}\n\n{} returns for another appointment. {} They arrive carrying the aftertaste of last time: {}",
+            "{header}\n\n{} returns. {} They arrive carrying the aftertaste of last time: {}",
             patient.name, patient.return_blurb, prior_note
         )
     } else {
         format!(
-            "{header}\n\n{} arrives for a first appointment. {}",
+            "{header}\n\n{} arrives. {}",
             patient.name, patient.intro_blurb
         )
     })
@@ -279,19 +279,19 @@ pub fn render_dynamic_story_text(template: &str, state: &WorldState) -> String {
     rendered
 }
 
-fn bootstrap_first_appointment(content: &ContentPack, state: &mut WorldState) {
+fn bootstrap_first_act(content: &ContentPack, state: &mut WorldState) {
     let patient = build_patient_record(
         content,
         state,
         content
-            .appointment_patients
+            .act_cast
             .first()
-            .unwrap_or_else(|| panic!("missing appointment patient definitions")),
+            .unwrap_or_else(|| panic!("missing act_cast member definitions")),
     );
-    let Some(series) = state.appointment_series.as_mut() else {
+    let Some(series) = state.act_series.as_mut() else {
         return;
     };
-    series.current_appointment_number = 1;
+    series.current_act_number = 1;
     series.current_patient_id = patient.id.clone();
     series.next_seed_index = 1;
     series.patients.insert(patient.id.clone(), patient);
@@ -299,13 +299,13 @@ fn bootstrap_first_appointment(content: &ContentPack, state: &mut WorldState) {
 }
 
 fn sync_current_patient_story_vars(content: &ContentPack, state: &mut WorldState) {
-    let Some(series) = state.appointment_series.as_ref() else {
+    let Some(series) = state.act_series.as_ref() else {
         return;
     };
     let Some(patient) = series.patients.get(&series.current_patient_id) else {
         return;
     };
-    let template_actor_id = appointment_template_actor_id(content).unwrap_or(&patient.actor_id);
+    let template_actor_id = act_template_actor_id(content).unwrap_or(&patient.actor_id);
     let base_name = content
         .actor(template_actor_id)
         .map(|actor| actor.name.clone())
@@ -324,8 +324,8 @@ fn sync_current_patient_story_vars(content: &ContentPack, state: &mut WorldState
         .story_vars
         .set_unchecked(PATIENT_NAME_VAR, &patient.name);
     state.story_vars.set_unchecked(
-        "appointment_number",
-        &series.current_appointment_number.to_string(),
+        "act_number",
+        &series.current_act_number.to_string(),
     );
     state
         .story_vars
@@ -359,7 +359,7 @@ fn sync_current_patient_story_vars(content: &ContentPack, state: &mut WorldState
     );
     state.story_vars.set_unchecked(
         "patient_returning",
-        if patient.appointment_count > 0 {
+        if patient.act_count > 0 {
             "true"
         } else {
             "false"
@@ -372,7 +372,7 @@ fn sync_current_patient_story_vars(content: &ContentPack, state: &mut WorldState
         *initial_stats = patient.actor_stats.clone();
     }
     let patient_actor_ids = content
-        .appointment_patients
+        .act_cast
         .iter()
         .map(|definition| definition.actor_id.as_str())
         .collect::<Vec<_>>();
@@ -382,22 +382,22 @@ fn sync_current_patient_story_vars(content: &ContentPack, state: &mut WorldState
         } else {
             state.actor_room_overrides.insert(
                 actor_id.to_string(),
-                APPOINTMENT_OFFSTAGE_ROOM_ID.to_string(),
+                ACT_OFFSTAGE_ROOM_ID.to_string(),
             );
         }
     }
 }
 
-fn current_patient(state: &WorldState) -> Option<&PatientRecord> {
-    let series = state.appointment_series.as_ref()?;
+fn current_patient(state: &WorldState) -> Option<&CastMemberRecord> {
+    let series = state.act_series.as_ref()?;
     series.patients.get(&series.current_patient_id)
 }
 
-fn current_appointment_number(state: &WorldState) -> u32 {
+fn current_act_number(state: &WorldState) -> u32 {
     state
-        .appointment_series
+        .act_series
         .as_ref()
-        .map(|series| series.current_appointment_number)
+        .map(|series| series.current_act_number)
         .unwrap_or(1)
 }
 
@@ -411,25 +411,25 @@ fn is_current_patient_reference(state: &WorldState, actor_id: &str) -> bool {
     })
 }
 
-fn choose_next_patient_id(content: &ContentPack, series: &AppointmentSeriesState) -> String {
-    if series.current_appointment_number >= 3 && series.current_appointment_number % 2 == 1 {
+fn choose_next_patient_id(content: &ContentPack, series: &ActSeriesState) -> String {
+    if series.current_act_number >= 3 && series.current_act_number % 2 == 1 {
         if let Some((patient_id, _)) = series
             .patients
             .iter()
             .filter(|(patient_id, _)| **patient_id != series.current_patient_id)
-            .min_by_key(|(_, patient)| patient.last_seen_appointment.unwrap_or(0))
+            .min_by_key(|(_, patient)| patient.last_seen_act.unwrap_or(0))
         {
             return patient_id.clone();
         }
     }
-    if let Some(definition) = content.appointment_patients.get(series.next_seed_index) {
+    if let Some(definition) = content.act_cast.get(series.next_seed_index) {
         return definition.id.clone();
     }
     series
         .patients
         .iter()
         .filter(|(patient_id, _)| **patient_id != series.current_patient_id)
-        .min_by_key(|(_, patient)| patient.last_seen_appointment.unwrap_or(0))
+        .min_by_key(|(_, patient)| patient.last_seen_act.unwrap_or(0))
         .map(|(patient_id, _)| patient_id.clone())
         .unwrap_or_else(|| series.current_patient_id.clone())
 }
@@ -437,8 +437,8 @@ fn choose_next_patient_id(content: &ContentPack, series: &AppointmentSeriesState
 fn build_patient_record(
     content: &ContentPack,
     state: &WorldState,
-    definition: &AppointmentPatientDefinition,
-) -> PatientRecord {
+    definition: &ActCastMember,
+) -> CastMemberRecord {
     let mut actor_stats = content
         .actor(&definition.actor_id)
         .map(|actor| actor.initial_stats.clone())
@@ -452,7 +452,7 @@ fn build_patient_record(
             .and_modify(|value| *value = definition.clamp(*value))
             .or_insert(definition.default);
     }
-    PatientRecord {
+    CastMemberRecord {
         id: definition.id.clone(),
         name: definition.name.clone(),
         actor_id: definition.actor_id.clone(),
@@ -467,17 +467,17 @@ fn build_patient_record(
         inspect_blurb: definition.inspect_blurb.clone(),
         intro_blurb: definition.intro_blurb.clone(),
         return_blurb: definition.return_blurb.clone(),
-        appointment_count: 0,
-        last_seen_appointment: None,
+        act_count: 0,
+        last_seen_act: None,
         last_feedback_rating: None,
         last_feedback_review: None,
         actor_stats,
     }
 }
 
-fn appointment_template_actor_id(content: &ContentPack) -> Option<&str> {
+fn act_template_actor_id(content: &ContentPack) -> Option<&str> {
     content
-        .appointment_patients
+        .act_cast
         .first()
         .map(|patient| patient.actor_id.as_str())
 }
@@ -491,24 +491,24 @@ mod tests {
     fn first_appointment_preserves_authored_patient() {
         let content = load_named_pack("isla", None).expect("load isla");
         let mut state = WorldState::new(&content);
-        initialize_appointment_state(&content, &mut state);
+        initialize_act_state(&content, &mut state);
 
         assert_eq!(current_patient_name(&state).as_deref(), Some("Noa"));
-        assert_eq!(current_appointment_intro(&state), None);
+        assert_eq!(current_act_intro(&state), None);
     }
 
     #[test]
     fn second_appointment_uses_first_generated_patient() {
         let content = load_named_pack("isla", None).expect("load isla");
         let mut state = WorldState::new(&content);
-        initialize_appointment_state(&content, &mut state);
+        initialize_act_state(&content, &mut state);
 
-        let _ = advance_to_next_appointment(&content, &mut state, None);
+        let _ = advance_to_next_act(&content, &mut state, None);
 
         assert_eq!(current_patient_name(&state).as_deref(), Some("Awa"));
         assert_eq!(current_patient_actor_id(&state), Some("awa"));
-        let intro = current_appointment_intro(&state).expect("appointment intro");
-        assert!(intro.contains("Appointment 2: Awa"));
+        let intro = current_act_intro(&state).expect("act intro");
+        assert!(intro.contains("Act 2: Awa"));
         assert!(intro.contains("━━━━━━━━━━━━━━━━━━━━"));
     }
 
@@ -516,8 +516,8 @@ mod tests {
     fn current_patient_reference_uses_distinct_actor_prompt_context() {
         let content = load_named_pack("isla", None).expect("load isla");
         let mut state = WorldState::new(&content);
-        initialize_appointment_state(&content, &mut state);
-        let _ = advance_to_next_appointment(&content, &mut state, None);
+        initialize_act_state(&content, &mut state);
+        let _ = advance_to_next_act(&content, &mut state, None);
 
         let proxy_actor = content.actor("noa").expect("proxy actor");
         let prompt_context = resolved_actor_prompt_context(&content, &state, proxy_actor);

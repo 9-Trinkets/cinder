@@ -13,9 +13,9 @@ use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::neuron::{WorkflowDefinition, WorkflowTraceContext, load_workflow};
 use crate::engine::reducer::apply_events;
 use crate::engine::state::{
-    AppointmentFeedbackSummary, GamePhase, TurnOutcome, WorldState, advance_to_next_appointment,
-    current_appointment_intro, current_patient_name, display_actor_name,
-    initialize_appointment_state,
+    ActFeedbackSummary, GamePhase, TurnOutcome, WorldState, advance_to_next_act,
+    current_act_intro, current_patient_name, display_actor_name,
+    initialize_act_state,
 };
 use crate::engine::turn_runner;
 use crate::engine::workflows::{
@@ -179,7 +179,7 @@ impl CinderRuntime {
         trace_dir: PathBuf,
     ) -> Result<Self, Box<dyn Error>> {
         let mut state = state;
-        initialize_appointment_state(&content, &mut state);
+        initialize_act_state(&content, &mut state);
         Ok(Self {
             state: Arc::new(Mutex::new(state)),
             content: Arc::new(content),
@@ -284,23 +284,23 @@ impl CinderRuntime {
         Ok(())
     }
 
-    pub fn advance_appointment(&self) -> Result<Option<String>, Box<dyn Error>> {
+    pub fn advance_act(&self) -> Result<Option<String>, Box<dyn Error>> {
         if !self.content.settings.multi_act {
             return Ok(None);
         }
         let feedback = self.build_perspective_review()?;
-        let feedback_summary = feedback.as_ref().map(|review| AppointmentFeedbackSummary {
+        let feedback_summary = feedback.as_ref().map(|review| ActFeedbackSummary {
             rating: review.review.rating,
             review_text: review.review.review_text.clone(),
         });
         let mut state = self
             .state
             .lock()
-            .map_err(|_| "failed to lock runtime state for appointment rollover")?;
+            .map_err(|_| "failed to lock runtime state for act rollover")?;
         if state.phase != GamePhase::ActEnded {
             return Ok(None);
         }
-        Ok(advance_to_next_appointment(
+        Ok(advance_to_next_act(
             self.content.as_ref(),
             &mut state,
             feedback_summary.as_ref(),
@@ -330,7 +330,7 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for intro text")?;
-        Ok(current_appointment_intro(&state)
+        Ok(current_act_intro(&state)
             .unwrap_or_else(|| self.content.opening.intro_text.clone()))
     }
 

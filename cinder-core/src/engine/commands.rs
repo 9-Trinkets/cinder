@@ -316,14 +316,14 @@ fn actor_references(state: &WorldState, actor: &ActorDefinition) -> Vec<String> 
 mod tests {
     use super::*;
     use crate::content::loader::load_named_pack;
-    use crate::engine::state::{advance_to_next_appointment, initialize_appointment_state};
+    use crate::engine::state::{advance_to_next_act, initialize_act_state};
 
     #[test]
     fn resolves_dynamic_patient_display_name() {
         let content = load_named_pack("isla", None).expect("load isla");
         let mut state = WorldState::new(&content);
-        initialize_appointment_state(&content, &mut state);
-        let _ = advance_to_next_appointment(&content, &mut state, None);
+        initialize_act_state(&content, &mut state);
+        let _ = advance_to_next_act(&content, &mut state, None);
 
         let resolved = resolve_actor_reference_input(&content, &state, "cafe", "Awa hello there")
             .expect("resolve dynamic patient");
