@@ -54,6 +54,8 @@ pub struct ContentSettingsDefinition {
     #[serde(default)]
     pub closure_perspective_actor_id: String,
     #[serde(default)]
+    pub act_member_alias: String,
+    #[serde(default)]
     pub fallback_stage_id: String,
     #[serde(default)]
     pub fallback_required_story_vars: Vec<String>,
@@ -112,6 +114,7 @@ impl Default for ContentSettingsDefinition {
             channel_surfing_only: false,
             autonomous_actor_dialogue: false,
             closure_perspective_actor_id: String::default(),
+            act_member_alias: String::default(),
             fallback_stage_id: String::default(),
             fallback_required_story_vars: Vec::new(),
             speech_stamina_cost_floor: default_speech_stamina_cost_floor(),
