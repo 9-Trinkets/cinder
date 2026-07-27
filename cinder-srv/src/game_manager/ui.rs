@@ -373,7 +373,7 @@ pub(super) fn build_ui_snapshot(
         talk_options,
         active_menu,
         ui_text: content.ui_text.clone(),
-        act_closure: if content.settings.show_session_closure {
+        act_closure: if content.settings.show_act_closure {
             response::act_closure_data(runtime, transcript_lines)
         } else {
             None

@@ -62,7 +62,7 @@ pub struct ContentSettingsDefinition {
     #[serde(default = "default_speech_stamina_cost_floor")]
     pub speech_stamina_cost_floor: i32,
     #[serde(default = "default_true")]
-    pub show_session_closure: bool,
+    pub show_act_closure: bool,
     #[serde(default)]
     pub show_relationship_sidebar: bool,
     #[serde(default)]
@@ -119,7 +119,7 @@ impl Default for ContentSettingsDefinition {
             fallback_required_story_vars: Vec::new(),
             speech_stamina_cost_floor: default_speech_stamina_cost_floor(),
             workflow_id: String::default(),
-            show_session_closure: true,
+            show_act_closure: true,
             show_relationship_sidebar: false,
             theme: ThemeDefinition::default(),
         }

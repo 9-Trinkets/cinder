@@ -182,7 +182,7 @@ impl TuiApp {
     }
 
     fn queue_day_summaries(&mut self) -> Result<(), Box<dyn Error>> {
-        if !self.runtime.content().settings.show_session_closure {
+        if !self.runtime.content().settings.show_act_closure {
             self.pending_act_closure_days.clear();
             return Ok(());
         }
