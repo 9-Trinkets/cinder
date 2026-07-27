@@ -82,10 +82,10 @@
     ]
   },
   {
-    "id": "appointments-offstage",
-    "title": "Appointments Offstage",
-    "summary": "A hidden holding space for patients who are not part of the current appointment.",
-    "inspect_text": "This room exists only to keep inactive appointment patients out of the current scene.",
+    "id": "acts-offstage",
+    "title": "Offstage",
+    "summary": "A hidden holding space for cast members who are not part of the current act.",
+    "inspect_text": "This room exists only to keep inactive cast members out of the current scene.",
     "features": [],
     "exits": []
   }
