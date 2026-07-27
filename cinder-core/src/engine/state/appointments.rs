@@ -54,8 +54,8 @@ pub struct ActFeedbackSummary {
 }
 
 const ACT_CAST_NAME_VAR: &str = "act_cast_name";
-const PATIENT_ACTOR_ID_VAR: &str = "patient_actor_id";
-const PATIENT_TEMPLATE_ACTOR_ID_VAR: &str = "patient_template_actor_id";
+const ACT_CAST_ACTOR_ID_VAR: &str = "act_cast_actor_id";
+const ACT_CAST_TEMPLATE_ACTOR_ID_VAR: &str = "act_cast_template_actor_id";
 const ACT_CAST_SLOT_BASE_NAME_VAR: &str = "act_cast_slot_base_name";
 const ACT_OFFSTAGE_ROOM_ID: &str = "acts-offstage";
 
@@ -236,8 +236,8 @@ pub fn current_patient_actor_id(state: &WorldState) -> Option<&str> {
 
 pub fn remap_story_actor_id<'a>(state: &'a WorldState, actor_id: &'a str) -> &'a str {
     match (
-        state.story_vars.get(PATIENT_TEMPLATE_ACTOR_ID_VAR),
-        state.story_vars.get(PATIENT_ACTOR_ID_VAR),
+        state.story_vars.get(ACT_CAST_TEMPLATE_ACTOR_ID_VAR),
+        state.story_vars.get(ACT_CAST_ACTOR_ID_VAR),
     ) {
         (Some(template_actor_id), Some(current_actor_id)) if template_actor_id == actor_id => {
             current_actor_id
@@ -307,9 +307,9 @@ fn inject_act_cast_vars(content: &ContentPack, state: &mut WorldState) {
         .unwrap_or_else(|| patient.name.clone());
     state
         .story_vars
-        .set_unchecked(PATIENT_ACTOR_ID_VAR, &patient.actor_id);
+        .set_unchecked(ACT_CAST_ACTOR_ID_VAR, &patient.actor_id);
     state.story_vars.set_unchecked(
-        PATIENT_TEMPLATE_ACTOR_ID_VAR,
+        ACT_CAST_TEMPLATE_ACTOR_ID_VAR,
         template_actor_id,
     );
     state
@@ -373,7 +373,7 @@ fn is_current_patient_reference(state: &WorldState, actor_id: &str) -> bool {
         current_actor_id == actor_id
             || state
                 .story_vars
-                .get(PATIENT_TEMPLATE_ACTOR_ID_VAR)
+                .get(ACT_CAST_TEMPLATE_ACTOR_ID_VAR)
                 .is_some_and(|template_actor_id| template_actor_id == actor_id)
     })
 }

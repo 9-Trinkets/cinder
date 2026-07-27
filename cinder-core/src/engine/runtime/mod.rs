@@ -820,7 +820,7 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for secret progress")?;
-        let current_actor_id = state.story_vars.get("patient_actor_id");
+        let current_actor_id = state.story_vars.get("act_cast_actor_id");
         let secret_stages: Vec<_> = self
             .content
             .beats

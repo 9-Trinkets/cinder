@@ -636,7 +636,7 @@
         {
           "signal": "stat_threshold",
           "conditions": [
-            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "awa" },
+            { "path": "story_vars.act_cast_actor_id", "operator": "equal", "value": "awa" },
             { "path": "actor_stats.awa.trust", "operator": "gte", "value": 5 },
             { "path": "stages_completed", "operator": "gte", "value": 1 },
             { "path": "actor_stats.awa.awa_secret_1_found", "operator": "less_than", "value": 1 }
@@ -663,7 +663,7 @@
         {
           "signal": "stat_threshold",
           "conditions": [
-            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "awa" },
+            { "path": "story_vars.act_cast_actor_id", "operator": "equal", "value": "awa" },
             { "path": "actor_stats.awa.trust", "operator": "gte", "value": 7 },
             { "path": "stages_completed", "operator": "gte", "value": 4 },
             { "path": "actor_stats.awa.awa_secret_2_found", "operator": "less_than", "value": 1 }
@@ -690,7 +690,7 @@
         {
           "signal": "stat_threshold",
           "conditions": [
-            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "awa" },
+            { "path": "story_vars.act_cast_actor_id", "operator": "equal", "value": "awa" },
             { "path": "actor_stats.awa.trust", "operator": "gte", "value": 9 },
             { "path": "stages_completed", "operator": "gte", "value": 8 },
             { "path": "actor_stats.awa.awa_secret_3_found", "operator": "less_than", "value": 1 }
@@ -717,7 +717,7 @@
         {
           "signal": "stat_threshold",
           "conditions": [
-            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "jonah" },
+            { "path": "story_vars.act_cast_actor_id", "operator": "equal", "value": "jonah" },
             { "path": "actor_stats.jonah.trust", "operator": "gte", "value": 5 },
             { "path": "stages_completed", "operator": "gte", "value": 1 },
             { "path": "actor_stats.jonah.jonah_secret_1_found", "operator": "less_than", "value": 1 }
@@ -744,7 +744,7 @@
         {
           "signal": "stat_threshold",
           "conditions": [
-            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "jonah" },
+            { "path": "story_vars.act_cast_actor_id", "operator": "equal", "value": "jonah" },
             { "path": "actor_stats.jonah.trust", "operator": "gte", "value": 7 },
             { "path": "stages_completed", "operator": "gte", "value": 4 },
             { "path": "actor_stats.jonah.jonah_secret_2_found", "operator": "less_than", "value": 1 }
@@ -771,7 +771,7 @@
         {
           "signal": "stat_threshold",
           "conditions": [
-            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "jonah" },
+            { "path": "story_vars.act_cast_actor_id", "operator": "equal", "value": "jonah" },
             { "path": "actor_stats.jonah.trust", "operator": "gte", "value": 9 },
             { "path": "stages_completed", "operator": "gte", "value": 8 },
             { "path": "actor_stats.jonah.jonah_secret_3_found", "operator": "less_than", "value": 1 }
@@ -798,7 +798,7 @@
         {
           "signal": "stat_threshold",
           "conditions": [
-            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "sophea" },
+            { "path": "story_vars.act_cast_actor_id", "operator": "equal", "value": "sophea" },
             { "path": "actor_stats.sophea.trust", "operator": "gte", "value": 5 },
             { "path": "stages_completed", "operator": "gte", "value": 1 },
             { "path": "actor_stats.sophea.sophea_secret_1_found", "operator": "less_than", "value": 1 }
@@ -825,7 +825,7 @@
         {
           "signal": "stat_threshold",
           "conditions": [
-            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "sophea" },
+            { "path": "story_vars.act_cast_actor_id", "operator": "equal", "value": "sophea" },
             { "path": "actor_stats.sophea.trust", "operator": "gte", "value": 7 },
             { "path": "stages_completed", "operator": "gte", "value": 4 },
             { "path": "actor_stats.sophea.sophea_secret_2_found", "operator": "less_than", "value": 1 }
@@ -852,7 +852,7 @@
         {
           "signal": "stat_threshold",
           "conditions": [
-            { "path": "story_vars.patient_actor_id", "operator": "equal", "value": "sophea" },
+            { "path": "story_vars.act_cast_actor_id", "operator": "equal", "value": "sophea" },
             { "path": "actor_stats.sophea.trust", "operator": "gte", "value": 9 },
             { "path": "stages_completed", "operator": "gte", "value": 8 },
             { "path": "actor_stats.sophea.sophea_secret_3_found", "operator": "less_than", "value": 1 }
