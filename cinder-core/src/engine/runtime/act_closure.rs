@@ -190,7 +190,7 @@ impl CinderRuntime {
             let state = self
                 .state
                 .lock()
-                .map_err(|_| "failed to lock runtime state for session closure guard")?;
+                .map_err(|_| "failed to lock runtime state for act closure guard")?;
             if state.phase != GamePhase::ActEnded {
                 return Ok(None);
             }

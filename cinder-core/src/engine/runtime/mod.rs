@@ -271,7 +271,7 @@ impl CinderRuntime {
             let mut state = self
                 .state
                 .lock()
-                .map_err(|_| "failed to lock runtime state for session continuation")?;
+                .map_err(|_| "failed to lock runtime state for act continuation")?;
             if state.phase != GamePhase::ActEnded {
                 return Ok(());
             }
@@ -1099,10 +1099,10 @@ fn join_with_and(items: &[String]) -> String {
 
 mod menus;
 mod perspective_review;
-mod session_closure;
+mod act_closure;
 mod stats_trace;
-pub use self::session_closure::FinalChapterSummary;
-pub use self::session_closure::RelationshipPair;
+pub use self::act_closure::FinalChapterSummary;
+pub use self::act_closure::RelationshipPair;
 use self::stats_trace::stats_trace_snapshot;
 
 #[cfg(test)]
