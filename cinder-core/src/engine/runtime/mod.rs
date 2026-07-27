@@ -278,7 +278,7 @@ impl CinderRuntime {
             state.phase = GamePhase::Active;
             state
                 .story_vars
-                .clear_scoped(crate::engine::state::VariableScope::Session);
+                .clear_scoped(crate::engine::state::VariableScope::Act);
         }
         self.clear_session_closure_cache()?;
         Ok(())

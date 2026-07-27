@@ -6,7 +6,7 @@ use std::collections::BTreeMap;
 #[serde(rename_all = "snake_case")]
 pub enum VariableScope {
     Game,
-    Session,
+    Act,
     Stage,
 }
 
@@ -300,12 +300,12 @@ mod tests {
     #[test]
     fn clear_scoped_removes_only_matching_scope() {
         let mut decls = BTreeMap::new();
-        decls.insert("a".to_string(), decl(VariableScope::Session));
+        decls.insert("a".to_string(), decl(VariableScope::Act));
         decls.insert("b".to_string(), decl(VariableScope::Game));
         let mut store = VariableStore::new(decls);
         store.set_unchecked("a", "1");
         store.set_unchecked("b", "2");
-        store.clear_scoped(VariableScope::Session);
+        store.clear_scoped(VariableScope::Act);
         assert!(!store.has("a"));
         assert!(store.has("b"));
     }
