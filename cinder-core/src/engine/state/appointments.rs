@@ -111,7 +111,7 @@ pub fn advance_to_next_act(
     }
 
     series.current_act_number = series.current_act_number.saturating_add(1);
-    let next_patient_id = choose_next_patient_id(content, &series);
+    let next_patient_id = choose_next_cast_member_id(content, &series);
     if !series.patients.contains_key(&next_patient_id) {
         let patient_definition = content
             .act_cast
@@ -378,7 +378,7 @@ fn is_current_patient_reference(state: &WorldState, actor_id: &str) -> bool {
     })
 }
 
-fn choose_next_patient_id(content: &ContentPack, series: &ActSeriesState) -> String {
+fn choose_next_cast_member_id(content: &ContentPack, series: &ActSeriesState) -> String {
     if series.current_act_number >= 3 && series.current_act_number % 2 == 1 {
         if let Some((patient_id, _)) = series
             .patients
