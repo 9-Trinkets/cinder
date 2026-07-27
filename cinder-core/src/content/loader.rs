@@ -297,10 +297,7 @@ pub fn load_pack_from_dir_with_locale(
             .into());
         }
     }
-    if settings.multi_act {
-        if act_cast.is_empty() {
-            return Err("multi_act content requires localized patients.json".into());
-        }
+    if !act_cast.is_empty() {
         let mut seen_patient_ids = std::collections::BTreeSet::new();
         let mut seen_patient_actor_ids = std::collections::BTreeSet::new();
         for patient in &act_cast {

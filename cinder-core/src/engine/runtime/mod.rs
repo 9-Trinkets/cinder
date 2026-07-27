@@ -285,7 +285,7 @@ impl CinderRuntime {
     }
 
     pub fn advance_act(&self) -> Result<Option<String>, Box<dyn Error>> {
-        if !self.content.settings.multi_act {
+        if self.content.act_cast.is_empty() {
             return Ok(None);
         }
         let feedback = self.build_perspective_review()?;

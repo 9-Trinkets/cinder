@@ -66,7 +66,7 @@ const PATIENT_SLOT_BASE_NAME_VAR: &str = "patient_slot_base_name";
 const ACT_OFFSTAGE_ROOM_ID: &str = "acts-offstage";
 
 pub fn initialize_act_state(content: &ContentPack, state: &mut WorldState) {
-    if !content.settings.multi_act || content.act_cast.is_empty() {
+    if content.act_cast.is_empty() {
         return;
     }
     if state.act_series.is_none() {
@@ -87,7 +87,7 @@ pub fn advance_to_next_act(
     state: &mut WorldState,
     feedback: Option<&ActFeedbackSummary>,
 ) -> Option<String> {
-    if !content.settings.multi_act {
+    if content.act_cast.is_empty() {
         return None;
     }
     let Some(mut series) = state.act_series.clone() else {
