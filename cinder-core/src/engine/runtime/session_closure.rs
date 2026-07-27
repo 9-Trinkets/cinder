@@ -144,7 +144,7 @@ impl CinderRuntime {
             .map_err(|error| format!("failed to configure chapter summary roles: {error}"))?;
 
         let what_happened = if transcript_lines.is_empty() {
-            self.content.ui_text.day_summary_empty_highlights.clone()
+            self.content.ui_text.session_closure_empty_highlights.clone()
         } else {
             summary_generator
                 .summarize_script(&ChapterScriptSummaryRequest {
@@ -155,7 +155,7 @@ impl CinderRuntime {
                 .map_err(std::io::Error::other)?
         };
         let relationship_status = if relationship_lines.is_empty() {
-            self.content.ui_text.day_summary_empty_relationships.clone()
+            self.content.ui_text.session_closure_empty_relationships.clone()
         } else {
             summary_generator
                 .summarize_relationships(&ChapterRelationshipSummaryRequest {

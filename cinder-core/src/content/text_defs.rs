@@ -108,18 +108,18 @@ pub struct UiTextDefinition {
     pub language_changed_text: String,
     #[serde(default = "default_modal_close_hint")]
     pub modal_close_hint: String,
-    #[serde(default = "default_day_summary_title")]
-    pub day_summary_title: String,
-    #[serde(default = "default_day_summary_current_focus_label")]
-    pub day_summary_current_focus_label: String,
-    #[serde(default = "default_day_summary_highlights_label")]
-    pub day_summary_highlights_label: String,
-    #[serde(default = "default_day_summary_relationships_label")]
-    pub day_summary_relationships_label: String,
-    #[serde(default = "default_day_summary_empty_highlights")]
-    pub day_summary_empty_highlights: String,
-    #[serde(default = "default_day_summary_empty_relationships")]
-    pub day_summary_empty_relationships: String,
+    #[serde(default = "default_session_closure_title")]
+    pub session_closure_title: String,
+    #[serde(default = "default_session_closure_current_focus_label")]
+    pub session_closure_current_focus_label: String,
+    #[serde(default = "default_session_closure_highlights_label")]
+    pub session_closure_highlights_label: String,
+    #[serde(default = "default_session_closure_relationships_label")]
+    pub session_closure_relationships_label: String,
+    #[serde(default = "default_session_closure_empty_highlights")]
+    pub session_closure_empty_highlights: String,
+    #[serde(default = "default_session_closure_empty_relationships")]
+    pub session_closure_empty_relationships: String,
     #[serde(default = "default_final_summary_title")]
     pub final_summary_title: String,
     #[serde(default = "default_final_summary_highlights_label")]
@@ -290,27 +290,27 @@ fn default_modal_close_hint() -> String {
     "Press Enter or Esc to close.".to_string()
 }
 
-fn default_day_summary_title() -> String {
+fn default_session_closure_title() -> String {
     "End of Day {day_number}".to_string()
 }
 
-fn default_day_summary_current_focus_label() -> String {
+fn default_session_closure_current_focus_label() -> String {
     "Current focus".to_string()
 }
 
-fn default_day_summary_highlights_label() -> String {
+fn default_session_closure_highlights_label() -> String {
     "Highlights".to_string()
 }
 
-fn default_day_summary_relationships_label() -> String {
+fn default_session_closure_relationships_label() -> String {
     "Relationship status".to_string()
 }
 
-fn default_day_summary_empty_highlights() -> String {
+fn default_session_closure_empty_highlights() -> String {
     "A quiet stretch, mostly observation and drift.".to_string()
 }
 
-fn default_day_summary_empty_relationships() -> String {
+fn default_session_closure_empty_relationships() -> String {
     "No clear relationship shifts yet.".to_string()
 }
 
@@ -451,12 +451,12 @@ impl Default for UiTextDefinition {
             language_modal_title: default_language_modal_title(),
             language_changed_text: default_language_changed_text(),
             modal_close_hint: default_modal_close_hint(),
-            day_summary_title: default_day_summary_title(),
-            day_summary_current_focus_label: default_day_summary_current_focus_label(),
-            day_summary_highlights_label: default_day_summary_highlights_label(),
-            day_summary_relationships_label: default_day_summary_relationships_label(),
-            day_summary_empty_highlights: default_day_summary_empty_highlights(),
-            day_summary_empty_relationships: default_day_summary_empty_relationships(),
+            session_closure_title: default_session_closure_title(),
+            session_closure_current_focus_label: default_session_closure_current_focus_label(),
+            session_closure_highlights_label: default_session_closure_highlights_label(),
+            session_closure_relationships_label: default_session_closure_relationships_label(),
+            session_closure_empty_highlights: default_session_closure_empty_highlights(),
+            session_closure_empty_relationships: default_session_closure_empty_relationships(),
             final_summary_title: default_final_summary_title(),
             final_summary_highlights_label: default_final_summary_highlights_label(),
             final_summary_relationships_label: default_final_summary_relationships_label(),

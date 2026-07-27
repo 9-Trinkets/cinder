@@ -61,7 +61,7 @@ pub struct ContentSettingsDefinition {
     pub fallback_required_story_vars: Vec<String>,
     #[serde(default = "default_speech_stamina_cost_floor")]
     pub speech_stamina_cost_floor: i32,
-    #[serde(default = "default_true", alias = "show_day_summary")]
+    #[serde(default = "default_true")]
     pub show_session_closure: bool,
     #[serde(default)]
     pub show_relationship_sidebar: bool,
