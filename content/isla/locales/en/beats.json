@@ -322,7 +322,7 @@
         "She says the story did not solve her life, but it gave her a way to stop repeating it blindly.",
         "Before leaving, Noa asks if she can come back next week and continue from this exact point."
       ],
-      "end_session": true,
+      "end_act": true,
       "next_chapter_preview": "A stronger patient may return with a more difficult truth next session."
     },
     {
@@ -333,7 +333,7 @@
         "She can name one pattern she wants to change, but not yet the fear underneath it.",
         "She thanks you for the session and leaves with a cautious kind of hope."
       ],
-      "end_session": true,
+      "end_act": true,
       "next_chapter_preview": "Another session could either deepen trust or reveal a harder resistance."
     },
     {
@@ -344,7 +344,7 @@
         "She says she appreciated the space, though her voice suggests the book missed something central.",
         "When the door chime fades, you are left with the sense that care without fit can still fail."
       ],
-      "end_session": true,
+      "end_act": true,
       "next_chapter_preview": "Future sessions may demand sharper recommendations and softer control."
     },
     {
@@ -355,7 +355,7 @@
         "Noa has not reached the final page, but she leaves with language she did not have when she arrived. The book has already changed something.",
         "She asks if she can come back to finish. The door chime sounds, soft and final."
       ],
-      "end_session": true,
+      "end_act": true,
       "next_chapter_preview": "A continuation session may let the final pages complete what the first half began."
     },
     {
@@ -366,7 +366,7 @@
         "Noa can name one pattern she wants to change, but not yet the fear underneath it. The book reached her, but not all the way.",
         "She thanks you and leaves with a cautious kind of hope. The door chime fades into the rain."
       ],
-      "end_session": true,
+      "end_act": true,
       "next_chapter_preview": "The next session is a pivotal chance to rebuild depth before politeness hardens into distance."
     },
     {
@@ -377,7 +377,7 @@
         "Noa thanks you courteously, but her posture says the session never reached the real wound. The book was a miss, or the timing was off.",
         "The door chime sounds. You are left with a clean cafe and the feeling that care without fit can still fail."
       ],
-      "end_session": true,
+      "end_act": true,
       "next_chapter_preview": "Future sessions may require a different recommendation strategy and softer intervention timing."
     },
     {

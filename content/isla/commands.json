@@ -293,22 +293,22 @@
       }
     },
     {
-      "id": "end_session",
-      "group": "session",
-      "command": "END SESSION",
+      "id": "end_act",
+      "group": "act",
+      "command": "END ACT",
       "target_mode": "none",
       "player_enabled": true,
-      "player_phrases": ["end session", "end", "quit", "exit", "leave"],
+      "player_phrases": ["end act", "end", "quit", "exit", "leave"],
       "player_command": {
-        "usage": "end session",
-        "example": "end session",
+        "usage": "end act",
+        "example": "end act",
         "advances_time": false
       },
       "content_event": {
-        "id": "isla.session_terminated",
-        "event_text": "You let the silence settle and draw the session to a close. What surfaced here will carry beyond this room.",
-        "hook_id": "isla.session_terminated",
-        "signals": ["session_terminated"]
+        "id": "isla.act_ended",
+        "event_text": "You let the silence settle and draw the act to a close. What surfaced here will carry beyond this room.",
+        "hook_id": "isla.act_ended",
+        "signals": ["act_terminated"]
       }
     }
   ]

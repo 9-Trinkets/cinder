@@ -313,7 +313,7 @@ pub struct BeatDefinition {
     #[serde(default)]
     pub projector_sequence_var_key: String,
     #[serde(default)]
-    pub end_session: bool,
+    pub end_act: bool,
     #[serde(default)]
     pub end_game: bool,
     #[serde(default)]

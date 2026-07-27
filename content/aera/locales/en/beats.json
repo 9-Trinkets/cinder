@@ -139,7 +139,7 @@
         "group_story_var_key": "day2_group_a",
         "remaining_group_story_var_key": "day2_group_b"
       },
-      "end_session": true
+      "end_act": true
     },
     {
       "id": "day2-event-a",
@@ -217,7 +217,7 @@
       "next_stage_ids": [
         "day3-departure"
       ],
-      "end_session": true
+      "end_act": true
     },
     {
       "id": "day3-departure",
@@ -231,7 +231,7 @@
       "advance_signals": [
         "time_reached:12:00"
       ],
-      "end_session": true,
+      "end_act": true,
       "end_game": true
     }
   ]

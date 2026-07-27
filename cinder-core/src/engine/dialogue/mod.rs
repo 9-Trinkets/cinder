@@ -363,7 +363,7 @@ Session Outcome
 {stats_context}
 
 Session Summary
-{session_summary}
+{act_summary}
 
 Relationship Notes
 {relationship_lines}
@@ -378,7 +378,7 @@ The review text should be 2-5 sentences in the patient's voice — honest, speci
             actor_name = request.actor_name,
             other_person_name = request.other_person_name,
             stats_context = request.stats_context,
-            session_summary = request.session_summary,
+            act_summary = request.act_summary,
             relationship_lines = request.relationship_lines.join("\n"),
         );
         let response = self.run_text_role(

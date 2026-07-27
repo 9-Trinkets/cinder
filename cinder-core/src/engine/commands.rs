@@ -215,7 +215,7 @@ fn player_command_help_lines(content: &ContentPack) -> Vec<String> {
         "conversation",
         "book",
         "service",
-        "session",
+        "act",
         "general",
     ];
     let mut lines = Vec::new();
@@ -231,7 +231,7 @@ fn player_command_help_lines(content: &ContentPack) -> Vec<String> {
             "conversation" => "Conversation",
             "book" => "Book",
             "service" => "Service",
-            "session" => "Session",
+            "act" => "Act",
             _ => "General",
         };
         lines.push(format!("— {} —", label));

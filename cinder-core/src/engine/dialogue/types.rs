@@ -290,7 +290,7 @@ pub struct PerspectiveReviewRequest {
     pub actor_name: String,
     pub other_person_name: String,
     pub stats_context: String,
-    pub session_summary: String,
+    pub act_summary: String,
     pub relationship_lines: Vec<String>,
 }
 

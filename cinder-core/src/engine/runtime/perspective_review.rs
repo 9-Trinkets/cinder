@@ -28,7 +28,7 @@ impl CinderRuntime {
             current,
             deltas,
             stats_context,
-            session_summary,
+            act_summary,
             relationship_lines,
         ) = {
             let state = self
@@ -62,7 +62,7 @@ impl CinderRuntime {
             })
             .collect::<Vec<_>>()
             .join("\n");
-            let session_summary = state.last_transcript_line.clone().unwrap_or_default();
+            let act_summary = state.last_transcript_line.clone().unwrap_or_default();
             let relationship_lines = self.relationship_status_lines_for_state(&state);
             (
                 actor_name,
@@ -70,7 +70,7 @@ impl CinderRuntime {
                 current,
                 deltas,
                 stats_context,
-                session_summary,
+                act_summary,
                 relationship_lines,
             )
         };
@@ -80,7 +80,7 @@ impl CinderRuntime {
             actor_name,
             other_person_name: "You".to_string(),
             stats_context,
-            session_summary,
+            act_summary,
             relationship_lines,
         };
         let review = match self.try_llm_perspective_review(request) {
