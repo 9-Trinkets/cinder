@@ -373,7 +373,11 @@ pub(super) fn build_ui_snapshot(
         talk_options,
         active_menu,
         ui_text: content.ui_text.clone(),
-        session_closure: response::session_closure_data(runtime, transcript_lines),
+        session_closure: if content.settings.show_day_summary {
+            response::session_closure_data(runtime, transcript_lines)
+        } else {
+            None
+        },
         game_closure: response::game_closure_data(runtime, transcript_lines),
         inventory: runtime
             .inventory_items()
