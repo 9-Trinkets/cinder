@@ -50,7 +50,7 @@
       }
     ]
   },
-  "exit_confirm_title": "Exit session?",
+  "exit_confirm_title": "Exit act?",
   "exit_confirm_body": "Press Enter to exit to the terminal, or Esc to keep playing.",
   "projector_skip_hint": "Press Enter to skip ahead. Esc closes.",
   "projector_title_prefix": "Projector",

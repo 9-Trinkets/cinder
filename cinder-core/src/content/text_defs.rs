@@ -335,7 +335,7 @@ fn default_final_summary_empty_preview() -> String {
 }
 
 fn default_exit_confirm_title() -> String {
-    "Exit session?".to_string()
+    "Exit act?".to_string()
 }
 
 fn default_exit_confirm_body() -> String {

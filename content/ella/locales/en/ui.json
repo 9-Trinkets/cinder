@@ -33,7 +33,7 @@
   "final_summary_relationships_label": "Where things stand",
   "final_summary_preview_label": "Next chapter",
   "final_summary_empty_preview": "Tomorrow is coming, but it has not resolved into a clear shape yet.",
-  "exit_confirm_title": "Exit session?",
+  "exit_confirm_title": "Exit act?",
   "exit_confirm_body": "Press Enter to exit to the terminal, or Esc to keep playing.",
   "projector_skip_hint": "Press Enter to skip ahead. Esc closes.",
   "projector_title_prefix": "Projector",
