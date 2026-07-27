@@ -304,7 +304,7 @@ fn inject_act_cast_vars(content: &ContentPack, state: &mut WorldState) {
     let base_name = content
         .actor(template_actor_id)
         .map(|actor| actor.name.clone())
-        .unwrap_or_else(|| "Patient".to_string());
+        .unwrap_or_else(|| patient.name.clone());
     state
         .story_vars
         .set_unchecked(PATIENT_ACTOR_ID_VAR, &patient.actor_id);
