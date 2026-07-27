@@ -356,7 +356,7 @@ mod tests {
     }
 
     #[test]
-    fn recommendation_prompt_uses_current_patient_name() {
+    fn recommendation_prompt_uses_current_cast_member_name() {
         let content = load_named_pack("isla", None).expect("load isla");
         let mut state = WorldState::new(&content);
         initialize_act_state(&content, &mut state);
@@ -372,7 +372,7 @@ mod tests {
     }
 
     #[test]
-    fn menu_narrative_lines_use_current_patient_name() {
+    fn menu_narrative_lines_use_current_cast_member_name() {
         let content = load_named_pack("isla", None).expect("load isla");
         let mut state = WorldState::new(&content);
         initialize_act_state(&content, &mut state);

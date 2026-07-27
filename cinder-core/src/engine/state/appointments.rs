@@ -8,11 +8,11 @@ use std::collections::BTreeMap;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ActSeriesState {
     pub current_act_number: u32,
-    pub current_patient_id: String,
+    pub current_cast_member_id: String,
     #[serde(default)]
     pub next_seed_index: usize,
     #[serde(default)]
-    pub patients: BTreeMap<String, CastMemberRecord>,
+    pub cast_members: BTreeMap<String, CastMemberRecord>,
     #[serde(default)]
     pub act_history: Vec<ActHistoryEntry>,
 }
@@ -67,7 +67,7 @@ pub fn initialize_act_state(content: &ContentPack, state: &mut WorldState) {
         state.act_series = Some(ActSeriesState::default());
     }
     let needs_bootstrap = state.act_series.as_ref().is_some_and(|series| {
-        series.current_act_number == 0 || series.current_patient_id.is_empty()
+        series.current_act_number == 0 || series.current_cast_member_id.is_empty()
     });
     if needs_bootstrap {
         bootstrap_first_act(content, state);
@@ -87,21 +87,21 @@ pub fn advance_to_next_act(
     let Some(mut series) = state.act_series.clone() else {
         return None;
     };
-    if series.current_act_number == 0 || series.current_patient_id.is_empty() {
+    if series.current_act_number == 0 || series.current_cast_member_id.is_empty() {
         bootstrap_first_act(content, state);
         return Some(
             current_act_intro(state).unwrap_or_else(|| content.opening.intro_text.clone()),
         );
     }
 
-    if let Some(current) = series.patients.get_mut(&series.current_patient_id) {
+    if let Some(current) = series.cast_members.get_mut(&series.current_cast_member_id) {
         current.act_count = current.act_count.saturating_add(1);
         current.last_seen_act = Some(series.current_act_number);
         current.last_feedback_rating = feedback.map(|summary| summary.rating);
         current.last_feedback_review = feedback.map(|summary| summary.review_text.clone());
         current.actor_stats = state.actor_stats_snapshot(&current.actor_id);
     }
-    if let Some(current) = series.patients.get(&series.current_patient_id) {
+    if let Some(current) = series.cast_members.get(&series.current_cast_member_id) {
         series.act_history.push(ActHistoryEntry {
             act_number: series.current_act_number,
             patient_id: current.id.clone(),
@@ -112,7 +112,7 @@ pub fn advance_to_next_act(
 
     series.current_act_number = series.current_act_number.saturating_add(1);
     let next_patient_id = choose_next_cast_member_id(content, &series);
-    if !series.patients.contains_key(&next_patient_id) {
+    if !series.cast_members.contains_key(&next_patient_id) {
         let patient_definition = content
             .act_cast
             .iter()
@@ -123,11 +123,11 @@ pub fn advance_to_next_act(
                     next_patient_id
                 )
             });
-        let patient = build_patient_record(content, state, patient_definition);
+        let patient = build_cast_member_record(content, state, patient_definition);
         series.next_seed_index = series.next_seed_index.saturating_add(1);
-        series.patients.insert(patient.id.clone(), patient);
+        series.cast_members.insert(patient.id.clone(), patient);
     }
-    series.current_patient_id = next_patient_id;
+    series.current_cast_member_id = next_patient_id;
 
     let mut next_state = WorldState::new(content);
     next_state.act_series = Some(series);
@@ -142,7 +142,7 @@ pub fn advance_to_next_act(
 }
 
 pub fn display_actor_name(state: &WorldState, actor: &ActorDefinition) -> String {
-    if is_current_patient_reference(state, &actor.id)
+    if is_current_cast_member_reference(state, &actor.id)
         && let Some(name) = state.story_vars.get(ACT_CAST_NAME_VAR)
     {
         return name.to_string();
@@ -155,10 +155,10 @@ pub fn resolved_actor_prompt_context(
     state: &WorldState,
     actor: &ActorDefinition,
 ) -> ActorPromptContext {
-    if !is_current_patient_reference(state, &actor.id) {
+    if !is_current_cast_member_reference(state, &actor.id) {
         return actor.prompt_context.clone();
     }
-    let Some(patient) = current_patient(state) else {
+    let Some(patient) = current_cast_member(state) else {
         return actor.prompt_context.clone();
     };
     let behavior_actor = content.actor(&patient.actor_id).unwrap_or(actor);
@@ -199,7 +199,7 @@ pub fn resolved_actor_prompt_context(
 }
 
 pub fn current_act_intro(state: &WorldState) -> Option<String> {
-    let patient = current_patient(state)?;
+    let patient = current_cast_member(state)?;
     if current_act_number(state) == 1 && patient.act_count == 0 {
         return None;
     }
@@ -226,12 +226,12 @@ pub fn current_act_intro(state: &WorldState) -> Option<String> {
     })
 }
 
-pub fn current_patient_name(state: &WorldState) -> Option<String> {
-    current_patient(state).map(|patient| patient.name.clone())
+pub fn current_cast_member_name(state: &WorldState) -> Option<String> {
+    current_cast_member(state).map(|patient| patient.name.clone())
 }
 
-pub fn current_patient_actor_id(state: &WorldState) -> Option<&str> {
-    current_patient(state).map(|patient| patient.actor_id.as_str())
+pub fn current_cast_member_actor_id(state: &WorldState) -> Option<&str> {
+    current_cast_member(state).map(|patient| patient.actor_id.as_str())
 }
 
 pub fn remap_story_actor_id<'a>(state: &'a WorldState, actor_id: &'a str) -> &'a str {
@@ -275,7 +275,7 @@ pub fn render_dynamic_story_text(template: &str, state: &WorldState) -> String {
 }
 
 fn bootstrap_first_act(content: &ContentPack, state: &mut WorldState) {
-    let patient = build_patient_record(
+    let patient = build_cast_member_record(
         content,
         state,
         content
@@ -287,9 +287,9 @@ fn bootstrap_first_act(content: &ContentPack, state: &mut WorldState) {
         return;
     };
     series.current_act_number = 1;
-    series.current_patient_id = patient.id.clone();
+    series.current_cast_member_id = patient.id.clone();
     series.next_seed_index = 1;
-    series.patients.insert(patient.id.clone(), patient);
+    series.cast_members.insert(patient.id.clone(), patient);
     inject_act_cast_vars(content, state);
 }
 
@@ -297,7 +297,7 @@ fn inject_act_cast_vars(content: &ContentPack, state: &mut WorldState) {
     let Some(series) = state.act_series.as_ref() else {
         return;
     };
-    let Some(patient) = series.patients.get(&series.current_patient_id) else {
+    let Some(patient) = series.cast_members.get(&series.current_cast_member_id) else {
         return;
     };
     let template_actor_id = act_template_actor_id(content).unwrap_or(&patient.actor_id);
@@ -355,9 +355,9 @@ fn inject_act_cast_vars(content: &ContentPack, state: &mut WorldState) {
     }
 }
 
-fn current_patient(state: &WorldState) -> Option<&CastMemberRecord> {
+fn current_cast_member(state: &WorldState) -> Option<&CastMemberRecord> {
     let series = state.act_series.as_ref()?;
-    series.patients.get(&series.current_patient_id)
+    series.cast_members.get(&series.current_cast_member_id)
 }
 
 fn current_act_number(state: &WorldState) -> u32 {
@@ -368,8 +368,8 @@ fn current_act_number(state: &WorldState) -> u32 {
         .unwrap_or(1)
 }
 
-fn is_current_patient_reference(state: &WorldState, actor_id: &str) -> bool {
-    current_patient_actor_id(state).is_some_and(|current_actor_id| {
+fn is_current_cast_member_reference(state: &WorldState, actor_id: &str) -> bool {
+    current_cast_member_actor_id(state).is_some_and(|current_actor_id| {
         current_actor_id == actor_id
             || state
                 .story_vars
@@ -380,28 +380,28 @@ fn is_current_patient_reference(state: &WorldState, actor_id: &str) -> bool {
 
 fn choose_next_cast_member_id(content: &ContentPack, series: &ActSeriesState) -> String {
     if series.current_act_number >= 3 && series.current_act_number % 2 == 1 {
-        if let Some((patient_id, _)) = series
-            .patients
+        if let Some((member_id, _)) = series
+            .cast_members
             .iter()
-            .filter(|(patient_id, _)| **patient_id != series.current_patient_id)
-            .min_by_key(|(_, patient)| patient.last_seen_act.unwrap_or(0))
+            .filter(|(member_id, _)| **member_id != series.current_cast_member_id)
+            .min_by_key(|(_, member)| member.last_seen_act.unwrap_or(0))
         {
-            return patient_id.clone();
+            return member_id.clone();
         }
     }
     if let Some(definition) = content.act_cast.get(series.next_seed_index) {
         return definition.id.clone();
     }
     series
-        .patients
+        .cast_members
         .iter()
-        .filter(|(patient_id, _)| **patient_id != series.current_patient_id)
-        .min_by_key(|(_, patient)| patient.last_seen_act.unwrap_or(0))
-        .map(|(patient_id, _)| patient_id.clone())
-        .unwrap_or_else(|| series.current_patient_id.clone())
+        .filter(|(member_id, _)| **member_id != series.current_cast_member_id)
+        .min_by_key(|(_, member)| member.last_seen_act.unwrap_or(0))
+        .map(|(member_id, _)| member_id.clone())
+        .unwrap_or_else(|| series.current_cast_member_id.clone())
 }
 
-fn build_patient_record(
+fn build_cast_member_record(
     content: &ContentPack,
     state: &WorldState,
     definition: &ActCastMember,
@@ -453,7 +453,7 @@ mod tests {
         let mut state = WorldState::new(&content);
         initialize_act_state(&content, &mut state);
 
-        assert_eq!(current_patient_name(&state).as_deref(), Some("Noa"));
+        assert_eq!(current_cast_member_name(&state).as_deref(), Some("Noa"));
         assert_eq!(current_act_intro(&state), None);
     }
 
@@ -465,8 +465,8 @@ mod tests {
 
         let _ = advance_to_next_act(&content, &mut state, None);
 
-        assert_eq!(current_patient_name(&state).as_deref(), Some("Awa"));
-        assert_eq!(current_patient_actor_id(&state), Some("awa"));
+        assert_eq!(current_cast_member_name(&state).as_deref(), Some("Awa"));
+        assert_eq!(current_cast_member_actor_id(&state), Some("awa"));
         let intro = current_act_intro(&state).expect("act intro");
         assert!(intro.contains("Act 2: Awa"));
         assert!(intro.contains("━━━━━━━━━━━━━━━━━━━━"));

@@ -1,5 +1,5 @@
 use crate::content::types::{ActorDefinition, CommandDefinition, ContentPack};
-use crate::engine::state::{WorldState, current_patient_actor_id, display_actor_name};
+use crate::engine::state::{WorldState, current_cast_member_actor_id, display_actor_name};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -307,7 +307,7 @@ fn actor_references(state: &WorldState, actor: &ActorDefinition, act_member_alia
         actor.id.clone(),
         display_actor_name(state, actor),
     ];
-    if current_patient_actor_id(state).is_some_and(|actor_id| actor_id == actor.id) {
+    if current_cast_member_actor_id(state).is_some_and(|actor_id| actor_id == actor.id) {
         if !act_member_alias.is_empty() {
             refs.push(act_member_alias.to_string());
         }

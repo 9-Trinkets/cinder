@@ -14,7 +14,7 @@ use crate::engine::neuron::{WorkflowDefinition, WorkflowTraceContext, load_workf
 use crate::engine::reducer::apply_events;
 use crate::engine::state::{
     ActFeedbackSummary, GamePhase, TurnOutcome, WorldState, advance_to_next_act,
-    current_act_intro, current_patient_name, display_actor_name,
+    current_act_intro, current_cast_member_name, display_actor_name,
     initialize_act_state,
 };
 use crate::engine::turn_runner;
@@ -345,12 +345,12 @@ impl CinderRuntime {
             .map(|actor| display_actor_name(&state, actor)))
     }
 
-    pub fn current_patient_name(&self) -> Result<Option<String>, Box<dyn Error>> {
+    pub fn current_cast_member_name(&self) -> Result<Option<String>, Box<dyn Error>> {
         let state = self
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for patient name")?;
-        Ok(current_patient_name(&state))
+        Ok(current_cast_member_name(&state))
     }
 
     fn apply_stage_assignments(&self, outcome: TurnOutcome) -> Result<TurnOutcome, Box<dyn Error>> {
@@ -836,7 +836,7 @@ impl CinderRuntime {
                     None => true,
                     Some(actor_id) => s.advance_signals.iter().any(|sig| {
                         sig.conditions().iter().any(|c| {
-                            c.path == "story_vars.patient_actor_id"
+                            c.path == "story_vars.act_cast_actor_id"
                                 && c.operator == "equal"
                                 && c.value.as_str() == Some(actor_id)
                         })

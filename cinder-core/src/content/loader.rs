@@ -298,36 +298,36 @@ pub fn load_pack_from_dir_with_locale(
         }
     }
     if !act_cast.is_empty() {
-        let mut seen_patient_ids = std::collections::BTreeSet::new();
-        let mut seen_patient_actor_ids = std::collections::BTreeSet::new();
-        for patient in &act_cast {
-            if patient.id.trim().is_empty() {
+        let mut seen_member_ids = std::collections::BTreeSet::new();
+        let mut seen_member_actor_ids = std::collections::BTreeSet::new();
+        for member in &act_cast {
+            if member.id.trim().is_empty() {
                 return Err("act_cast member definition is missing id".into());
             }
-            if !seen_patient_ids.insert(patient.id.clone()) {
-                return Err(format!("duplicate act_cast member id '{}'", patient.id).into());
+            if !seen_member_ids.insert(member.id.clone()) {
+                return Err(format!("duplicate act_cast member id '{}'", member.id).into());
             }
-            if patient.actor_id.trim().is_empty() {
+            if member.actor_id.trim().is_empty() {
                 return Err(
-                    format!("act_cast member '{}' is missing actor_id", patient.id).into(),
+                    format!("act_cast member '{}' is missing actor_id", member.id).into(),
                 );
             }
             require_known_id(
-                &patient.actor_id,
+                &member.actor_id,
                 &actors
                     .iter()
                     .map(|actor| actor.id.as_str())
                     .collect::<Vec<_>>(),
                 &format!(
                     "act_cast member '{}' actor_id '{}'",
-                    patient.id, patient.actor_id
+                    member.id, member.actor_id
                 ),
                 "actors",
             )?;
-            if !seen_patient_actor_ids.insert(patient.actor_id.clone()) {
+            if !seen_member_actor_ids.insert(member.actor_id.clone()) {
                 return Err(format!(
                     "act_cast members must not reuse actor_id '{}'",
-                    patient.actor_id
+                    member.actor_id
                 )
                 .into());
             }

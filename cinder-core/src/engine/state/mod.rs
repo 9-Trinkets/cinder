@@ -629,7 +629,7 @@ use seeding::{seeded_actor_stats, seeded_feature_consumable_stock, seeded_pair_s
 mod appointments;
 pub use appointments::{
     ActFeedbackSummary, ActHistoryEntry, ActSeriesState, CastMemberRecord,
-    advance_to_next_act, current_act_intro, current_patient_actor_id,
-    current_patient_name, display_actor_name, initialize_act_state, remap_story_actor_id,
+    advance_to_next_act, current_act_intro, current_cast_member_actor_id,
+    current_cast_member_name, display_actor_name, initialize_act_state, remap_story_actor_id,
     render_dynamic_story_text, resolved_actor_prompt_context, story_actor_matches,
 };

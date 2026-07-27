@@ -3,7 +3,7 @@ use crate::content::types::ContentPack;
 use crate::engine::dialogue::{PerspectiveReview, PerspectiveReviewRequest};
 use crate::engine::dialogue_grounding::viewer_participant_id;
 use crate::engine::state::{
-    WorldState, current_patient_actor_id, current_patient_name, display_actor_name,
+    WorldState, current_cast_member_actor_id, current_cast_member_name, display_actor_name,
     remap_story_actor_id,
 };
 use std::collections::BTreeMap;
@@ -43,7 +43,7 @@ impl CinderRuntime {
                 .actor(&actor_id)
                 .map(|actor| display_actor_name(&state, actor))
                 .unwrap_or_else(|| "Actor".to_string());
-            let subject_name = current_patient_name(&state).unwrap_or_else(|| actor_name.clone());
+            let subject_name = current_cast_member_name(&state).unwrap_or_else(|| actor_name.clone());
             let current = state.actor_stats_snapshot(&actor_id);
             let deltas = state.actor_stat_deltas(&actor_id).unwrap_or_default();
             let stats_context = [
@@ -156,7 +156,7 @@ fn pick_perspective_actor_id(
     state: &WorldState,
     _viewer_id: &str,
 ) -> Option<String> {
-    if let Some(actor_id) = current_patient_actor_id(state) {
+    if let Some(actor_id) = current_cast_member_actor_id(state) {
         return Some(actor_id.to_string());
     }
     if !content.settings.closure_perspective_actor_id.is_empty()
