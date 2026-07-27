@@ -51,7 +51,7 @@ pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/api/games/{id}/room", post(switch_room_handler))
         .route("/api/games/{id}/follow", post(follow_actor_handler))
         .route("/api/games/{id}/locale", post(set_locale_handler))
-        .route("/api/games/{id}/continue", post(continue_session_handler))
+        .route("/api/games/{id}/continue", post(continue_act_handler))
         .route("/api/games/{id}", delete(delete_session_handler))
         .route_layer(middleware::from_fn_with_state(state.clone(), auth_middleware));
 
@@ -272,12 +272,12 @@ pub async fn set_locale_handler(
     Ok(Json(response))
 }
 
-pub async fn continue_session_handler(
+pub async fn continue_act_handler(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
     Path(session_id): Path<String>,
 ) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
-    let response = game_manager::continue_session(&state.pool, &session_id, &auth.id)
+    let response = game_manager::continue_act(&state.pool, &session_id, &auth.id)
         .await
         .map_err(internal)?;
     Ok(Json(response))

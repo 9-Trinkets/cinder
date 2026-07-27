@@ -647,7 +647,7 @@ pub async fn get_transcript(
     Ok(rows)
 }
 
-pub async fn continue_session(
+pub async fn continue_act(
     pool: &PgPool,
     session_id: &str,
     player_id: &str,
@@ -656,7 +656,7 @@ pub async fn continue_session(
     let player_id = parse_uuid(player_id, "player id")?;
     with_runtime(pool, &session_id, &player_id, move |runtime, pack_id, _transcript_lines| {
         runtime
-            .continue_after_session()
+            .continue_after_act()
             .map_err(|e| format!("session continuation error: {e}"))?;
         let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
         Ok((

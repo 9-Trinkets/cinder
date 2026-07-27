@@ -266,7 +266,7 @@ impl CinderRuntime {
         Ok(outcome)
     }
 
-    pub fn continue_after_session(&self) -> Result<(), Box<dyn Error>> {
+    pub fn continue_after_act(&self) -> Result<(), Box<dyn Error>> {
         {
             let mut state = self
                 .state
