@@ -21,6 +21,7 @@ fn internal<E: ToString>(e: E) -> (StatusCode, String) {
 
 #[derive(Serialize)]
 pub struct SessionInfo {
+    #[serde(rename = "session_id")]
     pub play_id: String,
     pub pack_id: String,
     pub created_at: String,
