@@ -246,6 +246,8 @@ fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
             behavior_examples: vec![],
         },
         movement_rules: None,
+        act_cast: None,
+        game_data: BTreeMap::new(),
     }
 }
 

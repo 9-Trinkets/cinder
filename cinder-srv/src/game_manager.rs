@@ -18,20 +18,20 @@ struct PendingTranscriptEntry {
     text: String,
 }
 
-async fn load_session_row(
+async fn load_play_row(
     tx: &mut Transaction<'_, Postgres>,
-    session_id: &Uuid,
+    play_id: &Uuid,
     player_id: &Uuid,
     for_update: bool,
 ) -> Result<SessionRow, String> {
     let query = if for_update {
-        "SELECT pack_id, locale, state_json::text FROM game_sessions WHERE id = $1 AND player_id = $2 FOR UPDATE"
+        "SELECT pack_id, locale, state_json::text FROM game_plays WHERE id = $1 AND player_id = $2 FOR UPDATE"
     } else {
-        "SELECT pack_id, locale, state_json::text FROM game_sessions WHERE id = $1 AND player_id = $2"
+        "SELECT pack_id, locale, state_json::text FROM game_plays WHERE id = $1 AND player_id = $2"
     };
 
     sqlx::query_as::<_, SessionRow>(query)
-        .bind(session_id)
+        .bind(play_id)
         .bind(player_id)
         .fetch_optional(&mut **tx)
         .await
@@ -41,7 +41,7 @@ async fn load_session_row(
 
 async fn with_runtime<F, R>(
     pool: &PgPool,
-    session_id: &Uuid,
+    play_id: &Uuid,
     player_id: &Uuid,
     f: F,
 ) -> Result<R, String>
@@ -56,9 +56,9 @@ where
         .await
         .map_err(|e| format!("db begin error: {e}"))?;
     let (pack_id, locale, state_json) =
-        load_session_row(&mut tx, session_id, player_id, true).await?;
-    backfill_transcript_if_missing(&mut tx, session_id, &state_json).await?;
-    let transcript_lines = fetch_transcript_in_tx(&mut tx, session_id, player_id).await?;
+        load_play_row(&mut tx, play_id, player_id, true).await?;
+    backfill_transcript_if_missing(&mut tx, play_id, &state_json).await?;
+    let transcript_lines = fetch_transcript_in_tx(&mut tx, play_id, player_id).await?;
 
     let (result, transcript_entries, persisted_locale, new_state_json, turn_number) =
         tokio::task::spawn_blocking(move || {
@@ -89,16 +89,16 @@ where
         .map_err(|e| format!("blocking task panicked: {e:?}"))??;
 
     sqlx::query(
-        "UPDATE game_sessions SET locale = $1, state_json = $2::jsonb, updated_at = NOW() WHERE id = $3 AND player_id = $4",
+        "UPDATE game_plays SET locale = $1, state_json = $2::jsonb, updated_at = NOW() WHERE id = $3 AND player_id = $4",
     )
     .bind(&persisted_locale)
     .bind(&new_state_json)
-    .bind(session_id)
+    .bind(play_id)
     .bind(player_id)
     .execute(&mut *tx)
     .await
     .map_err(|e| format!("db update error: {e}"))?;
-    insert_transcript_entries(&mut tx, session_id, turn_number, &transcript_entries).await?;
+    insert_transcript_entries(&mut tx, play_id, turn_number, &transcript_entries).await?;
     tx.commit()
         .await
         .map_err(|e| format!("db commit error: {e}"))?;
@@ -108,15 +108,15 @@ where
 
 async fn insert_transcript_entries(
     tx: &mut Transaction<'_, Postgres>,
-    session_id: &Uuid,
+    play_id: &Uuid,
     turn_number: u32,
     entries: &[PendingTranscriptEntry],
 ) -> Result<(), String> {
     for entry in entries {
         sqlx::query(
-            "INSERT INTO transcript_entries (session_id, turn_number, role, text) VALUES ($1, $2, $3, $4)",
+            "INSERT INTO transcript_entries (play_id, turn_number, role, text) VALUES ($1, $2, $3, $4)",
         )
-        .bind(session_id)
+        .bind(play_id)
         .bind(turn_number as i32)
         .bind(&entry.role)
         .bind(&entry.text)
@@ -138,20 +138,20 @@ fn transcript_lines_from_state_json(state_json: &str) -> Result<Vec<String>, Str
 
 async fn replace_transcript_entries_with_lines(
     tx: &mut Transaction<'_, Postgres>,
-    session_id: &Uuid,
+    play_id: &Uuid,
     lines: &[String],
 ) -> Result<(), String> {
-    sqlx::query("DELETE FROM transcript_entries WHERE session_id = $1")
-        .bind(session_id)
+    sqlx::query("DELETE FROM transcript_entries WHERE play_id = $1")
+        .bind(play_id)
         .execute(&mut **tx)
         .await
         .map_err(|e| format!("transcript delete error: {e}"))?;
 
     for line in lines {
         sqlx::query(
-            "INSERT INTO transcript_entries (session_id, turn_number, role, text) VALUES ($1, $2, $3, $4)",
+            "INSERT INTO transcript_entries (play_id, turn_number, role, text) VALUES ($1, $2, $3, $4)",
         )
-        .bind(session_id)
+        .bind(play_id)
         .bind(0_i32)
         .bind("narrative")
         .bind(line)
@@ -166,18 +166,18 @@ const MAX_TRANSCRIPT_LINES: i64 = 200;
 
 async fn fetch_transcript_in_tx(
     tx: &mut Transaction<'_, Postgres>,
-    session_id: &Uuid,
+    play_id: &Uuid,
     player_id: &Uuid,
 ) -> Result<Vec<String>, String> {
     let rows = sqlx::query_scalar::<_, String>(
         "SELECT CASE WHEN te.role = 'player' THEN '> ' || te.text ELSE te.text END
          FROM transcript_entries te
-         JOIN game_sessions s ON s.id = te.session_id
-         WHERE te.session_id = $1 AND s.player_id = $2
+         JOIN game_plays s ON s.id = te.play_id
+         WHERE te.play_id = $1 AND s.player_id = $2
          ORDER BY te.turn_number ASC, te.id ASC
          LIMIT $3",
     )
-    .bind(session_id)
+    .bind(play_id)
     .bind(player_id)
     .bind(MAX_TRANSCRIPT_LINES)
     .fetch_all(&mut **tx)
@@ -188,13 +188,13 @@ async fn fetch_transcript_in_tx(
 
 async fn backfill_transcript_if_missing(
     tx: &mut Transaction<'_, Postgres>,
-    session_id: &Uuid,
+    play_id: &Uuid,
     state_json: &str,
 ) -> Result<(), String> {
     let existing = sqlx::query_scalar::<_, i64>(
-        "SELECT COUNT(*) FROM transcript_entries WHERE session_id = $1",
+        "SELECT COUNT(*) FROM transcript_entries WHERE play_id = $1",
     )
-    .bind(session_id)
+    .bind(play_id)
     .fetch_one(&mut **tx)
     .await
     .map_err(|e| format!("transcript count error: {e}"))?;
@@ -208,7 +208,7 @@ async fn backfill_transcript_if_missing(
         return Ok(());
     }
 
-    replace_transcript_entries_with_lines(tx, session_id, &lines).await
+    replace_transcript_entries_with_lines(tx, play_id, &lines).await
 }
 
 fn parse_uuid(value: &str, field: &str) -> Result<Uuid, String> {
@@ -217,7 +217,7 @@ fn parse_uuid(value: &str, field: &str) -> Result<Uuid, String> {
 
 // ── Public API ──────────────────────────────────────
 
-pub async fn create_session(
+pub async fn create_play(
     pool: &PgPool,
     player_id: &str,
     pack_id: &str,
@@ -243,16 +243,16 @@ pub async fn create_session(
     )
     .map_err(|e| format!("serialization error: {e}"))?;
 
-    let session_id = Uuid::new_v4();
+    let play_id = Uuid::new_v4();
     let mut tx = pool
         .begin()
         .await
         .map_err(|e| format!("db begin error: {e}"))?;
 
     sqlx::query(
-        "INSERT INTO game_sessions (id, player_id, pack_id, locale, state_json) VALUES ($1, $2, $3, $4, $5::jsonb)",
+        "INSERT INTO game_plays (id, player_id, pack_id, locale, state_json) VALUES ($1, $2, $3, $4, $5::jsonb)",
     )
-    .bind(session_id)
+    .bind(play_id)
     .bind(player_id)
     .bind(pack_id)
     .bind(&locale)
@@ -260,24 +260,24 @@ pub async fn create_session(
     .execute(&mut *tx)
     .await
     .map_err(|e| format!("db insert error: {e}"))?;
-    replace_transcript_entries_with_lines(&mut tx, &session_id, &[intro_text.clone()]).await?;
+    replace_transcript_entries_with_lines(&mut tx, &play_id, &[intro_text.clone()]).await?;
     tx.commit()
         .await
         .map_err(|e| format!("db commit error: {e}"))?;
 
-    Ok((session_id.to_string(), title, intro_text))
+    Ok((play_id.to_string(), title, intro_text))
 }
 
 pub async fn run_command(
     pool: &PgPool,
-    session_id: &str,
+    play_id: &str,
     player_id: &str,
     input: &str,
 ) -> Result<CommandResponse, String> {
-    let session_id = parse_uuid(session_id, "session id")?;
+    let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let input_owned = input.to_string();
-    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id, transcript_lines| {
+    with_runtime(pool, &play_id, &player_id, move |runtime, pack_id, transcript_lines| {
         let mut outcome = runtime
             .run_turn(&input_owned)
             .map_err(|e| format!("turn error: {e}"))?;
@@ -365,12 +365,12 @@ pub async fn run_command(
 
 pub async fn run_realtime_tick(
     pool: &PgPool,
-    session_id: &str,
+    play_id: &str,
     player_id: &str,
 ) -> Result<CommandResponse, String> {
-    let session_id = parse_uuid(session_id, "session id")?;
+    let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
-    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id, transcript_lines| {
+    with_runtime(pool, &play_id, &player_id, move |runtime, pack_id, transcript_lines| {
         let mut outcome = runtime.run_tick().map_err(|e| format!("tick error: {e}"))?;
         use cinder_core::engine::state::GamePhase;
         let act_closure = if outcome.phase == GamePhase::ActEnded {
@@ -422,14 +422,14 @@ pub async fn run_realtime_tick(
 
 pub async fn switch_room(
     pool: &PgPool,
-    session_id: &str,
+    play_id: &str,
     player_id: &str,
     room_id: &str,
 ) -> Result<CommandResponse, String> {
-    let session_id = parse_uuid(session_id, "session id")?;
+    let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let room_id = room_id.to_string();
-    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id, _transcript_lines| {
+    with_runtime(pool, &play_id, &player_id, move |runtime, pack_id, _transcript_lines| {
         let outcome = runtime
             .switch_room_view(&room_id)
             .map_err(|e| format!("room switch error: {e}"))?;
@@ -456,14 +456,14 @@ pub async fn switch_room(
 
 pub async fn follow_actor(
     pool: &PgPool,
-    session_id: &str,
+    play_id: &str,
     player_id: &str,
     actor_id: Option<&str>,
 ) -> Result<CommandResponse, String> {
-    let session_id = parse_uuid(session_id, "session id")?;
+    let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let actor_id = actor_id.map(|s| s.to_string());
-    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id, _transcript_lines| {
+    with_runtime(pool, &play_id, &player_id, move |runtime, pack_id, _transcript_lines| {
         let outcome = runtime
             .follow_actor(actor_id.as_deref())
             .map_err(|e| format!("follow error: {e}"))?;
@@ -490,17 +490,17 @@ pub async fn follow_actor(
 
 pub async fn set_locale(
     pool: &PgPool,
-    session_id: &str,
+    play_id: &str,
     player_id: &str,
     locale: &str,
 ) -> Result<CommandResponse, String> {
-    let session_id = parse_uuid(session_id, "session id")?;
+    let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let mut tx = pool
         .begin()
         .await
         .map_err(|e| format!("db begin error: {e}"))?;
-    let (pack_id, _, state_json) = load_session_row(&mut tx, &session_id, &player_id, true).await?;
+    let (pack_id, _, state_json) = load_play_row(&mut tx, &play_id, &player_id, true).await?;
     let locale = locale.to_string();
     let locale_for_runtime = locale.clone();
     let (changed_text, is_game_over, ui_snapshot, new_state_json) =
@@ -533,11 +533,11 @@ pub async fn set_locale(
         .map_err(|e| format!("blocking task panicked: {e:?}"))??;
 
     sqlx::query(
-        "UPDATE game_sessions SET locale = $1, state_json = $2::jsonb, updated_at = NOW() WHERE id = $3 AND player_id = $4",
+        "UPDATE game_plays SET locale = $1, state_json = $2::jsonb, updated_at = NOW() WHERE id = $3 AND player_id = $4",
     )
     .bind(&locale)
     .bind(&new_state_json)
-    .bind(session_id)
+    .bind(play_id)
     .bind(player_id)
     .execute(&mut *tx)
     .await
@@ -556,20 +556,20 @@ pub async fn set_locale(
     })
 }
 
-pub async fn get_session_ui(
+pub async fn get_play_ui(
     pool: &PgPool,
-    session_id: &str,
+    play_id: &str,
     player_id: &str,
 ) -> Result<UiSnapshot, String> {
-    let session_id = parse_uuid(session_id, "session id")?;
+    let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let mut tx = pool
         .begin()
         .await
         .map_err(|e| format!("db begin error: {e}"))?;
     let (pack_id, locale, state_json) =
-        load_session_row(&mut tx, &session_id, &player_id, true).await?;
-    let transcript_lines = fetch_transcript_in_tx(&mut tx, &session_id, &player_id).await?;
+        load_play_row(&mut tx, &play_id, &player_id, true).await?;
+    let transcript_lines = fetch_transcript_in_tx(&mut tx, &play_id, &player_id).await?;
 
     let (snapshot, persisted_locale, new_state_json) = tokio::task::spawn_blocking(move || {
         let content = loader::load_named_pack(&pack_id, Some(&locale))
@@ -589,11 +589,11 @@ pub async fn get_session_ui(
     .map_err(|e| format!("blocking task panicked: {e:?}"))??;
 
     sqlx::query(
-        "UPDATE game_sessions SET locale = $1, state_json = $2::jsonb, updated_at = NOW() WHERE id = $3 AND player_id = $4",
+        "UPDATE game_plays SET locale = $1, state_json = $2::jsonb, updated_at = NOW() WHERE id = $3 AND player_id = $4",
     )
     .bind(&persisted_locale)
     .bind(&new_state_json)
-    .bind(session_id)
+    .bind(play_id)
     .bind(player_id)
     .execute(&mut *tx)
     .await
@@ -607,24 +607,24 @@ pub async fn get_session_ui(
 
 pub async fn get_transcript(
     pool: &PgPool,
-    session_id: &str,
+    play_id: &str,
     player_id: &str,
 ) -> Result<Vec<String>, String> {
-    let session_id = parse_uuid(session_id, "session id")?;
+    let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let mut tx = pool
         .begin()
         .await
         .map_err(|e| format!("db begin error: {e}"))?;
-    let (_, _, state_json) = load_session_row(&mut tx, &session_id, &player_id, false).await?;
+    let (_, _, state_json) = load_play_row(&mut tx, &play_id, &player_id, false).await?;
     let rows = sqlx::query_scalar::<_, String>(
         "SELECT CASE WHEN te.role = 'player' THEN '> ' || te.text ELSE te.text END
          FROM transcript_entries te
-         JOIN game_sessions s ON s.id = te.session_id
-         WHERE te.session_id = $1 AND s.player_id = $2
+         JOIN game_plays s ON s.id = te.play_id
+         WHERE te.play_id = $1 AND s.player_id = $2
          ORDER BY te.turn_number ASC, te.id ASC",
     )
-    .bind(session_id)
+    .bind(play_id)
     .bind(player_id)
     .fetch_all(&mut *tx)
     .await
@@ -633,7 +633,7 @@ pub async fn get_transcript(
     if rows.is_empty() {
         let lines = transcript_lines_from_state_json(&state_json)?;
         if !lines.is_empty() {
-            replace_transcript_entries_with_lines(&mut tx, &session_id, &lines).await?;
+            replace_transcript_entries_with_lines(&mut tx, &play_id, &lines).await?;
         }
         tx.commit()
             .await
@@ -647,14 +647,14 @@ pub async fn get_transcript(
     Ok(rows)
 }
 
-pub async fn continue_act(
+pub async fn play_id(
     pool: &PgPool,
-    session_id: &str,
+    play_id: &str,
     player_id: &str,
 ) -> Result<CommandResponse, String> {
-    let session_id = parse_uuid(session_id, "session id")?;
+    let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
-    with_runtime(pool, &session_id, &player_id, move |runtime, pack_id, _transcript_lines| {
+    with_runtime(pool, &play_id, &player_id, move |runtime, pack_id, _transcript_lines| {
         runtime
             .continue_after_act()
             .map_err(|e| format!("session continuation error: {e}"))?;

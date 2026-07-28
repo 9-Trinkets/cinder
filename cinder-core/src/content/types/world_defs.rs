@@ -148,6 +148,22 @@ pub struct ActorDefinition {
     pub prompt_context: ActorPromptContext,
     #[serde(default)]
     pub movement_rules: Option<ActorMovementRulesDefinition>,
+    #[serde(default)]
+    pub act_cast: Option<ActorActCast>,
+    #[serde(default)]
+    pub game_data: BTreeMap<String, String>,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ActorActCast {
+    #[serde(default)]
+    pub inspect_blurb: String,
+    #[serde(default)]
+    pub intro_blurb: String,
+    #[serde(default)]
+    pub return_blurb: String,
+    #[serde(default)]
+    pub metadata: BTreeMap<String, String>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

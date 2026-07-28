@@ -21,7 +21,7 @@ fn internal<E: ToString>(e: E) -> (StatusCode, String) {
 
 #[derive(Serialize)]
 pub struct SessionInfo {
-    pub session_id: String,
+    pub play_id: String,
     pub pack_id: String,
     pub created_at: String,
     pub updated_at: String,
@@ -43,7 +43,7 @@ pub struct CreateSessionRequest {
 pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
     let auth_routes = Router::new()
         .route("/api/packs", get(list_packs))
-        .route("/api/games", get(list_sessions).post(create_session))
+        .route("/api/games", get(list_plays).post(create_play))
         .route("/api/games/{id}/command", post(run_command))
         .route("/api/games/{id}/tick", post(run_tick))
         .route("/api/games/{id}/ui", get(session_ui))
@@ -51,8 +51,8 @@ pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/api/games/{id}/room", post(switch_room_handler))
         .route("/api/games/{id}/follow", post(follow_actor_handler))
         .route("/api/games/{id}/locale", post(set_locale_handler))
-        .route("/api/games/{id}/continue", post(continue_act_handler))
-        .route("/api/games/{id}", delete(delete_session_handler))
+        .route("/api/games/{id}/continue", post(continue_play_handler))
+        .route("/api/games/{id}", delete(delete_play_handler))
         .route_layer(middleware::from_fn_with_state(state.clone(), auth_middleware));
 
     let ws_routes = Router::new()
@@ -62,18 +62,18 @@ pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
     auth_routes.merge(ws_routes)
 }
 
-pub async fn create_session(
+pub async fn create_play(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
     Json(req): Json<CreateSessionRequest>,
 ) -> Result<Json<SessionInfo>, (StatusCode, String)> {
-    let (session_id, title, intro_text) =
-        game_manager::create_session(&state.pool, &auth.id, &req.pack_id)
+    let (play_id, title, intro_text) =
+        game_manager::create_play(&state.pool, &auth.id, &req.pack_id)
             .await
             .map_err(internal)?;
 
     Ok(Json(SessionInfo {
-        session_id,
+        play_id,
         pack_id: req.pack_id,
         created_at: now_unix_secs(),
         updated_at: now_unix_secs(),
@@ -117,14 +117,14 @@ pub async fn list_packs() -> Json<Vec<PackInfo>> {
     )
 }
 
-pub async fn list_sessions(
+pub async fn list_plays(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
 ) -> Result<Json<Vec<SessionInfo>>, (StatusCode, String)> {
     let rows = sqlx::query_as::<_, (String, String, i64, i64, Option<String>, Option<i64>)>(
         "SELECT id::text, pack_id, EXTRACT(EPOCH FROM created_at)::bigint, EXTRACT(EPOCH FROM updated_at)::bigint, \
          state_json->>'current_room_id', (state_json->>'current_time_minutes')::bigint \
-         FROM game_sessions WHERE player_id = $1 ORDER BY updated_at DESC",
+         FROM game_plays WHERE player_id = $1 ORDER BY updated_at DESC",
     )
     .bind(Uuid::parse_str(&auth.id).map_err(internal)?)
     .fetch_all(&*state.pool)
@@ -156,7 +156,7 @@ pub async fn list_sessions(
                     })
                     .unwrap_or_default();
                 SessionInfo {
-                    session_id: id,
+                    play_id: id,
                     pack_id,
                     created_at: created_at.to_string(),
                     updated_at: updated_at.to_string(),
@@ -178,10 +178,10 @@ pub struct CommandRequest {
 pub async fn run_command(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
-    Path(session_id): Path<String>,
+    Path(play_id): Path<String>,
     Json(req): Json<CommandRequest>,
 ) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
-    let resp = game_manager::run_command(&state.pool, &session_id, &auth.id, &req.input)
+    let resp = game_manager::run_command(&state.pool, &play_id, &auth.id, &req.input)
         .await
         .map_err(internal)?;
     Ok(Json(resp))
@@ -190,9 +190,9 @@ pub async fn run_command(
 pub async fn run_tick(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
-    Path(session_id): Path<String>,
+    Path(play_id): Path<String>,
 ) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
-    let resp = game_manager::run_realtime_tick(&state.pool, &session_id, &auth.id)
+    let resp = game_manager::run_realtime_tick(&state.pool, &play_id, &auth.id)
         .await
         .map_err(internal)?;
     Ok(Json(resp))
@@ -201,9 +201,9 @@ pub async fn run_tick(
 pub async fn transcript_handler(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
-    Path(session_id): Path<String>,
+    Path(play_id): Path<String>,
 ) -> Result<Json<Vec<String>>, (StatusCode, String)> {
-    let lines = game_manager::get_transcript(&state.pool, &session_id, &auth.id)
+    let lines = game_manager::get_transcript(&state.pool, &play_id, &auth.id)
         .await
         .map_err(internal)?;
     Ok(Json(lines))
@@ -212,9 +212,9 @@ pub async fn transcript_handler(
 pub async fn session_ui(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
-    Path(session_id): Path<String>,
+    Path(play_id): Path<String>,
 ) -> Result<Json<game_manager::UiSnapshot>, (StatusCode, String)> {
-    let snapshot = game_manager::get_session_ui(&state.pool, &session_id, &auth.id)
+    let snapshot = game_manager::get_play_ui(&state.pool, &play_id, &auth.id)
         .await
         .map_err(internal)?;
     Ok(Json(snapshot))
@@ -228,10 +228,10 @@ pub struct RoomSwitchRequest {
 pub async fn switch_room_handler(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
-    Path(session_id): Path<String>,
+    Path(play_id): Path<String>,
     Json(req): Json<RoomSwitchRequest>,
 ) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
-    let outcome = game_manager::switch_room(&state.pool, &session_id, &auth.id, &req.room_id)
+    let outcome = game_manager::switch_room(&state.pool, &play_id, &auth.id, &req.room_id)
         .await
         .map_err(internal)?;
     Ok(Json(outcome))
@@ -245,11 +245,11 @@ pub struct FollowRequest {
 pub async fn follow_actor_handler(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
-    Path(session_id): Path<String>,
+    Path(play_id): Path<String>,
     Json(req): Json<FollowRequest>,
 ) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
     let outcome =
-        game_manager::follow_actor(&state.pool, &session_id, &auth.id, req.actor_id.as_deref())
+        game_manager::follow_actor(&state.pool, &play_id, &auth.id, req.actor_id.as_deref())
             .await
             .map_err(internal)?;
     Ok(Json(outcome))
@@ -263,35 +263,35 @@ pub struct LocaleRequest {
 pub async fn set_locale_handler(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
-    Path(session_id): Path<String>,
+    Path(play_id): Path<String>,
     Json(req): Json<LocaleRequest>,
 ) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
-    let response = game_manager::set_locale(&state.pool, &session_id, &auth.id, &req.locale)
+    let response = game_manager::set_locale(&state.pool, &play_id, &auth.id, &req.locale)
         .await
         .map_err(internal)?;
     Ok(Json(response))
 }
 
-pub async fn continue_act_handler(
+pub async fn continue_play_handler(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
-    Path(session_id): Path<String>,
+    Path(play_id): Path<String>,
 ) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
-    let response = game_manager::continue_act(&state.pool, &session_id, &auth.id)
+    let response = game_manager::play_id(&state.pool, &play_id, &auth.id)
         .await
         .map_err(internal)?;
     Ok(Json(response))
 }
 
-pub async fn delete_session_handler(
+pub async fn delete_play_handler(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
-    Path(session_id): Path<String>,
+    Path(play_id): Path<String>,
 ) -> Result<Json<()>, (StatusCode, String)> {
-    let session_id = Uuid::parse_str(&session_id).map_err(internal)?;
+    let play_id = Uuid::parse_str(&play_id).map_err(internal)?;
     let player_id = Uuid::parse_str(&auth.id).map_err(internal)?;
-    sqlx::query("DELETE FROM game_sessions WHERE id = $1 AND player_id = $2")
-        .bind(session_id)
+    sqlx::query("DELETE FROM game_plays WHERE id = $1 AND player_id = $2")
+        .bind(play_id)
         .bind(player_id)
         .execute(&*state.pool)
         .await
@@ -315,7 +315,7 @@ pub struct WsQuery {
 
 pub async fn ws_tick_handler(
     State(state): State<Arc<AppState>>,
-    Path(session_id): Path<String>,
+    Path(play_id): Path<String>,
     Query(query): Query<WsQuery>,
     ws: WebSocketUpgrade,
 ) -> Result<impl IntoResponse, (StatusCode, String)> {
@@ -327,21 +327,21 @@ pub async fn ws_tick_handler(
             )
         })?;
 
-    let session_id = Uuid::parse_str(&session_id).map_err(internal)?;
+    let play_id = Uuid::parse_str(&play_id).map_err(internal)?;
     let player_id = Uuid::parse_str(&claims.sub).map_err(internal)?;
 
     let pool = state.pool.clone();
-    let session_id_str = session_id.to_string();
+    let play_id_str = play_id.to_string();
     let player_id_str = player_id.to_string();
     let tick_ms = query.tick_ms.unwrap_or(2000);
 
-    Ok(ws.on_upgrade(move |socket| handle_ws(socket, pool, session_id_str, player_id_str, tick_ms)))
+    Ok(ws.on_upgrade(move |socket| handle_ws(socket, pool, play_id_str, player_id_str, tick_ms)))
 }
 
 async fn handle_ws(
     mut socket: axum::extract::ws::WebSocket,
     pool: crate::db::DbPool,
-    session_id: String,
+    play_id: String,
     player_id: String,
     tick_ms: u64,
 ) {
@@ -354,7 +354,7 @@ async fn handle_ws(
     loop {
         tokio::select! {
             _ = interval.tick() => {
-                match game_manager::run_realtime_tick(&pool, &session_id, &player_id).await {
+                match game_manager::run_realtime_tick(&pool, &play_id, &player_id).await {
                     Ok(resp) => {
                         if resp.text.is_empty() && resp.movie.is_none() && !resp.game_over && resp.act_closure.is_none() {
                             continue;

@@ -151,12 +151,22 @@ pub fn load_pack_from_dir_with_locale(
     let actors: Vec<ActorDefinition> = serde_json::from_str(&fs::read_to_string(
         localized_file_path(path, &effective_locale, "actors.json"),
     )?)?;
-    let act_cast = read_optional_localized_json::<Vec<ActCastMember>>(
-        path,
-        &effective_locale,
-        "patients.json",
-    )?
-    .unwrap_or_default();
+    let act_cast: Vec<ActCastMember> = actors
+        .iter()
+        .filter_map(|actor| {
+            let ac = actor.act_cast.as_ref()?;
+            Some(ActCastMember {
+                id: actor.id.clone(),
+                name: actor.name.clone(),
+                actor_id: actor.id.clone(),
+                inspect_blurb: ac.inspect_blurb.clone(),
+                intro_blurb: ac.intro_blurb.clone(),
+                return_blurb: ac.return_blurb.clone(),
+                metadata: ac.metadata.clone(),
+                actor_stats: actor.initial_stats.clone(),
+            })
+        })
+        .collect();
     let stats = read_optional_json::<StatsDefinition>(path, "stats.json")?.unwrap_or_default();
     let commands =
         read_optional_json::<CommandsDefinition>(path, "commands.json")?.unwrap_or_default();

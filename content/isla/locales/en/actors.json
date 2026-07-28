@@ -55,6 +55,22 @@
         "When you are about to reveal something vulnerable, you hedge first: 'I don't know if this matters, but...' or 'This is probably not what you're looking for, but...'",
         "If Isla pushes too directly too early, you become polite and agreeable while subtly shutting down — your way of protecting yourself without causing conflict."
       ]
+    },
+    "act_cast": {
+      "inspect_blurb": "Noa is in her early thirties, dressed in quiet quality with the composure of someone who learned early that visibility is a risk.",
+      "intro_blurb": "",
+      "return_blurb": "She comes back carrying the memory of what almost got said last time.",
+      "metadata": {
+        "char_age": "31",
+        "char_profession": "architect",
+        "char_presenting_issue": "she keeps everyone at a polite distance and disappears emotionally in close relationships",
+        "char_relational_pattern": "she becomes competent and warm on the surface while retreating from vulnerable need",
+        "char_formative_memory": "she learned that visible needs and intense feelings could make love vanish",
+        "char_coping_style": "she stays articulate, composed, and slightly hidden when something hurts",
+        "char_desired_change": "to remain present enough to be known without bracing for abandonment",
+        "char_bibliotherapy_fit": "books let her approach painful truths at a safer angle than direct confession",
+        "sub_tendency_under_pressure": "she stays articulate, composed, and slightly hidden when something hurts"
+      }
     }
   },
   {
@@ -105,6 +121,22 @@
         "If Isla names the cost of always being useful, you go still before replying because the remark lands harder than you expected.",
         "When something in the book resembles your family, you keep reading for one beat too long before looking up, like you are trying to outrun recognition."
       ]
+    },
+    "act_cast": {
+      "inspect_blurb": "Awa holds herself like someone ready to intercept the next problem before it reaches anyone else, and the vigilance makes even stillness look like work.",
+      "intro_blurb": "",
+      "return_blurb": "She returns carrying the memory of what almost got said last time.",
+      "metadata": {
+        "char_age": "29",
+        "char_profession": "home health aide",
+        "char_presenting_issue": "she carries competence like armor and mistrusts care she does not deliver herself",
+        "char_relational_pattern": "she keeps people at arm's length by solving their problems before they can ask about hers",
+        "char_formative_memory": "her brother's death taught her that stillness is dangerous and that she has to be the one who holds everything together",
+        "char_coping_style": "she answers in brisk, competent paragraphs and pivots to caretaking details",
+        "char_desired_change": "to stop confusing being needed with being loved",
+        "char_bibliotherapy_fit": "a book can say what she cannot, and she can close it before it closes in on her",
+        "sub_tendency_under_pressure": "she becomes efficient and lightly sarcastic when conversations risk getting too close"
+      }
     }
   },
   {
@@ -155,6 +187,22 @@
         "If Isla notices that you only feel close in emergencies, you answer with a joke first, then a quieter second answer.",
         "When the book mirrors your habit of manufacturing crises, you stare at the page too long before admitting it sounds familiar."
       ]
+    },
+    "act_cast": {
+      "inspect_blurb": "Jonah looks sturdy in the practiced way of someone who knows how to stay functional long after his feelings have left the room.",
+      "intro_blurb": "",
+      "return_blurb": "He is here again, ready for something he cannot yet name.",
+      "metadata": {
+        "char_age": "41",
+        "char_profession": "paramedic",
+        "char_presenting_issue": "he stays useful to avoid stillness and keeps grief in fragments",
+        "char_relational_pattern": "he is warm in motion and uneasy in stillness; quiet rooms leave too much room for memory",
+        "char_formative_memory": "he learned that calm usually meant waiting for the next blow",
+        "char_coping_style": "he tells stories with action and skips the feeling inside them",
+        "char_desired_change": "to find out who he is when the emergency ends",
+        "char_bibliotherapy_fit": "a book can hold still for him while he figures out how to hold still for himself",
+        "sub_tendency_under_pressure": "he becomes restless, practical, and slightly impatient with introspection"
+      }
     }
   },
   {
@@ -205,6 +253,22 @@
         "If Isla points out that being adored is not the same as being known, you smile first and then look away because the distinction hurts.",
         "When the book touches your fear of disappointing people, you start to explain it neatly, then stop halfway because the neat version suddenly feels false."
       ]
+    },
+    "act_cast": {
+      "inspect_blurb": "Sophea's smile arrives on cue, then lingers half a beat too long after the rest of her face has gone tired.",
+      "intro_blurb": "",
+      "return_blurb": "She returns carrying the memory of what almost got said last time.",
+      "metadata": {
+        "char_age": "35",
+        "char_profession": "middle-school music teacher",
+        "char_presenting_issue": "she performs ease instead of risking honesty and fears disappearing inside what people want from her",
+        "char_relational_pattern": "she makes warmth sound effortless even when she feels detached from it, then resents being easy to need",
+        "char_formative_memory": "she learned early that the right tone or smile could keep adults from turning cold",
+        "char_coping_style": "she edits herself in real time rather than refusing outright, and her anger leaves the room disguised as grace",
+        "char_desired_change": "to stop equating being adored with being known",
+        "char_bibliotherapy_fit": "a book can hold a truth she is not yet ready to say aloud",
+        "sub_tendency_under_pressure": "she becomes extra agreeable on the surface while saying less that is actually true"
+      }
     }
   }
 ]
