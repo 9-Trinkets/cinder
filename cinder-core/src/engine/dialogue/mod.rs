@@ -355,37 +355,16 @@ impl DialogueGenerator for SynapseDialogueGenerator {
         &self,
         request: &PerspectiveReviewRequest,
     ) -> Result<PerspectiveReview, String> {
-        let prompt = format!(
-            r#"Patient: {actor_name}
-Therapist: {other_person_name}
-
-Session Outcome
-{stats_context}
-
-Session Summary
-{act_summary}
-
-Relationship Notes
-{relationship_lines}
-
-Write a short Yelp-style review from {actor_name}'s perspective about their therapy session with {other_person_name}. Be specific and in character.
-
-Return ONLY valid JSON (no markdown, no backticks) in this exact format:
-{{"rating": <1-5>, "review_text": "<the review text>"}}
-
-The rating (1-5 stars) should reflect the patient's genuine experience based on the session outcome.
-The review text should be 2-5 sentences in the patient's voice — honest, specific, and a bit Yelp-flavored."#,
-            actor_name = request.actor_name,
-            other_person_name = request.other_person_name,
-            stats_context = request.stats_context,
-            act_summary = request.act_summary,
-            relationship_lines = request.relationship_lines.join("\n"),
-        );
+        let prompt = request.ui_text.perspective_review_prompt
+            .replace("{actor_name}", &request.actor_name)
+            .replace("{other_person_name}", &request.other_person_name)
+            .replace("{stats_context}", &request.stats_context)
+            .replace("{act_summary}", &request.act_summary)
+            .replace("{relationship_lines}", &request.relationship_lines.join("\n"));
         let response = self.run_text_role(
             PERSPECTIVE_REVIEW_ROLE,
             prompt,
-            "You write a short Yelp-style review from a patient's perspective. Respond only with valid JSON."
-                .to_string(),
+            request.ui_text.perspective_review_system.clone(),
         )?;
         serde_json::from_str::<PerspectiveReview>(&response)
             .map_err(|e| format!("failed to parse perspective review: {e}"))
@@ -437,10 +416,11 @@ The review text should be 2-5 sentences in the patient's voice — honest, speci
             .collect::<Vec<_>>()
             .join("\n");
         let role_specific_instructions = if request.role_name == "book_recommender" {
-            "Generate exactly 3 fictional book recommendations. Each option must be a plausible novel title paired with a one-line thematic blurb that fits this specific patient and this specific conversation. None of the options should be framed as the correct answer."
+            request.ui_text.book_recommender_instructions.as_str()
         } else {
             "Generate exactly 3 options that fit this specific character and this specific conversation."
         };
+        let context_label = &request.ui_text.dynamic_menu_context_label;
         let prompt = format!(
             r#"Menu id: {menu_id}
 
@@ -453,7 +433,7 @@ Intent guidance:
 Context about {actor_name}:
 {bio}
 
-Session context:
+{context_label}:
 {beats}
 
 Recent conversation:
@@ -475,6 +455,8 @@ Make the options feel distinct from each other and grounded in the recent conver
             menu_prompt = request.menu_prompt,
             guidance = guidance,
             actor_name = request.actor_name,
+            context_label = context_label,
+            beats = beats,
             role_specific_instructions = role_specific_instructions,
         );
         let response = self.run_text_role(

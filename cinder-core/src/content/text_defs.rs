@@ -174,6 +174,14 @@ pub struct UiTextDefinition {
     pub talk_panel_title: String,
     #[serde(default = "default_talk_panel_prompt")]
     pub talk_panel_prompt: String,
+    #[serde(default = "default_perspective_review_prompt")]
+    pub perspective_review_prompt: String,
+    #[serde(default = "default_perspective_review_system")]
+    pub perspective_review_system: String,
+    #[serde(default = "default_book_recommender_instructions")]
+    pub book_recommender_instructions: String,
+    #[serde(default = "default_dynamic_menu_context_label")]
+    pub dynamic_menu_context_label: String,
     #[serde(default)]
     pub act_closure: ActClosureDefinition,
     #[serde(default)]
@@ -422,6 +430,43 @@ fn default_talk_panel_prompt() -> String {
     "Who do you want to talk to?".to_string()
 }
 
+fn default_perspective_review_prompt() -> String {
+    r#"Cast Member: {actor_name}
+Other: {other_person_name}
+
+Outcome
+{stats_context}
+
+Summary
+{act_summary}
+
+Relationship Notes
+{relationship_lines}
+
+Write a short review from {actor_name}'s perspective about their experience with {other_person_name}. Be specific and in character.
+
+Return ONLY valid JSON (no markdown, no backticks) in this exact format:
+{{"rating": <1-5>, "review_text": "<the review text>"}}
+
+The rating (1-5 stars) should reflect the cast member's genuine experience based on the outcome.
+The review text should be 2-5 sentences in the cast member's voice — honest and specific."#
+        .to_string()
+}
+
+fn default_perspective_review_system() -> String {
+    "You write a short review from a cast member's perspective. Respond only with valid JSON."
+        .to_string()
+}
+
+fn default_book_recommender_instructions() -> String {
+    "Generate exactly 3 fictional book recommendations. Each option must be a plausible novel title paired with a one-line thematic blurb that fits this specific character and this specific conversation. None of the options should be framed as the correct answer."
+        .to_string()
+}
+
+fn default_dynamic_menu_context_label() -> String {
+    "Context".to_string()
+}
+
 impl Default for UiTextDefinition {
     fn default() -> Self {
         Self {
@@ -484,6 +529,10 @@ impl Default for UiTextDefinition {
             look_group_people: default_look_group_people(),
             talk_panel_title: default_talk_panel_title(),
             talk_panel_prompt: default_talk_panel_prompt(),
+            perspective_review_prompt: default_perspective_review_prompt(),
+            perspective_review_system: default_perspective_review_system(),
+            book_recommender_instructions: default_book_recommender_instructions(),
+            dynamic_menu_context_label: default_dynamic_menu_context_label(),
             act_closure: ActClosureDefinition::default(),
             game_closure: ActClosureDefinition::default(),
             shell_menu: ShellMenuDefinition::default(),

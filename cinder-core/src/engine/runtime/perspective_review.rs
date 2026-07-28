@@ -77,6 +77,7 @@ impl CinderRuntime {
         let request = PerspectiveReviewRequest {
             locale: self.content.locale.clone(),
             system_text: self.content.system_text.clone(),
+            ui_text: self.content.ui_text.clone(),
             actor_name,
             other_person_name: "You".to_string(),
             stats_context,

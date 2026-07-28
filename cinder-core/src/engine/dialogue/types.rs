@@ -1,4 +1,4 @@
-use crate::content::types::{CommandInputMode, ConsumableKind, SystemTextDefinition};
+use crate::content::types::{CommandInputMode, ConsumableKind, SystemTextDefinition, UiTextDefinition};
 use crate::engine::commands::TurnAction;
 use crate::engine::state::ConversationMemoryLine;
 use serde::{Deserialize, Serialize};
@@ -266,6 +266,7 @@ pub type ActorTurnActionDecision = TurnAction;
 pub struct DynamicMenuRequest {
     pub locale: String,
     pub system_text: SystemTextDefinition,
+    pub ui_text: UiTextDefinition,
     pub role_name: String,
     pub menu_id: String,
     pub menu_prompt: String,
@@ -287,6 +288,7 @@ pub struct DynamicMenuOptionOutput {
 pub struct PerspectiveReviewRequest {
     pub locale: String,
     pub system_text: SystemTextDefinition,
+    pub ui_text: UiTextDefinition,
     pub actor_name: String,
     pub other_person_name: String,
     pub stats_context: String,

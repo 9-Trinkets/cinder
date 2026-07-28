@@ -278,6 +278,7 @@ impl CinderRuntime {
                     .generate_dynamic_menu_options(&DynamicMenuRequest {
                         locale: self.content.locale.clone(),
                         system_text: self.content.system_text.clone(),
+                        ui_text: self.content.ui_text.clone(),
                         role_name: role_name.to_string(),
                         menu_id: menu.id.clone(),
                         menu_prompt,
