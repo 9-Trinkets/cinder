@@ -304,11 +304,12 @@ pub async fn run_command(
             }
         }
 
-        let act_closure = if outcome.phase == GamePhase::ActEnded {
-            response::act_closure_data(runtime, transcript_lines)
-        } else {
-            None
-        };
+        let act_closure =
+            if outcome.phase == GamePhase::ActEnded && runtime.content().settings.show_act_closure {
+                response::act_closure_data(runtime, transcript_lines)
+            } else {
+                None
+            };
         let game_closure = if outcome.phase == GamePhase::GameEnded {
             response::game_closure_data(runtime, transcript_lines)
         } else {
@@ -373,11 +374,12 @@ pub async fn run_realtime_tick(
     with_runtime(pool, &play_id, &player_id, move |runtime, pack_id, transcript_lines| {
         let mut outcome = runtime.run_tick().map_err(|e| format!("tick error: {e}"))?;
         use cinder_core::engine::state::GamePhase;
-        let act_closure = if outcome.phase == GamePhase::ActEnded {
-            response::act_closure_data(runtime, transcript_lines)
-        } else {
-            None
-        };
+        let act_closure =
+            if outcome.phase == GamePhase::ActEnded && runtime.content().settings.show_act_closure {
+                response::act_closure_data(runtime, transcript_lines)
+            } else {
+                None
+            };
         let game_closure = if outcome.phase == GamePhase::GameEnded {
             response::game_closure_data(runtime, transcript_lines)
         } else {
