@@ -96,7 +96,7 @@ pub(super) fn advance_objective_for_signal(
                     }
                 }
             }
-            if next_stage.end_act {
+            if next_stage.end_act && !content.act_cast.is_empty() {
                 state.stages_completed += 1;
                 state.phase = GamePhase::ActEnded;
             }
