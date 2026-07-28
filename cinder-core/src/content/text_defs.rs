@@ -445,10 +445,8 @@ Relationship Notes
 
 Write a short review from {actor_name}'s perspective about their experience with {other_person_name}. Be specific and in character.
 
-Return ONLY valid JSON (no markdown, no backticks) in this exact format:
-{{"rating": <1-5>, "review_text": "<the review text>"}}
-
-The rating (1-5 stars) should reflect the cast member's genuine experience based on the outcome.
+Return ONLY valid JSON (no markdown, no backticks) with a rating field (1-5 integer) and a review_text field (string).
+The rating should reflect the cast member's genuine experience based on the outcome.
 The review text should be 2-5 sentences in the cast member's voice — honest and specific."#
         .to_string()
 }
