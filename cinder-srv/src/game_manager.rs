@@ -324,8 +324,8 @@ pub async fn run_command(
                 if !intro_text.is_empty() {
                     outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
                 }
-                outcome.phase = GamePhase::Active;
             }
+            outcome.phase = GamePhase::Active;
         }
 
         let _ = runtime.push_transcript_line(&turn_text);
@@ -393,8 +393,8 @@ pub async fn run_realtime_tick(
                 if !intro_text.is_empty() {
                     outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
                 }
-                outcome.phase = GamePhase::Active;
             }
+            outcome.phase = GamePhase::Active;
         }
         let movie = consume_projector_sequence(runtime);
         let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, transcript_lines)?;
