@@ -448,7 +448,7 @@ mod tests {
     use crate::content::loader::load_named_pack;
 
     #[test]
-    fn first_appointment_preserves_authored_patient() {
+    fn first_act_preserves_authored_cast_member() {
         let content = load_named_pack("isla", None).expect("load isla");
         let mut state = WorldState::new(&content);
         initialize_act_state(&content, &mut state);
@@ -458,7 +458,7 @@ mod tests {
     }
 
     #[test]
-    fn second_appointment_uses_first_generated_patient() {
+    fn second_act_uses_first_generated_cast_member() {
         let content = load_named_pack("isla", None).expect("load isla");
         let mut state = WorldState::new(&content);
         initialize_act_state(&content, &mut state);
@@ -473,7 +473,7 @@ mod tests {
     }
 
     #[test]
-    fn current_patient_reference_uses_distinct_actor_prompt_context() {
+    fn current_cast_member_reference_uses_distinct_actor_prompt_context() {
         let content = load_named_pack("isla", None).expect("load isla");
         let mut state = WorldState::new(&content);
         initialize_act_state(&content, &mut state);

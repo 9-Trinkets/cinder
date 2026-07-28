@@ -323,7 +323,7 @@ mod tests {
     use crate::engine::state::{advance_to_next_act, initialize_act_state};
 
     #[test]
-    fn resolves_dynamic_patient_display_name() {
+    fn resolves_dynamic_cast_member_display_name() {
         let content = load_named_pack("isla", None).expect("load isla");
         let mut state = WorldState::new(&content);
         initialize_act_state(&content, &mut state);
