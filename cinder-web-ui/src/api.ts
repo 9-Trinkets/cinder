@@ -266,6 +266,7 @@ export interface UiSnapshot {
     commands_panel_empty: string
     commands_group_other: string
     commands_group_support: string
+    commands_group_act: string
     look_panel_title: string
     look_group_room: string
     look_group_things: string

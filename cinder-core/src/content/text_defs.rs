@@ -162,6 +162,8 @@ pub struct UiTextDefinition {
     pub commands_group_other: String,
     #[serde(default = "default_commands_group_support")]
     pub commands_group_support: String,
+    #[serde(default = "default_commands_group_act")]
+    pub commands_group_act: String,
     #[serde(default = "default_look_panel_title")]
     pub look_panel_title: String,
     #[serde(default = "default_look_group_room")]
@@ -406,6 +408,10 @@ fn default_commands_group_support() -> String {
     "Support".to_string()
 }
 
+fn default_commands_group_act() -> String {
+    "Act".to_string()
+}
+
 fn default_look_panel_title() -> String {
     "Look".to_string()
 }
@@ -521,6 +527,7 @@ impl Default for UiTextDefinition {
             commands_panel_empty: default_commands_panel_empty(),
             commands_group_other: default_commands_group_other(),
             commands_group_support: default_commands_group_support(),
+            commands_group_act: default_commands_group_act(),
             look_panel_title: default_look_panel_title(),
             look_group_room: default_look_group_room(),
             look_group_things: default_look_group_things(),

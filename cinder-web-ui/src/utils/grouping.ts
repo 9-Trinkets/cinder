@@ -17,6 +17,8 @@ function localizeCommandGroup(group: string, uiText: api.UiSnapshot['ui_text']):
   switch ((group || '').toLowerCase()) {
     case 'support':
       return uiText.commands_group_support
+    case 'act':
+      return uiText.commands_group_act
     case 'other':
     case '':
       return uiText.commands_group_other

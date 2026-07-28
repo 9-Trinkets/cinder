@@ -2,6 +2,7 @@
   "language_name": "English",
   "menu_button_label": "? Menu",
   "act_ended_title": "Session Ended",
+  "commands_group_act": "Session",
   "game_over_hint": "↑/↓ or PageUp/PageDown scroll • q exits",
   "menu_option_list_title": "Choose an option",
   "menu_choice_hint": "Use ↑/↓ and Enter to choose.",
