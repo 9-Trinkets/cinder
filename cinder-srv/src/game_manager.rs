@@ -325,6 +325,9 @@ pub async fn run_command(
                     outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
                 }
             }
+            runtime
+                .continue_after_act()
+                .map_err(|e| format!("act continuation error: {e}"))?;
             outcome.phase = GamePhase::Active;
         }
 
@@ -394,6 +397,9 @@ pub async fn run_realtime_tick(
                     outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
                 }
             }
+            runtime
+                .continue_after_act()
+                .map_err(|e| format!("act continuation error: {e}"))?;
             outcome.phase = GamePhase::Active;
         }
         let movie = consume_projector_sequence(runtime);
