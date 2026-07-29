@@ -62,6 +62,8 @@ pub struct WorldState {
     pub player_inventory: HashMap<String, u32>,
     #[serde(default)]
     pub act_series: Option<ActSeriesState>,
+    #[serde(default)]
+    pub stage_assigned_rooms: BTreeMap<String, String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -141,6 +143,7 @@ impl WorldState {
             last_transcript_line: None,
             player_inventory: HashMap::new(),
             act_series: None,
+            stage_assigned_rooms: BTreeMap::new(),
         }
     }
 

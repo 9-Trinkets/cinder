@@ -25,6 +25,7 @@ pub(super) fn advance_objective_for_signal(
             continue;
         }
         state.stages_completed += 1;
+        state.stage_assigned_rooms.clear();
         if current_stage.next_stage_ids.is_empty() {
             continue;
         }

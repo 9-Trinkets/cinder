@@ -640,6 +640,20 @@ impl CinderRuntime {
             let key = format!("{}_assigned_room", candidate.actor_id);
             state.story_vars.set_unchecked(&key, room_id);
         }
+        state.stage_assigned_rooms.insert(
+            request.initiator_actor_id.clone(),
+            request.selected_room_id.clone(),
+        );
+        for candidate in &request.candidates {
+            let room_id = if chosen.contains(&candidate.actor_id) {
+                &request.selected_room_id
+            } else {
+                &request.remaining_room_id
+            };
+            state
+                .stage_assigned_rooms
+                .insert(candidate.actor_id.clone(), room_id.clone());
+        }
 
         let selected_names = request
             .candidates
