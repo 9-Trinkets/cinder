@@ -269,8 +269,22 @@ pub(crate) fn build_stage_assignment_prompt(request: &StageAssignmentRequest) ->
         .collect::<Vec<_>>()
         .join("\n");
 
+    let anchored_lines = request
+        .anchored_room_assignments
+        .iter()
+        .map(|(actor_id, room_id)| {
+            format!("- actor_id: {actor_id} -> {room_id}", room_id = room_id)
+        })
+        .collect::<Vec<_>>()
+        .join("\n");
+    let anchored_section = if anchored_lines.is_empty() {
+        String::new()
+    } else {
+        format!("Already placed actors (do not score or move them):\n{anchored_lines}\n\n")
+    };
+
     format!(
-        "You are deciding how to split a stage's characters between two possible room outcomes.\n\nStage: {stage_id}\nSelection: {selection_label}\nInitiator: {initiator_actor_name}\nSelected room: {selected_room_title}\nRemaining room: {remaining_room_title}\n\nCurrent beat notes:\n{beat_note}\n\nContent-specific instructions:\n{prompt_instructions}\n\nFor each candidate below, assign an integer selection_score from 0 to 100 for how likely they are to join {initiator_actor_name} in {selected_room_title} for this stage split right now.\nUse only the candidate's stats, their pair stats with the initiator, and the content instructions above. Higher score means more likely to join the selected room.\n\nReturn JSON in exactly this shape:\n{{\"assignments\":[{{\"actor_id\":\"...\",\"selection_score\":72,\"rationale\":\"short reason\"}}]}}\n\nCandidates:\n{candidate_lines}\n",
+        "You are deciding how to split a stage's characters between two possible room outcomes.\n\nStage: {stage_id}\nSelection: {selection_label}\nInitiator: {initiator_actor_name}\nSelected room: {selected_room_title}\nRemaining room: {remaining_room_title}\n\nCurrent beat notes:\n{beat_note}\n\nContent-specific instructions:\n{prompt_instructions}\n\n{anchored_section}For each candidate below, assign an integer selection_score from 0 to 100 for how likely they are to join {initiator_actor_name} in {selected_room_title} for this stage split right now.\nUse only the candidate's stats, their pair stats with the initiator, and the content instructions above. Higher score means more likely to join the selected room.\n\nReturn JSON in exactly this shape:\n{{\"assignments\":[{{\"actor_id\":\"...\",\"selection_score\":72,\"rationale\":\"short reason\"}}]}}\n\nCandidates:\n{candidate_lines}\n",
         stage_id = request.stage_id,
         selection_label = request.selection_label,
         initiator_actor_name = request.initiator_actor_name,
@@ -286,6 +300,7 @@ pub(crate) fn build_stage_assignment_prompt(request: &StageAssignmentRequest) ->
         } else {
             request.prompt_instructions.trim()
         },
+        anchored_section = anchored_section,
         candidate_lines = candidate_lines,
     )
 }

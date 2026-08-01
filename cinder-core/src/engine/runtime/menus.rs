@@ -301,6 +301,7 @@ impl CinderRuntime {
                             menu_text: opt.menu_text,
                             narrative_lines: vec![],
                             room_id: String::new(),
+                            host_actor_id: String::new(),
                         })
                         .collect();
                     state

@@ -408,7 +408,10 @@ impl CinderRuntime {
             let Some(config) = stage.stage_assignment.as_ref() else {
                 continue;
             };
-            if config.initiator_actor_id.trim().is_empty() {
+            if config.initiator_actor_id.trim().is_empty()
+                && config.selected_host_story_var.trim().is_empty()
+                && config.remaining_host_story_var.trim().is_empty()
+            {
                 continue;
             }
             let selected_room_id = if !config.selected_room_story_var.is_empty() {
@@ -440,9 +443,31 @@ impl CinderRuntime {
             {
                 continue;
             }
-            let Some(initiator) = self.content.actor(&config.initiator_actor_id) else {
-                continue;
+            let mut anchored_room_assignments = std::collections::BTreeMap::new();
+            if !config.selected_host_story_var.trim().is_empty() {
+                if let Some(host_id) = state.story_vars.get(&config.selected_host_story_var) {
+                    if !host_id.trim().is_empty() {
+                        anchored_room_assignments
+                            .insert(host_id.to_string(), selected_room_id.clone());
+                    }
+                }
+            }
+            if !config.remaining_host_story_var.trim().is_empty() {
+                if let Some(host_id) = state.story_vars.get(&config.remaining_host_story_var) {
+                    if !host_id.trim().is_empty() {
+                        anchored_room_assignments
+                            .insert(host_id.to_string(), remaining_room_id.clone());
+                    }
+                }
+            }
+            let initiator = if config.initiator_actor_id.trim().is_empty() {
+                None
+            } else {
+                self.content.actor(&config.initiator_actor_id).cloned()
             };
+            if initiator.is_none() && anchored_room_assignments.is_empty() {
+                continue;
+            }
             let selected_room_title = self
                 .content
                 .room(&selected_room_id)
@@ -457,7 +482,11 @@ impl CinderRuntime {
                 .content
                 .actors
                 .iter()
-                .filter(|actor| actor.id != initiator.id)
+                .filter(|actor| {
+                    let initiator_id = initiator.as_ref().map(|a| a.id.as_str()).unwrap_or("");
+                    actor.id != initiator_id
+                        && !anchored_room_assignments.contains_key(&actor.id)
+                })
                 .map(|actor| StageAssignmentCandidate {
                     actor_id: actor.id.clone(),
                     actor_name: display_actor_name(&state, actor),
@@ -470,10 +499,13 @@ impl CinderRuntime {
                             state.actor_room_id(&actor.id, &actor.room_id).to_string()
                         }),
                     actor_stats: state.actor_stats_snapshot(&actor.id),
-                    pair_stats_with_initiator: state.pair_stats_snapshot(&actor.id, &initiator.id),
+                    pair_stats_with_initiator: initiator
+                        .as_ref()
+                        .map(|initiator| state.pair_stats_snapshot(&actor.id, &initiator.id))
+                        .unwrap_or_default(),
                 })
                 .collect::<Vec<_>>();
-            if candidates.is_empty() {
+            if candidates.is_empty() && initiator.is_none() {
                 continue;
             }
             let request = StageAssignmentRequest {
@@ -486,13 +518,20 @@ impl CinderRuntime {
                     config.selection_label.clone()
                 },
                 prompt_instructions: config.prompt_instructions.clone(),
-                initiator_actor_id: initiator.id.clone(),
-                initiator_actor_name: display_actor_name(&state, initiator),
+                initiator_actor_id: initiator
+                    .as_ref()
+                    .map(|actor| actor.id.clone())
+                    .unwrap_or_default(),
+                initiator_actor_name: initiator
+                    .as_ref()
+                    .map(|actor| display_actor_name(&state, actor))
+                    .unwrap_or_default(),
                 selected_room_id: selected_room_id.clone(),
                 selected_room_title,
                 remaining_room_id: remaining_room_id.clone(),
                 remaining_room_title,
                 beat_note: render_story_text(&stage.beat_note, &state),
+                anchored_room_assignments,
                 candidates,
             };
             return Ok(Some((request, config.clone())));
@@ -556,25 +595,42 @@ impl CinderRuntime {
         {
             return Ok(String::new());
         }
-        let initiator_from_room = state
-            .actor_room_overrides
-            .get(&request.initiator_actor_id)
-            .cloned()
-            .unwrap_or_default();
-        state.actor_room_overrides.insert(
-            request.initiator_actor_id.clone(),
-            request.selected_room_id.clone(),
-        );
-        let mut moved_actors: Vec<(String, String, String, String)> = Vec::new();
-        if initiator_from_room != request.selected_room_id {
-            moved_actors.push((
+        let mut preplaced_rooms: std::collections::BTreeMap<String, String> =
+            request.anchored_room_assignments.clone();
+        if !request.initiator_actor_id.is_empty() {
+            preplaced_rooms.insert(
                 request.initiator_actor_id.clone(),
-                request.initiator_actor_name.clone(),
-                initiator_from_room,
                 request.selected_room_id.clone(),
-            ));
+            );
+        }
+        let mut moved_actors: Vec<(String, String, String, String)> = Vec::new();
+        for (actor_id, room_id) in &preplaced_rooms {
+            let actor_name = self
+                .content
+                .actor(actor_id)
+                .map(|actor| display_actor_name(&state, actor))
+                .unwrap_or_else(|| actor_id.clone());
+            let from_room_id = state
+                .actor_room_overrides
+                .get(actor_id)
+                .cloned()
+                .unwrap_or_default();
+            state
+                .actor_room_overrides
+                .insert(actor_id.clone(), room_id.clone());
+            if from_room_id != *room_id {
+                moved_actors.push((
+                    actor_id.clone(),
+                    actor_name,
+                    from_room_id,
+                    room_id.clone(),
+                ));
+            }
         }
         for candidate in &request.candidates {
+            if preplaced_rooms.contains_key(&candidate.actor_id) {
+                continue;
+            }
             let room_id = if chosen.contains(&candidate.actor_id) {
                 &request.selected_room_id
             } else {
@@ -614,24 +670,43 @@ impl CinderRuntime {
         }
         state.story_vars.set_unchecked(&applied_flag, "true");
         if !config.group_story_var_key.trim().is_empty() {
-            let group_ids = chosen.iter().cloned().collect::<Vec<_>>().join(",");
+            let mut group_ids = preplaced_rooms
+                .iter()
+                .filter(|(_, room_id)| *room_id == &request.selected_room_id)
+                .map(|(actor_id, _)| actor_id.clone())
+                .collect::<Vec<_>>();
+            group_ids.extend(chosen.iter().cloned());
+            group_ids.sort();
             state
                 .story_vars
-                .set_unchecked(&config.group_story_var_key, &group_ids);
+                .set_unchecked(&config.group_story_var_key, &group_ids.join(","));
         }
         if !config.remaining_group_story_var_key.trim().is_empty() {
-            let remaining_ids = request
-                .candidates
+            let mut remaining_ids = preplaced_rooms
                 .iter()
-                .filter(|candidate| !chosen.contains(&candidate.actor_id))
-                .map(|candidate| candidate.actor_id.clone())
-                .collect::<Vec<_>>()
-                .join(",");
+                .filter(|(_, room_id)| *room_id == &request.remaining_room_id)
+                .map(|(actor_id, _)| actor_id.clone())
+                .collect::<Vec<_>>();
+            remaining_ids.extend(
+                request
+                    .candidates
+                    .iter()
+                    .filter(|candidate| !chosen.contains(&candidate.actor_id))
+                    .map(|candidate| candidate.actor_id.clone()),
+            );
+            remaining_ids.sort();
             state
                 .story_vars
-                .set_unchecked(&config.remaining_group_story_var_key, &remaining_ids);
+                .set_unchecked(&config.remaining_group_story_var_key, &remaining_ids.join(","));
+        }
+        for (actor_id, room_id) in &preplaced_rooms {
+            let key = format!("{}_assigned_room", actor_id);
+            state.story_vars.set_unchecked(&key, room_id);
         }
         for candidate in &request.candidates {
+            if preplaced_rooms.contains_key(&candidate.actor_id) {
+                continue;
+            }
             let room_id = if chosen.contains(&candidate.actor_id) {
                 &request.selected_room_id
             } else {
@@ -640,11 +715,15 @@ impl CinderRuntime {
             let key = format!("{}_assigned_room", candidate.actor_id);
             state.story_vars.set_unchecked(&key, room_id);
         }
-        state.stage_assigned_rooms.insert(
-            request.initiator_actor_id.clone(),
-            request.selected_room_id.clone(),
-        );
+        for (actor_id, room_id) in &preplaced_rooms {
+            state
+                .stage_assigned_rooms
+                .insert(actor_id.clone(), room_id.clone());
+        }
         for candidate in &request.candidates {
+            if preplaced_rooms.contains_key(&candidate.actor_id) {
+                continue;
+            }
             let room_id = if chosen.contains(&candidate.actor_id) {
                 &request.selected_room_id
             } else {
@@ -655,18 +734,38 @@ impl CinderRuntime {
                 .insert(candidate.actor_id.clone(), room_id.clone());
         }
 
-        let selected_names = request
-            .candidates
+        let mut selected_names = preplaced_rooms
             .iter()
-            .filter(|candidate| chosen.contains(&candidate.actor_id))
-            .map(|candidate| candidate.actor_name.clone())
+            .filter(|(_, room_id)| *room_id == &request.selected_room_id)
+            .filter_map(|(actor_id, _)| {
+                self.content
+                    .actor(actor_id)
+                    .map(|actor| display_actor_name(&state, actor))
+            })
             .collect::<Vec<_>>();
-        let remaining_names = request
-            .candidates
+        selected_names.extend(
+            request
+                .candidates
+                .iter()
+                .filter(|candidate| chosen.contains(&candidate.actor_id))
+                .map(|candidate| candidate.actor_name.clone()),
+        );
+        let mut remaining_names = preplaced_rooms
             .iter()
-            .filter(|candidate| !chosen.contains(&candidate.actor_id))
-            .map(|candidate| candidate.actor_name.clone())
+            .filter(|(_, room_id)| *room_id == &request.remaining_room_id)
+            .filter_map(|(actor_id, _)| {
+                self.content
+                    .actor(actor_id)
+                    .map(|actor| display_actor_name(&state, actor))
+            })
             .collect::<Vec<_>>();
+        remaining_names.extend(
+            request
+                .candidates
+                .iter()
+                .filter(|candidate| !chosen.contains(&candidate.actor_id))
+                .map(|candidate| candidate.actor_name.clone()),
+        );
         let mut lines = Vec::new();
         if !config.initiator_line_template.trim().is_empty() {
             lines.push(self.content.render_template(
@@ -1216,6 +1315,114 @@ mod tests {
             })
             .expect("reapply assignment");
         assert!(second.text.is_empty());
+    }
+
+    #[test]
+    fn stage_assignment_anchors_activity_hosts_to_their_rooms() {
+        let content =
+            crate::content::loader::load_named_pack("aera", Some("en")).expect("load aera pack");
+        let mut state = WorldState::new(&content);
+        state.active_objective_stage_ids = vec!["day2-assignment".to_string()];
+        state
+            .story_vars
+            .set_unchecked("day2_event_room", "patio");
+        state
+            .story_vars
+            .set_unchecked("day2_event2_room", "studio");
+        state
+            .story_vars
+            .set_unchecked("day2_event_host", "daichi");
+        state
+            .story_vars
+            .set_unchecked("day2_event2_host", "aera");
+        let dialogue = Arc::new(
+            ScriptedDialogueGenerator::new().with_stage_assignment(
+                "day2-assignment",
+                StageAssignment {
+                    assignments: vec![
+                        StageAssignmentScore {
+                            actor_id: "mio".to_string(),
+                            selection_score: 90,
+                            rationale: "joins the patio workout".to_string(),
+                        },
+                        StageAssignmentScore {
+                            actor_id: "ren".to_string(),
+                            selection_score: 20,
+                            rationale: "stays with the editing session".to_string(),
+                        },
+                    ],
+                },
+            ),
+        );
+        let runtime = CinderRuntime::new_with_dialogue_generator_and_workflows(
+            content,
+            state,
+            false,
+            dialogue,
+            load_workflow(&workflow_path_for_id("cinder_turn")).expect("load turn workflow"),
+            load_workflow(&cinder_npc_tick_workflow_path()).expect("load npc tick workflow"),
+            load_workflow(&cinder_npc_turn_workflow_path()).expect("load npc move workflow"),
+            std::env::temp_dir(),
+        )
+        .expect("build runtime");
+
+        runtime
+            .apply_stage_assignments(TurnOutcome {
+                text: String::new(),
+                phase: GamePhase::Active,
+            })
+            .expect("apply assignment");
+        let exported = runtime.export_state().expect("export state");
+        assert!(
+            exported
+                .actor_room_overrides
+                .get("daichi")
+                .is_some_and(|room| room == "patio"),
+            "Daichi (patio workout host) must be anchored to patio"
+        );
+        assert!(
+            exported
+                .actor_room_overrides
+                .get("aera")
+                .is_some_and(|room| room == "studio"),
+            "Aera (editing session host) must be anchored to studio"
+        );
+        assert!(
+            exported
+                .actor_room_overrides
+                .get("mio")
+                .is_some_and(|room| room == "patio"),
+            "Mio scores highest for the selected activity and joins the patio"
+        );
+        assert!(
+            exported
+                .actor_room_overrides
+                .get("ren")
+                .is_some_and(|room| room == "studio"),
+            "Ren fills the remaining editing-session group"
+        );
+        assert_eq!(
+            exported.story_vars.get("day2_group_a"),
+            Some("daichi,mio"),
+            "selected group must include the anchored host"
+        );
+        assert_eq!(
+            exported.story_vars.get("day2_group_b"),
+            Some("aera,ren"),
+            "remaining group must include the anchored host"
+        );
+        assert!(
+            exported
+                .story_vars
+                .get("daichi_assigned_room")
+                .is_some_and(|room| room == "patio")
+        );
+        assert!(
+            exported
+                .story_vars
+                .get("aera_assigned_room")
+                .is_some_and(|room| room == "studio")
+        );
     }
 
     fn write_stage_assignment_test_pack() -> std::path::PathBuf {

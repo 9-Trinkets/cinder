@@ -316,6 +316,7 @@ pub struct StageAssignmentRequest {
     pub remaining_room_id: String,
     pub remaining_room_title: String,
     pub beat_note: String,
+    pub anchored_room_assignments: BTreeMap<String, String>,
     pub candidates: Vec<StageAssignmentCandidate>,
 }
 

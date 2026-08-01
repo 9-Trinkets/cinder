@@ -458,6 +458,22 @@ pub(super) fn handle_menu_choice_made(
                     state.story_vars.set_unchecked(var_key, &value);
                 }
             }
+            if !menu.multi_selection_host_var_keys.is_empty() {
+                let selected_hosts: Vec<String> = selected_ids
+                    .iter()
+                    .filter_map(|id| {
+                        menu.options
+                            .iter()
+                            .find(|opt| opt.id == *id)
+                            .filter(|opt| !opt.host_actor_id.is_empty())
+                            .map(|opt| opt.host_actor_id.clone())
+                    })
+                    .collect();
+                for (i, var_key) in menu.multi_selection_host_var_keys.iter().enumerate() {
+                    let value = selected_hosts.get(i).cloned().unwrap_or_default();
+                    state.story_vars.set_unchecked(var_key, &value);
+                }
+            }
             if menu.multi_selection_var_keys.is_empty() && !menu.selection_var_key.is_empty() {
                 state
                     .story_vars
