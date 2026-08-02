@@ -4,6 +4,7 @@ use crate::engine::dialogue::{
 };
 use crate::engine::hook_ids;
 use crate::engine::neuron::evaluate_symbolic_value;
+use rand::Rng;
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 
@@ -48,6 +49,19 @@ pub struct SymbolicPlannerInput {
 pub struct SymbolicPlannerBoolResult {
     #[serde(default)]
     pub value: bool,
+    #[serde(default)]
+    pub chance: Option<SymbolicPlannerChanceGate>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+pub struct SymbolicPlannerChanceGate {
+    pub path: String,
+    #[serde(default = "default_chance_max")]
+    pub max: u32,
+}
+
+fn default_chance_max() -> u32 {
+    10
 }
 
 pub fn select_symbolic_actor_turn_action(
@@ -197,7 +211,20 @@ pub fn evaluate_symbolic_boolean_rule(
     let payload = evaluate_symbolic_value(&config, &input)
         .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
     let result: SymbolicPlannerBoolResult = serde_json::from_value(payload)?;
-    Ok(result.value)
+    if !result.value {
+        return Ok(false);
+    }
+    if let Some(chance) = result.chance {
+        let stat_value = input
+            .get(&chance.path)
+            .and_then(|value| value.as_i64())
+            .unwrap_or_default();
+        let roll = rand::thread_rng().gen_range(0..=chance.max);
+        if stat_value < i64::from(roll) {
+            return Ok(false);
+        }
+    }
+    Ok(true)
 }
 
 pub fn build_symbolic_action_planner_input(

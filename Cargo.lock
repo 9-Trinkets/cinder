@@ -551,6 +551,7 @@ name = "cinder-core"
 version = "0.1.0"
 dependencies = [
  "neuron-app",
+ "rand 0.8.6",
  "serde",
  "serde_json",
  "toml 0.8.23",
