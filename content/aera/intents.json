@@ -1,0 +1,31 @@
+{
+  "intents": [
+    {
+      "label": "NONE",
+      "description": "The line is neutral, practical, cooperative, or purely friendly.",
+      "effects": []
+    },
+    {
+      "label": "WARM",
+      "description": "The line reaches toward closeness, emotional openness, or shows vulnerability and trust.",
+      "effects": [
+        {
+          "kind": "pair_stat",
+          "stat": "connection",
+          "delta": 1
+        }
+      ]
+    },
+    {
+      "label": "FLIRTY",
+      "description": "The line clearly plays with romantic or charged tension, invitation, teasing intimacy, or direct desire.",
+      "effects": [
+        {
+          "kind": "pair_stat",
+          "stat": "attraction",
+          "delta": 1
+        }
+      ]
+    }
+  ]
+}
