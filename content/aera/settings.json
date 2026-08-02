@@ -8,7 +8,6 @@
   "default_language": "en",
   "channel_surfing_only": true,
   "autonomous_actor_dialogue": true,
-  "speech_stamina_cost_floor": 0,
   "show_act_closure": false,
   "show_relationship_sidebar": true
 }

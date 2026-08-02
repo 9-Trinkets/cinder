@@ -454,26 +454,3 @@ pub(super) fn apply_actor_move_transition(
     ));
     lines.extend(advance_house_progress_objectives(state, content));
 }
-
-pub(super) fn apply_speech_stamina_cost(
-    state: &mut WorldState,
-    content: &ContentPack,
-    speaker_actor_id: &str,
-    listener_actor_id: &str,
-) {
-    let attraction = state.pair_stat(speaker_actor_id, listener_actor_id, "attraction");
-    let safety = state.pair_stat(speaker_actor_id, listener_actor_id, "safety");
-    let mut stamina_cost = 1;
-    if attraction <= 2 {
-        stamina_cost += 1;
-    }
-    if attraction >= 7 && safety >= 6 {
-        stamina_cost -= 1;
-    }
-    let minimum_stamina_cost = content.settings.speech_stamina_cost_floor.max(0);
-    let stamina_cost = stamina_cost.max(minimum_stamina_cost);
-    if stamina_cost <= 0 {
-        return;
-    }
-    let _ = state.adjust_actor_stat(speaker_actor_id, "stamina", -stamina_cost);
-}

@@ -122,17 +122,23 @@ pub fn select_symbolic_actor_turn_action(
             freeform_text: None,
         });
     }
-    let should_speak = evaluate_symbolic_boolean_rule(
-        symbolic_rule_config(content, hook_ids::TURN_SHOULD_SPEAK)?,
-        serde_json::to_value(symbolic_input)?,
-    )?;
+    let should_speak = content
+        .hook(hook_ids::TURN_SHOULD_SPEAK)
+        .map(|config| {
+            evaluate_symbolic_boolean_rule(config.clone(), serde_json::to_value(symbolic_input)?)
+        })
+        .transpose()?
+        .unwrap_or(true);
     if !should_speak {
         return quiet_room_action_decision(request, "stays quiet for a moment, reading the room.");
     }
-    let should_direct_speech = evaluate_symbolic_boolean_rule(
-        symbolic_rule_config(content, hook_ids::TURN_SHOULD_DIRECT_SPEECH)?,
-        serde_json::to_value(symbolic_input)?,
-    )?;
+    let should_direct_speech = content
+        .hook(hook_ids::TURN_SHOULD_DIRECT_SPEECH)
+        .map(|config| {
+            evaluate_symbolic_boolean_rule(config.clone(), serde_json::to_value(symbolic_input)?)
+        })
+        .transpose()?
+        .unwrap_or(true);
     if should_direct_speech
         && let Some(target_actor_id) = directly_addressed_target_actor_id(request)
             .or_else(|| preferred_target_actor_id(request))
@@ -192,17 +198,6 @@ pub fn evaluate_symbolic_boolean_rule(
         .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
     let result: SymbolicPlannerBoolResult = serde_json::from_value(payload)?;
     Ok(result.value)
-}
-
-pub fn symbolic_rule_config(
-    content: &ContentPack,
-    hook_id: &str,
-) -> Result<serde_json::Value, Box<dyn Error>> {
-    content.hook(hook_id).cloned().ok_or_else(|| {
-        Box::new(std::io::Error::other(format!(
-            "missing symbolic hook '{hook_id}'"
-        ))) as Box<dyn Error>
-    })
 }
 
 pub fn build_symbolic_action_planner_input(

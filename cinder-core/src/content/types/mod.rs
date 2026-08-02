@@ -59,8 +59,6 @@ pub struct ContentSettingsDefinition {
     pub fallback_stage_id: String,
     #[serde(default)]
     pub fallback_required_story_vars: Vec<String>,
-    #[serde(default = "default_speech_stamina_cost_floor")]
-    pub speech_stamina_cost_floor: i32,
     #[serde(default = "default_true")]
     pub show_act_closure: bool,
     #[serde(default)]
@@ -78,10 +76,6 @@ fn default_npc_tick_interval_ms() -> u64 {
 }
 
 fn default_tick_minutes_per_turn() -> u32 {
-    1
-}
-
-fn default_speech_stamina_cost_floor() -> i32 {
     1
 }
 
@@ -117,7 +111,6 @@ impl Default for ContentSettingsDefinition {
             act_member_alias: String::default(),
             fallback_stage_id: String::default(),
             fallback_required_story_vars: Vec::new(),
-            speech_stamina_cost_floor: default_speech_stamina_cost_floor(),
             workflow_id: String::default(),
             show_act_closure: true,
             show_relationship_sidebar: false,

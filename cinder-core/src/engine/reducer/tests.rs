@@ -28,7 +28,6 @@ fn reducer_test_pack() -> ContentPack {
     let mut pack = load_default_pack().expect("load base pack");
     pack.settings = ContentSettingsDefinition {
         tick_minutes_per_turn: 1,
-        speech_stamina_cost_floor: 0,
         ..ContentSettingsDefinition::default()
     };
     pack.opening = OpeningDefinition {

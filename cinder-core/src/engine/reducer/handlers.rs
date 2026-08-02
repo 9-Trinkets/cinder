@@ -1,7 +1,6 @@
 use super::beat_advance::{advance_objective_for_signal, time_reached_signals};
 use super::command_effects::{
-    ActorMoveTransitionContext, apply_actor_move_transition, apply_speech_stamina_cost,
-    handle_actor_command_used,
+    ActorMoveTransitionContext, apply_actor_move_transition, handle_actor_command_used,
 };
 use super::observation::{
     render_actor_speech_line, render_feature_consumables_line, render_room_observation,
@@ -155,7 +154,6 @@ pub(super) fn handle_actor_spoke(
         }),
     )
     .unwrap_or_else(|error| eprintln!("[cinder] hook warning (speech): {error}"));
-    apply_speech_stamina_cost(state, content, actor_id, other_person_id);
     if state
         .pending_reply(actor_id, other_person_id)
         .is_some_and(|pending| {
