@@ -70,6 +70,7 @@ pub(crate) fn reply_pending_from_candidate(
 pub(crate) fn hidden_exploration_actions(
     content: &ContentPack,
     actor_stats: &BTreeMap<String, i32>,
+    is_stage_anchored: bool,
     rest_available: bool,
     eat_candidate_count: usize,
     drink_candidate_count: usize,
@@ -80,6 +81,7 @@ pub(crate) fn hidden_exploration_actions(
         HIDDEN_EXPLORATION_ACTIONS_HOOK,
         json!({
             "actor_stats": actor_stats,
+            "is_stage_anchored": is_stage_anchored,
             "affordances": {
                 "rest": {
                     "available": rest_available,

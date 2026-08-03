@@ -128,6 +128,7 @@ pub fn run_actor_turn(
     let hidden_actions = hidden_exploration_actions(
         content.as_ref(),
         &actor_stats,
+        state.stage_assigned_rooms.contains_key(&actor.id),
         rest_context.is_some(),
         consume_candidates
             .iter()

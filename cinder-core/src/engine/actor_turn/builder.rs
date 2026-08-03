@@ -101,6 +101,7 @@ pub fn build_actor_turn(
     let hidden_actions = hidden_exploration_actions(
         content.as_ref(),
         &actor_stats,
+        state.stage_assigned_rooms.contains_key(&actor.id),
         rest_context.is_some(),
         consume_candidates
             .iter()
@@ -117,7 +118,6 @@ pub fn build_actor_turn(
     )
     .map_err(std::io::Error::other)?;
     let hide_move = hidden_actions.contains(&HiddenAffordanceAction::Move);
-    let is_room_locked = state.stage_assigned_rooms.contains_key(&actor.id);
     let hide_inspect_feature = hidden_actions.contains(&HiddenAffordanceAction::InspectFeature);
     let hide_inspect_actor = hidden_actions.contains(&HiddenAffordanceAction::InspectActor);
     let inspect_feature_cands = if hide_inspect_feature {
@@ -130,14 +130,14 @@ pub fn build_actor_turn(
     } else {
         inspect_actor_candidates(state, actor, &talk_candidate_contexts)
     };
-    let move_target = (!hide_move && !is_room_locked)
+    let move_target = (!hide_move)
         .then(|| {
             exploration_move_target(content.as_ref(), state, actor, &current_room_id).or_else(
                 || pair_stats_move_target(content.as_ref(), state, actor, &current_room_id),
             )
         })
         .flatten();
-    let move_events = if hide_move || is_room_locked {
+    let move_events = if hide_move {
         Vec::new()
     } else {
         decide_movement(
