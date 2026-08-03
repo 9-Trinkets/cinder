@@ -1,4 +1,32 @@
 {
+  "actor.turn_action_guidance": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "active_stage_ids",
+              "operator": "array_contains",
+              "value": "introduce-everyone-first-evening"
+            }
+          ],
+          "payload_template": {
+            "kind": "hide_affordance",
+            "affordance_id": "move"
+          }
+        }
+      ]
+    }
+  },
   "actor.time_advanced": {
     "rule": "effect_table",
     "rule_config": {
