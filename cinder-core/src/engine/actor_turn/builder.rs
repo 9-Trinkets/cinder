@@ -22,10 +22,9 @@ use super::affordances::{
     require_actor_affordance_for_consumable_kind, require_affordance_command,
 };
 use super::context::{
-    HiddenAffordanceAction, SpeakCandidateContext, actors_in_room_except,
-    available_consume_candidates, hidden_exploration_actions, inspect_actor_candidates,
-    inspect_feature_candidates, preferred_hunger_recovery_consume_item_id, recovery_context_label,
-    reply_pending_from_candidate,
+    SpeakCandidateContext, actors_in_room_except, available_consume_candidates,
+    inspect_actor_candidates, inspect_feature_candidates,
+    preferred_hunger_recovery_consume_item_id, recovery_context_label, reply_pending_from_candidate,
 };
 use super::dialogue::{actor_turn_setting_notes, recent_actor_turn_memory};
 use super::movement::{
@@ -98,57 +97,18 @@ pub fn build_actor_turn(
     let rest_context = recovery_context_label(content.as_ref(), &current_room_id);
     let consume_candidates =
         available_consume_candidates(content.as_ref(), state, actor, &current_room_id);
-    let hidden_actions = hidden_exploration_actions(
-        content.as_ref(),
-        &actor_stats,
-        state.stage_assigned_rooms.contains_key(&actor.id),
-        rest_context.is_some(),
-        consume_candidates
-            .iter()
-            .filter(|candidate| candidate.kind == crate::content::types::ConsumableKind::Eat)
-            .count(),
-        consume_candidates
-            .iter()
-            .filter(|candidate| candidate.kind == crate::content::types::ConsumableKind::Drink)
-            .count(),
-        consume_candidates
-            .iter()
-            .filter(|candidate| candidate.kind == crate::content::types::ConsumableKind::Consume)
-            .count(),
-    )
-    .map_err(std::io::Error::other)?;
-    let hide_move = hidden_actions.contains(&HiddenAffordanceAction::Move);
-    let hide_inspect_feature = hidden_actions.contains(&HiddenAffordanceAction::InspectFeature);
-    let hide_inspect_actor = hidden_actions.contains(&HiddenAffordanceAction::InspectActor);
-    let inspect_feature_cands = if hide_inspect_feature {
-        Vec::new()
-    } else {
-        inspect_feature_candidates(content.as_ref(), state, actor, &current_room_id)
-    };
-    let inspect_actor_cands = if hide_inspect_actor {
-        Vec::new()
-    } else {
-        inspect_actor_candidates(state, actor, &talk_candidate_contexts)
-    };
-    let move_target = (!hide_move)
-        .then(|| {
-            exploration_move_target(content.as_ref(), state, actor, &current_room_id).or_else(
-                || pair_stats_move_target(content.as_ref(), state, actor, &current_room_id),
-            )
-        })
-        .flatten();
-    let move_events = if hide_move {
-        Vec::new()
-    } else {
-        decide_movement(
-            Arc::clone(&content),
-            state,
-            actor,
-            rules,
-            &current_room_id,
-            move_target.as_ref().map(|target| target.room_id.as_str()),
-        )?
-    };
+    let inspect_feature_cands = inspect_feature_candidates(content.as_ref(), state, actor, &current_room_id);
+    let inspect_actor_cands = inspect_actor_candidates(state, actor, &talk_candidate_contexts);
+    let move_target = exploration_move_target(content.as_ref(), state, actor, &current_room_id)
+        .or_else(|| pair_stats_move_target(content.as_ref(), state, actor, &current_room_id));
+    let move_events = decide_movement(
+        Arc::clone(&content),
+        state,
+        actor,
+        rules,
+        &current_room_id,
+        move_target.as_ref().map(|target| target.room_id.as_str()),
+    )?;
     let move_option = move_events.iter().find_map(|event| match event {
         WorldEvent::ActorMoved { to_room_id, .. } => content
             .room(to_room_id)
@@ -450,8 +410,12 @@ pub fn build_actor_turn(
             active_stage_ids: state.active_objective_stage_ids.clone(),
             unvisited_room_count,
             unseen_feature_count,
+            is_stage_anchored: state.stage_assigned_rooms.contains_key(&actor.id),
         },
     );
+    let hide_move = guidance.hidden_affordance_ids.contains("move");
+    let hide_inspect_feature = guidance.hidden_affordance_ids.contains("inspect_feature");
+    let hide_inspect_actor = guidance.hidden_affordance_ids.contains("inspect_actor");
     let mut affordances = affordance_candidates
         .into_iter()
         .filter(|candidate| {

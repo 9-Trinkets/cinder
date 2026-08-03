@@ -1,12 +1,7 @@
 use crate::content::types::{ActorDefinition, ConsumableDefinition, ConsumableKind, ContentPack};
 use crate::engine::dialogue::ActorTurnConsumeCandidate;
-use crate::engine::hooks::{ConversationCandidateAssessment, evaluate_hook_effects};
+use crate::engine::hooks::ConversationCandidateAssessment;
 use crate::engine::state::WorldState;
-use serde::Deserialize;
-use serde_json::json;
-use std::collections::{BTreeMap, BTreeSet};
-
-const HIDDEN_EXPLORATION_ACTIONS_HOOK: &str = "npc.hidden_exploration_actions";
 
 #[derive(Debug, Clone)]
 pub(crate) struct SpeakCandidateContext<'a> {
@@ -25,19 +20,6 @@ pub(crate) struct ActorTurnInspectFeatureCandidate {
 pub(crate) struct ActorTurnInspectActorCandidate {
     pub(crate) actor_id: String,
     pub(crate) actor_name: String,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub(crate) enum HiddenAffordanceAction {
-    Move,
-    InspectFeature,
-    InspectActor,
-}
-
-#[derive(Debug, Deserialize)]
-struct HiddenAffordanceEffect {
-    action: HiddenAffordanceAction,
 }
 
 pub(crate) fn actors_in_room_except<'a>(
@@ -65,46 +47,6 @@ pub(crate) fn reply_pending_from_candidate(
         .is_some_and(|pending| {
             pending.speaker_id == candidate_id && pending.listener_id == actor_id
         })
-}
-
-pub(crate) fn hidden_exploration_actions(
-    content: &ContentPack,
-    actor_stats: &BTreeMap<String, i32>,
-    is_stage_anchored: bool,
-    rest_available: bool,
-    eat_candidate_count: usize,
-    drink_candidate_count: usize,
-    consume_candidate_count: usize,
-) -> Result<BTreeSet<HiddenAffordanceAction>, String> {
-    Ok(evaluate_hook_effects::<HiddenAffordanceEffect>(
-        content,
-        HIDDEN_EXPLORATION_ACTIONS_HOOK,
-        json!({
-            "actor_stats": actor_stats,
-            "is_stage_anchored": is_stage_anchored,
-            "affordances": {
-                "rest": {
-                    "available": rest_available,
-                    "option_count": usize::from(rest_available),
-                },
-                "eat": {
-                    "available": eat_candidate_count > 0,
-                    "option_count": eat_candidate_count,
-                },
-                "drink": {
-                    "available": drink_candidate_count > 0,
-                    "option_count": drink_candidate_count,
-                },
-                "consume": {
-                    "available": consume_candidate_count > 0,
-                    "option_count": consume_candidate_count,
-                },
-            },
-        }),
-    )?
-    .into_iter()
-    .map(|effect| effect.action)
-    .collect())
 }
 
 pub(crate) fn available_consume_candidates(

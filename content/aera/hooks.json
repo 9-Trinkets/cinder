@@ -1,28 +1,4 @@
 {
-  "npc.hidden_exploration_actions": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": {
-        "effects": []
-      }
-    },
-    "input_overlay": {
-      "rules": [
-        {
-          "conditions": [
-            { "path": "is_stage_anchored", "operator": "equal", "value": true }
-          ],
-          "payload_template": {
-            "kind": "hide_action",
-            "action": "move"
-          }
-        }
-      ]
-    }
-  },
   "actor.turn_action_guidance": {
     "rule": "effect_table",
     "rule_config": {
@@ -42,6 +18,15 @@
               "operator": "array_contains",
               "value": "introduce-everyone-first-evening"
             }
+          ],
+          "payload_template": {
+            "kind": "hide_affordance",
+            "affordance_id": "move"
+          }
+        },
+        {
+          "conditions": [
+            { "path": "is_stage_anchored", "operator": "equal", "value": true }
           ],
           "payload_template": {
             "kind": "hide_affordance",
