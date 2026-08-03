@@ -1,10 +1,25 @@
 use crate::content::types::{
     ActorDefinition, ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition, ContentPack,
 };
+use crate::engine::actor_tick::decide_movement;
 use crate::engine::events::WorldEvent;
 use crate::engine::hooks::{pair_state_note, room_candidate_score};
 use crate::engine::state::WorldState;
 use std::collections::{BTreeMap, BTreeSet, VecDeque};
+use std::error::Error;
+use std::sync::Arc;
+
+/// Movement for non-autonomous packs (autonomous_actor_dialogue=false), which skip the
+/// full affordance/dialogue pipeline in build_actor_turn and only ever move NPCs.
+pub fn run_actor_turn(
+    content: Arc<ContentPack>,
+    state: &WorldState,
+    actor: &ActorDefinition,
+    rules: &ActorMovementRulesDefinition,
+) -> Result<Vec<WorldEvent>, Box<dyn Error>> {
+    let current_room_id = state.actor_room_id(&actor.id, &actor.room_id).to_string();
+    decide_movement(content, state, actor, rules, &current_room_id, None)
+}
 
 #[derive(Debug, Clone)]
 pub(crate) struct RelationshipMoveTarget {
