@@ -53,7 +53,6 @@
       ]
     },
     "movement_rules": {
-      "default_target_room_id": "lounge",
       "target_rules": [
         {
           "target_room_id": "girls-room",
@@ -135,7 +134,6 @@
       ]
     },
     "movement_rules": {
-      "default_target_room_id": "kitchen",
       "target_rules": [
         {
           "target_room_id": "guys-room",
@@ -221,7 +219,6 @@
       ]
     },
     "movement_rules": {
-      "default_target_room_id": "studio",
       "target_rules": [
         {
           "target_room_id": "girls-room",
@@ -305,7 +302,6 @@
       ]
     },
     "movement_rules": {
-      "default_target_room_id": "patio",
       "target_rules": [
         {
           "target_room_id": "guys-room",

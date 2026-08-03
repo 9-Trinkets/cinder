@@ -5,8 +5,6 @@ use std::collections::BTreeMap;
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ActorMovementRulesDefinition {
     #[serde(default)]
-    pub default_target_room_id: String,
-    #[serde(default)]
     pub target_rules: Vec<ActorMovementTargetRuleDefinition>,
 }
 

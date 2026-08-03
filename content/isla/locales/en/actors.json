@@ -13,7 +13,6 @@
     "aliases": [],
     "inspect_text": "Noa is in her early thirties, dressed in quiet quality — the kind of clothes chosen not to be noticed. She carries herself with the composure of someone who learned early that visibility is a risk. Her posture shifts between polished attention and the slight hunch of a woman who has spent years making herself smaller. When interrupted mid-thought, she restarts with a safer version.",
     "movement_rules": {
-      "default_target_room_id": "cafe",
       "target_rules": [
         {
           "target_room_id": "entrance-lobby",
@@ -87,7 +86,6 @@
     "aliases": [],
     "inspect_text": "Awa holds herself like someone ready to intercept the next problem before it reaches anyone else, and the vigilance makes even stillness look like work.",
     "movement_rules": {
-      "default_target_room_id": "cafe",
       "target_rules": [
         {
           "target_room_id": "entrance-lobby",
@@ -153,7 +151,6 @@
     "aliases": [],
     "inspect_text": "Jonah looks sturdy in the practiced way of someone who knows how to stay functional long after his feelings have left the room.",
     "movement_rules": {
-      "default_target_room_id": "cafe",
       "target_rules": [
         {
           "target_room_id": "entrance-lobby",
@@ -219,7 +216,6 @@
     "aliases": [],
     "inspect_text": "Sophea's smile arrives on cue, then lingers half a beat too long after the rest of her face has gone tired.",
     "movement_rules": {
-      "default_target_room_id": "cafe",
       "target_rules": [
         {
           "target_room_id": "entrance-lobby",

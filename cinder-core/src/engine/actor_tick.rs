@@ -1,20 +1,15 @@
-use crate::content::types::{
-    ActorDefinition, ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition, ContentPack,
-};
+use crate::content::types::{ActorDefinition, ActorMovementRulesDefinition, ContentPack};
+use crate::engine::actor_turn::movement::resolved_movement_rule_target_room_id;
 use crate::engine::actor_turn::{
     build_actor_turn, decide_actor_turn_action, realize_actor_turn_action, run_actor_turn,
 };
 use crate::engine::conversation_memory::refresh_conversation_summaries;
 use crate::engine::dialogue::{ActorTurnActionDecision, DialogueGenerator};
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
-use crate::engine::neuron::{
-    LocalWorkflowRunner, WorkflowDefinition, WorkflowRoleConfig, evaluate_symbolic_role,
-    run_workflow,
-};
+use crate::engine::neuron::{LocalWorkflowRunner, WorkflowDefinition, WorkflowRoleConfig, run_workflow};
 use crate::engine::reducer::apply_events;
 use crate::engine::state::WorldState;
 use serde::{Deserialize, Serialize};
-use serde_json::{Value, json};
 use std::error::Error;
 use std::fmt;
 use std::path::Path;
@@ -69,7 +64,6 @@ pub(crate) fn run_actor_tick(
     content: Arc<ContentPack>,
     dialogue: Arc<dyn DialogueGenerator>,
     tick_workflow: &WorkflowDefinition,
-    movement_workflow: &WorkflowDefinition,
     state: &WorldState,
 ) -> Result<ActorTickExecution, ActorTickError> {
     let input = ActorTickWorkflowState {
@@ -95,7 +89,6 @@ pub(crate) fn run_actor_tick(
         ActorTickRoleRunner {
             content,
             dialogue,
-            movement_workflow: movement_workflow.clone(),
             trace_records: Arc::clone(&trace_records),
         },
     );
@@ -126,85 +119,36 @@ pub(crate) fn run_actor_tick(
 
 pub(crate) fn decide_movement(
     content: Arc<ContentPack>,
-    workflow: &WorkflowDefinition,
     state: &WorldState,
     actor: &ActorDefinition,
     rules: &ActorMovementRulesDefinition,
     current_room_id: &str,
     preferred_target_room_id: Option<&str>,
 ) -> Result<Vec<WorldEvent>, Box<dyn Error>> {
-    if let Some(target_room_id) = evaluate_target_rules(state, &rules.target_rules) {
-        if target_room_id != current_room_id {
-            if let Some(next_room) = next_room_toward(&content, current_room_id, &target_room_id) {
-                let events = vec![WorldEvent::ActorMoved {
-                    actor_id: actor.id.clone(),
-                    from_room_id: current_room_id.to_string(),
-                    to_room_id: next_room,
-                }];
-                return Ok(events);
-            }
-        }
+    let target_room_id = resolved_movement_rule_target_room_id(state, rules)
+        .or_else(|| preferred_target_room_id.map(str::to_string));
+    let Some(target_room_id) = target_room_id else {
+        return Ok(vec![]);
+    };
+    if target_room_id == current_room_id {
         return Ok(vec![]);
     }
-    let input = ActorTurnWorkflowInput {
-        actor_id: actor.id.clone(),
-        current_room_id: current_room_id.to_string(),
-        player_room_id: state.current_room_id.clone(),
-        active_stage_ids: state.active_objective_stage_ids.clone(),
-        story_vars: state.story_vars.clone(),
-        default_target_room_id: preferred_target_room_id
-            .unwrap_or(rules.default_target_room_id.as_str())
-            .to_string(),
-        rules: build_decision_cases(actor, current_room_id, &rules.target_rules),
-    };
-    let output = run_workflow(
-        workflow,
-        &serde_json::to_string(&input)?,
-        false,
-        Path::new("."),
-        ActorMoveRoleRunner { content },
-    )?;
-    let result: ActorTurnResult = serde_json::from_str(output.trim())?;
-    Ok(result.events)
-}
-
-#[derive(Clone)]
-struct ActorMoveRoleRunner {
-    content: Arc<ContentPack>,
+    Ok(next_room_toward(&content, current_room_id, &target_room_id)
+        .map(|next_room_id| {
+            vec![WorldEvent::ActorMoved {
+                actor_id: actor.id.clone(),
+                from_room_id: current_room_id.to_string(),
+                to_room_id: next_room_id,
+            }]
+        })
+        .unwrap_or_default())
 }
 
 #[derive(Clone)]
 struct ActorTickRoleRunner {
     content: Arc<ContentPack>,
     dialogue: Arc<dyn DialogueGenerator>,
-    movement_workflow: WorkflowDefinition,
     trace_records: Arc<Mutex<Vec<ActorTraceRecord>>>,
-}
-
-impl LocalWorkflowRunner for ActorMoveRoleRunner {
-    fn run_role(
-        &self,
-        role_name: &str,
-        prompt: &str,
-        _role_cfg: &WorkflowRoleConfig,
-    ) -> Result<String, String> {
-        match role_name {
-            "npc_apply" => self.handle_apply(prompt),
-            _ => Err(format!("unknown cinder npc role '{role_name}'")),
-        }
-    }
-
-    fn run_symbolic_role(
-        &self,
-        role_name: &str,
-        prompt: &str,
-        role_cfg: &WorkflowRoleConfig,
-    ) -> Result<String, String> {
-        match role_name {
-            "npc_rule_gate" => self.handle_symbolic_rule(prompt, role_cfg),
-            _ => Err(format!("unknown cinder npc symbolic role '{role_name}'")),
-        }
-    }
 }
 
 impl LocalWorkflowRunner for ActorTickRoleRunner {
@@ -236,41 +180,6 @@ impl LocalWorkflowRunner for ActorTickRoleRunner {
                 "unknown cinder npc tick symbolic role '{role_name}'"
             )),
         }
-    }
-}
-
-impl ActorMoveRoleRunner {
-    fn handle_apply(&self, prompt: &str) -> Result<String, String> {
-        let inbound = extract_inbound_message(prompt)?;
-        let decision: ActorMoveDecision =
-            serde_json::from_str(&inbound).map_err(|error| error.to_string())?;
-        let events = next_room_toward(
-            self.content.as_ref(),
-            &decision.current_room_id,
-            &decision.target_room_id,
-        )
-        .map(|next_room_id| {
-            vec![WorldEvent::ActorMoved {
-                actor_id: decision.actor_id,
-                from_room_id: decision.current_room_id,
-                to_room_id: next_room_id,
-            }]
-        })
-        .unwrap_or_default();
-        serde_json::to_string(&RouteEnvelope {
-            next: "complete".to_string(),
-            message: serde_json::to_string(&ActorTurnResult { events })
-                .map_err(|error| error.to_string())?,
-        })
-        .map_err(|error| error.to_string())
-    }
-
-    fn handle_symbolic_rule(
-        &self,
-        prompt: &str,
-        role_cfg: &WorkflowRoleConfig,
-    ) -> Result<String, String> {
-        evaluate_symbolic_role(prompt, role_cfg, "cinder-npc-rule-gate")
     }
 }
 
@@ -325,7 +234,6 @@ impl ActorTickRoleRunner {
             let events = run_actor_turn(
                 Arc::clone(&self.content),
                 Arc::clone(&self.dialogue),
-                &self.movement_workflow,
                 &workflow_state.state,
                 &actor,
                 rules,
@@ -352,7 +260,6 @@ impl ActorTickRoleRunner {
         }
         let _ = build_actor_turn(
             Arc::clone(&self.content),
-            &self.movement_workflow,
             &workflow_state.state,
             &actor,
             rules,
@@ -412,7 +319,6 @@ impl ActorTickRoleRunner {
             .ok_or_else(|| format!("missing movement rules for '{actor_id}'"))?;
         let build = build_actor_turn(
             Arc::clone(&self.content),
-            &self.movement_workflow,
             &workflow_state.state,
             &actor,
             rules,
@@ -482,7 +388,6 @@ impl ActorTickRoleRunner {
             .ok_or_else(|| format!("missing movement rules for '{actor_id}'"))?;
         let build = build_actor_turn(
             Arc::clone(&self.content),
-            &self.movement_workflow,
             &workflow_state.state,
             &actor,
             rules,
@@ -577,17 +482,6 @@ impl ActorTickRoleRunner {
     }
 }
 
-#[derive(Debug, Clone, Serialize)]
-struct ActorTurnWorkflowInput {
-    actor_id: String,
-    current_room_id: String,
-    player_room_id: String,
-    active_stage_ids: Vec<String>,
-    story_vars: crate::engine::state::VariableStore,
-    default_target_room_id: String,
-    rules: Vec<ActorDecisionCase>,
-}
-
 #[derive(Debug, Clone, Serialize, Deserialize)]
 struct ActorTickWorkflowState {
     state: WorldState,
@@ -596,33 +490,6 @@ struct ActorTickWorkflowState {
     emitted_events: Vec<WorldEvent>,
     #[serde(default)]
     actor_turn_stage: ActorTurnStageEnvelope,
-}
-
-#[derive(Debug, Clone, Serialize)]
-struct ActorDecisionCase {
-    conditions: Vec<ActorDecisionCondition>,
-    payload_template: Value,
-}
-
-#[derive(Debug, Clone, Serialize)]
-struct ActorDecisionCondition {
-    path: String,
-    operator: &'static str,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    value: Option<Value>,
-}
-
-#[derive(Debug, Deserialize)]
-struct ActorMoveDecision {
-    actor_id: String,
-    current_room_id: String,
-    target_room_id: String,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-struct ActorTurnResult {
-    #[serde(default)]
-    events: Vec<WorldEvent>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -654,89 +521,6 @@ fn complete_tick_workflow(events: &[WorldEvent]) -> Result<String, String> {
         .map_err(|error| error.to_string())?,
     })
     .map_err(|error| error.to_string())
-}
-
-fn evaluate_target_rules(
-    state: &WorldState,
-    target_rules: &[ActorMovementTargetRuleDefinition],
-) -> Option<String> {
-    for rule in target_rules {
-        if !rule.when_player_room_id.is_empty()
-            && rule.when_player_room_id != state.current_room_id
-        {
-            continue;
-        }
-        if !rule.required_story_var.is_empty()
-            && !state.story_vars.has(&rule.required_story_var)
-        {
-            continue;
-        }
-        if !rule.any_active_stage_ids.is_empty()
-            && !rule
-                .any_active_stage_ids
-                .iter()
-                .any(|id| state.active_objective_stage_ids.contains(id))
-        {
-            continue;
-        }
-        if !rule.target_from_story_var.is_empty() {
-            if let Some(resolved) = state.story_vars.get(&rule.target_from_story_var) {
-                return Some(resolved.to_string());
-            }
-        }
-        return Some(rule.target_room_id.clone());
-    }
-    None
-}
-
-fn build_decision_cases(
-    actor: &ActorDefinition,
-    current_room_id: &str,
-    target_rules: &[ActorMovementTargetRuleDefinition],
-) -> Vec<ActorDecisionCase> {
-    target_rules
-        .iter()
-        .map(|rule| ActorDecisionCase {
-            conditions: build_conditions(rule),
-            payload_template: json!({
-                "actor_id": actor.id,
-                "current_room_id": current_room_id,
-                "target_room_id": rule.target_room_id,
-            }),
-        })
-        .collect()
-}
-
-fn build_conditions(rule: &ActorMovementTargetRuleDefinition) -> Vec<ActorDecisionCondition> {
-    let mut conditions = Vec::new();
-    if !rule.when_player_room_id.is_empty() {
-        conditions.push(ActorDecisionCondition {
-            path: "player_room_id".to_string(),
-            operator: "equal",
-            value: Some(Value::String(rule.when_player_room_id.clone())),
-        });
-    }
-    if !rule.required_story_var.is_empty() {
-        conditions.push(ActorDecisionCondition {
-            path: format!("story_vars.{}", rule.required_story_var),
-            operator: "exists",
-            value: None,
-        });
-    }
-    if !rule.any_active_stage_ids.is_empty() {
-        conditions.push(ActorDecisionCondition {
-            path: "active_stage_ids".to_string(),
-            operator: "array_contains_any",
-            value: Some(Value::Array(
-                rule.any_active_stage_ids
-                    .iter()
-                    .cloned()
-                    .map(Value::String)
-                    .collect(),
-            )),
-        });
-    }
-    conditions
 }
 
 fn sanitize_json_control_chars(input: &str) -> String {

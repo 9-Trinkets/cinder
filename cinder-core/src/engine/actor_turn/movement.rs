@@ -18,14 +18,16 @@ pub(crate) fn resolved_movement_rule_target_room_id(
     state: &WorldState,
     rules: &ActorMovementRulesDefinition,
 ) -> Option<String> {
-    rules
+    let rule = rules
         .target_rules
         .iter()
-        .find(|rule| movement_target_rule_matches(state, rule))
-        .map(|rule| rule.target_room_id.clone())
-        .or_else(|| {
-            (!rules.default_target_room_id.is_empty()).then(|| rules.default_target_room_id.clone())
-        })
+        .find(|rule| movement_target_rule_matches(state, rule))?;
+    if !rule.target_from_story_var.is_empty()
+        && let Some(resolved) = state.story_vars.get(&rule.target_from_story_var)
+    {
+        return Some(resolved.to_string());
+    }
+    Some(rule.target_room_id.clone())
 }
 
 pub(crate) fn planned_move_target_room_id(move_events: &[WorldEvent]) -> Option<&str> {

@@ -18,9 +18,7 @@ use crate::engine::state::{
     initialize_act_state,
 };
 use crate::engine::turn_runner;
-use crate::engine::workflows::{
-    cinder_npc_tick_workflow_path, cinder_npc_turn_workflow_path, workflow_path_for_id,
-};
+use crate::engine::workflows::{cinder_npc_tick_workflow_path, workflow_path_for_id};
 use serde::Serialize;
 use std::collections::{BTreeMap, HashMap};
 use std::error::Error;
@@ -33,7 +31,6 @@ pub struct CinderRuntime {
     state: Arc<Mutex<WorldState>>,
     workflow: WorkflowDefinition,
     actor_tick_workflow: WorkflowDefinition,
-    actor_move_workflow: WorkflowDefinition,
     trace_events: bool,
     trace_dir: PathBuf,
     act_closure: Arc<Mutex<Option<ActClosure>>>,
@@ -48,7 +45,6 @@ impl Clone for CinderRuntime {
             state: Arc::clone(&self.state),
             workflow: self.workflow.clone(),
             actor_tick_workflow: self.actor_tick_workflow.clone(),
-            actor_move_workflow: self.actor_move_workflow.clone(),
             trace_events: self.trace_events,
             trace_dir: self.trace_dir.clone(),
             act_closure: Arc::new(Mutex::new(
@@ -129,7 +125,6 @@ impl CinderRuntime {
             dialogue,
             workflow,
             load_workflow(&cinder_npc_tick_workflow_path())?,
-            load_workflow(&cinder_npc_turn_workflow_path())?,
             PathBuf::from(env!("CINDER_PROJECT_DIR")).join(".cinder-state"),
         )
     }
@@ -156,7 +151,6 @@ impl CinderRuntime {
             dialogue,
             workflow,
             load_workflow(&cinder_npc_tick_workflow_path())?,
-            load_workflow(&cinder_npc_turn_workflow_path())?,
             PathBuf::from(env!("CINDER_PROJECT_DIR")).join(".cinder-state"),
         )
     }
@@ -175,7 +169,6 @@ impl CinderRuntime {
         dialogue: Arc<dyn DialogueGenerator>,
         workflow: WorkflowDefinition,
         actor_tick_workflow: WorkflowDefinition,
-        actor_move_workflow: WorkflowDefinition,
         trace_dir: PathBuf,
     ) -> Result<Self, Box<dyn Error>> {
         let mut state = state;
@@ -186,7 +179,6 @@ impl CinderRuntime {
             dialogue,
             workflow,
             actor_tick_workflow,
-            actor_move_workflow,
             trace_events,
             trace_dir,
             act_closure: Arc::new(Mutex::new(None)),
@@ -976,7 +968,6 @@ impl CinderRuntime {
             state: Arc::clone(&self.state),
             workflow: self.workflow.clone(),
             actor_tick_workflow: self.actor_tick_workflow.clone(),
-            actor_move_workflow: self.actor_move_workflow.clone(),
             trace_events: self.trace_events,
             trace_dir: self.trace_dir.clone(),
             act_closure: Arc::new(Mutex::new(None)),
@@ -1112,7 +1103,6 @@ impl CinderRuntime {
             Arc::clone(&self.content),
             Arc::clone(&self.dialogue),
             &self.actor_tick_workflow,
-            &self.actor_move_workflow,
             &state_snapshot,
         ) {
             Ok(tick) => tick,
@@ -1261,7 +1251,6 @@ mod tests {
             dialogue,
             load_workflow(&workflow_path_for_id("cinder_turn")).expect("load turn workflow"),
             load_workflow(&cinder_npc_tick_workflow_path()).expect("load npc tick workflow"),
-            load_workflow(&cinder_npc_turn_workflow_path()).expect("load npc move workflow"),
             std::env::temp_dir(),
         )
         .expect("build runtime");
@@ -1361,7 +1350,6 @@ mod tests {
             dialogue,
             load_workflow(&workflow_path_for_id("cinder_turn")).expect("load turn workflow"),
             load_workflow(&cinder_npc_tick_workflow_path()).expect("load npc tick workflow"),
-            load_workflow(&cinder_npc_turn_workflow_path()).expect("load npc move workflow"),
             std::env::temp_dir(),
         )
         .expect("build runtime");

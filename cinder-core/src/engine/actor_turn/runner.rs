@@ -13,7 +13,6 @@ use crate::engine::hooks::{
     ActorTurnGuidanceInput, ActorTurnGuidanceSpeakCandidateInput, CandidateAffordanceInput,
     actor_state_notes, actor_turn_guidance, conversation_candidate_assessment, pair_state_note,
 };
-use crate::engine::neuron::WorkflowDefinition;
 use crate::engine::state::WorldState;
 use std::error::Error;
 use std::sync::Arc;
@@ -79,7 +78,6 @@ pub fn decide_actor_turn_action(
 pub fn run_actor_turn(
     content: Arc<ContentPack>,
     dialogue: Arc<dyn DialogueGenerator>,
-    workflow: &WorkflowDefinition,
     state: &WorldState,
     actor: &ActorDefinition,
     rules: &ActorMovementRulesDefinition,
@@ -115,7 +113,6 @@ pub fn run_actor_turn(
     if !content.settings.autonomous_actor_dialogue {
         let move_events = decide_movement(
             Arc::clone(&content),
-            workflow,
             state,
             actor,
             rules,
@@ -171,7 +168,6 @@ pub fn run_actor_turn(
     } else {
         decide_movement(
             Arc::clone(&content),
-            workflow,
             state,
             actor,
             rules,

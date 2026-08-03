@@ -29,7 +29,6 @@
       ]
     },
     "movement_rules": {
-      "default_target_room_id": "kitchen",
       "target_rules": [
         {
           "target_room_id": "living-room",
@@ -72,7 +71,6 @@
       ]
     },
     "movement_rules": {
-      "default_target_room_id": "living-room",
       "target_rules": []
     }
   }

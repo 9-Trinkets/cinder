@@ -12,7 +12,6 @@ use crate::engine::hooks::{
     ActorTurnGuidanceInput, ActorTurnGuidanceSpeakCandidateInput, CandidateAffordanceInput,
     actor_state_notes, actor_turn_guidance, conversation_candidate_assessment, pair_state_note,
 };
-use crate::engine::neuron::WorkflowDefinition;
 use crate::engine::state::WorldState;
 use serde::{Deserialize, Serialize};
 use std::error::Error;
@@ -59,7 +58,6 @@ pub struct ActorTurnBuildOutput {
 
 pub fn build_actor_turn(
     content: Arc<ContentPack>,
-    workflow: &WorkflowDefinition,
     state: &WorldState,
     actor: &ActorDefinition,
     rules: &ActorMovementRulesDefinition,
@@ -144,7 +142,6 @@ pub fn build_actor_turn(
     } else {
         decide_movement(
             Arc::clone(&content),
-            workflow,
             state,
             actor,
             rules,

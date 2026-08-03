@@ -17,10 +17,3 @@ pub fn cinder_npc_tick_workflow_path() -> PathBuf {
         .join("workflows")
         .join("cinder_npc_tick.toml")
 }
-
-pub fn cinder_npc_turn_workflow_path() -> PathBuf {
-    PathBuf::from(env!("CINDER_PROJECT_DIR"))
-        .join("config")
-        .join("workflows")
-        .join("cinder_npc_turn.toml")
-}

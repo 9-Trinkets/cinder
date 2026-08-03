@@ -110,7 +110,7 @@ pub fn select_symbolic_actor_turn_action(
             evaluate_symbolic_boolean_rule(config.clone(), serde_json::to_value(symbolic_input)?)
         })
         .transpose()?
-        .unwrap_or(false);
+        .unwrap_or(true);
     if should_move
         && let Some((command_id, room_id)) =
             request
