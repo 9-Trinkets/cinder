@@ -219,7 +219,7 @@ impl ActorTickRoleRunner {
             .content
             .movement_rules(&actor_id)
             .ok_or_else(|| format!("missing movement rules for '{actor_id}'"))?;
-        let mut emit_trace = |role_name: &str, topic: &str, payload: serde_json::Value| {
+        let emit_trace = |role_name: &str, topic: &str, payload: serde_json::Value| -> Result<(), String> {
             self.trace_records
                 .lock()
                 .map_err(|_| "failed to lock npc tick trace records".to_string())?
@@ -231,30 +231,23 @@ impl ActorTickRoleRunner {
             Ok(())
         };
         if !self.content.settings.autonomous_actor_dialogue {
-            let events = run_actor_turn(
-                Arc::clone(&self.content),
-                Arc::clone(&self.dialogue),
-                &workflow_state.state,
-                &actor,
-                rules,
-                &mut emit_trace,
-            )
-            .map_err(|error| {
-                let current_room_id = workflow_state
-                    .state
-                    .actor_room_id(&actor.id, &actor.room_id);
-                let _ = emit_trace(
-                    "npc_actor_turn",
-                    "workflow.error",
-                    serde_json::json!({
-                        "actor_id": actor.id,
-                        "actor_name": actor.name,
-                        "current_room_id": current_room_id,
-                        "message": error.to_string(),
-                    }),
-                );
-                error.to_string()
-            })?;
+            let events = run_actor_turn(Arc::clone(&self.content), &workflow_state.state, &actor, rules)
+                .map_err(|error| {
+                    let current_room_id = workflow_state
+                        .state
+                        .actor_room_id(&actor.id, &actor.room_id);
+                    let _ = emit_trace(
+                        "npc_actor_turn",
+                        "workflow.error",
+                        serde_json::json!({
+                            "actor_id": actor.id,
+                            "actor_name": actor.name,
+                            "current_room_id": current_room_id,
+                            "message": error.to_string(),
+                        }),
+                    );
+                    error.to_string()
+                })?;
             workflow_state.actor_turn_stage = ActorTurnStageEnvelope::Realized { actor_id, events };
             return route_tick_workflow("npc_actor_turn_apply", &workflow_state);
         }
