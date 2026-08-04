@@ -38,8 +38,6 @@ pub struct SymbolicPlannerInput {
     pub cooking_needed: bool,
     pub food_stock: usize,
     pub food_stock_deficit: i32,
-    pub has_pending_movement_target: bool,
-    pub has_move_affordance: bool,
     pub has_speak_room_affordance: bool,
     pub has_clearly_preferred_target: bool,
     pub candidates: Vec<SymbolicPlannerInputCandidate>,
@@ -104,27 +102,19 @@ pub fn select_symbolic_actor_turn_action(
     {
         return Ok(decision);
     }
-    let should_move = content
-        .hook(hook_ids::TURN_SHOULD_MOVE)
-        .map(|config| {
-            evaluate_symbolic_boolean_rule(config.clone(), serde_json::to_value(symbolic_input)?)
-        })
-        .transpose()?
-        .unwrap_or(true);
-    if should_move
-        && let Some((command_id, room_id)) =
-            request
-                .affordances
-                .iter()
-                .find_map(|affordance| match &affordance.invocation {
-                    ActorTurnCommandInvocation::Command {
-                        command_id,
-                        target_room_id: Some(room_id),
-                        input_mode: CommandInputMode::None,
-                        ..
-                    } => Some((command_id.clone(), room_id.clone())),
-                    _ => None,
-                })
+    if let Some((command_id, room_id)) =
+        request
+            .affordances
+            .iter()
+            .find_map(|affordance| match &affordance.invocation {
+                ActorTurnCommandInvocation::Command {
+                    command_id,
+                    target_room_id: Some(room_id),
+                    input_mode: CommandInputMode::None,
+                    ..
+                } => Some((command_id.clone(), room_id.clone())),
+                _ => None,
+            })
     {
         return Ok(ActorTurnActionDecision::Command {
             command_id,
@@ -368,16 +358,6 @@ pub fn build_symbolic_action_planner_input(
         cooking_needed: request.cooking_needed,
         food_stock: request.food_stock,
         food_stock_deficit: request.actor_count as i32 - request.food_stock as i32,
-        has_pending_movement_target: request.has_pending_movement_target,
-        has_move_affordance: request.affordances.iter().any(|affordance| {
-            matches!(
-                affordance.invocation,
-                ActorTurnCommandInvocation::Command {
-                    target_room_id: Some(_),
-                    ..
-                }
-            )
-        }),
         has_speak_room_affordance: request.affordances.iter().any(|affordance| {
             matches!(
                 &affordance.invocation,

@@ -27,18 +27,6 @@
         "語氣溫和、務實，有關心，但不要煽情。",
         "你不會長篇大道理，也不會把情緒一次講太滿。"
       ]
-    },
-    "movement_rules": {
-      "target_rules": [
-        {
-          "target_room_id": "living-room",
-          "when_player_room_id": "living-room",
-          "required_story_var": "movie_title",
-          "any_active_stage_ids": [
-            "dad-brings-fruit"
-          ]
-        }
-      ]
     }
   },
   {
@@ -69,9 +57,6 @@
         "語氣暖、會操心，但還是收著。",
         "你會用提醒、張羅和看似平常的小話來表達愛。"
       ]
-    },
-    "movement_rules": {
-      "target_rules": []
     }
   }
 ]

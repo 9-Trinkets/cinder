@@ -120,7 +120,6 @@ pub struct ActorTurnActionRequest {
     pub food_stock: usize,
     pub actor_count: usize,
     pub consume_target_item_id: Option<String>,
-    pub has_pending_movement_target: bool,
     pub move_target_room_id: Option<String>,
     pub move_target_room_title: Option<String>,
     pub move_target_actor_name: Option<String>,

@@ -1,0 +1,25 @@
+{
+  "unreachable_rooms": ["acts-offstage"],
+  "actors": {
+    "noa": {
+      "target_rules": [
+        { "target_room_id": "entrance-lobby", "when_player_room_id": "entrance-lobby" }
+      ]
+    },
+    "awa": {
+      "target_rules": [
+        { "target_room_id": "entrance-lobby", "when_player_room_id": "entrance-lobby" }
+      ]
+    },
+    "jonah": {
+      "target_rules": [
+        { "target_room_id": "entrance-lobby", "when_player_room_id": "entrance-lobby" }
+      ]
+    },
+    "sophea": {
+      "target_rules": [
+        { "target_room_id": "entrance-lobby", "when_player_room_id": "entrance-lobby" }
+      ]
+    }
+  }
+}

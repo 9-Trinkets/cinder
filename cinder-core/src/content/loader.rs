@@ -1,8 +1,9 @@
 use crate::content::types::{
     ActorDefinition, AffordancesDefinition, ActCastMember, BeatsDefinition,
-    CommandsDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition, OpeningDefinition,
-    OpeningMenuDefinition, OpeningMovieDefinition, PresentationDefinition, RoomDefinition,
-    SpeechIntentsConfig, StatsDefinition, SystemTextDefinition, UiTextDefinition,
+    CommandsDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition,
+    MovementConfigDefinition, OpeningDefinition, OpeningMenuDefinition, OpeningMovieDefinition,
+    PresentationDefinition, RoomDefinition, SpeechIntentsConfig, StatsDefinition,
+    SystemTextDefinition, UiTextDefinition,
 };
 use serde::de::DeserializeOwned;
 use serde_json::Value;
@@ -173,6 +174,8 @@ pub fn load_pack_from_dir_with_locale(
     validate_player_commands(&commands)?;
     let affordances =
         read_optional_json::<AffordancesDefinition>(path, "affordances.json")?.unwrap_or_default();
+    let movement =
+        read_optional_json::<MovementConfigDefinition>(path, "movement.json")?.unwrap_or_default();
     let hooks =
         read_optional_json::<BTreeMap<String, Value>>(path, "hooks.json")?.unwrap_or_default();
     let speech_intents: SpeechIntentsConfig =
@@ -307,6 +310,30 @@ pub fn load_pack_from_dir_with_locale(
             .into());
         }
     }
+    for actor_id in movement.actors.keys() {
+        require_known_id(
+            actor_id,
+            &actors.iter().map(|a| a.id.as_str()).collect::<Vec<_>>(),
+            &format!("movement.json actors key '{actor_id}'"),
+            "actors",
+        )?;
+    }
+    for stage_id in &movement.stage_locks {
+        require_known_id(
+            stage_id,
+            &stage_ids,
+            &format!("movement.json stage_locks entry '{stage_id}'"),
+            "beats.stages",
+        )?;
+    }
+    for room_id in &movement.unreachable_rooms {
+        require_known_id(
+            room_id,
+            &room_index.keys().map(String::as_str).collect::<Vec<_>>(),
+            &format!("movement.json unreachable_rooms entry '{room_id}'"),
+            "rooms",
+        )?;
+    }
     if !act_cast.is_empty() {
         let mut seen_member_ids = std::collections::BTreeSet::new();
         let mut seen_member_actor_ids = std::collections::BTreeSet::new();
@@ -360,6 +387,7 @@ pub fn load_pack_from_dir_with_locale(
         stats,
         commands,
         affordances,
+        movement,
         hooks,
         speech_intents,
         items,

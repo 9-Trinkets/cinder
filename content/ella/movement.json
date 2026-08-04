@@ -1,0 +1,61 @@
+{
+  "suppress_when": {
+    "rule": "decision_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": { "value": false }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "affordances.rest.available", "operator": "equal", "value": true }
+          ],
+          "payload_template": { "value": true }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.eat.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "value": true }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.drink.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "value": true }
+        },
+        {
+          "conditions": [
+            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
+            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
+            { "path": "affordances.consume.option_count", "operator": "greater_than", "value": 0 }
+          ],
+          "payload_template": { "value": true }
+        }
+      ]
+    }
+  },
+  "actors": {
+    "dad": {
+      "target_rules": [
+        {
+          "target_room_id": "living-room",
+          "when_player_room_id": "living-room",
+          "required_story_var": "movie_title",
+          "any_active_stage_ids": ["dad-brings-fruit"]
+        }
+      ]
+    },
+    "mom": {
+      "target_rules": []
+    }
+  }
+}

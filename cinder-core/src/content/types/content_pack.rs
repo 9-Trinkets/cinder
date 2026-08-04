@@ -19,6 +19,7 @@ pub struct ContentPack {
     pub stats: StatsDefinition,
     pub commands: CommandsDefinition,
     pub affordances: AffordancesDefinition,
+    pub movement: MovementConfigDefinition,
     pub hooks: BTreeMap<String, Value>,
     pub speech_intents: SpeechIntentsConfig,
     pub items: Vec<ItemDefinition>,
@@ -114,7 +115,11 @@ impl ContentPack {
     }
 
     pub fn movement_rules(&self, actor_id: &str) -> Option<&ActorMovementRulesDefinition> {
-        self.actor(actor_id)?.movement_rules.as_ref()
+        self.movement.actors.get(actor_id)
+    }
+
+    pub fn room_is_reachable(&self, room_id: &str) -> bool {
+        !self.movement.unreachable_rooms.iter().any(|id| id == room_id)
     }
 
     pub fn resolve_actor(&self, raw_target: &str) -> Option<&ActorDefinition> {

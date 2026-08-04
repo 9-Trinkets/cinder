@@ -5,9 +5,12 @@ use crate::engine::actor_tick::decide_movement;
 use crate::engine::events::WorldEvent;
 use crate::engine::hooks::{pair_state_note, room_candidate_score};
 use crate::engine::state::WorldState;
+use serde_json::json;
 use std::collections::{BTreeMap, BTreeSet, VecDeque};
 use std::error::Error;
 use std::sync::Arc;
+
+use super::symbolic_planner::evaluate_symbolic_boolean_rule;
 
 /// Movement for non-autonomous packs (autonomous_actor_dialogue=false), which skip the
 /// full affordance/dialogue pipeline in build_actor_turn and only ever move NPCs.
@@ -17,8 +20,76 @@ pub fn run_actor_turn(
     actor: &ActorDefinition,
     rules: &ActorMovementRulesDefinition,
 ) -> Result<Vec<WorldEvent>, Box<dyn Error>> {
+    if is_actor_movement_locked(
+        content.as_ref(),
+        state,
+        &actor.id,
+        &MovementSuppressionContext::default(),
+    )? {
+        return Ok(Vec::new());
+    }
     let current_room_id = state.actor_room_id(&actor.id, &actor.room_id).to_string();
     decide_movement(content, state, actor, rules, &current_room_id, None)
+}
+
+/// The reactive-suppression inputs movement.json's `suppress_when` rule can reference,
+/// mirroring the affordance availability a turn is already computing for other purposes.
+#[derive(Debug, Clone, Default)]
+pub(crate) struct MovementSuppressionContext {
+    pub(crate) rest_available: bool,
+    pub(crate) eat_option_count: usize,
+    pub(crate) drink_option_count: usize,
+    pub(crate) consume_option_count: usize,
+}
+
+/// The single gate for "can this actor move right now": an active stage-lock, being
+/// anchored to a room by stage assignment, or movement.json's reactive suppression rule
+/// (e.g. too low on stamina). This is the one place to check why an actor isn't moving.
+pub(crate) fn is_actor_movement_locked(
+    content: &ContentPack,
+    state: &WorldState,
+    actor_id: &str,
+    suppression: &MovementSuppressionContext,
+) -> Result<bool, Box<dyn Error>> {
+    if content
+        .movement
+        .stage_locks
+        .iter()
+        .any(|stage_id| state.active_objective_stage_ids.contains(stage_id))
+    {
+        return Ok(true);
+    }
+    if state.stage_assigned_rooms.contains_key(actor_id) {
+        return Ok(true);
+    }
+    let Some(config) = content.movement.suppress_when.as_ref() else {
+        return Ok(false);
+    };
+    let actor_stats = state.actor_stats_snapshot(actor_id);
+    evaluate_symbolic_boolean_rule(
+        config.clone(),
+        json!({
+            "actor_stats": actor_stats,
+            "affordances": {
+                "rest": {
+                    "available": suppression.rest_available,
+                    "option_count": usize::from(suppression.rest_available),
+                },
+                "eat": {
+                    "available": suppression.eat_option_count > 0,
+                    "option_count": suppression.eat_option_count,
+                },
+                "drink": {
+                    "available": suppression.drink_option_count > 0,
+                    "option_count": suppression.drink_option_count,
+                },
+                "consume": {
+                    "available": suppression.consume_option_count > 0,
+                    "option_count": suppression.consume_option_count,
+                },
+            },
+        }),
+    )
 }
 
 #[derive(Debug, Clone)]
@@ -151,7 +222,7 @@ fn nearest_unvisited_room(
     while let Some((room_id, first_step)) = queue.pop_front() {
         let room = content.room(&room_id)?;
         for exit in &room.exits {
-            if !visited.insert(exit.room_id.clone()) {
+            if !content.room_is_reachable(&exit.room_id) || !visited.insert(exit.room_id.clone()) {
                 continue;
             }
             let candidate_first_step = first_step.clone().unwrap_or_else(|| exit.room_id.clone());

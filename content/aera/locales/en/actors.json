@@ -51,38 +51,6 @@
         "When hurt or unsettled, you might become more formal, narrow what you reveal, or admit something real in a restrained but unmistakably sincere way.",
         "When you feel safe, you might tease softly, volunteer a personal detail, or sound more openly hopeful than usual."
       ]
-    },
-    "movement_rules": {
-      "target_rules": [
-        {
-          "target_room_id": "girls-room",
-          "any_active_stage_ids": [
-            "debrief-in-bedrooms",
-            "plan-day2",
-            "sleep-end-day2"
-          ]
-        },
-        {
-          "target_room_id": "dining-room",
-          "any_active_stage_ids": [
-            "talk-after-dinner"
-          ]
-        },
-        {
-          "target_room_id": "kitchen",
-          "any_active_stage_ids": [
-            "share-dinner-in-kitchen"
-          ]
-        },
-        {
-          "any_active_stage_ids": [
-            "day2-event-a",
-            "day2-event-b"
-          ],
-          "required_story_var": "aera_assigned_room",
-          "target_from_story_var": "aera_assigned_room"
-        }
-      ]
     }
   },
   {
@@ -131,38 +99,6 @@
         "When the room gets awkward, you might smooth it over with a practical suggestion, shift the energy through humor, or give everyone something simple to rally around.",
         "When you feel vulnerable, you might become more matter-of-fact, redirect into doing something useful, or let one unexpectedly sincere line slip out before moving on.",
         "When you feel secure, you might become more playful, more openly attentive, or quietly candid about the kind of life and closeness you actually want."
-      ]
-    },
-    "movement_rules": {
-      "target_rules": [
-        {
-          "target_room_id": "guys-room",
-          "any_active_stage_ids": [
-            "debrief-in-bedrooms",
-            "plan-day2",
-            "sleep-end-day2"
-          ]
-        },
-        {
-          "target_room_id": "dining-room",
-          "any_active_stage_ids": [
-            "talk-after-dinner"
-          ]
-        },
-        {
-          "target_room_id": "kitchen",
-          "any_active_stage_ids": [
-            "share-dinner-in-kitchen"
-          ]
-        },
-        {
-          "any_active_stage_ids": [
-            "day2-event-a",
-            "day2-event-b"
-          ],
-          "required_story_var": "ren_assigned_room",
-          "target_from_story_var": "ren_assigned_room"
-        }
       ]
     }
   },
@@ -217,38 +153,6 @@
         "When you feel dismissed or misread, you might become sharper, more self-aware, or unexpectedly direct about wanting to be taken seriously.",
         "When you feel safe, you might drop the polish, admit something a little embarrassing, or let your affection sound simpler and more sincere."
       ]
-    },
-    "movement_rules": {
-      "target_rules": [
-        {
-          "target_room_id": "girls-room",
-          "any_active_stage_ids": [
-            "debrief-in-bedrooms",
-            "plan-day2",
-            "sleep-end-day2"
-          ]
-        },
-        {
-          "target_room_id": "dining-room",
-          "any_active_stage_ids": [
-            "talk-after-dinner"
-          ]
-        },
-        {
-          "target_room_id": "kitchen",
-          "any_active_stage_ids": [
-            "share-dinner-in-kitchen"
-          ]
-        },
-        {
-          "any_active_stage_ids": [
-            "day2-event-a",
-            "day2-event-b"
-          ],
-          "required_story_var": "mio_assigned_room",
-          "target_from_story_var": "mio_assigned_room"
-        }
-      ]
     }
   },
   {
@@ -299,38 +203,6 @@
         "When the room is chaotic, you might ground yourself in something concrete, speak only when you have something useful to add, or quietly help create order without announcing it.",
         "When you feel uncertain, you might become even more concise, look for the clearest next move, or hold back until you can say something that feels fully meant.",
         "When you feel safe, your humor gets drier, your admissions get more personal, and your steadiness starts to read as tenderness instead of distance."
-      ]
-    },
-    "movement_rules": {
-      "target_rules": [
-        {
-          "target_room_id": "guys-room",
-          "any_active_stage_ids": [
-            "debrief-in-bedrooms",
-            "plan-day2",
-            "sleep-end-day2"
-          ]
-        },
-        {
-          "target_room_id": "dining-room",
-          "any_active_stage_ids": [
-            "talk-after-dinner"
-          ]
-        },
-        {
-          "target_room_id": "kitchen",
-          "any_active_stage_ids": [
-            "share-dinner-in-kitchen"
-          ]
-        },
-        {
-          "any_active_stage_ids": [
-            "day2-event-a",
-            "day2-event-b"
-          ],
-          "required_story_var": "daichi_assigned_room",
-          "target_from_story_var": "daichi_assigned_room"
-        }
       ]
     }
   }

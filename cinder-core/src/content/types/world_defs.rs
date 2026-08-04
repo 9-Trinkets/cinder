@@ -1,6 +1,22 @@
 use super::{default_actor_targeted_speech, default_stat_default_value};
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 use std::collections::BTreeMap;
+
+/// The single source of truth for all movement configuration in a content pack:
+/// which stages lock all movement, which rooms are unreachable, the reactive
+/// suppression rule (e.g. low stamina), and each actor's target rules.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct MovementConfigDefinition {
+    #[serde(default)]
+    pub stage_locks: Vec<String>,
+    #[serde(default)]
+    pub unreachable_rooms: Vec<String>,
+    #[serde(default)]
+    pub suppress_when: Option<Value>,
+    #[serde(default)]
+    pub actors: BTreeMap<String, ActorMovementRulesDefinition>,
+}
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ActorMovementRulesDefinition {
@@ -144,8 +160,6 @@ pub struct ActorDefinition {
     #[serde(default)]
     pub required_consumable_tags: Vec<String>,
     pub prompt_context: ActorPromptContext,
-    #[serde(default)]
-    pub movement_rules: Option<ActorMovementRulesDefinition>,
     #[serde(default)]
     pub act_cast: Option<ActorActCast>,
     #[serde(default)]

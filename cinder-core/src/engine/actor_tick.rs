@@ -562,11 +562,14 @@ fn next_room_toward(
     while let Some((room_id, first_step)) = queue.pop_front() {
         let room = content.room(&room_id)?;
         for exit in &room.exits {
-            if !visited.insert(exit.room_id.clone()) {
+            let is_target = exit.room_id == target_room_id;
+            if (!is_target && !content.room_is_reachable(&exit.room_id))
+                || !visited.insert(exit.room_id.clone())
+            {
                 continue;
             }
             let candidate_first_step = first_step.clone().unwrap_or_else(|| exit.room_id.clone());
-            if exit.room_id == target_room_id {
+            if is_target {
                 return Some(candidate_first_step);
             }
             queue.push_back((exit.room_id.clone(), Some(candidate_first_step)));

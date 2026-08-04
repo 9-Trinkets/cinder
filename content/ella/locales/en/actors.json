@@ -23,18 +23,6 @@
         "Keep the tone warm but not gushy.",
         "Let respect for family duty, modesty, long-term thinking, and emotional restraint shape the line without naming cultural theory."
       ]
-    },
-    "movement_rules": {
-      "target_rules": [
-        {
-          "target_room_id": "living-room",
-          "when_player_room_id": "living-room",
-          "required_story_var": "movie_title",
-          "any_active_stage_ids": [
-            "dad-brings-fruit"
-          ]
-        }
-      ]
     }
   },
   {
@@ -61,9 +49,6 @@
         "Keep the tone loving, practical, and slightly restrained.",
         "Let family duty, modesty, long-term thinking, and emotional restraint shape the line without naming cultural theory."
       ]
-    },
-    "movement_rules": {
-      "target_rules": []
     }
   }
 ]

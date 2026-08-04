@@ -350,37 +350,6 @@
             { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
             { "path": "affordances.rest.available", "operator": "equal", "value": true }
           ],
-          "payload_template": { "kind": "hide_affordance", "affordance_id": "move" }
-        },
-        {
-          "conditions": [
-            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
-            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
-            { "path": "affordances.eat.option_count", "operator": "greater_than", "value": 0 }
-          ],
-          "payload_template": { "kind": "hide_affordance", "affordance_id": "move" }
-        },
-        {
-          "conditions": [
-            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
-            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
-            { "path": "affordances.drink.option_count", "operator": "greater_than", "value": 0 }
-          ],
-          "payload_template": { "kind": "hide_affordance", "affordance_id": "move" }
-        },
-        {
-          "conditions": [
-            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
-            { "path": "actor_stats.hunger", "operator": "greater_than_or_equal", "value": 4 },
-            { "path": "affordances.consume.option_count", "operator": "greater_than", "value": 0 }
-          ],
-          "payload_template": { "kind": "hide_affordance", "affordance_id": "move" }
-        },
-        {
-          "conditions": [
-            { "path": "actor_stats.stamina", "operator": "less_than_or_equal", "value": 2 },
-            { "path": "affordances.rest.available", "operator": "equal", "value": true }
-          ],
           "payload_template": { "kind": "hide_affordance", "affordance_id": "inspect_feature" }
         },
         {

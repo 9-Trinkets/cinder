@@ -100,7 +100,6 @@ pub(crate) struct ActorTurnGuidanceInput {
     pub active_stage_ids: Vec<String>,
     pub unvisited_room_count: usize,
     pub unseen_feature_count: usize,
-    pub is_stage_anchored: bool,
 }
 
 pub(crate) fn actor_turn_guidance(
@@ -129,7 +128,6 @@ pub(crate) fn actor_turn_guidance(
             "active_stage_ids": input.active_stage_ids,
             "unvisited_room_count": input.unvisited_room_count,
             "unseen_feature_count": input.unseen_feature_count,
-            "is_stage_anchored": input.is_stage_anchored,
         }),
     )
     .unwrap_or_default();

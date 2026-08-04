@@ -28,7 +28,8 @@ use super::context::{
 };
 use super::dialogue::{actor_turn_setting_notes, recent_actor_turn_memory};
 use super::movement::{
-    exploration_move_target, pair_stats_move_target, resolved_movement_rule_target_room_id,
+    MovementSuppressionContext, exploration_move_target, is_actor_movement_locked,
+    pair_stats_move_target,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -99,16 +100,44 @@ pub fn build_actor_turn(
         available_consume_candidates(content.as_ref(), state, actor, &current_room_id);
     let inspect_feature_cands = inspect_feature_candidates(content.as_ref(), state, actor, &current_room_id);
     let inspect_actor_cands = inspect_actor_candidates(state, actor, &talk_candidate_contexts);
-    let move_target = exploration_move_target(content.as_ref(), state, actor, &current_room_id)
-        .or_else(|| pair_stats_move_target(content.as_ref(), state, actor, &current_room_id));
-    let move_events = decide_movement(
-        Arc::clone(&content),
+    let hide_move = is_actor_movement_locked(
+        content.as_ref(),
         state,
-        actor,
-        rules,
-        &current_room_id,
-        move_target.as_ref().map(|target| target.room_id.as_str()),
+        &actor.id,
+        &MovementSuppressionContext {
+            rest_available: rest_context.is_some(),
+            eat_option_count: consume_candidates
+                .iter()
+                .filter(|candidate| candidate.kind == crate::content::types::ConsumableKind::Eat)
+                .count(),
+            drink_option_count: consume_candidates
+                .iter()
+                .filter(|candidate| candidate.kind == crate::content::types::ConsumableKind::Drink)
+                .count(),
+            consume_option_count: consume_candidates
+                .iter()
+                .filter(|candidate| candidate.kind == crate::content::types::ConsumableKind::Consume)
+                .count(),
+        },
     )?;
+    let move_target = (!hide_move)
+        .then(|| {
+            exploration_move_target(content.as_ref(), state, actor, &current_room_id)
+                .or_else(|| pair_stats_move_target(content.as_ref(), state, actor, &current_room_id))
+        })
+        .flatten();
+    let move_events = if hide_move {
+        Vec::new()
+    } else {
+        decide_movement(
+            Arc::clone(&content),
+            state,
+            actor,
+            rules,
+            &current_room_id,
+            move_target.as_ref().map(|target| target.room_id.as_str()),
+        )?
+    };
     let move_option = move_events.iter().find_map(|event| match event {
         WorldEvent::ActorMoved { to_room_id, .. } => content
             .room(to_room_id)
@@ -410,10 +439,8 @@ pub fn build_actor_turn(
             active_stage_ids: state.active_objective_stage_ids.clone(),
             unvisited_room_count,
             unseen_feature_count,
-            is_stage_anchored: state.stage_assigned_rooms.contains_key(&actor.id),
         },
     );
-    let hide_move = guidance.hidden_affordance_ids.contains("move");
     let hide_inspect_feature = guidance.hidden_affordance_ids.contains("inspect_feature");
     let hide_inspect_actor = guidance.hidden_affordance_ids.contains("inspect_actor");
     let mut affordances = affordance_candidates
@@ -494,8 +521,6 @@ pub fn build_actor_turn(
             .count(),
         actor_count: state.actor_stats.len(),
         consume_target_item_id: preferred_hunger_recovery_consume_item_id(&consume_candidates),
-        has_pending_movement_target: resolved_movement_rule_target_room_id(state, rules)
-            .is_some_and(|target_room_id| target_room_id != current_room_id),
         move_target_room_id: move_option.as_ref().map(|(room_id, _)| room_id.clone()),
         move_target_room_title: move_option.as_ref().map(|(_, title)| title.clone()),
         move_target_actor_name: move_target
