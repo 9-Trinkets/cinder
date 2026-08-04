@@ -216,48 +216,5 @@
         }
       ]
     }
-  },
-  "actor.turn_should_speak": {
-    "rule": "decision_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": {
-        "value": false
-      }
-    },
-    "input_overlay": {
-      "rules": [
-        {
-          "conditions": [
-            {
-              "path": "is_directly_addressed",
-              "operator": "equal",
-              "value": true
-            }
-          ],
-          "payload_template": {
-            "value": true
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "has_clearly_preferred_target",
-              "operator": "equal",
-              "value": true
-            }
-          ],
-          "payload_template": {
-            "value": true,
-            "chance": {
-              "path": "confidence",
-              "max": 10
-            }
-          }
-        }
-      ]
-    }
   }
 }

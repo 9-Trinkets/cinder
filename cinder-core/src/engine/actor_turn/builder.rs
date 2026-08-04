@@ -255,7 +255,7 @@ pub fn build_actor_turn(
                 ),
             )
         }));
-        if speak_candidates.len() >= 2 {
+        if speak_candidates.len() >= content.speech.room_min_audience {
             affordance_candidates.push(ActorAffordanceCandidate::new(
                 affordance,
                 build_actor_turn_affordance_option(

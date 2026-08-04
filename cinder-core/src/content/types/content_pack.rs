@@ -20,6 +20,7 @@ pub struct ContentPack {
     pub commands: CommandsDefinition,
     pub affordances: AffordancesDefinition,
     pub movement: MovementConfigDefinition,
+    pub speech: SpeechConfigDefinition,
     pub hooks: BTreeMap<String, Value>,
     pub speech_intents: SpeechIntentsConfig,
     pub items: Vec<ItemDefinition>,

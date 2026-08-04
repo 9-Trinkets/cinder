@@ -412,7 +412,8 @@ pub use world_defs::{
     ActorDefinition, ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition,
     ActorPromptContext, ConsumableDefinition, ConsumableKind, ErrorTextDefinition,
     MovementConfigDefinition, PresentationDefinition, PresentationTextDefinition, RoomDefinition,
-    RoomExitDefinition, RoomFeatureDefinition, StatDefinition, StatsDefinition,
+    RoomExitDefinition, RoomFeatureDefinition, SpeechConfigDefinition, StatDefinition,
+    StatsDefinition,
 };
 
 mod command_defs;

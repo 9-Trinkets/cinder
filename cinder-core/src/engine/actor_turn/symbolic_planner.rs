@@ -9,10 +9,10 @@ use serde::{Deserialize, Serialize};
 use std::error::Error;
 
 use super::decisions::{
-    consume_decision_for_item, cook_decision, directly_addressed_target_actor_id,
-    has_clearly_preferred_target, preferred_target_actor_id, quiet_room_action_decision,
-    rest_decision,
+    consume_decision_for_item, cook_decision, has_clearly_preferred_target,
+    quiet_room_action_decision, rest_decision,
 };
+use super::policies::speech::{SpeechPolicyInput, decide_speech_action};
 
 #[derive(Debug, Clone, Serialize)]
 pub struct SymbolicPlannerInputCandidate {
@@ -62,6 +62,17 @@ fn default_chance_max() -> u32 {
     10
 }
 
+fn evaluate_speech_gate(
+    config: Option<&serde_json::Value>,
+    symbolic_input: &SymbolicPlannerInput,
+    default_value: bool,
+) -> Result<bool, Box<dyn Error>> {
+    if let Some(config) = config {
+        return evaluate_symbolic_boolean_rule(config.clone(), serde_json::to_value(symbolic_input)?);
+    }
+    Ok(default_value)
+}
+
 pub fn select_symbolic_actor_turn_action(
     content: &ContentPack,
     request: &ActorTurnActionRequest,
@@ -97,9 +108,7 @@ pub fn select_symbolic_actor_turn_action(
         })
         .transpose()?
         .unwrap_or(false);
-    if should_cook
-        && let Some(decision) = cook_decision(request)
-    {
+    if should_cook && let Some(decision) = cook_decision(request) {
         return Ok(decision);
     }
     if let Some((command_id, room_id)) =
@@ -126,70 +135,24 @@ pub fn select_symbolic_actor_turn_action(
             freeform_text: None,
         });
     }
-    let should_speak = content
-        .hook(hook_ids::TURN_SHOULD_SPEAK)
-        .map(|config| {
-            evaluate_symbolic_boolean_rule(config.clone(), serde_json::to_value(symbolic_input)?)
-        })
-        .transpose()?
-        .unwrap_or(true);
-    if !should_speak {
-        return quiet_room_action_decision(request, "stays quiet for a moment, reading the room.");
-    }
-    let should_direct_speech = content
-        .hook(hook_ids::TURN_SHOULD_DIRECT_SPEECH)
-        .map(|config| {
-            evaluate_symbolic_boolean_rule(config.clone(), serde_json::to_value(symbolic_input)?)
-        })
-        .transpose()?
-        .unwrap_or(true);
-    if should_direct_speech
-        && let Some(target_actor_id) = directly_addressed_target_actor_id(request)
-            .or_else(|| preferred_target_actor_id(request))
-    {
-        return Ok(ActorTurnActionDecision::Command {
-            command_id: "speak".to_string(),
-            target_room_id: None,
-            target_actor_id: Some(target_actor_id),
-            feature_id: None,
-            consumable_id: None,
-            context_label: None,
-            freeform_text: None,
-        });
-    }
-    if let Some(command_id) =
-        request
-            .affordances
-            .iter()
-            .find_map(|affordance| match &affordance.invocation {
-                ActorTurnCommandInvocation::Command {
-                    command_id,
-                    target_actor_id: None,
-                    ..
-                } if command_id == "speak" => Some(command_id.clone()),
-                _ => None,
-            })
-    {
-        return Ok(ActorTurnActionDecision::Command {
-            command_id,
-            target_room_id: None,
-            target_actor_id: None,
-            feature_id: None,
-            consumable_id: None,
-            context_label: None,
-            freeform_text: None,
-        });
-    }
-    if let Some(target_actor_id) = preferred_target_actor_id(request) {
-        return Ok(ActorTurnActionDecision::Command {
-            command_id: "speak".to_string(),
-            target_room_id: None,
-            target_actor_id: Some(target_actor_id),
-            feature_id: None,
-            consumable_id: None,
-            context_label: None,
-            freeform_text: None,
-        });
+    let should_speak = evaluate_speech_gate(
+        content.speech.should_speak_when.as_ref(),
+        symbolic_input,
+        true,
+    )?;
+    let should_direct_speech = evaluate_speech_gate(
+        content.speech.should_direct_speech_when.as_ref(),
+        symbolic_input,
+        true,
+    )?;
+    if let Some(decision) = decide_speech_action(
+        request,
+        SpeechPolicyInput {
+            should_speak,
+            should_direct_speech,
+        },
+    ) {
+        return Ok(decision);
     }
     quiet_room_action_decision(request, "stays quiet for a moment, reading the room.")
 }

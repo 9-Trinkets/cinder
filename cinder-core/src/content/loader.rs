@@ -2,7 +2,8 @@ use crate::content::types::{
     ActorDefinition, AffordancesDefinition, ActCastMember, BeatsDefinition,
     CommandsDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition,
     MovementConfigDefinition, OpeningDefinition, OpeningMenuDefinition, OpeningMovieDefinition,
-    PresentationDefinition, RoomDefinition, SpeechIntentsConfig, StatsDefinition,
+    PresentationDefinition, RoomDefinition, SpeechConfigDefinition, SpeechIntentsConfig,
+    StatsDefinition,
     SystemTextDefinition, UiTextDefinition,
 };
 use serde::de::DeserializeOwned;
@@ -176,6 +177,8 @@ pub fn load_pack_from_dir_with_locale(
         read_optional_json::<AffordancesDefinition>(path, "affordances.json")?.unwrap_or_default();
     let movement =
         read_optional_json::<MovementConfigDefinition>(path, "movement.json")?.unwrap_or_default();
+    let speech =
+        read_optional_json::<SpeechConfigDefinition>(path, "speech.json")?.unwrap_or_default();
     let hooks =
         read_optional_json::<BTreeMap<String, Value>>(path, "hooks.json")?.unwrap_or_default();
     let speech_intents: SpeechIntentsConfig =
@@ -388,6 +391,7 @@ pub fn load_pack_from_dir_with_locale(
         commands,
         affordances,
         movement,
+        speech,
         hooks,
         speech_intents,
         items,
