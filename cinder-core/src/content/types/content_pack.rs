@@ -114,8 +114,10 @@ impl ContentPack {
         })
     }
 
-    pub fn movement_rules(&self, actor_id: &str) -> Option<&ActorMovementRulesDefinition> {
-        self.movement.actors.get(actor_id)
+    /// An actor with no entry in movement.json simply has no target rules -- it still
+    /// gets NPC turns like any other actor. Never returns None.
+    pub fn movement_rules(&self, actor_id: &str) -> ActorMovementRulesDefinition {
+        self.movement.actors.get(actor_id).cloned().unwrap_or_default()
     }
 
     pub fn room_is_reachable(&self, room_id: &str) -> bool {

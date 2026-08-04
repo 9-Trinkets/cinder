@@ -53,9 +53,6 @@
           "any_active_stage_ids": ["dad-brings-fruit"]
         }
       ]
-    },
-    "mom": {
-      "target_rules": []
     }
   }
 }

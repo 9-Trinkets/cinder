@@ -192,11 +192,8 @@ impl ActorTickRoleRunner {
         if workflow_state.state.phase != crate::engine::state::GamePhase::Active {
             return complete_tick_workflow(&workflow_state.emitted_events);
         }
-        while let Some(actor_id) = workflow_state.remaining_actor_ids.first().cloned() {
+        if let Some(actor_id) = workflow_state.remaining_actor_ids.first().cloned() {
             workflow_state.remaining_actor_ids.remove(0);
-            if self.content.movement_rules(&actor_id).is_none() {
-                continue;
-            }
             workflow_state.current_actor_id = Some(actor_id);
             workflow_state.actor_turn_stage = ActorTurnStageEnvelope::Idle;
             return route_tick_workflow("npc_actor_turn_build_actions", &workflow_state);
@@ -215,10 +212,7 @@ impl ActorTickRoleRunner {
             .actor(&actor_id)
             .cloned()
             .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
-        let rules = self
-            .content
-            .movement_rules(&actor_id)
-            .ok_or_else(|| format!("missing movement rules for '{actor_id}'"))?;
+        let rules = self.content.movement_rules(&actor_id);
         let emit_trace = |role_name: &str, topic: &str, payload: serde_json::Value| -> Result<(), String> {
             self.trace_records
                 .lock()
@@ -231,7 +225,7 @@ impl ActorTickRoleRunner {
             Ok(())
         };
         if !self.content.settings.autonomous_actor_dialogue {
-            let events = run_actor_turn(Arc::clone(&self.content), &workflow_state.state, &actor, rules)
+            let events = run_actor_turn(Arc::clone(&self.content), &workflow_state.state, &actor, &rules)
                 .map_err(|error| {
                     let current_room_id = workflow_state
                         .state
@@ -255,7 +249,7 @@ impl ActorTickRoleRunner {
             Arc::clone(&self.content),
             &workflow_state.state,
             &actor,
-            rules,
+            &rules,
         )
         .map_err(|error| {
             let current_room_id = workflow_state
@@ -306,15 +300,12 @@ impl ActorTickRoleRunner {
             .actor(&actor_id)
             .cloned()
             .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
-        let rules = self
-            .content
-            .movement_rules(&actor_id)
-            .ok_or_else(|| format!("missing movement rules for '{actor_id}'"))?;
+        let rules = self.content.movement_rules(&actor_id);
         let build = build_actor_turn(
             Arc::clone(&self.content),
             &workflow_state.state,
             &actor,
-            rules,
+            &rules,
         )
         .map_err(|error| error.to_string())?;
         let mut emit_trace = |role_name: &str, topic: &str, payload: serde_json::Value| {
@@ -375,15 +366,12 @@ impl ActorTickRoleRunner {
             .actor(&actor_id)
             .cloned()
             .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
-        let rules = self
-            .content
-            .movement_rules(&actor_id)
-            .ok_or_else(|| format!("missing movement rules for '{actor_id}'"))?;
+        let rules = self.content.movement_rules(&actor_id);
         let build = build_actor_turn(
             Arc::clone(&self.content),
             &workflow_state.state,
             &actor,
-            rules,
+            &rules,
         )
         .map_err(|error| error.to_string())?;
         let mut emit_trace = |role_name: &str, topic: &str, payload: serde_json::Value| {
