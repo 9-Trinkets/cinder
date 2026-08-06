@@ -1,10 +1,9 @@
 use crate::content::types::{
-    ActorDefinition, AffordancesDefinition, ActCastMember, BeatsDefinition,
-    CommandsDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition,
-    MovementConfigDefinition, OpeningDefinition, OpeningMenuDefinition, OpeningMovieDefinition,
-    PresentationDefinition, RoomDefinition, RuleBundlesDefinition, SpeechConfigDefinition,
-    SpeechIntentsConfig, StatsDefinition,
-    SystemTextDefinition, UiTextDefinition,
+    ActCastMember, ActorDefinition, AffordancesDefinition, BeatsDefinition, CommandsDefinition,
+    ContentPack, ContentSettingsDefinition, ItemDefinition, MovementConfigDefinition,
+    OpeningDefinition, OpeningMenuDefinition, OpeningMovieDefinition, PresentationDefinition,
+    RoomDefinition, RuleBundlesDefinition, SpeechConfigDefinition, SpeechIntentsConfig,
+    StatsDefinition, SystemTextDefinition, UiTextDefinition,
 };
 use serde::de::DeserializeOwned;
 use serde_json::Value;
@@ -180,8 +179,7 @@ pub fn load_pack_from_dir_with_locale(
     let speech =
         read_optional_json::<SpeechConfigDefinition>(path, "speech.json")?.unwrap_or_default();
     let rule_bundles =
-        read_optional_json::<RuleBundlesDefinition>(path, "rule_bundles.json")?
-            .unwrap_or_default();
+        read_optional_json::<RuleBundlesDefinition>(path, "rule_bundles.json")?.unwrap_or_default();
     let hooks =
         read_optional_json::<BTreeMap<String, Value>>(path, "hooks.json")?.unwrap_or_default();
     let speech_intents: SpeechIntentsConfig =
@@ -352,6 +350,23 @@ pub fn load_pack_from_dir_with_locale(
             ),
             "beats.stages",
         )?;
+        let mut seen_progress_keys = std::collections::BTreeSet::new();
+        for progress in &bundle.progress.keys {
+            if progress.key.trim().is_empty() {
+                return Err(format!(
+                    "rule_bundles.json bundle '{}' has progress entry with empty key",
+                    bundle.id
+                )
+                .into());
+            }
+            if !seen_progress_keys.insert(progress.key.clone()) {
+                return Err(format!(
+                    "rule_bundles.json bundle '{}' has duplicate progress key '{}'",
+                    bundle.id, progress.key
+                )
+                .into());
+            }
+        }
         for priority in &bundle.guidance.prioritize {
             if priority.command_id.trim().is_empty() {
                 return Err(format!(
@@ -366,6 +381,115 @@ pub fn load_pack_from_dir_with_locale(
                     bundle.id, priority.command_id
                 )
                 .into());
+            }
+        }
+        for (index, conditional) in bundle.guidance.conditional.iter().enumerate() {
+            for priority in &conditional.prioritize {
+                if priority.command_id.trim().is_empty() {
+                    return Err(format!(
+                        "rule_bundles.json bundle '{}' conditional guidance #{} has prioritize entry with empty command_id",
+                        bundle.id,
+                        index + 1
+                    )
+                    .into());
+                }
+                if !command_index.contains_key(&priority.command_id) {
+                    return Err(format!(
+                        "rule_bundles.json bundle '{}' conditional guidance #{} prioritize command_id '{}' not found in commands",
+                        bundle.id,
+                        index + 1,
+                        priority.command_id
+                    )
+                    .into());
+                }
+            }
+        }
+    }
+    let bundle_progress_keys = rule_bundles
+        .bundles
+        .iter()
+        .map(|bundle| {
+            (
+                bundle.id.as_str(),
+                bundle
+                    .progress
+                    .keys
+                    .iter()
+                    .map(|progress| progress.key.as_str())
+                    .collect::<std::collections::BTreeSet<_>>(),
+            )
+        })
+        .collect::<std::collections::BTreeMap<_, _>>();
+    for command in &commands.actions {
+        for stage_id in &command.available_during {
+            require_known_id(
+                stage_id,
+                &stage_ids,
+                &format!(
+                    "command '{}' available_during stage_id '{}'",
+                    command.id, stage_id
+                ),
+                "beats.stages",
+            )?;
+        }
+        for progress in command
+            .required_bundle_progress
+            .iter()
+            .chain(command.blocked_by_bundle_progress.iter())
+            .chain(command.sets_bundle_progress.iter())
+            .chain(command.clears_bundle_progress.iter())
+        {
+            if progress.bundle_id.trim().is_empty() || progress.key.trim().is_empty() {
+                return Err(format!(
+                    "command '{}' bundle progress refs require non-empty bundle_id and key",
+                    command.id
+                )
+                .into());
+            }
+            let Some(keys) = bundle_progress_keys.get(progress.bundle_id.as_str()) else {
+                return Err(format!(
+                    "command '{}' bundle progress bundle_id '{}' not found in rule_bundles",
+                    command.id, progress.bundle_id
+                )
+                .into());
+            };
+            if !keys.contains(progress.key.as_str()) {
+                return Err(format!(
+                    "command '{}' bundle progress key '{}' not found in rule bundle '{}'",
+                    command.id, progress.key, progress.bundle_id
+                )
+                .into());
+            }
+        }
+        for bundle in &rule_bundles.bundles {
+            for conditional in &bundle.guidance.conditional {
+                for progress in conditional
+                    .required_bundle_progress
+                    .iter()
+                    .chain(conditional.blocked_by_bundle_progress.iter())
+                {
+                    if progress.bundle_id.trim().is_empty() || progress.key.trim().is_empty() {
+                        return Err(format!(
+                            "rule_bundles.json bundle '{}' conditional guidance bundle progress refs require non-empty bundle_id and key",
+                            bundle.id
+                        )
+                        .into());
+                    }
+                    let Some(keys) = bundle_progress_keys.get(progress.bundle_id.as_str()) else {
+                        return Err(format!(
+                            "rule_bundles.json bundle '{}' conditional guidance bundle_id '{}' not found in rule_bundles",
+                            bundle.id, progress.bundle_id
+                        )
+                        .into());
+                    };
+                    if !keys.contains(progress.key.as_str()) {
+                        return Err(format!(
+                            "rule_bundles.json bundle '{}' conditional guidance key '{}' not found in rule bundle '{}'",
+                            bundle.id, progress.key, progress.bundle_id
+                        )
+                        .into());
+                    }
+                }
             }
         }
     }
@@ -388,9 +512,7 @@ pub fn load_pack_from_dir_with_locale(
                 return Err(format!("duplicate act_cast member id '{}'", member.id).into());
             }
             if member.actor_id.trim().is_empty() {
-                return Err(
-                    format!("act_cast member '{}' is missing actor_id", member.id).into(),
-                );
+                return Err(format!("act_cast member '{}' is missing actor_id", member.id).into());
             }
             require_known_id(
                 &member.actor_id,

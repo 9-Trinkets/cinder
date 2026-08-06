@@ -26,6 +26,8 @@ pub struct ThemeDefinition {
     pub iris: String,
     #[serde(default = "default_highlight_high")]
     pub highlight_high: String,
+    #[serde(default = "default_crafted_highlight")]
+    pub crafted_highlight: String,
     #[serde(default = "default_crt_glow")]
     pub crt_glow: String,
     #[serde(default = "default_crt_dim")]
@@ -49,6 +51,7 @@ impl Default for ThemeDefinition {
             foam: default_foam(),
             iris: default_iris(),
             highlight_high: default_highlight_high(),
+            crafted_highlight: default_crafted_highlight(),
             crt_glow: default_crt_glow(),
             crt_dim: default_crt_dim(),
             crt_bez: default_crt_bez(),
@@ -91,6 +94,9 @@ fn default_iris() -> String {
 }
 fn default_highlight_high() -> String {
     "#56526e".into()
+}
+fn default_crafted_highlight() -> String {
+    default_gold()
 }
 fn default_crt_glow() -> String {
     "#a7f3d0".into()

@@ -1,4 +1,4 @@
-use super::{default_actor_targeted_speech, default_stat_default_value};
+use super::{RuleBundleProgressRef, default_actor_targeted_speech, default_stat_default_value};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::BTreeMap;
@@ -58,9 +58,25 @@ pub struct RuleBundleDefinition {
     #[serde(default)]
     pub stage_id: String,
     #[serde(default)]
+    pub progress: RuleBundleProgressDefinition,
+    #[serde(default)]
     pub completion: RuleBundleCompletionDefinition,
     #[serde(default)]
     pub guidance: RuleBundleGuidanceDefinition,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct RuleBundleProgressDefinition {
+    #[serde(default)]
+    pub keys: Vec<RuleBundleProgressKeyDefinition>,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct RuleBundleProgressKeyDefinition {
+    #[serde(default)]
+    pub key: String,
+    #[serde(default)]
+    pub label: String,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
@@ -75,6 +91,20 @@ pub struct RuleBundleGuidanceDefinition {
     pub prompt_note_if_actor_incomplete: String,
     #[serde(default)]
     pub prompt_note_if_others_incomplete: String,
+    #[serde(default)]
+    pub prioritize: Vec<RuleBundleAffordancePriorityDefinition>,
+    #[serde(default)]
+    pub conditional: Vec<RuleBundleConditionalGuidanceDefinition>,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct RuleBundleConditionalGuidanceDefinition {
+    #[serde(default)]
+    pub required_bundle_progress: Vec<RuleBundleProgressRef>,
+    #[serde(default)]
+    pub blocked_by_bundle_progress: Vec<RuleBundleProgressRef>,
+    #[serde(default)]
+    pub prompt_note: String,
     #[serde(default)]
     pub prioritize: Vec<RuleBundleAffordancePriorityDefinition>,
 }

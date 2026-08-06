@@ -6,6 +6,7 @@ use crate::engine::commands::{resolve_actor_reference_input, unknown_target_toke
 use crate::engine::dialogue_grounding::viewer_participant_id;
 use crate::engine::events::{ObservationMode, WorldEvent};
 use crate::engine::state::{WorldState, display_actor_name};
+use crate::engine::turn_policies::{command_availability_issue, command_unavailable_message};
 use std::collections::BTreeMap;
 
 pub(super) struct PlanningContext<'a> {
@@ -54,6 +55,13 @@ pub(super) fn plan_content_command(
     context: &PlanningContext<'_>,
     planned: &mut PlannedTurn,
 ) -> bool {
+    if let Some(issue) = command_availability_issue(content, context.planner_state, command) {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: command_unavailable_message(content, command, &issue),
+        });
+        return false;
+    }
+
     // Check room restrictions
     if !command.allowed_rooms.is_empty()
         && !command
@@ -176,11 +184,11 @@ pub(super) fn plan_content_command(
                 .unwrap_or(spec.consumable_id.clone())
         };
         if let Some(room) = content.room(context.current_room_id) {
-            if let Some(feature) = room.features.iter().find(|f| {
-                f.consumables
-                    .iter()
-                    .any(|c| c.id == consumable_id)
-            }) {
+            if let Some(feature) = room
+                .features
+                .iter()
+                .find(|f| f.consumables.iter().any(|c| c.id == consumable_id))
+            {
                 planned.events.push(WorldEvent::ConsumableCreated {
                     room_id: context.current_room_id.to_string(),
                     feature_id: feature.id.clone(),

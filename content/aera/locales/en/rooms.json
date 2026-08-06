@@ -215,6 +215,20 @@
             "initial_stock": 0,
             "hunger_recovery": 1,
             "stamina_recovery": 3
+          },
+          {
+            "id": "pour-over-coffee",
+            "label": "pour-over coffee",
+            "aliases": [
+              "coffee",
+              "pour over"
+            ],
+            "tags": [
+              "vegan"
+            ],
+            "kind": "drink",
+            "initial_stock": 0,
+            "stamina_recovery": 4
           }
         ],
         "inspect_text": "The island practically demands shared prep work. A cutting board and knife sit ready, and the counter has space for whatever tonight's cook decides to make."

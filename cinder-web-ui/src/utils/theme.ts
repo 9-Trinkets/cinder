@@ -14,5 +14,6 @@ export function themeVars(theme: ThemeDefinition): React.CSSProperties {
     '--color-foam': theme.foam,
     '--color-iris': theme.iris,
     '--color-highlight-high': theme.highlight_high,
+    '--color-crafted-highlight': theme.crafted_highlight,
   } as React.CSSProperties
 }

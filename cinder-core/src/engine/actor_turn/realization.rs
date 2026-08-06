@@ -4,6 +4,7 @@ use crate::content::types::{
 };
 use crate::engine::dialogue::{ActorTurnActionDecision, DialogueGenerator};
 use crate::engine::events::{WorldEvent, render_actor_action_text};
+use crate::engine::turn_policies::{command_availability_issue, command_unavailable_message};
 
 use super::builder::ActorTurnRealizationContext;
 use super::dialogue::{
@@ -100,6 +101,11 @@ pub fn realize_actor_turn_action(
                     "missing command '{command_id}'"
                 ))) as Box<dyn Error>
             })?;
+            if let Some(issue) = command_availability_issue(content, state, command) {
+                return Err(Box::new(std::io::Error::other(
+                    command_unavailable_message(content, command, &issue),
+                )));
+            }
             if command.outcome_mode == CommandOutcomeMode::Dialogue {
                 return match target_actor_id.as_deref() {
                     Some(target_actor_id) => actor_to_actor_dialogue(

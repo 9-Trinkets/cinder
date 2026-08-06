@@ -2,10 +2,13 @@ use super::beat_advance::{advance_conditions_met, evaluate_advance_condition};
 use super::*;
 use crate::content::loader::load_default_pack;
 use crate::content::types::{
-    ActorDefinition, ActorPromptContext, CommandDefinition, CommandEffect, CommandInputMode,
-    CommandTargetMode, CommandsDefinition, ContentPack, ContentSettingsDefinition,
-    OpeningDefinition, PresentationDefinition, RoomDefinition, RoomExitDefinition,
-    RoomFeatureDefinition, StatDefinition, StatsDefinition,
+    ActorDefinition, ActorPromptContext, AdvanceCondition, AdvanceSignal, BeatDefinition,
+    BeatsDefinition, CommandDefinition, CommandEffect, CommandInputMode, CommandTargetMode,
+    CommandsDefinition, ContentPack, ContentSettingsDefinition, OpeningDefinition,
+    PresentationDefinition, RoomDefinition, RoomExitDefinition, RoomFeatureDefinition,
+    RuleBundleCompletionDefinition, RuleBundleDefinition, RuleBundleGuidanceDefinition,
+    RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition, RuleBundleProgressRef,
+    RuleBundlesDefinition, StatDefinition, StatsDefinition,
 };
 use crate::engine::state::ConversationMemoryKind;
 use serde_json::json;
@@ -271,6 +274,10 @@ fn test_command() -> CommandDefinition {
         consumes_item: None,
         requires_any: vec![],
         consumes_any: vec![],
+        required_bundle_progress: vec![],
+        blocked_by_bundle_progress: vec![],
+        sets_bundle_progress: vec![],
+        clears_bundle_progress: vec![],
         available_during: vec![],
     }
 }
@@ -675,4 +682,86 @@ fn advance_conditions_met_conditional_signal_blocked_when_condition_not_met() {
         value: serde_json::json!(4),
     };
     assert!(!evaluate_advance_condition(&flat_input, &flat_cond));
+}
+
+#[test]
+fn command_used_signal_can_advance_stage_after_bundle_completion_and_clears_progress() {
+    let mut pack = reducer_test_pack();
+    pack.beats = BeatsDefinition {
+        initial_stage_ids: vec!["dinner-prep".to_string()],
+        stages: vec![
+            BeatDefinition {
+                id: "dinner-prep".to_string(),
+                advance_signals: vec![AdvanceSignal::Conditional {
+                    signal: "command_used".to_string(),
+                    conditions: vec![AdvanceCondition {
+                        path: "story_vars.values.rule_bundle:progress:dinner-prep-cook-and-check-in:meal_ready".to_string(),
+                        operator: "equal".to_string(),
+                        value: json!("true"),
+                    }],
+                }],
+                next_stage_ids: vec!["share-dinner".to_string()],
+                ..BeatDefinition::default()
+            },
+            BeatDefinition {
+                id: "share-dinner".to_string(),
+                ..BeatDefinition::default()
+            },
+        ],
+    };
+    pack.rule_bundles = RuleBundlesDefinition {
+        bundles: vec![RuleBundleDefinition {
+            id: "dinner-prep-cook-and-check-in".to_string(),
+            stage_id: "dinner-prep".to_string(),
+            progress: RuleBundleProgressDefinition {
+                keys: vec![RuleBundleProgressKeyDefinition {
+                    key: "meal_ready".to_string(),
+                    label: "meal ready".to_string(),
+                }],
+            },
+            completion: RuleBundleCompletionDefinition::default(),
+            guidance: RuleBundleGuidanceDefinition::default(),
+        }],
+    };
+    pack.commands.actions.push(CommandDefinition {
+        id: "cook".to_string(),
+        command: "COOK".to_string(),
+        effects: vec![CommandEffect::RememberInRoom],
+        event_text: "{actor_name} finishes dinner.".to_string(),
+        sets_bundle_progress: vec![RuleBundleProgressRef {
+            bundle_id: "dinner-prep-cook-and-check-in".to_string(),
+            key: "meal_ready".to_string(),
+        }],
+        ..test_command()
+    });
+    rebuild_test_pack_indexes(&mut pack);
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+
+    let events = [TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
+        actor_id: ACTOR_A_ID.to_string(),
+        actor_name: ACTOR_A_NAME.to_string(),
+        room_id: LOUNGE_ID.to_string(),
+        command_id: "cook".to_string(),
+        target_room_id: None,
+        target_actor_id: None,
+        target_actor_name: None,
+        context_label: None,
+        feature_id: None,
+        consumable_id: None,
+        freeform_text: None,
+    })];
+
+    apply_events(&mut state, &pack, &events);
+
+    assert_eq!(
+        state.active_objective_stage_ids,
+        vec!["share-dinner".to_string()]
+    );
+    assert_eq!(
+        state
+            .story_vars
+            .get("rule_bundle:progress:dinner-prep-cook-and-check-in:meal_ready"),
+        None
+    );
 }

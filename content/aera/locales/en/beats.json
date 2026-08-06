@@ -17,11 +17,26 @@
     },
     {
       "id": "dinner-prep",
-      "summary": "Dinner prep: Ren starts getting food ready while the house naturally splits.",
-      "update_message": "Ren heads into the kitchen to get dinner going, and everyone else has to decide whether to help or hang back.",
-      "beat_note": "Ren takes the lead on dinner prep, but the point is not chores for their own sake. This split creates the house's first genuinely simultaneous scenes. The kitchen should feel warmer, more practical, and slightly more intimate because there is a task to share; the lounge should feel looser, more observant, and a little more performative because people can sit back and watch what forms elsewhere. Let the people who drift into the kitchen show what kind of closeness they seek through usefulness, comfort, curiosity, or flirtation. Let the people who stay behind react to the split, fill the space in a different way, and notice who chose whom. When cooking, check other actors' hunger levels and pick recipes that suit the group. Ren might gravitate toward his signature garlic noodles if someone looks hungry. A lighter stir-fry works if people already snacked. Consider who you're feeding, not just what's available.",
+      "summary": "Dinner prep: everyone gathers in the kitchen and turns shared prep into a meal and coffee.",
+      "update_message": "Ren heads into the kitchen to get dinner going, and everyone joins the shared prep.",
+      "beat_note": "Ren takes the lead on dinner prep, but the point is not chores for their own sake. The whole house is gathered in the kitchen now, so the room should feel warmer, more practical, and slightly more intimate because there is a task to share. Let each actor show what kind of closeness they seek through usefulness, comfort, curiosity, flirtation, or easy practical rhythm. Dinner prep should feel collaborative: ingredients get prepared, someone keeps the water moving, and someone should eventually turn the setup into an actual meal or fresh coffee instead of letting the task dissolve into pure banter. When cooking, check other actors' hunger levels and pick recipes that suit the group. Ren might gravitate toward his signature garlic noodles if someone looks hungry. A lighter stir-fry works if people already snacked. Consider who you're feeding, not just what's available.",
       "advance_signals": [
-        "time_reached:19:00"
+        "time_reached:19:00",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.rule_bundle:progress:dinner-prep-cook-and-check-in:meal_ready",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.values.rule_bundle:progress:dinner-prep-cook-and-check-in:coffee_ready",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
       ],
       "on_advance_effects": [
         {
@@ -32,12 +47,12 @@
       ],
       "stage_assignment": {
         "selection_label": "dinner prep",
-        "prompt_instructions": "Score how likely each candidate is to join Ren in the kitchen during dinner prep instead of remaining in the lounge. Favor candidates who would seek closeness through usefulness, comfort, curiosity, flirtation, or an easy practical rhythm with Ren. Lower the score when a candidate would rather observe, hold the room socially, avoid domestic intimacy, or wait to see what forms elsewhere.",
+        "prompt_instructions": "Score how likely each candidate is to join Ren in the kitchen during dinner prep. Favor shared usefulness, comfort, curiosity, flirtation, and an easy practical rhythm, but keep the whole cast together for this collaborative scene by selecting everyone into the kitchen.",
         "initiator_actor_id": "ren",
         "selected_room_id": "kitchen",
         "remaining_room_id": "lounge",
-        "max_selected_actors": 2,
-        "min_selected_actors": 1,
+        "max_selected_actors": 3,
+        "min_selected_actors": 3,
         "score_threshold": 50,
         "initiator_line_template": "{initiator_name} heads to the {selected_room_title} to start {selection_label}.",
         "selected_line_template": "{selected_names} join in the {selected_room_title}.",
@@ -51,7 +66,7 @@
       "id": "share-dinner-in-kitchen",
       "summary": "Dinner in the kitchen: the house gathers around food and eats together.",
       "update_message": "Prep turns into a shared meal as everyone ends up back in the kitchen together.",
-      "beat_note": "Dinner follows directly from the prep split. The meal should carry forward whatever alignment the kitchen and lounge just created: who already feels easy together, who is arriving from a separate vibe, who now has to bridge a gap, and who uses food to keep a promising thread going. Let eating together do the social work: who sits close to whom, who serves others without being asked, who is particular about what they take, who uses the meal to stay near someone, and who arrives already feeling left out or newly included. Make the communal dinner feel a little more charged because the house has already had a chance to divide and recombine.",
+      "beat_note": "Dinner follows directly from the collaborative prep. The meal should carry forward whatever alignment the kitchen work just created: who already feels easy together, who stepped naturally into helping, who used usefulness to get closer, and who kept drifting toward conversation instead. Let eating together do the social work: who sits close to whom, who serves others without being asked, who is particular about what they take, and who uses the meal to keep a promising thread going. Make the communal dinner feel a little more charged because everyone just shared the same practical rhythm before sitting down.",
       "advance_signals": [
         "time_reached:20:00"
       ],

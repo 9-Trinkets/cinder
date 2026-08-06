@@ -31,6 +31,7 @@ pub struct ConsumableInfo {
     pub label: String,
     pub kind: String,
     pub stock: u32,
+    pub is_crafted: bool,
 }
 
 #[derive(Clone, Serialize)]
@@ -111,6 +112,7 @@ pub struct UiSnapshot {
     pub game_closure: Option<ActClosure>,
     pub inventory: Vec<InventoryItem>,
     pub room_consumables: Vec<RoomConsumableGroup>,
+    pub crafted_consumable_labels: Vec<String>,
     pub show_relationship_sidebar: bool,
     pub relationship_pairs: Vec<cinder_core::engine::runtime::RelationshipPair>,
     pub theme: cinder_core::content::types::ThemeDefinition,
@@ -164,6 +166,7 @@ pub(super) fn build_ui_snapshot(
         .followed_actor_id()
         .map_err(|error| error.to_string())?
         .and_then(|id| runtime.actor_display_name(&id).ok().flatten());
+    let crafted_consumable_ids = content.crafted_consumable_ids();
 
     let (action_bar_actions, content_defined_bar) =
         if !content.ui_text.action_bar.actions.is_empty() {
@@ -409,6 +412,7 @@ pub(super) fn build_ui_snapshot(
                             label: c.consumable.label.clone(),
                             kind: format!("{:?}", c.consumable.kind).to_lowercase(),
                             stock: remaining,
+                            is_crafted: crafted_consumable_ids.contains(&c.consumable.id),
                         });
                     } else {
                         groups.push(RoomConsumableGroup {
@@ -418,12 +422,21 @@ pub(super) fn build_ui_snapshot(
                                 label: c.consumable.label.clone(),
                                 kind: format!("{:?}", c.consumable.kind).to_lowercase(),
                                 stock: remaining,
+                                is_crafted: crafted_consumable_ids.contains(&c.consumable.id),
                             }],
                         });
                     }
                     groups
                 })
         },
+        crafted_consumable_labels: content
+            .room_consumables(&current_room_id)
+            .into_iter()
+            .filter(|c| crafted_consumable_ids.contains(&c.consumable.id))
+            .map(|c| c.consumable.label.clone())
+            .collect::<std::collections::BTreeSet<_>>()
+            .into_iter()
+            .collect(),
         show_relationship_sidebar: content.settings.show_relationship_sidebar,
         relationship_pairs: if content.settings.show_relationship_sidebar {
             runtime.relationship_pairs().unwrap_or_default()

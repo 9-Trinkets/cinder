@@ -1,6 +1,7 @@
 use super::*;
 use crate::content::text_defs::{SystemTextDefinition, UiTextDefinition};
 use crate::engine::state::{VariableDeclaration, WorldState};
+use std::collections::BTreeSet;
 
 #[derive(Debug, Clone)]
 pub struct ContentPack {
@@ -119,11 +120,19 @@ impl ContentPack {
     /// An actor with no entry in movement.json simply has no target rules -- it still
     /// gets NPC turns like any other actor. Never returns None.
     pub fn movement_rules(&self, actor_id: &str) -> ActorMovementRulesDefinition {
-        self.movement.actors.get(actor_id).cloned().unwrap_or_default()
+        self.movement
+            .actors
+            .get(actor_id)
+            .cloned()
+            .unwrap_or_default()
     }
 
     pub fn room_is_reachable(&self, room_id: &str) -> bool {
-        !self.movement.unreachable_rooms.iter().any(|id| id == room_id)
+        !self
+            .movement
+            .unreachable_rooms
+            .iter()
+            .any(|id| id == room_id)
     }
 
     pub fn resolve_actor(&self, raw_target: &str) -> Option<&ActorDefinition> {
@@ -211,6 +220,15 @@ impl ContentPack {
                     consumable,
                 })
         })
+    }
+
+    pub fn crafted_consumable_ids(&self) -> BTreeSet<String> {
+        self.commands
+            .actions
+            .iter()
+            .filter_map(|command| command.creates_consumable.as_ref())
+            .map(|spec| spec.consumable_id.clone())
+            .collect()
     }
 
     pub fn render_template(&self, template: &str, replacements: &[(&str, &str)]) -> String {

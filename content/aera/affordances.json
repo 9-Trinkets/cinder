@@ -82,11 +82,35 @@
       "visible_by_default": true
     },
     {
+      "id": "chop_vegetables",
+      "group": "kitchen",
+      "prompt_verb": "chop vegetables",
+      "command_id": "chop_vegetables",
+      "sort_order": 10,
+      "visible_by_default": true
+    },
+    {
+      "id": "boil_water",
+      "group": "kitchen",
+      "prompt_verb": "boil water",
+      "command_id": "boil_water",
+      "sort_order": 11,
+      "visible_by_default": true
+    },
+    {
+      "id": "grind_coffee",
+      "group": "kitchen",
+      "prompt_verb": "grind coffee",
+      "command_id": "grind_coffee",
+      "sort_order": 12,
+      "visible_by_default": true
+    },
+    {
       "id": "cook",
       "group": "kitchen",
       "prompt_verb": "cook",
       "command_id": "cook",
-      "sort_order": 10,
+      "sort_order": 13,
       "visible_by_default": true
     },
     {
@@ -94,7 +118,7 @@
       "group": "kitchen",
       "prompt_verb": "brew",
       "command_id": "brew",
-      "sort_order": 11,
+      "sort_order": 14,
       "visible_by_default": true
     },
     {
@@ -102,7 +126,7 @@
       "group": "patio",
       "prompt_verb": "yoga",
       "command_id": "yoga",
-      "sort_order": 12,
+      "sort_order": 15,
       "visible_by_default": true
     },
     {
@@ -110,7 +134,7 @@
       "group": "patio",
       "prompt_verb": "stretch",
       "command_id": "stretch",
-      "sort_order": 13,
+      "sort_order": 16,
       "visible_by_default": true
     },
     {
@@ -118,7 +142,7 @@
       "group": "studio",
       "prompt_verb": "edit",
       "command_id": "edit",
-      "sort_order": 14,
+      "sort_order": 17,
       "visible_by_default": true
     },
     {
@@ -126,7 +150,7 @@
       "group": "studio",
       "prompt_verb": "watch",
       "command_id": "watch",
-      "sort_order": 15,
+      "sort_order": 18,
       "visible_by_default": true
     }
   ]

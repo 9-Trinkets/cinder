@@ -97,7 +97,15 @@ pub struct CreatesConsumableSpec {
     pub resolve_from_target: bool,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct RuleBundleProgressRef {
+    #[serde(default)]
+    pub bundle_id: String,
+    #[serde(default)]
+    pub key: String,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct CommandDefinition {
     pub id: String,
     pub command: String,
@@ -137,6 +145,14 @@ pub struct CommandDefinition {
     pub requires_any: Vec<String>,
     #[serde(default)]
     pub consumes_any: Vec<String>,
+    #[serde(default)]
+    pub required_bundle_progress: Vec<RuleBundleProgressRef>,
+    #[serde(default)]
+    pub blocked_by_bundle_progress: Vec<RuleBundleProgressRef>,
+    #[serde(default)]
+    pub sets_bundle_progress: Vec<RuleBundleProgressRef>,
+    #[serde(default)]
+    pub clears_bundle_progress: Vec<RuleBundleProgressRef>,
     #[serde(default)]
     pub available_during: Vec<String>,
 }

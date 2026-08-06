@@ -10,7 +10,7 @@ use crate::engine::dialogue_grounding::{
 use crate::engine::events::WorldEvent;
 use crate::engine::hooks::{actor_state_notes, pair_state_note};
 use crate::engine::state::WorldState;
-use crate::engine::turn_policies::apply_actor_turn_policies;
+use crate::engine::turn_policies::{apply_actor_turn_policies, command_is_available};
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::sync::Arc;
@@ -22,7 +22,8 @@ use super::affordances::{
 use super::context::{
     SpeakCandidateContext, actors_in_room_except, available_consume_candidates,
     inspect_actor_candidates, inspect_feature_candidates,
-    preferred_hunger_recovery_consume_item_id, recovery_context_label, reply_pending_from_candidate,
+    preferred_hunger_recovery_consume_item_id, recovery_context_label,
+    reply_pending_from_candidate,
 };
 use super::dialogue::{actor_turn_setting_notes, recent_actor_turn_memory};
 use super::movement::{
@@ -87,7 +88,8 @@ pub fn build_actor_turn(
     let rest_context = recovery_context_label(content.as_ref(), &current_room_id);
     let consume_candidates =
         available_consume_candidates(content.as_ref(), state, actor, &current_room_id);
-    let inspect_feature_cands = inspect_feature_candidates(content.as_ref(), state, actor, &current_room_id);
+    let inspect_feature_cands =
+        inspect_feature_candidates(content.as_ref(), state, actor, &current_room_id);
     let inspect_actor_cands = inspect_actor_candidates(state, actor, &talk_candidate_contexts);
     let hide_move = is_actor_movement_locked(
         content.as_ref(),
@@ -105,14 +107,17 @@ pub fn build_actor_turn(
                 .count(),
             consume_option_count: consume_candidates
                 .iter()
-                .filter(|candidate| candidate.kind == crate::content::types::ConsumableKind::Consume)
+                .filter(|candidate| {
+                    candidate.kind == crate::content::types::ConsumableKind::Consume
+                })
                 .count(),
         },
     )?;
     let move_target = (!hide_move)
         .then(|| {
-            exploration_move_target(content.as_ref(), state, actor, &current_room_id)
-                .or_else(|| pair_stats_move_target(content.as_ref(), state, actor, &current_room_id))
+            exploration_move_target(content.as_ref(), state, actor, &current_room_id).or_else(
+                || pair_stats_move_target(content.as_ref(), state, actor, &current_room_id),
+            )
         })
         .flatten();
     let move_events = if hide_move {
@@ -372,6 +377,13 @@ pub fn build_actor_turn(
     let mut affordances = affordance_candidates
         .into_iter()
         .filter(|candidate| candidate.visible_by_default)
+        .filter(|candidate| {
+            let ActorTurnCommandInvocation::Command { command_id, .. } =
+                &candidate.option.invocation;
+            content
+                .command(command_id)
+                .is_some_and(|command| command_is_available(content.as_ref(), state, command))
+        })
         .collect::<Vec<_>>();
     affordances.sort_by(|left, right| left.order.cmp(&right.order));
     let mut request = ActorTurnActionRequest {

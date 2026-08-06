@@ -179,6 +179,7 @@ export interface ConsumableInfo {
   label: string
   kind: string
   stock: number
+  is_crafted: boolean
 }
 
 export interface RoomConsumableGroup {
@@ -207,6 +208,7 @@ export interface ThemeDefinition {
   foam: string
   iris: string
   highlight_high: string
+  crafted_highlight: string
   crt_glow: string
   crt_dim: string
   crt_bez: string
@@ -242,6 +244,7 @@ export interface UiSnapshot {
   game_closure: ActClosureData | null
   inventory: InventoryItem[]
   room_consumables: RoomConsumableGroup[]
+  crafted_consumable_labels: string[]
   show_relationship_sidebar: boolean
   relationship_pairs: RelationshipPair[]
   theme: ThemeDefinition

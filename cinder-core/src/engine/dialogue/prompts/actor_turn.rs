@@ -8,7 +8,7 @@ use super::{
     ChapterScriptSummaryRequest, ConversationMemorySummaryRequest, DialogueRequest,
     DirectSpeechIntentRequest, MenuIntentRequest,
 };
-use crate::content::types::{CommandDefinition, SystemTextDefinition};
+use crate::content::types::{CommandDefinition, CommandInputMode, SystemTextDefinition};
 
 pub(crate) fn build_actor_turn_action_prompt(request: &ActorTurnActionRequest) -> String {
     let text = &request.system_text;
@@ -282,23 +282,39 @@ pub(crate) fn build_actor_turn_affordance_option(
                 input_mode: command.input_mode,
             },
         ),
-        ActorTurnAffordanceTarget::Act => (
-            system_text.actor_turn_act_option_template.clone(),
-            render_prompt_template(
-                &system_text.actor_turn_act_decision_template,
-                &[("command", command.command.as_str())],
+        ActorTurnAffordanceTarget::Act => match command.input_mode {
+            CommandInputMode::FreeformText => (
+                system_text.actor_turn_act_option_template.clone(),
+                render_prompt_template(
+                    &system_text.actor_turn_act_decision_template,
+                    &[("command", command.command.as_str())],
+                ),
+                Some(command.command.clone()),
+                ActorTurnCommandInvocation::Command {
+                    command_id: command.id.clone(),
+                    target_room_id: None,
+                    target_actor_id: None,
+                    feature_id: None,
+                    consumable_id: None,
+                    context_label: None,
+                    input_mode: command.input_mode,
+                },
             ),
-            Some(command.command.clone()),
-            ActorTurnCommandInvocation::Command {
-                command_id: command.id.clone(),
-                target_room_id: None,
-                target_actor_id: None,
-                feature_id: None,
-                consumable_id: None,
-                context_label: None,
-                input_mode: command.input_mode,
-            },
-        ),
+            CommandInputMode::None => (
+                format!("You could {prompt_verb}."),
+                command.command.clone(),
+                None,
+                ActorTurnCommandInvocation::Command {
+                    command_id: command.id.clone(),
+                    target_room_id: None,
+                    target_actor_id: None,
+                    feature_id: None,
+                    consumable_id: None,
+                    context_label: None,
+                    input_mode: command.input_mode,
+                },
+            ),
+        },
     };
     ActorTurnAffordanceOption {
         affordance_id: affordance_id.to_string(),
@@ -362,6 +378,38 @@ pub(crate) fn chapter_relationship_summarizer_system_prompt(
         _ => {
             "You turn end-of-chapter pair stats into relationship-status updates. Use only the provided stat lines. Return 2 to 4 short lines with no bullets, each starting with the pair name exactly as given, like a reality TV host giving a sharp relationship board update. Do not invent scenes or promises."
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::build_actor_turn_affordance_option;
+    use crate::content::loader::load_named_pack;
+    use crate::content::types::{CommandDefinition, CommandInputMode, CommandTargetMode};
+    use crate::engine::dialogue::ActorTurnAffordanceTarget;
+
+    #[test]
+    fn targetless_none_input_commands_render_explicit_action_text() {
+        let content = load_named_pack("aera", Some("en")).expect("load aera");
+        let option = build_actor_turn_affordance_option(
+            &content.system_text,
+            "cook",
+            "kitchen",
+            "cook now",
+            None,
+            &CommandDefinition {
+                id: "cook".to_string(),
+                command: "COOK".to_string(),
+                input_mode: CommandInputMode::None,
+                target_mode: CommandTargetMode::None,
+                ..CommandDefinition::default()
+            },
+            ActorTurnAffordanceTarget::Act,
+        );
+
+        assert_eq!(option.available_text, "You could cook now.");
+        assert_eq!(option.decision_label, "COOK");
+        assert_eq!(option.decision_prefix, None);
     }
 }
 

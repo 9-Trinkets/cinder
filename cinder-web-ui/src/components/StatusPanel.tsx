@@ -41,7 +41,11 @@ export default function StatusPanel({ uiSnapshot }: { uiSnapshot: api.UiSnapshot
               <ul className="space-y-0.5">
                 {group.items.map((item) => (
                   <li key={item.id} className="text-text text-xs">
-                    • {item.label}{item.stock > 1 ? <span className="text-muted ml-1">×{item.stock}</span> : null}
+                    • <span
+                      className={item.is_crafted ? 'font-medium' : undefined}
+                      style={item.is_crafted ? { color: 'var(--color-crafted-highlight)' } : undefined}
+                    >{item.label}</span>
+                    {item.stock > 1 ? <span className="text-muted ml-1">×{item.stock}</span> : null}
                   </li>
                 ))}
               </ul>

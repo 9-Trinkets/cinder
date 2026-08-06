@@ -5,6 +5,7 @@ use crate::engine::events::ObservationMode;
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
+use crate::engine::turn_policies::apply_command_bundle_progress_effects;
 use serde_json::json;
 
 use super::beat_advance::advance_objective_for_signal;
@@ -78,6 +79,7 @@ pub(super) fn handle_actor_command_used(
     )?;
     record_actor_command_memory(state, content, command, &command_context, &command_text);
     apply_actor_command_effects(state, content, command, &command_context);
+    apply_command_bundle_progress_effects(state, command);
     if let Some(spec) = &command.creates_consumable {
         let resolved_id = if spec.resolve_from_target {
             command_context
@@ -92,9 +94,10 @@ pub(super) fn handle_actor_command_used(
                 .to_string()
         };
         let target_feature_id = content.room(command_context.room_id).and_then(|room| {
-            room.features.iter().find(|f| {
-                f.consumables.iter().any(|c| c.id == resolved_id)
-            }).map(|f| f.id.clone())
+            room.features
+                .iter()
+                .find(|f| f.consumables.iter().any(|c| c.id == resolved_id))
+                .map(|f| f.id.clone())
         });
         if let Some(target_feature_id) = target_feature_id {
             state.restock_feature_consumable(
@@ -127,6 +130,7 @@ pub(super) fn handle_actor_command_used(
     } else if state.current_room_id == room_id {
         lines.push(command_text);
     }
+    lines.extend(advance_objective_for_signal(state, content, "command_used"));
     Some(lines)
 }
 

@@ -20,13 +20,49 @@
     {
       "id": "dinner-prep-cook-and-check-in",
       "stage_id": "dinner-prep",
+      "progress": {
+        "keys": [
+          {
+            "key": "vegetables_chopped",
+            "label": "chopped vegetables"
+          },
+          {
+            "key": "water_boiled",
+            "label": "boiled water"
+          },
+          {
+            "key": "coffee_ground",
+            "label": "ground coffee"
+          },
+          {
+            "key": "meal_ready",
+            "label": "dinner ready"
+          },
+          {
+            "key": "coffee_ready",
+            "label": "coffee ready"
+          }
+        ]
+      },
       "completion": {
         "mark_actor_complete_on": []
       },
       "guidance": {
-        "prompt_note_if_actor_incomplete": "You are in dinner prep mode. Prioritize practical kitchen actions first: cook, brew, and prepare something people can actually eat or drink. While doing that, keep conversation light and social by checking in about how everyone's day is going.",
+        "prompt_note_if_actor_incomplete": "You are in dinner prep mode. Treat the kitchen like a shared task: get water boiling, chop vegetables, grind coffee, and coordinate so someone can turn that prep into an actual meal or a fresh brew. Keep the conversation light and social while you work.",
         "prompt_note_if_others_incomplete": "",
         "prioritize": [
+          {
+            "command_id": "chop_vegetables",
+            "target": "any"
+          },
+          {
+            "command_id": "boil_water",
+            "target": "any"
+          },
+          {
+            "command_id": "grind_coffee",
+            "target": "any"
+          },
           {
             "command_id": "cook",
             "target": "any"
@@ -36,24 +72,64 @@
             "target": "any"
           },
           {
-            "command_id": "eat",
-            "target": "any"
-          },
-          {
-            "command_id": "drink",
-            "target": "any"
-          },
-          {
-            "command_id": "consume",
-            "target": "any"
-          },
-          {
             "command_id": "speak",
             "target": "actor"
           },
           {
             "command_id": "speak",
             "target": "room"
+          }
+        ],
+        "conditional": [
+          {
+            "required_bundle_progress": [
+              {
+                "bundle_id": "dinner-prep-cook-and-check-in",
+                "key": "vegetables_chopped"
+              },
+              {
+                "bundle_id": "dinner-prep-cook-and-check-in",
+                "key": "water_boiled"
+              }
+            ],
+            "blocked_by_bundle_progress": [
+              {
+                "bundle_id": "dinner-prep-cook-and-check-in",
+                "key": "meal_ready"
+              }
+            ],
+            "prompt_note": "The vegetables are chopped and the water is boiling. Turn the prep into dinner now: someone should cook before the kitchen energy drifts back into pure conversation.",
+            "prioritize": [
+              {
+                "command_id": "cook",
+                "target": "any"
+              }
+            ]
+          },
+          {
+            "required_bundle_progress": [
+              {
+                "bundle_id": "dinner-prep-cook-and-check-in",
+                "key": "coffee_ground"
+              },
+              {
+                "bundle_id": "dinner-prep-cook-and-check-in",
+                "key": "water_boiled"
+              }
+            ],
+            "blocked_by_bundle_progress": [
+              {
+                "bundle_id": "dinner-prep-cook-and-check-in",
+                "key": "coffee_ready"
+              }
+            ],
+            "prompt_note": "The grounds and hot water are ready. Finish the shared ritual by brewing the coffee now instead of just talking around it.",
+            "prioritize": [
+              {
+                "command_id": "brew",
+                "target": "any"
+              }
+            ]
           }
         ]
       }

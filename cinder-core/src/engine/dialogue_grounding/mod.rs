@@ -5,6 +5,7 @@ use crate::engine::state::{
     ConversationMemoryKind, ConversationMemoryLine, WorldState, display_actor_name,
     remap_story_actor_id, render_dynamic_story_text, resolved_actor_prompt_context,
 };
+use crate::engine::turn_policies::actor_bundle_guidance_notes;
 const ROOM_RECENT_MEMORY_LIMIT: usize = 8;
 
 pub(crate) fn build_grounded_dialogue_request(
@@ -52,13 +53,14 @@ pub(crate) fn build_grounded_dialogue_request_for_exchange(
         &[("current_time", state.current_time_label().as_str())],
     );
     let setting_notes = build_setting_notes(content, state, actor, room, &current_time_note);
+    let objective_notes = current_objective_and_bundle_beat_notes(content, state, actor_id);
     let current_beat_notes = build_current_beat_notes(
         content,
         room,
         other_person_id,
         other_person_name,
         other_person_message.as_deref(),
-        &current_objective_beat_notes(content, state, Some(actor_id)),
+        &objective_notes,
     );
     let prompt_context = resolved_actor_prompt_context(content, state, actor);
     let actor_name = display_actor_name(state, actor);
@@ -71,13 +73,9 @@ pub(crate) fn build_grounded_dialogue_request_for_exchange(
     if other_person_id == viewer_participant_id(content) {
         subtext_notes.extend(content.opening.prompt_context.subtext_notes.clone());
     }
-    if let Some(note) = pair_state_note(
-        content,
-        state,
-        actor_id,
-        other_person_id,
-        other_person_name,
-    ) {
+    if let Some(note) =
+        pair_state_note(content, state, actor_id, other_person_id, other_person_name)
+    {
         subtext_notes.push(note);
     }
     subtext_notes.extend(actor_state_notes(content, state, actor_id));
@@ -147,7 +145,7 @@ pub(crate) fn build_grounded_dialogue_request_for_room(
         &[("current_time", state.current_time_label().as_str())],
     );
     let setting_notes = build_setting_notes(content, state, actor, room, &current_time_note);
-    let current_beat_notes = current_objective_beat_notes(content, state, Some(actor_id));
+    let current_beat_notes = current_objective_and_bundle_beat_notes(content, state, actor_id);
     let prompt_context = resolved_actor_prompt_context(content, state, actor);
     let actor_name = display_actor_name(state, actor);
     let mut response_notes = prompt_context.response_notes.clone();
@@ -245,10 +243,7 @@ pub(crate) fn current_objective_beat_notes(
             state
                 .story_vars
                 .get(&stage.target_actor_story_var)
-                .map(|ids| {
-                    ids.split(',')
-                        .any(|id| id.trim() == actor_id)
-                })
+                .map(|ids| ids.split(',').any(|id| id.trim() == actor_id))
                 .unwrap_or(false)
         })
         .map(|stage| render_story_text(&stage.beat_note, state))
@@ -256,8 +251,45 @@ pub(crate) fn current_objective_beat_notes(
         .collect()
 }
 
+fn current_objective_and_bundle_beat_notes(
+    content: &ContentPack,
+    state: &WorldState,
+    actor_id: &str,
+) -> Vec<String> {
+    let mut notes = current_objective_beat_notes(content, state, Some(actor_id));
+    notes.extend(actor_bundle_guidance_notes(content, state, actor_id));
+    notes
+}
+
 pub(crate) fn render_story_text(template: &str, state: &WorldState) -> String {
     render_dynamic_story_text(template, state)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::build_grounded_dialogue_request_for_room;
+    use crate::content::loader::load_named_pack;
+    use crate::engine::state::WorldState;
+
+    #[test]
+    fn room_dialogue_request_includes_intro_bundle_guidance() {
+        let content = load_named_pack("aera", Some("en")).expect("load aera");
+        let mut state = WorldState::new(&content);
+        state.active_objective_stage_ids = vec!["introduce-everyone-first-evening".to_string()];
+
+        let request = build_grounded_dialogue_request_for_room(
+            &content,
+            &state,
+            "aera",
+            "lounge",
+            "everyone here",
+        )
+        .expect("build room dialogue request");
+
+        assert!(request.current_beat_notes.iter().any(|note| {
+            note.contains("clearly says your name") && note.contains("first impression")
+        }));
+    }
 }
 
 pub(crate) fn build_setting_notes(

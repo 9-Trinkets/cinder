@@ -126,6 +126,69 @@
       "effects": ["remember_in_room"]
     },
     {
+      "id": "chop_vegetables",
+      "command": "CHOP VEGETABLES",
+      "target_mode": "none",
+      "effects": ["remember_in_room"],
+      "event_text": "{actor_name} claims the cutting board and starts chopping vegetables into a neat prep pile.",
+      "allowed_rooms": ["kitchen"],
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "vegetables_chopped"
+        }
+      ],
+      "blocked_by_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "vegetables_chopped"
+        }
+      ],
+      "available_during": ["dinner-prep"]
+    },
+    {
+      "id": "boil_water",
+      "command": "BOIL WATER",
+      "target_mode": "none",
+      "effects": ["remember_in_room"],
+      "event_text": "{actor_name} sets a pot to boil, filling the kitchen with the first real sense that dinner is underway.",
+      "allowed_rooms": ["kitchen"],
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "water_boiled"
+        }
+      ],
+      "blocked_by_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "water_boiled"
+        }
+      ],
+      "available_during": ["dinner-prep"]
+    },
+    {
+      "id": "grind_coffee",
+      "command": "GRIND COFFEE",
+      "target_mode": "none",
+      "effects": ["remember_in_room"],
+      "event_text": "{actor_name} measures out coffee beans and grinds them fresh, the kitchen taking on a warm roasted smell.",
+      "allowed_rooms": ["kitchen"],
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "coffee_ground"
+        }
+      ],
+      "blocked_by_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "coffee_ground"
+        }
+      ],
+      "available_during": ["dinner-prep"]
+    },
+    {
       "id": "cook",
       "command": "COOK",
       "target_mode": "none",
@@ -133,10 +196,33 @@
       "hook_id": "actor.cooked",
       "event_text": "{actor_name} works the kitchen with quiet focus, the pan hissing as ingredients come together.",
       "allowed_rooms": ["kitchen"],
+      "required_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "vegetables_chopped"
+        },
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "water_boiled"
+        }
+      ],
+      "blocked_by_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "meal_ready"
+        }
+      ],
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "meal_ready"
+        }
+      ],
       "creates_consumable": {
         "consumable_id": "garlic-noodles",
         "story_var": "cook_recipe"
-      }
+      },
+      "available_during": ["dinner-prep"]
     },
     {
       "id": "brew",
@@ -144,12 +230,35 @@
       "target_mode": "none",
       "effects": ["remember_in_room"],
       "hook_id": "actor.brewed",
-      "event_text": "{actor_name} puts together a fresh drink, the kitchen filling with something light and cool.",
+      "event_text": "{actor_name} turns the boiled water and fresh grounds into a careful pour-over, the kitchen filling with coffee aroma.",
       "allowed_rooms": ["kitchen"],
+      "required_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "water_boiled"
+        },
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "coffee_ground"
+        }
+      ],
+      "blocked_by_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "coffee_ready"
+        }
+      ],
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "coffee_ready"
+        }
+      ],
       "creates_consumable": {
-        "consumable_id": "yuzu-lemonade",
+        "consumable_id": "pour-over-coffee",
         "story_var": "brew_recipe"
-      }
+      },
+      "available_during": ["dinner-prep"]
     },
     {
       "id": "yoga",

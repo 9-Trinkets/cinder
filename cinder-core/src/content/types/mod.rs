@@ -1,7 +1,6 @@
 pub use super::text_defs::{
-    ActionBarDefinition, ActionBarItem, ActClosureDefinition, ActClosureSectionDefinition,
-    ActClosureSource, ShellMenuDefinition, ShellMenuItem, SystemTextDefinition,
-    UiTextDefinition,
+    ActClosureDefinition, ActClosureSectionDefinition, ActClosureSource, ActionBarDefinition,
+    ActionBarItem, ShellMenuDefinition, ShellMenuItem, SystemTextDefinition, UiTextDefinition,
 };
 
 use serde::{Deserialize, Serialize};
@@ -414,7 +413,8 @@ pub use world_defs::{
     MovementConfigDefinition, PresentationDefinition, PresentationTextDefinition, RoomDefinition,
     RoomExitDefinition, RoomFeatureDefinition, RuleBundleAffordancePriorityDefinition,
     RuleBundleAffordanceTarget, RuleBundleCompletionDefinition, RuleBundleCompletionTrigger,
-    RuleBundleDefinition, RuleBundleGuidanceDefinition, RuleBundlesDefinition,
+    RuleBundleConditionalGuidanceDefinition, RuleBundleDefinition, RuleBundleGuidanceDefinition,
+    RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition, RuleBundlesDefinition,
     SpeechConfigDefinition, StatDefinition, StatsDefinition,
 };
 
@@ -423,7 +423,7 @@ pub use command_defs::{
     AffordanceDefinition, AffordancesDefinition, CommandDefinition, CommandEffect,
     CommandInputMode, CommandOutcomeMode, CommandTargetMode, CommandsDefinition,
     ContentEventDefinition, PlayerCommandInputMetadata, PlayerCommandMetadata,
-    PlayerCommandTargetMode,
+    PlayerCommandTargetMode, RuleBundleProgressRef,
 };
 
 mod content_pack;
