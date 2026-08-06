@@ -3,6 +3,10 @@ name = "cinder-srv"
 version = "0.1.0"
 edition = "2024"
 
+[[bin]]
+name = "debug_playthrough"
+path = "src/bin/debug/playthrough.rs"
+
 [dependencies]
 axum = { version = "0.8", features = ["macros", "ws"] }
 dotenvy = "0.15"
