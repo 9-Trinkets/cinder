@@ -167,6 +167,9 @@ pub(super) fn build_ui_snapshot(
         .map_err(|error| error.to_string())?
         .and_then(|id| runtime.actor_display_name(&id).ok().flatten());
     let crafted_consumable_ids = content.crafted_consumable_ids();
+    let highlighted_consumable = |consumable: &cinder_core::content::types::ConsumableDefinition| {
+        crafted_consumable_ids.contains(&consumable.id) || consumable.initial_stock > 0
+    };
 
     let (action_bar_actions, content_defined_bar) =
         if !content.ui_text.action_bar.actions.is_empty() {
@@ -412,7 +415,7 @@ pub(super) fn build_ui_snapshot(
                             label: c.consumable.label.clone(),
                             kind: format!("{:?}", c.consumable.kind).to_lowercase(),
                             stock: remaining,
-                            is_crafted: crafted_consumable_ids.contains(&c.consumable.id),
+                            is_crafted: highlighted_consumable(c.consumable),
                         });
                     } else {
                         groups.push(RoomConsumableGroup {
@@ -422,7 +425,7 @@ pub(super) fn build_ui_snapshot(
                                 label: c.consumable.label.clone(),
                                 kind: format!("{:?}", c.consumable.kind).to_lowercase(),
                                 stock: remaining,
-                                is_crafted: crafted_consumable_ids.contains(&c.consumable.id),
+                                is_crafted: highlighted_consumable(c.consumable),
                             }],
                         });
                     }
@@ -432,7 +435,7 @@ pub(super) fn build_ui_snapshot(
         crafted_consumable_labels: content
             .room_consumables(&current_room_id)
             .into_iter()
-            .filter(|c| crafted_consumable_ids.contains(&c.consumable.id))
+            .filter(|c| highlighted_consumable(c.consumable))
             .map(|c| c.consumable.label.clone())
             .collect::<std::collections::BTreeSet<_>>()
             .into_iter()
