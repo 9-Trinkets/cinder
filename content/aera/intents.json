@@ -6,6 +6,22 @@
       "effects": []
     },
     {
+      "label": "COLD",
+      "description": "The line is dismissive, cutting, defensive, or pushes the other person away in a way that damages trust or ease.",
+      "effects": [
+        {
+          "kind": "pair_stat",
+          "stat": "connection",
+          "delta": -1
+        },
+        {
+          "kind": "pair_stat",
+          "stat": "safety",
+          "delta": -1
+        }
+      ]
+    },
+    {
       "label": "WARM",
       "description": "The line reaches toward closeness, emotional openness, or shows vulnerability and trust.",
       "effects": [
