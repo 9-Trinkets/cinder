@@ -2,8 +2,8 @@ use crate::content::types::{
     ActorDefinition, AffordancesDefinition, ActCastMember, BeatsDefinition,
     CommandsDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition,
     MovementConfigDefinition, OpeningDefinition, OpeningMenuDefinition, OpeningMovieDefinition,
-    PresentationDefinition, RoomDefinition, SpeechConfigDefinition, SpeechIntentsConfig,
-    StatsDefinition,
+    PresentationDefinition, RoomDefinition, RuleBundlesDefinition, SpeechConfigDefinition,
+    SpeechIntentsConfig, StatsDefinition,
     SystemTextDefinition, UiTextDefinition,
 };
 use serde::de::DeserializeOwned;
@@ -179,6 +179,9 @@ pub fn load_pack_from_dir_with_locale(
         read_optional_json::<MovementConfigDefinition>(path, "movement.json")?.unwrap_or_default();
     let speech =
         read_optional_json::<SpeechConfigDefinition>(path, "speech.json")?.unwrap_or_default();
+    let rule_bundles =
+        read_optional_json::<RuleBundlesDefinition>(path, "rule_bundles.json")?
+            .unwrap_or_default();
     let hooks =
         read_optional_json::<BTreeMap<String, Value>>(path, "hooks.json")?.unwrap_or_default();
     let speech_intents: SpeechIntentsConfig =
@@ -329,6 +332,27 @@ pub fn load_pack_from_dir_with_locale(
             "beats.stages",
         )?;
     }
+    for bundle in &rule_bundles.first_meeting_introductions {
+        if bundle.id.trim().is_empty() {
+            return Err("rule_bundles.json first_meeting_introductions entries require non-empty id".into());
+        }
+        if bundle.stage_id.trim().is_empty() {
+            return Err(format!(
+                "rule_bundles.json first_meeting_introductions '{}' requires non-empty stage_id",
+                bundle.id
+            )
+            .into());
+        }
+        require_known_id(
+            &bundle.stage_id,
+            &stage_ids,
+            &format!(
+                "rule_bundles.json first_meeting_introductions '{}' stage_id '{}'",
+                bundle.id, bundle.stage_id
+            ),
+            "beats.stages",
+        )?;
+    }
     for room_id in &movement.unreachable_rooms {
         require_known_id(
             room_id,
@@ -392,6 +416,7 @@ pub fn load_pack_from_dir_with_locale(
         affordances,
         movement,
         speech,
+        rule_bundles,
         hooks,
         speech_intents,
         items,

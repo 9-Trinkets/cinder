@@ -16,6 +16,7 @@ use crate::engine::events::ObservationMode;
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
+use crate::engine::turn_policies::mark_actor_room_introduction_if_applicable;
 use serde_json::{Value, json};
 
 pub(super) fn handle_turn_started(
@@ -185,6 +186,7 @@ pub(super) fn handle_actor_spoke_to_room(
     text: &str,
     lines: &mut Vec<String>,
 ) {
+    mark_actor_room_introduction_if_applicable(content, state, actor_id);
     for audience_actor_id in audience_actor_ids.iter() {
         state.push_conversation_line(
             actor_id,

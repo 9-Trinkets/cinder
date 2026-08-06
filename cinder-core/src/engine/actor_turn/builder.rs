@@ -10,6 +10,7 @@ use crate::engine::dialogue_grounding::{
 use crate::engine::events::WorldEvent;
 use crate::engine::hooks::{actor_state_notes, pair_state_note};
 use crate::engine::state::WorldState;
+use crate::engine::turn_policies::apply_actor_turn_policies;
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::sync::Arc;
@@ -373,7 +374,7 @@ pub fn build_actor_turn(
         .filter(|candidate| candidate.visible_by_default)
         .collect::<Vec<_>>();
     affordances.sort_by(|left, right| left.order.cmp(&right.order));
-    let request = ActorTurnActionRequest {
+    let mut request = ActorTurnActionRequest {
         actor_id: actor.id.clone(),
         actor_name: actor.name.clone(),
         locale: content.locale.clone(),
@@ -429,6 +430,7 @@ pub fn build_actor_turn(
         speak_candidates: speak_candidates.clone(),
         recent_memory: recent_actor_turn_memory(state, actor, &talk_candidate_contexts),
     };
+    apply_actor_turn_policies(content.as_ref(), state, &mut request);
     let realization_context = ActorTurnRealizationContext {
         current_room_id: current_room_id.clone(),
         hide_move,

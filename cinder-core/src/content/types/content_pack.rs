@@ -21,6 +21,7 @@ pub struct ContentPack {
     pub affordances: AffordancesDefinition,
     pub movement: MovementConfigDefinition,
     pub speech: SpeechConfigDefinition,
+    pub rule_bundles: RuleBundlesDefinition,
     pub hooks: BTreeMap<String, Value>,
     pub speech_intents: SpeechIntentsConfig,
     pub items: Vec<ItemDefinition>,

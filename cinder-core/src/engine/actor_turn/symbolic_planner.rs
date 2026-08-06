@@ -1,42 +1,13 @@
-use crate::content::types::{CommandInputMode, ContentPack};
+use crate::content::types::CommandInputMode;
 use crate::engine::dialogue::{
-    ActorTurnActionDecision, ActorTurnActionRequest, ActorTurnCommandInvocation,
+    ActorTurnActionDecision, ActorTurnActionRequest, ActorTurnCommandInvocation, DialogueGenerator,
 };
 use crate::engine::neuron::evaluate_symbolic_value;
 use rand::Rng;
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use std::error::Error;
 
-use super::decisions::{has_clearly_preferred_target, quiet_room_action_decision};
-
-#[derive(Debug, Clone, Serialize)]
-pub struct SymbolicPlannerInputCandidate {
-    pub actor_id: String,
-    pub reply_now: bool,
-    pub connection: i32,
-    pub safety: i32,
-    pub attraction: i32,
-    pub target_score: i32,
-}
-
-#[derive(Debug, Clone, Serialize)]
-pub struct SymbolicPlannerInput {
-    pub is_directly_addressed: bool,
-    pub has_recent_room_speech: bool,
-    pub confidence: i32,
-    pub stamina: i32,
-    pub hunger: i32,
-    pub has_rest_affordance: bool,
-    pub has_hunger_recovery_consumable: bool,
-    pub has_food_consumable: bool,
-    pub has_cook_affordance: bool,
-    pub cooking_needed: bool,
-    pub food_stock: usize,
-    pub food_stock_deficit: i32,
-    pub has_speak_room_affordance: bool,
-    pub has_clearly_preferred_target: bool,
-    pub candidates: Vec<SymbolicPlannerInputCandidate>,
-}
+use super::decisions::quiet_room_action_decision;
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct SymbolicPlannerBoolResult {
@@ -57,10 +28,8 @@ fn default_chance_max() -> u32 {
     10
 }
 
-pub fn select_symbolic_actor_turn_action(
-    _content: &ContentPack,
+pub fn select_fallback_actor_turn_action(
     request: &ActorTurnActionRequest,
-    _symbolic_input: &SymbolicPlannerInput,
 ) -> Result<ActorTurnActionDecision, Box<dyn Error>> {
     for affordance in &request.affordances {
         let ActorTurnCommandInvocation::Command { input_mode, .. } = &affordance.invocation;
@@ -74,15 +43,15 @@ pub fn select_symbolic_actor_turn_action(
 }
 
 pub fn decide_actor_turn_action(
-    content: &ContentPack,
+    dialogue: &dyn DialogueGenerator,
     request: &ActorTurnActionRequest,
     emit_trace: &mut dyn FnMut(&str, &str, serde_json::Value) -> Result<(), String>,
 ) -> Result<ActorTurnActionDecision, Box<dyn Error>> {
-    let symbolic_input = build_symbolic_action_planner_input(request);
+    let prompt = dialogue.build_actor_turn_action_prompt(request);
+    let model_backend = dialogue.trace_metadata("actor_turn_decider");
     let trace_backend = serde_json::json!({
-        "backend": "symbolic",
+        "backend": "symbolic_fallback",
         "planner_mode": "affordance_first",
-        "rule": "none",
     });
     emit_trace(
         "actor_turn_decider",
@@ -91,24 +60,43 @@ pub fn decide_actor_turn_action(
             "actor_id": request.actor_id,
             "actor_name": request.actor_name,
             "dialogue_request": request.clone(),
-            "symbolic_input": symbolic_input,
-            "backend": trace_backend.clone(),
+            "prompt": prompt,
+            "backend": model_backend,
         }),
     )
     .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
-    let symbolic_action = select_symbolic_actor_turn_action(content, request, &symbolic_input)?;
-    emit_trace(
-        "actor_turn_decider",
-        "model.response",
-        serde_json::json!({
-            "actor_id": request.actor_id,
-            "actor_name": request.actor_name,
-            "decision": actor_turn_decision_label(&symbolic_action),
-            "backend": trace_backend,
-        }),
-    )
-    .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
-    Ok(symbolic_action)
+    match dialogue.choose_actor_turn_action(request) {
+        Ok(model_action) => {
+            emit_trace(
+                "actor_turn_decider",
+                "model.response",
+                serde_json::json!({
+                    "actor_id": request.actor_id,
+                    "actor_name": request.actor_name,
+                    "decision": actor_turn_decision_label(&model_action),
+                    "backend": dialogue.trace_metadata("actor_turn_decider"),
+                }),
+            )
+            .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
+            Ok(model_action)
+        }
+        Err(error) => {
+            let fallback_action = select_fallback_actor_turn_action(request)?;
+            emit_trace(
+                "actor_turn_decider",
+                "model.response",
+                serde_json::json!({
+                    "actor_id": request.actor_id,
+                    "actor_name": request.actor_name,
+                    "error": error,
+                    "decision": actor_turn_decision_label(&fallback_action),
+                    "backend": trace_backend,
+                }),
+            )
+            .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
+            Ok(fallback_action)
+        }
+    }
 }
 
 pub fn actor_turn_decision_label(decision: &ActorTurnActionDecision) -> String {
@@ -169,85 +157,4 @@ pub fn evaluate_symbolic_boolean_rule(
         }
     }
     Ok(true)
-}
-
-pub fn build_symbolic_action_planner_input(
-    request: &ActorTurnActionRequest,
-) -> SymbolicPlannerInput {
-    let candidates = request
-        .speak_candidates
-        .iter()
-        .map(|candidate| {
-            let connection = candidate
-                .pair_stats
-                .get("connection")
-                .copied()
-                .unwrap_or_default();
-            let safety = candidate
-                .pair_stats
-                .get("safety")
-                .copied()
-                .unwrap_or_default();
-            let attraction = candidate
-                .pair_stats
-                .get("attraction")
-                .copied()
-                .unwrap_or_default();
-            SymbolicPlannerInputCandidate {
-                actor_id: candidate.actor_id.clone(),
-                reply_now: candidate.reply_now,
-                connection,
-                safety,
-                attraction,
-                target_score: connection + safety + attraction,
-            }
-        })
-        .collect::<Vec<_>>();
-    SymbolicPlannerInput {
-        is_directly_addressed: request
-            .speak_candidates
-            .iter()
-            .any(|candidate| candidate.reply_now),
-        has_recent_room_speech: request.recent_memory.iter().any(|line| {
-            line.kind == crate::engine::state::ConversationMemoryKind::Speech
-                && line
-                    .target_label
-                    .as_deref()
-                    .is_some_and(|label| label.eq_ignore_ascii_case("room"))
-        }),
-        confidence: request
-            .actor_stats
-            .get("confidence")
-            .copied()
-            .unwrap_or_default(),
-        stamina: request
-            .actor_stats
-            .get("stamina")
-            .copied()
-            .unwrap_or_default(),
-        hunger: request
-            .actor_stats
-            .get("hunger")
-            .copied()
-            .unwrap_or_default(),
-        has_rest_affordance: request.has_rest_affordance,
-        has_hunger_recovery_consumable: request.has_hunger_recovery_consumable,
-        has_food_consumable: request.has_food_consumable,
-        has_cook_affordance: request.has_cook_affordance,
-        cooking_needed: request.cooking_needed,
-        food_stock: request.food_stock,
-        food_stock_deficit: request.actor_count as i32 - request.food_stock as i32,
-        has_speak_room_affordance: request.affordances.iter().any(|affordance| {
-            matches!(
-                &affordance.invocation,
-                ActorTurnCommandInvocation::Command {
-                    command_id,
-                    target_actor_id: None,
-                    ..
-                } if command_id == "speak"
-            )
-        }),
-        has_clearly_preferred_target: has_clearly_preferred_target(request),
-        candidates,
-    }
 }

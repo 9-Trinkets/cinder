@@ -4,19 +4,6 @@ use crate::engine::dialogue::{
 };
 use std::error::Error;
 
-pub fn has_clearly_preferred_target(request: &ActorTurnActionRequest) -> bool {
-    let mut ranked_candidates = ranked_speak_candidates(request);
-    if ranked_candidates.is_empty() {
-        return false;
-    }
-    if ranked_candidates.len() == 1 {
-        return true;
-    }
-    let top_score = ranked_candidates.remove(0).0;
-    let second_score = ranked_candidates.remove(0).0;
-    top_score > second_score
-}
-
 pub fn quiet_room_action_decision(
     request: &ActorTurnActionRequest,
     text: &str,
@@ -49,41 +36,4 @@ pub fn quiet_room_action_decision(
                 "missing authored freeform npc command affordance for quiet in-room action",
             )) as Box<dyn Error>
         })
-}
-
-pub fn ranked_speak_candidates(request: &ActorTurnActionRequest) -> Vec<(i32, i32, String)> {
-    let mut candidates = request
-        .speak_candidates
-        .iter()
-        .map(|candidate| {
-            let connection = candidate
-                .pair_stats
-                .get("connection")
-                .copied()
-                .unwrap_or_default();
-            let safety = candidate
-                .pair_stats
-                .get("safety")
-                .copied()
-                .unwrap_or_default();
-            let attraction = candidate
-                .pair_stats
-                .get("attraction")
-                .copied()
-                .unwrap_or_default();
-            (
-                connection + safety + attraction,
-                connection,
-                candidate.actor_id.clone(),
-            )
-        })
-        .collect::<Vec<_>>();
-    candidates.sort_by(|left, right| {
-        right
-            .0
-            .cmp(&left.0)
-            .then_with(|| right.1.cmp(&left.1))
-            .then_with(|| left.2.cmp(&right.2))
-    });
-    candidates
 }

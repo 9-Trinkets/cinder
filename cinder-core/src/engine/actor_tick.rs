@@ -320,7 +320,11 @@ impl ActorTickRoleRunner {
             Ok(())
         };
         let decision =
-            decide_actor_turn_action(self.content.as_ref(), &build.request, &mut emit_trace)
+            decide_actor_turn_action(
+                self.dialogue.as_ref(),
+                &build.request,
+                &mut emit_trace,
+            )
                 .map_err(|error| {
                     let _ = emit_trace(
                         "npc_actor_turn",

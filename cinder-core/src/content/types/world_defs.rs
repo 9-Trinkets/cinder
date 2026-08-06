@@ -46,6 +46,30 @@ fn default_speech_room_min_audience() -> usize {
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct RuleBundlesDefinition {
+    #[serde(default)]
+    pub first_meeting_introductions: Vec<FirstMeetingIntroductionBundleDefinition>,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct FirstMeetingIntroductionBundleDefinition {
+    #[serde(default)]
+    pub id: String,
+    #[serde(default)]
+    pub stage_id: String,
+    #[serde(default = "default_intro_audience_label")]
+    pub audience_label: String,
+    #[serde(default)]
+    pub prompt_note_not_introduced: String,
+    #[serde(default)]
+    pub prompt_note_wait_for_others: String,
+}
+
+fn default_intro_audience_label() -> String {
+    "everyone here".to_string()
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ActorMovementRulesDefinition {
     #[serde(default)]
     pub target_rules: Vec<ActorMovementTargetRuleDefinition>,
