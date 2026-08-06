@@ -17,34 +17,6 @@ pub fn has_clearly_preferred_target(request: &ActorTurnActionRequest) -> bool {
     top_score > second_score
 }
 
-pub fn rest_decision(request: &ActorTurnActionRequest) -> Option<ActorTurnActionDecision> {
-    request
-        .affordances
-        .iter()
-        .find_map(|affordance| match &affordance.invocation {
-            ActorTurnCommandInvocation::Command {
-                command_id,
-                target_room_id,
-                target_actor_id,
-                feature_id,
-                consumable_id,
-                context_label,
-                input_mode,
-            } if command_id == "rest" && *input_mode == CommandInputMode::None => {
-                Some(ActorTurnActionDecision::Command {
-                    command_id: command_id.clone(),
-                    target_room_id: target_room_id.clone(),
-                    target_actor_id: target_actor_id.clone(),
-                    feature_id: feature_id.clone(),
-                    consumable_id: consumable_id.clone(),
-                    context_label: context_label.clone(),
-                    freeform_text: None,
-                })
-            }
-            _ => None,
-        })
-}
-
 pub fn quiet_room_action_decision(
     request: &ActorTurnActionRequest,
     text: &str,
@@ -77,78 +49,6 @@ pub fn quiet_room_action_decision(
                 "missing authored freeform npc command affordance for quiet in-room action",
             )) as Box<dyn Error>
         })
-}
-
-pub fn consume_decision_for_item(
-    request: &ActorTurnActionRequest,
-    item_id: &str,
-) -> Option<ActorTurnActionDecision> {
-    request
-        .affordances
-        .iter()
-        .find_map(|affordance| match &affordance.invocation {
-            ActorTurnCommandInvocation::Command {
-                command_id,
-                target_room_id,
-                target_actor_id,
-                feature_id,
-                consumable_id: Some(consumable_id),
-                context_label,
-                input_mode: CommandInputMode::None,
-            } if consumable_id == item_id => Some(ActorTurnActionDecision::Command {
-                command_id: command_id.clone(),
-                target_room_id: target_room_id.clone(),
-                target_actor_id: target_actor_id.clone(),
-                feature_id: feature_id.clone(),
-                consumable_id: Some(consumable_id.clone()),
-                context_label: context_label.clone(),
-                freeform_text: None,
-            }),
-            _ => None,
-        })
-}
-
-pub fn cook_decision(request: &ActorTurnActionRequest) -> Option<ActorTurnActionDecision> {
-    request
-        .affordances
-        .iter()
-        .find_map(|affordance| match &affordance.invocation {
-            ActorTurnCommandInvocation::Command {
-                command_id,
-                target_room_id,
-                target_actor_id,
-                feature_id,
-                consumable_id,
-                context_label,
-                input_mode: CommandInputMode::None,
-            } if command_id == "cook" || command_id == "brew" => {
-                Some(ActorTurnActionDecision::Command {
-                    command_id: command_id.clone(),
-                    target_room_id: target_room_id.clone(),
-                    target_actor_id: target_actor_id.clone(),
-                    feature_id: feature_id.clone(),
-                    consumable_id: consumable_id.clone(),
-                    context_label: context_label.clone(),
-                    freeform_text: None,
-                })
-            }
-            _ => None,
-        })
-}
-
-pub fn directly_addressed_target_actor_id(request: &ActorTurnActionRequest) -> Option<String> {
-    request
-        .speak_candidates
-        .iter()
-        .filter(|candidate| candidate.reply_now)
-        .map(|candidate| candidate.actor_id.clone())
-        .min()
-}
-
-pub fn preferred_target_actor_id(request: &ActorTurnActionRequest) -> Option<String> {
-    ranked_speak_candidates(request)
-        .first()
-        .map(|(_, _, actor_id)| actor_id.clone())
 }
 
 pub fn ranked_speak_candidates(request: &ActorTurnActionRequest) -> Vec<(i32, i32, String)> {

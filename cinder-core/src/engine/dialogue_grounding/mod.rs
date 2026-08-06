@@ -5,7 +5,6 @@ use crate::engine::state::{
     ConversationMemoryKind, ConversationMemoryLine, WorldState, display_actor_name,
     remap_story_actor_id, render_dynamic_story_text, resolved_actor_prompt_context,
 };
-use std::collections::BTreeMap;
 const ROOM_RECENT_MEMORY_LIMIT: usize = 8;
 
 pub(crate) fn build_grounded_dialogue_request(
@@ -78,7 +77,6 @@ pub(crate) fn build_grounded_dialogue_request_for_exchange(
         actor_id,
         other_person_id,
         other_person_name,
-        &BTreeMap::new(),
     ) {
         subtext_notes.push(note);
     }

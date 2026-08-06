@@ -6,7 +6,7 @@ use crate::engine::events::WorldEvent;
 use crate::engine::hooks::{pair_state_note, room_candidate_score};
 use crate::engine::state::WorldState;
 use serde_json::json;
-use std::collections::{BTreeMap, BTreeSet, VecDeque};
+use std::collections::{BTreeSet, VecDeque};
 use std::error::Error;
 use std::sync::Arc;
 
@@ -163,7 +163,6 @@ pub(crate) fn pair_stats_move_target(
                     &actor.id,
                     &candidate.id,
                     &candidate.name,
-                    &BTreeMap::new(),
                 ),
                 priority,
             })

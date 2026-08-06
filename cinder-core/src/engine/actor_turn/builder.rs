@@ -8,17 +8,14 @@ use crate::engine::dialogue_grounding::{
     current_objective_beat_notes, latest_other_person_message, recent_exchange_memory,
 };
 use crate::engine::events::WorldEvent;
-use crate::engine::hooks::{
-    ActorTurnGuidanceInput, ActorTurnGuidanceSpeakCandidateInput, CandidateAffordanceInput,
-    actor_state_notes, actor_turn_guidance, conversation_candidate_assessment, pair_state_note,
-};
+use crate::engine::hooks::{actor_state_notes, pair_state_note};
 use crate::engine::state::WorldState;
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::sync::Arc;
 
 use super::affordances::{
-    ActorAffordanceCandidate, guidance_affordance_inputs, require_actor_affordance_for_command_id,
+    ActorAffordanceCandidate, require_actor_affordance_for_command_id,
     require_actor_affordance_for_consumable_kind, require_affordance_command,
 };
 use super::context::{
@@ -71,18 +68,9 @@ pub fn build_actor_turn(
     let mut talk_candidate_contexts =
         actors_in_room_except(content.as_ref(), state, &current_room_id, &actor.id)
             .into_iter()
-            .filter_map(|candidate| {
-                let evaluation = conversation_candidate_assessment(
-                    content.as_ref(),
-                    state,
-                    &actor.id,
-                    &candidate.id,
-                );
-                evaluation.visible.then_some(SpeakCandidateContext {
-                    actor: candidate,
-                    latest_message: latest_other_person_message(state, &actor.id, &candidate.id),
-                    evaluation,
-                })
+            .map(|candidate| SpeakCandidateContext {
+                actor: candidate,
+                latest_message: latest_other_person_message(state, &actor.id, &candidate.id),
             })
             .collect::<Vec<_>>();
     talk_candidate_contexts.sort_by(|left, right| {
@@ -157,19 +145,13 @@ pub fn build_actor_turn(
                     candidate.actor.id.as_str(),
                 ),
                 pair_stats,
-                affordances: candidate
-                    .evaluation
-                    .affordances
-                    .iter()
-                    .map(|(id, affordance)| (id.clone(), affordance.available))
-                    .collect(),
+                affordances: std::collections::BTreeMap::new(),
                 interaction_note: pair_state_note(
                     content.as_ref(),
                     state,
                     &actor.id,
                     &candidate.actor.id,
                     &candidate.actor.name,
-                    &candidate.evaluation.affordances,
                 ),
                 recent_summary: state
                     .conversation_summary(&actor.id, &candidate.actor.id)
@@ -184,32 +166,6 @@ pub fn build_actor_turn(
             }
         })
         .collect::<Vec<_>>();
-    let unmet_speak_candidate_count = talk_candidate_contexts
-        .iter()
-        .filter(|candidate| {
-            !state
-                .conversation_history(&actor.id, &candidate.actor.id)
-                .iter()
-                .any(|line| line.kind == crate::engine::state::ConversationMemoryKind::Speech)
-        })
-        .count();
-    let unvisited_room_count = content
-        .rooms
-        .iter()
-        .filter(|room| !state.actor_has_visited_room(&actor.id, &room.id))
-        .count();
-    let unseen_feature_count = content
-        .room(&current_room_id)
-        .map(|room| {
-            room.features
-                .iter()
-                .filter(|feature| {
-                    !state.actor_has_seen_feature(&actor.id, &current_room_id, &feature.id)
-                })
-                .count()
-        })
-        .unwrap_or_default();
-    let top_speak_candidate = speak_candidates.first();
     let mut affordance_candidates = Vec::new();
     if let Some((room_id, room_title)) = move_option.as_ref()
         && let Some(affordance) = content.affordance("move")
@@ -410,76 +366,13 @@ pub fn build_actor_turn(
             ));
         }
     }
-    let guidance_affordances = guidance_affordance_inputs(content.as_ref(), &affordance_candidates);
-    let guidance = actor_turn_guidance(
-        content.as_ref(),
-        ActorTurnGuidanceInput {
-            actor_stats: actor_stats.clone(),
-            affordances: guidance_affordances,
-            speak_candidate_count: speak_candidates.len(),
-            unmet_speak_candidate_count,
-            top_speak_candidate: top_speak_candidate.map(|candidate| {
-                ActorTurnGuidanceSpeakCandidateInput {
-                    reply_now: candidate.reply_now,
-                    pair_stats: candidate.pair_stats.clone(),
-                    affordances: candidate
-                        .affordances
-                        .iter()
-                        .map(|(id, available)| {
-                            (
-                                id.clone(),
-                                CandidateAffordanceInput {
-                                    available: *available,
-                                },
-                            )
-                        })
-                        .collect(),
-                }
-            }),
-            active_stage_ids: state.active_objective_stage_ids.clone(),
-            unvisited_room_count,
-            unseen_feature_count,
-        },
-    );
-    let hide_inspect_feature = guidance.hidden_affordance_ids.contains("inspect_feature");
-    let hide_inspect_actor = guidance.hidden_affordance_ids.contains("inspect_actor");
+    let hide_inspect_feature = false;
+    let hide_inspect_actor = false;
     let mut affordances = affordance_candidates
         .into_iter()
-        .filter(|candidate| {
-            !guidance
-                .hidden_affordance_ids
-                .contains(candidate.option.affordance_id.as_str())
-                && (candidate.visible_by_default
-                    || guidance
-                        .visible_affordance_ids
-                        .contains(candidate.option.affordance_id.as_str()))
-        })
+        .filter(|candidate| candidate.visible_by_default)
         .collect::<Vec<_>>();
-    affordances.sort_by(|left, right| {
-        let left_priority = guidance
-            .group_priorities
-            .get(left.option.group.as_str())
-            .copied()
-            .unwrap_or_default()
-            + guidance
-                .affordance_priorities
-                .get(left.option.affordance_id.as_str())
-                .copied()
-                .unwrap_or_default();
-        let right_priority = guidance
-            .group_priorities
-            .get(right.option.group.as_str())
-            .copied()
-            .unwrap_or_default()
-            + guidance
-                .affordance_priorities
-                .get(right.option.affordance_id.as_str())
-                .copied()
-                .unwrap_or_default();
-        right_priority
-            .cmp(&left_priority)
-            .then_with(|| left.order.cmp(&right.order))
-    });
+    affordances.sort_by(|left, right| left.order.cmp(&right.order));
     let request = ActorTurnActionRequest {
         actor_id: actor.id.clone(),
         actor_name: actor.name.clone(),

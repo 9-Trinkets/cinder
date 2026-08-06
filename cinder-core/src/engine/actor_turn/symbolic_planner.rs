@@ -2,17 +2,12 @@ use crate::content::types::{CommandInputMode, ContentPack};
 use crate::engine::dialogue::{
     ActorTurnActionDecision, ActorTurnActionRequest, ActorTurnCommandInvocation,
 };
-use crate::engine::hook_ids;
 use crate::engine::neuron::evaluate_symbolic_value;
 use rand::Rng;
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 
-use super::decisions::{
-    consume_decision_for_item, cook_decision, has_clearly_preferred_target,
-    quiet_room_action_decision, rest_decision,
-};
-use super::policies::speech::{SpeechPolicyInput, decide_speech_action};
+use super::decisions::{has_clearly_preferred_target, quiet_room_action_decision};
 
 #[derive(Debug, Clone, Serialize)]
 pub struct SymbolicPlannerInputCandidate {
@@ -62,97 +57,18 @@ fn default_chance_max() -> u32 {
     10
 }
 
-fn evaluate_speech_gate(
-    config: Option<&serde_json::Value>,
-    symbolic_input: &SymbolicPlannerInput,
-    default_value: bool,
-) -> Result<bool, Box<dyn Error>> {
-    if let Some(config) = config {
-        return evaluate_symbolic_boolean_rule(config.clone(), serde_json::to_value(symbolic_input)?);
-    }
-    Ok(default_value)
-}
-
 pub fn select_symbolic_actor_turn_action(
-    content: &ContentPack,
+    _content: &ContentPack,
     request: &ActorTurnActionRequest,
-    symbolic_input: &SymbolicPlannerInput,
+    _symbolic_input: &SymbolicPlannerInput,
 ) -> Result<ActorTurnActionDecision, Box<dyn Error>> {
-    let should_rest = content
-        .hook(hook_ids::TURN_SHOULD_REST)
-        .map(|config| {
-            evaluate_symbolic_boolean_rule(config.clone(), serde_json::to_value(symbolic_input)?)
-        })
-        .transpose()?
-        .unwrap_or(false);
-    if should_rest && let Some(decision) = rest_decision(request) {
-        return Ok(decision);
-    }
-    let should_consume = content
-        .hook(hook_ids::TURN_SHOULD_CONSUME)
-        .map(|config| {
-            evaluate_symbolic_boolean_rule(config.clone(), serde_json::to_value(symbolic_input)?)
-        })
-        .transpose()?
-        .unwrap_or(false);
-    if should_consume
-        && let Some(item_id) = request.consume_target_item_id.as_deref()
-        && let Some(decision) = consume_decision_for_item(request, item_id)
-    {
-        return Ok(decision);
-    }
-    let should_cook = content
-        .hook(hook_ids::TURN_SHOULD_COOK)
-        .map(|config| {
-            evaluate_symbolic_boolean_rule(config.clone(), serde_json::to_value(symbolic_input)?)
-        })
-        .transpose()?
-        .unwrap_or(false);
-    if should_cook && let Some(decision) = cook_decision(request) {
-        return Ok(decision);
-    }
-    if let Some((command_id, room_id)) =
-        request
-            .affordances
-            .iter()
-            .find_map(|affordance| match &affordance.invocation {
-                ActorTurnCommandInvocation::Command {
-                    command_id,
-                    target_room_id: Some(room_id),
-                    input_mode: CommandInputMode::None,
-                    ..
-                } => Some((command_id.clone(), room_id.clone())),
-                _ => None,
-            })
-    {
-        return Ok(ActorTurnActionDecision::Command {
-            command_id,
-            target_room_id: Some(room_id),
-            target_actor_id: None,
-            feature_id: None,
-            consumable_id: None,
-            context_label: None,
-            freeform_text: None,
-        });
-    }
-    let should_speak = evaluate_speech_gate(
-        content.speech.should_speak_when.as_ref(),
-        symbolic_input,
-        true,
-    )?;
-    let should_direct_speech = evaluate_speech_gate(
-        content.speech.should_direct_speech_when.as_ref(),
-        symbolic_input,
-        true,
-    )?;
-    if let Some(decision) = decide_speech_action(
-        request,
-        SpeechPolicyInput {
-            should_speak,
-            should_direct_speech,
-        },
-    ) {
-        return Ok(decision);
+    for affordance in &request.affordances {
+        let ActorTurnCommandInvocation::Command { input_mode, .. } = &affordance.invocation;
+        if *input_mode == CommandInputMode::None
+            && let Ok(decision) = affordance.invocation.clone().into_decision(None)
+        {
+            return Ok(decision);
+        }
     }
     quiet_room_action_decision(request, "stays quiet for a moment, reading the room.")
 }
@@ -165,8 +81,8 @@ pub fn decide_actor_turn_action(
     let symbolic_input = build_symbolic_action_planner_input(request);
     let trace_backend = serde_json::json!({
         "backend": "symbolic",
-        "planner_mode": "symbolic",
-        "rule": "decision_table",
+        "planner_mode": "affordance_first",
+        "rule": "none",
     });
     emit_trace(
         "actor_turn_decider",

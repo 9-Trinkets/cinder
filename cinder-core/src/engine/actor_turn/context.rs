@@ -1,13 +1,11 @@
 use crate::content::types::{ActorDefinition, ConsumableDefinition, ConsumableKind, ContentPack};
 use crate::engine::dialogue::ActorTurnConsumeCandidate;
-use crate::engine::hooks::ConversationCandidateAssessment;
 use crate::engine::state::WorldState;
 
 #[derive(Debug, Clone)]
 pub(crate) struct SpeakCandidateContext<'a> {
     pub(crate) actor: &'a ActorDefinition,
     pub(crate) latest_message: Option<String>,
-    pub(crate) evaluation: ConversationCandidateAssessment,
 }
 
 #[derive(Debug, Clone)]

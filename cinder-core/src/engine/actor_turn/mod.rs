@@ -4,7 +4,6 @@ pub(super) mod context;
 mod decisions;
 pub(super) mod dialogue;
 pub(super) mod movement;
-mod policies;
 mod realization;
 mod symbolic_planner;
 mod targeting;

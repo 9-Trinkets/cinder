@@ -1,7 +1,5 @@
 use crate::content::types::{AffordanceDefinition, CommandDefinition, ConsumableKind, ContentPack};
 use crate::engine::dialogue::ActorTurnAffordanceOption;
-use crate::engine::hooks::ActorTurnGuidanceAffordanceInput;
-use std::collections::BTreeMap;
 use std::error::Error;
 
 #[derive(Debug, Clone)]
@@ -22,39 +20,6 @@ impl ActorAffordanceCandidate {
             option,
         }
     }
-}
-
-pub(crate) fn guidance_affordance_inputs(
-    content: &ContentPack,
-    affordances: &[ActorAffordanceCandidate],
-) -> BTreeMap<String, ActorTurnGuidanceAffordanceInput> {
-    let mut inputs = content
-        .affordances
-        .actions
-        .iter()
-        .map(|definition| {
-            (
-                definition.id.clone(),
-                ActorTurnGuidanceAffordanceInput {
-                    available: false,
-                    option_count: 0,
-                    group: definition.group.clone(),
-                },
-            )
-        })
-        .collect::<BTreeMap<_, _>>();
-    for affordance in affordances {
-        let entry = inputs
-            .entry(affordance.option.affordance_id.clone())
-            .or_insert_with(|| ActorTurnGuidanceAffordanceInput {
-                available: true,
-                option_count: 0,
-                group: affordance.option.group.clone(),
-            });
-        entry.available = true;
-        entry.option_count += 1;
-    }
-    inputs
 }
 
 pub(crate) fn require_affordance_command<'a>(
