@@ -37,6 +37,41 @@ Trace files are written under `.cinder-state/runs/`.
 
 Display language can be switched in-game from `? Menu` → `Language`.
 
+## Debug utilities
+
+Server-side debug binaries live under `cinder-srv/src/bin/debug/`.
+
+Inspect the latest persisted playthrough, including transcript and `rule_bundle:*`
+story vars:
+
+```bash
+cargo run -p cinder-srv --bin debug_playthrough -- --pack aera --transcript-limit 20
+```
+
+Print actor-turn prompt data from a saved playthrough, including system prompt,
+request JSON, and rendered prompt text:
+
+```bash
+cargo run -p cinder-srv --bin debug_prompts -- --pack aera --actor ren
+```
+
+When Postgres is only reachable on the Docker Compose network, run the utilities
+inside that network:
+
+```bash
+docker run --rm --network cinder_default \
+  -v "$PWD":/work -w /work \
+  -e CINDER_DATABASE_URL='postgres://cinder:cinder@postgres:5432/cinder' \
+  rust:1-bookworm \
+  cargo run -p cinder-srv --bin debug_playthrough -- --pack aera --transcript-limit 20
+
+docker run --rm --network cinder_default \
+  -v "$PWD":/work -w /work \
+  -e CINDER_DATABASE_URL='postgres://cinder:cinder@postgres:5432/cinder' \
+  rust:1-bookworm \
+  cargo run -p cinder-srv --bin debug_prompts -- --pack aera --actor ren
+```
+
 ## Layout
 
 ```

@@ -45,6 +45,22 @@ const STAGE_ASSIGNMENT_ROLE: &str = "stage_assignment";
 const CONVERSATION_MEMORY_SUMMARY_TIMEOUT: Duration = Duration::from_secs(10);
 const VALIDATED_ROLE_MAX_ATTEMPTS: usize = 4;
 
+pub fn render_scene_dialogue_prompt(request: &DialogueRequest) -> String {
+    build_scene_brief_dialogue_prompt(request)
+}
+
+pub fn scene_dialogue_system_prompt_text(request: &DialogueRequest) -> String {
+    dialogue_system_prompt(request).to_string()
+}
+
+pub fn render_actor_turn_decider_prompt(request: &ActorTurnActionRequest) -> String {
+    build_actor_turn_action_prompt(request)
+}
+
+pub fn actor_turn_decider_system_prompt_text(request: &ActorTurnActionRequest) -> String {
+    actor_turn_decider_system_prompt(request).to_string()
+}
+
 pub trait DialogueGenerator: Send + Sync {
     fn build_prompt(&self, request: &DialogueRequest) -> String {
         build_scene_brief_dialogue_prompt(request)
