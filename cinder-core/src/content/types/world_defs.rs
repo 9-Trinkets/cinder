@@ -151,6 +151,8 @@ pub struct ActorMovementTargetRuleDefinition {
     pub any_active_stage_ids: Vec<String>,
     #[serde(default)]
     pub target_from_story_var: String,
+    #[serde(default)]
+    pub must_move: bool,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

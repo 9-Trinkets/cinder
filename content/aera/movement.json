@@ -6,6 +6,13 @@
         {
           "target_room_id": "girls-room",
           "any_active_stage_ids": [
+            "move-to-bedrooms"
+          ],
+          "must_move": true
+        },
+        {
+          "target_room_id": "girls-room",
+          "any_active_stage_ids": [
             "debrief-in-bedrooms",
             "plan-day2",
             "sleep-end-day2"
@@ -35,6 +42,13 @@
     },
     "ren": {
       "target_rules": [
+        {
+          "target_room_id": "guys-room",
+          "any_active_stage_ids": [
+            "move-to-bedrooms"
+          ],
+          "must_move": true
+        },
         {
           "target_room_id": "guys-room",
           "any_active_stage_ids": [
@@ -70,6 +84,13 @@
         {
           "target_room_id": "girls-room",
           "any_active_stage_ids": [
+            "move-to-bedrooms"
+          ],
+          "must_move": true
+        },
+        {
+          "target_room_id": "girls-room",
+          "any_active_stage_ids": [
             "debrief-in-bedrooms",
             "plan-day2",
             "sleep-end-day2"
@@ -99,6 +120,13 @@
     },
     "daichi": {
       "target_rules": [
+        {
+          "target_room_id": "guys-room",
+          "any_active_stage_ids": [
+            "move-to-bedrooms"
+          ],
+          "must_move": true
+        },
         {
           "target_room_id": "guys-room",
           "any_active_stage_ids": [

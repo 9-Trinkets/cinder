@@ -116,6 +116,27 @@ pub(crate) fn resolved_movement_rule_target_room_id(
     Some(rule.target_room_id.clone())
 }
 
+pub(crate) fn required_movement_target_room_id(
+    state: &WorldState,
+    rules: &ActorMovementRulesDefinition,
+    current_room_id: &str,
+) -> Option<String> {
+    let rule = rules
+        .target_rules
+        .iter()
+        .find(|rule| rule.must_move && movement_target_rule_matches(state, rule))?;
+    let target_room_id = if !rule.target_from_story_var.is_empty() {
+        state.story_vars.get(&rule.target_from_story_var)?.to_string()
+    } else {
+        rule.target_room_id.clone()
+    };
+    if target_room_id.is_empty() || target_room_id == current_room_id {
+        None
+    } else {
+        Some(target_room_id)
+    }
+}
+
 pub(crate) fn planned_move_target_room_id(move_events: &[WorldEvent]) -> Option<&str> {
     move_events.iter().find_map(|event| match event {
         WorldEvent::ActorMoved { to_room_id, .. } => Some(to_room_id.as_str()),
@@ -232,4 +253,31 @@ fn nearest_unvisited_room(
         }
     }
     None
+}
+
+#[cfg(test)]
+mod tests {
+    use super::required_movement_target_room_id;
+    use crate::content::loader::load_named_pack;
+    use crate::engine::state::WorldState;
+
+    #[test]
+    fn must_move_rule_requires_relocation_only_until_actor_arrives() {
+        let content = load_named_pack("aera", Some("en")).expect("load aera");
+        let rules = content.movement_rules("aera");
+        let mut state = WorldState::new(&content);
+        state.active_objective_stage_ids = vec!["move-to-bedrooms".to_string()];
+        state
+            .actor_room_overrides
+            .insert("aera".to_string(), "kitchen".to_string());
+
+        assert_eq!(
+            required_movement_target_room_id(&state, &rules, "kitchen").as_deref(),
+            Some("girls-room")
+        );
+        assert_eq!(
+            required_movement_target_room_id(&state, &rules, "girls-room"),
+            None
+        );
+    }
 }

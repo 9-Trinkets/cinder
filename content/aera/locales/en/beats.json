@@ -78,6 +78,18 @@
         }
       ],
       "next_stage_ids": [
+        "move-to-bedrooms"
+      ]
+    },
+    {
+      "id": "move-to-bedrooms",
+      "summary": "Bedrooms transition: everyone breaks from dinner and heads back to their rooms.",
+      "update_message": "Dinner winds down, and the housemates peel off toward their bedrooms.",
+      "beat_note": "Dinner is over. The energy shifts from one shared room back into smaller private spaces. People are still carrying the warmth, awkwardness, and curiosity from the meal, but first they have to leave the kitchen and head back toward their bedrooms.",
+      "advance_signals": [
+        "time_reached:20:20"
+      ],
+      "next_stage_ids": [
         "debrief-in-bedrooms"
       ]
     },
