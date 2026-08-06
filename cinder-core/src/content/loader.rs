@@ -332,13 +332,13 @@ pub fn load_pack_from_dir_with_locale(
             "beats.stages",
         )?;
     }
-    for bundle in &rule_bundles.first_meeting_introductions {
+    for bundle in &rule_bundles.bundles {
         if bundle.id.trim().is_empty() {
-            return Err("rule_bundles.json first_meeting_introductions entries require non-empty id".into());
+            return Err("rule_bundles.json bundles entries require non-empty id".into());
         }
         if bundle.stage_id.trim().is_empty() {
             return Err(format!(
-                "rule_bundles.json first_meeting_introductions '{}' requires non-empty stage_id",
+                "rule_bundles.json bundle '{}' requires non-empty stage_id",
                 bundle.id
             )
             .into());
@@ -347,11 +347,27 @@ pub fn load_pack_from_dir_with_locale(
             &bundle.stage_id,
             &stage_ids,
             &format!(
-                "rule_bundles.json first_meeting_introductions '{}' stage_id '{}'",
+                "rule_bundles.json bundle '{}' stage_id '{}'",
                 bundle.id, bundle.stage_id
             ),
             "beats.stages",
         )?;
+        for priority in &bundle.guidance.prioritize {
+            if priority.command_id.trim().is_empty() {
+                return Err(format!(
+                    "rule_bundles.json bundle '{}' has prioritize entry with empty command_id",
+                    bundle.id
+                )
+                .into());
+            }
+            if !command_index.contains_key(&priority.command_id) {
+                return Err(format!(
+                    "rule_bundles.json bundle '{}' prioritize command_id '{}' not found in commands",
+                    bundle.id, priority.command_id
+                )
+                .into());
+            }
+        }
     }
     for room_id in &movement.unreachable_rooms {
         require_known_id(

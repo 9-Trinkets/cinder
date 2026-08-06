@@ -16,7 +16,9 @@ use crate::engine::events::ObservationMode;
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
-use crate::engine::turn_policies::mark_actor_room_introduction_if_applicable;
+use crate::engine::turn_policies::{
+    BundleSpeechEvent, mark_actor_bundle_progress_for_speech_event,
+};
 use serde_json::{Value, json};
 
 pub(super) fn handle_turn_started(
@@ -109,6 +111,12 @@ pub(super) fn handle_actor_spoke(
     text: &str,
     lines: &mut Vec<String>,
 ) {
+    mark_actor_bundle_progress_for_speech_event(
+        content,
+        state,
+        actor_id,
+        BundleSpeechEvent::ToActor,
+    );
     let history = state.conversation_history(actor_id, other_person_id);
     let needs_other_person_line = other_person_message.as_ref().is_some_and(|message| {
         history
@@ -186,7 +194,12 @@ pub(super) fn handle_actor_spoke_to_room(
     text: &str,
     lines: &mut Vec<String>,
 ) {
-    mark_actor_room_introduction_if_applicable(content, state, actor_id);
+    mark_actor_bundle_progress_for_speech_event(
+        content,
+        state,
+        actor_id,
+        BundleSpeechEvent::ToRoom,
+    );
     for audience_actor_id in audience_actor_ids.iter() {
         state.push_conversation_line(
             actor_id,

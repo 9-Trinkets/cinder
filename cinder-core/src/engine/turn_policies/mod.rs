@@ -1,100 +1,139 @@
-use crate::content::types::{ContentPack, FirstMeetingIntroductionBundleDefinition};
+use crate::content::types::{
+    ContentPack, RuleBundleAffordanceTarget, RuleBundleCompletionTrigger, RuleBundleDefinition,
+};
 use crate::engine::dialogue::{ActorTurnActionRequest, ActorTurnCommandInvocation};
 use crate::engine::state::WorldState;
 
-const INTRO_STORY_VAR_PREFIX: &str = "rule_bundle:first_meeting:introduced";
+const BUNDLE_ACTOR_COMPLETE_STORY_VAR_PREFIX: &str = "rule_bundle:actor_complete";
 
 pub(crate) fn apply_actor_turn_policies(
     content: &ContentPack,
     state: &WorldState,
     request: &mut ActorTurnActionRequest,
 ) {
-    apply_first_meeting_introduction_policy(content, state, request);
+    for bundle in active_bundles(content, state) {
+        apply_bundle_guidance(content, state, bundle, request);
+    }
 }
 
-pub(crate) fn mark_actor_room_introduction_if_applicable(
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum BundleSpeechEvent {
+    ToActor,
+    ToRoom,
+}
+
+pub(crate) fn mark_actor_bundle_progress_for_speech_event(
     content: &ContentPack,
     state: &mut WorldState,
     actor_id: &str,
+    event: BundleSpeechEvent,
 ) {
-    let Some(bundle) = active_first_meeting_bundle(content, state) else {
-        return;
-    };
-    let key = intro_story_var_key(&bundle.id, actor_id);
-    state.story_vars.set_unchecked(&key, "true");
+    let keys = active_bundles(content, state)
+        .filter(|bundle| {
+            bundle
+                .completion
+                .mark_actor_complete_on
+                .iter()
+                .any(|trigger| speech_trigger_matches(*trigger, event))
+        })
+        .map(|bundle| bundle_actor_complete_key(&bundle.id, actor_id))
+        .collect::<Vec<_>>();
+    for key in keys {
+        state.story_vars.set_unchecked(&key, "true");
+    }
 }
 
-fn apply_first_meeting_introduction_policy(
+fn apply_bundle_guidance(
     content: &ContentPack,
     state: &WorldState,
+    bundle: &RuleBundleDefinition,
     request: &mut ActorTurnActionRequest,
 ) {
-    let Some(bundle) = active_first_meeting_bundle(content, state) else {
-        return;
-    };
-    let introduced_actor_count = content
+    let completed_actor_count = content
         .actors
         .iter()
-        .filter(|actor| actor_is_introduced(state, bundle, &actor.id))
+        .map(|actor| actor.id.as_str())
+        .filter(|actor_id| actor_is_complete(state, bundle, actor_id))
         .count();
-    if introduced_actor_count >= content.actors.len() {
+    if completed_actor_count >= content.actors.len() {
         return;
     }
-    let actor_is_introduced = actor_is_introduced(state, bundle, &request.actor_id);
-    if actor_is_introduced {
-        if !bundle.prompt_note_wait_for_others.trim().is_empty() {
+    let actor_is_complete = actor_is_complete(state, bundle, &request.actor_id);
+    if actor_is_complete {
+        if !bundle
+            .guidance
+            .prompt_note_if_others_incomplete
+            .trim()
+            .is_empty()
+        {
             request
                 .current_beat_notes
-                .push(bundle.prompt_note_wait_for_others.clone());
+                .push(bundle.guidance.prompt_note_if_others_incomplete.clone());
         }
         return;
     }
-    if !bundle.prompt_note_not_introduced.trim().is_empty() {
+    if !bundle.guidance.prompt_note_if_actor_incomplete.trim().is_empty() {
         request
             .current_beat_notes
-            .push(bundle.prompt_note_not_introduced.clone());
+            .push(bundle.guidance.prompt_note_if_actor_incomplete.clone());
+    }
+    if bundle.guidance.prioritize.is_empty() {
+        return;
     }
     request.affordances.sort_by_key(|affordance| {
-        let speak_room = matches!(
-            &affordance.invocation,
-            ActorTurnCommandInvocation::Command {
+        for (index, priority) in bundle.guidance.prioritize.iter().enumerate() {
+            let ActorTurnCommandInvocation::Command {
                 command_id,
-                target_actor_id: None,
+                target_actor_id,
                 ..
-            } if command_id == "speak"
-        );
-        if speak_room {
-            0
-        } else {
-            1
+            } = &affordance.invocation;
+            let target_matches = match priority.target {
+                RuleBundleAffordanceTarget::Any => true,
+                RuleBundleAffordanceTarget::Actor => target_actor_id.is_some(),
+                RuleBundleAffordanceTarget::Room => target_actor_id.is_none(),
+            };
+            if *command_id == priority.command_id && target_matches {
+                return index;
+            }
         }
+        usize::MAX
     });
 }
 
-fn active_first_meeting_bundle<'a>(
+fn active_bundles<'a>(
     content: &'a ContentPack,
     state: &WorldState,
-) -> Option<&'a FirstMeetingIntroductionBundleDefinition> {
+) -> impl Iterator<Item = &'a RuleBundleDefinition> {
     content
         .rule_bundles
-        .first_meeting_introductions
+        .bundles
         .iter()
-        .find(|bundle| {
+        .filter(|bundle| {
             !bundle.stage_id.is_empty() && state.active_objective_stage_ids.contains(&bundle.stage_id)
         })
 }
 
-fn actor_is_introduced(
+fn actor_is_complete(
     state: &WorldState,
-    bundle: &FirstMeetingIntroductionBundleDefinition,
+    bundle: &RuleBundleDefinition,
     actor_id: &str,
 ) -> bool {
     state
         .story_vars
-        .get(&intro_story_var_key(&bundle.id, actor_id))
+        .get(&bundle_actor_complete_key(&bundle.id, actor_id))
         .is_some_and(|value| value == "true")
 }
 
-fn intro_story_var_key(bundle_id: &str, actor_id: &str) -> String {
-    format!("{INTRO_STORY_VAR_PREFIX}:{bundle_id}:{actor_id}")
+fn bundle_actor_complete_key(bundle_id: &str, actor_id: &str) -> String {
+    format!("{BUNDLE_ACTOR_COMPLETE_STORY_VAR_PREFIX}:{bundle_id}:{actor_id}")
+}
+
+fn speech_trigger_matches(trigger: RuleBundleCompletionTrigger, event: BundleSpeechEvent) -> bool {
+    matches!(
+        (trigger, event),
+        (
+            RuleBundleCompletionTrigger::SpeechToActor,
+            BundleSpeechEvent::ToActor
+        ) | (RuleBundleCompletionTrigger::SpeechToRoom, BundleSpeechEvent::ToRoom)
+    )
 }

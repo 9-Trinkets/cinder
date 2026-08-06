@@ -411,9 +411,11 @@ mod world_defs;
 pub use world_defs::{
     ActorDefinition, ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition,
     ActorPromptContext, ConsumableDefinition, ConsumableKind, ErrorTextDefinition,
-    FirstMeetingIntroductionBundleDefinition, MovementConfigDefinition, PresentationDefinition,
-    PresentationTextDefinition, RoomDefinition, RoomExitDefinition, RoomFeatureDefinition,
-    RuleBundlesDefinition, SpeechConfigDefinition, StatDefinition, StatsDefinition,
+    MovementConfigDefinition, PresentationDefinition, PresentationTextDefinition, RoomDefinition,
+    RoomExitDefinition, RoomFeatureDefinition, RuleBundleAffordancePriorityDefinition,
+    RuleBundleAffordanceTarget, RuleBundleCompletionDefinition, RuleBundleCompletionTrigger,
+    RuleBundleDefinition, RuleBundleGuidanceDefinition, RuleBundlesDefinition,
+    SpeechConfigDefinition, StatDefinition, StatsDefinition,
 };
 
 mod command_defs;

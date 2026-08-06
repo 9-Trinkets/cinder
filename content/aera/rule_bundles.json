@@ -1,11 +1,21 @@
 {
-  "first_meeting_introductions": [
+  "bundles": [
     {
       "id": "first-meeting-lounge-intros",
       "stage_id": "introduce-everyone-first-evening",
-      "audience_label": "everyone here",
-      "prompt_note_not_introduced": "You have not introduced yourself to the room yet. Prioritize one room-addressed line that clearly says your name and gives a first impression.",
-      "prompt_note_wait_for_others": "Not everyone has introduced themselves yet. Keep the flow centered on room-level introductions before drifting into one-on-one side conversations."
+      "completion": {
+        "mark_actor_complete_on": ["speech_to_room"]
+      },
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "You have not introduced yourself to the room yet. Prioritize one room-addressed line that clearly says your name and gives a first impression.",
+        "prompt_note_if_others_incomplete": "Not everyone has introduced themselves yet. Keep the flow centered on room-level introductions before drifting into one-on-one side conversations.",
+        "prioritize": [
+          {
+            "command_id": "speak",
+            "target": "room"
+          }
+        ]
+      }
     }
   ]
 }

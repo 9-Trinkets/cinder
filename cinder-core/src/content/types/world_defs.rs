@@ -48,25 +48,59 @@ fn default_speech_room_min_audience() -> usize {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct RuleBundlesDefinition {
     #[serde(default)]
-    pub first_meeting_introductions: Vec<FirstMeetingIntroductionBundleDefinition>,
+    pub bundles: Vec<RuleBundleDefinition>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct FirstMeetingIntroductionBundleDefinition {
+pub struct RuleBundleDefinition {
     #[serde(default)]
     pub id: String,
     #[serde(default)]
     pub stage_id: String,
-    #[serde(default = "default_intro_audience_label")]
-    pub audience_label: String,
     #[serde(default)]
-    pub prompt_note_not_introduced: String,
+    pub completion: RuleBundleCompletionDefinition,
     #[serde(default)]
-    pub prompt_note_wait_for_others: String,
+    pub guidance: RuleBundleGuidanceDefinition,
 }
 
-fn default_intro_audience_label() -> String {
-    "everyone here".to_string()
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct RuleBundleCompletionDefinition {
+    #[serde(default)]
+    pub mark_actor_complete_on: Vec<RuleBundleCompletionTrigger>,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct RuleBundleGuidanceDefinition {
+    #[serde(default)]
+    pub prompt_note_if_actor_incomplete: String,
+    #[serde(default)]
+    pub prompt_note_if_others_incomplete: String,
+    #[serde(default)]
+    pub prioritize: Vec<RuleBundleAffordancePriorityDefinition>,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct RuleBundleAffordancePriorityDefinition {
+    #[serde(default)]
+    pub command_id: String,
+    #[serde(default)]
+    pub target: RuleBundleAffordanceTarget,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum RuleBundleAffordanceTarget {
+    #[default]
+    Any,
+    Actor,
+    Room,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum RuleBundleCompletionTrigger {
+    SpeechToActor,
+    SpeechToRoom,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
