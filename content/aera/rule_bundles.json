@@ -16,6 +16,109 @@
           }
         ]
       }
+    },
+    {
+      "id": "dinner-prep-cook-and-check-in",
+      "stage_id": "dinner-prep",
+      "completion": {
+        "mark_actor_complete_on": []
+      },
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "You are in dinner prep mode. Prioritize practical kitchen actions first: cook, brew, and prepare something people can actually eat or drink. While doing that, keep conversation light and social by checking in about how everyone's day is going.",
+        "prompt_note_if_others_incomplete": "",
+        "prioritize": [
+          {
+            "command_id": "cook",
+            "target": "any"
+          },
+          {
+            "command_id": "brew",
+            "target": "any"
+          },
+          {
+            "command_id": "eat",
+            "target": "any"
+          },
+          {
+            "command_id": "drink",
+            "target": "any"
+          },
+          {
+            "command_id": "consume",
+            "target": "any"
+          },
+          {
+            "command_id": "speak",
+            "target": "actor"
+          },
+          {
+            "command_id": "speak",
+            "target": "room"
+          }
+        ]
+      }
+    },
+    {
+      "id": "share-dinner-eat-and-react",
+      "stage_id": "share-dinner-in-kitchen",
+      "completion": {
+        "mark_actor_complete_on": []
+      },
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "You are in shared dinner mode. Prioritize eating and drinking what is available, react to the meal, and keep the conversation moving by asking others about their day and impressions.",
+        "prompt_note_if_others_incomplete": "",
+        "prioritize": [
+          {
+            "command_id": "eat",
+            "target": "any"
+          },
+          {
+            "command_id": "drink",
+            "target": "any"
+          },
+          {
+            "command_id": "consume",
+            "target": "any"
+          },
+          {
+            "command_id": "speak",
+            "target": "actor"
+          },
+          {
+            "command_id": "speak",
+            "target": "room"
+          }
+        ]
+      }
+    },
+    {
+      "id": "bedroom-debrief-gossip",
+      "stage_id": "debrief-in-bedrooms",
+      "completion": {
+        "mark_actor_complete_on": []
+      },
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "You are in debrief mode. Prioritize conversation over logistics: compare notes from dinner, gossip about who bonded with whom, and share your read on the day's social dynamics.",
+        "prompt_note_if_others_incomplete": "",
+        "prioritize": [
+          {
+            "command_id": "speak",
+            "target": "actor"
+          },
+          {
+            "command_id": "speak",
+            "target": "room"
+          },
+          {
+            "command_id": "drink",
+            "target": "any"
+          },
+          {
+            "command_id": "consume",
+            "target": "any"
+          }
+        ]
+      }
     }
   ]
 }
