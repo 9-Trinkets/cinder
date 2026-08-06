@@ -2,6 +2,7 @@ use cinder_core::content::loader;
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 use sqlx::{PgPool, Postgres, Transaction};
+use std::sync::Arc;
 use uuid::Uuid;
 
 mod response;
@@ -11,6 +12,8 @@ pub use self::response::{CommandResponse, consume_projector_sequence};
 pub use self::ui::UiSnapshot;
 
 type SessionRow = (String, String, String);
+const MAX_TRANSCRIPT_LINES: i64 = 200;
+const MAX_SESSION_WRITE_RETRIES: usize = 5;
 
 #[derive(Debug)]
 struct PendingTranscriptEntry {
@@ -39,6 +42,43 @@ async fn load_play_row(
         .ok_or_else(|| "session not found".to_string())
 }
 
+async fn load_play_row_unlocked(
+    pool: &PgPool,
+    play_id: &Uuid,
+    player_id: &Uuid,
+) -> Result<SessionRow, String> {
+    sqlx::query_as::<_, SessionRow>(
+        "SELECT pack_id, locale, state_json::text FROM game_plays WHERE id = $1 AND player_id = $2",
+    )
+    .bind(play_id)
+    .bind(player_id)
+    .fetch_optional(pool)
+    .await
+    .map_err(|e| format!("db error: {e}"))?
+    .ok_or_else(|| "session not found".to_string())
+}
+
+async fn fetch_transcript_lines(
+    pool: &PgPool,
+    play_id: &Uuid,
+    player_id: &Uuid,
+) -> Result<Vec<String>, String> {
+    sqlx::query_scalar::<_, String>(
+        "SELECT CASE WHEN te.role = 'player' THEN '> ' || te.text ELSE te.text END
+         FROM transcript_entries te
+         JOIN game_plays s ON s.id = te.play_id
+         WHERE te.play_id = $1 AND s.player_id = $2
+         ORDER BY te.turn_number ASC, te.id ASC
+         LIMIT $3",
+    )
+    .bind(play_id)
+    .bind(player_id)
+    .bind(MAX_TRANSCRIPT_LINES)
+    .fetch_all(pool)
+    .await
+    .map_err(|e| format!("transcript query error: {e}"))
+}
+
 async fn with_runtime<F, R>(
     pool: &PgPool,
     play_id: &Uuid,
@@ -46,22 +86,32 @@ async fn with_runtime<F, R>(
     f: F,
 ) -> Result<R, String>
 where
-    F: FnOnce(&CinderRuntime, &str, &[String]) -> Result<(R, Vec<PendingTranscriptEntry>), String>
+    F: Fn(&CinderRuntime, &str, &[String]) -> Result<(R, Vec<PendingTranscriptEntry>), String>
         + Send
+        + Sync
         + 'static,
     R: Send + 'static,
 {
-    let mut tx = pool
-        .begin()
-        .await
-        .map_err(|e| format!("db begin error: {e}"))?;
-    let (pack_id, locale, state_json) =
-        load_play_row(&mut tx, play_id, player_id, true).await?;
-    backfill_transcript_if_missing(&mut tx, play_id, &state_json).await?;
-    let transcript_lines = fetch_transcript_in_tx(&mut tx, play_id, player_id).await?;
+    let f = Arc::new(f);
 
-    let (result, transcript_entries, persisted_locale, new_state_json, turn_number) =
-        tokio::task::spawn_blocking(move || {
+    for _attempt in 0..MAX_SESSION_WRITE_RETRIES {
+        let (pack_id, locale, state_json) =
+            load_play_row_unlocked(pool, play_id, player_id).await?;
+        let transcript_lines = {
+            let rows = fetch_transcript_lines(pool, play_id, player_id).await?;
+            if rows.is_empty() {
+                transcript_lines_from_state_json(&state_json)?
+            } else {
+                rows
+            }
+        };
+
+        let f = Arc::clone(&f);
+        let base_pack_id = pack_id.clone();
+        let base_locale = locale.clone();
+        let base_state_json = state_json.clone();
+        let (result, transcript_entries, persisted_locale, new_state_json, turn_number) =
+            tokio::task::spawn_blocking(move || {
             let content = loader::load_named_pack(&pack_id, Some(&locale))
                 .map_err(|e| format!("failed to load pack '{pack_id}' locale '{locale}': {e}"))?;
 
@@ -88,22 +138,41 @@ where
         .await
         .map_err(|e| format!("blocking task panicked: {e:?}"))??;
 
-    sqlx::query(
-        "UPDATE game_plays SET locale = $1, state_json = $2::jsonb, updated_at = NOW() WHERE id = $3 AND player_id = $4",
-    )
-    .bind(&persisted_locale)
-    .bind(&new_state_json)
-    .bind(play_id)
-    .bind(player_id)
-    .execute(&mut *tx)
-    .await
-    .map_err(|e| format!("db update error: {e}"))?;
-    insert_transcript_entries(&mut tx, play_id, turn_number, &transcript_entries).await?;
-    tx.commit()
-        .await
-        .map_err(|e| format!("db commit error: {e}"))?;
+        let mut tx = pool
+            .begin()
+            .await
+            .map_err(|e| format!("db begin error: {e}"))?;
+        let (current_pack_id, current_locale, current_state_json) =
+            load_play_row(&mut tx, play_id, player_id, true).await?;
+        if current_pack_id != base_pack_id
+            || current_locale != base_locale
+            || current_state_json != base_state_json
+        {
+            tx.rollback()
+                .await
+                .map_err(|e| format!("db rollback error: {e}"))?;
+            continue;
+        }
 
-    Ok(result)
+        sqlx::query(
+            "UPDATE game_plays SET locale = $1, state_json = $2::jsonb, updated_at = NOW() WHERE id = $3 AND player_id = $4",
+        )
+        .bind(&persisted_locale)
+        .bind(&new_state_json)
+        .bind(play_id)
+        .bind(player_id)
+        .execute(&mut *tx)
+        .await
+        .map_err(|e| format!("db update error: {e}"))?;
+        insert_transcript_entries(&mut tx, play_id, turn_number, &transcript_entries).await?;
+        tx.commit()
+            .await
+            .map_err(|e| format!("db commit error: {e}"))?;
+
+        return Ok(result);
+    }
+
+    Err("session changed too frequently; please retry".to_string())
 }
 
 async fn insert_transcript_entries(
@@ -160,55 +229,6 @@ async fn replace_transcript_entries_with_lines(
         .map_err(|e| format!("transcript insert error: {e}"))?;
     }
     Ok(())
-}
-
-const MAX_TRANSCRIPT_LINES: i64 = 200;
-
-async fn fetch_transcript_in_tx(
-    tx: &mut Transaction<'_, Postgres>,
-    play_id: &Uuid,
-    player_id: &Uuid,
-) -> Result<Vec<String>, String> {
-    let rows = sqlx::query_scalar::<_, String>(
-        "SELECT CASE WHEN te.role = 'player' THEN '> ' || te.text ELSE te.text END
-         FROM transcript_entries te
-         JOIN game_plays s ON s.id = te.play_id
-         WHERE te.play_id = $1 AND s.player_id = $2
-         ORDER BY te.turn_number ASC, te.id ASC
-         LIMIT $3",
-    )
-    .bind(play_id)
-    .bind(player_id)
-    .bind(MAX_TRANSCRIPT_LINES)
-    .fetch_all(&mut **tx)
-    .await
-    .map_err(|e| format!("transcript query error: {e}"))?;
-    Ok(rows)
-}
-
-async fn backfill_transcript_if_missing(
-    tx: &mut Transaction<'_, Postgres>,
-    play_id: &Uuid,
-    state_json: &str,
-) -> Result<(), String> {
-    let existing = sqlx::query_scalar::<_, i64>(
-        "SELECT COUNT(*) FROM transcript_entries WHERE play_id = $1",
-    )
-    .bind(play_id)
-    .fetch_one(&mut **tx)
-    .await
-    .map_err(|e| format!("transcript count error: {e}"))?;
-
-    if existing > 0 {
-        return Ok(());
-    }
-
-    let lines = transcript_lines_from_state_json(state_json)?;
-    if lines.is_empty() {
-        return Ok(());
-    }
-
-    replace_transcript_entries_with_lines(tx, play_id, &lines).await
 }
 
 fn parse_uuid(value: &str, field: &str) -> Result<Uuid, String> {
@@ -498,64 +518,86 @@ pub async fn set_locale(
 ) -> Result<CommandResponse, String> {
     let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
-    let mut tx = pool
-        .begin()
-        .await
-        .map_err(|e| format!("db begin error: {e}"))?;
-    let (pack_id, _, state_json) = load_play_row(&mut tx, &play_id, &player_id, true).await?;
     let locale = locale.to_string();
-    let locale_for_runtime = locale.clone();
-    let (changed_text, is_game_over, ui_snapshot, new_state_json) =
-        tokio::task::spawn_blocking(move || {
-            let localized_pack = loader::load_pack_from_dir_with_locale(
-                &loader::pack_dir(&pack_id),
-                Some(&locale_for_runtime),
-            )
-            .map_err(|e| format!("failed to load locale '{locale_for_runtime}': {e}"))?;
-            let language_name = localized_pack.ui_text.language_name.clone();
-            let runtime = build_runtime_impl(localized_pack, &state_json)?;
-            runtime
-                .relocalize_story_vars()
-                .map_err(|e| format!("relocalize error: {e}"))?;
-            let changed_text = runtime.content().render_template(
-                &runtime.content().ui_text.language_changed_text,
-                &[("language_name", language_name.as_str())],
-            );
-            let ui_snapshot = ui::build_ui_snapshot(&runtime, &pack_id, &[])?;
-            let new_state = runtime
-                .export_state()
-                .map_err(|e| format!("state export error: {e}"))?;
-            let is_game_over = new_state.phase != cinder_core::engine::state::GamePhase::Active;
-            let new_state_json = serde_json::to_string(&new_state)
-                .map_err(|e| format!("serialization error: {e}"))?;
 
-            Ok::<_, String>((changed_text, is_game_over, ui_snapshot, new_state_json))
-        })
+    for _attempt in 0..MAX_SESSION_WRITE_RETRIES {
+        let (pack_id, previous_locale, state_json) =
+            load_play_row_unlocked(pool, &play_id, &player_id).await?;
+        let target_locale = locale.clone();
+        let base_pack_id = pack_id.clone();
+        let base_state_json = state_json.clone();
+        let base_locale = previous_locale.clone();
+        let (changed_text, is_game_over, ui_snapshot, new_state_json) =
+            tokio::task::spawn_blocking(move || {
+                let localized_pack = loader::load_pack_from_dir_with_locale(
+                    &loader::pack_dir(&pack_id),
+                    Some(&target_locale),
+                )
+                .map_err(|e| format!("failed to load locale '{target_locale}': {e}"))?;
+                let language_name = localized_pack.ui_text.language_name.clone();
+                let runtime = build_runtime_impl(localized_pack, &state_json)?;
+                runtime
+                    .relocalize_story_vars()
+                    .map_err(|e| format!("relocalize error: {e}"))?;
+                let changed_text = runtime.content().render_template(
+                    &runtime.content().ui_text.language_changed_text,
+                    &[("language_name", language_name.as_str())],
+                );
+                let ui_snapshot = ui::build_ui_snapshot(&runtime, &pack_id, &[])?;
+                let new_state = runtime
+                    .export_state()
+                    .map_err(|e| format!("state export error: {e}"))?;
+                let is_game_over =
+                    new_state.phase != cinder_core::engine::state::GamePhase::Active;
+                let new_state_json = serde_json::to_string(&new_state)
+                    .map_err(|e| format!("serialization error: {e}"))?;
+
+                Ok::<_, String>((changed_text, is_game_over, ui_snapshot, new_state_json))
+            })
+            .await
+            .map_err(|e| format!("blocking task panicked: {e:?}"))??;
+
+        let mut tx = pool
+            .begin()
+            .await
+            .map_err(|e| format!("db begin error: {e}"))?;
+        let (current_pack_id, current_locale, current_state_json) =
+            load_play_row(&mut tx, &play_id, &player_id, true).await?;
+        if current_pack_id != base_pack_id
+            || current_locale != base_locale
+            || current_state_json != base_state_json
+        {
+            tx.rollback()
+                .await
+                .map_err(|e| format!("db rollback error: {e}"))?;
+            continue;
+        }
+
+        sqlx::query(
+            "UPDATE game_plays SET locale = $1, state_json = $2::jsonb, updated_at = NOW() WHERE id = $3 AND player_id = $4",
+        )
+        .bind(&locale)
+        .bind(&new_state_json)
+        .bind(play_id)
+        .bind(player_id)
+        .execute(&mut *tx)
         .await
-        .map_err(|e| format!("blocking task panicked: {e:?}"))??;
+        .map_err(|e| format!("db update error: {e}"))?;
+        tx.commit()
+            .await
+            .map_err(|e| format!("db commit error: {e}"))?;
 
-    sqlx::query(
-        "UPDATE game_plays SET locale = $1, state_json = $2::jsonb, updated_at = NOW() WHERE id = $3 AND player_id = $4",
-    )
-    .bind(&locale)
-    .bind(&new_state_json)
-    .bind(play_id)
-    .bind(player_id)
-    .execute(&mut *tx)
-    .await
-    .map_err(|e| format!("db update error: {e}"))?;
-    tx.commit()
-        .await
-        .map_err(|e| format!("db commit error: {e}"))?;
+        return Ok(CommandResponse {
+            text: changed_text,
+            game_over: is_game_over,
+            movie: None,
+            act_closure: ui_snapshot.act_closure.clone(),
+            game_closure: ui_snapshot.game_closure.clone(),
+            ui_snapshot: Some(ui_snapshot),
+        });
+    }
 
-    Ok(CommandResponse {
-        text: changed_text,
-        game_over: is_game_over,
-        movie: None,
-        act_closure: ui_snapshot.act_closure.clone(),
-        game_closure: ui_snapshot.game_closure.clone(),
-        ui_snapshot: Some(ui_snapshot),
-    })
+    Err("session changed too frequently; please retry".to_string())
 }
 
 pub async fn get_play_ui(
@@ -565,29 +607,8 @@ pub async fn get_play_ui(
 ) -> Result<UiSnapshot, String> {
     let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
-    let (pack_id, locale, state_json) = sqlx::query_as::<_, SessionRow>(
-        "SELECT pack_id, locale, state_json::text FROM game_plays WHERE id = $1 AND player_id = $2",
-    )
-    .bind(play_id)
-    .bind(player_id)
-    .fetch_optional(pool)
-    .await
-    .map_err(|e| format!("db error: {e}"))?
-    .ok_or_else(|| "session not found".to_string())?;
-    let transcript_lines = sqlx::query_scalar::<_, String>(
-        "SELECT CASE WHEN te.role = 'player' THEN '> ' || te.text ELSE te.text END
-         FROM transcript_entries te
-         JOIN game_plays s ON s.id = te.play_id
-         WHERE te.play_id = $1 AND s.player_id = $2
-         ORDER BY te.turn_number ASC, te.id ASC
-         LIMIT $3",
-    )
-    .bind(play_id)
-    .bind(player_id)
-    .bind(MAX_TRANSCRIPT_LINES)
-    .fetch_all(pool)
-    .await
-    .map_err(|e| format!("transcript query error: {e}"))?;
+    let (pack_id, locale, state_json) = load_play_row_unlocked(pool, &play_id, &player_id).await?;
+    let transcript_lines = fetch_transcript_lines(pool, &play_id, &player_id).await?;
     let transcript_lines = if transcript_lines.is_empty() {
         transcript_lines_from_state_json(&state_json)?
     } else {
