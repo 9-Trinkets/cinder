@@ -45,6 +45,8 @@ pub struct WorldState {
     pub pending_projector_sequence_id: Option<String>,
     pub pending_projector_narrative_lines: Vec<String>,
     pub story_vars: VariableStore,
+    #[serde(default)]
+    pub stage_started_minutes: BTreeMap<String, u32>,
     pub actor_known_room_ids: BTreeMap<String, BTreeSet<String>>,
     pub actor_observed_room_ids: BTreeMap<String, BTreeSet<String>>,
     pub actor_known_feature_ids: BTreeMap<String, BTreeSet<String>>,
@@ -62,8 +64,6 @@ pub struct WorldState {
     pub player_inventory: HashMap<String, u32>,
     #[serde(default)]
     pub act_series: Option<ActSeriesState>,
-    #[serde(default)]
-    pub stage_assigned_rooms: BTreeMap<String, String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -128,6 +128,12 @@ impl WorldState {
             pending_projector_sequence_id: None,
             pending_projector_narrative_lines: Vec::new(),
             story_vars: VariableStore::new(content.variables.clone()),
+            stage_started_minutes: content
+                .beats
+                .initial_stage_ids
+                .iter()
+                .map(|stage_id| (stage_id.clone(), content.opening.start_time_minutes))
+                .collect(),
             actor_known_room_ids: content
                 .actors
                 .iter()
@@ -143,7 +149,6 @@ impl WorldState {
             last_transcript_line: None,
             player_inventory: HashMap::new(),
             act_series: None,
-            stage_assigned_rooms: BTreeMap::new(),
         }
     }
 

@@ -261,6 +261,109 @@
       "available_during": ["dinner-prep"]
     },
     {
+      "id": "slice_fruit",
+      "command": "SLICE FRUIT",
+      "target_mode": "none",
+      "effects": ["remember_in_room"],
+      "event_text": "{actor_name} slices fruit into a bright breakfast pile, making the kitchen feel awake before anyone is fully ready to be.",
+      "allowed_rooms": ["kitchen"],
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "day2-breakfast-prep",
+          "key": "fruit_prepped"
+        }
+      ],
+      "blocked_by_bundle_progress": [
+        {
+          "bundle_id": "day2-breakfast-prep",
+          "key": "fruit_prepped"
+        }
+      ],
+      "available_during": ["day2-breakfast-prep"]
+    },
+    {
+      "id": "toast_bread",
+      "command": "TOAST BREAD",
+      "target_mode": "none",
+      "effects": ["remember_in_room"],
+      "event_text": "{actor_name} tends a pan of toast until the kitchen smells warm and buttery in a way that makes the whole house feel lived in.",
+      "allowed_rooms": ["kitchen"],
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "day2-breakfast-prep",
+          "key": "toast_ready"
+        }
+      ],
+      "blocked_by_bundle_progress": [
+        {
+          "bundle_id": "day2-breakfast-prep",
+          "key": "toast_ready"
+        }
+      ],
+      "available_during": ["day2-breakfast-prep"]
+    },
+    {
+      "id": "brew_morning_coffee",
+      "command": "BREW MORNING COFFEE",
+      "target_mode": "none",
+      "effects": ["remember_in_room"],
+      "hook_id": "actor.brewed",
+      "event_text": "{actor_name} brews the first coffee of the day, and the smell drifts far enough to start pulling the rest of the house awake.",
+      "allowed_rooms": ["kitchen"],
+      "blocked_by_bundle_progress": [
+        {
+          "bundle_id": "day2-breakfast-prep",
+          "key": "coffee_ready"
+        }
+      ],
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "day2-breakfast-prep",
+          "key": "coffee_ready"
+        }
+      ],
+      "creates_consumable": {
+        "consumable_id": "pour-over-coffee",
+        "story_var": "brew_recipe"
+      },
+      "available_during": ["day2-breakfast-prep"]
+    },
+    {
+      "id": "serve_breakfast",
+      "command": "SERVE BREAKFAST",
+      "target_mode": "none",
+      "effects": ["remember_in_room"],
+      "hook_id": "actor.cooked",
+      "event_text": "{actor_name} pulls the breakfast together and sets it out like the first real act of the day belongs to everyone.",
+      "allowed_rooms": ["kitchen"],
+      "required_bundle_progress": [
+        {
+          "bundle_id": "day2-breakfast-prep",
+          "key": "fruit_prepped"
+        },
+        {
+          "bundle_id": "day2-breakfast-prep",
+          "key": "toast_ready"
+        }
+      ],
+      "blocked_by_bundle_progress": [
+        {
+          "bundle_id": "day2-breakfast-prep",
+          "key": "breakfast_ready"
+        }
+      ],
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "day2-breakfast-prep",
+          "key": "breakfast_ready"
+        }
+      ],
+      "creates_consumable": {
+        "consumable_id": "honey-toast-and-fruit"
+      },
+      "available_during": ["day2-breakfast-prep"]
+    },
+    {
       "id": "demonstrate_knife_work",
       "command": "DEMONSTRATE KNIFE WORK",
       "target_mode": "none",
@@ -297,7 +400,8 @@
       "hook_id": "actor.yoga",
       "event_text": "{actor_name} flows through a slow sequence on the patio, breath steady, shoulders dropping.",
       "allowed_rooms": ["patio"],
-      "player_enabled": false
+      "player_enabled": false,
+      "available_during": ["day2-event-a", "day2-event-b"]
     },
     {
       "id": "stretch",
@@ -306,7 +410,8 @@
       "hook_id": "actor.stretched",
       "event_text": "{actor_name} stretches out against the morning air, finding space in the movement.",
       "allowed_rooms": ["patio"],
-      "player_enabled": false
+      "player_enabled": false,
+      "available_during": ["day2-event-a", "day2-event-b"]
     },
     {
       "id": "edit",
@@ -316,6 +421,7 @@
       "event_text": "{actor_name} clips through footage on the editing desk, pulling a moment of {target_actor_name} out of the timeline.",
       "allowed_rooms": ["studio"],
       "player_enabled": false,
+      "available_during": ["day2-event-a", "day2-event-b"],
       "creates_consumable": {
         "consumable_id": "clip-ren",
         "resolve_from_target": true
@@ -330,7 +436,8 @@
       "hook_id": "actor.watched",
       "event_text": "{actor_name} watches the clip on the monitor, the room going quiet around the footage.",
       "allowed_rooms": ["studio"],
-      "player_enabled": false
+      "player_enabled": false,
+      "available_during": ["day2-event-a", "day2-event-b"]
     }
   ]
 }

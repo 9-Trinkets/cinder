@@ -20,8 +20,11 @@ pub(crate) fn apply_actor_turn_policies(
     state: &WorldState,
     request: &mut ActorTurnActionRequest,
 ) {
-    for bundle in active_bundles(content, state) {
-        let notes = bundle_guidance_notes_for_actor(content, state, bundle, &request.actor_id);
+    let actor_id = request.actor_id.clone();
+    for bundle in active_bundles(content, state)
+        .filter(|bundle| bundle_applies_to_actor(content, state, bundle, &actor_id))
+    {
+        let notes = bundle_guidance_notes_for_actor(content, state, bundle, &actor_id);
         request.current_beat_notes.extend(notes);
         apply_bundle_affordance_priorities(bundle, content, state, request);
     }
@@ -33,6 +36,7 @@ pub(crate) fn actor_bundle_guidance_notes(
     actor_id: &str,
 ) -> Vec<String> {
     active_bundles(content, state)
+        .filter(|bundle| bundle_applies_to_actor(content, state, bundle, actor_id))
         .flat_map(|bundle| bundle_guidance_notes_for_actor(content, state, bundle, actor_id))
         .collect()
 }
@@ -50,6 +54,7 @@ pub(crate) fn mark_actor_bundle_progress_for_speech_event(
     event: BundleSpeechEvent,
 ) {
     let keys = active_bundles(content, state)
+        .filter(|bundle| bundle_applies_to_actor(content, state, bundle, actor_id))
         .filter(|bundle| {
             bundle
                 .completion
@@ -233,6 +238,30 @@ fn active_bundles<'a>(
     content.rule_bundles.bundles.iter().filter(|bundle| {
         !bundle.stage_id.is_empty() && state.active_objective_stage_ids.contains(&bundle.stage_id)
     })
+}
+
+fn bundle_applies_to_actor(
+    content: &ContentPack,
+    state: &WorldState,
+    bundle: &RuleBundleDefinition,
+    actor_id: &str,
+) -> bool {
+    let Some(stage) = content
+        .beats
+        .stages
+        .iter()
+        .find(|stage| stage.id == bundle.stage_id)
+    else {
+        return true;
+    };
+    if stage.target_actor_story_var.is_empty() {
+        return true;
+    }
+    state
+        .story_vars
+        .get(&stage.target_actor_story_var)
+        .map(|ids| ids.split(',').any(|id| id.trim() == actor_id))
+        .unwrap_or(false)
 }
 
 pub(crate) fn clear_inactive_bundle_state(content: &ContentPack, state: &mut WorldState) {
@@ -568,5 +597,110 @@ mod tests {
                 .get("rule_bundle:actor_complete:first-meeting-lounge-intros:aera"),
             None
         );
+    }
+
+    #[test]
+    fn stage_targeted_bundles_only_apply_to_the_matching_group() {
+        let content = load_named_pack("aera", Some("en")).expect("load aera");
+        let mut state = WorldState::new(&content);
+        state.active_objective_stage_ids =
+            vec!["day2-event-a".to_string(), "day2-event-b".to_string()];
+        state.story_vars.set_unchecked("day2_group_a", "aera,mio");
+        state.story_vars.set_unchecked("day2_group_b", "daichi,ren");
+
+        let aera_notes = super::actor_bundle_guidance_notes(&content, &state, "aera");
+        let daichi_notes = super::actor_bundle_guidance_notes(&content, &state, "daichi");
+
+        assert_eq!(
+            aera_notes
+                .iter()
+                .filter(|note| note.contains("small-group activity scene"))
+                .count(),
+            1
+        );
+        assert_eq!(
+            daichi_notes
+                .iter()
+                .filter(|note| note.contains("small-group activity scene"))
+                .count(),
+            1
+        );
+    }
+
+    #[test]
+    fn day2_event_b_bundle_prioritizes_studio_editing_actions() {
+        let content = load_named_pack("aera", Some("en")).expect("load aera");
+        let mut state = WorldState::new(&content);
+        state.active_objective_stage_ids =
+            vec!["day2-event-a".to_string(), "day2-event-b".to_string()];
+        state.story_vars.set_unchecked("day2_group_a", "daichi,ren");
+        state.story_vars.set_unchecked("day2_group_b", "aera,mio");
+
+        let mut request = ActorTurnActionRequest {
+            actor_id: "aera".to_string(),
+            actor_name: "Aera".to_string(),
+            locale: content.locale.clone(),
+            system_text: content.system_text.clone(),
+            character_notes: vec![],
+            setting_notes: vec![],
+            current_beat_notes: vec![],
+            subtext_notes: vec![],
+            behavior_examples: vec![],
+            actor_stats: BTreeMap::new(),
+            has_rest_affordance: false,
+            has_hunger_recovery_consumable: false,
+            has_food_consumable: false,
+            has_cook_affordance: false,
+            cooking_needed: false,
+            food_stock: 0,
+            actor_count: content.actors.len(),
+            consume_target_item_id: None,
+            move_target_room_id: None,
+            move_target_room_title: None,
+            move_target_actor_name: None,
+            move_target_social_note: None,
+            affordances: vec![
+                ActorTurnAffordanceOption {
+                    affordance_id: "speak".to_string(),
+                    command_id: "speak".to_string(),
+                    group: "social".to_string(),
+                    available_text: "You could speak.".to_string(),
+                    decision_label: "SPEAK MIO".to_string(),
+                    decision_prefix: None,
+                    invocation: ActorTurnCommandInvocation::Command {
+                        command_id: "speak".to_string(),
+                        target_room_id: None,
+                        target_actor_id: Some("mio".to_string()),
+                        feature_id: None,
+                        consumable_id: None,
+                        context_label: None,
+                        input_mode: CommandInputMode::FreeformText,
+                    },
+                },
+                ActorTurnAffordanceOption {
+                    affordance_id: "edit-mio".to_string(),
+                    command_id: "edit".to_string(),
+                    group: "studio".to_string(),
+                    available_text: "You could edit.".to_string(),
+                    decision_label: "EDIT MIO".to_string(),
+                    decision_prefix: None,
+                    invocation: ActorTurnCommandInvocation::Command {
+                        command_id: "edit".to_string(),
+                        target_room_id: None,
+                        target_actor_id: Some("mio".to_string()),
+                        feature_id: None,
+                        consumable_id: None,
+                        context_label: None,
+                        input_mode: CommandInputMode::None,
+                    },
+                },
+            ],
+            speak_candidates: vec![],
+            recent_memory: vec![],
+        };
+
+        apply_actor_turn_policies(&content, &state, &mut request);
+
+        assert_eq!(request.affordances[0].command_id, "edit");
     }
 }

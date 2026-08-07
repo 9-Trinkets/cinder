@@ -59,9 +59,6 @@ pub(crate) fn is_actor_movement_locked(
     {
         return Ok(true);
     }
-    if state.stage_assigned_rooms.contains_key(actor_id) {
-        return Ok(true);
-    }
     let Some(config) = content.movement.suppress_when.as_ref() else {
         return Ok(false);
     };
@@ -278,6 +275,40 @@ mod tests {
         assert_eq!(
             required_movement_target_room_id(&state, &rules, "girls-room"),
             None
+        );
+    }
+
+    #[test]
+    fn must_move_rule_can_resolve_day2_activity_room_from_story_vars() {
+        let content = load_named_pack("aera", Some("en")).expect("load aera");
+        let rules = content.movement_rules("aera");
+        let mut state = WorldState::new(&content);
+        state.active_objective_stage_ids = vec!["day2-move-to-activities".to_string()];
+        state.story_vars.set_unchecked("aera_assigned_room", "studio");
+        state
+            .actor_room_overrides
+            .insert("aera".to_string(), "girls-room".to_string());
+
+        assert_eq!(
+            required_movement_target_room_id(&state, &rules, "girls-room").as_deref(),
+            Some("studio")
+        );
+    }
+
+    #[test]
+    fn must_move_rule_can_start_day2_breakfast_relocation_during_assignment_stage() {
+        let content = load_named_pack("aera", Some("en")).expect("load aera");
+        let rules = content.movement_rules("ren");
+        let mut state = WorldState::new(&content);
+        state.active_objective_stage_ids = vec!["day2-breakfast-assignment".to_string()];
+        state.story_vars.set_unchecked("ren_assigned_room", "kitchen");
+        state
+            .actor_room_overrides
+            .insert("ren".to_string(), "guys-room".to_string());
+
+        assert_eq!(
+            required_movement_target_room_id(&state, &rules, "guys-room").as_deref(),
+            Some("kitchen")
         );
     }
 }

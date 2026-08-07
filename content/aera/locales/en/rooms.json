@@ -172,6 +172,22 @@
             "hunger_recovery": 6
           },
           {
+            "id": "honey-toast-and-fruit",
+            "label": "honey toast and fruit",
+            "aliases": [
+              "toast",
+              "fruit plate",
+              "breakfast"
+            ],
+            "tags": [
+              "vegetarian"
+            ],
+            "kind": "eat",
+            "initial_stock": 0,
+            "hunger_recovery": 6,
+            "stamina_recovery": 1
+          },
+          {
             "id": "citrus-iced-tea",
             "label": "citrus iced tea",
             "aliases": [

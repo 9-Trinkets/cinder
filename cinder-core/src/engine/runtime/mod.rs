@@ -8,8 +8,6 @@ use crate::engine::dialogue::{
 };
 use crate::engine::dialogue_grounding::render_story_text;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
-use crate::engine::hook_ids;
-use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::neuron::{WorkflowDefinition, WorkflowTraceContext, load_workflow};
 use crate::engine::reducer::apply_events;
 use crate::engine::state::{
@@ -595,71 +593,6 @@ impl CinderRuntime {
                 request.selected_room_id.clone(),
             );
         }
-        let mut moved_actors: Vec<(String, String, String, String)> = Vec::new();
-        for (actor_id, room_id) in &preplaced_rooms {
-            let actor_name = self
-                .content
-                .actor(actor_id)
-                .map(|actor| display_actor_name(&state, actor))
-                .unwrap_or_else(|| actor_id.clone());
-            let from_room_id = state
-                .actor_room_overrides
-                .get(actor_id)
-                .cloned()
-                .unwrap_or_default();
-            state
-                .actor_room_overrides
-                .insert(actor_id.clone(), room_id.clone());
-            if from_room_id != *room_id {
-                moved_actors.push((
-                    actor_id.clone(),
-                    actor_name,
-                    from_room_id,
-                    room_id.clone(),
-                ));
-            }
-        }
-        for candidate in &request.candidates {
-            if preplaced_rooms.contains_key(&candidate.actor_id) {
-                continue;
-            }
-            let room_id = if chosen.contains(&candidate.actor_id) {
-                &request.selected_room_id
-            } else {
-                &request.remaining_room_id
-            };
-            let from_room_id = state
-                .actor_room_overrides
-                .get(&candidate.actor_id)
-                .cloned()
-                .unwrap_or_default();
-            state
-                .actor_room_overrides
-                .insert(candidate.actor_id.clone(), room_id.clone());
-            if from_room_id != *room_id {
-                moved_actors.push((
-                    candidate.actor_id.clone(),
-                    candidate.actor_name.clone(),
-                    from_room_id,
-                    room_id.clone(),
-                ));
-            }
-        }
-        for (actor_id, _actor_name, from_room_id, to_room_id) in &moved_actors {
-            let _ = apply_world_hook_effects(
-                &mut *state,
-                self.content.as_ref(),
-                hook_ids::ACTOR_MOVED,
-                serde_json::json!({
-                    "actor_id": actor_id,
-                    "from_room_id": from_room_id,
-                    "to_room_id": to_room_id,
-                }),
-            );
-            if state.followed_actor_id.as_deref() == Some(actor_id.as_str()) {
-                state.current_room_id = to_room_id.clone();
-            }
-        }
         state.story_vars.set_unchecked(&applied_flag, "true");
         if !config.group_story_var_key.trim().is_empty() {
             let mut group_ids = preplaced_rooms
@@ -707,25 +640,6 @@ impl CinderRuntime {
             let key = format!("{}_assigned_room", candidate.actor_id);
             state.story_vars.set_unchecked(&key, room_id);
         }
-        for (actor_id, room_id) in &preplaced_rooms {
-            state
-                .stage_assigned_rooms
-                .insert(actor_id.clone(), room_id.clone());
-        }
-        for candidate in &request.candidates {
-            if preplaced_rooms.contains_key(&candidate.actor_id) {
-                continue;
-            }
-            let room_id = if chosen.contains(&candidate.actor_id) {
-                &request.selected_room_id
-            } else {
-                &request.remaining_room_id
-            };
-            state
-                .stage_assigned_rooms
-                .insert(candidate.actor_id.clone(), room_id.clone());
-        }
-
         let mut selected_names = preplaced_rooms
             .iter()
             .filter(|(_, room_id)| *room_id == &request.selected_room_id)
@@ -1227,17 +1141,17 @@ mod tests {
             StageAssignment {
                 assignments: vec![
                     StageAssignmentScore {
-                        actor_id: "aera".to_string(),
+                        actor_id: "blair".to_string(),
                         selection_score: 90,
-                        rationale: "already leaning toward Ren".to_string(),
+                        rationale: "already leaning toward Alex".to_string(),
                     },
                     StageAssignmentScore {
-                        actor_id: "mio".to_string(),
+                        actor_id: "casey".to_string(),
                         selection_score: 82,
                         rationale: "likes the energy in the kitchen".to_string(),
                     },
                     StageAssignmentScore {
-                        actor_id: "daichi".to_string(),
+                        actor_id: "devon".to_string(),
                         selection_score: 15,
                         rationale: "hangs back in the lounge".to_string(),
                     },
@@ -1266,36 +1180,19 @@ mod tests {
         assert!(
             first
                 .text
-                .contains("Ren heads to the Kitchen to start dinner prep.")
+                .contains("Alex starts pulling the house toward the Kitchen for dinner prep.")
         );
-        assert_eq!(
-            exported.actor_room_overrides.get("ren").map(String::as_str),
-            Some("kitchen")
-        );
-        assert_eq!(
-            exported
-                .actor_room_overrides
-                .get("aera")
-                .map(String::as_str),
-            Some("kitchen")
-        );
-        assert_eq!(
-            exported.actor_room_overrides.get("mio").map(String::as_str),
-            Some("kitchen")
-        );
-        assert_eq!(
-            exported
-                .actor_room_overrides
-                .get("daichi")
-                .map(String::as_str),
-            Some("lounge")
-        );
+        assert_eq!(exported.story_vars.get("alex_assigned_room"), Some("kitchen"));
+        assert_eq!(exported.story_vars.get("blair_assigned_room"), Some("kitchen"));
+        assert_eq!(exported.story_vars.get("casey_assigned_room"), Some("kitchen"));
+        assert_eq!(exported.story_vars.get("devon_assigned_room"), Some("lounge"));
         assert_eq!(
             exported
                 .story_vars
                 .get("stage_assignment_applied:dinner-prep"),
             Some("true")
         );
+        assert!(exported.actor_room_overrides.is_empty());
 
         let second = runtime
             .apply_stage_assignments(TurnOutcome {
@@ -1307,37 +1204,37 @@ mod tests {
     }
 
     #[test]
-    fn stage_assignment_anchors_activity_hosts_to_their_rooms() {
-        let content =
-            crate::content::loader::load_named_pack("aera", Some("en")).expect("load aera pack");
+    fn stage_assignment_assigns_activity_hosts_via_story_vars_only() {
+        let pack_dir = write_stage_assignment_test_pack();
+        let content = load_pack_from_dir(&pack_dir).expect("load test pack");
         let mut state = WorldState::new(&content);
-        state.active_objective_stage_ids = vec!["day2-assignment".to_string()];
+        state.active_objective_stage_ids = vec!["activity-split".to_string()];
         state
             .story_vars
-            .set_unchecked("day2_event_room", "patio");
+            .set_unchecked("activity_room_a", "patio");
         state
             .story_vars
-            .set_unchecked("day2_event2_room", "studio");
+            .set_unchecked("activity_room_b", "studio");
         state
             .story_vars
-            .set_unchecked("day2_event_host", "daichi");
+            .set_unchecked("activity_host_a", "devon");
         state
             .story_vars
-            .set_unchecked("day2_event2_host", "aera");
+            .set_unchecked("activity_host_b", "alex");
         let dialogue = Arc::new(
             ScriptedDialogueGenerator::new().with_stage_assignment(
-                "day2-assignment",
+                "activity-split",
                 StageAssignment {
                     assignments: vec![
                         StageAssignmentScore {
-                            actor_id: "mio".to_string(),
+                            actor_id: "casey".to_string(),
                             selection_score: 90,
-                            rationale: "joins the patio workout".to_string(),
+                            rationale: "joins the patio activity".to_string(),
                         },
                         StageAssignmentScore {
-                            actor_id: "ren".to_string(),
+                            actor_id: "blair".to_string(),
                             selection_score: 20,
-                            rationale: "stays with the editing session".to_string(),
+                            rationale: "stays with the studio activity".to_string(),
                         },
                     ],
                 },
@@ -1361,56 +1258,29 @@ mod tests {
             })
             .expect("apply assignment");
         let exported = runtime.export_state().expect("export state");
-        assert!(
-            exported
-                .actor_room_overrides
-                .get("daichi")
-                .is_some_and(|room| room == "patio"),
-            "Daichi (patio workout host) must be anchored to patio"
-        );
-        assert!(
-            exported
-                .actor_room_overrides
-                .get("aera")
-                .is_some_and(|room| room == "studio"),
-            "Aera (editing session host) must be anchored to studio"
-        );
-        assert!(
-            exported
-                .actor_room_overrides
-                .get("mio")
-                .is_some_and(|room| room == "patio"),
-            "Mio scores highest for the selected activity and joins the patio"
-        );
-        assert!(
-            exported
-                .actor_room_overrides
-                .get("ren")
-                .is_some_and(|room| room == "studio"),
-            "Ren fills the remaining editing-session group"
-        );
         assert_eq!(
-            exported.story_vars.get("day2_group_a"),
-            Some("daichi,mio"),
+            exported.story_vars.get("activity_group_a"),
+            Some("casey,devon"),
             "selected group must include the anchored host"
         );
         assert_eq!(
-            exported.story_vars.get("day2_group_b"),
-            Some("aera,ren"),
+            exported.story_vars.get("activity_group_b"),
+            Some("alex,blair"),
             "remaining group must include the anchored host"
         );
         assert!(
             exported
                 .story_vars
-                .get("daichi_assigned_room")
+                .get("devon_assigned_room")
                 .is_some_and(|room| room == "patio")
         );
         assert!(
             exported
                 .story_vars
-                .get("aera_assigned_room")
+                .get("alex_assigned_room")
                 .is_some_and(|room| room == "studio")
         );
+        assert!(exported.actor_room_overrides.is_empty());
     }
 
     fn write_stage_assignment_test_pack() -> std::path::PathBuf {
@@ -1455,6 +1325,22 @@ mod tests {
     "inspect_text": "A warm kitchen.",
     "features": [],
     "exits": []
+  },
+  {
+    "id": "patio",
+    "title": "Patio",
+    "summary": "A quiet patio.",
+    "inspect_text": "A quiet patio.",
+    "features": [],
+    "exits": []
+  },
+  {
+    "id": "studio",
+    "title": "Studio",
+    "summary": "A focused studio.",
+    "inspect_text": "A focused studio.",
+    "features": [],
+    "exits": []
   }
 ]"#,
         )
@@ -1463,34 +1349,34 @@ mod tests {
             locale_dir.join("actors.json"),
             r#"[
   {
-    "id": "ren",
-    "name": "Ren",
+    "id": "alex",
+    "name": "Alex",
     "room_id": "lounge",
     "initial_stats": { "confidence": 5, "stamina": 8, "hunger": 3 },
     "prompt_context": {}
   },
   {
-    "id": "aera",
-    "name": "Aera",
+    "id": "blair",
+    "name": "Blair",
     "room_id": "lounge",
     "initial_stats": { "confidence": 3, "stamina": 6, "hunger": 5 },
-    "initial_pair_stats": { "ren": { "connection": 4, "attraction": 2, "safety": 3 } },
+    "initial_pair_stats": { "alex": { "connection": 4, "attraction": 2, "safety": 3 } },
     "prompt_context": {}
   },
   {
-    "id": "mio",
-    "name": "Mio",
+    "id": "casey",
+    "name": "Casey",
     "room_id": "lounge",
     "initial_stats": { "confidence": 7, "stamina": 7, "hunger": 4 },
-    "initial_pair_stats": { "ren": { "connection": 2, "attraction": 3, "safety": 1 } },
+    "initial_pair_stats": { "alex": { "connection": 2, "attraction": 3, "safety": 1 } },
     "prompt_context": {}
   },
   {
-    "id": "daichi",
-    "name": "Daichi",
+    "id": "devon",
+    "name": "Devon",
     "room_id": "lounge",
     "initial_stats": { "confidence": 1, "stamina": 9, "hunger": 2 },
-    "initial_pair_stats": { "ren": { "connection": 1, "attraction": 0, "safety": 2 } },
+    "initial_pair_stats": { "alex": { "connection": 1, "attraction": 0, "safety": 2 } },
     "prompt_context": {}
   }
 ]"#,
@@ -1508,16 +1394,16 @@ mod tests {
       "beat_note": "Split the house.",
       "stage_assignment": {
         "selection_label": "dinner prep",
-        "prompt_instructions": "Prefer the kitchen when someone would want to be near Ren through useful, practical closeness.",
-        "initiator_actor_id": "ren",
+        "prompt_instructions": "Prefer the kitchen when someone would want to be near Alex through useful, practical closeness.",
+        "initiator_actor_id": "alex",
         "selected_room_id": "kitchen",
         "remaining_room_id": "lounge",
         "max_selected_actors": 2,
         "min_selected_actors": 1,
         "score_threshold": 50,
-        "initiator_line_template": "{initiator_name} heads to the {selected_room_title} to start {selection_label}.",
-        "selected_line_template": "{selected_names} join in the {selected_room_title}.",
-        "remaining_line_template": "{remaining_names} stay in the {remaining_room_title}."
+        "initiator_line_template": "{initiator_name} starts pulling the house toward the {selected_room_title} for {selection_label}.",
+        "selected_line_template": "{selected_names} fall in with the plan.",
+        "remaining_line_template": "{remaining_names} lag a step behind for the moment."
       },
       "next_stage_ids": ["dinner"]
     },
@@ -1525,6 +1411,33 @@ mod tests {
       "id": "dinner",
       "summary": "Dinner",
       "update_message": "Dinner starts."
+    },
+    {
+      "id": "activity-split",
+      "summary": "Split",
+      "update_message": "Split starts.",
+      "beat_note": "Split the house into two activities.",
+      "stage_assignment": {
+        "selection_label": "activity split",
+        "prompt_instructions": "Divide the cast between two activity rooms.",
+        "selected_room_id": "patio",
+        "remaining_room_id": "studio",
+        "selected_room_story_var": "activity_room_a",
+        "remaining_room_story_var": "activity_room_b",
+        "selected_host_story_var": "activity_host_a",
+        "remaining_host_story_var": "activity_host_b",
+        "max_selected_actors": 1,
+        "min_selected_actors": 1,
+        "score_threshold": 0,
+        "group_story_var_key": "activity_group_a",
+        "remaining_group_story_var_key": "activity_group_b"
+      },
+      "next_stage_ids": ["after-split"]
+    },
+    {
+      "id": "after-split",
+      "summary": "After split",
+      "update_message": "After split."
     }
   ]
 }"#,

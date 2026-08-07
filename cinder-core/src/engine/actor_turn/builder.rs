@@ -1,4 +1,6 @@
-use crate::content::types::{ActorDefinition, ActorMovementRulesDefinition, ContentPack};
+use crate::content::types::{
+    ActorDefinition, ActorMovementRulesDefinition, CommandTargetMode, ContentPack,
+};
 use crate::engine::actor_tick::decide_movement;
 use crate::engine::dialogue::{
     ActorTurnActionRequest, ActorTurnAffordanceTarget, ActorTurnCommandInvocation,
@@ -358,18 +360,90 @@ pub fn build_actor_turn(
                 .iter()
                 .any(|c| c.option.affordance_id == affordance.id)
         {
-            affordance_candidates.push(ActorAffordanceCandidate::new(
-                affordance,
-                build_actor_turn_affordance_option(
-                    &content.system_text,
-                    &affordance.id,
-                    &affordance.group,
-                    &affordance.prompt_verb,
-                    None,
-                    command,
-                    ActorTurnAffordanceTarget::Act,
-                ),
-            ));
+            match command.target_mode {
+                CommandTargetMode::None => {
+                    affordance_candidates.push(ActorAffordanceCandidate::new(
+                        affordance,
+                        build_actor_turn_affordance_option(
+                            &content.system_text,
+                            &affordance.id,
+                            &affordance.group,
+                            &affordance.prompt_verb,
+                            None,
+                            command,
+                            ActorTurnAffordanceTarget::Act,
+                        ),
+                    ));
+                }
+                CommandTargetMode::Actor | CommandTargetMode::ActorOptional => {
+                    affordance_candidates.extend(speak_candidates.iter().map(|candidate| {
+                        ActorAffordanceCandidate::new(
+                            affordance,
+                            build_actor_turn_affordance_option(
+                                &content.system_text,
+                                &affordance.id,
+                                &affordance.group,
+                                &affordance.prompt_verb,
+                                None,
+                                command,
+                                ActorTurnAffordanceTarget::Hug {
+                                    actor_id: &candidate.actor_id,
+                                    actor_name: &candidate.actor_name,
+                                },
+                            ),
+                        )
+                    }));
+                }
+                CommandTargetMode::Consumable => {
+                    affordance_candidates.extend(consume_candidates.iter().filter_map(
+                        |candidate| {
+                            if command
+                                .consumable_kind
+                                .is_some_and(|kind| kind != candidate.kind)
+                            {
+                                return None;
+                            }
+                            Some(ActorAffordanceCandidate::new(
+                                affordance,
+                                build_actor_turn_affordance_option(
+                                    &content.system_text,
+                                    &affordance.id,
+                                    &affordance.group,
+                                    &affordance.prompt_verb,
+                                    None,
+                                    command,
+                                    ActorTurnAffordanceTarget::Consume {
+                                        item_id: &candidate.item_id,
+                                        item_label: &candidate.item_label,
+                                        feature_label: &candidate.feature_label,
+                                        kind: candidate.kind,
+                                    },
+                                ),
+                            ))
+                        },
+                    ));
+                }
+                CommandTargetMode::Feature => {
+                    affordance_candidates.extend(inspect_feature_cands.iter().map(|candidate| {
+                        ActorAffordanceCandidate::new(
+                            affordance,
+                            build_actor_turn_affordance_option(
+                                &content.system_text,
+                                &affordance.id,
+                                &affordance.group,
+                                &affordance.prompt_verb,
+                                None,
+                                command,
+                                ActorTurnAffordanceTarget::InspectFeature {
+                                    feature_id: &candidate.feature_id,
+                                    feature_label: &candidate.label,
+                                },
+                            ),
+                        )
+                    }));
+                }
+                CommandTargetMode::Room | CommandTargetMode::ContextLabel => {}
+            }
         }
     }
     let hide_inspect_feature = false;
@@ -472,4 +546,56 @@ pub fn build_actor_turn(
         request,
         realization_context,
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::build_actor_turn;
+    use crate::content::loader::load_named_pack;
+    use crate::engine::state::WorldState;
+    use std::sync::Arc;
+
+    #[test]
+    fn custom_actor_target_room_commands_keep_actor_targets() {
+        let content = load_named_pack("aera", Some("en")).expect("load aera");
+        let mut state = WorldState::new(&content);
+        state.active_objective_stage_ids =
+            vec!["day2-event-a".to_string(), "day2-event-b".to_string()];
+        state.story_vars.set_unchecked("day2_group_a", "aera,mio");
+        state.story_vars.set_unchecked("day2_group_b", "ren,daichi");
+        state
+            .actor_room_overrides
+            .insert("aera".to_string(), "studio".to_string());
+        state
+            .actor_room_overrides
+            .insert("mio".to_string(), "studio".to_string());
+        state
+            .actor_room_overrides
+            .insert("ren".to_string(), "patio".to_string());
+        state
+            .actor_room_overrides
+            .insert("daichi".to_string(), "patio".to_string());
+
+        let actor = content.actor("aera").expect("aera actor");
+        let rules = content.movement_rules("aera");
+        let build = build_actor_turn(Arc::new(content.clone()), &state, actor, &rules)
+            .expect("build actor turn");
+
+        assert!(build.request.affordances.iter().any(|affordance| {
+            affordance.command_id == "edit"
+                && affordance.decision_label == "EDIT mio"
+                && matches!(
+                    &affordance.invocation,
+                    crate::engine::dialogue::ActorTurnCommandInvocation::Command {
+                        target_actor_id: Some(target_actor_id),
+                        ..
+                    } if target_actor_id == "mio"
+                )
+        }));
+        assert!(
+            !build.request.affordances.iter().any(|affordance| {
+                affordance.command_id == "edit" && affordance.decision_label == "EDIT"
+            })
+        );
+    }
 }

@@ -197,13 +197,179 @@
       }
     },
     {
+      "id": "day2-breakfast-prep",
+      "stage_id": "day2-breakfast-prep",
+      "progress": {
+        "keys": [
+          {
+            "key": "fruit_prepped",
+            "label": "fruit sliced"
+          },
+          {
+            "key": "toast_ready",
+            "label": "toast ready"
+          },
+          {
+            "key": "coffee_ready",
+            "label": "coffee ready"
+          },
+          {
+            "key": "breakfast_ready",
+            "label": "breakfast served"
+          }
+        ]
+      },
+      "completion": {
+        "mark_actor_complete_on": []
+      },
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "You are in breakfast prep mode. Ren is leading a smaller morning task with one other person, so keep the energy focused and domestic rather than sprawling. Slice fruit, get toast going, brew the first coffee of the day, and then actually serve breakfast instead of talking around it. Let the smallness of the task create a softer kind of intimacy.",
+        "prompt_note_if_others_incomplete": "",
+        "prioritize": [
+          {
+            "command_id": "slice_fruit",
+            "target": "any"
+          },
+          {
+            "command_id": "toast_bread",
+            "target": "any"
+          },
+          {
+            "command_id": "brew_morning_coffee",
+            "target": "any"
+          },
+          {
+            "command_id": "serve_breakfast",
+            "target": "any"
+          },
+          {
+            "command_id": "speak",
+            "target": "actor"
+          },
+          {
+            "command_id": "speak",
+            "target": "room"
+          }
+        ],
+        "conditional": [
+          {
+            "required_bundle_progress": [
+              {
+                "bundle_id": "day2-breakfast-prep",
+                "key": "fruit_prepped"
+              },
+              {
+                "bundle_id": "day2-breakfast-prep",
+                "key": "toast_ready"
+              }
+            ],
+            "blocked_by_bundle_progress": [
+              {
+                "bundle_id": "day2-breakfast-prep",
+                "key": "breakfast_ready"
+              }
+            ],
+            "prompt_note": "The fruit is ready and the toast is up. Pull breakfast together now so the moment lands before the house fully wakes up.",
+            "prioritize": [
+              {
+                "command_id": "serve_breakfast",
+                "target": "any"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "day2-share-breakfast",
+      "stage_id": "day2-share-breakfast",
+      "completion": {
+        "mark_actor_complete_on": []
+      },
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "You are in shared breakfast mode. Everyone is back in the kitchen now. Prioritize eating and drinking what was just made, waking up into conversation, and letting the first communal meal of the day set the mood before the activities split the house again.",
+        "prompt_note_if_others_incomplete": "",
+        "prioritize": [
+          {
+            "command_id": "eat",
+            "target": "any"
+          },
+          {
+            "command_id": "drink",
+            "target": "any"
+          },
+          {
+            "command_id": "consume",
+            "target": "any"
+          },
+          {
+            "command_id": "speak",
+            "target": "actor"
+          },
+          {
+            "command_id": "speak",
+            "target": "room"
+          }
+        ]
+      }
+    },
+    {
       "id": "day2-hands-on-activities",
       "stage_id": "day2-event-a",
       "completion": {
         "mark_actor_complete_on": []
       },
       "guidance": {
-        "prompt_note_if_actor_incomplete": "You are in a small-group activity scene. Stay hands-on with the task in your room before drifting into pure banter. In the kitchen, make the cooking lesson feel collaborative and slightly intimate by demonstrating technique, tasting together, and finishing the dish. On the patio, let stretching and yoga create rhythm, exertion, and breath-led conversation. In the studio, let editing and watching footage pull vulnerable reactions to the surface. The activity should unlock at least one candid moment that would not happen in an ordinary chat.",
+        "prompt_note_if_actor_incomplete": "You are in a small-group activity scene. Stay hands-on with the task in your room before drifting into pure banter. In the kitchen, make the cooking lesson feel collaborative and slightly intimate by demonstrating technique, tasting together, and finishing the dish. On the patio, let stretching and yoga create rhythm, exertion, and breath-led conversation. In the studio, do not leave the footage untouched: someone should edit, then watch what the activity reveals. The activity should unlock at least one candid moment that would not happen in an ordinary chat.",
+        "prompt_note_if_others_incomplete": "",
+        "prioritize": [
+          {
+            "command_id": "demonstrate_knife_work",
+            "target": "any"
+          },
+          {
+            "command_id": "taste_sauce",
+            "target": "any"
+          },
+          {
+            "command_id": "plate_dish",
+            "target": "any"
+          },
+          {
+            "command_id": "stretch",
+            "target": "any"
+          },
+          {
+            "command_id": "yoga",
+            "target": "any"
+          },
+          {
+            "command_id": "edit",
+            "target": "any"
+          },
+          {
+            "command_id": "watch",
+            "target": "any"
+          },
+          {
+            "command_id": "speak",
+            "target": "actor"
+          },
+          {
+            "command_id": "speak",
+            "target": "room"
+          }
+        ]
+      }
+    },
+    {
+      "id": "day2-hands-on-activities-b",
+      "stage_id": "day2-event-b",
+      "completion": {
+        "mark_actor_complete_on": []
+      },
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "You are in a small-group activity scene. Stay hands-on with the task in your room before drifting into pure banter. In the kitchen, make the cooking lesson feel collaborative and slightly intimate by demonstrating technique, tasting together, and finishing the dish. On the patio, let stretching and yoga create rhythm, exertion, and breath-led conversation. In the studio, do not leave the footage untouched: someone should edit, then watch what the activity reveals. The activity should unlock at least one candid moment that would not happen in an ordinary chat.",
         "prompt_note_if_others_incomplete": "",
         "prioritize": [
           {

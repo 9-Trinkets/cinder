@@ -196,7 +196,7 @@ pub enum AdvanceEffect {
     },
 }
 
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct StageAssignmentDefinition {
     #[serde(default)]
     pub selection_label: String,
@@ -232,6 +232,30 @@ pub struct StageAssignmentDefinition {
     pub group_story_var_key: String,
     #[serde(default)]
     pub remaining_group_story_var_key: String,
+}
+
+impl Default for StageAssignmentDefinition {
+    fn default() -> Self {
+        Self {
+            selection_label: String::new(),
+            prompt_instructions: String::new(),
+            initiator_actor_id: String::new(),
+            selected_room_id: String::new(),
+            remaining_room_id: String::new(),
+            selected_room_story_var: String::new(),
+            remaining_room_story_var: String::new(),
+            selected_host_story_var: String::new(),
+            remaining_host_story_var: String::new(),
+            max_selected_actors: default_stage_assignment_max_selected(),
+            min_selected_actors: default_stage_assignment_min_selected(),
+            score_threshold: default_stage_assignment_score_threshold(),
+            initiator_line_template: String::new(),
+            selected_line_template: String::new(),
+            remaining_line_template: String::new(),
+            group_story_var_key: String::new(),
+            remaining_group_story_var_key: String::new(),
+        }
+    }
 }
 
 fn default_stage_assignment_max_selected() -> usize {

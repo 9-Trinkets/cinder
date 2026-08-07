@@ -28,6 +28,10 @@
     "var_type": "string",
     "scope": "game"
   },
+  "day2_breakfast_group": {
+    "var_type": "string",
+    "scope": "game"
+  },
   "day2_group_b": {
     "var_type": "string",
     "scope": "game"

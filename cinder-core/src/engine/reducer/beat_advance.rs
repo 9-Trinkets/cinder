@@ -9,24 +9,37 @@ pub(super) fn advance_objective_for_signal(
 ) -> Vec<String> {
     let mut messages = Vec::new();
     let mut next_active_stage_ids = Vec::with_capacity(state.active_objective_stage_ids.len());
+    let mut next_stage_started_minutes = std::collections::BTreeMap::new();
     for current_stage_id in state.active_objective_stage_ids.clone() {
+        let current_stage_started_minutes = state
+            .stage_started_minutes
+            .get(&current_stage_id)
+            .copied()
+            .unwrap_or(state.current_time_minutes);
         let Some(current_stage) = content
             .beats
             .stages
             .iter()
             .find(|stage| stage.id == current_stage_id)
         else {
+            next_stage_started_minutes.insert(current_stage_id.clone(), current_stage_started_minutes);
             next_active_stage_ids.push(current_stage_id);
             continue;
         };
         if !current_stage.advance_signals.iter().any(|candidate| {
-            candidate.signal() == signal && advance_conditions_met(state, candidate.conditions())
+            advance_signal_matches(
+                state,
+                &current_stage_id,
+                signal,
+                candidate.signal(),
+                candidate.conditions(),
+            )
         }) {
+            next_stage_started_minutes.insert(current_stage_id.clone(), current_stage_started_minutes);
             next_active_stage_ids.push(current_stage_id);
             continue;
         }
         state.stages_completed += 1;
-        state.stage_assigned_rooms.clear();
         if current_stage.next_stage_ids.is_empty() {
             continue;
         }
@@ -55,6 +68,9 @@ pub(super) fn advance_objective_for_signal(
                 {
                     state.pending_projector_sequence_id = Some(movie.id.clone());
                     state.current_time_minutes += next_stage.elapsed_minutes;
+                    next_stage_started_minutes
+                        .entry(next_stage_id.clone())
+                        .or_insert(state.current_time_minutes);
                     state.pending_projector_narrative_lines = next_stage
                         .narrative_lines
                         .iter()
@@ -64,6 +80,9 @@ pub(super) fn advance_objective_for_signal(
                 }
             }
             state.current_time_minutes += next_stage.elapsed_minutes;
+            next_stage_started_minutes
+                .entry(next_stage_id.clone())
+                .or_insert(state.current_time_minutes);
             for line in &next_stage.narrative_lines {
                 messages.push(super::observation::render_story_text(line, state));
             }
@@ -111,6 +130,7 @@ pub(super) fn advance_objective_for_signal(
     next_active_stage_ids.sort();
     next_active_stage_ids.dedup();
     state.active_objective_stage_ids = next_active_stage_ids;
+    state.stage_started_minutes = next_stage_started_minutes;
     state
         .story_vars
         .clear_scoped(crate::engine::state::VariableScope::Stage);
@@ -123,9 +143,35 @@ pub(super) fn advance_objective_for_signal(
         state.phase != GamePhase::Active,
         &state.story_vars,
     ) {
-        state.active_objective_stage_ids.push(stage_id);
+        state.active_objective_stage_ids.push(stage_id.clone());
+        state
+            .stage_started_minutes
+            .insert(stage_id, state.current_time_minutes);
     }
     messages
+}
+
+fn advance_signal_matches(
+    state: &WorldState,
+    current_stage_id: &str,
+    current_signal: &str,
+    candidate_signal: &str,
+    conditions: &[AdvanceCondition],
+) -> bool {
+    if let Some(minutes) = candidate_signal.strip_prefix("stage_elapsed:") {
+        let Ok(required_minutes) = minutes.parse::<u32>() else {
+            return false;
+        };
+        let Some(started_minutes) = state.stage_started_minutes.get(current_stage_id).copied()
+        else {
+            return false;
+        };
+        return current_signal.starts_with("time_reached:")
+            && state.current_time_minutes.saturating_sub(started_minutes) >= required_minutes
+            && advance_conditions_met(state, conditions);
+    }
+
+    candidate_signal == current_signal && advance_conditions_met(state, conditions)
 }
 
 fn fallback_stage_to_activate(
@@ -153,9 +199,10 @@ fn fallback_stage_to_activate(
 
 #[cfg(test)]
 mod tests {
-    use super::fallback_stage_to_activate;
-    use crate::content::types::BeatDefinition;
-    use crate::engine::state::VariableStore;
+    use super::{advance_objective_for_signal, fallback_stage_to_activate};
+    use crate::content::loader::load_named_pack;
+    use crate::content::types::{AdvanceSignal, BeatDefinition, BeatsDefinition};
+    use crate::engine::state::{VariableStore, WorldState};
 
     #[test]
     fn fallback_stage_activates_only_when_requirements_are_met() {
@@ -198,6 +245,36 @@ mod tests {
         );
 
         assert!(stage_id.is_none());
+    }
+
+    #[test]
+    fn stage_elapsed_signal_advances_relative_to_stage_start() {
+        let mut pack = load_named_pack("aera", Some("en")).expect("load aera");
+        pack.beats = BeatsDefinition {
+            initial_stage_ids: vec!["prep".to_string()],
+            stages: vec![
+                BeatDefinition {
+                    id: "prep".to_string(),
+                    advance_signals: vec![AdvanceSignal::Simple("stage_elapsed:10".to_string())],
+                    next_stage_ids: vec!["done".to_string()],
+                    ..BeatDefinition::default()
+                },
+                BeatDefinition {
+                    id: "done".to_string(),
+                    ..BeatDefinition::default()
+                },
+            ],
+        };
+        let mut state = WorldState::new(&pack);
+        state.current_time_minutes = 9 * 60 + 12;
+        state
+            .stage_started_minutes
+            .insert("prep".to_string(), 9 * 60);
+
+        advance_objective_for_signal(&mut state, &pack, "time_reached:09:12");
+
+        assert_eq!(state.active_objective_stage_ids, vec!["done".to_string()]);
+        assert_eq!(state.stage_started_minutes.get("done"), Some(&(9 * 60 + 12)));
     }
 }
 

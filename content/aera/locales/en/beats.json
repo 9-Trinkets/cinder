@@ -54,9 +54,9 @@
         "max_selected_actors": 3,
         "min_selected_actors": 3,
         "score_threshold": 50,
-        "initiator_line_template": "{initiator_name} heads to the {selected_room_title} to start {selection_label}.",
-        "selected_line_template": "{selected_names} join in the {selected_room_title}.",
-        "remaining_line_template": "{remaining_names} stay in the {remaining_room_title}."
+        "initiator_line_template": "{initiator_name} starts pulling the house toward the {selected_room_title} for {selection_label}.",
+        "selected_line_template": "{selected_names} fall in with the plan.",
+        "remaining_line_template": "{remaining_names} lag a step behind for the moment."
       },
       "next_stage_ids": [
         "share-dinner-in-kitchen"
@@ -117,25 +117,115 @@
         "menu_selected:day2-plan"
       ],
       "next_stage_ids": [
-        "day2-assignment"
+        "day2-breakfast-assignment"
       ],
       "open_menu": "day2-plan"
     },
     {
-      "id": "day2-assignment",
-      "summary": "Day 2: the house divides into two groups for separate activities.",
-      "update_message": "The house splits into two groups for the morning activities.",
+      "id": "day2-breakfast-assignment",
+      "summary": "Day 2 morning: Ren pulls one other actor into breakfast prep before the day opens up.",
+      "update_message": "Morning starts in the kitchen. Ren is pulling one other person into breakfast prep.",
       "elapsed_minutes": 660,
       "narrative_lines": [
-        "Morning light pushes through the blinds. The house stirs — kettle whistling, bare feet on hardwood, someone squinting into the kitchen with last night still written on their face. Day two. The documentary crew is already in position. Today the house splits into groups, and the producers want the player to decide how."
+        "Morning light pushes through the blinds. The house stirs — kettle whistling, bare feet on hardwood, someone squinting into the kitchen with last night still written on their face. Day two. Before the producers split anyone into activities, the house still has to wake up together."
       ],
-      "beat_note": "Morning light fills the house. People are waking up, making coffee, stretching. Today there will be two separate activities — the house will split into groups. The group in the kitchen will do a cooking-related activity. The group on the patio will do an outdoor activity. The house divides naturally — who goes where depends on who is drawn to which activity.",
+      "beat_note": "The day begins small. Ren takes charge of breakfast and draws one other person into the kitchen with him while the rest of the house wakes more slowly. This should feel more intimate and domestic than dinner prep did: less of a whole-cast event, more of a quiet early-morning rhythm that reveals who feels easy around Ren before the day gets structured by production.",
       "advance_signals": [
-        "time_reached:09:30"
+        "stage_elapsed:10"
       ],
       "next_stage_ids": [
-        "day2-event-a",
-        "day2-event-b"
+        "day2-move-to-breakfast-prep"
+      ],
+      "stage_assignment": {
+        "selection_label": "breakfast prep",
+        "prompt_instructions": "Score how likely each candidate is to join Ren in the kitchen for a quiet breakfast prep before the rest of the house fully wakes up. Favor ease, usefulness, comfort with domestic closeness, and the sense that Ren would naturally pull this person into an early-morning task.",
+        "initiator_actor_id": "ren",
+        "selected_room_id": "kitchen",
+        "remaining_room_id": "lounge",
+        "max_selected_actors": 1,
+        "min_selected_actors": 1,
+        "score_threshold": 0,
+        "initiator_line_template": "{initiator_name} starts {selection_label} and draws the morning toward the {selected_room_title}.",
+        "selected_line_template": "{selected_names} get pulled into the quiet kitchen rhythm.",
+        "remaining_line_template": "{remaining_names} drift into the {remaining_room_title}, letting the morning gather itself.",
+        "group_story_var_key": "day2_breakfast_group"
+      },
+      "end_act": true
+    },
+    {
+      "id": "day2-move-to-breakfast-prep",
+      "summary": "Day 2 transition: the house wakes and breaks into breakfast positions.",
+      "update_message": "Ren and his helper move into the kitchen while the others drift into the common space.",
+      "beat_note": "The house is waking up for real now. Let doors open, footsteps cross the hall, and the morning sort people into its first pattern: Ren and one other person in the kitchen, everyone else lingering just outside the center of it.",
+      "advance_signals": [
+        "stage_elapsed:10"
+      ],
+      "next_stage_ids": [
+        "day2-breakfast-prep"
+      ]
+    },
+    {
+      "id": "day2-breakfast-prep",
+      "summary": "Day 2 breakfast prep: Ren and one other actor make breakfast together.",
+      "update_message": "Ren and one other housemate are making breakfast in the kitchen.",
+      "beat_note": "This is a smaller, quieter kitchen scene than dinner prep. Ren is leading, but not performing leadership for the room — he is just moving through a morning task with one other person close by. Let breakfast prep create intimacy through usefulness, near-touch, and sleepy honesty. The rest of the house can feel nearby without crowding the moment. Make sure the prep turns into actual breakfast and coffee instead of dissolving into pure banter.",
+      "advance_signals": [
+        "stage_elapsed:25",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.rule_bundle:progress:day2-breakfast-prep:breakfast_ready",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.values.rule_bundle:progress:day2-breakfast-prep:coffee_ready",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "day2-gather-for-breakfast"
+      ],
+      "target_actor_story_var": "day2_breakfast_group"
+    },
+    {
+      "id": "day2-gather-for-breakfast",
+      "summary": "Day 2 transition: everyone drifts into the kitchen for breakfast.",
+      "update_message": "The smell of breakfast pulls the rest of the house into the kitchen.",
+      "beat_note": "Breakfast is ready, and the smell is enough to gather everyone. Let the rest of the house drift toward the kitchen, carrying their just-woken-up moods with them until the scene becomes communal again.",
+      "advance_signals": [
+        "stage_elapsed:10"
+      ],
+      "next_stage_ids": [
+        "day2-share-breakfast"
+      ]
+    },
+    {
+      "id": "day2-share-breakfast",
+      "summary": "Day 2 breakfast: the whole house eats together before the activities split them up.",
+      "update_message": "Everyone ends up in the kitchen for a shared breakfast.",
+      "beat_note": "Everyone is back together in the kitchen now, but the mood is still colored by who shared the prep and who arrived later. Let breakfast feel lighter and sleepier than dinner, but still socially important: who sits nearest the food, who pours coffee for someone else, who looks better in the morning than they expected, and what small comment sets the tone for the rest of the day.",
+      "advance_signals": [
+        "stage_elapsed:25"
+      ],
+      "next_stage_ids": [
+        "day2-assignment"
+      ]
+    },
+    {
+      "id": "day2-assignment",
+      "summary": "Day 2: the house divides into two groups for separate activities.",
+      "update_message": "Breakfast winds down and production steps back in to split the house into activities.",
+      "beat_note": "Breakfast has gathered the house into one room, but now production takes over the shape of the day. Today there will be two separate activities, and the split should feel slightly charged by breakfast: who already found an easy rhythm this morning, who seems to want more time together, and who might prefer a different energy now that the house is fully awake.",
+      "advance_signals": [
+        "stage_elapsed:10"
+      ],
+      "next_stage_ids": [
+        "day2-move-to-activities"
       ],
       "stage_assignment": {
         "selection_label": "morning activities split",
@@ -159,12 +249,25 @@
       "end_act": true
     },
     {
+      "id": "day2-move-to-activities",
+      "summary": "Day 2 transition: breakfast breaks up and the house heads to the morning activities.",
+      "update_message": "Breakfast ends and the housemates head toward their assigned morning activities.",
+      "beat_note": "The morning split has been decided. Breakfast has just ended, so let the house physically break formation again: chairs scrape back, someone carries the last sip of coffee into the hall, and the two pairs head toward different parts of the house with whatever anticipation, hesitation, or private curiosity breakfast left behind. The movement itself should feel like the start of the next social pattern.",
+      "advance_signals": [
+        "stage_elapsed:10"
+      ],
+      "next_stage_ids": [
+        "day2-event-a",
+        "day2-event-b"
+      ]
+    },
+    {
       "id": "day2-event-a",
       "summary": "Day 2 morning activity A: {day2_event}.",
       "update_message": "The morning activities begin. Today's first activity: {day2_event}.",
       "beat_note": "The first activity is {day2_event}. The group assigned to this activity should be fully engaged in their task — talking, working, reacting to each other. Let the activity shape the energy: if it is a cooking lesson, focus on hands-in-the-same-space intimacy and who teaches whom; if it is a patio workout, focus on physical rhythm, shared breath, and who pushes whom; if it is an editing session, focus on watching yourself through someone else's eyes and what gets left on the cutting room floor. Push for one unguarded moment per person — something the activity unlocks that conversation alone would not.",
       "advance_signals": [
-        "time_reached:12:00"
+        "stage_elapsed:90"
       ],
       "next_stage_ids": [
         "day2-lounge"
@@ -177,7 +280,7 @@
       "update_message": "Meanwhile, the other group begins their activity: {day2_event2}.",
       "beat_note": "The second activity is {day2_event2}. The group in the other part of the house is doing their own thing — separate from the first group, building its own rhythm. Let the activity define the mood: a cooking lesson creates warmth and shared focus; a patio workout creates exertion and quiet bonding; an editing session creates vulnerability and self-consciousness. The two groups will compare notes later, so let each group create at least one moment worth retelling — and one moment that only the people who were there will understand.",
       "advance_signals": [
-        "time_reached:12:00"
+        "stage_elapsed:90"
       ],
       "next_stage_ids": [
         "day2-lounge"
