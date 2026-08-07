@@ -205,12 +205,24 @@
         "time_reached:19:30"
       ],
       "next_stage_ids": [
+        "day2-move-to-bedrooms"
+      ]
+    },
+    {
+      "id": "day2-move-to-bedrooms",
+      "summary": "Day 2 transition: the house breaks from dinner and drifts back to bedrooms.",
+      "update_message": "Dinner thins out into smaller clusters as people head back toward their rooms.",
+      "beat_note": "The second dinner is over. Let the mood loosen and separate again: glances linger a beat longer than they did on the first night, unfinished threads hang in the air, and people carry the day's alliances and tensions back toward their bedrooms before the more private end-of-night conversations begin.",
+      "advance_signals": [
+        "time_reached:19:50"
+      ],
+      "next_stage_ids": [
         "day2-debrief"
       ]
     },
     {
       "id": "day2-debrief",
-      "summary": "Day 2 night: bedrooms, private conversations, and the plan for tomorrow.",
+      "summary": "Day 2 night: bedrooms, private conversations, and the sense that the house is taking shape.",
       "update_message": "It is 8 PM. The house drifts to bedrooms and quiet spaces.",
       "beat_note": "End of the second day. The house is starting to have a shape — alliances, tensions, routines forming. Let the bedroom conversations be sharper than last night: people now have two days of material to work with. Someone replayed a moment from the morning. Someone is quietly jealous of who got invited where. Someone is starting to wonder whether they came here for the right reason. Push for one revelation per room — something the speaker has not said aloud before. End the night with the sense that the house is beginning to choose its fault lines.",
       "advance_signals": [
@@ -226,28 +238,26 @@
       "update_message": "It is 9:30 PM. Day 2 ends.",
       "beat_note": "A shorter close than last night. The house is tired. Let the final moments be small: a goodnight that lingers a beat too long, a door left slightly open, someone staring at the ceiling. The house has two days of shared memory now. Bonds are forming, even if no one has named them yet.",
       "narrative_lines": [
-        "The second night falls softer than the first. Conversations trail off mid-sentence. People know each other's silences now, or think they do. The house hums with the low frequency of almost-said things. Tomorrow is the last day — the cameras will pack up, the doors will open, and everyone will have to decide what this was."
+        "The second night falls softer than the first. Conversations trail off mid-sentence. People know each other's silences now, or think they do. The house hums with the low frequency of almost-said things. Two days were enough for patterns to form — enough for someone to hope, someone to hesitate, and everyone to leave some version of themselves in the rooms behind closed doors."
       ],
       "advance_signals": [
         "time_reached:21:20"
       ],
       "next_stage_ids": [
-        "day3-departure"
-      ],
-      "end_act": true
+        "day2-epilogue"
+      ]
     },
     {
-      "id": "day3-departure",
-      "summary": "Day 3 departure: the house empties.",
-      "update_message": "It is 7 AM. The last morning. Bags are packed by the door.",
+      "id": "day2-epilogue",
+      "summary": "Epilogue: the house empties before the story fully settles.",
+      "update_message": "Morning comes, and the experiment is already ending.",
       "narrative_lines": [
-        "The last morning. Sunlight hits the suitcases lined up in the hallway and for a moment the whole house looks like a waiting room. Coffee brews for the final time. Someone takes a photo of the kitchen. No one says why."
+        "Morning comes too quickly. Suitcases gather by the door before anyone has fully sorted what the last two days meant. Coffee brews. A joke lands softer than it would have on the first night. Someone lingers in a doorway they do not need to linger in.",
+        "No one gets a clean ending. They get fragments: a look held a second too long, a goodbye that sounds casual and isn't, a feeling that something might have opened just as the cameras stopped needing it. The house will empty by noon, but the real aftermath belongs to whatever each of them carries out with them.",
+        "For now, that is enough. Two days were enough to start a story, even if they were never enough to finish one."
       ],
       "elapsed_minutes": 600,
-      "beat_note": "The final morning. Bags are lined up in the hallway. The house looks different when it is full of suitcases — the same rooms, but already becoming memory. Let the morning routines be performed one last time: the last shower, the last coffee, the last look in the mirror. Each goodbye is its own scene: who seeks out whom for a final word, who avoids a goodbye by leaving early, who lingers at the door. The departures should happen in sequence, not all at once. The house gets quieter with each person who leaves. By the time the last two people are standing in the lounge, the rooms feel bigger and the silence is louder. The camera holds on the door after it closes. The house is empty. The documentary is over. But the people who lived here carry something out with them that the camera cannot see.",
-      "advance_signals": [
-        "time_reached:12:00"
-      ],
+      "beat_note": "This is an authored epilogue rather than another playable day. Compress the final departure into reflective closing narration that treats the last morning as aftermath: the house emptying, the unresolved attraction and tension still hanging in memory, and the sense that the documentary caught only the beginning of something.",
       "end_act": true,
       "end_game": true
     }
