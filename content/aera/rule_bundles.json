@@ -195,6 +195,55 @@
           }
         ]
       }
+    },
+    {
+      "id": "day2-hands-on-activities",
+      "stage_id": "day2-event-a",
+      "completion": {
+        "mark_actor_complete_on": []
+      },
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "You are in a small-group activity scene. Stay hands-on with the task in your room before drifting into pure banter. In the kitchen, make the cooking lesson feel collaborative and slightly intimate by demonstrating technique, tasting together, and finishing the dish. On the patio, let stretching and yoga create rhythm, exertion, and breath-led conversation. In the studio, let editing and watching footage pull vulnerable reactions to the surface. The activity should unlock at least one candid moment that would not happen in an ordinary chat.",
+        "prompt_note_if_others_incomplete": "",
+        "prioritize": [
+          {
+            "command_id": "demonstrate_knife_work",
+            "target": "any"
+          },
+          {
+            "command_id": "taste_sauce",
+            "target": "any"
+          },
+          {
+            "command_id": "plate_dish",
+            "target": "any"
+          },
+          {
+            "command_id": "stretch",
+            "target": "any"
+          },
+          {
+            "command_id": "yoga",
+            "target": "any"
+          },
+          {
+            "command_id": "edit",
+            "target": "any"
+          },
+          {
+            "command_id": "watch",
+            "target": "any"
+          },
+          {
+            "command_id": "speak",
+            "target": "actor"
+          },
+          {
+            "command_id": "speak",
+            "target": "room"
+          }
+        ]
+      }
     }
   ]
 }

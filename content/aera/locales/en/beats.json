@@ -162,7 +162,7 @@
       "id": "day2-event-a",
       "summary": "Day 2 morning activity A: {day2_event}.",
       "update_message": "The morning activities begin. Today's first activity: {day2_event}.",
-      "beat_note": "The first activity is {day2_event}. The group assigned to this activity should be fully engaged in their task — talking, working, reacting to each other. Let the activity shape the energy: if it is a cooking lesson, focus on hands-in-the-same-space intimacy and who teaches whom; if it is a morning run, focus on physical rhythm, shared breath, and who pushes whom; if it is an editing session, focus on watching yourself through someone else's eyes and what gets left on the cutting room floor. Push for one unguarded moment per person — something the activity unlocks that conversation alone would not.",
+      "beat_note": "The first activity is {day2_event}. The group assigned to this activity should be fully engaged in their task — talking, working, reacting to each other. Let the activity shape the energy: if it is a cooking lesson, focus on hands-in-the-same-space intimacy and who teaches whom; if it is a patio workout, focus on physical rhythm, shared breath, and who pushes whom; if it is an editing session, focus on watching yourself through someone else's eyes and what gets left on the cutting room floor. Push for one unguarded moment per person — something the activity unlocks that conversation alone would not.",
       "advance_signals": [
         "time_reached:12:00"
       ],
@@ -175,7 +175,7 @@
       "id": "day2-event-b",
       "summary": "Day 2 morning activity B: {day2_event2}.",
       "update_message": "Meanwhile, the other group begins their activity: {day2_event2}.",
-      "beat_note": "The second activity is {day2_event2}. The group in the other part of the house is doing their own thing — separate from the first group, building its own rhythm. Let the activity define the mood: a cooking lesson creates warmth and shared focus; a morning run creates exertion and quiet bonding; an editing session creates vulnerability and self-consciousness. The two groups will compare notes later, so let each group create at least one moment worth retelling — and one moment that only the people who were there will understand.",
+      "beat_note": "The second activity is {day2_event2}. The group in the other part of the house is doing their own thing — separate from the first group, building its own rhythm. Let the activity define the mood: a cooking lesson creates warmth and shared focus; a patio workout creates exertion and quiet bonding; an editing session creates vulnerability and self-consciousness. The two groups will compare notes later, so let each group create at least one moment worth retelling — and one moment that only the people who were there will understand.",
       "advance_signals": [
         "time_reached:12:00"
       ],

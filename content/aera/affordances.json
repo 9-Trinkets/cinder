@@ -122,11 +122,35 @@
       "visible_by_default": true
     },
     {
+      "id": "demonstrate_knife_work",
+      "group": "kitchen",
+      "prompt_verb": "demonstrate knife work",
+      "command_id": "demonstrate_knife_work",
+      "sort_order": 15,
+      "visible_by_default": true
+    },
+    {
+      "id": "taste_sauce",
+      "group": "kitchen",
+      "prompt_verb": "taste the sauce",
+      "command_id": "taste_sauce",
+      "sort_order": 16,
+      "visible_by_default": true
+    },
+    {
+      "id": "plate_dish",
+      "group": "kitchen",
+      "prompt_verb": "plate the dish",
+      "command_id": "plate_dish",
+      "sort_order": 17,
+      "visible_by_default": true
+    },
+    {
       "id": "yoga",
       "group": "patio",
       "prompt_verb": "yoga",
       "command_id": "yoga",
-      "sort_order": 15,
+      "sort_order": 18,
       "visible_by_default": true
     },
     {
@@ -134,7 +158,7 @@
       "group": "patio",
       "prompt_verb": "stretch",
       "command_id": "stretch",
-      "sort_order": 16,
+      "sort_order": 19,
       "visible_by_default": true
     },
     {
@@ -142,7 +166,7 @@
       "group": "studio",
       "prompt_verb": "edit",
       "command_id": "edit",
-      "sort_order": 17,
+      "sort_order": 20,
       "visible_by_default": true
     },
     {
@@ -150,7 +174,7 @@
       "group": "studio",
       "prompt_verb": "watch",
       "command_id": "watch",
-      "sort_order": 18,
+      "sort_order": 21,
       "visible_by_default": true
     }
   ]

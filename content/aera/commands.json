@@ -261,6 +261,36 @@
       "available_during": ["dinner-prep"]
     },
     {
+      "id": "demonstrate_knife_work",
+      "command": "DEMONSTRATE KNIFE WORK",
+      "target_mode": "none",
+      "effects": ["remember_in_room"],
+      "event_text": "{actor_name} demonstrates the knife work slowly and cleanly, turning the cutting board into a lesson instead of just prep.",
+      "allowed_rooms": ["kitchen"],
+      "player_enabled": false,
+      "available_during": ["day2-event-a", "day2-event-b"]
+    },
+    {
+      "id": "taste_sauce",
+      "command": "TASTE SAUCE",
+      "target_mode": "none",
+      "effects": ["remember_in_room"],
+      "event_text": "{actor_name} tastes the sauce, pauses to think, then adjusts it with the kind of focus that invites someone else to lean in.",
+      "allowed_rooms": ["kitchen"],
+      "player_enabled": false,
+      "available_during": ["day2-event-a", "day2-event-b"]
+    },
+    {
+      "id": "plate_dish",
+      "command": "PLATE DISH",
+      "target_mode": "none",
+      "effects": ["remember_in_room"],
+      "event_text": "{actor_name} plates the dish with more care than the situation strictly requires, making the final touches feel quietly intimate.",
+      "allowed_rooms": ["kitchen"],
+      "player_enabled": false,
+      "available_during": ["day2-event-a", "day2-event-b"]
+    },
+    {
       "id": "yoga",
       "command": "YOGA",
       "target_mode": "none",
