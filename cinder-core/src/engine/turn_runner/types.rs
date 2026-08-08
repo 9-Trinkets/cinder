@@ -89,10 +89,7 @@ pub(super) fn next_turn_id(state: &Arc<Mutex<WorldState>>) -> Result<u32, String
 }
 
 fn sanitize_json_control_chars(input: &str) -> String {
-    input
-        .chars()
-        .filter(|c| !c.is_control())
-        .collect()
+    input.chars().filter(|c| !c.is_control()).collect()
 }
 
 pub(super) fn extract_inbound_message(prompt: &str) -> Result<String, String> {

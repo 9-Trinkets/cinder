@@ -1,7 +1,7 @@
 use cinder_core::content::loader;
 use cinder_core::content::types::UiTextDefinition;
 use cinder_core::engine::runtime::{
-    ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption, ActClosure,
+    ActClosure, ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption,
 };
 use serde::Serialize;
 
@@ -167,9 +167,10 @@ pub(super) fn build_ui_snapshot(
         .map_err(|error| error.to_string())?
         .and_then(|id| runtime.actor_display_name(&id).ok().flatten());
     let crafted_consumable_ids = content.crafted_consumable_ids();
-    let highlighted_consumable = |consumable: &cinder_core::content::types::ConsumableDefinition| {
-        crafted_consumable_ids.contains(&consumable.id) || consumable.initial_stock > 0
-    };
+    let highlighted_consumable =
+        |consumable: &cinder_core::content::types::ConsumableDefinition| {
+            crafted_consumable_ids.contains(&consumable.id) || consumable.initial_stock > 0
+        };
 
     let (action_bar_actions, content_defined_bar) =
         if !content.ui_text.action_bar.actions.is_empty() {
@@ -409,7 +410,10 @@ pub(super) fn build_ui_snapshot(
                 .fold(Vec::<RoomConsumableGroup>::new(), |mut groups, c| {
                     let key = format!("{}::{}::{}", current_room_id, c.feature.id, c.consumable.id);
                     let remaining = stock.get(&key).copied().unwrap_or(0);
-                    if let Some(group) = groups.iter_mut().find(|g| g.feature_label == c.feature.label) {
+                    if let Some(group) = groups
+                        .iter_mut()
+                        .find(|g| g.feature_label == c.feature.label)
+                    {
                         group.items.push(ConsumableInfo {
                             id: c.consumable.id.clone(),
                             label: c.consumable.label.clone(),

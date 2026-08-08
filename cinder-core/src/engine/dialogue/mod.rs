@@ -371,12 +371,17 @@ impl DialogueGenerator for SynapseDialogueGenerator {
         &self,
         request: &PerspectiveReviewRequest,
     ) -> Result<PerspectiveReview, String> {
-        let prompt = request.ui_text.perspective_review_prompt
+        let prompt = request
+            .ui_text
+            .perspective_review_prompt
             .replace("{actor_name}", &request.actor_name)
             .replace("{other_person_name}", &request.other_person_name)
             .replace("{stats_context}", &request.stats_context)
             .replace("{act_summary}", &request.act_summary)
-            .replace("{relationship_lines}", &request.relationship_lines.join("\n"));
+            .replace(
+                "{relationship_lines}",
+                &request.relationship_lines.join("\n"),
+            );
         let response = self.run_text_role(
             PERSPECTIVE_REVIEW_ROLE,
             prompt,

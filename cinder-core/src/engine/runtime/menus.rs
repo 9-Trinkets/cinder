@@ -167,7 +167,10 @@ impl CinderRuntime {
             if menu.selection_var_key.is_empty() || menu.selection_id_var_key.is_empty() {
                 continue;
             }
-            let Some(selected_id) = state.story_vars.get(&menu.selection_id_var_key).map(|s| s.to_string())
+            let Some(selected_id) = state
+                .story_vars
+                .get(&menu.selection_id_var_key)
+                .map(|s| s.to_string())
             else {
                 continue;
             };
@@ -237,8 +240,11 @@ impl CinderRuntime {
                         .ok_or_else(|| format!("missing actor '{}'", menu.actor_id))?;
                     let prompt_context =
                         resolved_actor_prompt_context(self.content.as_ref(), &state, actor);
-                    let mut beat_notes =
-                        current_objective_beat_notes(self.content.as_ref(), &state, Some(actor.id.as_str()));
+                    let mut beat_notes = current_objective_beat_notes(
+                        self.content.as_ref(),
+                        &state,
+                        Some(actor.id.as_str()),
+                    );
                     beat_notes.extend(
                         menu.narrative_lines
                             .iter()

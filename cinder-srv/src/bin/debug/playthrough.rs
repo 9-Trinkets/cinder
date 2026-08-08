@@ -192,7 +192,10 @@ fn print_summary(play: &PlayRow, state: &WorldState, transcript: &[TranscriptRow
     println!("phase: {:?}", state.phase);
     println!("current_room_id: {}", state.current_room_id);
     println!("current_time_minutes: {}", state.current_time_minutes);
-    println!("active_stage_ids: {}", state.active_objective_stage_ids.join(", "));
+    println!(
+        "active_stage_ids: {}",
+        state.active_objective_stage_ids.join(", ")
+    );
     println!();
 
     let bundle_vars = collect_bundle_story_vars(state);
@@ -262,17 +265,22 @@ mod tests {
 
     #[test]
     fn collect_bundle_story_vars_filters_to_rule_bundle_keys() {
-        let content = cinder_core::content::loader::load_named_pack("aera", Some("en"))
-            .expect("load aera");
+        let content =
+            cinder_core::content::loader::load_named_pack("aera", Some("en")).expect("load aera");
         let mut state = WorldState::new(&content);
-        state.story_vars.set_unchecked("rule_bundle:progress:test:meal", "true");
-        state.story_vars.set_unchecked("cook_recipe", "garlic-noodles");
+        state
+            .story_vars
+            .set_unchecked("rule_bundle:progress:test:meal", "true");
+        state
+            .story_vars
+            .set_unchecked("cook_recipe", "garlic-noodles");
 
         let bundle_vars = collect_bundle_story_vars(&state);
 
         assert_eq!(bundle_vars.len(), 1);
         assert_eq!(
-            bundle_vars.get("rule_bundle:progress:test:meal")
+            bundle_vars
+                .get("rule_bundle:progress:test:meal")
                 .map(String::as_str),
             Some("true")
         );

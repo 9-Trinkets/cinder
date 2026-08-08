@@ -1,4 +1,4 @@
-use super::{CinderRuntime, ActClosure, ActClosureSection};
+use super::{ActClosure, ActClosureSection, CinderRuntime};
 use crate::content::types::ActClosureSource;
 use crate::engine::dialogue::{
     ChapterRelationshipSummaryRequest, ChapterScriptSummaryRequest, SynapseChapterSummaryGenerator,
@@ -178,10 +178,7 @@ impl CinderRuntime {
         transcript_lines: &[String],
     ) -> Result<Option<ActClosure>, Box<dyn Error>> {
         {
-            let cached = self
-                .act_closure
-                .lock()
-                .map_err(|error| error.to_string())?;
+            let cached = self.act_closure.lock().map_err(|error| error.to_string())?;
             if let Some(closure) = cached.as_ref() {
                 return Ok(Some(closure.clone()));
             }
@@ -220,8 +217,7 @@ impl CinderRuntime {
             .any(|section| {
                 matches!(
                     section.source,
-                    ActClosureSource::PerspectiveRating
-                        | ActClosureSource::PerspectiveReview
+                    ActClosureSource::PerspectiveRating | ActClosureSource::PerspectiveReview
                 )
             })
             .then(|| self.build_perspective_review())
@@ -257,12 +253,10 @@ impl CinderRuntime {
                         })
                 }
                 ActClosureSource::PerspectiveReview => {
-                    perspective
-                        .as_ref()
-                        .map(|review| ActClosureSection::Text {
-                            title: section.title.clone(),
-                            body: review.review.review_text.clone(),
-                        })
+                    perspective.as_ref().map(|review| ActClosureSection::Text {
+                        title: section.title.clone(),
+                        body: review.review.review_text.clone(),
+                    })
                 }
                 ActClosureSource::TranscriptHighlights => {
                     summary.as_ref().map(|summary| ActClosureSection::Text {
@@ -295,10 +289,7 @@ impl CinderRuntime {
             sections,
         };
         {
-            let mut cached = self
-                .act_closure
-                .lock()
-                .map_err(|error| error.to_string())?;
+            let mut cached = self.act_closure.lock().map_err(|error| error.to_string())?;
             *cached = Some(closure.clone());
         }
         Ok(Some(closure))
@@ -351,8 +342,7 @@ impl CinderRuntime {
             .any(|section| {
                 matches!(
                     section.source,
-                    ActClosureSource::PerspectiveRating
-                        | ActClosureSource::PerspectiveReview
+                    ActClosureSource::PerspectiveRating | ActClosureSource::PerspectiveReview
                 )
             })
             .then(|| self.build_perspective_review())
@@ -388,12 +378,10 @@ impl CinderRuntime {
                         })
                 }
                 ActClosureSource::PerspectiveReview => {
-                    perspective
-                        .as_ref()
-                        .map(|review| ActClosureSection::Text {
-                            title: section.title.clone(),
-                            body: review.review.review_text.clone(),
-                        })
+                    perspective.as_ref().map(|review| ActClosureSection::Text {
+                        title: section.title.clone(),
+                        body: review.review.review_text.clone(),
+                    })
                 }
                 ActClosureSource::TranscriptHighlights => {
                     summary.as_ref().map(|summary| ActClosureSection::Text {

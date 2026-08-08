@@ -104,14 +104,18 @@ pub(crate) fn resolve_actor_reference_input(
         actor_in_room: true,
     })
     .or_else(|| {
-        match_actor_reference(state, content.actors.iter(), remainder, &content.settings.act_member_alias).map(
-            |(actor, player_message)| ResolvedActorReferenceInput {
-                actor_id: actor.id.clone(),
-                actor_name: display_actor_name(state, actor),
-                player_message,
-                actor_in_room: state.actor_room_id(&actor.id, &actor.room_id) == current_room_id,
-            },
+        match_actor_reference(
+            state,
+            content.actors.iter(),
+            remainder,
+            &content.settings.act_member_alias,
         )
+        .map(|(actor, player_message)| ResolvedActorReferenceInput {
+            actor_id: actor.id.clone(),
+            actor_name: display_actor_name(state, actor),
+            player_message,
+            actor_in_room: state.actor_room_id(&actor.id, &actor.room_id) == current_room_id,
+        })
     })
 }
 
@@ -301,7 +305,11 @@ fn match_actor_reference<'a>(
     best.map(|(actor, _, player_message)| (actor, player_message))
 }
 
-fn actor_references(state: &WorldState, actor: &ActorDefinition, act_member_alias: &str) -> Vec<String> {
+fn actor_references(
+    state: &WorldState,
+    actor: &ActorDefinition,
+    act_member_alias: &str,
+) -> Vec<String> {
     let mut refs = vec![
         actor.name.clone(),
         actor.id.clone(),

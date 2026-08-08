@@ -1,7 +1,5 @@
 use super::{MINUTES_PER_DAY, WorldState};
-use crate::content::types::{
-    ActorDefinition, ActorPromptContext, ActCastMember, ContentPack,
-};
+use crate::content::types::{ActCastMember, ActorDefinition, ActorPromptContext, ContentPack};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -117,12 +115,7 @@ pub fn advance_to_next_act(
             .act_cast
             .iter()
             .find(|definition| definition.id == next_patient_id)
-            .unwrap_or_else(|| {
-                panic!(
-                    "missing act_cast member definition '{}'",
-                    next_patient_id
-                )
-            });
+            .unwrap_or_else(|| panic!("missing act_cast member definition '{}'", next_patient_id));
         let patient = build_cast_member_record(content, state, patient_definition);
         series.next_seed_index = series.next_seed_index.saturating_add(1);
         series.cast_members.insert(patient.id.clone(), patient);
@@ -164,10 +157,7 @@ pub fn resolved_actor_prompt_context(
     let behavior_actor = content.actor(&patient.actor_id).unwrap_or(actor);
     let act_number = current_act_number(state);
     let mut character_notes = behavior_actor.prompt_context.character_notes.clone();
-    character_notes.push(format!(
-        "You are {}.",
-        patient.name
-    ));
+    character_notes.push(format!("You are {}.", patient.name));
     for (key, value) in &patient.metadata {
         if key.starts_with("char_") {
             let label = key.strip_prefix("char_").unwrap_or(key);
@@ -175,7 +165,10 @@ pub fn resolved_actor_prompt_context(
         }
     }
     let mut subtext_notes = behavior_actor.prompt_context.subtext_notes.clone();
-    subtext_notes.push(format!("Carry the emotional residue of {}.", patient.intro_blurb));
+    subtext_notes.push(format!(
+        "Carry the emotional residue of {}.",
+        patient.intro_blurb
+    ));
     for (key, value) in &patient.metadata {
         if key.starts_with("sub_") {
             let label = key.strip_prefix("sub_").unwrap_or(key);
@@ -308,10 +301,9 @@ fn inject_act_cast_vars(content: &ContentPack, state: &mut WorldState) {
     state
         .story_vars
         .set_unchecked(ACT_CAST_ACTOR_ID_VAR, &patient.actor_id);
-    state.story_vars.set_unchecked(
-        ACT_CAST_TEMPLATE_ACTOR_ID_VAR,
-        template_actor_id,
-    );
+    state
+        .story_vars
+        .set_unchecked(ACT_CAST_TEMPLATE_ACTOR_ID_VAR, template_actor_id);
     state
         .story_vars
         .set_unchecked(ACT_CAST_SLOT_BASE_NAME_VAR, &base_name);
@@ -322,7 +314,9 @@ fn inject_act_cast_vars(content: &ContentPack, state: &mut WorldState) {
         .story_vars
         .set_unchecked("act_number", &series.current_act_number.to_string());
     for (key, value) in &patient.metadata {
-        state.story_vars.set_unchecked(&format!("patient_{key}"), value);
+        state
+            .story_vars
+            .set_unchecked(&format!("patient_{key}"), value);
     }
     state.story_vars.set_unchecked(
         "patient_returning",
@@ -347,10 +341,9 @@ fn inject_act_cast_vars(content: &ContentPack, state: &mut WorldState) {
         if actor_id == patient.actor_id {
             state.actor_room_overrides.remove(actor_id);
         } else {
-            state.actor_room_overrides.insert(
-                actor_id.to_string(),
-                ACT_OFFSTAGE_ROOM_ID.to_string(),
-            );
+            state
+                .actor_room_overrides
+                .insert(actor_id.to_string(), ACT_OFFSTAGE_ROOM_ID.to_string());
         }
     }
 }

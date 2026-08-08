@@ -288,11 +288,14 @@ mod tests {
     #[test]
     fn declarations_populate_defaults() {
         let mut decls = BTreeMap::new();
-        decls.insert("greeting".to_string(), VariableDeclaration {
-            var_type: VariableType::String,
-            default: Some("hello".to_string()),
-            scope: VariableScope::Game,
-        });
+        decls.insert(
+            "greeting".to_string(),
+            VariableDeclaration {
+                var_type: VariableType::String,
+                default: Some("hello".to_string()),
+                scope: VariableScope::Game,
+            },
+        );
         let store = VariableStore::new(decls);
         assert_eq!(store.get("greeting"), Some("hello"));
     }

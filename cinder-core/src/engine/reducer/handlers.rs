@@ -502,9 +502,7 @@ pub(super) fn handle_menu_choice_made(
                 state,
             ));
         } else {
-            state
-                .story_vars
-                .set_unchecked("selection_title", title);
+            state.story_vars.set_unchecked("selection_title", title);
             if !menu.selection_var_key.is_empty() {
                 state
                     .story_vars
@@ -553,15 +551,14 @@ pub(super) fn handle_menu_selection_toggled(
             if max > 0 && state.pending_menu_selections.len() >= max {
                 return;
             }
-            if !state.pending_menu_selections.contains(&option_id.to_string()) {
-                state
-                    .pending_menu_selections
-                    .push(option_id.to_string());
+            if !state
+                .pending_menu_selections
+                .contains(&option_id.to_string())
+            {
+                state.pending_menu_selections.push(option_id.to_string());
             }
         } else {
-            state
-                .pending_menu_selections
-                .retain(|id| id != option_id);
+            state.pending_menu_selections.retain(|id| id != option_id);
         }
     }
 }

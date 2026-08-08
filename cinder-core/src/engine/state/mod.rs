@@ -5,7 +5,9 @@ use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet, HashMap};
 
 pub mod variable_store;
-pub use variable_store::{VariableDeclaration, VariableError, VariableScope, VariableStore, VariableType};
+pub use variable_store::{
+    VariableDeclaration, VariableError, VariableScope, VariableStore, VariableType,
+};
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
@@ -636,8 +638,8 @@ mod seeding;
 use seeding::{seeded_actor_stats, seeded_feature_consumable_stock, seeded_pair_stats};
 mod act_cast;
 pub use act_cast::{
-    ActFeedbackSummary, ActHistoryEntry, ActSeriesState, CastMemberRecord,
-    advance_to_next_act, current_act_intro, current_cast_member_actor_id,
-    current_cast_member_name, display_actor_name, initialize_act_state, remap_story_actor_id,
-    render_dynamic_story_text, resolved_actor_prompt_context, story_actor_matches,
+    ActFeedbackSummary, ActHistoryEntry, ActSeriesState, CastMemberRecord, advance_to_next_act,
+    current_act_intro, current_cast_member_actor_id, current_cast_member_name, display_actor_name,
+    initialize_act_state, remap_story_actor_id, render_dynamic_story_text,
+    resolved_actor_prompt_context, story_actor_matches,
 };

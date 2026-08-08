@@ -54,7 +54,10 @@ pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/api/games/{id}/locale", post(set_locale_handler))
         .route("/api/games/{id}/continue", post(continue_play_handler))
         .route("/api/games/{id}", delete(delete_play_handler))
-        .route_layer(middleware::from_fn_with_state(state.clone(), auth_middleware));
+        .route_layer(middleware::from_fn_with_state(
+            state.clone(),
+            auth_middleware,
+        ));
 
     let ws_routes = Router::new()
         .route("/api/games/{id}/ws", get(ws_tick_handler))
@@ -99,8 +102,8 @@ pub async fn list_packs() -> Json<Vec<PackInfo>> {
         cinder_core::content::loader::available_packs()
             .into_iter()
             .map(|id| {
-                let settings = cinder_core::content::loader::load_pack_settings(&id)
-                    .unwrap_or_default();
+                let settings =
+                    cinder_core::content::loader::load_pack_settings(&id).unwrap_or_default();
                 let title = if settings.title.is_empty() {
                     id.clone()
                 } else {
@@ -132,41 +135,45 @@ pub async fn list_plays(
     .await
     .map_err(internal)?;
 
-    let mut room_titles: std::collections::HashMap<String, std::collections::HashMap<String, String>> =
-        std::collections::HashMap::new();
+    let mut room_titles: std::collections::HashMap<
+        String,
+        std::collections::HashMap<String, String>,
+    > = std::collections::HashMap::new();
 
     Ok(Json(
         rows.into_iter()
-            .map(|(id, pack_id, created_at, updated_at, room_id, time_minutes)| {
-                let day_number = time_minutes
-                    .map(|minutes| (minutes as u32 / (24 * 60)) + 1)
-                    .unwrap_or(0);
-                let current_room_name = room_id
-                    .map(|room_id| {
-                        let titles = room_titles.entry(pack_id.clone()).or_insert_with(|| {
-                            cinder_core::content::loader::load_named_pack(&pack_id, None)
-                                .map(|pack| {
-                                    pack.rooms
-                                        .into_iter()
-                                        .map(|room| (room.id, room.title))
-                                        .collect()
-                                })
-                                .unwrap_or_default()
-                        });
-                        titles.get(&room_id).cloned().unwrap_or(room_id)
-                    })
-                    .unwrap_or_default();
-                SessionInfo {
-                    play_id: id,
-                    pack_id,
-                    created_at: created_at.to_string(),
-                    updated_at: updated_at.to_string(),
-                    title: String::new(),
-                    intro_text: String::new(),
-                    day_number,
-                    current_room_name,
-                }
-            })
+            .map(
+                |(id, pack_id, created_at, updated_at, room_id, time_minutes)| {
+                    let day_number = time_minutes
+                        .map(|minutes| (minutes as u32 / (24 * 60)) + 1)
+                        .unwrap_or(0);
+                    let current_room_name = room_id
+                        .map(|room_id| {
+                            let titles = room_titles.entry(pack_id.clone()).or_insert_with(|| {
+                                cinder_core::content::loader::load_named_pack(&pack_id, None)
+                                    .map(|pack| {
+                                        pack.rooms
+                                            .into_iter()
+                                            .map(|room| (room.id, room.title))
+                                            .collect()
+                                    })
+                                    .unwrap_or_default()
+                            });
+                            titles.get(&room_id).cloned().unwrap_or(room_id)
+                        })
+                        .unwrap_or_default();
+                    SessionInfo {
+                        play_id: id,
+                        pack_id,
+                        created_at: created_at.to_string(),
+                        updated_at: updated_at.to_string(),
+                        title: String::new(),
+                        intro_text: String::new(),
+                        day_number,
+                        current_room_name,
+                    }
+                },
+            )
             .collect(),
     ))
 }

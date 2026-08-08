@@ -11,9 +11,8 @@ use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
 use crate::engine::neuron::{WorkflowDefinition, WorkflowTraceContext, load_workflow};
 use crate::engine::reducer::apply_events;
 use crate::engine::state::{
-    ActFeedbackSummary, GamePhase, TurnOutcome, WorldState, advance_to_next_act,
-    current_act_intro, current_cast_member_name, display_actor_name,
-    initialize_act_state,
+    ActFeedbackSummary, GamePhase, TurnOutcome, WorldState, advance_to_next_act, current_act_intro,
+    current_cast_member_name, display_actor_name, initialize_act_state,
 };
 use crate::engine::turn_runner;
 use crate::engine::workflows::{cinder_npc_tick_workflow_path, workflow_path_for_id};
@@ -215,10 +214,7 @@ impl CinderRuntime {
             Ok((text, phase)) => TurnOutcome { text, phase },
             Err(error) => {
                 if let Some(actor_tick_error) = error.downcast_ref::<ActorTickError>() {
-                    eprintln!(
-                        "[cinder] actor tick error: {}",
-                        actor_tick_error.message
-                    );
+                    eprintln!("[cinder] actor tick error: {}", actor_tick_error.message);
                     TurnOutcome {
                         text: self.actor_tick_soft_error_text(actor_tick_error),
                         phase: GamePhase::Active,
@@ -299,10 +295,7 @@ impl CinderRuntime {
 
     fn clear_act_closure_cache(&self) -> Result<(), Box<dyn Error>> {
         {
-            let mut cached = self
-                .act_closure
-                .lock()
-                .map_err(|error| error.to_string())?;
+            let mut cached = self.act_closure.lock().map_err(|error| error.to_string())?;
             *cached = None;
         }
         {
@@ -320,8 +313,7 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for intro text")?;
-        Ok(current_act_intro(&state)
-            .unwrap_or_else(|| self.content.opening.intro_text.clone()))
+        Ok(current_act_intro(&state).unwrap_or_else(|| self.content.opening.intro_text.clone()))
     }
 
     pub fn actor_display_name(&self, actor_id: &str) -> Result<Option<String>, Box<dyn Error>> {
@@ -474,8 +466,7 @@ impl CinderRuntime {
                 .iter()
                 .filter(|actor| {
                     let initiator_id = initiator.as_ref().map(|a| a.id.as_str()).unwrap_or("");
-                    actor.id != initiator_id
-                        && !anchored_room_assignments.contains_key(&actor.id)
+                    actor.id != initiator_id && !anchored_room_assignments.contains_key(&actor.id)
                 })
                 .map(|actor| StageAssignmentCandidate {
                     actor_id: actor.id.clone(),
@@ -620,9 +611,10 @@ impl CinderRuntime {
                     .map(|candidate| candidate.actor_id.clone()),
             );
             remaining_ids.sort();
-            state
-                .story_vars
-                .set_unchecked(&config.remaining_group_story_var_key, &remaining_ids.join(","));
+            state.story_vars.set_unchecked(
+                &config.remaining_group_story_var_key,
+                &remaining_ids.join(","),
+            );
         }
         for (actor_id, room_id) in &preplaced_rooms {
             let key = format!("{}_assigned_room", actor_id);
@@ -850,17 +842,15 @@ impl CinderRuntime {
                     .iter()
                     .any(|sig| sig.signal() == "stat_threshold")
             })
-            .filter(|s| {
-                match current_actor_id {
-                    None => true,
-                    Some(actor_id) => s.advance_signals.iter().any(|sig| {
-                        sig.conditions().iter().any(|c| {
-                            c.path == "story_vars.act_cast_actor_id"
-                                && c.operator == "equal"
-                                && c.value.as_str() == Some(actor_id)
-                        })
-                    }),
-                }
+            .filter(|s| match current_actor_id {
+                None => true,
+                Some(actor_id) => s.advance_signals.iter().any(|sig| {
+                    sig.conditions().iter().any(|c| {
+                        c.path == "story_vars.act_cast_actor_id"
+                            && c.operator == "equal"
+                            && c.value.as_str() == Some(actor_id)
+                    })
+                }),
             })
             .collect();
         let total = secret_stages.len();
@@ -1114,9 +1104,9 @@ fn join_with_and(items: &[String]) -> String {
     }
 }
 
+mod act_closure;
 mod menus;
 mod perspective_review;
-mod act_closure;
 mod stats_trace;
 pub use self::act_closure::FinalChapterSummary;
 pub use self::act_closure::RelationshipPair;
@@ -1182,10 +1172,22 @@ mod tests {
                 .text
                 .contains("Alex starts pulling the house toward the Kitchen for dinner prep.")
         );
-        assert_eq!(exported.story_vars.get("alex_assigned_room"), Some("kitchen"));
-        assert_eq!(exported.story_vars.get("blair_assigned_room"), Some("kitchen"));
-        assert_eq!(exported.story_vars.get("casey_assigned_room"), Some("kitchen"));
-        assert_eq!(exported.story_vars.get("devon_assigned_room"), Some("lounge"));
+        assert_eq!(
+            exported.story_vars.get("alex_assigned_room"),
+            Some("kitchen")
+        );
+        assert_eq!(
+            exported.story_vars.get("blair_assigned_room"),
+            Some("kitchen")
+        );
+        assert_eq!(
+            exported.story_vars.get("casey_assigned_room"),
+            Some("kitchen")
+        );
+        assert_eq!(
+            exported.story_vars.get("devon_assigned_room"),
+            Some("lounge")
+        );
         assert_eq!(
             exported
                 .story_vars
@@ -1209,37 +1211,27 @@ mod tests {
         let content = load_pack_from_dir(&pack_dir).expect("load test pack");
         let mut state = WorldState::new(&content);
         state.active_objective_stage_ids = vec!["activity-split".to_string()];
-        state
-            .story_vars
-            .set_unchecked("activity_room_a", "patio");
-        state
-            .story_vars
-            .set_unchecked("activity_room_b", "studio");
-        state
-            .story_vars
-            .set_unchecked("activity_host_a", "devon");
-        state
-            .story_vars
-            .set_unchecked("activity_host_b", "alex");
-        let dialogue = Arc::new(
-            ScriptedDialogueGenerator::new().with_stage_assignment(
-                "activity-split",
-                StageAssignment {
-                    assignments: vec![
-                        StageAssignmentScore {
-                            actor_id: "casey".to_string(),
-                            selection_score: 90,
-                            rationale: "joins the patio activity".to_string(),
-                        },
-                        StageAssignmentScore {
-                            actor_id: "blair".to_string(),
-                            selection_score: 20,
-                            rationale: "stays with the studio activity".to_string(),
-                        },
-                    ],
-                },
-            ),
-        );
+        state.story_vars.set_unchecked("activity_room_a", "patio");
+        state.story_vars.set_unchecked("activity_room_b", "studio");
+        state.story_vars.set_unchecked("activity_host_a", "devon");
+        state.story_vars.set_unchecked("activity_host_b", "alex");
+        let dialogue = Arc::new(ScriptedDialogueGenerator::new().with_stage_assignment(
+            "activity-split",
+            StageAssignment {
+                assignments: vec![
+                    StageAssignmentScore {
+                        actor_id: "casey".to_string(),
+                        selection_score: 90,
+                        rationale: "joins the patio activity".to_string(),
+                    },
+                    StageAssignmentScore {
+                        actor_id: "blair".to_string(),
+                        selection_score: 20,
+                        rationale: "stays with the studio activity".to_string(),
+                    },
+                ],
+            },
+        ));
         let runtime = CinderRuntime::new_with_dialogue_generator_and_workflows(
             content,
             state,

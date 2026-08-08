@@ -43,7 +43,8 @@ impl CinderRuntime {
                 .actor(&actor_id)
                 .map(|actor| display_actor_name(&state, actor))
                 .unwrap_or_else(|| "Actor".to_string());
-            let subject_name = current_cast_member_name(&state).unwrap_or_else(|| actor_name.clone());
+            let subject_name =
+                current_cast_member_name(&state).unwrap_or_else(|| actor_name.clone());
             let current = state.actor_stats_snapshot(&actor_id);
             let deltas = state.actor_stat_deltas(&actor_id).unwrap_or_default();
             let stats_context = [

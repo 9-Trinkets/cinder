@@ -293,9 +293,7 @@ mod tests {
         PerspectiveReview, PerspectiveReviewRequest, StageAssignment, StageAssignmentRequest,
     };
     use crate::engine::events::WorldEvent;
-    use crate::engine::state::{
-        WorldState, advance_to_next_act, initialize_act_state,
-    };
+    use crate::engine::state::{WorldState, advance_to_next_act, initialize_act_state};
 
     struct FailingMenuIntentDialogue;
 

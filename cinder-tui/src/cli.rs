@@ -8,9 +8,7 @@ use cinder_core::content::loader::{
     LocaleOption, available_locales, load_pack_from_dir_with_locale, pack_dir,
 };
 use cinder_core::content::types::{ShellMenuItem, UiTextDefinition};
-use cinder_core::{
-    CinderRuntime, MenuChoiceOption, ActClosure, ActClosureSection, TurnOutcome,
-};
+use cinder_core::{ActClosure, ActClosureSection, CinderRuntime, MenuChoiceOption, TurnOutcome};
 use crossterm::cursor::SetCursorStyle;
 use crossterm::event::{self, Event, KeyEventKind};
 use crossterm::execute;

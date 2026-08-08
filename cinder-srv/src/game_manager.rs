@@ -112,31 +112,32 @@ where
         let base_state_json = state_json.clone();
         let (result, transcript_entries, persisted_locale, new_state_json, turn_number) =
             tokio::task::spawn_blocking(move || {
-            let content = loader::load_named_pack(&pack_id, Some(&locale))
-                .map_err(|e| format!("failed to load pack '{pack_id}' locale '{locale}': {e}"))?;
+                let content = loader::load_named_pack(&pack_id, Some(&locale)).map_err(|e| {
+                    format!("failed to load pack '{pack_id}' locale '{locale}': {e}")
+                })?;
 
-            let runtime = build_runtime_impl(content, &state_json)?;
+                let runtime = build_runtime_impl(content, &state_json)?;
 
-            let (result, transcript_entries) = f(&runtime, &pack_id, &transcript_lines)?;
+                let (result, transcript_entries) = f(&runtime, &pack_id, &transcript_lines)?;
 
-            let persisted_locale = runtime.content().locale.clone();
-            let new_state = runtime
-                .export_state()
-                .map_err(|e| format!("state export error: {e}"))?;
-            let turn_number = new_state.turn_number;
-            let new_state_json = serde_json::to_string(&new_state)
-                .map_err(|e| format!("serialization error: {e}"))?;
+                let persisted_locale = runtime.content().locale.clone();
+                let new_state = runtime
+                    .export_state()
+                    .map_err(|e| format!("state export error: {e}"))?;
+                let turn_number = new_state.turn_number;
+                let new_state_json = serde_json::to_string(&new_state)
+                    .map_err(|e| format!("serialization error: {e}"))?;
 
-            Ok::<_, String>((
-                result,
-                transcript_entries,
-                persisted_locale,
-                new_state_json,
-                turn_number,
-            ))
-        })
-        .await
-        .map_err(|e| format!("blocking task panicked: {e:?}"))??;
+                Ok::<_, String>((
+                    result,
+                    transcript_entries,
+                    persisted_locale,
+                    new_state_json,
+                    turn_number,
+                ))
+            })
+            .await
+            .map_err(|e| format!("blocking task panicked: {e:?}"))??;
 
         let mut tx = pool
             .begin()
@@ -297,90 +298,96 @@ pub async fn run_command(
     let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let input_owned = input.to_string();
-    with_runtime(pool, &play_id, &player_id, move |runtime, pack_id, transcript_lines| {
-        let mut outcome = runtime
-            .run_turn(&input_owned)
-            .map_err(|e| format!("turn error: {e}"))?;
+    with_runtime(
+        pool,
+        &play_id,
+        &player_id,
+        move |runtime, pack_id, transcript_lines| {
+            let mut outcome = runtime
+                .run_turn(&input_owned)
+                .map_err(|e| format!("turn error: {e}"))?;
 
-        let turn_text = outcome.text.clone();
+            let turn_text = outcome.text.clone();
 
-        let menu_active = runtime
-            .export_state()
-            .map(|s| s.active_menu_id.is_some())
-            .unwrap_or(false);
+            let menu_active = runtime
+                .export_state()
+                .map(|s| s.active_menu_id.is_some())
+                .unwrap_or(false);
 
-        use cinder_core::engine::state::GamePhase;
-        if outcome.phase == GamePhase::Active && !menu_active {
-            match runtime.run_tick() {
-                Ok(tick) => {
-                    if !tick.text.is_empty() {
-                        outcome.text = format!("{}\n\n{}", outcome.text, tick.text);
+            use cinder_core::engine::state::GamePhase;
+            if outcome.phase == GamePhase::Active && !menu_active {
+                match runtime.run_tick() {
+                    Ok(tick) => {
+                        if !tick.text.is_empty() {
+                            outcome.text = format!("{}\n\n{}", outcome.text, tick.text);
+                        }
+                        if tick.phase != GamePhase::Active {
+                            outcome.phase = tick.phase;
+                        }
                     }
-                    if tick.phase != GamePhase::Active {
-                        outcome.phase = tick.phase;
-                    }
+                    Err(e) => return Err(format!("tick error: {e}")),
                 }
-                Err(e) => return Err(format!("tick error: {e}")),
             }
-        }
 
-        let act_closure =
-            if outcome.phase == GamePhase::ActEnded && runtime.content().settings.show_act_closure {
+            let act_closure = if outcome.phase == GamePhase::ActEnded
+                && runtime.content().settings.show_act_closure
+            {
                 response::act_closure_data(runtime, transcript_lines)
             } else {
                 None
             };
-        let game_closure = if outcome.phase == GamePhase::GameEnded {
-            response::game_closure_data(runtime, transcript_lines)
-        } else {
-            None
-        };
+            let game_closure = if outcome.phase == GamePhase::GameEnded {
+                response::game_closure_data(runtime, transcript_lines)
+            } else {
+                None
+            };
 
-        if outcome.phase == GamePhase::ActEnded {
-            if let Some(intro_text) = runtime
-                .advance_act()
-                .map_err(|e| format!("act rollover error: {e}"))?
-            {
-                if !intro_text.is_empty() {
-                    outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
+            if outcome.phase == GamePhase::ActEnded {
+                if let Some(intro_text) = runtime
+                    .advance_act()
+                    .map_err(|e| format!("act rollover error: {e}"))?
+                {
+                    if !intro_text.is_empty() {
+                        outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
+                    }
                 }
+                outcome.phase = GamePhase::Active;
             }
-            outcome.phase = GamePhase::Active;
-        }
 
-        let _ = runtime.push_transcript_line(&turn_text);
+            let _ = runtime.push_transcript_line(&turn_text);
 
-        let movie = consume_projector_sequence(runtime);
-        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, transcript_lines)?;
+            let movie = consume_projector_sequence(runtime);
+            let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, transcript_lines)?;
 
-        let is_game_over = outcome.phase != GamePhase::Active;
-        let response = CommandResponse {
-            text: outcome.text,
-            game_over: is_game_over,
-            movie,
-            act_closure,
-            game_closure,
-            ui_snapshot: Some(ui_snapshot),
-        };
-        let transcript_entries = {
-            let mut entries = vec![PendingTranscriptEntry {
-                role: "player".to_string(),
-                text: input_owned.clone(),
-            }];
-            for line in response.text.split("\n\n") {
-                let trimmed = line.trim();
-                if !trimmed.is_empty() {
-                    entries.push(PendingTranscriptEntry {
-                        role: "narrative".to_string(),
-                        text: trimmed.to_string(),
-                    });
+            let is_game_over = outcome.phase != GamePhase::Active;
+            let response = CommandResponse {
+                text: outcome.text,
+                game_over: is_game_over,
+                movie,
+                act_closure,
+                game_closure,
+                ui_snapshot: Some(ui_snapshot),
+            };
+            let transcript_entries = {
+                let mut entries = vec![PendingTranscriptEntry {
+                    role: "player".to_string(),
+                    text: input_owned.clone(),
+                }];
+                for line in response.text.split("\n\n") {
+                    let trimmed = line.trim();
+                    if !trimmed.is_empty() {
+                        entries.push(PendingTranscriptEntry {
+                            role: "narrative".to_string(),
+                            text: trimmed.to_string(),
+                        });
+                    }
                 }
-            }
-            entries
-        };
+                entries
+            };
 
-        Ok((response, transcript_entries))
-    })
+            Ok((response, transcript_entries))
+        },
+    )
     .await
 }
 
@@ -391,54 +398,60 @@ pub async fn run_realtime_tick(
 ) -> Result<CommandResponse, String> {
     let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
-    with_runtime(pool, &play_id, &player_id, move |runtime, pack_id, transcript_lines| {
-        let mut outcome = runtime.run_tick().map_err(|e| format!("tick error: {e}"))?;
-        use cinder_core::engine::state::GamePhase;
-        let act_closure =
-            if outcome.phase == GamePhase::ActEnded && runtime.content().settings.show_act_closure {
+    with_runtime(
+        pool,
+        &play_id,
+        &player_id,
+        move |runtime, pack_id, transcript_lines| {
+            let mut outcome = runtime.run_tick().map_err(|e| format!("tick error: {e}"))?;
+            use cinder_core::engine::state::GamePhase;
+            let act_closure = if outcome.phase == GamePhase::ActEnded
+                && runtime.content().settings.show_act_closure
+            {
                 response::act_closure_data(runtime, transcript_lines)
             } else {
                 None
             };
-        let game_closure = if outcome.phase == GamePhase::GameEnded {
-            response::game_closure_data(runtime, transcript_lines)
-        } else {
-            None
-        };
-        if outcome.phase == GamePhase::ActEnded {
-            if let Some(intro_text) = runtime
-                .advance_act()
-                .map_err(|e| format!("act rollover error: {e}"))?
-            {
-                if !intro_text.is_empty() {
-                    outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
+            let game_closure = if outcome.phase == GamePhase::GameEnded {
+                response::game_closure_data(runtime, transcript_lines)
+            } else {
+                None
+            };
+            if outcome.phase == GamePhase::ActEnded {
+                if let Some(intro_text) = runtime
+                    .advance_act()
+                    .map_err(|e| format!("act rollover error: {e}"))?
+                {
+                    if !intro_text.is_empty() {
+                        outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
+                    }
                 }
+                outcome.phase = GamePhase::Active;
             }
-            outcome.phase = GamePhase::Active;
-        }
-        let movie = consume_projector_sequence(runtime);
-        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, transcript_lines)?;
-        let is_game_over = outcome.phase != GamePhase::Active;
-        let response = CommandResponse {
-            text: outcome.text.clone(),
-            game_over: is_game_over,
-            movie,
-            act_closure,
-            game_closure,
-            ui_snapshot: Some(ui_snapshot),
-        };
-        let transcript_entries: Vec<PendingTranscriptEntry> = response
-            .text
-            .split("\n\n")
-            .map(|line| line.trim())
-            .filter(|line| !line.is_empty())
-            .map(|line| PendingTranscriptEntry {
-                role: "narrative".to_string(),
-                text: line.to_string(),
-            })
-            .collect();
-        Ok((response, transcript_entries))
-    })
+            let movie = consume_projector_sequence(runtime);
+            let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, transcript_lines)?;
+            let is_game_over = outcome.phase != GamePhase::Active;
+            let response = CommandResponse {
+                text: outcome.text.clone(),
+                game_over: is_game_over,
+                movie,
+                act_closure,
+                game_closure,
+                ui_snapshot: Some(ui_snapshot),
+            };
+            let transcript_entries: Vec<PendingTranscriptEntry> = response
+                .text
+                .split("\n\n")
+                .map(|line| line.trim())
+                .filter(|line| !line.is_empty())
+                .map(|line| PendingTranscriptEntry {
+                    role: "narrative".to_string(),
+                    text: line.to_string(),
+                })
+                .collect();
+            Ok((response, transcript_entries))
+        },
+    )
     .await
 }
 
@@ -451,28 +464,33 @@ pub async fn switch_room(
     let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let room_id = room_id.to_string();
-    with_runtime(pool, &play_id, &player_id, move |runtime, pack_id, _transcript_lines| {
-        let outcome = runtime
-            .switch_room_view(&room_id)
-            .map_err(|e| format!("room switch error: {e}"))?;
-        let _ = runtime.push_transcript_line(&outcome.text);
-        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
-        let transcript_entries = vec![PendingTranscriptEntry {
-            role: "narrative".to_string(),
-            text: outcome.text.clone(),
-        }];
-        Ok((
-            CommandResponse {
-                text: outcome.text,
-                game_over: outcome.phase != cinder_core::engine::state::GamePhase::Active,
-                movie: None,
-                act_closure: None,
-                game_closure: None,
-                ui_snapshot: Some(ui_snapshot),
-            },
-            transcript_entries,
-        ))
-    })
+    with_runtime(
+        pool,
+        &play_id,
+        &player_id,
+        move |runtime, pack_id, _transcript_lines| {
+            let outcome = runtime
+                .switch_room_view(&room_id)
+                .map_err(|e| format!("room switch error: {e}"))?;
+            let _ = runtime.push_transcript_line(&outcome.text);
+            let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
+            let transcript_entries = vec![PendingTranscriptEntry {
+                role: "narrative".to_string(),
+                text: outcome.text.clone(),
+            }];
+            Ok((
+                CommandResponse {
+                    text: outcome.text,
+                    game_over: outcome.phase != cinder_core::engine::state::GamePhase::Active,
+                    movie: None,
+                    act_closure: None,
+                    game_closure: None,
+                    ui_snapshot: Some(ui_snapshot),
+                },
+                transcript_entries,
+            ))
+        },
+    )
     .await
 }
 
@@ -485,28 +503,33 @@ pub async fn follow_actor(
     let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let actor_id = actor_id.map(|s| s.to_string());
-    with_runtime(pool, &play_id, &player_id, move |runtime, pack_id, _transcript_lines| {
-        let outcome = runtime
-            .follow_actor(actor_id.as_deref())
-            .map_err(|e| format!("follow error: {e}"))?;
-        let _ = runtime.push_transcript_line(&outcome.text);
-        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
-        let transcript_entries = vec![PendingTranscriptEntry {
-            role: "narrative".to_string(),
-            text: outcome.text.clone(),
-        }];
-        Ok((
-            CommandResponse {
-                text: outcome.text,
-                game_over: outcome.phase != cinder_core::engine::state::GamePhase::Active,
-                movie: None,
-                act_closure: None,
-                game_closure: None,
-                ui_snapshot: Some(ui_snapshot),
-            },
-            transcript_entries,
-        ))
-    })
+    with_runtime(
+        pool,
+        &play_id,
+        &player_id,
+        move |runtime, pack_id, _transcript_lines| {
+            let outcome = runtime
+                .follow_actor(actor_id.as_deref())
+                .map_err(|e| format!("follow error: {e}"))?;
+            let _ = runtime.push_transcript_line(&outcome.text);
+            let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
+            let transcript_entries = vec![PendingTranscriptEntry {
+                role: "narrative".to_string(),
+                text: outcome.text.clone(),
+            }];
+            Ok((
+                CommandResponse {
+                    text: outcome.text,
+                    game_over: outcome.phase != cinder_core::engine::state::GamePhase::Active,
+                    movie: None,
+                    act_closure: None,
+                    game_closure: None,
+                    ui_snapshot: Some(ui_snapshot),
+                },
+                transcript_entries,
+            ))
+        },
+    )
     .await
 }
 
@@ -547,8 +570,7 @@ pub async fn set_locale(
                 let new_state = runtime
                     .export_state()
                     .map_err(|e| format!("state export error: {e}"))?;
-                let is_game_over =
-                    new_state.phase != cinder_core::engine::state::GamePhase::Active;
+                let is_game_over = new_state.phase != cinder_core::engine::state::GamePhase::Active;
                 let new_state_json = serde_json::to_string(&new_state)
                     .map_err(|e| format!("serialization error: {e}"))?;
 
@@ -676,23 +698,28 @@ pub async fn play_id(
 ) -> Result<CommandResponse, String> {
     let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
-    with_runtime(pool, &play_id, &player_id, move |runtime, pack_id, _transcript_lines| {
-        runtime
-            .continue_after_act()
-            .map_err(|e| format!("session continuation error: {e}"))?;
-        let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
-        Ok((
-            CommandResponse {
-                text: String::new(),
-                game_over: false,
-                movie: None,
-                act_closure: None,
-                game_closure: None,
-                ui_snapshot: Some(ui_snapshot),
-            },
-            Vec::new(),
-        ))
-    })
+    with_runtime(
+        pool,
+        &play_id,
+        &player_id,
+        move |runtime, pack_id, _transcript_lines| {
+            runtime
+                .continue_after_act()
+                .map_err(|e| format!("session continuation error: {e}"))?;
+            let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
+            Ok((
+                CommandResponse {
+                    text: String::new(),
+                    game_over: false,
+                    movie: None,
+                    act_closure: None,
+                    game_closure: None,
+                    ui_snapshot: Some(ui_snapshot),
+                },
+                Vec::new(),
+            ))
+        },
+    )
     .await
 }
 

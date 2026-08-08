@@ -592,10 +592,8 @@ mod tests {
                     } if target_actor_id == "mio"
                 )
         }));
-        assert!(
-            !build.request.affordances.iter().any(|affordance| {
-                affordance.command_id == "edit" && affordance.decision_label == "EDIT"
-            })
-        );
+        assert!(!build.request.affordances.iter().any(|affordance| {
+            affordance.command_id == "edit" && affordance.decision_label == "EDIT"
+        }));
     }
 }

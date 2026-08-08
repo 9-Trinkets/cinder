@@ -22,7 +22,8 @@ pub(super) fn advance_objective_for_signal(
             .iter()
             .find(|stage| stage.id == current_stage_id)
         else {
-            next_stage_started_minutes.insert(current_stage_id.clone(), current_stage_started_minutes);
+            next_stage_started_minutes
+                .insert(current_stage_id.clone(), current_stage_started_minutes);
             next_active_stage_ids.push(current_stage_id);
             continue;
         };
@@ -35,7 +36,8 @@ pub(super) fn advance_objective_for_signal(
                 candidate.conditions(),
             )
         }) {
-            next_stage_started_minutes.insert(current_stage_id.clone(), current_stage_started_minutes);
+            next_stage_started_minutes
+                .insert(current_stage_id.clone(), current_stage_started_minutes);
             next_active_stage_ids.push(current_stage_id);
             continue;
         }
@@ -274,7 +276,10 @@ mod tests {
         advance_objective_for_signal(&mut state, &pack, "time_reached:09:12");
 
         assert_eq!(state.active_objective_stage_ids, vec!["done".to_string()]);
-        assert_eq!(state.stage_started_minutes.get("done"), Some(&(9 * 60 + 12)));
+        assert_eq!(
+            state.stage_started_minutes.get("done"),
+            Some(&(9 * 60 + 12))
+        );
     }
 }
 

@@ -1,4 +1,6 @@
-use crate::content::types::{CommandInputMode, ConsumableKind, SystemTextDefinition, UiTextDefinition};
+use crate::content::types::{
+    CommandInputMode, ConsumableKind, SystemTextDefinition, UiTextDefinition,
+};
 use crate::engine::commands::TurnAction;
 use crate::engine::state::ConversationMemoryLine;
 use serde::{Deserialize, Serialize};

@@ -58,9 +58,7 @@ pub(super) fn build_planned_turn(
                         true
                     } else if is_multi_select && raw.starts_with("toggle:") {
                         let option_id = raw["toggle:".len()..].to_string();
-                        let selected = !planner_state
-                            .pending_menu_selections
-                            .contains(&option_id);
+                        let selected = !planner_state.pending_menu_selections.contains(&option_id);
                         planned.events.push(WorldEvent::MenuSelectionToggled {
                             menu_id: menu_id.to_string(),
                             option_id,
@@ -72,7 +70,10 @@ pub(super) fn build_planned_turn(
                             .generated_menu_options
                             .get(menu_id)
                             .and_then(|options| {
-                                resolve_menu_choice_in_options(options, &aggregated.command.raw_input)
+                                resolve_menu_choice_in_options(
+                                    options,
+                                    &aggregated.command.raw_input,
+                                )
                             })
                             .or_else(|| resolve_menu_choice(menu, &aggregated.command.raw_input));
                         if let Some(option) = option {
