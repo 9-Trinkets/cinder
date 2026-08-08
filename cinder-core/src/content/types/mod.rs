@@ -434,9 +434,10 @@ mod world_defs;
 pub use world_defs::{
     ActorDefinition, ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition,
     ActorPromptContext, ConsumableDefinition, ConsumableKind, ErrorTextDefinition,
-    MovementConfigDefinition, PresentationDefinition, PresentationTextDefinition, RoomDefinition,
-    RoomExitDefinition, RoomFeatureDefinition, RuleBundleAffordancePriorityDefinition,
-    RuleBundleAffordanceTarget, RuleBundleCompletionDefinition, RuleBundleCompletionTrigger,
+    MovementConfigDefinition, MovementTargetBehavior, PresentationDefinition,
+    PresentationTextDefinition, RoomDefinition, RoomExitDefinition, RoomFeatureDefinition,
+    RuleBundleAffordancePriorityDefinition, RuleBundleAffordanceTarget,
+    RuleBundleCompletionDefinition, RuleBundleCompletionTrigger,
     RuleBundleConditionalGuidanceDefinition, RuleBundleDefinition, RuleBundleGuidanceDefinition,
     RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition, RuleBundlesDefinition,
     SpeechConfigDefinition, StatDefinition, StatsDefinition,

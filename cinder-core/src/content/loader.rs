@@ -322,6 +322,38 @@ pub fn load_pack_from_dir_with_locale(
             "actors",
         )?;
     }
+    for (actor_id, rules) in &movement.actors {
+        for (index, rule) in rules.target_rules.iter().enumerate() {
+            let context = format!("movement.json actor '{actor_id}' target_rules[{index}]");
+            if rule.target_room_id.trim().is_empty() && rule.target_from_story_var.trim().is_empty()
+            {
+                return Err(
+                    format!("{context} must set target_room_id or target_from_story_var").into(),
+                );
+            }
+            if rule.target_behavior.is_none() {
+                return Err(
+                    format!("{context} must set target_behavior to 'move' or 'stay'").into(),
+                );
+            }
+            if !rule.target_room_id.trim().is_empty() {
+                require_known_id(
+                    &rule.target_room_id,
+                    &room_index.keys().map(String::as_str).collect::<Vec<_>>(),
+                    &format!("{context} target_room_id '{}'", rule.target_room_id),
+                    "rooms",
+                )?;
+            }
+            for stage_id in &rule.any_active_stage_ids {
+                require_known_id(
+                    stage_id,
+                    &stage_ids,
+                    &format!("{context} any_active_stage_ids entry '{stage_id}'"),
+                    "beats.stages",
+                )?;
+            }
+        }
+    }
     for stage_id in &movement.stage_locks {
         require_known_id(
             stage_id,

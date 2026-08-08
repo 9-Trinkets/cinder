@@ -8,14 +8,14 @@
           "any_active_stage_ids": [
             "move-to-bedrooms"
           ],
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "target_room_id": "girls-room",
           "any_active_stage_ids": [
             "day2-move-to-bedrooms"
           ],
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -23,7 +23,7 @@
           ],
           "required_story_var": "aera_assigned_room",
           "target_from_story_var": "aera_assigned_room",
-          "must_move": true
+          "target_behavior": "stay"
         },
         {
           "any_active_stage_ids": [
@@ -31,7 +31,7 @@
           ],
           "required_story_var": "aera_assigned_room",
           "target_from_story_var": "aera_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -39,14 +39,14 @@
           ],
           "required_story_var": "aera_assigned_room",
           "target_from_story_var": "aera_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "target_room_id": "kitchen",
           "any_active_stage_ids": [
             "day2-gather-for-breakfast"
           ],
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -54,7 +54,7 @@
           ],
           "required_story_var": "aera_assigned_room",
           "target_from_story_var": "aera_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -62,20 +62,22 @@
           ],
           "required_story_var": "aera_assigned_room",
           "target_from_story_var": "aera_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "required_story_var": "aera_assigned_room",
           "target_from_story_var": "aera_assigned_room",
           "any_active_stage_ids": [
             "day2-breakfast-prep"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "target_room_id": "kitchen",
           "any_active_stage_ids": [
             "day2-share-breakfast"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "target_room_id": "girls-room",
@@ -84,19 +86,15 @@
             "day2-debrief",
             "plan-day2",
             "sleep-end-day2"
-          ]
-        },
-        {
-          "target_room_id": "dining-room",
-          "any_active_stage_ids": [
-            "talk-after-dinner"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "target_room_id": "kitchen",
           "any_active_stage_ids": [
             "share-dinner-in-kitchen"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "any_active_stage_ids": [
@@ -104,7 +102,8 @@
             "day2-event-b"
           ],
           "required_story_var": "aera_assigned_room",
-          "target_from_story_var": "aera_assigned_room"
+          "target_from_story_var": "aera_assigned_room",
+          "target_behavior": "stay"
         }
       ]
     },
@@ -115,14 +114,14 @@
           "any_active_stage_ids": [
             "move-to-bedrooms"
           ],
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "target_room_id": "guys-room",
           "any_active_stage_ids": [
             "day2-move-to-bedrooms"
           ],
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -130,7 +129,7 @@
           ],
           "required_story_var": "ren_assigned_room",
           "target_from_story_var": "ren_assigned_room",
-          "must_move": true
+          "target_behavior": "stay"
         },
         {
           "any_active_stage_ids": [
@@ -138,7 +137,7 @@
           ],
           "required_story_var": "ren_assigned_room",
           "target_from_story_var": "ren_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -146,14 +145,14 @@
           ],
           "required_story_var": "ren_assigned_room",
           "target_from_story_var": "ren_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "target_room_id": "kitchen",
           "any_active_stage_ids": [
             "day2-gather-for-breakfast"
           ],
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -161,7 +160,7 @@
           ],
           "required_story_var": "ren_assigned_room",
           "target_from_story_var": "ren_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -169,20 +168,22 @@
           ],
           "required_story_var": "ren_assigned_room",
           "target_from_story_var": "ren_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "required_story_var": "ren_assigned_room",
           "target_from_story_var": "ren_assigned_room",
           "any_active_stage_ids": [
             "day2-breakfast-prep"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "target_room_id": "kitchen",
           "any_active_stage_ids": [
             "day2-share-breakfast"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "target_room_id": "guys-room",
@@ -191,19 +192,15 @@
             "day2-debrief",
             "plan-day2",
             "sleep-end-day2"
-          ]
-        },
-        {
-          "target_room_id": "dining-room",
-          "any_active_stage_ids": [
-            "talk-after-dinner"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "target_room_id": "kitchen",
           "any_active_stage_ids": [
             "share-dinner-in-kitchen"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "any_active_stage_ids": [
@@ -211,7 +208,8 @@
             "day2-event-b"
           ],
           "required_story_var": "ren_assigned_room",
-          "target_from_story_var": "ren_assigned_room"
+          "target_from_story_var": "ren_assigned_room",
+          "target_behavior": "stay"
         }
       ]
     },
@@ -222,14 +220,14 @@
           "any_active_stage_ids": [
             "move-to-bedrooms"
           ],
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "target_room_id": "girls-room",
           "any_active_stage_ids": [
             "day2-move-to-bedrooms"
           ],
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -237,7 +235,7 @@
           ],
           "required_story_var": "mio_assigned_room",
           "target_from_story_var": "mio_assigned_room",
-          "must_move": true
+          "target_behavior": "stay"
         },
         {
           "any_active_stage_ids": [
@@ -245,7 +243,7 @@
           ],
           "required_story_var": "mio_assigned_room",
           "target_from_story_var": "mio_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -253,14 +251,14 @@
           ],
           "required_story_var": "mio_assigned_room",
           "target_from_story_var": "mio_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "target_room_id": "kitchen",
           "any_active_stage_ids": [
             "day2-gather-for-breakfast"
           ],
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -268,7 +266,7 @@
           ],
           "required_story_var": "mio_assigned_room",
           "target_from_story_var": "mio_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -276,20 +274,22 @@
           ],
           "required_story_var": "mio_assigned_room",
           "target_from_story_var": "mio_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "required_story_var": "mio_assigned_room",
           "target_from_story_var": "mio_assigned_room",
           "any_active_stage_ids": [
             "day2-breakfast-prep"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "target_room_id": "kitchen",
           "any_active_stage_ids": [
             "day2-share-breakfast"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "target_room_id": "girls-room",
@@ -298,19 +298,15 @@
             "day2-debrief",
             "plan-day2",
             "sleep-end-day2"
-          ]
-        },
-        {
-          "target_room_id": "dining-room",
-          "any_active_stage_ids": [
-            "talk-after-dinner"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "target_room_id": "kitchen",
           "any_active_stage_ids": [
             "share-dinner-in-kitchen"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "any_active_stage_ids": [
@@ -318,7 +314,8 @@
             "day2-event-b"
           ],
           "required_story_var": "mio_assigned_room",
-          "target_from_story_var": "mio_assigned_room"
+          "target_from_story_var": "mio_assigned_room",
+          "target_behavior": "stay"
         }
       ]
     },
@@ -329,14 +326,14 @@
           "any_active_stage_ids": [
             "move-to-bedrooms"
           ],
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "target_room_id": "guys-room",
           "any_active_stage_ids": [
             "day2-move-to-bedrooms"
           ],
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -344,7 +341,7 @@
           ],
           "required_story_var": "daichi_assigned_room",
           "target_from_story_var": "daichi_assigned_room",
-          "must_move": true
+          "target_behavior": "stay"
         },
         {
           "any_active_stage_ids": [
@@ -352,7 +349,7 @@
           ],
           "required_story_var": "daichi_assigned_room",
           "target_from_story_var": "daichi_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -360,14 +357,14 @@
           ],
           "required_story_var": "daichi_assigned_room",
           "target_from_story_var": "daichi_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "target_room_id": "kitchen",
           "any_active_stage_ids": [
             "day2-gather-for-breakfast"
           ],
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -375,7 +372,7 @@
           ],
           "required_story_var": "daichi_assigned_room",
           "target_from_story_var": "daichi_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "any_active_stage_ids": [
@@ -383,20 +380,22 @@
           ],
           "required_story_var": "daichi_assigned_room",
           "target_from_story_var": "daichi_assigned_room",
-          "must_move": true
+          "target_behavior": "move"
         },
         {
           "required_story_var": "daichi_assigned_room",
           "target_from_story_var": "daichi_assigned_room",
           "any_active_stage_ids": [
             "day2-breakfast-prep"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "target_room_id": "kitchen",
           "any_active_stage_ids": [
             "day2-share-breakfast"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "target_room_id": "guys-room",
@@ -405,19 +404,15 @@
             "day2-debrief",
             "plan-day2",
             "sleep-end-day2"
-          ]
-        },
-        {
-          "target_room_id": "dining-room",
-          "any_active_stage_ids": [
-            "talk-after-dinner"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "target_room_id": "kitchen",
           "any_active_stage_ids": [
             "share-dinner-in-kitchen"
-          ]
+          ],
+          "target_behavior": "stay"
         },
         {
           "any_active_stage_ids": [
@@ -425,7 +420,8 @@
             "day2-event-b"
           ],
           "required_story_var": "daichi_assigned_room",
-          "target_from_story_var": "daichi_assigned_room"
+          "target_from_story_var": "daichi_assigned_room",
+          "target_behavior": "stay"
         }
       ]
     }

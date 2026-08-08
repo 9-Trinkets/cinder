@@ -1,5 +1,6 @@
 use crate::content::types::{
     ActorDefinition, ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition, ContentPack,
+    MovementTargetBehavior,
 };
 use crate::engine::actor_tick::decide_movement;
 use crate::engine::events::WorldEvent;
@@ -43,8 +44,8 @@ pub(crate) struct MovementSuppressionContext {
 }
 
 /// The single gate for "can this actor move right now": an active stage-lock, being
-/// anchored to a room by stage assignment, or movement.json's reactive suppression rule
-/// (e.g. too low on stamina). This is the one place to check why an actor isn't moving.
+/// anchored to a room by an explicit stay rule, or movement.json's reactive suppression
+/// rule (e.g. too low on stamina). This is the one place to check why an actor isn't moving.
 pub(crate) fn is_actor_movement_locked(
     content: &ContentPack,
     state: &WorldState,
@@ -57,6 +58,15 @@ pub(crate) fn is_actor_movement_locked(
         .iter()
         .any(|stage_id| state.active_objective_stage_ids.contains(stage_id))
     {
+        return Ok(true);
+    }
+    let default_room_id = content
+        .actor(actor_id)
+        .map(|actor| actor.room_id.clone())
+        .unwrap_or_default();
+    let current_room_id = state.actor_room_id(actor_id, &default_room_id);
+    let rules = content.movement_rules(actor_id);
+    if actor_is_locked_to_target_room(state, &rules, current_room_id) {
         return Ok(true);
     }
     let Some(config) = content.movement.suppress_when.as_ref() else {
@@ -97,40 +107,16 @@ pub(crate) struct RelationshipMoveTarget {
     priority: i32,
 }
 
-pub(crate) fn resolved_movement_rule_target_room_id(
-    state: &WorldState,
-    rules: &ActorMovementRulesDefinition,
-) -> Option<String> {
-    let rule = rules
-        .target_rules
-        .iter()
-        .find(|rule| movement_target_rule_matches(state, rule))?;
-    if !rule.target_from_story_var.is_empty()
-        && let Some(resolved) = state.story_vars.get(&rule.target_from_story_var)
-    {
-        return Some(resolved.to_string());
-    }
-    Some(rule.target_room_id.clone())
-}
-
 pub(crate) fn required_movement_target_room_id(
     state: &WorldState,
     rules: &ActorMovementRulesDefinition,
     current_room_id: &str,
 ) -> Option<String> {
-    let rule = rules
-        .target_rules
-        .iter()
-        .find(|rule| rule.must_move && movement_target_rule_matches(state, rule))?;
-    let target_room_id = if !rule.target_from_story_var.is_empty() {
-        state.story_vars.get(&rule.target_from_story_var)?.to_string()
-    } else {
-        rule.target_room_id.clone()
-    };
-    if target_room_id.is_empty() || target_room_id == current_room_id {
+    let target = resolved_movement_target(state, rules)?;
+    if target.room_id == current_room_id {
         None
     } else {
-        Some(target_room_id)
+        Some(target.room_id)
     }
 }
 
@@ -218,13 +204,56 @@ fn movement_target_rule_matches(
     rule: &ActorMovementTargetRuleDefinition,
 ) -> bool {
     (rule.when_player_room_id.is_empty() || rule.when_player_room_id == state.current_room_id)
-        && (rule.required_story_var.is_empty()
-            || state.story_vars.has(&rule.required_story_var))
+        && (rule.required_story_var.is_empty() || state.story_vars.has(&rule.required_story_var))
         && (rule.any_active_stage_ids.is_empty()
             || rule
                 .any_active_stage_ids
                 .iter()
                 .any(|stage_id| state.active_objective_stage_ids.contains(stage_id)))
+}
+
+#[derive(Debug, Clone)]
+struct ResolvedMovementTarget {
+    room_id: String,
+    behavior: MovementTargetBehavior,
+}
+
+fn resolved_movement_target(
+    state: &WorldState,
+    rules: &ActorMovementRulesDefinition,
+) -> Option<ResolvedMovementTarget> {
+    let rule = rules
+        .target_rules
+        .iter()
+        .find(|rule| movement_target_rule_matches(state, rule))?;
+    let room_id = if !rule.target_from_story_var.is_empty() {
+        state
+            .story_vars
+            .get(&rule.target_from_story_var)?
+            .to_string()
+    } else {
+        rule.target_room_id.clone()
+    };
+    let behavior = rule.target_behavior?;
+    if room_id.is_empty() {
+        None
+    } else {
+        Some(ResolvedMovementTarget { room_id, behavior })
+    }
+}
+
+fn actor_is_locked_to_target_room(
+    state: &WorldState,
+    rules: &ActorMovementRulesDefinition,
+    current_room_id: &str,
+) -> bool {
+    matches!(
+        resolved_movement_target(state, rules),
+        Some(ResolvedMovementTarget {
+            room_id,
+            behavior: MovementTargetBehavior::Stay,
+        }) if room_id == current_room_id
+    )
 }
 
 fn nearest_unvisited_room(
@@ -254,12 +283,12 @@ fn nearest_unvisited_room(
 
 #[cfg(test)]
 mod tests {
-    use super::required_movement_target_room_id;
+    use super::{is_actor_movement_locked, required_movement_target_room_id};
     use crate::content::loader::load_named_pack;
     use crate::engine::state::WorldState;
 
     #[test]
-    fn must_move_rule_requires_relocation_only_until_actor_arrives() {
+    fn move_behavior_requires_relocation_only_until_actor_arrives() {
         let content = load_named_pack("aera", Some("en")).expect("load aera");
         let rules = content.movement_rules("aera");
         let mut state = WorldState::new(&content);
@@ -279,12 +308,14 @@ mod tests {
     }
 
     #[test]
-    fn must_move_rule_can_resolve_day2_activity_room_from_story_vars() {
+    fn move_behavior_can_resolve_day2_activity_room_from_story_vars() {
         let content = load_named_pack("aera", Some("en")).expect("load aera");
         let rules = content.movement_rules("aera");
         let mut state = WorldState::new(&content);
         state.active_objective_stage_ids = vec!["day2-move-to-activities".to_string()];
-        state.story_vars.set_unchecked("aera_assigned_room", "studio");
+        state
+            .story_vars
+            .set_unchecked("aera_assigned_room", "studio");
         state
             .actor_room_overrides
             .insert("aera".to_string(), "girls-room".to_string());
@@ -296,12 +327,14 @@ mod tests {
     }
 
     #[test]
-    fn must_move_rule_can_start_day2_breakfast_relocation_during_assignment_stage() {
+    fn stay_behavior_still_relocates_actor_until_they_arrive() {
         let content = load_named_pack("aera", Some("en")).expect("load aera");
         let rules = content.movement_rules("ren");
         let mut state = WorldState::new(&content);
-        state.active_objective_stage_ids = vec!["day2-breakfast-assignment".to_string()];
-        state.story_vars.set_unchecked("ren_assigned_room", "kitchen");
+        state.active_objective_stage_ids = vec!["day2-breakfast-prep".to_string()];
+        state
+            .story_vars
+            .set_unchecked("ren_assigned_room", "kitchen");
         state
             .actor_room_overrides
             .insert("ren".to_string(), "guys-room".to_string());
@@ -309,6 +342,30 @@ mod tests {
         assert_eq!(
             required_movement_target_room_id(&state, &rules, "guys-room").as_deref(),
             Some("kitchen")
+        );
+        assert_eq!(
+            required_movement_target_room_id(&state, &rules, "kitchen"),
+            None
+        );
+    }
+
+    #[test]
+    fn stay_behavior_locks_actor_once_they_arrive() {
+        let content = load_named_pack("aera", Some("en")).expect("load aera");
+        let mut state = WorldState::new(&content);
+        state.active_objective_stage_ids = vec!["day2-share-breakfast".to_string()];
+        state
+            .actor_room_overrides
+            .insert("aera".to_string(), "kitchen".to_string());
+
+        assert!(
+            is_actor_movement_locked(
+                &content,
+                &state,
+                "aera",
+                &super::MovementSuppressionContext::default(),
+            )
+            .expect("movement lock should resolve")
         );
     }
 }

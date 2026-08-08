@@ -139,6 +139,13 @@ pub struct ActorMovementRulesDefinition {
     pub target_rules: Vec<ActorMovementTargetRuleDefinition>,
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum MovementTargetBehavior {
+    Move,
+    Stay,
+}
+
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ActorMovementTargetRuleDefinition {
     #[serde(default)]
@@ -152,7 +159,7 @@ pub struct ActorMovementTargetRuleDefinition {
     #[serde(default)]
     pub target_from_story_var: String,
     #[serde(default)]
-    pub must_move: bool,
+    pub target_behavior: Option<MovementTargetBehavior>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

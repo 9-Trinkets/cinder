@@ -1,14 +1,14 @@
 use crate::content::types::{ActorDefinition, ActorMovementRulesDefinition, ContentPack};
-use crate::engine::actor_turn::movement::{
-    required_movement_target_room_id, resolved_movement_rule_target_room_id,
-};
+use crate::engine::actor_turn::movement::required_movement_target_room_id;
 use crate::engine::actor_turn::{
     build_actor_turn, decide_actor_turn_action, realize_actor_turn_action, run_actor_turn,
 };
 use crate::engine::conversation_memory::refresh_conversation_summaries;
 use crate::engine::dialogue::{ActorTurnActionDecision, DialogueGenerator};
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
-use crate::engine::neuron::{LocalWorkflowRunner, WorkflowDefinition, WorkflowRoleConfig, run_workflow};
+use crate::engine::neuron::{
+    LocalWorkflowRunner, WorkflowDefinition, WorkflowRoleConfig, run_workflow,
+};
 use crate::engine::reducer::apply_events;
 use crate::engine::state::WorldState;
 use serde::{Deserialize, Serialize};
@@ -121,14 +121,13 @@ pub(crate) fn run_actor_tick(
 
 pub(crate) fn decide_movement(
     content: Arc<ContentPack>,
-    state: &WorldState,
+    _state: &WorldState,
     actor: &ActorDefinition,
-    rules: &ActorMovementRulesDefinition,
+    _rules: &ActorMovementRulesDefinition,
     current_room_id: &str,
     preferred_target_room_id: Option<&str>,
 ) -> Result<Vec<WorldEvent>, Box<dyn Error>> {
-    let target_room_id = resolved_movement_rule_target_room_id(state, rules)
-        .or_else(|| preferred_target_room_id.map(str::to_string));
+    let target_room_id = preferred_target_room_id.map(str::to_string);
     let Some(target_room_id) = target_room_id else {
         return Ok(vec![]);
     };
@@ -215,35 +214,41 @@ impl ActorTickRoleRunner {
             .cloned()
             .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
         let rules = self.content.movement_rules(&actor_id);
-        let emit_trace = |role_name: &str, topic: &str, payload: serde_json::Value| -> Result<(), String> {
-            self.trace_records
-                .lock()
-                .map_err(|_| "failed to lock npc tick trace records".to_string())?
-                .push(ActorTraceRecord {
-                    role_name: role_name.to_string(),
-                    topic: topic.to_string(),
-                    payload,
-                });
-            Ok(())
-        };
+        let emit_trace =
+            |role_name: &str, topic: &str, payload: serde_json::Value| -> Result<(), String> {
+                self.trace_records
+                    .lock()
+                    .map_err(|_| "failed to lock npc tick trace records".to_string())?
+                    .push(ActorTraceRecord {
+                        role_name: role_name.to_string(),
+                        topic: topic.to_string(),
+                        payload,
+                    });
+                Ok(())
+            };
         if !self.content.settings.autonomous_actor_dialogue {
-            let events = run_actor_turn(Arc::clone(&self.content), &workflow_state.state, &actor, &rules)
-                .map_err(|error| {
-                    let current_room_id = workflow_state
-                        .state
-                        .actor_room_id(&actor.id, &actor.room_id);
-                    let _ = emit_trace(
-                        "npc_actor_turn",
-                        "workflow.error",
-                        serde_json::json!({
-                            "actor_id": actor.id,
-                            "actor_name": actor.name,
-                            "current_room_id": current_room_id,
-                            "message": error.to_string(),
-                        }),
-                    );
-                    error.to_string()
-                })?;
+            let events = run_actor_turn(
+                Arc::clone(&self.content),
+                &workflow_state.state,
+                &actor,
+                &rules,
+            )
+            .map_err(|error| {
+                let current_room_id = workflow_state
+                    .state
+                    .actor_room_id(&actor.id, &actor.room_id);
+                let _ = emit_trace(
+                    "npc_actor_turn",
+                    "workflow.error",
+                    serde_json::json!({
+                        "actor_id": actor.id,
+                        "actor_name": actor.name,
+                        "current_room_id": current_room_id,
+                        "message": error.to_string(),
+                    }),
+                );
+                error.to_string()
+            })?;
             workflow_state.actor_turn_stage = ActorTurnStageEnvelope::Realized { actor_id, events };
             return route_tick_workflow("npc_actor_turn_apply", &workflow_state);
         }
@@ -254,21 +259,25 @@ impl ActorTickRoleRunner {
         if required_movement_target_room_id(&workflow_state.state, &rules, &current_room_id)
             .is_some()
         {
-            let events =
-                run_actor_turn(Arc::clone(&self.content), &workflow_state.state, &actor, &rules)
-                    .map_err(|error| {
-                        let _ = emit_trace(
-                            "npc_actor_turn",
-                            "workflow.error",
-                            serde_json::json!({
-                                "actor_id": actor.id,
-                                "actor_name": actor.name,
-                                "current_room_id": current_room_id,
-                                "message": error.to_string(),
-                            }),
-                        );
-                        error.to_string()
-                    })?;
+            let events = run_actor_turn(
+                Arc::clone(&self.content),
+                &workflow_state.state,
+                &actor,
+                &rules,
+            )
+            .map_err(|error| {
+                let _ = emit_trace(
+                    "npc_actor_turn",
+                    "workflow.error",
+                    serde_json::json!({
+                        "actor_id": actor.id,
+                        "actor_name": actor.name,
+                        "current_room_id": current_room_id,
+                        "message": error.to_string(),
+                    }),
+                );
+                error.to_string()
+            })?;
             workflow_state.actor_turn_stage = ActorTurnStageEnvelope::Realized { actor_id, events };
             return route_tick_workflow("npc_actor_turn_apply", &workflow_state);
         }
@@ -347,11 +356,7 @@ impl ActorTickRoleRunner {
             Ok(())
         };
         let decision =
-            decide_actor_turn_action(
-                self.dialogue.as_ref(),
-                &build.request,
-                &mut emit_trace,
-            )
+            decide_actor_turn_action(self.dialogue.as_ref(), &build.request, &mut emit_trace)
                 .map_err(|error| {
                     let _ = emit_trace(
                         "npc_actor_turn",
@@ -536,10 +541,7 @@ fn complete_tick_workflow(events: &[WorldEvent]) -> Result<String, String> {
 }
 
 fn sanitize_json_control_chars(input: &str) -> String {
-    input
-        .chars()
-        .filter(|c| !c.is_control())
-        .collect()
+    input.chars().filter(|c| !c.is_control()).collect()
 }
 
 fn extract_inbound_message(prompt: &str) -> Result<String, String> {
