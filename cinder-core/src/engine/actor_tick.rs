@@ -121,13 +121,14 @@ pub(crate) fn run_actor_tick(
 
 pub(crate) fn decide_movement(
     content: Arc<ContentPack>,
-    _state: &WorldState,
+    state: &WorldState,
     actor: &ActorDefinition,
-    _rules: &ActorMovementRulesDefinition,
+    rules: &ActorMovementRulesDefinition,
     current_room_id: &str,
     preferred_target_room_id: Option<&str>,
 ) -> Result<Vec<WorldEvent>, Box<dyn Error>> {
-    let target_room_id = preferred_target_room_id.map(str::to_string);
+    let target_room_id = required_movement_target_room_id(state, rules, current_room_id)
+        .or_else(|| preferred_target_room_id.map(str::to_string));
     let Some(target_room_id) = target_room_id else {
         return Ok(vec![]);
     };

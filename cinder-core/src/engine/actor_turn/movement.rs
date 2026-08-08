@@ -283,9 +283,11 @@ fn nearest_unvisited_room(
 
 #[cfg(test)]
 mod tests {
-    use super::{is_actor_movement_locked, required_movement_target_room_id};
+    use super::{is_actor_movement_locked, required_movement_target_room_id, run_actor_turn};
     use crate::content::loader::load_named_pack;
+    use crate::engine::events::WorldEvent;
     use crate::engine::state::WorldState;
+    use std::sync::Arc;
 
     #[test]
     fn move_behavior_requires_relocation_only_until_actor_arrives() {
@@ -367,5 +369,29 @@ mod tests {
             )
             .expect("movement lock should resolve")
         );
+    }
+
+    #[test]
+    fn run_actor_turn_emits_move_event_for_explicit_move_rule() {
+        let content = Arc::new(load_named_pack("aera", Some("en")).expect("load aera"));
+        let actor = content.actor("aera").expect("aera actor").clone();
+        let rules = content.movement_rules("aera");
+        let mut state = WorldState::new(&content);
+        state.active_objective_stage_ids = vec!["move-to-bedrooms".to_string()];
+        state
+            .actor_room_overrides
+            .insert("aera".to_string(), "kitchen".to_string());
+
+        let events = run_actor_turn(Arc::clone(&content), &state, &actor, &rules)
+            .expect("move rule should emit relocation event");
+
+        assert!(events.iter().any(|event| matches!(
+            event,
+            WorldEvent::ActorMoved {
+            actor_id,
+            from_room_id,
+            ..
+            } if actor_id == "aera" && from_room_id == "kitchen"
+        )));
     }
 }
