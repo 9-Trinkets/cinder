@@ -60,7 +60,8 @@
             "go-to-kitchen",
             "talk-with-dad",
             "choose-snack",
-            "snack-afterglow"
+            "snack-afterglow",
+            "go-to-bed"
           ],
           "target_behavior": "stay"
         }

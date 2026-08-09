@@ -431,6 +431,15 @@ mod tests {
             Some("kitchen")
         );
 
+        state.active_objective_stage_ids = vec!["go-to-bed".to_string()];
+        state
+            .actor_room_overrides
+            .insert("dad".to_string(), "foyer".to_string());
+        assert_eq!(
+            required_movement_target_room_id(&state, &rules, "foyer").as_deref(),
+            Some("kitchen")
+        );
+
         assert_eq!(
             required_movement_target_room_id(&state, &rules, "kitchen"),
             None
