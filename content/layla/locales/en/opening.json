@@ -3,18 +3,17 @@
   "title": "Layla",
   "start_room_id": "lightless-cell",
   "start_time_minutes": 60,
-  "intro_text": "You wake on cold stone. The dark is absolute, and behind your eyes there is a wall where your memories should be \u2014 you know your name is Layla, and almost nothing else. You know you play a game with black and white stones, and that the rules of it feel truer than any memory you can reach.\n\nSomewhere above, something grinds against the dark. A door you cannot see stands somewhere ahead. The only light is the thought that this place has edges, and that edges can be held.\n\nExplore the room you are in. Look around. Find a way forward.",
+  "intro_text": "You wake on cold stone, in dark that has no bottom and no top. Your name is Layla \u2014 you know that much \u2014 and beyond it there is only a wall where your memories should be.\n\nYour hands remember things your mind does not: how to grip a weapon, how to move without sound, how to take a hit and stay standing. Whatever you were before you woke here, you were not soft.\n\nSomewhere above, something grinds against the dark. Somewhere ahead, there is a way out you cannot see yet.\n\nFind it. Get out. Whatever it takes.",
   "help_text": "Commands:\n{available_commands}\n- Tab switches focus between command and transcript\n- Up/Down recalls command history when command is focused\n- Up/Down scrolls the transcript when transcript is focused\n- PageUp/PageDown/Home/End scroll the transcript faster\n- ? opens the menu",
   "prompt_context": {
     "setting_notes": [
       "Layla is inside a sealed, lightless room made of fitted stone, somewhere underground.",
-      "The world outside the room is unknown; the board she will come to explore is entirely shrouded.",
-      "The room feels like a single square on a much larger board.",
-      "Layla has no memory of how she arrived here."
+      "Layla has no memory of how she arrived here; she knows only her own name.",
+      "Her body carries skills her mind cannot remember \u2014 she moves and fights like someone well trained."
     ],
     "subtext_notes": [
-      "Layla wakes without memory but with the deep, certain rules of Go in her hands.",
-      "She moves carefully, treating unknown darkness the way she would treat a board she cannot see.",
+      "Layla wakes with no memory but with a fighter's instincts and a stubborn, quiet resolve.",
+      "She treats the unknown dark with caution and competence, not fear.",
       "She is alone, and the silence is doing something to her."
     ]
   }
