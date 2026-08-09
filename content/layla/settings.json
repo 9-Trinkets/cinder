@@ -1,0 +1,30 @@
+{
+  "title": "Layla",
+  "tagline": "Wake lost. Encircle what is yours. Lay claim to the whole board.",
+  "description": "Layla wakes with no memory inside a shrouded grid of dark rooms. Explore, fight, and capture territory by encircling it \u2014 one room at a time \u2014 until the whole board is hers.",
+  "typewriter_char_ms": 12,
+  "npc_tick_interval_ms": 2000,
+  "tick_minutes_per_turn": 1,
+  "default_language": "en",
+  "channel_surfing_only": false,
+  "autonomous_actor_dialogue": false,
+  "show_act_closure": false,
+  "theme": {
+    "base": "#101218",
+    "surface": "#181c26",
+    "overlay": "#232938",
+    "muted": "#6a7182",
+    "text": "#d8dce6",
+    "love": "#c05a4a",
+    "gold": "#d4a76a",
+    "rose": "#d49a8a",
+    "pine": "#5a7a64",
+    "foam": "#7fa8c9",
+    "iris": "#a58fc0",
+    "highlight_high": "#2c3348",
+    "crafted_highlight": "#d4a76a",
+    "crt_glow": "#bcd6e8",
+    "crt_dim": "#4a5a7a",
+    "crt_bez": "#0b0d12"
+  }
+}

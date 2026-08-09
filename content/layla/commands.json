@@ -1,0 +1,52 @@
+{
+  "actions": [
+    {
+      "id": "look",
+      "group": "observation",
+      "command": "LOOK",
+      "target_mode": "none",
+      "effects": ["observe_room"],
+      "player_enabled": true,
+      "player_phrases": ["look", "l", "look at", "look room", "look around", "inspect room", "examine", "x"],
+      "player_command": {
+        "usage": "look [at <thing or person>]",
+        "example": "look around",
+        "advances_time": false,
+        "input": { "required": false }
+      }
+    },
+    {
+      "id": "move",
+      "group": "movement",
+      "command": "MOVE",
+      "target_mode": "room",
+      "effects": ["move_actor"],
+      "event_text": "{actor_name} heads to {target_room_title}.",
+      "player_enabled": true,
+      "player_phrases": ["go to", "go", "enter", "move to", "move"],
+      "player_command": {
+        "target_mode": "room_reference",
+        "usage": "go <exit>",
+        "example": "go north",
+        "advances_time": true,
+        "input": { "required": true }
+      }
+    },
+    {
+      "id": "speak",
+      "group": "conversation",
+      "command": "SPEAK",
+      "target_mode": "actor_optional",
+      "outcome_mode": "dialogue",
+      "player_enabled": true,
+      "player_phrases": ["talk to", "talk", "speak to", "speak"],
+      "player_command": {
+        "target_mode": "actor_reference",
+        "usage": "talk to <person> [message]",
+        "example": "talk to the old man what is this place",
+        "advances_time": true,
+        "input": { "required": true }
+      }
+    }
+  ]
+}

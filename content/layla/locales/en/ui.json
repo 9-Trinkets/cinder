@@ -1,0 +1,84 @@
+{
+  "language_name": "English",
+  "menu_button_label": "? Menu",
+  "game_over_hint": "↑/↓ or PageUp/PageDown scroll • q exits",
+  "menu_option_list_title": "Choose an option",
+  "menu_choice_hint": "Use ↑/↓ and Enter to choose.",
+  "menu_choice_transcript": "chose {title}",
+  "shell_menu_title": "Menu",
+  "shell_menu_close_hint": "Use ↑/↓ and Enter to choose. Esc closes.",
+  "help_label": "Help",
+  "resume_label": "Resume",
+  "things_to_do_label": "Things to do",
+  "language_menu_label": "Language",
+  "about_label": "About",
+  "exit_label": "Exit",
+  "things_to_do_empty": "Find a way out of the dark.",
+  "about_body": "Layla\nA board game in the dark",
+  "language_modal_title": "Display language",
+  "language_changed_text": "Display language changed to {language_name}.",
+  "modal_close_hint": "Press Enter or Esc to close.",
+  "look_group_room": "Room",
+  "look_group_things": "Things",
+  "look_group_people": "People",
+  "act_closure_title": "Chapter Recap",
+  "final_summary_title": "Chapter Recap",
+  "final_summary_highlights_label": "What happened",
+  "final_summary_relationships_label": "Bonds",
+  "final_summary_preview_label": "Next chapter",
+  "final_summary_empty_preview": "The next chapter is still taking shape.",
+  "exit_confirm_title": "Exit chapter?",
+  "exit_confirm_body": "Press Enter to exit to the terminal, or Esc to keep playing.",
+  "projector_skip_hint": "Press Enter to skip ahead. Esc closes.",
+  "projector_title_prefix": "Projector",
+  "error_prefix": "Error:",
+  "response_worker_disconnected": "response worker disconnected.",
+  "menu_unavailable": "That menu is no longer available.",
+  "npc_tick_soft_error": "{actor_name} goes still, listening to the dark.",
+  "action_bar": {
+    "actions": [
+      {
+        "id": "look",
+        "label": "Look"
+      },
+      {
+        "id": "move",
+        "label": "Move"
+      },
+      {
+        "id": "speak",
+        "label": "Talk"
+      }
+    ]
+  },
+  "shell_menu": {
+    "items": [
+      {
+        "id": "resume",
+        "label": "Resume"
+      },
+      {
+        "id": "settings",
+        "label": "Settings",
+        "children": [
+          {
+            "id": "language",
+            "label": "Language"
+          },
+          {
+            "id": "about",
+            "label": "About"
+          }
+        ]
+      },
+      {
+        "id": "exit",
+        "label": "Exit"
+      }
+    ]
+  },
+  "look_panel_title": "Look",
+  "talk_panel_title": "Talk",
+  "talk_panel_prompt": "Who do you want to talk to?",
+  "dynamic_menu_context_label": "Context"
+}

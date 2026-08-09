@@ -1,0 +1,17 @@
+[
+  {
+    "id": "lightless-cell",
+    "title": "A Lightless Cell",
+    "summary": "A stone room with no door and no light, where Layla wakes.",
+    "inspect_text": "Cold stone closes in on every side. The air is stale and still. You can feel a wall at the edge of the dark \u2014 worked stone, smooth and seamless, with no door, no grate, no crack of light. When you run your fingers along it you find the faintest seam, like a line scored into a board before a stone is played. The room has edges. Somewhere, it has a way out.",
+    "features": [
+      {
+        "id": "stone-wall",
+        "label": "seam in the stone wall",
+        "aliases": ["wall", "stone", "seam", "crack"],
+        "inspect_text": "The stone here is scored by a hairline seam, straight as a ruled line. It could be the work of a door, a panel, or a board that has not yet been played."
+      }
+    ],
+    "exits": []
+  }
+]

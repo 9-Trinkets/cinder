@@ -1,0 +1,21 @@
+{
+  "id": "layla",
+  "title": "Layla",
+  "start_room_id": "lightless-cell",
+  "start_time_minutes": 60,
+  "intro_text": "You wake on cold stone. The dark is absolute, and behind your eyes there is a wall where your memories should be \u2014 you know your name is Layla, and almost nothing else. You know you play a game with black and white stones, and that the rules of it feel truer than any memory you can reach.\n\nSomewhere above, something grinds against the dark. A door you cannot see stands somewhere ahead. The only light is the thought that this place has edges, and that edges can be held.\n\nExplore the room you are in. Look around. Find a way forward.",
+  "help_text": "Commands:\n{available_commands}\n- Tab switches focus between command and transcript\n- Up/Down recalls command history when command is focused\n- Up/Down scrolls the transcript when transcript is focused\n- PageUp/PageDown/Home/End scroll the transcript faster\n- ? opens the menu",
+  "prompt_context": {
+    "setting_notes": [
+      "Layla is inside a sealed, lightless room made of fitted stone, somewhere underground.",
+      "The world outside the room is unknown; the board she will come to explore is entirely shrouded.",
+      "The room feels like a single square on a much larger board.",
+      "Layla has no memory of how she arrived here."
+    ],
+    "subtext_notes": [
+      "Layla wakes without memory but with the deep, certain rules of Go in her hands.",
+      "She moves carefully, treating unknown darkness the way she would treat a board she cannot see.",
+      "She is alone, and the silence is doing something to her."
+    ]
+  }
+}
