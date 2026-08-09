@@ -66,14 +66,10 @@ pub fn available_packs() -> Vec<String> {
 }
 
 pub fn load_pack_settings(pack_id: &str) -> Result<ContentSettingsDefinition, Box<dyn Error>> {
-    let settings_path = pack_dir(pack_id).join("settings.json");
-    match fs::read_to_string(&settings_path) {
-        Ok(contents) => Ok(serde_json::from_str(&contents)?),
-        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
-            Ok(ContentSettingsDefinition::default())
-        }
-        Err(error) => Err(error.into()),
-    }
+    Ok(
+        read_optional_path::<ContentSettingsDefinition>(&pack_dir(pack_id).join("settings.json"))?
+            .unwrap_or_default(),
+    )
 }
 
 pub fn load_pack_from_dir(path: &Path) -> Result<ContentPack, Box<dyn Error>> {
@@ -84,61 +80,35 @@ pub fn load_pack_from_dir_with_locale(
     path: &Path,
     locale: Option<&str>,
 ) -> Result<ContentPack, Box<dyn Error>> {
-    let settings_path = path.join("settings.json");
-    let settings = match fs::read_to_string(&settings_path) {
-        Ok(contents) => serde_json::from_str(&contents)?,
-        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {
-            ContentSettingsDefinition::default()
-        }
-        Err(error) => return Err(error.into()),
-    };
+    let settings = read_optional_path::<ContentSettingsDefinition>(&path.join("settings.json"))?
+        .unwrap_or_default();
     let effective_locale = match locale {
         Some(locale) if !locale.trim().is_empty() => locale.to_string(),
         _ if !settings.default_language.trim().is_empty() => settings.default_language.clone(),
         _ => DEFAULT_LOCALE.to_string(),
     };
-    let ui_text_path = localized_file_path(path, &effective_locale, "ui.json");
-    let ui_text = match fs::read_to_string(&ui_text_path) {
-        Ok(contents) => serde_json::from_str(&contents)?,
-        Err(error) if error.kind() == std::io::ErrorKind::NotFound => UiTextDefinition::default(),
-        Err(error) => return Err(error.into()),
-    };
-    let system_text_path = localized_file_path(path, &effective_locale, "system.json");
-    let system_text: SystemTextDefinition =
-        serde_json::from_str(&fs::read_to_string(&system_text_path)?)?;
-    let opening_path = localized_file_path_with_fallback(
-        path,
-        &effective_locale,
-        "opening.json",
-        Some("scenario.json"),
-    );
-    let opening: OpeningDefinition = serde_json::from_str(&fs::read_to_string(&opening_path)?)?;
-    let beats: BeatsDefinition = read_optional_localized_json_with_fallback(
-        path,
-        &effective_locale,
-        "beats.json",
-        Some("objective_flow.json"),
-    )?
-    .unwrap_or_default();
-    let menus = read_optional_localized_json::<Vec<OpeningMenuDefinition>>(
-        path,
-        &effective_locale,
-        "menus.json",
-    )?
-    .unwrap_or_default();
-    let mut movies = read_optional_localized_json_with_fallback::<Vec<OpeningMovieDefinition>>(
-        path,
-        &effective_locale,
-        "movies.json",
-        Some("projector_sequences.json"),
-    )?
-    .unwrap_or_default();
-    let presentation = read_optional_localized_json::<PresentationDefinition>(
-        path,
-        &effective_locale,
-        "presentation.json",
-    )?
-    .unwrap_or_default();
+    let paths = LocalizedPaths::new(path, &effective_locale);
+    let ui_text = paths
+        .read_optional::<UiTextDefinition>("ui.json")?
+        .unwrap_or_default();
+    let system_text = paths.read_required::<SystemTextDefinition>("system.json")?;
+    let opening = paths
+        .read_required_with_fallback::<OpeningDefinition>("opening.json", Some("scenario.json"))?;
+    let beats = paths
+        .read_optional_with_fallback::<BeatsDefinition>("beats.json", Some("objective_flow.json"))?
+        .unwrap_or_default();
+    let menus = paths
+        .read_optional::<Vec<OpeningMenuDefinition>>("menus.json")?
+        .unwrap_or_default();
+    let mut movies = paths
+        .read_optional_with_fallback::<Vec<OpeningMovieDefinition>>(
+            "movies.json",
+            Some("projector_sequences.json"),
+        )?
+        .unwrap_or_default();
+    let presentation = paths
+        .read_optional::<PresentationDefinition>("presentation.json")?
+        .unwrap_or_default();
     for movie in &mut movies {
         for frame in &mut movie.frames {
             if !frame.text_path.is_empty() {
@@ -146,28 +116,9 @@ pub fn load_pack_from_dir_with_locale(
             }
         }
     }
-    let rooms: Vec<RoomDefinition> = serde_json::from_str(&fs::read_to_string(
-        localized_file_path(path, &effective_locale, "rooms.json"),
-    )?)?;
-    let actors: Vec<ActorDefinition> = serde_json::from_str(&fs::read_to_string(
-        localized_file_path(path, &effective_locale, "actors.json"),
-    )?)?;
-    let act_cast: Vec<ActCastMember> = actors
-        .iter()
-        .filter_map(|actor| {
-            let ac = actor.act_cast.as_ref()?;
-            Some(ActCastMember {
-                id: actor.id.clone(),
-                name: actor.name.clone(),
-                actor_id: actor.id.clone(),
-                inspect_blurb: ac.inspect_blurb.clone(),
-                intro_blurb: ac.intro_blurb.clone(),
-                return_blurb: ac.return_blurb.clone(),
-                metadata: ac.metadata.clone(),
-                actor_stats: actor.initial_stats.clone(),
-            })
-        })
-        .collect();
+    let rooms = paths.read_required::<Vec<RoomDefinition>>("rooms.json")?;
+    let actors = paths.read_required::<Vec<ActorDefinition>>("actors.json")?;
+    let act_cast = collect_act_cast(&actors);
     let stats = read_optional_json::<StatsDefinition>(path, "stats.json")?.unwrap_or_default();
     let commands =
         read_optional_json::<CommandsDefinition>(path, "commands.json")?.unwrap_or_default();
@@ -192,28 +143,10 @@ pub fn load_pack_from_dir_with_locale(
         )?
         .unwrap_or_default();
 
-    let room_index: HashMap<String, usize> = rooms
-        .iter()
-        .enumerate()
-        .map(|(i, r)| (r.id.clone(), i))
-        .collect();
-    let actor_index: HashMap<String, usize> = actors
-        .iter()
-        .enumerate()
-        .map(|(i, a)| (a.id.clone(), i))
-        .collect();
-    let command_index: HashMap<String, usize> = commands
-        .actions
-        .iter()
-        .enumerate()
-        .map(|(i, c)| (c.id.clone(), i))
-        .collect();
-    let affordance_index: HashMap<String, usize> = affordances
-        .actions
-        .iter()
-        .enumerate()
-        .map(|(i, a)| (a.id.clone(), i))
-        .collect();
+    let room_index = build_index(&rooms, |room| &room.id);
+    let actor_index = build_index(&actors, |actor| &actor.id);
+    let command_index = build_index(&commands.actions, |command| &command.id);
+    let affordance_index = build_index(&affordances.actions, |affordance| &affordance.id);
 
     let stage_ids: Vec<&str> = beats.stages.iter().map(|s| s.id.as_str()).collect();
 
@@ -643,47 +576,15 @@ pub fn available_locales(path: &Path) -> Result<Vec<LocaleOption>, Box<dyn Error
     Ok(locales)
 }
 
-fn read_optional_localized_json<T: DeserializeOwned>(
-    path: &Path,
-    locale: &str,
-    file_name: &str,
-) -> Result<Option<T>, Box<dyn Error>> {
-    let file_path = localized_file_path(path, locale, file_name);
-    match fs::read_to_string(file_path) {
-        Ok(contents) => Ok(Some(serde_json::from_str(&contents)?)),
-        Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(None),
-        Err(error) => Err(error.into()),
-    }
-}
-
 fn read_optional_json<T: DeserializeOwned>(
     path: &Path,
     file_name: &str,
 ) -> Result<Option<T>, Box<dyn Error>> {
-    match fs::read_to_string(path.join(file_name)) {
-        Ok(contents) => Ok(Some(serde_json::from_str(&contents)?)),
-        Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(None),
-        Err(error) => Err(error.into()),
-    }
+    read_optional_path(&path.join(file_name))
 }
 
 fn read_json<T: DeserializeOwned>(path: &Path, file_name: &str) -> Result<T, Box<dyn Error>> {
-    let contents = fs::read_to_string(path.join(file_name))?;
-    Ok(serde_json::from_str(&contents)?)
-}
-
-fn read_optional_localized_json_with_fallback<T: DeserializeOwned>(
-    path: &Path,
-    locale: &str,
-    file_name: &str,
-    fallback_file_name: Option<&str>,
-) -> Result<Option<T>, Box<dyn Error>> {
-    let file_path = localized_file_path_with_fallback(path, locale, file_name, fallback_file_name);
-    match fs::read_to_string(file_path) {
-        Ok(contents) => Ok(Some(serde_json::from_str(&contents)?)),
-        Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(None),
-        Err(error) => Err(error.into()),
-    }
+    read_required_path(&path.join(file_name))
 }
 
 fn localized_file_path_with_fallback(
@@ -720,4 +621,95 @@ fn localized_file_path(path: &Path, locale: &str, file_name: &str) -> PathBuf {
         return default_localized;
     }
     path.join(file_name)
+}
+
+fn read_optional_path<T: DeserializeOwned>(path: &Path) -> Result<Option<T>, Box<dyn Error>> {
+    match fs::read_to_string(path) {
+        Ok(contents) => Ok(Some(serde_json::from_str(&contents)?)),
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(None),
+        Err(error) => Err(error.into()),
+    }
+}
+
+fn read_required_path<T: DeserializeOwned>(path: &Path) -> Result<T, Box<dyn Error>> {
+    let contents = fs::read_to_string(path)?;
+    Ok(serde_json::from_str(&contents)?)
+}
+
+fn collect_act_cast(actors: &[ActorDefinition]) -> Vec<ActCastMember> {
+    actors
+        .iter()
+        .filter_map(|actor| {
+            let act_cast = actor.act_cast.as_ref()?;
+            Some(ActCastMember {
+                id: actor.id.clone(),
+                name: actor.name.clone(),
+                actor_id: actor.id.clone(),
+                inspect_blurb: act_cast.inspect_blurb.clone(),
+                intro_blurb: act_cast.intro_blurb.clone(),
+                return_blurb: act_cast.return_blurb.clone(),
+                metadata: act_cast.metadata.clone(),
+                actor_stats: actor.initial_stats.clone(),
+            })
+        })
+        .collect()
+}
+
+fn build_index<T, F>(items: &[T], id: F) -> HashMap<String, usize>
+where
+    F: Fn(&T) -> &str,
+{
+    items
+        .iter()
+        .enumerate()
+        .map(|(index, item)| (id(item).to_string(), index))
+        .collect()
+}
+
+struct LocalizedPaths<'a> {
+    root: &'a Path,
+    locale: &'a str,
+}
+
+impl<'a> LocalizedPaths<'a> {
+    fn new(root: &'a Path, locale: &'a str) -> Self {
+        Self { root, locale }
+    }
+
+    fn read_optional<T: DeserializeOwned>(
+        &self,
+        file_name: &str,
+    ) -> Result<Option<T>, Box<dyn Error>> {
+        read_optional_path(&localized_file_path(self.root, self.locale, file_name))
+    }
+
+    fn read_required<T: DeserializeOwned>(&self, file_name: &str) -> Result<T, Box<dyn Error>> {
+        read_required_path(&localized_file_path(self.root, self.locale, file_name))
+    }
+
+    fn read_optional_with_fallback<T: DeserializeOwned>(
+        &self,
+        file_name: &str,
+        fallback_file_name: Option<&str>,
+    ) -> Result<Option<T>, Box<dyn Error>> {
+        read_optional_path(&localized_file_path_with_fallback(
+            self.root,
+            self.locale,
+            file_name,
+            fallback_file_name,
+        ))
+    }
+
+    fn read_required_with_fallback<T: DeserializeOwned>(
+        &self,
+        file_name: &str,
+        fallback_file_name: Option<&str>,
+    ) -> Result<T, Box<dyn Error>> {
+        read_required_path(&localized_file_path_with_fallback(
+            self.root,
+            self.locale,
+            file_name,
+            fallback_file_name,
+        ))
+    }
 }
