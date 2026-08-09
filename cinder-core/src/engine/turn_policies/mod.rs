@@ -236,7 +236,12 @@ fn active_bundles<'a>(
     state: &WorldState,
 ) -> impl Iterator<Item = &'a RuleBundleDefinition> {
     content.rule_bundles.bundles.iter().filter(|bundle| {
-        !bundle.stage_id.is_empty() && state.active_objective_stage_ids.contains(&bundle.stage_id)
+        bundle_stage_ids(bundle).into_iter().any(|stage_id| {
+            state
+                .active_objective_stage_ids
+                .iter()
+                .any(|active| active == stage_id)
+        })
     })
 }
 
@@ -246,27 +251,49 @@ fn bundle_applies_to_actor(
     bundle: &RuleBundleDefinition,
     actor_id: &str,
 ) -> bool {
-    let Some(stage) = content
-        .beats
-        .stages
-        .iter()
-        .find(|stage| stage.id == bundle.stage_id)
-    else {
-        return true;
-    };
-    if stage.target_actor_story_var.is_empty() {
+    let active_stages = bundle_stage_ids(bundle)
+        .into_iter()
+        .filter(|stage_id| {
+            state
+                .active_objective_stage_ids
+                .iter()
+                .any(|active| active == *stage_id)
+        })
+        .filter_map(|stage_id| {
+            content
+                .beats
+                .stages
+                .iter()
+                .find(|stage| stage.id == *stage_id)
+        })
+        .collect::<Vec<_>>();
+    if active_stages.is_empty() {
         return true;
     }
-    state
-        .story_vars
-        .get(&stage.target_actor_story_var)
-        .map(|ids| ids.split(',').any(|id| id.trim() == actor_id))
-        .unwrap_or(false)
+    if active_stages
+        .iter()
+        .all(|stage| stage.target_actor_story_var.is_empty())
+    {
+        return true;
+    }
+    active_stages.iter().any(|stage| {
+        !stage.target_actor_story_var.is_empty()
+            && state
+                .story_vars
+                .get(&stage.target_actor_story_var)
+                .map(|ids| ids.split(',').any(|id| id.trim() == actor_id))
+                .unwrap_or(false)
+    })
 }
 
 pub(crate) fn clear_inactive_bundle_state(content: &ContentPack, state: &mut WorldState) {
     for bundle in content.rule_bundles.bundles.iter().filter(|bundle| {
-        bundle.stage_id.is_empty() || !state.active_objective_stage_ids.contains(&bundle.stage_id)
+        !bundle_stage_ids(bundle).into_iter().any(|stage_id| {
+            state
+                .active_objective_stage_ids
+                .iter()
+                .any(|active| active == stage_id)
+        })
     }) {
         for actor in &content.actors {
             state
@@ -280,6 +307,14 @@ pub(crate) fn clear_inactive_bundle_state(content: &ContentPack, state: &mut Wor
                 .values_mut()
                 .remove(&bundle_progress_story_var_key(&bundle.id, &progress.key));
         }
+    }
+}
+
+fn bundle_stage_ids(bundle: &RuleBundleDefinition) -> Vec<&str> {
+    if bundle.stage_ids.is_empty() {
+        vec![bundle.stage_id.as_str()]
+    } else {
+        bundle.stage_ids.iter().map(String::as_str).collect()
     }
 }
 
@@ -702,5 +737,78 @@ mod tests {
         apply_actor_turn_policies(&content, &state, &mut request);
 
         assert_eq!(request.affordances[0].command_id, "edit");
+    }
+
+    #[test]
+    fn multi_stage_bundle_progress_persists_across_included_stages() {
+        let content = load_named_pack("isla", Some("en")).expect("load isla");
+        let mut state = WorldState::new(&content);
+        state.active_objective_stage_ids = vec!["reading-quarter".to_string()];
+        state.story_vars.set_unchecked(
+            "rule_bundle:progress:reading-service-ritual:coffee_ready",
+            "true",
+        );
+
+        state.active_objective_stage_ids = vec!["request-quarter".to_string()];
+        clear_inactive_bundle_state(&content, &mut state);
+
+        assert_eq!(
+            state
+                .story_vars
+                .get("rule_bundle:progress:reading-service-ritual:coffee_ready"),
+            Some("true")
+        );
+    }
+
+    #[test]
+    fn ella_snack_commands_unlock_in_sequence() {
+        let content = load_named_pack("ella", Some("en")).expect("load ella");
+        let mut state = WorldState::new(&content);
+        state.active_objective_stage_ids = vec!["snack-prep".to_string()];
+
+        let cook = content.command("cook_snack").expect("cook snack command");
+        let serve = content.command("serve_snack").expect("serve snack command");
+
+        assert!(matches!(
+            command_availability_issue(&content, &state, cook),
+            Some(CommandAvailabilityIssue::MissingBundleProgress(_))
+        ));
+        assert!(matches!(
+            command_availability_issue(&content, &state, serve),
+            Some(CommandAvailabilityIssue::MissingBundleProgress(_))
+        ));
+
+        state.story_vars.set_unchecked(
+            "rule_bundle:progress:late-night-snack-prep:ingredients_prepped",
+            "true",
+        );
+        assert!(command_availability_issue(&content, &state, cook).is_none());
+        assert!(matches!(
+            command_availability_issue(&content, &state, serve),
+            Some(CommandAvailabilityIssue::MissingBundleProgress(_))
+        ));
+
+        state.story_vars.set_unchecked(
+            "rule_bundle:progress:late-night-snack-prep:snack_cooked",
+            "true",
+        );
+        assert!(command_availability_issue(&content, &state, serve).is_none());
+    }
+
+    #[test]
+    fn isla_serve_coffee_is_available_during_reading_stage_once_brewed() {
+        let content = load_named_pack("isla", Some("en")).expect("load isla");
+        let mut state = WorldState::new(&content);
+        state.active_objective_stage_ids = vec!["reading-quarter".to_string()];
+        state.story_vars.set_unchecked(
+            "rule_bundle:progress:reading-service-ritual:coffee_ready",
+            "true",
+        );
+
+        let command = content
+            .command("serve_coffee")
+            .expect("serve coffee command");
+
+        assert!(command_availability_issue(&content, &state, command).is_none());
     }
 }

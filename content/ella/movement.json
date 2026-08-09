@@ -52,6 +52,11 @@
           "required_story_var": "movie_title",
           "any_active_stage_ids": ["dad-brings-fruit"],
           "target_behavior": "stay"
+        },
+        {
+          "target_room_id": "kitchen",
+          "any_active_stage_ids": ["movie-afterglow"],
+          "target_behavior": "stay"
         }
       ]
     }

@@ -10,6 +10,7 @@ use crate::engine::state::{
     WorldState, display_actor_name, remap_story_actor_id, render_dynamic_story_text,
     story_actor_matches,
 };
+use crate::engine::turn_policies::actor_bundle_guidance_notes;
 
 pub(crate) struct PendingMenuDialogue<'a> {
     pub actor_id: &'a str,
@@ -63,7 +64,12 @@ where
                 && story_actor_matches(state, pending.actor_id, &menu.actor_id)
         })
         .collect::<Vec<_>>();
-    let objective_notes = current_objective_beat_notes(content, state, Some(pending.actor_id));
+    let mut objective_notes = current_objective_beat_notes(content, state, Some(pending.actor_id));
+    objective_notes.extend(actor_bundle_guidance_notes(
+        content,
+        state,
+        pending.actor_id,
+    ));
     let current_time_note = content.render_template(
         &content.system_text.prompt_time_note,
         &[("current_time", state.current_time_label().as_str())],

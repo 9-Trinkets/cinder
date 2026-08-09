@@ -1,0 +1,37 @@
+{
+  "bundles": [
+    {
+      "id": "reading-service-ritual",
+      "stage_ids": [
+        "intake",
+        "reading-quarter",
+        "request-quarter",
+        "reading-half",
+        "request-half",
+        "reading-three-quarters",
+        "request-three-quarters",
+        "ready-to-finish"
+      ],
+      "progress": {
+        "keys": [
+          {
+            "key": "coffee_ready",
+            "label": "coffee ready"
+          },
+          {
+            "key": "tea_ready",
+            "label": "tea ready"
+          },
+          {
+            "key": "pastry_ready",
+            "label": "pastry ready"
+          }
+        ]
+      },
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "Use the cafe's service rituals deliberately. Warm drinks and food should support the emotional work, not distract from it.",
+        "prompt_note_if_others_incomplete": ""
+      }
+    }
+  ]
+}

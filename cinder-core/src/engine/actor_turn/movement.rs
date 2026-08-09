@@ -394,4 +394,24 @@ mod tests {
             } if actor_id == "aera" && from_room_id == "kitchen"
         )));
     }
+
+    #[test]
+    fn ella_dad_returns_to_kitchen_after_movie() {
+        let content = load_named_pack("ella", Some("en")).expect("load ella");
+        let rules = content.movement_rules("dad");
+        let mut state = WorldState::new(&content);
+        state.active_objective_stage_ids = vec!["movie-afterglow".to_string()];
+        state
+            .actor_room_overrides
+            .insert("dad".to_string(), "living-room".to_string());
+
+        assert_eq!(
+            required_movement_target_room_id(&state, &rules, "living-room").as_deref(),
+            Some("kitchen")
+        );
+        assert_eq!(
+            required_movement_target_room_id(&state, &rules, "kitchen"),
+            None
+        );
+    }
 }

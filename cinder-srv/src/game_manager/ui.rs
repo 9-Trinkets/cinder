@@ -72,12 +72,16 @@ pub struct MenuOptionData {
 pub struct ActiveMenuData {
     pub prompt: String,
     pub options: Vec<MenuOptionData>,
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "is_zero")]
     pub max_selections: usize,
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "is_zero")]
     pub min_selections: usize,
-    #[serde(default)]
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub selected_ids: Vec<String>,
+}
+
+fn is_zero(value: &usize) -> bool {
+    *value == 0
 }
 
 #[derive(Clone, Serialize)]
@@ -509,7 +513,9 @@ fn append_stage_menu_overflow_actions(
 
 #[cfg(test)]
 mod tests {
-    use super::{OverflowAction, append_stage_menu_overflow_actions};
+    use super::{
+        ActiveMenuData, MenuOptionData, OverflowAction, append_stage_menu_overflow_actions,
+    };
     use cinder_core::content::loader::load_named_pack;
 
     #[test]
@@ -574,5 +580,25 @@ mod tests {
         );
 
         assert!(overflow.is_empty());
+    }
+
+    #[test]
+    fn zero_selection_counts_are_omitted_from_menu_payload() {
+        let payload = serde_json::to_value(ActiveMenuData {
+            prompt: "Choose".to_string(),
+            options: vec![MenuOptionData {
+                id: "1".to_string(),
+                title: "First".to_string(),
+                menu_text: "First option".to_string(),
+            }],
+            max_selections: 0,
+            min_selections: 0,
+            selected_ids: vec![],
+        })
+        .expect("serialize active menu");
+
+        assert!(payload.get("max_selections").is_none());
+        assert!(payload.get("min_selections").is_none());
+        assert!(payload.get("selected_ids").is_none());
     }
 }

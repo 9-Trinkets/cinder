@@ -713,6 +713,7 @@ fn command_used_signal_can_advance_stage_after_bundle_completion_and_clears_prog
         bundles: vec![RuleBundleDefinition {
             id: "dinner-prep-cook-and-check-in".to_string(),
             stage_id: "dinner-prep".to_string(),
+            stage_ids: vec![],
             progress: RuleBundleProgressDefinition {
                 keys: vec![RuleBundleProgressKeyDefinition {
                     key: "meal_ready".to_string(),

@@ -1,0 +1,44 @@
+{
+  "bundles": [
+    {
+      "id": "movie-night-choice",
+      "stage_ids": ["talk-with-mom", "choose-movie"],
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "This scene is about settling into movie night with Mom. Keep the exchange warm, domestic, and pointed toward actually choosing a movie instead of wandering away from the setup.",
+        "prompt_note_if_others_incomplete": ""
+      }
+    },
+    {
+      "id": "late-night-snack-choice",
+      "stage_ids": ["talk-with-dad", "choose-snack"],
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "This kitchen scene is about choosing a small late-night snack with Dad. Keep the energy practical and affectionate, and move toward deciding what to make together.",
+        "prompt_note_if_others_incomplete": ""
+      }
+    },
+    {
+      "id": "late-night-snack-prep",
+      "stage_ids": ["snack-prep"],
+      "progress": {
+        "keys": [
+          {
+            "key": "ingredients_prepped",
+            "label": "ingredients prepped"
+          },
+          {
+            "key": "snack_cooked",
+            "label": "snack cooked"
+          },
+          {
+            "key": "snack_served",
+            "label": "snack served"
+          }
+        ]
+      },
+      "guidance": {
+        "prompt_note_if_actor_incomplete": "The snack scene should actually happen in the kitchen: prep what you need, cook it, then plate it so the emotional beat has a real shared task underneath it.",
+        "prompt_note_if_others_incomplete": ""
+      }
+    }
+  ]
+}

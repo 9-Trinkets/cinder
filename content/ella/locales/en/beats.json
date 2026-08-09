@@ -110,14 +110,26 @@
         "menu_selected:late-night-snack"
       ],
       "next_stage_ids": [
+        "snack-prep"
+      ]
+    },
+    {
+      "id": "snack-prep",
+      "summary": "Make {snack_title} with Dad.",
+      "beat_note": "The choice is made. Now let the kitchen scene do what it came to do: prep the snack, work side by side with Dad, and let the small teamwork carry the emotional weight.",
+      "update_message": "Make {snack_title} with Dad. Prep the ingredients, cook it, and plate it before the night slips back into pure conversation.",
+      "advance_signals": [
+        "snack_ready"
+      ],
+      "next_stage_ids": [
         "snack-afterglow"
       ]
     },
     {
       "id": "snack-afterglow",
-      "summary": "You and Dad just made {snack_title} together. Stay with him for a bit.",
-      "beat_note": "The kitchen still smells like {snack_title}, and the two of you are lingering in the shared memory of making it together.",
-      "update_message": "You and Dad just made {snack_title} together. Stay with him for a bit.",
+      "summary": "You and Dad have {snack_title} ready. Stay with him for a bit.",
+      "beat_note": "The kitchen still smells like {snack_title}, and the two of you are lingering in the softer quiet that comes after actually making something together.",
+      "update_message": "You and Dad have {snack_title} ready. Stay with him for a bit.",
       "elapsed_minutes": 25,
       "advance_signals": [
         "room_left:kitchen"

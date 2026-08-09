@@ -366,22 +366,37 @@ pub fn load_pack_from_dir_with_locale(
         if bundle.id.trim().is_empty() {
             return Err("rule_bundles.json bundles entries require non-empty id".into());
         }
-        if bundle.stage_id.trim().is_empty() {
+        let bundle_stage_ids = if bundle.stage_ids.is_empty() {
+            if bundle.stage_id.trim().is_empty() {
+                Vec::new()
+            } else {
+                vec![bundle.stage_id.as_str()]
+            }
+        } else {
+            bundle
+                .stage_ids
+                .iter()
+                .map(String::as_str)
+                .collect::<Vec<_>>()
+        };
+        if bundle_stage_ids.is_empty() {
             return Err(format!(
-                "rule_bundles.json bundle '{}' requires non-empty stage_id",
+                "rule_bundles.json bundle '{}' requires at least one stage id",
                 bundle.id
             )
             .into());
         }
-        require_known_id(
-            &bundle.stage_id,
-            &stage_ids,
-            &format!(
-                "rule_bundles.json bundle '{}' stage_id '{}'",
-                bundle.id, bundle.stage_id
-            ),
-            "beats.stages",
-        )?;
+        for stage_id in bundle_stage_ids {
+            require_known_id(
+                stage_id,
+                &stage_ids,
+                &format!(
+                    "rule_bundles.json bundle '{}' stage id '{}'",
+                    bundle.id, stage_id
+                ),
+                "beats.stages",
+            )?;
+        }
         let mut seen_progress_keys = std::collections::BTreeSet::new();
         for progress in &bundle.progress.keys {
             if progress.key.trim().is_empty() {

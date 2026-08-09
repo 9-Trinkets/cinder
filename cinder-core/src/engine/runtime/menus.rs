@@ -11,6 +11,7 @@ use crate::engine::state::{
     TurnOutcome, display_actor_name, remap_story_actor_id, render_dynamic_story_text,
     resolved_actor_prompt_context,
 };
+use crate::engine::turn_policies::actor_bundle_guidance_notes;
 use std::error::Error;
 
 impl CinderRuntime {
@@ -245,6 +246,11 @@ impl CinderRuntime {
                         &state,
                         Some(actor.id.as_str()),
                     );
+                    beat_notes.extend(actor_bundle_guidance_notes(
+                        self.content.as_ref(),
+                        &state,
+                        actor.id.as_str(),
+                    ));
                     beat_notes.extend(
                         menu.narrative_lines
                             .iter()

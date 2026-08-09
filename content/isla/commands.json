@@ -145,7 +145,20 @@
         "event_text": "You pull a fresh shot of espresso. Steam curls upward as the machine settles into a low hum. A fresh cup waits on the counter.",
         "hook_id": "isla.coffee_brewed",
         "signals": ["beverage_ready"]
-      }
+      },
+      "available_during": ["intake", "reading-quarter", "request-quarter", "reading-half", "request-half", "reading-three-quarters", "request-three-quarters", "ready-to-finish"],
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "reading-service-ritual",
+          "key": "coffee_ready"
+        }
+      ],
+      "blocked_by_bundle_progress": [
+        {
+          "bundle_id": "reading-service-ritual",
+          "key": "coffee_ready"
+        }
+      ]
     },
     {
       "id": "brew_tea",
@@ -166,7 +179,20 @@
         "event_text": "You pour hot water over loose leaves and let them steep. The fragrance curls through the cafe. A warm cup steeps by the kettle.",
         "hook_id": "isla.tea_brewed",
         "signals": ["beverage_ready"]
-      }
+      },
+      "available_during": ["intake", "reading-quarter", "request-quarter", "reading-half", "request-half", "reading-three-quarters", "request-three-quarters", "ready-to-finish"],
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "reading-service-ritual",
+          "key": "tea_ready"
+        }
+      ],
+      "blocked_by_bundle_progress": [
+        {
+          "bundle_id": "reading-service-ritual",
+          "key": "tea_ready"
+        }
+      ]
     },
     {
       "id": "bake_pastry",
@@ -187,7 +213,20 @@
         "event_text": "You slide a tray from the small oven. The pastry case fills with the scent of butter and something warm and simple. A small plate rests on the counter.",
         "hook_id": "isla.pastry_baked",
         "signals": ["pastry_ready"]
-      }
+      },
+      "available_during": ["intake", "reading-quarter", "request-quarter", "reading-half", "request-half", "reading-three-quarters", "request-three-quarters", "ready-to-finish"],
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "reading-service-ritual",
+          "key": "pastry_ready"
+        }
+      ],
+      "blocked_by_bundle_progress": [
+        {
+          "bundle_id": "reading-service-ritual",
+          "key": "pastry_ready"
+        }
+      ]
     },
     {
       "id": "serve_coffee",
@@ -208,7 +247,20 @@
         "event_text": "You bring a fresh cup to Noa's side of the table. She wraps both hands around it, the warmth settling into her palms.",
         "hook_id": "isla.coffee_served",
         "signals": ["coffee_served"]
-      }
+      },
+      "available_during": ["intake", "reading-quarter", "request-quarter", "reading-half", "request-half", "reading-three-quarters", "request-three-quarters", "ready-to-finish"],
+      "required_bundle_progress": [
+        {
+          "bundle_id": "reading-service-ritual",
+          "key": "coffee_ready"
+        }
+      ],
+      "clears_bundle_progress": [
+        {
+          "bundle_id": "reading-service-ritual",
+          "key": "coffee_ready"
+        }
+      ]
     },
     {
       "id": "serve_tea",
@@ -229,7 +281,20 @@
         "event_text": "You set a warm cup beside Noa's elbow. The steam rises slowly, carrying a floral note through the air.",
         "hook_id": "isla.tea_served",
         "signals": ["tea_served"]
-      }
+      },
+      "available_during": ["intake", "reading-quarter", "request-quarter", "reading-half", "request-half", "reading-three-quarters", "request-three-quarters", "ready-to-finish"],
+      "required_bundle_progress": [
+        {
+          "bundle_id": "reading-service-ritual",
+          "key": "tea_ready"
+        }
+      ],
+      "clears_bundle_progress": [
+        {
+          "bundle_id": "reading-service-ritual",
+          "key": "tea_ready"
+        }
+      ]
     },
     {
       "id": "serve_pastry",
@@ -250,7 +315,20 @@
         "event_text": "You place a small plate near Noa, the pastry still warm. She glances at it and her focus softens.",
         "hook_id": "isla.pastry_served",
         "signals": ["pastry_served"]
-      }
+      },
+      "available_during": ["intake", "reading-quarter", "request-quarter", "reading-half", "request-half", "reading-three-quarters", "request-three-quarters", "ready-to-finish"],
+      "required_bundle_progress": [
+        {
+          "bundle_id": "reading-service-ritual",
+          "key": "pastry_ready"
+        }
+      ],
+      "clears_bundle_progress": [
+        {
+          "bundle_id": "reading-service-ritual",
+          "key": "pastry_ready"
+        }
+      ]
     },
     {
       "id": "drink",
