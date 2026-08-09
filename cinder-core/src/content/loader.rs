@@ -178,8 +178,7 @@ pub fn load_pack_from_dir_with_locale(
         read_optional_json::<MovementConfigDefinition>(path, "movement.json")?.unwrap_or_default();
     let speech =
         read_optional_json::<SpeechConfigDefinition>(path, "speech.json")?.unwrap_or_default();
-    let rule_bundles =
-        read_optional_json::<RuleBundlesDefinition>(path, "rule_bundles.json")?.unwrap_or_default();
+    let rule_bundles = read_json::<RuleBundlesDefinition>(path, "rule_bundles.json")?;
     let hooks =
         read_optional_json::<BTreeMap<String, Value>>(path, "hooks.json")?.unwrap_or_default();
     let speech_intents: SpeechIntentsConfig =
@@ -366,19 +365,11 @@ pub fn load_pack_from_dir_with_locale(
         if bundle.id.trim().is_empty() {
             return Err("rule_bundles.json bundles entries require non-empty id".into());
         }
-        let bundle_stage_ids = if bundle.stage_ids.is_empty() {
-            if bundle.stage_id.trim().is_empty() {
-                Vec::new()
-            } else {
-                vec![bundle.stage_id.as_str()]
-            }
-        } else {
-            bundle
-                .stage_ids
-                .iter()
-                .map(String::as_str)
-                .collect::<Vec<_>>()
-        };
+        let bundle_stage_ids = bundle
+            .stage_ids
+            .iter()
+            .map(String::as_str)
+            .collect::<Vec<_>>();
         if bundle_stage_ids.is_empty() {
             return Err(format!(
                 "rule_bundles.json bundle '{}' requires at least one stage id",
@@ -674,6 +665,11 @@ fn read_optional_json<T: DeserializeOwned>(
         Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(None),
         Err(error) => Err(error.into()),
     }
+}
+
+fn read_json<T: DeserializeOwned>(path: &Path, file_name: &str) -> Result<T, Box<dyn Error>> {
+    let contents = fs::read_to_string(path.join(file_name))?;
+    Ok(serde_json::from_str(&contents)?)
 }
 
 fn read_optional_localized_json_with_fallback<T: DeserializeOwned>(

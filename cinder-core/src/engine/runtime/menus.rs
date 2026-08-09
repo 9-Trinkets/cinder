@@ -54,7 +54,13 @@ impl CinderRuntime {
             }
         }
         for item in &self.content.items {
-            if state.has_item(&item.id) {
+            if state.has_item(&item.id)
+                || state.has_item_in_storage(
+                    &item.id,
+                    crate::content::types::ItemStorageTarget::CurrentRoom,
+                    current_room_id,
+                )
+            {
                 options.push(LookOptionItem {
                     id: format!("item:{}", item.id),
                     label: item.label.clone(),

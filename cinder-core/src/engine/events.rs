@@ -1,3 +1,4 @@
+use crate::content::types::ItemStorageTarget;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -123,6 +124,7 @@ pub enum WorldEvent {
     ActEnded,
     ItemAcquired {
         item_id: String,
+        storage: ItemStorageTarget,
     },
     ConsumableCreated {
         room_id: String,
@@ -131,8 +133,9 @@ pub enum WorldEvent {
     },
     ItemConsumed {
         item_id: String,
-        consumer_id: String,
-        consumer_name: String,
+        storage: ItemStorageTarget,
+        consumer_id: Option<String>,
+        consumer_name: Option<String>,
     },
     ItemObserved {
         item_id: String,

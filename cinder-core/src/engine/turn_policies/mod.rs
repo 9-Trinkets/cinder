@@ -311,11 +311,7 @@ pub(crate) fn clear_inactive_bundle_state(content: &ContentPack, state: &mut Wor
 }
 
 fn bundle_stage_ids(bundle: &RuleBundleDefinition) -> Vec<&str> {
-    if bundle.stage_ids.is_empty() {
-        vec![bundle.stage_id.as_str()]
-    } else {
-        bundle.stage_ids.iter().map(String::as_str).collect()
-    }
+    bundle.stage_ids.iter().map(String::as_str).collect()
 }
 
 fn actor_is_complete(state: &WorldState, bundle: &RuleBundleDefinition, actor_id: &str) -> bool {

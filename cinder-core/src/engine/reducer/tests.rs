@@ -4,11 +4,11 @@ use crate::content::loader::load_default_pack;
 use crate::content::types::{
     ActorDefinition, ActorPromptContext, AdvanceCondition, AdvanceSignal, BeatDefinition,
     BeatsDefinition, CommandDefinition, CommandEffect, CommandInputMode, CommandTargetMode,
-    CommandsDefinition, ContentPack, ContentSettingsDefinition, OpeningDefinition,
-    PresentationDefinition, RoomDefinition, RoomExitDefinition, RoomFeatureDefinition,
-    RuleBundleCompletionDefinition, RuleBundleDefinition, RuleBundleGuidanceDefinition,
-    RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition, RuleBundleProgressRef,
-    RuleBundlesDefinition, StatDefinition, StatsDefinition,
+    CommandsDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition, ItemStorageTarget,
+    OpeningDefinition, PresentationDefinition, RoomDefinition, RoomExitDefinition,
+    RoomFeatureDefinition, RuleBundleCompletionDefinition, RuleBundleDefinition,
+    RuleBundleGuidanceDefinition, RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition,
+    RuleBundleProgressRef, RuleBundlesDefinition, StatDefinition, StatsDefinition,
 };
 use crate::engine::state::ConversationMemoryKind;
 use serde_json::json;
@@ -270,10 +270,15 @@ fn test_command() -> CommandDefinition {
         player_command: None,
         allowed_rooms: vec![],
         creates_item: None,
+        creates_item_storage: ItemStorageTarget::PlayerInventory,
         creates_consumable: None,
         consumes_item: None,
+        consumes_item_storage: ItemStorageTarget::PlayerInventory,
         requires_any: vec![],
+        requires_any_storage: ItemStorageTarget::PlayerInventory,
         consumes_any: vec![],
+        consumes_any_storage: ItemStorageTarget::PlayerInventory,
+        item_consumer: Default::default(),
         required_bundle_progress: vec![],
         blocked_by_bundle_progress: vec![],
         sets_bundle_progress: vec![],
@@ -712,8 +717,7 @@ fn command_used_signal_can_advance_stage_after_bundle_completion_and_clears_prog
     pack.rule_bundles = RuleBundlesDefinition {
         bundles: vec![RuleBundleDefinition {
             id: "dinner-prep-cook-and-check-in".to_string(),
-            stage_id: "dinner-prep".to_string(),
-            stage_ids: vec![],
+            stage_ids: vec!["dinner-prep".to_string()],
             progress: RuleBundleProgressDefinition {
                 keys: vec![RuleBundleProgressKeyDefinition {
                     key: "meal_ready".to_string(),
@@ -764,5 +768,71 @@ fn command_used_signal_can_advance_stage_after_bundle_completion_and_clears_prog
             .story_vars
             .get("rule_bundle:progress:dinner-prep-cook-and-check-in:meal_ready"),
         None
+    );
+}
+
+#[test]
+fn item_events_can_store_and_consume_items_in_current_room() {
+    let mut pack = reducer_test_pack();
+    pack.items = vec![ItemDefinition {
+        id: "coffee".to_string(),
+        label: "coffee".to_string(),
+        description: "Fresh coffee.".to_string(),
+    }];
+    rebuild_test_pack_indexes(&mut pack);
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = KITCHEN_ID.to_string();
+
+    apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::ItemAcquired {
+            item_id: "coffee".to_string(),
+            storage: ItemStorageTarget::CurrentRoom,
+        })],
+    );
+
+    assert!(state.has_item_in_storage("coffee", ItemStorageTarget::CurrentRoom, KITCHEN_ID,));
+
+    apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::ItemConsumed {
+            item_id: "coffee".to_string(),
+            storage: ItemStorageTarget::CurrentRoom,
+            consumer_id: None,
+            consumer_name: None,
+        })],
+    );
+
+    assert!(!state.has_item_in_storage("coffee", ItemStorageTarget::CurrentRoom, KITCHEN_ID,));
+}
+
+#[test]
+fn item_events_keep_player_inventory_behavior_unchanged() {
+    let mut pack = reducer_test_pack();
+    pack.items = vec![ItemDefinition {
+        id: "tea".to_string(),
+        label: "tea".to_string(),
+        description: "Hot tea.".to_string(),
+    }];
+    rebuild_test_pack_indexes(&mut pack);
+    let mut state = WorldState::new(&pack);
+
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::ItemAcquired {
+            item_id: "tea".to_string(),
+            storage: ItemStorageTarget::PlayerInventory,
+        })],
+    );
+
+    assert!(state.has_item("tea"));
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|line| line == "You have tea ready.")
     );
 }

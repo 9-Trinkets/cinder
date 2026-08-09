@@ -97,6 +97,23 @@ pub struct CreatesConsumableSpec {
     pub resolve_from_target: bool,
 }
 
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
+#[serde(rename_all = "snake_case")]
+pub enum ItemStorageTarget {
+    #[default]
+    PlayerInventory,
+    CurrentRoom,
+}
+
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
+#[serde(rename_all = "snake_case")]
+pub enum ItemConsumerTarget {
+    #[default]
+    None,
+    Player,
+    FirstActorInRoom,
+}
+
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 pub struct RuleBundleProgressRef {
     #[serde(default)]
@@ -138,13 +155,23 @@ pub struct CommandDefinition {
     #[serde(default)]
     pub creates_item: Option<String>,
     #[serde(default)]
+    pub creates_item_storage: ItemStorageTarget,
+    #[serde(default)]
     pub creates_consumable: Option<CreatesConsumableSpec>,
     #[serde(default)]
     pub consumes_item: Option<String>,
     #[serde(default)]
+    pub consumes_item_storage: ItemStorageTarget,
+    #[serde(default)]
     pub requires_any: Vec<String>,
     #[serde(default)]
+    pub requires_any_storage: ItemStorageTarget,
+    #[serde(default)]
     pub consumes_any: Vec<String>,
+    #[serde(default)]
+    pub consumes_any_storage: ItemStorageTarget,
+    #[serde(default)]
+    pub item_consumer: ItemConsumerTarget,
     #[serde(default)]
     pub required_bundle_progress: Vec<RuleBundleProgressRef>,
     #[serde(default)]

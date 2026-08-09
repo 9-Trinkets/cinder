@@ -10,7 +10,7 @@ use super::tick::{
     advance_actor_stats_on_tick, advance_house_progress_objectives,
     advance_stat_threshold_objectives, increment_shared_room_safety,
 };
-use crate::content::types::ContentPack;
+use crate::content::types::{ContentPack, ItemStorageTarget};
 use crate::engine::commands::{player_command_help_text, player_command_suggestions};
 use crate::engine::events::ObservationMode;
 use crate::engine::hook_ids;
@@ -656,14 +656,21 @@ pub(super) fn handle_item_acquired(
     state: &mut WorldState,
     content: &ContentPack,
     item_id: &str,
+    storage: ItemStorageTarget,
     lines: &mut Vec<String>,
 ) {
     let label = content
         .item(item_id)
         .map(|i| i.label.as_str())
         .unwrap_or(item_id);
-    state.add_item(item_id);
-    lines.push(format!("You have {label} ready."));
+    let room_id = state.current_room_id.clone();
+    state.add_item_to_storage(item_id, storage, &room_id);
+    match storage {
+        ItemStorageTarget::PlayerInventory => lines.push(format!("You have {label} ready.")),
+        ItemStorageTarget::CurrentRoom => {
+            lines.push(format!("The {label} is ready here."));
+        }
+    }
 }
 
 pub(super) fn handle_consumable_created(
@@ -686,19 +693,23 @@ pub(super) fn handle_item_consumed(
     state: &mut WorldState,
     content: &ContentPack,
     item_id: &str,
-    consumer_id: &str,
-    consumer_name: &str,
+    storage: ItemStorageTarget,
+    consumer_id: Option<&str>,
+    consumer_name: Option<&str>,
     lines: &mut Vec<String>,
 ) {
     let label = content
         .item(item_id)
         .map(|i| i.label.as_str())
         .unwrap_or(item_id);
-    if state.remove_item(item_id) {
-        if consumer_id == "player" {
-            lines.push(format!("You drink the {label}."));
-        } else {
+    let room_id = state.current_room_id.clone();
+    if state.remove_item_from_storage(item_id, storage, &room_id) {
+        if consumer_id == Some("player") {
+            lines.push(format!("You finish the {label}."));
+        } else if let Some(consumer_name) = consumer_name {
             lines.push(format!("{consumer_name} accepts the {label}."));
+        } else {
+            lines.push(format!("You use the {label}."));
         }
     }
 }

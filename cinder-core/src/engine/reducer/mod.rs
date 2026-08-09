@@ -238,8 +238,8 @@ pub fn apply_events(
             WorldEvent::ActEnded => {
                 handle_act_ended(state, content, &mut lines);
             }
-            WorldEvent::ItemAcquired { item_id } => {
-                handle_item_acquired(state, content, item_id, &mut lines);
+            WorldEvent::ItemAcquired { item_id, storage } => {
+                handle_item_acquired(state, content, item_id, *storage, &mut lines);
             }
             WorldEvent::ConsumableCreated {
                 room_id,
@@ -257,6 +257,7 @@ pub fn apply_events(
             }
             WorldEvent::ItemConsumed {
                 item_id,
+                storage,
                 consumer_id,
                 consumer_name,
             } => {
@@ -264,8 +265,9 @@ pub fn apply_events(
                     state,
                     content,
                     item_id,
-                    consumer_id,
-                    consumer_name,
+                    *storage,
+                    consumer_id.as_deref(),
+                    consumer_name.as_deref(),
                     &mut lines,
                 );
             }

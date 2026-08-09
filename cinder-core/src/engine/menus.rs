@@ -224,14 +224,6 @@ pub(crate) fn build_menu_choice_events(
         title: option.title.clone(),
     }];
     events.extend(
-        menu.actor_relocations
-            .iter()
-            .map(|relocation| WorldEvent::ActorRelocated {
-                actor_id: relocation.actor_id.clone(),
-                to_room_id: relocation.to_room_id.clone(),
-            }),
-    );
-    events.extend(
         menu.narrative_lines
             .iter()
             .map(|line| WorldEvent::NarrativeLine {

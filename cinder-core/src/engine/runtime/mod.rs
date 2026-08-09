@@ -743,6 +743,18 @@ impl CinderRuntime {
         Ok(state.has_item(item_id))
     }
 
+    pub fn has_item_in_storage(
+        &self,
+        item_id: &str,
+        storage: crate::content::types::ItemStorageTarget,
+    ) -> Result<bool, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for inventory")?;
+        Ok(state.has_item_in_storage(item_id, storage, &state.current_room_id))
+    }
+
     pub fn inventory_items(&self) -> Result<HashMap<String, u32>, Box<dyn Error>> {
         let state = self
             .state
@@ -1284,6 +1296,8 @@ mod tests {
         let locale_dir = base.join("locales").join("en");
         fs::create_dir_all(&locale_dir).expect("create locale dir");
         fs::write(base.join("settings.json"), "{}").expect("write settings");
+        fs::write(base.join("rule_bundles.json"), r#"{ "bundles": [] }"#)
+            .expect("write rule bundles");
         fs::write(locale_dir.join("ui.json"), "{}").expect("write ui");
         fs::write(locale_dir.join("system.json"), minimal_system_text_json())
             .expect("write system");

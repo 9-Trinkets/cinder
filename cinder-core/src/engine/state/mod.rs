@@ -1,5 +1,5 @@
 use crate::content::types::{
-    ContentPack, OpeningMenuOptionDefinition, RoomDefinition, StatDefinition,
+    ContentPack, ItemStorageTarget, OpeningMenuOptionDefinition, RoomDefinition, StatDefinition,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet, HashMap};
@@ -64,6 +64,8 @@ pub struct WorldState {
     pub last_transcript_line: Option<String>,
     #[serde(default)]
     pub player_inventory: HashMap<String, u32>,
+    #[serde(default)]
+    pub room_item_stock: BTreeMap<String, u32>,
     #[serde(default)]
     pub act_series: Option<ActSeriesState>,
 }
@@ -150,6 +152,7 @@ impl WorldState {
             transcript: Vec::new(),
             last_transcript_line: None,
             player_inventory: HashMap::new(),
+            room_item_stock: BTreeMap::new(),
             act_series: None,
         }
     }
@@ -591,6 +594,73 @@ impl WorldState {
         has
     }
 
+    pub fn has_item_in_storage(
+        &self,
+        item_id: &str,
+        storage: ItemStorageTarget,
+        current_room_id: &str,
+    ) -> bool {
+        self.item_count_in_storage(item_id, storage, current_room_id) > 0
+    }
+
+    pub fn item_count_in_storage(
+        &self,
+        item_id: &str,
+        storage: ItemStorageTarget,
+        current_room_id: &str,
+    ) -> u32 {
+        match storage {
+            ItemStorageTarget::PlayerInventory => self.item_count(item_id),
+            ItemStorageTarget::CurrentRoom => self
+                .room_item_stock
+                .get(&room_item_key(current_room_id, item_id))
+                .copied()
+                .unwrap_or(0),
+        }
+    }
+
+    pub fn add_item_to_storage(
+        &mut self,
+        item_id: &str,
+        storage: ItemStorageTarget,
+        current_room_id: &str,
+    ) {
+        match storage {
+            ItemStorageTarget::PlayerInventory => self.add_item(item_id),
+            ItemStorageTarget::CurrentRoom => {
+                *self
+                    .room_item_stock
+                    .entry(room_item_key(current_room_id, item_id))
+                    .or_insert(0) += 1;
+            }
+        }
+    }
+
+    pub fn remove_item_from_storage(
+        &mut self,
+        item_id: &str,
+        storage: ItemStorageTarget,
+        current_room_id: &str,
+    ) -> bool {
+        match storage {
+            ItemStorageTarget::PlayerInventory => self.remove_item(item_id),
+            ItemStorageTarget::CurrentRoom => {
+                let key = room_item_key(current_room_id, item_id);
+                let mut removed = false;
+                if let Some(count) = self.room_item_stock.get_mut(&key) {
+                    if *count > 0 {
+                        *count -= 1;
+                        removed = true;
+                    }
+                }
+                if let Some(0) = self.room_item_stock.get(&key) {
+                    self.room_item_stock.remove(&key);
+                }
+                removed
+            }
+        }
+    }
+
     pub fn mark_actor_observed_room(&mut self, actor_id: &str, room_id: &str) {
         self.actor_observed_room_ids
             .entry(actor_id.to_string())
@@ -605,6 +675,10 @@ fn feature_key(room_id: &str, feature_id: &str) -> String {
 
 fn consumable_key(room_id: &str, feature_id: &str, consumable_id: &str) -> String {
     format!("{room_id}::{feature_id}::{consumable_id}")
+}
+
+fn room_item_key(room_id: &str, item_id: &str) -> String {
+    format!("{room_id}::{item_id}")
 }
 
 pub const MAX_CONVERSATION_RECENT_LINES: usize = 4;

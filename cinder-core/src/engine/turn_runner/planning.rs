@@ -1,6 +1,7 @@
 use super::types::{PendingDialogue, PlannedTurn};
 use crate::content::types::{
-    CommandDefinition, CommandEffect, CommandOutcomeMode, ContentPack, PlayerCommandTargetMode,
+    CommandDefinition, CommandEffect, CommandOutcomeMode, ContentPack, ItemConsumerTarget,
+    PlayerCommandTargetMode,
 };
 use crate::engine::commands::{resolve_actor_reference_input, unknown_target_token};
 use crate::engine::dialogue_grounding::viewer_participant_id;
@@ -48,6 +49,18 @@ fn content_event_for_command(
     }
 }
 
+fn first_actor_in_room<'a>(
+    content: &'a ContentPack,
+    context: &PlanningContext<'_>,
+) -> Option<&'a crate::content::types::ActorDefinition> {
+    content.actors.iter().find(|actor| {
+        context
+            .planner_state
+            .actor_room_id(&actor.id, &actor.room_id)
+            == context.current_room_id
+    })
+}
+
 pub(super) fn plan_content_command(
     content: &ContentPack,
     command: &CommandDefinition,
@@ -86,28 +99,23 @@ pub(super) fn plan_content_command(
 
     // Check item requirement (consumes_item, consumes_any, or requires_any)
     if let Some(item_id) = &command.consumes_item {
-        if !context.planner_state.has_item(item_id) {
+        if !context.planner_state.has_item_in_storage(
+            item_id,
+            command.consumes_item_storage,
+            context.current_room_id,
+        ) {
             let label = content
                 .item(item_id)
                 .map(|i| i.label.as_str())
                 .unwrap_or(item_id);
             planned.events.push(WorldEvent::ActionRejected {
-                message: format!("You don't have any {label} to serve."),
+                message: format!("You don't have any {label} ready."),
             });
             return false;
         }
-        // Check target actor is in the same room
-        let actors_here: Vec<_> = content
-            .actors
-            .iter()
-            .filter(|actor| {
-                context
-                    .planner_state
-                    .actor_room_id(&actor.id, &actor.room_id)
-                    == context.current_room_id
-            })
-            .collect();
-        if actors_here.is_empty() {
+        if command.item_consumer == ItemConsumerTarget::FirstActorInRoom
+            && first_actor_in_room(content, context).is_none()
+        {
             planned.events.push(WorldEvent::ActionRejected {
                 message: "There is no one here to serve.".to_string(),
             });
@@ -120,12 +128,32 @@ pub(super) fn plan_content_command(
             .iter()
             .chain(command.consumes_any.iter())
             .collect();
-        let has_any = all_required
-            .iter()
-            .any(|id| context.planner_state.has_item(id));
+        let has_any = all_required.iter().any(|id| {
+            let storage = if command
+                .consumes_any
+                .iter()
+                .any(|candidate| candidate == *id)
+            {
+                command.consumes_any_storage
+            } else {
+                command.requires_any_storage
+            };
+            context
+                .planner_state
+                .has_item_in_storage(id, storage, context.current_room_id)
+        });
         if !has_any {
             planned.events.push(WorldEvent::ActionRejected {
                 message: "You don't have anything to consume.".to_string(),
+            });
+            return false;
+        }
+        if !command.consumes_any.is_empty()
+            && command.item_consumer == ItemConsumerTarget::FirstActorInRoom
+            && first_actor_in_room(content, context).is_none()
+        {
+            planned.events.push(WorldEvent::ActionRejected {
+                message: "There is no one here to serve.".to_string(),
             });
             return false;
         }
@@ -163,6 +191,7 @@ pub(super) fn plan_content_command(
     if let Some(item_id) = &command.creates_item {
         planned.events.push(WorldEvent::ItemAcquired {
             item_id: item_id.clone(),
+            storage: command.creates_item_storage,
         });
     }
     if let Some(spec) = &command.creates_consumable {
@@ -198,33 +227,44 @@ pub(super) fn plan_content_command(
         }
     }
     if let Some(item_id) = &command.consumes_item {
-        // Use the first actor in the room as the recipient
-        let recipient = content
-            .actors
-            .iter()
-            .find(|actor| {
-                context
-                    .planner_state
-                    .actor_room_id(&actor.id, &actor.room_id)
-                    == context.current_room_id
-            })
-            .expect("actor should be in room");
+        let (consumer_id, consumer_name) = match command.item_consumer {
+            ItemConsumerTarget::None => (None, None),
+            ItemConsumerTarget::Player => (Some("player".to_string()), Some("You".to_string())),
+            ItemConsumerTarget::FirstActorInRoom => {
+                let recipient =
+                    first_actor_in_room(content, context).expect("actor should be in room");
+                (Some(recipient.id.clone()), Some(recipient.name.clone()))
+            }
+        };
         planned.events.push(WorldEvent::ItemConsumed {
             item_id: item_id.clone(),
-            consumer_id: recipient.id.clone(),
-            consumer_name: recipient.name.clone(),
+            storage: command.consumes_item_storage,
+            consumer_id,
+            consumer_name,
         });
     }
     if !command.consumes_any.is_empty() {
-        if let Some(item_id) = command
-            .consumes_any
-            .iter()
-            .find(|id| context.planner_state.has_item(id))
-        {
+        if let Some(item_id) = command.consumes_any.iter().find(|id| {
+            context.planner_state.has_item_in_storage(
+                id,
+                command.consumes_any_storage,
+                context.current_room_id,
+            )
+        }) {
+            let (consumer_id, consumer_name) = match command.item_consumer {
+                ItemConsumerTarget::None => (None, None),
+                ItemConsumerTarget::Player => (Some("player".to_string()), Some("You".to_string())),
+                ItemConsumerTarget::FirstActorInRoom => {
+                    let recipient =
+                        first_actor_in_room(content, context).expect("actor should be in room");
+                    (Some(recipient.id.clone()), Some(recipient.name.clone()))
+                }
+            };
             planned.events.push(WorldEvent::ItemConsumed {
                 item_id: item_id.clone(),
-                consumer_id: "player".to_string(),
-                consumer_name: "You".to_string(),
+                storage: command.consumes_any_storage,
+                consumer_id,
+                consumer_name,
             });
         }
     }
@@ -273,7 +313,9 @@ pub(super) fn plan_observe_target(
             room_id: context.current_room_id.to_string(),
             feature_id: feature.id.clone(),
         });
-    } else if let Some(item) = content.resolve_item_in_inventory(context.planner_state, target) {
+    } else if let Some(item) =
+        content.resolve_item_in_scope(context.planner_state, context.current_room_id, target)
+    {
         planned.events.push(WorldEvent::ItemObserved {
             item_id: item.id.clone(),
         });
@@ -285,6 +327,7 @@ pub(super) fn plan_observe_target(
             ),
         });
     }
+
     false
 }
 

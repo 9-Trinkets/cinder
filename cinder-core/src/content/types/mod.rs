@@ -383,8 +383,6 @@ pub struct OpeningMenuDefinition {
     #[serde(default)]
     pub multi_selection_host_var_keys: Vec<String>,
     #[serde(default)]
-    pub actor_relocations: Vec<ActorRelocationDefinition>,
-    #[serde(default)]
     pub narrative_lines: Vec<String>,
     #[serde(default)]
     pub options: Vec<OpeningMenuOptionDefinition>,
@@ -447,8 +445,8 @@ mod command_defs;
 pub use command_defs::{
     AffordanceDefinition, AffordancesDefinition, CommandDefinition, CommandEffect,
     CommandInputMode, CommandOutcomeMode, CommandTargetMode, CommandsDefinition,
-    ContentEventDefinition, PlayerCommandInputMetadata, PlayerCommandMetadata,
-    PlayerCommandTargetMode, RuleBundleProgressRef,
+    ContentEventDefinition, ItemConsumerTarget, ItemStorageTarget, PlayerCommandInputMetadata,
+    PlayerCommandMetadata, PlayerCommandTargetMode, RuleBundleProgressRef,
 };
 
 mod content_pack;

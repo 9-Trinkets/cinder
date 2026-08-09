@@ -104,14 +104,20 @@ impl ContentPack {
         self.items.iter().find(|item| item.id == item_id)
     }
 
-    pub fn resolve_item_in_inventory<'a>(
+    pub fn resolve_item_in_scope<'a>(
         &'a self,
         state: &WorldState,
+        current_room_id: &str,
         raw_target: &str,
     ) -> Option<&'a ItemDefinition> {
         let target = raw_target.trim().to_ascii_lowercase();
         self.items.iter().find(|item| {
-            state.has_item(&item.id)
+            (state.has_item(&item.id)
+                || state.has_item_in_storage(
+                    &item.id,
+                    super::ItemStorageTarget::CurrentRoom,
+                    current_room_id,
+                ))
                 && (item.id.eq_ignore_ascii_case(&target)
                     || item.label.eq_ignore_ascii_case(&target))
         })

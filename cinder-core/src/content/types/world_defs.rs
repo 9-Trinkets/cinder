@@ -56,8 +56,6 @@ pub struct RuleBundleDefinition {
     #[serde(default)]
     pub id: String,
     #[serde(default)]
-    pub stage_id: String,
-    #[serde(default)]
     pub stage_ids: Vec<String>,
     #[serde(default)]
     pub progress: RuleBundleProgressDefinition,

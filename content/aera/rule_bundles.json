@@ -2,7 +2,7 @@
   "bundles": [
     {
       "id": "first-meeting-lounge-intros",
-      "stage_id": "introduce-everyone-first-evening",
+      "stage_ids": ["introduce-everyone-first-evening"],
       "completion": {
         "mark_actor_complete_on": ["speech_to_room"]
       },
@@ -19,7 +19,7 @@
     },
     {
       "id": "dinner-prep-cook-and-check-in",
-      "stage_id": "dinner-prep",
+      "stage_ids": ["dinner-prep"],
       "progress": {
         "keys": [
           {
@@ -136,7 +136,7 @@
     },
     {
       "id": "share-dinner-eat-and-react",
-      "stage_id": "share-dinner-in-kitchen",
+      "stage_ids": ["share-dinner-in-kitchen"],
       "completion": {
         "mark_actor_complete_on": []
       },
@@ -169,7 +169,7 @@
     },
     {
       "id": "bedroom-debrief-gossip",
-      "stage_id": "debrief-in-bedrooms",
+      "stage_ids": ["debrief-in-bedrooms"],
       "completion": {
         "mark_actor_complete_on": []
       },
@@ -198,7 +198,7 @@
     },
     {
       "id": "day2-breakfast-prep",
-      "stage_id": "day2-breakfast-prep",
+      "stage_ids": ["day2-breakfast-prep"],
       "progress": {
         "keys": [
           {
@@ -282,7 +282,7 @@
     },
     {
       "id": "day2-share-breakfast",
-      "stage_id": "day2-share-breakfast",
+      "stage_ids": ["day2-share-breakfast"],
       "completion": {
         "mark_actor_complete_on": []
       },
@@ -315,56 +315,7 @@
     },
     {
       "id": "day2-hands-on-activities",
-      "stage_id": "day2-event-a",
-      "completion": {
-        "mark_actor_complete_on": []
-      },
-      "guidance": {
-        "prompt_note_if_actor_incomplete": "You are in a small-group activity scene. Stay hands-on with the task in your room before drifting into pure banter. In the kitchen, make the cooking lesson feel collaborative and slightly intimate by demonstrating technique, tasting together, and finishing the dish. On the patio, let stretching and yoga create rhythm, exertion, and breath-led conversation. In the studio, do not leave the footage untouched: someone should edit, then watch what the activity reveals. The activity should unlock at least one candid moment that would not happen in an ordinary chat.",
-        "prompt_note_if_others_incomplete": "",
-        "prioritize": [
-          {
-            "command_id": "demonstrate_knife_work",
-            "target": "any"
-          },
-          {
-            "command_id": "taste_sauce",
-            "target": "any"
-          },
-          {
-            "command_id": "plate_dish",
-            "target": "any"
-          },
-          {
-            "command_id": "stretch",
-            "target": "any"
-          },
-          {
-            "command_id": "yoga",
-            "target": "any"
-          },
-          {
-            "command_id": "edit",
-            "target": "any"
-          },
-          {
-            "command_id": "watch",
-            "target": "any"
-          },
-          {
-            "command_id": "speak",
-            "target": "actor"
-          },
-          {
-            "command_id": "speak",
-            "target": "room"
-          }
-        ]
-      }
-    },
-    {
-      "id": "day2-hands-on-activities-b",
-      "stage_id": "day2-event-b",
+      "stage_ids": ["day2-event-a", "day2-event-b"],
       "completion": {
         "mark_actor_complete_on": []
       },

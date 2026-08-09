@@ -140,6 +140,7 @@
       },
       "allowed_rooms": ["kitchen"],
       "creates_item": "coffee",
+      "creates_item_storage": "player_inventory",
       "content_event": {
         "id": "isla.coffee_brewed",
         "event_text": "You pull a fresh shot of espresso. Steam curls upward as the machine settles into a low hum. A fresh cup waits on the counter.",
@@ -174,6 +175,7 @@
       },
       "allowed_rooms": ["kitchen"],
       "creates_item": "tea",
+      "creates_item_storage": "player_inventory",
       "content_event": {
         "id": "isla.tea_brewed",
         "event_text": "You pour hot water over loose leaves and let them steep. The fragrance curls through the cafe. A warm cup steeps by the kettle.",
@@ -208,6 +210,7 @@
       },
       "allowed_rooms": ["kitchen"],
       "creates_item": "pastry",
+      "creates_item_storage": "player_inventory",
       "content_event": {
         "id": "isla.pastry_baked",
         "event_text": "You slide a tray from the small oven. The pastry case fills with the scent of butter and something warm and simple. A small plate rests on the counter.",
@@ -242,6 +245,8 @@
       },
       "allowed_rooms": ["cafe"],
       "consumes_item": "coffee",
+      "consumes_item_storage": "player_inventory",
+      "item_consumer": "first_actor_in_room",
       "content_event": {
         "id": "isla.coffee_served",
         "event_text": "You bring a fresh cup to Noa's side of the table. She wraps both hands around it, the warmth settling into her palms.",
@@ -276,6 +281,8 @@
       },
       "allowed_rooms": ["cafe"],
       "consumes_item": "tea",
+      "consumes_item_storage": "player_inventory",
+      "item_consumer": "first_actor_in_room",
       "content_event": {
         "id": "isla.tea_served",
         "event_text": "You set a warm cup beside Noa's elbow. The steam rises slowly, carrying a floral note through the air.",
@@ -310,6 +317,8 @@
       },
       "allowed_rooms": ["cafe"],
       "consumes_item": "pastry",
+      "consumes_item_storage": "player_inventory",
+      "item_consumer": "first_actor_in_room",
       "content_event": {
         "id": "isla.pastry_served",
         "event_text": "You place a small plate near Noa, the pastry still warm. She glances at it and her focus softens.",
@@ -343,6 +352,8 @@
         "advances_time": false
       },
       "consumes_any": ["coffee", "tea"],
+      "consumes_any_storage": "player_inventory",
+      "item_consumer": "player",
       "content_event": {
         "id": "isla.beverage_consumed",
         "event_text": "The familiar rhythm of the cafe deepens. Steam rises, warmth settles.",
@@ -363,6 +374,8 @@
         "advances_time": false
       },
       "consumes_any": ["pastry"],
+      "consumes_any_storage": "player_inventory",
+      "item_consumer": "player",
       "content_event": {
         "id": "isla.pastry_consumed",
         "event_text": "The warm pastry breaks apart easily. The quiet is punctuated by small, unhurried sounds.",

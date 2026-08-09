@@ -292,16 +292,22 @@ pub(super) fn build_ui_snapshot(
                 return false;
             }
             if let Some(item_id) = &command.consumes_item
-                && !runtime.player_has_item(item_id).unwrap_or(false)
+                && !runtime
+                    .has_item_in_storage(item_id, command.consumes_item_storage)
+                    .unwrap_or(false)
             {
                 return false;
             }
             if !command.requires_any.is_empty() || !command.consumes_any.is_empty() {
-                let has_any = command
-                    .requires_any
-                    .iter()
-                    .chain(command.consumes_any.iter())
-                    .any(|id| runtime.player_has_item(id).unwrap_or(false));
+                let has_any = command.requires_any.iter().any(|id| {
+                    runtime
+                        .has_item_in_storage(id, command.requires_any_storage)
+                        .unwrap_or(false)
+                }) || command.consumes_any.iter().any(|id| {
+                    runtime
+                        .has_item_in_storage(id, command.consumes_any_storage)
+                        .unwrap_or(false)
+                });
                 if !has_any {
                     return false;
                 }
