@@ -55,7 +55,13 @@
         },
         {
           "target_room_id": "kitchen",
-          "any_active_stage_ids": ["movie-afterglow"],
+          "any_active_stage_ids": [
+            "movie-afterglow",
+            "go-to-kitchen",
+            "talk-with-dad",
+            "choose-snack",
+            "snack-afterglow"
+          ],
           "target_behavior": "stay"
         }
       ]

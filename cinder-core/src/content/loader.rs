@@ -2,8 +2,8 @@ use crate::content::types::{
     ActCastMember, ActorDefinition, AffordancesDefinition, BeatsDefinition, CommandsDefinition,
     ContentPack, ContentSettingsDefinition, ItemDefinition, MovementConfigDefinition,
     OpeningDefinition, OpeningMenuDefinition, OpeningMovieDefinition, PresentationDefinition,
-    RoomDefinition, RuleBundlesDefinition, SpeechConfigDefinition, SpeechIntentsConfig,
-    StatsDefinition, SystemTextDefinition, UiTextDefinition,
+    RoomDefinition, RuleBundleProgressRef, RuleBundlesDefinition, SpeechConfigDefinition,
+    SpeechIntentsConfig, StatsDefinition, SystemTextDefinition, UiTextDefinition,
 };
 use serde::de::DeserializeOwned;
 use serde_json::Value;
@@ -147,6 +147,14 @@ pub fn load_pack_from_dir_with_locale(
     let actor_index = build_index(&actors, |actor| &actor.id);
     let command_index = build_index(&commands.actions, |command| &command.id);
     let affordance_index = build_index(&affordances.actions, |affordance| &affordance.id);
+    let room_ids = rooms
+        .iter()
+        .map(|room| room.id.as_str())
+        .collect::<Vec<_>>();
+    let actor_ids = actors
+        .iter()
+        .map(|actor| actor.id.as_str())
+        .collect::<Vec<_>>();
 
     let stage_ids: Vec<&str> = beats.stages.iter().map(|s| s.id.as_str()).collect();
 
@@ -172,10 +180,7 @@ pub fn load_pack_from_dir_with_locale(
             if !config.initiator_actor_id.trim().is_empty() {
                 require_known_id(
                     &config.initiator_actor_id,
-                    &actors
-                        .iter()
-                        .map(|actor| actor.id.as_str())
-                        .collect::<Vec<_>>(),
+                    &actor_ids,
                     &format!(
                         "beat '{}' stage_assignment initiator_actor_id '{}'",
                         stage.id, config.initiator_actor_id
@@ -186,7 +191,7 @@ pub fn load_pack_from_dir_with_locale(
             if !config.selected_room_id.trim().is_empty() {
                 require_known_id(
                     &config.selected_room_id,
-                    &room_index.keys().map(String::as_str).collect::<Vec<_>>(),
+                    &room_ids,
                     &format!(
                         "beat '{}' stage_assignment selected_room_id '{}'",
                         stage.id, config.selected_room_id
@@ -197,7 +202,7 @@ pub fn load_pack_from_dir_with_locale(
             if !config.remaining_room_id.trim().is_empty() {
                 require_known_id(
                     &config.remaining_room_id,
-                    &room_index.keys().map(String::as_str).collect::<Vec<_>>(),
+                    &room_ids,
                     &format!(
                         "beat '{}' stage_assignment remaining_room_id '{}'",
                         stage.id, config.remaining_room_id
@@ -229,13 +234,11 @@ pub fn load_pack_from_dir_with_locale(
         }
     }
     for action in &affordances.actions {
-        if !command_index.contains_key(&action.command_id) {
-            return Err(format!(
-                "affordance '{}' command_id '{}' not found in commands",
-                action.id, action.command_id
-            )
-            .into());
-        }
+        require_known_command_id(
+            &action.command_id,
+            &format!("affordance '{}'", action.id),
+            &command_index,
+        )?;
     }
     for actor in &actors {
         if !room_index.contains_key(&actor.room_id) {
@@ -249,7 +252,7 @@ pub fn load_pack_from_dir_with_locale(
     for actor_id in movement.actors.keys() {
         require_known_id(
             actor_id,
-            &actors.iter().map(|a| a.id.as_str()).collect::<Vec<_>>(),
+            &actor_ids,
             &format!("movement.json actors key '{actor_id}'"),
             "actors",
         )?;
@@ -271,7 +274,7 @@ pub fn load_pack_from_dir_with_locale(
             if !rule.target_room_id.trim().is_empty() {
                 require_known_id(
                     &rule.target_room_id,
-                    &room_index.keys().map(String::as_str).collect::<Vec<_>>(),
+                    &room_ids,
                     &format!("{context} target_room_id '{}'", rule.target_room_id),
                     "rooms",
                 )?;
@@ -346,13 +349,11 @@ pub fn load_pack_from_dir_with_locale(
                 )
                 .into());
             }
-            if !command_index.contains_key(&priority.command_id) {
-                return Err(format!(
-                    "rule_bundles.json bundle '{}' prioritize command_id '{}' not found in commands",
-                    bundle.id, priority.command_id
-                )
-                .into());
-            }
+            require_known_command_id(
+                &priority.command_id,
+                &format!("rule_bundles.json bundle '{}' prioritize", bundle.id),
+                &command_index,
+            )?;
         }
         for (index, conditional) in bundle.guidance.conditional.iter().enumerate() {
             for priority in &conditional.prioritize {
@@ -364,15 +365,15 @@ pub fn load_pack_from_dir_with_locale(
                     )
                     .into());
                 }
-                if !command_index.contains_key(&priority.command_id) {
-                    return Err(format!(
-                        "rule_bundles.json bundle '{}' conditional guidance #{} prioritize command_id '{}' not found in commands",
+                require_known_command_id(
+                    &priority.command_id,
+                    &format!(
+                        "rule_bundles.json bundle '{}' conditional guidance #{} prioritize",
                         bundle.id,
-                        index + 1,
-                        priority.command_id
-                    )
-                    .into());
-                }
+                        index + 1
+                    ),
+                    &command_index,
+                )?;
             }
         }
     }
@@ -403,71 +404,36 @@ pub fn load_pack_from_dir_with_locale(
                 "beats.stages",
             )?;
         }
-        for progress in command
-            .required_bundle_progress
-            .iter()
-            .chain(command.blocked_by_bundle_progress.iter())
-            .chain(command.sets_bundle_progress.iter())
-            .chain(command.clears_bundle_progress.iter())
-        {
-            if progress.bundle_id.trim().is_empty() || progress.key.trim().is_empty() {
-                return Err(format!(
-                    "command '{}' bundle progress refs require non-empty bundle_id and key",
-                    command.id
-                )
-                .into());
-            }
-            let Some(keys) = bundle_progress_keys.get(progress.bundle_id.as_str()) else {
-                return Err(format!(
-                    "command '{}' bundle progress bundle_id '{}' not found in rule_bundles",
-                    command.id, progress.bundle_id
-                )
-                .into());
-            };
-            if !keys.contains(progress.key.as_str()) {
-                return Err(format!(
-                    "command '{}' bundle progress key '{}' not found in rule bundle '{}'",
-                    command.id, progress.key, progress.bundle_id
-                )
-                .into());
-            }
-        }
+        validate_bundle_progress_refs(
+            &format!("command '{}' bundle progress", command.id),
+            command
+                .required_bundle_progress
+                .iter()
+                .chain(command.blocked_by_bundle_progress.iter())
+                .chain(command.sets_bundle_progress.iter())
+                .chain(command.clears_bundle_progress.iter()),
+            &bundle_progress_keys,
+        )?;
         for bundle in &rule_bundles.bundles {
             for conditional in &bundle.guidance.conditional {
-                for progress in conditional
-                    .required_bundle_progress
-                    .iter()
-                    .chain(conditional.blocked_by_bundle_progress.iter())
-                {
-                    if progress.bundle_id.trim().is_empty() || progress.key.trim().is_empty() {
-                        return Err(format!(
-                            "rule_bundles.json bundle '{}' conditional guidance bundle progress refs require non-empty bundle_id and key",
-                            bundle.id
-                        )
-                        .into());
-                    }
-                    let Some(keys) = bundle_progress_keys.get(progress.bundle_id.as_str()) else {
-                        return Err(format!(
-                            "rule_bundles.json bundle '{}' conditional guidance bundle_id '{}' not found in rule_bundles",
-                            bundle.id, progress.bundle_id
-                        )
-                        .into());
-                    };
-                    if !keys.contains(progress.key.as_str()) {
-                        return Err(format!(
-                            "rule_bundles.json bundle '{}' conditional guidance key '{}' not found in rule bundle '{}'",
-                            bundle.id, progress.key, progress.bundle_id
-                        )
-                        .into());
-                    }
-                }
+                validate_bundle_progress_refs(
+                    &format!(
+                        "rule_bundles.json bundle '{}' conditional guidance bundle progress",
+                        bundle.id
+                    ),
+                    conditional
+                        .required_bundle_progress
+                        .iter()
+                        .chain(conditional.blocked_by_bundle_progress.iter()),
+                    &bundle_progress_keys,
+                )?;
             }
         }
     }
     for room_id in &movement.unreachable_rooms {
         require_known_id(
             room_id,
-            &room_index.keys().map(String::as_str).collect::<Vec<_>>(),
+            &room_ids,
             &format!("movement.json unreachable_rooms entry '{room_id}'"),
             "rooms",
         )?;
@@ -487,10 +453,7 @@ pub fn load_pack_from_dir_with_locale(
             }
             require_known_id(
                 &member.actor_id,
-                &actors
-                    .iter()
-                    .map(|actor| actor.id.as_str())
-                    .collect::<Vec<_>>(),
+                &actor_ids,
                 &format!(
                     "act_cast member '{}' actor_id '{}'",
                     member.id, member.actor_id
@@ -664,6 +627,45 @@ where
         .enumerate()
         .map(|(index, item)| (id(item).to_string(), index))
         .collect()
+}
+
+fn require_known_command_id(
+    command_id: &str,
+    subject: &str,
+    command_index: &HashMap<String, usize>,
+) -> Result<(), Box<dyn Error>> {
+    if command_index.contains_key(command_id) {
+        Ok(())
+    } else {
+        Err(format!("{subject} command_id '{command_id}' not found in commands").into())
+    }
+}
+
+fn validate_bundle_progress_refs<'a>(
+    owner: &str,
+    refs: impl IntoIterator<Item = &'a RuleBundleProgressRef>,
+    bundle_progress_keys: &BTreeMap<&str, std::collections::BTreeSet<&str>>,
+) -> Result<(), Box<dyn Error>> {
+    for progress in refs {
+        if progress.bundle_id.trim().is_empty() || progress.key.trim().is_empty() {
+            return Err(format!("{owner} refs require non-empty bundle_id and key").into());
+        }
+        let Some(keys) = bundle_progress_keys.get(progress.bundle_id.as_str()) else {
+            return Err(format!(
+                "{owner} bundle_id '{}' not found in rule_bundles",
+                progress.bundle_id
+            )
+            .into());
+        };
+        if !keys.contains(progress.key.as_str()) {
+            return Err(format!(
+                "{owner} key '{}' not found in rule bundle '{}'",
+                progress.key, progress.bundle_id
+            )
+            .into());
+        }
+    }
+    Ok(())
 }
 
 struct LocalizedPaths<'a> {

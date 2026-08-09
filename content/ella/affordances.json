@@ -74,35 +74,11 @@
       "visible_by_default": true
     },
     {
-      "id": "prep_snack_ingredients",
-      "group": "kitchen",
-      "prompt_verb": "prep",
-      "command_id": "prep_snack_ingredients",
-      "sort_order": 9,
-      "visible_by_default": true
-    },
-    {
-      "id": "cook_snack",
-      "group": "kitchen",
-      "prompt_verb": "cook",
-      "command_id": "cook_snack",
-      "sort_order": 10,
-      "visible_by_default": true
-    },
-    {
-      "id": "serve_snack",
-      "group": "kitchen",
-      "prompt_verb": "serve",
-      "command_id": "serve_snack",
-      "sort_order": 11,
-      "visible_by_default": true
-    },
-    {
       "id": "act",
       "group": "in_room",
       "prompt_verb": "do",
       "command_id": "act",
-      "sort_order": 12,
+      "sort_order": 9,
       "visible_by_default": true
     }
   ]

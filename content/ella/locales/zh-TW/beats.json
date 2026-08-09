@@ -88,12 +88,6 @@
       "summary": "跟爸爸決定要不要弄點宵夜。",
       "beat_note": "爸爸就在廚房，艾拉只要開口，今晚的宵夜就會真的開始。",
       "update_message": "跟爸爸決定要不要弄點宵夜。",
-      "actor_relocations": [
-        {
-          "actor_id": "dad",
-          "to_room_id": "kitchen"
-        }
-      ],
       "advance_signals": [
         "menu_opened:late-night-snack"
       ],
@@ -110,26 +104,14 @@
         "menu_selected:late-night-snack"
       ],
       "next_stage_ids": [
-        "snack-prep"
-      ]
-    },
-    {
-      "id": "snack-prep",
-      "summary": "跟爸爸一起把 {snack_title} 做出來。",
-      "beat_note": "既然已經選好了，就讓這場廚房戲真的發生：一起備料、一起動手，讓那種很小卻很熟悉的默契把情感帶出來。",
-      "update_message": "跟爸爸一起把 {snack_title} 做出來。先備料，再煮，最後裝盤，不要讓這一段只剩聊天。",
-      "advance_signals": [
-        "snack_ready"
-      ],
-      "next_stage_ids": [
         "snack-afterglow"
       ]
     },
     {
       "id": "snack-afterglow",
-      "summary": "你和爸爸已經把 {snack_title} 弄好了，再陪他待一會。",
-      "beat_note": "廚房裡還留著 {snack_title} 的香味，也留著剛一起動手完那種比較安靜、比較靠近的氣氛。",
-      "update_message": "你和爸爸已經把 {snack_title} 弄好了，再陪他待一會。",
+      "summary": "你和爸爸剛弄好 {snack_title}，再陪他待一會。",
+      "beat_note": "廚房裡還有 {snack_title} 的香味，你們兩個也還沒想這麼快散。",
+      "update_message": "你和爸爸剛弄好 {snack_title}，再陪他待一會。",
       "elapsed_minutes": 25,
       "advance_signals": [
         "room_left:kitchen"

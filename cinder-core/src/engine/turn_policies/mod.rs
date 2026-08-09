@@ -757,38 +757,19 @@ mod tests {
     }
 
     #[test]
-    fn ella_snack_commands_unlock_in_sequence() {
+    fn ella_snack_prep_is_not_exposed_as_authored_commands() {
         let content = load_named_pack("ella", Some("en")).expect("load ella");
-        let mut state = WorldState::new(&content);
-        state.active_objective_stage_ids = vec!["snack-prep".to_string()];
 
-        let cook = content.command("cook_snack").expect("cook snack command");
-        let serve = content.command("serve_snack").expect("serve snack command");
-
-        assert!(matches!(
-            command_availability_issue(&content, &state, cook),
-            Some(CommandAvailabilityIssue::MissingBundleProgress(_))
-        ));
-        assert!(matches!(
-            command_availability_issue(&content, &state, serve),
-            Some(CommandAvailabilityIssue::MissingBundleProgress(_))
-        ));
-
-        state.story_vars.set_unchecked(
-            "rule_bundle:progress:late-night-snack-prep:ingredients_prepped",
-            "true",
-        );
-        assert!(command_availability_issue(&content, &state, cook).is_none());
-        assert!(matches!(
-            command_availability_issue(&content, &state, serve),
-            Some(CommandAvailabilityIssue::MissingBundleProgress(_))
-        ));
-
-        state.story_vars.set_unchecked(
-            "rule_bundle:progress:late-night-snack-prep:snack_cooked",
-            "true",
-        );
-        assert!(command_availability_issue(&content, &state, serve).is_none());
+        for id in ["prep_snack_ingredients", "cook_snack", "serve_snack"] {
+            assert!(
+                content.command(id).is_none(),
+                "{id} should not exist as a command"
+            );
+            assert!(
+                content.affordance(id).is_none(),
+                "{id} should not exist as an affordance"
+            );
+        }
     }
 
     #[test]
