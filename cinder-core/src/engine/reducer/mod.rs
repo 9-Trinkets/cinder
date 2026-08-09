@@ -20,6 +20,7 @@ pub(crate) use self::observation::render_actor_speech_line;
 use crate::content::types::ContentPack;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
 use crate::engine::state::{GamePhase, WorldState};
+use crate::engine::turn_policies::apply_command_bundle_progress_effects;
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -259,6 +260,11 @@ pub fn apply_events(
             }
             WorldEvent::ItemObserved { item_id } => {
                 handle_item_observed(state, content, item_id, &mut lines);
+            }
+            WorldEvent::CommandBundleProgressApplied { command_id } => {
+                if let Some(command) = content.command(command_id) {
+                    apply_command_bundle_progress_effects(state, command);
+                }
             }
             WorldEvent::ContentEvent { event_id, payload } => {
                 apply_content_event(state, content, event_id, payload, &mut lines);

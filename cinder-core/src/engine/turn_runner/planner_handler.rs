@@ -240,7 +240,9 @@ mod tests {
     use super::{AggregatedTurn, build_planned_turn};
     use crate::content::loader::load_named_pack;
     use crate::engine::commands::parse_command;
+    use crate::engine::events::TimestampedWorldEvent;
     use crate::engine::events::WorldEvent;
+    use crate::engine::reducer::apply_events;
     use crate::engine::state::WorldSnapshot;
     use crate::engine::state::WorldState;
     use crate::engine::turn_runner::types::CommandSignal;
@@ -276,6 +278,80 @@ mod tests {
         )));
         assert!(
             !planned
+                .events
+                .iter()
+                .any(|event| matches!(event, WorldEvent::ActionRejected { .. }))
+        );
+    }
+
+    #[test]
+    fn isla_brewing_coffee_enables_serving_during_intake() {
+        let content = load_named_pack("isla", Some("en")).expect("load isla");
+        let mut state = WorldState::new(&content);
+        state.current_room_id = "kitchen".to_string();
+        state.active_objective_stage_ids = vec!["intake".to_string()];
+
+        let brew = AggregatedTurn {
+            command: CommandSignal {
+                raw_input: "brew coffee".to_string(),
+                command: parse_command(&content, "brew coffee"),
+            },
+            world: WorldSnapshot {
+                turn_number: 0,
+                current_room_id: "kitchen".to_string(),
+            },
+        };
+
+        let (planned_brew, brew_advances_time) =
+            build_planned_turn(&content, brew, &state, 1, false);
+
+        assert!(brew_advances_time);
+        assert!(planned_brew.events.iter().any(|event| matches!(
+            event,
+            WorldEvent::CommandBundleProgressApplied { command_id } if command_id == "brew_coffee"
+        )));
+
+        let brew_events = planned_brew
+            .events
+            .into_iter()
+            .map(TimestampedWorldEvent::now)
+            .collect::<Vec<_>>();
+        apply_events(&mut state, &content, &brew_events);
+
+        assert!(state.has_item("coffee"));
+        assert_eq!(
+            state
+                .story_vars
+                .get("rule_bundle:progress:reading-service-ritual:coffee_ready"),
+            Some("true")
+        );
+
+        state.current_room_id = "cafe".to_string();
+        let serve = AggregatedTurn {
+            command: CommandSignal {
+                raw_input: "serve coffee".to_string(),
+                command: parse_command(&content, "serve coffee"),
+            },
+            world: WorldSnapshot {
+                turn_number: 1,
+                current_room_id: "cafe".to_string(),
+            },
+        };
+
+        let (planned_serve, serve_advances_time) =
+            build_planned_turn(&content, serve, &state, 2, false);
+
+        assert!(!serve_advances_time);
+        assert!(planned_serve.events.iter().any(|event| matches!(
+            event,
+            WorldEvent::ContentEvent { event_id, .. } if event_id == "isla.coffee_served"
+        )));
+        assert!(planned_serve.events.iter().any(|event| matches!(
+            event,
+            WorldEvent::ItemConsumed { item_id, .. } if item_id == "coffee"
+        )));
+        assert!(
+            !planned_serve
                 .events
                 .iter()
                 .any(|event| matches!(event, WorldEvent::ActionRejected { .. }))

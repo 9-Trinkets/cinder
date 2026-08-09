@@ -135,6 +135,9 @@ pub enum WorldEvent {
     ItemObserved {
         item_id: String,
     },
+    CommandBundleProgressApplied {
+        command_id: String,
+    },
     ContentEvent {
         event_id: String,
         payload: BTreeMap<String, String>,

@@ -217,6 +217,13 @@ pub(super) fn plan_content_command(
     planned
         .events
         .push(content_event_for_command(command, payload));
+    if !command.sets_bundle_progress.is_empty() || !command.clears_bundle_progress.is_empty() {
+        planned
+            .events
+            .push(WorldEvent::CommandBundleProgressApplied {
+                command_id: command.id.clone(),
+            });
+    }
 
     if let Some(item_id) = resolved_created_item_id(content, command, input, context) {
         planned.events.push(WorldEvent::ItemAcquired {
