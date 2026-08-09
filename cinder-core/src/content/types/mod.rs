@@ -383,6 +383,8 @@ pub struct OpeningMenuDefinition {
     #[serde(default)]
     pub multi_selection_host_var_keys: Vec<String>,
     #[serde(default)]
+    pub opening_narrative_lines: Vec<String>,
+    #[serde(default)]
     pub narrative_lines: Vec<String>,
     #[serde(default)]
     pub options: Vec<OpeningMenuOptionDefinition>,

@@ -8,9 +8,9 @@ use self::handlers::{
     apply_content_event, handle_act_ended, handle_action_rejected, handle_actor_command_used_event,
     handle_actor_moved, handle_actor_observed, handle_actor_observed_actor,
     handle_actor_observed_feature, handle_actor_observed_room, handle_actor_relocated,
-    handle_actor_spoke, handle_actor_spoke_to_room, handle_consumable_created,
-    handle_current_room_observed, handle_feature_observed, handle_help_shown, handle_item_acquired,
-    handle_item_consumed, handle_item_observed, handle_menu_choice_made, handle_menu_opened,
+    handle_actor_spoke, handle_actor_spoke_to_room, handle_current_room_observed,
+    handle_feature_observed, handle_help_shown, handle_item_acquired, handle_item_consumed,
+    handle_item_observed, handle_menu_choice_made, handle_menu_opened,
     handle_menu_selection_toggled, handle_narrative_line, handle_pair_stat_adjusted,
     handle_player_moved, handle_turn_started, handle_unknown_input,
 };
@@ -240,20 +240,6 @@ pub fn apply_events(
             }
             WorldEvent::ItemAcquired { item_id, storage } => {
                 handle_item_acquired(state, content, item_id, *storage, &mut lines);
-            }
-            WorldEvent::ConsumableCreated {
-                room_id,
-                feature_id,
-                consumable_id,
-            } => {
-                handle_consumable_created(
-                    state,
-                    content,
-                    room_id,
-                    feature_id,
-                    consumable_id,
-                    &mut lines,
-                );
             }
             WorldEvent::ItemConsumed {
                 item_id,

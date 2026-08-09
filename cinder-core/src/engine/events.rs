@@ -126,11 +126,6 @@ pub enum WorldEvent {
         item_id: String,
         storage: ItemStorageTarget,
     },
-    ConsumableCreated {
-        room_id: String,
-        feature_id: String,
-        consumable_id: String,
-    },
     ItemConsumed {
         item_id: String,
         storage: ItemStorageTarget,

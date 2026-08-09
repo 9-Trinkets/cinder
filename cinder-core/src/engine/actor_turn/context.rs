@@ -62,6 +62,11 @@ pub(crate) fn available_consume_candidates(
                 &candidate.feature.id,
                 &candidate.consumable.id,
             ) > 0
+                || state.has_item_in_storage(
+                    &candidate.consumable.id,
+                    crate::content::types::ItemStorageTarget::CurrentRoom,
+                    current_room_id,
+                )
         })
         .filter(|candidate| consumable_matches_actor_requirements(actor, candidate.consumable))
         .map(|candidate| ActorTurnConsumeCandidate {

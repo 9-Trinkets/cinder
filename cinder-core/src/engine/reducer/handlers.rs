@@ -415,6 +415,13 @@ pub(super) fn handle_menu_opened(
 ) {
     state.active_menu_id = Some(menu_id.to_string());
     state.pending_menu_selections.clear();
+    if let Some(menu) = content.menu(menu_id) {
+        lines.extend(
+            menu.opening_narrative_lines
+                .iter()
+                .map(|line| render_story_text(line, state)),
+        );
+    }
     lines.extend(advance_objective_for_signal(
         state,
         content,
@@ -671,22 +678,6 @@ pub(super) fn handle_item_acquired(
             lines.push(format!("The {label} is ready here."));
         }
     }
-}
-
-pub(super) fn handle_consumable_created(
-    state: &mut WorldState,
-    content: &ContentPack,
-    room_id: &str,
-    feature_id: &str,
-    consumable_id: &str,
-    lines: &mut Vec<String>,
-) {
-    let label = content
-        .room_consumable(room_id, feature_id, consumable_id)
-        .map(|r| r.consumable.label.clone())
-        .unwrap_or_else(|| consumable_id.to_string());
-    state.restock_feature_consumable(room_id, feature_id, consumable_id, 1);
-    lines.push(format!("A fresh {label} is ready."));
 }
 
 pub(super) fn handle_item_consumed(

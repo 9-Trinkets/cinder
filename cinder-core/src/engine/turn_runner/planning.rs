@@ -61,6 +61,36 @@ fn first_actor_in_room<'a>(
     })
 }
 
+fn resolved_created_item_id(
+    content: &ContentPack,
+    command: &CommandDefinition,
+    input: Option<&str>,
+    context: &PlanningContext<'_>,
+) -> Option<String> {
+    let item_id = command.creates_item.as_ref()?;
+    if command.creates_item_resolve_from_target {
+        let input_val = input.unwrap_or_default().trim();
+        return Some(
+            resolve_actor_reference_input(
+                content,
+                context.planner_state,
+                context.current_room_id,
+                input_val,
+            )
+            .map(|resolved| format!("clip-{}", resolved.actor_id))
+            .unwrap_or_else(|| item_id.clone()),
+        );
+    }
+    Some(
+        command
+            .creates_item_story_var
+            .as_ref()
+            .and_then(|var_key| context.planner_state.story_vars.get(var_key))
+            .map(|value| value.to_string())
+            .unwrap_or_else(|| item_id.clone()),
+    )
+}
+
 pub(super) fn plan_content_command(
     content: &ContentPack,
     command: &CommandDefinition,
@@ -188,43 +218,11 @@ pub(super) fn plan_content_command(
         .events
         .push(content_event_for_command(command, payload));
 
-    if let Some(item_id) = &command.creates_item {
+    if let Some(item_id) = resolved_created_item_id(content, command, input, context) {
         planned.events.push(WorldEvent::ItemAcquired {
-            item_id: item_id.clone(),
+            item_id,
             storage: command.creates_item_storage,
         });
-    }
-    if let Some(spec) = &command.creates_consumable {
-        let consumable_id = if spec.resolve_from_target {
-            let input_val = input.unwrap_or_default().trim();
-            resolve_actor_reference_input(
-                content,
-                context.planner_state,
-                context.current_room_id,
-                input_val,
-            )
-            .map(|resolved| format!("clip-{}", resolved.actor_id))
-            .unwrap_or_else(|| spec.consumable_id.clone())
-        } else {
-            spec.story_var
-                .as_ref()
-                .and_then(|var_key| context.planner_state.story_vars.get(var_key))
-                .map(|v| v.to_string())
-                .unwrap_or(spec.consumable_id.clone())
-        };
-        if let Some(room) = content.room(context.current_room_id) {
-            if let Some(feature) = room
-                .features
-                .iter()
-                .find(|f| f.consumables.iter().any(|c| c.id == consumable_id))
-            {
-                planned.events.push(WorldEvent::ConsumableCreated {
-                    room_id: context.current_room_id.to_string(),
-                    feature_id: feature.id.clone(),
-                    consumable_id,
-                });
-            }
-        }
     }
     if let Some(item_id) = &command.consumes_item {
         let (consumer_id, consumer_name) = match command.item_consumer {

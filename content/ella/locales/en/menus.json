@@ -39,11 +39,14 @@
     "trigger_mode": "intent_clarified",
     "proposal_line": "If you're still hungry, we can put together something quick before it gets too late.",
     "intent_guidance": "Open this menu only if Ella is clearly saying she wants food, a snack, or to make something quick with Dad right now. Do not open it for small talk, emotional check-ins, or unrelated questions.",
-    "selection_prompt": "Dad opens the fridge, glances back at Ella, and waits.\nChoose a late-night snack:",
+    "selection_prompt": "Choose a late-night snack:",
     "invalid_choice_text": "Dad is waiting on a snack pick. Choose 1-3 or type one of the options.",
     "selection_confirmation": "They settle on {selection_title}.",
     "selection_var_key": "snack_title",
     "selection_id_var_key": "snack_choice_id",
+    "opening_narrative_lines": [
+      "Dad opens the fridge, glances back at Ella, and waits."
+    ],
     "narrative_lines": [
       "Dad starts pulling ingredients together while Ella takes over the small jobs he used to hand her when she was little.",
       "The two of them fall into an old rhythm of passing bowls, tasting as they go, and pretending not to notice how naturally they still move around each other in the kitchen.",

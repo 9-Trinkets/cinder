@@ -1,0 +1,47 @@
+[
+  {
+    "id": "garlic-noodles",
+    "label": "garlic butter noodles",
+    "description": "A fragrant bowl of garlic butter noodles, still warm from the pan."
+  },
+  {
+    "id": "miso-salmon",
+    "label": "miso-glazed salmon",
+    "description": "Miso-glazed salmon with a savory sheen and just-finished warmth."
+  },
+  {
+    "id": "vegetable-stir-fry",
+    "label": "vegetable stir-fry",
+    "description": "A bright stir-fry of vegetables, cooked just enough to stay crisp."
+  },
+  {
+    "id": "honey-toast-and-fruit",
+    "label": "honey toast and fruit",
+    "description": "Warm toast and fresh fruit arranged like breakfast was meant to gather people in."
+  },
+  {
+    "id": "pour-over-coffee",
+    "label": "pour-over coffee",
+    "description": "Fresh pour-over coffee with a clean aroma that fills the kitchen."
+  },
+  {
+    "id": "clip-aera",
+    "label": "clip of Aera",
+    "description": "A short video clip cut from Aera's footage."
+  },
+  {
+    "id": "clip-mio",
+    "label": "clip of Mio",
+    "description": "A short video clip cut from Mio's footage."
+  },
+  {
+    "id": "clip-ren",
+    "label": "clip of Ren",
+    "description": "A short video clip cut from Ren's footage."
+  },
+  {
+    "id": "clip-daichi",
+    "label": "clip of Daichi",
+    "description": "A short video clip cut from Daichi's footage."
+  }
+]

@@ -124,6 +124,11 @@ pub(super) fn render_feature_consumables_line(
         .iter()
         .filter(|consumable| {
             state.remaining_consumable_stock(room_id, feature_id, &consumable.id) > 0
+                || state.has_item_in_storage(
+                    &consumable.id,
+                    crate::content::types::ItemStorageTarget::CurrentRoom,
+                    room_id,
+                )
         })
         .map(|consumable| consumable.label.as_str())
         .collect::<Vec<_>>();

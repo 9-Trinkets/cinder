@@ -218,10 +218,9 @@
           "key": "meal_ready"
         }
       ],
-      "creates_consumable": {
-        "consumable_id": "garlic-noodles",
-        "story_var": "cook_recipe"
-      },
+      "creates_item": "garlic-noodles",
+      "creates_item_story_var": "cook_recipe",
+      "creates_item_storage": "current_room",
       "available_during": ["dinner-prep"]
     },
     {
@@ -254,10 +253,9 @@
           "key": "coffee_ready"
         }
       ],
-      "creates_consumable": {
-        "consumable_id": "pour-over-coffee",
-        "story_var": "brew_recipe"
-      },
+      "creates_item": "pour-over-coffee",
+      "creates_item_story_var": "brew_recipe",
+      "creates_item_storage": "current_room",
       "available_during": ["dinner-prep"]
     },
     {
@@ -322,10 +320,9 @@
           "key": "coffee_ready"
         }
       ],
-      "creates_consumable": {
-        "consumable_id": "pour-over-coffee",
-        "story_var": "brew_recipe"
-      },
+      "creates_item": "pour-over-coffee",
+      "creates_item_story_var": "brew_recipe",
+      "creates_item_storage": "current_room",
       "available_during": ["day2-breakfast-prep"]
     },
     {
@@ -358,9 +355,8 @@
           "key": "breakfast_ready"
         }
       ],
-      "creates_consumable": {
-        "consumable_id": "honey-toast-and-fruit"
-      },
+      "creates_item": "honey-toast-and-fruit",
+      "creates_item_storage": "current_room",
       "available_during": ["day2-breakfast-prep"]
     },
     {
@@ -422,10 +418,9 @@
       "allowed_rooms": ["studio"],
       "player_enabled": false,
       "available_during": ["day2-event-a", "day2-event-b"],
-      "creates_consumable": {
-        "consumable_id": "clip-ren",
-        "resolve_from_target": true
-      }
+      "creates_item": "clip-ren",
+      "creates_item_resolve_from_target": true,
+      "creates_item_storage": "current_room"
     },
     {
       "id": "watch",

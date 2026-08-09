@@ -80,33 +80,8 @@ pub(super) fn handle_actor_command_used(
     record_actor_command_memory(state, content, command, &command_context, &command_text);
     apply_actor_command_effects(state, content, command, &command_context);
     apply_command_bundle_progress_effects(state, command);
-    if let Some(spec) = &command.creates_consumable {
-        let resolved_id = if spec.resolve_from_target {
-            command_context
-                .target_actor_id
-                .map(|tid| format!("clip-{}", tid))
-                .unwrap_or_else(|| spec.consumable_id.clone())
-        } else {
-            spec.story_var
-                .as_ref()
-                .and_then(|var_key| state.story_vars.get(var_key))
-                .unwrap_or(&spec.consumable_id)
-                .to_string()
-        };
-        let target_feature_id = content.room(command_context.room_id).and_then(|room| {
-            room.features
-                .iter()
-                .find(|f| f.consumables.iter().any(|c| c.id == resolved_id))
-                .map(|f| f.id.clone())
-        });
-        if let Some(target_feature_id) = target_feature_id {
-            state.restock_feature_consumable(
-                command_context.room_id,
-                &target_feature_id,
-                &resolved_id,
-                1,
-            );
-        }
+    if let Some(item_id) = resolved_created_item_id(state, command, &command_context) {
+        state.add_item_to_storage(item_id.as_str(), command.creates_item_storage, room_id);
     }
     if command.has_effect(CommandEffect::MoveActor) {
         if let Some(target_room_id) = target_room_id {
@@ -132,6 +107,30 @@ pub(super) fn handle_actor_command_used(
     }
     lines.extend(advance_objective_for_signal(state, content, "command_used"));
     Some(lines)
+}
+
+fn resolved_created_item_id(
+    state: &WorldState,
+    command: &CommandDefinition,
+    command_context: &ActorCommandContext<'_>,
+) -> Option<String> {
+    let item_id = command.creates_item.as_ref()?;
+    if command.creates_item_resolve_from_target {
+        return Some(
+            command_context
+                .target_actor_id
+                .map(|target_actor_id| format!("clip-{target_actor_id}"))
+                .unwrap_or_else(|| item_id.clone()),
+        );
+    }
+    Some(
+        command
+            .creates_item_story_var
+            .as_ref()
+            .and_then(|var_key| state.story_vars.get(var_key))
+            .unwrap_or(item_id)
+            .to_string(),
+    )
 }
 
 pub(super) fn apply_actor_command_realization_effects(
@@ -188,6 +187,10 @@ pub(super) fn apply_actor_command_realization_effects(
                     command_context.room_id,
                     feature_id,
                     consumable_id,
+                ) && !state.remove_item_from_storage(
+                    consumable_id,
+                    crate::content::types::ItemStorageTarget::CurrentRoom,
+                    command_context.room_id,
                 ) {
                     return false;
                 }

@@ -54,6 +54,21 @@ impl CinderRuntime {
             }
         }
         for item in &self.content.items {
+            if self
+                .content
+                .room_consumables(current_room_id)
+                .into_iter()
+                .any(|candidate| {
+                    candidate.consumable.id == item.id
+                        && state.remaining_consumable_stock(
+                            current_room_id,
+                            &candidate.feature.id,
+                            &candidate.consumable.id,
+                        ) > 0
+                })
+            {
+                continue;
+            }
             if state.has_item(&item.id)
                 || state.has_item_in_storage(
                     &item.id,

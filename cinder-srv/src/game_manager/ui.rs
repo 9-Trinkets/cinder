@@ -170,7 +170,7 @@ pub(super) fn build_ui_snapshot(
         .followed_actor_id()
         .map_err(|error| error.to_string())?
         .and_then(|id| runtime.actor_display_name(&id).ok().flatten());
-    let crafted_consumable_ids = content.crafted_consumable_ids();
+    let crafted_consumable_ids = content.crafted_current_room_item_ids();
     let highlighted_consumable =
         |consumable: &cinder_core::content::types::ConsumableDefinition| {
             crafted_consumable_ids.contains(&consumable.id) || consumable.initial_stock > 0
@@ -409,17 +409,36 @@ pub(super) fn build_ui_snapshot(
             })
             .collect(),
         room_consumables: {
-            let stock = runtime.feature_consumable_stock().unwrap_or_default();
             content
                 .room_consumables(&current_room_id)
                 .into_iter()
                 .filter(|c| {
-                    let key = format!("{}::{}::{}", current_room_id, c.feature.id, c.consumable.id);
-                    stock.get(&key).copied().unwrap_or(0) > 0
+                    runtime
+                        .current_room_item_count(&c.consumable.id)
+                        .map(|count| {
+                            count
+                                + runtime
+                                    .feature_consumable_count(
+                                        &current_room_id,
+                                        &c.feature.id,
+                                        &c.consumable.id,
+                                    )
+                                    .unwrap_or(0)
+                        })
+                        .unwrap_or(0)
+                        > 0
                 })
                 .fold(Vec::<RoomConsumableGroup>::new(), |mut groups, c| {
-                    let key = format!("{}::{}::{}", current_room_id, c.feature.id, c.consumable.id);
-                    let remaining = stock.get(&key).copied().unwrap_or(0);
+                    let remaining = runtime
+                        .current_room_item_count(&c.consumable.id)
+                        .unwrap_or(0)
+                        + runtime
+                            .feature_consumable_count(
+                                &current_room_id,
+                                &c.feature.id,
+                                &c.consumable.id,
+                            )
+                            .unwrap_or(0);
                     if let Some(group) = groups
                         .iter_mut()
                         .find(|g| g.feature_label == c.feature.label)

@@ -88,15 +88,6 @@ pub struct PlayerCommandMetadata {
     pub input: Option<PlayerCommandInputMetadata>,
 }
 
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct CreatesConsumableSpec {
-    pub consumable_id: String,
-    #[serde(default)]
-    pub story_var: Option<String>,
-    #[serde(default)]
-    pub resolve_from_target: bool,
-}
-
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]
 #[serde(rename_all = "snake_case")]
 pub enum ItemStorageTarget {
@@ -155,9 +146,11 @@ pub struct CommandDefinition {
     #[serde(default)]
     pub creates_item: Option<String>,
     #[serde(default)]
-    pub creates_item_storage: ItemStorageTarget,
+    pub creates_item_story_var: Option<String>,
     #[serde(default)]
-    pub creates_consumable: Option<CreatesConsumableSpec>,
+    pub creates_item_resolve_from_target: bool,
+    #[serde(default)]
+    pub creates_item_storage: ItemStorageTarget,
     #[serde(default)]
     pub consumes_item: Option<String>,
     #[serde(default)]

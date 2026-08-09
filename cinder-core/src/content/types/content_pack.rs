@@ -228,12 +228,12 @@ impl ContentPack {
         })
     }
 
-    pub fn crafted_consumable_ids(&self) -> BTreeSet<String> {
+    pub fn crafted_current_room_item_ids(&self) -> BTreeSet<String> {
         self.commands
             .actions
             .iter()
-            .filter_map(|command| command.creates_consumable.as_ref())
-            .map(|spec| spec.consumable_id.clone())
+            .filter(|command| command.creates_item_storage == super::ItemStorageTarget::CurrentRoom)
+            .filter_map(|command| command.creates_item.clone())
             .collect()
     }
 

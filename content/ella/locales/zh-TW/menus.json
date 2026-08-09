@@ -39,11 +39,14 @@
     "trigger_mode": "intent_clarified",
     "proposal_line": "要是還有點餓，我們弄個簡單的吧。",
     "intent_guidance": "只有在艾拉很明確地表示，她現在想吃點東西、想吃宵夜，或想和爸爸一起弄點吃的時，才打開這個選單。若只是聊天、情緒交流或其他問題，都不要打開。",
-    "selection_prompt": "",
+    "selection_prompt": "選一個宵夜：",
     "invalid_choice_text": "爸爸還在等你選宵夜。請輸入 1-3，或直接輸入選項名稱。",
     "selection_confirmation": "最後他們決定做 {selection_title}。",
     "selection_var_key": "snack_title",
     "selection_id_var_key": "snack_choice_id",
+    "opening_narrative_lines": [
+      "爸爸打開冰箱，回頭看了艾拉一眼，等她決定。"
+    ],
     "narrative_lines": [
       "爸爸把幾樣東西拿上檯面，艾拉很自然就接手那些她從小做到大的小事。",
       "一個遞碗，一個開火，邊做邊試味道，動作熟得幾乎不用多說。",

@@ -17,7 +17,7 @@ use crate::engine::state::{
 use crate::engine::turn_runner;
 use crate::engine::workflows::{cinder_npc_tick_workflow_path, workflow_path_for_id};
 use serde::Serialize;
-use std::collections::{BTreeMap, HashMap};
+use std::collections::HashMap;
 use std::error::Error;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
@@ -763,12 +763,29 @@ impl CinderRuntime {
         Ok(state.player_inventory.clone())
     }
 
-    pub fn feature_consumable_stock(&self) -> Result<BTreeMap<String, u32>, Box<dyn Error>> {
+    pub fn current_room_item_count(&self, item_id: &str) -> Result<u32, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for room items")?;
+        Ok(state.item_count_in_storage(
+            item_id,
+            crate::content::types::ItemStorageTarget::CurrentRoom,
+            &state.current_room_id,
+        ))
+    }
+
+    pub fn feature_consumable_count(
+        &self,
+        room_id: &str,
+        feature_id: &str,
+        consumable_id: &str,
+    ) -> Result<u32, Box<dyn Error>> {
         let state = self
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for consumable stock")?;
-        Ok(state.feature_consumable_stock.clone())
+        Ok(state.remaining_consumable_stock(room_id, feature_id, consumable_id))
     }
 
     pub fn active_stage_ids(&self) -> Result<Vec<String>, Box<dyn Error>> {

@@ -75,6 +75,7 @@ export default function GamePage() {
   const draftInputRef = useRef('')
   const busy = initializing || commandPending || panelBusy
   const busyLabel = commandPending ? 'Sending…' : panelBusy ? 'Updating…' : initializing ? 'Loading…' : null
+  const activeMenuTitle = activeMenu?.prompt?.trim() || uiSnapshot?.ui_text.menu_option_list_title || 'Choose'
 
   useEffect(() => {
     if (activeMenu?.max_selections && activeMenu.max_selections > 0) {
@@ -701,10 +702,7 @@ export default function GamePage() {
       )}
 
       {activeMenu && (
-        <Modal title={uiSnapshot?.ui_text.menu_option_list_title ?? 'Choose'} onClose={() => setActiveMenu(null)}>
-          {activeMenu.prompt && (
-            <p className="text-sm text-text whitespace-pre-wrap mb-3">{activeMenu.prompt}</p>
-          )}
+        <Modal title={activeMenuTitle} onClose={() => setActiveMenu(null)}>
           {activeMenu.max_selections && activeMenu.max_selections > 0 && (
             <p className="text-xs text-muted mb-2">
               Select up to {activeMenu.max_selections} option{activeMenu.max_selections === 1 ? '' : 's'}
