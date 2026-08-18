@@ -400,7 +400,10 @@ impl CinderRuntime {
                     .find(|e| e.room_id == room.id)
                     .map(|e| e.label.as_str())
                     .unwrap_or("");
-                let title = if exit_label.is_empty() {
+                let title = if exit_label.is_empty()
+                    || room.title.to_ascii_lowercase() == exit_label.to_ascii_lowercase()
+                    || room.title.to_ascii_lowercase().contains(&exit_label.to_ascii_lowercase())
+                {
                     room.title.clone()
                 } else {
                     format!("{} — {}", exit_label, room.title)
