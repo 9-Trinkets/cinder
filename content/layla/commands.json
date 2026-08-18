@@ -21,7 +21,7 @@
       "command": "MOVE",
       "target_mode": "room",
       "effects": ["move_actor"],
-      "event_text": "{actor_name} heads to {target_room_title}.",
+      "event_text": "{actor_name} heads {target_exit_label} to {target_room_title}.",
       "player_enabled": true,
       "player_phrases": ["go to", "go", "enter", "move to", "move"],
       "player_command": {
