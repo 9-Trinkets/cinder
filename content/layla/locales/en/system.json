@@ -34,7 +34,7 @@
   "prompt_current_room_note": "You are in the {room_title}.",
   "prompt_visible_features_note": "Visible here: {features}.",
   "prompt_people_here_note": "Also here: {people}.",
-  "prompt_exits_note": "",
+  "prompt_exits_note": "Possible moves: {exits}.",
   "prompt_current_speaker_note": "{other_person_name} is speaking with you in the {room_title}.",
   "prompt_shared_room_note": "{other_person_name} is here with you in the {room_title}.",
   "prompt_latest_words_note": "Their latest words mention {features}.",

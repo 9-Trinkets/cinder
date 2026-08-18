@@ -1,7 +1,14 @@
 {
   "id": "layla",
   "title": "Layla",
-  "start_room_id": "lightless-cell",
+  "start_room_id": "r1c1",
+  "start_room_ids": [
+    "r1c1", "r1c2", "r1c3", "r1c4", "r1c5",
+    "r2c1", "r2c2", "r2c3", "r2c4", "r2c5",
+    "r3c1", "r3c2", "r3c3", "r3c4", "r3c5",
+    "r4c1", "r4c2", "r4c3", "r4c4", "r4c5",
+    "r5c1", "r5c2", "r5c3", "r5c4", "r5c5"
+  ],
   "start_time_minutes": 60,
   "intro_text": "You wake on cold stone, in dark that has no bottom and no top. Your name is Layla \u2014 you know that much \u2014 and beyond it there is only a wall where your memories should be.\n\nYour hands remember things your mind does not: how to grip a weapon, how to move without sound, how to take a hit and stay standing. Whatever you were before you woke here, you were not soft.\n\nSomewhere above, something grinds against the dark. Somewhere ahead, there is a way out you cannot see yet.\n\nFind it. Get out. Whatever it takes.",
   "help_text": "Commands:\n{available_commands}\n- Tab switches focus between command and transcript\n- Up/Down recalls command history when command is focused\n- Up/Down scrolls the transcript when transcript is focused\n- PageUp/PageDown/Home/End scroll the transcript faster\n- ? opens the menu",

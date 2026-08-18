@@ -16,6 +16,11 @@ pub struct OpeningDefinition {
     pub id: String,
     pub title: String,
     pub start_room_id: String,
+    /// Optional list of candidate spawn rooms. When non-empty, the player
+    /// starts in one chosen uniformly at random (fog of war: no fixed
+    /// spawn). `start_room_id` remains the fallback when this is empty.
+    #[serde(default)]
+    pub start_room_ids: Vec<String>,
     #[serde(default = "default_opening_start_time_minutes")]
     pub start_time_minutes: u32,
     pub intro_text: String,

@@ -1,3 +1,5 @@
+use rand::Rng;
+
 use crate::content::types::{
     ContentPack, ItemStorageTarget, OpeningMenuOptionDefinition, RoomDefinition, StatDefinition,
 };
@@ -108,8 +110,15 @@ pub enum ConversationMemoryKind {
 
 impl WorldState {
     pub fn new(content: &ContentPack) -> Self {
+        let start_room_id = if content.opening.start_room_ids.is_empty() {
+            content.opening.start_room_id.clone()
+        } else {
+            let ids = &content.opening.start_room_ids;
+            let index = rand::thread_rng().gen_range(0..ids.len());
+            ids[index].clone()
+        };
         Self {
-            current_room_id: content.opening.start_room_id.clone(),
+            current_room_id: start_room_id,
             turn_number: 0,
             current_time_minutes: content.opening.start_time_minutes,
             phase: GamePhase::Active,
