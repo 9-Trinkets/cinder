@@ -23,14 +23,16 @@
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r1c2",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -58,21 +60,24 @@
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r1c1",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r1c3",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -99,21 +104,24 @@
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r1c2",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r1c4",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -140,21 +148,24 @@
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r1c3",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r1c5",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -182,14 +193,16 @@
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r1c4",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       }
     ]
   },
@@ -216,21 +229,24 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r3c1",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r2c2",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -257,28 +273,32 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r3c2",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r2c1",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r2c3",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -305,28 +325,32 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r3c3",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r2c2",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r2c4",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -354,28 +378,32 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r3c4",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r2c3",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r2c5",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -402,21 +430,24 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r3c5",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r2c4",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       }
     ]
   },
@@ -443,21 +474,24 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r4c1",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r3c2",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -485,28 +519,32 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r4c2",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r3c1",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r3c3",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -533,28 +571,32 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r4c3",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r3c2",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r3c4",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -581,28 +623,32 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r4c4",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r3c3",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r3c5",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -630,21 +676,24 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r4c5",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r3c4",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       }
     ]
   },
@@ -672,21 +721,24 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r5c1",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r4c2",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -714,28 +766,32 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r5c2",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r4c1",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r4c3",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -762,28 +818,32 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r5c3",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r4c2",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r4c4",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -811,28 +871,32 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r5c4",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r4c3",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r4c5",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -859,21 +923,24 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r5c5",
         "label": "South",
         "aliases": [
           "s"
-        ]
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r4c4",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       }
     ]
   },
@@ -901,14 +968,16 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r5c2",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -936,21 +1005,24 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r5c1",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r5c3",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -978,21 +1050,24 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r5c2",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r5c4",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -1020,21 +1095,24 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r5c3",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       },
       {
         "room_id": "r5c5",
         "label": "East",
         "aliases": [
           "e"
-        ]
+        ],
+        "menu_label": "East"
       }
     ]
   },
@@ -1062,14 +1140,16 @@
         "label": "North",
         "aliases": [
           "n"
-        ]
+        ],
+        "menu_label": "North"
       },
       {
         "room_id": "r5c4",
         "label": "West",
         "aliases": [
           "w"
-        ]
+        ],
+        "menu_label": "West"
       }
     ]
   }

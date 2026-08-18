@@ -397,16 +397,10 @@ impl CinderRuntime {
                 let exit_label = current_room
                     .exits
                     .iter()
-                    .find(|e| e.room_id == room.id)
-                    .map(|e| e.label.as_str())
-                    .unwrap_or("");
-                let title = if exit_label.is_empty()
-                    || exit_label.eq_ignore_ascii_case(&room.title)
-                {
-                    room.title.clone()
-                } else {
-                    format!("{} — {}", exit_label, room.title)
-                };
+                    .find(|e| e.room_id == room.id);
+                let title = exit_label
+                    .and_then(|e| e.menu_label.clone())
+                    .unwrap_or_else(|| room.title.clone());
                 MenuChoiceOption {
                     prompt: prompt.clone(),
                     title: title.clone(),

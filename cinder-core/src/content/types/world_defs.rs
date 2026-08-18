@@ -203,6 +203,10 @@ pub struct RoomExitDefinition {
     pub label: String,
     #[serde(default)]
     pub aliases: Vec<String>,
+    /// Optional label shown in the room-switch menu in place of the
+    /// destination room title. When absent the room title is used.
+    #[serde(default)]
+    pub menu_label: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

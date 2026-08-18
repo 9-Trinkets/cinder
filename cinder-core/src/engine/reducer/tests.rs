@@ -64,6 +64,7 @@ fn reducer_test_pack() -> ContentPack {
                 room_id: KITCHEN_ID.to_string(),
                 label: KITCHEN_TITLE.to_string(),
                 aliases: vec!["kitchen".to_string()],
+                menu_label: None,
             }],
         },
         RoomDefinition {
@@ -77,6 +78,7 @@ fn reducer_test_pack() -> ContentPack {
                 room_id: LOUNGE_ID.to_string(),
                 label: LOUNGE_TITLE.to_string(),
                 aliases: vec!["lounge".to_string()],
+                menu_label: None,
             }],
         },
     ];
