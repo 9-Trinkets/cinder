@@ -330,43 +330,29 @@ pub(super) fn render_actor_command_text(
             crate::engine::events::render_actor_action_text(command_context.actor_name, text).ok()
         }),
         _ if command.event_text.is_empty() => None,
-        _ => {
-            let target_exit_label = command_context
-                .target_room_id
-                .and_then(|target_room_id| {
-                    content
-                        .room(command_context.room_id)?
-                        .exits
-                        .iter()
-                        .find(|exit| exit.room_id == target_room_id)
-                        .map(|exit| exit.label.as_str())
-                })
-                .unwrap_or("");
-            Some(
-                content.render_template(
-                    &command.event_text,
-                    &[
-                        ("actor_name", command_context.actor_name),
-                        (
-                            "target_actor_name",
-                            command_context.target_actor_name.unwrap_or(""),
-                        ),
-                        ("context_label", command_context.context_label.unwrap_or("")),
-                        ("feature_label", feature_label),
-                        ("item_label", item_label),
-                        (
-                            "target_room_title",
-                            command_context
-                                .target_room_id
-                                .and_then(|room_id| content.room(room_id))
-                                .map(|room| room.title.as_str())
-                                .unwrap_or(""),
-                        ),
-                        ("target_exit_label", target_exit_label),
-                    ],
-                ),
-            )
-        }
+        _ => Some(
+            content.render_template(
+                &command.event_text,
+                &[
+                    ("actor_name", command_context.actor_name),
+                    (
+                        "target_actor_name",
+                        command_context.target_actor_name.unwrap_or(""),
+                    ),
+                    ("context_label", command_context.context_label.unwrap_or("")),
+                    ("feature_label", feature_label),
+                    ("item_label", item_label),
+                    (
+                        "target_room_title",
+                        command_context
+                            .target_room_id
+                            .and_then(|room_id| content.room(room_id))
+                            .map(|room| room.title.as_str())
+                            .unwrap_or(""),
+                    ),
+                ],
+            ),
+        ),
     }
 }
 
