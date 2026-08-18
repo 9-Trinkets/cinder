@@ -44,10 +44,6 @@
       {
         "id": "move",
         "label": "Move"
-      },
-      {
-        "id": "speak",
-        "label": "Talk"
       }
     ]
   },
