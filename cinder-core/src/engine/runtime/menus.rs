@@ -393,12 +393,25 @@ impl CinderRuntime {
             };
 
         Ok(rooms_iter
-            .map(|room| MenuChoiceOption {
-                prompt: prompt.clone(),
-                title: room.title.clone(),
-                menu_text: room.title.clone(),
-                command: room.id.clone(),
-                transcript_label: Some(room.title.clone()),
+            .map(|room| {
+                let exit_label = current_room
+                    .exits
+                    .iter()
+                    .find(|e| e.room_id == room.id)
+                    .map(|e| e.label.as_str())
+                    .unwrap_or("");
+                let title = if exit_label.is_empty() {
+                    room.title.clone()
+                } else {
+                    format!("{} — {}", exit_label, room.title)
+                };
+                MenuChoiceOption {
+                    prompt: prompt.clone(),
+                    title: title.clone(),
+                    menu_text: title,
+                    command: room.id.clone(),
+                    transcript_label: Some(room.title.clone()),
+                }
             })
             .collect())
     }
