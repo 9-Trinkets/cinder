@@ -341,11 +341,10 @@ pub(crate) fn build_setting_notes(
     let exits = room
         .exits
         .iter()
-        .filter_map(|exit| content.room(&exit.room_id))
-        .map(|reachable_room| reachable_room.title.as_str())
+        .map(|exit| exit.label.as_str())
         .collect::<Vec<_>>();
     if !exits.is_empty() {
-        let exits = natural_join(&exits);
+        let exits = exits.join(", ");
         notes.push(content.render_template(
             &content.system_text.prompt_exits_note,
             &[("exits", exits.as_str())],
