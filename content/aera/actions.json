@@ -1,0 +1,1016 @@
+{
+  "actions": [
+    {
+      "id": "look",
+      "command": "LOOK",
+      "label": "Look",
+      "group": "",
+      "phrases": [
+        "look",
+        "l",
+        "look room",
+        "look around",
+        "inspect room",
+        "x room"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "effects": [
+        "observe_room"
+      ],
+      "player_command": {
+        "usage": "look",
+        "example": "look around",
+        "advances_time": false
+      },
+      "available": {},
+      "ui": {
+        "bar": true,
+        "overflow": false,
+        "group": "",
+        "sort_order": 100,
+        "panel": "look"
+      }
+    },
+    {
+      "id": "move",
+      "command": "MOVE",
+      "label": "Move",
+      "group": "",
+      "phrases": [
+        "go to",
+        "go",
+        "enter",
+        "move to",
+        "move"
+      ],
+      "player_enabled": true,
+      "target_mode": "room",
+      "effects": [
+        "move_actor"
+      ],
+      "event_text": "{actor_name} heads to {target_room_title}.",
+      "player_command": {
+        "target_mode": "room_reference",
+        "usage": "go <room>",
+        "example": "go patio",
+        "advances_time": true,
+        "input": {
+          "required": true
+        }
+      },
+      "available": {},
+      "ui": {
+        "bar": true,
+        "overflow": false,
+        "group": "movement",
+        "sort_order": 0,
+        "panel": "move"
+      },
+      "npc": {
+        "prompt_verb": "move",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "speak",
+      "command": "SPEAK",
+      "label": "Speak",
+      "group": "",
+      "phrases": [
+        "talk to",
+        "talk",
+        "tell to",
+        "tell",
+        "speak to",
+        "speak"
+      ],
+      "player_enabled": false,
+      "target_mode": "actor_optional",
+      "outcome_mode": "dialogue",
+      "player_command": {
+        "target_mode": "actor_reference",
+        "usage": "speak <person> [message]",
+        "example": "talk to aera hey",
+        "advances_time": true,
+        "input": {
+          "required": true
+        }
+      },
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "social",
+        "sort_order": 1,
+        "panel": "talk"
+      },
+      "npc": {
+        "prompt_verb": "speak to",
+        "visible_by_default": true,
+        "prompt_reply_verb": "reply to"
+      }
+    },
+    {
+      "id": "hug",
+      "command": "HUG",
+      "label": "Hug",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "actor",
+      "effects": [
+        "remember_with_target_actor"
+      ],
+      "event_text": "{actor_name} hugs {target_actor_name}.",
+      "hook_id": "actor.hugged",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "social",
+        "sort_order": 2
+      },
+      "npc": {
+        "prompt_verb": "hug",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "rest",
+      "command": "REST",
+      "label": "Rest",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "context_label",
+      "effects": [
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} takes a quiet moment to rest on the {context_label}.",
+      "hook_id": "actor.rested",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "recovery",
+        "sort_order": 3
+      },
+      "npc": {
+        "prompt_verb": "rest",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "eat",
+      "command": "EAT",
+      "label": "Eat",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "consumable",
+      "consumable_kind": "eat",
+      "effects": [
+        "consume_targeted_consumable",
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} eats the {item_label} from the {feature_label}.",
+      "hook_id": "actor.consumed",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "consume",
+        "sort_order": 4
+      },
+      "npc": {
+        "prompt_verb": "eat",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "drink",
+      "command": "DRINK",
+      "label": "Drink",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "consumable",
+      "consumable_kind": "drink",
+      "effects": [
+        "consume_targeted_consumable",
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} drinks the {item_label} from the {feature_label}.",
+      "hook_id": "actor.consumed",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "consume",
+        "sort_order": 5
+      },
+      "npc": {
+        "prompt_verb": "drink",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "consume",
+      "command": "CONSUME",
+      "label": "Consume",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "consumable",
+      "consumable_kind": "consume",
+      "effects": [
+        "consume_targeted_consumable",
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} has the {item_label} from the {feature_label}.",
+      "hook_id": "actor.consumed",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "consume",
+        "sort_order": 6
+      },
+      "npc": {
+        "prompt_verb": "have",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "inspect_feature",
+      "command": "INSPECT FEATURE",
+      "label": "Inspect Feature",
+      "group": "",
+      "phrases": [
+        "look at",
+        "look",
+        "inspect",
+        "x"
+      ],
+      "player_enabled": true,
+      "target_mode": "feature",
+      "effects": [
+        "observe_feature"
+      ],
+      "event_text": "{actor_name} studies the {feature_label}.",
+      "player_command": {
+        "target_mode": "actor_or_feature_reference",
+        "usage": "inspect <thing or person>",
+        "example": "inspect projector",
+        "advances_time": false,
+        "input": {
+          "required": true
+        }
+      },
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "observe",
+        "sort_order": 7
+      },
+      "npc": {
+        "prompt_verb": "inspect",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "inspect_actor",
+      "command": "INSPECT ACTOR",
+      "label": "Inspect Actor",
+      "group": "",
+      "phrases": [
+        "look at",
+        "look",
+        "inspect",
+        "x"
+      ],
+      "player_enabled": false,
+      "target_mode": "actor",
+      "effects": [
+        "observe_actor"
+      ],
+      "event_text": "{actor_name} studies {target_actor_name} more closely.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "observe",
+        "sort_order": 8
+      },
+      "npc": {
+        "prompt_verb": "study",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "act",
+      "command": "ACT",
+      "label": "Act",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "input_mode": "freeform_text",
+      "effects": [
+        "remember_in_room"
+      ],
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "in_room",
+        "sort_order": 9
+      },
+      "npc": {
+        "prompt_verb": "do",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "chop_vegetables",
+      "command": "CHOP VEGETABLES",
+      "label": "Chop Vegetables",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "effects": [
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} claims the cutting board and starts chopping vegetables into a neat prep pile.",
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "vegetables_chopped"
+        }
+      ],
+      "available": {
+        "allowed_rooms": [
+          "kitchen"
+        ],
+        "available_during": [
+          "dinner-prep"
+        ],
+        "blocked_by_bundle_progress": [
+          {
+            "bundle_id": "dinner-prep-cook-and-check-in",
+            "key": "vegetables_chopped"
+          }
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "kitchen",
+        "sort_order": 10
+      },
+      "npc": {
+        "prompt_verb": "chop vegetables",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "boil_water",
+      "command": "BOIL WATER",
+      "label": "Boil Water",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "effects": [
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} sets a pot to boil, filling the kitchen with the first real sense that dinner is underway.",
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "water_boiled"
+        }
+      ],
+      "available": {
+        "allowed_rooms": [
+          "kitchen"
+        ],
+        "available_during": [
+          "dinner-prep"
+        ],
+        "blocked_by_bundle_progress": [
+          {
+            "bundle_id": "dinner-prep-cook-and-check-in",
+            "key": "water_boiled"
+          }
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "kitchen",
+        "sort_order": 11
+      },
+      "npc": {
+        "prompt_verb": "boil water",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "grind_coffee",
+      "command": "GRIND COFFEE",
+      "label": "Grind Coffee",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "effects": [
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} measures out coffee beans and grinds them fresh, the kitchen taking on a warm roasted smell.",
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "coffee_ground"
+        }
+      ],
+      "available": {
+        "allowed_rooms": [
+          "kitchen"
+        ],
+        "available_during": [
+          "dinner-prep"
+        ],
+        "blocked_by_bundle_progress": [
+          {
+            "bundle_id": "dinner-prep-cook-and-check-in",
+            "key": "coffee_ground"
+          }
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "kitchen",
+        "sort_order": 12
+      },
+      "npc": {
+        "prompt_verb": "grind coffee",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "cook",
+      "command": "COOK",
+      "label": "Cook",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "effects": [
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} works the kitchen with quiet focus, the pan hissing as ingredients come together.",
+      "hook_id": "actor.cooked",
+      "item_creation": {
+        "creates_item": "garlic-noodles",
+        "creates_item_story_var": "cook_recipe",
+        "storage": "current_room"
+      },
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "meal_ready"
+        }
+      ],
+      "available": {
+        "allowed_rooms": [
+          "kitchen"
+        ],
+        "available_during": [
+          "dinner-prep"
+        ],
+        "required_bundle_progress": [
+          {
+            "bundle_id": "dinner-prep-cook-and-check-in",
+            "key": "vegetables_chopped"
+          },
+          {
+            "bundle_id": "dinner-prep-cook-and-check-in",
+            "key": "water_boiled"
+          }
+        ],
+        "blocked_by_bundle_progress": [
+          {
+            "bundle_id": "dinner-prep-cook-and-check-in",
+            "key": "meal_ready"
+          }
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "kitchen",
+        "sort_order": 13
+      },
+      "npc": {
+        "prompt_verb": "cook",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "brew",
+      "command": "BREW",
+      "label": "Brew",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "effects": [
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} turns the boiled water and fresh grounds into a careful pour-over, the kitchen filling with coffee aroma.",
+      "hook_id": "actor.brewed",
+      "item_creation": {
+        "creates_item": "pour-over-coffee",
+        "creates_item_story_var": "brew_recipe",
+        "storage": "current_room"
+      },
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "dinner-prep-cook-and-check-in",
+          "key": "coffee_ready"
+        }
+      ],
+      "available": {
+        "allowed_rooms": [
+          "kitchen"
+        ],
+        "available_during": [
+          "dinner-prep"
+        ],
+        "required_bundle_progress": [
+          {
+            "bundle_id": "dinner-prep-cook-and-check-in",
+            "key": "water_boiled"
+          },
+          {
+            "bundle_id": "dinner-prep-cook-and-check-in",
+            "key": "coffee_ground"
+          }
+        ],
+        "blocked_by_bundle_progress": [
+          {
+            "bundle_id": "dinner-prep-cook-and-check-in",
+            "key": "coffee_ready"
+          }
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "kitchen",
+        "sort_order": 14
+      },
+      "npc": {
+        "prompt_verb": "brew",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "slice_fruit",
+      "command": "SLICE FRUIT",
+      "label": "Slice Fruit",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "effects": [
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} slices fruit into a bright breakfast pile, making the kitchen feel awake before anyone is fully ready to be.",
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "day2-breakfast-prep",
+          "key": "fruit_prepped"
+        }
+      ],
+      "available": {
+        "allowed_rooms": [
+          "kitchen"
+        ],
+        "available_during": [
+          "day2-breakfast-prep"
+        ],
+        "blocked_by_bundle_progress": [
+          {
+            "bundle_id": "day2-breakfast-prep",
+            "key": "fruit_prepped"
+          }
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "kitchen",
+        "sort_order": 15
+      },
+      "npc": {
+        "prompt_verb": "slice fruit",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "toast_bread",
+      "command": "TOAST BREAD",
+      "label": "Toast Bread",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "effects": [
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} tends a pan of toast until the kitchen smells warm and buttery in a way that makes the whole house feel lived in.",
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "day2-breakfast-prep",
+          "key": "toast_ready"
+        }
+      ],
+      "available": {
+        "allowed_rooms": [
+          "kitchen"
+        ],
+        "available_during": [
+          "day2-breakfast-prep"
+        ],
+        "blocked_by_bundle_progress": [
+          {
+            "bundle_id": "day2-breakfast-prep",
+            "key": "toast_ready"
+          }
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "kitchen",
+        "sort_order": 16
+      },
+      "npc": {
+        "prompt_verb": "toast bread",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "brew_morning_coffee",
+      "command": "BREW MORNING COFFEE",
+      "label": "Brew Morning Coffee",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "effects": [
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} brews the first coffee of the day, and the smell drifts far enough to start pulling the rest of the house awake.",
+      "hook_id": "actor.brewed",
+      "item_creation": {
+        "creates_item": "pour-over-coffee",
+        "creates_item_story_var": "brew_recipe",
+        "storage": "current_room"
+      },
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "day2-breakfast-prep",
+          "key": "coffee_ready"
+        }
+      ],
+      "available": {
+        "allowed_rooms": [
+          "kitchen"
+        ],
+        "available_during": [
+          "day2-breakfast-prep"
+        ],
+        "blocked_by_bundle_progress": [
+          {
+            "bundle_id": "day2-breakfast-prep",
+            "key": "coffee_ready"
+          }
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "kitchen",
+        "sort_order": 17
+      },
+      "npc": {
+        "prompt_verb": "brew morning coffee",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "serve_breakfast",
+      "command": "SERVE BREAKFAST",
+      "label": "Serve Breakfast",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "effects": [
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} pulls the breakfast together and sets it out like the first real act of the day belongs to everyone.",
+      "hook_id": "actor.cooked",
+      "item_creation": {
+        "creates_item": "honey-toast-and-fruit",
+        "storage": "current_room"
+      },
+      "sets_bundle_progress": [
+        {
+          "bundle_id": "day2-breakfast-prep",
+          "key": "breakfast_ready"
+        }
+      ],
+      "available": {
+        "allowed_rooms": [
+          "kitchen"
+        ],
+        "available_during": [
+          "day2-breakfast-prep"
+        ],
+        "required_bundle_progress": [
+          {
+            "bundle_id": "day2-breakfast-prep",
+            "key": "fruit_prepped"
+          },
+          {
+            "bundle_id": "day2-breakfast-prep",
+            "key": "toast_ready"
+          }
+        ],
+        "blocked_by_bundle_progress": [
+          {
+            "bundle_id": "day2-breakfast-prep",
+            "key": "breakfast_ready"
+          }
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "kitchen",
+        "sort_order": 18
+      },
+      "npc": {
+        "prompt_verb": "serve breakfast",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "demonstrate_knife_work",
+      "command": "DEMONSTRATE KNIFE WORK",
+      "label": "Demonstrate Knife Work",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "effects": [
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} demonstrates the knife work slowly and cleanly, turning the cutting board into a lesson instead of just prep.",
+      "available": {
+        "allowed_rooms": [
+          "kitchen"
+        ],
+        "available_during": [
+          "day2-event-a",
+          "day2-event-b"
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "kitchen",
+        "sort_order": 19
+      },
+      "npc": {
+        "prompt_verb": "demonstrate knife work",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "taste_sauce",
+      "command": "TASTE SAUCE",
+      "label": "Taste Sauce",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "effects": [
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} tastes the sauce, pauses to think, then adjusts it with the kind of focus that invites someone else to lean in.",
+      "available": {
+        "allowed_rooms": [
+          "kitchen"
+        ],
+        "available_during": [
+          "day2-event-a",
+          "day2-event-b"
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "kitchen",
+        "sort_order": 20
+      },
+      "npc": {
+        "prompt_verb": "taste the sauce",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "plate_dish",
+      "command": "PLATE DISH",
+      "label": "Plate Dish",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "effects": [
+        "remember_in_room"
+      ],
+      "event_text": "{actor_name} plates the dish with more care than the situation strictly requires, making the final touches feel quietly intimate.",
+      "available": {
+        "allowed_rooms": [
+          "kitchen"
+        ],
+        "available_during": [
+          "day2-event-a",
+          "day2-event-b"
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "kitchen",
+        "sort_order": 21
+      },
+      "npc": {
+        "prompt_verb": "plate the dish",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "yoga",
+      "command": "YOGA",
+      "label": "Yoga",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "event_text": "{actor_name} flows through a slow sequence on the patio, breath steady, shoulders dropping.",
+      "hook_id": "actor.yoga",
+      "available": {
+        "allowed_rooms": [
+          "patio"
+        ],
+        "available_during": [
+          "day2-event-a",
+          "day2-event-b"
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "patio",
+        "sort_order": 22
+      },
+      "npc": {
+        "prompt_verb": "yoga",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "stretch",
+      "command": "STRETCH",
+      "label": "Stretch",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "none",
+      "event_text": "{actor_name} stretches out against the morning air, finding space in the movement.",
+      "hook_id": "actor.stretched",
+      "available": {
+        "allowed_rooms": [
+          "patio"
+        ],
+        "available_during": [
+          "day2-event-a",
+          "day2-event-b"
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "patio",
+        "sort_order": 23
+      },
+      "npc": {
+        "prompt_verb": "stretch",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "edit",
+      "command": "EDIT",
+      "label": "Edit",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "actor",
+      "event_text": "{actor_name} clips through footage on the editing desk, pulling a moment of {target_actor_name} out of the timeline.",
+      "hook_id": "actor.edited",
+      "item_creation": {
+        "creates_item": "clip-ren",
+        "creates_item_resolve_from_target": true,
+        "storage": "current_room"
+      },
+      "available": {
+        "allowed_rooms": [
+          "studio"
+        ],
+        "available_during": [
+          "day2-event-a",
+          "day2-event-b"
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "studio",
+        "sort_order": 24
+      },
+      "npc": {
+        "prompt_verb": "edit",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "watch",
+      "command": "WATCH",
+      "label": "Watch",
+      "group": "",
+      "phrases": [],
+      "player_enabled": false,
+      "target_mode": "consumable",
+      "consumable_kind": "video_clip",
+      "effects": [
+        "consume_targeted_consumable"
+      ],
+      "event_text": "{actor_name} watches the clip on the monitor, the room going quiet around the footage.",
+      "hook_id": "actor.watched",
+      "available": {
+        "allowed_rooms": [
+          "studio"
+        ],
+        "available_during": [
+          "day2-event-a",
+          "day2-event-b"
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "studio",
+        "sort_order": 25
+      },
+      "npc": {
+        "prompt_verb": "watch",
+        "visible_by_default": true
+      }
+    },
+    {
+      "id": "follow",
+      "label": "Follow",
+      "group": "social",
+      "player_enabled": true,
+      "target_mode": "none",
+      "ui": {
+        "bar": true,
+        "overflow": false,
+        "group": "social",
+        "sort_order": 2,
+        "panel": "follow"
+      }
+    }
+  ]
+}

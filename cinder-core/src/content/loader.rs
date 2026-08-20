@@ -3,7 +3,7 @@ use crate::content::types::{
     ContentSettingsDefinition, ItemDefinition, MovementConfigDefinition, OpeningDefinition,
     OpeningMenuDefinition, OpeningMovieDefinition, PresentationDefinition, RoomDefinition,
     RuleBundleProgressRef, RuleBundlesDefinition, SpeechConfigDefinition, SpeechIntentsConfig,
-    StatsDefinition, SystemTextDefinition, UiTextDefinition, convert_legacy_commands,
+    StatsDefinition, SystemTextDefinition, UiTextDefinition,
 };
 use serde::de::DeserializeOwned;
 use serde_json::Value;
@@ -125,9 +125,6 @@ pub fn load_pack_from_dir_with_locale(
         let actions_def: ActionsDefinition =
             serde_json::from_str(&actions_json).map_err(|e| format!("actions.json: {e}"))?;
         actions_def.actions
-    } else if let Some(commands_json) = read_optional_json_raw(path, "commands.json")? {
-        let affordances_json = read_optional_json_raw(path, "affordances.json")?;
-        convert_legacy_commands(&commands_json, affordances_json.as_deref())?
     } else {
         Vec::new()
     };

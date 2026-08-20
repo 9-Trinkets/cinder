@@ -459,7 +459,7 @@ mod action_defs;
 pub use action_defs::{
     ActionAvailability, ActionContentEvent, ActionDefinition, ActionItemConsumerTarget,
     ActionItemCreation, ActionItemStorageTarget, ActionNpc, ActionPlayerCommand, ActionPlayerInput,
-    ActionUi, ActionsDefinition, convert_legacy_commands,
+    ActionUi, ActionsDefinition,
 };
 
 mod content_pack;
