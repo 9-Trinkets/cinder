@@ -168,7 +168,6 @@ pub struct ActionDefinition {
     #[serde(default)]
     pub npc: Option<ActionNpc>,
 
-    // Sets bundle progress (carried from CommandDefinition)
     #[serde(default)]
     pub sets_bundle_progress: Vec<RuleBundleProgressRef>,
     #[serde(default)]

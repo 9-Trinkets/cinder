@@ -450,8 +450,7 @@ pub use world_defs::{
 
 mod command_defs;
 pub use command_defs::{
-    AffordanceDefinition, AffordancesDefinition, CommandDefinition, CommandEffect,
-    CommandInputMode, CommandOutcomeMode, CommandTargetMode, CommandsDefinition,
+    CommandEffect, CommandInputMode, CommandOutcomeMode, CommandTargetMode,
     ContentEventDefinition, ItemConsumerTarget, ItemStorageTarget, PlayerCommandInputMetadata,
     PlayerCommandMetadata, PlayerCommandTargetMode, RuleBundleProgressRef,
 };
