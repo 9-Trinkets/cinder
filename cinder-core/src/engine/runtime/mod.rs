@@ -1,4 +1,6 @@
-use crate::content::types::{ContentPack, OpeningMenuOptionDefinition, OpeningMovieDefinition};
+use crate::content::types::{
+    ActionDefinition, ContentPack, OpeningMenuOptionDefinition, OpeningMovieDefinition,
+};
 use crate::engine::actor_tick::{ActorTickError, run_actor_tick};
 use crate::engine::commands::player_command_help_text;
 use crate::engine::conversation_memory::refresh_conversation_summaries;
@@ -794,6 +796,19 @@ impl CinderRuntime {
             .lock()
             .map_err(|_| "failed to lock runtime state for stages")?;
         Ok(state.active_objective_stage_ids.clone())
+    }
+
+    pub fn action_is_available(&self, action: &ActionDefinition) -> Result<bool, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for action availability")?;
+        Ok(super::turn_policies::action_is_available(
+            self.content.as_ref(),
+            &state,
+            action,
+            &state.current_room_id,
+        ))
     }
 
     pub fn push_transcript_line(&self, line: &str) -> Result<(), Box<dyn Error>> {

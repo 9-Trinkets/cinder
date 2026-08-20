@@ -127,6 +127,7 @@ export interface MenuOptionItem {
 export interface ActionBarAction {
   id: string
   label: string
+  panel?: string
 }
 
 export interface OverflowAction {

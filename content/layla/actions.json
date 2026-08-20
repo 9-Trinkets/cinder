@@ -1,0 +1,84 @@
+{
+  "actions": [
+    {
+      "id": "look",
+      "command": "LOOK",
+      "label": "Look",
+      "group": "observation",
+      "phrases": ["look", "l", "look at", "look room", "look around", "inspect room", "examine", "x"],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": ["observe_room"],
+      "available": {},
+      "ui": {
+        "bar": true,
+        "overflow": false,
+        "panel": "look",
+        "group": "observe",
+        "sort_order": 0
+      },
+      "player_command": {
+        "usage": "look [at <thing or person>]",
+        "example": "look around",
+        "advances_time": false,
+        "input": { "required": false }
+      }
+    },
+    {
+      "id": "move",
+      "command": "MOVE",
+      "label": "Move",
+      "group": "movement",
+      "phrases": ["go to", "go", "enter", "move to", "move"],
+      "player_enabled": true,
+      "target_mode": "room",
+      "outcome_mode": "event",
+      "effects": ["move_actor"],
+      "event_text": "{actor_name} heads to {target_room_title}.",
+      "available": {},
+      "ui": {
+        "bar": true,
+        "overflow": false,
+        "panel": "move",
+        "group": "movement",
+        "sort_order": 1
+      },
+      "player_command": {
+        "target_mode": "room_reference",
+        "usage": "go <exit>",
+        "example": "go north",
+        "advances_time": true,
+        "input": { "required": true }
+      }
+    },
+    {
+      "id": "speak",
+      "command": "SPEAK",
+      "label": "Talk",
+      "group": "conversation",
+      "phrases": ["talk to", "talk", "speak to", "speak"],
+      "player_enabled": true,
+      "target_mode": "actor_optional",
+      "outcome_mode": "dialogue",
+      "effects": [],
+      "available": {
+        "requires_actor_in_room": true
+      },
+      "ui": {
+        "bar": true,
+        "overflow": false,
+        "panel": "talk",
+        "group": "social",
+        "sort_order": 2
+      },
+      "player_command": {
+        "target_mode": "actor_reference",
+        "usage": "talk to <person> [message]",
+        "example": "talk to the old man what is this place",
+        "advances_time": true,
+        "input": { "required": true }
+      }
+    }
+  ]
+}

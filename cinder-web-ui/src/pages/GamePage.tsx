@@ -432,11 +432,16 @@ export default function GamePage() {
       trimmed = 'talk to ' + trimmed.slice(1).trimStart()
     }
     if (trimmed === '?') { openMenu(); return }
-    if (trimmed.toLowerCase() === 'move' || trimmed.toLowerCase() === 'follow') {
+    const lowerInput = trimmed.toLowerCase()
+    const matchingBarAction = (uiSnapshot?.action_bar_actions ?? []).find(
+      a => a.id.toLowerCase() === lowerInput || a.label.toLowerCase() === lowerInput
+    )
+    if (matchingBarAction?.panel) {
       const snap = uiSnapshot || await api.fetchSessionUi(token, id).catch(() => null)
       if (snap?.channel_surfing_only) {
         setUiSnapshot(snap)
-        setQuickPanel(trimmed.toLowerCase() === 'move' ? 'rooms' : 'follow')
+        const panelName = (matchingBarAction.panel === 'move' ? 'rooms' : matchingBarAction.panel) as QuickPanel
+        setQuickPanel(current => current === panelName ? null : panelName)
         return
       }
     }
@@ -529,8 +534,9 @@ export default function GamePage() {
                 focusInputToEnd()
               }}
               onOverflow={action => {
-                const talkOpts = uiSnapshot?.talk_options ?? []
-                if ((action.id === 'speak' || action.id === 'talk') && talkOpts.length > 0) {
+                const panel = (action as unknown as Record<string, unknown>).panel as string | undefined
+                if (panel === 'talk') {
+                  const talkOpts = uiSnapshot?.talk_options ?? []
                   if (talkOpts.length === 1) {
                     setQuickPanel(null)
                     setInput(`@${talkOpts[0].title} `)
@@ -542,6 +548,12 @@ export default function GamePage() {
                     setQuickPanel('talk')
                     return
                   }
+                }
+                if (panel) {
+                  setQuickPanel(null)
+                  const panelName = (panel === 'move' ? 'rooms' : panel) as QuickPanel
+                  setQuickPanel(current => current === panelName ? null : panelName)
+                  return
                 }
                 setQuickPanel(null)
                 void execCommand(action.id)
@@ -555,20 +567,9 @@ export default function GamePage() {
             ]).map(action => {
               const handleClick = () => {
                 if (busy || gameOver) return
-                if (action.id === 'look') {
-                  setQuickPanel(current => current === 'look' ? null : 'look')
-                  return
-                }
-                if (action.id === 'move') {
-                  setQuickPanel(current => current === 'rooms' ? null : 'rooms')
-                  return
-                }
-                if (action.id === 'follow') {
-                  setQuickPanel(current => current === 'follow' ? null : 'follow')
-                  return
-                }
-                const talkOpts = uiSnapshot?.talk_options ?? []
-                if ((action.id === 'speak' || action.id === 'talk') && talkOpts.length > 0) {
+                const panel = action.panel as string | undefined
+                if (panel === 'talk') {
+                  const talkOpts = uiSnapshot?.talk_options ?? []
                   if (talkOpts.length === 1) {
                     setInput(`@${talkOpts[0].title} `)
                     setAtSuggestions(null)
@@ -579,6 +580,11 @@ export default function GamePage() {
                     setQuickPanel(current => current === 'talk' ? null : 'talk')
                     return
                   }
+                }
+                if (panel) {
+                  const panelName = (panel === 'move' ? 'rooms' : panel) as QuickPanel
+                  setQuickPanel(current => current === panelName ? null : panelName)
+                  return
                 }
                 execCommand(action.id)
               }

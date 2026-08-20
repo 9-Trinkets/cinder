@@ -1,4 +1,4 @@
-use crate::content::types::{ActorDefinition, CommandDefinition, ContentPack};
+use crate::content::types::{ActionDefinition, ActorDefinition, ContentPack};
 use crate::engine::state::{WorldState, current_cast_member_actor_id, display_actor_name};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -51,20 +51,21 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
         _ => {}
     }
 
-    if let Some((command, matched_phrase)) = best_player_command_match(content, trimmed, &lower) {
-        return PlayerCommand::Authored {
-            command_id: command.id.clone(),
-            input: matched_phrase.remainder,
-        };
-    }
-
-    // Fallback: match by command ID directly (used by web UI overflow actions)
-    for command in &content.commands.actions {
-        if command.player_enabled && command.id.to_ascii_lowercase() == lower {
+    if !content.actions.is_empty() {
+        if let Some((action, matched_phrase)) = best_player_action_match(content, trimmed, &lower) {
             return PlayerCommand::Authored {
-                command_id: command.id.clone(),
-                input: None,
+                command_id: action.id.clone(),
+                input: matched_phrase.remainder,
             };
+        }
+        // Fallback: match by action ID directly (used by web UI overflow actions)
+        for action in &content.actions {
+            if action.player_enabled && action.id.to_ascii_lowercase() == lower {
+                return PlayerCommand::Authored {
+                    command_id: action.id.clone(),
+                    input: None,
+                };
+            }
         }
     }
 
@@ -133,23 +134,23 @@ struct PlayerPhraseMatch {
     remainder: Option<String>,
 }
 
-fn best_player_command_match<'a>(
+fn best_player_action_match<'a>(
     content: &'a ContentPack,
     trimmed: &str,
     lower: &str,
-) -> Option<(&'a CommandDefinition, PlayerPhraseMatch)> {
-    let mut best: Option<(&CommandDefinition, (usize, usize), PlayerPhraseMatch)> = None;
-    for command in &content.commands.actions {
-        let Some(metadata) = command.player_command.as_ref() else {
+) -> Option<(&'a ActionDefinition, PlayerPhraseMatch)> {
+    let mut best: Option<(&ActionDefinition, (usize, usize), PlayerPhraseMatch)> = None;
+    for action in &content.actions {
+        let Some(metadata) = action.player_command.as_ref() else {
             continue;
         };
-        if !command.player_enabled {
+        if !action.player_enabled {
             continue;
         }
         let input_metadata = metadata.input.as_ref();
         let requires_input = input_metadata.is_some_and(|input| input.required);
         let accepts_input = input_metadata.is_some();
-        for phrase in &command.player_phrases {
+        for phrase in &action.phrases {
             let phrase_trimmed = phrase.trim();
             if phrase_trimmed.is_empty() {
                 continue;
@@ -190,27 +191,32 @@ fn best_player_command_match<'a>(
                     .as_ref()
                     .is_none_or(|(_, best_score, _)| score > *best_score)
                 {
-                    best = Some((command, score, matched));
+                    best = Some((action, score, matched));
                 }
             }
         }
     }
-    best.map(|(command, _, matched)| (command, matched))
+    best.map(|(action, _, matched)| (action, matched))
 }
 
 fn player_command_help_lines(content: &ContentPack) -> Vec<String> {
     let mut groups: BTreeMap<String, Vec<String>> = BTreeMap::new();
-    for command in content.player_commands() {
-        let Some(metadata) = &command.player_command else {
+
+    for action in content
+        .actions
+        .iter()
+        .filter(|a| a.player_enabled && !a.phrases.is_empty())
+    {
+        let Some(metadata) = &action.player_command else {
             continue;
         };
         if metadata.usage.is_empty() {
             continue;
         }
-        let group = if command.group.is_empty() {
+        let group = if action.group.is_empty() {
             "general"
         } else {
-            command.group.as_str()
+            action.group.as_str()
         };
         let line = format!("- {}", metadata.usage);
         groups.entry(group.to_string()).or_default().push(line);
@@ -251,8 +257,12 @@ fn player_command_help_lines(content: &ContentPack) -> Vec<String> {
 
 fn player_command_examples(content: &ContentPack) -> Vec<String> {
     let mut examples = Vec::new();
-    for command in content.player_commands() {
-        let Some(metadata) = &command.player_command else {
+    for action in content
+        .actions
+        .iter()
+        .filter(|a| a.player_enabled && !a.phrases.is_empty())
+    {
+        let Some(metadata) = &action.player_command else {
             continue;
         };
         if metadata.example.is_empty() {

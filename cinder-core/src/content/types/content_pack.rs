@@ -18,8 +18,7 @@ pub struct ContentPack {
     pub actors: Vec<ActorDefinition>,
     pub act_cast: Vec<ActCastMember>,
     pub stats: StatsDefinition,
-    pub commands: CommandsDefinition,
-    pub affordances: AffordancesDefinition,
+    pub actions: Vec<ActionDefinition>,
     pub movement: MovementConfigDefinition,
     pub speech: SpeechConfigDefinition,
     pub rule_bundles: RuleBundlesDefinition,
@@ -29,8 +28,7 @@ pub struct ContentPack {
     pub variables: BTreeMap<String, VariableDeclaration>,
     pub room_index: HashMap<String, usize>,
     pub actor_index: HashMap<String, usize>,
-    pub command_index: HashMap<String, usize>,
-    pub affordance_index: HashMap<String, usize>,
+    pub action_index: HashMap<String, usize>,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -68,32 +66,28 @@ impl ContentPack {
         self.hooks.get(hook_id)
     }
 
-    pub fn command(&self, command_id: &str) -> Option<&CommandDefinition> {
-        self.command_index
-            .get(command_id)
-            .map(|&i| &self.commands.actions[i])
+    pub fn command(&self, command_id: &str) -> Option<&ActionDefinition> {
+        self.action(command_id)
     }
 
-    pub fn content_event(&self, event_id: &str) -> Option<&ContentEventDefinition> {
-        self.commands
-            .actions
+    pub fn content_event(&self, event_id: &str) -> Option<&ActionContentEvent> {
+        self.actions
             .iter()
-            .filter_map(|command| command.content_event.as_ref())
+            .filter_map(|action| action.content_event.as_ref())
             .find(|event| event.id == event_id)
     }
 
-    pub fn player_commands(&self) -> Vec<&CommandDefinition> {
-        self.commands
-            .actions
+    pub fn player_commands(&self) -> Vec<&ActionDefinition> {
+        self.actions
             .iter()
-            .filter(|command| command.player_enabled)
+            .filter(|action| action.player_enabled)
             .collect()
     }
 
-    pub fn affordance(&self, affordance_id: &str) -> Option<&AffordanceDefinition> {
-        self.affordance_index
-            .get(affordance_id)
-            .map(|&i| &self.affordances.actions[i])
+    pub fn action(&self, action_id: &str) -> Option<&ActionDefinition> {
+        self.action_index
+            .get(action_id)
+            .map(|&i| &self.actions[i])
     }
 
     pub fn menu(&self, menu_id: &str) -> Option<&OpeningMenuDefinition> {
@@ -229,11 +223,20 @@ impl ContentPack {
     }
 
     pub fn crafted_current_room_item_ids(&self) -> BTreeSet<String> {
-        self.commands
-            .actions
+        self.actions
             .iter()
-            .filter(|command| command.creates_item_storage == super::ItemStorageTarget::CurrentRoom)
-            .filter_map(|command| command.creates_item.clone())
+            .filter(|action| {
+                action
+                    .item_creation
+                    .as_ref()
+                    .is_some_and(|ic| ic.storage == ActionItemStorageTarget::CurrentRoom)
+            })
+            .filter_map(|action| {
+                action
+                    .item_creation
+                    .as_ref()
+                    .map(|ic| ic.creates_item.clone())
+            })
             .collect()
     }
 

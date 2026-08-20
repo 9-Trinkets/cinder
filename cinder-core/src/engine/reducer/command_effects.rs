@@ -1,5 +1,6 @@
 use crate::content::types::{
-    CommandDefinition, CommandEffect, CommandInputMode, CommandTargetMode, ContentPack,
+    ActionDefinition, ActionItemStorageTarget, CommandEffect, CommandInputMode, CommandTargetMode,
+    ContentPack, ItemStorageTarget,
 };
 use crate::engine::events::ObservationMode;
 use crate::engine::hook_ids;
@@ -13,6 +14,13 @@ use super::observation::render_room_observation;
 use super::tick::{
     advance_house_progress_objectives, pending_reply_broken_by_move, record_room_action_memory,
 };
+
+fn to_item_storage(storage: ActionItemStorageTarget) -> ItemStorageTarget {
+    match storage {
+        ActionItemStorageTarget::PlayerInventory => ItemStorageTarget::PlayerInventory,
+        ActionItemStorageTarget::CurrentRoom => ItemStorageTarget::CurrentRoom,
+    }
+}
 
 pub(super) struct ActorCommandContext<'a> {
     pub(super) actor_id: &'a str,
@@ -81,7 +89,16 @@ pub(super) fn handle_actor_command_used(
     apply_actor_command_effects(state, content, command, &command_context);
     apply_command_bundle_progress_effects(state, command);
     if let Some(item_id) = resolved_created_item_id(state, command, &command_context) {
-        state.add_item_to_storage(item_id.as_str(), command.creates_item_storage, room_id);
+        let storage = command
+            .item_creation
+            .as_ref()
+            .map(|ic| to_item_storage(ic.storage.clone()))
+            .unwrap_or_default();
+        state.add_item_to_storage(
+            item_id.as_str(),
+            storage,
+            room_id,
+        );
     }
     if command.has_effect(CommandEffect::MoveActor) {
         if let Some(target_room_id) = target_room_id {
@@ -111,11 +128,15 @@ pub(super) fn handle_actor_command_used(
 
 fn resolved_created_item_id(
     state: &WorldState,
-    command: &CommandDefinition,
+    command: &ActionDefinition,
     command_context: &ActorCommandContext<'_>,
 ) -> Option<String> {
-    let item_id = command.creates_item.as_ref()?;
-    if command.creates_item_resolve_from_target {
+    let item_id = &command.item_creation.as_ref()?.creates_item;
+    if command
+        .item_creation
+        .as_ref()
+        .is_some_and(|ic| ic.creates_item_resolve_from_target)
+    {
         return Some(
             command_context
                 .target_actor_id
@@ -125,8 +146,9 @@ fn resolved_created_item_id(
     }
     Some(
         command
-            .creates_item_story_var
+            .item_creation
             .as_ref()
+            .map(|ic| &ic.creates_item_story_var)
             .and_then(|var_key| state.story_vars.get(var_key))
             .unwrap_or(item_id)
             .to_string(),
@@ -136,7 +158,7 @@ fn resolved_created_item_id(
 pub(super) fn apply_actor_command_realization_effects(
     state: &mut WorldState,
     content: &ContentPack,
-    command: &CommandDefinition,
+    command: &ActionDefinition,
     command_context: &ActorCommandContext<'_>,
 ) -> bool {
     for effect in &command.effects {
@@ -197,7 +219,8 @@ pub(super) fn apply_actor_command_realization_effects(
             }
             CommandEffect::ObserveRoom
             | CommandEffect::RememberInRoom
-            | CommandEffect::RememberWithTargetActor => {}
+            | CommandEffect::RememberWithTargetActor
+            | CommandEffect::FollowActor => {}
         }
     }
     true
@@ -206,7 +229,7 @@ pub(super) fn apply_actor_command_realization_effects(
 pub(super) fn apply_actor_command_effects(
     state: &mut WorldState,
     content: &ContentPack,
-    command: &CommandDefinition,
+    command: &ActionDefinition,
     command_context: &ActorCommandContext<'_>,
 ) {
     if command.hook_id.is_empty() {
@@ -244,7 +267,7 @@ pub(super) fn apply_actor_command_effects(
 pub(super) fn record_actor_command_memory(
     state: &mut WorldState,
     content: &ContentPack,
-    command: &CommandDefinition,
+    command: &ActionDefinition,
     command_context: &ActorCommandContext<'_>,
     text: &str,
 ) {
@@ -320,7 +343,7 @@ pub(super) fn resolve_actor_command_labels(
 
 pub(super) fn render_actor_command_text(
     content: &ContentPack,
-    command: &CommandDefinition,
+    command: &ActionDefinition,
     command_context: &ActorCommandContext<'_>,
     item_label: &str,
     feature_label: &str,

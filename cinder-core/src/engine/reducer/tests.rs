@@ -2,13 +2,14 @@ use super::beat_advance::{advance_conditions_met, evaluate_advance_condition};
 use super::*;
 use crate::content::loader::{load_default_pack, load_named_pack};
 use crate::content::types::{
-    ActorDefinition, ActorPromptContext, AdvanceCondition, AdvanceSignal, BeatDefinition,
-    BeatsDefinition, CommandDefinition, CommandEffect, CommandInputMode, CommandTargetMode,
-    CommandsDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition, ItemStorageTarget,
-    OpeningDefinition, PresentationDefinition, RoomDefinition, RoomExitDefinition,
-    RoomFeatureDefinition, RuleBundleCompletionDefinition, RuleBundleDefinition,
-    RuleBundleGuidanceDefinition, RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition,
-    RuleBundleProgressRef, RuleBundlesDefinition, StatDefinition, StatsDefinition,
+    ActionDefinition, ActionItemCreation, ActionItemStorageTarget, ActorDefinition,
+    ActorPromptContext, AdvanceCondition, AdvanceSignal, BeatDefinition, BeatsDefinition,
+    CommandEffect, CommandInputMode, CommandTargetMode, ContentPack, ContentSettingsDefinition,
+    ItemDefinition, ItemStorageTarget, OpeningDefinition, PresentationDefinition, RoomDefinition,
+    RoomExitDefinition, RoomFeatureDefinition, RuleBundleCompletionDefinition,
+    RuleBundleDefinition, RuleBundleGuidanceDefinition, RuleBundleProgressDefinition,
+    RuleBundleProgressKeyDefinition, RuleBundleProgressRef, RuleBundlesDefinition,
+    StatDefinition, StatsDefinition,
 };
 use crate::engine::state::ConversationMemoryKind;
 use serde_json::json;
@@ -42,7 +43,6 @@ fn reducer_test_pack() -> ContentPack {
     pack.menus.clear();
     pack.movies.clear();
     pack.items.clear();
-    pack.affordances = Default::default();
     pack.speech_intents = Default::default();
     pack.presentation = reducer_test_presentation();
     pack.rooms = vec![
@@ -89,42 +89,40 @@ fn reducer_test_pack() -> ContentPack {
     ];
     pack.act_cast.clear();
     pack.stats = reducer_test_stats();
-    pack.commands = CommandsDefinition {
-        actions: vec![
-            CommandDefinition {
-                id: "act".to_string(),
-                command: "act".to_string(),
-                input_mode: CommandInputMode::FreeformText,
-                effects: vec![CommandEffect::RememberInRoom],
-                ..test_command()
-            },
-            CommandDefinition {
-                id: "hug".to_string(),
-                command: "hug".to_string(),
-                target_mode: CommandTargetMode::Actor,
-                hook_id: "actor.hugged".to_string(),
-                event_text: "{actor_name} hugs {target_actor_name}.".to_string(),
-                ..test_command()
-            },
-            CommandDefinition {
-                id: "rest".to_string(),
-                command: "rest".to_string(),
-                target_mode: CommandTargetMode::ContextLabel,
-                hook_id: "actor.rested".to_string(),
-                event_text: "{actor_name} takes a quiet moment to rest on the {context_label}."
-                    .to_string(),
-                ..test_command()
-            },
-            CommandDefinition {
-                id: "move".to_string(),
-                command: "move".to_string(),
-                target_mode: CommandTargetMode::Room,
-                effects: vec![CommandEffect::MoveActor],
-                event_text: "{actor_name} heads to the {target_room_title}.".to_string(),
-                ..test_command()
-            },
-        ],
-    };
+    pack.actions = vec![
+        ActionDefinition {
+            id: "act".to_string(),
+            command: "act".to_string(),
+            input_mode: CommandInputMode::FreeformText,
+            effects: vec![CommandEffect::RememberInRoom],
+            ..ActionDefinition::default()
+        },
+        ActionDefinition {
+            id: "hug".to_string(),
+            command: "hug".to_string(),
+            target_mode: CommandTargetMode::Actor,
+            hook_id: "actor.hugged".to_string(),
+            event_text: "{actor_name} hugs {target_actor_name}.".to_string(),
+            ..ActionDefinition::default()
+        },
+        ActionDefinition {
+            id: "rest".to_string(),
+            command: "rest".to_string(),
+            target_mode: CommandTargetMode::ContextLabel,
+            hook_id: "actor.rested".to_string(),
+            event_text: "{actor_name} takes a quiet moment to rest on the {context_label}."
+                .to_string(),
+            ..ActionDefinition::default()
+        },
+        ActionDefinition {
+            id: "move".to_string(),
+            command: "move".to_string(),
+            target_mode: CommandTargetMode::Room,
+            effects: vec![CommandEffect::MoveActor],
+            event_text: "{actor_name} heads to the {target_room_title}.".to_string(),
+            ..ActionDefinition::default()
+        },
+    ];
     pack.hooks = serde_json::from_value(json!({
         "conversation.shared_room_tick": effect_hook(vec![json!({
             "kind": "adjust_pair_stat",
@@ -254,42 +252,6 @@ fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
     }
 }
 
-fn test_command() -> CommandDefinition {
-    CommandDefinition {
-        id: String::new(),
-        command: String::new(),
-        group: String::new(),
-        player_enabled: false,
-        player_phrases: vec![],
-        outcome_mode: Default::default(),
-        input_mode: Default::default(),
-        target_mode: Default::default(),
-        consumable_kind: None,
-        effects: vec![],
-        hook_id: String::new(),
-        event_text: String::new(),
-        content_event: None,
-        player_command: None,
-        allowed_rooms: vec![],
-        creates_item: None,
-        creates_item_story_var: None,
-        creates_item_resolve_from_target: false,
-        creates_item_storage: ItemStorageTarget::PlayerInventory,
-        consumes_item: None,
-        consumes_item_storage: ItemStorageTarget::PlayerInventory,
-        requires_any: vec![],
-        requires_any_storage: ItemStorageTarget::PlayerInventory,
-        consumes_any: vec![],
-        consumes_any_storage: ItemStorageTarget::PlayerInventory,
-        item_consumer: Default::default(),
-        required_bundle_progress: vec![],
-        blocked_by_bundle_progress: vec![],
-        sets_bundle_progress: vec![],
-        clears_bundle_progress: vec![],
-        available_during: vec![],
-    }
-}
-
 fn effect_hook(effects: Vec<serde_json::Value>) -> serde_json::Value {
     json!({
         "rule": "effect_table",
@@ -323,14 +285,12 @@ fn rebuild_test_pack_indexes(pack: &mut ContentPack) {
         .enumerate()
         .map(|(index, actor)| (actor.id.clone(), index))
         .collect::<HashMap<_, _>>();
-    pack.command_index = pack
-        .commands
+    pack.action_index = pack
         .actions
         .iter()
         .enumerate()
-        .map(|(index, command)| (command.id.clone(), index))
+        .map(|(index, action)| (action.id.clone(), index))
         .collect::<HashMap<_, _>>();
-    pack.affordance_index = HashMap::new();
 }
 
 #[test]
@@ -731,7 +691,7 @@ fn command_used_signal_can_advance_stage_after_bundle_completion_and_clears_prog
             guidance: RuleBundleGuidanceDefinition::default(),
         }],
     };
-    pack.commands.actions.push(CommandDefinition {
+    pack.actions.push(ActionDefinition {
         id: "cook".to_string(),
         command: "COOK".to_string(),
         effects: vec![CommandEffect::RememberInRoom],
@@ -740,7 +700,7 @@ fn command_used_signal_can_advance_stage_after_bundle_completion_and_clears_prog
             bundle_id: "dinner-prep-cook-and-check-in".to_string(),
             key: "meal_ready".to_string(),
         }],
-        ..test_command()
+        ..ActionDefinition::default()
     });
     rebuild_test_pack_indexes(&mut pack);
     let mut state = WorldState::new(&pack);
@@ -855,15 +815,18 @@ fn actor_commands_can_create_room_items_from_story_vars() {
             description: "Stir-fry.".to_string(),
         },
     ];
-    pack.commands.actions.push(CommandDefinition {
+    pack.actions.push(ActionDefinition {
         id: "cook".to_string(),
         command: "COOK".to_string(),
         effects: vec![CommandEffect::RememberInRoom],
         event_text: "{actor_name} finishes dinner.".to_string(),
-        creates_item: Some("garlic-noodles".to_string()),
-        creates_item_story_var: Some("cook_recipe".to_string()),
-        creates_item_storage: ItemStorageTarget::CurrentRoom,
-        ..test_command()
+        item_creation: Some(ActionItemCreation {
+            creates_item: "garlic-noodles".to_string(),
+            creates_item_story_var: "cook_recipe".to_string(),
+            creates_item_resolve_from_target: false,
+            storage: ActionItemStorageTarget::CurrentRoom,
+        }),
+        ..ActionDefinition::default()
     });
     rebuild_test_pack_indexes(&mut pack);
     let mut state = WorldState::new(&pack);

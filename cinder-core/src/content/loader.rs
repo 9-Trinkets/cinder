@@ -1,9 +1,9 @@
 use crate::content::types::{
-    ActCastMember, ActorDefinition, AffordancesDefinition, BeatsDefinition, CommandsDefinition,
-    ContentPack, ContentSettingsDefinition, ItemDefinition, MovementConfigDefinition,
-    OpeningDefinition, OpeningMenuDefinition, OpeningMovieDefinition, PresentationDefinition,
-    RoomDefinition, RuleBundleProgressRef, RuleBundlesDefinition, SpeechConfigDefinition,
-    SpeechIntentsConfig, StatsDefinition, SystemTextDefinition, UiTextDefinition,
+    ActCastMember, ActorDefinition, ActionsDefinition, BeatsDefinition, ContentPack,
+    ContentSettingsDefinition, ItemDefinition, MovementConfigDefinition, OpeningDefinition,
+    OpeningMenuDefinition, OpeningMovieDefinition, PresentationDefinition, RoomDefinition,
+    RuleBundleProgressRef, RuleBundlesDefinition, SpeechConfigDefinition, SpeechIntentsConfig,
+    StatsDefinition, SystemTextDefinition, UiTextDefinition, convert_legacy_commands,
 };
 use serde::de::DeserializeOwned;
 use serde_json::Value;
@@ -120,11 +120,17 @@ pub fn load_pack_from_dir_with_locale(
     let actors = paths.read_required::<Vec<ActorDefinition>>("actors.json")?;
     let act_cast = collect_act_cast(&actors);
     let stats = read_optional_json::<StatsDefinition>(path, "stats.json")?.unwrap_or_default();
-    let commands =
-        read_optional_json::<CommandsDefinition>(path, "commands.json")?.unwrap_or_default();
-    validate_player_commands(&commands)?;
-    let affordances =
-        read_optional_json::<AffordancesDefinition>(path, "affordances.json")?.unwrap_or_default();
+
+    let actions = if let Some(actions_json) = read_optional_json_raw(path, "actions.json")? {
+        let actions_def: ActionsDefinition =
+            serde_json::from_str(&actions_json).map_err(|e| format!("actions.json: {e}"))?;
+        actions_def.actions
+    } else if let Some(commands_json) = read_optional_json_raw(path, "commands.json")? {
+        let affordances_json = read_optional_json_raw(path, "affordances.json")?;
+        convert_legacy_commands(&commands_json, affordances_json.as_deref())?
+    } else {
+        Vec::new()
+    };
     let movement =
         read_optional_json::<MovementConfigDefinition>(path, "movement.json")?.unwrap_or_default();
     let speech =
@@ -145,8 +151,7 @@ pub fn load_pack_from_dir_with_locale(
 
     let room_index = build_index(&rooms, |room| &room.id);
     let actor_index = build_index(&actors, |actor| &actor.id);
-    let command_index = build_index(&commands.actions, |command| &command.id);
-    let affordance_index = build_index(&affordances.actions, |affordance| &affordance.id);
+    let action_index = build_index(&actions, |action| &action.id);
     let room_ids = rooms
         .iter()
         .map(|room| room.id.as_str())
@@ -157,6 +162,7 @@ pub fn load_pack_from_dir_with_locale(
         .collect::<Vec<_>>();
 
     let stage_ids: Vec<&str> = beats.stages.iter().map(|s| s.id.as_str()).collect();
+    validate_actions(&actions, &room_ids, &stage_ids)?;
 
     for id in &beats.initial_stage_ids {
         require_known_id(
@@ -233,13 +239,6 @@ pub fn load_pack_from_dir_with_locale(
             }
         }
     }
-    for action in &affordances.actions {
-        require_known_command_id(
-            &action.command_id,
-            &format!("affordance '{}'", action.id),
-            &command_index,
-        )?;
-    }
     for actor in &actors {
         if !room_index.contains_key(&actor.room_id) {
             return Err(format!(
@@ -297,6 +296,7 @@ pub fn load_pack_from_dir_with_locale(
             "beats.stages",
         )?;
     }
+    let action_index_keys: Vec<&str> = action_index.keys().map(|k| k.as_str()).collect();
     for bundle in &rule_bundles.bundles {
         if bundle.id.trim().is_empty() {
             return Err("rule_bundles.json bundles entries require non-empty id".into());
@@ -349,10 +349,11 @@ pub fn load_pack_from_dir_with_locale(
                 )
                 .into());
             }
-            require_known_command_id(
+            require_known_id(
                 &priority.command_id,
+                &action_index_keys,
                 &format!("rule_bundles.json bundle '{}' prioritize", bundle.id),
-                &command_index,
+                "actions",
             )?;
         }
         for (index, conditional) in bundle.guidance.conditional.iter().enumerate() {
@@ -365,14 +366,15 @@ pub fn load_pack_from_dir_with_locale(
                     )
                     .into());
                 }
-                require_known_command_id(
+                require_known_id(
                     &priority.command_id,
+                    &action_index_keys,
                     &format!(
                         "rule_bundles.json bundle '{}' conditional guidance #{} prioritize",
                         bundle.id,
                         index + 1
                     ),
-                    &command_index,
+                    "actions",
                 )?;
             }
         }
@@ -392,42 +394,43 @@ pub fn load_pack_from_dir_with_locale(
             )
         })
         .collect::<std::collections::BTreeMap<_, _>>();
-    for command in &commands.actions {
-        for stage_id in &command.available_during {
+    for action in &actions {
+        for stage_id in &action.available.available_during {
             require_known_id(
                 stage_id,
                 &stage_ids,
                 &format!(
-                    "command '{}' available_during stage_id '{}'",
-                    command.id, stage_id
+                    "action '{}' available_during stage_id '{}'",
+                    action.id, stage_id
                 ),
                 "beats.stages",
             )?;
         }
         validate_bundle_progress_refs(
-            &format!("command '{}' bundle progress", command.id),
-            command
+            &format!("action '{}' bundle progress", action.id),
+            action
+                .available
                 .required_bundle_progress
                 .iter()
-                .chain(command.blocked_by_bundle_progress.iter())
-                .chain(command.sets_bundle_progress.iter())
-                .chain(command.clears_bundle_progress.iter()),
+                .chain(action.available.blocked_by_bundle_progress.iter())
+                .chain(action.sets_bundle_progress.iter())
+                .chain(action.clears_bundle_progress.iter()),
             &bundle_progress_keys,
         )?;
-        for bundle in &rule_bundles.bundles {
-            for conditional in &bundle.guidance.conditional {
-                validate_bundle_progress_refs(
-                    &format!(
-                        "rule_bundles.json bundle '{}' conditional guidance bundle progress",
-                        bundle.id
-                    ),
-                    conditional
-                        .required_bundle_progress
-                        .iter()
-                        .chain(conditional.blocked_by_bundle_progress.iter()),
-                    &bundle_progress_keys,
-                )?;
-            }
+    }
+    for bundle in &rule_bundles.bundles {
+        for conditional in &bundle.guidance.conditional {
+            validate_bundle_progress_refs(
+                &format!(
+                    "rule_bundles.json bundle '{}' conditional guidance bundle progress",
+                    bundle.id
+                ),
+                conditional
+                    .required_bundle_progress
+                    .iter()
+                    .chain(conditional.blocked_by_bundle_progress.iter()),
+                &bundle_progress_keys,
+            )?;
         }
     }
     for room_id in &movement.unreachable_rooms {
@@ -484,8 +487,7 @@ pub fn load_pack_from_dir_with_locale(
         actors,
         act_cast,
         stats,
-        commands,
-        affordances,
+        actions,
         movement,
         speech,
         rule_bundles,
@@ -495,12 +497,11 @@ pub fn load_pack_from_dir_with_locale(
         variables,
         room_index,
         actor_index,
-        command_index,
-        affordance_index,
+        action_index,
     })
 }
 
-use crate::content::loader_validation::{require_known_id, validate_player_commands};
+use crate::content::loader_validation::{require_known_id, validate_actions};
 
 pub fn available_locales(path: &Path) -> Result<Vec<LocaleOption>, Box<dyn Error>> {
     let locales_dir = path.join("locales");
@@ -544,6 +545,15 @@ fn read_optional_json<T: DeserializeOwned>(
     file_name: &str,
 ) -> Result<Option<T>, Box<dyn Error>> {
     read_optional_path(&path.join(file_name))
+}
+
+fn read_optional_json_raw(path: &Path, file_name: &str) -> Result<Option<String>, Box<dyn Error>> {
+    let file_path = path.join(file_name);
+    if file_path.exists() {
+        Ok(Some(fs::read_to_string(&file_path)?))
+    } else {
+        Ok(None)
+    }
 }
 
 fn read_json<T: DeserializeOwned>(path: &Path, file_name: &str) -> Result<T, Box<dyn Error>> {
@@ -627,18 +637,6 @@ where
         .enumerate()
         .map(|(index, item)| (id(item).to_string(), index))
         .collect()
-}
-
-fn require_known_command_id(
-    command_id: &str,
-    subject: &str,
-    command_index: &HashMap<String, usize>,
-) -> Result<(), Box<dyn Error>> {
-    if command_index.contains_key(command_id) {
-        Ok(())
-    } else {
-        Err(format!("{subject} command_id '{command_id}' not found in commands").into())
-    }
 }
 
 fn validate_bundle_progress_refs<'a>(

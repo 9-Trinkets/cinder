@@ -27,6 +27,7 @@ pub enum CommandEffect {
     ConsumeTargetedConsumable,
     RememberInRoom,
     RememberWithTargetActor,
+    FollowActor,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]

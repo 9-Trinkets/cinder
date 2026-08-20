@@ -23,7 +23,6 @@ fn layla_pack_boots() {
     assert_eq!(room.title, "A Lightless Cell");
 
     let commands: Vec<String> = content
-        .commands
         .actions
         .iter()
         .filter(|c| c.player_enabled)

@@ -12,14 +12,14 @@ use crate::engine::dialogue_grounding::{
 use crate::engine::events::WorldEvent;
 use crate::engine::hooks::{actor_state_notes, pair_state_note};
 use crate::engine::state::WorldState;
-use crate::engine::turn_policies::{apply_actor_turn_policies, command_is_available};
+use crate::engine::turn_policies::{action_is_available, apply_actor_turn_policies};
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::sync::Arc;
 
 use super::affordances::{
     ActorAffordanceCandidate, require_actor_affordance_for_command_id,
-    require_actor_affordance_for_consumable_kind, require_affordance_command,
+    require_actor_affordance_for_consumable_kind,
 };
 use super::context::{
     SpeakCandidateContext, actors_in_room_except, available_consume_candidates,
@@ -176,18 +176,18 @@ pub fn build_actor_turn(
         .collect::<Vec<_>>();
     let mut affordance_candidates = Vec::new();
     if let Some((room_id, room_title)) = move_option.as_ref()
-        && let Some(affordance) = content.affordance("move")
+        && let Some(action) = content.action("move")
     {
-        let command = require_affordance_command(content.as_ref(), affordance)?;
+        let npc = action.npc.as_ref();
         affordance_candidates.push(ActorAffordanceCandidate::new(
-            affordance,
+            action,
             build_actor_turn_affordance_option(
                 &content.system_text,
-                &affordance.id,
-                &affordance.group,
-                &affordance.prompt_verb,
+                &action.id,
+                &action.group,
+                npc.map_or("", |n| n.prompt_verb.as_str()),
                 None,
-                command,
+                action,
                 ActorTurnAffordanceTarget::Move {
                     room_id,
                     room_title,
@@ -198,19 +198,24 @@ pub fn build_actor_turn(
             ),
         ));
     }
-    if let Some(affordance) = content.affordance("speak") {
-        let command = require_affordance_command(content.as_ref(), affordance)?;
+    if let Some(action) = content.action("speak") {
+        let npc = action.npc.as_ref();
         affordance_candidates.extend(speak_candidates.iter().map(|candidate| {
             ActorAffordanceCandidate::new(
-                affordance,
+                action,
                 build_actor_turn_affordance_option(
                     &content.system_text,
-                    &affordance.id,
-                    &affordance.group,
-                    &affordance.prompt_verb,
-                    (!affordance.prompt_reply_verb.is_empty())
-                        .then_some(affordance.prompt_reply_verb.as_str()),
-                    command,
+                    &action.id,
+                    &action.group,
+                    npc.map_or("", |n| n.prompt_verb.as_str()),
+                    npc.and_then(|n| {
+                        if n.prompt_reply_verb.is_empty() {
+                            None
+                        } else {
+                            Some(n.prompt_reply_verb.as_str())
+                        }
+                    }),
+                    action,
                     ActorTurnAffordanceTarget::Speak {
                         actor_id: &candidate.actor_id,
                         actor_name: &candidate.actor_name,
@@ -221,14 +226,14 @@ pub fn build_actor_turn(
         }));
         if speak_candidates.len() >= content.speech.room_min_audience {
             affordance_candidates.push(ActorAffordanceCandidate::new(
-                affordance,
+                action,
                 build_actor_turn_affordance_option(
                     &content.system_text,
-                    &affordance.id,
-                    &affordance.group,
-                    &affordance.prompt_verb,
+                    &action.id,
+                    &action.group,
+                    npc.map_or("", |n| n.prompt_verb.as_str()),
                     None,
-                    command,
+                    action,
                     ActorTurnAffordanceTarget::SpeakRoom {
                         audience_label: "everyone here",
                     },
@@ -236,18 +241,18 @@ pub fn build_actor_turn(
             ));
         }
     }
-    if let Some(affordance) = content.affordance("hug") {
-        let command = require_affordance_command(content.as_ref(), affordance)?;
+    if let Some(action) = content.action("hug") {
+        let npc = action.npc.as_ref();
         affordance_candidates.extend(speak_candidates.iter().map(|candidate| {
             ActorAffordanceCandidate::new(
-                affordance,
+                action,
                 build_actor_turn_affordance_option(
                     &content.system_text,
-                    &affordance.id,
-                    &affordance.group,
-                    &affordance.prompt_verb,
+                    &action.id,
+                    &action.group,
+                    npc.map_or("", |n| n.prompt_verb.as_str()),
                     None,
-                    command,
+                    action,
                     ActorTurnAffordanceTarget::Hug {
                         actor_id: &candidate.actor_id,
                         actor_name: &candidate.actor_name,
@@ -257,35 +262,37 @@ pub fn build_actor_turn(
         }));
     }
     if let Some(context_label) = rest_context.as_deref()
-        && let Ok((affordance, command)) =
+        && let Ok(action) =
             require_actor_affordance_for_command_id(content.as_ref(), "rest")
     {
+        let npc = action.npc.as_ref();
         affordance_candidates.push(ActorAffordanceCandidate::new(
-            affordance,
+            action,
             build_actor_turn_affordance_option(
                 &content.system_text,
-                &affordance.id,
-                &affordance.group,
-                &affordance.prompt_verb,
+                &action.id,
+                &action.group,
+                npc.map_or("", |n| n.prompt_verb.as_str()),
                 None,
-                command,
+                action,
                 ActorTurnAffordanceTarget::Rest { context_label },
             ),
         ));
     }
     for candidate in &consume_candidates {
-        if let Ok((affordance, command)) =
+        if let Ok(action) =
             require_actor_affordance_for_consumable_kind(content.as_ref(), candidate.kind)
         {
+            let npc = action.npc.as_ref();
             affordance_candidates.push(ActorAffordanceCandidate::new(
-                affordance,
+                action,
                 build_actor_turn_affordance_option(
                     &content.system_text,
-                    &affordance.id,
-                    &affordance.group,
-                    &affordance.prompt_verb,
+                    &action.id,
+                    &action.group,
+                    npc.map_or("", |n| n.prompt_verb.as_str()),
                     None,
-                    command,
+                    action,
                     ActorTurnAffordanceTarget::Consume {
                         item_id: &candidate.item_id,
                         item_label: &candidate.item_label,
@@ -296,18 +303,18 @@ pub fn build_actor_turn(
             ));
         }
     }
-    if let Some(affordance) = content.affordance("inspect_feature") {
-        let command = require_affordance_command(content.as_ref(), affordance)?;
+    if let Some(action) = content.action("inspect_feature") {
+        let npc = action.npc.as_ref();
         affordance_candidates.extend(inspect_feature_cands.iter().map(|candidate| {
             ActorAffordanceCandidate::new(
-                affordance,
+                action,
                 build_actor_turn_affordance_option(
                     &content.system_text,
-                    &affordance.id,
-                    &affordance.group,
-                    &affordance.prompt_verb,
+                    &action.id,
+                    &action.group,
+                    npc.map_or("", |n| n.prompt_verb.as_str()),
                     None,
-                    command,
+                    action,
                     ActorTurnAffordanceTarget::InspectFeature {
                         feature_id: &candidate.feature_id,
                         feature_label: &candidate.label,
@@ -316,18 +323,18 @@ pub fn build_actor_turn(
             )
         }));
     }
-    if let Some(affordance) = content.affordance("inspect_actor") {
-        let command = require_affordance_command(content.as_ref(), affordance)?;
+    if let Some(action) = content.action("inspect_actor") {
+        let npc = action.npc.as_ref();
         affordance_candidates.extend(inspect_actor_cands.iter().map(|candidate| {
             ActorAffordanceCandidate::new(
-                affordance,
+                action,
                 build_actor_turn_affordance_option(
                     &content.system_text,
-                    &affordance.id,
-                    &affordance.group,
-                    &affordance.prompt_verb,
+                    &action.id,
+                    &action.group,
+                    npc.map_or("", |n| n.prompt_verb.as_str()),
                     None,
-                    command,
+                    action,
                     ActorTurnAffordanceTarget::InspectActor {
                         actor_id: &candidate.actor_id,
                         actor_name: &candidate.actor_name,
@@ -336,113 +343,178 @@ pub fn build_actor_turn(
             )
         }));
     }
-    if let Ok((affordance, command)) =
+    if let Ok(action) =
         require_actor_affordance_for_command_id(content.as_ref(), "act")
     {
+        let npc = action.npc.as_ref();
         affordance_candidates.push(ActorAffordanceCandidate::new(
-            affordance,
+            action,
             build_actor_turn_affordance_option(
                 &content.system_text,
-                &affordance.id,
-                &affordance.group,
-                &affordance.prompt_verb,
+                &action.id,
+                &action.group,
+                npc.map_or("", |n| n.prompt_verb.as_str()),
                 None,
-                command,
+                action,
                 ActorTurnAffordanceTarget::Act,
             ),
         ));
     }
-    for affordance in &content.affordances.actions {
-        if let Some(command) = content.command(&affordance.command_id)
-            && !command.allowed_rooms.is_empty()
-            && command.allowed_rooms.contains(&current_room_id)
-            && !affordance_candidates
+    if !content.actions.is_empty() {
+        for action in content.actions.iter().filter(|a| {
+            a.npc.is_some() && a.command == "FOLLOW"
+        }) {
+            if let Some(npc) = &action.npc {
+                if let Some(ref scope) = npc.actor_scope {
+                    if !scope.iter().any(|id| id == &actor.id) {
+                        continue;
+                    }
+                }
+            }
+            if !action.available.allowed_rooms.is_empty() && !action.available.allowed_rooms.contains(&current_room_id) {
+                continue;
+            }
+            if !affordance_candidates
                 .iter()
-                .any(|c| c.option.affordance_id == affordance.id)
-        {
-            match command.target_mode {
-                CommandTargetMode::None => {
-                    affordance_candidates.push(ActorAffordanceCandidate::new(
-                        affordance,
-                        build_actor_turn_affordance_option(
-                            &content.system_text,
-                            &affordance.id,
-                            &affordance.group,
-                            &affordance.prompt_verb,
-                            None,
-                            command,
-                            ActorTurnAffordanceTarget::Act,
-                        ),
-                    ));
-                }
-                CommandTargetMode::Actor | CommandTargetMode::ActorOptional => {
-                    affordance_candidates.extend(speak_candidates.iter().map(|candidate| {
-                        ActorAffordanceCandidate::new(
-                            affordance,
-                            build_actor_turn_affordance_option(
-                                &content.system_text,
-                                &affordance.id,
-                                &affordance.group,
-                                &affordance.prompt_verb,
-                                None,
-                                command,
-                                ActorTurnAffordanceTarget::Hug {
-                                    actor_id: &candidate.actor_id,
-                                    actor_name: &candidate.actor_name,
-                                },
-                            ),
-                        )
-                    }));
-                }
-                CommandTargetMode::Consumable => {
-                    affordance_candidates.extend(consume_candidates.iter().filter_map(
-                        |candidate| {
-                            if command
-                                .consumable_kind
-                                .is_some_and(|kind| kind != candidate.kind)
-                            {
-                                return None;
-                            }
-                            Some(ActorAffordanceCandidate::new(
-                                affordance,
-                                build_actor_turn_affordance_option(
+                .any(|c| c.option.affordance_id == action.id)
+            {
+                match action.target_mode {
+                    CommandTargetMode::Actor | CommandTargetMode::ActorOptional => {
+                        let npc = action.npc.as_ref().unwrap();
+                        affordance_candidates.extend(speak_candidates.iter().map(|candidate| {
+                            ActorAffordanceCandidate {
+                                order: action.ui.sort_order,
+                                visible_by_default: npc.visible_by_default,
+                                option: build_actor_turn_affordance_option(
                                     &content.system_text,
-                                    &affordance.id,
-                                    &affordance.group,
-                                    &affordance.prompt_verb,
-                                    None,
-                                    command,
-                                    ActorTurnAffordanceTarget::Consume {
-                                        item_id: &candidate.item_id,
-                                        item_label: &candidate.item_label,
-                                        feature_label: &candidate.feature_label,
-                                        kind: candidate.kind,
+                                    &action.id,
+                                    &action.group,
+                                    &npc.prompt_verb,
+                                    (!npc.prompt_reply_verb.is_empty())
+                                        .then_some(npc.prompt_reply_verb.as_str()),
+                                    action,
+                                    ActorTurnAffordanceTarget::Hug {
+                                        actor_id: &candidate.actor_id,
+                                        actor_name: &candidate.actor_name,
                                     },
                                 ),
-                            ))
-                        },
-                    ));
+                            }
+                        }));
+                    }
+                    _ => {}
                 }
-                CommandTargetMode::Feature => {
-                    affordance_candidates.extend(inspect_feature_cands.iter().map(|candidate| {
-                        ActorAffordanceCandidate::new(
-                            affordance,
-                            build_actor_turn_affordance_option(
-                                &content.system_text,
-                                &affordance.id,
-                                &affordance.group,
-                                &affordance.prompt_verb,
-                                None,
-                                command,
-                                ActorTurnAffordanceTarget::InspectFeature {
-                                    feature_id: &candidate.feature_id,
-                                    feature_label: &candidate.label,
+            }
+        }
+        for action in content.actions.iter().filter(|a| {
+            a.npc.is_some() && a.command != "FOLLOW"
+        }) {
+            if let Some(npc) = &action.npc {
+                if let Some(ref scope) = npc.actor_scope {
+                    if !scope.iter().any(|id| id == &actor.id) {
+                        continue;
+                    }
+                }
+                if !action.available.allowed_rooms.is_empty()
+                    && !action.available.allowed_rooms.contains(&current_room_id)
+                {
+                    continue;
+                }
+                if !affordance_candidates
+                    .iter()
+                    .any(|c| c.option.affordance_id == action.id)
+                {
+                    match action.target_mode {
+                        CommandTargetMode::None => {
+                            affordance_candidates.push(ActorAffordanceCandidate {
+                                order: action.ui.sort_order,
+                                visible_by_default: npc.visible_by_default,
+                                option: build_actor_turn_affordance_option(
+                                    &content.system_text,
+                                    &action.id,
+                                    &action.group,
+                                    &npc.prompt_verb,
+                                    None,
+                                    action,
+                                    ActorTurnAffordanceTarget::Act,
+                                ),
+                            });
+                        }
+                        CommandTargetMode::Actor | CommandTargetMode::ActorOptional => {
+                            affordance_candidates.extend(speak_candidates.iter().map(|candidate| {
+                                ActorAffordanceCandidate {
+                                    order: action.ui.sort_order,
+                                    visible_by_default: npc.visible_by_default,
+                                    option: build_actor_turn_affordance_option(
+                                        &content.system_text,
+                                        &action.id,
+                                        &action.group,
+                                        &npc.prompt_verb,
+                                        (!npc.prompt_reply_verb.is_empty())
+                                            .then_some(npc.prompt_reply_verb.as_str()),
+                                        action,
+                                        ActorTurnAffordanceTarget::Hug {
+                                            actor_id: &candidate.actor_id,
+                                            actor_name: &candidate.actor_name,
+                                        },
+                                    ),
+                                }
+                            }));
+                        }
+                        CommandTargetMode::Consumable => {
+                            affordance_candidates.extend(consume_candidates.iter().filter_map(
+                                |candidate| {
+                                    if action
+                                        .consumable_kind
+                                        .is_some_and(|kind| kind != candidate.kind)
+                                    {
+                                        return None;
+                                    }
+                                    Some(ActorAffordanceCandidate {
+                                        order: action.ui.sort_order,
+                                        visible_by_default: npc.visible_by_default,
+                                        option: build_actor_turn_affordance_option(
+                                            &content.system_text,
+                                            &action.id,
+                                            &action.group,
+                                            &npc.prompt_verb,
+                                            None,
+                                            action,
+                                            ActorTurnAffordanceTarget::Consume {
+                                                item_id: &candidate.item_id,
+                                                item_label: &candidate.item_label,
+                                                feature_label: &candidate.feature_label,
+                                                kind: candidate.kind,
+                                            },
+                                        ),
+                                    })
                                 },
-                            ),
-                        )
-                    }));
+                            ));
+                        }
+                        CommandTargetMode::Feature => {
+                            affordance_candidates.extend(inspect_feature_cands.iter().map(
+                                |candidate| {
+                                    ActorAffordanceCandidate {
+                                        order: action.ui.sort_order,
+                                        visible_by_default: npc.visible_by_default,
+                                        option: build_actor_turn_affordance_option(
+                                            &content.system_text,
+                                            &action.id,
+                                            &action.group,
+                                            &npc.prompt_verb,
+                                            None,
+                                            action,
+                                            ActorTurnAffordanceTarget::InspectFeature {
+                                                feature_id: &candidate.feature_id,
+                                                feature_label: &candidate.label,
+                                            },
+                                        ),
+                                    }
+                                },
+                            ));
+                        }
+                        CommandTargetMode::Room | CommandTargetMode::ContextLabel => {}
+                    }
                 }
-                CommandTargetMode::Room | CommandTargetMode::ContextLabel => {}
             }
         }
     }
@@ -454,9 +526,9 @@ pub fn build_actor_turn(
         .filter(|candidate| {
             let ActorTurnCommandInvocation::Command { command_id, .. } =
                 &candidate.option.invocation;
-            content
-                .command(command_id)
-                .is_some_and(|command| command_is_available(content.as_ref(), state, command))
+                content
+                    .action(command_id)
+                    .is_some_and(|action| action_is_available(content.as_ref(), state, action, &current_room_id))
         })
         .collect::<Vec<_>>();
     affordances.sort_by(|left, right| left.order.cmp(&right.order));

@@ -1,5 +1,5 @@
 use super::builder::ActorTurnRealizationContext;
-use crate::content::types::{CommandDefinition, CommandTargetMode, ContentPack};
+use crate::content::types::{ActionDefinition, CommandTargetMode, ContentPack};
 use std::error::Error;
 
 pub(crate) fn resolve_target_actor_name(
@@ -23,14 +23,14 @@ pub(crate) fn resolve_target_actor_name(
 }
 
 pub(crate) fn validate_command_target_contract(
-    command: &CommandDefinition,
+    action: &ActionDefinition,
     target_room_id: Option<&str>,
     target_actor_id: Option<&str>,
     context_label: Option<&str>,
     feature_id: Option<&str>,
     consumable_id: Option<&str>,
 ) -> Result<(), Box<dyn Error>> {
-    match command.target_mode {
+    match action.target_mode {
         CommandTargetMode::None => {
             if target_room_id.is_some()
                 || target_actor_id.is_some()
@@ -40,7 +40,7 @@ pub(crate) fn validate_command_target_contract(
             {
                 return Err(Box::new(std::io::Error::other(format!(
                     "command '{}' does not accept runtime targets",
-                    command.id
+                    action.id
                 ))));
             }
         }
@@ -48,7 +48,7 @@ pub(crate) fn validate_command_target_contract(
             if target_room_id.is_none() {
                 return Err(Box::new(std::io::Error::other(format!(
                     "command '{}' missing room target",
-                    command.id
+                    action.id
                 ))));
             }
         }
@@ -56,7 +56,7 @@ pub(crate) fn validate_command_target_contract(
             if target_actor_id.is_none() {
                 return Err(Box::new(std::io::Error::other(format!(
                     "command '{}' missing actor target",
-                    command.id
+                    action.id
                 ))));
             }
         }
@@ -65,7 +65,7 @@ pub(crate) fn validate_command_target_contract(
             if feature_id.is_none() {
                 return Err(Box::new(std::io::Error::other(format!(
                     "command '{}' missing feature target",
-                    command.id
+                    action.id
                 ))));
             }
         }
@@ -73,7 +73,7 @@ pub(crate) fn validate_command_target_contract(
             if consumable_id.is_none() {
                 return Err(Box::new(std::io::Error::other(format!(
                     "command '{}' missing consumable target",
-                    command.id
+                    action.id
                 ))));
             }
         }
@@ -81,7 +81,7 @@ pub(crate) fn validate_command_target_contract(
             if context_label.is_none_or(|label| label.trim().is_empty()) {
                 return Err(Box::new(std::io::Error::other(format!(
                     "command '{}' missing context label target",
-                    command.id
+                    action.id
                 ))));
             }
         }

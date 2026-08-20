@@ -8,7 +8,7 @@ use super::{
     ChapterScriptSummaryRequest, ConversationMemorySummaryRequest, DialogueRequest,
     DirectSpeechIntentRequest, MenuIntentRequest,
 };
-use crate::content::types::{CommandDefinition, CommandInputMode, SystemTextDefinition};
+use crate::content::types::{ActionDefinition, CommandInputMode, SystemTextDefinition};
 
 pub(crate) fn build_actor_turn_action_prompt(request: &ActorTurnActionRequest) -> String {
     let text = &request.system_text;
@@ -93,7 +93,7 @@ pub(crate) fn build_actor_turn_affordance_option(
     group: &str,
     prompt_verb: &str,
     _prompt_reply_verb: Option<&str>,
-    command: &CommandDefinition,
+    action: &ActionDefinition,
     target: ActorTurnAffordanceTarget<'_>,
 ) -> ActorTurnAffordanceOption {
     let (available_text, decision_label, decision_prefix, invocation) = match target {
@@ -116,16 +116,16 @@ pub(crate) fn build_actor_turn_affordance_option(
                     &[("prompt_verb", prompt_verb), ("room_title", room_title)],
                 ),
             },
-            format!("{} {room_id}", command.command),
+            format!("{} {room_id}", action.command),
             None,
             ActorTurnCommandInvocation::Command {
-                command_id: command.id.clone(),
+                command_id: action.id.clone(),
                 target_room_id: Some(room_id.to_string()),
                 target_actor_id: None,
                 feature_id: None,
                 consumable_id: None,
                 context_label: None,
-                input_mode: command.input_mode,
+                input_mode: action.input_mode,
             },
         ),
         ActorTurnAffordanceTarget::Speak {
@@ -147,13 +147,13 @@ pub(crate) fn build_actor_turn_affordance_option(
             format!("SPEAK {actor_id}"),
             None,
             ActorTurnCommandInvocation::Command {
-                command_id: command.id.clone(),
+                command_id: action.id.clone(),
                 target_room_id: None,
                 target_actor_id: Some(actor_id.to_string()),
                 feature_id: None,
                 consumable_id: None,
                 context_label: None,
-                input_mode: command.input_mode,
+                input_mode: action.input_mode,
             },
         ),
         ActorTurnAffordanceTarget::SpeakRoom { audience_label } => (
@@ -164,13 +164,13 @@ pub(crate) fn build_actor_turn_affordance_option(
             format!("SPEAK ROOM — address {audience_label} at once"),
             None,
             ActorTurnCommandInvocation::Command {
-                command_id: command.id.clone(),
+                command_id: action.id.clone(),
                 target_room_id: None,
                 target_actor_id: None,
                 feature_id: None,
                 consumable_id: None,
                 context_label: None,
-                input_mode: command.input_mode,
+                input_mode: action.input_mode,
             },
         ),
         ActorTurnAffordanceTarget::Hug {
@@ -181,16 +181,16 @@ pub(crate) fn build_actor_turn_affordance_option(
                 &system_text.actor_turn_hug_option_template,
                 &[("prompt_verb", prompt_verb), ("actor_name", actor_name)],
             ),
-            format!("{} {actor_id}", command.command),
+            format!("{} {actor_id}", action.command),
             None,
             ActorTurnCommandInvocation::Command {
-                command_id: command.id.clone(),
+                command_id: action.id.clone(),
                 target_room_id: None,
                 target_actor_id: Some(actor_id.to_string()),
                 feature_id: None,
                 consumable_id: None,
                 context_label: None,
-                input_mode: command.input_mode,
+                input_mode: action.input_mode,
             },
         ),
         ActorTurnAffordanceTarget::Rest { context_label } => (
@@ -201,16 +201,16 @@ pub(crate) fn build_actor_turn_affordance_option(
                     ("context_label", context_label),
                 ],
             ),
-            command.command.clone(),
+            action.command.clone(),
             None,
             ActorTurnCommandInvocation::Command {
-                command_id: command.id.clone(),
+                command_id: action.id.clone(),
                 target_room_id: None,
                 target_actor_id: None,
                 feature_id: None,
                 consumable_id: None,
                 context_label: Some(context_label.to_string()),
-                input_mode: command.input_mode,
+                input_mode: action.input_mode,
             },
         ),
         ActorTurnAffordanceTarget::Consume {
@@ -227,16 +227,16 @@ pub(crate) fn build_actor_turn_affordance_option(
                     ("feature_label", feature_label),
                 ],
             ),
-            format!("{} {item_id}", command.command),
+            format!("{} {item_id}", action.command),
             None,
             ActorTurnCommandInvocation::Command {
-                command_id: command.id.clone(),
+                command_id: action.id.clone(),
                 target_room_id: None,
                 target_actor_id: None,
                 feature_id: None,
                 consumable_id: Some(item_id.to_string()),
                 context_label: None,
-                input_mode: command.input_mode,
+                input_mode: action.input_mode,
             },
         ),
         ActorTurnAffordanceTarget::InspectFeature {
@@ -250,16 +250,16 @@ pub(crate) fn build_actor_turn_affordance_option(
                     ("feature_label", feature_label),
                 ],
             ),
-            format!("{} {feature_id}", command.command),
+            format!("{} {feature_id}", action.command),
             None,
             ActorTurnCommandInvocation::Command {
-                command_id: command.id.clone(),
+                command_id: action.id.clone(),
                 target_room_id: None,
                 target_actor_id: None,
                 feature_id: Some(feature_id.to_string()),
                 consumable_id: None,
                 context_label: None,
-                input_mode: command.input_mode,
+                input_mode: action.input_mode,
             },
         ),
         ActorTurnAffordanceTarget::InspectActor {
@@ -270,55 +270,55 @@ pub(crate) fn build_actor_turn_affordance_option(
                 &system_text.actor_turn_inspect_actor_option_template,
                 &[("prompt_verb", prompt_verb), ("actor_name", actor_name)],
             ),
-            format!("{} {actor_id}", command.command),
+            format!("{} {actor_id}", action.command),
             None,
             ActorTurnCommandInvocation::Command {
-                command_id: command.id.clone(),
+                command_id: action.id.clone(),
                 target_room_id: None,
                 target_actor_id: Some(actor_id.to_string()),
                 feature_id: None,
                 consumable_id: None,
                 context_label: None,
-                input_mode: command.input_mode,
+                input_mode: action.input_mode,
             },
         ),
-        ActorTurnAffordanceTarget::Act => match command.input_mode {
+        ActorTurnAffordanceTarget::Act => match action.input_mode {
             CommandInputMode::FreeformText => (
                 system_text.actor_turn_act_option_template.clone(),
                 render_prompt_template(
                     &system_text.actor_turn_act_decision_template,
-                    &[("command", command.command.as_str())],
+                    &[("command", action.command.as_str())],
                 ),
-                Some(command.command.clone()),
+                Some(action.command.clone()),
                 ActorTurnCommandInvocation::Command {
-                    command_id: command.id.clone(),
+                    command_id: action.id.clone(),
                     target_room_id: None,
                     target_actor_id: None,
                     feature_id: None,
                     consumable_id: None,
                     context_label: None,
-                    input_mode: command.input_mode,
+                    input_mode: action.input_mode,
                 },
             ),
             CommandInputMode::None => (
                 format!("You could {prompt_verb}."),
-                command.command.clone(),
+                action.command.clone(),
                 None,
                 ActorTurnCommandInvocation::Command {
-                    command_id: command.id.clone(),
+                    command_id: action.id.clone(),
                     target_room_id: None,
                     target_actor_id: None,
                     feature_id: None,
                     consumable_id: None,
                     context_label: None,
-                    input_mode: command.input_mode,
+                    input_mode: action.input_mode,
                 },
             ),
         },
     };
     ActorTurnAffordanceOption {
         affordance_id: affordance_id.to_string(),
-        command_id: command.id.clone(),
+        command_id: action.id.clone(),
         group: group.to_string(),
         available_text,
         decision_label,
@@ -385,7 +385,7 @@ pub(crate) fn chapter_relationship_summarizer_system_prompt(
 mod tests {
     use super::build_actor_turn_affordance_option;
     use crate::content::loader::load_named_pack;
-    use crate::content::types::{CommandDefinition, CommandInputMode, CommandTargetMode};
+    use crate::content::types::{ActionDefinition, CommandInputMode, CommandTargetMode};
     use crate::engine::dialogue::ActorTurnAffordanceTarget;
 
     #[test]
@@ -397,12 +397,12 @@ mod tests {
             "kitchen",
             "cook now",
             None,
-            &CommandDefinition {
+            &ActionDefinition {
                 id: "cook".to_string(),
                 command: "COOK".to_string(),
                 input_mode: CommandInputMode::None,
                 target_mode: CommandTargetMode::None,
-                ..CommandDefinition::default()
+                ..ActionDefinition::default()
             },
             ActorTurnAffordanceTarget::Act,
         );

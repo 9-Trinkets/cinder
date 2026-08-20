@@ -1,5 +1,5 @@
 use crate::content::types::{
-    CommandDefinition, ContentPack, RuleBundleAffordanceTarget, RuleBundleCompletionTrigger,
+    ActionDefinition, ContentPack, RuleBundleAffordanceTarget, RuleBundleCompletionTrigger,
     RuleBundleConditionalGuidanceDefinition, RuleBundleDefinition, RuleBundleProgressRef,
 };
 use crate::engine::dialogue::{ActorTurnActionRequest, ActorTurnCommandInvocation};
@@ -72,18 +72,18 @@ pub(crate) fn mark_actor_bundle_progress_for_speech_event(
 pub(crate) fn command_availability_issue(
     content: &ContentPack,
     state: &WorldState,
-    command: &CommandDefinition,
+    action: &ActionDefinition,
 ) -> Option<CommandAvailabilityIssue> {
-    if !command.available_during.is_empty()
-        && !command
-            .available_during
+    let a = &action.available;
+    if !a.available_during.is_empty()
+        && !a.available_during
             .iter()
             .any(|stage_id| state.active_objective_stage_ids.contains(stage_id))
     {
         return Some(CommandAvailabilityIssue::StageInactive);
     }
 
-    let missing = command
+    let missing = a
         .required_bundle_progress
         .iter()
         .filter(|progress| !bundle_progress_is_met(content, state, progress))
@@ -93,7 +93,7 @@ pub(crate) fn command_availability_issue(
         return Some(CommandAvailabilityIssue::MissingBundleProgress(missing));
     }
 
-    let blocked = command
+    let blocked = a
         .blocked_by_bundle_progress
         .iter()
         .filter(|progress| bundle_progress_is_met(content, state, progress))
@@ -106,20 +106,12 @@ pub(crate) fn command_availability_issue(
     None
 }
 
-pub(crate) fn command_is_available(
-    content: &ContentPack,
-    state: &WorldState,
-    command: &CommandDefinition,
-) -> bool {
-    command_availability_issue(content, state, command).is_none()
-}
-
 pub(crate) fn command_unavailable_message(
     _content: &ContentPack,
-    command: &CommandDefinition,
+    action: &ActionDefinition,
     issue: &CommandAvailabilityIssue,
 ) -> String {
-    let verb = command.command.to_ascii_lowercase();
+    let verb = action.command.to_ascii_lowercase();
     match issue {
         CommandAvailabilityIssue::StageInactive => format!("You can't {verb} right now."),
         CommandAvailabilityIssue::MissingBundleProgress(labels) => {
@@ -134,15 +126,15 @@ pub(crate) fn command_unavailable_message(
 
 pub(crate) fn apply_command_bundle_progress_effects(
     state: &mut WorldState,
-    command: &CommandDefinition,
+    action: &ActionDefinition,
 ) {
-    for progress in &command.sets_bundle_progress {
+    for progress in &action.sets_bundle_progress {
         state.story_vars.set_unchecked(
             &bundle_progress_story_var_key(&progress.bundle_id, &progress.key),
             "true",
         );
     }
-    for progress in &command.clears_bundle_progress {
+    for progress in &action.clears_bundle_progress {
         state
             .story_vars
             .values_mut()
@@ -151,6 +143,52 @@ pub(crate) fn apply_command_bundle_progress_effects(
                 &progress.key,
             ));
     }
+}
+
+pub fn action_is_available(
+    content: &ContentPack,
+    state: &WorldState,
+    action: &ActionDefinition,
+    context_room_id: &str,
+) -> bool {
+    let a = &action.available;
+
+    if a.requires_actor_in_room {
+        let has_actor = content.actors.iter().any(|act| {
+            let room_id = state.actor_room_id(&act.id, &act.room_id);
+            room_id == context_room_id
+        });
+        if !has_actor {
+            return false;
+        }
+    }
+
+    if !a.allowed_rooms.is_empty() && !a.allowed_rooms.contains(&context_room_id.to_string()) {
+        return false;
+    }
+
+    if !a.available_during.is_empty()
+        && !a
+            .available_during
+            .iter()
+            .any(|stage_id| state.active_objective_stage_ids.contains(stage_id))
+    {
+        return false;
+    }
+
+    for progress in &a.required_bundle_progress {
+        if !bundle_progress_is_met(content, state, progress) {
+            return false;
+        }
+    }
+
+    for progress in &a.blocked_by_bundle_progress {
+        if bundle_progress_is_met(content, state, progress) {
+            return false;
+        }
+    }
+
+    true
 }
 
 fn bundle_guidance_notes_for_actor(
@@ -418,7 +456,7 @@ mod tests {
         clear_inactive_bundle_state, command_availability_issue,
     };
     use crate::content::loader::load_named_pack;
-    use crate::content::types::{CommandDefinition, CommandInputMode, RuleBundleProgressRef};
+    use crate::content::types::{ActionDefinition, CommandInputMode, RuleBundleProgressRef};
     use crate::engine::dialogue::{
         ActorTurnActionRequest, ActorTurnAffordanceOption, ActorTurnCommandInvocation,
     };
@@ -454,7 +492,7 @@ mod tests {
     fn command_bundle_progress_effects_set_and_clear_flags() {
         let content = load_named_pack("aera", Some("en")).expect("load aera");
         let mut state = WorldState::new(&content);
-        let command = CommandDefinition {
+        let command = ActionDefinition {
             sets_bundle_progress: vec![RuleBundleProgressRef {
                 bundle_id: "bundle".to_string(),
                 key: "meal_ready".to_string(),
@@ -463,7 +501,7 @@ mod tests {
                 bundle_id: "bundle".to_string(),
                 key: "water_boiled".to_string(),
             }],
-            ..CommandDefinition::default()
+            ..ActionDefinition::default()
         };
         state
             .story_vars
@@ -764,10 +802,6 @@ mod tests {
             assert!(
                 content.command(id).is_none(),
                 "{id} should not exist as a command"
-            );
-            assert!(
-                content.affordance(id).is_none(),
-                "{id} should not exist as an affordance"
             );
         }
     }

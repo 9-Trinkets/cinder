@@ -3,6 +3,7 @@ use cinder_core::content::types::UiTextDefinition;
 use cinder_core::engine::runtime::{
     ActClosure, ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption,
 };
+use cinder_core::engine::turn_policies::action_is_available;
 use serde::Serialize;
 
 use super::response;
@@ -44,6 +45,8 @@ pub struct RoomConsumableGroup {
 pub struct ActionBarAction {
     pub id: String,
     pub label: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub panel: Option<String>,
 }
 
 #[derive(Clone, Serialize)]
@@ -122,6 +125,16 @@ pub struct UiSnapshot {
     pub theme: cinder_core::content::types::ThemeDefinition,
 }
 
+fn legacy_panel_for_action_id(id: &str) -> Option<String> {
+    match id {
+        "look" => Some("look".into()),
+        "move" => Some("move".into()),
+        "follow" => Some("follow".into()),
+        "speak" | "talk" => Some("talk".into()),
+        _ => None,
+    }
+}
+
 pub(super) fn build_ui_snapshot(
     runtime: &CinderRuntime,
     pack_id: &str,
@@ -177,7 +190,22 @@ pub(super) fn build_ui_snapshot(
         };
 
     let (action_bar_actions, content_defined_bar) =
-        if !content.ui_text.action_bar.actions.is_empty() {
+        if !content.actions.is_empty() {
+            let state = runtime.export_state().map_err(|e| e.to_string())?;
+            (
+                content
+                    .actions
+                    .iter()
+                    .filter(|a| a.ui.bar && action_is_available(content, &state, a, &state.current_room_id))
+                    .map(|a| ActionBarAction {
+                        id: a.id.clone(),
+                        label: a.label.clone(),
+                        panel: a.ui.panel.clone(),
+                    })
+                    .collect(),
+                true,
+            )
+        } else if !content.ui_text.action_bar.actions.is_empty() {
             (
                 content
                     .ui_text
@@ -187,6 +215,7 @@ pub(super) fn build_ui_snapshot(
                     .map(|action| ActionBarAction {
                         id: action.id.clone(),
                         label: action.label.clone(),
+                        panel: legacy_panel_for_action_id(&action.id),
                     })
                     .collect(),
                 true,
@@ -197,14 +226,17 @@ pub(super) fn build_ui_snapshot(
                     ActionBarAction {
                         id: "look".into(),
                         label: "Look".into(),
+                        panel: Some("look".into()),
                     },
                     ActionBarAction {
                         id: "move".into(),
                         label: "Move".into(),
+                        panel: Some("move".into()),
                     },
                     ActionBarAction {
                         id: "follow".into(),
                         label: "Follow".into(),
+                        panel: Some("follow".into()),
                     },
                 ],
                 false,
@@ -262,6 +294,7 @@ pub(super) fn build_ui_snapshot(
         action_bar_actions.push(ActionBarAction {
             id: "talk".into(),
             label: "Talk".into(),
+            panel: Some("talk".into()),
         });
     }
 
@@ -272,84 +305,86 @@ pub(super) fn build_ui_snapshot(
     let has_talk = bar_ids.contains(&"speak") || bar_ids.contains(&"talk");
     let modal_covered: Vec<&str> = vec!["inspect_feature", "inspect_actor"];
     let current_room_id = runtime.current_room_id().unwrap_or_default();
-    let mut overflow_actions: Vec<OverflowAction> = content
-        .commands
-        .actions
-        .iter()
-        .filter(|command| {
-            if !command.player_enabled || bar_ids.contains(&command.id.as_str()) {
-                return false;
-            }
-            if modal_covered.contains(&command.id.as_str()) {
-                return false;
-            }
-            if (command.id == "speak" || command.id == "talk") && has_talk {
-                return false;
-            }
-            if !command.allowed_rooms.is_empty()
-                && !command.allowed_rooms.contains(&current_room_id)
-            {
-                return false;
-            }
-            if let Some(item_id) = &command.consumes_item
-                && !runtime
-                    .has_item_in_storage(item_id, command.consumes_item_storage)
-                    .unwrap_or(false)
-            {
-                return false;
-            }
-            if !command.requires_any.is_empty() || !command.consumes_any.is_empty() {
-                let has_any = command.requires_any.iter().any(|id| {
-                    runtime
-                        .has_item_in_storage(id, command.requires_any_storage)
-                        .unwrap_or(false)
-                }) || command.consumes_any.iter().any(|id| {
-                    runtime
-                        .has_item_in_storage(id, command.consumes_any_storage)
-                        .unwrap_or(false)
-                });
-                if !has_any {
+    let mut overflow_actions: Vec<OverflowAction> = {
+        content
+            .actions
+            .iter()
+            .filter(|a| {
+                if !a.player_enabled || bar_ids.contains(&a.id.as_str()) {
                     return false;
                 }
-            }
-            if !command.available_during.is_empty() {
-                let active_stages: Vec<String> = runtime.active_stage_ids().unwrap_or_default();
-                let matches_stage = command
-                    .available_during
-                    .iter()
-                    .any(|stage_id| active_stages.contains(stage_id));
-                if !matches_stage {
+                if modal_covered.contains(&a.id.as_str()) {
                     return false;
                 }
-            }
-            true
-        })
-        .map(|command| {
-            let label = command
-                .id
-                .split('_')
-                .map(|word| {
-                    let mut chars = word.chars();
-                    chars
-                        .next()
-                        .map(|first| first.to_uppercase().to_string() + chars.as_str())
-                        .unwrap_or_default()
-                })
-                .collect::<Vec<_>>()
-                .join(" ");
-            let usage = command
-                .player_command
-                .as_ref()
-                .map(|player_command| player_command.usage.clone())
-                .unwrap_or_default();
-            OverflowAction {
-                id: command.id.clone(),
+                if (a.id == "speak" || a.id == "talk") && has_talk {
+                    return false;
+                }
+                if !a.available.allowed_rooms.is_empty()
+                    && !a.available.allowed_rooms.contains(&current_room_id)
+                {
+                    return false;
+                }
+                if let Some(item_id) = &a.available.consumes_item
+                    && !runtime
+                        .has_item_in_storage(item_id, a.available.consumes_item_storage.clone().into())
+                        .unwrap_or(false)
+                {
+                    return false;
+                }
+                if !a.available.requires_any.is_empty() || !a.available.consumes_any.is_empty() {
+                    let has_any = a.available.requires_any.iter().any(|id| {
+                        runtime
+                            .has_item_in_storage(id, a.available.requires_any_storage.clone().into())
+                            .unwrap_or(false)
+                    }) || a.available.consumes_any.iter().any(|id| {
+                        runtime
+                            .has_item_in_storage(id, a.available.consumes_any_storage.clone().into())
+                            .unwrap_or(false)
+                    });
+                    if !has_any {
+                        return false;
+                    }
+                }
+                if !a.available.available_during.is_empty() {
+                    let active_stages: Vec<String> = runtime.active_stage_ids().unwrap_or_default();
+                    let matches_stage = a
+                        .available
+                        .available_during
+                        .iter()
+                        .any(|stage_id| active_stages.contains(stage_id));
+                    if !matches_stage {
+                        return false;
+                    }
+                }
+                true
+            })
+            .map(|a| {
+                let label = a
+                    .id
+                    .split('_')
+                    .map(|word| {
+                        let mut chars = word.chars();
+                        chars
+                            .next()
+                            .map(|first: char| first.to_uppercase().to_string() + chars.as_str())
+                            .unwrap_or_default()
+                    })
+                    .collect::<Vec<_>>()
+                    .join(" ");
+                let usage = a
+                    .player_command
+                    .as_ref()
+                    .map(|player_command| player_command.usage.clone())
+                    .unwrap_or_default();
+                OverflowAction {
+                id: a.id.clone(),
                 label,
-                group: command.group.clone(),
+                group: a.ui.group.clone(),
                 usage,
             }
         })
-        .collect();
+        .collect()
+    };
 
     if let Ok(active_stages) = runtime.active_stage_ids() {
         append_stage_menu_overflow_actions(&mut overflow_actions, content, &active_stages);

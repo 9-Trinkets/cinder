@@ -456,6 +456,13 @@ pub use command_defs::{
     PlayerCommandMetadata, PlayerCommandTargetMode, RuleBundleProgressRef,
 };
 
+mod action_defs;
+pub use action_defs::{
+    ActionAvailability, ActionContentEvent, ActionDefinition, ActionItemConsumerTarget,
+    ActionItemCreation, ActionItemStorageTarget, ActionNpc, ActionPlayerCommand, ActionPlayerInput,
+    ActionUi, ActionsDefinition, convert_legacy_commands,
+};
+
 mod content_pack;
 pub use content_pack::{ContentPack, RoomConsumableRef};
 

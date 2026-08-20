@@ -1,7 +1,7 @@
 use super::types::{PendingDialogue, PlannedTurn};
 use crate::content::types::{
-    CommandDefinition, CommandEffect, CommandOutcomeMode, ContentPack, ItemConsumerTarget,
-    PlayerCommandTargetMode,
+    ActionDefinition, ActionItemConsumerTarget, CommandEffect, CommandOutcomeMode, ContentPack,
+    ItemStorageTarget, PlayerCommandTargetMode,
 };
 use crate::engine::commands::{resolve_actor_reference_input, unknown_target_token};
 use crate::engine::dialogue_grounding::viewer_participant_id;
@@ -9,6 +9,17 @@ use crate::engine::events::{ObservationMode, WorldEvent};
 use crate::engine::state::{WorldState, display_actor_name};
 use crate::engine::turn_policies::{command_availability_issue, command_unavailable_message};
 use std::collections::BTreeMap;
+
+fn to_item_storage(storage: crate::content::types::ActionItemStorageTarget) -> ItemStorageTarget {
+    match storage {
+        crate::content::types::ActionItemStorageTarget::PlayerInventory => {
+            ItemStorageTarget::PlayerInventory
+        }
+        crate::content::types::ActionItemStorageTarget::CurrentRoom => {
+            ItemStorageTarget::CurrentRoom
+        }
+    }
+}
 
 pub(super) struct PlanningContext<'a> {
     pub(super) raw_input: &'a str,
@@ -36,13 +47,13 @@ fn pending_dialogue_for(
 }
 
 fn content_event_for_command(
-    command: &CommandDefinition,
+    action: &ActionDefinition,
     payload: BTreeMap<String, String>,
 ) -> WorldEvent {
-    let content_event = command
+    let content_event = action
         .content_event
         .as_ref()
-        .unwrap_or_else(|| panic!("command '{}' should define a content_event", command.id));
+        .unwrap_or_else(|| panic!("action '{}' should define a content_event", action.id));
     WorldEvent::ContentEvent {
         event_id: content_event.id.clone(),
         payload,
@@ -63,12 +74,13 @@ fn first_actor_in_room<'a>(
 
 fn resolved_created_item_id(
     content: &ContentPack,
-    command: &CommandDefinition,
+    action: &ActionDefinition,
     input: Option<&str>,
     context: &PlanningContext<'_>,
 ) -> Option<String> {
-    let item_id = command.creates_item.as_ref()?;
-    if command.creates_item_resolve_from_target {
+    let item_creation = action.item_creation.as_ref()?;
+    let item_id = &item_creation.creates_item;
+    if item_creation.creates_item_resolve_from_target {
         let input_val = input.unwrap_or_default().trim();
         return Some(
             resolve_actor_reference_input(
@@ -82,9 +94,8 @@ fn resolved_created_item_id(
         );
     }
     Some(
-        command
-            .creates_item_story_var
-            .as_ref()
+        (!item_creation.creates_item_story_var.is_empty())
+            .then(|| item_creation.creates_item_story_var.as_str())
             .and_then(|var_key| context.planner_state.story_vars.get(var_key))
             .map(|value| value.to_string())
             .unwrap_or_else(|| item_id.clone()),
@@ -93,25 +104,27 @@ fn resolved_created_item_id(
 
 pub(super) fn plan_content_command(
     content: &ContentPack,
-    command: &CommandDefinition,
+    action: &ActionDefinition,
     input: Option<&str>,
     context: &PlanningContext<'_>,
     planned: &mut PlannedTurn,
 ) -> bool {
-    if let Some(issue) = command_availability_issue(content, context.planner_state, command) {
+    if let Some(issue) = command_availability_issue(content, context.planner_state, action) {
         planned.events.push(WorldEvent::ActionRejected {
-            message: command_unavailable_message(content, command, &issue),
+            message: command_unavailable_message(content, action, &issue),
         });
         return false;
     }
 
     // Check room restrictions
-    if !command.allowed_rooms.is_empty()
-        && !command
+    if !action.available.allowed_rooms.is_empty()
+        && !action
+            .available
             .allowed_rooms
             .contains(&context.current_room_id.to_string())
     {
-        let needed = command
+        let needed = action
+            .available
             .allowed_rooms
             .first()
             .and_then(|id| content.room(id))
@@ -120,7 +133,7 @@ pub(super) fn plan_content_command(
         planned.events.push(WorldEvent::ActionRejected {
             message: format!(
                 "You can't {} here. Head to the {} first.",
-                command.command.to_lowercase(),
+                action.command.to_lowercase(),
                 needed,
             ),
         });
@@ -128,10 +141,10 @@ pub(super) fn plan_content_command(
     }
 
     // Check item requirement (consumes_item, consumes_any, or requires_any)
-    if let Some(item_id) = &command.consumes_item {
+    if let Some(item_id) = &action.available.consumes_item {
         if !context.planner_state.has_item_in_storage(
             item_id,
-            command.consumes_item_storage,
+            to_item_storage(action.available.consumes_item_storage.clone()),
             context.current_room_id,
         ) {
             let label = content
@@ -143,7 +156,7 @@ pub(super) fn plan_content_command(
             });
             return false;
         }
-        if command.item_consumer == ItemConsumerTarget::FirstActorInRoom
+        if action.item_consumer == ActionItemConsumerTarget::FirstActorInRoom
             && first_actor_in_room(content, context).is_none()
         {
             planned.events.push(WorldEvent::ActionRejected {
@@ -152,21 +165,23 @@ pub(super) fn plan_content_command(
             return false;
         }
     }
-    if !command.requires_any.is_empty() || !command.consumes_any.is_empty() {
-        let all_required: Vec<_> = command
+    if !action.available.requires_any.is_empty() || !action.available.consumes_any.is_empty() {
+        let all_required: Vec<_> = action
+            .available
             .requires_any
             .iter()
-            .chain(command.consumes_any.iter())
+            .chain(action.available.consumes_any.iter())
             .collect();
         let has_any = all_required.iter().any(|id| {
-            let storage = if command
+            let storage = if action
+                .available
                 .consumes_any
                 .iter()
                 .any(|candidate| candidate == *id)
             {
-                command.consumes_any_storage
+                to_item_storage(action.available.consumes_any_storage.clone())
             } else {
-                command.requires_any_storage
+                to_item_storage(action.available.requires_any_storage.clone())
             };
             context
                 .planner_state
@@ -178,8 +193,8 @@ pub(super) fn plan_content_command(
             });
             return false;
         }
-        if !command.consumes_any.is_empty()
-            && command.item_consumer == ItemConsumerTarget::FirstActorInRoom
+        if !action.available.consumes_any.is_empty()
+            && action.item_consumer == ActionItemConsumerTarget::FirstActorInRoom
             && first_actor_in_room(content, context).is_none()
         {
             planned.events.push(WorldEvent::ActionRejected {
@@ -189,10 +204,10 @@ pub(super) fn plan_content_command(
         }
     }
 
-    let metadata = command
+    let metadata = action
         .player_command
         .as_ref()
-        .unwrap_or_else(|| panic!("command '{}' should define player_command", command.id));
+        .unwrap_or_else(|| panic!("action '{}' should define player_command", action.id));
     let mut payload = BTreeMap::new();
     if let Some(input_metadata) = &metadata.input {
         let value = input.unwrap_or_default().trim();
@@ -216,26 +231,32 @@ pub(super) fn plan_content_command(
     // Content event (narrative) first, then item events
     planned
         .events
-        .push(content_event_for_command(command, payload));
-    if !command.sets_bundle_progress.is_empty() || !command.clears_bundle_progress.is_empty() {
+        .push(content_event_for_command(action, payload));
+    if !action.sets_bundle_progress.is_empty() || !action.clears_bundle_progress.is_empty() {
         planned
             .events
             .push(WorldEvent::CommandBundleProgressApplied {
-                command_id: command.id.clone(),
+                command_id: action.id.clone(),
             });
     }
 
-    if let Some(item_id) = resolved_created_item_id(content, command, input, context) {
+    if let Some(item_id) = resolved_created_item_id(content, action, input, context) {
         planned.events.push(WorldEvent::ItemAcquired {
             item_id,
-            storage: command.creates_item_storage,
+            storage: action
+                .item_creation
+                .as_ref()
+                .map(|ic| to_item_storage(ic.storage.clone()))
+                .unwrap_or_default(),
         });
     }
-    if let Some(item_id) = &command.consumes_item {
-        let (consumer_id, consumer_name) = match command.item_consumer {
-            ItemConsumerTarget::None => (None, None),
-            ItemConsumerTarget::Player => (Some("player".to_string()), Some("You".to_string())),
-            ItemConsumerTarget::FirstActorInRoom => {
+    if let Some(item_id) = &action.available.consumes_item {
+        let (consumer_id, consumer_name) = match action.item_consumer {
+            ActionItemConsumerTarget::None => (None, None),
+            ActionItemConsumerTarget::Player => {
+                (Some("player".to_string()), Some("You".to_string()))
+            }
+            ActionItemConsumerTarget::FirstActorInRoom => {
                 let recipient =
                     first_actor_in_room(content, context).expect("actor should be in room");
                 (Some(recipient.id.clone()), Some(recipient.name.clone()))
@@ -243,23 +264,25 @@ pub(super) fn plan_content_command(
         };
         planned.events.push(WorldEvent::ItemConsumed {
             item_id: item_id.clone(),
-            storage: command.consumes_item_storage,
+            storage: to_item_storage(action.available.consumes_item_storage.clone()),
             consumer_id,
             consumer_name,
         });
     }
-    if !command.consumes_any.is_empty() {
-        if let Some(item_id) = command.consumes_any.iter().find(|id| {
+    if !action.available.consumes_any.is_empty() {
+        if let Some(item_id) = action.available.consumes_any.iter().find(|id| {
             context.planner_state.has_item_in_storage(
                 id,
-                command.consumes_any_storage,
+                to_item_storage(action.available.consumes_any_storage.clone()),
                 context.current_room_id,
             )
         }) {
-            let (consumer_id, consumer_name) = match command.item_consumer {
-                ItemConsumerTarget::None => (None, None),
-                ItemConsumerTarget::Player => (Some("player".to_string()), Some("You".to_string())),
-                ItemConsumerTarget::FirstActorInRoom => {
+            let (consumer_id, consumer_name) = match action.item_consumer {
+                ActionItemConsumerTarget::None => (None, None),
+                ActionItemConsumerTarget::Player => {
+                    (Some("player".to_string()), Some("You".to_string()))
+                }
+                ActionItemConsumerTarget::FirstActorInRoom => {
                     let recipient =
                         first_actor_in_room(content, context).expect("actor should be in room");
                     (Some(recipient.id.clone()), Some(recipient.name.clone()))
@@ -267,7 +290,7 @@ pub(super) fn plan_content_command(
             };
             planned.events.push(WorldEvent::ItemConsumed {
                 item_id: item_id.clone(),
-                storage: command.consumes_any_storage,
+                storage: to_item_storage(action.available.consumes_any_storage.clone()),
                 consumer_id,
                 consumer_name,
             });
@@ -366,15 +389,15 @@ pub(super) fn plan_move_to_room_target(
 
 pub(super) fn plan_targeted_state_command(
     content: &ContentPack,
-    command: &CommandDefinition,
+    action: &ActionDefinition,
     input: Option<&str>,
     context: &PlanningContext<'_>,
     planned: &mut PlannedTurn,
 ) -> bool {
-    let metadata = command
+    let metadata = action
         .player_command
         .as_ref()
-        .unwrap_or_else(|| panic!("command '{}' should define player_command", command.id));
+        .unwrap_or_else(|| panic!("action '{}' should define player_command", action.id));
     match metadata.target_mode {
         PlayerCommandTargetMode::RoomReference => plan_move_to_room_target(
             content,
@@ -388,50 +411,50 @@ pub(super) fn plan_targeted_state_command(
         }
         other => panic!(
             "stateful player command '{}' has unsupported target_mode '{other:?}'",
-            command.id
+            action.id
         ),
     }
 }
 
 pub(super) fn plan_command_effects(
     content: &ContentPack,
-    command: &CommandDefinition,
+    action: &ActionDefinition,
     input: Option<&str>,
     context: &PlanningContext<'_>,
     planned: &mut PlannedTurn,
 ) -> bool {
-    if command.has_effect(CommandEffect::ObserveRoom) {
+    if action.has_effect(CommandEffect::ObserveRoom) {
         let target = input.unwrap_or_default().trim();
         if target.is_empty() {
             plan_observe_room(context, planned)
         } else {
             plan_observe_target(content, target, context, planned)
         }
-    } else if command.has_any_effect(&[
+    } else if action.has_any_effect(&[
         CommandEffect::ObserveFeature,
         CommandEffect::ObserveActor,
         CommandEffect::MoveActor,
     ]) {
-        plan_targeted_state_command(content, command, input, context, planned)
+        plan_targeted_state_command(content, action, input, context, planned)
     } else {
         panic!(
             "player command '{}' uses command effects without a supported planner effect",
-            command.id
+            action.id
         )
     }
 }
 
 pub(super) fn plan_dialogue_command(
     content: &ContentPack,
-    command: &CommandDefinition,
+    action: &ActionDefinition,
     input: Option<&str>,
     context: &PlanningContext<'_>,
     planned: &mut PlannedTurn,
 ) -> bool {
-    let metadata = command
+    let metadata = action
         .player_command
         .as_ref()
-        .unwrap_or_else(|| panic!("command '{}' should define player_command", command.id));
+        .unwrap_or_else(|| panic!("action '{}' should define player_command", action.id));
     if context.channel_surfing_only {
         planned.events.push(WorldEvent::UnknownInput {
             raw_input: context.raw_input.to_string(),
@@ -504,7 +527,7 @@ pub(super) fn plan_dialogue_command(
         other => {
             panic!(
                 "dialogue player command '{}' has unsupported target_mode '{other:?}'",
-                command.id,
+                action.id,
             )
         }
     }
@@ -517,14 +540,14 @@ pub(super) fn plan_authored_command(
     context: PlanningContext<'_>,
     planned: &mut PlannedTurn,
 ) -> bool {
-    let command = content
+    let action = content
         .command(command_id)
         .unwrap_or_else(|| panic!("missing command definition '{command_id}'"));
-    if command.outcome_mode == CommandOutcomeMode::Dialogue {
-        plan_dialogue_command(content, command, input, &context, planned)
-    } else if !command.effects.is_empty() {
-        plan_command_effects(content, command, input, &context, planned)
+    if action.outcome_mode == CommandOutcomeMode::Dialogue {
+        plan_dialogue_command(content, action, input, &context, planned)
+    } else if !action.effects.is_empty() {
+        plan_command_effects(content, action, input, &context, planned)
     } else {
-        plan_content_command(content, command, input, &context, planned)
+        plan_content_command(content, action, input, &context, planned)
     }
 }
