@@ -416,6 +416,41 @@ pub(super) fn plan_targeted_state_command(
     }
 }
 
+pub(super) fn plan_targetless_command(
+    content: &ContentPack,
+    action: &ActionDefinition,
+    context: &PlanningContext<'_>,
+    planned: &mut PlannedTurn,
+) -> bool {
+    let metadata = action
+        .player_command
+        .as_ref()
+        .unwrap_or_else(|| panic!("action '{}' should define player_command", action.id));
+    let room_id = context.current_room_id.to_string();
+    let actor_name = content.opening.title.as_str();
+    planned.events.push(WorldEvent::ActorCommandUsed {
+        actor_id: "player".to_string(),
+        actor_name: actor_name.to_string(),
+        room_id,
+        command_id: action.id.clone(),
+        target_room_id: None,
+        target_actor_id: None,
+        target_actor_name: None,
+        context_label: None,
+        feature_id: None,
+        consumable_id: None,
+        freeform_text: None,
+    });
+    if metadata.advances_time {
+        planned.events.push(WorldEvent::TurnStarted {
+            turn_number: context.turn_number,
+            raw_input: action.id.clone(),
+            advances_time: true,
+        });
+    }
+    true
+}
+
 pub(super) fn plan_command_effects(
     content: &ContentPack,
     action: &ActionDefinition,
@@ -434,8 +469,14 @@ pub(super) fn plan_command_effects(
         CommandEffect::ObserveFeature,
         CommandEffect::ObserveActor,
         CommandEffect::MoveActor,
+        CommandEffect::AttackTarget,
     ]) {
         plan_targeted_state_command(content, action, input, context, planned)
+    } else if action.has_any_effect(&[
+        CommandEffect::PlaceFlag,
+        CommandEffect::RemoveFlag,
+    ]) {
+        plan_targetless_command(content, action, context, planned)
     } else {
         panic!(
             "player command '{}' uses command effects without a supported planner effect",

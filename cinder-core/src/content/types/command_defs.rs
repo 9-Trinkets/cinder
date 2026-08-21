@@ -27,6 +27,9 @@ pub enum CommandEffect {
     RememberInRoom,
     RememberWithTargetActor,
     FollowActor,
+    PlaceFlag,
+    RemoveFlag,
+    AttackTarget,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]

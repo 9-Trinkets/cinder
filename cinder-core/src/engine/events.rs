@@ -142,6 +142,21 @@ pub enum WorldEvent {
         event_id: String,
         payload: BTreeMap<String, String>,
     },
+    FlagPlaced {
+        room_id: String,
+    },
+    FlagRemoved {
+        room_id: String,
+    },
+    GolemConverted {
+        golem_actor_id: String,
+        room_id: String,
+    },
+    ActorDamaged {
+        actor_id: String,
+        damage: i32,
+        remaining_hp: i32,
+    },
 }
 
 pub(crate) fn render_actor_action_text(actor_name: &str, action: &str) -> Result<String, String> {

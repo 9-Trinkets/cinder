@@ -1,20 +1,20 @@
 [
   {
     "id": "r1c1",
-    "title": "A Lightless Cell",
-    "summary": "A stone room with no door you can see.",
-    "inspect_text": "Cold stone closes in on every side. The air is stale and still. When you run your fingers along the wall you find the faintest seam, like a line scored before something is set in place.",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
     "features": [
       {
         "id": "r1c1-feature",
-        "label": "seam in the stone wall",
+        "label": "scored lines in the wall",
         "aliases": [
+          "line",
           "wall",
-          "stone",
-          "seam",
-          "crack"
+          "score",
+          "mark"
         ],
-        "inspect_text": "The stone is scored by a hairline seam, straight as a ruled line. It could be the work of a door, a panel, or something patient and deliberate."
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
       }
     ],
     "exits": [
@@ -38,20 +38,20 @@
   },
   {
     "id": "r1c2",
-    "title": "A Corridor of Damp Stone",
-    "summary": "A low corridor where water has worn the floor.",
-    "inspect_text": "Water has been here long enough to groove the stone. The air is close and mineral, and the dark swallows sound a step ahead of you.",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
     "features": [
       {
         "id": "r1c2-feature",
-        "label": "groove worn by a drip",
+        "label": "the fitted flagstones",
         "aliases": [
-          "drip",
-          "water",
-          "groove",
-          "gutter"
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
         ],
-        "inspect_text": "A slow drip has cut a groove across the floor, patient as any craftsman."
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
       }
     ],
     "exits": [
@@ -83,19 +83,20 @@
   },
   {
     "id": "r1c3",
-    "title": "A Chamber of Hanging Dust",
-    "summary": "A still room where dust hangs like a held breath.",
-    "inspect_text": "Nothing has disturbed the air here in a very long time. Dust hangs motionless in the faint glow of nothing at all.",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
     "features": [
       {
         "id": "r1c3-feature",
-        "label": "motionless dust",
+        "label": "a grid scored into the floor",
         "aliases": [
-          "dust",
-          "air",
-          "mote"
+          "grid",
+          "floor",
+          "line",
+          "intersection"
         ],
-        "inspect_text": "The dust is so still it seems to be waiting for something to enter and disturb it."
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
       }
     ],
     "exits": [
@@ -127,19 +128,20 @@
   },
   {
     "id": "r1c4",
-    "title": "A Narrow Passage",
-    "summary": "A passage so narrow you move sideways.",
-    "inspect_text": "The walls press close enough to scrape your shoulders. The stone is cold and worn smooth at the height of many hands.",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
     "features": [
       {
         "id": "r1c4-feature",
-        "label": "crack in the floor",
+        "label": "worn crossing paths",
         "aliases": [
-          "crack",
+          "path",
+          "cross",
           "floor",
-          "gap"
+          "worn"
         ],
-        "inspect_text": "A thin crack runs the length of the floor, too narrow to lose anything in and too straight to be natural."
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
       }
     ],
     "exits": [
@@ -171,20 +173,20 @@
   },
   {
     "id": "r1c5",
-    "title": "A Room of Old Ashes",
-    "summary": "A room where a fire was long ago, and never since.",
-    "inspect_text": "A dead firepit sits in the center, its ashes cold and undisturbed. The soot on the walls has had decades to settle.",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
     "features": [
       {
         "id": "r1c5-feature",
-        "label": "cold firepit",
+        "label": "scored lines in the wall",
         "aliases": [
-          "firepit",
-          "ashes",
-          "fire",
-          "soot"
+          "line",
+          "wall",
+          "score",
+          "mark"
         ],
-        "inspect_text": "The firepit is swept clean of warmth. Whatever was burned here left nothing behind but ash."
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
       }
     ],
     "exits": [
@@ -203,24 +205,205 @@
           "w"
         ],
         "menu_label": "West"
+      },
+      {
+        "room_id": "r1c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r1c6",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "features": [
+      {
+        "id": "r1c6-feature",
+        "label": "the fitted flagstones",
+        "aliases": [
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
+        ],
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r2c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r1c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r1c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r1c7",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "features": [
+      {
+        "id": "r1c7-feature",
+        "label": "a grid scored into the floor",
+        "aliases": [
+          "grid",
+          "floor",
+          "line",
+          "intersection"
+        ],
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r2c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r1c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r1c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r1c8",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "features": [
+      {
+        "id": "r1c8-feature",
+        "label": "worn crossing paths",
+        "aliases": [
+          "path",
+          "cross",
+          "floor",
+          "worn"
+        ],
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r2c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r1c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r1c9",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r1c9",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "features": [
+      {
+        "id": "r1c9-feature",
+        "label": "scored lines in the wall",
+        "aliases": [
+          "line",
+          "wall",
+          "score",
+          "mark"
+        ],
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r2c9",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r1c8",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
       }
     ]
   },
   {
     "id": "r2c1",
-    "title": "A Hall of Broken Chairs",
-    "summary": "A hall littered with furniture that was broken on purpose.",
-    "inspect_text": "Chairs lie in pieces, their legs snapped deliberately. Someone was angry here, or someone was testing the strength of things.",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
     "features": [
       {
         "id": "r2c1-feature",
-        "label": "a chair with a broken back",
+        "label": "the fitted flagstones",
         "aliases": [
-          "chair",
-          "furniture",
-          "debris"
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
         ],
-        "inspect_text": "The chair's back is snapped clean off. The break is old and the wood has gone grey."
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
       }
     ],
     "exits": [
@@ -252,19 +435,20 @@
   },
   {
     "id": "r2c2",
-    "title": "A Cellar of Quiet",
-    "summary": "A low cellar where even your footsteps sound too loud.",
-    "inspect_text": "The floor is packed earth and the ceiling is barely above your head. The quiet here has weight, like something is listening to it.",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
     "features": [
       {
         "id": "r2c2-feature",
-        "label": "a hollow barrel",
+        "label": "a grid scored into the floor",
         "aliases": [
-          "barrel",
-          "cask",
-          "container"
+          "grid",
+          "floor",
+          "line",
+          "intersection"
         ],
-        "inspect_text": "A barrel stands in the corner. Tapped, it rings hollow and the sound dies too quickly."
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
       }
     ],
     "exits": [
@@ -304,19 +488,20 @@
   },
   {
     "id": "r2c3",
-    "title": "A Gallery of Blind Arches",
-    "summary": "A gallery whose arches open onto nothing but wall.",
-    "inspect_text": "Arches line the walls, and behind every one of them is bare stone. The builder planned doors that were never cut.",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
     "features": [
       {
         "id": "r2c3-feature",
-        "label": "an arch bricked shut",
+        "label": "worn crossing paths",
         "aliases": [
-          "arch",
-          "archway",
-          "wall"
+          "path",
+          "cross",
+          "floor",
+          "worn"
         ],
-        "inspect_text": "Brickwork fills this arch with a care that suggests whoever closed it meant for it to stay closed."
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
       }
     ],
     "exits": [
@@ -356,20 +541,20 @@
   },
   {
     "id": "r2c4",
-    "title": "A Vault with a Rusted Door",
-    "summary": "A vault whose door has not moved in years.",
-    "inspect_text": "A heavy iron door sits flush in the wall, so rusted that the hinges have become one with the frame. It gives slightly under your hand and no further.",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
     "features": [
       {
         "id": "r2c4-feature",
-        "label": "a rusted iron door",
+        "label": "scored lines in the wall",
         "aliases": [
-          "door",
-          "iron",
-          "vault",
-          "hinge"
+          "line",
+          "wall",
+          "score",
+          "mark"
         ],
-        "inspect_text": "The door is crusted with rust the color of dried blood. It is locked, or seized, or both."
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
       }
     ],
     "exits": [
@@ -409,19 +594,20 @@
   },
   {
     "id": "r2c5",
-    "title": "A Den of Cold Draughts",
-    "summary": "A room where air moves in from somewhere you cannot see.",
-    "inspect_text": "A cold current of air threads through the room, stirring the dust in slow spirals. It has to be coming from somewhere, but you cannot find the source.",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
     "features": [
       {
         "id": "r2c5-feature",
-        "label": "a wandering draught",
+        "label": "the fitted flagstones",
         "aliases": [
-          "draught",
-          "wind",
-          "air"
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
         ],
-        "inspect_text": "The draught moves past you and is gone, leaving the room colder for having passed."
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
       }
     ],
     "exits": [
@@ -448,24 +634,237 @@
           "w"
         ],
         "menu_label": "West"
+      },
+      {
+        "room_id": "r2c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r2c6",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "features": [
+      {
+        "id": "r2c6-feature",
+        "label": "a grid scored into the floor",
+        "aliases": [
+          "grid",
+          "floor",
+          "line",
+          "intersection"
+        ],
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r1c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r3c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r2c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r2c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r2c7",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "features": [
+      {
+        "id": "r2c7-feature",
+        "label": "worn crossing paths",
+        "aliases": [
+          "path",
+          "cross",
+          "floor",
+          "worn"
+        ],
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r1c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r3c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r2c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r2c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r2c8",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "features": [
+      {
+        "id": "r2c8-feature",
+        "label": "scored lines in the wall",
+        "aliases": [
+          "line",
+          "wall",
+          "score",
+          "mark"
+        ],
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r1c8",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r3c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r2c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r2c9",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r2c9",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "features": [
+      {
+        "id": "r2c9-feature",
+        "label": "the fitted flagstones",
+        "aliases": [
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
+        ],
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r1c9",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r3c9",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r2c8",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
       }
     ]
   },
   {
     "id": "r3c1",
-    "title": "A Storage Room of Empty Shelves",
-    "summary": "A storage room where everything has been taken.",
-    "inspect_text": "Shelves line every wall, and every shelf is bare. Dust outlines where jars and crates once stood, each shape a small monument to something removed.",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
     "features": [
       {
         "id": "r3c1-feature",
-        "label": "empty shelves",
+        "label": "a grid scored into the floor",
         "aliases": [
-          "shelf",
-          "shelves",
-          "storage"
+          "grid",
+          "floor",
+          "line",
+          "intersection"
         ],
-        "inspect_text": "The shelves are clean of everything except dust. The footprints in it are all yours."
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
       }
     ],
     "exits": [
@@ -497,20 +896,20 @@
   },
   {
     "id": "r3c2",
-    "title": "A Chamber of Chained Rings",
-    "summary": "A chamber where rings and chains have been bolted into the floor.",
-    "inspect_text": "Iron rings are set into the stone at regular intervals, each with a length of chain lying coiled and rusted. Whatever was kept here is long gone, but the room remembers the keeping.",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
     "features": [
       {
         "id": "r3c2-feature",
-        "label": "a bolted iron ring",
+        "label": "worn crossing paths",
         "aliases": [
-          "ring",
-          "chain",
-          "iron",
-          "bolt"
+          "path",
+          "cross",
+          "floor",
+          "worn"
         ],
-        "inspect_text": "The ring is worn bright where something was tethered to it for a long, long time."
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
       }
     ],
     "exits": [
@@ -550,19 +949,20 @@
   },
   {
     "id": "r3c3",
-    "title": "A Central Hall of Hollow Stone",
-    "summary": "A hall whose echoes answer you from too far away.",
-    "inspect_text": "The room is larger than the dark lets you measure. Every sound you make comes back late, as if it had to travel a long way to bounce off something and return.",
+    "title": "A Hall of Dark Stone",
+    "summary": "The stone here is darker than the rest. A golem of dark granite stands at the center, still as architecture. Its eyes are closed.",
+    "inspect_text": "The stone here is darker than the rest. A golem of dark granite stands at the center, still as architecture. Its eyes are closed.",
     "features": [
       {
         "id": "r3c3-feature",
-        "label": "a cracked central pillar",
+        "label": "a grid of dark stone",
         "aliases": [
-          "pillar",
-          "column",
-          "crack"
+          "grid",
+          "stone",
+          "dark",
+          "floor"
         ],
-        "inspect_text": "The pillar leans a fraction of a degree off true. The crack running down it has not grown in a long time."
+        "inspect_text": "The floor is laid in dark stone, each block precise as a placed thing. The grid lines here are deeper, as if this room matters more than the others."
       }
     ],
     "exits": [
@@ -602,19 +1002,20 @@
   },
   {
     "id": "r3c4",
-    "title": "A Study with No Books",
-    "summary": "A study that must once have held books, and no longer does.",
-    "inspect_text": "A writing desk stands against the wall, its surface worn smooth by use. The shelves around it are empty, and the room feels like a memory of reading.",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
     "features": [
       {
         "id": "r3c4-feature",
-        "label": "a worn writing desk",
+        "label": "the fitted flagstones",
         "aliases": [
-          "desk",
-          "study",
-          "table"
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
         ],
-        "inspect_text": "The desk is scarred with ink that has dried black and old. The drawer is empty and smells of paper that used to be here."
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
       }
     ],
     "exits": [
@@ -654,20 +1055,20 @@
   },
   {
     "id": "r3c5",
-    "title": "A Guardroom with No Guard",
-    "summary": "A room built for a sentry who never came back.",
-    "inspect_text": "A spear rack stands against the wall, empty. A stool sits in the center of the room, arranged to face the door that no one watches now.",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
     "features": [
       {
         "id": "r3c5-feature",
-        "label": "an empty spear rack",
+        "label": "a grid scored into the floor",
         "aliases": [
-          "spear",
-          "rack",
-          "weapon",
-          "armory"
+          "grid",
+          "floor",
+          "line",
+          "intersection"
         ],
-        "inspect_text": "The rack holds nothing. The brackets where spears once rested are polished bright with use."
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
       }
     ],
     "exits": [
@@ -694,25 +1095,237 @@
           "w"
         ],
         "menu_label": "West"
+      },
+      {
+        "room_id": "r3c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r3c6",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "features": [
+      {
+        "id": "r3c6-feature",
+        "label": "worn crossing paths",
+        "aliases": [
+          "path",
+          "cross",
+          "floor",
+          "worn"
+        ],
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r2c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r4c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r3c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r3c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r3c7",
+    "title": "A Chamber of Pale Pillars",
+    "summary": "The pillars here are pale, almost white. A golem of pale marble stands among them, motionless. It does not look at you.",
+    "inspect_text": "The pillars here are pale, almost white. A golem of pale marble stands among them, motionless. It does not look at you.",
+    "features": [
+      {
+        "id": "r3c7-feature",
+        "label": "pale stone pillars",
+        "aliases": [
+          "pillar",
+          "pale",
+          "stone",
+          "marble"
+        ],
+        "inspect_text": "The pillars are arranged in a pattern that feels deliberate. They mark positions on the floor like pieces on a board."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r2c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r4c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r3c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r3c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r3c8",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "features": [
+      {
+        "id": "r3c8-feature",
+        "label": "the fitted flagstones",
+        "aliases": [
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
+        ],
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r2c8",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r4c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r3c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r3c9",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r3c9",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "features": [
+      {
+        "id": "r3c9-feature",
+        "label": "a grid scored into the floor",
+        "aliases": [
+          "grid",
+          "floor",
+          "line",
+          "intersection"
+        ],
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r2c9",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r4c9",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r3c8",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
       }
     ]
   },
   {
     "id": "r4c1",
-    "title": "A Pantry of Rot",
-    "summary": "A pantry whose stores have long since spoiled.",
-    "inspect_text": "The smell is old and organic. Shelves of jars hold things that have turned to dark sludge, and the air is thick with the patience of decay.",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
     "features": [
       {
         "id": "r4c1-feature",
-        "label": "a shelf of spoiled jars",
+        "label": "worn crossing paths",
         "aliases": [
-          "jar",
-          "shelf",
-          "food",
-          "rot"
+          "path",
+          "cross",
+          "floor",
+          "worn"
         ],
-        "inspect_text": "The jars are sealed but what is inside has gone past mold into something darker. Better not to open them."
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
       }
     ],
     "exits": [
@@ -744,20 +1357,20 @@
   },
   {
     "id": "r4c2",
-    "title": "A Cell of Scraped Walls",
-    "summary": "A cell whose walls are covered in parallel scratches.",
-    "inspect_text": "The plaster is gouged with rows of long, parallel scratches, all at the height of a hand held out for balance. Someone walked these walls many times, feeling their way.",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
     "features": [
       {
         "id": "r4c2-feature",
-        "label": "gouged plaster",
+        "label": "scored lines in the wall",
         "aliases": [
-          "scratch",
-          "plaster",
+          "line",
           "wall",
-          "marks"
+          "score",
+          "mark"
         ],
-        "inspect_text": "The gouges are deep enough to catch a fingernail. They are old, and they end at the height of a head."
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
       }
     ],
     "exits": [
@@ -797,19 +1410,20 @@
   },
   {
     "id": "r4c3",
-    "title": "A Tunnel with a Low Ceiling",
-    "summary": "A tunnel you must crouch through, roof close and wet.",
-    "inspect_text": "The ceiling is low enough that you move doubled over, and damp enough that it has darkened your shoulders. The tunnel curves in a way that makes the next corner always a surprise.",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
     "features": [
       {
         "id": "r4c3-feature",
-        "label": "low oak beams",
+        "label": "the fitted flagstones",
         "aliases": [
-          "beam",
-          "ceiling",
-          "roof"
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
         ],
-        "inspect_text": "The beams are old and black with moisture. One of them has begun to bow under the weight of the hill."
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
       }
     ],
     "exits": [
@@ -849,20 +1463,20 @@
   },
   {
     "id": "r4c4",
-    "title": "A Rookery of Shadows",
-    "summary": "A tall room where shadows collect like birds at dusk.",
-    "inspect_text": "The ceiling is lost in darkness. High on the walls, dark shapes that might be stains or might be nests cling to ledges. The room feels watched, though nothing moves.",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
     "features": [
       {
         "id": "r4c4-feature",
-        "label": "a stain like a roost",
+        "label": "a grid scored into the floor",
         "aliases": [
-          "stain",
-          "roost",
-          "ledge",
-          "shadow"
+          "grid",
+          "floor",
+          "line",
+          "intersection"
         ],
-        "inspect_text": "Up close it is only old stain, but from the floor it looked exactly like something perched and waiting."
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
       }
     ],
     "exits": [
@@ -902,19 +1516,20 @@
   },
   {
     "id": "r4c5",
-    "title": "A Chamber of Bowed Pillars",
-    "summary": "A chamber whose pillars strain under a weight they were not built for.",
-    "inspect_text": "The pillars lean inward, their capitals cracked, as if the whole ceiling is slowly pressing down. The room holds its breath under the load.",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
     "features": [
       {
         "id": "r4c5-feature",
-        "label": "a bowed pillar",
+        "label": "worn crossing paths",
         "aliases": [
-          "pillar",
-          "column",
-          "crack"
+          "path",
+          "cross",
+          "floor",
+          "worn"
         ],
-        "inspect_text": "The pillar is bowed enough to notice, its stone grooved with the strain of holding what should not be held."
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
       }
     ],
     "exits": [
@@ -941,25 +1556,237 @@
           "w"
         ],
         "menu_label": "West"
+      },
+      {
+        "room_id": "r4c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r4c6",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "features": [
+      {
+        "id": "r4c6-feature",
+        "label": "scored lines in the wall",
+        "aliases": [
+          "line",
+          "wall",
+          "score",
+          "mark"
+        ],
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r3c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r5c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r4c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r4c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r4c7",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "features": [
+      {
+        "id": "r4c7-feature",
+        "label": "the fitted flagstones",
+        "aliases": [
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
+        ],
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r3c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r5c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r4c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r4c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r4c8",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "features": [
+      {
+        "id": "r4c8-feature",
+        "label": "a grid scored into the floor",
+        "aliases": [
+          "grid",
+          "floor",
+          "line",
+          "intersection"
+        ],
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r3c8",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r5c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r4c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r4c9",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r4c9",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "features": [
+      {
+        "id": "r4c9-feature",
+        "label": "worn crossing paths",
+        "aliases": [
+          "path",
+          "cross",
+          "floor",
+          "worn"
+        ],
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r3c9",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r5c9",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r4c8",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
       }
     ]
   },
   {
     "id": "r5c1",
-    "title": "A Trap Room with a Sprung Spring",
-    "summary": "A room whose trap has already been sprung, long ago.",
-    "inspect_text": "A plate in the floor is sunk an inch lower than it should be, and the blade that once would have answered it lies broken against the far wall. Someone was here before you, or something was.",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
     "features": [
       {
         "id": "r5c1-feature",
-        "label": "a sprung floor plate",
+        "label": "scored lines in the wall",
         "aliases": [
-          "plate",
-          "trap",
-          "floor",
-          "spring"
+          "line",
+          "wall",
+          "score",
+          "mark"
         ],
-        "inspect_text": "The plate is wedged down and will not move. Whatever tension powered it is spent."
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
       }
     ],
     "exits": [
@@ -970,6 +1797,14 @@
           "n"
         ],
         "menu_label": "North"
+      },
+      {
+        "room_id": "r6c1",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r5c2",
@@ -983,20 +1818,20 @@
   },
   {
     "id": "r5c2",
-    "title": "A Well Room, Dry as Bone",
-    "summary": "A room built around a well that has not held water in memory.",
-    "inspect_text": "A stone well stands in the center, its bucket rotted to a hoop of rust. You drop a pebble and count a long time before it lands, somewhere very far below.",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
     "features": [
       {
         "id": "r5c2-feature",
-        "label": "a dry stone well",
+        "label": "the fitted flagstones",
         "aliases": [
-          "well",
-          "stone",
-          "bucket",
-          "shaft"
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
         ],
-        "inspect_text": "The well is dry but not shallow. Whatever is at the bottom of it is beyond the reach of light."
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
       }
     ],
     "exits": [
@@ -1007,6 +1842,14 @@
           "n"
         ],
         "menu_label": "North"
+      },
+      {
+        "room_id": "r6c2",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r5c1",
@@ -1028,20 +1871,20 @@
   },
   {
     "id": "r5c3",
-    "title": "A Passage That Doubles Back",
-    "summary": "A passage that seems to lead somewhere and then turns on itself.",
-    "inspect_text": "The passage bends so that you can never see more than a few strides ahead, and when you follow it, the way you came has become the way ahead. It is easy to believe it is moving while you walk.",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
     "features": [
       {
         "id": "r5c3-feature",
-        "label": "a wall that doubles back",
+        "label": "a grid scored into the floor",
         "aliases": [
-          "wall",
-          "corner",
-          "passage",
-          "turn"
+          "grid",
+          "floor",
+          "line",
+          "intersection"
         ],
-        "inspect_text": "The wall meets its own shadow at an angle that feels wrong, as if the room were folded rather than built."
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
       }
     ],
     "exits": [
@@ -1052,6 +1895,14 @@
           "n"
         ],
         "menu_label": "North"
+      },
+      {
+        "room_id": "r6c3",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r5c2",
@@ -1073,20 +1924,20 @@
   },
   {
     "id": "r5c4",
-    "title": "A Vestry of Lost Prayers",
-    "summary": "A small room where rituals were once performed, and then abandoned.",
-    "inspect_text": "A narrow table stands against the wall with a dry stone basin. The air smells of candle wax that burned out long ago. Whatever was prayed for here was not answered.",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
     "features": [
       {
         "id": "r5c4-feature",
-        "label": "a dry stone basin",
+        "label": "worn crossing paths",
         "aliases": [
-          "basin",
-          "altar",
-          "table",
-          "candle"
+          "path",
+          "cross",
+          "floor",
+          "worn"
         ],
-        "inspect_text": "The basin is clean and dry. The wax pooled at its base is the only sign anyone ever used it."
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
       }
     ],
     "exits": [
@@ -1097,6 +1948,14 @@
           "n"
         ],
         "menu_label": "North"
+      },
+      {
+        "room_id": "r6c4",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
       },
       {
         "room_id": "r5c3",
@@ -1118,20 +1977,20 @@
   },
   {
     "id": "r5c5",
-    "title": "A Hall of Sighing Stone",
-    "summary": "A hall where the stone itself seems to breathe.",
-    "inspect_text": "The room is bare and the acoustics are wrong. If you stand very still, you can hear the faint, slow sound of air moving through stone, like a chest rising and falling in sleep.",
+    "title": "The Center Hall",
+    "summary": "The room is open and the floor is laid in a precise grid. Lines cross at every intersection. At the center stands a golem of pale stone, taller than the rest, perfectly still. It does not move. It does not need to.",
+    "inspect_text": "The room is open and the floor is laid in a precise grid. Lines cross at every intersection. At the center stands a golem of pale stone, taller than the rest, perfectly still. It does not move. It does not need to.",
     "features": [
       {
         "id": "r5c5-feature",
-        "label": "a stone that sighs",
+        "label": "a deep central grid",
         "aliases": [
-          "stone",
-          "slab",
-          "breath",
-          "air"
+          "grid",
+          "center",
+          "line",
+          "intersection"
         ],
-        "inspect_text": "Pressing your ear to the slab, the sound is unmistakable: a slow, even rhythm, patient as a held game."
+        "inspect_text": "Lines cross the floor at precise intervals, forming a grid of squares. The intersections are worn smooth. This is the center of everything."
       }
     ],
     "exits": [
@@ -1144,7 +2003,1999 @@
         "menu_label": "North"
       },
       {
+        "room_id": "r6c5",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
         "room_id": "r5c4",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r5c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r5c6",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "features": [
+      {
+        "id": "r5c6-feature",
+        "label": "the fitted flagstones",
+        "aliases": [
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
+        ],
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r4c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r6c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r5c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r5c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r5c7",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "features": [
+      {
+        "id": "r5c7-feature",
+        "label": "a grid scored into the floor",
+        "aliases": [
+          "grid",
+          "floor",
+          "line",
+          "intersection"
+        ],
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r4c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r6c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r5c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r5c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r5c8",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "features": [
+      {
+        "id": "r5c8-feature",
+        "label": "worn crossing paths",
+        "aliases": [
+          "path",
+          "cross",
+          "floor",
+          "worn"
+        ],
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r4c8",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r6c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r5c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r5c9",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r5c9",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "features": [
+      {
+        "id": "r5c9-feature",
+        "label": "scored lines in the wall",
+        "aliases": [
+          "line",
+          "wall",
+          "score",
+          "mark"
+        ],
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r4c9",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r6c9",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r5c8",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      }
+    ]
+  },
+  {
+    "id": "r6c1",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "features": [
+      {
+        "id": "r6c1-feature",
+        "label": "the fitted flagstones",
+        "aliases": [
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
+        ],
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r5c1",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r7c1",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r6c2",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r6c2",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "features": [
+      {
+        "id": "r6c2-feature",
+        "label": "a grid scored into the floor",
+        "aliases": [
+          "grid",
+          "floor",
+          "line",
+          "intersection"
+        ],
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r5c2",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r7c2",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r6c1",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r6c3",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r6c3",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "features": [
+      {
+        "id": "r6c3-feature",
+        "label": "worn crossing paths",
+        "aliases": [
+          "path",
+          "cross",
+          "floor",
+          "worn"
+        ],
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r5c3",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r7c3",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r6c2",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r6c4",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r6c4",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "features": [
+      {
+        "id": "r6c4-feature",
+        "label": "scored lines in the wall",
+        "aliases": [
+          "line",
+          "wall",
+          "score",
+          "mark"
+        ],
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r5c4",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r7c4",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r6c3",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r6c5",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r6c5",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "features": [
+      {
+        "id": "r6c5-feature",
+        "label": "the fitted flagstones",
+        "aliases": [
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
+        ],
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r5c5",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r7c5",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r6c4",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r6c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r6c6",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "features": [
+      {
+        "id": "r6c6-feature",
+        "label": "a grid scored into the floor",
+        "aliases": [
+          "grid",
+          "floor",
+          "line",
+          "intersection"
+        ],
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r5c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r7c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r6c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r6c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r6c7",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "features": [
+      {
+        "id": "r6c7-feature",
+        "label": "worn crossing paths",
+        "aliases": [
+          "path",
+          "cross",
+          "floor",
+          "worn"
+        ],
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r5c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r7c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r6c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r6c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r6c8",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "features": [
+      {
+        "id": "r6c8-feature",
+        "label": "scored lines in the wall",
+        "aliases": [
+          "line",
+          "wall",
+          "score",
+          "mark"
+        ],
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r5c8",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r7c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r6c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r6c9",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r6c9",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "features": [
+      {
+        "id": "r6c9-feature",
+        "label": "the fitted flagstones",
+        "aliases": [
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
+        ],
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r5c9",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r7c9",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r6c8",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      }
+    ]
+  },
+  {
+    "id": "r7c1",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "features": [
+      {
+        "id": "r7c1-feature",
+        "label": "a grid scored into the floor",
+        "aliases": [
+          "grid",
+          "floor",
+          "line",
+          "intersection"
+        ],
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r6c1",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r8c1",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r7c2",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r7c2",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "features": [
+      {
+        "id": "r7c2-feature",
+        "label": "worn crossing paths",
+        "aliases": [
+          "path",
+          "cross",
+          "floor",
+          "worn"
+        ],
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r6c2",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r8c2",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r7c1",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r7c3",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r7c3",
+    "title": "A Vault of Dark Flags",
+    "summary": "The floor is laid in dark stone flags. A golem of dark granite stands in the corner, watching nothing.",
+    "inspect_text": "The floor is laid in dark stone flags. A golem of dark granite stands in the corner, watching nothing.",
+    "features": [
+      {
+        "id": "r7c3-feature",
+        "label": "dark fitted flags",
+        "aliases": [
+          "flag",
+          "stone",
+          "dark",
+          "floor"
+        ],
+        "inspect_text": "Each flag is cut from dark stone, fitted precisely against its neighbors. The joints form a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r6c3",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r8c3",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r7c2",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r7c4",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r7c4",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "features": [
+      {
+        "id": "r7c4-feature",
+        "label": "the fitted flagstones",
+        "aliases": [
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
+        ],
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r6c4",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r8c4",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r7c3",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r7c5",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r7c5",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "features": [
+      {
+        "id": "r7c5-feature",
+        "label": "a grid scored into the floor",
+        "aliases": [
+          "grid",
+          "floor",
+          "line",
+          "intersection"
+        ],
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r6c5",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r8c5",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r7c4",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r7c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r7c6",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "features": [
+      {
+        "id": "r7c6-feature",
+        "label": "worn crossing paths",
+        "aliases": [
+          "path",
+          "cross",
+          "floor",
+          "worn"
+        ],
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r6c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r8c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r7c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r7c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r7c7",
+    "title": "A Hall of Pale Stone",
+    "summary": "The stone here is pale, almost white, and catches what little light there is. A pale golem stands in the center, waiting.",
+    "inspect_text": "The stone here is pale, almost white, and catches what little light there is. A pale golem stands in the center, waiting.",
+    "features": [
+      {
+        "id": "r7c7-feature",
+        "label": "luminous pale stone",
+        "aliases": [
+          "stone",
+          "pale",
+          "light",
+          "glow"
+        ],
+        "inspect_text": "The stone holds light like a memory. The grid lines on the floor glow faintly, as if something is beneath them."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r6c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r8c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r7c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r7c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r7c8",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "features": [
+      {
+        "id": "r7c8-feature",
+        "label": "the fitted flagstones",
+        "aliases": [
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
+        ],
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r6c8",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r8c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r7c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r7c9",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r7c9",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "features": [
+      {
+        "id": "r7c9-feature",
+        "label": "a grid scored into the floor",
+        "aliases": [
+          "grid",
+          "floor",
+          "line",
+          "intersection"
+        ],
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r6c9",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r8c9",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r7c8",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      }
+    ]
+  },
+  {
+    "id": "r8c1",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "features": [
+      {
+        "id": "r8c1-feature",
+        "label": "worn crossing paths",
+        "aliases": [
+          "path",
+          "cross",
+          "floor",
+          "worn"
+        ],
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r7c1",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c1",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r8c2",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r8c2",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "features": [
+      {
+        "id": "r8c2-feature",
+        "label": "scored lines in the wall",
+        "aliases": [
+          "line",
+          "wall",
+          "score",
+          "mark"
+        ],
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r7c2",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c2",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r8c1",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r8c3",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r8c3",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "features": [
+      {
+        "id": "r8c3-feature",
+        "label": "the fitted flagstones",
+        "aliases": [
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
+        ],
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r7c3",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c3",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r8c2",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r8c4",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r8c4",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "features": [
+      {
+        "id": "r8c4-feature",
+        "label": "a grid scored into the floor",
+        "aliases": [
+          "grid",
+          "floor",
+          "line",
+          "intersection"
+        ],
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r7c4",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c4",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r8c3",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r8c5",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r8c5",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "features": [
+      {
+        "id": "r8c5-feature",
+        "label": "worn crossing paths",
+        "aliases": [
+          "path",
+          "cross",
+          "floor",
+          "worn"
+        ],
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r7c5",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c5",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r8c4",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r8c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r8c6",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "features": [
+      {
+        "id": "r8c6-feature",
+        "label": "scored lines in the wall",
+        "aliases": [
+          "line",
+          "wall",
+          "score",
+          "mark"
+        ],
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r7c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r8c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r8c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r8c7",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "features": [
+      {
+        "id": "r8c7-feature",
+        "label": "the fitted flagstones",
+        "aliases": [
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
+        ],
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r7c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r8c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r8c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r8c8",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "features": [
+      {
+        "id": "r8c8-feature",
+        "label": "a grid scored into the floor",
+        "aliases": [
+          "grid",
+          "floor",
+          "line",
+          "intersection"
+        ],
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r7c8",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r8c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r8c9",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r8c9",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "features": [
+      {
+        "id": "r8c9-feature",
+        "label": "worn crossing paths",
+        "aliases": [
+          "path",
+          "cross",
+          "floor",
+          "worn"
+        ],
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r7c9",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c9",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "r8c8",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      }
+    ]
+  },
+  {
+    "id": "r9c1",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "features": [
+      {
+        "id": "r9c1-feature",
+        "label": "scored lines in the wall",
+        "aliases": [
+          "line",
+          "wall",
+          "score",
+          "mark"
+        ],
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r8c1",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c2",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r9c2",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "features": [
+      {
+        "id": "r9c2-feature",
+        "label": "the fitted flagstones",
+        "aliases": [
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
+        ],
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r8c2",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c1",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r9c3",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r9c3",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "features": [
+      {
+        "id": "r9c3-feature",
+        "label": "a grid scored into the floor",
+        "aliases": [
+          "grid",
+          "floor",
+          "line",
+          "intersection"
+        ],
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r8c3",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c2",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r9c4",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r9c4",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "features": [
+      {
+        "id": "r9c4-feature",
+        "label": "worn crossing paths",
+        "aliases": [
+          "path",
+          "cross",
+          "floor",
+          "worn"
+        ],
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r8c4",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c3",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r9c5",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r9c5",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "features": [
+      {
+        "id": "r9c5-feature",
+        "label": "scored lines in the wall",
+        "aliases": [
+          "line",
+          "wall",
+          "score",
+          "mark"
+        ],
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r8c5",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c4",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r9c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r9c6",
+    "title": "A Corridor of Worn Flags",
+    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "features": [
+      {
+        "id": "r9c6-feature",
+        "label": "the fitted flagstones",
+        "aliases": [
+          "flagstone",
+          "flag",
+          "floor",
+          "joint"
+        ],
+        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r8c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r9c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r9c7",
+    "title": "A Cell of Fitted Stone",
+    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "features": [
+      {
+        "id": "r9c7-feature",
+        "label": "a grid scored into the floor",
+        "aliases": [
+          "grid",
+          "floor",
+          "line",
+          "intersection"
+        ],
+        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r8c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r9c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r9c8",
+    "title": "A Hall of Crossing Paths",
+    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "features": [
+      {
+        "id": "r9c8-feature",
+        "label": "worn crossing paths",
+        "aliases": [
+          "path",
+          "cross",
+          "floor",
+          "worn"
+        ],
+        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r8c8",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "r9c9",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "r9c9",
+    "title": "A Passage of Scored Walls",
+    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "features": [
+      {
+        "id": "r9c9-feature",
+        "label": "scored lines in the wall",
+        "aliases": [
+          "line",
+          "wall",
+          "score",
+          "mark"
+        ],
+        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "r8c9",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "r9c8",
         "label": "West",
         "aliases": [
           "w"

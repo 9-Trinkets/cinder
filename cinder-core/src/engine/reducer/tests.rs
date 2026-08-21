@@ -913,3 +913,241 @@ fn menu_opened_emits_opening_narrative_lines() {
             .any(|line| line == "Dad opens the fridge, glances back at Ella, and waits.")
     );
 }
+
+fn layla_test_pack() -> ContentPack {
+    let mut pack = load_named_pack("layla", Some("en")).expect("load layla");
+    pack.settings = ContentSettingsDefinition {
+        tick_minutes_per_turn: 1,
+        ..ContentSettingsDefinition::default()
+    };
+    pack.opening.start_room_id = "r1c1".to_string();
+    pack.opening.start_room_ids = vec!["r1c1".to_string()];
+    pack
+}
+
+fn layla_test_state() -> (ContentPack, WorldState) {
+    let content = layla_test_pack();
+    let mut state = WorldState::new(&content);
+    state.current_room_id = "r1c1".to_string();
+    (content, state)
+}
+
+#[test]
+fn layla_place_flag_adds_to_flagged_rooms() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r4c4".to_string();
+
+    let output = apply_events(
+        &mut state,
+        &content,
+        &[TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
+            actor_id: "player".to_string(),
+            actor_name: "Layla".to_string(),
+            room_id: "r4c4".to_string(),
+            command_id: "place_flag".to_string(),
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        })],
+    );
+
+    assert!(state.flagged_rooms.contains("r4c4"));
+    assert!(output.lines.iter().any(|l| l.contains("marker")));
+}
+
+#[test]
+fn layla_pick_up_flag_removes_from_flagged_rooms() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r4c4".to_string();
+    state.flagged_rooms.insert("r4c4".to_string());
+
+    let output = apply_events(
+        &mut state,
+        &content,
+        &[TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
+            actor_id: "player".to_string(),
+            actor_name: "Layla".to_string(),
+            room_id: "r4c4".to_string(),
+            command_id: "pick_up_flag".to_string(),
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        })],
+    );
+
+    assert!(!state.flagged_rooms.contains("r4c4"));
+    assert!(
+        output.lines.iter().any(|l| l.contains("pull") || l.contains("marker")),
+        "expected flag removal message, got: {:?}",
+        output.lines
+    );
+}
+
+#[test]
+fn layla_attack_deals_damage_to_golem() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c3".to_string();
+    state
+        .actor_stats
+        .entry("golem-dark-nw".to_string())
+        .or_default()
+        .insert("hp".to_string(), 8);
+
+    let output = apply_events(
+        &mut state,
+        &content,
+        &[TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
+            actor_id: "player".to_string(),
+            actor_name: "Layla".to_string(),
+            room_id: "r3c3".to_string(),
+            command_id: "attack".to_string(),
+            target_room_id: None,
+            target_actor_id: Some("golem-dark-nw".to_string()),
+            target_actor_name: Some("Dark Golem".to_string()),
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        })],
+    );
+
+    let golem_hp = state
+        .actor_stats
+        .get("golem-dark-nw")
+        .and_then(|s| s.get("hp"))
+        .copied()
+        .unwrap_or(8);
+    assert!(golem_hp < 8, "golem should have taken damage, hp={}", golem_hp);
+    assert!(output.lines.iter().any(|l| l.contains("strike")));
+}
+
+#[test]
+fn layla_encirclement_converts_golem() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r4c3".to_string();
+    state
+        .actor_stats
+        .entry("golem-dark-nw".to_string())
+        .or_default()
+        .insert("hp".to_string(), 8);
+
+    let neighbors = ["r2c3", "r3c2", "r3c4"];
+    for n in &neighbors {
+        state.flagged_rooms.insert(n.to_string());
+    }
+
+    let output = apply_events(
+        &mut state,
+        &content,
+        &[TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
+            actor_id: "player".to_string(),
+            actor_name: "Layla".to_string(),
+            room_id: "r4c3".to_string(),
+            command_id: "place_flag".to_string(),
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        })],
+    );
+
+    assert!(
+        output.lines.iter().any(|l| l.contains("shudders") || l.contains("follow")),
+        "expected conversion message, got: {:?}",
+        output.lines
+    );
+    assert_eq!(
+        state.followed_actor_id.as_deref(),
+        Some("golem-dark-nw"),
+        "golem should be followed after conversion"
+    );
+}
+
+#[test]
+fn layla_cannot_attack_dead_golem() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c3".to_string();
+    state
+        .actor_stats
+        .entry("golem-dark-nw".to_string())
+        .or_default()
+        .insert("hp".to_string(), 0);
+
+    let output = apply_events(
+        &mut state,
+        &content,
+        &[TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
+            actor_id: "player".to_string(),
+            actor_name: "Layla".to_string(),
+            room_id: "r3c3".to_string(),
+            command_id: "attack".to_string(),
+            target_room_id: None,
+            target_actor_id: Some("golem-dark-nw".to_string()),
+            target_actor_name: Some("Dark Golem".to_string()),
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        })],
+    );
+
+    assert!(
+        output.lines.is_empty(),
+        "attack on dead golem should produce no output, got: {:?}",
+        output.lines
+    );
+}
+
+#[test]
+fn layla_allies_boost_damage() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c3".to_string();
+    state
+        .actor_stats
+        .entry("golem-dark-nw".to_string())
+        .or_default()
+        .insert("hp".to_string(), 50);
+    state
+        .actor_stats
+        .entry("golem-pale-ne".to_string())
+        .or_default()
+        .insert("strength".to_string(), 3);
+
+    let output = apply_events(
+        &mut state,
+        &content,
+        &[TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
+            actor_id: "player".to_string(),
+            actor_name: "Layla".to_string(),
+            room_id: "r3c3".to_string(),
+            command_id: "attack".to_string(),
+            target_room_id: None,
+            target_actor_id: Some("golem-dark-nw".to_string()),
+            target_actor_name: Some("Dark Golem".to_string()),
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        })],
+    );
+
+    let golem_hp = state
+        .actor_stats
+        .get("golem-dark-nw")
+        .and_then(|s| s.get("hp"))
+        .copied()
+        .unwrap_or(50);
+    assert!(golem_hp < 47, "ally (3 str) + player (3 str) should deal > 3 damage, hp={}", golem_hp);
+    assert!(output.lines.iter().any(|l| l.contains("strike")));
+}

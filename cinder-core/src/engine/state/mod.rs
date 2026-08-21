@@ -70,6 +70,8 @@ pub struct WorldState {
     pub room_item_stock: BTreeMap<String, u32>,
     #[serde(default)]
     pub act_series: Option<ActSeriesState>,
+    #[serde(default)]
+    pub flagged_rooms: BTreeSet<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -163,6 +165,7 @@ impl WorldState {
             player_inventory: HashMap::new(),
             room_item_stock: BTreeMap::new(),
             act_series: None,
+            flagged_rooms: BTreeSet::new(),
         }
     }
 

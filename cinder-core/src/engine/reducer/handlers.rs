@@ -717,3 +717,58 @@ pub(super) fn handle_item_observed(
         lines.push(content.presentation.error_text.feature_unknown.clone());
     }
 }
+
+pub(super) fn handle_flag_placed(
+    state: &mut WorldState,
+    _content: &ContentPack,
+    room_id: &str,
+    lines: &mut Vec<String>,
+) {
+    state.flagged_rooms.insert(room_id.to_string());
+    lines.push(format!(
+        "You drive a small stone marker into the ground at {room_id}."
+    ));
+}
+
+pub(super) fn handle_flag_removed(
+    state: &mut WorldState,
+    _content: &ContentPack,
+    room_id: &str,
+    lines: &mut Vec<String>,
+) {
+    state.flagged_rooms.remove(room_id);
+    lines.push("You pull the stone marker from the ground.".to_string());
+}
+
+pub(super) fn handle_golem_converted(
+    state: &mut WorldState,
+    _content: &ContentPack,
+    golem_actor_id: &str,
+    _room_id: &str,
+    lines: &mut Vec<String>,
+) {
+    lines.push(format!(
+        "The {golem_actor_id} shudders, its dark surface brightening. It turns toward you, no longer hostile."
+    ));
+    if state.followed_actor_id.is_none() {
+        state.followed_actor_id = Some(golem_actor_id.to_string());
+        lines.push("The golem begins to follow you.".to_string());
+    }
+}
+
+pub(super) fn handle_actor_damaged(
+    _state: &mut WorldState,
+    _content: &ContentPack,
+    actor_id: &str,
+    damage: i32,
+    remaining_hp: i32,
+    lines: &mut Vec<String>,
+) {
+    if actor_id == "player" {
+        lines.push(format!("You take {damage} damage. ({remaining_hp} HP remaining)"));
+    } else {
+        lines.push(format!(
+            "The {actor_id} takes {damage} damage. ({remaining_hp} HP remaining)"
+        ));
+    }
+}

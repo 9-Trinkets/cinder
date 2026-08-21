@@ -87,6 +87,7 @@ pub(super) fn handle_actor_command_used(
     )?;
     record_actor_command_memory(state, content, command, &command_context, &command_text);
     apply_actor_command_effects(state, content, command, &command_context);
+    apply_new_command_effects(state, content, command, &command_context, &mut lines);
     apply_command_bundle_progress_effects(state, command);
     if let Some(item_id) = resolved_created_item_id(state, command, &command_context) {
         let storage = command
@@ -221,6 +222,33 @@ pub(super) fn apply_actor_command_realization_effects(
             | CommandEffect::RememberInRoom
             | CommandEffect::RememberWithTargetActor
             | CommandEffect::FollowActor => {}
+            CommandEffect::PlaceFlag => {
+                if state.flagged_rooms.contains(command_context.room_id) {
+                    return false;
+                }
+            }
+            CommandEffect::RemoveFlag => {
+                if !state.flagged_rooms.contains(command_context.room_id) {
+                    return false;
+                }
+            }
+            CommandEffect::AttackTarget => {
+                let Some(target_actor_id) = command_context.target_actor_id else {
+                    return false;
+                };
+                if !target_actor_id.starts_with("golem-") {
+                    return false;
+                }
+                let hp = state
+                    .actor_stats
+                    .get(target_actor_id)
+                    .and_then(|s| s.get("hp"))
+                    .copied()
+                    .unwrap_or(8);
+                if hp <= 0 {
+                    return false;
+                }
+            }
         }
     }
     true
@@ -483,4 +511,139 @@ pub(super) fn apply_actor_move_transition(
         ),
     ));
     lines.extend(advance_house_progress_objectives(state, content));
+}
+
+pub(super) fn apply_new_command_effects(
+    state: &mut WorldState,
+    content: &ContentPack,
+    command: &ActionDefinition,
+    command_context: &ActorCommandContext<'_>,
+    lines: &mut Vec<String>,
+) {
+    if command.has_effect(CommandEffect::PlaceFlag) {
+        let room_id = command_context.room_id.to_string();
+        state.flagged_rooms.insert(room_id.clone());
+        check_encirclement(state, content, &room_id, lines);
+    }
+    if command.has_effect(CommandEffect::RemoveFlag) {
+        let room_id = command_context.room_id.to_string();
+        state.flagged_rooms.remove(&room_id);
+    }
+    if command.has_effect(CommandEffect::AttackTarget) {
+        let Some(target_actor_id) = command_context.target_actor_id else {
+            return;
+        };
+        let player_str = get_actor_stat(state, "player", "strength");
+        let target_def = get_actor_stat(state, target_actor_id, "defense");
+        let base_damage = (player_str - target_def).max(1);
+        let ally_damage = compute_allied_damage(state, target_actor_id);
+        let total_damage = base_damage + ally_damage;
+        let remaining = adjust_actor_stat(state, target_actor_id, "hp", -total_damage);
+        lines.push(format!(
+            "The {target_actor_id} takes {total_damage} damage. ({remaining} HP remaining)"
+        ));
+        if remaining <= 0 {
+            lines.push(format!("The {target_actor_id} crumbles to dust."));
+        }
+        let player_remaining = adjust_actor_stat(state, "player", "hp", -target_def.max(1));
+        if player_remaining <= 0 {
+            lines.push("The world tilts. Your legs give out. The last thing you feel is the cold stone beneath your palms.".to_string());
+            state.phase = crate::engine::state::GamePhase::GameEnded;
+        }
+    }
+}
+
+fn get_actor_stat(state: &WorldState, actor_id: &str, stat: &str) -> i32 {
+    state
+        .actor_stats
+        .get(actor_id)
+        .and_then(|stats| stats.get(stat))
+        .copied()
+        .unwrap_or(0)
+}
+
+fn adjust_actor_stat(state: &mut WorldState, actor_id: &str, stat: &str, delta: i32) -> i32 {
+    let current = get_actor_stat(state, actor_id, stat);
+    let new_val = (current + delta).max(0);
+    let stats = state.actor_stats.entry(actor_id.to_string()).or_default();
+    stats.insert(stat.to_string(), new_val);
+    new_val
+}
+
+fn compute_allied_damage(state: &WorldState, target_actor_id: &str) -> i32 {
+    let mut total = 0;
+    for (actor_id, stats) in &state.actor_stats {
+        if actor_id == "player" || actor_id == target_actor_id {
+            continue;
+        }
+        if !actor_id.starts_with("golem-") {
+            continue;
+        }
+        let str_val = stats.get("strength").copied().unwrap_or(0);
+        if str_val > 0 {
+            total += str_val;
+        }
+    }
+    total
+}
+
+fn check_encirclement(
+    state: &mut WorldState,
+    content: &ContentPack,
+    _placed_room_id: &str,
+    lines: &mut Vec<String>,
+) {
+    let star_points = ["r3c3", "r3c7", "r5c5", "r7c3", "r7c7"];
+    for star in &star_points {
+        let star_actor_id = find_golem_at_room(state, content, star);
+        let Some(golem_id) = star_actor_id else {
+            continue;
+        };
+        if state.followed_actor_id.as_deref() == Some(golem_id.as_str()) {
+            continue;
+        }
+        let neighbors = orthogonal_neighbors(star);
+        let all_flagged = neighbors.iter().all(|n| state.flagged_rooms.contains(n));
+        if all_flagged {
+            lines.push(format!(
+                "The dark golem at {star} shudders, its surface brightening. It turns toward you, no longer hostile."
+            ));
+            state.followed_actor_id = Some(golem_id.clone());
+            lines.push("The golem begins to follow you.".to_string());
+            break;
+        }
+    }
+}
+
+fn find_golem_at_room(state: &WorldState, content: &ContentPack, room_id: &str) -> Option<String> {
+    if let Some((id, _)) = state
+        .actor_room_overrides
+        .iter()
+        .find(|(_, r)| r.as_str() == room_id)
+    {
+        if id.starts_with("golem-") {
+            return Some(id.clone());
+        }
+    }
+    content.actors.iter().find(|actor| {
+        actor.id.starts_with("golem-") && actor.room_id == room_id
+    }).map(|actor| actor.id.clone())
+}
+
+fn orthogonal_neighbors(room_id: &str) -> Vec<String> {
+    let bytes = room_id.as_bytes();
+    if bytes.len() != 4 || bytes[0] != b'r' || bytes[2] != b'c' {
+        return vec![];
+    }
+    let row = (bytes[1] - b'0') as i32;
+    let col = (bytes[3] - b'0') as i32;
+    let mut neighbors = Vec::new();
+    for (dr, dc) in [(-1, 0), (1, 0), (0, -1), (0, 1)] {
+        let nr = row + dr;
+        let nc = col + dc;
+        if nr >= 1 && nr <= 9 && nc >= 1 && nc <= 9 {
+            neighbors.push(format!("r{nr}c{nc}"));
+        }
+    }
+    neighbors
 }

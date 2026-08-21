@@ -1,5 +1,7 @@
 {
   "actor": {
-    "hp": { "default": 10, "min": 0, "max": 20 }
+    "hp": { "default": 10, "min": 0, "max": 20 },
+    "strength": { "default": 3, "min": 0, "max": 10 },
+    "defense": { "default": 1, "min": 0, "max": 10 }
   }
 }

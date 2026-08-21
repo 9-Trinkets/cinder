@@ -79,6 +79,84 @@
         "advances_time": true,
         "input": { "required": true }
       }
+    },
+    {
+      "id": "attack",
+      "command": "ATTACK",
+      "label": "Attack",
+      "group": "combat",
+      "phrases": ["attack", "hit", "strike", "fight", "kill"],
+      "player_enabled": true,
+      "target_mode": "actor",
+      "outcome_mode": "event",
+      "effects": ["attack_target"],
+      "event_text": "{actor_name} strikes {target_actor_name}.",
+      "available": {
+        "requires_actor_in_room": true
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "combat",
+        "sort_order": 10
+      },
+      "player_command": {
+        "target_mode": "actor_reference",
+        "usage": "attack <target>",
+        "example": "attack the golem",
+        "advances_time": true,
+        "input": { "required": true }
+      }
+    },
+    {
+      "id": "place_flag",
+      "command": "PLACE FLAG",
+      "label": "Place Flag",
+      "group": "territory",
+      "phrases": ["place flag", "plant flag", "set flag", "mark room", "flag room"],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": ["place_flag"],
+      "event_text": "{actor_name} drives a stone marker into the ground.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "territory",
+        "sort_order": 20
+      },
+      "player_command": {
+        "usage": "place flag",
+        "example": "place flag",
+        "advances_time": true,
+        "input": { "required": false }
+      }
+    },
+    {
+      "id": "pick_up_flag",
+      "command": "PICK UP FLAG",
+      "label": "Pick Up Flag",
+      "group": "territory",
+      "phrases": ["pick up flag", "retrieve flag", "take flag", "remove flag", "collect flag"],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": ["remove_flag"],
+      "event_text": "{actor_name} pulls a stone marker from the ground.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "territory",
+        "sort_order": 21
+      },
+      "player_command": {
+        "usage": "pick up flag",
+        "example": "pick up flag",
+        "advances_time": true,
+        "input": { "required": false }
+      }
     }
   ]
 }

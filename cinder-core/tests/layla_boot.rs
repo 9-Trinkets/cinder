@@ -1,14 +1,16 @@
 use cinder_core::content::loader::load_named_pack;
 use std::collections::HashSet;
 
+const GRID: usize = 9;
+
 fn room_ids() -> Vec<String> {
-    (1..=5)
-        .flat_map(|r| (1..=5).map(move |c| format!("r{}c{}", r, c)))
+    (1..=GRID)
+        .flat_map(|r| (1..=GRID).map(move |c| format!("r{}c{}", r, c)))
         .collect()
 }
 
 fn exit_count(r: usize, c: usize) -> usize {
-    (r > 1) as usize + (r < 5) as usize + (c > 1) as usize + (c < 5) as usize
+    (r > 1) as usize + (r < GRID) as usize + (c > 1) as usize + (c < GRID) as usize
 }
 
 #[test]
@@ -17,10 +19,10 @@ fn layla_pack_boots() {
     assert_eq!(content.locale, "en");
     assert_eq!(content.settings.title, "Layla");
     assert_eq!(content.opening.start_room_id, "r1c1");
-    assert_eq!(content.opening.start_room_ids.len(), 25);
+    assert_eq!(content.opening.start_room_ids.len(), 81);
 
     let room = content.room("r1c1").expect("start room must exist");
-    assert_eq!(room.title, "A Lightless Cell");
+    assert_eq!(room.title, "A Passage of Scored Walls");
 
     let commands: Vec<String> = content
         .actions
@@ -28,9 +30,27 @@ fn layla_pack_boots() {
         .filter(|c| c.player_enabled)
         .map(|c| c.id.clone())
         .collect();
-    assert_eq!(commands, vec!["look", "move", "speak"]);
+    assert_eq!(commands, vec!["look", "move", "speak", "attack", "place_flag", "pick_up_flag"]);
 
     assert!(content.stats.actor.contains_key("hp"));
+    assert!(content.stats.actor.contains_key("strength"));
+    assert!(content.stats.actor.contains_key("defense"));
+
+    // Golems at star points
+    let golems: Vec<&str> = content.actors.iter().map(|a| a.id.as_str()).collect();
+    assert!(golems.contains(&"golem-dark-nw"), "dark golem NW at r3c3");
+    assert!(golems.contains(&"golem-pale-ne"), "pale golem NE at r3c7");
+    assert!(golems.contains(&"golem-boss"), "boss at r5c5");
+    assert!(golems.contains(&"golem-dark-sw"), "dark golem SW at r7c3");
+    assert!(golems.contains(&"golem-pale-se"), "pale golem SE at r7c7");
+    assert_eq!(golems.len(), 5);
+
+    // Boss has more HP than regular golems
+    let boss = content.actor("golem-boss").expect("boss exists");
+    let boss_hp = boss.initial_stats.get("hp").copied().unwrap_or(0);
+    let nw = content.actor("golem-dark-nw").expect("nw golem");
+    let nw_hp = nw.initial_stats.get("hp").copied().unwrap_or(0);
+    assert!(boss_hp > nw_hp, "boss ({}) should have more HP than regular golem ({})", boss_hp, nw_hp);
 
     let look = content.command("look").expect("look command");
     assert!(look.has_effect(cinder_core::content::types::CommandEffect::ObserveRoom));
@@ -40,10 +60,10 @@ fn layla_pack_boots() {
 }
 
 #[test]
-fn layla_grid_has_25_rooms() {
+fn layla_grid_has_81_rooms() {
     let content = load_named_pack("layla", None).expect("layla pack must load");
     let ids: HashSet<String> = content.rooms.iter().map(|r| r.id.clone()).collect();
-    assert_eq!(ids.len(), 25);
+    assert_eq!(ids.len(), 81);
     assert_eq!(ids, room_ids().into_iter().collect());
 }
 
@@ -53,8 +73,8 @@ fn layla_grid_adjacency() {
     let by_id: std::collections::HashMap<&str, &cinder_core::content::types::RoomDefinition> =
         content.rooms.iter().map(|r| (r.id.as_str(), r)).collect();
 
-    for r in 1..=5 {
-        for c in 1..=5 {
+    for r in 1..=GRID {
+        for c in 1..=GRID {
             let rid = format!("r{}c{}", r, c);
             let room = *by_id.get(rid.as_str()).expect("room exists");
             assert_eq!(
@@ -77,11 +97,16 @@ fn layla_grid_adjacency() {
         }
     }
 
+    // Corner: 2 exits
     let corner = by_id.get("r1c1").expect("corner");
     let dirs: HashSet<String> = corner.exits.iter().map(|e| e.label.clone()).collect();
     assert_eq!(dirs, HashSet::from(["East".to_string(), "South".to_string()]));
-    let center = by_id.get("r3c3").expect("center");
+    // Interior: 4 exits
+    let center = by_id.get("r5c5").expect("center");
     assert_eq!(center.exits.len(), 4);
+    // Star point: 4 exits
+    let star = by_id.get("r3c3").expect("star");
+    assert_eq!(star.exits.len(), 4);
 }
 
 #[test]
@@ -89,7 +114,7 @@ fn layla_random_spawn() {
     let content = load_named_pack("layla", None).expect("layla pack must load");
     let valid: HashSet<String> = room_ids().into_iter().collect();
     let mut seen = HashSet::new();
-    for _ in 0..60 {
+    for _ in 0..200 {
         let runtime =
             cinder_core::CinderRuntime::new(content.clone(), false).expect("runtime constructs");
         let state = runtime.export_state().expect("state export");
@@ -101,7 +126,7 @@ fn layla_random_spawn() {
         seen.insert(state.current_room_id);
     }
     assert!(
-        seen.len() >= 3,
+        seen.len() >= 5,
         "spawns should vary across runs, saw only {}",
         seen.len()
     );
@@ -170,4 +195,64 @@ fn layla_move_dispatch() {
     let after = runtime.export_state().expect("state export");
     assert_eq!(after.current_room_id, exit.room_id);
     let _ = outcome;
+}
+
+#[test]
+fn layla_place_flag_via_runtime() {
+    let content = load_named_pack("layla", None).expect("layla pack must load");
+    let runtime =
+        cinder_core::CinderRuntime::new(content, false).expect("runtime must construct");
+    let outcome = runtime
+        .run_turn("place flag")
+        .expect("place flag must dispatch");
+    assert!(
+        outcome.text.to_lowercase().contains("marker") || outcome.text.to_lowercase().contains("flag"),
+        "expected flag placement message, got: {}",
+        outcome.text
+    );
+}
+
+#[test]
+fn layla_attack_dispatches() {
+    let content = load_named_pack("layla", None).expect("layla pack must load");
+    let runtime =
+        cinder_core::CinderRuntime::new(content, false).expect("runtime must construct");
+    let state = runtime.export_state().expect("state export");
+    let room = runtime
+        .content()
+        .room(&state.current_room_id)
+        .expect("spawn room exists");
+    let has_actor_exit = room.exits.iter().any(|e| {
+        runtime
+            .content()
+            .actors
+            .iter()
+            .any(|a| a.room_id == e.room_id && a.id.starts_with("golem-"))
+    });
+    if has_actor_exit {
+        let golem_exit = room.exits.iter().find(|e| {
+            runtime
+                .content()
+                .actors
+                .iter()
+                .any(|a| a.room_id == e.room_id && a.id.starts_with("golem-"))
+        }).unwrap();
+        runtime
+            .run_turn(&format!("go {}", golem_exit.label.to_lowercase()))
+            .expect("move to golem");
+        let golem = runtime
+            .content()
+            .actors
+            .iter()
+            .find(|a| a.room_id == golem_exit.room_id && a.id.starts_with("golem-"))
+            .unwrap();
+        let outcome = runtime
+            .run_turn(&format!("attack {}", golem.name.to_lowercase()))
+            .expect("attack must dispatch");
+        assert!(
+            outcome.text.to_lowercase().contains("damage") || outcome.text.to_lowercase().contains("strike"),
+            "expected combat output, got: {}",
+            outcome.text
+        );
+    }
 }
