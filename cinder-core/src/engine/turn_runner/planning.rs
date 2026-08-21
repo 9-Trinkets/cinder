@@ -409,6 +409,60 @@ pub(super) fn plan_targeted_state_command(
         PlayerCommandTargetMode::ActorOrFeatureReference => {
             plan_observe_target(content, input.unwrap_or_default().trim(), context, planned)
         }
+        PlayerCommandTargetMode::ActorReference => {
+            let remainder = input.unwrap_or_default();
+            if let Some(resolved) = resolve_actor_reference_input(
+                content,
+                context.planner_state,
+                context.current_room_id,
+                remainder,
+            ) {
+                if resolved.actor_in_room {
+                    let room_id = context.current_room_id.to_string();
+                    let actor_name = content
+                        .opening
+                        .title
+                        .as_str();
+                    planned.events.push(WorldEvent::ActorCommandUsed {
+                        actor_id: "player".to_string(),
+                        actor_name: actor_name.to_string(),
+                        room_id,
+                        command_id: action.id.clone(),
+                        target_room_id: None,
+                        target_actor_id: Some(resolved.actor_id),
+                        target_actor_name: Some(resolved.actor_name),
+                        context_label: None,
+                        feature_id: None,
+                        consumable_id: None,
+                        freeform_text: None,
+                    });
+                    if metadata.advances_time {
+                        planned.events.push(WorldEvent::TurnStarted {
+                            turn_number: context.turn_number,
+                            raw_input: context.raw_input.to_string(),
+                            advances_time: true,
+                        });
+                    }
+                    true
+                } else {
+                    planned.events.push(WorldEvent::ActionRejected {
+                        message: content.render_template(
+                            &content.presentation.error_text.actor_not_here,
+                            &[("actor_name", resolved.actor_name.as_str())],
+                        ),
+                    });
+                    false
+                }
+            } else {
+                planned.events.push(WorldEvent::ActionRejected {
+                    message: content.render_template(
+                        &content.presentation.error_text.actor_unknown,
+                        &[("target", unknown_target_token(remainder).as_str())],
+                    ),
+                });
+                false
+            }
+        }
         other => panic!(
             "stateful player command '{}' has unsupported target_mode '{other:?}'",
             action.id
