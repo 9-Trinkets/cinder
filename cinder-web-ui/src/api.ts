@@ -128,6 +128,21 @@ export interface ActionBarAction {
   id: string
   label: string
   panel?: string
+  panel_config?: PanelConfigData
+}
+
+export interface PanelConfigData {
+  title: string
+  prompt: string
+  data_source: 'actors_in_room' | 'exits' | 'features'
+  on_select: 'execute_command' | 'prefill_input' | 'switch_room' | 'follow_actor'
+}
+
+export interface PanelOptionData {
+  id: string
+  title: string
+  subtitle?: string
+  command?: string
 }
 
 export interface OverflowAction {
@@ -240,6 +255,7 @@ export interface UiSnapshot {
   overflow_actions: OverflowAction[]
   look_options: LookOptionData[]
   talk_options: MenuOptionItem[]
+  panel_options: Record<string, PanelOptionData[]>
   active_menu: ActiveMenuData | null
   act_closure: ActClosureData | null
   game_closure: ActClosureData | null

@@ -75,11 +75,9 @@ docker run --rm --network cinder_default \
 ## Layout
 
 ```
-Cargo.toml            Workspace root (members: cinder-core, cinder-tui)
+Cargo.toml            Workspace root (members: cinder-core, cinder-srv)
 cinder-core/          Engine library (runtime, content loading, event system)
-cinder-tui/           Terminal frontend (ratatui, effects, input)
-  src/main.rs         CLI entry point + content pack loading
-  src/cli.rs          Terminal loop, turn submission, NPC tick scheduling
+cinder-srv/           HTTP server for web UI
 config/workflows/     Synapse workflow TOML files
 content/<pack>/       Authored content packs (characters, rooms, beats, menus, locale data)
 docs/                 Concept and design docs
@@ -87,9 +85,8 @@ docs/                 Concept and design docs
 
 ### Runtime setup
 
-1. `cinder-tui/src/main.rs` parses CLI flags (`--trace-events`, `--content`) and loads the content pack.
-2. `CinderRuntime::new` builds the engine from the content pack.
-3. `cinder-tui/src/cli.rs` starts the terminal loop, submits player turns, and runs periodic NPC ticks.
+1. `CinderRuntime::new` builds the engine from the content pack.
+2. `cinder-srv` serves the web UI and exposes API endpoints for turn submission.
 
 ### Player turn flow
 

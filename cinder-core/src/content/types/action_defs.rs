@@ -47,9 +47,52 @@ pub struct ActionUi {
     #[serde(default)]
     pub panel: Option<String>,
     #[serde(default)]
+    pub panel_config: Option<PanelConfig>,
+    #[serde(default)]
     pub group: String,
     #[serde(default)]
     pub sort_order: usize,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct PanelConfig {
+    #[serde(default)]
+    pub title: String,
+    #[serde(default)]
+    pub prompt: String,
+    #[serde(default)]
+    pub data_source: PanelDataSource,
+    #[serde(default)]
+    pub on_select: PanelSelectAction,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum PanelDataSource {
+    ActorsInRoom,
+    Exits,
+    Features,
+}
+
+impl Default for PanelDataSource {
+    fn default() -> Self {
+        Self::ActorsInRoom
+    }
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum PanelSelectAction {
+    ExecuteCommand,
+    PrefillInput,
+    SwitchRoom,
+    FollowActor,
+}
+
+impl Default for PanelSelectAction {
+    fn default() -> Self {
+        Self::ExecuteCommand
+    }
 }
 
 fn default_true() -> bool {

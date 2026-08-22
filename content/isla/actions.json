@@ -10,7 +10,13 @@
         "overflow": false,
         "group": "system",
         "sort_order": 0,
-        "panel": "move"
+        "panel": "move",
+        "panel_config": {
+          "title": "Where To?",
+          "prompt": "Choose a direction",
+          "data_source": "exits",
+          "on_select": "switch_room"
+        }
       }
     },
     {
@@ -47,7 +53,13 @@
         "overflow": false,
         "group": "observation",
         "sort_order": 100,
-        "panel": "look"
+        "panel": "look",
+        "panel_config": {
+          "title": "Look Around",
+          "prompt": "What catches your eye?",
+          "data_source": "features",
+          "on_select": "execute_command"
+        }
       }
     },
     {
@@ -79,7 +91,13 @@
         "overflow": false,
         "group": "social",
         "sort_order": 0,
-        "panel": "talk"
+        "panel": "talk",
+        "panel_config": {
+          "title": "Who do you want to talk to?",
+          "prompt": "Select someone to speak with",
+          "data_source": "actors_in_room",
+          "on_select": "prefill_input"
+        }
       },
       "npc": {
         "prompt_verb": "speak to",

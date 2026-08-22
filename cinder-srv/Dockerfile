@@ -3,8 +3,6 @@ WORKDIR /app
 
 COPY Cargo.toml Cargo.lock ./
 COPY cinder-core ./cinder-core
-COPY cinder-tui ./cinder-tui
-COPY cinder-desk ./cinder-desk
 COPY cinder-srv ./cinder-srv
 
 RUN cargo build --release -p cinder-srv

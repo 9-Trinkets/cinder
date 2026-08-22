@@ -1,10 +1,11 @@
 use cinder_core::content::loader;
-use cinder_core::content::types::UiTextDefinition;
+use cinder_core::content::types::{PanelDataSource, PanelSelectAction, UiTextDefinition};
 use cinder_core::engine::runtime::{
     ActClosure, ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption,
 };
 use cinder_core::engine::turn_policies::action_is_available;
 use serde::Serialize;
+use std::collections::BTreeMap;
 
 use super::response;
 
@@ -47,6 +48,26 @@ pub struct ActionBarAction {
     pub label: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub panel: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub panel_config: Option<PanelConfigData>,
+}
+
+#[derive(Clone, Serialize)]
+pub struct PanelConfigData {
+    pub title: String,
+    pub prompt: String,
+    pub data_source: PanelDataSource,
+    pub on_select: PanelSelectAction,
+}
+
+#[derive(Clone, Serialize)]
+pub struct PanelOptionData {
+    pub id: String,
+    pub title: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub subtitle: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub command: Option<String>,
 }
 
 #[derive(Clone, Serialize)]
@@ -113,6 +134,8 @@ pub struct UiSnapshot {
     pub overflow_actions: Vec<OverflowAction>,
     pub look_options: Vec<LookOptionData>,
     pub talk_options: Vec<MenuOptionData>,
+    #[serde(default)]
+    pub panel_options: BTreeMap<String, Vec<PanelOptionData>>,
     pub active_menu: Option<ActiveMenuData>,
     pub ui_text: UiTextDefinition,
     pub act_closure: Option<ActClosure>,
@@ -201,6 +224,12 @@ pub(super) fn build_ui_snapshot(
                         id: a.id.clone(),
                         label: a.label.clone(),
                         panel: a.ui.panel.clone(),
+                        panel_config: a.ui.panel_config.as_ref().map(|pc| PanelConfigData {
+                            title: pc.title.clone(),
+                            prompt: pc.prompt.clone(),
+                            data_source: pc.data_source.clone(),
+                            on_select: pc.on_select.clone(),
+                        }),
                     })
                     .collect(),
                 true,
@@ -216,6 +245,7 @@ pub(super) fn build_ui_snapshot(
                         id: action.id.clone(),
                         label: action.label.clone(),
                         panel: legacy_panel_for_action_id(&action.id),
+                        panel_config: None,
                     })
                     .collect(),
                 true,
@@ -227,16 +257,19 @@ pub(super) fn build_ui_snapshot(
                         id: "look".into(),
                         label: "Look".into(),
                         panel: Some("look".into()),
+                        panel_config: None,
                     },
                     ActionBarAction {
                         id: "move".into(),
                         label: "Move".into(),
                         panel: Some("move".into()),
+                        panel_config: None,
                     },
                     ActionBarAction {
                         id: "follow".into(),
                         label: "Follow".into(),
                         panel: Some("follow".into()),
+                        panel_config: None,
                     },
                 ],
                 false,
@@ -295,6 +328,7 @@ pub(super) fn build_ui_snapshot(
             id: "talk".into(),
             label: "Talk".into(),
             panel: Some("talk".into()),
+            panel_config: None,
         });
     }
 
@@ -390,6 +424,53 @@ pub(super) fn build_ui_snapshot(
         append_stage_menu_overflow_actions(&mut overflow_actions, content, &active_stages);
     }
 
+    let mut panel_options: BTreeMap<String, Vec<PanelOptionData>> = BTreeMap::new();
+    for action in &content.actions {
+        if let (Some(panel_name), Some(panel_config)) = (&action.ui.panel, &action.ui.panel_config) {
+            let phrase = action.phrases.first().map(|s| s.as_str()).unwrap_or(&action.command);
+            let options = match panel_config.data_source {
+                PanelDataSource::ActorsInRoom => runtime
+                    .current_room_talk_options()
+                    .map_err(|error| error.to_string())?
+                    .into_iter()
+                    .map(|opt| {
+                        let actor_id = opt.id.strip_prefix("actor:").unwrap_or(&opt.id);
+                        PanelOptionData {
+                            id: opt.id.clone(),
+                            title: opt.label.clone(),
+                            subtitle: None,
+                            command: Some(format!("{} {}", phrase, actor_id)),
+                        }
+                    })
+                    .collect(),
+                PanelDataSource::Exits => runtime
+                    .room_switch_options()
+                    .map_err(|error| error.to_string())?
+                    .into_iter()
+                    .map(|opt| PanelOptionData {
+                        id: opt.command.clone(),
+                        title: opt.title.clone(),
+                        subtitle: if opt.menu_text.is_empty() { None } else { Some(opt.menu_text) },
+                        command: Some(opt.command.clone()),
+                    })
+                    .collect(),
+                PanelDataSource::Features => runtime
+                    .current_room_look_options()
+                    .map_err(|error| error.to_string())?
+                    .into_iter()
+                    .filter(|opt| opt.id.starts_with("feature:"))
+                    .map(|opt| PanelOptionData {
+                        id: opt.id.clone(),
+                        title: opt.label.clone(),
+                        subtitle: None,
+                        command: Some(opt.command.clone()),
+                    })
+                    .collect(),
+            };
+            panel_options.insert(panel_name.clone(), options);
+        }
+    }
+
     Ok(UiSnapshot {
         pack_id: pack_id.to_string(),
         title: content.opening.title.clone(),
@@ -423,6 +504,7 @@ pub(super) fn build_ui_snapshot(
         overflow_actions,
         look_options,
         talk_options,
+        panel_options,
         active_menu,
         ui_text: content.ui_text.clone(),
         act_closure: if content.settings.show_act_closure {

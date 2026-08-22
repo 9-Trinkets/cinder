@@ -3,7 +3,6 @@
 /target
 .env
 cinder-srv/.env
-cinder-desk/gen/
 cinder-srv/gen/
 *.db
 .vercel

@@ -29,7 +29,13 @@
         "overflow": false,
         "group": "",
         "sort_order": 100,
-        "panel": "look"
+        "panel": "look",
+        "panel_config": {
+          "title": "Look Around",
+          "prompt": "What catches your eye?",
+          "data_source": "features",
+          "on_select": "execute_command"
+        }
       }
     },
     {
@@ -65,7 +71,13 @@
         "overflow": false,
         "group": "movement",
         "sort_order": 0,
-        "panel": "move"
+        "panel": "move",
+        "panel_config": {
+          "title": "Where To?",
+          "prompt": "Choose a direction",
+          "data_source": "exits",
+          "on_select": "switch_room"
+        }
       },
       "npc": {
         "prompt_verb": "move",
@@ -103,7 +115,13 @@
         "overflow": true,
         "group": "social",
         "sort_order": 1,
-        "panel": "talk"
+        "panel": "talk",
+        "panel_config": {
+          "title": "Who do you want to talk to?",
+          "prompt": "Select someone to speak with",
+          "data_source": "actors_in_room",
+          "on_select": "prefill_input"
+        }
       },
       "npc": {
         "prompt_verb": "speak to",
@@ -1009,7 +1027,13 @@
         "overflow": false,
         "group": "social",
         "sort_order": 2,
-        "panel": "follow"
+        "panel": "follow",
+        "panel_config": {
+          "title": "Who to Follow?",
+          "prompt": "Select someone to follow",
+          "data_source": "actors_in_room",
+          "on_select": "follow_actor"
+        }
       }
     }
   ]

@@ -15,6 +15,12 @@
         "bar": true,
         "overflow": false,
         "panel": "look",
+        "panel_config": {
+          "title": "Look Around",
+          "prompt": "What catches your eye?",
+          "data_source": "features",
+          "on_select": "execute_command"
+        },
         "group": "observe",
         "sort_order": 0
       },
@@ -41,6 +47,12 @@
         "bar": true,
         "overflow": false,
         "panel": "move",
+        "panel_config": {
+          "title": "Where To?",
+          "prompt": "Choose a direction",
+          "data_source": "exits",
+          "on_select": "switch_room"
+        },
         "group": "movement",
         "sort_order": 1
       },
@@ -69,6 +81,12 @@
         "bar": true,
         "overflow": false,
         "panel": "talk",
+        "panel_config": {
+          "title": "Who do you want to talk to?",
+          "prompt": "Select someone to speak with",
+          "data_source": "actors_in_room",
+          "on_select": "prefill_input"
+        },
         "group": "social",
         "sort_order": 2
       },
@@ -95,8 +113,15 @@
         "requires_actor_in_room": true
       },
       "ui": {
-        "bar": false,
-        "overflow": true,
+        "bar": true,
+        "overflow": false,
+        "panel": "attack",
+        "panel_config": {
+          "title": "Who do you want to attack?",
+          "prompt": "Select a target",
+          "data_source": "actors_in_room",
+          "on_select": "execute_command"
+        },
         "group": "combat",
         "sort_order": 10
       },
