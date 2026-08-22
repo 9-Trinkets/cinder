@@ -62,7 +62,5 @@
     ]
   },
   "look_panel_title": "Look",
-  "talk_panel_title": "Talk",
-  "talk_panel_prompt": "Who do you want to talk to?",
   "dynamic_menu_context_label": "Context"
 }

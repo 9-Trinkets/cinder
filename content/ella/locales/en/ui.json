@@ -41,21 +41,7 @@
   "response_worker_disconnected": "response worker disconnected.",
   "menu_unavailable": "That menu is no longer available.",
   "npc_tick_soft_error": "{actor_name} blanks for a second, looking briefly confused.",
-  "action_bar": {
-    "actions": [
-      {
-        "id": "look",
-        "label": "Look"
-      },
-      {
-        "id": "move",
-        "label": "Move"
-      }
-    ]
-  },
   "look_panel_title": "Look",
-  "talk_panel_title": "Talk",
-  "talk_panel_prompt": "Who do you want to talk to?",
   "game_closure": {
     "title": "Goodnight",
     "subtitle_template": "",

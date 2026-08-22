@@ -1,6 +1,6 @@
 pub use super::text_defs::{
-    ActClosureDefinition, ActClosureSectionDefinition, ActClosureSource, ActionBarDefinition,
-    ActionBarItem, ShellMenuDefinition, ShellMenuItem, SystemTextDefinition, UiTextDefinition,
+    ActClosureDefinition, ActClosureSectionDefinition, ActClosureSource, ShellMenuDefinition,
+    ShellMenuItem, SystemTextDefinition, UiTextDefinition,
 };
 
 use serde::{Deserialize, Serialize};

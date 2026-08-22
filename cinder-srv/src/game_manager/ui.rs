@@ -148,16 +148,6 @@ pub struct UiSnapshot {
     pub theme: cinder_core::content::types::ThemeDefinition,
 }
 
-fn legacy_panel_for_action_id(id: &str) -> Option<String> {
-    match id {
-        "look" => Some("look".into()),
-        "move" => Some("move".into()),
-        "follow" => Some("follow".into()),
-        "speak" | "talk" => Some("talk".into()),
-        _ => None,
-    }
-}
-
 pub(super) fn build_ui_snapshot(
     runtime: &CinderRuntime,
     pack_id: &str,
@@ -212,69 +202,27 @@ pub(super) fn build_ui_snapshot(
             crafted_consumable_ids.contains(&consumable.id) || consumable.initial_stock > 0
         };
 
-    let (action_bar_actions, content_defined_bar) =
-        if !content.actions.is_empty() {
-            let state = runtime.export_state().map_err(|e| e.to_string())?;
-            (
-                content
-                    .actions
-                    .iter()
-                    .filter(|a| a.ui.bar && action_is_available(content, &state, a, &state.current_room_id))
-                    .map(|a| ActionBarAction {
-                        id: a.id.clone(),
-                        label: a.label.clone(),
-                        panel: a.ui.panel.clone(),
-                        panel_config: a.ui.panel_config.as_ref().map(|pc| PanelConfigData {
-                            title: pc.title.clone(),
-                            prompt: pc.prompt.clone(),
-                            data_source: pc.data_source.clone(),
-                            on_select: pc.on_select.clone(),
-                        }),
-                    })
-                    .collect(),
-                true,
-            )
-        } else if !content.ui_text.action_bar.actions.is_empty() {
-            (
-                content
-                    .ui_text
-                    .action_bar
-                    .actions
-                    .iter()
-                    .map(|action| ActionBarAction {
-                        id: action.id.clone(),
-                        label: action.label.clone(),
-                        panel: legacy_panel_for_action_id(&action.id),
-                        panel_config: None,
-                    })
-                    .collect(),
-                true,
-            )
-        } else {
-            (
-                vec![
-                    ActionBarAction {
-                        id: "look".into(),
-                        label: "Look".into(),
-                        panel: Some("look".into()),
-                        panel_config: None,
-                    },
-                    ActionBarAction {
-                        id: "move".into(),
-                        label: "Move".into(),
-                        panel: Some("move".into()),
-                        panel_config: None,
-                    },
-                    ActionBarAction {
-                        id: "follow".into(),
-                        label: "Follow".into(),
-                        panel: Some("follow".into()),
-                        panel_config: None,
-                    },
-                ],
-                false,
-            )
-        };
+    let action_bar_actions: Vec<ActionBarAction> = if !content.actions.is_empty() {
+        let state = runtime.export_state().map_err(|e| e.to_string())?;
+        content
+            .actions
+            .iter()
+            .filter(|a| a.ui.bar && action_is_available(content, &state, a, &state.current_room_id))
+            .map(|a| ActionBarAction {
+                id: a.id.clone(),
+                label: a.label.clone(),
+                panel: a.ui.panel.clone(),
+                panel_config: a.ui.panel_config.as_ref().map(|pc| PanelConfigData {
+                    title: pc.title.clone(),
+                    prompt: pc.prompt.clone(),
+                    data_source: pc.data_source.clone(),
+                    on_select: pc.on_select.clone(),
+                }),
+            })
+            .collect()
+    } else {
+        vec![]
+    };
 
     let look_options: Vec<LookOptionData> = runtime
         .current_room_look_options()
@@ -317,20 +265,7 @@ pub(super) fn build_ui_snapshot(
                 .collect(),
         });
 
-    let mut action_bar_actions = action_bar_actions;
-    if !content_defined_bar
-        && !talk_options.is_empty()
-        && !action_bar_actions
-            .iter()
-            .any(|action| action.id == "speak" || action.id == "talk")
-    {
-        action_bar_actions.push(ActionBarAction {
-            id: "talk".into(),
-            label: "Talk".into(),
-            panel: Some("talk".into()),
-            panel_config: None,
-        });
-    }
+    let action_bar_actions = action_bar_actions;
 
     let bar_ids: Vec<&str> = action_bar_actions
         .iter()

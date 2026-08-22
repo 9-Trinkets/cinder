@@ -56,26 +56,6 @@
   "response_worker_disconnected": "response worker disconnected.",
   "menu_unavailable": "That menu is no longer available.",
   "npc_tick_soft_error": "Noa goes quiet for a moment, searching for words.",
-  "action_bar": {
-    "actions": [
-      {
-        "id": "look",
-        "label": "Look"
-      },
-      {
-        "id": "move",
-        "label": "Move"
-      },
-      {
-        "id": "speak",
-        "label": "Talk"
-      },
-      {
-        "id": "listen",
-        "label": "Listen"
-      }
-    ]
-  },
   "shell_menu": {
     "items": [
       {
@@ -107,8 +87,6 @@
     ]
   },
   "look_panel_title": "Look",
-  "talk_panel_title": "Talk",
-  "talk_panel_prompt": "Who do you want to talk to?",
   "perspective_review_prompt": "Patient: {actor_name}\nTherapist: {other_person_name}\n\nSession Outcome\n{stats_context}\n\nSession Summary\n{act_summary}\n\nRelationship Notes\n{relationship_lines}\n\nWrite a short Yelp-style review from {actor_name}'s perspective about their therapy session with {other_person_name}. Be specific and in character.\n\nReturn ONLY valid JSON (no markdown, no backticks) with a rating field (1-5 integer) and a review_text field (string).\nThe rating should reflect the patient's genuine experience based on the session outcome.\nThe review text should be 2-5 sentences in the patient's voice — honest, specific, and a bit Yelp-flavored.",
   "perspective_review_system": "You write a short Yelp-style review from a patient's perspective. Respond only with valid JSON.",
   "book_recommender_instructions": "Generate exactly 3 fictional book recommendations. Each option must be a plausible novel title paired with a one-line thematic blurb that fits this specific patient and this specific conversation. None of the options should be framed as the correct answer.",

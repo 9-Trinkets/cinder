@@ -15,18 +15,6 @@ pub struct ShellMenuItem {
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct ActionBarDefinition {
-    #[serde(default)]
-    pub actions: Vec<ActionBarItem>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ActionBarItem {
-    pub id: String,
-    pub label: String,
-}
-
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ActClosureDefinition {
     #[serde(default)]
     pub title: String,
@@ -172,10 +160,6 @@ pub struct UiTextDefinition {
     pub look_group_things: String,
     #[serde(default = "default_look_group_people")]
     pub look_group_people: String,
-    #[serde(default = "default_talk_panel_title")]
-    pub talk_panel_title: String,
-    #[serde(default = "default_talk_panel_prompt")]
-    pub talk_panel_prompt: String,
     #[serde(default = "default_perspective_review_prompt")]
     pub perspective_review_prompt: String,
     #[serde(default = "default_perspective_review_system")]
@@ -190,8 +174,6 @@ pub struct UiTextDefinition {
     pub game_closure: ActClosureDefinition,
     #[serde(default)]
     pub shell_menu: ShellMenuDefinition,
-    #[serde(default)]
-    pub action_bar: ActionBarDefinition,
 }
 
 pub use crate::content::system_text_defs::SystemTextDefinition;
@@ -428,14 +410,6 @@ fn default_look_group_people() -> String {
     "People".to_string()
 }
 
-fn default_talk_panel_title() -> String {
-    "Talk".to_string()
-}
-
-fn default_talk_panel_prompt() -> String {
-    "Who do you want to talk to?".to_string()
-}
-
 fn default_perspective_review_prompt() -> String {
     r#"Cast Member: {actor_name}
 Other: {other_person_name}
@@ -532,8 +506,6 @@ impl Default for UiTextDefinition {
             look_group_room: default_look_group_room(),
             look_group_things: default_look_group_things(),
             look_group_people: default_look_group_people(),
-            talk_panel_title: default_talk_panel_title(),
-            talk_panel_prompt: default_talk_panel_prompt(),
             perspective_review_prompt: default_perspective_review_prompt(),
             perspective_review_system: default_perspective_review_system(),
             book_recommender_instructions: default_book_recommender_instructions(),
@@ -541,7 +513,6 @@ impl Default for UiTextDefinition {
             act_closure: ActClosureDefinition::default(),
             game_closure: ActClosureDefinition::default(),
             shell_menu: ShellMenuDefinition::default(),
-            action_bar: ActionBarDefinition::default(),
         }
     }
 }
