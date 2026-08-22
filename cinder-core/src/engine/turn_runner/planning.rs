@@ -410,8 +410,49 @@ pub(super) fn plan_targeted_state_command(
             plan_observe_target(content, input.unwrap_or_default().trim(), context, planned)
         }
         PlayerCommandTargetMode::ActorReference => {
-            let remainder = input.unwrap_or_default();
-            if let Some(resolved) = resolve_actor_reference_input(
+            let remainder = input.unwrap_or_default().trim();
+            if remainder.is_empty() {
+                let actors_here: Vec<_> = content
+                    .actors
+                    .iter()
+                    .filter(|actor| {
+                        context
+                            .planner_state
+                            .actor_room_id(&actor.id, &actor.room_id)
+                            == context.current_room_id
+                    })
+                    .collect();
+                if let Some(actor) = actors_here.first() {
+                    let room_id = context.current_room_id.to_string();
+                    let actor_name = content.opening.title.as_str();
+                    planned.events.push(WorldEvent::ActorCommandUsed {
+                        actor_id: "player".to_string(),
+                        actor_name: actor_name.to_string(),
+                        room_id,
+                        command_id: action.id.clone(),
+                        target_room_id: None,
+                        target_actor_id: Some(actor.id.clone()),
+                        target_actor_name: Some(actor.name.clone()),
+                        context_label: None,
+                        feature_id: None,
+                        consumable_id: None,
+                        freeform_text: None,
+                    });
+                    if metadata.advances_time {
+                        planned.events.push(WorldEvent::TurnStarted {
+                            turn_number: context.turn_number,
+                            raw_input: context.raw_input.to_string(),
+                            advances_time: true,
+                        });
+                    }
+                    true
+                } else {
+                    planned.events.push(WorldEvent::ActionRejected {
+                        message: "There's no one here to target.".to_string(),
+                    });
+                    false
+                }
+            } else if let Some(resolved) = resolve_actor_reference_input(
                 content,
                 context.planner_state,
                 context.current_room_id,
@@ -419,10 +460,7 @@ pub(super) fn plan_targeted_state_command(
             ) {
                 if resolved.actor_in_room {
                     let room_id = context.current_room_id.to_string();
-                    let actor_name = content
-                        .opening
-                        .title
-                        .as_str();
+                    let actor_name = content.opening.title.as_str();
                     planned.events.push(WorldEvent::ActorCommandUsed {
                         actor_id: "player".to_string(),
                         actor_name: actor_name.to_string(),
