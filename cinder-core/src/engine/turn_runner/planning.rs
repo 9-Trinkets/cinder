@@ -422,7 +422,8 @@ pub(super) fn plan_targeted_state_command(
                             == context.current_room_id
                     })
                     .collect();
-                if let Some(actor) = actors_here.first() {
+                if actors_here.len() == 1 {
+                    let actor = &actors_here[0];
                     let room_id = context.current_room_id.to_string();
                     let actor_name = content.opening.title.as_str();
                     planned.events.push(WorldEvent::ActorCommandUsed {
@@ -446,9 +447,18 @@ pub(super) fn plan_targeted_state_command(
                         });
                     }
                     true
-                } else {
+                } else if actors_here.is_empty() {
                     planned.events.push(WorldEvent::ActionRejected {
                         message: "There's no one here to target.".to_string(),
+                    });
+                    false
+                } else {
+                    let names: Vec<&str> = actors_here.iter().map(|a| a.name.as_str()).collect();
+                    planned.events.push(WorldEvent::ActionRejected {
+                        message: format!(
+                            "Who do you want to target? Try: {}",
+                            names.join(", ")
+                        ),
                     });
                     false
                 }
