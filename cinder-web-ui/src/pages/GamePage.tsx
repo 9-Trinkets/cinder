@@ -466,7 +466,7 @@ export default function GamePage() {
       const snap = uiSnapshot || await api.fetchSessionUi(token, id).catch(() => null)
       if (snap?.channel_surfing_only) {
         setUiSnapshot(snap)
-        setQuickPanel(current => current === matchingBarAction.panel ? null : matchingBarAction.panel)
+        setQuickPanel(current => current === matchingBarAction.panel ? null : matchingBarAction.panel ?? null)
         return
       }
     }
