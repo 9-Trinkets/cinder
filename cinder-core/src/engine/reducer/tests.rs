@@ -241,6 +241,8 @@ fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
         aliases: vec![],
         inspect_text: format!("{name} looks thoughtful."),
         required_consumable_tags: vec![],
+        attackable: false,
+        conversion_trigger: None,
         prompt_context: ActorPromptContext {
             character_notes: vec![],
             subtext_notes: vec![],

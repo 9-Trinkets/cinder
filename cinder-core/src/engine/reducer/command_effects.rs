@@ -1,6 +1,6 @@
 use crate::content::types::{
     ActionDefinition, ActionItemStorageTarget, CommandEffect, CommandInputMode, CommandTargetMode,
-    ContentPack, ItemStorageTarget,
+    ContentPack, ConversionTrigger, ItemStorageTarget,
 };
 use crate::engine::events::{ObservationMode, WorldEvent};
 use crate::engine::hook_ids;
@@ -242,16 +242,13 @@ pub(super) fn apply_actor_command_realization_effects(
                 let Some(target_actor_id) = command_context.target_actor_id else {
                     return false;
                 };
-                if !target_actor_id.starts_with("golem-") {
+                if !content
+                    .actor(target_actor_id)
+                    .is_some_and(|actor| actor.attackable)
+                {
                     return false;
                 }
-                let hp = state
-                    .actor_stats
-                    .get(target_actor_id)
-                    .and_then(|s| s.get("hp"))
-                    .copied()
-                    .unwrap_or(8);
-                if hp <= 0 {
+                if state.actor_stat(target_actor_id, "hp") <= 0 {
                     return false;
                 }
             }
@@ -616,24 +613,34 @@ fn check_encirclement(
     lines: &mut Vec<String>,
     outbox: &mut Vec<WorldEvent>,
 ) {
-    let star_points = ["r3c3", "r3c7", "r5c5", "r7c3", "r7c7"];
-    for star in &star_points {
-        let Some(golem_id) = find_golem_at_room(state, content, star) else {
+    for actor in &content.actors {
+        if actor.conversion_trigger != Some(ConversionTrigger::Encirclement) {
             continue;
-        };
-        let relationship = state.relationship(&golem_id);
+        }
+        let relationship = state.relationship(&actor.id);
         if relationship.stance != ActorStance::Neutral || relationship.follows_player {
             continue;
         }
-        let neighbors = orthogonal_neighbors(star);
+        if state.actor_is_defeated(&actor.id) {
+            continue;
+        }
+        let room_id = state.actor_room_id(&actor.id, &actor.room_id).to_string();
+        let neighbors = orthogonal_neighbors(&room_id);
+        if neighbors.is_empty() {
+            continue;
+        }
         let all_flagged = neighbors.iter().all(|n| state.flagged_rooms.contains(n));
         if all_flagged {
             lines.push(format!(
-                "The golem at {star} shudders, its surface brightening. It turns toward you, no longer hostile."
+                "The {} shudders, its surface brightening. It turns toward you, no longer hostile.",
+                actor_display_name(content, &actor.id)
             ));
-            lines.push("The golem falls in behind you.".to_string());
+            lines.push(format!(
+                "The {} falls in behind you.",
+                actor_display_name(content, &actor.id)
+            ));
             outbox.push(WorldEvent::ActorRelationshipUpdated {
-                actor_id: golem_id,
+                actor_id: actor.id.clone(),
                 relationship: ActorRelationship {
                     stance: ActorStance::Allied,
                     follows_player: true,
@@ -642,23 +649,6 @@ fn check_encirclement(
             break;
         }
     }
-}
-
-fn find_golem_at_room(state: &WorldState, content: &ContentPack, room_id: &str) -> Option<String> {
-    if let Some((id, _)) = state
-        .actor_room_overrides
-        .iter()
-        .find(|(_, r)| r.as_str() == room_id)
-    {
-        if id.starts_with("golem-") {
-            return Some(id.clone());
-        }
-    }
-    content
-        .actors
-        .iter()
-        .find(|actor| actor.id.starts_with("golem-") && actor.room_id == room_id)
-        .map(|actor| actor.id.clone())
 }
 
 fn orthogonal_neighbors(room_id: &str) -> Vec<String> {

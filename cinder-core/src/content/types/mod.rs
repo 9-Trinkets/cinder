@@ -438,8 +438,8 @@ pub struct OpeningMovieFrameDefinition {
 mod world_defs;
 pub use world_defs::{
     ActorDefinition, ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition,
-    ActorPromptContext, ConsumableDefinition, ConsumableKind, ErrorTextDefinition,
-    MovementConfigDefinition, MovementTargetBehavior, PresentationDefinition,
+    ActorPromptContext, ConsumableDefinition, ConsumableKind, ConversionTrigger,
+    ErrorTextDefinition, MovementConfigDefinition, MovementTargetBehavior, PresentationDefinition,
     PresentationTextDefinition, RoomDefinition, RoomExitDefinition, RoomFeatureDefinition,
     RuleBundleAffordancePriorityDefinition, RuleBundleAffordanceTarget,
     RuleBundleCompletionDefinition, RuleBundleCompletionTrigger,

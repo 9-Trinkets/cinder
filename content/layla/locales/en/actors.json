@@ -3,8 +3,16 @@
     "id": "golem-dark-nw",
     "name": "a dark golem",
     "room_id": "r3c3",
-    "initial_stats": { "hp": 8, "strength": 2 },
-    "aliases": ["golem", "dark golem", "granite golem", "stone figure"],
+    "initial_stats": {
+      "hp": 8,
+      "strength": 2
+    },
+    "aliases": [
+      "golem",
+      "dark golem",
+      "granite golem",
+      "stone figure"
+    ],
     "inspect_text": "A golem of dark granite, still as architecture. Its eyes are closed. The grid lines on the floor seem to radiate from where it stands.",
     "prompt_context": {
       "character_notes": [
@@ -26,14 +34,24 @@
         "When attacked and still standing, your eyes open and you retaliate without pause.",
         "When surrounded by flagged rooms, you wake. Something shifts in you. You belong to the one who marked the ground."
       ]
-    }
+    },
+    "attackable": true,
+    "conversion_trigger": "encirclement"
   },
   {
     "id": "golem-pale-ne",
     "name": "a pale golem",
     "room_id": "r3c7",
-    "initial_stats": { "hp": 8, "strength": 2 },
-    "aliases": ["golem", "pale golem", "marble golem", "stone figure"],
+    "initial_stats": {
+      "hp": 8,
+      "strength": 2
+    },
+    "aliases": [
+      "golem",
+      "pale golem",
+      "marble golem",
+      "stone figure"
+    ],
     "inspect_text": "A golem of pale marble, motionless among the pillars. It does not look at you. The stone beneath its feet is worn smooth.",
     "prompt_context": {
       "character_notes": [
@@ -55,14 +73,27 @@
         "When attacked and still standing, your eyes open and you retaliate without pause.",
         "When surrounded by flagged rooms, you wake. Something shifts in you."
       ]
-    }
+    },
+    "attackable": true,
+    "conversion_trigger": "encirclement"
   },
   {
     "id": "golem-boss",
     "name": "the stone warden",
     "room_id": "r5c5",
-    "initial_stats": { "hp": 20, "strength": 4 },
-    "aliases": ["warden", "boss golem", "stone warden", "pale golem", "golem", "large golem", "tall golem"],
+    "initial_stats": {
+      "hp": 20,
+      "strength": 4
+    },
+    "aliases": [
+      "warden",
+      "boss golem",
+      "stone warden",
+      "pale golem",
+      "golem",
+      "large golem",
+      "tall golem"
+    ],
     "inspect_text": "The golem is taller than the others, pale as bone, perfectly still. It stands at the center of a grid scored deep into the stone. It does not move. It does not need to. The room feels like it exists for this one thing.",
     "prompt_context": {
       "character_notes": [
@@ -86,14 +117,24 @@
         "When attacked, you wake and strike back with the weight of stone, every turn.",
         "You cannot be surrounded or converted. You can only be defeated in combat."
       ]
-    }
+    },
+    "attackable": true,
+    "conversion_trigger": "encirclement"
   },
   {
     "id": "golem-dark-sw",
     "name": "a dark golem",
     "room_id": "r7c3",
-    "initial_stats": { "hp": 8, "strength": 2 },
-    "aliases": ["golem", "dark golem", "granite golem", "stone figure"],
+    "initial_stats": {
+      "hp": 8,
+      "strength": 2
+    },
+    "aliases": [
+      "golem",
+      "dark golem",
+      "granite golem",
+      "stone figure"
+    ],
     "inspect_text": "A golem of dark granite stands in the corner, watching nothing. The flags beneath its feet are dark, fitted precisely.",
     "prompt_context": {
       "character_notes": [
@@ -114,14 +155,24 @@
         "When attacked and still standing, your eyes open and you retaliate without pause.",
         "When surrounded by flagged rooms, you wake."
       ]
-    }
+    },
+    "attackable": true,
+    "conversion_trigger": "encirclement"
   },
   {
     "id": "golem-pale-se",
     "name": "a pale golem",
     "room_id": "r7c7",
-    "initial_stats": { "hp": 8, "strength": 2 },
-    "aliases": ["golem", "pale golem", "marble golem", "stone figure"],
+    "initial_stats": {
+      "hp": 8,
+      "strength": 2
+    },
+    "aliases": [
+      "golem",
+      "pale golem",
+      "marble golem",
+      "stone figure"
+    ],
     "inspect_text": "A golem of pale stone stands in the center of the room, waiting. The light catches in the stone and holds.",
     "prompt_context": {
       "character_notes": [
@@ -142,6 +193,8 @@
         "When attacked and still standing, your eyes open and you retaliate without pause.",
         "When surrounded by flagged rooms, you wake."
       ]
-    }
+    },
+    "attackable": true,
+    "conversion_trigger": "encirclement"
   }
 ]

@@ -287,11 +287,26 @@ pub struct ActorDefinition {
     pub inspect_text: String,
     #[serde(default)]
     pub required_consumable_tags: Vec<String>,
+    /// Whether the player can attack this actor. Defaults to false; combat
+    /// packs opt their creatures in explicitly.
+    #[serde(default)]
+    pub attackable: bool,
+    /// Rule that can convert this actor into a player ally, if any.
+    #[serde(default)]
+    pub conversion_trigger: Option<ConversionTrigger>,
     pub prompt_context: ActorPromptContext,
     #[serde(default)]
     pub act_cast: Option<ActorActCast>,
     #[serde(default)]
     pub game_data: BTreeMap<String, String>,
+}
+
+/// Content-declared ways an actor can be turned into an ally.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ConversionTrigger {
+    /// Converting when every room adjacent to the actor's room is flagged.
+    Encirclement,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
