@@ -109,6 +109,9 @@ pub fn load_pack_from_dir_with_locale(
     let presentation = paths
         .read_optional::<PresentationDefinition>("presentation.json")?
         .unwrap_or_default();
+    let messages = paths
+        .read_optional::<BTreeMap<String, String>>("messages.json")?
+        .unwrap_or_default();
     for movie in &mut movies {
         for frame in &mut movie.frames {
             if !frame.text_path.is_empty() {
@@ -492,6 +495,7 @@ pub fn load_pack_from_dir_with_locale(
         speech_intents,
         items,
         variables,
+        messages,
         room_index,
         actor_index,
         action_index,

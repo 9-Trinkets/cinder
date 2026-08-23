@@ -543,15 +543,23 @@ pub(super) fn apply_new_command_effects(
         let ally_damage = compute_allied_damage(state);
         let total_damage = base_damage + ally_damage;
         let remaining = adjust_actor_stat(state, target_actor_id, "hp", -total_damage);
-        lines.push(format!(
-            "The {} takes {total_damage} damage. ({remaining} HP remaining)",
-            actor_display_name(content, target_actor_id),
-        ));
+        let target_name = actor_display_name(content, target_actor_id);
+        if let Some(line) = content.render_message(
+            "combat.attack_hit",
+            &[
+                ("actor", target_name.as_str()),
+                ("damage", total_damage.to_string().as_str()),
+                ("remaining", remaining.to_string().as_str()),
+            ],
+        ) {
+            lines.push(line);
+        }
         if remaining <= 0 {
-            lines.push(format!(
-                "The {} crumbles to dust.",
-                actor_display_name(content, target_actor_id)
-            ));
+            if let Some(line) =
+                content.render_message("combat.actor_defeated", &[("actor", target_name.as_str())])
+            {
+                lines.push(line);
+            }
             state.set_relationship(target_actor_id, ActorRelationship::default());
             return;
         }
@@ -560,10 +568,12 @@ pub(super) fn apply_new_command_effects(
         {
             relationship.stance = ActorStance::Hostile;
             state.set_relationship(target_actor_id, relationship);
-            lines.push(format!(
-                "The {}'s eyes snap open. It turns to face you.",
-                actor_display_name(content, target_actor_id)
-            ));
+            if let Some(line) = content.render_message(
+                "combat.actor_wakes_hostile",
+                &[("actor", target_name.as_str())],
+            ) {
+                lines.push(line);
+            }
         }
     }
 }
@@ -631,14 +641,18 @@ fn check_encirclement(
         }
         let all_flagged = neighbors.iter().all(|n| state.flagged_rooms.contains(n));
         if all_flagged {
-            lines.push(format!(
-                "The {} shudders, its surface brightening. It turns toward you, no longer hostile.",
-                actor_display_name(content, &actor.id)
-            ));
-            lines.push(format!(
-                "The {} falls in behind you.",
-                actor_display_name(content, &actor.id)
-            ));
+            let actor_name = actor_display_name(content, &actor.id);
+            if let Some(line) =
+                content.render_message("conversion.encircled", &[("actor", actor_name.as_str())])
+            {
+                lines.push(line);
+            }
+            if let Some(line) = content.render_message(
+                "conversion.encircled_follows",
+                &[("actor", actor_name.as_str())],
+            ) {
+                lines.push(line);
+            }
             outbox.push(WorldEvent::ActorRelationshipUpdated {
                 actor_id: actor.id.clone(),
                 relationship: ActorRelationship {

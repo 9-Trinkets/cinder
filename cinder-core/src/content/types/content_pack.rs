@@ -26,6 +26,10 @@ pub struct ContentPack {
     pub speech_intents: SpeechIntentsConfig,
     pub items: Vec<ItemDefinition>,
     pub variables: BTreeMap<String, VariableDeclaration>,
+    /// Locale-authored templates for engine-emitted narration, keyed by
+    /// message id. The engine never hardcodes player-facing prose; emit
+    /// sites skip lines whose key the pack does not define.
+    pub messages: BTreeMap<String, String>,
     pub room_index: HashMap<String, usize>,
     pub actor_index: HashMap<String, usize>,
     pub action_index: HashMap<String, usize>,
@@ -259,6 +263,17 @@ impl ContentPack {
                     .map(|ic| ic.creates_item.clone())
             })
             .collect()
+    }
+
+    /// Template for a pack-authored engine message, if the pack defines it.
+    pub fn message(&self, key: &str) -> Option<&str> {
+        self.messages.get(key).map(|t| t.as_str())
+    }
+
+    /// Render a pack-authored engine message, if the pack defines it.
+    pub fn render_message(&self, key: &str, replacements: &[(&str, &str)]) -> Option<String> {
+        self.render_template(self.message(key)?, replacements)
+            .into()
     }
 
     pub fn render_template(&self, template: &str, replacements: &[(&str, &str)]) -> String {

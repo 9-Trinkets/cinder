@@ -152,11 +152,6 @@ pub enum WorldEvent {
         actor_id: String,
         relationship: crate::engine::state::ActorRelationship,
     },
-    ActorDamaged {
-        actor_id: String,
-        damage: i32,
-        remaining_hp: i32,
-    },
 }
 
 pub(crate) fn render_actor_action_text(actor_name: &str, action: &str) -> Result<String, String> {

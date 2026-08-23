@@ -438,10 +438,12 @@ pub(super) fn handle_player_moved(
             state
                 .actor_room_overrides
                 .insert(follower_id.clone(), to_room_id.to_string());
-            lines.push(format!(
-                "The {} follows you.",
-                actor_display_name(content, &follower_id)
-            ));
+            if let Some(line) = content.render_message(
+                "follow.actor_follows",
+                &[("actor", actor_display_name(content, &follower_id).as_str())],
+            ) {
+                lines.push(line);
+            }
         }
     }
 }
@@ -759,41 +761,43 @@ pub(super) fn handle_item_observed(
 
 pub(super) fn handle_flag_placed(
     state: &mut WorldState,
-    _content: &ContentPack,
+    content: &ContentPack,
     room_id: &str,
     lines: &mut Vec<String>,
 ) {
     state.flagged_rooms.insert(room_id.to_string());
-    lines.push(format!(
-        "You drive a small stone marker into the ground at {room_id}."
-    ));
+    if let Some(line) = content.render_message(
+        "flags.placed",
+        &[
+            ("room_id", room_id),
+            ("room_title", room_title(content, room_id).as_str()),
+        ],
+    ) {
+        lines.push(line);
+    }
 }
 
 pub(super) fn handle_flag_removed(
     state: &mut WorldState,
-    _content: &ContentPack,
+    content: &ContentPack,
     room_id: &str,
     lines: &mut Vec<String>,
 ) {
     state.flagged_rooms.remove(room_id);
-    lines.push("You pull the stone marker from the ground.".to_string());
+    if let Some(line) = content.render_message(
+        "flags.removed",
+        &[
+            ("room_id", room_id),
+            ("room_title", room_title(content, room_id).as_str()),
+        ],
+    ) {
+        lines.push(line);
+    }
 }
 
-pub(super) fn handle_actor_damaged(
-    _state: &mut WorldState,
-    _content: &ContentPack,
-    actor_id: &str,
-    damage: i32,
-    remaining_hp: i32,
-    lines: &mut Vec<String>,
-) {
-    if actor_id == "player" {
-        lines.push(format!(
-            "You take {damage} damage. ({remaining_hp} HP remaining)"
-        ));
-    } else {
-        lines.push(format!(
-            "The {actor_id} takes {damage} damage. ({remaining_hp} HP remaining)"
-        ));
-    }
+fn room_title(content: &ContentPack, room_id: &str) -> String {
+    content
+        .room(room_id)
+        .map(|room| room.title.clone())
+        .unwrap_or_else(|| room_id.to_string())
 }

@@ -6,7 +6,7 @@ mod tick;
 
 use self::handlers::{
     apply_content_event, handle_act_ended, handle_action_rejected, handle_actor_command_used_event,
-    handle_actor_damaged, handle_actor_moved, handle_actor_observed, handle_actor_observed_actor,
+    handle_actor_moved, handle_actor_observed, handle_actor_observed_actor,
     handle_actor_observed_feature, handle_actor_observed_room, handle_actor_relocated,
     handle_actor_spoke, handle_actor_spoke_to_room, handle_current_room_observed,
     handle_feature_observed, handle_flag_placed, handle_flag_removed, handle_help_shown,
@@ -298,13 +298,6 @@ pub fn apply_events(
                 if state.phase == GamePhase::Active {
                     state.set_relationship(actor_id, *relationship);
                 }
-            }
-            WorldEvent::ActorDamaged {
-                actor_id,
-                damage,
-                remaining_hp,
-            } => {
-                handle_actor_damaged(state, content, actor_id, *damage, *remaining_hp, &mut lines);
             }
         }
     }

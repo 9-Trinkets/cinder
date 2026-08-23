@@ -46,10 +46,17 @@ pub(super) fn apply_hostile_actor_attacks_on_turn_start(
             .adjust_actor_stat("player", "hp", -damage)
             .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
         let remaining = state.actor_stat("player", "hp");
-        lines.push(format!(
-            "The {} strikes you! You take {damage} damage. ({remaining} HP remaining)",
-            actor_display_name(content, &actor_id),
-        ));
+        let actor_name = actor_display_name(content, &actor_id);
+        if let Some(line) = content.render_message(
+            "combat.hostile_strike",
+            &[
+                ("actor", actor_name.as_str()),
+                ("damage", damage.to_string().as_str()),
+                ("remaining", remaining.to_string().as_str()),
+            ],
+        ) {
+            lines.push(line);
+        }
         defeat_player_if_dead(state, lines);
         if state.phase != GamePhase::Active {
             break;
