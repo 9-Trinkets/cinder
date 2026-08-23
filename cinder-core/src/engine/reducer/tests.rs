@@ -11,7 +11,7 @@ use crate::content::types::{
     RuleBundleProgressKeyDefinition, RuleBundleProgressRef, RuleBundlesDefinition, StatDefinition,
     StatsDefinition,
 };
-use crate::engine::state::ConversationMemoryKind;
+use crate::engine::state::{ActorStance, ConversationMemoryKind};
 use serde_json::json;
 use std::collections::{BTreeMap, HashMap};
 
@@ -960,7 +960,7 @@ fn layla_turn_started() -> TimestampedWorldEvent {
 fn layla_background_npc_tick_does_not_trigger_hostile_strikes() {
     let (content, mut state) = layla_test_state();
     state.current_room_id = "r3c3".to_string();
-    state.hostile_actors.insert("golem-dark-nw".to_string());
+    state.set_stance("golem-dark-nw", ActorStance::Hostile);
 
     let output = apply_events(
         &mut state,
@@ -1074,7 +1074,7 @@ fn layla_attack_deals_damage_to_golem_and_wakes_it() {
     assert_eq!(state.actor_stat("player", "hp"), 10);
     assert_eq!(state.phase, GamePhase::Active);
     assert!(
-        state.hostile_actors.contains("golem-dark-nw"),
+        state.stance("golem-dark-nw") == ActorStance::Hostile,
         "surviving golem should wake hostile"
     );
 }
@@ -1101,7 +1101,7 @@ fn layla_slain_golem_does_not_become_hostile() {
         output.lines
     );
     assert!(
-        !state.hostile_actors.contains("golem-dark-nw"),
+        state.stance("golem-dark-nw") != ActorStance::Hostile,
         "slain golem must not turn hostile"
     );
 }
@@ -1110,7 +1110,7 @@ fn layla_slain_golem_does_not_become_hostile() {
 fn layla_hostile_golem_strikes_player_sharing_room_on_turn_start() {
     let (content, mut state) = layla_test_state();
     state.current_room_id = "r3c3".to_string();
-    state.hostile_actors.insert("golem-dark-nw".to_string());
+    state.set_stance("golem-dark-nw", ActorStance::Hostile);
 
     let output = apply_events(&mut state, &content, &[layla_turn_started()]);
 
@@ -1129,7 +1129,7 @@ fn layla_hostile_golem_strikes_player_sharing_room_on_turn_start() {
 fn layla_distant_hostile_golem_leaves_player_untouched() {
     let (content, mut state) = layla_test_state();
     state.current_room_id = "r5c5".to_string();
-    state.hostile_actors.insert("golem-dark-nw".to_string());
+    state.set_stance("golem-dark-nw", ActorStance::Hostile);
 
     let output = apply_events(&mut state, &content, &[layla_turn_started()]);
 
@@ -1145,7 +1145,7 @@ fn layla_distant_hostile_golem_leaves_player_untouched() {
 fn layla_woken_golem_kills_player_if_ignored() {
     let (content, mut state) = layla_test_state();
     state.current_room_id = "r3c3".to_string();
-    state.hostile_actors.insert("golem-dark-nw".to_string());
+    state.set_stance("golem-dark-nw", ActorStance::Hostile);
     state
         .actor_stats
         .entry("player".to_string())
@@ -1212,11 +1212,11 @@ fn layla_encirclement_converts_golem() {
         "conversion must not flip the player-follows-actor relationship"
     );
     assert!(
-        state.follower_actor_ids.contains("golem-dark-nw"),
+        state.follows_player("golem-dark-nw"),
         "converted golem should follow the player"
     );
     assert!(
-        state.allied_actors.contains("golem-dark-nw"),
+        state.stance("golem-dark-nw") == ActorStance::Allied,
         "converted golem should count as an ally"
     );
 }
@@ -1225,7 +1225,7 @@ fn layla_encirclement_converts_golem() {
 fn layla_follower_relocates_when_player_moves() {
     let (content, mut state) = layla_test_state();
     state.current_room_id = "r3c3".to_string();
-    state.follower_actor_ids.insert("golem-dark-nw".to_string());
+    state.set_follows_player("golem-dark-nw", true);
     state
         .actor_room_overrides
         .insert("golem-dark-nw".to_string(), "r3c3".to_string());
@@ -1258,7 +1258,7 @@ fn layla_follower_relocates_when_player_moves() {
 fn layla_encirclement_skips_hostile_golem() {
     let (content, mut state) = layla_test_state();
     state.current_room_id = "r3c4".to_string();
-    state.hostile_actors.insert("golem-dark-nw".to_string());
+    state.set_stance("golem-dark-nw", ActorStance::Hostile);
 
     let neighbors = ["r2c3", "r3c4", "r4c3"];
     for n in &neighbors {
@@ -1284,8 +1284,8 @@ fn layla_encirclement_skips_hostile_golem() {
     );
 
     assert!(
-        !state.allied_actors.contains("golem-dark-nw")
-            && !state.follower_actor_ids.contains("golem-dark-nw"),
+        state.stance("golem-dark-nw") != ActorStance::Allied
+            && !state.follows_player("golem-dark-nw"),
         "a woken hostile golem must not convert through encirclement"
     );
 }
@@ -1334,8 +1334,8 @@ fn layla_defeated_golem_vanishes_from_room_presence() {
         .entry("golem-dark-nw".to_string())
         .or_default()
         .insert("hp".to_string(), 1);
-    state.allied_actors.insert("golem-dark-nw".to_string());
-    state.follower_actor_ids.insert("golem-dark-nw".to_string());
+    state.set_stance("golem-dark-nw", ActorStance::Allied);
+    state.set_follows_player("golem-dark-nw", true);
 
     apply_events(
         &mut state,
@@ -1348,9 +1348,11 @@ fn layla_defeated_golem_vanishes_from_room_presence() {
         super::observation::actors_in_room(&content, &state, "r3c3").is_empty(),
         "defeated golem must not be listed among actors in the room"
     );
-    assert!(!state.hostile_actors.contains("golem-dark-nw"));
-    assert!(!state.allied_actors.contains("golem-dark-nw"));
-    assert!(!state.follower_actor_ids.contains("golem-dark-nw"));
+    assert_eq!(
+        state.relationship("golem-dark-nw"),
+        crate::engine::state::ActorRelationship::default(),
+        "defeat must clear the relationship entirely"
+    );
 
     // Attacking the corpse again must be rejected outright.
     let before = state.turn_number;
@@ -1380,14 +1382,14 @@ fn layla_allies_boost_damage_and_hostiles_do_not() {
         .entry("golem-pale-ne".to_string())
         .or_default()
         .insert("strength".to_string(), 3);
-    state.allied_actors.insert("golem-pale-ne".to_string());
+    state.set_stance("golem-pale-ne", ActorStance::Allied);
     // A hostile golem's strength must never add to the player's attacks.
     state
         .actor_stats
         .entry("golem-pale-se".to_string())
         .or_default()
         .insert("strength".to_string(), 9);
-    state.hostile_actors.insert("golem-pale-se".to_string());
+    state.set_stance("golem-pale-se", ActorStance::Hostile);
 
     apply_events(
         &mut state,

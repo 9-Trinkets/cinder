@@ -14,7 +14,7 @@ use super::tick::{
 };
 use crate::content::types::{ContentPack, ItemStorageTarget};
 use crate::engine::commands::{player_command_help_text, player_command_suggestions};
-use crate::engine::events::ObservationMode;
+use crate::engine::events::{ObservationMode, WorldEvent};
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
@@ -268,6 +268,7 @@ pub(super) fn handle_actor_command_used_event(
     consumable_id: Option<&str>,
     freeform_text: Option<&str>,
     lines: &mut Vec<String>,
+    outbox: &mut Vec<WorldEvent>,
 ) {
     if let Some(new_lines) = handle_actor_command_used(
         state,
@@ -283,6 +284,7 @@ pub(super) fn handle_actor_command_used_event(
         feature_id,
         consumable_id,
         freeform_text,
+        outbox,
     ) {
         lines.extend(new_lines);
     }
@@ -414,7 +416,13 @@ pub(super) fn handle_player_moved(
         content,
         &format!("room_entered:{to_room_id}"),
     ));
-    for follower_id in state.follower_actor_ids.clone() {
+    let follower_actor_ids: Vec<String> = state
+        .relationships
+        .iter()
+        .filter(|(_, relationship)| relationship.follows_player)
+        .map(|(actor_id, _)| actor_id.clone())
+        .collect();
+    for follower_id in follower_actor_ids {
         if follower_id == "player" {
             continue;
         }
@@ -769,22 +777,6 @@ pub(super) fn handle_flag_removed(
 ) {
     state.flagged_rooms.remove(room_id);
     lines.push("You pull the stone marker from the ground.".to_string());
-}
-
-pub(super) fn handle_golem_converted(
-    state: &mut WorldState,
-    _content: &ContentPack,
-    golem_actor_id: &str,
-    _room_id: &str,
-    lines: &mut Vec<String>,
-) {
-    lines.push(format!(
-        "The {golem_actor_id} shudders, its dark surface brightening. It turns toward you, no longer hostile."
-    ));
-    state.allied_actors.insert(golem_actor_id.to_string());
-    if state.follower_actor_ids.insert(golem_actor_id.to_string()) {
-        lines.push("The golem falls in behind you.".to_string());
-    }
 }
 
 pub(super) fn handle_actor_damaged(

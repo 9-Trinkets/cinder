@@ -9,11 +9,10 @@ use self::handlers::{
     handle_actor_damaged, handle_actor_moved, handle_actor_observed, handle_actor_observed_actor,
     handle_actor_observed_feature, handle_actor_observed_room, handle_actor_relocated,
     handle_actor_spoke, handle_actor_spoke_to_room, handle_current_room_observed,
-    handle_feature_observed, handle_flag_placed, handle_flag_removed, handle_golem_converted,
-    handle_help_shown, handle_item_acquired, handle_item_consumed, handle_item_observed,
-    handle_menu_choice_made, handle_menu_opened, handle_menu_selection_toggled,
-    handle_narrative_line, handle_pair_stat_adjusted, handle_player_moved, handle_turn_started,
-    handle_unknown_input,
+    handle_feature_observed, handle_flag_placed, handle_flag_removed, handle_help_shown,
+    handle_item_acquired, handle_item_consumed, handle_item_observed, handle_menu_choice_made,
+    handle_menu_opened, handle_menu_selection_toggled, handle_narrative_line,
+    handle_pair_stat_adjusted, handle_player_moved, handle_turn_started, handle_unknown_input,
 };
 
 pub(crate) use self::observation::render_actor_speech_line;
@@ -23,6 +22,7 @@ use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
 use crate::engine::state::{GamePhase, WorldState};
 use crate::engine::turn_policies::apply_command_bundle_progress_effects;
 use serde::{Deserialize, Serialize};
+use std::collections::VecDeque;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReducerOutput {
@@ -36,7 +36,10 @@ pub fn apply_events(
     events: &[TimestampedWorldEvent],
 ) -> ReducerOutput {
     let mut lines = Vec::new();
-    for entry in events {
+    // Queue-based so handlers can spawn follow-up events (e.g. relationship
+    // updates triggered by command effects) that are applied in the same pass.
+    let mut pending: VecDeque<TimestampedWorldEvent> = events.iter().cloned().collect();
+    while let Some(entry) = pending.pop_front() {
         match &entry.event {
             WorldEvent::TurnStarted {
                 turn_number,
@@ -137,6 +140,7 @@ pub fn apply_events(
                 consumable_id,
                 freeform_text,
             } => {
+                let mut spawned_events = Vec::new();
                 handle_actor_command_used_event(
                     state,
                     content,
@@ -152,7 +156,11 @@ pub fn apply_events(
                     consumable_id.as_deref(),
                     freeform_text.as_deref(),
                     &mut lines,
+                    &mut spawned_events,
                 );
+                for event in spawned_events {
+                    pending.push_back(TimestampedWorldEvent::now(event));
+                }
             }
             WorldEvent::ActorObservedRoom {
                 actor_id,
@@ -283,11 +291,13 @@ pub fn apply_events(
             WorldEvent::FlagRemoved { room_id } => {
                 handle_flag_removed(state, content, room_id, &mut lines);
             }
-            WorldEvent::GolemConverted {
-                golem_actor_id,
-                room_id,
+            WorldEvent::ActorRelationshipUpdated {
+                actor_id,
+                relationship,
             } => {
-                handle_golem_converted(state, content, golem_actor_id, room_id, &mut lines);
+                if state.phase == GamePhase::Active {
+                    state.set_relationship(actor_id, *relationship);
+                }
             }
             WorldEvent::ActorDamaged {
                 actor_id,

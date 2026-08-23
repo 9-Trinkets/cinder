@@ -297,7 +297,7 @@ fn layla_attack_dispatches() {
             "player HP should have dropped from 10 but stayed positive, got {hp}"
         );
         assert!(
-            after.hostile_actors.contains(golem.id.as_str()),
+            after.stance(golem.id.as_str()) == cinder_core::engine::state::ActorStance::Hostile,
             "attacked golem should wake hostile"
         );
     }
@@ -365,7 +365,7 @@ fn layla_woken_golem_kills_ignored_player() {
         "player must survive waking the golem"
     );
     assert!(
-        after_attack.hostile_actors.contains(golem.id.as_str()),
+        after_attack.stance(golem.id.as_str()) == cinder_core::engine::state::ActorStance::Hostile,
         "expected the attacked golem to wake hostile"
     );
 

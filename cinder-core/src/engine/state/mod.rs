@@ -41,8 +41,6 @@ pub struct WorldState {
     pub stages_completed: usize,
     pub feature_consumable_stock: BTreeMap<String, u32>,
     pub followed_actor_id: Option<String>,
-    #[serde(default)]
-    pub follower_actor_ids: BTreeSet<String>,
     pub active_menu_id: Option<String>,
     #[serde(default)]
     pub pending_menu_selections: Vec<String>,
@@ -74,12 +72,31 @@ pub struct WorldState {
     pub act_series: Option<ActSeriesState>,
     #[serde(default)]
     pub flagged_rooms: BTreeSet<String>,
-    /// Actors that have woken hostile toward the player and attack while sharing a room.
+    /// Per-actor relationship toward the player. Absent entries mean
+    /// `ActorRelationship::default()` (neutral, not following), so packs that
+    /// never touch relationships carry no state.
     #[serde(default)]
-    pub hostile_actors: BTreeSet<String>,
-    /// Converted actors fighting alongside the player.
+    pub relationships: BTreeMap<String, ActorRelationship>,
+}
+
+/// Discrete stance of an actor toward the player. Mutual exclusion is inherent:
+/// a stance is a single value, not independent flags.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum ActorStance {
+    #[default]
+    Neutral,
+    Hostile,
+    Allied,
+}
+
+/// Relationship of one actor to the player.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+pub struct ActorRelationship {
     #[serde(default)]
-    pub allied_actors: BTreeSet<String>,
+    pub stance: ActorStance,
+    #[serde(default)]
+    pub follows_player: bool,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -145,7 +162,6 @@ impl WorldState {
             stages_completed: 0,
             feature_consumable_stock: seeded_feature_consumable_stock(content),
             followed_actor_id: None,
-            follower_actor_ids: BTreeSet::new(),
             active_menu_id: None,
             pending_menu_selections: Vec::new(),
             generated_menu_options: HashMap::new(),
@@ -175,8 +191,7 @@ impl WorldState {
             room_item_stock: BTreeMap::new(),
             act_series: None,
             flagged_rooms: BTreeSet::new(),
-            hostile_actors: BTreeSet::new(),
-            allied_actors: BTreeSet::new(),
+            relationships: BTreeMap::new(),
         }
     }
 
@@ -277,6 +292,46 @@ impl WorldState {
             .get(actor_id)
             .and_then(|stats| stats.get("hp"))
             .is_some_and(|hp| *hp <= 0)
+    }
+
+    /// Relationship of an actor toward the player; absent entries are neutral.
+    pub fn relationship(&self, actor_id: &str) -> ActorRelationship {
+        let actor_id = remap_story_actor_id(self, actor_id);
+        self.relationships
+            .get(actor_id)
+            .copied()
+            .unwrap_or_default()
+    }
+
+    pub fn stance(&self, actor_id: &str) -> ActorStance {
+        self.relationship(actor_id).stance
+    }
+
+    pub fn follows_player(&self, actor_id: &str) -> bool {
+        self.relationship(actor_id).follows_player
+    }
+
+    /// Writes a full relationship snapshot. Writing the default removes the
+    /// entry entirely, keeping state sparse.
+    pub fn set_relationship(&mut self, actor_id: &str, relationship: ActorRelationship) {
+        let actor_id = remap_story_actor_id(self, actor_id).to_string();
+        if relationship == ActorRelationship::default() {
+            self.relationships.remove(actor_id.as_str());
+        } else {
+            self.relationships.insert(actor_id, relationship);
+        }
+    }
+
+    pub fn set_stance(&mut self, actor_id: &str, stance: ActorStance) {
+        let mut relationship = self.relationship(actor_id);
+        relationship.stance = stance;
+        self.set_relationship(actor_id, relationship);
+    }
+
+    pub fn set_follows_player(&mut self, actor_id: &str, follows_player: bool) {
+        let mut relationship = self.relationship(actor_id);
+        relationship.follows_player = follows_player;
+        self.set_relationship(actor_id, relationship);
     }
 
     pub fn pair_stat(

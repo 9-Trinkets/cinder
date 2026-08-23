@@ -148,9 +148,9 @@ pub enum WorldEvent {
     FlagRemoved {
         room_id: String,
     },
-    GolemConverted {
-        golem_actor_id: String,
-        room_id: String,
+    ActorRelationshipUpdated {
+        actor_id: String,
+        relationship: crate::engine::state::ActorRelationship,
     },
     ActorDamaged {
         actor_id: String,

@@ -2,7 +2,9 @@ use crate::content::types::ContentPack;
 use crate::engine::dialogue_grounding::viewer_participant_id;
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_world_hook_effects;
-use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, GamePhase, WorldState};
+use crate::engine::state::{
+    ActorStance, ConversationMemoryKind, ConversationMemoryLine, GamePhase, WorldState,
+};
 use serde_json::json;
 
 use super::beat_advance::{advance_conditions_met, advance_objective_for_signal};
@@ -19,7 +21,13 @@ pub(super) fn apply_hostile_actor_attacks_on_turn_start(
     if state.phase != GamePhase::Active {
         return;
     }
-    for actor_id in state.hostile_actors.clone() {
+    let hostile_actor_ids: Vec<String> = state
+        .relationships
+        .iter()
+        .filter(|(_, relationship)| relationship.stance == ActorStance::Hostile)
+        .map(|(actor_id, _)| actor_id.clone())
+        .collect();
+    for actor_id in hostile_actor_ids {
         if state.actor_stat(&actor_id, "hp") <= 0 {
             continue;
         }

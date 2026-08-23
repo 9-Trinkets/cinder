@@ -2,10 +2,12 @@ use crate::content::types::{
     ActionDefinition, ActionItemStorageTarget, CommandEffect, CommandInputMode, CommandTargetMode,
     ContentPack, ItemStorageTarget,
 };
-use crate::engine::events::ObservationMode;
+use crate::engine::events::{ObservationMode, WorldEvent};
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_world_hook_effects;
-use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
+use crate::engine::state::{
+    ActorRelationship, ActorStance, ConversationMemoryKind, ConversationMemoryLine, WorldState,
+};
 use crate::engine::turn_policies::apply_command_bundle_progress_effects;
 use serde_json::json;
 
@@ -58,6 +60,7 @@ pub(super) fn handle_actor_command_used(
     feature_id: Option<&str>,
     consumable_id: Option<&str>,
     freeform_text: Option<&str>,
+    outbox: &mut Vec<WorldEvent>,
 ) -> Option<Vec<String>> {
     let mut lines = Vec::new();
     let previous_current_room_id = state.current_room_id.clone();
@@ -87,7 +90,14 @@ pub(super) fn handle_actor_command_used(
     )?;
     record_actor_command_memory(state, content, command, &command_context, &command_text);
     apply_actor_command_effects(state, content, command, &command_context);
-    apply_new_command_effects(state, content, command, &command_context, &mut lines);
+    apply_new_command_effects(
+        state,
+        content,
+        command,
+        &command_context,
+        &mut lines,
+        outbox,
+    );
     apply_command_bundle_progress_effects(state, command);
     if let Some(item_id) = resolved_created_item_id(state, command, &command_context) {
         let storage = command
@@ -515,11 +525,12 @@ pub(super) fn apply_new_command_effects(
     command: &ActionDefinition,
     command_context: &ActorCommandContext<'_>,
     lines: &mut Vec<String>,
+    outbox: &mut Vec<WorldEvent>,
 ) {
     if command.has_effect(CommandEffect::PlaceFlag) {
         let room_id = command_context.room_id.to_string();
         state.flagged_rooms.insert(room_id.clone());
-        check_encirclement(state, content, &room_id, lines);
+        check_encirclement(state, content, &room_id, lines, outbox);
     }
     if command.has_effect(CommandEffect::RemoveFlag) {
         let room_id = command_context.room_id.to_string();
@@ -544,14 +555,14 @@ pub(super) fn apply_new_command_effects(
                 "The {} crumbles to dust.",
                 actor_display_name(content, target_actor_id)
             ));
-            state.hostile_actors.remove(target_actor_id);
-            state.allied_actors.remove(target_actor_id);
-            state.follower_actor_ids.remove(target_actor_id);
+            state.set_relationship(target_actor_id, ActorRelationship::default());
             return;
         }
-        if !state.allied_actors.contains(target_actor_id)
-            && state.hostile_actors.insert(target_actor_id.to_string())
+        let mut relationship = state.relationship(target_actor_id);
+        if relationship.stance != ActorStance::Allied && relationship.stance != ActorStance::Hostile
         {
+            relationship.stance = ActorStance::Hostile;
+            state.set_relationship(target_actor_id, relationship);
             lines.push(format!(
                 "The {}'s eyes snap open. It turns to face you.",
                 actor_display_name(content, target_actor_id)
@@ -591,9 +602,10 @@ pub(super) fn defeat_player_if_dead(state: &mut WorldState, lines: &mut Vec<Stri
 
 fn compute_allied_damage(state: &WorldState) -> i32 {
     state
-        .allied_actors
+        .relationships
         .iter()
-        .map(|actor_id| state.actor_stat(actor_id, "strength").max(0))
+        .filter(|(_, relationship)| relationship.stance == ActorStance::Allied)
+        .map(|(actor_id, _)| state.actor_stat(actor_id, "strength").max(0))
         .sum()
 }
 
@@ -602,17 +614,15 @@ fn check_encirclement(
     content: &ContentPack,
     _placed_room_id: &str,
     lines: &mut Vec<String>,
+    outbox: &mut Vec<WorldEvent>,
 ) {
     let star_points = ["r3c3", "r3c7", "r5c5", "r7c3", "r7c7"];
     for star in &star_points {
-        let star_actor_id = find_golem_at_room(state, content, star);
-        let Some(golem_id) = star_actor_id else {
+        let Some(golem_id) = find_golem_at_room(state, content, star) else {
             continue;
         };
-        if state.allied_actors.contains(&golem_id) || state.follower_actor_ids.contains(&golem_id) {
-            continue;
-        }
-        if state.hostile_actors.contains(&golem_id) {
+        let relationship = state.relationship(&golem_id);
+        if relationship.stance != ActorStance::Neutral || relationship.follows_player {
             continue;
         }
         let neighbors = orthogonal_neighbors(star);
@@ -621,10 +631,14 @@ fn check_encirclement(
             lines.push(format!(
                 "The golem at {star} shudders, its surface brightening. It turns toward you, no longer hostile."
             ));
-            state.allied_actors.insert(golem_id.clone());
-            if state.follower_actor_ids.insert(golem_id.clone()) {
-                lines.push("The golem falls in behind you.".to_string());
-            }
+            lines.push("The golem falls in behind you.".to_string());
+            outbox.push(WorldEvent::ActorRelationshipUpdated {
+                actor_id: golem_id,
+                relationship: ActorRelationship {
+                    stance: ActorStance::Allied,
+                    follows_player: true,
+                },
+            });
             break;
         }
     }
