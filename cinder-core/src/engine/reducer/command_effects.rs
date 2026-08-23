@@ -95,11 +95,7 @@ pub(super) fn handle_actor_command_used(
             .as_ref()
             .map(|ic| to_item_storage(ic.storage.clone()))
             .unwrap_or_default();
-        state.add_item_to_storage(
-            item_id.as_str(),
-            storage,
-            room_id,
-        );
+        state.add_item_to_storage(item_id.as_str(), storage, room_id);
     }
     if command.has_effect(CommandEffect::MoveActor) {
         if let Some(target_room_id) = target_room_id {
@@ -533,58 +529,72 @@ pub(super) fn apply_new_command_effects(
         let Some(target_actor_id) = command_context.target_actor_id else {
             return;
         };
-        let player_str = get_actor_stat(state, "player", "strength");
-        let target_def = get_actor_stat(state, target_actor_id, "defense");
+        let player_str = state.actor_stat("player", "strength");
+        let target_def = state.actor_stat(target_actor_id, "defense");
         let base_damage = (player_str - target_def).max(1);
-        let ally_damage = compute_allied_damage(state, target_actor_id);
+        let ally_damage = compute_allied_damage(state);
         let total_damage = base_damage + ally_damage;
         let remaining = adjust_actor_stat(state, target_actor_id, "hp", -total_damage);
         lines.push(format!(
-            "The {target_actor_id} takes {total_damage} damage. ({remaining} HP remaining)"
+            "The {} takes {total_damage} damage. ({remaining} HP remaining)",
+            actor_display_name(content, target_actor_id),
         ));
         if remaining <= 0 {
-            lines.push(format!("The {target_actor_id} crumbles to dust."));
+            lines.push(format!(
+                "The {} crumbles to dust.",
+                actor_display_name(content, target_actor_id)
+            ));
+            state.hostile_actors.remove(target_actor_id);
+            state.allied_actors.remove(target_actor_id);
+            state.follower_actor_ids.remove(target_actor_id);
+            return;
         }
-        let player_remaining = adjust_actor_stat(state, "player", "hp", -target_def.max(1));
-        if player_remaining <= 0 {
-            lines.push("The world tilts. Your legs give out. The last thing you feel is the cold stone beneath your palms.".to_string());
-            state.phase = crate::engine::state::GamePhase::GameEnded;
+        if !state.allied_actors.contains(target_actor_id)
+            && state.hostile_actors.insert(target_actor_id.to_string())
+        {
+            lines.push(format!(
+                "The {}'s eyes snap open. It turns to face you.",
+                actor_display_name(content, target_actor_id)
+            ));
         }
     }
 }
 
-fn get_actor_stat(state: &WorldState, actor_id: &str, stat: &str) -> i32 {
-    state
-        .actor_stats
-        .get(actor_id)
-        .and_then(|stats| stats.get(stat))
-        .copied()
-        .unwrap_or(0)
+pub(super) fn actor_display_name(content: &ContentPack, actor_id: &str) -> String {
+    content
+        .actor(actor_id)
+        .map(|actor| actor.name.clone())
+        .unwrap_or_else(|| actor_id.to_string())
 }
 
 fn adjust_actor_stat(state: &mut WorldState, actor_id: &str, stat: &str, delta: i32) -> i32 {
-    let current = get_actor_stat(state, actor_id, stat);
-    let new_val = (current + delta).max(0);
-    let stats = state.actor_stats.entry(actor_id.to_string()).or_default();
-    stats.insert(stat.to_string(), new_val);
-    new_val
+    state
+        .adjust_actor_stat(actor_id, stat, delta)
+        .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
+    state.actor_stat(actor_id, stat)
 }
 
-fn compute_allied_damage(state: &WorldState, target_actor_id: &str) -> i32 {
-    let mut total = 0;
-    for (actor_id, stats) in &state.actor_stats {
-        if actor_id == "player" || actor_id == target_actor_id {
-            continue;
-        }
-        if !actor_id.starts_with("golem-") {
-            continue;
-        }
-        let str_val = stats.get("strength").copied().unwrap_or(0);
-        if str_val > 0 {
-            total += str_val;
-        }
+/// Ends the game when the player's HP has reached zero.
+pub(super) fn defeat_player_if_dead(state: &mut WorldState, lines: &mut Vec<String>) {
+    if state.phase != crate::engine::state::GamePhase::Active {
+        return;
     }
-    total
+    if state.actor_stat("player", "hp") > 0 {
+        return;
+    }
+    lines.push(
+        "The world tilts. Your legs give out. The last thing you feel is the cold stone beneath your palms."
+            .to_string(),
+    );
+    state.phase = crate::engine::state::GamePhase::GameEnded;
+}
+
+fn compute_allied_damage(state: &WorldState) -> i32 {
+    state
+        .allied_actors
+        .iter()
+        .map(|actor_id| state.actor_stat(actor_id, "strength").max(0))
+        .sum()
 }
 
 fn check_encirclement(
@@ -599,17 +609,22 @@ fn check_encirclement(
         let Some(golem_id) = star_actor_id else {
             continue;
         };
-        if state.followed_actor_id.as_deref() == Some(golem_id.as_str()) {
+        if state.allied_actors.contains(&golem_id) || state.follower_actor_ids.contains(&golem_id) {
+            continue;
+        }
+        if state.hostile_actors.contains(&golem_id) {
             continue;
         }
         let neighbors = orthogonal_neighbors(star);
         let all_flagged = neighbors.iter().all(|n| state.flagged_rooms.contains(n));
         if all_flagged {
             lines.push(format!(
-                "The dark golem at {star} shudders, its surface brightening. It turns toward you, no longer hostile."
+                "The golem at {star} shudders, its surface brightening. It turns toward you, no longer hostile."
             ));
-            state.followed_actor_id = Some(golem_id.clone());
-            lines.push("The golem begins to follow you.".to_string());
+            state.allied_actors.insert(golem_id.clone());
+            if state.follower_actor_ids.insert(golem_id.clone()) {
+                lines.push("The golem falls in behind you.".to_string());
+            }
             break;
         }
     }
@@ -625,9 +640,11 @@ fn find_golem_at_room(state: &WorldState, content: &ContentPack, room_id: &str) 
             return Some(id.clone());
         }
     }
-    content.actors.iter().find(|actor| {
-        actor.id.starts_with("golem-") && actor.room_id == room_id
-    }).map(|actor| actor.id.clone())
+    content
+        .actors
+        .iter()
+        .find(|actor| actor.id.starts_with("golem-") && actor.room_id == room_id)
+        .map(|actor| actor.id.clone())
 }
 
 fn orthogonal_neighbors(room_id: &str) -> Vec<String> {

@@ -1,6 +1,7 @@
 use super::beat_advance::{advance_objective_for_signal, time_reached_signals};
 use super::command_effects::{
-    ActorMoveTransitionContext, apply_actor_move_transition, handle_actor_command_used,
+    ActorMoveTransitionContext, actor_display_name, apply_actor_move_transition,
+    handle_actor_command_used,
 };
 use super::observation::{
     render_actor_speech_line, render_feature_consumables_line, render_room_observation,
@@ -8,7 +9,8 @@ use super::observation::{
 };
 use super::tick::{
     advance_actor_stats_on_tick, advance_house_progress_objectives,
-    advance_stat_threshold_objectives, increment_shared_room_safety,
+    advance_stat_threshold_objectives, apply_hostile_actor_attacks_on_turn_start,
+    increment_shared_room_safety,
 };
 use crate::content::types::{ContentPack, ItemStorageTarget};
 use crate::engine::commands::{player_command_help_text, player_command_suggestions};
@@ -25,6 +27,7 @@ pub(super) fn handle_turn_started(
     state: &mut WorldState,
     content: &ContentPack,
     turn_number: u32,
+    raw_input: &str,
     advances_time: bool,
     lines: &mut Vec<String>,
 ) {
@@ -45,6 +48,12 @@ pub(super) fn handle_turn_started(
         }
         lines.extend(advance_house_progress_objectives(state, content));
         lines.extend(advance_stat_threshold_objectives(state, content));
+    }
+    // Background NPC ticks (raw_input "tick") must not count as player exposure:
+    // hostile mobs strike only on player-driven turns, otherwise they attack every
+    // server tick (~2s) while the player is still choosing an action.
+    if raw_input != "tick" {
+        apply_hostile_actor_attacks_on_turn_start(state, content, lines);
     }
 }
 
@@ -405,6 +414,28 @@ pub(super) fn handle_player_moved(
         content,
         &format!("room_entered:{to_room_id}"),
     ));
+    for follower_id in state.follower_actor_ids.clone() {
+        if follower_id == "player" {
+            continue;
+        }
+        if state.actor_stat(&follower_id, "hp") <= 0 {
+            continue;
+        }
+        let default_room_id = content
+            .actor(&follower_id)
+            .map(|actor| actor.room_id.clone())
+            .unwrap_or_default();
+        let already_here = state.actor_room_id(&follower_id, &default_room_id) == to_room_id;
+        if !already_here {
+            state
+                .actor_room_overrides
+                .insert(follower_id.clone(), to_room_id.to_string());
+            lines.push(format!(
+                "The {} follows you.",
+                actor_display_name(content, &follower_id)
+            ));
+        }
+    }
 }
 
 pub(super) fn handle_menu_opened(
@@ -750,9 +781,9 @@ pub(super) fn handle_golem_converted(
     lines.push(format!(
         "The {golem_actor_id} shudders, its dark surface brightening. It turns toward you, no longer hostile."
     ));
-    if state.followed_actor_id.is_none() {
-        state.followed_actor_id = Some(golem_actor_id.to_string());
-        lines.push("The golem begins to follow you.".to_string());
+    state.allied_actors.insert(golem_actor_id.to_string());
+    if state.follower_actor_ids.insert(golem_actor_id.to_string()) {
+        lines.push("The golem falls in behind you.".to_string());
     }
 }
 
@@ -765,7 +796,9 @@ pub(super) fn handle_actor_damaged(
     lines: &mut Vec<String>,
 ) {
     if actor_id == "player" {
-        lines.push(format!("You take {damage} damage. ({remaining_hp} HP remaining)"));
+        lines.push(format!(
+            "You take {damage} damage. ({remaining_hp} HP remaining)"
+        ));
     } else {
         lines.push(format!(
             "The {actor_id} takes {damage} damage. ({remaining_hp} HP remaining)"

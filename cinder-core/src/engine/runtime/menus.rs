@@ -44,7 +44,7 @@ impl CinderRuntime {
         }
         for actor in &self.content.actors {
             let actor_room = state.actor_room_id(&actor.id, &actor.room_id);
-            if actor_room == current_room_id {
+            if actor_room == current_room_id && !state.actor_is_defeated(&actor.id) {
                 let actor_name = display_actor_name(&state, actor);
                 options.push(LookOptionItem {
                     id: format!("actor:{}", actor.id),
@@ -95,7 +95,7 @@ impl CinderRuntime {
         let mut options = Vec::new();
         for actor in &self.content.actors {
             let actor_room = state.actor_room_id(&actor.id, &actor.room_id);
-            if actor_room == current_room_id {
+            if actor_room == current_room_id && !state.actor_is_defeated(&actor.id) {
                 let actor_name = display_actor_name(&state, actor);
                 options.push(LookOptionItem {
                     id: format!("actor:{}", actor.id),
@@ -394,10 +394,7 @@ impl CinderRuntime {
 
         Ok(rooms_iter
             .map(|room| {
-                let exit_label = current_room
-                    .exits
-                    .iter()
-                    .find(|e| e.room_id == room.id);
+                let exit_label = current_room.exits.iter().find(|e| e.room_id == room.id);
                 let title = exit_label
                     .and_then(|e| e.menu_label.clone())
                     .unwrap_or_else(|| room.title.clone());

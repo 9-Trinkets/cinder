@@ -8,8 +8,8 @@ use crate::content::types::{
     ItemDefinition, ItemStorageTarget, OpeningDefinition, PresentationDefinition, RoomDefinition,
     RoomExitDefinition, RoomFeatureDefinition, RuleBundleCompletionDefinition,
     RuleBundleDefinition, RuleBundleGuidanceDefinition, RuleBundleProgressDefinition,
-    RuleBundleProgressKeyDefinition, RuleBundleProgressRef, RuleBundlesDefinition,
-    StatDefinition, StatsDefinition,
+    RuleBundleProgressKeyDefinition, RuleBundleProgressRef, RuleBundlesDefinition, StatDefinition,
+    StatsDefinition,
 };
 use crate::engine::state::ConversationMemoryKind;
 use serde_json::json;
@@ -932,6 +932,54 @@ fn layla_test_state() -> (ContentPack, WorldState) {
     (content, state)
 }
 
+fn layla_attack_event(room_id: &str, target_actor_id: &str) -> TimestampedWorldEvent {
+    TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
+        actor_id: "player".to_string(),
+        actor_name: "Layla".to_string(),
+        room_id: room_id.to_string(),
+        command_id: "attack".to_string(),
+        target_room_id: None,
+        target_actor_id: Some(target_actor_id.to_string()),
+        target_actor_name: Some("Golem".to_string()),
+        context_label: None,
+        feature_id: None,
+        consumable_id: None,
+        freeform_text: None,
+    })
+}
+
+fn layla_turn_started() -> TimestampedWorldEvent {
+    TimestampedWorldEvent::now(WorldEvent::TurnStarted {
+        turn_number: 1,
+        raw_input: "look".to_string(),
+        advances_time: false,
+    })
+}
+
+#[test]
+fn layla_background_npc_tick_does_not_trigger_hostile_strikes() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c3".to_string();
+    state.hostile_actors.insert("golem-dark-nw".to_string());
+
+    let output = apply_events(
+        &mut state,
+        &content,
+        &[TimestampedWorldEvent::now(WorldEvent::TurnStarted {
+            turn_number: 2,
+            raw_input: "tick".to_string(),
+            advances_time: true,
+        })],
+    );
+
+    assert_eq!(
+        state.actor_stat("player", "hp"),
+        10,
+        "background NPC ticks must not count as player exposure"
+    );
+    assert!(!output.lines.iter().any(|l| l.contains("strikes you")));
+}
+
 #[test]
 fn layla_place_flag_adds_to_flagged_rooms() {
     let (content, mut state) = layla_test_state();
@@ -985,14 +1033,17 @@ fn layla_pick_up_flag_removes_from_flagged_rooms() {
 
     assert!(!state.flagged_rooms.contains("r4c4"));
     assert!(
-        output.lines.iter().any(|l| l.contains("pull") || l.contains("marker")),
+        output
+            .lines
+            .iter()
+            .any(|l| l.contains("pull") || l.contains("marker")),
         "expected flag removal message, got: {:?}",
         output.lines
     );
 }
 
 #[test]
-fn layla_attack_deals_damage_to_golem() {
+fn layla_attack_deals_damage_to_golem_and_wakes_it() {
     let (content, mut state) = layla_test_state();
     state.current_room_id = "r3c3".to_string();
     state
@@ -1004,19 +1055,7 @@ fn layla_attack_deals_damage_to_golem() {
     let output = apply_events(
         &mut state,
         &content,
-        &[TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
-            actor_id: "player".to_string(),
-            actor_name: "Layla".to_string(),
-            room_id: "r3c3".to_string(),
-            command_id: "attack".to_string(),
-            target_room_id: None,
-            target_actor_id: Some("golem-dark-nw".to_string()),
-            target_actor_name: Some("Dark Golem".to_string()),
-            context_label: None,
-            feature_id: None,
-            consumable_id: None,
-            freeform_text: None,
-        })],
+        &[layla_attack_event("r3c3", "golem-dark-nw")],
     );
 
     let golem_hp = state
@@ -1025,8 +1064,106 @@ fn layla_attack_deals_damage_to_golem() {
         .and_then(|s| s.get("hp"))
         .copied()
         .unwrap_or(8);
-    assert!(golem_hp < 8, "golem should have taken damage, hp={}", golem_hp);
-    assert!(output.lines.iter().any(|l| l.contains("strike")));
+    assert!(
+        golem_hp < 8,
+        "golem should have taken damage, hp={}",
+        golem_hp
+    );
+    assert!(output.lines.iter().any(|l| l.contains("damage")));
+    // Regression: the player must keep the stats.json default HP, not die instantly.
+    assert_eq!(state.actor_stat("player", "hp"), 10);
+    assert_eq!(state.phase, GamePhase::Active);
+    assert!(
+        state.hostile_actors.contains("golem-dark-nw"),
+        "surviving golem should wake hostile"
+    );
+}
+
+#[test]
+fn layla_slain_golem_does_not_become_hostile() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c3".to_string();
+    state
+        .actor_stats
+        .entry("golem-dark-nw".to_string())
+        .or_default()
+        .insert("hp".to_string(), 2);
+
+    let output = apply_events(
+        &mut state,
+        &content,
+        &[layla_attack_event("r3c3", "golem-dark-nw")],
+    );
+
+    assert!(
+        output.lines.iter().any(|l| l.contains("crumbles")),
+        "expected kill message, got: {:?}",
+        output.lines
+    );
+    assert!(
+        !state.hostile_actors.contains("golem-dark-nw"),
+        "slain golem must not turn hostile"
+    );
+}
+
+#[test]
+fn layla_hostile_golem_strikes_player_sharing_room_on_turn_start() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c3".to_string();
+    state.hostile_actors.insert("golem-dark-nw".to_string());
+
+    let output = apply_events(&mut state, &content, &[layla_turn_started()]);
+
+    assert!(
+        state.actor_stat("player", "hp") < 10,
+        "hostile golem sharing the room should damage the player"
+    );
+    assert!(
+        output.lines.iter().any(|l| l.contains("strikes you")),
+        "expected mob strike line, got: {:?}",
+        output.lines
+    );
+}
+
+#[test]
+fn layla_distant_hostile_golem_leaves_player_untouched() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r5c5".to_string();
+    state.hostile_actors.insert("golem-dark-nw".to_string());
+
+    let output = apply_events(&mut state, &content, &[layla_turn_started()]);
+
+    assert_eq!(
+        state.actor_stat("player", "hp"),
+        10,
+        "hostile golem in another room must not reach the player"
+    );
+    assert!(!output.lines.iter().any(|l| l.contains("strikes you")));
+}
+
+#[test]
+fn layla_woken_golem_kills_player_if_ignored() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c3".to_string();
+    state.hostile_actors.insert("golem-dark-nw".to_string());
+    state
+        .actor_stats
+        .entry("player".to_string())
+        .or_default()
+        .insert("hp".to_string(), 1);
+
+    let output = apply_events(&mut state, &content, &[layla_turn_started()]);
+
+    assert_eq!(
+        state.phase,
+        GamePhase::GameEnded,
+        "ignoring a woken golem should be lethal"
+    );
+    assert!(
+        output.lines.iter().any(|l| l.contains("world tilts")),
+        "expected defeat line, got: {:?}",
+        output.lines
+    );
 }
 
 #[test]
@@ -1063,14 +1200,93 @@ fn layla_encirclement_converts_golem() {
     );
 
     assert!(
-        output.lines.iter().any(|l| l.contains("shudders") || l.contains("follow")),
+        output
+            .lines
+            .iter()
+            .any(|l| l.contains("shudders") || l.contains("follow")),
         "expected conversion message, got: {:?}",
         output.lines
     );
     assert_eq!(
-        state.followed_actor_id.as_deref(),
-        Some("golem-dark-nw"),
-        "golem should be followed after conversion"
+        state.followed_actor_id, None,
+        "conversion must not flip the player-follows-actor relationship"
+    );
+    assert!(
+        state.follower_actor_ids.contains("golem-dark-nw"),
+        "converted golem should follow the player"
+    );
+    assert!(
+        state.allied_actors.contains("golem-dark-nw"),
+        "converted golem should count as an ally"
+    );
+}
+
+#[test]
+fn layla_follower_relocates_when_player_moves() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c3".to_string();
+    state.follower_actor_ids.insert("golem-dark-nw".to_string());
+    state
+        .actor_room_overrides
+        .insert("golem-dark-nw".to_string(), "r3c3".to_string());
+
+    let output = apply_events(
+        &mut state,
+        &content,
+        &[TimestampedWorldEvent::now(WorldEvent::PlayerMoved {
+            from_room_id: "r3c3".to_string(),
+            to_room_id: "r4c3".to_string(),
+        })],
+    );
+
+    assert_eq!(
+        state
+            .actor_room_overrides
+            .get("golem-dark-nw")
+            .map(String::as_str),
+        Some("r4c3"),
+        "converted golem must move along with the player"
+    );
+    assert!(
+        output.lines.iter().any(|l| l.contains("follows you")),
+        "expected follow line, got: {:?}",
+        output.lines
+    );
+}
+
+#[test]
+fn layla_encirclement_skips_hostile_golem() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c4".to_string();
+    state.hostile_actors.insert("golem-dark-nw".to_string());
+
+    let neighbors = ["r2c3", "r3c4", "r4c3"];
+    for n in &neighbors {
+        state.flagged_rooms.insert(n.to_string());
+    }
+
+    apply_events(
+        &mut state,
+        &content,
+        &[TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
+            actor_id: "player".to_string(),
+            actor_name: "Layla".to_string(),
+            room_id: "r3c2".to_string(),
+            command_id: "place_flag".to_string(),
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        })],
+    );
+
+    assert!(
+        !state.allied_actors.contains("golem-dark-nw")
+            && !state.follower_actor_ids.contains("golem-dark-nw"),
+        "a woken hostile golem must not convert through encirclement"
     );
 }
 
@@ -1110,36 +1326,73 @@ fn layla_cannot_attack_dead_golem() {
 }
 
 #[test]
-fn layla_allies_boost_damage() {
+fn layla_defeated_golem_vanishes_from_room_presence() {
     let (content, mut state) = layla_test_state();
     state.current_room_id = "r3c3".to_string();
     state
         .actor_stats
         .entry("golem-dark-nw".to_string())
         .or_default()
-        .insert("hp".to_string(), 50);
+        .insert("hp".to_string(), 1);
+    state.allied_actors.insert("golem-dark-nw".to_string());
+    state.follower_actor_ids.insert("golem-dark-nw".to_string());
+
+    apply_events(
+        &mut state,
+        &content,
+        &[layla_attack_event("r3c3", "golem-dark-nw")],
+    );
+
+    assert!(state.actor_is_defeated("golem-dark-nw"));
+    assert!(
+        super::observation::actors_in_room(&content, &state, "r3c3").is_empty(),
+        "defeated golem must not be listed among actors in the room"
+    );
+    assert!(!state.hostile_actors.contains("golem-dark-nw"));
+    assert!(!state.allied_actors.contains("golem-dark-nw"));
+    assert!(!state.follower_actor_ids.contains("golem-dark-nw"));
+
+    // Attacking the corpse again must be rejected outright.
+    let before = state.turn_number;
+    let output = apply_events(
+        &mut state,
+        &content,
+        &[layla_attack_event("r3c3", "golem-dark-nw")],
+    );
+    assert!(
+        output.lines.is_empty() && state.turn_number == before,
+        "attack on defeated golem should produce no output, got: {:?}",
+        output.lines
+    );
+}
+
+#[test]
+fn layla_allies_boost_damage_and_hostiles_do_not() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c3".to_string();
+    state
+        .actor_stats
+        .entry("golem-dark-nw".to_string())
+        .or_default()
+        .insert("hp".to_string(), 18);
     state
         .actor_stats
         .entry("golem-pale-ne".to_string())
         .or_default()
         .insert("strength".to_string(), 3);
+    state.allied_actors.insert("golem-pale-ne".to_string());
+    // A hostile golem's strength must never add to the player's attacks.
+    state
+        .actor_stats
+        .entry("golem-pale-se".to_string())
+        .or_default()
+        .insert("strength".to_string(), 9);
+    state.hostile_actors.insert("golem-pale-se".to_string());
 
-    let output = apply_events(
+    apply_events(
         &mut state,
         &content,
-        &[TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
-            actor_id: "player".to_string(),
-            actor_name: "Layla".to_string(),
-            room_id: "r3c3".to_string(),
-            command_id: "attack".to_string(),
-            target_room_id: None,
-            target_actor_id: Some("golem-dark-nw".to_string()),
-            target_actor_name: Some("Dark Golem".to_string()),
-            context_label: None,
-            feature_id: None,
-            consumable_id: None,
-            freeform_text: None,
-        })],
+        &[layla_attack_event("r3c3", "golem-dark-nw")],
     );
 
     let golem_hp = state
@@ -1147,7 +1400,10 @@ fn layla_allies_boost_damage() {
         .get("golem-dark-nw")
         .and_then(|s| s.get("hp"))
         .copied()
-        .unwrap_or(50);
-    assert!(golem_hp < 47, "ally (3 str) + player (3 str) should deal > 3 damage, hp={}", golem_hp);
-    assert!(output.lines.iter().any(|l| l.contains("strike")));
+        .unwrap_or(18);
+    assert_eq!(
+        golem_hp, 13,
+        "expected exactly player (2) + one ally (3) damage, hp={}",
+        golem_hp
+    );
 }

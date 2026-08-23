@@ -65,10 +65,11 @@ fn first_actor_in_room<'a>(
     context: &PlanningContext<'_>,
 ) -> Option<&'a crate::content::types::ActorDefinition> {
     content.actors.iter().find(|actor| {
-        context
-            .planner_state
-            .actor_room_id(&actor.id, &actor.room_id)
-            == context.current_room_id
+        !context.planner_state.actor_is_defeated(&actor.id)
+            && context
+                .planner_state
+                .actor_room_id(&actor.id, &actor.room_id)
+                == context.current_room_id
     })
 }
 
@@ -455,10 +456,7 @@ pub(super) fn plan_targeted_state_command(
                 } else {
                     let names: Vec<&str> = actors_here.iter().map(|a| a.name.as_str()).collect();
                     planned.events.push(WorldEvent::ActionRejected {
-                        message: format!(
-                            "Who do you want to target? Try: {}",
-                            names.join(", ")
-                        ),
+                        message: format!("Who do you want to target? Try: {}", names.join(", ")),
                     });
                     false
                 }
@@ -574,10 +572,7 @@ pub(super) fn plan_command_effects(
         CommandEffect::AttackTarget,
     ]) {
         plan_targeted_state_command(content, action, input, context, planned)
-    } else if action.has_any_effect(&[
-        CommandEffect::PlaceFlag,
-        CommandEffect::RemoveFlag,
-    ]) {
+    } else if action.has_any_effect(&[CommandEffect::PlaceFlag, CommandEffect::RemoveFlag]) {
         plan_targetless_command(content, action, context, planned)
     } else {
         panic!(

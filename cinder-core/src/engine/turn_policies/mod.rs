@@ -76,7 +76,8 @@ pub(crate) fn command_availability_issue(
 ) -> Option<CommandAvailabilityIssue> {
     let a = &action.available;
     if !a.available_during.is_empty()
-        && !a.available_during
+        && !a
+            .available_during
             .iter()
             .any(|stage_id| state.active_objective_stage_ids.contains(stage_id))
     {
@@ -164,6 +165,14 @@ pub fn action_is_available(
     }
 
     if !a.allowed_rooms.is_empty() && !a.allowed_rooms.contains(&context_room_id.to_string()) {
+        return false;
+    }
+
+    let room_is_flagged = state.flagged_rooms.contains(&context_room_id.to_string());
+    if a.requires_room_flagged && !room_is_flagged {
+        return false;
+    }
+    if a.requires_room_unflagged && room_is_flagged {
         return false;
     }
 

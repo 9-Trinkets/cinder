@@ -10,7 +10,10 @@ pub(super) fn actors_in_room<'a>(
     content
         .actors
         .iter()
-        .filter(|actor| state.actor_room_id(&actor.id, &actor.room_id) == room_id)
+        .filter(|actor| {
+            !state.actor_is_defeated(&actor.id)
+                && state.actor_room_id(&actor.id, &actor.room_id) == room_id
+        })
         .collect()
 }
 

@@ -2,11 +2,52 @@ use crate::content::types::ContentPack;
 use crate::engine::dialogue_grounding::viewer_participant_id;
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_world_hook_effects;
-use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
+use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, GamePhase, WorldState};
 use serde_json::json;
 
 use super::beat_advance::{advance_conditions_met, advance_objective_for_signal};
+use super::command_effects::{actor_display_name, defeat_player_if_dead};
 use super::observation::actors_in_room;
+
+/// Deterministic combat step: every hostile actor sharing the player's room strikes
+/// once per turn. Ignoring a woken mob is eventually lethal.
+pub(super) fn apply_hostile_actor_attacks_on_turn_start(
+    state: &mut WorldState,
+    content: &ContentPack,
+    lines: &mut Vec<String>,
+) {
+    if state.phase != GamePhase::Active {
+        return;
+    }
+    for actor_id in state.hostile_actors.clone() {
+        if state.actor_stat(&actor_id, "hp") <= 0 {
+            continue;
+        }
+        let default_room_id = content
+            .actor(&actor_id)
+            .map(|actor| actor.room_id.clone())
+            .unwrap_or_default();
+        let actor_room_id = state.actor_room_id(&actor_id, &default_room_id);
+        if actor_room_id != state.current_room_id {
+            continue;
+        }
+        let damage = (state.actor_stat(&actor_id, "strength")
+            - state.actor_stat("player", "defense"))
+        .max(1);
+        state
+            .adjust_actor_stat("player", "hp", -damage)
+            .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
+        let remaining = state.actor_stat("player", "hp");
+        lines.push(format!(
+            "The {} strikes you! You take {damage} damage. ({remaining} HP remaining)",
+            actor_display_name(content, &actor_id),
+        ));
+        defeat_player_if_dead(state, lines);
+        if state.phase != GamePhase::Active {
+            break;
+        }
+    }
+}
 
 pub(super) fn advance_actor_stats_on_tick(
     state: &mut WorldState,

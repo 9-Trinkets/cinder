@@ -9,6 +9,10 @@ pub struct ActionAvailability {
     #[serde(default)]
     pub requires_actor_in_room: bool,
     #[serde(default)]
+    pub requires_room_flagged: bool,
+    #[serde(default)]
+    pub requires_room_unflagged: bool,
+    #[serde(default)]
     pub allowed_rooms: Vec<String>,
     #[serde(default)]
     pub available_during: Vec<String>,

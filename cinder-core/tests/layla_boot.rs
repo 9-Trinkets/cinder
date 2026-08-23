@@ -30,7 +30,17 @@ fn layla_pack_boots() {
         .filter(|c| c.player_enabled)
         .map(|c| c.id.clone())
         .collect();
-    assert_eq!(commands, vec!["look", "move", "speak", "attack", "place_flag", "pick_up_flag"]);
+    assert_eq!(
+        commands,
+        vec![
+            "look",
+            "move",
+            "speak",
+            "attack",
+            "place_flag",
+            "pick_up_flag"
+        ]
+    );
 
     assert!(content.stats.actor.contains_key("hp"));
     assert!(content.stats.actor.contains_key("strength"));
@@ -50,13 +60,23 @@ fn layla_pack_boots() {
     let boss_hp = boss.initial_stats.get("hp").copied().unwrap_or(0);
     let nw = content.actor("golem-dark-nw").expect("nw golem");
     let nw_hp = nw.initial_stats.get("hp").copied().unwrap_or(0);
-    assert!(boss_hp > nw_hp, "boss ({}) should have more HP than regular golem ({})", boss_hp, nw_hp);
+    assert!(
+        boss_hp > nw_hp,
+        "boss ({}) should have more HP than regular golem ({})",
+        boss_hp,
+        nw_hp
+    );
 
     let look = content.command("look").expect("look command");
     assert!(look.has_effect(cinder_core::content::types::CommandEffect::ObserveRoom));
     let move_cmd = content.command("move").expect("move command");
     assert!(move_cmd.has_effect(cinder_core::content::types::CommandEffect::MoveActor));
-    assert!(content.command("speak").expect("speak command").player_enabled);
+    assert!(
+        content
+            .command("speak")
+            .expect("speak command")
+            .player_enabled
+    );
 }
 
 #[test]
@@ -85,7 +105,12 @@ fn layla_grid_adjacency() {
                 exit_count(r, c)
             );
             for exit in &room.exits {
-                assert!(by_id.contains_key(exit.room_id.as_str()), "{} -> {} missing target", rid, exit.room_id);
+                assert!(
+                    by_id.contains_key(exit.room_id.as_str()),
+                    "{} -> {} missing target",
+                    rid,
+                    exit.room_id
+                );
                 let back = by_id
                     .get(exit.room_id.as_str())
                     .expect("target exists")
@@ -100,7 +125,10 @@ fn layla_grid_adjacency() {
     // Corner: 2 exits
     let corner = by_id.get("r1c1").expect("corner");
     let dirs: HashSet<String> = corner.exits.iter().map(|e| e.label.clone()).collect();
-    assert_eq!(dirs, HashSet::from(["East".to_string(), "South".to_string()]));
+    assert_eq!(
+        dirs,
+        HashSet::from(["East".to_string(), "South".to_string()])
+    );
     // Interior: 4 exits
     let center = by_id.get("r5c5").expect("center");
     assert_eq!(center.exits.len(), 4);
@@ -135,8 +163,7 @@ fn layla_random_spawn() {
 #[test]
 fn layla_runtime_boots_web_path() {
     let content = load_named_pack("layla", None).expect("layla pack must load");
-    let runtime =
-        cinder_core::CinderRuntime::new(content, false).expect("runtime must construct");
+    let runtime = cinder_core::CinderRuntime::new(content, false).expect("runtime must construct");
     let intro = runtime.current_intro_text().expect("intro text");
     assert!(intro.contains("Layla") || intro.contains("cold stone"));
     let state = runtime.export_state().expect("state export");
@@ -148,8 +175,7 @@ fn layla_runtime_boots_web_path() {
 #[test]
 fn layla_look_dispatch() {
     let content = load_named_pack("layla", None).expect("layla pack must load");
-    let runtime =
-        cinder_core::CinderRuntime::new(content, false).expect("runtime must construct");
+    let runtime = cinder_core::CinderRuntime::new(content, false).expect("runtime must construct");
     let outcome = runtime
         .run_turn("look")
         .expect("look must not error at dispatch");
@@ -180,8 +206,7 @@ fn layla_look_dispatch() {
 #[test]
 fn layla_move_dispatch() {
     let content = load_named_pack("layla", None).expect("layla pack must load");
-    let runtime =
-        cinder_core::CinderRuntime::new(content, false).expect("runtime must construct");
+    let runtime = cinder_core::CinderRuntime::new(content, false).expect("runtime must construct");
     let state = runtime.export_state().expect("state export");
     let room = runtime
         .content()
@@ -200,13 +225,13 @@ fn layla_move_dispatch() {
 #[test]
 fn layla_place_flag_via_runtime() {
     let content = load_named_pack("layla", None).expect("layla pack must load");
-    let runtime =
-        cinder_core::CinderRuntime::new(content, false).expect("runtime must construct");
+    let runtime = cinder_core::CinderRuntime::new(content, false).expect("runtime must construct");
     let outcome = runtime
         .run_turn("place flag")
         .expect("place flag must dispatch");
     assert!(
-        outcome.text.to_lowercase().contains("marker") || outcome.text.to_lowercase().contains("flag"),
+        outcome.text.to_lowercase().contains("marker")
+            || outcome.text.to_lowercase().contains("flag"),
         "expected flag placement message, got: {}",
         outcome.text
     );
@@ -215,8 +240,7 @@ fn layla_place_flag_via_runtime() {
 #[test]
 fn layla_attack_dispatches() {
     let content = load_named_pack("layla", None).expect("layla pack must load");
-    let runtime =
-        cinder_core::CinderRuntime::new(content, false).expect("runtime must construct");
+    let runtime = cinder_core::CinderRuntime::new(content, false).expect("runtime must construct");
     let state = runtime.export_state().expect("state export");
     let room = runtime
         .content()
@@ -230,13 +254,17 @@ fn layla_attack_dispatches() {
             .any(|a| a.room_id == e.room_id && a.id.starts_with("golem-"))
     });
     if has_actor_exit {
-        let golem_exit = room.exits.iter().find(|e| {
-            runtime
-                .content()
-                .actors
-                .iter()
-                .any(|a| a.room_id == e.room_id && a.id.starts_with("golem-"))
-        }).unwrap();
+        let golem_exit = room
+            .exits
+            .iter()
+            .find(|e| {
+                runtime
+                    .content()
+                    .actors
+                    .iter()
+                    .any(|a| a.room_id == e.room_id && a.id.starts_with("golem-"))
+            })
+            .unwrap();
         runtime
             .run_turn(&format!("go {}", golem_exit.label.to_lowercase()))
             .expect("move to golem");
@@ -250,9 +278,125 @@ fn layla_attack_dispatches() {
             .run_turn(&format!("attack {}", golem.name.to_lowercase()))
             .expect("attack must dispatch");
         assert!(
-            outcome.text.to_lowercase().contains("damage") || outcome.text.to_lowercase().contains("strike"),
+            outcome.text.to_lowercase().contains("damage")
+                || outcome.text.to_lowercase().contains("strike"),
             "expected combat output, got: {}",
             outcome.text
         );
+        // Regression: attacking must not instantly kill the player, even though
+        // the woken golem retaliates within the same turn.
+        let after = runtime.export_state().expect("state export");
+        assert_eq!(
+            after.phase,
+            cinder_core::engine::state::GamePhase::Active,
+            "player must survive the first exchange"
+        );
+        let hp = after.actor_stat("player", "hp");
+        assert!(
+            (0..10).contains(&hp),
+            "player HP should have dropped from 10 but stayed positive, got {hp}"
+        );
+        assert!(
+            after.hostile_actors.contains(golem.id.as_str()),
+            "attacked golem should wake hostile"
+        );
     }
+}
+
+fn path_to_nearest_star_golem(
+    content: &cinder_core::ContentPack,
+    from_room_id: &str,
+) -> Option<(Vec<String>, String)> {
+    const STAR_POINTS: [&str; 5] = ["r3c3", "r3c7", "r5c5", "r7c3", "r7c7"];
+    let mut queue =
+        std::collections::VecDeque::from([(from_room_id.to_string(), Vec::<String>::new())]);
+    let mut visited = HashSet::from([from_room_id.to_string()]);
+    while let Some((room_id, path)) = queue.pop_front() {
+        if STAR_POINTS.contains(&room_id.as_str()) {
+            let golem = content
+                .actors
+                .iter()
+                .find(|a| a.id.starts_with("golem-") && a.room_id == room_id)?;
+            return Some((path, golem.name.clone()));
+        }
+        for exit in &content.room(&room_id)?.exits {
+            if visited.insert(exit.room_id.clone()) {
+                let mut next_path = path.clone();
+                next_path.push(exit.label.clone());
+                queue.push_back((exit.room_id.clone(), next_path));
+            }
+        }
+    }
+    None
+}
+
+#[test]
+fn layla_woken_golem_kills_ignored_player() {
+    let content = load_named_pack("layla", None).expect("layla pack must load");
+    let runtime =
+        cinder_core::CinderRuntime::new(content.clone(), false).expect("runtime must construct");
+    let state = runtime.export_state().expect("state export");
+    let (path, golem_name) = path_to_nearest_star_golem(&content, &state.current_room_id)
+        .expect("grid always reaches a star-point golem");
+
+    // Walk to the golem's room. Golems are passive until struck, so travel is safe.
+    for label in &path {
+        runtime
+            .run_turn(&format!("go {}", label.to_lowercase()))
+            .expect("walk step must dispatch");
+    }
+    let here = runtime
+        .export_state()
+        .expect("state export")
+        .current_room_id;
+    let golem = content
+        .actors
+        .iter()
+        .find(|a| a.id.starts_with("golem-") && a.room_id == here)
+        .expect("golem present at the reached star point");
+
+    runtime
+        .run_turn(&format!("attack {}", golem_name.to_lowercase()))
+        .expect("attack must dispatch once sharing the golem's room");
+    let after_attack = runtime.export_state().expect("state export");
+    assert_eq!(
+        after_attack.phase,
+        cinder_core::engine::state::GamePhase::Active,
+        "player must survive waking the golem"
+    );
+    assert!(
+        after_attack.hostile_actors.contains(golem.id.as_str()),
+        "expected the attacked golem to wake hostile"
+    );
+
+    // Ignore the golem: keep taking time-advancing actions in its room until dead.
+    let mut ended = false;
+    for _ in 0..40 {
+        let outcome = runtime
+            .run_turn("place flag")
+            .expect("place flag dispatches");
+        if runtime.export_state().expect("state").phase
+            == cinder_core::engine::state::GamePhase::GameEnded
+        {
+            assert!(
+                outcome.text.contains("world tilts") || outcome.text.contains("HP remaining"),
+                "expected combat/defeat output on the death turn"
+            );
+            ended = true;
+            break;
+        }
+        runtime
+            .run_turn("pick up flag")
+            .expect("pick up flag dispatches");
+        if runtime.export_state().expect("state").phase
+            == cinder_core::engine::state::GamePhase::GameEnded
+        {
+            ended = true;
+            break;
+        }
+    }
+    assert!(
+        ended,
+        "a woken golem sharing the player's room must kill them while ignored"
+    );
 }

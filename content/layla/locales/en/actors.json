@@ -3,7 +3,7 @@
     "id": "golem-dark-nw",
     "name": "a dark golem",
     "room_id": "r3c3",
-    "initial_stats": { "hp": 8 },
+    "initial_stats": { "hp": 8, "strength": 2 },
     "aliases": ["golem", "dark golem", "granite golem", "stone figure"],
     "inspect_text": "A golem of dark granite, still as architecture. Its eyes are closed. The grid lines on the floor seem to radiate from where it stands.",
     "prompt_context": {
@@ -18,11 +18,12 @@
       ],
       "response_notes": [
         "Do not speak. Do not emote. If attacked, respond with silence and resilience.",
+        "If attacked and not destroyed, you wake. Your eyes open. You strike the one who struck you, again and again, until they fall or flee.",
         "If converted to an ally, follow the player without question. You do not explain yourself."
       ],
       "behavior_examples": [
         "When the player enters, you do not react.",
-        "When attacked, you endure.",
+        "When attacked and still standing, your eyes open and you retaliate without pause.",
         "When surrounded by flagged rooms, you wake. Something shifts in you. You belong to the one who marked the ground."
       ]
     }
@@ -31,7 +32,7 @@
     "id": "golem-pale-ne",
     "name": "a pale golem",
     "room_id": "r3c7",
-    "initial_stats": { "hp": 8 },
+    "initial_stats": { "hp": 8, "strength": 2 },
     "aliases": ["golem", "pale golem", "marble golem", "stone figure"],
     "inspect_text": "A golem of pale marble, motionless among the pillars. It does not look at you. The stone beneath its feet is worn smooth.",
     "prompt_context": {
@@ -46,11 +47,12 @@
       ],
       "response_notes": [
         "Do not speak. Do not emote. If attacked, respond with silence and resilience.",
+        "If attacked and not destroyed, you wake. Your eyes open. You strike the one who struck you, again and again, until they fall or flee.",
         "If converted to an ally, follow the player without question."
       ],
       "behavior_examples": [
         "When the player enters, you do not react.",
-        "When attacked, you endure.",
+        "When attacked and still standing, your eyes open and you retaliate without pause.",
         "When surrounded by flagged rooms, you wake. Something shifts in you."
       ]
     }
@@ -59,7 +61,7 @@
     "id": "golem-boss",
     "name": "the stone warden",
     "room_id": "r5c5",
-    "initial_stats": { "hp": 25 },
+    "initial_stats": { "hp": 20, "strength": 4 },
     "aliases": ["warden", "boss golem", "stone warden", "pale golem", "golem", "large golem", "tall golem"],
     "inspect_text": "The golem is taller than the others, pale as bone, perfectly still. It stands at the center of a grid scored deep into the stone. It does not move. It does not need to. The room feels like it exists for this one thing.",
     "prompt_context": {
@@ -75,12 +77,13 @@
       ],
       "response_notes": [
         "Do not speak. If attacked, fight back with overwhelming force.",
+        "If attacked and not destroyed, your eyes open. You strike the player every turn they remain near you.",
         "You attack the player directly. You do not target allies.",
         "You are too strong for the player alone. They need help."
       ],
       "behavior_examples": [
         "When the player enters, you do not react. You are waiting.",
-        "When attacked, you strike back with the weight of stone.",
+        "When attacked, you wake and strike back with the weight of stone, every turn.",
         "You cannot be surrounded or converted. You can only be defeated in combat."
       ]
     }
@@ -89,7 +92,7 @@
     "id": "golem-dark-sw",
     "name": "a dark golem",
     "room_id": "r7c3",
-    "initial_stats": { "hp": 8 },
+    "initial_stats": { "hp": 8, "strength": 2 },
     "aliases": ["golem", "dark golem", "granite golem", "stone figure"],
     "inspect_text": "A golem of dark granite stands in the corner, watching nothing. The flags beneath its feet are dark, fitted precisely.",
     "prompt_context": {
@@ -103,11 +106,12 @@
       ],
       "response_notes": [
         "Do not speak. If attacked, respond with silence and resilience.",
+        "If attacked and not destroyed, you wake. Your eyes open. You strike the one who struck you, again and again, until they fall or flee.",
         "If converted to an ally, follow the player without question."
       ],
       "behavior_examples": [
         "When the player enters, you do not react.",
-        "When attacked, you endure.",
+        "When attacked and still standing, your eyes open and you retaliate without pause.",
         "When surrounded by flagged rooms, you wake."
       ]
     }
@@ -116,7 +120,7 @@
     "id": "golem-pale-se",
     "name": "a pale golem",
     "room_id": "r7c7",
-    "initial_stats": { "hp": 8 },
+    "initial_stats": { "hp": 8, "strength": 2 },
     "aliases": ["golem", "pale golem", "marble golem", "stone figure"],
     "inspect_text": "A golem of pale stone stands in the center of the room, waiting. The light catches in the stone and holds.",
     "prompt_context": {
@@ -130,11 +134,12 @@
       ],
       "response_notes": [
         "Do not speak. If attacked, respond with silence and resilience.",
+        "If attacked and not destroyed, you wake. Your eyes open. You strike the one who struck you, again and again, until they fall or flee.",
         "If converted to an ally, follow the player without question."
       ],
       "behavior_examples": [
         "When the player enters, you do not react.",
-        "When attacked, you endure.",
+        "When attacked and still standing, your eyes open and you retaliate without pause.",
         "When surrounded by flagged rooms, you wake."
       ]
     }

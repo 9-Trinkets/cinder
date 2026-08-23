@@ -144,7 +144,9 @@
       "outcome_mode": "event",
       "effects": ["place_flag"],
       "event_text": "{actor_name} drives a stone marker into the ground.",
-      "available": {},
+      "available": {
+        "requires_room_unflagged": true
+      },
       "ui": {
         "bar": false,
         "overflow": true,
@@ -169,7 +171,9 @@
       "outcome_mode": "event",
       "effects": ["remove_flag"],
       "event_text": "{actor_name} pulls a stone marker from the ground.",
-      "available": {},
+      "available": {
+        "requires_room_flagged": true
+      },
       "ui": {
         "bar": false,
         "overflow": true,

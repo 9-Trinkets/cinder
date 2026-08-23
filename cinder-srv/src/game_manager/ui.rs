@@ -202,8 +202,8 @@ pub(super) fn build_ui_snapshot(
             crafted_consumable_ids.contains(&consumable.id) || consumable.initial_stock > 0
         };
 
+    let state = runtime.export_state().map_err(|e| e.to_string())?;
     let action_bar_actions: Vec<ActionBarAction> = if !content.actions.is_empty() {
-        let state = runtime.export_state().map_err(|e| e.to_string())?;
         content
             .actions
             .iter()
@@ -288,44 +288,7 @@ pub(super) fn build_ui_snapshot(
                 if (a.id == "speak" || a.id == "talk") && has_talk {
                     return false;
                 }
-                if !a.available.allowed_rooms.is_empty()
-                    && !a.available.allowed_rooms.contains(&current_room_id)
-                {
-                    return false;
-                }
-                if let Some(item_id) = &a.available.consumes_item
-                    && !runtime
-                        .has_item_in_storage(item_id, a.available.consumes_item_storage.clone().into())
-                        .unwrap_or(false)
-                {
-                    return false;
-                }
-                if !a.available.requires_any.is_empty() || !a.available.consumes_any.is_empty() {
-                    let has_any = a.available.requires_any.iter().any(|id| {
-                        runtime
-                            .has_item_in_storage(id, a.available.requires_any_storage.clone().into())
-                            .unwrap_or(false)
-                    }) || a.available.consumes_any.iter().any(|id| {
-                        runtime
-                            .has_item_in_storage(id, a.available.consumes_any_storage.clone().into())
-                            .unwrap_or(false)
-                    });
-                    if !has_any {
-                        return false;
-                    }
-                }
-                if !a.available.available_during.is_empty() {
-                    let active_stages: Vec<String> = runtime.active_stage_ids().unwrap_or_default();
-                    let matches_stage = a
-                        .available
-                        .available_during
-                        .iter()
-                        .any(|stage_id| active_stages.contains(stage_id));
-                    if !matches_stage {
-                        return false;
-                    }
-                }
-                true
+                action_is_available(content, &state, a, &current_room_id)
             })
             .map(|a| {
                 let label = a
@@ -346,13 +309,13 @@ pub(super) fn build_ui_snapshot(
                     .map(|player_command| player_command.usage.clone())
                     .unwrap_or_default();
                 OverflowAction {
-                id: a.id.clone(),
-                label,
-                group: a.ui.group.clone(),
-                usage,
-            }
-        })
-        .collect()
+                    id: a.id.clone(),
+                    label,
+                    group: a.ui.group.clone(),
+                    usage,
+                }
+            })
+            .collect()
     };
 
     if let Ok(active_stages) = runtime.active_stage_ids() {
@@ -361,8 +324,13 @@ pub(super) fn build_ui_snapshot(
 
     let mut panel_options: BTreeMap<String, Vec<PanelOptionData>> = BTreeMap::new();
     for action in &content.actions {
-        if let (Some(panel_name), Some(panel_config)) = (&action.ui.panel, &action.ui.panel_config) {
-            let phrase = action.phrases.first().map(|s| s.as_str()).unwrap_or(&action.command);
+        if let (Some(panel_name), Some(panel_config)) = (&action.ui.panel, &action.ui.panel_config)
+        {
+            let phrase = action
+                .phrases
+                .first()
+                .map(|s| s.as_str())
+                .unwrap_or(&action.command);
             let options = match panel_config.data_source {
                 PanelDataSource::ActorsInRoom => runtime
                     .current_room_talk_options()
@@ -385,7 +353,11 @@ pub(super) fn build_ui_snapshot(
                     .map(|opt| PanelOptionData {
                         id: opt.command.clone(),
                         title: opt.title.clone(),
-                        subtitle: if opt.menu_text.is_empty() { None } else { Some(opt.menu_text) },
+                        subtitle: if opt.menu_text.is_empty() {
+                            None
+                        } else {
+                            Some(opt.menu_text)
+                        },
                         command: Some(opt.command.clone()),
                     })
                     .collect(),

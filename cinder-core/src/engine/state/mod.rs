@@ -41,6 +41,8 @@ pub struct WorldState {
     pub stages_completed: usize,
     pub feature_consumable_stock: BTreeMap<String, u32>,
     pub followed_actor_id: Option<String>,
+    #[serde(default)]
+    pub follower_actor_ids: BTreeSet<String>,
     pub active_menu_id: Option<String>,
     #[serde(default)]
     pub pending_menu_selections: Vec<String>,
@@ -72,6 +74,12 @@ pub struct WorldState {
     pub act_series: Option<ActSeriesState>,
     #[serde(default)]
     pub flagged_rooms: BTreeSet<String>,
+    /// Actors that have woken hostile toward the player and attack while sharing a room.
+    #[serde(default)]
+    pub hostile_actors: BTreeSet<String>,
+    /// Converted actors fighting alongside the player.
+    #[serde(default)]
+    pub allied_actors: BTreeSet<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -137,6 +145,7 @@ impl WorldState {
             stages_completed: 0,
             feature_consumable_stock: seeded_feature_consumable_stock(content),
             followed_actor_id: None,
+            follower_actor_ids: BTreeSet::new(),
             active_menu_id: None,
             pending_menu_selections: Vec::new(),
             generated_menu_options: HashMap::new(),
@@ -166,6 +175,8 @@ impl WorldState {
             room_item_stock: BTreeMap::new(),
             act_series: None,
             flagged_rooms: BTreeSet::new(),
+            hostile_actors: BTreeSet::new(),
+            allied_actors: BTreeSet::new(),
         }
     }
 
@@ -255,6 +266,17 @@ impl WorldState {
             .get(actor_id)
             .map(String::as_str)
             .unwrap_or(default_room_id)
+    }
+
+    /// True only when an explicit hp entry records the actor at or below zero.
+    /// Actors without a recorded hp value (never touched by combat) are not
+    /// considered defeated, so packs without hp stats are unaffected.
+    pub fn actor_is_defeated(&self, actor_id: &str) -> bool {
+        let actor_id = remap_story_actor_id(self, actor_id);
+        self.actor_stats
+            .get(actor_id)
+            .and_then(|stats| stats.get("hp"))
+            .is_some_and(|hp| *hp <= 0)
     }
 
     pub fn pair_stat(

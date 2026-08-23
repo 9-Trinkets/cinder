@@ -91,10 +91,10 @@ pub(crate) fn resolve_actor_reference_input(
 ) -> Option<ResolvedActorReferenceInput> {
     match_actor_reference(
         state,
-        content
-            .actors
-            .iter()
-            .filter(|actor| state.actor_room_id(&actor.id, &actor.room_id) == current_room_id),
+        content.actors.iter().filter(|actor| {
+            !state.actor_is_defeated(&actor.id)
+                && state.actor_room_id(&actor.id, &actor.room_id) == current_room_id
+        }),
         remainder,
         &content.settings.act_member_alias,
     )
@@ -107,7 +107,10 @@ pub(crate) fn resolve_actor_reference_input(
     .or_else(|| {
         match_actor_reference(
             state,
-            content.actors.iter(),
+            content
+                .actors
+                .iter()
+                .filter(|actor| !state.actor_is_defeated(&actor.id)),
             remainder,
             &content.settings.act_member_alias,
         )

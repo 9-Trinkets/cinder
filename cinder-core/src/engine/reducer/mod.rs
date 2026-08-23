@@ -40,10 +40,17 @@ pub fn apply_events(
         match &entry.event {
             WorldEvent::TurnStarted {
                 turn_number,
+                raw_input,
                 advances_time,
-                ..
             } => {
-                handle_turn_started(state, content, *turn_number, *advances_time, &mut lines);
+                handle_turn_started(
+                    state,
+                    content,
+                    *turn_number,
+                    raw_input,
+                    *advances_time,
+                    &mut lines,
+                );
             }
             WorldEvent::CurrentRoomObserved { room_id, mode } => {
                 if state.phase != GamePhase::Active {
