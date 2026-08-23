@@ -381,38 +381,6 @@ pub(crate) fn chapter_relationship_summarizer_system_prompt(
     }
 }
 
-#[cfg(test)]
-mod tests {
-    use super::build_actor_turn_affordance_option;
-    use crate::content::loader::load_named_pack;
-    use crate::content::types::{ActionDefinition, CommandInputMode, CommandTargetMode};
-    use crate::engine::dialogue::ActorTurnAffordanceTarget;
-
-    #[test]
-    fn targetless_none_input_commands_render_explicit_action_text() {
-        let content = load_named_pack("aera", Some("en")).expect("load aera");
-        let option = build_actor_turn_affordance_option(
-            &content.system_text,
-            "cook",
-            "kitchen",
-            "cook now",
-            None,
-            &ActionDefinition {
-                id: "cook".to_string(),
-                command: "COOK".to_string(),
-                input_mode: CommandInputMode::None,
-                target_mode: CommandTargetMode::None,
-                ..ActionDefinition::default()
-            },
-            ActorTurnAffordanceTarget::Act,
-        );
-
-        assert_eq!(option.available_text, "You could cook now.");
-        assert_eq!(option.decision_label, "COOK");
-        assert_eq!(option.decision_prefix, None);
-    }
-}
-
 pub(crate) fn direct_speech_intent_system_prompt(request: &DirectSpeechIntentRequest) -> &str {
     request
         .system_text
@@ -493,5 +461,37 @@ fn format_talk_relationship_context(candidate: &ActorTurnSpeakCandidate) -> Stri
             social_context = social_context,
             reply_marker = reply_marker,
         ),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::build_actor_turn_affordance_option;
+    use crate::content::loader::load_named_pack;
+    use crate::content::types::{ActionDefinition, CommandInputMode, CommandTargetMode};
+    use crate::engine::dialogue::ActorTurnAffordanceTarget;
+
+    #[test]
+    fn targetless_none_input_commands_render_explicit_action_text() {
+        let content = load_named_pack("aera", Some("en")).expect("load aera");
+        let option = build_actor_turn_affordance_option(
+            &content.system_text,
+            "cook",
+            "kitchen",
+            "cook now",
+            None,
+            &ActionDefinition {
+                id: "cook".to_string(),
+                command: "COOK".to_string(),
+                input_mode: CommandInputMode::None,
+                target_mode: CommandTargetMode::None,
+                ..ActionDefinition::default()
+            },
+            ActorTurnAffordanceTarget::Act,
+        );
+
+        assert_eq!(option.available_text, "You could cook now.");
+        assert_eq!(option.decision_label, "COOK");
+        assert_eq!(option.decision_prefix, None);
     }
 }

@@ -262,8 +262,7 @@ pub fn build_actor_turn(
         }));
     }
     if let Some(context_label) = rest_context.as_deref()
-        && let Ok(action) =
-            require_actor_affordance_for_command_id(content.as_ref(), "rest")
+        && let Ok(action) = require_actor_affordance_for_command_id(content.as_ref(), "rest")
     {
         let npc = action.npc.as_ref();
         affordance_candidates.push(ActorAffordanceCandidate::new(
@@ -343,9 +342,7 @@ pub fn build_actor_turn(
             )
         }));
     }
-    if let Ok(action) =
-        require_actor_affordance_for_command_id(content.as_ref(), "act")
-    {
+    if let Ok(action) = require_actor_affordance_for_command_id(content.as_ref(), "act") {
         let npc = action.npc.as_ref();
         affordance_candidates.push(ActorAffordanceCandidate::new(
             action,
@@ -361,17 +358,20 @@ pub fn build_actor_turn(
         ));
     }
     if !content.actions.is_empty() {
-        for action in content.actions.iter().filter(|a| {
-            a.npc.is_some() && a.command == "FOLLOW"
-        }) {
-            if let Some(npc) = &action.npc {
-                if let Some(ref scope) = npc.actor_scope {
-                    if !scope.iter().any(|id| id == &actor.id) {
-                        continue;
-                    }
-                }
+        for action in content
+            .actions
+            .iter()
+            .filter(|a| a.npc.is_some() && a.command == "FOLLOW")
+        {
+            if let Some(npc) = &action.npc
+                && let Some(ref scope) = npc.actor_scope
+                && !scope.iter().any(|id| id == &actor.id)
+            {
+                continue;
             }
-            if !action.available.allowed_rooms.is_empty() && !action.available.allowed_rooms.contains(&current_room_id) {
+            if !action.available.allowed_rooms.is_empty()
+                && !action.available.allowed_rooms.contains(&current_room_id)
+            {
                 continue;
             }
             if !affordance_candidates
@@ -405,14 +405,16 @@ pub fn build_actor_turn(
                 }
             }
         }
-        for action in content.actions.iter().filter(|a| {
-            a.npc.is_some() && a.command != "FOLLOW"
-        }) {
+        for action in content
+            .actions
+            .iter()
+            .filter(|a| a.npc.is_some() && a.command != "FOLLOW")
+        {
             if let Some(npc) = &action.npc {
-                if let Some(ref scope) = npc.actor_scope {
-                    if !scope.iter().any(|id| id == &actor.id) {
-                        continue;
-                    }
+                if let Some(ref scope) = npc.actor_scope
+                    && !scope.iter().any(|id| id == &actor.id)
+                {
+                    continue;
                 }
                 if !action.available.allowed_rooms.is_empty()
                     && !action.available.allowed_rooms.contains(&current_room_id)
@@ -440,25 +442,27 @@ pub fn build_actor_turn(
                             });
                         }
                         CommandTargetMode::Actor | CommandTargetMode::ActorOptional => {
-                            affordance_candidates.extend(speak_candidates.iter().map(|candidate| {
-                                ActorAffordanceCandidate {
-                                    order: action.ui.sort_order,
-                                    visible_by_default: npc.visible_by_default,
-                                    option: build_actor_turn_affordance_option(
-                                        &content.system_text,
-                                        &action.id,
-                                        &action.group,
-                                        &npc.prompt_verb,
-                                        (!npc.prompt_reply_verb.is_empty())
-                                            .then_some(npc.prompt_reply_verb.as_str()),
-                                        action,
-                                        ActorTurnAffordanceTarget::Hug {
-                                            actor_id: &candidate.actor_id,
-                                            actor_name: &candidate.actor_name,
-                                        },
-                                    ),
-                                }
-                            }));
+                            affordance_candidates.extend(speak_candidates.iter().map(
+                                |candidate| {
+                                    ActorAffordanceCandidate {
+                                        order: action.ui.sort_order,
+                                        visible_by_default: npc.visible_by_default,
+                                        option: build_actor_turn_affordance_option(
+                                            &content.system_text,
+                                            &action.id,
+                                            &action.group,
+                                            &npc.prompt_verb,
+                                            (!npc.prompt_reply_verb.is_empty())
+                                                .then_some(npc.prompt_reply_verb.as_str()),
+                                            action,
+                                            ActorTurnAffordanceTarget::Hug {
+                                                actor_id: &candidate.actor_id,
+                                                actor_name: &candidate.actor_name,
+                                            },
+                                        ),
+                                    }
+                                },
+                            ));
                         }
                         CommandTargetMode::Consumable => {
                             affordance_candidates.extend(consume_candidates.iter().filter_map(
@@ -492,23 +496,21 @@ pub fn build_actor_turn(
                         }
                         CommandTargetMode::Feature => {
                             affordance_candidates.extend(inspect_feature_cands.iter().map(
-                                |candidate| {
-                                    ActorAffordanceCandidate {
-                                        order: action.ui.sort_order,
-                                        visible_by_default: npc.visible_by_default,
-                                        option: build_actor_turn_affordance_option(
-                                            &content.system_text,
-                                            &action.id,
-                                            &action.group,
-                                            &npc.prompt_verb,
-                                            None,
-                                            action,
-                                            ActorTurnAffordanceTarget::InspectFeature {
-                                                feature_id: &candidate.feature_id,
-                                                feature_label: &candidate.label,
-                                            },
-                                        ),
-                                    }
+                                |candidate| ActorAffordanceCandidate {
+                                    order: action.ui.sort_order,
+                                    visible_by_default: npc.visible_by_default,
+                                    option: build_actor_turn_affordance_option(
+                                        &content.system_text,
+                                        &action.id,
+                                        &action.group,
+                                        &npc.prompt_verb,
+                                        None,
+                                        action,
+                                        ActorTurnAffordanceTarget::InspectFeature {
+                                            feature_id: &candidate.feature_id,
+                                            feature_label: &candidate.label,
+                                        },
+                                    ),
                                 },
                             ));
                         }
@@ -526,9 +528,9 @@ pub fn build_actor_turn(
         .filter(|candidate| {
             let ActorTurnCommandInvocation::Command { command_id, .. } =
                 &candidate.option.invocation;
-                content
-                    .action(command_id)
-                    .is_some_and(|action| action_is_available(content.as_ref(), state, action, &current_room_id))
+            content.action(command_id).is_some_and(|action| {
+                action_is_available(content.as_ref(), state, action, &current_room_id)
+            })
         })
         .collect::<Vec<_>>();
     affordances.sort_by(|left, right| left.order.cmp(&right.order));

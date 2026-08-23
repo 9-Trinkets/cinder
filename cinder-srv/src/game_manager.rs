@@ -281,7 +281,8 @@ pub async fn create_play(
     .execute(&mut *tx)
     .await
     .map_err(|e| format!("db insert error: {e}"))?;
-    replace_transcript_entries_with_lines(&mut tx, &play_id, &[intro_text.clone()]).await?;
+    replace_transcript_entries_with_lines(&mut tx, &play_id, std::slice::from_ref(&intro_text))
+        .await?;
     tx.commit()
         .await
         .map_err(|e| format!("db commit error: {e}"))?;
@@ -346,10 +347,9 @@ pub async fn run_command(
                 if let Some(intro_text) = runtime
                     .advance_act()
                     .map_err(|e| format!("act rollover error: {e}"))?
+                    && !intro_text.is_empty()
                 {
-                    if !intro_text.is_empty() {
-                        outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
-                    }
+                    outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
                 }
                 outcome.phase = GamePhase::Active;
             }
@@ -421,10 +421,9 @@ pub async fn run_realtime_tick(
                 if let Some(intro_text) = runtime
                     .advance_act()
                     .map_err(|e| format!("act rollover error: {e}"))?
+                    && !intro_text.is_empty()
                 {
-                    if !intro_text.is_empty() {
-                        outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
-                    }
+                    outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
                 }
                 outcome.phase = GamePhase::Active;
             }

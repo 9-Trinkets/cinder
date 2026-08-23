@@ -428,21 +428,17 @@ impl CinderRuntime {
                 continue;
             }
             let mut anchored_room_assignments = std::collections::BTreeMap::new();
-            if !config.selected_host_story_var.trim().is_empty() {
-                if let Some(host_id) = state.story_vars.get(&config.selected_host_story_var) {
-                    if !host_id.trim().is_empty() {
-                        anchored_room_assignments
-                            .insert(host_id.to_string(), selected_room_id.clone());
-                    }
-                }
+            if !config.selected_host_story_var.trim().is_empty()
+                && let Some(host_id) = state.story_vars.get(&config.selected_host_story_var)
+                && !host_id.trim().is_empty()
+            {
+                anchored_room_assignments.insert(host_id.to_string(), selected_room_id.clone());
             }
-            if !config.remaining_host_story_var.trim().is_empty() {
-                if let Some(host_id) = state.story_vars.get(&config.remaining_host_story_var) {
-                    if !host_id.trim().is_empty() {
-                        anchored_room_assignments
-                            .insert(host_id.to_string(), remaining_room_id.clone());
-                    }
-                }
+            if !config.remaining_host_story_var.trim().is_empty()
+                && let Some(host_id) = state.story_vars.get(&config.remaining_host_story_var)
+                && !host_id.trim().is_empty()
+            {
+                anchored_room_assignments.insert(host_id.to_string(), remaining_room_id.clone());
             }
             let initiator = if config.initiator_actor_id.trim().is_empty() {
                 None

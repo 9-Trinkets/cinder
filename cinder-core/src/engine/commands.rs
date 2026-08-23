@@ -328,10 +328,10 @@ fn actor_references(
         actor.id.clone(),
         display_actor_name(state, actor),
     ];
-    if current_cast_member_actor_id(state).is_some_and(|actor_id| actor_id == actor.id) {
-        if !act_member_alias.is_empty() {
-            refs.push(act_member_alias.to_string());
-        }
+    if current_cast_member_actor_id(state).is_some_and(|actor_id| actor_id == actor.id)
+        && !act_member_alias.is_empty()
+    {
+        refs.push(act_member_alias.to_string());
     }
     refs.extend(actor.aliases.iter().cloned());
     refs

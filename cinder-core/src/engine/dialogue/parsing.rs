@@ -73,7 +73,6 @@ fn strip_actor_turn_annotation(label: &str) -> &str {
 
 fn normalize_enum_label(label: &str) -> String {
     label
-        .trim()
         .split_whitespace()
         .next()
         .unwrap_or("")

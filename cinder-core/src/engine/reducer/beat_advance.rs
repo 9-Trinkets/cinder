@@ -199,6 +199,84 @@ fn fallback_stage_to_activate(
         .map(|stage| stage.id.clone())
 }
 
+pub(super) fn advance_conditions_met(state: &WorldState, conditions: &[AdvanceCondition]) -> bool {
+    if conditions.is_empty() {
+        return true;
+    }
+    let input = world_state_condition_input(state);
+    conditions
+        .iter()
+        .all(|cond| evaluate_advance_condition(&input, cond))
+}
+
+pub(super) fn world_state_condition_input(state: &WorldState) -> serde_json::Value {
+    serde_json::json!({
+        "current_time_minutes": state.current_time_minutes,
+        "active_stage_ids": state.active_objective_stage_ids,
+        "stages_completed": state.stages_completed,
+        "actor_stats": state.actor_stats,
+        "pair_stats": state.pair_stats,
+        "story_vars": state.story_vars,
+    })
+}
+
+pub(super) fn evaluate_advance_condition(
+    input: &serde_json::Value,
+    cond: &AdvanceCondition,
+) -> bool {
+    let actual = resolve_path(input, &cond.path);
+    match cond.operator.as_str() {
+        "equal" => actual == Some(&cond.value),
+        "greater_than" => compare_numbers(&actual, &cond.value, |a, b| a > b),
+        "less_than" => compare_numbers(&actual, &cond.value, |a, b| a < b),
+        "gte" => compare_numbers(&actual, &cond.value, |a, b| a >= b),
+        "lte" => compare_numbers(&actual, &cond.value, |a, b| a <= b),
+        "not_equal" => actual != Some(&cond.value),
+        "array_contains" => actual
+            .and_then(|v| v.as_array())
+            .map(|arr| arr.contains(&cond.value))
+            .unwrap_or(false),
+        _ => false,
+    }
+}
+
+pub(super) fn resolve_path<'a>(
+    value: &'a serde_json::Value,
+    path: &str,
+) -> Option<&'a serde_json::Value> {
+    path.split('.')
+        .try_fold(value, |acc, key| acc.as_object()?.get(key))
+}
+
+pub(super) fn compare_numbers(
+    actual: &Option<&serde_json::Value>,
+    expected: &serde_json::Value,
+    cmp: impl Fn(f64, f64) -> bool,
+) -> bool {
+    let Some(a) = actual.and_then(|v| v.as_f64()) else {
+        return false;
+    };
+    let Some(b) = expected.as_f64() else {
+        return false;
+    };
+    cmp(a, b)
+}
+
+pub(super) fn time_reached_signal(current_time_minutes: u32) -> String {
+    let hour24 = (current_time_minutes / 60) % 24;
+    let minute = current_time_minutes % 60;
+    format!("time_reached:{hour24:02}:{minute:02}")
+}
+
+pub(super) fn time_reached_signals(
+    previous_time_minutes: u32,
+    current_time_minutes: u32,
+) -> Vec<String> {
+    ((previous_time_minutes + 1)..=current_time_minutes)
+        .map(time_reached_signal)
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::{advance_objective_for_signal, fallback_stage_to_activate};
@@ -281,82 +359,4 @@ mod tests {
             Some(&(9 * 60 + 12))
         );
     }
-}
-
-pub(super) fn advance_conditions_met(state: &WorldState, conditions: &[AdvanceCondition]) -> bool {
-    if conditions.is_empty() {
-        return true;
-    }
-    let input = world_state_condition_input(state);
-    conditions
-        .iter()
-        .all(|cond| evaluate_advance_condition(&input, cond))
-}
-
-pub(super) fn world_state_condition_input(state: &WorldState) -> serde_json::Value {
-    serde_json::json!({
-        "current_time_minutes": state.current_time_minutes,
-        "active_stage_ids": state.active_objective_stage_ids,
-        "stages_completed": state.stages_completed,
-        "actor_stats": state.actor_stats,
-        "pair_stats": state.pair_stats,
-        "story_vars": state.story_vars,
-    })
-}
-
-pub(super) fn evaluate_advance_condition(
-    input: &serde_json::Value,
-    cond: &AdvanceCondition,
-) -> bool {
-    let actual = resolve_path(input, &cond.path);
-    match cond.operator.as_str() {
-        "equal" => actual == Some(&cond.value),
-        "greater_than" => compare_numbers(&actual, &cond.value, |a, b| a > b),
-        "less_than" => compare_numbers(&actual, &cond.value, |a, b| a < b),
-        "gte" => compare_numbers(&actual, &cond.value, |a, b| a >= b),
-        "lte" => compare_numbers(&actual, &cond.value, |a, b| a <= b),
-        "not_equal" => actual != Some(&cond.value),
-        "array_contains" => actual
-            .and_then(|v| v.as_array())
-            .map(|arr| arr.contains(&cond.value))
-            .unwrap_or(false),
-        _ => false,
-    }
-}
-
-pub(super) fn resolve_path<'a>(
-    value: &'a serde_json::Value,
-    path: &str,
-) -> Option<&'a serde_json::Value> {
-    path.split('.')
-        .try_fold(value, |acc, key| acc.as_object()?.get(key))
-}
-
-pub(super) fn compare_numbers(
-    actual: &Option<&serde_json::Value>,
-    expected: &serde_json::Value,
-    cmp: impl Fn(f64, f64) -> bool,
-) -> bool {
-    let Some(a) = actual.and_then(|v| v.as_f64()) else {
-        return false;
-    };
-    let Some(b) = expected.as_f64() else {
-        return false;
-    };
-    cmp(a, b)
-}
-
-pub(super) fn time_reached_signal(current_time_minutes: u32) -> String {
-    let hour24 = (current_time_minutes / 60) % 24;
-    let minute = current_time_minutes % 60;
-    format!("time_reached:{hour24:02}:{minute:02}")
-}
-
-pub(super) fn time_reached_signals(
-    previous_time_minutes: u32,
-    current_time_minutes: u32,
-) -> Vec<String> {
-    ((previous_time_minutes + 1)..=current_time_minutes)
-        .map(time_reached_signal)
-        .collect()
 }

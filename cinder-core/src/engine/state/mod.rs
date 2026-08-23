@@ -671,11 +671,11 @@ impl WorldState {
 
     pub fn remove_item(&mut self, item_id: &str) -> bool {
         let mut has = false;
-        if let Some(count) = self.player_inventory.get_mut(item_id) {
-            if *count > 0 {
-                *count -= 1;
-                has = true;
-            }
+        if let Some(count) = self.player_inventory.get_mut(item_id)
+            && *count > 0
+        {
+            *count -= 1;
+            has = true;
         }
         if let Some(0) = self.player_inventory.get(item_id) {
             self.player_inventory.remove(item_id);
@@ -736,11 +736,11 @@ impl WorldState {
             ItemStorageTarget::CurrentRoom => {
                 let key = room_item_key(current_room_id, item_id);
                 let mut removed = false;
-                if let Some(count) = self.room_item_stock.get_mut(&key) {
-                    if *count > 0 {
-                        *count -= 1;
-                        removed = true;
-                    }
+                if let Some(count) = self.room_item_stock.get_mut(&key)
+                    && *count > 0
+                {
+                    *count -= 1;
+                    removed = true;
                 }
                 if let Some(0) = self.room_item_stock.get(&key) {
                     self.room_item_stock.remove(&key);

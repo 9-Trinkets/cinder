@@ -72,31 +72,23 @@ pub struct PanelConfig {
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
+#[derive(Default)]
 pub enum PanelDataSource {
+    #[default]
     ActorsInRoom,
     Exits,
     Features,
 }
 
-impl Default for PanelDataSource {
-    fn default() -> Self {
-        Self::ActorsInRoom
-    }
-}
-
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
+#[derive(Default)]
 pub enum PanelSelectAction {
+    #[default]
     ExecuteCommand,
     PrefillInput,
     SwitchRoom,
     FollowActor,
-}
-
-impl Default for PanelSelectAction {
-    fn default() -> Self {
-        Self::ExecuteCommand
-    }
 }
 
 fn default_true() -> bool {

@@ -82,9 +82,7 @@ pub fn advance_to_next_act(
     if content.act_cast.is_empty() {
         return None;
     }
-    let Some(mut series) = state.act_series.clone() else {
-        return None;
-    };
+    let mut series = state.act_series.clone()?;
     if series.current_act_number == 0 || series.current_cast_member_id.is_empty() {
         bootstrap_first_act(content, state);
         return Some(
@@ -372,15 +370,15 @@ fn is_current_cast_member_reference(state: &WorldState, actor_id: &str) -> bool 
 }
 
 fn choose_next_cast_member_id(content: &ContentPack, series: &ActSeriesState) -> String {
-    if series.current_act_number >= 3 && series.current_act_number % 2 == 1 {
-        if let Some((member_id, _)) = series
+    if series.current_act_number >= 3
+        && series.current_act_number % 2 == 1
+        && let Some((member_id, _)) = series
             .cast_members
             .iter()
             .filter(|(member_id, _)| **member_id != series.current_cast_member_id)
             .min_by_key(|(_, member)| member.last_seen_act.unwrap_or(0))
-        {
-            return member_id.clone();
-        }
+    {
+        return member_id.clone();
     }
     if let Some(definition) = content.act_cast.get(series.next_seed_index) {
         return definition.id.clone();

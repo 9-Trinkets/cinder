@@ -96,7 +96,7 @@ fn resolved_created_item_id(
     }
     Some(
         (!item_creation.creates_item_story_var.is_empty())
-            .then(|| item_creation.creates_item_story_var.as_str())
+            .then_some(item_creation.creates_item_story_var.as_str())
             .and_then(|var_key| context.planner_state.story_vars.get(var_key))
             .map(|value| value.to_string())
             .unwrap_or_else(|| item_id.clone()),
@@ -270,32 +270,32 @@ pub(super) fn plan_content_command(
             consumer_name,
         });
     }
-    if !action.available.consumes_any.is_empty() {
-        if let Some(item_id) = action.available.consumes_any.iter().find(|id| {
+    if !action.available.consumes_any.is_empty()
+        && let Some(item_id) = action.available.consumes_any.iter().find(|id| {
             context.planner_state.has_item_in_storage(
                 id,
                 to_item_storage(action.available.consumes_any_storage.clone()),
                 context.current_room_id,
             )
-        }) {
-            let (consumer_id, consumer_name) = match action.item_consumer {
-                ActionItemConsumerTarget::None => (None, None),
-                ActionItemConsumerTarget::Player => {
-                    (Some("player".to_string()), Some("You".to_string()))
-                }
-                ActionItemConsumerTarget::FirstActorInRoom => {
-                    let recipient =
-                        first_actor_in_room(content, context).expect("actor should be in room");
-                    (Some(recipient.id.clone()), Some(recipient.name.clone()))
-                }
-            };
-            planned.events.push(WorldEvent::ItemConsumed {
-                item_id: item_id.clone(),
-                storage: to_item_storage(action.available.consumes_any_storage.clone()),
-                consumer_id,
-                consumer_name,
-            });
-        }
+        })
+    {
+        let (consumer_id, consumer_name) = match action.item_consumer {
+            ActionItemConsumerTarget::None => (None, None),
+            ActionItemConsumerTarget::Player => {
+                (Some("player".to_string()), Some("You".to_string()))
+            }
+            ActionItemConsumerTarget::FirstActorInRoom => {
+                let recipient =
+                    first_actor_in_room(content, context).expect("actor should be in room");
+                (Some(recipient.id.clone()), Some(recipient.name.clone()))
+            }
+        };
+        planned.events.push(WorldEvent::ItemConsumed {
+            item_id: item_id.clone(),
+            storage: to_item_storage(action.available.consumes_any_storage.clone()),
+            consumer_id,
+            consumer_name,
+        });
     }
 
     metadata.advances_time

@@ -168,7 +168,7 @@ pub fn action_is_available(
         return false;
     }
 
-    let room_is_flagged = state.flagged_rooms.contains(&context_room_id.to_string());
+    let room_is_flagged = state.flagged_rooms.contains(context_room_id);
     if a.requires_room_flagged && !room_is_flagged {
         return false;
     }

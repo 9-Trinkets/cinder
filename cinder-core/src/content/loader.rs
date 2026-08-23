@@ -1,5 +1,5 @@
 use crate::content::types::{
-    ActCastMember, ActorDefinition, ActionsDefinition, BeatsDefinition, ContentPack,
+    ActCastMember, ActionsDefinition, ActorDefinition, BeatsDefinition, ContentPack,
     ContentSettingsDefinition, ItemDefinition, MovementConfigDefinition, OpeningDefinition,
     OpeningMenuDefinition, OpeningMovieDefinition, PresentationDefinition, RoomDefinition,
     RuleBundleProgressRef, RuleBundlesDefinition, SpeechConfigDefinition, SpeechIntentsConfig,
@@ -53,10 +53,10 @@ pub fn available_packs() -> Vec<String> {
             let path = entry.path();
             if path.is_dir() {
                 let settings_path = path.join("settings.json");
-                if settings_path.exists() {
-                    if let Some(name) = path.file_name().and_then(|n| n.to_str()) {
-                        packs.push(name.to_string());
-                    }
+                if settings_path.exists()
+                    && let Some(name) = path.file_name().and_then(|n| n.to_str())
+                {
+                    packs.push(name.to_string());
                 }
             }
         }

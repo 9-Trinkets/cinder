@@ -4,30 +4,22 @@ use std::collections::BTreeMap;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
+#[derive(Default)]
 pub enum VariableScope {
+    #[default]
     Game,
     Act,
     Stage,
 }
 
-impl Default for VariableScope {
-    fn default() -> Self {
-        Self::Game
-    }
-}
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
+#[derive(Default)]
 pub enum VariableType {
+    #[default]
     String,
     Bool,
     Int,
-}
-
-impl Default for VariableType {
-    fn default() -> Self {
-        Self::String
-    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -40,20 +32,11 @@ pub struct VariableDeclaration {
     pub scope: VariableScope,
 }
 
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Serialize, Default)]
 pub struct VariableStore {
     values: BTreeMap<String, String>,
     #[serde(skip)]
     declarations: BTreeMap<String, VariableDeclaration>,
-}
-
-impl Default for VariableStore {
-    fn default() -> Self {
-        Self {
-            values: BTreeMap::new(),
-            declarations: BTreeMap::new(),
-        }
-    }
 }
 
 impl<'de> Deserialize<'de> for VariableStore {

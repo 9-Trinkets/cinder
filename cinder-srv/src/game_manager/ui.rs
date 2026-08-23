@@ -265,8 +265,6 @@ pub(super) fn build_ui_snapshot(
                 .collect(),
         });
 
-    let action_bar_actions = action_bar_actions;
-
     let bar_ids: Vec<&str> = action_bar_actions
         .iter()
         .map(|action| action.id.as_str())
