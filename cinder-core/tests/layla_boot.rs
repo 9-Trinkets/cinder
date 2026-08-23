@@ -430,6 +430,7 @@ fn layla_attacking_an_ally_is_rejected_at_planning() {
         golem.id.as_str(),
         cinder_core::engine::state::ActorStance::Allied,
     );
+    let expected_hp = converted.actor_stat(golem.id.as_str(), "hp");
     let ally_runtime = cinder_core::CinderRuntime::from_state(content.clone(), converted, false)
         .expect("runtime from converted state");
 
@@ -444,7 +445,7 @@ fn layla_attacking_an_ally_is_rejected_at_planning() {
     let after = ally_runtime.export_state().expect("state export");
     assert_eq!(
         after.actor_stat(golem.id.as_str(), "hp"),
-        8,
+        expected_hp,
         "an ally must not take damage"
     );
 }
