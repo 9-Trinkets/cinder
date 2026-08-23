@@ -625,7 +625,7 @@ fn check_encirclement(
             continue;
         }
         let room_id = state.actor_room_id(&actor.id, &actor.room_id).to_string();
-        let neighbors = orthogonal_neighbors(&room_id);
+        let neighbors = content.adjacent_room_ids(&room_id);
         if neighbors.is_empty() {
             continue;
         }
@@ -649,22 +649,4 @@ fn check_encirclement(
             break;
         }
     }
-}
-
-fn orthogonal_neighbors(room_id: &str) -> Vec<String> {
-    let bytes = room_id.as_bytes();
-    if bytes.len() != 4 || bytes[0] != b'r' || bytes[2] != b'c' {
-        return vec![];
-    }
-    let row = (bytes[1] - b'0') as i32;
-    let col = (bytes[3] - b'0') as i32;
-    let mut neighbors = Vec::new();
-    for (dr, dc) in [(-1, 0), (1, 0), (0, -1), (0, 1)] {
-        let nr = row + dr;
-        let nc = col + dc;
-        if nr >= 1 && nr <= 9 && nc >= 1 && nc <= 9 {
-            neighbors.push(format!("r{nr}c{nc}"));
-        }
-    }
-    neighbors
 }

@@ -85,9 +85,7 @@ impl ContentPack {
     }
 
     pub fn action(&self, action_id: &str) -> Option<&ActionDefinition> {
-        self.action_index
-            .get(action_id)
-            .map(|&i| &self.actions[i])
+        self.action_index.get(action_id).map(|&i| &self.actions[i])
     }
 
     pub fn menu(&self, menu_id: &str) -> Option<&OpeningMenuDefinition> {
@@ -133,6 +131,29 @@ impl ContentPack {
             .unreachable_rooms
             .iter()
             .any(|id| id == room_id)
+    }
+
+    /// Rooms directly connected to `room_id` by an exit in either direction.
+    pub fn adjacent_room_ids(&self, room_id: &str) -> Vec<String> {
+        let mut neighbors: Vec<String> = Vec::new();
+        if let Some(room) = self.room(room_id) {
+            for exit in &room.exits {
+                if exit.room_id != room_id && !neighbors.contains(&exit.room_id) {
+                    neighbors.push(exit.room_id.clone());
+                }
+            }
+        }
+        for other in &self.rooms {
+            if other.id == room_id {
+                continue;
+            }
+            if other.exits.iter().any(|exit| exit.room_id == room_id)
+                && !neighbors.contains(&other.id)
+            {
+                neighbors.push(other.id.clone());
+            }
+        }
+        neighbors
     }
 
     pub fn resolve_actor(&self, raw_target: &str) -> Option<&ActorDefinition> {
