@@ -442,8 +442,8 @@ fn layla_defeated_golem_vanishes_from_room_presence() {
         .entry("golem-dark-nw".to_string())
         .or_default()
         .insert("hp".to_string(), 1);
-    state.set_stance("golem-dark-nw", ActorStance::Allied);
-    state.set_follows_player("golem-dark-nw", true);
+    // Allies can no longer be attacked, so the killable case is a hostile.
+    state.set_stance("golem-dark-nw", ActorStance::Hostile);
 
     apply_events(
         &mut state,
@@ -491,6 +491,10 @@ fn layla_allies_boost_damage_and_hostiles_do_not() {
         .or_default()
         .insert("strength".to_string(), 3);
     state.set_stance("golem-pale-ne", ActorStance::Allied);
+    // The ally must share the attack room to contribute.
+    state
+        .actor_room_overrides
+        .insert("golem-pale-ne".to_string(), "r3c3".to_string());
     // A hostile golem's strength must never add to the player's attacks.
     state
         .actor_stats
@@ -499,7 +503,7 @@ fn layla_allies_boost_damage_and_hostiles_do_not() {
         .insert("strength".to_string(), 9);
     state.set_stance("golem-pale-se", ActorStance::Hostile);
 
-    apply_events(
+    let output = apply_events(
         &mut state,
         &content,
         &[layla_attack_event("r3c3", "golem-dark-nw")],
@@ -515,5 +519,77 @@ fn layla_allies_boost_damage_and_hostiles_do_not() {
         golem_hp, 13,
         "expected exactly player (2) + one ally (3) damage, hp={}",
         golem_hp
+    );
+    assert!(
+        output.lines.iter().any(|l| l.contains("strikes alongside")),
+        "expected ally join narration, got: {:?}",
+        output.lines
+    );
+}
+
+#[test]
+fn layla_distant_allies_do_not_boost_damage() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c3".to_string();
+    state
+        .actor_stats
+        .entry("golem-dark-nw".to_string())
+        .or_default()
+        .insert("hp".to_string(), 18);
+    // Allied but in its home room (r3c7), far from the attack at r3c3.
+    state
+        .actor_stats
+        .entry("golem-pale-ne".to_string())
+        .or_default()
+        .insert("strength".to_string(), 9);
+    state.set_stance("golem-pale-ne", ActorStance::Allied);
+
+    apply_events(
+        &mut state,
+        &content,
+        &[layla_attack_event("r3c3", "golem-dark-nw")],
+    );
+
+    let golem_hp = state
+        .actor_stats
+        .get("golem-dark-nw")
+        .and_then(|s| s.get("hp"))
+        .copied()
+        .unwrap_or(18);
+    assert_eq!(
+        golem_hp, 16,
+        "an ally outside the attack room must not add damage, hp={}",
+        golem_hp
+    );
+}
+
+#[test]
+fn layla_cannot_attack_an_ally() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c3".to_string();
+    state
+        .actor_stats
+        .entry("golem-dark-nw".to_string())
+        .or_default()
+        .insert("hp".to_string(), 8);
+    state.set_stance("golem-dark-nw", ActorStance::Allied);
+
+    let output = apply_events(
+        &mut state,
+        &content,
+        &[layla_attack_event("r3c3", "golem-dark-nw")],
+    );
+
+    let golem_hp = state
+        .actor_stats
+        .get("golem-dark-nw")
+        .and_then(|s| s.get("hp"))
+        .copied()
+        .unwrap_or(8);
+    assert_eq!(golem_hp, 8, "allies must never take damage from attacks");
+    assert!(
+        output.lines.is_empty(),
+        "attacking an ally should be refused silently at the mechanism level, got: {:?}",
+        output.lines
     );
 }

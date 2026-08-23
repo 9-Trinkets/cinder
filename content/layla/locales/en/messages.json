@@ -1,5 +1,7 @@
 {
   "combat.attack_hit": "The {actor} takes {damage} damage. ({remaining} HP remaining)",
+  "combat.ally_joins_attack": "The {actor} strikes alongside you!",
+  "combat.cannot_attack_ally": "The {actor} fights at your side; you cannot raise a hand against it.",
   "combat.actor_defeated": "The {actor} crumbles to dust.",
   "combat.actor_wakes_hostile": "The {actor}'s eyes snap open. It turns to face you.",
   "combat.hostile_strike": "The {actor} strikes you! You take {damage} damage. ({remaining} HP remaining)",

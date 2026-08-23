@@ -400,3 +400,51 @@ fn layla_woken_golem_kills_ignored_player() {
         "a woken golem sharing the player's room must kill them while ignored"
     );
 }
+
+#[test]
+fn layla_attacking_an_ally_is_rejected_at_planning() {
+    let content = load_named_pack("layla", None).expect("layla pack must load");
+    let runtime =
+        cinder_core::CinderRuntime::new(content.clone(), false).expect("runtime must construct");
+    let state = runtime.export_state().expect("state export");
+    let (path, golem_name) = path_to_nearest_star_golem(&content, &state.current_room_id)
+        .expect("grid always reaches a star-point golem");
+    for label in &path {
+        runtime
+            .run_turn(&format!("go {}", label.to_lowercase()))
+            .expect("walk step must dispatch");
+    }
+    let here = runtime
+        .export_state()
+        .expect("state export")
+        .current_room_id;
+    let golem = content
+        .actors
+        .iter()
+        .find(|a| a.id.starts_with("golem-") && a.room_id == here)
+        .expect("golem present at the reached star point");
+
+    // Simulate a converted ally (the encirclement path is covered elsewhere).
+    let mut converted = runtime.export_state().expect("state export");
+    converted.set_stance(
+        golem.id.as_str(),
+        cinder_core::engine::state::ActorStance::Allied,
+    );
+    let ally_runtime = cinder_core::CinderRuntime::from_state(content.clone(), converted, false)
+        .expect("runtime from converted state");
+
+    let outcome = ally_runtime
+        .run_turn(&format!("attack {}", golem_name.to_lowercase()))
+        .expect("attack input must dispatch a turn");
+    assert!(
+        outcome.text.contains("cannot raise a hand"),
+        "expected ally rejection line, got: {}",
+        outcome.text
+    );
+    let after = ally_runtime.export_state().expect("state export");
+    assert_eq!(
+        after.actor_stat(golem.id.as_str(), "hp"),
+        8,
+        "an ally must not take damage"
+    );
+}

@@ -6,7 +6,7 @@ use crate::content::types::{
 use crate::engine::commands::{resolve_actor_reference_input, unknown_target_token};
 use crate::engine::dialogue_grounding::viewer_participant_id;
 use crate::engine::events::{ObservationMode, WorldEvent};
-use crate::engine::state::{WorldState, display_actor_name};
+use crate::engine::state::{ActorStance, WorldState, display_actor_name};
 use crate::engine::turn_policies::{command_availability_issue, command_unavailable_message};
 use std::collections::BTreeMap;
 
@@ -388,6 +388,29 @@ pub(super) fn plan_move_to_room_target(
     }
 }
 
+/// Attacking an ally is never allowed: emit a locale-authored rejection when
+/// the pack defines one, otherwise a silent rejection (the mechanism still
+/// blocks the attack and its time advance).
+fn ally_attack_rejection(
+    content: &ContentPack,
+    state: &WorldState,
+    action: &ActionDefinition,
+    actor_id: &str,
+    actor_name: &str,
+) -> Option<WorldEvent> {
+    if !action.has_effect(CommandEffect::AttackTarget) {
+        return None;
+    }
+    if state.stance(actor_id) != ActorStance::Allied {
+        return None;
+    }
+    Some(WorldEvent::ActionRejected {
+        message: content
+            .render_message("combat.cannot_attack_ally", &[("actor", actor_name)])
+            .unwrap_or_default(),
+    })
+}
+
 pub(super) fn plan_targeted_state_command(
     content: &ContentPack,
     action: &ActionDefinition,
@@ -425,6 +448,16 @@ pub(super) fn plan_targeted_state_command(
                     .collect();
                 if actors_here.len() == 1 {
                     let actor = &actors_here[0];
+                    if let Some(rejection) = ally_attack_rejection(
+                        content,
+                        context.planner_state,
+                        action,
+                        &actor.id,
+                        &actor.name,
+                    ) {
+                        planned.events.push(rejection);
+                        return false;
+                    }
                     let room_id = context.current_room_id.to_string();
                     let actor_name = content.opening.title.as_str();
                     planned.events.push(WorldEvent::ActorCommandUsed {
@@ -467,6 +500,16 @@ pub(super) fn plan_targeted_state_command(
                 remainder,
             ) {
                 if resolved.actor_in_room {
+                    if let Some(rejection) = ally_attack_rejection(
+                        content,
+                        context.planner_state,
+                        action,
+                        &resolved.actor_id,
+                        &resolved.actor_name,
+                    ) {
+                        planned.events.push(rejection);
+                        return false;
+                    }
                     let room_id = context.current_room_id.to_string();
                     let actor_name = content.opening.title.as_str();
                     planned.events.push(WorldEvent::ActorCommandUsed {

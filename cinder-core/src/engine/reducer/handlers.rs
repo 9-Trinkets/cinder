@@ -616,7 +616,9 @@ pub(super) fn handle_narrative_line(text: &str, lines: &mut Vec<String>) {
 }
 
 pub(super) fn handle_action_rejected(message: &str, lines: &mut Vec<String>) {
-    lines.push(message.to_string());
+    if !message.is_empty() {
+        lines.push(message.to_string());
+    }
 }
 
 pub(super) fn handle_help_shown(
