@@ -232,6 +232,11 @@ pub(super) fn apply_actor_command_realization_effects(
                 if state.flagged_rooms.contains(command_context.room_id) {
                     return false;
                 }
+                // Mechanism backstop: packs with a finite supply refuse
+                // placement once the pool is empty.
+                if content.settings.flag_supply > 0 && state.flags_remaining == 0 {
+                    return false;
+                }
             }
             CommandEffect::RemoveFlag => {
                 if !state.flagged_rooms.contains(command_context.room_id) {
@@ -530,11 +535,16 @@ pub(super) fn apply_new_command_effects(
     if command.has_effect(CommandEffect::PlaceFlag) {
         let room_id = command_context.room_id.to_string();
         state.flagged_rooms.insert(room_id.clone());
+        if content.settings.flag_supply > 0 {
+            state.flags_remaining = state.flags_remaining.saturating_sub(1);
+        }
         check_encirclement(state, content, &room_id, lines, outbox);
     }
     if command.has_effect(CommandEffect::RemoveFlag) {
         let room_id = command_context.room_id.to_string();
-        state.flagged_rooms.remove(&room_id);
+        if state.flagged_rooms.remove(&room_id) && content.settings.flag_supply > 0 {
+            state.flags_remaining += 1;
+        }
     }
     if command.has_effect(CommandEffect::AttackTarget) {
         let Some(target_actor_id) = command_context.target_actor_id else {

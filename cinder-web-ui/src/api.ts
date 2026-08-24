@@ -260,6 +260,8 @@ export interface UiSnapshot {
   act_closure: ActClosureData | null
   game_closure: ActClosureData | null
   inventory: InventoryItem[]
+  flags_remaining: number
+  flag_supply_total: number
   room_consumables: RoomConsumableGroup[]
   crafted_consumable_labels: string[]
   show_relationship_sidebar: boolean

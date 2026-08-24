@@ -238,6 +238,27 @@ fn layla_place_flag_via_runtime() {
 }
 
 #[test]
+fn layla_exhausted_flag_supply_rejects_placement() {
+    let content = load_named_pack("layla", None).expect("layla pack must load");
+    let runtime =
+        cinder_core::CinderRuntime::new(content.clone(), false).expect("runtime must construct");
+    // Drop into a mid-session state with the marker pool empty.
+    let mut state = runtime.export_state().expect("state export");
+    state.flags_remaining = 0;
+    let runtime = cinder_core::CinderRuntime::from_state(content, state, false)
+        .expect("runtime must reconstruct from exported state");
+
+    let outcome = runtime
+        .run_turn("place flag")
+        .expect("place flag must dispatch");
+    assert!(
+        outcome.text.contains("no stone markers"),
+        "expected supply-exhausted rejection, got: {}",
+        outcome.text
+    );
+}
+
+#[test]
 fn layla_attack_dispatches() {
     let content = load_named_pack("layla", None).expect("layla pack must load");
     let runtime = cinder_core::CinderRuntime::new(content, false).expect("runtime must construct");

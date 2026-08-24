@@ -141,6 +141,10 @@ pub struct UiSnapshot {
     pub act_closure: Option<ActClosure>,
     pub game_closure: Option<ActClosure>,
     pub inventory: Vec<InventoryItem>,
+    /// Stone markers left to place; `flag_supply_total` of 0 means the pack
+    /// has no supply limit.
+    pub flags_remaining: u32,
+    pub flag_supply_total: u32,
     pub room_consumables: Vec<RoomConsumableGroup>,
     pub crafted_consumable_labels: Vec<String>,
     pub show_relationship_sidebar: bool,
@@ -430,6 +434,8 @@ pub(super) fn build_ui_snapshot(
                 InventoryItem { label, count }
             })
             .collect(),
+        flags_remaining: state.flags_remaining,
+        flag_supply_total: content.settings.flag_supply,
         room_consumables: {
             content
                 .room_consumables(&current_room_id)

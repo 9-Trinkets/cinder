@@ -122,6 +122,51 @@ fn layla_place_flag_adds_to_flagged_rooms() {
 }
 
 #[test]
+fn layla_flag_supply_decrements_on_place_and_refills_on_pickup() {
+    let (mut content, mut state) = layla_test_state();
+    content.settings.flag_supply = 2;
+    state.flags_remaining = content.settings.flag_supply;
+
+    fn flag_event(room_id: &str, command_id: &str) -> TimestampedWorldEvent {
+        TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
+            actor_id: "player".to_string(),
+            actor_name: "Layla".to_string(),
+            room_id: room_id.to_string(),
+            command_id: command_id.to_string(),
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        })
+    }
+
+    apply_events(
+        &mut state,
+        &content,
+        &[flag_event("r4c4", "place_flag"), flag_event("r3c3", "place_flag")],
+    );
+    assert_eq!(
+        state.flags_remaining, 0,
+        "each placement consumes one marker"
+    );
+
+    // Realization backstop: placing with an empty pool must be refused.
+    let output = apply_events(&mut state, &content, &[flag_event("r2c2", "place_flag")]);
+    assert!(!state.flagged_rooms.contains("r2c2"));
+    assert!(
+        output.lines.is_empty(),
+        "exhausted supply must produce no effects, got: {:?}",
+        output.lines
+    );
+
+    apply_events(&mut state, &content, &[flag_event("r4c4", "pick_up_flag")]);
+    assert_eq!(state.flags_remaining, 1, "picked-up markers return to the pool");
+}
+
+#[test]
 fn layla_pick_up_flag_removes_from_flagged_rooms() {
     let (content, mut state) = layla_test_state();
     state.current_room_id = "r4c4".to_string();

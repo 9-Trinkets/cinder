@@ -569,6 +569,18 @@ pub(super) fn plan_targetless_command(
         .player_command
         .as_ref()
         .unwrap_or_else(|| panic!("action '{}' should define player_command", action.id));
+    // Packs with a finite flag supply refuse placement once the pool is empty.
+    if action.has_effect(CommandEffect::PlaceFlag)
+        && content.settings.flag_supply > 0
+        && context.planner_state.flags_remaining == 0
+    {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content
+                .render_message("flags.exhausted", &[])
+                .unwrap_or_default(),
+        });
+        return false;
+    }
     let room_id = context.current_room_id.to_string();
     let actor_name = content.opening.title.as_str();
     planned.events.push(WorldEvent::ActorCommandUsed {

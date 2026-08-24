@@ -82,6 +82,10 @@ pub struct WorldState {
     /// seeded when a mob wakes and cleared when it leaves hostility.
     #[serde(default)]
     pub next_hostile_strike_at: BTreeMap<String, u32>,
+    /// Stone markers left to place. Seeded from the pack's `flag_supply`;
+    /// packs with a supply of 0 have unlimited markers.
+    #[serde(default)]
+    pub flags_remaining: u32,
 }
 
 /// Discrete stance of an actor toward the player. Mutual exclusion is inherent:
@@ -198,6 +202,7 @@ impl WorldState {
             flagged_rooms: BTreeSet::new(),
             relationships: BTreeMap::new(),
             next_hostile_strike_at: BTreeMap::new(),
+            flags_remaining: content.settings.flag_supply,
         }
     }
 

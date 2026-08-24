@@ -67,6 +67,10 @@ pub struct ContentSettingsDefinition {
     pub show_act_closure: bool,
     #[serde(default)]
     pub show_relationship_sidebar: bool,
+    /// Stone markers available for `place_flag`. 0 means unlimited supply;
+    /// picked-up markers return to the pool.
+    #[serde(default)]
+    pub flag_supply: u32,
     #[serde(default)]
     pub theme: ThemeDefinition,
 }
@@ -118,6 +122,7 @@ impl Default for ContentSettingsDefinition {
             workflow_id: String::default(),
             show_act_closure: true,
             show_relationship_sidebar: false,
+            flag_supply: 0,
             theme: ThemeDefinition::default(),
         }
     }
@@ -450,9 +455,9 @@ pub use world_defs::{
 
 mod command_defs;
 pub use command_defs::{
-    CommandEffect, CommandInputMode, CommandOutcomeMode, CommandTargetMode,
-    ContentEventDefinition, ItemConsumerTarget, ItemStorageTarget, PlayerCommandInputMetadata,
-    PlayerCommandMetadata, PlayerCommandTargetMode, RuleBundleProgressRef,
+    CommandEffect, CommandInputMode, CommandOutcomeMode, CommandTargetMode, ContentEventDefinition,
+    ItemConsumerTarget, ItemStorageTarget, PlayerCommandInputMetadata, PlayerCommandMetadata,
+    PlayerCommandTargetMode, RuleBundleProgressRef,
 };
 
 mod action_defs;
