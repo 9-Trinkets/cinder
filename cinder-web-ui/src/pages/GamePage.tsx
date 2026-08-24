@@ -459,6 +459,12 @@ export default function GamePage() {
     }
     if (trimmed === '?') { openMenu(); return }
     const lowerInput = trimmed.toLowerCase()
+    // Bare "look" opens the look panel; the panel's Room option still prints
+    // the full description.
+    if (lowerInput === 'look' || lowerInput === 'l') {
+      setQuickPanel(current => current === 'look' ? null : 'look')
+      return
+    }
     const matchingBarAction = (uiSnapshot?.action_bar_actions ?? []).find(
       a => a.id.toLowerCase() === lowerInput || a.label.toLowerCase() === lowerInput
     )
@@ -572,6 +578,11 @@ export default function GamePage() {
             ]).map(action => {
               const handleClick = () => {
                 if (busy || gameOver) return
+                // The Look button opens the look panel instead of dumping text.
+                if (action.id === 'look') {
+                  setQuickPanel(current => current === 'look' ? null : 'look')
+                  return
+                }
                 const panel = action.panel as string | undefined
                 if (panel) {
                   const options = uiSnapshot?.panel_options?.[panel] ?? []
