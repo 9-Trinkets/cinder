@@ -314,8 +314,8 @@ pub enum ConversionTrigger {
 }
 
 impl ActorDefinition {
-    pub fn attack_interval_minutes(&self) -> u32 {
-        self.attack_interval_minutes.unwrap_or(4)
+    pub fn attack_interval_minutes(&self, default_minutes: u32) -> u32 {
+        self.attack_interval_minutes.unwrap_or(default_minutes)
     }
 }
 

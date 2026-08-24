@@ -294,14 +294,15 @@ impl WorldState {
             .unwrap_or(default_room_id)
     }
 
-    /// True only when an explicit hp entry records the actor at or below zero.
-    /// Actors without a recorded hp value (never touched by combat) are not
-    /// considered defeated, so packs without hp stats are unaffected.
-    pub fn actor_is_defeated(&self, actor_id: &str) -> bool {
+    /// True only when an explicit entry for the pack's health stat records the
+    /// actor at or below zero. Actors without such an entry (never touched by
+    /// combat) are not considered defeated, so packs without combat are
+    /// unaffected.
+    pub fn actor_is_defeated(&self, actor_id: &str, health_stat_id: &str) -> bool {
         let actor_id = remap_story_actor_id(self, actor_id);
         self.actor_stats
             .get(actor_id)
-            .and_then(|stats| stats.get("hp"))
+            .and_then(|stats| stats.get(health_stat_id))
             .is_some_and(|hp| *hp <= 0)
     }
 

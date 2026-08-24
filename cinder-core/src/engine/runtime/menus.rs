@@ -44,7 +44,9 @@ impl CinderRuntime {
         }
         for actor in &self.content.actors {
             let actor_room = state.actor_room_id(&actor.id, &actor.room_id);
-            if actor_room == current_room_id && !state.actor_is_defeated(&actor.id) {
+            if actor_room == current_room_id
+                && !state.actor_is_defeated(&actor.id, &self.content.settings.combat.health_stat_id)
+            {
                 let actor_name = display_actor_name(&state, actor);
                 options.push(LookOptionItem {
                     id: format!("actor:{}", actor.id),
@@ -95,7 +97,9 @@ impl CinderRuntime {
         let mut options = Vec::new();
         for actor in &self.content.actors {
             let actor_room = state.actor_room_id(&actor.id, &actor.room_id);
-            if actor_room == current_room_id && !state.actor_is_defeated(&actor.id) {
+            if actor_room == current_room_id
+                && !state.actor_is_defeated(&actor.id, &self.content.settings.combat.health_stat_id)
+            {
                 let actor_name = display_actor_name(&state, actor);
                 options.push(LookOptionItem {
                     id: format!("actor:{}", actor.id),

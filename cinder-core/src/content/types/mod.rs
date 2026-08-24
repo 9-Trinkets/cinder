@@ -71,6 +71,9 @@ pub struct ContentSettingsDefinition {
     /// `rules` selects deterministically; `llm` asks a validated LLM planner.
     #[serde(default)]
     pub autonomous_hostility_mode: AutonomousHostilityMode,
+    /// Binds the generic strike mechanism to this pack's stat vocabulary.
+    #[serde(default)]
+    pub combat: CombatSettingsDefinition,
     /// Stone markers available for `place_flag`. 0 means unlimited supply;
     /// picked-up markers return to the pool.
     #[serde(default)]
@@ -121,6 +124,77 @@ pub enum AutonomousHostilityMode {
     Llm,
 }
 
+/// Content-declared vocabulary for the generic hostile-strike mechanism.
+/// The engine never assumes specific stat ids or a player actor id; packs
+/// bind the mechanism to their own stats by filling this in.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct CombatSettingsDefinition {
+    /// Actor id that strikes are directed at and whose death ends the game.
+    #[serde(default = "default_player_actor_id")]
+    pub player_actor_id: String,
+    /// Stat id consulted for alive/defeated checks.
+    #[serde(default = "default_health_stat_id")]
+    pub health_stat_id: String,
+    /// Stat id read from the attacker when computing damage.
+    #[serde(default = "default_attack_stat_id")]
+    pub attack_stat_id: String,
+    /// Stat id read from the defender when computing damage.
+    #[serde(default = "default_defense_stat_id")]
+    pub defense_stat_id: String,
+    /// Lower bound for a single strike's damage after mitigation.
+    #[serde(default = "default_minimum_damage")]
+    pub minimum_damage: i32,
+    /// Cooldown used when an actor does not declare its own interval.
+    #[serde(default = "default_attack_interval_minutes")]
+    pub default_attack_interval_minutes: u32,
+    /// Narration shown when the player actor's health stat reaches zero.
+    #[serde(default = "default_player_defeat_text")]
+    pub player_defeat_text: String,
+}
+
+impl Default for CombatSettingsDefinition {
+    fn default() -> Self {
+        Self {
+            player_actor_id: default_player_actor_id(),
+            health_stat_id: default_health_stat_id(),
+            attack_stat_id: default_attack_stat_id(),
+            defense_stat_id: default_defense_stat_id(),
+            minimum_damage: default_minimum_damage(),
+            default_attack_interval_minutes: default_attack_interval_minutes(),
+            player_defeat_text: default_player_defeat_text(),
+        }
+    }
+}
+
+fn default_player_actor_id() -> String {
+    "player".to_string()
+}
+
+fn default_health_stat_id() -> String {
+    "hp".to_string()
+}
+
+fn default_attack_stat_id() -> String {
+    "strength".to_string()
+}
+
+fn default_defense_stat_id() -> String {
+    "defense".to_string()
+}
+
+fn default_minimum_damage() -> i32 {
+    1
+}
+
+pub(super) fn default_attack_interval_minutes() -> u32 {
+    4
+}
+
+fn default_player_defeat_text() -> String {
+    "The world tilts. Your legs give out. The last thing you feel is the cold stone beneath your palms."
+        .to_string()
+}
+
 impl Default for ContentSettingsDefinition {
     fn default() -> Self {
         Self {
@@ -141,6 +215,7 @@ impl Default for ContentSettingsDefinition {
             show_act_closure: true,
             show_relationship_sidebar: false,
             autonomous_hostility_mode: AutonomousHostilityMode::Rules,
+            combat: CombatSettingsDefinition::default(),
             flag_supply: 0,
             theme: ThemeDefinition::default(),
         }

@@ -64,9 +64,10 @@ pub(super) fn handle_hostile_strike(
     actor_id: &str,
     lines: &mut Vec<String>,
 ) {
+    let combat = &content.settings.combat;
     if state.phase != GamePhase::Active
         || state.stance(actor_id) != ActorStance::Hostile
-        || state.actor_stat(actor_id, "hp") <= 0
+        || state.actor_stat(actor_id, &combat.health_stat_id) <= 0
     {
         return;
     }
@@ -80,12 +81,13 @@ pub(super) fn handle_hostile_strike(
     if state.actor_room_id(actor_id, &default_room_id) != state.current_room_id {
         return;
     }
-    let damage =
-        (state.actor_stat(actor_id, "strength") - state.actor_stat("player", "defense")).max(1);
+    let damage = (state.actor_stat(actor_id, &combat.attack_stat_id)
+        - state.actor_stat(&combat.player_actor_id, &combat.defense_stat_id))
+    .max(combat.minimum_damage);
     state
-        .adjust_actor_stat("player", "hp", -damage)
+        .adjust_actor_stat(&combat.player_actor_id, &combat.health_stat_id, -damage)
         .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
-    let remaining = state.actor_stat("player", "hp");
+    let remaining = state.actor_stat(&combat.player_actor_id, &combat.health_stat_id);
     let actor_name = actor_display_name(content, actor_id);
     if let Some(line) = content.render_message(
         "combat.hostile_strike",
@@ -99,12 +101,12 @@ pub(super) fn handle_hostile_strike(
     }
     let interval = content
         .actor(actor_id)
-        .map(|actor| actor.attack_interval_minutes())
-        .unwrap_or(4);
+        .map(|actor| actor.attack_interval_minutes(combat.default_attack_interval_minutes))
+        .unwrap_or(combat.default_attack_interval_minutes);
     state
         .next_hostile_strike_at
         .insert(actor_id.to_string(), state.current_time_minutes + interval);
-    defeat_player_if_dead(state, lines);
+    defeat_player_if_dead(state, content, lines);
 }
 
 pub(super) fn handle_current_room_observed(
@@ -473,10 +475,10 @@ pub(super) fn handle_player_moved(
         .map(|(actor_id, _)| actor_id.clone())
         .collect();
     for follower_id in follower_actor_ids {
-        if follower_id == "player" {
+        if follower_id == content.settings.combat.player_actor_id {
             continue;
         }
-        if state.actor_stat(&follower_id, "hp") <= 0 {
+        if state.actor_stat(&follower_id, &content.settings.combat.health_stat_id) <= 0 {
             continue;
         }
         let default_room_id = content
@@ -788,7 +790,7 @@ pub(super) fn handle_item_consumed(
         .unwrap_or(item_id);
     let room_id = state.current_room_id.clone();
     if state.remove_item_from_storage(item_id, storage, &room_id) {
-        if consumer_id == Some("player") {
+        if consumer_id == Some(content.settings.combat.player_actor_id.as_str()) {
             lines.push(format!("You finish the {label}."));
         } else if let Some(consumer_name) = consumer_name {
             lines.push(format!("{consumer_name} accepts the {label}."));

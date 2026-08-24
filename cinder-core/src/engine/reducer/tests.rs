@@ -4,14 +4,14 @@ use crate::content::loader::{load_default_pack, load_named_pack};
 use crate::content::types::{
     ActionDefinition, ActionItemCreation, ActionItemStorageTarget, ActorDefinition,
     ActorPromptContext, AdvanceCondition, AdvanceSignal, BeatDefinition, BeatsDefinition,
-    CommandEffect, CommandInputMode, CommandTargetMode, ContentPack, ContentSettingsDefinition,
-    ItemDefinition, ItemStorageTarget, OpeningDefinition, PresentationDefinition, RoomDefinition,
-    RoomExitDefinition, RoomFeatureDefinition, RuleBundleCompletionDefinition,
-    RuleBundleDefinition, RuleBundleGuidanceDefinition, RuleBundleProgressDefinition,
-    RuleBundleProgressKeyDefinition, RuleBundleProgressRef, RuleBundlesDefinition, StatDefinition,
-    StatsDefinition,
+    CombatSettingsDefinition, CommandEffect, CommandInputMode, CommandTargetMode, ContentPack,
+    ContentSettingsDefinition, ItemDefinition, ItemStorageTarget, OpeningDefinition,
+    PresentationDefinition, RoomDefinition, RoomExitDefinition, RoomFeatureDefinition,
+    RuleBundleCompletionDefinition, RuleBundleDefinition, RuleBundleGuidanceDefinition,
+    RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition, RuleBundleProgressRef,
+    RuleBundlesDefinition, StatDefinition, StatsDefinition,
 };
-use crate::engine::state::ConversationMemoryKind;
+use crate::engine::state::{ActorStance, ConversationMemoryKind, GamePhase};
 use serde_json::json;
 use std::collections::{BTreeMap, HashMap};
 
@@ -914,5 +914,88 @@ fn menu_opened_emits_opening_narrative_lines() {
             .lines
             .iter()
             .any(|line| line == "Dad opens the fridge, glances back at Ella, and waits.")
+    );
+}
+
+#[test]
+fn hostile_strike_uses_pack_declared_combat_vocabulary() {
+    let mut pack = reducer_test_pack();
+    pack.stats.actor.insert(
+        "vitality".to_string(),
+        StatDefinition {
+            default: 10,
+            ..StatDefinition::default()
+        },
+    );
+    pack.stats
+        .actor
+        .insert("fury".to_string(), StatDefinition::default());
+    pack.stats
+        .actor
+        .insert("ward".to_string(), StatDefinition::default());
+    for actor in &mut pack.actors {
+        actor.initial_stats.insert("vitality".to_string(), 10);
+        actor.initial_stats.insert("ward".to_string(), 0);
+    }
+    pack.settings.combat = CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_NAME.to_string(),
+        health_stat_id: "vitality".to_string(),
+        attack_stat_id: "fury".to_string(),
+        defense_stat_id: "ward".to_string(),
+        minimum_damage: 2,
+        default_attack_interval_minutes: 7,
+        ..CombatSettingsDefinition::default()
+    };
+    let mut state = WorldState::new(&pack);
+    state
+        .actor_stats
+        .entry(ACTOR_A_ID.to_string())
+        .or_default()
+        .insert("fury".to_string(), 5);
+    state.set_stance(ACTOR_A_ID, ActorStance::Hostile);
+    let events = [TimestampedWorldEvent::now(WorldEvent::HostileStrike {
+        actor_id: ACTOR_A_ID.to_string(),
+    })];
+
+    apply_events(&mut state, &pack, &events);
+
+    assert_eq!(state.actor_stat(ACTOR_A_NAME, "vitality"), 5);
+    assert_eq!(
+        state.next_hostile_strike_at.get(ACTOR_A_ID),
+        Some(&(state.current_time_minutes + 7))
+    );
+}
+
+#[test]
+fn player_defeat_narration_and_phase_come_from_content() {
+    let mut pack = reducer_test_pack();
+    let defeat_text = "The lounge lights fade for good.";
+    pack.settings.combat = CombatSettingsDefinition {
+        player_actor_id: ACTOR_B_NAME.to_string(),
+        health_stat_id: "stamina".to_string(),
+        attack_stat_id: "confidence".to_string(),
+        minimum_damage: 9,
+        player_defeat_text: defeat_text.to_string(),
+        ..CombatSettingsDefinition::default()
+    };
+    let mut state = WorldState::new(&pack);
+    // Move Casey into the player's room so the strike is in range.
+    state
+        .actor_room_overrides
+        .insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
+    state.set_stance(ACTOR_C_ID, ActorStance::Hostile);
+    // Casey shares the lounge with the player actor (Blair).
+    let events = [TimestampedWorldEvent::now(WorldEvent::HostileStrike {
+        actor_id: ACTOR_C_ID.to_string(),
+    })];
+
+    let output = apply_events(&mut state, &pack, &events);
+
+    assert_eq!(state.phase, GamePhase::GameEnded);
+    assert_eq!(output.phase, GamePhase::GameEnded);
+    assert!(
+        output.lines.iter().any(|line| line == defeat_text),
+        "expected pack-authored defeat line, got {:?}",
+        output.lines
     );
 }

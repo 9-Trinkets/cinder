@@ -92,7 +92,7 @@ pub(crate) fn resolve_actor_reference_input(
     match_actor_reference(
         state,
         content.actors.iter().filter(|actor| {
-            !state.actor_is_defeated(&actor.id)
+            !state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
                 && state.actor_room_id(&actor.id, &actor.room_id) == current_room_id
         }),
         remainder,
@@ -107,10 +107,9 @@ pub(crate) fn resolve_actor_reference_input(
     .or_else(|| {
         match_actor_reference(
             state,
-            content
-                .actors
-                .iter()
-                .filter(|actor| !state.actor_is_defeated(&actor.id)),
+            content.actors.iter().filter(|actor| {
+                !state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
+            }),
             remainder,
             &content.settings.act_member_alias,
         )

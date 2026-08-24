@@ -253,7 +253,7 @@ pub(super) fn apply_actor_command_realization_effects(
                 {
                     return false;
                 }
-                if state.actor_stat(target_actor_id, "hp") <= 0 {
+                if state.actor_stat(target_actor_id, &content.settings.combat.health_stat_id) <= 0 {
                     return false;
                 }
                 if state.stance(target_actor_id) == ActorStance::Allied {
@@ -550,21 +550,27 @@ pub(super) fn apply_new_command_effects(
         let Some(target_actor_id) = command_context.target_actor_id else {
             return;
         };
+        let combat = &content.settings.combat;
         // Mechanism backstop: allies are never valid targets, even if a pack
         // omits the planning-side message.
         if state.stance(target_actor_id) == ActorStance::Allied {
             return;
         }
-        let player_str = state.actor_stat("player", "strength");
-        let target_def = state.actor_stat(target_actor_id, "defense");
-        let base_damage = (player_str - target_def).max(1);
+        let player_attack = state.actor_stat(&combat.player_actor_id, &combat.attack_stat_id);
+        let target_defense = state.actor_stat(target_actor_id, &combat.defense_stat_id);
+        let base_damage = (player_attack - target_defense).max(combat.minimum_damage);
         let allied_participants = room_allies(state, content, command_context.room_id);
         let ally_damage = allied_participants
             .iter()
-            .map(|actor_id| state.actor_stat(actor_id, "strength").max(0))
+            .map(|actor_id| state.actor_stat(actor_id, &combat.attack_stat_id).max(0))
             .sum::<i32>();
         let total_damage = base_damage + ally_damage;
-        let remaining = adjust_actor_stat(state, target_actor_id, "hp", -total_damage);
+        let remaining = adjust_actor_stat(
+            state,
+            target_actor_id,
+            &combat.health_stat_id,
+            -total_damage,
+        );
         let target_name = actor_display_name(content, target_actor_id);
         if let Some(line) = content.render_message(
             "combat.attack_hit",
@@ -577,7 +583,7 @@ pub(super) fn apply_new_command_effects(
             lines.push(line);
         }
         for ally_id in &allied_participants {
-            let ally_damage = state.actor_stat(ally_id, "strength").max(0);
+            let ally_damage = state.actor_stat(ally_id, &combat.attack_stat_id).max(0);
             let ally_name = actor_display_name(content, ally_id);
             if let Some(line) = content.render_message(
                 "combat.ally_joins_attack",
@@ -607,8 +613,8 @@ pub(super) fn apply_new_command_effects(
             // attack cooldown elapses.
             let interval = content
                 .actor(target_actor_id)
-                .map(|actor| actor.attack_interval_minutes())
-                .unwrap_or(4);
+                .map(|actor| actor.attack_interval_minutes(combat.default_attack_interval_minutes))
+                .unwrap_or(combat.default_attack_interval_minutes);
             state.next_hostile_strike_at.insert(
                 target_actor_id.to_string(),
                 state.current_time_minutes + interval,
@@ -637,18 +643,24 @@ fn adjust_actor_stat(state: &mut WorldState, actor_id: &str, stat: &str, delta: 
     state.actor_stat(actor_id, stat)
 }
 
-/// Ends the game when the player's HP has reached zero.
-pub(super) fn defeat_player_if_dead(state: &mut WorldState, lines: &mut Vec<String>) {
+/// Ends the game when the player actor's health stat has reached zero. The
+/// defeat narration is pack-authored via `settings.combat.player_defeat_text`.
+pub(super) fn defeat_player_if_dead(
+    state: &mut WorldState,
+    content: &ContentPack,
+    lines: &mut Vec<String>,
+) {
     if state.phase != crate::engine::state::GamePhase::Active {
         return;
     }
-    if state.actor_stat("player", "hp") > 0 {
+    let combat = &content.settings.combat;
+    if state.actor_stat(&combat.player_actor_id, &combat.health_stat_id) > 0 {
         return;
     }
-    lines.push(
-        "The world tilts. Your legs give out. The last thing you feel is the cold stone beneath your palms."
-            .to_string(),
-    );
+    lines.push(super::observation::render_story_text(
+        &combat.player_defeat_text,
+        state,
+    ));
     state.phase = crate::engine::state::GamePhase::GameEnded;
 }
 
@@ -661,7 +673,7 @@ fn room_allies(state: &WorldState, content: &ContentPack, room_id: &str) -> Vec<
         .filter(|(_, relationship)| relationship.stance == ActorStance::Allied)
         .map(|(actor_id, _)| actor_id.clone())
         .filter(|actor_id| {
-            !state.actor_is_defeated(actor_id)
+            !state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id)
                 && state.actor_room_id(
                     actor_id,
                     content
@@ -688,7 +700,7 @@ fn check_encirclement(
         if relationship.stance != ActorStance::Neutral || relationship.follows_player {
             continue;
         }
-        if state.actor_is_defeated(&actor.id) {
+        if state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id) {
             continue;
         }
         let room_id = state.actor_room_id(&actor.id, &actor.room_id).to_string();

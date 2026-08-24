@@ -662,7 +662,7 @@ fn build_hostility_plan_request(content: &ContentPack, state: &WorldState) -> Ho
             relationship.stance == crate::engine::state::ActorStance::Hostile
         })
         .filter(|(actor_id, _)| {
-            state.actor_stat(actor_id, "hp") > 0
+            state.actor_stat(actor_id, &content.settings.combat.health_stat_id) > 0
                 && state.next_hostile_strike_at.contains_key(*actor_id)
                 && {
                     let default_room_id = content
@@ -679,8 +679,12 @@ fn build_hostility_plan_request(content: &ContentPack, state: &WorldState) -> Ho
                 .get(actor_id)
                 .unwrap_or(&current_time_minutes);
             let interval = actor
-                .map(|actor| actor.attack_interval_minutes())
-                .unwrap_or(4);
+                .map(|actor| {
+                    actor.attack_interval_minutes(
+                        content.settings.combat.default_attack_interval_minutes,
+                    )
+                })
+                .unwrap_or(content.settings.combat.default_attack_interval_minutes);
             HostilityCandidate {
                 actor_id: actor_id.clone(),
                 actor_name: actor
@@ -692,8 +696,8 @@ fn build_hostility_plan_request(content: &ContentPack, state: &WorldState) -> Ho
                         &actor.map(|actor| actor.room_id.clone()).unwrap_or_default(),
                     )
                     .to_string(),
-                hp: state.actor_stat(actor_id, "hp"),
-                strength: state.actor_stat(actor_id, "strength"),
+                hp: state.actor_stat(actor_id, &content.settings.combat.health_stat_id),
+                strength: state.actor_stat(actor_id, &content.settings.combat.attack_stat_id),
                 minutes_since_last_strike: current_time_minutes
                     .saturating_sub(due_at.saturating_sub(interval)),
                 attack_interval_minutes: interval,
@@ -702,7 +706,10 @@ fn build_hostility_plan_request(content: &ContentPack, state: &WorldState) -> Ho
         .collect();
     HostilityPlanRequest {
         player_room_id: state.current_room_id.to_string(),
-        player_hp: state.actor_stat("player", "hp"),
+        player_hp: state.actor_stat(
+            &content.settings.combat.player_actor_id,
+            &content.settings.combat.health_stat_id,
+        ),
         candidates,
     }
 }

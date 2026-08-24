@@ -18,7 +18,7 @@ pub(crate) fn plan_rules_hostility(content: &ContentPack, state: &WorldState) ->
         .iter()
         .filter(|(_, relationship)| relationship.stance == ActorStance::Hostile)
         .filter(|(actor_id, _)| {
-            state.actor_stat(actor_id, "hp") > 0
+            state.actor_stat(actor_id, &content.settings.combat.health_stat_id) > 0
                 && state
                     .next_hostile_strike_at
                     .get(*actor_id)

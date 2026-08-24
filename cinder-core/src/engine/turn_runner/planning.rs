@@ -65,7 +65,9 @@ fn first_actor_in_room<'a>(
     context: &PlanningContext<'_>,
 ) -> Option<&'a crate::content::types::ActorDefinition> {
     content.actors.iter().find(|actor| {
-        !context.planner_state.actor_is_defeated(&actor.id)
+        !context
+            .planner_state
+            .actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
             && context
                 .planner_state
                 .actor_room_id(&actor.id, &actor.room_id)
@@ -254,9 +256,10 @@ pub(super) fn plan_content_command(
     if let Some(item_id) = &action.available.consumes_item {
         let (consumer_id, consumer_name) = match action.item_consumer {
             ActionItemConsumerTarget::None => (None, None),
-            ActionItemConsumerTarget::Player => {
-                (Some("player".to_string()), Some("You".to_string()))
-            }
+            ActionItemConsumerTarget::Player => (
+                Some(content.settings.combat.player_actor_id.clone()),
+                Some("You".to_string()),
+            ),
             ActionItemConsumerTarget::FirstActorInRoom => {
                 let recipient =
                     first_actor_in_room(content, context).expect("actor should be in room");
@@ -281,9 +284,10 @@ pub(super) fn plan_content_command(
     {
         let (consumer_id, consumer_name) = match action.item_consumer {
             ActionItemConsumerTarget::None => (None, None),
-            ActionItemConsumerTarget::Player => {
-                (Some("player".to_string()), Some("You".to_string()))
-            }
+            ActionItemConsumerTarget::Player => (
+                Some(content.settings.combat.player_actor_id.clone()),
+                Some("You".to_string()),
+            ),
             ActionItemConsumerTarget::FirstActorInRoom => {
                 let recipient =
                     first_actor_in_room(content, context).expect("actor should be in room");
