@@ -16,6 +16,7 @@ const TranscriptPane = memo(function TranscriptPane({
   onDismissClosure,
   onDismissGameClosure,
   craftedLabels,
+  interactableLabels,
 }: {
   lines: Line[]
   busyLabel: string | null
@@ -28,6 +29,7 @@ const TranscriptPane = memo(function TranscriptPane({
   onDismissClosure: () => void
   onDismissGameClosure: () => void
   craftedLabels: string[]
+  interactableLabels?: string[]
 }) {
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -78,7 +80,7 @@ const TranscriptPane = memo(function TranscriptPane({
           </button>
         )}
         {lines.map(line => (
-          <TranscriptLine key={line.key} line={line} searchQuery={searchQuery} craftedLabels={craftedLabels} />
+          <TranscriptLine key={line.key} line={line} searchQuery={searchQuery} craftedLabels={craftedLabels} interactableLabels={interactableLabels} />
         ))}
         {busyLabel && lines.length === 0 && <Skeleton lines={4} className="mb-2" />}
         {busyLabel && <p className="text-muted text-sm italic">{busyLabel}</p>}

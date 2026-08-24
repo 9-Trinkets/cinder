@@ -254,6 +254,7 @@ export interface UiSnapshot {
   action_bar_actions: ActionBarAction[]
   overflow_actions: OverflowAction[]
   look_options: LookOptionData[]
+  interactable_labels: string[]
   talk_options: MenuOptionItem[]
   panel_options: Record<string, PanelOptionData[]>
   active_menu: ActiveMenuData | null

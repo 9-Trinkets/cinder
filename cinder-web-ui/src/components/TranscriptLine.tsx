@@ -5,14 +5,20 @@ export interface Line {
   key: number
 }
 
+type SegmentKind = 'plain' | 'match' | 'crafted' | 'interactable'
+
 type TextSegment = {
   text: string
-  match: boolean
-  crafted: boolean
+  kind: SegmentKind
 }
 
-function splitByMatch(text: string, query: string): TextSegment[] {
-  if (!query) return [{ text, match: false, crafted: false }]
+type LabelHighlight = {
+  label: string
+  kind: Exclude<SegmentKind, 'plain' | 'match'>
+}
+
+function splitByQuery(text: string, query: string): TextSegment[] {
+  if (!query) return [{ text, kind: 'plain' }]
 
   const lower = text.toLowerCase()
   const qLower = query.toLowerCase()
@@ -22,54 +28,58 @@ function splitByMatch(text: string, query: string): TextSegment[] {
   let idx = lower.indexOf(qLower, lastIdx)
   while (idx !== -1) {
     if (idx > lastIdx) {
-      parts.push({ text: text.slice(lastIdx, idx), match: false, crafted: false })
+      parts.push({ text: text.slice(lastIdx, idx), kind: 'plain' })
     }
-    parts.push({ text: text.slice(idx, idx + query.length), match: true, crafted: false })
+    parts.push({ text: text.slice(idx, idx + query.length), kind: 'match' })
     lastIdx = idx + query.length
     idx = lower.indexOf(qLower, lastIdx)
   }
   if (lastIdx < text.length) {
-    parts.push({ text: text.slice(lastIdx), match: false, crafted: false })
+    parts.push({ text: text.slice(lastIdx), kind: 'plain' })
   }
   return parts
 }
 
-function splitSegmentByCrafted(segment: TextSegment, craftedLabels: string[]): TextSegment[] {
-  if (segment.match || craftedLabels.length === 0) return [segment]
+function splitSegmentByLabels(
+  segment: TextSegment,
+  highlights: LabelHighlight[],
+): TextSegment[] {
+  if (segment.kind !== 'plain' || highlights.length === 0) return [segment]
 
   let earliestIndex = -1
-  let matchedLabel = ''
+  let matched: LabelHighlight | null = null
   const lower = segment.text.toLowerCase()
-  for (const label of craftedLabels) {
-    if (!label) continue
-    const idx = lower.indexOf(label.toLowerCase())
-    if (idx !== -1 && (earliestIndex === -1 || idx < earliestIndex || (idx === earliestIndex && label.length > matchedLabel.length))) {
+  for (const highlight of highlights) {
+    if (!highlight.label) continue
+    const idx = lower.indexOf(highlight.label.toLowerCase())
+    if (
+      idx !== -1 &&
+      (earliestIndex === -1 ||
+        idx < earliestIndex ||
+        (idx === earliestIndex && matched !== null && highlight.label.length > matched.label.length))
+    ) {
       earliestIndex = idx
-      matchedLabel = label
+      matched = highlight
     }
   }
-  if (earliestIndex === -1) return [segment]
+  if (matched === null || earliestIndex === -1) return [segment]
 
   const parts: TextSegment[] = []
   if (earliestIndex > 0) {
-    parts.push(...splitSegmentByCrafted({
-      text: segment.text.slice(0, earliestIndex),
-      match: false,
-      crafted: false,
-    }, craftedLabels))
+    parts.push(
+      ...splitSegmentByLabels(
+        { text: segment.text.slice(0, earliestIndex), kind: 'plain' },
+        highlights,
+      ),
+    )
   }
   parts.push({
-    text: segment.text.slice(earliestIndex, earliestIndex + matchedLabel.length),
-    match: false,
-    crafted: true,
+    text: segment.text.slice(earliestIndex, earliestIndex + matched.label.length),
+    kind: matched.kind,
   })
-  const rest = segment.text.slice(earliestIndex + matchedLabel.length)
+  const rest = segment.text.slice(earliestIndex + matched.label.length)
   if (rest) {
-    parts.push(...splitSegmentByCrafted({
-      text: rest,
-      match: false,
-      crafted: false,
-    }, craftedLabels))
+    parts.push(...splitSegmentByLabels({ text: rest, kind: 'plain' }, highlights))
   }
   return parts
 }
@@ -78,21 +88,36 @@ function HighlightedText({
   text,
   query,
   craftedLabels,
+  interactableLabels,
 }: {
   text: string
   query: string
   craftedLabels: string[]
+  interactableLabels: string[]
 }) {
-  const parts = splitByMatch(text, query).flatMap(part => splitSegmentByCrafted(part, craftedLabels))
+  const highlights: LabelHighlight[] = [
+    ...craftedLabels.map(label => ({ label, kind: 'crafted' as const })),
+    ...interactableLabels.map(label => ({ label, kind: 'interactable' as const })),
+  ]
+  const parts = splitByQuery(text, query).flatMap(part =>
+    splitSegmentByLabels(part, highlights),
+  )
 
   return (
     <>
       {parts.map((part, i) => {
-        if (part.match) {
+        if (part.kind === 'match') {
           return <mark key={i} className="bg-gold/30 text-text rounded px-0.5">{part.text}</mark>
         }
-        if (part.crafted) {
+        if (part.kind === 'crafted') {
           return <span key={i} className="font-medium" style={{ color: 'var(--color-crafted-highlight)' }}>{part.text}</span>
+        }
+        if (part.kind === 'interactable') {
+          return (
+            <span key={i} className="font-medium text-iris underline decoration-iris/40 underline-offset-2">
+              {part.text}
+            </span>
+          )
         }
         return <span key={i}>{part.text}</span>
       })}
@@ -104,10 +129,12 @@ const TranscriptLine = memo(function TranscriptLine({
   line,
   searchQuery,
   craftedLabels,
+  interactableLabels,
 }: {
   line: Line
   searchQuery?: string
   craftedLabels?: string[]
+  interactableLabels?: string[]
 }) {
   let className = 'text-text'
   if (line.text.startsWith('> ')) {
@@ -121,7 +148,12 @@ const TranscriptLine = memo(function TranscriptLine({
   return (
     <div className="whitespace-pre-wrap text-sm leading-relaxed">
       <span className={className}>
-        <HighlightedText text={line.text} query={searchQuery ?? ''} craftedLabels={craftedLabels ?? []} />
+        <HighlightedText
+          text={line.text}
+          query={searchQuery ?? ''}
+          craftedLabels={craftedLabels ?? []}
+          interactableLabels={interactableLabels ?? []}
+        />
       </span>
     </div>
   )

@@ -133,6 +133,10 @@ pub struct UiSnapshot {
     pub action_bar_actions: Vec<ActionBarAction>,
     pub overflow_actions: Vec<OverflowAction>,
     pub look_options: Vec<LookOptionData>,
+    /// Labels of actors/features/items present in the current room, for
+    /// transcript highlighting.
+    #[serde(default)]
+    pub interactable_labels: Vec<String>,
     pub talk_options: Vec<MenuOptionData>,
     #[serde(default)]
     pub panel_options: BTreeMap<String, Vec<PanelOptionData>>,
@@ -238,6 +242,19 @@ pub(super) fn build_ui_snapshot(
             command: option.command,
         })
         .collect();
+
+    // Names the transcript can highlight as interactable: actors, features,
+    // and items present here (everything except the room itself).
+    let interactable_labels: Vec<String> = {
+        let mut labels: Vec<String> = look_options
+            .iter()
+            .filter(|option| option.id != "__room__")
+            .map(|option| option.title.clone())
+            .collect();
+        labels.sort();
+        labels.dedup();
+        labels
+    };
 
     let talk_options: Vec<MenuOptionData> = runtime
         .current_room_talk_options()
@@ -412,6 +429,7 @@ pub(super) fn build_ui_snapshot(
         action_bar_actions,
         overflow_actions,
         look_options,
+        interactable_labels,
         talk_options,
         panel_options,
         active_menu,

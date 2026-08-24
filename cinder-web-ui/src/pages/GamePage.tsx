@@ -526,6 +526,7 @@ export default function GamePage() {
             gameClosure={gameClosure}
             gameOver={gameOver}
             craftedLabels={uiSnapshot?.crafted_consumable_labels ?? []}
+            interactableLabels={uiSnapshot?.interactable_labels ?? []}
             transcriptRef={transcriptRef}
             bottomRef={bottomRef}
             onScroll={handleTranscriptScroll}
