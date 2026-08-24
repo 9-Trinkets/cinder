@@ -28,5 +28,6 @@
     "crt_dim": "#4a5a7a",
     "crt_bez": "#0b0d12"
   },
-  "flag_supply": 5
+  "flag_supply": 5,
+  "flag_item_id": "stone-marker"
 }

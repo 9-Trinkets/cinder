@@ -145,10 +145,6 @@ pub struct UiSnapshot {
     pub act_closure: Option<ActClosure>,
     pub game_closure: Option<ActClosure>,
     pub inventory: Vec<InventoryItem>,
-    /// Stone markers left to place; `flag_supply_total` of 0 means the pack
-    /// has no supply limit.
-    pub flags_remaining: u32,
-    pub flag_supply_total: u32,
     pub room_consumables: Vec<RoomConsumableGroup>,
     pub crafted_consumable_labels: Vec<String>,
     pub show_relationship_sidebar: bool,
@@ -440,20 +436,27 @@ pub(super) fn build_ui_snapshot(
             None
         },
         game_closure: response::game_closure_data(runtime, transcript_lines),
-        inventory: runtime
-            .inventory_items()
-            .unwrap_or_default()
-            .into_iter()
-            .map(|(id, count)| {
-                let label = content
-                    .item(&id)
-                    .map(|item| item.label.clone())
-                    .unwrap_or_else(|| id.clone());
-                InventoryItem { label, count }
-            })
-            .collect(),
-        flags_remaining: state.flags_remaining,
-        flag_supply_total: content.settings.flag_supply,
+        inventory: {
+            let mut items = runtime.inventory_items().unwrap_or_default();
+            if content.settings.flag_supply > 0
+                && !content.settings.flag_item_id.is_empty()
+                && state.flags_remaining > 0
+            {
+                items.insert(content.settings.flag_item_id.clone(), state.flags_remaining);
+            }
+            let mut inventory = items
+                .into_iter()
+                .map(|(id, count)| {
+                    let label = content
+                        .item(&id)
+                        .map(|item| item.label.clone())
+                        .unwrap_or_else(|| id.clone());
+                    InventoryItem { label, count }
+                })
+                .collect::<Vec<_>>();
+            inventory.sort_by(|left, right| left.label.cmp(&right.label));
+            inventory
+        },
         room_consumables: {
             content
                 .room_consumables(&current_room_id)

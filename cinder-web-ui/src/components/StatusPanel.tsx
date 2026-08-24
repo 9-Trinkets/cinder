@@ -32,15 +32,6 @@ export default function StatusPanel({ uiSnapshot }: { uiSnapshot: api.UiSnapshot
           </ul>
         </div>
       )}
-      {uiSnapshot.flag_supply_total > 0 && (
-        <div>
-          <p className="text-xs text-muted uppercase tracking-wider">Flags</p>
-          <p className="text-text font-medium">
-            {uiSnapshot.flags_remaining} left
-            <span className="text-muted ml-1">of {uiSnapshot.flag_supply_total}</span>
-          </p>
-        </div>
-      )}
       {uiSnapshot.room_consumables.length > 0 && (
         <div>
           <p className="text-xs text-muted uppercase tracking-wider">Available</p>

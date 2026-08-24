@@ -78,6 +78,9 @@ pub struct ContentSettingsDefinition {
     /// picked-up markers return to the pool.
     #[serde(default)]
     pub flag_supply: u32,
+    /// Item definition used to present a finite flag supply in inventory.
+    #[serde(default)]
+    pub flag_item_id: String,
     #[serde(default)]
     pub theme: ThemeDefinition,
 }
@@ -217,6 +220,7 @@ impl Default for ContentSettingsDefinition {
             autonomous_hostility_mode: AutonomousHostilityMode::Rules,
             combat: CombatSettingsDefinition::default(),
             flag_supply: 0,
+            flag_item_id: String::default(),
             theme: ThemeDefinition::default(),
         }
     }
