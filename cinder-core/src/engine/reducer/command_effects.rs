@@ -90,6 +90,11 @@ pub(super) fn handle_actor_command_used(
     )?;
     record_actor_command_memory(state, content, command, &command_context, &command_text);
     apply_actor_command_effects(state, content, command, &command_context);
+    // Narrate the actor's own action first; its world consequences (e.g. an
+    // encirclement conversion triggered by placing a flag) follow as responses.
+    if !command.has_effect(CommandEffect::MoveActor) && state.current_room_id == room_id {
+        lines.push(command_text.clone());
+    }
     apply_new_command_effects(
         state,
         content,
@@ -126,8 +131,6 @@ pub(super) fn handle_actor_command_used(
         {
             lines.push(command_text);
         }
-    } else if state.current_room_id == room_id {
-        lines.push(command_text);
     }
     lines.extend(advance_objective_for_signal(state, content, "command_used"));
     Some(lines)

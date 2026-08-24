@@ -5,11 +5,11 @@ use crate::content::types::{
     ActionDefinition, ActionItemCreation, ActionItemStorageTarget, ActorDefinition,
     ActorPromptContext, AdvanceCondition, AdvanceSignal, BeatDefinition, BeatsDefinition,
     CombatSettingsDefinition, CommandEffect, CommandInputMode, CommandTargetMode, ContentPack,
-    ContentSettingsDefinition, ItemDefinition, ItemStorageTarget, OpeningDefinition,
-    PresentationDefinition, RoomDefinition, RoomExitDefinition, RoomFeatureDefinition,
-    RuleBundleCompletionDefinition, RuleBundleDefinition, RuleBundleGuidanceDefinition,
-    RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition, RuleBundleProgressRef,
-    RuleBundlesDefinition, StatDefinition, StatsDefinition,
+    ContentSettingsDefinition, ConversionTrigger, ItemDefinition, ItemStorageTarget,
+    OpeningDefinition, PresentationDefinition, RoomDefinition, RoomExitDefinition,
+    RoomFeatureDefinition, RuleBundleCompletionDefinition, RuleBundleDefinition,
+    RuleBundleGuidanceDefinition, RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition,
+    RuleBundleProgressRef, RuleBundlesDefinition, StatDefinition, StatsDefinition,
 };
 use crate::engine::state::{ActorStance, ConversationMemoryKind, GamePhase};
 use serde_json::json;
@@ -997,5 +997,70 @@ fn player_defeat_narration_and_phase_come_from_content() {
         output.lines.iter().any(|line| line == defeat_text),
         "expected pack-authored defeat line, got {:?}",
         output.lines
+    );
+}
+
+#[test]
+fn encirclement_conversion_narration_follows_the_flag_placement() {
+    let mut pack = reducer_test_pack();
+    pack.actions.push(ActionDefinition {
+        id: "place-flag".to_string(),
+        command: "place-flag".to_string(),
+        target_mode: CommandTargetMode::None,
+        effects: vec![CommandEffect::PlaceFlag],
+        event_text: "{actor_name} drives a stone marker into the ground.".to_string(),
+        ..ActionDefinition::default()
+    });
+    pack.messages.insert(
+        "conversion.encircled".to_string(),
+        "The {actor} turns toward you, no longer hostile.".to_string(),
+    );
+    pack.messages.insert(
+        "conversion.encircled_follows".to_string(),
+        "The {actor} falls in behind you.".to_string(),
+    );
+    // A golem in the lounge converts once its only neighbor (the kitchen) is flagged.
+    pack.actors.push(ActorDefinition {
+        id: "golem".to_string(),
+        name: "dark golem".to_string(),
+        room_id: LOUNGE_ID.to_string(),
+        conversion_trigger: Some(ConversionTrigger::Encirclement),
+        ..test_actor("golem", "dark golem", LOUNGE_ID)
+    });
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    state.flagged_rooms.insert(KITCHEN_ID.to_string());
+
+    let lines = super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        LOUNGE_ID,
+        "place-flag",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        &mut Vec::new(),
+    )
+    .expect("place a flag");
+
+    let placed_at = lines
+        .iter()
+        .position(|line| line.contains("drives a stone marker"))
+        .expect("flag placement narration present");
+    let conversion_at = lines
+        .iter()
+        .position(|line| line.contains("turns toward you"))
+        .expect("conversion narration present");
+    assert!(
+        placed_at < conversion_at,
+        "flag placement must precede the conversion, got {lines:?}"
     );
 }
