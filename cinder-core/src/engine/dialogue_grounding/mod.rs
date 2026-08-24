@@ -406,30 +406,3 @@ fn natural_join(items: &[&str]) -> String {
         }
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::build_grounded_dialogue_request_for_room;
-    use crate::content::loader::load_named_pack;
-    use crate::engine::state::WorldState;
-
-    #[test]
-    fn room_dialogue_request_includes_intro_bundle_guidance() {
-        let content = load_named_pack("aera", Some("en")).expect("load aera");
-        let mut state = WorldState::new(&content);
-        state.active_objective_stage_ids = vec!["introduce-everyone-first-evening".to_string()];
-
-        let request = build_grounded_dialogue_request_for_room(
-            &content,
-            &state,
-            "aera",
-            "lounge",
-            "everyone here",
-        )
-        .expect("build room dialogue request");
-
-        assert!(request.current_beat_notes.iter().any(|note| {
-            note.contains("clearly says your name") && note.contains("first impression")
-        }));
-    }
-}

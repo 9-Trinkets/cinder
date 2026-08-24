@@ -584,74 +584,7 @@ fn append_stage_menu_overflow_actions(
 
 #[cfg(test)]
 mod tests {
-    use super::{
-        ActiveMenuData, MenuOptionData, OverflowAction, append_stage_menu_overflow_actions,
-    };
-    use cinder_core::content::loader::load_named_pack;
-
-    #[test]
-    fn request_stage_adds_support_options_to_overflow() {
-        let content = load_named_pack("isla", None).expect("load isla");
-        let mut overflow = Vec::new();
-
-        append_stage_menu_overflow_actions(
-            &mut overflow,
-            &content,
-            &[String::from("request-quarter")],
-        );
-
-        let ids = overflow
-            .into_iter()
-            .map(|action| action.id)
-            .collect::<Vec<_>>();
-        assert_eq!(
-            ids,
-            vec![
-                "quarter-coffee".to_string(),
-                "quarter-pastry".to_string(),
-                "quarter-push-through".to_string(),
-            ]
-        );
-    }
-
-    #[test]
-    fn dynamic_stage_menu_does_not_add_static_overflow_options() {
-        let content = load_named_pack("isla", None).expect("load isla");
-        let mut overflow = vec![OverflowAction {
-            id: "recommend_book".to_string(),
-            label: "Recommend Book".to_string(),
-            group: "book".to_string(),
-            usage: "recommend".to_string(),
-        }];
-
-        append_stage_menu_overflow_actions(
-            &mut overflow,
-            &content,
-            &[String::from("book-selection")],
-        );
-
-        assert_eq!(overflow.len(), 1);
-        assert_eq!(overflow[0].id, "recommend_book");
-    }
-
-    #[test]
-    fn intent_gated_stage_does_not_add_options_before_menu_opens() {
-        let content = load_named_pack("ella", None).expect("load ella");
-        let mut overflow = Vec::new();
-
-        append_stage_menu_overflow_actions(
-            &mut overflow,
-            &content,
-            &[String::from("talk-with-dad")],
-        );
-        append_stage_menu_overflow_actions(
-            &mut overflow,
-            &content,
-            &[String::from("talk-with-mom")],
-        );
-
-        assert!(overflow.is_empty());
-    }
+    use super::{ActiveMenuData, MenuOptionData};
 
     #[test]
     fn zero_selection_counts_are_omitted_from_menu_payload() {

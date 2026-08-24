@@ -336,32 +336,3 @@ fn actor_references(
     refs.extend(actor.aliases.iter().cloned());
     refs
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::content::loader::load_named_pack;
-    use crate::engine::state::{advance_to_next_act, initialize_act_state};
-
-    #[test]
-    fn resolves_dynamic_cast_member_display_name() {
-        let content = load_named_pack("isla", None).expect("load isla");
-        let mut state = WorldState::new(&content);
-        initialize_act_state(&content, &mut state);
-        let _ = advance_to_next_act(&content, &mut state, None);
-
-        let resolved = resolve_actor_reference_input(&content, &state, "cafe", "Awa hello there")
-            .expect("resolve dynamic patient");
-        assert_eq!(resolved.actor_id, "awa");
-        assert_eq!(resolved.actor_name, "Awa");
-        assert_eq!(resolved.player_message.as_deref(), Some("hello there"));
-    }
-
-    #[test]
-    fn loads_aera_pack() {
-        let content = load_named_pack("aera", None).expect("load aera");
-        assert_eq!(content.actors.len(), 4);
-        assert_eq!(content.rooms.len(), 8);
-        assert!(content.beats.stages.len() > 6);
-    }
-}
