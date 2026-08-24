@@ -17,6 +17,29 @@ pub(super) fn actors_in_room<'a>(
         .collect()
 }
 
+/// Collapse repeated names while preserving first-seen order, suffixing
+/// duplicates with a count ("dark golem ×2").
+pub(super) fn group_duplicate_names(names: &[String]) -> Vec<String> {
+    let mut grouped: Vec<(String, usize)> = Vec::new();
+    for name in names {
+        if let Some(entry) = grouped.iter_mut().find(|(existing, _)| existing == name) {
+            entry.1 += 1;
+        } else {
+            grouped.push((name.clone(), 1));
+        }
+    }
+    grouped
+        .into_iter()
+        .map(|(name, count)| {
+            if count > 1 {
+                format!("{name} ×{count}")
+            } else {
+                name
+            }
+        })
+        .collect()
+}
+
 pub(super) fn render_room_observation(
     content: &ContentPack,
     state: &WorldState,
@@ -52,10 +75,11 @@ pub(super) fn render_room_observation(
         if present.is_empty() {
             String::new()
         } else {
-            let present_refs = present.iter().map(String::as_str).collect::<Vec<_>>();
+            let grouped = group_duplicate_names(&present);
+            let grouped_refs = grouped.iter().map(String::as_str).collect::<Vec<_>>();
             content.render_template(
                 &content.presentation.presentation_text.people,
-                &[("people", &present_refs.join(", "))],
+                &[("people", &grouped_refs.join(", "))],
             )
         }
     };

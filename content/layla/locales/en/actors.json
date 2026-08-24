@@ -1,7 +1,7 @@
 [
   {
     "id": "golem-dark-nw",
-    "name": "a dark golem",
+    "name": "dark golem",
     "room_id": "r3c3",
     "initial_stats": {
       "hp": 8,
@@ -41,7 +41,7 @@
   },
   {
     "id": "golem-pale-ne",
-    "name": "a pale golem",
+    "name": "pale golem",
     "room_id": "r3c7",
     "initial_stats": {
       "hp": 8,
@@ -81,7 +81,7 @@
   },
   {
     "id": "golem-boss",
-    "name": "the stone warden",
+    "name": "stone warden",
     "room_id": "r5c5",
     "initial_stats": {
       "hp": 20,
@@ -126,7 +126,7 @@
   },
   {
     "id": "golem-dark-sw",
-    "name": "a dark golem",
+    "name": "dark golem",
     "room_id": "r7c3",
     "initial_stats": {
       "hp": 8,
@@ -165,7 +165,7 @@
   },
   {
     "id": "golem-pale-se",
-    "name": "a pale golem",
+    "name": "pale golem",
     "room_id": "r7c7",
     "initial_stats": {
       "hp": 8,

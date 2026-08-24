@@ -2,7 +2,7 @@
 
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::content::types::{ContentPack, ContentSettingsDefinition};
-use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
+use cinder_core::engine::events::{ObservationMode, TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::reducer::apply_events;
 use cinder_core::engine::state::{ActorRelationship, ActorStance, GamePhase, WorldState};
 
@@ -543,6 +543,35 @@ fn layla_defeated_golem_vanishes_from_room_presence() {
     assert!(
         output.lines.is_empty() && state.turn_number == before,
         "attack on defeated golem should produce no output, got: {:?}",
+        output.lines
+    );
+}
+
+#[test]
+fn layla_duplicate_golems_group_in_room_presence() {
+    let (content, mut state) = layla_test_state();
+    // Two dark golems share r3c3: the nw spawn plus the sw golem relocated in.
+    state
+        .actor_room_overrides
+        .insert("golem-dark-sw".to_string(), "r3c3".to_string());
+
+    let output = apply_events(
+        &mut state,
+        &content,
+        &[TimestampedWorldEvent::now(
+            WorldEvent::CurrentRoomObserved {
+                room_id: "r3c3".to_string(),
+                mode: ObservationMode::Summary,
+            },
+        )],
+    );
+
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|line| line.contains("dark golem ×2")),
+        "duplicate names should group with a count, got: {:?}",
         output.lines
     );
 }
