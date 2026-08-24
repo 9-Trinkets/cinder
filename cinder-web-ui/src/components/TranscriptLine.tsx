@@ -113,11 +113,7 @@ function HighlightedText({
           return <span key={i} className="font-medium" style={{ color: 'var(--color-crafted-highlight)' }}>{part.text}</span>
         }
         if (part.kind === 'interactable') {
-          return (
-            <span key={i} className="font-medium text-iris underline decoration-iris/40 underline-offset-2">
-              {part.text}
-            </span>
-          )
+          return <span key={i} className="font-medium" style={{ color: 'var(--color-crafted-highlight)' }}>{part.text}</span>
         }
         return <span key={i}>{part.text}</span>
       })}
