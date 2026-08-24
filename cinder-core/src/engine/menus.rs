@@ -287,8 +287,9 @@ mod tests {
     use crate::engine::dialogue::types::{
         ActorTurnActionDecision, ActorTurnActionRequest, ConversationMemorySummaryRequest,
         DialogueRequest, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
-        DynamicMenuOptionOutput, DynamicMenuRequest, MenuIntentDecision, MenuIntentRequest,
-        PerspectiveReview, PerspectiveReviewRequest, StageAssignment, StageAssignmentRequest,
+        DynamicMenuOptionOutput, DynamicMenuRequest, HostilityPlanDecision, HostilityPlanRequest,
+        MenuIntentDecision, MenuIntentRequest, PerspectiveReview, PerspectiveReviewRequest,
+        StageAssignment, StageAssignmentRequest,
     };
     use crate::engine::events::WorldEvent;
     use crate::engine::state::{WorldState, advance_to_next_act, initialize_act_state};
@@ -311,6 +312,13 @@ mod tests {
             &self,
             _request: &ActorTurnActionRequest,
         ) -> Result<ActorTurnActionDecision, String> {
+            Err("not used in test".to_string())
+        }
+
+        fn plan_hostility_actions(
+            &self,
+            _request: &HostilityPlanRequest,
+        ) -> Result<HostilityPlanDecision, String> {
             Err("not used in test".to_string())
         }
 

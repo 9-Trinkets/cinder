@@ -72,19 +72,25 @@ fn layla_background_tick(turn_number: u32) -> TimestampedWorldEvent {
     })
 }
 
+fn golem_strike(actor_id: &str) -> TimestampedWorldEvent {
+    TimestampedWorldEvent::now(WorldEvent::HostileStrike {
+        actor_id: actor_id.to_string(),
+    })
+}
+
 #[test]
-fn layla_tick_strikes_respect_attack_cooldown() {
+fn layla_strike_respects_attack_cooldown() {
     let (content, mut state) = layla_test_state();
     state.current_room_id = "r3c3".to_string();
     state.set_stance("golem-dark-nw", ActorStance::Hostile);
-    // Cooldown still in the future relative to the time this tick advances to.
-    // The game clock starts at `start_time_minutes`, so seed relative to it.
+    // Cooldown still in the future relative to the current game clock.
+    // The clock starts at `start_time_minutes`, so seed relative to it.
     let next_strike = state.current_time_minutes + 5;
     state
         .next_hostile_strike_at
         .insert("golem-dark-nw".to_string(), next_strike);
 
-    let output = apply_events(&mut state, &content, &[layla_background_tick(2)]);
+    let output = apply_events(&mut state, &content, &[golem_strike("golem-dark-nw")]);
 
     assert_eq!(
         state.actor_stat("player", "hp"),
@@ -146,7 +152,10 @@ fn layla_flag_supply_decrements_on_place_and_refills_on_pickup() {
     apply_events(
         &mut state,
         &content,
-        &[flag_event("r4c4", "place_flag"), flag_event("r3c3", "place_flag")],
+        &[
+            flag_event("r4c4", "place_flag"),
+            flag_event("r3c3", "place_flag"),
+        ],
     );
     assert_eq!(
         state.flags_remaining, 0,
@@ -163,7 +172,10 @@ fn layla_flag_supply_decrements_on_place_and_refills_on_pickup() {
     );
 
     apply_events(&mut state, &content, &[flag_event("r4c4", "pick_up_flag")]);
-    assert_eq!(state.flags_remaining, 1, "picked-up markers return to the pool");
+    assert_eq!(
+        state.flags_remaining, 1,
+        "picked-up markers return to the pool"
+    );
 }
 
 #[test]
@@ -266,7 +278,7 @@ fn layla_slain_golem_does_not_become_hostile() {
 }
 
 #[test]
-fn layla_hostile_golem_strikes_on_due_tick() {
+fn layla_hostile_golem_strikes_when_declared() {
     let (content, mut state) = layla_test_state();
     state.current_room_id = "r3c3".to_string();
     state.set_stance("golem-dark-nw", ActorStance::Hostile);
@@ -274,16 +286,39 @@ fn layla_hostile_golem_strikes_on_due_tick() {
         .next_hostile_strike_at
         .insert("golem-dark-nw".to_string(), 0);
 
-    let output = apply_events(&mut state, &content, &[layla_background_tick(2)]);
+    let output = apply_events(&mut state, &content, &[golem_strike("golem-dark-nw")]);
 
     assert!(
         state.actor_stat("player", "hp") < 10,
-        "hostile golem sharing the room should strike once its cooldown elapses"
+        "a declared strike from a hostile golem sharing the room should land"
     );
     assert!(
         output.lines.iter().any(|l| l.contains("strikes you")),
         "expected mob strike line, got: {:?}",
         output.lines
+    );
+}
+
+#[test]
+fn layla_declared_strike_reseeds_cooldown() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c3".to_string();
+    state.set_stance("golem-dark-nw", ActorStance::Hostile);
+    state
+        .next_hostile_strike_at
+        .insert("golem-dark-nw".to_string(), 0);
+    let now = state.current_time_minutes;
+
+    apply_events(&mut state, &content, &[golem_strike("golem-dark-nw")]);
+
+    let interval = content
+        .actor("golem-dark-nw")
+        .map(|actor| actor.attack_interval_minutes())
+        .unwrap_or(4);
+    assert_eq!(
+        state.next_hostile_strike_at.get("golem-dark-nw"),
+        Some(&(now + interval)),
+        "a landed strike must restart the actor's attack cooldown"
     );
 }
 
@@ -315,7 +350,7 @@ fn layla_distant_hostile_golem_leaves_player_untouched() {
         .next_hostile_strike_at
         .insert("golem-dark-nw".to_string(), 0);
 
-    let output = apply_events(&mut state, &content, &[layla_background_tick(2)]);
+    let output = apply_events(&mut state, &content, &[golem_strike("golem-dark-nw")]);
 
     assert_eq!(
         state.actor_stat("player", "hp"),
@@ -339,7 +374,7 @@ fn layla_woken_golem_kills_player_if_ignored() {
         .next_hostile_strike_at
         .insert("golem-dark-nw".to_string(), 0);
 
-    let output = apply_events(&mut state, &content, &[layla_background_tick(2)]);
+    let output = apply_events(&mut state, &content, &[golem_strike("golem-dark-nw")]);
 
     assert_eq!(
         state.phase,
@@ -388,6 +423,18 @@ fn layla_waking_golem_gets_grace_window_before_first_strike() {
         "grace window must cover the first tick after waking"
     );
     assert!(!output.lines.iter().any(|l| l.contains("strikes you")));
+
+    // The wake itself seeded the cooldown: wake time + attack interval.
+    let interval = content
+        .actor("golem-dark-nw")
+        .map(|actor| actor.attack_interval_minutes())
+        .unwrap_or(4);
+    let wake_time = state.current_time_minutes - 1;
+    assert_eq!(
+        state.next_hostile_strike_at.get("golem-dark-nw"),
+        Some(&(wake_time + interval)),
+        "waking a golem must seed its first-strike cooldown"
+    );
 }
 
 #[test]

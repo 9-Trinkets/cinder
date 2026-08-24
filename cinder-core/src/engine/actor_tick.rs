@@ -1,11 +1,16 @@
-use crate::content::types::{ActorDefinition, ActorMovementRulesDefinition, ContentPack};
+use crate::content::types::{
+    ActorDefinition, ActorMovementRulesDefinition, AutonomousHostilityMode, ContentPack,
+};
 use crate::engine::actor_turn::movement::required_movement_target_room_id;
 use crate::engine::actor_turn::{
     build_actor_turn, decide_actor_turn_action, realize_actor_turn_action, run_actor_turn,
 };
 use crate::engine::conversation_memory::refresh_conversation_summaries;
-use crate::engine::dialogue::{ActorTurnActionDecision, DialogueGenerator};
+use crate::engine::dialogue::{
+    ActorTurnActionDecision, DialogueGenerator, HostilityCandidate, HostilityPlanRequest,
+};
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
+use crate::engine::hostility::plan_rules_hostility;
 use crate::engine::neuron::{
     LocalWorkflowRunner, WorkflowDefinition, WorkflowRoleConfig, run_workflow,
 };
@@ -39,6 +44,18 @@ enum ActorTurnStageEnvelope {
         actor_id: String,
         events: Vec<WorldEvent>,
     },
+}
+
+/// Workflow-local stage for the once-per-tick hostile strike planning pass.
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[serde(tag = "stage", content = "payload", rename_all = "snake_case")]
+enum HostilityStageEnvelope {
+    #[default]
+    Idle,
+    Decided {
+        events: Vec<WorldEvent>,
+    },
+    Applied,
 }
 
 #[derive(Debug, Clone)]
@@ -78,6 +95,7 @@ pub(crate) fn run_actor_tick(
         current_actor_id: None,
         emitted_events: Vec::new(),
         actor_turn_stage: ActorTurnStageEnvelope::Idle,
+        hostility_stage: HostilityStageEnvelope::Idle,
     };
     let trace_records = Arc::new(Mutex::new(Vec::new()));
     let output = run_workflow(
@@ -162,6 +180,8 @@ impl LocalWorkflowRunner for ActorTickRoleRunner {
     ) -> Result<String, String> {
         match role_name {
             "npc_tick_orchestrator" => self.handle_tick_orchestrator(prompt),
+            "world_hostility_decide" => self.handle_hostility_decide(prompt),
+            "world_hostility_apply" => self.handle_hostility_apply(prompt),
             "npc_actor_turn_build_actions" => self.handle_actor_turn_build_actions(prompt),
             "npc_actor_turn_decide_action" => self.handle_actor_turn_decide_action(prompt),
             "npc_actor_turn_write_dialogue" => self.handle_actor_turn_write_dialogue(prompt),
@@ -177,6 +197,7 @@ impl LocalWorkflowRunner for ActorTickRoleRunner {
         _role_cfg: &WorkflowRoleConfig,
     ) -> Result<String, String> {
         match role_name {
+            "world_hostility_decide" => self.handle_hostility_decide(prompt),
             "npc_actor_turn_decide_action" => self.handle_actor_turn_decide_action(prompt),
             _ => Err(format!(
                 "unknown cinder npc tick symbolic role '{role_name}'"
@@ -194,14 +215,120 @@ impl ActorTickRoleRunner {
         if workflow_state.state.phase != crate::engine::state::GamePhase::Active {
             return complete_tick_workflow(&workflow_state.emitted_events);
         }
-        if let Some(actor_id) = workflow_state.remaining_actor_ids.first().cloned() {
-            workflow_state.remaining_actor_ids.remove(0);
-            workflow_state.current_actor_id = Some(actor_id);
-            workflow_state.actor_turn_stage = ActorTurnStageEnvelope::Idle;
-            return route_tick_workflow("npc_actor_turn_build_actions", &workflow_state);
+        match workflow_state.hostility_stage {
+            HostilityStageEnvelope::Idle => {
+                route_tick_workflow("world_hostility_decide", &workflow_state)
+            }
+            HostilityStageEnvelope::Applied => {
+                if let Some(actor_id) = workflow_state.remaining_actor_ids.first().cloned() {
+                    workflow_state.remaining_actor_ids.remove(0);
+                    workflow_state.current_actor_id = Some(actor_id);
+                    workflow_state.actor_turn_stage = ActorTurnStageEnvelope::Idle;
+                    return route_tick_workflow("npc_actor_turn_build_actions", &workflow_state);
+                }
+                complete_tick_workflow(&workflow_state.emitted_events)
+            }
+            HostilityStageEnvelope::Decided { .. } => {
+                Err("npc tick orchestrator received undecided hostility stage envelope".to_string())
+            }
         }
-        complete_tick_workflow(&workflow_state.emitted_events)
     }
+
+    fn handle_hostility_decide(&self, prompt: &str) -> Result<String, String> {
+        let inbound = extract_inbound_message(prompt)?;
+        let mut workflow_state: ActorTickWorkflowState =
+            serde_json::from_str(&inbound).map_err(|error| error.to_string())?;
+        let eligible_events = plan_rules_hostility(self.content.as_ref(), &workflow_state.state);
+        let events = if matches!(
+            self.content.settings.autonomous_hostility_mode,
+            AutonomousHostilityMode::Llm
+        ) && !eligible_events.is_empty()
+        {
+            let request =
+                build_hostility_plan_request(self.content.as_ref(), &workflow_state.state);
+            let emit_trace =
+                |role_name: &str, topic: &str, payload: serde_json::Value| -> Result<(), String> {
+                    self.trace_records
+                        .lock()
+                        .map_err(|_| "failed to lock npc tick trace records".to_string())?
+                        .push(ActorTraceRecord {
+                            role_name: role_name.to_string(),
+                            topic: topic.to_string(),
+                            payload,
+                        });
+                    Ok(())
+                };
+            emit_trace(
+                "world_hostility",
+                "plan.request",
+                serde_json::to_value(&request).map_err(|error| error.to_string())?,
+            )?;
+            let decision = self
+                .dialogue
+                .plan_hostility_actions(&request)
+                .map_err(|error| {
+                    let _ = emit_trace(
+                        "world_hostility",
+                        "workflow.error",
+                        serde_json::json!({ "message": error }),
+                    );
+                    error
+                })?;
+            emit_trace(
+                "world_hostility",
+                "plan.decision",
+                serde_json::json!({ "strikes": decision.strikes }),
+            )?;
+            decision
+                .strikes
+                .into_iter()
+                .map(|actor_id| WorldEvent::HostileStrike { actor_id })
+                .collect()
+        } else {
+            eligible_events
+        };
+        workflow_state.hostility_stage = HostilityStageEnvelope::Decided { events };
+        route_tick_workflow("world_hostility_apply", &workflow_state)
+    }
+
+    fn handle_hostility_apply(&self, prompt: &str) -> Result<String, String> {
+        let inbound = extract_inbound_message(prompt)?;
+        let mut workflow_state: ActorTickWorkflowState =
+            serde_json::from_str(&inbound).map_err(|error| error.to_string())?;
+        let events = match std::mem::replace(
+            &mut workflow_state.hostility_stage,
+            HostilityStageEnvelope::Idle,
+        ) {
+            HostilityStageEnvelope::Decided { events } => events,
+            _ => {
+                return Err(
+                    "world_hostility_apply expected decided hostility stage envelope".to_string(),
+                );
+            }
+        };
+        if !events.is_empty() {
+            let timestamped = events
+                .iter()
+                .cloned()
+                .map(TimestampedWorldEvent::now)
+                .collect::<Vec<_>>();
+            apply_events(
+                &mut workflow_state.state,
+                self.content.as_ref(),
+                &timestamped,
+            );
+            refresh_conversation_summaries(
+                self.content.as_ref(),
+                self.dialogue.as_ref(),
+                &mut workflow_state.state,
+            )
+            .map_err(|error| error.to_string())?;
+        }
+        workflow_state.emitted_events.extend(events);
+        workflow_state.hostility_stage = HostilityStageEnvelope::Applied;
+        route_tick_workflow("npc_tick_orchestrator", &workflow_state)
+    }
+
     fn handle_actor_turn_build_actions(&self, prompt: &str) -> Result<String, String> {
         let inbound = extract_inbound_message(prompt)?;
         let mut workflow_state: ActorTickWorkflowState =
@@ -508,6 +635,8 @@ struct ActorTickWorkflowState {
     emitted_events: Vec<WorldEvent>,
     #[serde(default)]
     actor_turn_stage: ActorTurnStageEnvelope,
+    #[serde(default)]
+    hostility_stage: HostilityStageEnvelope,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -520,6 +649,62 @@ struct ActorTickResult {
 struct RouteEnvelope {
     next: String,
     message: String,
+}
+
+/// Grounded planner snapshot for the LLM hostility mode. Candidates mirror the
+/// rules-policy filter, so both modes choose from the same eligible set.
+fn build_hostility_plan_request(content: &ContentPack, state: &WorldState) -> HostilityPlanRequest {
+    let current_time_minutes = state.current_time_minutes;
+    let candidates = state
+        .relationships
+        .iter()
+        .filter(|(_, relationship)| {
+            relationship.stance == crate::engine::state::ActorStance::Hostile
+        })
+        .filter(|(actor_id, _)| {
+            state.actor_stat(actor_id, "hp") > 0
+                && state.next_hostile_strike_at.contains_key(*actor_id)
+                && {
+                    let default_room_id = content
+                        .actor(actor_id)
+                        .map(|actor| actor.room_id.clone())
+                        .unwrap_or_default();
+                    state.actor_room_id(actor_id, &default_room_id) == state.current_room_id
+                }
+        })
+        .map(|(actor_id, _)| {
+            let actor = content.actor(actor_id);
+            let due_at = *state
+                .next_hostile_strike_at
+                .get(actor_id)
+                .unwrap_or(&current_time_minutes);
+            let interval = actor
+                .map(|actor| actor.attack_interval_minutes())
+                .unwrap_or(4);
+            HostilityCandidate {
+                actor_id: actor_id.clone(),
+                actor_name: actor
+                    .map(|actor| actor.name.clone())
+                    .unwrap_or_else(|| actor_id.clone()),
+                room_id: state
+                    .actor_room_id(
+                        actor_id,
+                        &actor.map(|actor| actor.room_id.clone()).unwrap_or_default(),
+                    )
+                    .to_string(),
+                hp: state.actor_stat(actor_id, "hp"),
+                strength: state.actor_stat(actor_id, "strength"),
+                minutes_since_last_strike: current_time_minutes
+                    .saturating_sub(due_at.saturating_sub(interval)),
+                attack_interval_minutes: interval,
+            }
+        })
+        .collect();
+    HostilityPlanRequest {
+        player_room_id: state.current_room_id.to_string(),
+        player_hp: state.actor_stat("player", "hp"),
+        candidates,
+    }
 }
 
 fn route_tick_workflow(next: &str, state: &ActorTickWorkflowState) -> Result<String, String> {

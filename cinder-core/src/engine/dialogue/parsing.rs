@@ -1,7 +1,8 @@
 use super::{
     ActorTurnActionDecision, ActorTurnAffordanceOption, DirectSpeechIntentDecision,
-    MenuIntentDecision,
+    HostilityPlanDecision, MenuIntentDecision,
 };
+use serde_json::Value;
 
 pub(super) struct ActorTurnActionParseContext<'a> {
     pub(super) affordances: &'a [ActorTurnAffordanceOption],
@@ -71,6 +72,51 @@ fn strip_actor_turn_annotation(label: &str) -> &str {
         .unwrap_or(label)
 }
 
+pub(super) fn parse_hostility_plan(
+    text: &str,
+    candidate_ids: &[String],
+) -> Result<HostilityPlanDecision, String> {
+    let trimmed = text.trim();
+    let json_start = trimmed.find('{');
+    let json_end = trimmed.rfind('}');
+    if let (Some(start), Some(end)) = (json_start, json_end)
+        && start < end
+    {
+        let payload = &trimmed[start..=end];
+        let value: Value = serde_json::from_str(payload)
+            .map_err(|error| format!("hostility planner returned invalid JSON: {error}"))?;
+        let Some(strikes) = value.get("strikes") else {
+            return Err("hostility planner JSON is missing the 'strikes' field".to_string());
+        };
+        let Value::Array(items) = strikes else {
+            return Err("hostility planner 'strikes' field must be an array".to_string());
+        };
+        let mut decision = HostilityPlanDecision::default();
+        for item in items {
+            let Some(actor_id) = item.as_str() else {
+                return Err("hostility planner strike entries must be actor id strings".to_string());
+            };
+            if !candidate_ids.iter().any(|candidate| candidate == actor_id) {
+                return Err(format!(
+                    "hostility planner returned unknown or ineligible actor '{actor_id}'"
+                ));
+            }
+            if !decision.strikes.contains(&actor_id.to_string()) {
+                decision.strikes.push(actor_id.to_string());
+            }
+        }
+        return Ok(decision);
+    }
+    let normalized = normalize_enum_label(trimmed);
+    match normalized.as_str() {
+        "WAIT" | "HOLD" | "" => Ok(HostilityPlanDecision::default()),
+        _ => Err(format!(
+            "hostility planner returned '{}'; expected a JSON object with a 'strikes' array or WAIT",
+            trimmed
+        )),
+    }
+}
+
 fn normalize_enum_label(label: &str) -> String {
     label
         .split_whitespace()
@@ -82,7 +128,7 @@ fn normalize_enum_label(label: &str) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::parse_menu_intent_label;
+    use super::{parse_hostility_plan, parse_menu_intent_label};
 
     #[test]
     fn parses_annotated_open_menu_intent() {
@@ -98,5 +144,29 @@ mod tests {
             parse_menu_intent_label("PASS because this is only small talk").expect("parse PASS");
         assert!(!decision.should_open);
         assert_eq!(decision.label, "PASS");
+    }
+
+    fn candidate_ids() -> Vec<String> {
+        vec!["dark_golem".to_string(), "pale_golem".to_string()]
+    }
+
+    #[test]
+    fn parses_hostility_plan_json_with_fencing() {
+        let text = "Sure!\n```json\n{\"strikes\": [\"dark_golem\", \"dark_golem\"]}\n```";
+        let decision = parse_hostility_plan(text, &candidate_ids()).expect("parse plan");
+        assert_eq!(decision.strikes, vec!["dark_golem".to_string()]);
+    }
+
+    #[test]
+    fn parses_hostility_plan_wait() {
+        let decision = parse_hostility_plan("WAIT", &candidate_ids()).expect("parse WAIT");
+        assert!(decision.strikes.is_empty());
+    }
+
+    #[test]
+    fn rejects_hostility_plan_unknown_actor() {
+        let error = parse_hostility_plan("{\"strikes\": [\"ghost\"]}", &candidate_ids())
+            .expect_err("unknown actor rejected");
+        assert!(error.contains("unknown or ineligible"));
     }
 }

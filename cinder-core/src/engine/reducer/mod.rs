@@ -10,9 +10,10 @@ use self::handlers::{
     handle_actor_observed_feature, handle_actor_observed_room, handle_actor_relocated,
     handle_actor_spoke, handle_actor_spoke_to_room, handle_current_room_observed,
     handle_feature_observed, handle_flag_placed, handle_flag_removed, handle_help_shown,
-    handle_item_acquired, handle_item_consumed, handle_item_observed, handle_menu_choice_made,
-    handle_menu_opened, handle_menu_selection_toggled, handle_narrative_line,
-    handle_pair_stat_adjusted, handle_player_moved, handle_turn_started, handle_unknown_input,
+    handle_hostile_strike, handle_item_acquired, handle_item_consumed, handle_item_observed,
+    handle_menu_choice_made, handle_menu_opened, handle_menu_selection_toggled,
+    handle_narrative_line, handle_pair_stat_adjusted, handle_player_moved, handle_turn_started,
+    handle_unknown_input,
 };
 
 pub(crate) use self::observation::render_actor_speech_line;
@@ -298,6 +299,9 @@ pub fn apply_events(
                 if state.phase == GamePhase::Active {
                     state.set_relationship(actor_id, *relationship);
                 }
+            }
+            WorldEvent::HostileStrike { actor_id } => {
+                handle_hostile_strike(state, content, actor_id, &mut lines);
             }
         }
     }

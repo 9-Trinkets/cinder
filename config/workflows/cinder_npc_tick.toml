@@ -7,7 +7,10 @@ routing_mode = "sequential"
 max_hops = 32
 max_message_chars = 24000
 graph = """
+npc_tick_orchestrator -> world_hostility_decide
 npc_tick_orchestrator -> npc_actor_turn_build_actions
+world_hostility_decide -> world_hostility_apply
+world_hostility_apply -> npc_tick_orchestrator
 npc_actor_turn_build_actions -> npc_actor_turn_apply
 npc_actor_turn_build_actions -> npc_actor_turn_decide_action
 npc_actor_turn_decide_action -> npc_actor_turn_write_dialogue
@@ -16,6 +19,12 @@ npc_actor_turn_apply -> npc_tick_orchestrator
 """
 
 [synapse.workflows.cinder_npc_tick.roles.npc_tick_orchestrator]
+
+[synapse.workflows.cinder_npc_tick.roles.world_hostility_decide]
+planner_mode = "symbolic"
+symbolic_planner_rule = "decision_table"
+
+[synapse.workflows.cinder_npc_tick.roles.world_hostility_apply]
 
 [synapse.workflows.cinder_npc_tick.roles.npc_actor_turn_build_actions]
 

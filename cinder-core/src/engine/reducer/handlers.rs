@@ -1,7 +1,7 @@
 use super::beat_advance::{advance_objective_for_signal, time_reached_signals};
 use super::command_effects::{
     ActorMoveTransitionContext, actor_display_name, apply_actor_move_transition,
-    handle_actor_command_used,
+    defeat_player_if_dead, handle_actor_command_used,
 };
 use super::observation::{
     render_actor_speech_line, render_feature_consumables_line, render_room_observation,
@@ -9,15 +9,16 @@ use super::observation::{
 };
 use super::tick::{
     advance_actor_stats_on_tick, advance_house_progress_objectives,
-    advance_stat_threshold_objectives, apply_autonomous_hostile_strikes,
-    increment_shared_room_safety,
+    advance_stat_threshold_objectives, increment_shared_room_safety,
 };
 use crate::content::types::{ContentPack, ItemStorageTarget};
 use crate::engine::commands::{player_command_help_text, player_command_suggestions};
 use crate::engine::events::{ObservationMode, WorldEvent};
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_world_hook_effects;
-use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
+use crate::engine::state::{
+    ActorStance, ConversationMemoryKind, ConversationMemoryLine, GamePhase, WorldState,
+};
 use crate::engine::turn_policies::{
     BundleSpeechEvent, mark_actor_bundle_progress_for_speech_event,
 };
@@ -27,7 +28,7 @@ pub(super) fn handle_turn_started(
     state: &mut WorldState,
     content: &ContentPack,
     turn_number: u32,
-    raw_input: &str,
+    _raw_input: &str,
     advances_time: bool,
     lines: &mut Vec<String>,
 ) {
@@ -49,11 +50,61 @@ pub(super) fn handle_turn_started(
         lines.extend(advance_house_progress_objectives(state, content));
         lines.extend(advance_stat_threshold_objectives(state, content));
     }
-    // Autonomous strikes run only on background ticks, paced by each actor's
-    // attack cooldown — never as same-turn retaliation for player actions.
-    if raw_input == "tick" && advances_time {
-        apply_autonomous_hostile_strikes(state, content, lines);
+    // Strike policy is external (tick workflows, rules or LLM); the reducer
+    // only resolves declared HostileStrike events.
+}
+
+/// Generic mechanics for a declared hostile strike: validates eligibility,
+/// applies stat-based damage, emits the pack-authored narration, and reschedules
+/// the actor's cooldown. Strike *policy* (who strikes, when) lives in tick
+/// behaviors, never here.
+pub(super) fn handle_hostile_strike(
+    state: &mut WorldState,
+    content: &ContentPack,
+    actor_id: &str,
+    lines: &mut Vec<String>,
+) {
+    if state.phase != GamePhase::Active
+        || state.stance(actor_id) != ActorStance::Hostile
+        || state.actor_stat(actor_id, "hp") <= 0
+    {
+        return;
     }
+    if state.current_time_minutes < *state.next_hostile_strike_at.get(actor_id).unwrap_or(&0) {
+        return;
+    }
+    let default_room_id = content
+        .actor(actor_id)
+        .map(|actor| actor.room_id.clone())
+        .unwrap_or_default();
+    if state.actor_room_id(actor_id, &default_room_id) != state.current_room_id {
+        return;
+    }
+    let damage =
+        (state.actor_stat(actor_id, "strength") - state.actor_stat("player", "defense")).max(1);
+    state
+        .adjust_actor_stat("player", "hp", -damage)
+        .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
+    let remaining = state.actor_stat("player", "hp");
+    let actor_name = actor_display_name(content, actor_id);
+    if let Some(line) = content.render_message(
+        "combat.hostile_strike",
+        &[
+            ("actor", actor_name.as_str()),
+            ("damage", damage.to_string().as_str()),
+            ("remaining", remaining.to_string().as_str()),
+        ],
+    ) {
+        lines.push(line);
+    }
+    let interval = content
+        .actor(actor_id)
+        .map(|actor| actor.attack_interval_minutes())
+        .unwrap_or(4);
+    state
+        .next_hostile_strike_at
+        .insert(actor_id.to_string(), state.current_time_minutes + interval);
+    defeat_player_if_dead(state, lines);
 }
 
 pub(super) fn handle_current_room_observed(

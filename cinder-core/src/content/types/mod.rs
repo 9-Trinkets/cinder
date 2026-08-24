@@ -67,6 +67,10 @@ pub struct ContentSettingsDefinition {
     pub show_act_closure: bool,
     #[serde(default)]
     pub show_relationship_sidebar: bool,
+    /// How autonomous hostile strikes are decided on background ticks.
+    /// `rules` selects deterministically; `llm` asks a validated LLM planner.
+    #[serde(default)]
+    pub autonomous_hostility_mode: AutonomousHostilityMode,
     /// Stone markers available for `place_flag`. 0 means unlimited supply;
     /// picked-up markers return to the pool.
     #[serde(default)]
@@ -103,6 +107,20 @@ pub(super) fn default_true() -> bool {
     true
 }
 
+/// Policy selector for autonomous hostile strikes on background ticks.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum AutonomousHostilityMode {
+    /// Deterministic: every eligible hostile actor in the player's room
+    /// strikes when its cooldown elapses.
+    #[default]
+    Rules,
+    /// An LLM planner receives a grounded world snapshot and returns validated
+    /// strike decisions. The reducer still enforces eligibility, so the model
+    /// can never bypass pacing or range rules.
+    Llm,
+}
+
 impl Default for ContentSettingsDefinition {
     fn default() -> Self {
         Self {
@@ -122,6 +140,7 @@ impl Default for ContentSettingsDefinition {
             workflow_id: String::default(),
             show_act_closure: true,
             show_relationship_sidebar: false,
+            autonomous_hostility_mode: AutonomousHostilityMode::Rules,
             flag_supply: 0,
             theme: ThemeDefinition::default(),
         }

@@ -3,13 +3,13 @@ use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::time::{SystemTime, UNIX_EPOCH};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum ObservationMode {
     Summary,
     Detailed,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum WorldEvent {
     TurnStarted {
         turn_number: u32,
@@ -151,6 +151,11 @@ pub enum WorldEvent {
     ActorRelationshipUpdated {
         actor_id: String,
         relationship: crate::engine::state::ActorRelationship,
+    },
+    /// A hostile actor strikes the player. Declared by tick policies (rules or
+    /// LLM); the reducer resolves the mechanics generically from stats.
+    HostileStrike {
+        actor_id: String,
     },
 }
 

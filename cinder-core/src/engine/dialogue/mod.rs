@@ -11,17 +11,18 @@ pub use scripted::ScriptedDialogueGenerator;
 
 use self::parsing::{
     ActorTurnActionParseContext, parse_actor_turn_action, parse_direct_speech_intent_label,
-    parse_menu_intent_label,
+    parse_hostility_plan, parse_menu_intent_label,
 };
 pub(crate) use self::prompts::build_actor_turn_affordance_option;
 use self::prompts::{
     actor_turn_decider_system_prompt, build_actor_turn_action_prompt,
     build_chapter_relationship_summary_prompt, build_chapter_script_summary_prompt,
     build_conversation_memory_summary_prompt, build_direct_speech_intent_prompt,
-    build_menu_intent_prompt, build_scene_brief_dialogue_prompt, build_stage_assignment_prompt,
-    chapter_relationship_summarizer_system_prompt, chapter_script_summarizer_system_prompt,
-    conversation_memory_summarizer_system_prompt, dialogue_system_prompt,
-    direct_speech_intent_system_prompt, menu_intent_system_prompt, sanitize_statement,
+    build_hostility_plan_prompt, build_menu_intent_prompt, build_scene_brief_dialogue_prompt,
+    build_stage_assignment_prompt, chapter_relationship_summarizer_system_prompt,
+    chapter_script_summarizer_system_prompt, conversation_memory_summarizer_system_prompt,
+    dialogue_system_prompt, direct_speech_intent_system_prompt, hostility_planner_system_prompt,
+    menu_intent_system_prompt, sanitize_statement,
 };
 
 use crate::content::types::SpeechIntentLabel;
@@ -36,6 +37,7 @@ use std::time::Duration;
 const ACTOR_DIALOGUE_ROLE: &str = "actor_dialogue";
 const MENU_INTENT_CLARIFIER_ROLE: &str = "menu_intent_clarifier";
 const ACTOR_TURN_DECIDER_ROLE: &str = "actor_turn_decider";
+const HOSTILITY_PLANNER_ROLE: &str = "hostility_planner";
 const CONVERSATION_MEMORY_SUMMARIZER_ROLE: &str = "conversation_memory_summarizer";
 const CHAPTER_SCRIPT_SUMMARIZER_ROLE: &str = "chapter_script_summarizer";
 const CHAPTER_RELATIONSHIP_SUMMARIZER_ROLE: &str = "chapter_relationship_summarizer";
@@ -68,6 +70,10 @@ pub trait DialogueGenerator: Send + Sync {
 
     fn build_actor_turn_action_prompt(&self, request: &ActorTurnActionRequest) -> String {
         build_actor_turn_action_prompt(request)
+    }
+
+    fn build_hostility_plan_prompt(&self, request: &HostilityPlanRequest) -> String {
+        build_hostility_plan_prompt(request)
     }
 
     fn build_menu_intent_prompt(&self, request: &MenuIntentRequest) -> String {
@@ -104,6 +110,11 @@ pub trait DialogueGenerator: Send + Sync {
         &self,
         request: &ActorTurnActionRequest,
     ) -> Result<ActorTurnActionDecision, String>;
+
+    fn plan_hostility_actions(
+        &self,
+        request: &HostilityPlanRequest,
+    ) -> Result<HostilityPlanDecision, String>;
 
     fn summarize_conversation_memory(
         &self,
@@ -336,6 +347,23 @@ impl DialogueGenerator for SynapseDialogueGenerator {
                     },
                 )
             },
+        )
+    }
+
+    fn plan_hostility_actions(
+        &self,
+        request: &HostilityPlanRequest,
+    ) -> Result<HostilityPlanDecision, String> {
+        let candidate_ids = request
+            .candidates
+            .iter()
+            .map(|candidate| candidate.actor_id.clone())
+            .collect::<Vec<_>>();
+        self.run_validated_text_role(
+            HOSTILITY_PLANNER_ROLE,
+            self.build_hostility_plan_prompt(request),
+            hostility_planner_system_prompt().to_string(),
+            |text| parse_hostility_plan(text, &candidate_ids),
         )
     }
 

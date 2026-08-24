@@ -7,6 +7,7 @@ pub mod dialogue_grounding;
 pub mod events;
 pub mod hook_ids;
 pub mod hooks;
+pub mod hostility;
 pub mod menus;
 pub mod neuron;
 pub mod reducer;

@@ -342,3 +342,32 @@ pub struct StageAssignmentScore {
     pub selection_score: i32,
     pub rationale: String,
 }
+
+/// Grounded snapshot handed to the LLM hostility planner on a background tick.
+/// Candidates are pre-filtered to hostile actors whose pacing allows a strike;
+/// the planner only chooses among them.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct HostilityPlanRequest {
+    pub player_room_id: String,
+    pub player_hp: i32,
+    pub candidates: Vec<HostilityCandidate>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct HostilityCandidate {
+    pub actor_id: String,
+    pub actor_name: String,
+    pub room_id: String,
+    pub hp: i32,
+    pub strength: i32,
+    /// Minutes elapsed since this actor last struck (or was woken).
+    pub minutes_since_last_strike: u32,
+    /// Minimum minutes between strikes for this actor.
+    pub attack_interval_minutes: u32,
+}
+
+/// Validated planner output: actor ids that should strike this tick.
+#[derive(Debug, Clone, PartialEq, Eq, Default)]
+pub struct HostilityPlanDecision {
+    pub strikes: Vec<String>,
+}

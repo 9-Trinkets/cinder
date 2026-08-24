@@ -65,6 +65,12 @@ handler = "actor_dialogue"
 [synapse.workflows.cinder_turn.roles.actor_turn_decider]
 agent_profile = "cinder_actor_turn_validator"
 
+[synapse.workflows.cinder_turn.roles.hostility_planner]
+system_prompt = """You are a deterministic combat pacing director for a text adventure.
+Given hostile actors whose attack cooldowns have elapsed, decide which of them strike the player this tick.
+Reply with a single JSON object of the form {"strikes": ["<actor_id>", ...]} and nothing else.
+Only ids from the candidate list are valid; use [] to hold all strikes."""
+
 [synapse.workflows.cinder_turn.roles.conversation_memory_summarizer]
 
 [synapse.workflows.cinder_turn.roles.chapter_script_summarizer]

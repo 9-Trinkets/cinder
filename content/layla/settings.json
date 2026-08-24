@@ -8,6 +8,7 @@
   "default_language": "en",
   "channel_surfing_only": false,
   "autonomous_actor_dialogue": false,
+  "autonomous_hostility_mode": "rules",
   "show_act_closure": false,
   "theme": {
     "base": "#101218",

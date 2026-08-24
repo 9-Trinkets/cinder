@@ -306,6 +306,7 @@ pub(crate) fn build_stage_assignment_prompt(request: &StageAssignmentRequest) ->
 }
 
 mod actor_turn;
+mod hostility;
 pub(crate) use actor_turn::{
     actor_turn_decider_system_prompt, chapter_relationship_summarizer_system_prompt,
     chapter_script_summarizer_system_prompt, conversation_memory_summarizer_system_prompt,
@@ -313,6 +314,7 @@ pub(crate) use actor_turn::{
     sanitize_statement,
 };
 pub(crate) use actor_turn::{build_actor_turn_action_prompt, build_actor_turn_affordance_option};
+pub(crate) use hostility::{build_hostility_plan_prompt, hostility_planner_system_prompt};
 
 pub(super) fn join_non_empty_sections(sections: &[String]) -> String {
     sections

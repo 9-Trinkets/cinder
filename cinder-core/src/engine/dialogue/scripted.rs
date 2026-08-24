@@ -2,8 +2,9 @@ use super::DialogueGenerator;
 use super::types::{
     ActorTurnActionDecision, ActorTurnActionRequest, ConversationMemorySummaryRequest,
     DialogueRequest, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
-    DynamicMenuOptionOutput, DynamicMenuRequest, MenuIntentDecision, MenuIntentRequest,
-    PerspectiveReview, PerspectiveReviewRequest, StageAssignment, StageAssignmentRequest,
+    DynamicMenuOptionOutput, DynamicMenuRequest, HostilityPlanDecision, HostilityPlanRequest,
+    MenuIntentDecision, MenuIntentRequest, PerspectiveReview, PerspectiveReviewRequest,
+    StageAssignment, StageAssignmentRequest,
 };
 use crate::content::types::SpeechIntentLabel;
 use std::collections::BTreeMap;
@@ -129,6 +130,13 @@ impl DialogueGenerator for ScriptedDialogueGenerator {
             .get(&request.actor_id)
             .cloned()
             .unwrap_or(ActorTurnActionDecision::Move))
+    }
+
+    fn plan_hostility_actions(
+        &self,
+        _request: &HostilityPlanRequest,
+    ) -> Result<HostilityPlanDecision, String> {
+        Ok(HostilityPlanDecision::default())
     }
 
     fn summarize_conversation_memory(
