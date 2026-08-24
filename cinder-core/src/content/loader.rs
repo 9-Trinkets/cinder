@@ -97,9 +97,7 @@ pub fn load_pack_from_dir_with_locale(
     let presentation = paths
         .read_optional::<PresentationDefinition>("presentation.json")?
         .unwrap_or_default();
-    let messages = paths
-        .read_optional::<BTreeMap<String, String>>("messages.json")?
-        .unwrap_or_default();
+    let messages = read_messages(&paths)?;
     for movie in &mut movies {
         for frame in &mut movie.frames {
             if !frame.text_path.is_empty() {
@@ -668,6 +666,26 @@ fn validate_bundle_progress_refs<'a>(
         }
     }
     Ok(())
+}
+
+/// Reads a pack's `messages.json`, layering it over the engine's bundled
+/// `messages_defaults.json`. Packs override the engine's default narration
+/// keys they define; anything else falls back to the bundled value. This keeps
+/// the engine's default player-facing narration in a JSON file rather than
+/// hardcoded in Rust.
+fn read_messages(paths: &LocalizedPaths<'_>) -> Result<BTreeMap<String, String>, Box<dyn Error>> {
+    let defaults: BTreeMap<String, String> =
+        serde_json::from_str(include_str!("messages_defaults.json"))
+            .expect("invalid bundled messages_defaults.json");
+    let mut merged = defaults;
+    let pack_messages = read_optional_path::<BTreeMap<String, String>>(&localized_file_path(
+        paths.root,
+        paths.locale,
+        "messages.json",
+    ))?
+    .unwrap_or_default();
+    merged.extend(pack_messages);
+    Ok(merged)
 }
 
 /// Reads a pack's `system.json`, layering it over the engine's bundled

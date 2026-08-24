@@ -1,0 +1,16 @@
+{
+  "observation.actor_inspects_room": "{actor_name} pauses to take in the {room_title} more carefully.",
+  "observation.actor_inspects_feature": "{actor_name} studies the {feature_label}.",
+  "observation.actor_studies_actor": "{actor_name} studies {target_actor_name} more closely.",
+  "item.acquired_inventory": "You have {label} ready.",
+  "item.acquired_room": "The {label} is ready here.",
+  "item.consumed_player": "You finish the {label}.",
+  "item.consumed_actor": "{consumer_name} accepts the {label}.",
+  "item.consumed_use": "You use the {label}.",
+  "error.command_not_now": "You can't {verb} right now.",
+  "error.command_needs_more": "You can't {verb} yet. Still needed: {labels}.",
+  "error.command_blocked_by_progress": "You can't {verb} again right now. Already ready: {labels}.",
+  "error.cannot_command_here": "You can't {command} here. Head to the {room} first.",
+  "error.missing_item": "You don't have any {label} ready.",
+  "error.nothing_to_consume": "You don't have anything to consume."
+}

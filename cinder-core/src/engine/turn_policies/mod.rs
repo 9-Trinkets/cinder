@@ -108,20 +108,33 @@ pub(crate) fn command_availability_issue(
 }
 
 pub(crate) fn command_unavailable_message(
-    _content: &ContentPack,
+    content: &ContentPack,
     action: &ActionDefinition,
     issue: &CommandAvailabilityIssue,
 ) -> String {
     let verb = action.command.to_ascii_lowercase();
     match issue {
-        CommandAvailabilityIssue::StageInactive => format!("You can't {verb} right now."),
+        CommandAvailabilityIssue::StageInactive => content
+            .render_message("error.command_not_now", &[("verb", verb.as_str())])
+            .unwrap_or_default(),
         CommandAvailabilityIssue::MissingBundleProgress(labels) => {
-            format!("You can't {verb} yet. Still needed: {}.", labels.join(", "))
+            let labels_text = labels.join(", ");
+            content
+                .render_message(
+                    "error.command_needs_more",
+                    &[("verb", verb.as_str()), ("labels", labels_text.as_str())],
+                )
+                .unwrap_or_default()
         }
-        CommandAvailabilityIssue::BlockedByBundleProgress(labels) => format!(
-            "You can't {verb} again right now. Already ready: {}.",
-            labels.join(", ")
-        ),
+        CommandAvailabilityIssue::BlockedByBundleProgress(labels) => {
+            let labels_text = labels.join(", ");
+            content
+                .render_message(
+                    "error.command_blocked_by_progress",
+                    &[("verb", verb.as_str()), ("labels", labels_text.as_str())],
+                )
+                .unwrap_or_default()
+        }
     }
 }
 

@@ -133,12 +133,14 @@ pub(super) fn plan_content_command(
             .and_then(|id| content.room(id))
             .map(|r| r.title.as_str())
             .unwrap_or("another room");
+        let command_lower = action.command.to_lowercase();
         planned.events.push(WorldEvent::ActionRejected {
-            message: format!(
-                "You can't {} here. Head to the {} first.",
-                action.command.to_lowercase(),
-                needed,
-            ),
+            message: content
+                .render_message(
+                    "error.cannot_command_here",
+                    &[("command", command_lower.as_str()), ("room", needed)],
+                )
+                .unwrap_or_default(),
         });
         return false;
     }
@@ -155,7 +157,9 @@ pub(super) fn plan_content_command(
                 .map(|i| i.label.as_str())
                 .unwrap_or(item_id);
             planned.events.push(WorldEvent::ActionRejected {
-                message: format!("You don't have any {label} ready."),
+                message: content
+                    .render_message("error.missing_item", &[("label", label)])
+                    .unwrap_or_default(),
             });
             return false;
         }
@@ -192,7 +196,9 @@ pub(super) fn plan_content_command(
         });
         if !has_any {
             planned.events.push(WorldEvent::ActionRejected {
-                message: "You don't have anything to consume.".to_string(),
+                message: content
+                    .render_message("error.nothing_to_consume", &[])
+                    .unwrap_or_default(),
             });
             return false;
         }

@@ -353,11 +353,16 @@ pub(super) fn handle_actor_observed_room(
     if let Some(room) = content.room(room_id) {
         state.mark_actor_observed_room(actor_id, room_id);
         state.push_actor_observation_note(actor_id, room.inspect_text.clone());
-        if state.current_room_id == room_id {
-            lines.push(format!(
-                "{actor_name} pauses to take in the {} more carefully.",
-                room.title
-            ));
+        if state.current_room_id == room_id
+            && let Some(line) = content.render_message(
+                "observation.actor_inspects_room",
+                &[
+                    ("actor_name", actor_name),
+                    ("room_title", room.title.as_str()),
+                ],
+            )
+        {
+            lines.push(line);
         }
     } else {
         lines.push(content.presentation.error_text.room_missing.clone());
@@ -381,8 +386,16 @@ pub(super) fn handle_actor_observed_feature(
     }) {
         state.mark_actor_feature_seen(actor_id, room_id, feature_id);
         state.push_actor_observation_note(actor_id, feature.inspect_text.clone());
-        if state.current_room_id == room_id {
-            lines.push(format!("{actor_name} studies the {}.", feature.label));
+        if state.current_room_id == room_id
+            && let Some(line) = content.render_message(
+                "observation.actor_inspects_feature",
+                &[
+                    ("actor_name", actor_name),
+                    ("feature_label", feature.label.as_str()),
+                ],
+            )
+        {
+            lines.push(line);
         }
         let _ = room;
     } else {
@@ -404,10 +417,16 @@ pub(super) fn handle_actor_observed_actor(
     if let Some(target_actor) = content.actor(target_actor_id) {
         state.mark_actor_studied_actor(actor_id, target_actor_id);
         state.push_actor_observation_note(actor_id, target_actor.inspect_text.clone());
-        if state.current_room_id == room_id {
-            lines.push(format!(
-                "{actor_name} studies {target_actor_name} more closely."
-            ));
+        if state.current_room_id == room_id
+            && let Some(line) = content.render_message(
+                "observation.actor_studies_actor",
+                &[
+                    ("actor_name", actor_name),
+                    ("target_actor_name", target_actor_name),
+                ],
+            )
+        {
+            lines.push(line);
         }
     } else {
         lines.push(content.presentation.error_text.actor_unknown.clone());
@@ -768,9 +787,17 @@ pub(super) fn handle_item_acquired(
     let room_id = state.current_room_id.clone();
     state.add_item_to_storage(item_id, storage, &room_id);
     match storage {
-        ItemStorageTarget::PlayerInventory => lines.push(format!("You have {label} ready.")),
+        ItemStorageTarget::PlayerInventory => {
+            if let Some(line) =
+                content.render_message("item.acquired_inventory", &[("label", label)])
+            {
+                lines.push(line);
+            }
+        }
         ItemStorageTarget::CurrentRoom => {
-            lines.push(format!("The {label} is ready here."));
+            if let Some(line) = content.render_message("item.acquired_room", &[("label", label)]) {
+                lines.push(line);
+            }
         }
     }
 }
@@ -791,11 +818,20 @@ pub(super) fn handle_item_consumed(
     let room_id = state.current_room_id.clone();
     if state.remove_item_from_storage(item_id, storage, &room_id) {
         if consumer_id == Some(content.settings.combat.player_actor_id.as_str()) {
-            lines.push(format!("You finish the {label}."));
+            if let Some(line) = content.render_message("item.consumed_player", &[("label", label)])
+            {
+                lines.push(line);
+            }
         } else if let Some(consumer_name) = consumer_name {
-            lines.push(format!("{consumer_name} accepts the {label}."));
-        } else {
-            lines.push(format!("You use the {label}."));
+            if let Some(line) = content.render_message(
+                "item.consumed_actor",
+                &[("consumer_name", consumer_name), ("label", label)],
+            ) {
+                lines.push(line);
+            }
+        } else if let Some(line) = content.render_message("item.consumed_use", &[("label", label)])
+        {
+            lines.push(line);
         }
     }
 }
