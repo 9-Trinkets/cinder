@@ -592,8 +592,11 @@ fn layla_allies_boost_damage_and_hostiles_do_not() {
         golem_hp
     );
     assert!(
-        output.lines.iter().any(|l| l.contains("strikes alongside")),
-        "expected ally join narration, got: {:?}",
+        output
+            .lines
+            .iter()
+            .any(|l| l.contains("strikes alongside") && l.contains("for 3 damage")),
+        "expected ally join narration with its damage contribution, got: {:?}",
         output.lines
     );
 }

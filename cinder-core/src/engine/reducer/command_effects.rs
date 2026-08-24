@@ -567,10 +567,15 @@ pub(super) fn apply_new_command_effects(
             lines.push(line);
         }
         for ally_id in &allied_participants {
+            let ally_damage = state.actor_stat(ally_id, "strength").max(0);
             let ally_name = actor_display_name(content, ally_id);
-            if let Some(line) =
-                content.render_message("combat.ally_joins_attack", &[("actor", ally_name.as_str())])
-            {
+            if let Some(line) = content.render_message(
+                "combat.ally_joins_attack",
+                &[
+                    ("actor", ally_name.as_str()),
+                    ("damage", ally_damage.to_string().as_str()),
+                ],
+            ) {
                 lines.push(line);
             }
         }
