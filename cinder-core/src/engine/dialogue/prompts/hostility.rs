@@ -29,6 +29,6 @@ pub(crate) fn build_hostility_plan_prompt(request: &HostilityPlanRequest) -> Str
     )
 }
 
-pub(crate) fn hostility_planner_system_prompt() -> &'static str {
-    "You are a deterministic combat pacing director. Reply with a single JSON object and nothing else."
+pub(crate) fn hostility_planner_system_prompt(request: &HostilityPlanRequest) -> &str {
+    &request.system_prompt
 }

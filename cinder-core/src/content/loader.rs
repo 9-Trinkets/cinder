@@ -21,14 +21,6 @@ pub struct LocaleOption {
     pub label: String,
 }
 
-pub fn load_default_pack() -> Result<ContentPack, Box<dyn Error>> {
-    load_default_pack_with_locale(None)
-}
-
-pub fn load_default_pack_with_locale(locale: Option<&str>) -> Result<ContentPack, Box<dyn Error>> {
-    load_pack_from_dir_with_locale(&default_pack_dir(), locale)
-}
-
 pub fn load_named_pack(pack_id: &str, locale: Option<&str>) -> Result<ContentPack, Box<dyn Error>> {
     load_pack_from_dir_with_locale(&pack_dir(pack_id), locale)
 }
@@ -39,10 +31,6 @@ pub fn content_dir() -> PathBuf {
 
 pub fn pack_dir(pack_id: &str) -> PathBuf {
     content_dir().join(pack_id)
-}
-
-pub fn default_pack_dir() -> PathBuf {
-    pack_dir("ella")
 }
 
 pub fn available_packs() -> Vec<String> {
@@ -91,7 +79,7 @@ pub fn load_pack_from_dir_with_locale(
     let ui_text = paths
         .read_optional::<UiTextDefinition>("ui.json")?
         .unwrap_or_default();
-    let system_text = paths.read_required::<SystemTextDefinition>("system.json")?;
+    let system_text = read_system_text(&paths)?;
     let opening = paths
         .read_required_with_fallback::<OpeningDefinition>("opening.json", Some("scenario.json"))?;
     let beats = paths
@@ -680,6 +668,31 @@ fn validate_bundle_progress_refs<'a>(
         }
     }
     Ok(())
+}
+
+/// Reads a pack's `system.json`, layering it over the engine's bundled
+/// `system_defaults.json`. Required fields must still be declared by the pack;
+/// defaulted fields fall back to the bundled values unless the pack overrides
+/// them. This keeps the engine's prompt/label defaults in a JSON file rather
+/// than hardcoded in Rust.
+fn read_system_text(paths: &LocalizedPaths<'_>) -> Result<SystemTextDefinition, Box<dyn Error>> {
+    let defaults: Value = serde_json::from_str(include_str!("system_defaults.json"))
+        .expect("invalid bundled system_defaults.json");
+    let mut merged = defaults
+        .as_object()
+        .cloned()
+        .unwrap_or_else(serde_json::Map::new);
+    let pack_system = read_required_path::<Value>(&localized_file_path(
+        paths.root,
+        paths.locale,
+        "system.json",
+    ))?;
+    if let Value::Object(pack_object) = pack_system {
+        for (key, value) in pack_object {
+            merged.insert(key, value);
+        }
+    }
+    Ok(serde_json::from_value(Value::Object(merged))?)
 }
 
 struct LocalizedPaths<'a> {

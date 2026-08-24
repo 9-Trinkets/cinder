@@ -280,7 +280,6 @@ pub(super) fn time_reached_signals(
 #[cfg(test)]
 mod tests {
     use super::{advance_objective_for_signal, fallback_stage_to_activate};
-    use crate::content::loader::load_named_pack;
     use crate::content::types::{AdvanceSignal, BeatDefinition, BeatsDefinition};
     use crate::engine::state::{VariableStore, WorldState};
 
@@ -329,7 +328,7 @@ mod tests {
 
     #[test]
     fn stage_elapsed_signal_advances_relative_to_stage_start() {
-        let mut pack = load_named_pack("aera", Some("en")).expect("load aera");
+        let mut pack = crate::engine::test_fixtures::minimal_test_pack();
         pack.beats = BeatsDefinition {
             initial_stage_ids: vec!["prep".to_string()],
             stages: vec![

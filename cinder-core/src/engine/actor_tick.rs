@@ -711,6 +711,7 @@ fn build_hostility_plan_request(content: &ContentPack, state: &WorldState) -> Ho
             &content.settings.combat.health_stat_id,
         ),
         candidates,
+        system_prompt: content.system_text.hostility_planner_system_prompt.clone(),
     }
 }
 

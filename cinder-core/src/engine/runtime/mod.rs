@@ -1497,45 +1497,6 @@ mod tests {
     }
 
     fn minimal_system_text_json() -> &'static str {
-        r#"{
-  "dialogue_system_prompt": "",
-  "dialogue_section_character": "",
-  "dialogue_section_setting": "",
-  "dialogue_section_current_beat": "",
-  "dialogue_section_subtext": "",
-  "dialogue_section_recent_memory": "",
-  "dialogue_latest_line_label": "",
-  "dialogue_section_response": "",
-  "dialogue_no_direct_question": "",
-  "dialogue_no_character_facts": "",
-  "dialogue_no_setting_facts": "",
-  "dialogue_no_current_beat_facts": "",
-  "dialogue_no_subtext_facts": "",
-  "dialogue_no_recent_memory": "",
-  "dialogue_response_fallback": "",
-  "menu_intent_system_prompt": "",
-  "menu_section_title": "",
-  "menu_id_label": "",
-  "menu_offered_by_label": "",
-  "menu_intent_guidance_label": "",
-  "menu_available_options_label": "",
-  "menu_section_setting": "",
-  "menu_section_current_beat": "",
-  "menu_section_recent_memory": "",
-  "menu_latest_line_label": "",
-  "menu_decision_label": "",
-  "menu_no_direct_request": "",
-  "menu_no_authored_options": "",
-  "menu_decision_instruction": "",
-  "prompt_time_note": "",
-  "prompt_current_room_note": "",
-  "prompt_visible_features_note": "",
-  "prompt_people_here_note": "",
-  "prompt_exits_note": "",
-  "prompt_current_speaker_note": "",
-  "prompt_shared_room_note": "",
-  "prompt_latest_words_note": "",
-  "prompt_address_other_person_note": ""
-}"#
+        crate::engine::test_fixtures::minimal_system_text_json()
     }
 }

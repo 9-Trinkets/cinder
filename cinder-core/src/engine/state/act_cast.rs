@@ -155,7 +155,11 @@ pub fn resolved_actor_prompt_context(
     let behavior_actor = content.actor(&patient.actor_id).unwrap_or(actor);
     let act_number = current_act_number(state);
     let mut character_notes = behavior_actor.prompt_context.character_notes.clone();
-    character_notes.push(format!("You are {}.", patient.name));
+    character_notes.push(render_act_cast_template(
+        content,
+        &content.system_text.act_cast_character_note_template,
+        &[("name", patient.name.as_str())],
+    ));
     for (key, value) in &patient.metadata {
         if key.starts_with("char_") {
             let label = key.strip_prefix("char_").unwrap_or(key);
@@ -163,9 +167,10 @@ pub fn resolved_actor_prompt_context(
         }
     }
     let mut subtext_notes = behavior_actor.prompt_context.subtext_notes.clone();
-    subtext_notes.push(format!(
-        "Carry the emotional residue of {}.",
-        patient.intro_blurb
+    subtext_notes.push(render_act_cast_template(
+        content,
+        &content.system_text.act_cast_subtext_template,
+        &[("intro", patient.intro_blurb.as_str())],
     ));
     for (key, value) in &patient.metadata {
         if key.starts_with("sub_") {
@@ -174,9 +179,13 @@ pub fn resolved_actor_prompt_context(
         }
     }
     let mut response_notes = behavior_actor.prompt_context.response_notes.clone();
-    response_notes.push(format!(
-        "You are in act {act_number}. Respond as {} would, without narrating future sessions.",
-        patient.name
+    response_notes.push(render_act_cast_template(
+        content,
+        &content.system_text.act_cast_response_note_template,
+        &[
+            ("act", act_number.to_string().as_str()),
+            ("name", patient.name.as_str()),
+        ],
     ));
     if let Some(review) = patient.last_feedback_review.as_deref() {
         response_notes.push(format!("Last act takeaway: {review}"));
@@ -187,6 +196,14 @@ pub fn resolved_actor_prompt_context(
         response_notes,
         behavior_examples: behavior_actor.prompt_context.behavior_examples.clone(),
     }
+}
+
+fn render_act_cast_template(
+    content: &ContentPack,
+    template: &str,
+    replacements: &[(&str, &str)],
+) -> String {
+    content.render_template(template, replacements)
 }
 
 pub fn current_act_intro(state: &WorldState) -> Option<String> {

@@ -344,41 +344,29 @@ pub(crate) fn actor_turn_decider_system_prompt(_request: &ActorTurnActionRequest
 
 pub(crate) fn conversation_memory_summarizer_system_prompt(
     request: &ConversationMemorySummaryRequest,
-) -> &'static str {
-    match request.locale.as_str() {
-        "zh-TW" => {
-            "你要把兩個角色最近互動的重點濃縮成一小段後續可重用的記憶摘要。只能根據提供的既有摘要與最近互動來寫，不要杜撰。只回傳一小段自然語句，不要條列，不要分析，不要超過 240 個字元。"
-        }
-        _ => {
-            "You compress recent interaction history into one short reusable relationship-memory summary for future prompts. Use only the provided summary and recent lines. Return one plain prose sentence or two very short clauses, under 240 characters, with no bullets or analysis."
-        }
-    }
+) -> &str {
+    request
+        .system_text
+        .conversation_memory_summarizer_system_prompt
+        .as_str()
 }
 
 pub(crate) fn chapter_script_summarizer_system_prompt(
     request: &ChapterScriptSummaryRequest,
-) -> &'static str {
-    match request.locale.as_str() {
-        "zh-TW" => {
-            "你要閱讀整章逐字稿，寫成一小段章節結尾回顧。只能根據提供的逐字稿，不要杜撰。語氣像戀愛實境節目的集數回顧：具體、有畫面、懂人際張力，但不要浮誇。只回傳一段 3 到 5 句的自然文字。"
-        }
-        _ => {
-            "You turn a full chapter transcript into one compact end-of-episode recap. Use only the provided transcript. Sound like a sharp reality TV recap: specific, vivid, socially observant, and lightly juicy without becoming campy. Return one tight paragraph of 2 to 4 sentences."
-        }
-    }
+) -> &str {
+    request
+        .system_text
+        .chapter_script_summarizer_system_prompt
+        .as_str()
 }
 
 pub(crate) fn chapter_relationship_summarizer_system_prompt(
     request: &ChapterRelationshipSummaryRequest,
-) -> &'static str {
-    match request.locale.as_str() {
-        "zh-TW" => {
-            "你要根據章節結尾的人際數值，寫出關係現況更新。只能依據提供的數值，不要杜撰事件。每行簡短自然，像戀愛實境節目主持人在更新配對看板。回傳 2 到 4 行，不要加條列符號。"
-        }
-        _ => {
-            "You turn end-of-chapter pair stats into relationship-status updates. Use only the provided stat lines. Return 2 to 4 short lines with no bullets, each starting with the pair name exactly as given, like a reality TV host giving a sharp relationship board update. Do not invent scenes or promises."
-        }
-    }
+) -> &str {
+    request
+        .system_text
+        .chapter_relationship_summarizer_system_prompt
+        .as_str()
 }
 
 pub(crate) fn direct_speech_intent_system_prompt(request: &DirectSpeechIntentRequest) -> &str {
@@ -467,13 +455,13 @@ fn format_talk_relationship_context(candidate: &ActorTurnSpeakCandidate) -> Stri
 #[cfg(test)]
 mod tests {
     use super::build_actor_turn_affordance_option;
-    use crate::content::loader::load_named_pack;
     use crate::content::types::{ActionDefinition, CommandInputMode, CommandTargetMode};
     use crate::engine::dialogue::ActorTurnAffordanceTarget;
+    use crate::engine::test_fixtures::minimal_test_pack;
 
     #[test]
     fn targetless_none_input_commands_render_explicit_action_text() {
-        let content = load_named_pack("aera", Some("en")).expect("load aera");
+        let content = minimal_test_pack();
         let option = build_actor_turn_affordance_option(
             &content.system_text,
             "cook",

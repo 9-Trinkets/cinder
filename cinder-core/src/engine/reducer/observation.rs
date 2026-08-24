@@ -18,7 +18,7 @@ pub(super) fn actors_in_room<'a>(
 }
 
 /// Collapse repeated names while preserving first-seen order, suffixing
-/// duplicates with a count ("dark golem ×2").
+/// duplicates with a count ("warden ×2").
 pub(super) fn group_duplicate_names(names: &[String]) -> Vec<String> {
     let mut grouped: Vec<(String, usize)> = Vec::new();
     for name in names {

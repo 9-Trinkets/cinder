@@ -1,5 +1,11 @@
 use serde::{Deserialize, Serialize};
 
+/// System-level prompt and label text for the dialogue engine.
+///
+/// Fields without a default are required in every pack's `system.json`. The
+/// defaulted fields fall back to values in `system_defaults.json` (bundled
+/// with the engine); the loader merges a pack's `system.json` over that base,
+/// so packs only declare the keys they want to override.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SystemTextDefinition {
     pub dialogue_system_prompt: String,
@@ -7,7 +13,7 @@ pub struct SystemTextDefinition {
     pub dialogue_section_setting: String,
     pub dialogue_section_current_beat: String,
     pub dialogue_section_subtext: String,
-    #[serde(default = "default_dialogue_section_behavior_examples")]
+    #[serde(default)]
     pub dialogue_section_behavior_examples: String,
     pub dialogue_section_recent_memory: String,
     pub dialogue_latest_line_label: String,
@@ -17,7 +23,7 @@ pub struct SystemTextDefinition {
     pub dialogue_no_setting_facts: String,
     pub dialogue_no_current_beat_facts: String,
     pub dialogue_no_subtext_facts: String,
-    #[serde(default = "default_dialogue_no_behavior_examples")]
+    #[serde(default)]
     pub dialogue_no_behavior_examples: String,
     pub dialogue_no_recent_memory: String,
     pub dialogue_response_fallback: String,
@@ -44,225 +50,90 @@ pub struct SystemTextDefinition {
     pub prompt_shared_room_note: String,
     pub prompt_latest_words_note: String,
     pub prompt_address_other_person_note: String,
-    #[serde(default = "default_actor_action_response_notes")]
+    #[serde(default)]
     pub actor_action_response_notes: Vec<String>,
-    #[serde(default = "default_conversation_memory_summary_label")]
+    #[serde(default)]
     pub conversation_memory_summary_label: String,
-    #[serde(default = "default_conversation_memory_summary_empty")]
+    #[serde(default)]
     pub conversation_memory_summary_empty: String,
-    #[serde(default = "default_conversation_memory_summary_prompt_template")]
+    #[serde(default)]
     pub conversation_memory_summary_prompt_template: String,
-    #[serde(default = "default_chapter_script_summary_empty")]
+    #[serde(default)]
     pub chapter_script_summary_empty: String,
-    #[serde(default = "default_chapter_script_summary_prompt_template")]
+    #[serde(default)]
     pub chapter_script_summary_prompt_template: String,
-    #[serde(default = "default_chapter_relationship_summary_empty")]
+    #[serde(default)]
     pub chapter_relationship_summary_empty: String,
-    #[serde(default = "default_chapter_relationship_summary_prompt_template")]
+    #[serde(default)]
     pub chapter_relationship_summary_prompt_template: String,
-    #[serde(default = "default_direct_speech_intent_no_current_beat")]
+    #[serde(default)]
     pub direct_speech_intent_no_current_beat: String,
-    #[serde(default = "default_direct_speech_intent_no_subtext")]
+    #[serde(default)]
     pub direct_speech_intent_no_subtext: String,
-    #[serde(default = "default_direct_speech_intent_no_recent_memory")]
+    #[serde(default)]
     pub direct_speech_intent_no_recent_memory: String,
-    #[serde(default = "default_direct_speech_intent_no_reply")]
+    #[serde(default)]
     pub direct_speech_intent_no_reply: String,
-    #[serde(default = "default_direct_speech_intent_prompt_template")]
+    #[serde(default)]
     pub direct_speech_intent_prompt_template: String,
-    #[serde(default = "default_direct_speech_intent_system_prompt")]
+    #[serde(default)]
     pub direct_speech_intent_system_prompt: String,
-    #[serde(default = "default_actor_turn_prompt_recent_memory_note")]
+    #[serde(default)]
     pub actor_turn_prompt_recent_memory_note: String,
-    #[serde(default = "default_actor_turn_relationship_status_label")]
+    #[serde(default)]
     pub actor_turn_relationship_status_label: String,
-    #[serde(default = "default_actor_turn_available_actions_label")]
+    #[serde(default)]
     pub actor_turn_available_actions_label: String,
-    #[serde(default = "default_actor_turn_decision_instruction")]
+    #[serde(default)]
     pub actor_turn_decision_instruction: String,
-    #[serde(default = "default_actor_turn_prompt_template")]
+    #[serde(default)]
     pub actor_turn_prompt_template: String,
-    #[serde(default = "default_actor_turn_decider_system_prompt")]
+    #[serde(default)]
     pub actor_turn_decider_system_prompt: String,
-    #[serde(default = "default_actor_turn_no_social_context")]
+    #[serde(default)]
     pub actor_turn_no_social_context: String,
-    #[serde(default = "default_actor_turn_move_option_template")]
+    #[serde(default)]
     pub actor_turn_move_option_template: String,
-    #[serde(default = "default_actor_turn_move_option_with_actor_template")]
+    #[serde(default)]
     pub actor_turn_move_option_with_actor_template: String,
-    #[serde(default = "default_actor_turn_speak_option_template")]
+    #[serde(default)]
     pub actor_turn_speak_option_template: String,
-    #[serde(default = "default_actor_turn_reply_option_template")]
+    #[serde(default)]
     pub actor_turn_reply_option_template: String,
-    #[serde(default = "default_actor_turn_speak_room_option_template")]
+    #[serde(default)]
     pub actor_turn_speak_room_option_template: String,
-    #[serde(default = "default_actor_turn_hug_option_template")]
+    #[serde(default)]
     pub actor_turn_hug_option_template: String,
-    #[serde(default = "default_actor_turn_rest_option_template")]
+    #[serde(default)]
     pub actor_turn_rest_option_template: String,
-    #[serde(default = "default_actor_turn_consume_option_template")]
+    #[serde(default)]
     pub actor_turn_consume_option_template: String,
-    #[serde(default = "default_actor_turn_inspect_feature_option_template")]
+    #[serde(default)]
     pub actor_turn_inspect_feature_option_template: String,
-    #[serde(default = "default_actor_turn_inspect_actor_option_template")]
+    #[serde(default)]
     pub actor_turn_inspect_actor_option_template: String,
-    #[serde(default = "default_actor_turn_act_option_template")]
+    #[serde(default)]
     pub actor_turn_act_option_template: String,
-    #[serde(default = "default_actor_turn_act_decision_template")]
+    #[serde(default)]
     pub actor_turn_act_decision_template: String,
-    #[serde(default = "default_exploration_unvisited_room_note_template")]
+    #[serde(default)]
     pub exploration_unvisited_room_note_template: String,
-}
-
-// ── UiTextDefinition default helpers ─────────────────────────────────────────
-
-fn default_dialogue_section_behavior_examples() -> String {
-    "Behavior Examples".to_string()
-}
-
-fn default_dialogue_no_behavior_examples() -> String {
-    "No behavior examples.".to_string()
-}
-
-fn default_actor_action_response_notes() -> Vec<String> {
-    vec![
-        "Describe one brief, noticeable in-room action in bare third-person present tense as this actor."
-            .to_string(),
-        "Start with a present-tense verb phrase (for example: adjusts, glances, rests)."
-            .to_string(),
-        "Do not include dialogue, quotes, or any person's name.".to_string(),
-    ]
-}
-
-fn default_conversation_memory_summary_label() -> String {
-    "Conversation Summary".to_string()
-}
-
-fn default_conversation_memory_summary_empty() -> String {
-    "No longer-term interaction summary yet.".to_string()
-}
-
-fn default_conversation_memory_summary_prompt_template() -> String {
-    "Participants\n- {participant_a_name}\n- {participant_b_name}\n\nExisting Summary\n{existing_summary}\n\nRecent Lines\n{recent_lines}\n\nTask\nWrite one short relationship-memory summary for future prompt grounding.\n- Keep it under 240 characters.\n- Focus on what changed between them: trust, tension, warmth, recurring topics, promises, distance, or revealing visible actions.\n- Do not invent anything.\n- Write in plain third-person prose, not bullets.\n- Use the same language as the source lines.".to_string()
-}
-
-fn default_chapter_script_summary_empty() -> String {
-    "No chapter transcript available.".to_string()
-}
-
-fn default_chapter_script_summary_prompt_template() -> String {
-    "Chapter Transcript\n{transcript}\n\nTask\nYou are the commentary panel recapping tonight's episode for viewers.\n- Write one tight paragraph of 2 to 4 sentences.\n- Lead with the most charged moment of the night: who made a move, who pulled back, what shifted in the room.\n- Name the strongest connection, the sharpest awkward beat, or the mood that settled over the house.\n- End on the tension or possibility still hanging in the air.\n- Sound specific and socially observant, like hosts who just watched the footage together and have opinions.\n- Do not invent off-screen events, inner thoughts, or future outcomes.\n- Use the same language as the transcript.".to_string()
-}
-
-fn default_chapter_relationship_summary_empty() -> String {
-    "No relationship shifts were recorded.".to_string()
-}
-
-fn default_chapter_relationship_summary_prompt_template() -> String {
-    "Pair Dynamics (background data — do not quote numbers)\n{pair_stats}\n\nTask\nYou are the commentary panel updating the relationship board after tonight's episode.\n- Write 2 to 4 short lines, one pair per line when possible.\n- Start each line with the pair name exactly as given, then an em dash, then your observation.\n- Interpret the data as gossip: what does the panel see in how these two are doing? Are they warming up, stalling, pulling apart, circling each other?\n- Never mention numbers, scores, stat names, or ratings. Translate everything into body language, vibe, and behavior.\n- Sound like a panel of hosts who watched the footage and have a read on the situation.\n- Mention uncertainty when the data is ambiguous — 'hard to tell yet' is fine.\n- Do not invent scenes or promises not supported by the data.".to_string()
-}
-
-fn default_direct_speech_intent_no_current_beat() -> String {
-    "No current beat guidance.".to_string()
-}
-
-fn default_direct_speech_intent_no_subtext() -> String {
-    "No subtext notes.".to_string()
-}
-
-fn default_direct_speech_intent_no_recent_memory() -> String {
-    "No recent memory.".to_string()
-}
-
-fn default_direct_speech_intent_no_reply() -> String {
-    "No immediate reply from the other person.".to_string()
-}
-
-fn default_direct_speech_intent_prompt_template() -> String {
-    "Speaker\n- {actor_name}\n\nTarget\n- {other_person_name}\n\nCurrent Beat\n{current_beat}\n\nSubtext\n{subtext}\n\nRecent Memory\n{recent_memory}\n\nLatest Line From Target\n{other_person_message}\n\nSpoken Line\n- {spoken_line}\n\nAvailable Intents\n{available_intents}\n\nTask\nChoose the intent that best describes the spoken line.\n- Base the choice on the spoken line first, using the other context only to interpret it.\n- Return exactly one label from the Available Intents list.".to_string()
-}
-
-fn default_direct_speech_intent_system_prompt() -> String {
-    "You classify the relational intent of a spoken line. Return exactly one label from the available intents list. Use the descriptions to guide your choice.".to_string()
-}
-
-fn default_actor_turn_prompt_recent_memory_note() -> String {
-    "(Chronological room context, oldest to newest.)".to_string()
-}
-
-fn default_actor_turn_relationship_status_label() -> String {
-    "Relationship Status".to_string()
-}
-
-fn default_actor_turn_available_actions_label() -> String {
-    "Available Actions".to_string()
-}
-
-fn default_actor_turn_decision_instruction() -> String {
-    "Return exactly one command from this list.\nDo not return explanations or descriptions."
-        .to_string()
-}
-
-fn default_actor_turn_prompt_template() -> String {
-    "Character\n{character}\n\nSetting\n{setting}\n\nCurrent Beat\n{current_beat}\n\nSubtext\n{subtext}\n\nBehavior Examples\n{behavior_examples}\n\nRecent Memory\n{recent_memory_note}\n{recent_memory}\n\n{relationship_status_label}\n{relationship_context}\n\n{available_actions_label}\n{available_actions}\n\n{decision_label}\n{decision_instruction}\n{decision_lines}".to_string()
-}
-
-fn default_actor_turn_decider_system_prompt() -> String {
-    "Use Available Actions to understand what is possible. Return exactly one command from the prompt's Decision section and do not include explanations or descriptions. If a listed command includes a placeholder like <...>, repeat the command prefix followed by a short bare third-person present-tense action phrase. Do not include the actor name or any leading pronoun. Never use first-person or second-person wording.".to_string()
-}
-
-fn default_actor_turn_no_social_context() -> String {
-    "No active social context yet.".to_string()
-}
-
-fn default_actor_turn_move_option_template() -> String {
-    "You could {prompt_verb} to {room_title}.".to_string()
-}
-
-fn default_actor_turn_move_option_with_actor_template() -> String {
-    "You could {prompt_verb} to {room_title} next to get closer to {actor_name}.".to_string()
-}
-
-fn default_actor_turn_speak_option_template() -> String {
-    "You could speak to {actor_name}.".to_string()
-}
-
-fn default_actor_turn_reply_option_template() -> String {
-    "You could speak to {actor_name} now.".to_string()
-}
-
-fn default_actor_turn_speak_room_option_template() -> String {
-    "You could speak to {audience_label} by addressing the whole room at once.".to_string()
-}
-
-fn default_actor_turn_hug_option_template() -> String {
-    "You could {prompt_verb} {actor_name}.".to_string()
-}
-
-fn default_actor_turn_rest_option_template() -> String {
-    "You could {prompt_verb} on the {context_label} to recover a little.".to_string()
-}
-
-fn default_actor_turn_consume_option_template() -> String {
-    "You could {prompt_verb} the {item_label} from the {feature_label}.".to_string()
-}
-
-fn default_actor_turn_inspect_feature_option_template() -> String {
-    "You could {prompt_verb} {feature_label} more closely.".to_string()
-}
-
-fn default_actor_turn_inspect_actor_option_template() -> String {
-    "You could {prompt_verb} {actor_name} more closely.".to_string()
-}
-
-fn default_actor_turn_act_option_template() -> String {
-    "You could do one brief, noticeable in-room action without speaking.".to_string()
-}
-
-fn default_actor_turn_act_decision_template() -> String {
-    "{command} <third-person present-tense action>".to_string()
-}
-
-fn default_exploration_unvisited_room_note_template() -> String {
-    "You have not really gotten a feel for the {room_title} yet.".to_string()
+    #[serde(default)]
+    pub conversation_memory_summarizer_system_prompt: String,
+    #[serde(default)]
+    pub chapter_script_summarizer_system_prompt: String,
+    #[serde(default)]
+    pub chapter_relationship_summarizer_system_prompt: String,
+    #[serde(default)]
+    pub act_cast_character_note_template: String,
+    #[serde(default)]
+    pub act_cast_subtext_template: String,
+    #[serde(default)]
+    pub act_cast_response_note_template: String,
+    #[serde(default)]
+    pub stage_assignment_system_prompt: String,
+    #[serde(default)]
+    pub dynamic_menu_system_prompt: String,
+    #[serde(default)]
+    pub hostility_planner_system_prompt: String,
 }

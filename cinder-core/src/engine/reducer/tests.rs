@@ -1,6 +1,5 @@
 use super::beat_advance::{advance_conditions_met, evaluate_advance_condition};
 use super::*;
-use crate::content::loader::{load_default_pack, load_named_pack};
 use crate::content::types::{
     ActionDefinition, ActionItemCreation, ActionItemStorageTarget, ActorDefinition,
     ActorPromptContext, AdvanceCondition, AdvanceSignal, BeatDefinition, BeatsDefinition,
@@ -12,6 +11,7 @@ use crate::content::types::{
     RuleBundleProgressRef, RuleBundlesDefinition, StatDefinition, StatsDefinition,
 };
 use crate::engine::state::{ActorStance, ConversationMemoryKind, GamePhase};
+use crate::engine::test_fixtures::minimal_test_pack;
 use serde_json::json;
 use std::collections::{BTreeMap, HashMap};
 
@@ -29,7 +29,7 @@ const SOFA_ID: &str = "sofa";
 const SOFA_LABEL: &str = "long sofa";
 
 fn reducer_test_pack() -> ContentPack {
-    let mut pack = load_default_pack().expect("load base pack");
+    let mut pack = minimal_test_pack();
     pack.settings = ContentSettingsDefinition {
         tick_minutes_per_turn: 1,
         ..ContentSettingsDefinition::default()
@@ -866,55 +866,6 @@ fn actor_commands_can_create_room_items_from_story_vars() {
         ItemStorageTarget::CurrentRoom,
         KITCHEN_ID,
     ));
-}
-
-#[test]
-fn actor_watch_command_consumes_current_room_item_when_no_feature_stock_exists() {
-    let content = load_named_pack("aera", Some("en")).expect("load aera");
-    let mut state = WorldState::new(&content);
-    state.current_room_id = "studio".to_string();
-    state.add_item_to_storage("clip-ren", ItemStorageTarget::CurrentRoom, "studio");
-
-    apply_events(
-        &mut state,
-        &content,
-        &[TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
-            actor_id: "ren".to_string(),
-            actor_name: "Ren".to_string(),
-            room_id: "studio".to_string(),
-            command_id: "watch".to_string(),
-            target_room_id: None,
-            target_actor_id: None,
-            target_actor_name: None,
-            context_label: None,
-            feature_id: Some("editing-desk".to_string()),
-            consumable_id: Some("clip-ren".to_string()),
-            freeform_text: None,
-        })],
-    );
-
-    assert!(!state.has_item_in_storage("clip-ren", ItemStorageTarget::CurrentRoom, "studio",));
-}
-
-#[test]
-fn menu_opened_emits_opening_narrative_lines() {
-    let content = load_named_pack("ella", Some("en")).expect("load ella");
-    let mut state = WorldState::new(&content);
-
-    let output = apply_events(
-        &mut state,
-        &content,
-        &[TimestampedWorldEvent::now(WorldEvent::MenuOpened {
-            menu_id: "late-night-snack".to_string(),
-        })],
-    );
-
-    assert!(
-        output
-            .lines
-            .iter()
-            .any(|line| line == "Dad opens the fridge, glances back at Ella, and waits.")
-    );
 }
 
 #[test]

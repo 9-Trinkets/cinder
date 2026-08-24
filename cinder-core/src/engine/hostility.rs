@@ -40,14 +40,13 @@ pub(crate) fn plan_rules_hostility(content: &ContentPack, state: &WorldState) ->
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::content::loader::load_named_pack;
     use crate::engine::state::GamePhase;
 
-    /// Fixture reusing the loaded pack's own actors: the first becomes the
+    /// Fixture reusing the synthetic pack's own actors: the first becomes the
     /// hostile creature sharing the player's room, the second waits elsewhere.
     /// Mutating definitions in place keeps the pack's id index consistent.
     fn hostile_fixture() -> (ContentPack, WorldState, String, String) {
-        let mut content = load_named_pack("aera", Some("en")).expect("load aera");
+        let mut content = crate::engine::test_fixtures::minimal_test_pack();
         assert!(content.actors.len() >= 2, "fixture needs two actors");
         let brute_id = content.actors[0].id.clone();
         let bystander_id = content.actors[1].id.clone();

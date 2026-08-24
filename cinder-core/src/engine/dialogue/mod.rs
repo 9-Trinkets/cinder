@@ -362,7 +362,7 @@ impl DialogueGenerator for SynapseDialogueGenerator {
         self.run_validated_text_role(
             HOSTILITY_PLANNER_ROLE,
             self.build_hostility_plan_prompt(request),
-            hostility_planner_system_prompt().to_string(),
+            hostility_planner_system_prompt(request).to_string(),
             |text| parse_hostility_plan(text, &candidate_ids),
         )
     }
@@ -426,7 +426,7 @@ impl DialogueGenerator for SynapseDialogueGenerator {
         self.run_validated_text_role(
             STAGE_ASSIGNMENT_ROLE,
             build_stage_assignment_prompt(request),
-            "You rank which characters are most likely to join the selected side of a stage split. Respond only with valid JSON.".to_string(),
+            request.system_text.stage_assignment_system_prompt.clone(),
             |text| {
                 let parsed: StageAssignment = serde_json::from_str(text.trim())
                     .map_err(|error| format!("failed to parse stage assignment: {error}"))?;
@@ -511,8 +511,7 @@ Make the options feel distinct from each other and grounded in the recent conver
         let response = self.run_text_role(
             &request.role_name,
             prompt,
-            "You generate menu options for a dialogue-driven game. Respond only with valid JSON."
-                .to_string(),
+            request.system_text.dynamic_menu_system_prompt.clone(),
         )?;
         serde_json::from_str::<Vec<DynamicMenuOptionOutput>>(&response)
             .map_err(|e| format!("failed to parse dynamic menu options: {e}"))

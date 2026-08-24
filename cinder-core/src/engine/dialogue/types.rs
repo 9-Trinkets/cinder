@@ -351,6 +351,10 @@ pub struct HostilityPlanRequest {
     pub player_room_id: String,
     pub player_hp: i32,
     pub candidates: Vec<HostilityCandidate>,
+    /// Pack-authored system prompt for the planner role (defaults to a
+    /// deterministic structural instruction when the pack omits it).
+    #[serde(default)]
+    pub system_prompt: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
