@@ -28,10 +28,7 @@
     "crt_dim": "#4a5a7a",
     "crt_bez": "#0b0d12"
   },
-  "room_tag_limits": {
-    "marker": 5
-  },
-  "room_tag_items": {
-    "marker": "stone-marker"
+  "starting_items": {
+    "stone-marker": 5
   }
 }

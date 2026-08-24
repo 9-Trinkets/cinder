@@ -132,17 +132,11 @@ pub fn load_pack_from_dir_with_locale(
         .iter()
         .map(|item| item.id.as_str())
         .collect::<Vec<_>>();
-    for (tag, item_id) in &settings.room_tag_items {
-        if settings.room_tag_limits.get(tag).copied().unwrap_or(0) == 0 {
-            return Err(format!(
-                "room_tag_items declares item for tag '{tag}', but room_tag_limits has no finite limit for it"
-            )
-            .into());
-        }
+    for item_id in settings.starting_items.keys() {
         require_known_id(
             item_id,
             &item_ids,
-            &format!("room_tag_items['{tag}'] '{item_id}'"),
+            &format!("starting_items '{item_id}'"),
             "items",
         )?;
     }

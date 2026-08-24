@@ -958,8 +958,8 @@ fn encirclement_conversion_narration_follows_the_flag_placement() {
         id: "place-flag".to_string(),
         command: "place-flag".to_string(),
         target_mode: CommandTargetMode::None,
-        effects: vec![CommandEffect::PlaceRoomTag],
-        room_tag: "marker".to_string(),
+        effects: vec![CommandEffect::DropItem],
+        drop_item: "stone-marker".to_string(),
         event_text: "{actor_name} drives a stone marker into the ground.".to_string(),
         ..ActionDefinition::default()
     });
@@ -972,7 +972,7 @@ fn encirclement_conversion_narration_follows_the_flag_placement() {
         "The {actor} falls in behind you.".to_string(),
     );
     // A golem in the lounge converts via the `actor.encircled` hook once its
-    // only neighbor (the kitchen) is marked.
+    // only neighbor (the kitchen) holds a stone marker.
     pack.actors.push(ActorDefinition {
         id: "golem".to_string(),
         name: "dark golem".to_string(),
@@ -993,7 +993,8 @@ fn encirclement_conversion_narration_follows_the_flag_placement() {
 
     let mut state = WorldState::new(&pack);
     state.current_room_id = LOUNGE_ID.to_string();
-    state.add_room_tag(KITCHEN_ID, "marker");
+    state.add_item("stone-marker");
+    state.add_item_to_storage("stone-marker", ItemStorageTarget::CurrentRoom, KITCHEN_ID);
 
     let lines = super::command_effects::handle_actor_command_used(
         &mut state,
@@ -1053,34 +1054,74 @@ fn room_observation_annotates_present_actors_by_stance() {
 }
 
 #[test]
-fn room_observation_lists_placed_markers() {
+fn drop_and_pick_up_item_move_it_between_inventory_and_room() {
     let mut pack = reducer_test_pack();
-    pack.presentation.presentation_text.markers =
-        "Stone markers stand here: {markers}.".to_string();
-    pack.presentation.presentation_text.room_observation =
-        "{room_title} {body} {markers}".to_string();
-    pack.settings
-        .room_tag_items
-        .insert("marker".to_string(), "stone-marker".to_string());
-    pack.items.push(ItemDefinition {
-        id: "stone-marker".to_string(),
-        label: "stone marker".to_string(),
-        description: String::new(),
+    pack.actions.push(ActionDefinition {
+        id: "drop-marker".to_string(),
+        command: "drop-marker".to_string(),
+        target_mode: CommandTargetMode::None,
+        effects: vec![CommandEffect::DropItem],
+        drop_item: "stone-marker".to_string(),
+        event_text: "{actor_name} places the stone marker on the ground.".to_string(),
+        ..ActionDefinition::default()
     });
+    pack.actions.push(ActionDefinition {
+        id: "pick-up-marker".to_string(),
+        command: "pick-up-marker".to_string(),
+        target_mode: CommandTargetMode::None,
+        effects: vec![CommandEffect::PickUpItem],
+        drop_item: "stone-marker".to_string(),
+        event_text: "{actor_name} picks up the stone marker.".to_string(),
+        ..ActionDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut pack);
+
     let mut state = WorldState::new(&pack);
     state.current_room_id = LOUNGE_ID.to_string();
-    state.add_room_tag(LOUNGE_ID, "marker");
+    state.add_item("stone-marker");
 
-    let text = super::observation::render_room_observation(
+    super::command_effects::handle_actor_command_used(
+        &mut state,
         &pack,
-        &state,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
         LOUNGE_ID,
-        crate::engine::events::ObservationMode::Summary,
+        "drop-marker",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        &mut Vec::new(),
     )
-    .expect("room observation");
+    .expect("drop marker");
 
-    assert!(
-        text.contains("Stone markers stand here: stone marker."),
-        "got: {text}"
+    assert!(!state.has_item("stone-marker"));
+    assert_eq!(
+        state.loose_room_items(LOUNGE_ID),
+        vec![("stone-marker".to_string(), 1)]
     );
+
+    super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        LOUNGE_ID,
+        "pick-up-marker",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        &mut Vec::new(),
+    )
+    .expect("pick up marker");
+
+    assert!(state.has_item("stone-marker"));
+    assert!(state.loose_room_items(LOUNGE_ID).is_empty());
 }

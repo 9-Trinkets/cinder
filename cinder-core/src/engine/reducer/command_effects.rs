@@ -231,24 +231,23 @@ pub(super) fn apply_actor_command_realization_effects(
             | CommandEffect::RememberInRoom
             | CommandEffect::RememberWithTargetActor
             | CommandEffect::FollowActor => {}
-            CommandEffect::PlaceRoomTag => {
-                if command.room_tag.is_empty() {
+            CommandEffect::DropItem => {
+                if command.drop_item.is_empty() {
                     return false;
                 }
-                if state.room_has_tag(command_context.room_id, &command.room_tag) {
-                    return false;
-                }
-                // Mechanism backstop: packs with a finite per-tag supply refuse
-                // placement once that tag's pool is empty.
-                if let Some(&limit) = content.settings.room_tag_limits.get(&command.room_tag)
-                    && limit > 0
-                    && state.room_tag_count(&command.room_tag) >= limit as usize
-                {
+                if !state.has_item(&command.drop_item) {
                     return false;
                 }
             }
-            CommandEffect::RemoveRoomTag => {
-                if !state.room_has_tag(command_context.room_id, &command.room_tag) {
+            CommandEffect::PickUpItem => {
+                if command.drop_item.is_empty() {
+                    return false;
+                }
+                if !state.has_item_in_storage(
+                    &command.drop_item,
+                    ItemStorageTarget::CurrentRoom,
+                    command_context.room_id,
+                ) {
                     return false;
                 }
             }
@@ -541,14 +540,22 @@ pub(super) fn apply_new_command_effects(
     lines: &mut Vec<String>,
     _outbox: &mut Vec<WorldEvent>,
 ) {
-    if command.has_effect(CommandEffect::PlaceRoomTag) {
+    if command.has_effect(CommandEffect::DropItem) {
         let room_id = command_context.room_id.to_string();
-        let tag = &command.room_tag;
-        state.add_room_tag(&room_id, tag);
-        run_encirclement_rules(state, content, tag, lines);
+        if state.remove_item(&command.drop_item) {
+            state.add_item_to_storage(&command.drop_item, ItemStorageTarget::CurrentRoom, &room_id);
+            run_encirclement_rules(state, content, &command.drop_item, lines);
+        }
     }
-    if command.has_effect(CommandEffect::RemoveRoomTag) {
-        state.remove_room_tag(command_context.room_id, &command.room_tag);
+    if command.has_effect(CommandEffect::PickUpItem) {
+        let room_id = command_context.room_id.to_string();
+        if state.remove_item_from_storage(
+            &command.drop_item,
+            ItemStorageTarget::CurrentRoom,
+            &room_id,
+        ) {
+            state.add_item(&command.drop_item);
+        }
     }
     if command.has_effect(CommandEffect::AttackTarget) {
         let Some(target_actor_id) = command_context.target_actor_id else {
@@ -689,16 +696,16 @@ fn room_allies(state: &WorldState, content: &ContentPack, room_id: &str) -> Vec<
         .collect()
 }
 
-/// Generic encirclement scan: after a room tag is placed, find any living,
-/// neutral actor marked `conversion_trigger: encirclement` whose room is now
-/// fully surrounded by neighbors carrying that tag, and fire the
+/// Generic encirclement scan: after an item is dropped into a room, find any
+/// living, neutral actor marked `conversion_trigger: encirclement` whose room
+/// is now fully surrounded by neighbors containing that item, and fire the
 /// `actor.encircled` hook for each. The hook's *effect* is content-authored
 /// (e.g. convert the actor to an ally follower) — the engine only decides
 /// *that* the encirclement completed.
 fn run_encirclement_rules(
     state: &mut WorldState,
     content: &ContentPack,
-    tag: &str,
+    item_id: &str,
     lines: &mut Vec<String>,
 ) {
     for actor in &content.actors {
@@ -717,7 +724,10 @@ fn run_encirclement_rules(
         if neighbors.is_empty() {
             continue;
         }
-        if !neighbors.iter().all(|n| state.room_has_tag(n, tag)) {
+        if !neighbors
+            .iter()
+            .all(|n| state.has_item_in_storage(item_id, ItemStorageTarget::CurrentRoom, n))
+        {
             continue;
         }
         let actor_name = actor_display_name(content, &actor.id);
@@ -729,7 +739,7 @@ fn run_encirclement_rules(
                 "actor_id": actor.id,
                 "actor_name": actor_name,
                 "room_id": room_id,
-                "tag": tag,
+                "item_id": item_id,
             }),
             lines,
         )

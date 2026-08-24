@@ -27,8 +27,8 @@ pub enum CommandEffect {
     RememberInRoom,
     RememberWithTargetActor,
     FollowActor,
-    PlaceRoomTag,
-    RemoveRoomTag,
+    DropItem,
+    PickUpItem,
     AttackTarget,
 }
 

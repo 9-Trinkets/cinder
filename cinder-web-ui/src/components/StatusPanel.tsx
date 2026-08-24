@@ -24,12 +24,14 @@ export default function StatusPanel({ uiSnapshot }: { uiSnapshot: api.UiSnapshot
           </ul>
         </div>
       )}
-      {uiSnapshot.current_room_tags.length > 0 && (
+      {uiSnapshot.current_room_items.length > 0 && (
         <div>
-          <p className="text-xs text-muted uppercase tracking-wider">Markers here</p>
+          <p className="text-xs text-muted uppercase tracking-wider">On the ground</p>
           <ul className="mt-1 space-y-0.5">
-            {uiSnapshot.current_room_tags.map((label, i) => (
-              <li key={i} className="text-text text-xs">• {label}</li>
+            {uiSnapshot.current_room_items.map((item, i) => (
+              <li key={i} className="text-text text-xs">
+                • {item.label}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
+              </li>
             ))}
           </ul>
         </div>

@@ -9,10 +9,9 @@
     "dialogue_unavailable": "{actor_name} doesn't answer right now. Dialogue error: {error}"
   },
   "presentation_text": {
-    "room_observation": "== {room_title} ==\n{body}{features}{markers}{people}{exits}",
+    "room_observation": "== {room_title} ==\n{body}{features}{people}{exits}",
     "objective": "\n\nObjective:\n{objective}",
     "features": "\n\nYou notice: {features}.",
-    "markers": "\n\nA stone marker is planted in the ground here.",
     "people": "\n\nHere with you: {people}.",
     "exits": "\n\nExits: {exits}.",
     "feature_consumables": "\n\nAvailable at the {feature_label}: {items}.",

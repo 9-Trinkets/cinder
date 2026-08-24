@@ -1,6 +1,7 @@
 use crate::content::types::{
-    ActionDefinition, ContentPack, RuleBundleAffordanceTarget, RuleBundleCompletionTrigger,
-    RuleBundleConditionalGuidanceDefinition, RuleBundleDefinition, RuleBundleProgressRef,
+    ActionDefinition, ContentPack, ItemStorageTarget, RuleBundleAffordanceTarget,
+    RuleBundleCompletionTrigger, RuleBundleConditionalGuidanceDefinition, RuleBundleDefinition,
+    RuleBundleProgressRef,
 };
 use crate::engine::dialogue::{ActorTurnActionRequest, ActorTurnCommandInvocation};
 use crate::engine::state::WorldState;
@@ -181,12 +182,21 @@ pub fn action_is_available(
         return false;
     }
 
-    if !a.requires_room_tag.is_empty() && !state.room_has_tag(context_room_id, &a.requires_room_tag)
+    if !a.requires_room_item.is_empty()
+        && !state.has_item_in_storage(
+            &a.requires_room_item,
+            ItemStorageTarget::CurrentRoom,
+            context_room_id,
+        )
     {
         return false;
     }
-    if !a.requires_room_without_tag.is_empty()
-        && state.room_has_tag(context_room_id, &a.requires_room_without_tag)
+    if !a.requires_room_without_item.is_empty()
+        && state.has_item_in_storage(
+            &a.requires_room_without_item,
+            ItemStorageTarget::CurrentRoom,
+            context_room_id,
+        )
     {
         return false;
     }

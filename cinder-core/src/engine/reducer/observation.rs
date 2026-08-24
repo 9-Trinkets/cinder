@@ -97,21 +97,6 @@ pub(super) fn render_room_observation(
             )
         }
     };
-    let markers = {
-        let tags = state.room_tags.get(room_id).cloned().unwrap_or_default();
-        if tags.is_empty() {
-            String::new()
-        } else {
-            let labels = tags
-                .iter()
-                .map(|tag| content.room_tag_label(tag))
-                .collect::<Vec<_>>();
-            content.render_template(
-                &content.presentation.presentation_text.markers,
-                &[("markers", &labels.join(", "))],
-            )
-        }
-    };
     let exits = if room.exits.is_empty() {
         String::new()
     } else {
@@ -136,7 +121,6 @@ pub(super) fn render_room_observation(
             ("body", body.as_str()),
             ("features", features.as_str()),
             ("people", people.as_str()),
-            ("markers", markers.as_str()),
             ("exits", exits.as_str()),
             ("objective", objective.as_str()),
         ],

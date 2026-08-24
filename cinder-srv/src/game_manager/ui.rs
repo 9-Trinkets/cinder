@@ -147,8 +147,8 @@ pub struct UiSnapshot {
     pub inventory: Vec<InventoryItem>,
     /// Display names of actors following the player (the party).
     pub party: Vec<String>,
-    /// Display labels of room-tag markers placed in the current room.
-    pub current_room_tags: Vec<String>,
+    /// Loose items lying in the current room (dropped there).
+    pub current_room_items: Vec<InventoryItem>,
     pub room_consumables: Vec<RoomConsumableGroup>,
     pub crafted_consumable_labels: Vec<String>,
     pub show_relationship_sidebar: bool,
@@ -448,28 +448,21 @@ pub(super) fn build_ui_snapshot(
             })
             .filter_map(|(actor_id, _)| runtime.actor_display_name(actor_id).ok().flatten())
             .collect(),
-        current_room_tags: state
-            .room_tags
-            .get(&current_room_id)
-            .cloned()
-            .unwrap_or_default()
+        current_room_items: state
+            .loose_room_items(&current_room_id)
             .into_iter()
-            .map(|tag| content.room_tag_label(&tag))
+            .map(|(item_id, count)| {
+                let label = content
+                    .item(&item_id)
+                    .map(|item| item.label.clone())
+                    .unwrap_or_else(|| item_id.clone());
+                InventoryItem { label, count }
+            })
             .collect(),
         inventory: {
-            let mut items = runtime.inventory_items().unwrap_or_default();
-            // Present each finite per-tag supply through its configured item,
-            // with the count being the remaining pool.
-            for (tag, item_id) in &content.settings.room_tag_items {
-                if let Some(limit) = content.settings.room_tag_limits.get(tag)
-                    && *limit > 0
-                    && let Some(remaining) = limit.checked_sub(state.room_tag_count(tag) as u32)
-                    && remaining > 0
-                {
-                    items.insert(item_id.clone(), remaining);
-                }
-            }
-            let mut inventory = items
+            let mut inventory = runtime
+                .inventory_items()
+                .unwrap_or_default()
                 .into_iter()
                 .map(|(id, count)| {
                     let label = content

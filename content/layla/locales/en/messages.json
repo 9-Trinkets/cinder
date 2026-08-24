@@ -8,5 +8,5 @@
   "conversion.encircled": "The {actor} shudders, its surface brightening. It turns toward you, no longer hostile.",
   "conversion.encircled_follows": "The {actor} falls in behind you.",
   "follow.actor_follows": "The {actor} follows you.",
-  "room_tag.marker.exhausted": "You have no stone markers left. Pick one up to reuse it."
+  "item.stone-marker.none_held": "You have no stone markers left. Pick one up to reuse it."
 }

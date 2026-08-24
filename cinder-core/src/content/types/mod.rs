@@ -74,16 +74,11 @@ pub struct ContentSettingsDefinition {
     /// Binds the generic strike mechanism to this pack's stat vocabulary.
     #[serde(default)]
     pub combat: CombatSettingsDefinition,
-    /// Per-tag supply limit: the maximum number of rooms that may carry each
-    /// tag. An absent tag (or 0) means unlimited placement; removing a tag
-    /// returns a unit to the pool.
+    /// Items the player starts with, item id → count. Seed a finite resource
+    /// (e.g. layla's stone markers) here so it can be dropped into rooms and
+    /// picked back up.
     #[serde(default)]
-    pub room_tag_limits: BTreeMap<String, u32>,
-    /// Tag → item id shown in the inventory panel, with the count being the
-    /// tag's remaining supply. Packs use this to present a finite resource
-    /// (e.g. layla's stone markers) using the standard inventory UI.
-    #[serde(default)]
-    pub room_tag_items: BTreeMap<String, String>,
+    pub starting_items: BTreeMap<String, u32>,
     #[serde(default)]
     pub theme: ThemeDefinition,
 }
@@ -222,8 +217,7 @@ impl Default for ContentSettingsDefinition {
             show_relationship_sidebar: false,
             autonomous_hostility_mode: AutonomousHostilityMode::Rules,
             combat: CombatSettingsDefinition::default(),
-            room_tag_limits: BTreeMap::new(),
-            room_tag_items: BTreeMap::new(),
+            starting_items: BTreeMap::new(),
             theme: ThemeDefinition::default(),
         }
     }

@@ -70,11 +70,6 @@ pub struct WorldState {
     pub room_item_stock: BTreeMap<String, u32>,
     #[serde(default)]
     pub act_series: Option<ActSeriesState>,
-    /// Generic per-room markers. `room_tags[room_id]` is the set of tags
-    /// currently placed in that room; packs name tags freely and attach rules
-    /// to them (e.g. layla's `marker` tag drives its encirclement rule).
-    #[serde(default)]
-    pub room_tags: BTreeMap<String, BTreeSet<String>>,
     /// Per-actor relationship toward the player. Absent entries mean
     /// `ActorRelationship::default()` (neutral, not following), so packs that
     /// never touch relationships carry no state.
@@ -195,10 +190,14 @@ impl WorldState {
             initial_pair_stats: seeded_pair_stats(content, &content.stats.pair),
             transcript: Vec::new(),
             last_transcript_line: None,
-            player_inventory: HashMap::new(),
+            player_inventory: content
+                .settings
+                .starting_items
+                .clone()
+                .into_iter()
+                .collect(),
             room_item_stock: BTreeMap::new(),
             act_series: None,
-            room_tags: BTreeMap::new(),
             relationships: BTreeMap::new(),
             next_hostile_strike_at: BTreeMap::new(),
         }
@@ -667,38 +666,6 @@ impl WorldState {
             .is_some_and(|rooms| rooms.contains(room_id))
     }
 
-    pub fn room_has_tag(&self, room_id: &str, tag: &str) -> bool {
-        self.room_tags
-            .get(room_id)
-            .is_some_and(|tags| tags.contains(tag))
-    }
-
-    /// Number of rooms currently carrying `tag` (used for pack-declared
-    /// per-tag supply limits).
-    pub fn room_tag_count(&self, tag: &str) -> usize {
-        self.room_tags
-            .values()
-            .filter(|tags| tags.contains(tag))
-            .count()
-    }
-
-    pub fn add_room_tag(&mut self, room_id: &str, tag: &str) {
-        self.room_tags
-            .entry(room_id.to_string())
-            .or_default()
-            .insert(tag.to_string());
-    }
-
-    /// Removes `tag` from `room_id`; prunes empty tag sets.
-    pub fn remove_room_tag(&mut self, room_id: &str, tag: &str) {
-        if let Some(tags) = self.room_tags.get_mut(room_id) {
-            tags.remove(tag);
-            if tags.is_empty() {
-                self.room_tags.remove(room_id);
-            }
-        }
-    }
-
     pub fn has_item(&self, item_id: &str) -> bool {
         self.player_inventory.get(item_id).copied().unwrap_or(0) > 0
     }
@@ -800,6 +767,17 @@ impl WorldState {
             .entry(actor_id.to_string())
             .or_default()
             .insert(room_id.to_string());
+    }
+
+    /// Loose items lying in `room_id` (from `ItemStorageTarget::CurrentRoom`),
+    /// as `(item_id, count)`.
+    pub fn loose_room_items(&self, room_id: &str) -> Vec<(String, u32)> {
+        let prefix = format!("{room_id}::");
+        self.room_item_stock
+            .iter()
+            .filter(|(key, _)| key.starts_with(&prefix))
+            .map(|(key, count)| (key[prefix.len()..].to_string(), *count))
+            .collect()
     }
 }
 
