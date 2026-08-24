@@ -14,10 +14,24 @@ export default function StatusPanel({ uiSnapshot }: { uiSnapshot: api.UiSnapshot
           {uiSnapshot.time_label ? <span className="text-muted ml-1">— {uiSnapshot.time_label}</span> : null}
         </p>
       </div>
-      {uiSnapshot.followed_actor_name && (
+      {uiSnapshot.party.length > 0 && (
         <div>
-          <p className="text-xs text-muted uppercase tracking-wider">Following</p>
-          <p className="text-pine font-medium">{uiSnapshot.followed_actor_name}</p>
+          <p className="text-xs text-muted uppercase tracking-wider">Party</p>
+          <ul className="mt-1 space-y-0.5">
+            {uiSnapshot.party.map((name, i) => (
+              <li key={i} className="text-pine font-medium text-xs">• {name}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {uiSnapshot.current_room_tags.length > 0 && (
+        <div>
+          <p className="text-xs text-muted uppercase tracking-wider">Markers here</p>
+          <ul className="mt-1 space-y-0.5">
+            {uiSnapshot.current_room_tags.map((label, i) => (
+              <li key={i} className="text-text text-xs">• {label}</li>
+            ))}
+          </ul>
         </div>
       )}
       {uiSnapshot.inventory.length > 0 && (

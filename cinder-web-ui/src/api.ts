@@ -261,6 +261,8 @@ export interface UiSnapshot {
   act_closure: ActClosureData | null
   game_closure: ActClosureData | null
   inventory: InventoryItem[]
+  party: string[]
+  current_room_tags: string[]
   room_consumables: RoomConsumableGroup[]
   crafted_consumable_labels: string[]
   show_relationship_sidebar: boolean

@@ -1026,3 +1026,61 @@ fn encirclement_conversion_narration_follows_the_flag_placement() {
         "flag placement must precede the conversion, got {lines:?}"
     );
 }
+
+#[test]
+fn room_observation_annotates_present_actors_by_stance() {
+    let mut pack = reducer_test_pack();
+    pack.presentation.presentation_text.ally_suffix = " (ally)".to_string();
+    pack.presentation.presentation_text.hostile_suffix = " (enemy)".to_string();
+    pack.presentation.presentation_text.room_observation =
+        "{room_title} {body} {people}".to_string();
+    pack.presentation.presentation_text.people = "Here: {people}.".to_string();
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    state.set_stance(ACTOR_A_ID, ActorStance::Allied);
+    state.set_stance(ACTOR_B_ID, ActorStance::Hostile);
+
+    let text = super::observation::render_room_observation(
+        &pack,
+        &state,
+        LOUNGE_ID,
+        crate::engine::events::ObservationMode::Summary,
+    )
+    .expect("room observation");
+
+    assert!(text.contains("Alex (ally)"), "got: {text}");
+    assert!(text.contains("Blair (enemy)"), "got: {text}");
+}
+
+#[test]
+fn room_observation_lists_placed_markers() {
+    let mut pack = reducer_test_pack();
+    pack.presentation.presentation_text.markers =
+        "Stone markers stand here: {markers}.".to_string();
+    pack.presentation.presentation_text.room_observation =
+        "{room_title} {body} {markers}".to_string();
+    pack.settings
+        .room_tag_items
+        .insert("marker".to_string(), "stone-marker".to_string());
+    pack.items.push(ItemDefinition {
+        id: "stone-marker".to_string(),
+        label: "stone marker".to_string(),
+        description: String::new(),
+    });
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    state.add_room_tag(LOUNGE_ID, "marker");
+
+    let text = super::observation::render_room_observation(
+        &pack,
+        &state,
+        LOUNGE_ID,
+        crate::engine::events::ObservationMode::Summary,
+    )
+    .expect("room observation");
+
+    assert!(
+        text.contains("Stone markers stand here: stone marker."),
+        "got: {text}"
+    );
+}

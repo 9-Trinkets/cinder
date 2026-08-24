@@ -145,6 +145,10 @@ pub struct UiSnapshot {
     pub act_closure: Option<ActClosure>,
     pub game_closure: Option<ActClosure>,
     pub inventory: Vec<InventoryItem>,
+    /// Display names of actors following the player (the party).
+    pub party: Vec<String>,
+    /// Display labels of room-tag markers placed in the current room.
+    pub current_room_tags: Vec<String>,
     pub room_consumables: Vec<RoomConsumableGroup>,
     pub crafted_consumable_labels: Vec<String>,
     pub show_relationship_sidebar: bool,
@@ -436,6 +440,22 @@ pub(super) fn build_ui_snapshot(
             None
         },
         game_closure: response::game_closure_data(runtime, transcript_lines),
+        party: state
+            .relationships
+            .iter()
+            .filter(|(actor_id, relationship)| {
+                relationship.follows_player && *actor_id != &content.settings.combat.player_actor_id
+            })
+            .filter_map(|(actor_id, _)| runtime.actor_display_name(actor_id).ok().flatten())
+            .collect(),
+        current_room_tags: state
+            .room_tags
+            .get(&current_room_id)
+            .cloned()
+            .unwrap_or_default()
+            .into_iter()
+            .map(|tag| content.room_tag_label(&tag))
+            .collect(),
         inventory: {
             let mut items = runtime.inventory_items().unwrap_or_default();
             // Present each finite per-tag supply through its configured item,

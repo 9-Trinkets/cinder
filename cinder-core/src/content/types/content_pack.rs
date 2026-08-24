@@ -100,6 +100,17 @@ impl ContentPack {
         self.items.iter().find(|item| item.id == item_id)
     }
 
+    /// Display label for a room tag: the label of the item configured for it
+    /// in `settings.room_tag_items`, else the raw tag name.
+    pub fn room_tag_label(&self, tag: &str) -> String {
+        self.settings
+            .room_tag_items
+            .get(tag)
+            .and_then(|item_id| self.item(item_id))
+            .map(|item| item.label.clone())
+            .unwrap_or_else(|| tag.to_string())
+    }
+
     pub fn resolve_item_in_scope<'a>(
         &'a self,
         state: &WorldState,

@@ -187,6 +187,18 @@ pub struct PresentationTextDefinition {
     pub actor_departed: String,
     pub actor_arrived: String,
     pub act_ended: String,
+    /// Template listing the room-tag markers present in the current room,
+    /// rendered with `{markers}`. Include `{markers}` in `room_observation`
+    /// to surface them; empty for packs that don't use room tags.
+    #[serde(default)]
+    pub markers: String,
+    /// Suffix appended to a present actor's name when their stance is allied,
+    /// so same-named allies and hostiles in one room read differently.
+    #[serde(default)]
+    pub ally_suffix: String,
+    /// Suffix appended to a present actor's name when their stance is hostile.
+    #[serde(default)]
+    pub hostile_suffix: String,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
