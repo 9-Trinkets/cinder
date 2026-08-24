@@ -142,12 +142,6 @@ pub enum WorldEvent {
         event_id: String,
         payload: BTreeMap<String, String>,
     },
-    FlagPlaced {
-        room_id: String,
-    },
-    FlagRemoved {
-        room_id: String,
-    },
     ActorRelationshipUpdated {
         actor_id: String,
         relationship: crate::engine::state::ActorRelationship,

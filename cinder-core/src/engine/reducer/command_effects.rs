@@ -4,7 +4,7 @@ use crate::content::types::{
 };
 use crate::engine::events::{ObservationMode, WorldEvent};
 use crate::engine::hook_ids;
-use crate::engine::hooks::apply_world_hook_effects;
+use crate::engine::hooks::{apply_narrating_world_hook_effects, apply_world_hook_effects};
 use crate::engine::state::{
     ActorRelationship, ActorStance, ConversationMemoryKind, ConversationMemoryLine, WorldState,
 };
@@ -231,18 +231,24 @@ pub(super) fn apply_actor_command_realization_effects(
             | CommandEffect::RememberInRoom
             | CommandEffect::RememberWithTargetActor
             | CommandEffect::FollowActor => {}
-            CommandEffect::PlaceFlag => {
-                if state.flagged_rooms.contains(command_context.room_id) {
+            CommandEffect::PlaceRoomTag => {
+                if command.room_tag.is_empty() {
                     return false;
                 }
-                // Mechanism backstop: packs with a finite supply refuse
-                // placement once the pool is empty.
-                if content.settings.flag_supply > 0 && state.flags_remaining == 0 {
+                if state.room_has_tag(command_context.room_id, &command.room_tag) {
+                    return false;
+                }
+                // Mechanism backstop: packs with a finite per-tag supply refuse
+                // placement once that tag's pool is empty.
+                if let Some(&limit) = content.settings.room_tag_limits.get(&command.room_tag)
+                    && limit > 0
+                    && state.room_tag_count(&command.room_tag) >= limit as usize
+                {
                     return false;
                 }
             }
-            CommandEffect::RemoveFlag => {
-                if !state.flagged_rooms.contains(command_context.room_id) {
+            CommandEffect::RemoveRoomTag => {
+                if !state.room_has_tag(command_context.room_id, &command.room_tag) {
                     return false;
                 }
             }
@@ -533,21 +539,16 @@ pub(super) fn apply_new_command_effects(
     command: &ActionDefinition,
     command_context: &ActorCommandContext<'_>,
     lines: &mut Vec<String>,
-    outbox: &mut Vec<WorldEvent>,
+    _outbox: &mut Vec<WorldEvent>,
 ) {
-    if command.has_effect(CommandEffect::PlaceFlag) {
+    if command.has_effect(CommandEffect::PlaceRoomTag) {
         let room_id = command_context.room_id.to_string();
-        state.flagged_rooms.insert(room_id.clone());
-        if content.settings.flag_supply > 0 {
-            state.flags_remaining = state.flags_remaining.saturating_sub(1);
-        }
-        check_encirclement(state, content, &room_id, lines, outbox);
+        let tag = &command.room_tag;
+        state.add_room_tag(&room_id, tag);
+        run_encirclement_rules(state, content, tag, lines);
     }
-    if command.has_effect(CommandEffect::RemoveFlag) {
-        let room_id = command_context.room_id.to_string();
-        if state.flagged_rooms.remove(&room_id) && content.settings.flag_supply > 0 {
-            state.flags_remaining += 1;
-        }
+    if command.has_effect(CommandEffect::RemoveRoomTag) {
+        state.remove_room_tag(command_context.room_id, &command.room_tag);
     }
     if command.has_effect(CommandEffect::AttackTarget) {
         let Some(target_actor_id) = command_context.target_actor_id else {
@@ -688,12 +689,17 @@ fn room_allies(state: &WorldState, content: &ContentPack, room_id: &str) -> Vec<
         .collect()
 }
 
-fn check_encirclement(
+/// Generic encirclement scan: after a room tag is placed, find any living,
+/// neutral actor marked `conversion_trigger: encirclement` whose room is now
+/// fully surrounded by neighbors carrying that tag, and fire the
+/// `actor.encircled` hook for each. The hook's *effect* is content-authored
+/// (e.g. convert the actor to an ally follower) — the engine only decides
+/// *that* the encirclement completed.
+fn run_encirclement_rules(
     state: &mut WorldState,
     content: &ContentPack,
-    _placed_room_id: &str,
+    tag: &str,
     lines: &mut Vec<String>,
-    outbox: &mut Vec<WorldEvent>,
 ) {
     for actor in &content.actors {
         if actor.conversion_trigger != Some(ConversionTrigger::Encirclement) {
@@ -711,28 +717,22 @@ fn check_encirclement(
         if neighbors.is_empty() {
             continue;
         }
-        let all_flagged = neighbors.iter().all(|n| state.flagged_rooms.contains(n));
-        if all_flagged {
-            let actor_name = actor_display_name(content, &actor.id);
-            if let Some(line) =
-                content.render_message("conversion.encircled", &[("actor", actor_name.as_str())])
-            {
-                lines.push(line);
-            }
-            if let Some(line) = content.render_message(
-                "conversion.encircled_follows",
-                &[("actor", actor_name.as_str())],
-            ) {
-                lines.push(line);
-            }
-            outbox.push(WorldEvent::ActorRelationshipUpdated {
-                actor_id: actor.id.clone(),
-                relationship: ActorRelationship {
-                    stance: ActorStance::Allied,
-                    follows_player: true,
-                },
-            });
-            break;
+        if !neighbors.iter().all(|n| state.room_has_tag(n, tag)) {
+            continue;
         }
+        let actor_name = actor_display_name(content, &actor.id);
+        apply_narrating_world_hook_effects(
+            state,
+            content,
+            hook_ids::ACTOR_ENCIRCLED,
+            json!({
+                "actor_id": actor.id,
+                "actor_name": actor_name,
+                "room_id": room_id,
+                "tag": tag,
+            }),
+            lines,
+        )
+        .unwrap_or_else(|error| eprintln!("[cinder] hook warning (actor.encircled): {error}"));
     }
 }

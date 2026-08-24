@@ -1,7 +1,7 @@
 use crate::content::types::ContentPack;
 use crate::engine::hook_ids;
 use crate::engine::neuron::evaluate_symbolic_value;
-use crate::engine::state::WorldState;
+use crate::engine::state::{ActorStance, WorldState};
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Deserializer};
 use serde_json::{Value, json};
@@ -114,6 +114,28 @@ pub(crate) fn apply_world_hook_effects(
     hook_id: &str,
     input: Value,
 ) -> Result<(), String> {
+    apply_hook_effects(state, content, hook_id, input, None)
+}
+
+/// Applies a hook's effects and also renders any narration carried by
+/// relationship-changing effects (e.g. `ConvertActorToAlly`) into `lines`.
+pub(crate) fn apply_narrating_world_hook_effects(
+    state: &mut WorldState,
+    content: &ContentPack,
+    hook_id: &str,
+    input: Value,
+    lines: &mut Vec<String>,
+) -> Result<(), String> {
+    apply_hook_effects(state, content, hook_id, input, Some(lines))
+}
+
+fn apply_hook_effects(
+    state: &mut WorldState,
+    content: &ContentPack,
+    hook_id: &str,
+    input: Value,
+    mut lines: Option<&mut Vec<String>>,
+) -> Result<(), String> {
     let effects = evaluate_hook_effects::<WorldHookEffect>(content, hook_id, input)?;
     for effect in effects {
         match effect {
@@ -128,6 +150,27 @@ pub(crate) fn apply_world_hook_effects(
                 stat,
                 delta,
             } => state.adjust_actor_stat(&actor_id, &stat, delta)?,
+            WorldHookEffect::ConvertActorToAlly {
+                actor_id,
+                follows_player,
+                messages,
+            } => {
+                let mut relationship = state.relationship(&actor_id);
+                relationship.stance = ActorStance::Allied;
+                relationship.follows_player = follows_player;
+                state.set_relationship(&actor_id, relationship);
+                if let Some(lines) = lines.as_deref_mut() {
+                    let actor_name = content
+                        .actor(&actor_id)
+                        .map(|actor| actor.name.as_str())
+                        .unwrap_or(&actor_id);
+                    for key in &messages {
+                        if let Some(line) = content.render_message(key, &[("actor", actor_name)]) {
+                            lines.push(line);
+                        }
+                    }
+                }
+            }
         }
     }
     Ok(())
@@ -148,6 +191,15 @@ enum WorldHookEffect {
         stat: String,
         #[serde(deserialize_with = "deserialize_i32ish")]
         delta: i32,
+    },
+    /// Turns an actor into an ally (and optionally a follower). `messages` are
+    /// pack-authored message keys rendered with `{actor}` for narration.
+    ConvertActorToAlly {
+        actor_id: String,
+        #[serde(default)]
+        follows_player: bool,
+        #[serde(default)]
+        messages: Vec<String>,
     },
 }
 

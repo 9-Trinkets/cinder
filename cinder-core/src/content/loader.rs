@@ -128,18 +128,21 @@ pub fn load_pack_from_dir_with_locale(
         read_optional_json::<SpeechIntentsConfig>(path, "intents.json")?.unwrap_or_default();
     let items: Vec<ItemDefinition> =
         read_optional_json::<Vec<ItemDefinition>>(path, "items.json")?.unwrap_or_default();
-    if settings.flag_supply > 0 {
-        if settings.flag_item_id.trim().is_empty() {
-            return Err("finite flag_supply requires flag_item_id".into());
+    let item_ids = items
+        .iter()
+        .map(|item| item.id.as_str())
+        .collect::<Vec<_>>();
+    for (tag, item_id) in &settings.room_tag_items {
+        if settings.room_tag_limits.get(tag).copied().unwrap_or(0) == 0 {
+            return Err(format!(
+                "room_tag_items declares item for tag '{tag}', but room_tag_limits has no finite limit for it"
+            )
+            .into());
         }
-        let item_ids = items
-            .iter()
-            .map(|item| item.id.as_str())
-            .collect::<Vec<_>>();
         require_known_id(
-            &settings.flag_item_id,
+            item_id,
             &item_ids,
-            &format!("flag_item_id '{}'", settings.flag_item_id),
+            &format!("room_tag_items['{tag}'] '{item_id}'"),
             "items",
         )?;
     }

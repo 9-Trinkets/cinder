@@ -8,7 +8,5 @@
   "conversion.encircled": "The {actor} shudders, its surface brightening. It turns toward you, no longer hostile.",
   "conversion.encircled_follows": "The {actor} falls in behind you.",
   "follow.actor_follows": "The {actor} follows you.",
- "flags.placed": "You drive a small stone marker into the ground at {room_id}.",
- "flags.removed": "You pull the stone marker from the ground.",
- "flags.exhausted": "You have no stone markers left. Pick one up to reuse it."
+  "room_tag.marker.exhausted": "You have no stone markers left. Pick one up to reuse it."
 }

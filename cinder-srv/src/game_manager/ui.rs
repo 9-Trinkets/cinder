@@ -438,11 +438,16 @@ pub(super) fn build_ui_snapshot(
         game_closure: response::game_closure_data(runtime, transcript_lines),
         inventory: {
             let mut items = runtime.inventory_items().unwrap_or_default();
-            if content.settings.flag_supply > 0
-                && !content.settings.flag_item_id.is_empty()
-                && state.flags_remaining > 0
-            {
-                items.insert(content.settings.flag_item_id.clone(), state.flags_remaining);
+            // Present each finite per-tag supply through its configured item,
+            // with the count being the remaining pool.
+            for (tag, item_id) in &content.settings.room_tag_items {
+                if let Some(limit) = content.settings.room_tag_limits.get(tag)
+                    && *limit > 0
+                    && let Some(remaining) = limit.checked_sub(state.room_tag_count(tag) as u32)
+                    && remaining > 0
+                {
+                    items.insert(item_id.clone(), remaining);
+                }
             }
             let mut inventory = items
                 .into_iter()

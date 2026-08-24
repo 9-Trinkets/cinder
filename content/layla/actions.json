@@ -142,10 +142,11 @@
       "player_enabled": true,
       "target_mode": "none",
       "outcome_mode": "event",
-      "effects": ["place_flag"],
+      "effects": ["place_room_tag"],
+      "room_tag": "marker",
       "event_text": "{actor_name} drives a stone marker into the ground.",
       "available": {
-        "requires_room_unflagged": true
+        "requires_room_without_tag": "marker"
       },
       "ui": {
         "bar": false,
@@ -169,10 +170,11 @@
       "player_enabled": true,
       "target_mode": "none",
       "outcome_mode": "event",
-      "effects": ["remove_flag"],
+      "effects": ["remove_room_tag"],
+      "room_tag": "marker",
       "event_text": "{actor_name} pulls a stone marker from the ground.",
       "available": {
-        "requires_room_flagged": true
+        "requires_room_tag": "marker"
       },
       "ui": {
         "bar": false,

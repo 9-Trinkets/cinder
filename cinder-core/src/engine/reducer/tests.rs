@@ -958,7 +958,8 @@ fn encirclement_conversion_narration_follows_the_flag_placement() {
         id: "place-flag".to_string(),
         command: "place-flag".to_string(),
         target_mode: CommandTargetMode::None,
-        effects: vec![CommandEffect::PlaceFlag],
+        effects: vec![CommandEffect::PlaceRoomTag],
+        room_tag: "marker".to_string(),
         event_text: "{actor_name} drives a stone marker into the ground.".to_string(),
         ..ActionDefinition::default()
     });
@@ -970,7 +971,8 @@ fn encirclement_conversion_narration_follows_the_flag_placement() {
         "conversion.encircled_follows".to_string(),
         "The {actor} falls in behind you.".to_string(),
     );
-    // A golem in the lounge converts once its only neighbor (the kitchen) is flagged.
+    // A golem in the lounge converts via the `actor.encircled` hook once its
+    // only neighbor (the kitchen) is marked.
     pack.actors.push(ActorDefinition {
         id: "golem".to_string(),
         name: "dark golem".to_string(),
@@ -978,11 +980,20 @@ fn encirclement_conversion_narration_follows_the_flag_placement() {
         conversion_trigger: Some(ConversionTrigger::Encirclement),
         ..test_actor("golem", "dark golem", LOUNGE_ID)
     });
+    pack.hooks.insert(
+        "actor.encircled".to_string(),
+        effect_hook(vec![json!({
+            "kind": "convert_actor_to_ally",
+            "actor_id": "$input.actor_id",
+            "follows_player": true,
+            "messages": ["conversion.encircled", "conversion.encircled_follows"],
+        })]),
+    );
     rebuild_test_pack_indexes(&mut pack);
 
     let mut state = WorldState::new(&pack);
     state.current_room_id = LOUNGE_ID.to_string();
-    state.flagged_rooms.insert(KITCHEN_ID.to_string());
+    state.add_room_tag(KITCHEN_ID, "marker");
 
     let lines = super::command_effects::handle_actor_command_used(
         &mut state,

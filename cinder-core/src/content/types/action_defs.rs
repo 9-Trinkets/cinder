@@ -8,10 +8,12 @@ use serde::{Deserialize, Serialize};
 pub struct ActionAvailability {
     #[serde(default)]
     pub requires_actor_in_room: bool,
+    /// Room must carry this tag for the action to be available.
     #[serde(default)]
-    pub requires_room_flagged: bool,
+    pub requires_room_tag: String,
+    /// Room must NOT carry this tag for the action to be available.
     #[serde(default)]
-    pub requires_room_unflagged: bool,
+    pub requires_room_without_tag: String,
     #[serde(default)]
     pub allowed_rooms: Vec<String>,
     #[serde(default)]
@@ -182,6 +184,11 @@ pub struct ActionDefinition {
     pub consumable_kind: Option<ConsumableKind>,
     #[serde(default)]
     pub effects: Vec<CommandEffect>,
+    /// Tag this action places or removes on its room, when the action has the
+    /// `PlaceRoomTag`/`RemoveRoomTag` effects. Tags are generic per-room
+    /// markers; packs name them freely (e.g. `marker`, `cleared`, `sealed`).
+    #[serde(default)]
+    pub room_tag: String,
     #[serde(default)]
     pub event_text: String,
     #[serde(default)]

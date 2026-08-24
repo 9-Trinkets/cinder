@@ -181,11 +181,13 @@ pub fn action_is_available(
         return false;
     }
 
-    let room_is_flagged = state.flagged_rooms.contains(context_room_id);
-    if a.requires_room_flagged && !room_is_flagged {
+    if !a.requires_room_tag.is_empty() && !state.room_has_tag(context_room_id, &a.requires_room_tag)
+    {
         return false;
     }
-    if a.requires_room_unflagged && room_is_flagged {
+    if !a.requires_room_without_tag.is_empty()
+        && state.room_has_tag(context_room_id, &a.requires_room_without_tag)
+    {
         return false;
     }
 

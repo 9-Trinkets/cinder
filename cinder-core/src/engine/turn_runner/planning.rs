@@ -579,14 +579,17 @@ pub(super) fn plan_targetless_command(
         .player_command
         .as_ref()
         .unwrap_or_else(|| panic!("action '{}' should define player_command", action.id));
-    // Packs with a finite flag supply refuse placement once the pool is empty.
-    if action.has_effect(CommandEffect::PlaceFlag)
-        && content.settings.flag_supply > 0
-        && context.planner_state.flags_remaining == 0
+    // Packs with a finite per-tag supply refuse placement once that tag's pool
+    // is empty.
+    if action.has_effect(CommandEffect::PlaceRoomTag)
+        && let Some(&limit) = content.settings.room_tag_limits.get(&action.room_tag)
+        && limit > 0
+        && context.planner_state.room_tag_count(&action.room_tag) >= limit as usize
     {
         planned.events.push(WorldEvent::ActionRejected {
             message: content
-                .render_message("flags.exhausted", &[])
+                .render_message(&format!("room_tag.{}.exhausted", action.room_tag), &[])
+                .or_else(|| content.render_message("room_tag.exhausted", &[]))
                 .unwrap_or_default(),
         });
         return false;
@@ -637,7 +640,7 @@ pub(super) fn plan_command_effects(
         CommandEffect::AttackTarget,
     ]) {
         plan_targeted_state_command(content, action, input, context, planned)
-    } else if action.has_any_effect(&[CommandEffect::PlaceFlag, CommandEffect::RemoveFlag]) {
+    } else if action.has_any_effect(&[CommandEffect::PlaceRoomTag, CommandEffect::RemoveRoomTag]) {
         plan_targetless_command(content, action, context, planned)
     } else {
         panic!(

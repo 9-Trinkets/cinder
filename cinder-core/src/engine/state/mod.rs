@@ -70,8 +70,11 @@ pub struct WorldState {
     pub room_item_stock: BTreeMap<String, u32>,
     #[serde(default)]
     pub act_series: Option<ActSeriesState>,
+    /// Generic per-room markers. `room_tags[room_id]` is the set of tags
+    /// currently placed in that room; packs name tags freely and attach rules
+    /// to them (e.g. layla's `marker` tag drives its encirclement rule).
     #[serde(default)]
-    pub flagged_rooms: BTreeSet<String>,
+    pub room_tags: BTreeMap<String, BTreeSet<String>>,
     /// Per-actor relationship toward the player. Absent entries mean
     /// `ActorRelationship::default()` (neutral, not following), so packs that
     /// never touch relationships carry no state.
@@ -82,10 +85,6 @@ pub struct WorldState {
     /// seeded when a mob wakes and cleared when it leaves hostility.
     #[serde(default)]
     pub next_hostile_strike_at: BTreeMap<String, u32>,
-    /// Stone markers left to place. Seeded from the pack's `flag_supply`;
-    /// packs with a supply of 0 have unlimited markers.
-    #[serde(default)]
-    pub flags_remaining: u32,
 }
 
 /// Discrete stance of an actor toward the player. Mutual exclusion is inherent:
@@ -199,10 +198,9 @@ impl WorldState {
             player_inventory: HashMap::new(),
             room_item_stock: BTreeMap::new(),
             act_series: None,
-            flagged_rooms: BTreeSet::new(),
+            room_tags: BTreeMap::new(),
             relationships: BTreeMap::new(),
             next_hostile_strike_at: BTreeMap::new(),
-            flags_remaining: content.settings.flag_supply,
         }
     }
 
@@ -667,6 +665,38 @@ impl WorldState {
         self.actor_observed_room_ids
             .get(actor_id)
             .is_some_and(|rooms| rooms.contains(room_id))
+    }
+
+    pub fn room_has_tag(&self, room_id: &str, tag: &str) -> bool {
+        self.room_tags
+            .get(room_id)
+            .is_some_and(|tags| tags.contains(tag))
+    }
+
+    /// Number of rooms currently carrying `tag` (used for pack-declared
+    /// per-tag supply limits).
+    pub fn room_tag_count(&self, tag: &str) -> usize {
+        self.room_tags
+            .values()
+            .filter(|tags| tags.contains(tag))
+            .count()
+    }
+
+    pub fn add_room_tag(&mut self, room_id: &str, tag: &str) {
+        self.room_tags
+            .entry(room_id.to_string())
+            .or_default()
+            .insert(tag.to_string());
+    }
+
+    /// Removes `tag` from `room_id`; prunes empty tag sets.
+    pub fn remove_room_tag(&mut self, room_id: &str, tag: &str) {
+        if let Some(tags) = self.room_tags.get_mut(room_id) {
+            tags.remove(tag);
+            if tags.is_empty() {
+                self.room_tags.remove(room_id);
+            }
+        }
     }
 
     pub fn has_item(&self, item_id: &str) -> bool {
