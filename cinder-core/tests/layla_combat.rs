@@ -64,26 +64,32 @@ fn layla_turn_started() -> TimestampedWorldEvent {
     })
 }
 
+fn layla_background_tick(turn_number: u32) -> TimestampedWorldEvent {
+    TimestampedWorldEvent::now(WorldEvent::TurnStarted {
+        turn_number,
+        raw_input: "tick".to_string(),
+        advances_time: true,
+    })
+}
+
 #[test]
-fn layla_background_npc_tick_does_not_trigger_hostile_strikes() {
+fn layla_tick_strikes_respect_attack_cooldown() {
     let (content, mut state) = layla_test_state();
     state.current_room_id = "r3c3".to_string();
     state.set_stance("golem-dark-nw", ActorStance::Hostile);
+    // Cooldown still in the future relative to the time this tick advances to.
+    // The game clock starts at `start_time_minutes`, so seed relative to it.
+    let next_strike = state.current_time_minutes + 5;
+    state
+        .next_hostile_strike_at
+        .insert("golem-dark-nw".to_string(), next_strike);
 
-    let output = apply_events(
-        &mut state,
-        &content,
-        &[TimestampedWorldEvent::now(WorldEvent::TurnStarted {
-            turn_number: 2,
-            raw_input: "tick".to_string(),
-            advances_time: true,
-        })],
-    );
+    let output = apply_events(&mut state, &content, &[layla_background_tick(2)]);
 
     assert_eq!(
         state.actor_stat("player", "hp"),
         10,
-        "background NPC ticks must not count as player exposure"
+        "a golem whose attack cooldown has not elapsed must not strike"
     );
     assert!(!output.lines.iter().any(|l| l.contains("strikes you")));
 }
@@ -215,16 +221,19 @@ fn layla_slain_golem_does_not_become_hostile() {
 }
 
 #[test]
-fn layla_hostile_golem_strikes_player_sharing_room_on_turn_start() {
+fn layla_hostile_golem_strikes_on_due_tick() {
     let (content, mut state) = layla_test_state();
     state.current_room_id = "r3c3".to_string();
     state.set_stance("golem-dark-nw", ActorStance::Hostile);
+    state
+        .next_hostile_strike_at
+        .insert("golem-dark-nw".to_string(), 0);
 
-    let output = apply_events(&mut state, &content, &[layla_turn_started()]);
+    let output = apply_events(&mut state, &content, &[layla_background_tick(2)]);
 
     assert!(
         state.actor_stat("player", "hp") < 10,
-        "hostile golem sharing the room should damage the player"
+        "hostile golem sharing the room should strike once its cooldown elapses"
     );
     assert!(
         output.lines.iter().any(|l| l.contains("strikes you")),
@@ -234,12 +243,34 @@ fn layla_hostile_golem_strikes_player_sharing_room_on_turn_start() {
 }
 
 #[test]
+fn layla_player_command_turns_do_not_trigger_strikes() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c3".to_string();
+    state.set_stance("golem-dark-nw", ActorStance::Hostile);
+    state
+        .next_hostile_strike_at
+        .insert("golem-dark-nw".to_string(), 0);
+
+    let output = apply_events(&mut state, &content, &[layla_turn_started()]);
+
+    assert_eq!(
+        state.actor_stat("player", "hp"),
+        10,
+        "strikes are autonomous tick events, not same-turn retaliation"
+    );
+    assert!(!output.lines.iter().any(|l| l.contains("strikes you")));
+}
+
+#[test]
 fn layla_distant_hostile_golem_leaves_player_untouched() {
     let (content, mut state) = layla_test_state();
     state.current_room_id = "r5c5".to_string();
     state.set_stance("golem-dark-nw", ActorStance::Hostile);
+    state
+        .next_hostile_strike_at
+        .insert("golem-dark-nw".to_string(), 0);
 
-    let output = apply_events(&mut state, &content, &[layla_turn_started()]);
+    let output = apply_events(&mut state, &content, &[layla_background_tick(2)]);
 
     assert_eq!(
         state.actor_stat("player", "hp"),
@@ -259,8 +290,11 @@ fn layla_woken_golem_kills_player_if_ignored() {
         .entry("player".to_string())
         .or_default()
         .insert("hp".to_string(), 1);
+    state
+        .next_hostile_strike_at
+        .insert("golem-dark-nw".to_string(), 0);
 
-    let output = apply_events(&mut state, &content, &[layla_turn_started()]);
+    let output = apply_events(&mut state, &content, &[layla_background_tick(2)]);
 
     assert_eq!(
         state.phase,
@@ -272,6 +306,43 @@ fn layla_woken_golem_kills_player_if_ignored() {
         "expected defeat line, got: {:?}",
         output.lines
     );
+}
+
+#[test]
+fn layla_waking_golem_gets_grace_window_before_first_strike() {
+    let (content, mut state) = layla_test_state();
+    state.current_room_id = "r3c3".to_string();
+    state
+        .actor_stats
+        .entry("golem-dark-nw".to_string())
+        .or_default()
+        .insert("hp".to_string(), 8);
+
+    // Wake the golem with an attack; it must not retaliate this turn.
+    let output = apply_events(
+        &mut state,
+        &content,
+        &[layla_attack_event("r3c3", "golem-dark-nw")],
+    );
+    assert!(
+        output.lines.iter().any(|l| l.contains("eyes snap open")),
+        "expected wake line, got: {:?}",
+        output.lines
+    );
+    assert_eq!(
+        state.actor_stat("player", "hp"),
+        10,
+        "a freshly woken golem must not strike immediately"
+    );
+
+    // One tick later the cooldown (wake time + interval) has not elapsed yet.
+    let output = apply_events(&mut state, &content, &[layla_background_tick(2)]);
+    assert_eq!(
+        state.actor_stat("player", "hp"),
+        10,
+        "grace window must cover the first tick after waking"
+    );
+    assert!(!output.lines.iter().any(|l| l.contains("strikes you")));
 }
 
 #[test]

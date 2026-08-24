@@ -36,7 +36,8 @@
       ]
     },
     "attackable": true,
-    "conversion_trigger": "encirclement"
+    "conversion_trigger": "encirclement",
+    "attack_interval_minutes": 4
   },
   {
     "id": "golem-pale-ne",
@@ -75,7 +76,8 @@
       ]
     },
     "attackable": true,
-    "conversion_trigger": "encirclement"
+    "conversion_trigger": "encirclement",
+    "attack_interval_minutes": 4
   },
   {
     "id": "golem-boss",
@@ -119,7 +121,8 @@
       ]
     },
     "attackable": true,
-    "conversion_trigger": "encirclement"
+    "conversion_trigger": "encirclement",
+    "attack_interval_minutes": 3
   },
   {
     "id": "golem-dark-sw",
@@ -157,7 +160,8 @@
       ]
     },
     "attackable": true,
-    "conversion_trigger": "encirclement"
+    "conversion_trigger": "encirclement",
+    "attack_interval_minutes": 4
   },
   {
     "id": "golem-pale-se",
@@ -195,6 +199,7 @@
       ]
     },
     "attackable": true,
-    "conversion_trigger": "encirclement"
+    "conversion_trigger": "encirclement",
+    "attack_interval_minutes": 4
   }
 ]

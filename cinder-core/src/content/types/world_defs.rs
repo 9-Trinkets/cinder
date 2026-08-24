@@ -294,6 +294,10 @@ pub struct ActorDefinition {
     /// Rule that can convert this actor into a player ally, if any.
     #[serde(default)]
     pub conversion_trigger: Option<ConversionTrigger>,
+    /// Game minutes between this actor's autonomous hostile strikes. Only used
+    /// while the actor is hostile; defaults to 4 when omitted.
+    #[serde(default)]
+    pub attack_interval_minutes: Option<u32>,
     pub prompt_context: ActorPromptContext,
     #[serde(default)]
     pub act_cast: Option<ActorActCast>,
@@ -307,6 +311,12 @@ pub struct ActorDefinition {
 pub enum ConversionTrigger {
     /// Converting when every room adjacent to the actor's room is flagged.
     Encirclement,
+}
+
+impl ActorDefinition {
+    pub fn attack_interval_minutes(&self) -> u32 {
+        self.attack_interval_minutes.unwrap_or(4)
+    }
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

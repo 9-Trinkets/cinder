@@ -243,6 +243,7 @@ fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
         required_consumable_tags: vec![],
         attackable: false,
         conversion_trigger: None,
+        attack_interval_minutes: None,
         prompt_context: ActorPromptContext {
             character_notes: vec![],
             subtext_notes: vec![],

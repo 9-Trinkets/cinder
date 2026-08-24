@@ -588,6 +588,16 @@ pub(super) fn apply_new_command_effects(
         {
             relationship.stance = ActorStance::Hostile;
             state.set_relationship(target_actor_id, relationship);
+            // Grace window: the freshly woken mob does not strike until its
+            // attack cooldown elapses.
+            let interval = content
+                .actor(target_actor_id)
+                .map(|actor| actor.attack_interval_minutes())
+                .unwrap_or(4);
+            state.next_hostile_strike_at.insert(
+                target_actor_id.to_string(),
+                state.current_time_minutes + interval,
+            );
             if let Some(line) = content.render_message(
                 "combat.actor_wakes_hostile",
                 &[("actor", target_name.as_str())],

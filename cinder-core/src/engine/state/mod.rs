@@ -77,6 +77,11 @@ pub struct WorldState {
     /// never touch relationships carry no state.
     #[serde(default)]
     pub relationships: BTreeMap<String, ActorRelationship>,
+    /// Next game-minute at which each hostile actor may autonomously strike
+    /// the player. Only meaningful while the stance is hostile; entries are
+    /// seeded when a mob wakes and cleared when it leaves hostility.
+    #[serde(default)]
+    pub next_hostile_strike_at: BTreeMap<String, u32>,
 }
 
 /// Discrete stance of an actor toward the player. Mutual exclusion is inherent:
@@ -192,6 +197,7 @@ impl WorldState {
             act_series: None,
             flagged_rooms: BTreeSet::new(),
             relationships: BTreeMap::new(),
+            next_hostile_strike_at: BTreeMap::new(),
         }
     }
 
@@ -318,7 +324,10 @@ impl WorldState {
         if relationship == ActorRelationship::default() {
             self.relationships.remove(actor_id.as_str());
         } else {
-            self.relationships.insert(actor_id, relationship);
+            self.relationships.insert(actor_id.clone(), relationship);
+        }
+        if relationship.stance != ActorStance::Hostile {
+            self.next_hostile_strike_at.remove(actor_id.as_str());
         }
     }
 

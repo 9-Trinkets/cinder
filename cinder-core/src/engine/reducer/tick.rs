@@ -11,9 +11,11 @@ use super::beat_advance::{advance_conditions_met, advance_objective_for_signal};
 use super::command_effects::{actor_display_name, defeat_player_if_dead};
 use super::observation::actors_in_room;
 
-/// Deterministic combat step: every hostile actor sharing the player's room strikes
-/// once per turn. Ignoring a woken mob is eventually lethal.
-pub(super) fn apply_hostile_actor_attacks_on_turn_start(
+/// Autonomous combat step, run once per background tick (`raw_input == "tick"`):
+/// every hostile actor sharing the player's room strikes when its attack
+/// cooldown expires. Waking a mob seeds its cooldown, giving the player a grace
+/// window before the first hit; ignoring a woken mob is eventually lethal.
+pub(super) fn apply_autonomous_hostile_strikes(
     state: &mut WorldState,
     content: &ContentPack,
     lines: &mut Vec<String>,
@@ -21,13 +23,20 @@ pub(super) fn apply_hostile_actor_attacks_on_turn_start(
     if state.phase != GamePhase::Active {
         return;
     }
-    let hostile_actor_ids: Vec<String> = state
+    let current_time_minutes = state.current_time_minutes;
+    let due_actor_ids: Vec<String> = state
         .relationships
         .iter()
         .filter(|(_, relationship)| relationship.stance == ActorStance::Hostile)
+        .filter(|(actor_id, _)| {
+            state
+                .next_hostile_strike_at
+                .get(*actor_id)
+                .is_none_or(|next_strike| current_time_minutes >= *next_strike)
+        })
         .map(|(actor_id, _)| actor_id.clone())
         .collect();
-    for actor_id in hostile_actor_ids {
+    for actor_id in due_actor_ids {
         if state.actor_stat(&actor_id, "hp") <= 0 {
             continue;
         }
@@ -57,6 +66,13 @@ pub(super) fn apply_hostile_actor_attacks_on_turn_start(
         ) {
             lines.push(line);
         }
+        let interval = content
+            .actor(&actor_id)
+            .map(|actor| actor.attack_interval_minutes())
+            .unwrap_or(4);
+        state
+            .next_hostile_strike_at
+            .insert(actor_id, current_time_minutes + interval);
         defeat_player_if_dead(state, lines);
         if state.phase != GamePhase::Active {
             break;

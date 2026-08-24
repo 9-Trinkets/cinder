@@ -283,22 +283,26 @@ fn layla_attack_dispatches() {
             "expected combat output, got: {}",
             outcome.text
         );
-        // Regression: attacking must not instantly kill the player, even though
-        // the woken golem retaliates within the same turn.
+        // Regression: strikes are autonomous tick events, so attacking must not
+        // trigger same-turn retaliation and the player stays untouched.
         let after = runtime.export_state().expect("state export");
         assert_eq!(
             after.phase,
             cinder_core::engine::state::GamePhase::Active,
-            "player must survive the first exchange"
+            "player must survive waking the golem"
         );
         let hp = after.actor_stat("player", "hp");
-        assert!(
-            (0..10).contains(&hp),
-            "player HP should have dropped from 10 but stayed positive, got {hp}"
+        assert_eq!(
+            hp, 10,
+            "no same-turn retaliation: woken golem waits for its tick cooldown"
         );
         assert!(
             after.stance(golem.id.as_str()) == cinder_core::engine::state::ActorStance::Hostile,
             "attacked golem should wake hostile"
+        );
+        assert!(
+            after.next_hostile_strike_at.contains_key(golem.id.as_str()),
+            "woken golem must have an autonomous strike cooldown seeded"
         );
     }
 }
@@ -331,7 +335,7 @@ fn path_to_nearest_star_golem(
 }
 
 #[test]
-fn layla_woken_golem_kills_ignored_player() {
+fn layla_woken_golem_waits_for_its_tick_cooldown() {
     let content = load_named_pack("layla", None).expect("layla pack must load");
     let runtime =
         cinder_core::CinderRuntime::new(content.clone(), false).expect("runtime must construct");
@@ -358,6 +362,10 @@ fn layla_woken_golem_kills_ignored_player() {
     runtime
         .run_turn(&format!("attack {}", golem_name.to_lowercase()))
         .expect("attack must dispatch once sharing the golem's room");
+
+    // Autonomous model: the woken golem seeds a strike cooldown instead of
+    // retaliating inside the player's turn. The grace window must cover the
+    // first few game minutes after waking.
     let after_attack = runtime.export_state().expect("state export");
     assert_eq!(
         after_attack.phase,
@@ -368,36 +376,27 @@ fn layla_woken_golem_kills_ignored_player() {
         after_attack.stance(golem.id.as_str()) == cinder_core::engine::state::ActorStance::Hostile,
         "expected the attacked golem to wake hostile"
     );
-
-    // Ignore the golem: keep taking time-advancing actions in its room until dead.
-    let mut ended = false;
-    for _ in 0..40 {
-        let outcome = runtime
-            .run_turn("place flag")
-            .expect("place flag dispatches");
-        if runtime.export_state().expect("state").phase
-            == cinder_core::engine::state::GamePhase::GameEnded
-        {
-            assert!(
-                outcome.text.contains("world tilts") || outcome.text.contains("HP remaining"),
-                "expected combat/defeat output on the death turn"
-            );
-            ended = true;
-            break;
-        }
-        runtime
-            .run_turn("pick up flag")
-            .expect("pick up flag dispatches");
-        if runtime.export_state().expect("state").phase
-            == cinder_core::engine::state::GamePhase::GameEnded
-        {
-            ended = true;
-            break;
-        }
-    }
+    let seeded_at = after_attack
+        .next_hostile_strike_at
+        .get(golem.id.as_str())
+        .copied()
+        .expect("wake must seed an autonomous strike cooldown");
     assert!(
-        ended,
-        "a woken golem sharing the player's room must kill them while ignored"
+        seeded_at > after_attack.current_time_minutes,
+        "cooldown must start in the future (grace window), got {seeded_at} vs now {}",
+        after_attack.current_time_minutes
+    );
+    let interval = golem.attack_interval_minutes();
+    // Later sub-turns of the same run_turn advance game time past the wake
+    // moment, so only bound the cooldown relative to the exported clock.
+    assert!(
+        seeded_at > after_attack.current_time_minutes,
+        "cooldown must still be pending (grace window), got {seeded_at} vs now {}",
+        after_attack.current_time_minutes
+    );
+    assert!(
+        seeded_at <= after_attack.current_time_minutes + interval,
+        "cooldown must have been seeded no earlier than wake time + interval"
     );
 }
 

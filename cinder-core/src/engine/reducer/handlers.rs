@@ -9,7 +9,7 @@ use super::observation::{
 };
 use super::tick::{
     advance_actor_stats_on_tick, advance_house_progress_objectives,
-    advance_stat_threshold_objectives, apply_hostile_actor_attacks_on_turn_start,
+    advance_stat_threshold_objectives, apply_autonomous_hostile_strikes,
     increment_shared_room_safety,
 };
 use crate::content::types::{ContentPack, ItemStorageTarget};
@@ -49,11 +49,10 @@ pub(super) fn handle_turn_started(
         lines.extend(advance_house_progress_objectives(state, content));
         lines.extend(advance_stat_threshold_objectives(state, content));
     }
-    // Background NPC ticks (raw_input "tick") must not count as player exposure:
-    // hostile mobs strike only on player-driven turns, otherwise they attack every
-    // server tick (~2s) while the player is still choosing an action.
-    if raw_input != "tick" {
-        apply_hostile_actor_attacks_on_turn_start(state, content, lines);
+    // Autonomous strikes run only on background ticks, paced by each actor's
+    // attack cooldown — never as same-turn retaliation for player actions.
+    if raw_input == "tick" && advances_time {
+        apply_autonomous_hostile_strikes(state, content, lines);
     }
 }
 
