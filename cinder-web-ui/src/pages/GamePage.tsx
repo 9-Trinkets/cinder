@@ -258,7 +258,14 @@ export default function GamePage() {
 
   function applyCommandResponse(res: api.CommandResponse, behavior: ScrollBehavior = 'auto') {
     if (res.text) {
-      appendLines([res.text], behavior)
+      // Split on blank lines like the server does for the stored transcript,
+      // so each narrative block is its own line (and gets its own styling
+      // rather than the whole turn inheriting one color).
+      const chunks = res.text
+        .split(/\n\n+/)
+        .map(chunk => chunk.trim())
+        .filter(Boolean)
+      appendLines(chunks.length ? chunks : [res.text], behavior)
     }
     if (res.ui_snapshot) {
       channelSurfingOnly.current = res.ui_snapshot.channel_surfing_only
