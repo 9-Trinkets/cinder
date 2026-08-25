@@ -592,16 +592,31 @@ pub(super) fn plan_targetless_command(
         });
         return false;
     }
-    if action.has_effect(CommandEffect::EquipItem)
-        && !context.planner_state.has_item(&action.item_id)
-    {
-        planned.events.push(WorldEvent::ActionRejected {
-            message: content
-                .render_message(&format!("item.{}.none_held", action.item_id), &[])
-                .or_else(|| content.render_message("item.none_held", &[]))
-                .unwrap_or_default(),
+    if action.has_effect(CommandEffect::EquipItem) {
+        let item_label = content
+            .item(&action.item_id)
+            .map(|item| item.label.as_str())
+            .unwrap_or_default();
+        let already_equipped = content.item(&action.item_id).is_some_and(|item| {
+            context.planner_state.equipped_item(&item.equip_slot) == Some(action.item_id.as_str())
         });
-        return false;
+        if already_equipped {
+            planned.events.push(WorldEvent::ActionRejected {
+                message: content
+                    .render_message("equipment.already_equipped", &[("item", item_label)])
+                    .unwrap_or_default(),
+            });
+            return false;
+        }
+        if !context.planner_state.has_item(&action.item_id) {
+            planned.events.push(WorldEvent::ActionRejected {
+                message: content
+                    .render_message(&format!("item.{}.none_held", action.item_id), &[])
+                    .or_else(|| content.render_message("item.none_held", &[]))
+                    .unwrap_or_default(),
+            });
+            return false;
+        }
     }
     if action.has_effect(CommandEffect::UnequipItem) {
         let equipped = content

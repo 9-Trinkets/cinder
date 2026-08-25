@@ -25,9 +25,13 @@ pub struct ObjectiveItem {
 pub struct InventoryItem {
     pub label: String,
     pub count: u32,
-    /// True when the player has this item equipped in one of its slots.
-    #[serde(default)]
-    pub equipped: bool,
+}
+
+/// An item worn in one of the player's equipment slots.
+#[derive(Clone, Serialize)]
+pub struct EquippedItem {
+    pub slot: String,
+    pub label: String,
 }
 
 #[derive(Clone, Serialize)]
@@ -153,6 +157,8 @@ pub struct UiSnapshot {
     pub act_closure: Option<ActClosure>,
     pub game_closure: Option<ActClosure>,
     pub inventory: Vec<InventoryItem>,
+    /// Items worn in the player's equipment slots (slot → label).
+    pub equipped_items: Vec<EquippedItem>,
     /// Display names of actors following the player (the party).
     pub party: Vec<String>,
     /// Loose items lying in the current room (dropped there).
@@ -471,30 +477,38 @@ pub(super) fn build_ui_snapshot(
                     .item(&item_id)
                     .map(|item| item.label.clone())
                     .unwrap_or_else(|| item_id.clone());
-                InventoryItem {
-                    label,
-                    count,
-                    equipped: false,
-                }
+                InventoryItem { label, count }
             })
             .collect(),
+        equipped_items: {
+            let mut items: Vec<EquippedItem> = state
+                .equipment
+                .iter()
+                .map(|(slot, item_id)| {
+                    let label = content
+                        .item(item_id)
+                        .map(|item| item.label.clone())
+                        .unwrap_or_else(|| item_id.clone());
+                    EquippedItem {
+                        slot: slot.clone(),
+                        label,
+                    }
+                })
+                .collect();
+            items.sort_by(|left, right| left.slot.cmp(&right.slot));
+            items
+        },
         inventory: {
-            let equipped_ids: std::collections::BTreeSet<&str> =
-                state.equipment.values().map(String::as_str).collect();
             let mut inventory = runtime
                 .inventory_items()
                 .unwrap_or_default()
                 .into_iter()
                 .map(|(id, count)| {
-                    let (label, equipped) = content
+                    let label = content
                         .item(&id)
-                        .map(|item| (item.label.clone(), equipped_ids.contains(id.as_str())))
-                        .unwrap_or_else(|| (id.clone(), false));
-                    InventoryItem {
-                        label,
-                        count,
-                        equipped,
-                    }
+                        .map(|item| item.label.clone())
+                        .unwrap_or_else(|| id.clone());
+                    InventoryItem { label, count }
                 })
                 .collect::<Vec<_>>();
             inventory.sort_by(|left, right| left.label.cmp(&right.label));

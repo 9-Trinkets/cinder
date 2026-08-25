@@ -1429,6 +1429,60 @@ fn equipping_a_second_weapon_replaces_the_first() {
 }
 
 #[test]
+fn cannot_equip_an_item_already_in_its_slot_even_with_spares() {
+    let pack = equipment_test_pack();
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    // Two copies: one equipped, one spare in the inventory.
+    state.add_item("iron-chisel");
+    state.add_item("iron-chisel");
+
+    super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        LOUNGE_ID,
+        "equip-chisel",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        &mut Vec::new(),
+    )
+    .expect("equip first chisel");
+    assert_eq!(state.equipped_item("weapon"), Some("iron-chisel"));
+    assert_eq!(state.item_count("iron-chisel"), 1);
+
+    // Equipping the same item again is rejected: it already fills the slot.
+    let second = super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        LOUNGE_ID,
+        "equip-chisel",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        &mut Vec::new(),
+    );
+    assert!(
+        second.is_none(),
+        "equipping an already-equipped item must be rejected"
+    );
+    assert_eq!(state.equipped_item("weapon"), Some("iron-chisel"));
+    assert_eq!(state.item_count("iron-chisel"), 1);
+}
+
+#[test]
 fn using_a_potion_consumes_it_and_fires_its_use_hook() {
     let pack = equipment_test_pack();
     let mut state = WorldState::new(&pack);

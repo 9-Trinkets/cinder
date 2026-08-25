@@ -261,6 +261,10 @@ pub(super) fn apply_actor_command_realization_effects(
                 if !content.settings.equipment_slots.contains(&item.equip_slot) {
                     return false;
                 }
+                // Can't equip an item that already occupies its slot.
+                if state.equipped_item(&item.equip_slot) == Some(command.item_id.as_str()) {
+                    return false;
+                }
             }
             CommandEffect::UnequipItem => {
                 let Some(item) = content.item(&command.item_id) else {

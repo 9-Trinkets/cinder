@@ -11,6 +11,7 @@
   "equipment.equipped": "You ready the {item}. ({bonuses})",
   "equipment.unequipped": "You stow the {item}.",
   "equipment.not_equipped": "The {item} isn't equipped.",
+  "equipment.already_equipped": "The {item} is already equipped.",
   "combat.defeat_drop": "The {actor} crumbles. Left behind: {items}.",
   "error.command_not_now": "You can't {verb} right now.",
   "error.command_needs_more": "You can't {verb} yet. Still needed: {labels}.",

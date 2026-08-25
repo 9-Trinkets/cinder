@@ -190,7 +190,11 @@ export type ActClosureSection =
 export interface InventoryItem {
   label: string
   count: number
-  equipped?: boolean
+}
+
+export interface EquippedItem {
+  slot: string
+  label: string
 }
 
 export interface ConsumableInfo {
@@ -264,6 +268,7 @@ export interface UiSnapshot {
   act_closure: ActClosureData | null
   game_closure: ActClosureData | null
   inventory: InventoryItem[]
+  equipped_items: EquippedItem[]
   party: string[]
   current_room_items: InventoryItem[]
   room_consumables: RoomConsumableGroup[]
