@@ -37,7 +37,11 @@
     },
     "attackable": true,
     "conversion_trigger": "encirclement",
-    "attack_interval_minutes": 4
+    "attack_interval_minutes": 4,
+    "drops": {},
+    "tags": [
+      "golem"
+    ]
   },
   {
     "id": "golem-pale-ne",
@@ -77,7 +81,11 @@
     },
     "attackable": true,
     "conversion_trigger": "encirclement",
-    "attack_interval_minutes": 4
+    "attack_interval_minutes": 4,
+    "drops": {},
+    "tags": [
+      "golem"
+    ]
   },
   {
     "id": "golem-boss",
@@ -122,7 +130,13 @@
     },
     "attackable": true,
     "conversion_trigger": "encirclement",
-    "attack_interval_minutes": 3
+    "attack_interval_minutes": 3,
+    "drops": {
+      "warden-core": 1
+    },
+    "tags": [
+      "golem"
+    ]
   },
   {
     "id": "golem-dark-sw",
@@ -161,7 +175,11 @@
     },
     "attackable": true,
     "conversion_trigger": "encirclement",
-    "attack_interval_minutes": 4
+    "attack_interval_minutes": 4,
+    "drops": {},
+    "tags": [
+      "golem"
+    ]
   },
   {
     "id": "golem-pale-se",
@@ -200,6 +218,10 @@
     },
     "attackable": true,
     "conversion_trigger": "encirclement",
-    "attack_interval_minutes": 4
+    "attack_interval_minutes": 4,
+    "drops": {},
+    "tags": [
+      "golem"
+    ]
   }
 ]

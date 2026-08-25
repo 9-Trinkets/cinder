@@ -171,6 +171,37 @@ fn apply_hook_effects(
                     }
                 }
             }
+            WorldHookEffect::ConvertAlliesByTag {
+                tag,
+                follows_player,
+                messages,
+            } => {
+                let health_stat_id = &content.settings.combat.health_stat_id;
+                for actor in &content.actors {
+                    if !actor.tags.iter().any(|actor_tag| actor_tag.as_str() == tag) {
+                        continue;
+                    }
+                    if state.actor_is_defeated(&actor.id, health_stat_id) {
+                        continue;
+                    }
+                    let mut relationship = state.relationship(&actor.id);
+                    if relationship.stance == ActorStance::Allied {
+                        continue;
+                    }
+                    relationship.stance = ActorStance::Allied;
+                    relationship.follows_player = follows_player;
+                    state.set_relationship(&actor.id, relationship);
+                    if let Some(lines) = lines.as_deref_mut() {
+                        for key in &messages {
+                            if let Some(line) =
+                                content.render_message(key, &[("actor", actor.name.as_str())])
+                            {
+                                lines.push(line);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     Ok(())
@@ -196,6 +227,16 @@ enum WorldHookEffect {
     /// pack-authored message keys rendered with `{actor}` for narration.
     ConvertActorToAlly {
         actor_id: String,
+        #[serde(default)]
+        follows_player: bool,
+        #[serde(default)]
+        messages: Vec<String>,
+    },
+    /// Turns every living actor carrying `tag` into an ally (and optionally a
+    /// follower). Already-allied and defeated actors are left untouched, so
+    /// re-firing (e.g. re-equipping an item) is idempotent.
+    ConvertAlliesByTag {
+        tag: String,
         #[serde(default)]
         follows_player: bool,
         #[serde(default)]

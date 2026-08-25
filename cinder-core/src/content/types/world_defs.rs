@@ -291,6 +291,8 @@ pub struct ActorDefinition {
     #[serde(default)]
     pub aliases: Vec<String>,
     #[serde(default)]
+    pub tags: Vec<String>,
+    #[serde(default)]
     pub inspect_text: String,
     #[serde(default)]
     pub required_consumable_tags: Vec<String>,
@@ -301,6 +303,10 @@ pub struct ActorDefinition {
     /// Rule that can convert this actor into a player ally, if any.
     #[serde(default)]
     pub conversion_trigger: Option<ConversionTrigger>,
+    /// Items scattered into this actor's room as loose items when it is
+    /// defeated by the player's attack, item id → count.
+    #[serde(default)]
+    pub drops: BTreeMap<String, u32>,
     /// Game minutes between this actor's autonomous hostile strikes. Only used
     /// while the actor is hostile; defaults to 4 when omitted.
     #[serde(default)]

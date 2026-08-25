@@ -1,4 +1,9 @@
-use crate::content::types::{ActionDefinition, CommandEffect, CommandTargetMode};
+use crate::content::types::{
+    ActionDefinition, CommandEffect, CommandTargetMode, ContentSettingsDefinition, ItemDefinition,
+    StatDefinition,
+};
+use serde_json::Value;
+use std::collections::BTreeMap;
 use std::error::Error;
 
 pub(crate) fn require_known_id(
@@ -43,11 +48,7 @@ pub(crate) fn validate_actions(
             }
         }
         if action.npc.is_some() && action.command.trim().is_empty() {
-            return Err(format!(
-                "NPC action '{}' must define a command field",
-                action.id
-            )
-            .into());
+            return Err(format!("NPC action '{}' must define a command field", action.id).into());
         }
         for room_id in &action.available.allowed_rooms {
             require_known_id(
@@ -76,6 +77,51 @@ pub(crate) fn validate_actions(
                 action.id
             )
             .into());
+        }
+    }
+    Ok(())
+}
+
+/// Equipment references resolve against the pack: slots must be declared in
+/// `settings.equipment_slots`, bonus keys must be declared stats, and use
+/// hooks must exist in hooks.json.
+pub(crate) fn validate_items(
+    items: &[ItemDefinition],
+    settings: &ContentSettingsDefinition,
+    known_stats: &BTreeMap<String, StatDefinition>,
+    known_hooks: &BTreeMap<String, Value>,
+) -> Result<(), Box<dyn Error>> {
+    for item in items {
+        if item.equip_slot.trim().is_empty() {
+            continue;
+        }
+        if !settings.equipment_slots.contains(&item.equip_slot) {
+            return Err(format!(
+                "item '{}' equip_slot '{}' not declared in settings.equipment_slots",
+                item.id, item.equip_slot
+            )
+            .into());
+        }
+        for stat_id in item.stat_bonuses.keys() {
+            if !known_stats.contains_key(stat_id) {
+                return Err(format!(
+                    "item '{}' stat_bonuses key '{}' not declared in stats.actor",
+                    item.id, stat_id
+                )
+                .into());
+            }
+        }
+        for (field, hook_id) in [
+            ("use_hook", &item.use_hook),
+            ("equip_hook", &item.equip_hook),
+        ] {
+            if !hook_id.trim().is_empty() && !known_hooks.contains_key(hook_id.as_str()) {
+                return Err(format!(
+                    "item '{}' {field} '{hook_id}' not found in hooks.json",
+                    item.id
+                )
+                .into());
+            }
         }
     }
     Ok(())

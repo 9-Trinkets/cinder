@@ -25,6 +25,9 @@ pub struct ObjectiveItem {
 pub struct InventoryItem {
     pub label: String,
     pub count: u32,
+    /// True when the player has this item equipped in one of its slots.
+    #[serde(default)]
+    pub equipped: bool,
 }
 
 #[derive(Clone, Serialize)]
@@ -456,20 +459,30 @@ pub(super) fn build_ui_snapshot(
                     .item(&item_id)
                     .map(|item| item.label.clone())
                     .unwrap_or_else(|| item_id.clone());
-                InventoryItem { label, count }
+                InventoryItem {
+                    label,
+                    count,
+                    equipped: false,
+                }
             })
             .collect(),
         inventory: {
+            let equipped_ids: std::collections::BTreeSet<&str> =
+                state.equipment.values().map(String::as_str).collect();
             let mut inventory = runtime
                 .inventory_items()
                 .unwrap_or_default()
                 .into_iter()
                 .map(|(id, count)| {
-                    let label = content
+                    let (label, equipped) = content
                         .item(&id)
-                        .map(|item| item.label.clone())
-                        .unwrap_or_else(|| id.clone());
-                    InventoryItem { label, count }
+                        .map(|item| (item.label.clone(), equipped_ids.contains(id.as_str())))
+                        .unwrap_or_else(|| (id.clone(), false));
+                    InventoryItem {
+                        label,
+                        count,
+                        equipped,
+                    }
                 })
                 .collect::<Vec<_>>();
             inventory.sort_by(|left, right| left.label.cmp(&right.label));

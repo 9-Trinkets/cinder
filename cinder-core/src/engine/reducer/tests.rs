@@ -239,10 +239,12 @@ fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
         initial_stats: BTreeMap::new(),
         initial_pair_stats: BTreeMap::new(),
         aliases: vec![],
+        tags: vec![],
         inspect_text: format!("{name} looks thoughtful."),
         required_consumable_tags: vec![],
         attackable: false,
         conversion_trigger: None,
+        drops: BTreeMap::new(),
         attack_interval_minutes: None,
         prompt_context: ActorPromptContext {
             character_notes: vec![],
@@ -744,6 +746,7 @@ fn item_events_can_store_and_consume_items_in_current_room() {
         id: "coffee".to_string(),
         label: "coffee".to_string(),
         description: "Fresh coffee.".to_string(),
+        ..ItemDefinition::default()
     }];
     rebuild_test_pack_indexes(&mut pack);
     let mut state = WorldState::new(&pack);
@@ -781,6 +784,7 @@ fn item_events_keep_player_inventory_behavior_unchanged() {
         id: "tea".to_string(),
         label: "tea".to_string(),
         description: "Hot tea.".to_string(),
+        ..ItemDefinition::default()
     }];
     rebuild_test_pack_indexes(&mut pack);
     let mut state = WorldState::new(&pack);
@@ -811,11 +815,13 @@ fn actor_commands_can_create_room_items_from_story_vars() {
             id: "garlic-noodles".to_string(),
             label: "garlic noodles".to_string(),
             description: "Noodles.".to_string(),
+            ..ItemDefinition::default()
         },
         ItemDefinition {
             id: "vegetable-stir-fry".to_string(),
             label: "vegetable stir-fry".to_string(),
             description: "Stir-fry.".to_string(),
+            ..ItemDefinition::default()
         },
     ];
     pack.actions.push(ActionDefinition {
@@ -959,7 +965,7 @@ fn encirclement_conversion_narration_follows_the_flag_placement() {
         command: "place-flag".to_string(),
         target_mode: CommandTargetMode::None,
         effects: vec![CommandEffect::DropItem],
-        drop_item: "stone-marker".to_string(),
+        item_id: "stone-marker".to_string(),
         event_text: "{actor_name} drives a stone marker into the ground.".to_string(),
         ..ActionDefinition::default()
     });
@@ -1061,7 +1067,7 @@ fn drop_and_pick_up_item_move_it_between_inventory_and_room() {
         command: "drop-marker".to_string(),
         target_mode: CommandTargetMode::None,
         effects: vec![CommandEffect::DropItem],
-        drop_item: "stone-marker".to_string(),
+        item_id: "stone-marker".to_string(),
         event_text: "{actor_name} places the stone marker on the ground.".to_string(),
         ..ActionDefinition::default()
     });
@@ -1070,7 +1076,7 @@ fn drop_and_pick_up_item_move_it_between_inventory_and_room() {
         command: "pick-up-marker".to_string(),
         target_mode: CommandTargetMode::None,
         effects: vec![CommandEffect::PickUpItem],
-        drop_item: "stone-marker".to_string(),
+        item_id: "stone-marker".to_string(),
         event_text: "{actor_name} picks up the stone marker.".to_string(),
         ..ActionDefinition::default()
     });
@@ -1124,4 +1130,388 @@ fn drop_and_pick_up_item_move_it_between_inventory_and_room() {
 
     assert!(state.has_item("stone-marker"));
     assert!(state.loose_room_items(LOUNGE_ID).is_empty());
+}
+
+#[test]
+fn equipping_an_item_with_equip_hook_converts_surviving_tagged_actors() {
+    let mut pack = reducer_test_pack();
+    pack.settings.combat = crate::content::types::CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_ID.to_string(),
+        health_stat_id: "stamina".to_string(),
+        attack_stat_id: "confidence".to_string(),
+        defense_stat_id: "hunger".to_string(),
+        ..crate::content::types::CombatSettingsDefinition::default()
+    };
+    pack.settings.equipment_slots = ["trinket".to_string()].into_iter().collect();
+    pack.items.push(crate::content::types::ItemDefinition {
+        id: "warden-core".to_string(),
+        label: "warden core".to_string(),
+        description: "A warm stone heart.".to_string(),
+        kind: crate::content::types::ItemKind::Trinket,
+        equip_slot: "trinket".to_string(),
+        stat_bonuses: BTreeMap::new(),
+        use_hook: String::new(),
+        equip_hook: "item.core_equipped".to_string(),
+    });
+    pack.messages.insert(
+        "conversion.core".to_string(),
+        "The {actor} bows its head and falls in behind you.".to_string(),
+    );
+    pack.hooks.insert(
+        "item.core_equipped".to_string(),
+        effect_hook(vec![json!({
+            "kind": "convert_allies_by_tag",
+            "tag": "golem",
+            "follows_player": true,
+            "messages": ["conversion.core"],
+        })]),
+    );
+    pack.actions.push(ActionDefinition {
+        id: "equip-core".to_string(),
+        command: "equip-core".to_string(),
+        target_mode: CommandTargetMode::None,
+        effects: vec![CommandEffect::EquipItem],
+        item_id: "warden-core".to_string(),
+        event_text: "{actor_name} grasps the warden core.".to_string(),
+        ..ActionDefinition::default()
+    });
+    // Two living golems, one already allied (encircled earlier), one dead.
+    let mut golem_living = test_actor("statue-live", "granite statue", KITCHEN_ID);
+    golem_living.tags = vec!["golem".to_string()];
+    golem_living.initial_stats = BTreeMap::from([("stamina".to_string(), 8)]);
+    let mut golem_dead = test_actor("statue-dead", "dust statue", KITCHEN_ID);
+    golem_dead.tags = vec!["golem".to_string()];
+    golem_dead.initial_stats = BTreeMap::from([("stamina".to_string(), 0)]);
+    let mut golem_allied = test_actor("statue-ally", "charmed statue", KITCHEN_ID);
+    golem_allied.tags = vec!["golem".to_string()];
+    golem_allied.initial_stats = BTreeMap::from([("stamina".to_string(), 8)]);
+    pack.actors.extend([golem_living, golem_dead, golem_allied]);
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    state.set_stance("statue-ally", ActorStance::Allied);
+    state.add_item("warden-core");
+
+    let lines = super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        LOUNGE_ID,
+        "equip-core",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        &mut Vec::new(),
+    )
+    .unwrap_or_default();
+
+    // Living golem converted to an ally follower; dead and already-allied skipped.
+    assert_eq!(state.stance("statue-live"), ActorStance::Allied);
+    assert!(state.relationship("statue-live").follows_player);
+    assert_eq!(state.stance("statue-dead"), ActorStance::Neutral);
+    assert_eq!(state.stance("statue-ally"), ActorStance::Allied);
+    // Already-allied actors are left untouched (not re-followed by the hook).
+    assert!(!state.relationship("statue-ally").follows_player);
+    assert!(
+        lines.iter().any(|line| line.contains("granite statue")),
+        "got: {lines:?}"
+    );
+    assert!(
+        !lines.iter().any(|line| line.contains("dust statue")),
+        "got: {lines:?}"
+    );
+}
+
+fn equipment_test_pack() -> ContentPack {
+    let mut pack = reducer_test_pack();
+    pack.settings.combat = crate::content::types::CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_ID.to_string(),
+        health_stat_id: "stamina".to_string(),
+        attack_stat_id: "confidence".to_string(),
+        defense_stat_id: "hunger".to_string(),
+        ..crate::content::types::CombatSettingsDefinition::default()
+    };
+    pack.settings.equipment_slots = ["weapon".to_string()].into_iter().collect();
+    pack.items.push(crate::content::types::ItemDefinition {
+        id: "iron-chisel".to_string(),
+        label: "iron chisel".to_string(),
+        description: "A chisel with a worn grip.".to_string(),
+        kind: crate::content::types::ItemKind::Weapon,
+        equip_slot: "weapon".to_string(),
+        stat_bonuses: BTreeMap::from([("confidence".to_string(), 2)]),
+        use_hook: String::new(),
+        equip_hook: String::new(),
+    });
+    pack.items.push(crate::content::types::ItemDefinition {
+        id: "steel-chisel".to_string(),
+        label: "steel chisel".to_string(),
+        description: "A finer chisel.".to_string(),
+        kind: crate::content::types::ItemKind::Weapon,
+        equip_slot: "weapon".to_string(),
+        stat_bonuses: BTreeMap::from([("confidence".to_string(), 4)]),
+        use_hook: String::new(),
+        equip_hook: String::new(),
+    });
+    pack.items.push(crate::content::types::ItemDefinition {
+        id: "herb-salve".to_string(),
+        label: "herb salve".to_string(),
+        description: "A fragrant paste.".to_string(),
+        kind: crate::content::types::ItemKind::Potion,
+        equip_slot: String::new(),
+        stat_bonuses: BTreeMap::new(),
+        use_hook: "item.salve_used".to_string(),
+        equip_hook: String::new(),
+    });
+    pack.hooks.insert(
+        "item.salve_used".to_string(),
+        effect_hook(vec![json!({
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "stamina",
+            "delta": 2
+        })]),
+    );
+    for id in ["equip-chisel", "unequip-chisel", "use-salve"] {
+        let (effects, item) = match id {
+            "equip-chisel" => (vec![CommandEffect::EquipItem], "iron-chisel"),
+            "unequip-chisel" => (vec![CommandEffect::UnequipItem], "iron-chisel"),
+            _ => (vec![CommandEffect::UseItem], "herb-salve"),
+        };
+        pack.actions.push(ActionDefinition {
+            id: id.to_string(),
+            command: id.to_string(),
+            target_mode: CommandTargetMode::None,
+            effects,
+            item_id: item.to_string(),
+            event_text: format!("{{actor_name}} uses the {item}."),
+            ..ActionDefinition::default()
+        });
+    }
+    rebuild_test_pack_indexes(&mut pack);
+    pack
+}
+
+#[test]
+fn equip_and_unequip_change_effective_stats_and_inventory() {
+    let pack = equipment_test_pack();
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    // Alex's confidence base.
+    let base_attack = state.actor_stat(ACTOR_A_ID, "confidence");
+    state.add_item("iron-chisel");
+
+    super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        LOUNGE_ID,
+        "equip-chisel",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        &mut Vec::new(),
+    )
+    .expect("equip chisel");
+
+    assert!(!state.has_item("iron-chisel"));
+    assert_eq!(state.equipped_item("weapon"), Some("iron-chisel"));
+    assert_eq!(
+        state.effective_actor_stat(&pack, ACTOR_A_ID, "confidence"),
+        base_attack + 2
+    );
+    // Non-player actors never receive equipment bonuses.
+    assert_eq!(
+        state.effective_actor_stat(&pack, ACTOR_B_ID, "confidence"),
+        state.actor_stat(ACTOR_B_ID, "confidence")
+    );
+
+    super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        LOUNGE_ID,
+        "unequip-chisel",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        &mut Vec::new(),
+    )
+    .expect("unequip chisel");
+
+    assert!(state.has_item("iron-chisel"));
+    assert_eq!(state.equipped_item("weapon"), None);
+    assert_eq!(
+        state.effective_actor_stat(&pack, ACTOR_A_ID, "confidence"),
+        base_attack
+    );
+}
+
+#[test]
+fn equipping_a_second_weapon_replaces_the_first() {
+    let mut pack = equipment_test_pack();
+    pack.actions.push(ActionDefinition {
+        id: "equip-steel".to_string(),
+        command: "equip-steel".to_string(),
+        target_mode: CommandTargetMode::None,
+        effects: vec![CommandEffect::EquipItem],
+        item_id: "steel-chisel".to_string(),
+        event_text: "{actor_name} readies the steel chisel.".to_string(),
+        ..ActionDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut pack);
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    state.add_item("iron-chisel");
+    state.add_item("steel-chisel");
+    let base_attack = state.actor_stat(ACTOR_A_ID, "confidence");
+
+    super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        LOUNGE_ID,
+        "equip-chisel",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        &mut Vec::new(),
+    )
+    .expect("equip iron chisel");
+    super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        LOUNGE_ID,
+        "equip-steel",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        &mut Vec::new(),
+    )
+    .expect("equip steel chisel");
+
+    assert_eq!(state.equipped_item("weapon"), Some("steel-chisel"));
+    assert!(
+        state.has_item("iron-chisel"),
+        "old weapon returns to inventory"
+    );
+    assert!(!state.has_item("steel-chisel"));
+    assert_eq!(
+        state.effective_actor_stat(&pack, ACTOR_A_ID, "confidence"),
+        base_attack + 4
+    );
+}
+
+#[test]
+fn using_a_potion_consumes_it_and_fires_its_use_hook() {
+    let pack = equipment_test_pack();
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    state.add_item("herb-salve");
+    state.add_item("herb-salve");
+    let stamina_before = state.actor_stat(ACTOR_A_ID, "stamina");
+
+    super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        LOUNGE_ID,
+        "use-salve",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        &mut Vec::new(),
+    )
+    .expect("use salve");
+
+    assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), stamina_before + 2);
+    assert_eq!(state.item_count("herb-salve"), 1);
+}
+
+#[test]
+fn defeating_an_actor_scatters_its_drops_into_the_room() {
+    let mut pack = equipment_test_pack();
+    pack.actions.push(ActionDefinition {
+        id: "attack".to_string(),
+        command: "attack".to_string(),
+        target_mode: CommandTargetMode::Actor,
+        effects: vec![CommandEffect::AttackTarget],
+        event_text: "{actor_name} strikes {target_actor_name}.".to_string(),
+        ..ActionDefinition::default()
+    });
+    let mut golem = test_actor("golem", "dark golem", LOUNGE_ID);
+    golem.attackable = true;
+    golem.initial_stats = BTreeMap::from([("stamina".to_string(), 1)]);
+    golem.drops = BTreeMap::from([("herb-salve".to_string(), 2)]);
+    pack.actors.push(golem);
+    pack.items.push(crate::content::types::ItemDefinition {
+        id: "stone-marker".to_string(),
+        label: "stone marker".to_string(),
+        description: "A flat stone.".to_string(),
+        ..ItemDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+
+    let lines = super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        LOUNGE_ID,
+        "attack",
+        None,
+        Some("golem"),
+        Some("dark golem"),
+        None,
+        None,
+        None,
+        None,
+        &mut Vec::new(),
+    )
+    .unwrap_or_default();
+
+    assert!(state.actor_is_defeated("golem", "stamina"));
+    assert_eq!(
+        state.loose_room_items(LOUNGE_ID),
+        vec![("herb-salve".to_string(), 2)]
+    );
+    let transcript = lines.join("\n");
+    assert!(
+        transcript.contains("Left behind") && transcript.contains("herb salve"),
+        "got: {transcript}"
+    );
 }

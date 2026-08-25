@@ -5,11 +5,22 @@
       "command": "LOOK",
       "label": "Look",
       "group": "observation",
-      "phrases": ["look", "l", "look at", "look room", "look around", "inspect room", "examine", "x"],
+      "phrases": [
+        "look",
+        "l",
+        "look at",
+        "look room",
+        "look around",
+        "inspect room",
+        "examine",
+        "x"
+      ],
       "player_enabled": true,
       "target_mode": "none",
       "outcome_mode": "event",
-      "effects": ["observe_room"],
+      "effects": [
+        "observe_room"
+      ],
       "available": {},
       "ui": {
         "bar": true,
@@ -28,7 +39,9 @@
         "usage": "look [at <thing or person>]",
         "example": "look around",
         "advances_time": false,
-        "input": { "required": false }
+        "input": {
+          "required": false
+        }
       }
     },
     {
@@ -36,11 +49,19 @@
       "command": "MOVE",
       "label": "Move",
       "group": "movement",
-      "phrases": ["go to", "go", "enter", "move to", "move"],
+      "phrases": [
+        "go to",
+        "go",
+        "enter",
+        "move to",
+        "move"
+      ],
       "player_enabled": true,
       "target_mode": "room",
       "outcome_mode": "event",
-      "effects": ["move_actor"],
+      "effects": [
+        "move_actor"
+      ],
       "event_text": "{actor_name} heads to {target_room_title}.",
       "available": {},
       "ui": {
@@ -61,7 +82,9 @@
         "usage": "go <exit>",
         "example": "go north",
         "advances_time": true,
-        "input": { "required": true }
+        "input": {
+          "required": true
+        }
       }
     },
     {
@@ -69,7 +92,12 @@
       "command": "SPEAK",
       "label": "Talk",
       "group": "conversation",
-      "phrases": ["talk to", "talk", "speak to", "speak"],
+      "phrases": [
+        "talk to",
+        "talk",
+        "speak to",
+        "speak"
+      ],
       "player_enabled": true,
       "target_mode": "actor_optional",
       "outcome_mode": "dialogue",
@@ -95,7 +123,9 @@
         "usage": "talk to <person> [message]",
         "example": "talk to the old man what is this place",
         "advances_time": true,
-        "input": { "required": true }
+        "input": {
+          "required": true
+        }
       }
     },
     {
@@ -103,11 +133,19 @@
       "command": "ATTACK",
       "label": "Attack",
       "group": "combat",
-      "phrases": ["attack", "hit", "strike", "fight", "kill"],
+      "phrases": [
+        "attack",
+        "hit",
+        "strike",
+        "fight",
+        "kill"
+      ],
       "player_enabled": true,
       "target_mode": "actor",
       "outcome_mode": "event",
-      "effects": ["attack_target"],
+      "effects": [
+        "attack_target"
+      ],
       "event_text": "{actor_name} strikes {target_actor_name}.",
       "available": {
         "requires_actor_in_room": true
@@ -130,7 +168,9 @@
         "usage": "attack <target>",
         "example": "attack the golem",
         "advances_time": true,
-        "input": { "required": true }
+        "input": {
+          "required": true
+        }
       }
     },
     {
@@ -138,12 +178,20 @@
       "command": "PLACE FLAG",
       "label": "Place Flag",
       "group": "territory",
-      "phrases": ["place flag", "plant flag", "set flag", "mark room", "flag room"],
+      "phrases": [
+        "place flag",
+        "plant flag",
+        "set flag",
+        "mark room",
+        "flag room"
+      ],
       "player_enabled": true,
       "target_mode": "none",
       "outcome_mode": "event",
-      "effects": ["drop_item"],
-      "drop_item": "stone-marker",
+      "effects": [
+        "drop_item"
+      ],
+      "item_id": "stone-marker",
       "event_text": "{actor_name} drives a stone marker into the ground.",
       "available": {
         "requires_room_without_item": "stone-marker"
@@ -158,7 +206,9 @@
         "usage": "place flag",
         "example": "place flag",
         "advances_time": true,
-        "input": { "required": false }
+        "input": {
+          "required": false
+        }
       }
     },
     {
@@ -166,12 +216,20 @@
       "command": "PICK UP FLAG",
       "label": "Pick Up Flag",
       "group": "territory",
-      "phrases": ["pick up flag", "retrieve flag", "take flag", "remove flag", "collect flag"],
+      "phrases": [
+        "pick up flag",
+        "retrieve flag",
+        "take flag",
+        "remove flag",
+        "collect flag"
+      ],
       "player_enabled": true,
       "target_mode": "none",
       "outcome_mode": "event",
-      "effects": ["pick_up_item"],
-      "drop_item": "stone-marker",
+      "effects": [
+        "pick_up_item"
+      ],
+      "item_id": "stone-marker",
       "event_text": "{actor_name} pulls a stone marker from the ground.",
       "available": {
         "requires_room_item": "stone-marker"
@@ -186,7 +244,228 @@
         "usage": "pick up flag",
         "example": "pick up flag",
         "advances_time": true,
-        "input": { "required": false }
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "equip_chisel",
+      "command": "EQUIP CHISEL",
+      "label": "Equip Chisel",
+      "group": "gear",
+      "phrases": [
+        "equip chisel",
+        "wield chisel",
+        "ready chisel",
+        "draw chisel"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "equip_item"
+      ],
+      "item_id": "iron-chisel",
+      "event_text": "{actor_name} wraps a hand around the iron chisel.",
+      "available": {
+        "requires_any": [
+          "iron-chisel"
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 30
+      },
+      "player_command": {
+        "usage": "equip chisel",
+        "example": "equip chisel",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "unequip_chisel",
+      "command": "STOW CHISEL",
+      "label": "Stow Chisel",
+      "group": "gear",
+      "phrases": [
+        "stow chisel",
+        "unequip chisel",
+        "sheathe chisel"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "unequip_item"
+      ],
+      "item_id": "iron-chisel",
+      "event_text": "{actor_name} loosens her grip on the iron chisel.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 31
+      },
+      "player_command": {
+        "usage": "stow chisel",
+        "example": "stow chisel",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "equip_core",
+      "command": "EQUIP CORE",
+      "label": "Equip Warden Core",
+      "group": "gear",
+      "phrases": [
+        "equip core",
+        "hold core",
+        "carry core",
+        "grasp core"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "equip_item"
+      ],
+      "item_id": "warden-core",
+      "event_text": "{actor_name} lifts the warden core; it hums against her palm.",
+      "available": {
+        "requires_any": [
+          "warden-core"
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 32
+      },
+      "player_command": {
+        "usage": "equip core",
+        "example": "equip core",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "unequip_core",
+      "command": "STOW CORE",
+      "label": "Stow Warden Core",
+      "group": "gear",
+      "phrases": [
+        "stow core",
+        "unequip core",
+        "put down core"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "unequip_item"
+      ],
+      "item_id": "warden-core",
+      "event_text": "{actor_name} tucks the warden core away. The humming fades.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 33
+      },
+      "player_command": {
+        "usage": "stow core",
+        "example": "stow core",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "use_salve",
+      "command": "USE SALVE",
+      "label": "Use Herb Salve",
+      "group": "gear",
+      "phrases": [
+        "use salve",
+        "apply salve",
+        "eat salve",
+        "drink salve",
+        "heal"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "use_item"
+      ],
+      "item_id": "herb-salve",
+      "event_text": "{actor_name} rubs the herb salve into her wounds.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 34
+      },
+      "player_command": {
+        "usage": "use salve",
+        "example": "use salve",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "pick_up_core",
+      "command": "PICK UP CORE",
+      "label": "Pick Up Warden Core",
+      "group": "gear",
+      "phrases": [
+        "pick up core",
+        "take core",
+        "retrieve core",
+        "collect core"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "pick_up_item"
+      ],
+      "item_id": "warden-core",
+      "event_text": "{actor_name} lifts the still-warm warden core from the dust.",
+      "available": {
+        "requires_room_item": "warden-core"
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 35
+      },
+      "player_command": {
+        "usage": "pick up core",
+        "example": "pick up core",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
       }
     }
   ]

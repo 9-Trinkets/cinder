@@ -582,11 +582,54 @@ pub(super) fn plan_targetless_command(
     // Packs with a finite per-tag supply refuse placement once that tag's pool
     // is empty.
     if action.has_effect(CommandEffect::DropItem)
-        && !context.planner_state.has_item(&action.drop_item)
+        && !context.planner_state.has_item(&action.item_id)
     {
         planned.events.push(WorldEvent::ActionRejected {
             message: content
-                .render_message(&format!("item.{}.none_held", action.drop_item), &[])
+                .render_message(&format!("item.{}.none_held", action.item_id), &[])
+                .or_else(|| content.render_message("item.none_held", &[]))
+                .unwrap_or_default(),
+        });
+        return false;
+    }
+    if action.has_effect(CommandEffect::EquipItem)
+        && !context.planner_state.has_item(&action.item_id)
+    {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content
+                .render_message(&format!("item.{}.none_held", action.item_id), &[])
+                .or_else(|| content.render_message("item.none_held", &[]))
+                .unwrap_or_default(),
+        });
+        return false;
+    }
+    if action.has_effect(CommandEffect::UnequipItem) {
+        let equipped = content
+            .item(&action.item_id)
+            .and_then(|item| context.planner_state.equipment.get(&item.equip_slot));
+        if equipped.map(String::as_str) != Some(action.item_id.as_str()) {
+            planned.events.push(WorldEvent::ActionRejected {
+                message: content
+                    .render_message(
+                        "equipment.not_equipped",
+                        &[(
+                            "item",
+                            content
+                                .item(&action.item_id)
+                                .map(|item| item.label.as_str())
+                                .unwrap_or_default(),
+                        )],
+                    )
+                    .unwrap_or_default(),
+            });
+            return false;
+        }
+    }
+    if action.has_effect(CommandEffect::UseItem) && !context.planner_state.has_item(&action.item_id)
+    {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content
+                .render_message(&format!("item.{}.none_held", action.item_id), &[])
                 .or_else(|| content.render_message("item.none_held", &[]))
                 .unwrap_or_default(),
         });
@@ -638,7 +681,13 @@ pub(super) fn plan_command_effects(
         CommandEffect::AttackTarget,
     ]) {
         plan_targeted_state_command(content, action, input, context, planned)
-    } else if action.has_any_effect(&[CommandEffect::DropItem, CommandEffect::PickUpItem]) {
+    } else if action.has_any_effect(&[
+        CommandEffect::DropItem,
+        CommandEffect::PickUpItem,
+        CommandEffect::EquipItem,
+        CommandEffect::UnequipItem,
+        CommandEffect::UseItem,
+    ]) {
         plan_targetless_command(content, action, context, planned)
     } else {
         panic!(

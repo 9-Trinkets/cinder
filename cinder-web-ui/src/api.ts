@@ -188,6 +188,7 @@ export type ActClosureSection =
 export interface InventoryItem {
   label: string
   count: number
+  equipped?: boolean
 }
 
 export interface ConsumableInfo {

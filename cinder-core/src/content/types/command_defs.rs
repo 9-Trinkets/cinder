@@ -30,6 +30,15 @@ pub enum CommandEffect {
     DropItem,
     PickUpItem,
     AttackTarget,
+    /// Moves one unit of the action's item from the player's inventory into
+    /// its equipment slot (replacing anything there, which returns to the
+    /// inventory) and applies its stat bonuses via effective stat reads.
+    EquipItem,
+    /// Returns the action's item from its equipment slot to the inventory.
+    UnequipItem,
+    /// Consumes one unit of the action's item from the inventory and fires
+    /// the item's `use_hook` content rule (e.g. a potion healing hp).
+    UseItem,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]

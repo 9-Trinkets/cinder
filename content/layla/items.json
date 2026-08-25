@@ -2,6 +2,31 @@
   {
     "id": "stone-marker",
     "label": "stone marker",
+    "kind": "misc",
     "description": "A small stone marker sturdy enough to drive into the dungeon floor and retrieve later."
+  },
+  {
+    "id": "iron-chisel",
+    "label": "iron chisel",
+    "kind": "weapon",
+    "equip_slot": "weapon",
+    "stat_bonuses": { "strength": 2 },
+    "description": "A miner's chisel with a worn leather grip. It bites into stone like it remembers being made for it."
+  },
+  {
+    "id": "herb-salve",
+    "label": "herb salve",
+    "kind": "potion",
+    "use_hook": "item.salve_used",
+    "description": "A fragrant green paste in a clay pot. Village herbalists swear it knits wounds closed."
+  },
+  {
+    "id": "warden-core",
+    "label": "warden core",
+    "kind": "trinket",
+    "equip_slot": "trinket",
+    "stat_bonuses": { "strength": 1, "defense": 1 },
+    "equip_hook": "item.core_equipped",
+    "description": "The heart of the Warden, a fist-sized stone still warm. While you carry it, the other golems bow to your will."
   }
 ]

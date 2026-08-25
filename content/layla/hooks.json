@@ -1,4 +1,54 @@
 {
+  "item.core_equipped": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "convert_allies_by_tag",
+            "tag": "golem",
+            "follows_player": true,
+            "messages": [
+              "conversion.core"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "item.salve_used": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "hp",
+            "delta": 4
+          }
+        }
+      ]
+    }
+  },
   "actor.encircled": {
     "rule": "effect_table",
     "rule_config": {

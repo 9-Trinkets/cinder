@@ -140,6 +140,7 @@ pub fn load_pack_from_dir_with_locale(
             "items",
         )?;
     }
+    validate_items(&items, &settings, &stats.actor, &hooks)?;
     let variables: BTreeMap<String, crate::engine::state::VariableDeclaration> =
         read_optional_json::<BTreeMap<String, crate::engine::state::VariableDeclaration>>(
             path,
@@ -244,6 +245,14 @@ pub fn load_pack_from_dir_with_locale(
                 actor.id, actor.room_id
             )
             .into());
+        }
+        for item_id in actor.drops.keys() {
+            require_known_id(
+                item_id,
+                &item_ids,
+                &format!("actor '{}' drops '{item_id}'", actor.id),
+                "items",
+            )?;
         }
     }
     for actor_id in movement.actors.keys() {
@@ -500,7 +509,7 @@ pub fn load_pack_from_dir_with_locale(
     })
 }
 
-use crate::content::loader_validation::{require_known_id, validate_actions};
+use crate::content::loader_validation::{require_known_id, validate_actions, validate_items};
 
 pub fn available_locales(path: &Path) -> Result<Vec<LocaleOption>, Box<dyn Error>> {
     let locales_dir = path.join("locales");

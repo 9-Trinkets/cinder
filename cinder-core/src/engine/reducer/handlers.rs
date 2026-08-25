@@ -82,12 +82,13 @@ pub(super) fn handle_hostile_strike(
         return;
     }
     let damage = (state.actor_stat(actor_id, &combat.attack_stat_id)
-        - state.actor_stat(&combat.player_actor_id, &combat.defense_stat_id))
+        - state.effective_actor_stat(content, &combat.player_actor_id, &combat.defense_stat_id))
     .max(combat.minimum_damage);
     state
         .adjust_actor_stat(&combat.player_actor_id, &combat.health_stat_id, -damage)
         .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
-    let remaining = state.actor_stat(&combat.player_actor_id, &combat.health_stat_id);
+    let remaining =
+        state.effective_actor_stat(content, &combat.player_actor_id, &combat.health_stat_id);
     let actor_name = actor_display_name(content, actor_id);
     if let Some(line) = content.render_message(
         "combat.hostile_strike",

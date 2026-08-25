@@ -29,6 +29,9 @@
     "crt_bez": "#0b0d12"
   },
   "starting_items": {
-    "stone-marker": 5
-  }
+    "stone-marker": 5,
+    "iron-chisel": 1,
+    "herb-salve": 2
+  },
+  "equipment_slots": ["weapon", "trinket"]
 }

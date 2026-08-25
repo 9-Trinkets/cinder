@@ -1,6 +1,6 @@
 use crate::content::types::{
     ActionDefinition, ActionItemStorageTarget, CommandEffect, CommandInputMode, CommandTargetMode,
-    ContentPack, ConversionTrigger, ItemStorageTarget,
+    ContentPack, ConversionTrigger, ItemDefinition, ItemStorageTarget,
 };
 use crate::engine::events::{ObservationMode, WorldEvent};
 use crate::engine::hook_ids;
@@ -232,22 +232,49 @@ pub(super) fn apply_actor_command_realization_effects(
             | CommandEffect::RememberWithTargetActor
             | CommandEffect::FollowActor => {}
             CommandEffect::DropItem => {
-                if command.drop_item.is_empty() {
+                if command.item_id.is_empty() {
                     return false;
                 }
-                if !state.has_item(&command.drop_item) {
+                if !state.has_item(&command.item_id) {
                     return false;
                 }
             }
             CommandEffect::PickUpItem => {
-                if command.drop_item.is_empty() {
+                if command.item_id.is_empty() {
                     return false;
                 }
                 if !state.has_item_in_storage(
-                    &command.drop_item,
+                    &command.item_id,
                     ItemStorageTarget::CurrentRoom,
                     command_context.room_id,
                 ) {
+                    return false;
+                }
+            }
+            CommandEffect::EquipItem => {
+                let Some(item) = content.item(&command.item_id) else {
+                    return false;
+                };
+                if !item.is_equippable() || !state.has_item(&command.item_id) {
+                    return false;
+                }
+                if !content.settings.equipment_slots.contains(&item.equip_slot) {
+                    return false;
+                }
+            }
+            CommandEffect::UnequipItem => {
+                let Some(item) = content.item(&command.item_id) else {
+                    return false;
+                };
+                if state.equipped_item(&item.equip_slot) != Some(command.item_id.as_str()) {
+                    return false;
+                }
+            }
+            CommandEffect::UseItem => {
+                let Some(item) = content.item(&command.item_id) else {
+                    return false;
+                };
+                if item.use_hook.is_empty() || !state.has_item(&command.item_id) {
                     return false;
                 }
             }
@@ -542,20 +569,29 @@ pub(super) fn apply_new_command_effects(
 ) {
     if command.has_effect(CommandEffect::DropItem) {
         let room_id = command_context.room_id.to_string();
-        if state.remove_item(&command.drop_item) {
-            state.add_item_to_storage(&command.drop_item, ItemStorageTarget::CurrentRoom, &room_id);
-            run_encirclement_rules(state, content, &command.drop_item, lines);
+        if state.remove_item(&command.item_id) {
+            state.add_item_to_storage(&command.item_id, ItemStorageTarget::CurrentRoom, &room_id);
+            run_encirclement_rules(state, content, &command.item_id, lines);
         }
     }
     if command.has_effect(CommandEffect::PickUpItem) {
         let room_id = command_context.room_id.to_string();
         if state.remove_item_from_storage(
-            &command.drop_item,
+            &command.item_id,
             ItemStorageTarget::CurrentRoom,
             &room_id,
         ) {
-            state.add_item(&command.drop_item);
+            state.add_item(&command.item_id);
         }
+    }
+    if command.has_effect(CommandEffect::EquipItem) {
+        apply_equip(state, content, command, lines);
+    }
+    if command.has_effect(CommandEffect::UnequipItem) {
+        apply_unequip(state, content, command, lines);
+    }
+    if command.has_effect(CommandEffect::UseItem) {
+        apply_use_item(state, content, command, lines);
     }
     if command.has_effect(CommandEffect::AttackTarget) {
         let Some(target_actor_id) = command_context.target_actor_id else {
@@ -567,8 +603,10 @@ pub(super) fn apply_new_command_effects(
         if state.stance(target_actor_id) == ActorStance::Allied {
             return;
         }
-        let player_attack = state.actor_stat(&combat.player_actor_id, &combat.attack_stat_id);
-        let target_defense = state.actor_stat(target_actor_id, &combat.defense_stat_id);
+        let player_attack =
+            state.effective_actor_stat(content, &combat.player_actor_id, &combat.attack_stat_id);
+        let target_defense =
+            state.effective_actor_stat(content, target_actor_id, &combat.defense_stat_id);
         let base_damage = (player_attack - target_defense).max(combat.minimum_damage);
         let allied_participants = room_allies(state, content, command_context.room_id);
         let ally_damage = allied_participants
@@ -612,6 +650,13 @@ pub(super) fn apply_new_command_effects(
             {
                 lines.push(line);
             }
+            spawn_defeat_drops(
+                state,
+                content,
+                target_actor_id,
+                command_context.room_id,
+                lines,
+            );
             state.set_relationship(target_actor_id, ActorRelationship::default());
             return;
         }
@@ -647,6 +692,50 @@ pub(super) fn actor_display_name(content: &ContentPack, actor_id: &str) -> Strin
         .unwrap_or_else(|| actor_id.to_string())
 }
 
+/// Scatters a defeated actor's declared drops into its room as loose items the
+/// player can pick up. Narrates one line listing what appeared.
+pub(super) fn spawn_defeat_drops(
+    state: &mut WorldState,
+    content: &ContentPack,
+    actor_id: &str,
+    room_id: &str,
+    lines: &mut Vec<String>,
+) {
+    let Some(actor) = content.actor(actor_id) else {
+        return;
+    };
+    if actor.drops.is_empty() {
+        return;
+    }
+    let mut dropped_labels = Vec::new();
+    for (item_id, count) in &actor.drops {
+        for _ in 0..*count {
+            state.add_item_to_storage(item_id, ItemStorageTarget::CurrentRoom, room_id);
+        }
+        if let Some(item) = content.item(item_id) {
+            dropped_labels.push(if *count > 1 {
+                format!("{} x{count}", item.label)
+            } else {
+                item.label.clone()
+            });
+        }
+    }
+    if dropped_labels.is_empty() {
+        return;
+    }
+    let actor_name = actor_display_name(content, actor_id);
+    if let Some(line) = content.render_message(
+        "combat.defeat_drop",
+        &[
+            ("actor", actor_name.as_str()),
+            ("items", dropped_labels.join(", ").as_str()),
+            ("room", room_id),
+        ],
+    ) {
+        lines.push(line);
+    }
+}
+
 fn adjust_actor_stat(state: &mut WorldState, actor_id: &str, stat: &str, delta: i32) -> i32 {
     state
         .adjust_actor_stat(actor_id, stat, delta)
@@ -665,7 +754,7 @@ pub(super) fn defeat_player_if_dead(
         return;
     }
     let combat = &content.settings.combat;
-    if state.actor_stat(&combat.player_actor_id, &combat.health_stat_id) > 0 {
+    if state.effective_actor_stat(content, &combat.player_actor_id, &combat.health_stat_id) > 0 {
         return;
     }
     lines.push(super::observation::render_story_text(
@@ -694,6 +783,144 @@ fn room_allies(state: &WorldState, content: &ContentPack, room_id: &str) -> Vec<
                 ) == room_id
         })
         .collect()
+}
+
+/// Equips one unit of the action's item: takes it from the inventory into its
+/// slot, returning whatever occupied the slot to the inventory. Bonuses are
+/// never written into base stats — they live in effective reads.
+fn apply_equip(
+    state: &mut WorldState,
+    content: &ContentPack,
+    command: &ActionDefinition,
+    lines: &mut Vec<String>,
+) {
+    let Some(item) = content.item(&command.item_id) else {
+        return;
+    };
+    if !item.is_equippable() || !state.has_item(&command.item_id) {
+        return;
+    }
+    let previous = state.equipment.get(&item.equip_slot).cloned();
+    if !state.remove_item(&command.item_id) {
+        return;
+    }
+    state
+        .equipment
+        .insert(item.equip_slot.clone(), command.item_id.clone());
+    if let Some(old_item_id) = previous.filter(|old| old.as_str() != command.item_id) {
+        state.add_item(&old_item_id);
+    }
+    if !item.equip_hook.is_empty() {
+        let player_id = content.settings.combat.player_actor_id.clone();
+        if let Err(error) = apply_narrating_world_hook_effects(
+            state,
+            content,
+            &item.equip_hook,
+            json!({
+                "actor_id": player_id,
+                "actor_name": actor_display_name(content, &player_id),
+                "item_id": item.id,
+                "item_label": item.label,
+            }),
+            lines,
+        ) {
+            eprintln!("[cinder] hook warning ({}): {error}", item.equip_hook);
+        }
+    }
+    if let Some(line) = render_equipment_message(content, state, "equipment.equipped", item) {
+        lines.push(line);
+    }
+}
+
+/// Returns the equipped item named by the action back to the inventory.
+fn apply_unequip(
+    state: &mut WorldState,
+    content: &ContentPack,
+    command: &ActionDefinition,
+    lines: &mut Vec<String>,
+) {
+    let Some(item) = content.item(&command.item_id) else {
+        return;
+    };
+    if state.equipment.get(&item.equip_slot).map(String::as_str) != Some(command.item_id.as_str()) {
+        return;
+    }
+    state.equipment.remove(&item.equip_slot);
+    state.add_item(&command.item_id);
+    if let Some(line) = render_equipment_message(content, state, "equipment.unequipped", item) {
+        lines.push(line);
+    }
+}
+
+/// Consumes one unit of the item and fires its `use_hook` content rule so the
+/// pack decides what using it does (e.g. heal hp via AdjustActorStat).
+fn apply_use_item(
+    state: &mut WorldState,
+    content: &ContentPack,
+    command: &ActionDefinition,
+    lines: &mut Vec<String>,
+) {
+    let Some(item) = content.item(&command.item_id) else {
+        return;
+    };
+    if item.use_hook.is_empty() || !state.remove_item(&command.item_id) {
+        return;
+    }
+    let player_id = content.settings.combat.player_actor_id.clone();
+    if let Err(error) = apply_narrating_world_hook_effects(
+        state,
+        content,
+        &item.use_hook,
+        json!({
+            "actor_id": player_id,
+            "actor_name": actor_display_name(content, &player_id),
+            "item_id": item.id,
+            "item_label": item.label,
+        }),
+        lines,
+    ) {
+        eprintln!("[cinder] hook warning ({}): {error}", item.use_hook);
+    }
+    if let Some(line) = content.render_message("item.used", &[("item", item.label.as_str())]) {
+        lines.push(line);
+    }
+}
+
+/// Renders an equipment narration line with the item label and the effective
+/// stat values the player now has.
+fn render_equipment_message(
+    content: &ContentPack,
+    state: &WorldState,
+    key: &str,
+    item: &ItemDefinition,
+) -> Option<String> {
+    let combat = &content.settings.combat;
+    let mut bonuses = item
+        .stat_bonuses
+        .iter()
+        .map(|(stat_id, delta)| {
+            (
+                stat_id.clone(),
+                format!(
+                    "{delta:+} ({})",
+                    state.effective_actor_stat(content, &combat.player_actor_id, stat_id)
+                ),
+            )
+        })
+        .collect::<Vec<_>>();
+    bonuses.sort();
+    let bonus_text = bonuses
+        .iter()
+        .map(|(stat_id, text)| format!("{stat_id} {text}"))
+        .collect::<Vec<_>>()
+        .join(", ");
+    content.render_message(
+        key,
+        &[
+            ("item", item.label.as_str()),
+            ("bonuses", bonus_text.as_str()),
+        ],
+    )
 }
 
 /// Generic encirclement scan: after an item is dropped into a room, find any

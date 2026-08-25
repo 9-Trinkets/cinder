@@ -184,10 +184,10 @@ pub struct ActionDefinition {
     pub consumable_kind: Option<ConsumableKind>,
     #[serde(default)]
     pub effects: Vec<CommandEffect>,
-    /// Item this action drops into or picks up from the current room, when the
-    /// action has the `DropItem`/`PickUpItem` effects.
+    /// Item this action operates on, when the action has the `DropItem`,
+    /// `PickUpItem`, `EquipItem`, `UnequipItem`, or `UseItem` effects.
     #[serde(default)]
-    pub drop_item: String,
+    pub item_id: String,
     #[serde(default)]
     pub event_text: String,
     #[serde(default)]

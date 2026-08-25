@@ -5,8 +5,8 @@ pub use super::text_defs::{
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use std::collections::BTreeMap;
 use std::collections::HashMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 mod theme;
 pub use theme::ThemeDefinition;
@@ -79,6 +79,11 @@ pub struct ContentSettingsDefinition {
     /// picked back up.
     #[serde(default)]
     pub starting_items: BTreeMap<String, u32>,
+    /// Fixed equipment slot list (e.g. "weapon", "armor", "trinket"). Each
+    /// slot holds at most one equipped item; equippable items name one of
+    /// these slots and their bonuses feed effective stat reads.
+    #[serde(default)]
+    pub equipment_slots: BTreeSet<String>,
     #[serde(default)]
     pub theme: ThemeDefinition,
 }
@@ -218,6 +223,7 @@ impl Default for ContentSettingsDefinition {
             autonomous_hostility_mode: AutonomousHostilityMode::Rules,
             combat: CombatSettingsDefinition::default(),
             starting_items: BTreeMap::new(),
+            equipment_slots: BTreeSet::new(),
             theme: ThemeDefinition::default(),
         }
     }
@@ -566,4 +572,4 @@ mod content_pack;
 pub use content_pack::{ContentPack, RoomConsumableRef};
 
 mod item_defs;
-pub use item_defs::ItemDefinition;
+pub use item_defs::{ItemDefinition, ItemKind};
