@@ -79,6 +79,11 @@ pub struct OverflowAction {
     pub label: String,
     pub group: String,
     pub usage: String,
+    /// Panel this action opens (e.g. the speak/talk picker), if any.
+    #[serde(default)]
+    pub panel: String,
+    #[serde(default)]
+    pub panel_config: Option<PanelConfigData>,
 }
 
 #[derive(Clone, Serialize)]
@@ -335,6 +340,13 @@ pub(super) fn build_ui_snapshot(
                     label,
                     group: a.ui.group.clone(),
                     usage,
+                    panel: a.ui.panel.clone().unwrap_or_default(),
+                    panel_config: a.ui.panel_config.as_ref().map(|pc| PanelConfigData {
+                        title: pc.title.clone(),
+                        prompt: pc.prompt.clone(),
+                        data_source: pc.data_source.clone(),
+                        on_select: pc.on_select.clone(),
+                    }),
                 }
             })
             .collect()
@@ -361,7 +373,7 @@ pub(super) fn build_ui_snapshot(
                     .map(|opt| {
                         let actor_id = opt.id.strip_prefix("actor:").unwrap_or(&opt.id);
                         PanelOptionData {
-                            id: opt.id.clone(),
+                            id: actor_id.to_string(),
                             title: opt.label.clone(),
                             subtitle: None,
                             command: Some(format!("{} {}", phrase, actor_id)),
@@ -611,6 +623,8 @@ fn append_stage_menu_overflow_actions(
                 label: option.title.clone(),
                 group: "support".to_string(),
                 usage: String::new(),
+                panel: String::new(),
+                panel_config: None,
             });
         }
     }

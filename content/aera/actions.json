@@ -1020,7 +1020,7 @@
       "id": "follow",
       "label": "Follow",
       "group": "social",
-      "player_enabled": true,
+      "player_enabled": false,
       "target_mode": "none",
       "ui": {
         "bar": true,

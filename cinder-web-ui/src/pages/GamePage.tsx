@@ -78,7 +78,10 @@ export default function GamePage() {
   const activeMenuTitle = activeMenu?.prompt?.trim() || uiSnapshot?.ui_text.menu_option_list_title || 'Choose'
 
   function findPanelConfig(panelName: string): api.PanelConfigData | undefined {
-    return uiSnapshot?.action_bar_actions.find(a => a.panel === panelName)?.panel_config
+    return (
+      uiSnapshot?.action_bar_actions.find(a => a.panel === panelName)?.panel_config ??
+      uiSnapshot?.overflow_actions.find(a => a.panel === panelName)?.panel_config
+    )
   }
 
   function handleSelectPanelOption(panelName: string, option: api.PanelOptionData) {

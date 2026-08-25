@@ -150,6 +150,8 @@ export interface OverflowAction {
   label: string
   group: string
   usage: string
+  panel?: string
+  panel_config?: PanelConfigData
 }
 
 export interface LookOptionData {
