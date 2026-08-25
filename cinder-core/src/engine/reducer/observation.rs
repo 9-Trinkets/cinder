@@ -113,6 +113,31 @@ pub(super) fn render_room_observation(
             )],
         )
     };
+    let items = {
+        let loose = state.loose_room_items(room_id);
+        if loose.is_empty() {
+            String::new()
+        } else {
+            let labels = loose
+                .iter()
+                .map(|(id, count)| {
+                    let label = content
+                        .item(id)
+                        .map(|item| item.label.as_str())
+                        .unwrap_or(id);
+                    if *count > 1 {
+                        format!("{label} ×{count}")
+                    } else {
+                        label.to_string()
+                    }
+                })
+                .collect::<Vec<_>>();
+            content.render_template(
+                &content.presentation.presentation_text.loose_items,
+                &[("items", &labels.join(", "))],
+            )
+        }
+    };
     let objective = render_objective(content, state);
     Some(content.render_template(
         &content.presentation.presentation_text.room_observation,
@@ -120,6 +145,7 @@ pub(super) fn render_room_observation(
             ("room_title", room.title.as_str()),
             ("body", body.as_str()),
             ("features", features.as_str()),
+            ("items", items.as_str()),
             ("people", people.as_str()),
             ("exits", exits.as_str()),
             ("objective", objective.as_str()),

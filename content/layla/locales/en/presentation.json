@@ -9,7 +9,7 @@
     "dialogue_unavailable": "{actor_name} doesn't answer right now. Dialogue error: {error}"
   },
   "presentation_text": {
-    "room_observation": "== {room_title} ==\n{body}{features}{people}{exits}",
+    "room_observation": "== {room_title} ==\n{body}{features}{items}{people}{exits}",
     "objective": "\n\nObjective:\n{objective}",
     "features": "\n\nYou notice: {features}.",
     "people": "\n\nHere with you: {people}.",
@@ -21,6 +21,7 @@
     "actor_arrived": "{actor_name} arrives from the {room_title}.",
     "act_ended": "The dark closes in around you, and the board holds its breath.",
     "ally_suffix": " (ally)",
-    "hostile_suffix": " (enemy)"
+    "hostile_suffix": " (enemy)",
+    "loose_items": "\n\nOn the ground: {items}."
   }
 }

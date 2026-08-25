@@ -178,6 +178,10 @@ pub struct PresentationTextDefinition {
     pub room_observation: String,
     pub objective: String,
     pub features: String,
+    /// Line listing loose items lying in the room (e.g. dropped flags). Rendered
+    /// into the `{items}` slot of `room_observation` when any are present.
+    #[serde(default)]
+    pub loose_items: String,
     pub people: String,
     pub exits: String,
     pub feature_consumables: String,

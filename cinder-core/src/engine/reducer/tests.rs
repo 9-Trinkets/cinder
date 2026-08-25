@@ -1060,6 +1060,47 @@ fn room_observation_annotates_present_actors_by_stance() {
 }
 
 #[test]
+fn room_observation_lists_loose_items_on_the_ground() {
+    let mut pack = reducer_test_pack();
+    pack.presentation.presentation_text.room_observation =
+        "{room_title} {body} {items} {people}".to_string();
+    pack.presentation.presentation_text.loose_items = "On the ground: {items}.".to_string();
+    pack.presentation.presentation_text.people = "Here: {people}.".to_string();
+    pack.items.push(ItemDefinition {
+        id: "stone-marker".to_string(),
+        label: "stone marker".to_string(),
+        description: "A marker.".to_string(),
+        ..ItemDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    state.add_item_to_storage("stone-marker", ItemStorageTarget::CurrentRoom, LOUNGE_ID);
+
+    let text = super::observation::render_room_observation(
+        &pack,
+        &state,
+        LOUNGE_ID,
+        crate::engine::events::ObservationMode::Summary,
+    )
+    .expect("room observation");
+
+    assert!(text.contains("On the ground: stone marker."), "got: {text}");
+
+    // A room without loose items omits the line entirely.
+    state.current_room_id = KITCHEN_ID.to_string();
+    let empty = super::observation::render_room_observation(
+        &pack,
+        &state,
+        KITCHEN_ID,
+        crate::engine::events::ObservationMode::Summary,
+    )
+    .expect("kitchen observation");
+    assert!(!empty.contains("On the ground"), "got: {empty}");
+}
+
+#[test]
 fn drop_and_pick_up_item_move_it_between_inventory_and_room() {
     let mut pack = reducer_test_pack();
     pack.actions.push(ActionDefinition {
