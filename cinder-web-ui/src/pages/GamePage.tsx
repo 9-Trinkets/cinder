@@ -145,15 +145,18 @@ export default function GamePage() {
     scrollBehaviorRef.current = behavior
   }
 
-  function appendLines(texts: string[], behavior: ScrollBehavior = 'auto') {
-    if (texts.length === 0) return
+  function appendLines(
+    items: Array<{ text: string; kind?: api.LineKind }>,
+    behavior: ScrollBehavior = 'auto',
+  ) {
+    if (items.length === 0) return
     if (behavior === 'smooth') {
       autoScrollRef.current = true
     }
     queueScroll(behavior)
     setLines(prev => [
       ...prev,
-      ...texts.map(text => ({ text, key: nextKey.current++ })),
+      ...items.map(item => ({ text: item.text, kind: item.kind, key: nextKey.current++ })),
     ])
   }
 
@@ -182,7 +185,7 @@ export default function GamePage() {
 
     const titleEntries: Line[] = []
     if (sessionState?.title) {
-      titleEntries.push({ text: `== ${sessionState.title} ==`, key: nextKey.current++ })
+      titleEntries.push({ text: `== ${sessionState.title} ==`, kind: 'heading', key: nextKey.current++ })
     }
     setLines(titleEntries)
 
@@ -199,7 +202,7 @@ export default function GamePage() {
         if (transcript.length > 0) {
           setLines([
             ...titleEntries,
-            ...transcript.map(t => ({ text: t, key: nextKey.current++ })),
+            ...transcript.map(t => ({ text: t.text, kind: t.kind, key: nextKey.current++ })),
           ])
           setInitializing(false)
           return false
@@ -257,15 +260,17 @@ export default function GamePage() {
   }
 
   function applyCommandResponse(res: api.CommandResponse, behavior: ScrollBehavior = 'auto') {
-    if (res.text) {
-      // Split on blank lines like the server does for the stored transcript,
-      // so each narrative block is its own line (and gets its own styling
-      // rather than the whole turn inheriting one color).
+    // Prefer the engine's typed narrative lines; fall back to splitting the
+    // raw text into narration blocks for older responses without line kinds.
+    const typed = (res.lines ?? []).filter(l => l.text.trim())
+    if (typed.length > 0) {
+      appendLines(typed.map(l => ({ text: l.text, kind: l.kind })), behavior)
+    } else if (res.text) {
       const chunks = res.text
         .split(/\n\n+/)
         .map(chunk => chunk.trim())
         .filter(Boolean)
-      appendLines(chunks.length ? chunks : [res.text], behavior)
+      appendLines(chunks.length ? chunks.map(text => ({ text })) : [{ text: res.text }], behavior)
     }
     if (res.ui_snapshot) {
       channelSurfingOnly.current = res.ui_snapshot.channel_surfing_only
@@ -297,7 +302,7 @@ export default function GamePage() {
     setCommandPending(true)
     lastInteractionAtRef.current = Date.now()
     autoScrollRef.current = true
-    const cmdLine: Line = { text: `> ${displayCmd ?? cmd}`, key: nextKey.current++ }
+    const cmdLine: Line = { text: `> ${displayCmd ?? cmd}`, kind: 'player', key: nextKey.current++ }
     queueScroll('smooth')
     setLines(prev => [...prev, cmdLine])
     try {
@@ -386,7 +391,7 @@ export default function GamePage() {
 
   function closeMovie() {
     if (movie && movie.narrative_lines.length > 0) {
-      appendLines(movie.narrative_lines, 'auto')
+      appendLines(movie.narrative_lines.map(text => ({ text })), 'auto')
     }
     setMovie(null)
     setMovieFrame(0)

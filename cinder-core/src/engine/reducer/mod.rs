@@ -19,6 +19,7 @@ pub(crate) use self::observation::render_actor_speech_line;
 
 use crate::content::types::ContentPack;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
+use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{GamePhase, WorldState};
 use crate::engine::turn_policies::apply_command_bundle_progress_effects;
 use serde::{Deserialize, Serialize};
@@ -26,7 +27,7 @@ use std::collections::VecDeque;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ReducerOutput {
-    pub lines: Vec<String>,
+    pub lines: NarrativeLines,
     pub phase: GamePhase,
 }
 
@@ -35,7 +36,7 @@ pub fn apply_events(
     content: &ContentPack,
     events: &[TimestampedWorldEvent],
 ) -> ReducerOutput {
-    let mut lines = Vec::new();
+    let mut lines = NarrativeLines::default();
     // Queue-based so handlers can spawn follow-up events (e.g. relationship
     // updates triggered by command effects) that are applied in the same pass.
     let mut pending: VecDeque<TimestampedWorldEvent> = events.iter().cloned().collect();

@@ -850,6 +850,11 @@ fn format_clock_time(total_minutes: u32) -> String {
 pub struct TurnOutcome {
     pub text: String,
     pub phase: GamePhase,
+    /// The narrative lines that produced `text`, each tagged with how it
+    /// should be styled. Present so the server/client never have to parse
+    /// styling hints out of the prose.
+    #[serde(default)]
+    pub lines: Vec<crate::engine::narrative::NarrativeLine>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

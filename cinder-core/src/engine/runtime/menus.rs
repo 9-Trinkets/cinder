@@ -476,8 +476,9 @@ impl CinderRuntime {
         refresh_conversation_summaries(self.content.as_ref(), self.dialogue.as_ref(), &mut state)
             .map_err(std::io::Error::other)?;
         Ok(TurnOutcome {
-            text: reduced.lines.join("\n\n"),
+            text: reduced.lines.to_text(),
             phase: reduced.phase,
+            lines: reduced.lines.0,
         })
     }
 
@@ -537,11 +538,13 @@ impl CinderRuntime {
         let reduced = apply_events(&mut state, self.content.as_ref(), &events);
         refresh_conversation_summaries(self.content.as_ref(), self.dialogue.as_ref(), &mut state)
             .map_err(std::io::Error::other)?;
-        let mut lines = vec![feedback_line];
-        lines.extend(reduced.lines);
+        let mut lines = crate::engine::narrative::NarrativeLines::default();
+        lines.narration(feedback_line);
+        lines.extend(reduced.lines.0);
         Ok(TurnOutcome {
-            text: lines.join("\n\n"),
+            text: lines.to_text(),
             phase: reduced.phase,
+            lines: lines.0,
         })
     }
 }

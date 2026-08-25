@@ -5,6 +5,7 @@ use crate::content::types::{
 use crate::engine::events::{ObservationMode, WorldEvent};
 use crate::engine::hook_ids;
 use crate::engine::hooks::{apply_narrating_world_hook_effects, apply_world_hook_effects};
+use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{
     ActorRelationship, ActorStance, ConversationMemoryKind, ConversationMemoryLine, WorldState,
 };
@@ -61,8 +62,8 @@ pub(super) fn handle_actor_command_used(
     consumable_id: Option<&str>,
     freeform_text: Option<&str>,
     outbox: &mut Vec<WorldEvent>,
-) -> Option<Vec<String>> {
-    let mut lines = Vec::new();
+) -> Option<NarrativeLines> {
+    let mut lines = NarrativeLines::default();
     let previous_current_room_id = state.current_room_id.clone();
     let command_context = ActorCommandContext {
         actor_id,
@@ -93,7 +94,7 @@ pub(super) fn handle_actor_command_used(
     // Narrate the actor's own action first; its world consequences (e.g. an
     // encirclement conversion triggered by placing a flag) follow as responses.
     if !command.has_effect(CommandEffect::MoveActor) && state.current_room_id == room_id {
-        lines.push(command_text.clone());
+        lines.narration(command_text.clone());
     }
     apply_new_command_effects(
         state,
@@ -129,10 +130,10 @@ pub(super) fn handle_actor_command_used(
         } else if previous_current_room_id == room_id
             || state.followed_actor_id.as_deref() == Some(actor_id)
         {
-            lines.push(command_text);
+            lines.narration(command_text);
         }
     }
-    lines.extend(advance_objective_for_signal(state, content, "command_used"));
+    lines.extend_narration(advance_objective_for_signal(state, content, "command_used"));
     Some(lines)
 }
 
@@ -461,7 +462,7 @@ pub(super) fn apply_actor_move_transition(
     state: &mut WorldState,
     content: &ContentPack,
     movement: ActorMoveTransitionContext<'_>,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     apply_world_hook_effects(
         state,
@@ -501,12 +502,12 @@ pub(super) fn apply_actor_move_transition(
         .unwrap_or(movement.actor_id);
     if let Some(command_text) = movement.command_text {
         if state.current_room_id == movement.from_room_id || is_followed_actor {
-            lines.push(command_text.to_string());
+            lines.narration(command_text.to_string());
         } else if !is_followed_actor
             && state.current_room_id == movement.to_room_id
             && let Some(origin) = content.room(movement.from_room_id)
         {
-            lines.push(content.render_template(
+            lines.narration(content.render_template(
                 &content.presentation.presentation_text.actor_arrived,
                 &[
                     ("actor_name", actor_name),
@@ -516,7 +517,7 @@ pub(super) fn apply_actor_move_transition(
         }
     } else if !is_followed_actor && state.current_room_id == movement.from_room_id {
         if let Some(destination) = content.room(movement.to_room_id) {
-            lines.push(content.render_template(
+            lines.narration(content.render_template(
                 &content.presentation.presentation_text.actor_departed,
                 &[
                     ("actor_name", actor_name),
@@ -528,7 +529,7 @@ pub(super) fn apply_actor_move_transition(
         && state.current_room_id == movement.to_room_id
         && let Some(origin) = content.room(movement.from_room_id)
     {
-        lines.push(content.render_template(
+        lines.narration(content.render_template(
             &content.presentation.presentation_text.actor_arrived,
             &[
                 ("actor_name", actor_name),
@@ -549,10 +550,10 @@ pub(super) fn apply_actor_move_transition(
             movement.to_room_id,
             ObservationMode::Summary,
         ) {
-            lines.push(observation);
+            lines.extend(observation.0);
         }
     }
-    lines.extend(advance_objective_for_signal(
+    lines.extend_narration(advance_objective_for_signal(
         state,
         content,
         &format!(
@@ -560,7 +561,7 @@ pub(super) fn apply_actor_move_transition(
             movement.actor_id, movement.to_room_id
         ),
     ));
-    lines.extend(advance_house_progress_objectives(state, content));
+    lines.extend_narration(advance_house_progress_objectives(state, content));
 }
 
 pub(super) fn apply_new_command_effects(
@@ -568,7 +569,7 @@ pub(super) fn apply_new_command_effects(
     content: &ContentPack,
     command: &ActionDefinition,
     command_context: &ActorCommandContext<'_>,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
     _outbox: &mut Vec<WorldEvent>,
 ) {
     if command.has_effect(CommandEffect::DropItem) {
@@ -633,7 +634,7 @@ pub(super) fn apply_new_command_effects(
                 ("remaining", remaining.to_string().as_str()),
             ],
         ) {
-            lines.push(line);
+            lines.narration(line);
         }
         for ally_id in &allied_participants {
             let ally_damage = state.actor_stat(ally_id, &combat.attack_stat_id).max(0);
@@ -645,14 +646,14 @@ pub(super) fn apply_new_command_effects(
                     ("damage", ally_damage.to_string().as_str()),
                 ],
             ) {
-                lines.push(line);
+                lines.narration(line);
             }
         }
         if remaining <= 0 {
             if let Some(line) =
                 content.render_message("combat.actor_defeated", &[("actor", target_name.as_str())])
             {
-                lines.push(line);
+                lines.narration(line);
             }
             spawn_defeat_drops(
                 state,
@@ -683,7 +684,7 @@ pub(super) fn apply_new_command_effects(
                 "combat.actor_wakes_hostile",
                 &[("actor", target_name.as_str())],
             ) {
-                lines.push(line);
+                lines.narration(line);
             }
         }
     }
@@ -703,7 +704,7 @@ pub(super) fn spawn_defeat_drops(
     content: &ContentPack,
     actor_id: &str,
     room_id: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     let Some(actor) = content.actor(actor_id) else {
         return;
@@ -736,7 +737,7 @@ pub(super) fn spawn_defeat_drops(
             ("room", room_id),
         ],
     ) {
-        lines.push(line);
+        lines.narration(line);
     }
 }
 
@@ -752,7 +753,7 @@ fn adjust_actor_stat(state: &mut WorldState, actor_id: &str, stat: &str, delta: 
 pub(super) fn defeat_player_if_dead(
     state: &mut WorldState,
     content: &ContentPack,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     if state.phase != crate::engine::state::GamePhase::Active {
         return;
@@ -761,7 +762,7 @@ pub(super) fn defeat_player_if_dead(
     if state.effective_actor_stat(content, &combat.player_actor_id, &combat.health_stat_id) > 0 {
         return;
     }
-    lines.push(super::observation::render_story_text(
+    lines.narration(super::observation::render_story_text(
         &combat.player_defeat_text,
         state,
     ));
@@ -796,7 +797,7 @@ fn apply_equip(
     state: &mut WorldState,
     content: &ContentPack,
     command: &ActionDefinition,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     let Some(item) = content.item(&command.item_id) else {
         return;
@@ -832,7 +833,7 @@ fn apply_equip(
         }
     }
     if let Some(line) = render_equipment_message(content, state, "equipment.equipped", item) {
-        lines.push(line);
+        lines.narration(line);
     }
 }
 
@@ -841,7 +842,7 @@ fn apply_unequip(
     state: &mut WorldState,
     content: &ContentPack,
     command: &ActionDefinition,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     let Some(item) = content.item(&command.item_id) else {
         return;
@@ -852,7 +853,7 @@ fn apply_unequip(
     state.equipment.remove(&item.equip_slot);
     state.add_item(&command.item_id);
     if let Some(line) = render_equipment_message(content, state, "equipment.unequipped", item) {
-        lines.push(line);
+        lines.narration(line);
     }
 }
 
@@ -862,7 +863,7 @@ fn apply_use_item(
     state: &mut WorldState,
     content: &ContentPack,
     command: &ActionDefinition,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     let Some(item) = content.item(&command.item_id) else {
         return;
@@ -886,7 +887,7 @@ fn apply_use_item(
         eprintln!("[cinder] hook warning ({}): {error}", item.use_hook);
     }
     if let Some(line) = content.render_message("item.used", &[("item", item.label.as_str())]) {
-        lines.push(line);
+        lines.narration(line);
     }
 }
 
@@ -937,7 +938,7 @@ fn run_encirclement_rules(
     state: &mut WorldState,
     content: &ContentPack,
     item_id: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     for actor in &content.actors {
         if actor.conversion_trigger != Some(ConversionTrigger::Encirclement) {

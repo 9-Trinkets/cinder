@@ -9,6 +9,7 @@ pub mod hook_ids;
 pub mod hooks;
 pub mod hostility;
 pub mod menus;
+pub mod narrative;
 pub mod neuron;
 pub mod reducer;
 pub mod roles;

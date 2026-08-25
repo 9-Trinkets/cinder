@@ -9,7 +9,7 @@
     "dialogue_unavailable": "{actor_name} doesn't answer right now. Dialogue error: {error}"
   },
   "presentation_text": {
-    "room_observation": "== {room_title} ==\n{body}{features}{items}{people}{exits}",
+    "room_observation": "{body}{features}{items}{people}{exits}",
     "objective": "\n\nObjective:\n{objective}",
     "features": "\n\nYou notice: {features}.",
     "people": "\n\nHere with you: {people}.",

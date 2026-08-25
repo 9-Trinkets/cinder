@@ -1,5 +1,6 @@
 use crate::content::types::{ActorDefinition, ContentPack};
 use crate::engine::events::ObservationMode;
+use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{WorldState, display_actor_name};
 
 pub(super) fn actors_in_room<'a>(
@@ -45,7 +46,7 @@ pub(super) fn render_room_observation(
     state: &WorldState,
     room_id: &str,
     mode: ObservationMode,
-) -> Option<String> {
+) -> Option<NarrativeLines> {
     let room = content.room(room_id)?;
     let body = match mode {
         ObservationMode::Summary => room.summary.clone(),
@@ -139,10 +140,9 @@ pub(super) fn render_room_observation(
         }
     };
     let objective = render_objective(content, state);
-    Some(content.render_template(
+    let body_text = content.render_template(
         &content.presentation.presentation_text.room_observation,
         &[
-            ("room_title", room.title.as_str()),
             ("body", body.as_str()),
             ("features", features.as_str()),
             ("items", items.as_str()),
@@ -150,7 +150,13 @@ pub(super) fn render_room_observation(
             ("exits", exits.as_str()),
             ("objective", objective.as_str()),
         ],
-    ))
+    );
+    let mut lines = NarrativeLines::default();
+    lines.heading(format!("== {} ==", room.title));
+    if !body_text.trim().is_empty() {
+        lines.narration(body_text);
+    }
+    Some(lines)
 }
 
 pub(super) fn render_objective(content: &ContentPack, state: &WorldState) -> String {

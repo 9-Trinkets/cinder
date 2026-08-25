@@ -328,7 +328,7 @@ fn actor_action_is_injected_into_roommate_recent_memory() {
         output
             .lines
             .iter()
-            .any(|line| line == "Alex sits on the couch.")
+            .any(|line| line.text == "Alex sits on the couch.")
     );
     let history = state.conversation_history(ACTOR_A_ID, ACTOR_B_ID);
     assert_eq!(history.len(), 1);
@@ -357,7 +357,12 @@ fn hug_increases_attraction_and_safety_for_the_pair() {
 
     let output = apply_events(&mut state, &pack, &events);
 
-    assert!(output.lines.iter().any(|line| line == "Alex hugs Casey."));
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|line| line.text == "Alex hugs Casey.")
+    );
     assert_eq!(state.pair_stat(ACTOR_A_ID, ACTOR_C_ID, "safety"), 1);
     assert_eq!(state.pair_stat_u32(ACTOR_A_ID, ACTOR_C_ID, "attraction"), 1);
 }
@@ -431,7 +436,7 @@ fn rest_recovers_stamina() {
         output
             .lines
             .iter()
-            .any(|line| line == "Alex takes a quiet moment to rest on the long sofa.")
+            .any(|line| line.text == "Alex takes a quiet moment to rest on the long sofa.")
     );
     assert_eq!(
         state.actor_stat_u32(ACTOR_A_ID, "stamina"),
@@ -504,7 +509,7 @@ fn visible_speech_lines_include_target_when_present() {
         output
             .lines
             .iter()
-            .any(|line| line == "Alex (to Blair): Hey.")
+            .any(|line| line.text == "Alex (to Blair): Hey.")
     );
 }
 
@@ -561,7 +566,7 @@ fn offscreen_move_command_shows_arrival_when_actor_enters_current_room() {
         output
             .lines
             .iter()
-            .any(|line| line == "Alex comes in from the Lounge.")
+            .any(|line| line.text == "Alex comes in from the Lounge.")
     );
     assert_eq!(state.actor_room_id(ACTOR_A_ID, LOUNGE_ID), KITCHEN_ID);
 }
@@ -598,19 +603,19 @@ fn actor_observation_events_feed_recent_observation_memory() {
         output
             .lines
             .iter()
-            .any(|line| line == "Alex pauses to take in the Lounge more carefully.")
+            .any(|line| line.text == "Alex pauses to take in the Lounge more carefully.")
     );
     assert!(
         output
             .lines
             .iter()
-            .any(|line| line == "Alex studies Blair more closely.")
+            .any(|line| line.text == "Alex studies Blair more closely.")
     );
     assert!(
         output
             .lines
             .iter()
-            .any(|line| line == "Alex studies the long sofa.")
+            .any(|line| line.text == "Alex studies the long sofa.")
     );
     assert!(state.actor_has_seen_feature(ACTOR_A_ID, LOUNGE_ID, SOFA_ID));
     assert!(state.actor_has_studied_actor(ACTOR_A_ID, ACTOR_B_ID));
@@ -803,7 +808,7 @@ fn item_events_keep_player_inventory_behavior_unchanged() {
         output
             .lines
             .iter()
-            .any(|line| line == "You have tea ready.")
+            .any(|line| line.text == "You have tea ready.")
     );
 }
 
@@ -951,7 +956,7 @@ fn player_defeat_narration_and_phase_come_from_content() {
     assert_eq!(state.phase, GamePhase::GameEnded);
     assert_eq!(output.phase, GamePhase::GameEnded);
     assert!(
-        output.lines.iter().any(|line| line == defeat_text),
+        output.lines.iter().any(|line| line.text == defeat_text),
         "expected pack-authored defeat line, got {:?}",
         output.lines
     );
@@ -1022,11 +1027,11 @@ fn encirclement_conversion_narration_follows_the_flag_placement() {
 
     let placed_at = lines
         .iter()
-        .position(|line| line.contains("drives a stone marker"))
+        .position(|line| line.text.contains("drives a stone marker"))
         .expect("flag placement narration present");
     let conversion_at = lines
         .iter()
-        .position(|line| line.contains("turns toward you"))
+        .position(|line| line.text.contains("turns toward you"))
         .expect("conversion narration present");
     assert!(
         placed_at < conversion_at,
@@ -1053,7 +1058,8 @@ fn room_observation_annotates_present_actors_by_stance() {
         LOUNGE_ID,
         crate::engine::events::ObservationMode::Summary,
     )
-    .expect("room observation");
+    .expect("room observation")
+    .to_text();
 
     assert!(text.contains("Alex (ally)"), "got: {text}");
     assert!(text.contains("Blair (enemy)"), "got: {text}");
@@ -1084,7 +1090,8 @@ fn room_observation_lists_loose_items_on_the_ground() {
         LOUNGE_ID,
         crate::engine::events::ObservationMode::Summary,
     )
-    .expect("room observation");
+    .expect("room observation")
+    .to_text();
 
     assert!(text.contains("On the ground: stone marker."), "got: {text}");
 
@@ -1096,7 +1103,8 @@ fn room_observation_lists_loose_items_on_the_ground() {
         KITCHEN_ID,
         crate::engine::events::ObservationMode::Summary,
     )
-    .expect("kitchen observation");
+    .expect("kitchen observation")
+    .to_text();
     assert!(!empty.contains("On the ground"), "got: {empty}");
 }
 
@@ -1260,11 +1268,13 @@ fn equipping_an_item_with_equip_hook_converts_surviving_tagged_actors() {
     // Already-allied actors are left untouched (not re-followed by the hook).
     assert!(!state.relationship("statue-ally").follows_player);
     assert!(
-        lines.iter().any(|line| line.contains("granite statue")),
+        lines
+            .iter()
+            .any(|line| line.text.contains("granite statue")),
         "got: {lines:?}"
     );
     assert!(
-        !lines.iter().any(|line| line.contains("dust statue")),
+        !lines.iter().any(|line| line.text.contains("dust statue")),
         "got: {lines:?}"
     );
 }
@@ -1604,7 +1614,11 @@ fn defeating_an_actor_scatters_its_drops_into_the_room() {
         state.loose_room_items(LOUNGE_ID),
         vec![("herb-salve".to_string(), 2)]
     );
-    let transcript = lines.join("\n");
+    let transcript = lines
+        .iter()
+        .map(|line| line.text.as_str())
+        .collect::<Vec<_>>()
+        .join("\n");
     assert!(
         transcript.contains("Left behind") && transcript.contains("herb salve"),
         "got: {transcript}"

@@ -84,8 +84,16 @@ export interface MovieData {
   narrative_lines: string[]
 }
 
+export type LineKind = 'narration' | 'heading' | 'player' | 'error'
+
+export interface NarrativeLine {
+  kind: LineKind
+  text: string
+}
+
 export interface CommandResponse {
   text: string
+  lines: NarrativeLine[]
   game_over: boolean
   movie: MovieData | null
   act_closure: ActClosureData | null
@@ -352,7 +360,7 @@ export function continueSession(token: string, sessionId: string) {
 }
 
 export function fetchTranscript(token: string, sessionId: string) {
-  return req<string[]>(`/games/${sessionId}/transcript`, {
+  return req<NarrativeLine[]>(`/games/${sessionId}/transcript`, {
     headers: authHeader(token),
   })
 }

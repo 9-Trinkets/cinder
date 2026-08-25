@@ -19,6 +19,9 @@ pub struct MovieData {
 #[derive(Clone, Serialize)]
 pub struct CommandResponse {
     pub text: String,
+    /// The narrative lines behind `text`, each tagged with its styling kind.
+    #[serde(default)]
+    pub lines: Vec<cinder_core::engine::narrative::NarrativeLine>,
     pub game_over: bool,
     pub movie: Option<MovieData>,
     pub act_closure: Option<ActClosure>,

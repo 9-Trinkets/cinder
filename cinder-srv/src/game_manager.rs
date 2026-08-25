@@ -21,6 +21,27 @@ struct PendingTranscriptEntry {
     text: String,
 }
 
+/// DB `role` value for a narrative line kind. "player" lines carry the echoed
+/// command; everything else uses the kind's snake_case name so reloaded
+/// history can recover the styling.
+fn narrative_role(kind: &cinder_core::engine::narrative::NarrativeLineKind) -> &'static str {
+    match kind {
+        cinder_core::engine::narrative::NarrativeLineKind::Player => "player",
+        cinder_core::engine::narrative::NarrativeLineKind::Heading => "heading",
+        cinder_core::engine::narrative::NarrativeLineKind::Error => "error",
+        cinder_core::engine::narrative::NarrativeLineKind::Narration => "narrative",
+    }
+}
+
+fn narrative_kind(role: &str) -> cinder_core::engine::narrative::NarrativeLineKind {
+    match role {
+        "player" => cinder_core::engine::narrative::NarrativeLineKind::Player,
+        "heading" => cinder_core::engine::narrative::NarrativeLineKind::Heading,
+        "error" => cinder_core::engine::narrative::NarrativeLineKind::Error,
+        _ => cinder_core::engine::narrative::NarrativeLineKind::Narration,
+    }
+}
+
 async fn load_play_row(
     tx: &mut Transaction<'_, Postgres>,
     play_id: &Uuid,
@@ -309,6 +330,10 @@ pub async fn run_command(
                 .map_err(|e| format!("turn error: {e}"))?;
 
             let turn_text = outcome.text.clone();
+            // Typed narrative lines for the player's turn. Ticks and act
+            // rollover append extra prose to `text` that we also surface.
+            let mut narrative = outcome.lines.clone();
+            let mut extra_text: Vec<String> = Vec::new();
 
             let menu_active = runtime
                 .export_state()
@@ -321,6 +346,7 @@ pub async fn run_command(
                     Ok(tick) => {
                         if !tick.text.is_empty() {
                             outcome.text = format!("{}\n\n{}", outcome.text, tick.text);
+                            extra_text.push(tick.text);
                         }
                         if tick.phase != GamePhase::Active {
                             outcome.phase = tick.phase;
@@ -350,6 +376,7 @@ pub async fn run_command(
                     && !intro_text.is_empty()
                 {
                     outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
+                    extra_text.push(intro_text);
                 }
                 outcome.phase = GamePhase::Active;
             }
@@ -360,8 +387,14 @@ pub async fn run_command(
             let ui_snapshot = ui::build_ui_snapshot(runtime, pack_id, transcript_lines)?;
 
             let is_game_over = outcome.phase != GamePhase::Active;
+            for extra in extra_text {
+                narrative.push(cinder_core::engine::narrative::NarrativeLine::narration(
+                    extra,
+                ));
+            }
             let response = CommandResponse {
                 text: outcome.text,
+                lines: narrative.clone(),
                 game_over: is_game_over,
                 movie,
                 act_closure,
@@ -373,11 +406,11 @@ pub async fn run_command(
                     role: "player".to_string(),
                     text: input_owned.clone(),
                 }];
-                for line in response.text.split("\n\n") {
-                    let trimmed = line.trim();
+                for line in &narrative {
+                    let trimmed = line.text.trim();
                     if !trimmed.is_empty() {
                         entries.push(PendingTranscriptEntry {
-                            role: "narrative".to_string(),
+                            role: narrative_role(&line.kind).to_string(),
                             text: trimmed.to_string(),
                         });
                     }
@@ -432,6 +465,7 @@ pub async fn run_realtime_tick(
             let is_game_over = outcome.phase != GamePhase::Active;
             let response = CommandResponse {
                 text: outcome.text.clone(),
+                lines: Vec::new(),
                 game_over: is_game_over,
                 movie,
                 act_closure,
@@ -480,6 +514,7 @@ pub async fn switch_room(
             Ok((
                 CommandResponse {
                     text: outcome.text,
+                    lines: Vec::new(),
                     game_over: outcome.phase != cinder_core::engine::state::GamePhase::Active,
                     movie: None,
                     act_closure: None,
@@ -519,6 +554,7 @@ pub async fn follow_actor(
             Ok((
                 CommandResponse {
                     text: outcome.text,
+                    lines: Vec::new(),
                     game_over: outcome.phase != cinder_core::engine::state::GamePhase::Active,
                     movie: None,
                     act_closure: None,
@@ -610,6 +646,7 @@ pub async fn set_locale(
 
         return Ok(CommandResponse {
             text: changed_text,
+            lines: Vec::new(),
             game_over: is_game_over,
             movie: None,
             act_closure: ui_snapshot.act_closure.clone(),
@@ -652,7 +689,7 @@ pub async fn get_transcript(
     pool: &PgPool,
     play_id: &str,
     player_id: &str,
-) -> Result<Vec<String>, String> {
+) -> Result<Vec<cinder_core::engine::narrative::NarrativeLine>, String> {
     let play_id = parse_uuid(play_id, "session id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let mut tx = pool
@@ -660,8 +697,8 @@ pub async fn get_transcript(
         .await
         .map_err(|e| format!("db begin error: {e}"))?;
     let (_, _, state_json) = load_play_row(&mut tx, &play_id, &player_id, false).await?;
-    let rows = sqlx::query_scalar::<_, String>(
-        "SELECT CASE WHEN te.role = 'player' THEN '> ' || te.text ELSE te.text END
+    let rows: Vec<(String, String)> = sqlx::query_as(
+        "SELECT te.role, te.text
          FROM transcript_entries te
          JOIN game_plays s ON s.id = te.play_id
          WHERE te.play_id = $1 AND s.player_id = $2
@@ -681,13 +718,24 @@ pub async fn get_transcript(
         tx.commit()
             .await
             .map_err(|e| format!("db commit error: {e}"))?;
-        return Ok(lines);
+        return Ok(lines
+            .into_iter()
+            .map(cinder_core::engine::narrative::NarrativeLine::narration)
+            .collect());
     }
 
     tx.rollback()
         .await
         .map_err(|e| format!("db rollback error: {e}"))?;
-    Ok(rows)
+    Ok(rows
+        .into_iter()
+        .map(
+            |(role, text)| cinder_core::engine::narrative::NarrativeLine {
+                kind: narrative_kind(&role),
+                text,
+            },
+        )
+        .collect())
 }
 
 pub async fn play_id(
@@ -709,6 +757,7 @@ pub async fn play_id(
             Ok((
                 CommandResponse {
                     text: String::new(),
+                    lines: Vec::new(),
                     game_over: false,
                     movie: None,
                     act_closure: None,

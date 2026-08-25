@@ -10,6 +10,7 @@ use crate::engine::dialogue::{
 };
 use crate::engine::dialogue_grounding::render_story_text;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
+use crate::engine::narrative::NarrativeLines;
 use crate::engine::neuron::{WorkflowDefinition, WorkflowTraceContext, load_workflow};
 use crate::engine::reducer::apply_events;
 use crate::engine::state::{
@@ -213,13 +214,18 @@ impl CinderRuntime {
 
     pub fn run_tick(&self) -> Result<TurnOutcome, Box<dyn Error>> {
         let outcome = match self.run_actor_turns() {
-            Ok((text, phase)) => TurnOutcome { text, phase },
+            Ok((text, phase)) => TurnOutcome {
+                text,
+                phase,
+                lines: Vec::new(),
+            },
             Err(error) => {
                 if let Some(actor_tick_error) = error.downcast_ref::<ActorTickError>() {
                     eprintln!("[cinder] actor tick error: {}", actor_tick_error.message);
                     TurnOutcome {
                         text: self.actor_tick_soft_error_text(actor_tick_error),
                         phase: GamePhase::Active,
+                        lines: Vec::new(),
                     }
                 } else {
                     return Err(error);
@@ -363,6 +369,7 @@ impl CinderRuntime {
         Ok(TurnOutcome {
             text,
             phase: outcome.phase,
+            lines: outcome.lines,
         })
     }
 
@@ -986,7 +993,7 @@ impl CinderRuntime {
     }
 
     fn run_actor_turns(&self) -> Result<(String, GamePhase), Box<dyn Error>> {
-        let mut lines = Vec::new();
+        let mut lines = NarrativeLines::default();
         let tracer = WorkflowTraceContext::new(self.trace_events, &self.trace_dir)?;
         tracer
             .emit(
@@ -1020,7 +1027,7 @@ impl CinderRuntime {
                 &mut state,
             )
             .map_err(std::io::Error::other)?;
-            lines.extend(reduced.lines);
+            lines.extend(reduced.lines.0);
         }
         let state_snapshot = {
             let state = self
@@ -1029,7 +1036,7 @@ impl CinderRuntime {
                 .map_err(|_| "failed to lock runtime state for npc turns")?;
             if state.phase != GamePhase::Active {
                 let phase = state.phase.clone();
-                return Ok((lines.join("\n\n"), phase));
+                return Ok((lines.to_text(), phase));
             }
             state.clone()
         };
@@ -1082,7 +1089,7 @@ impl CinderRuntime {
                 .map_err(|_| "failed to lock runtime state to apply npc events")?;
             if state.phase != GamePhase::Active {
                 let phase = state.phase.clone();
-                return Ok((lines.join("\n\n"), phase));
+                return Ok((lines.to_text(), phase));
             }
             let logged_events = tick
                 .events
@@ -1096,7 +1103,7 @@ impl CinderRuntime {
                 &mut state,
             )
             .map_err(std::io::Error::other)?;
-            lines.extend(reduced.lines);
+            lines.extend(reduced.lines.0);
         }
         let final_state = self
             .state
@@ -1121,12 +1128,12 @@ impl CinderRuntime {
                 "workflow.complete",
                 serde_json::json!({
                     "phase": format!("{:?}", phase),
-                    "text": lines.join("\n\n"),
+                    "text": lines.to_text(),
                     "stats": final_stats,
                 }),
             )
             .map_err(std::io::Error::other)?;
-        Ok((lines.join("\n\n"), phase))
+        Ok((lines.to_text(), phase))
     }
 }
 
@@ -1203,6 +1210,7 @@ mod tests {
             .apply_stage_assignments(TurnOutcome {
                 text: String::new(),
                 phase: GamePhase::Active,
+                lines: Vec::new(),
             })
             .expect("apply assignment");
         let exported = runtime.export_state().expect("export state");
@@ -1240,6 +1248,7 @@ mod tests {
             .apply_stage_assignments(TurnOutcome {
                 text: String::new(),
                 phase: GamePhase::Active,
+                lines: Vec::new(),
             })
             .expect("reapply assignment");
         assert!(second.text.is_empty());
@@ -1287,6 +1296,7 @@ mod tests {
             .apply_stage_assignments(TurnOutcome {
                 text: String::new(),
                 phase: GamePhase::Active,
+                lines: Vec::new(),
             })
             .expect("apply assignment");
         let exported = runtime.export_state().expect("export state");

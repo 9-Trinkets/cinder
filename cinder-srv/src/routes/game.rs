@@ -210,7 +210,7 @@ pub async fn transcript_handler(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
     Path(play_id): Path<String>,
-) -> Result<Json<Vec<String>>, (StatusCode, String)> {
+) -> Result<Json<Vec<cinder_core::engine::narrative::NarrativeLine>>, (StatusCode, String)> {
     let lines = game_manager::get_transcript(&state.pool, &play_id, &auth.id)
         .await
         .map_err(internal)?;

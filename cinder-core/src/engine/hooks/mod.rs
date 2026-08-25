@@ -1,5 +1,6 @@
 use crate::content::types::ContentPack;
 use crate::engine::hook_ids;
+use crate::engine::narrative::NarrativeLines;
 use crate::engine::neuron::evaluate_symbolic_value;
 use crate::engine::state::{ActorStance, WorldState};
 use serde::de::DeserializeOwned;
@@ -124,7 +125,7 @@ pub(crate) fn apply_narrating_world_hook_effects(
     content: &ContentPack,
     hook_id: &str,
     input: Value,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) -> Result<(), String> {
     apply_hook_effects(state, content, hook_id, input, Some(lines))
 }
@@ -134,7 +135,7 @@ fn apply_hook_effects(
     content: &ContentPack,
     hook_id: &str,
     input: Value,
-    mut lines: Option<&mut Vec<String>>,
+    mut lines: Option<&mut NarrativeLines>,
 ) -> Result<(), String> {
     let effects = evaluate_hook_effects::<WorldHookEffect>(content, hook_id, input)?;
     for effect in effects {
@@ -166,7 +167,7 @@ fn apply_hook_effects(
                         .unwrap_or(&actor_id);
                     for key in &messages {
                         if let Some(line) = content.render_message(key, &[("actor", actor_name)]) {
-                            lines.push(line);
+                            lines.narration(line);
                         }
                     }
                 }
@@ -196,7 +197,7 @@ fn apply_hook_effects(
                             if let Some(line) =
                                 content.render_message(key, &[("actor", actor.name.as_str())])
                             {
-                                lines.push(line);
+                                lines.narration(line);
                             }
                         }
                     }

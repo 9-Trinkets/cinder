@@ -1,8 +1,11 @@
 import { memo } from 'react'
 
+export type LineKind = 'narration' | 'heading' | 'player' | 'error'
+
 export interface Line {
   text: string
   key: number
+  kind?: LineKind
 }
 
 type SegmentKind = 'plain' | 'match' | 'crafted' | 'interactable'
@@ -132,29 +135,21 @@ const TranscriptLine = memo(function TranscriptLine({
   craftedLabels?: string[]
   interactableLabels?: string[]
 }) {
+  // Styling is decided by the line's declared kind, not by parsing its text.
   let className = 'text-text'
-  let heading: string | null = null
-  if (line.text.startsWith('> ')) {
+  if (line.kind === 'player') {
     className = 'text-foam font-mono text-xs'
-  } else if (line.text.startsWith('== ')) {
-    // A room observation begins with a `== Title ==` heading. Color only the
-    // heading as the accent, leaving the body in the default text color so an
-    // entire room block isn't tinted.
-    const match = line.text.match(/^(== [^\n]+)\n?([\s\S]*)$/)
-    heading = match?.[1] ?? null
+  } else if (line.kind === 'heading') {
     className = 'text-iris font-bold'
-  } else if (line.text.startsWith('[error:')) {
+  } else if (line.kind === 'error') {
     className = 'text-love italic text-xs'
   }
 
-  const body = heading ? line.text.slice(heading.length).replace(/^\n/, '') : line.text
-
   return (
     <div className="whitespace-pre-wrap text-sm leading-relaxed">
-      {heading && <span className="text-iris font-bold">{heading}{'\n'}</span>}
-      <span className={heading ? 'text-text' : className}>
+      <span className={className}>
         <HighlightedText
-          text={body}
+          text={line.text}
           query={searchQuery ?? ''}
           craftedLabels={craftedLabels ?? []}
           interactableLabels={interactableLabels ?? []}

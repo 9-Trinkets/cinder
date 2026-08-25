@@ -16,6 +16,7 @@ use crate::engine::commands::{player_command_help_text, player_command_suggestio
 use crate::engine::events::{ObservationMode, WorldEvent};
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_world_hook_effects;
+use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{
     ActorStance, ConversationMemoryKind, ConversationMemoryLine, GamePhase, WorldState,
 };
@@ -30,7 +31,7 @@ pub(super) fn handle_turn_started(
     turn_number: u32,
     _raw_input: &str,
     advances_time: bool,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     state.turn_number = turn_number;
     if advances_time {
@@ -45,10 +46,10 @@ pub(super) fn handle_turn_started(
             state.current_time_minutes,
         );
         for signal in time_reached_signals(previous_time_minutes, state.current_time_minutes) {
-            lines.extend(advance_objective_for_signal(state, content, &signal));
+            lines.extend_narration(advance_objective_for_signal(state, content, &signal));
         }
-        lines.extend(advance_house_progress_objectives(state, content));
-        lines.extend(advance_stat_threshold_objectives(state, content));
+        lines.extend_narration(advance_house_progress_objectives(state, content));
+        lines.extend_narration(advance_stat_threshold_objectives(state, content));
     }
     // Strike policy is external (tick workflows, rules or LLM); the reducer
     // only resolves declared HostileStrike events.
@@ -62,7 +63,7 @@ pub(super) fn handle_hostile_strike(
     state: &mut WorldState,
     content: &ContentPack,
     actor_id: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     let combat = &content.settings.combat;
     if state.phase != GamePhase::Active
@@ -98,7 +99,7 @@ pub(super) fn handle_hostile_strike(
             ("remaining", remaining.to_string().as_str()),
         ],
     ) {
-        lines.push(line);
+        lines.narration(line);
     }
     let interval = content
         .actor(actor_id)
@@ -115,12 +116,12 @@ pub(super) fn handle_current_room_observed(
     content: &ContentPack,
     room_id: &str,
     mode: ObservationMode,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     if let Some(observation) = render_room_observation(content, state, room_id, mode) {
-        lines.push(observation);
+        lines.extend(observation.0);
     } else {
-        lines.push(content.presentation.error_text.room_missing.clone());
+        lines.error(content.presentation.error_text.room_missing.clone());
     }
 }
 
@@ -129,21 +130,21 @@ pub(super) fn handle_feature_observed(
     content: &ContentPack,
     room_id: &str,
     feature_id: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     if let Some(feature) = content.room(room_id).and_then(|room| {
         room.features
             .iter()
             .find(|feature| feature.id == feature_id)
     }) {
-        lines.push(feature.inspect_text.clone());
+        lines.narration(feature.inspect_text.clone());
         if let Some(consumables_line) =
             render_feature_consumables_line(content, state, room_id, feature_id)
         {
-            lines.push(consumables_line);
+            lines.narration(consumables_line);
         }
     } else {
-        lines.push(content.presentation.error_text.room_missing.clone());
+        lines.narration(content.presentation.error_text.room_missing.clone());
     }
 }
 
@@ -151,12 +152,12 @@ pub(super) fn handle_actor_observed(
     state: &mut WorldState,
     content: &ContentPack,
     actor_id: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     if let Some(actor) = content.actor(actor_id) {
-        lines.push(render_story_text(&actor.inspect_text, state));
+        lines.narration(render_story_text(&actor.inspect_text, state));
     } else {
-        lines.push(content.presentation.error_text.actor_unknown.clone());
+        lines.narration(content.presentation.error_text.actor_unknown.clone());
     }
 }
 
@@ -171,7 +172,7 @@ pub(super) fn handle_actor_spoke(
     other_person_message: &Option<String>,
     room_id: &str,
     text: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     mark_actor_bundle_progress_for_speech_event(
         content,
@@ -235,14 +236,14 @@ pub(super) fn handle_actor_spoke(
     }
     state.set_pending_reply(actor_id, other_person_id, room_id, state.turn_number);
     if state.current_room_id == room_id {
-        lines.push(render_actor_speech_line(
+        lines.narration(render_actor_speech_line(
             content,
             actor_name,
             Some(other_person_name),
             text,
         ));
     }
-    lines.extend(advance_house_progress_objectives(state, content));
+    lines.extend_narration(advance_house_progress_objectives(state, content));
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -254,7 +255,7 @@ pub(super) fn handle_actor_spoke_to_room(
     audience_actor_ids: &[String],
     room_id: &str,
     text: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     mark_actor_bundle_progress_for_speech_event(
         content,
@@ -290,9 +291,9 @@ pub(super) fn handle_actor_spoke_to_room(
         .unwrap_or_else(|error| eprintln!("[cinder] hook warning (speech): {error}"));
     }
     if state.current_room_id == room_id {
-        lines.push(render_actor_speech_line(content, actor_name, None, text));
+        lines.narration(render_actor_speech_line(content, actor_name, None, text));
     }
-    lines.extend(advance_house_progress_objectives(state, content));
+    lines.extend_narration(advance_house_progress_objectives(state, content));
 }
 
 pub(super) fn handle_pair_stat_adjusted(
@@ -320,7 +321,7 @@ pub(super) fn handle_actor_command_used_event(
     feature_id: Option<&str>,
     consumable_id: Option<&str>,
     freeform_text: Option<&str>,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
     outbox: &mut Vec<WorldEvent>,
 ) {
     if let Some(new_lines) = handle_actor_command_used(
@@ -339,7 +340,7 @@ pub(super) fn handle_actor_command_used_event(
         freeform_text,
         outbox,
     ) {
-        lines.extend(new_lines);
+        lines.extend(new_lines.0);
     }
 }
 
@@ -349,7 +350,7 @@ pub(super) fn handle_actor_observed_room(
     actor_id: &str,
     actor_name: &str,
     room_id: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     if let Some(room) = content.room(room_id) {
         state.mark_actor_observed_room(actor_id, room_id);
@@ -363,10 +364,10 @@ pub(super) fn handle_actor_observed_room(
                 ],
             )
         {
-            lines.push(line);
+            lines.narration(line);
         }
     } else {
-        lines.push(content.presentation.error_text.room_missing.clone());
+        lines.narration(content.presentation.error_text.room_missing.clone());
     }
 }
 
@@ -377,7 +378,7 @@ pub(super) fn handle_actor_observed_feature(
     actor_name: &str,
     room_id: &str,
     feature_id: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     if let Some((room, feature)) = content.room(room_id).and_then(|room| {
         room.features
@@ -396,11 +397,11 @@ pub(super) fn handle_actor_observed_feature(
                 ],
             )
         {
-            lines.push(line);
+            lines.narration(line);
         }
         let _ = room;
     } else {
-        lines.push(content.presentation.error_text.room_missing.clone());
+        lines.narration(content.presentation.error_text.room_missing.clone());
     }
 }
 
@@ -413,7 +414,7 @@ pub(super) fn handle_actor_observed_actor(
     room_id: &str,
     target_actor_id: &str,
     target_actor_name: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     if let Some(target_actor) = content.actor(target_actor_id) {
         state.mark_actor_studied_actor(actor_id, target_actor_id);
@@ -427,10 +428,10 @@ pub(super) fn handle_actor_observed_actor(
                 ],
             )
         {
-            lines.push(line);
+            lines.narration(line);
         }
     } else {
-        lines.push(content.presentation.error_text.actor_unknown.clone());
+        lines.narration(content.presentation.error_text.actor_unknown.clone());
     }
 }
 
@@ -439,13 +440,13 @@ pub(super) fn handle_actor_relocated(
     content: &ContentPack,
     actor_id: &str,
     to_room_id: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     state.mark_actor_room_visited(actor_id, to_room_id);
     state
         .actor_room_overrides
         .insert(actor_id.to_string(), to_room_id.to_string());
-    lines.extend(advance_house_progress_objectives(state, content));
+    lines.extend_narration(advance_house_progress_objectives(state, content));
 }
 
 pub(super) fn handle_actor_moved(
@@ -454,7 +455,7 @@ pub(super) fn handle_actor_moved(
     actor_id: &str,
     from_room_id: &str,
     to_room_id: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     apply_actor_move_transition(
         state,
@@ -474,16 +475,16 @@ pub(super) fn handle_player_moved(
     state: &mut WorldState,
     content: &ContentPack,
     to_room_id: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     let from_room_id = state.current_room_id.clone();
-    lines.extend(advance_objective_for_signal(
+    lines.extend_narration(advance_objective_for_signal(
         state,
         content,
         &format!("room_left:{from_room_id}"),
     ));
     state.current_room_id = to_room_id.to_string();
-    lines.extend(advance_objective_for_signal(
+    lines.extend_narration(advance_objective_for_signal(
         state,
         content,
         &format!("room_entered:{to_room_id}"),
@@ -514,7 +515,7 @@ pub(super) fn handle_player_moved(
                 "follow.actor_follows",
                 &[("actor", actor_display_name(content, &follower_id).as_str())],
             ) {
-                lines.push(line);
+                lines.narration(line);
             }
         }
     }
@@ -524,18 +525,18 @@ pub(super) fn handle_menu_opened(
     state: &mut WorldState,
     content: &ContentPack,
     menu_id: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     state.active_menu_id = Some(menu_id.to_string());
     state.pending_menu_selections.clear();
     if let Some(menu) = content.menu(menu_id) {
-        lines.extend(
+        lines.extend_narration(
             menu.opening_narrative_lines
                 .iter()
                 .map(|line| render_story_text(line, state)),
         );
     }
-    lines.extend(advance_objective_for_signal(
+    lines.extend_narration(advance_objective_for_signal(
         state,
         content,
         &format!("menu_opened:{menu_id}"),
@@ -548,7 +549,7 @@ pub(super) fn handle_menu_choice_made(
     menu_id: &str,
     option_id: &str,
     title: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     state.active_menu_id = None;
     if let Some(menu) = content.menu(menu_id) {
@@ -617,7 +618,7 @@ pub(super) fn handle_menu_choice_made(
                     .story_vars
                     .set_unchecked(&menu.selection_id_var_key, &joined_ids);
             }
-            lines.push(super::observation::render_story_text(
+            lines.narration(super::observation::render_story_text(
                 &menu.selection_confirmation,
                 state,
             ));
@@ -633,7 +634,7 @@ pub(super) fn handle_menu_choice_made(
                     .story_vars
                     .set_unchecked(&menu.selection_id_var_key, option_id);
             }
-            lines.push(super::observation::render_story_text(
+            lines.narration(super::observation::render_story_text(
                 &menu.selection_confirmation,
                 state,
             ));
@@ -651,7 +652,7 @@ pub(super) fn handle_menu_choice_made(
         }),
     )
     .unwrap_or_else(|error| eprintln!("[cinder] hook warning (menu.selected): {error}"));
-    lines.extend(advance_objective_for_signal(
+    lines.extend_narration(advance_objective_for_signal(
         state,
         content,
         &format!("menu_selected:{menu_id}"),
@@ -683,23 +684,23 @@ pub(super) fn handle_menu_selection_toggled(
     }
 }
 
-pub(super) fn handle_narrative_line(text: &str, lines: &mut Vec<String>) {
-    lines.push(text.to_string());
+pub(super) fn handle_narrative_line(text: &str, lines: &mut NarrativeLines) {
+    lines.narration(text.to_string());
 }
 
-pub(super) fn handle_action_rejected(message: &str, lines: &mut Vec<String>) {
+pub(super) fn handle_action_rejected(message: &str, lines: &mut NarrativeLines) {
     if !message.is_empty() {
-        lines.push(message.to_string());
+        lines.error(message.to_string());
     }
 }
 
 pub(super) fn handle_help_shown(
     _state: &mut WorldState,
     content: &ContentPack,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     let available_commands = player_command_help_text(content);
-    lines.push(content.render_template(
+    lines.narration(content.render_template(
         &content.opening.help_text,
         &[("available_commands", available_commands.as_str())],
     ));
@@ -708,10 +709,10 @@ pub(super) fn handle_help_shown(
 pub(super) fn handle_unknown_input(
     content: &ContentPack,
     raw_input: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     let available_commands = player_command_suggestions(content);
-    lines.push(content.render_template(
+    lines.narration(content.render_template(
         &content.presentation.error_text.unknown_input,
         &[
             ("raw_input", raw_input),
@@ -723,7 +724,7 @@ pub(super) fn handle_unknown_input(
 pub(super) fn handle_act_ended(
     state: &mut WorldState,
     _content: &ContentPack,
-    _lines: &mut Vec<String>,
+    _lines: &mut NarrativeLines,
 ) {
     state.phase = crate::engine::state::GamePhase::ActEnded;
 }
@@ -733,7 +734,7 @@ pub(super) fn apply_content_event(
     content: &ContentPack,
     event_id: &str,
     payload: &std::collections::BTreeMap<String, String>,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     let event = content
         .content_event(event_id)
@@ -743,7 +744,7 @@ pub(super) fn apply_content_event(
         .map(|(key, value)| (key.as_str(), value.as_str()))
         .collect();
     if !event.event_text.is_empty() {
-        lines.push(super::observation::render_story_text(
+        lines.narration(super::observation::render_story_text(
             &content.render_template(&event.event_text, &template_values),
             state,
         ));
@@ -763,7 +764,7 @@ pub(super) fn apply_content_event(
             &content.render_template(signal, &template_values),
             state,
         );
-        lines.extend(advance_objective_for_signal(
+        lines.extend_narration(advance_objective_for_signal(
             state,
             content,
             &rendered_signal,
@@ -779,7 +780,7 @@ pub(super) fn handle_item_acquired(
     content: &ContentPack,
     item_id: &str,
     storage: ItemStorageTarget,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     let label = content
         .item(item_id)
@@ -792,12 +793,12 @@ pub(super) fn handle_item_acquired(
             if let Some(line) =
                 content.render_message("item.acquired_inventory", &[("label", label)])
             {
-                lines.push(line);
+                lines.narration(line);
             }
         }
         ItemStorageTarget::CurrentRoom => {
             if let Some(line) = content.render_message("item.acquired_room", &[("label", label)]) {
-                lines.push(line);
+                lines.narration(line);
             }
         }
     }
@@ -810,7 +811,7 @@ pub(super) fn handle_item_consumed(
     storage: ItemStorageTarget,
     consumer_id: Option<&str>,
     consumer_name: Option<&str>,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     let label = content
         .item(item_id)
@@ -821,18 +822,18 @@ pub(super) fn handle_item_consumed(
         if consumer_id == Some(content.settings.combat.player_actor_id.as_str()) {
             if let Some(line) = content.render_message("item.consumed_player", &[("label", label)])
             {
-                lines.push(line);
+                lines.narration(line);
             }
         } else if let Some(consumer_name) = consumer_name {
             if let Some(line) = content.render_message(
                 "item.consumed_actor",
                 &[("consumer_name", consumer_name), ("label", label)],
             ) {
-                lines.push(line);
+                lines.narration(line);
             }
         } else if let Some(line) = content.render_message("item.consumed_use", &[("label", label)])
         {
-            lines.push(line);
+            lines.narration(line);
         }
     }
 }
@@ -841,11 +842,11 @@ pub(super) fn handle_item_observed(
     _state: &mut WorldState,
     content: &ContentPack,
     item_id: &str,
-    lines: &mut Vec<String>,
+    lines: &mut NarrativeLines,
 ) {
     if let Some(item) = content.item(item_id) {
-        lines.push(item.description.clone());
+        lines.narration(item.description.clone());
     } else {
-        lines.push(content.presentation.error_text.feature_unknown.clone());
+        lines.narration(content.presentation.error_text.feature_unknown.clone());
     }
 }
