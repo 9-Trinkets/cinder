@@ -112,6 +112,11 @@ pub(super) fn handle_actor_command_used(
             .map(|ic| to_item_storage(ic.storage.clone()))
             .unwrap_or_default();
         state.add_item_to_storage(item_id.as_str(), storage, room_id);
+        // An item produced into a room can complete an encirclement (e.g.
+        // chalk markings drawn around a golem's chamber).
+        if storage == ItemStorageTarget::CurrentRoom {
+            run_encirclement_rules(state, content, &item_id, &mut lines);
+        }
     }
     if command.has_effect(CommandEffect::MoveActor) {
         if let Some(target_room_id) = target_room_id {
@@ -934,7 +939,7 @@ fn render_equipment_message(
 /// `actor.encircled` hook for each. The hook's *effect* is content-authored
 /// (e.g. convert the actor to an ally follower) — the engine only decides
 /// *that* the encirclement completed.
-fn run_encirclement_rules(
+pub(super) fn run_encirclement_rules(
     state: &mut WorldState,
     content: &ContentPack,
     item_id: &str,

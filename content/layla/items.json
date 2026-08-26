@@ -1,9 +1,15 @@
 [
   {
-    "id": "stone-marker",
-    "label": "stone marker",
+    "id": "magic-chalk",
+    "label": "magic chalk",
     "kind": "misc",
-    "description": "A small stone marker sturdy enough to drive into the dungeon floor and retrieve later."
+    "description": "A stub of chalk, warm in the hand, that never seems to wear down. Wherever she draws with it, a line of pale light stays behind in the stone."
+  },
+  {
+    "id": "chalk-marking",
+    "label": "chalk drawing",
+    "kind": "misc",
+    "description": "A tangle of geometric lines chalked into the floor — angles and arcs that almost make sense, like a diagram of something that isn't finished."
   },
   {
     "id": "iron-chisel",

@@ -14,6 +14,8 @@ pub(crate) enum CommandAvailabilityIssue {
     StageInactive,
     MissingBundleProgress(Vec<String>),
     BlockedByBundleProgress(Vec<String>),
+    /// A room-item condition is unmet (`requires_room_item` / `requires_room_without_item`).
+    RoomItemCondition(String),
 }
 
 pub(crate) fn apply_actor_turn_policies(
@@ -105,6 +107,29 @@ pub(crate) fn command_availability_issue(
         return Some(CommandAvailabilityIssue::BlockedByBundleProgress(blocked));
     }
 
+    if !a.requires_room_item.is_empty()
+        && !state.has_item_in_storage(
+            &a.requires_room_item,
+            ItemStorageTarget::CurrentRoom,
+            &state.current_room_id,
+        )
+    {
+        return Some(CommandAvailabilityIssue::RoomItemCondition(
+            "required".to_string(),
+        ));
+    }
+    if !a.requires_room_without_item.is_empty()
+        && state.has_item_in_storage(
+            &a.requires_room_without_item,
+            ItemStorageTarget::CurrentRoom,
+            &state.current_room_id,
+        )
+    {
+        return Some(CommandAvailabilityIssue::RoomItemCondition(
+            "forbidden".to_string(),
+        ));
+    }
+
     None
 }
 
@@ -136,6 +161,9 @@ pub(crate) fn command_unavailable_message(
                 )
                 .unwrap_or_default()
         }
+        CommandAvailabilityIssue::RoomItemCondition(_) => content
+            .render_message("error.command_not_now", &[("verb", verb.as_str())])
+            .unwrap_or_default(),
     }
 }
 

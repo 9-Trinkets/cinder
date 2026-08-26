@@ -174,84 +174,6 @@
       }
     },
     {
-      "id": "place_marker",
-      "command": "PLACE MARKER",
-      "label": "Place Marker",
-      "group": "territory",
-      "phrases": [
-        "place marker",
-        "place stone marker",
-        "plant marker",
-        "set marker",
-        "mark room",
-        "drive marker"
-      ],
-      "player_enabled": true,
-      "target_mode": "none",
-      "outcome_mode": "event",
-      "effects": [
-        "drop_item"
-      ],
-      "item_id": "stone-marker",
-      "event_text": "{actor_name} drives a stone marker into the ground.",
-      "available": {
-        "requires_room_without_item": "stone-marker"
-      },
-      "ui": {
-        "bar": false,
-        "overflow": true,
-        "group": "territory",
-        "sort_order": 20
-      },
-      "player_command": {
-        "usage": "place marker",
-        "example": "place marker",
-        "advances_time": true,
-        "input": {
-          "required": false
-        }
-      }
-    },
-    {
-      "id": "pick_up_marker",
-      "command": "PICK UP MARKER",
-      "label": "Pick Up Marker",
-      "group": "territory",
-      "phrases": [
-        "pick up marker",
-        "pick up stone marker",
-        "retrieve marker",
-        "take marker",
-        "remove marker",
-        "collect marker"
-      ],
-      "player_enabled": true,
-      "target_mode": "none",
-      "outcome_mode": "event",
-      "effects": [
-        "pick_up_item"
-      ],
-      "item_id": "stone-marker",
-      "event_text": "{actor_name} pulls a stone marker from the ground.",
-      "available": {
-        "requires_room_item": "stone-marker"
-      },
-      "ui": {
-        "bar": false,
-        "overflow": true,
-        "group": "territory",
-        "sort_order": 21
-      },
-      "player_command": {
-        "usage": "pick up marker",
-        "example": "pick up marker",
-        "advances_time": true,
-        "input": {
-          "required": false
-        }
-      }
-    },
-    {
       "id": "equip_chisel",
       "command": "EQUIP CHISEL",
       "label": "Equip Chisel",
@@ -456,6 +378,50 @@
       "player_command": {
         "usage": "pick up core",
         "example": "pick up core",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "trace",
+      "command": "TRACE",
+      "label": "Trace",
+      "group": "territory",
+      "phrases": [
+        "trace",
+        "trace a line",
+        "draw",
+        "draw a line",
+        "use chalk",
+        "sketch"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "content_event": {
+        "id": "layla.traced",
+        "event_text": "Layla crouches and draws a line of chalk across the floor. It glows, pale and steady, and stays.",
+        "hook_id": "",
+        "signals": []
+      },
+      "item_creation": {
+        "creates_item": "chalk-marking",
+        "storage": "current_room"
+      },
+      "available": {
+        "requires_room_without_item": "chalk-marking"
+      },
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "territory",
+        "sort_order": 20
+      },
+      "player_command": {
+        "usage": "trace",
+        "example": "trace",
         "advances_time": true,
         "input": {
           "required": false

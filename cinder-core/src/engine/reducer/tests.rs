@@ -1040,6 +1040,76 @@ fn encirclement_conversion_narration_follows_the_flag_placement() {
 }
 
 #[test]
+fn creating_an_item_in_a_room_can_complete_an_encirclement() {
+    let mut pack = reducer_test_pack();
+    pack.actions.push(ActionDefinition {
+        id: "trace".to_string(),
+        command: "trace".to_string(),
+        target_mode: CommandTargetMode::None,
+        item_creation: Some(ActionItemCreation {
+            creates_item: "chalk-marking".to_string(),
+            storage: ActionItemStorageTarget::CurrentRoom,
+            ..ActionItemCreation::default()
+        }),
+        event_text: "{actor_name} draws chalk across the floor.".to_string(),
+        ..ActionDefinition::default()
+    });
+    pack.messages.insert(
+        "conversion.encircled".to_string(),
+        "The {actor} turns toward you, no longer hostile.".to_string(),
+    );
+    // A golem in the lounge is encircled once its only neighbor (the kitchen)
+    // holds a chalk marking created by the trace action.
+    pack.actors.push(ActorDefinition {
+        id: "golem".to_string(),
+        name: "dark golem".to_string(),
+        room_id: LOUNGE_ID.to_string(),
+        conversion_trigger: Some(ConversionTrigger::Encirclement),
+        ..test_actor("golem", "dark golem", LOUNGE_ID)
+    });
+    pack.hooks.insert(
+        "actor.encircled".to_string(),
+        effect_hook(vec![json!({
+            "kind": "convert_actor_to_ally",
+            "actor_id": "$input.actor_id",
+            "follows_player": true,
+            "messages": ["conversion.encircled"],
+        })]),
+    );
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = KITCHEN_ID.to_string();
+
+    let lines = super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        KITCHEN_ID,
+        "trace",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        &mut Vec::new(),
+    )
+    .expect("trace");
+
+    assert!(state.has_item_in_storage("chalk-marking", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
+    assert_eq!(state.stance("golem"), ActorStance::Allied);
+    assert!(
+        lines
+            .iter()
+            .any(|line| line.text.contains("turns toward you")),
+        "got: {lines:?}"
+    );
+}
+
+#[test]
 fn room_observation_annotates_present_actors_by_stance() {
     let mut pack = reducer_test_pack();
     pack.presentation.presentation_text.ally_suffix = " (ally)".to_string();

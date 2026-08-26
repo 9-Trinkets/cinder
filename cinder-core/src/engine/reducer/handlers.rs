@@ -791,17 +791,42 @@ pub(super) fn handle_item_acquired(
     match storage {
         ItemStorageTarget::PlayerInventory => {
             if let Some(line) =
-                content.render_message("item.acquired_inventory", &[("label", label)])
+                render_acquired_line(content, item_id, "item.acquired_inventory", label)
             {
                 lines.narration(line);
             }
         }
         ItemStorageTarget::CurrentRoom => {
-            if let Some(line) = content.render_message("item.acquired_room", &[("label", label)]) {
+            if let Some(line) = render_acquired_line(content, item_id, "item.acquired_room", label)
+            {
                 lines.narration(line);
             }
+            // An item appearing in a room can complete an encirclement.
+            super::command_effects::run_encirclement_rules(state, content, item_id, lines);
         }
     }
+}
+
+/// Renders the "item acquired" narration for a single item. A pack may define
+/// `item.<id>.<generic key>` to override the message; an empty override
+/// suppresses the line entirely.
+fn render_acquired_line(
+    content: &ContentPack,
+    item_id: &str,
+    generic_key: &str,
+    label: &str,
+) -> Option<String> {
+    let specific_key = format!(
+        "item.{item_id}.{}",
+        generic_key.strip_prefix("item.").unwrap_or(generic_key)
+    );
+    if let Some(text) = content.message(&specific_key) {
+        if text.is_empty() {
+            return None;
+        }
+        return Some(content.render_template(text, &[("label", label)]));
+    }
+    content.render_message(generic_key, &[("label", label)])
 }
 
 pub(super) fn handle_item_consumed(
