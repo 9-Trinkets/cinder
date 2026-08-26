@@ -119,8 +119,24 @@ pub(super) fn render_room_observation(
         if loose.is_empty() {
             String::new()
         } else {
-            let labels = loose
+            // Items with a `look_description` read as part of the room; the
+            // rest are listed generically as loose items on the ground.
+            let described = loose
                 .iter()
+                .filter_map(|(id, _)| {
+                    content
+                        .item(id)
+                        .filter(|item| !item.look_description.is_empty())
+                        .map(|item| item.look_description.clone())
+                })
+                .collect::<Vec<_>>();
+            let plain = loose
+                .iter()
+                .filter(|(id, _)| {
+                    content
+                        .item(id)
+                        .map_or(true, |item| item.look_description.is_empty())
+                })
                 .map(|(id, count)| {
                     let label = content
                         .item(id)
@@ -133,10 +149,18 @@ pub(super) fn render_room_observation(
                     }
                 })
                 .collect::<Vec<_>>();
-            content.render_template(
-                &content.presentation.presentation_text.loose_items,
-                &[("items", &labels.join(", "))],
-            )
+            let mut out = String::new();
+            if !described.is_empty() {
+                out.push_str("\n\n");
+                out.push_str(&described.join(" "));
+            }
+            if !plain.is_empty() {
+                out.push_str(&content.render_template(
+                    &content.presentation.presentation_text.loose_items,
+                    &[("items", &plain.join(", "))],
+                ));
+            }
+            out
         }
     };
     let objective = render_objective(content, state);

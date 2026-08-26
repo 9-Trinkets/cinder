@@ -1271,6 +1271,7 @@ fn equipping_an_item_with_equip_hook_converts_surviving_tagged_actors() {
         stat_bonuses: BTreeMap::new(),
         use_hook: String::new(),
         equip_hook: "item.core_equipped".to_string(),
+        look_description: String::new(),
     });
     pack.messages.insert(
         "conversion.core".to_string(),
@@ -1368,6 +1369,7 @@ fn equipment_test_pack() -> ContentPack {
         stat_bonuses: BTreeMap::from([("confidence".to_string(), 2)]),
         use_hook: String::new(),
         equip_hook: String::new(),
+        look_description: String::new(),
     });
     pack.items.push(crate::content::types::ItemDefinition {
         id: "steel-chisel".to_string(),
@@ -1378,6 +1380,7 @@ fn equipment_test_pack() -> ContentPack {
         stat_bonuses: BTreeMap::from([("confidence".to_string(), 4)]),
         use_hook: String::new(),
         equip_hook: String::new(),
+        look_description: String::new(),
     });
     pack.items.push(crate::content::types::ItemDefinition {
         id: "herb-salve".to_string(),
@@ -1388,6 +1391,7 @@ fn equipment_test_pack() -> ContentPack {
         stat_bonuses: BTreeMap::new(),
         use_hook: "item.salve_used".to_string(),
         equip_hook: String::new(),
+        look_description: String::new(),
     });
     pack.hooks.insert(
         "item.salve_used".to_string(),

@@ -9,7 +9,8 @@
     "id": "chalk-marking",
     "label": "chalk drawing",
     "kind": "misc",
-    "description": "A tangle of geometric lines chalked into the floor — angles and arcs that almost make sense, like a diagram of something that isn't finished."
+    "description": "A tangle of geometric lines chalked into the floor — angles and arcs that almost make sense, like a diagram of something that isn't finished.",
+    "look_description": "Pale chalk lines glow faintly on the floor, tracing angles that almost make sense."
   },
   {
     "id": "iron-chisel",

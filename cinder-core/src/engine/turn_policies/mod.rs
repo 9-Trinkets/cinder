@@ -580,6 +580,7 @@ mod tests {
             stat_bonuses: std::collections::BTreeMap::new(),
             use_hook: String::new(),
             equip_hook: String::new(),
+            look_description: String::new(),
         });
         pack.actions.push(ActionDefinition {
             id: "equip".to_string(),

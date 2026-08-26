@@ -39,6 +39,11 @@ pub struct ItemDefinition {
     /// followers.
     #[serde(default)]
     pub equip_hook: String,
+    /// Prose shown in a room observation when this item lies loose there,
+    /// in place of the generic "On the ground: {label}" line. Lets non-object
+    /// room marks (e.g. chalk drawings) read as part of the room, not loot.
+    #[serde(default)]
+    pub look_description: String,
 }
 
 impl ItemDefinition {
