@@ -1,7 +1,7 @@
 use crate::content::types::{
-    ActionDefinition, ContentPack, ItemStorageTarget, RuleBundleAffordanceTarget,
-    RuleBundleCompletionTrigger, RuleBundleConditionalGuidanceDefinition, RuleBundleDefinition,
-    RuleBundleProgressRef,
+    ActionDefinition, ActionItemStorageTarget, CommandEffect, ContentPack, ItemStorageTarget,
+    RuleBundleAffordanceTarget, RuleBundleCompletionTrigger,
+    RuleBundleConditionalGuidanceDefinition, RuleBundleDefinition, RuleBundleProgressRef,
 };
 use crate::engine::dialogue::{ActorTurnActionRequest, ActorTurnCommandInvocation};
 use crate::engine::state::WorldState;
@@ -160,6 +160,13 @@ pub(crate) fn apply_command_bundle_progress_effects(
     }
 }
 
+fn to_item_storage(storage: ActionItemStorageTarget) -> ItemStorageTarget {
+    match storage {
+        ActionItemStorageTarget::PlayerInventory => ItemStorageTarget::PlayerInventory,
+        ActionItemStorageTarget::CurrentRoom => ItemStorageTarget::CurrentRoom,
+    }
+}
+
 pub fn action_is_available(
     content: &ContentPack,
     state: &WorldState,
@@ -208,6 +215,48 @@ pub fn action_is_available(
             .any(|stage_id| state.active_objective_stage_ids.contains(stage_id))
     {
         return false;
+    }
+
+    // Item-possession gating so the bar hides actions whose items you lack.
+    if let Some(item_id) = &a.consumes_item {
+        if !state.has_item_in_storage(
+            item_id,
+            to_item_storage(a.consumes_item_storage.clone()),
+            context_room_id,
+        ) {
+            return false;
+        }
+    }
+    if !a.requires_any.is_empty() || !a.consumes_any.is_empty() {
+        let all_required: Vec<_> = a.requires_any.iter().chain(a.consumes_any.iter()).collect();
+        let has_any = all_required.iter().any(|id| {
+            let storage = if a.consumes_any.iter().any(|c| c == *id) {
+                to_item_storage(a.consumes_any_storage.clone())
+            } else {
+                to_item_storage(a.requires_any_storage.clone())
+            };
+            state.has_item_in_storage(id, storage, context_room_id)
+        });
+        if !has_any {
+            return false;
+        }
+    }
+    // Item-state gating derived from the effect, so content never has to restate
+    // the obvious: equipping/using needs the item in the inventory, unequipping
+    // needs it worn.
+    if action.has_effect(CommandEffect::EquipItem) && !state.has_item(&action.item_id) {
+        return false;
+    }
+    if action.has_effect(CommandEffect::UseItem) && !state.has_item(&action.item_id) {
+        return false;
+    }
+    if action.has_effect(CommandEffect::UnequipItem) {
+        let equipped = content
+            .item(&action.item_id)
+            .and_then(|item| state.equipped_item(&item.equip_slot));
+        if equipped != Some(action.item_id.as_str()) {
+            return false;
+        }
     }
 
     for progress in &a.required_bundle_progress {
@@ -481,4 +530,107 @@ fn speech_trigger_matches(trigger: RuleBundleCompletionTrigger, event: BundleSpe
             BundleSpeechEvent::ToRoom
         )
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::content::types::{
+        ActionAvailability, CommandEffect, CommandTargetMode, ItemDefinition, ItemKind,
+    };
+    use crate::engine::state::WorldState;
+
+    fn equipment_pack() -> ContentPack {
+        let mut pack = crate::engine::test_fixtures::minimal_test_pack();
+        pack.settings.equipment_slots = ["weapon".to_string()].into_iter().collect();
+        pack.items.push(ItemDefinition {
+            id: "chisel".to_string(),
+            label: "chisel".to_string(),
+            description: "A chisel.".to_string(),
+            kind: ItemKind::Weapon,
+            equip_slot: "weapon".to_string(),
+            stat_bonuses: std::collections::BTreeMap::new(),
+            use_hook: String::new(),
+            equip_hook: String::new(),
+        });
+        pack.actions.push(ActionDefinition {
+            id: "equip".to_string(),
+            command: "equip".to_string(),
+            target_mode: CommandTargetMode::None,
+            effects: vec![CommandEffect::EquipItem],
+            item_id: "chisel".to_string(),
+            available: ActionAvailability::default(),
+            ..ActionDefinition::default()
+        });
+        pack.actions.push(ActionDefinition {
+            id: "unequip".to_string(),
+            command: "unequip".to_string(),
+            target_mode: CommandTargetMode::None,
+            effects: vec![CommandEffect::UnequipItem],
+            item_id: "chisel".to_string(),
+            available: ActionAvailability::default(),
+            ..ActionDefinition::default()
+        });
+        pack.room_index = pack
+            .rooms
+            .iter()
+            .enumerate()
+            .map(|(i, r)| (r.id.clone(), i))
+            .collect();
+        pack.actor_index = pack
+            .actors
+            .iter()
+            .enumerate()
+            .map(|(i, a)| (a.id.clone(), i))
+            .collect();
+        pack.action_index = pack
+            .actions
+            .iter()
+            .enumerate()
+            .map(|(i, a)| (a.id.clone(), i))
+            .collect();
+        pack
+    }
+
+    #[test]
+    fn equip_and_unequip_are_mutually_exclusive_in_the_bar() {
+        let pack = equipment_pack();
+        let equip = pack.action("equip").unwrap();
+        let unequip = pack.action("unequip").unwrap();
+
+        // Holding the chisel (not equipped): only equip is available.
+        let mut state = WorldState::new(&pack);
+        state.current_room_id = "lounge".to_string();
+        state.add_item("chisel");
+        assert!(action_is_available(
+            &pack,
+            &state,
+            equip,
+            &state.current_room_id
+        ));
+        assert!(!action_is_available(
+            &pack,
+            &state,
+            unequip,
+            &state.current_room_id
+        ));
+
+        // After equipping, only unequip is available.
+        state.remove_item("chisel");
+        state
+            .equipment
+            .insert("weapon".to_string(), "chisel".to_string());
+        assert!(!action_is_available(
+            &pack,
+            &state,
+            equip,
+            &state.current_room_id
+        ));
+        assert!(action_is_available(
+            &pack,
+            &state,
+            unequip,
+            &state.current_room_id
+        ));
+    }
 }

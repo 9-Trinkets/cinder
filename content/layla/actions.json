@@ -268,11 +268,7 @@
       ],
       "item_id": "iron-chisel",
       "event_text": "{actor_name} wraps a hand around the iron chisel.",
-      "available": {
-        "requires_any": [
-          "iron-chisel"
-        ]
-      },
+      "available": {},
       "ui": {
         "bar": false,
         "overflow": true,
@@ -341,11 +337,7 @@
       ],
       "item_id": "warden-core",
       "event_text": "{actor_name} lifts the warden core; it hums against her palm.",
-      "available": {
-        "requires_any": [
-          "warden-core"
-        ]
-      },
+      "available": {},
       "ui": {
         "bar": false,
         "overflow": true,
