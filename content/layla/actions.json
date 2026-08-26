@@ -243,15 +243,15 @@
       }
     },
     {
-      "id": "equip_core",
-      "command": "EQUIP CORE",
-      "label": "Equip Warden Core",
+      "id": "equip_ring",
+      "command": "EQUIP RING",
+      "label": "Equip Ring",
       "group": "gear",
       "phrases": [
-        "equip core",
-        "hold core",
-        "carry core",
-        "grasp core"
+        "equip ring",
+        "wear ring",
+        "slide ring",
+        "put on ring"
       ],
       "player_enabled": true,
       "target_mode": "none",
@@ -259,8 +259,8 @@
       "effects": [
         "equip_item"
       ],
-      "item_id": "warden-core",
-      "event_text": "{actor_name} lifts the warden core; it hums against her palm.",
+      "item_id": "warden-ring",
+      "event_text": "{actor_name} slides the warden ring onto her finger; the stone warms against her skin.",
       "available": {},
       "ui": {
         "bar": false,
@@ -269,8 +269,8 @@
         "sort_order": 32
       },
       "player_command": {
-        "usage": "equip core",
-        "example": "equip core",
+        "usage": "equip ring",
+        "example": "equip ring",
         "advances_time": true,
         "input": {
           "required": false
@@ -278,14 +278,14 @@
       }
     },
     {
-      "id": "unequip_core",
-      "command": "STOW CORE",
-      "label": "Stow Warden Core",
+      "id": "unequip_ring",
+      "command": "UNEQUIP RING",
+      "label": "Unequip Ring",
       "group": "gear",
       "phrases": [
-        "stow core",
-        "unequip core",
-        "put down core"
+        "unequip ring",
+        "remove ring",
+        "take off ring"
       ],
       "player_enabled": true,
       "target_mode": "none",
@@ -293,8 +293,8 @@
       "effects": [
         "unequip_item"
       ],
-      "item_id": "warden-core",
-      "event_text": "{actor_name} tucks the warden core away. The humming fades.",
+      "item_id": "warden-ring",
+      "event_text": "{actor_name} pulls the warden ring off and tucks it away. The warmth fades.",
       "available": {},
       "ui": {
         "bar": false,
@@ -303,8 +303,8 @@
         "sort_order": 33
       },
       "player_command": {
-        "usage": "stow core",
-        "example": "stow core",
+        "usage": "unequip ring",
+        "example": "unequip ring",
         "advances_time": true,
         "input": {
           "required": false
@@ -348,15 +348,14 @@
       }
     },
     {
-      "id": "pick_up_core",
-      "command": "PICK UP CORE",
-      "label": "Pick Up Warden Core",
+      "id": "pick_up_ring",
+      "command": "PICK UP RING",
+      "label": "Pick Up Ring",
       "group": "gear",
       "phrases": [
-        "pick up core",
-        "take core",
-        "retrieve core",
-        "collect core"
+        "pick up ring",
+        "take ring",
+        "retrieve ring"
       ],
       "player_enabled": true,
       "target_mode": "none",
@@ -364,10 +363,10 @@
       "effects": [
         "pick_up_item"
       ],
-      "item_id": "warden-core",
-      "event_text": "{actor_name} lifts the still-warm warden core from the dust.",
+      "item_id": "warden-ring",
+      "event_text": "{actor_name} lifts the still-warm warden ring from the dust.",
       "available": {
-        "requires_room_item": "warden-core"
+        "requires_room_item": "warden-ring"
       },
       "ui": {
         "bar": false,
@@ -376,8 +375,8 @@
         "sort_order": 35
       },
       "player_command": {
-        "usage": "pick up core",
-        "example": "pick up core",
+        "usage": "pick up ring",
+        "example": "pick up ring",
         "advances_time": true,
         "input": {
           "required": false

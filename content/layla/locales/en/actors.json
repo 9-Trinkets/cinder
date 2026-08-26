@@ -129,7 +129,7 @@
     "attackable": true,
     "attack_interval_minutes": 3,
     "drops": {
-      "warden-core": 1
+      "warden-ring": 1
     },
     "tags": [
       "golem"

@@ -1,7 +1,7 @@
 {
   "title": "Layla",
   "tagline": "Wake lost. Encircle what is yours. Lay claim to the whole board.",
-  "description": "Layla wakes with no memory inside a shrouded grid of dark rooms. Explore, fight, and capture territory by encircling it \u2014 one room at a time \u2014 until the whole board is hers.",
+  "description": "Layla wakes with no memory inside a shrouded grid of dark rooms. Explore, fight, and capture territory by encircling it — one room at a time — until the whole board is hers.",
   "typewriter_char_ms": 12,
   "npc_tick_interval_ms": 2000,
   "tick_minutes_per_turn": 1,
@@ -33,5 +33,8 @@
     "iron-chisel": 1,
     "herb-salve": 2
   },
-  "equipment_slots": ["weapon", "trinket"]
+  "equipment_slots": [
+    "weapon",
+    "ring"
+  ]
 }
