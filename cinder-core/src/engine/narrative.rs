@@ -11,7 +11,7 @@ pub enum NarrativeLineKind {
     Narration,
     /// A scene/room heading (e.g. `== Lounge ==`).
     Heading,
-    /// The player's own echoed command (`> place flag`).
+    /// The player's own echoed command (`> place marker`).
     Player,
     /// A system/error feedback line.
     Error,

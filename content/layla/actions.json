@@ -174,16 +174,17 @@
       }
     },
     {
-      "id": "place_flag",
-      "command": "PLACE FLAG",
-      "label": "Place Flag",
+      "id": "place_marker",
+      "command": "PLACE MARKER",
+      "label": "Place Marker",
       "group": "territory",
       "phrases": [
-        "place flag",
-        "plant flag",
-        "set flag",
+        "place marker",
+        "place stone marker",
+        "plant marker",
+        "set marker",
         "mark room",
-        "flag room"
+        "drive marker"
       ],
       "player_enabled": true,
       "target_mode": "none",
@@ -203,8 +204,8 @@
         "sort_order": 20
       },
       "player_command": {
-        "usage": "place flag",
-        "example": "place flag",
+        "usage": "place marker",
+        "example": "place marker",
         "advances_time": true,
         "input": {
           "required": false
@@ -212,16 +213,17 @@
       }
     },
     {
-      "id": "pick_up_flag",
-      "command": "PICK UP FLAG",
-      "label": "Pick Up Flag",
+      "id": "pick_up_marker",
+      "command": "PICK UP MARKER",
+      "label": "Pick Up Marker",
       "group": "territory",
       "phrases": [
-        "pick up flag",
-        "retrieve flag",
-        "take flag",
-        "remove flag",
-        "collect flag"
+        "pick up marker",
+        "pick up stone marker",
+        "retrieve marker",
+        "take marker",
+        "remove marker",
+        "collect marker"
       ],
       "player_enabled": true,
       "target_mode": "none",
@@ -241,8 +243,8 @@
         "sort_order": 21
       },
       "player_command": {
-        "usage": "pick up flag",
-        "example": "pick up flag",
+        "usage": "pick up marker",
+        "example": "pick up marker",
         "advances_time": true,
         "input": {
           "required": false
