@@ -119,7 +119,12 @@ pub(super) fn handle_actor_command_used(
         }
     }
     if command.has_effect(CommandEffect::MoveActor) {
-        if let Some(target_room_id) = target_room_id {
+        let fixed_destination = if command.destination_room_id.is_empty() {
+            None
+        } else {
+            Some(command.destination_room_id.clone())
+        };
+        if let Some(to_room_id) = fixed_destination.or_else(|| target_room_id.map(str::to_string)) {
             apply_actor_move_transition(
                 state,
                 content,
@@ -127,7 +132,7 @@ pub(super) fn handle_actor_command_used(
                     actor_id,
                     actor_name: Some(actor_name),
                     from_room_id: room_id,
-                    to_room_id: target_room_id,
+                    to_room_id: &to_room_id,
                     command_text: Some(command_text.as_str()),
                 },
                 &mut lines,
@@ -497,6 +502,7 @@ pub(super) fn apply_actor_move_transition(
         state.clear_pending_reply(&pending.speaker_id, &pending.listener_id);
     }
     let is_followed_actor = state.followed_actor_id.as_deref() == Some(movement.actor_id);
+    let is_player = movement.actor_id == content.settings.combat.player_actor_id;
     let actor_name = movement
         .actor_name
         .or_else(|| {
@@ -547,7 +553,7 @@ pub(super) fn apply_actor_move_transition(
         movement.actor_id.to_string(),
         movement.to_room_id.to_string(),
     );
-    if is_followed_actor {
+    if is_followed_actor || is_player {
         state.current_room_id = movement.to_room_id.to_string();
         if let Some(observation) = render_room_observation(
             content,
@@ -667,6 +673,19 @@ pub(super) fn apply_new_command_effects(
                 command_context.room_id,
                 lines,
             );
+            let actor_name = actor_display_name(content, target_actor_id);
+            apply_narrating_world_hook_effects(
+                state,
+                content,
+                hook_ids::ACTOR_DEFEATED,
+                json!({
+                    "actor_id": target_actor_id,
+                    "actor_name": actor_name,
+                    "room_id": command_context.room_id,
+                }),
+                lines,
+            )
+            .unwrap_or_else(|error| eprintln!("[cinder] hook warning (actor.defeated): {error}"));
             state.set_relationship(target_actor_id, ActorRelationship::default());
             return;
         }

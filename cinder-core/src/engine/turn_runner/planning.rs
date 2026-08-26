@@ -575,6 +575,12 @@ pub(super) fn plan_targetless_command(
     context: &PlanningContext<'_>,
     planned: &mut PlannedTurn,
 ) -> bool {
+    if let Some(issue) = command_availability_issue(content, context.planner_state, action) {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: command_unavailable_message(content, action, &issue),
+        });
+        return false;
+    }
     let metadata = action
         .player_command
         .as_ref()
@@ -682,7 +688,10 @@ pub(super) fn plan_command_effects(
     context: &PlanningContext<'_>,
     planned: &mut PlannedTurn,
 ) -> bool {
-    if action.has_effect(CommandEffect::ObserveRoom) {
+    if action.has_effect(CommandEffect::MoveActor) && !action.destination_room_id.is_empty() {
+        // A fixed-destination move (e.g. descending a ladder) is targetless.
+        plan_targetless_command(content, action, context, planned)
+    } else if action.has_effect(CommandEffect::ObserveRoom) {
         let target = input.unwrap_or_default().trim();
         if target.is_empty() {
             plan_observe_room(context, planned)

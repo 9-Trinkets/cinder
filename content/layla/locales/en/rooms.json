@@ -4003,5 +4003,64 @@
         "menu_label": "West"
       }
     ]
+  },
+  {
+    "id": "d1c1",
+    "title": "The Mushroom Grove",
+    "summary": "A cavern floor choked with pale mushrooms that lean toward a glowing canopy overhead. The air smells of wet earth and something sweet.",
+    "inspect_text": "Glowing caps bob in the dark. The false sky above shimmers like water seen from below.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d1c2",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "d1c2",
+    "title": "A Chalked Clearing",
+    "summary": "A clearing where faint chalk lines—her chalk—glow in the soil. The forest parts here, as if waiting for something.",
+    "inspect_text": "The lines trace shapes she half-remembers. Something moved here recently.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d1c1",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d2c2",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d2c2",
+    "title": "The Root Hollow",
+    "summary": "Gnarled roots weave through the walls of this hollow, and between them the deep hum of the forest beats like a slow heart.",
+    "inspect_text": "The hum quickens near the eastern wall, as if something large is sleeping just beyond.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d1c2",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      }
+    ]
   }
 ]

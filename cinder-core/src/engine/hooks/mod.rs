@@ -203,6 +203,9 @@ fn apply_hook_effects(
                     }
                 }
             }
+            WorldHookEffect::SetStoryVar { key, value } => {
+                state.story_vars.set_unchecked(key.as_str(), value.as_str());
+            }
         }
     }
     Ok(())
@@ -243,6 +246,8 @@ enum WorldHookEffect {
         #[serde(default)]
         messages: Vec<String>,
     },
+    /// Sets a story variable (e.g. a flag marking a boss as defeated).
+    SetStoryVar { key: String, value: String },
 }
 
 fn deserialize_i32ish<'de, D>(deserializer: D) -> Result<i32, D::Error>

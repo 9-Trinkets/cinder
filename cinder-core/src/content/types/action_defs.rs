@@ -14,6 +14,10 @@ pub struct ActionAvailability {
     /// Room must NOT contain this item for the action to be available.
     #[serde(default)]
     pub requires_room_without_item: String,
+    /// A story variable that must be set (to a truthy value) for the action
+    /// to be available, e.g. `warden_defeated`.
+    #[serde(default)]
+    pub requires_story_var: String,
     #[serde(default)]
     pub allowed_rooms: Vec<String>,
     #[serde(default)]
@@ -176,6 +180,11 @@ pub struct ActionDefinition {
     // Behavior
     #[serde(default)]
     pub target_mode: CommandTargetMode,
+    /// A fixed destination room for a `MoveActor` action, overriding any
+    /// player-chosen exit. Used for scripted transitions like descending a
+    /// ladder to another level.
+    #[serde(default)]
+    pub destination_room_id: String,
     #[serde(default)]
     pub outcome_mode: CommandOutcomeMode,
     #[serde(default)]

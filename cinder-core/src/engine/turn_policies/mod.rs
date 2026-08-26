@@ -129,8 +129,23 @@ pub(crate) fn command_availability_issue(
             "forbidden".to_string(),
         ));
     }
+    if !a.requires_story_var.is_empty() && !story_var_is_truthy(state, &a.requires_story_var) {
+        return Some(CommandAvailabilityIssue::StageInactive);
+    }
 
     None
+}
+
+/// A story variable counts as set/truthy when it exists and isn't a falsy
+/// string ("", "false", "0").
+fn story_var_is_truthy(state: &WorldState, key: &str) -> bool {
+    match state.story_vars.get(key) {
+        Some(value) => !matches!(
+            value.trim().to_ascii_lowercase().as_str(),
+            "" | "false" | "0"
+        ),
+        None => false,
+    }
 }
 
 pub(crate) fn command_unavailable_message(
@@ -233,6 +248,9 @@ pub fn action_is_available(
             context_room_id,
         )
     {
+        return false;
+    }
+    if !a.requires_story_var.is_empty() && !story_var_is_truthy(state, &a.requires_story_var) {
         return false;
     }
 
