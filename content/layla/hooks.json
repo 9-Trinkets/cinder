@@ -49,7 +49,7 @@
       ]
     }
   },
-  "actor.encircled": {
+  "actor.surrounded": {
     "rule": "effect_table",
     "rule_config": {
       "cases_path": "rules",

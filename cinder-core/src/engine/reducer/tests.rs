@@ -4,11 +4,11 @@ use crate::content::types::{
     ActionDefinition, ActionItemCreation, ActionItemStorageTarget, ActorDefinition,
     ActorPromptContext, AdvanceCondition, AdvanceSignal, BeatDefinition, BeatsDefinition,
     CombatSettingsDefinition, CommandEffect, CommandInputMode, CommandTargetMode, ContentPack,
-    ContentSettingsDefinition, ConversionTrigger, ItemDefinition, ItemStorageTarget,
-    OpeningDefinition, PresentationDefinition, RoomDefinition, RoomExitDefinition,
-    RoomFeatureDefinition, RuleBundleCompletionDefinition, RuleBundleDefinition,
-    RuleBundleGuidanceDefinition, RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition,
-    RuleBundleProgressRef, RuleBundlesDefinition, StatDefinition, StatsDefinition,
+    ContentSettingsDefinition, ItemDefinition, ItemStorageTarget, OpeningDefinition,
+    PresentationDefinition, RoomDefinition, RoomExitDefinition, RoomFeatureDefinition,
+    RuleBundleCompletionDefinition, RuleBundleDefinition, RuleBundleGuidanceDefinition,
+    RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition, RuleBundleProgressRef,
+    RuleBundlesDefinition, StatDefinition, StatsDefinition,
 };
 use crate::engine::state::{ActorStance, ConversationMemoryKind, GamePhase};
 use crate::engine::test_fixtures::minimal_test_pack;
@@ -243,7 +243,6 @@ fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
         inspect_text: format!("{name} looks thoughtful."),
         required_consumable_tags: vec![],
         attackable: false,
-        conversion_trigger: None,
         drops: BTreeMap::new(),
         attack_interval_minutes: None,
         prompt_context: ActorPromptContext {
@@ -982,17 +981,16 @@ fn encirclement_conversion_narration_follows_the_flag_placement() {
         "conversion.encircled_follows".to_string(),
         "The {actor} falls in behind you.".to_string(),
     );
-    // A golem in the lounge converts via the `actor.encircled` hook once its
+    // A golem in the lounge converts via the `actor.surrounded` hook once its
     // only neighbor (the kitchen) holds a stone marker.
     pack.actors.push(ActorDefinition {
         id: "golem".to_string(),
         name: "dark golem".to_string(),
         room_id: LOUNGE_ID.to_string(),
-        conversion_trigger: Some(ConversionTrigger::Encirclement),
         ..test_actor("golem", "dark golem", LOUNGE_ID)
     });
     pack.hooks.insert(
-        "actor.encircled".to_string(),
+        "actor.surrounded".to_string(),
         effect_hook(vec![json!({
             "kind": "convert_actor_to_ally",
             "actor_id": "$input.actor_id",
@@ -1064,11 +1062,10 @@ fn creating_an_item_in_a_room_can_complete_an_encirclement() {
         id: "golem".to_string(),
         name: "dark golem".to_string(),
         room_id: LOUNGE_ID.to_string(),
-        conversion_trigger: Some(ConversionTrigger::Encirclement),
         ..test_actor("golem", "dark golem", LOUNGE_ID)
     });
     pack.hooks.insert(
-        "actor.encircled".to_string(),
+        "actor.surrounded".to_string(),
         effect_hook(vec![json!({
             "kind": "convert_actor_to_ally",
             "actor_id": "$input.actor_id",

@@ -1,6 +1,6 @@
 use crate::content::types::{
     ActionDefinition, ActionItemStorageTarget, CommandEffect, CommandInputMode, CommandTargetMode,
-    ContentPack, ConversionTrigger, ItemDefinition, ItemStorageTarget,
+    ContentPack, ItemDefinition, ItemStorageTarget,
 };
 use crate::engine::events::{ObservationMode, WorldEvent};
 use crate::engine::hook_ids;
@@ -115,7 +115,7 @@ pub(super) fn handle_actor_command_used(
         // An item produced into a room can complete an encirclement (e.g.
         // chalk markings drawn around a golem's chamber).
         if storage == ItemStorageTarget::CurrentRoom {
-            run_encirclement_rules(state, content, &item_id, &mut lines);
+            trigger_surrounded_hooks(state, content, &item_id, &mut lines);
         }
     }
     if command.has_effect(CommandEffect::MoveActor) {
@@ -581,7 +581,7 @@ pub(super) fn apply_new_command_effects(
         let room_id = command_context.room_id.to_string();
         if state.remove_item(&command.item_id) {
             state.add_item_to_storage(&command.item_id, ItemStorageTarget::CurrentRoom, &room_id);
-            run_encirclement_rules(state, content, &command.item_id, lines);
+            trigger_surrounded_hooks(state, content, &command.item_id, lines);
         }
     }
     if command.has_effect(CommandEffect::PickUpItem) {
@@ -933,24 +933,24 @@ fn render_equipment_message(
     )
 }
 
-/// Generic encirclement scan: after an item is dropped into a room, find any
-/// living, neutral actor marked `conversion_trigger: encirclement` whose room
-/// is now fully surrounded by neighbors containing that item, and fire the
-/// `actor.encircled` hook for each. The hook's *effect* is content-authored
-/// (e.g. convert the actor to an ally follower) — the engine only decides
-/// *that* the encirclement completed.
-pub(super) fn run_encirclement_rules(
+/// Generic spatial trigger: whenever an item appears in a room, find any
+/// living, non-allied, non-player actor whose room is now *fully surrounded*
+/// by neighbors containing that item, and fire the `actor.surrounded` hook for
+/// each. What the hook does (e.g. convert the actor to an ally) is entirely
+/// content-authored — the engine only decides that the surround completed.
+pub(super) fn trigger_surrounded_hooks(
     state: &mut WorldState,
     content: &ContentPack,
     item_id: &str,
     lines: &mut NarrativeLines,
 ) {
+    let player_id = &content.settings.combat.player_actor_id;
     for actor in &content.actors {
-        if actor.conversion_trigger != Some(ConversionTrigger::Encirclement) {
+        if actor.id == *player_id {
             continue;
         }
         let relationship = state.relationship(&actor.id);
-        if relationship.stance != ActorStance::Neutral || relationship.follows_player {
+        if relationship.stance == ActorStance::Allied || relationship.follows_player {
             continue;
         }
         if state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id) {
@@ -971,7 +971,7 @@ pub(super) fn run_encirclement_rules(
         apply_narrating_world_hook_effects(
             state,
             content,
-            hook_ids::ACTOR_ENCIRCLED,
+            hook_ids::ACTOR_SURROUNDED,
             json!({
                 "actor_id": actor.id,
                 "actor_name": actor_name,
@@ -980,6 +980,6 @@ pub(super) fn run_encirclement_rules(
             }),
             lines,
         )
-        .unwrap_or_else(|error| eprintln!("[cinder] hook warning (actor.encircled): {error}"));
+        .unwrap_or_else(|error| eprintln!("[cinder] hook warning (actor.surrounded): {error}"));
     }
 }

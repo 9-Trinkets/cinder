@@ -802,7 +802,7 @@ pub(super) fn handle_item_acquired(
                 lines.narration(line);
             }
             // An item appearing in a room can complete an encirclement.
-            super::command_effects::run_encirclement_rules(state, content, item_id, lines);
+            super::command_effects::trigger_surrounded_hooks(state, content, item_id, lines);
         }
     }
 }

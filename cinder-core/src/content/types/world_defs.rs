@@ -304,9 +304,6 @@ pub struct ActorDefinition {
     /// packs opt their creatures in explicitly.
     #[serde(default)]
     pub attackable: bool,
-    /// Rule that can convert this actor into a player ally, if any.
-    #[serde(default)]
-    pub conversion_trigger: Option<ConversionTrigger>,
     /// Items scattered into this actor's room as loose items when it is
     /// defeated by the player's attack, item id → count.
     #[serde(default)]
@@ -320,14 +317,6 @@ pub struct ActorDefinition {
     pub act_cast: Option<ActorActCast>,
     #[serde(default)]
     pub game_data: BTreeMap<String, String>,
-}
-
-/// Content-declared ways an actor can be turned into an ally.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum ConversionTrigger {
-    /// Converting when every room adjacent to the actor's room is flagged.
-    Encirclement,
 }
 
 impl ActorDefinition {
