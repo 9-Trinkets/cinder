@@ -14,12 +14,42 @@ export default function StatusPanel({ uiSnapshot }: { uiSnapshot: api.UiSnapshot
           {uiSnapshot.time_label ? <span className="text-muted ml-1">— {uiSnapshot.time_label}</span> : null}
         </p>
       </div>
+      <div>
+        <p className="text-xs text-muted uppercase tracking-wider">Vitals</p>
+        <div className="mt-1">
+          <div className="flex items-baseline justify-between text-xs">
+            <span className="text-text">HP</span>
+            <span className="text-muted">{uiSnapshot.player.hp}/{uiSnapshot.player.hp_max}</span>
+          </div>
+          <div className="mt-1 h-1.5 w-full rounded-full bg-overlay overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all duration-300"
+              style={{
+                width: `${uiSnapshot.player.hp_max > 0 ? (uiSnapshot.player.hp / uiSnapshot.player.hp_max) * 100 : 0}%`,
+                backgroundColor: 'var(--color-pine)',
+              }}
+            />
+          </div>
+          {uiSnapshot.player.stats.length > 0 && (
+            <ul className="mt-1.5 space-y-0.5">
+              {uiSnapshot.player.stats.map(stat => (
+                <li key={stat.id} className="flex justify-between text-xs">
+                  <span className="text-muted">{stat.id}</span>
+                  <span className="text-text">{stat.value}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
       {uiSnapshot.party.length > 0 && (
         <div>
           <p className="text-xs text-muted uppercase tracking-wider">Party</p>
           <ul className="mt-1 space-y-0.5">
-            {uiSnapshot.party.map((name, i) => (
-              <li key={i} className="text-pine font-medium text-xs">• {name}</li>
+            {uiSnapshot.party.map((member, i) => (
+              <li key={i} className="text-pine font-medium text-xs">
+                • {member.label}{member.count > 1 ? <span className="text-muted ml-1">×{member.count}</span> : null}
+              </li>
             ))}
           </ul>
         </div>

@@ -205,6 +205,22 @@ export interface EquippedItem {
   label: string
 }
 
+export interface PartyMember {
+  label: string
+  count: number
+}
+
+export interface StatValue {
+  id: string
+  value: number
+}
+
+export interface PlayerStatus {
+  hp: number
+  hp_max: number
+  stats: StatValue[]
+}
+
 export interface ConsumableInfo {
   id: string
   label: string
@@ -277,7 +293,8 @@ export interface UiSnapshot {
   game_closure: ActClosureData | null
   inventory: InventoryItem[]
   equipped_items: EquippedItem[]
-  party: string[]
+  party: PartyMember[]
+  player: PlayerStatus
   current_room_items: InventoryItem[]
   room_consumables: RoomConsumableGroup[]
   crafted_consumable_labels: string[]

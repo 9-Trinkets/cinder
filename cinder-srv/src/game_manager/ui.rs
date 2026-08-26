@@ -34,6 +34,28 @@ pub struct EquippedItem {
     pub label: String,
 }
 
+/// A group of same-named followers in the party.
+#[derive(Clone, Serialize)]
+pub struct PartyMember {
+    pub label: String,
+    pub count: u32,
+}
+
+/// A single stat value shown on the player's status.
+#[derive(Clone, Serialize)]
+pub struct StatValue {
+    pub id: String,
+    pub value: i32,
+}
+
+/// The player's vitals and other stats for the sidebar.
+#[derive(Clone, Serialize)]
+pub struct PlayerStatus {
+    pub hp: u32,
+    pub hp_max: u32,
+    pub stats: Vec<StatValue>,
+}
+
 #[derive(Clone, Serialize)]
 pub struct ConsumableInfo {
     pub id: String,
@@ -159,8 +181,10 @@ pub struct UiSnapshot {
     pub inventory: Vec<InventoryItem>,
     /// Items worn in the player's equipment slots (slot → label).
     pub equipped_items: Vec<EquippedItem>,
-    /// Display names of actors following the player (the party).
-    pub party: Vec<String>,
+    /// Followers grouped by name (e.g. "dark golem" ×2).
+    pub party: Vec<PartyMember>,
+    /// The player's vitals and other stats for the sidebar.
+    pub player: PlayerStatus,
     /// Loose items lying in the current room (dropped there).
     pub current_room_items: Vec<InventoryItem>,
     pub room_consumables: Vec<RoomConsumableGroup>,
@@ -461,14 +485,57 @@ pub(super) fn build_ui_snapshot(
             None
         },
         game_closure: response::game_closure_data(runtime, transcript_lines),
-        party: state
-            .relationships
-            .iter()
-            .filter(|(actor_id, relationship)| {
-                relationship.follows_player && *actor_id != &content.settings.combat.player_actor_id
-            })
-            .filter_map(|(actor_id, _)| runtime.actor_display_name(actor_id).ok().flatten())
-            .collect(),
+        party: {
+            let mut members: Vec<PartyMember> = Vec::new();
+            for actor_id in state
+                .relationships
+                .iter()
+                .filter_map(|(actor_id, relationship)| {
+                    (relationship.follows_player
+                        && actor_id.as_str() != content.settings.combat.player_actor_id)
+                        .then_some(actor_id)
+                })
+            {
+                let label = runtime
+                    .actor_display_name(actor_id)
+                    .ok()
+                    .flatten()
+                    .unwrap_or_else(|| actor_id.clone());
+                if let Some(member) = members.iter_mut().find(|m| m.label == label) {
+                    member.count += 1;
+                } else {
+                    members.push(PartyMember { label, count: 1 });
+                }
+            }
+            members.sort_by(|a, b| a.label.cmp(&b.label));
+            members
+        },
+        player: {
+            let player_id = &content.settings.combat.player_actor_id;
+            let health_stat = &content.settings.combat.health_stat_id;
+            let hp = state
+                .effective_actor_stat(content, player_id, health_stat)
+                .max(0) as u32;
+            let hp_max = content
+                .stats
+                .actor
+                .get(health_stat)
+                .and_then(|stat| stat.max)
+                .map(|max| max.max(0) as u32)
+                .unwrap_or(hp);
+            let mut stats = content
+                .stats
+                .actor
+                .iter()
+                .filter(|(stat_id, _)| *stat_id != health_stat)
+                .map(|(stat_id, _)| StatValue {
+                    id: stat_id.clone(),
+                    value: state.effective_actor_stat(content, player_id, stat_id),
+                })
+                .collect::<Vec<_>>();
+            stats.sort_by(|a, b| a.id.cmp(&b.id));
+            PlayerStatus { hp, hp_max, stats }
+        },
         current_room_items: state
             .loose_room_items(&current_room_id)
             .into_iter()
