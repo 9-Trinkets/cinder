@@ -87,11 +87,18 @@ pub(crate) fn run_actor_tick(
     tick_workflow: &WorkflowDefinition,
     state: &WorldState,
 ) -> Result<ActorTickExecution, ActorTickError> {
+    // Only tick actors on the player's current board so separate levels don't
+    // act in parallel (which also keeps per-tick workflow hops bounded).
+    let reachable = content.reachable_room_ids(&state.current_room_id);
     let input = ActorTickWorkflowState {
         state: state.clone(),
         remaining_actor_ids: content
             .actors
             .iter()
+            .filter(|actor| {
+                let room = state.actor_room_id(&actor.id, &actor.room_id);
+                reachable.contains(room)
+            })
             .map(|actor| actor.id.clone())
             .collect(),
         current_actor_id: None,
@@ -148,12 +155,18 @@ pub(crate) fn plan_wander_moves(content: &ContentPack, state: &WorldState) -> Ve
     if state.phase != crate::engine::state::GamePhase::Active {
         return Vec::new();
     }
+    // Only wander actors on the player's current board; actors on other levels
+    // stay dormant until the player descends.
+    let reachable = content.reachable_room_ids(&state.current_room_id);
     let mut events = Vec::new();
     for actor in &content.actors {
         if actor.move_every_ticks == 0 {
             continue;
         }
         if state.stance(&actor.id) != ActorStance::Hostile {
+            continue;
+        }
+        if !reachable.contains(state.actor_room_id(&actor.id, &actor.room_id)) {
             continue;
         }
         if state.current_time_minutes % actor.move_every_ticks != 0 {

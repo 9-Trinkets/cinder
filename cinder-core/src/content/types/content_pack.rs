@@ -138,6 +138,25 @@ impl ContentPack {
     }
 
     /// Rooms directly connected to `room_id` by an exit in either direction.
+    /// Every room reachable from `start_room_id` by walking exits — i.e. the
+    /// connected board the player is on. Scripted transitions (like a ladder
+    /// descent action) are not exits, so separate boards stay separate.
+    pub fn reachable_room_ids(&self, start_room_id: &str) -> std::collections::BTreeSet<String> {
+        let mut seen = std::collections::BTreeSet::new();
+        let mut queue = std::collections::VecDeque::from([start_room_id.to_string()]);
+        while let Some(room_id) = queue.pop_front() {
+            if !seen.insert(room_id.clone()) {
+                continue;
+            }
+            for neighbor in self.adjacent_room_ids(&room_id) {
+                if !seen.contains(&neighbor) {
+                    queue.push_back(neighbor);
+                }
+            }
+        }
+        seen
+    }
+
     pub fn adjacent_room_ids(&self, room_id: &str) -> Vec<String> {
         let mut neighbors: Vec<String> = Vec::new();
         if let Some(room) = self.room(room_id) {
