@@ -206,6 +206,19 @@ fn apply_hook_effects(
             WorldHookEffect::SetStoryVar { key, value } => {
                 state.story_vars.set_unchecked(key.as_str(), value.as_str());
             }
+            WorldHookEffect::DefeatActorsByTag { tag } => {
+                let health_stat_id = &content.settings.combat.health_stat_id;
+                for actor in &content.actors {
+                    if actor.tags.iter().any(|actor_tag| actor_tag.as_str() == tag) {
+                        // A large negative delta clamps to the stat's min (0).
+                        state
+                            .adjust_actor_stat(&actor.id, health_stat_id, i32::MIN / 2)
+                            .unwrap_or_else(|error| {
+                                eprintln!("[cinder] defeat stat error: {error}")
+                            });
+                    }
+                }
+            }
         }
     }
     Ok(())
@@ -248,6 +261,9 @@ enum WorldHookEffect {
     },
     /// Sets a story variable (e.g. a flag marking a boss as defeated).
     SetStoryVar { key: String, value: String },
+    /// Defeats every living actor carrying `tag` (e.g. an army crumbling when
+    /// its commander falls).
+    DefeatActorsByTag { tag: String },
 }
 
 fn deserialize_i32ish<'de, D>(deserializer: D) -> Result<i32, D::Error>
