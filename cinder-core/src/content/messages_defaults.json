@@ -14,6 +14,8 @@
   "equipment.already_equipped": "The {item} is already equipped.",
   "combat.defeat_drop": "The {actor} crumbles. Left behind: {items}.",
   "combat.level_up": "The party grows stronger. Level {level}.",
+  "combat.guard_intercepts": "The {actor} strikes, but {guard} steps in front of you, taking {damage} damage.",
+  "combat.guard_falls": "{guard} crumples from the blow and collapses.",
   "error.command_not_now": "You can't {verb} right now.",
   "error.command_needs_more": "You can't {verb} yet. Still needed: {labels}.",
   "error.command_blocked_by_progress": "You can't {verb} again right now. Already ready: {labels}.",

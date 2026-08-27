@@ -243,6 +243,7 @@ fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
         inspect_text: format!("{name} looks thoughtful."),
         required_consumable_tags: vec![],
         attackable: false,
+        guard: false,
         drops: BTreeMap::new(),
         xp_drop: 0,
         attack_interval_minutes: None,

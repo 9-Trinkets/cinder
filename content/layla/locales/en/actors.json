@@ -40,7 +40,8 @@
     "drops": {},
     "tags": [
       "golem"
-    ]
+    ],
+    "guard": true
   },
   {
     "id": "golem-pale-ne",
@@ -83,7 +84,8 @@
     "drops": {},
     "tags": [
       "golem"
-    ]
+    ],
+    "guard": false
   },
   {
     "id": "golem-boss",
@@ -133,7 +135,8 @@
     },
     "tags": [
       "golem"
-    ]
+    ],
+    "guard": false
   },
   {
     "id": "golem-dark-sw",
@@ -175,7 +178,8 @@
     "drops": {},
     "tags": [
       "golem"
-    ]
+    ],
+    "guard": true
   },
   {
     "id": "golem-pale-se",
@@ -217,6 +221,7 @@
     "drops": {},
     "tags": [
       "golem"
-    ]
+    ],
+    "guard": false
   }
 ]

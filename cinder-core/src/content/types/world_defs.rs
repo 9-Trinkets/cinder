@@ -304,6 +304,10 @@ pub struct ActorDefinition {
     /// packs opt their creatures in explicitly.
     #[serde(default)]
     pub attackable: bool,
+    /// When this actor follows the player, it intercepts damage aimed at the
+    /// player, taking it at a rate reduced by its own defense.
+    #[serde(default)]
+    pub guard: bool,
     /// Items scattered into this actor's room as loose items when it is
     /// defeated by the player's attack, item id → count.
     #[serde(default)]
