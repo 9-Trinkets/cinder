@@ -686,6 +686,7 @@ pub(super) fn apply_new_command_effects(
                 lines,
             )
             .unwrap_or_else(|error| eprintln!("[cinder] hook warning (actor.defeated): {error}"));
+            award_defeat_xp(state, content, target_actor_id, lines);
             state.set_relationship(target_actor_id, ActorRelationship::default());
             return;
         }
@@ -723,6 +724,55 @@ pub(super) fn actor_display_name(content: &ContentPack, actor_id: &str) -> Strin
 
 /// Scatters a defeated actor's declared drops into its room as loose items the
 /// player can pick up. Narrates one line listing what appeared.
+/// Awards the defeated actor's XP to the whole party and raises levels while
+/// the shared XP crosses the content-declared thresholds, applying the level
+/// stat bonus to the player and every follower.
+pub(super) fn award_defeat_xp(
+    state: &mut WorldState,
+    content: &ContentPack,
+    defeated_actor_id: &str,
+    lines: &mut NarrativeLines,
+) {
+    let Some(xp) = content.actor(defeated_actor_id).map(|actor| actor.xp_drop) else {
+        return;
+    };
+    let combat = &content.settings.combat;
+    if xp == 0 || combat.xp_per_level.is_empty() {
+        return;
+    }
+    state.party_xp += xp;
+    let mut leveled = 0;
+    while let Some(required) = combat.xp_per_level.get((state.party_level - 1) as usize) {
+        if state.party_xp < *required {
+            break;
+        }
+        state.party_xp -= *required;
+        state.party_level += 1;
+        leveled += 1;
+        let mut targets = vec![combat.player_actor_id.clone()];
+        for (actor_id, relationship) in &state.relationships {
+            if relationship.follows_player {
+                targets.push(actor_id.clone());
+            }
+        }
+        for target in targets {
+            for (stat, delta) in &combat.level_stat_bonus {
+                if let Err(error) = state.adjust_actor_stat(&target, stat, *delta) {
+                    eprintln!("[cinder] level stat error ({target}/{stat}): {error}");
+                }
+            }
+        }
+    }
+    if leveled > 0 {
+        if let Some(line) = content.render_message(
+            "combat.level_up",
+            &[("level", state.party_level.to_string().as_str())],
+        ) {
+            lines.narration(line);
+        }
+    }
+}
+
 pub(super) fn spawn_defeat_drops(
     state: &mut WorldState,
     content: &ContentPack,

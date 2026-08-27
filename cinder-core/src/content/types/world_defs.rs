@@ -308,6 +308,9 @@ pub struct ActorDefinition {
     /// defeated by the player's attack, item id → count.
     #[serde(default)]
     pub drops: BTreeMap<String, u32>,
+    /// XP awarded to the whole party when this actor is defeated.
+    #[serde(default)]
+    pub xp_drop: u32,
     /// Game minutes between this actor's autonomous hostile strikes. Only used
     /// while the actor is hostile; defaults to 4 when omitted.
     #[serde(default)]

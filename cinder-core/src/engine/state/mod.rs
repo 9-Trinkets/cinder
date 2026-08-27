@@ -84,6 +84,11 @@ pub struct WorldState {
     /// `settings.equipment_slots` keys. Bonuses feed effective stat reads.
     #[serde(default)]
     pub equipment: BTreeMap<String, String>,
+    /// Shared party XP and current level.
+    #[serde(default)]
+    pub party_xp: u32,
+    #[serde(default)]
+    pub party_level: u32,
 }
 
 /// Discrete stance of an actor toward the player. Mutual exclusion is inherent:
@@ -205,6 +210,8 @@ impl WorldState {
             relationships: BTreeMap::new(),
             next_hostile_strike_at: BTreeMap::new(),
             equipment: BTreeMap::new(),
+            party_xp: 0,
+            party_level: 1,
         }
     }
 
