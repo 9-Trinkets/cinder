@@ -36,5 +36,19 @@
   "equipment_slots": [
     "weapon",
     "ring"
-  ]
+  ],
+  "combat": {
+    "xp_per_level": [
+      50,
+      100,
+      180,
+      300,
+      500
+    ],
+    "level_stat_bonus": {
+      "hp": 3,
+      "strength": 1,
+      "defense": 1
+    }
+  }
 }

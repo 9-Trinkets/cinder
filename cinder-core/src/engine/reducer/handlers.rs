@@ -538,6 +538,17 @@ pub(super) fn handle_player_moved(
         content,
         &format!("room_entered:{to_room_id}"),
     ));
+    sync_followers_to_room(state, content, to_room_id, lines);
+}
+
+/// Moves every living follower into the player's room (used when the player
+/// moves or descends, so the party stays together).
+pub(super) fn sync_followers_to_room(
+    state: &mut WorldState,
+    content: &ContentPack,
+    to_room_id: &str,
+    lines: &mut NarrativeLines,
+) {
     let follower_actor_ids: Vec<String> = state
         .relationships
         .iter()

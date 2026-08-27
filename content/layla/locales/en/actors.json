@@ -223,5 +223,373 @@
       "golem"
     ],
     "guard": false
+  },
+  {
+    "id": "elf-pawn-1",
+    "name": "elf pawn",
+    "room_id": "d7c1",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 1,
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "hp": 6,
+      "strength": 2,
+      "defense": 1
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-pawn-2",
+    "name": "elf pawn",
+    "room_id": "d7c2",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 1,
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "hp": 6,
+      "strength": 2,
+      "defense": 1
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-pawn-3",
+    "name": "elf pawn",
+    "room_id": "d7c3",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 1,
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "hp": 6,
+      "strength": 2,
+      "defense": 1
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-pawn-4",
+    "name": "elf pawn",
+    "room_id": "d7c4",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 1,
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "hp": 6,
+      "strength": 2,
+      "defense": 1
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-pawn-5",
+    "name": "elf pawn",
+    "room_id": "d7c5",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 1,
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "hp": 6,
+      "strength": 2,
+      "defense": 1
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-pawn-6",
+    "name": "elf pawn",
+    "room_id": "d7c6",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 1,
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "hp": 6,
+      "strength": 2,
+      "defense": 1
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-pawn-7",
+    "name": "elf pawn",
+    "room_id": "d7c7",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 1,
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "hp": 6,
+      "strength": 2,
+      "defense": 1
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-pawn-8",
+    "name": "elf pawn",
+    "room_id": "d7c8",
+    "aliases": [
+      "elf pawn"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 1,
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "hp": 6,
+      "strength": 2,
+      "defense": 1
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-rook-1",
+    "name": "elf rook",
+    "room_id": "d8c1",
+    "aliases": [
+      "elf rook"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf rook of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 3,
+    "initial_hostile": true,
+    "xp_drop": 40,
+    "initial_stats": {
+      "hp": 14,
+      "strength": 5,
+      "defense": 3
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-knight-2",
+    "name": "elf knight",
+    "room_id": "d8c2",
+    "aliases": [
+      "elf knight"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf knight of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 2,
+    "initial_hostile": true,
+    "xp_drop": 25,
+    "initial_stats": {
+      "hp": 10,
+      "strength": 4,
+      "defense": 2
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-bishop-3",
+    "name": "elf bishop",
+    "room_id": "d8c3",
+    "aliases": [
+      "elf bishop"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf bishop of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 3,
+    "initial_hostile": true,
+    "xp_drop": 25,
+    "initial_stats": {
+      "hp": 10,
+      "strength": 4,
+      "defense": 2
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-queen-4",
+    "name": "elf queen",
+    "room_id": "d8c4",
+    "aliases": [
+      "elf queen"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf queen of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 4,
+    "initial_hostile": true,
+    "xp_drop": 60,
+    "initial_stats": {
+      "hp": 16,
+      "strength": 6,
+      "defense": 3
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-king-5",
+    "name": "elf king",
+    "room_id": "d8c5",
+    "aliases": [
+      "elf king"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf king of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 0,
+    "initial_hostile": true,
+    "xp_drop": 0,
+    "initial_stats": {
+      "hp": 20,
+      "strength": 6,
+      "defense": 4
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-bishop-6",
+    "name": "elf bishop",
+    "room_id": "d8c6",
+    "aliases": [
+      "elf bishop"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf bishop of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 3,
+    "initial_hostile": true,
+    "xp_drop": 25,
+    "initial_stats": {
+      "hp": 10,
+      "strength": 4,
+      "defense": 2
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-knight-7",
+    "name": "elf knight",
+    "room_id": "d8c7",
+    "aliases": [
+      "elf knight"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf knight of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 2,
+    "initial_hostile": true,
+    "xp_drop": 25,
+    "initial_stats": {
+      "hp": 10,
+      "strength": 4,
+      "defense": 2
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "elf-rook-8",
+    "name": "elf rook",
+    "room_id": "d8c8",
+    "aliases": [
+      "elf rook"
+    ],
+    "tags": [
+      "elf"
+    ],
+    "inspect_text": "A elf rook of the underground forest, armed and watching.",
+    "attackable": true,
+    "attack_interval_minutes": 1,
+    "move_every_ticks": 3,
+    "initial_hostile": true,
+    "xp_drop": 40,
+    "initial_stats": {
+      "hp": 14,
+      "strength": 5,
+      "defense": 3
+    },
+    "prompt_context": {}
   }
 ]

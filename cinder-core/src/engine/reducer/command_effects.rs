@@ -555,6 +555,9 @@ pub(super) fn apply_actor_move_transition(
     );
     if is_followed_actor || is_player {
         state.current_room_id = movement.to_room_id.to_string();
+        if is_player {
+            super::handlers::sync_followers_to_room(state, content, movement.to_room_id, lines);
+        }
         if let Some(observation) = render_room_observation(
             content,
             state,

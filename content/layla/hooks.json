@@ -24,6 +24,19 @@
             "key": "warden_defeated",
             "value": "true"
           }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "elf-king-5"
+            }
+          ],
+          "payload_template": {
+            "kind": "defeat_actors_by_tag",
+            "tag": "elf"
+          }
         }
       ]
     }

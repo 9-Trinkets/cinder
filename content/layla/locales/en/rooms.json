@@ -4008,7 +4008,7 @@
     "id": "d1c1",
     "title": "The Mushroom Grove",
     "summary": "A cavern floor choked with pale mushrooms that lean toward a glowing canopy overhead. The air smells of wet earth and something sweet.",
-    "inspect_text": "Glowing caps bob in the dark. The false sky above shimmers like water seen from below.",
+    "inspect_text": "A cavern floor choked with pale mushrooms that lean toward a glowing canopy overhead. The air smells of wet earth and something sweet.",
     "features": [],
     "exits": [
       {
@@ -4018,14 +4018,22 @@
           "e"
         ],
         "menu_label": "East"
+      },
+      {
+        "room_id": "d2c1",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
       }
     ]
   },
   {
     "id": "d1c2",
-    "title": "A Chalked Clearing",
-    "summary": "A clearing where faint chalk lines—her chalk—glow in the soil. The forest parts here, as if waiting for something.",
-    "inspect_text": "The lines trace shapes she half-remembers. Something moved here recently.",
+    "title": "A Glowing Clearing",
+    "summary": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "inspect_text": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
     "features": [],
     "exits": [
       {
@@ -4035,6 +4043,14 @@
           "w"
         ],
         "menu_label": "West"
+      },
+      {
+        "room_id": "d1c3",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
       },
       {
         "room_id": "d2c2",
@@ -4047,14 +4063,2307 @@
     ]
   },
   {
-    "id": "d2c2",
-    "title": "The Root Hollow",
-    "summary": "Gnarled roots weave through the walls of this hollow, and between them the deep hum of the forest beats like a slow heart.",
-    "inspect_text": "The hum quickens near the eastern wall, as if something large is sleeping just beyond.",
+    "id": "d1c3",
+    "title": "A Glowing Clearing",
+    "summary": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "inspect_text": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
     "features": [],
     "exits": [
       {
         "room_id": "d1c2",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d1c4",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d2c3",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d1c4",
+    "title": "A Glowing Clearing",
+    "summary": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "inspect_text": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d1c3",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d1c5",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d2c4",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d1c5",
+    "title": "A Glowing Clearing",
+    "summary": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "inspect_text": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d1c4",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d1c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d2c5",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d1c6",
+    "title": "A Glowing Clearing",
+    "summary": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "inspect_text": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d1c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d1c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d2c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d1c7",
+    "title": "A Glowing Clearing",
+    "summary": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "inspect_text": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d1c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d1c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d2c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d1c8",
+    "title": "A Glowing Clearing",
+    "summary": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "inspect_text": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d1c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d2c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d2c1",
+    "title": "The Root Tangle",
+    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d2c2",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d1c1",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d3c1",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d2c2",
+    "title": "The Root Tangle",
+    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d2c1",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d2c3",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d1c2",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d3c2",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d2c3",
+    "title": "The Root Tangle",
+    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d2c2",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d2c4",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d1c3",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d3c3",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d2c4",
+    "title": "The Root Tangle",
+    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d2c3",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d2c5",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d1c4",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d3c4",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d2c5",
+    "title": "The Root Tangle",
+    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d2c4",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d2c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d1c5",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d3c5",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d2c6",
+    "title": "The Root Tangle",
+    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d2c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d2c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d1c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d3c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d2c7",
+    "title": "The Root Tangle",
+    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d2c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d2c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d1c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d3c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d2c8",
+    "title": "The Root Tangle",
+    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d2c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d1c8",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d3c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d3c1",
+    "title": "A Still Pool Glade",
+    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d3c2",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d2c1",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d4c1",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d3c2",
+    "title": "A Still Pool Glade",
+    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d3c1",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d3c3",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d2c2",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d4c2",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d3c3",
+    "title": "A Still Pool Glade",
+    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d3c2",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d3c4",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d2c3",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d4c3",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d3c4",
+    "title": "A Still Pool Glade",
+    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d3c3",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d3c5",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d2c4",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d4c4",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d3c5",
+    "title": "A Still Pool Glade",
+    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d3c4",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d3c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d2c5",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d4c5",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d3c6",
+    "title": "A Still Pool Glade",
+    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d3c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d3c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d2c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d4c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d3c7",
+    "title": "A Still Pool Glade",
+    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d3c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d3c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d2c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d4c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d3c8",
+    "title": "A Still Pool Glade",
+    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d3c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d2c8",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d4c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d4c1",
+    "title": "The Fungus Hollow",
+    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d4c2",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d3c1",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d5c1",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d4c2",
+    "title": "The Fungus Hollow",
+    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d4c1",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d4c3",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d3c2",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d5c2",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d4c3",
+    "title": "The Fungus Hollow",
+    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d4c2",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d4c4",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d3c3",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d5c3",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d4c4",
+    "title": "The Fungus Hollow",
+    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d4c3",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d4c5",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d3c4",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d5c4",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d4c5",
+    "title": "The Fungus Hollow",
+    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d4c4",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d4c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d3c5",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d5c5",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d4c6",
+    "title": "The Fungus Hollow",
+    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d4c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d4c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d3c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d5c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d4c7",
+    "title": "The Fungus Hollow",
+    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d4c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d4c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d3c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d5c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d4c8",
+    "title": "The Fungus Hollow",
+    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d4c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d3c8",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d5c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d5c1",
+    "title": "A Chalked Trail",
+    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d5c2",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d4c1",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d6c1",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d5c2",
+    "title": "A Chalked Trail",
+    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d5c1",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d5c3",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d4c2",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d6c2",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d5c3",
+    "title": "A Chalked Trail",
+    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d5c2",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d5c4",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d4c3",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d6c3",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d5c4",
+    "title": "A Chalked Trail",
+    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d5c3",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d5c5",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d4c4",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d6c4",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d5c5",
+    "title": "A Chalked Trail",
+    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d5c4",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d5c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d4c5",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d6c5",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d5c6",
+    "title": "A Chalked Trail",
+    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d5c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d5c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d4c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d6c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d5c7",
+    "title": "A Chalked Trail",
+    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d5c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d5c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d4c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d6c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d5c8",
+    "title": "A Chalked Trail",
+    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d5c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d4c8",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d6c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d6c1",
+    "title": "The Whispering Ferns",
+    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d6c2",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d5c1",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d7c1",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d6c2",
+    "title": "The Whispering Ferns",
+    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d6c1",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d6c3",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d5c2",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d7c2",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d6c3",
+    "title": "The Whispering Ferns",
+    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d6c2",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d6c4",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d5c3",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d7c3",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d6c4",
+    "title": "The Whispering Ferns",
+    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d6c3",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d6c5",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d5c4",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d7c4",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d6c5",
+    "title": "The Whispering Ferns",
+    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d6c4",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d6c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d5c5",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d7c5",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d6c6",
+    "title": "The Whispering Ferns",
+    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d6c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d6c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d5c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d7c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d6c7",
+    "title": "The Whispering Ferns",
+    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d6c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d6c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d5c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d7c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d6c8",
+    "title": "The Whispering Ferns",
+    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d6c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d5c8",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d7c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d7c1",
+    "title": "A Shaft of Sky",
+    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d7c2",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d6c1",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d8c1",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d7c2",
+    "title": "A Shaft of Sky",
+    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d7c1",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d7c3",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d6c2",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d8c2",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d7c3",
+    "title": "A Shaft of Sky",
+    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d7c2",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d7c4",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d6c3",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d8c3",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d7c4",
+    "title": "A Shaft of Sky",
+    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d7c3",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d7c5",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d6c4",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d8c4",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d7c5",
+    "title": "A Shaft of Sky",
+    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d7c4",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d7c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d6c5",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d8c5",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d7c6",
+    "title": "A Shaft of Sky",
+    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d7c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d7c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d6c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d8c6",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d7c7",
+    "title": "A Shaft of Sky",
+    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d7c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d7c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d6c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d8c7",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d7c8",
+    "title": "A Shaft of Sky",
+    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d7c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d6c8",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "d8c8",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "d8c1",
+    "title": "The Deep Glade",
+    "summary": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "inspect_text": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d8c2",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d7c1",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      }
+    ]
+  },
+  {
+    "id": "d8c2",
+    "title": "The Deep Glade",
+    "summary": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "inspect_text": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d8c1",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d8c3",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d7c2",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      }
+    ]
+  },
+  {
+    "id": "d8c3",
+    "title": "The Deep Glade",
+    "summary": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "inspect_text": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d8c2",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d8c4",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d7c3",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      }
+    ]
+  },
+  {
+    "id": "d8c4",
+    "title": "The Deep Glade",
+    "summary": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "inspect_text": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d8c3",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d8c5",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d7c4",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      }
+    ]
+  },
+  {
+    "id": "d8c5",
+    "title": "The King's Grove",
+    "summary": "The forest opens into a wide, still chamber. At its heart, enthroned in roots and pale light, sits the elf king.",
+    "inspect_text": "The forest opens into a wide, still chamber. At its heart, enthroned in roots and pale light, sits the elf king.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d8c4",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d8c6",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d7c5",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      }
+    ]
+  },
+  {
+    "id": "d8c6",
+    "title": "The Deep Glade",
+    "summary": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "inspect_text": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d8c5",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d8c7",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d7c6",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      }
+    ]
+  },
+  {
+    "id": "d8c7",
+    "title": "The Deep Glade",
+    "summary": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "inspect_text": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d8c6",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d8c8",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "d7c7",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      }
+    ]
+  },
+  {
+    "id": "d8c8",
+    "title": "The Deep Glade",
+    "summary": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "inspect_text": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "features": [],
+    "exits": [
+      {
+        "room_id": "d8c7",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "d7c8",
         "label": "North",
         "aliases": [
           "n"
