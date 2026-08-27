@@ -1091,11 +1091,16 @@ impl CinderRuntime {
                 let phase = state.phase.clone();
                 return Ok((lines.to_text(), phase));
             }
-            let logged_events = tick
+            let mut logged_events = tick
                 .events
                 .into_iter()
                 .map(TimestampedWorldEvent::now)
                 .collect::<Vec<_>>();
+            logged_events.extend(
+                crate::engine::actor_tick::plan_wander_moves(self.content.as_ref(), &state)
+                    .into_iter()
+                    .map(TimestampedWorldEvent::now),
+            );
             let reduced = apply_events(&mut state, self.content.as_ref(), &logged_events);
             refresh_conversation_summaries(
                 self.content.as_ref(),

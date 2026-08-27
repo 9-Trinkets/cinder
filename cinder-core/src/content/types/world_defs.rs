@@ -319,6 +319,14 @@ pub struct ActorDefinition {
     /// while the actor is hostile; defaults to 4 when omitted.
     #[serde(default)]
     pub attack_interval_minutes: Option<u32>,
+    /// How often this actor wanders to a random adjacent room during ticks:
+    /// 1 = every tick, 2 = every other tick, etc. 0 means it never wanders.
+    #[serde(default)]
+    pub move_every_ticks: u32,
+    /// Whether the actor starts hostile to the player (used for mobs that
+    /// attack on sight, like the level-2 elf army).
+    #[serde(default)]
+    pub initial_hostile: bool,
     pub prompt_context: ActorPromptContext,
     #[serde(default)]
     pub act_cast: Option<ActorActCast>,

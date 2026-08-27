@@ -247,6 +247,8 @@ fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
         drops: BTreeMap::new(),
         xp_drop: 0,
         attack_interval_minutes: None,
+        move_every_ticks: 0,
+        initial_hostile: false,
         prompt_context: ActorPromptContext {
             character_notes: vec![],
             subtext_notes: vec![],

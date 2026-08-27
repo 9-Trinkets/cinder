@@ -207,7 +207,20 @@ impl WorldState {
                 .collect(),
             room_item_stock: BTreeMap::new(),
             act_series: None,
-            relationships: BTreeMap::new(),
+            relationships: content
+                .actors
+                .iter()
+                .filter(|actor| actor.initial_hostile)
+                .map(|actor| {
+                    (
+                        actor.id.clone(),
+                        ActorRelationship {
+                            stance: ActorStance::Hostile,
+                            follows_player: false,
+                        },
+                    )
+                })
+                .collect(),
             next_hostile_strike_at: BTreeMap::new(),
             equipment: BTreeMap::new(),
             party_xp: 0,

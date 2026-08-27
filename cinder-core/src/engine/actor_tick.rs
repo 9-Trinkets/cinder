@@ -15,7 +15,9 @@ use crate::engine::neuron::{
     LocalWorkflowRunner, WorkflowDefinition, WorkflowRoleConfig, run_workflow,
 };
 use crate::engine::reducer::apply_events;
+use crate::engine::state::ActorStance;
 use crate::engine::state::WorldState;
+use rand::Rng;
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::fmt;
@@ -135,6 +137,41 @@ pub(crate) fn run_actor_tick(
         events: result.events,
         trace_records,
     })
+}
+
+/// Deterministic wander pass for the tick: hostile actors with a
+/// `move_every_ticks` cadence move to a random adjacent room on the ticks
+/// where `current_time_minutes` is a multiple of their cadence. So pawns
+/// (cadence 1) drift toward the player fast while knights (2) and stronger
+/// pieces lag behind, giving the player early, weaker encounters.
+pub(crate) fn plan_wander_moves(content: &ContentPack, state: &WorldState) -> Vec<WorldEvent> {
+    if state.phase != crate::engine::state::GamePhase::Active {
+        return Vec::new();
+    }
+    let mut events = Vec::new();
+    for actor in &content.actors {
+        if actor.move_every_ticks == 0 {
+            continue;
+        }
+        if state.stance(&actor.id) != ActorStance::Hostile {
+            continue;
+        }
+        if state.current_time_minutes % actor.move_every_ticks != 0 {
+            continue;
+        }
+        let current_room_id = state.actor_room_id(&actor.id, &actor.room_id);
+        let neighbors = content.adjacent_room_ids(current_room_id);
+        if neighbors.is_empty() {
+            continue;
+        }
+        let index = rand::thread_rng().gen_range(0..neighbors.len());
+        events.push(WorldEvent::ActorMoved {
+            actor_id: actor.id.clone(),
+            from_room_id: current_room_id.to_string(),
+            to_room_id: neighbors[index].clone(),
+        });
+    }
+    events
 }
 
 pub(crate) fn decide_movement(
