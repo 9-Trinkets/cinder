@@ -2025,6 +2025,17 @@
           "e"
         ],
         "menu_label": "East"
+      },
+      {
+        "room_id": "d1c1",
+        "label": "Down",
+        "aliases": [
+          "d",
+          "down",
+          "ladder"
+        ],
+        "menu_label": "Down",
+        "requires_story_var": "warden_defeated"
       }
     ]
   },
@@ -4026,6 +4037,18 @@
           "s"
         ],
         "menu_label": "South"
+      },
+      {
+        "room_id": "r5c5",
+        "label": "Up",
+        "aliases": [
+          "u",
+          "up",
+          "ladder",
+          "climb"
+        ],
+        "menu_label": "Up",
+        "requires_story_var": "warden_defeated"
       }
     ]
   },

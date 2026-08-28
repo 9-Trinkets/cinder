@@ -219,6 +219,9 @@ export interface PlayerStatus {
   hp: number
   hp_max: number
   stats: StatValue[]
+  level: number
+  xp: number
+  xp_max: number
 }
 
 export interface ConsumableInfo {

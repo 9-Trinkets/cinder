@@ -727,9 +727,11 @@ pub(super) fn actor_display_name(content: &ContentPack, actor_id: &str) -> Strin
 
 /// Scatters a defeated actor's declared drops into its room as loose items the
 /// player can pick up. Narrates one line listing what appeared.
-/// Awards the defeated actor's XP to the whole party and raises levels while
-/// the shared XP crosses the content-declared thresholds, applying the level
-/// stat bonus to the player and every follower.
+/// Awards the defeated actor's full XP to the whole party — the player and
+/// every follower each get the entire drop, no splitting — and levels each of
+/// them independently on the shared curve, applying the level stat bonus per
+/// actor. Keeps XP/level per actor so differentiated classes/jobs can advance
+/// on their own curves later.
 pub(super) fn award_defeat_xp(
     state: &mut WorldState,
     content: &ContentPack,
@@ -743,22 +745,31 @@ pub(super) fn award_defeat_xp(
     if xp == 0 || combat.xp_per_level.is_empty() {
         return;
     }
-    state.party_xp += xp;
-    let mut leveled = 0;
-    while let Some(required) = combat.xp_per_level.get((state.party_level - 1) as usize) {
-        if state.party_xp < *required {
-            break;
-        }
-        state.party_xp -= *required;
-        state.party_level += 1;
-        leveled += 1;
-        let mut targets = vec![combat.player_actor_id.clone()];
-        for (actor_id, relationship) in &state.relationships {
-            if relationship.follows_player {
-                targets.push(actor_id.clone());
+    let mut targets = vec![combat.player_actor_id.clone()];
+    targets.extend(
+        state
+            .relationships
+            .iter()
+            .filter(|(_, relationship)| relationship.follows_player)
+            .map(|(actor_id, _)| actor_id.clone()),
+    );
+    let mut leveled_any = false;
+    for target in targets {
+        let mut xp = state.actor_xp.get(&target).copied().unwrap_or(0) + xp;
+        let mut level = state.actor_level.get(&target).copied().unwrap_or(1).max(1);
+        let mut gained = 0;
+        while let Some(required) = combat.xp_per_level.get((level - 1) as usize).copied() {
+            if xp < required {
+                break;
             }
+            xp -= required;
+            level += 1;
+            gained += 1;
         }
-        for target in targets {
+        state.actor_xp.insert(target.clone(), xp);
+        *state.actor_level.entry(target.clone()).or_insert(1) = level;
+        if gained > 0 {
+            leveled_any = true;
             for (stat, delta) in &combat.level_stat_bonus {
                 if let Err(error) = state.adjust_actor_stat(&target, stat, *delta) {
                     eprintln!("[cinder] level stat error ({target}/{stat}): {error}");
@@ -766,10 +777,16 @@ pub(super) fn award_defeat_xp(
             }
         }
     }
-    if leveled > 0 {
+    if leveled_any {
         if let Some(line) = content.render_message(
             "combat.level_up",
-            &[("level", state.party_level.to_string().as_str())],
+            &[(
+                "level",
+                state
+                    .actor_level(&combat.player_actor_id)
+                    .to_string()
+                    .as_str(),
+            )],
         ) {
             lines.narration(line);
         }

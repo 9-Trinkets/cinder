@@ -377,7 +377,9 @@ pub(super) fn plan_move_to_room_target(
     context: &PlanningContext<'_>,
     planned: &mut PlannedTurn,
 ) -> bool {
-    if let Some(exit) = content.resolve_exit(context.current_room_id, target) {
+    if let Some(exit) = content.resolve_exit_for(context.current_room_id, target, |key| {
+        crate::engine::turn_policies::story_var_is_truthy(context.planner_state, key)
+    }) {
         planned.events.push(WorldEvent::PlayerMoved {
             from_room_id: context.current_room_id.to_string(),
             to_room_id: exit.room_id.clone(),

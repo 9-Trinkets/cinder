@@ -3,11 +3,33 @@ use cinder_core::content::types::{PanelDataSource, PanelSelectAction, UiTextDefi
 use cinder_core::engine::runtime::{
     ActClosure, ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption,
 };
+use cinder_core::engine::state::WorldState;
 use cinder_core::engine::turn_policies::action_is_available;
 use serde::Serialize;
 use std::collections::BTreeMap;
 
 use super::response;
+
+/// The player's progress toward the next level. XP/level are per-actor now:
+/// `actor_xp` holds progress toward the *next* level (reset past each
+/// threshold on level-up), so `xp_max` is the threshold at index `level - 1`.
+/// A missing threshold means the actor is at max level (xp_max == 0).
+fn xp_progress(
+    state: &WorldState,
+    content: &cinder_core::content::types::ContentPack,
+) -> (u32, u32, u32) {
+    let player_id = &content.settings.combat.player_actor_id;
+    let level = state.actor_level(player_id);
+    let xp = state.actor_xp(player_id);
+    let xp_max = content
+        .settings
+        .combat
+        .xp_per_level
+        .get((level - 1) as usize)
+        .copied()
+        .unwrap_or(0);
+    (level, xp, xp_max)
+}
 
 #[derive(Clone, Serialize)]
 pub struct LocaleItem {
@@ -54,6 +76,12 @@ pub struct PlayerStatus {
     pub hp: u32,
     pub hp_max: u32,
     pub stats: Vec<StatValue>,
+    /// Current shared party level.
+    pub level: u32,
+    /// Shared party XP toward the next level (or cumulative if no curve).
+    pub xp: u32,
+    /// XP required to advance from the current level to the next (0 = maxed).
+    pub xp_max: u32,
 }
 
 #[derive(Clone, Serialize)]
@@ -534,7 +562,15 @@ pub(super) fn build_ui_snapshot(
                 })
                 .collect::<Vec<_>>();
             stats.sort_by(|a, b| a.id.cmp(&b.id));
-            PlayerStatus { hp, hp_max, stats }
+            let (level, xp, xp_max) = xp_progress(&state, &content);
+            PlayerStatus {
+                hp,
+                hp_max,
+                stats,
+                level,
+                xp,
+                xp_max,
+            }
         },
         current_room_items: state
             .loose_room_items(&current_room_id)

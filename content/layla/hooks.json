@@ -30,6 +30,32 @@
             {
               "path": "actor_id",
               "operator": "equal",
+              "value": "golem-boss"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "warden.reveal"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "golem-boss"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "warden.memory"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
               "value": "elf-king-5"
             }
           ],

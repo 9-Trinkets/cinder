@@ -46,19 +46,24 @@ impl ContentPack {
         self.room_index.get(room_id).map(|&i| &self.rooms[i])
     }
 
-    pub fn resolve_exit<'a>(
+    /// Exit resolution for the player, honouring story-var gates: an exit
+    /// whose `requires_story_var` is not yet truthy is invisible and won't be
+    /// resolved (as if it didn't exist).
+    pub fn resolve_exit_for<'a>(
         &'a self,
         room_id: &str,
         raw_target: &str,
+        truthy: impl Fn(&str) -> bool,
     ) -> Option<&'a RoomExitDefinition> {
         let target = raw_target.trim().to_ascii_lowercase();
         self.room(room_id)?.exits.iter().find(|exit| {
-            exit.label.eq_ignore_ascii_case(&target)
-                || exit.room_id.eq_ignore_ascii_case(&target)
-                || exit
-                    .aliases
-                    .iter()
-                    .any(|alias| alias.eq_ignore_ascii_case(&target))
+            (exit.requires_story_var.is_empty() || truthy(&exit.requires_story_var))
+                && (exit.label.eq_ignore_ascii_case(&target)
+                    || exit.room_id.eq_ignore_ascii_case(&target)
+                    || exit
+                        .aliases
+                        .iter()
+                        .any(|alias| alias.eq_ignore_ascii_case(&target)))
         })
     }
 
@@ -161,18 +166,24 @@ impl ContentPack {
         let mut neighbors: Vec<String> = Vec::new();
         if let Some(room) = self.room(room_id) {
             for exit in &room.exits {
-                if exit.room_id != room_id && !neighbors.contains(&exit.room_id) {
-                    neighbors.push(exit.room_id.clone());
+                if exit.room_id == room_id
+                    || !exit.requires_story_var.is_empty()
+                    || neighbors.contains(&exit.room_id)
+                {
+                    continue;
                 }
+                neighbors.push(exit.room_id.clone());
             }
         }
         for other in &self.rooms {
             if other.id == room_id {
                 continue;
             }
-            if other.exits.iter().any(|exit| exit.room_id == room_id)
-                && !neighbors.contains(&other.id)
-            {
+            let points_back = other
+                .exits
+                .iter()
+                .any(|exit| exit.room_id == room_id && exit.requires_story_var.is_empty());
+            if points_back && !neighbors.contains(&other.id) {
                 neighbors.push(other.id.clone());
             }
         }

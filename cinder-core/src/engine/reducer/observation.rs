@@ -98,20 +98,24 @@ pub(super) fn render_room_observation(
             )
         }
     };
-    let exits = if room.exits.is_empty() {
+    let visible_exits: Vec<&str> = room
+        .exits
+        .iter()
+        .filter(|exit| {
+            exit.requires_story_var.is_empty()
+                || crate::engine::turn_policies::story_var_is_truthy(
+                    state,
+                    &exit.requires_story_var,
+                )
+        })
+        .map(|exit| exit.label.as_str())
+        .collect();
+    let exits = if visible_exits.is_empty() {
         String::new()
     } else {
         content.render_template(
             &content.presentation.presentation_text.exits,
-            &[(
-                "exits",
-                &room
-                    .exits
-                    .iter()
-                    .map(|exit| exit.label.as_str())
-                    .collect::<Vec<_>>()
-                    .join(", "),
-            )],
+            &[("exits", &visible_exits.join(", "))],
         )
     };
     let items = {

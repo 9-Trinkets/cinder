@@ -426,47 +426,6 @@
           "required": false
         }
       }
-    },
-    {
-      "id": "climb_down",
-      "command": "CLIMB DOWN",
-      "label": "Climb Down",
-      "group": "territory",
-      "phrases": [
-        "climb down",
-        "climb the ladder",
-        "descend",
-        "go down the ladder",
-        "go down"
-      ],
-      "player_enabled": true,
-      "target_mode": "room",
-      "outcome_mode": "event",
-      "effects": [
-        "move_actor"
-      ],
-      "destination_room_id": "d1c1",
-      "event_text": "{actor_name} climbs down the ladder into the dark.",
-      "available": {
-        "allowed_rooms": [
-          "r5c5"
-        ],
-        "requires_story_var": "warden_defeated"
-      },
-      "ui": {
-        "bar": false,
-        "overflow": true,
-        "group": "territory",
-        "sort_order": 5
-      },
-      "player_command": {
-        "usage": "climb down",
-        "example": "climb down",
-        "advances_time": true,
-        "input": {
-          "required": false
-        }
-      }
     }
   ]
 }

@@ -138,7 +138,7 @@ pub(crate) fn command_availability_issue(
 
 /// A story variable counts as set/truthy when it exists and isn't a falsy
 /// string ("", "false", "0").
-fn story_var_is_truthy(state: &WorldState, key: &str) -> bool {
+pub(crate) fn story_var_is_truthy(state: &WorldState, key: &str) -> bool {
     match state.story_vars.get(key) {
         Some(value) => !matches!(
             value.trim().to_ascii_lowercase().as_str(),

@@ -40,6 +40,31 @@ export default function StatusPanel({ uiSnapshot }: { uiSnapshot: api.UiSnapshot
               ))}
             </ul>
           )}
+          {uiSnapshot.player.level > 0 && (
+            <div className="mt-2 border-t border-overlay pt-2">
+              <div className="flex items-baseline justify-between text-xs">
+                <span className="text-text font-medium">Level {uiSnapshot.player.level}</span>
+                <span className="text-muted">
+                  {uiSnapshot.player.xp_max > 0
+                    ? `${uiSnapshot.player.xp} / ${uiSnapshot.player.xp_max} XP`
+                    : 'MAX'}
+                </span>
+              </div>
+              <div className="mt-1 h-1.5 w-full rounded-full bg-overlay overflow-hidden">
+                <div
+                  role="progressbar"
+                  aria-valuenow={uiSnapshot.player.xp}
+                  aria-valuemin={0}
+                  aria-valuemax={uiSnapshot.player.xp_max || 1}
+                  className="h-full rounded-full transition-all duration-300"
+                  style={{
+                    width: `${uiSnapshot.player.xp_max > 0 ? (uiSnapshot.player.xp / uiSnapshot.player.xp_max) * 100 : 100}%`,
+                    backgroundColor: 'var(--color-gold)',
+                  }}
+                />
+              </div>
+            </div>
+          )}
         </div>
       </div>
       {uiSnapshot.party.length > 0 && (

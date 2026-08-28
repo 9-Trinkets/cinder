@@ -84,11 +84,15 @@ pub struct WorldState {
     /// `settings.equipment_slots` keys. Bonuses feed effective stat reads.
     #[serde(default)]
     pub equipment: BTreeMap<String, String>,
-    /// Shared party XP and current level.
+    /// Per-actor experience toward their next level. Absent entries are 0.
+    /// When a mob is defeated its full XP drop is awarded to every party
+    /// member (the player and every follower), so each advances on their own
+    /// curve.
     #[serde(default)]
-    pub party_xp: u32,
+    pub actor_xp: BTreeMap<String, u32>,
+    /// Per-actor current level. Absent entries read as 1.
     #[serde(default)]
-    pub party_level: u32,
+    pub actor_level: BTreeMap<String, u32>,
 }
 
 /// Discrete stance of an actor toward the player. Mutual exclusion is inherent:
@@ -223,8 +227,8 @@ impl WorldState {
                 .collect(),
             next_hostile_strike_at: BTreeMap::new(),
             equipment: BTreeMap::new(),
-            party_xp: 0,
-            party_level: 1,
+            actor_xp: BTreeMap::new(),
+            actor_level: BTreeMap::new(),
         }
     }
 
@@ -343,6 +347,16 @@ impl WorldState {
 
     pub fn follows_player(&self, actor_id: &str) -> bool {
         self.relationship(actor_id).follows_player
+    }
+
+    /// Current level for an actor; absent entries read as level 1.
+    pub fn actor_level(&self, actor_id: &str) -> u32 {
+        self.actor_level.get(actor_id).copied().unwrap_or(1).max(1)
+    }
+
+    /// Experience an actor holds toward their next level.
+    pub fn actor_xp(&self, actor_id: &str) -> u32 {
+        self.actor_xp.get(actor_id).copied().unwrap_or(0)
     }
 
     /// Writes a full relationship snapshot. Writing the default removes the

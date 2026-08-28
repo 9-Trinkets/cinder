@@ -206,6 +206,15 @@ fn apply_hook_effects(
             WorldHookEffect::SetStoryVar { key, value } => {
                 state.story_vars.set_unchecked(key.as_str(), value.as_str());
             }
+            WorldHookEffect::NarrateMessage { key, vars } => {
+                if let Some(lines) = lines.as_deref_mut() {
+                    let replacements: Vec<(&str, &str)> =
+                        vars.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
+                    if let Some(line) = content.render_message(&key, &replacements) {
+                        lines.narration(line);
+                    }
+                }
+            }
             WorldHookEffect::DefeatActorsByTag { tag } => {
                 let health_stat_id = &content.settings.combat.health_stat_id;
                 for actor in &content.actors {
@@ -264,6 +273,14 @@ enum WorldHookEffect {
     /// Defeats every living actor carrying `tag` (e.g. an army crumbling when
     /// its commander falls).
     DefeatActorsByTag { tag: String },
+    /// Narration-only plot beat. Renders `key` through the pack's message
+    /// table (with any `vars`) and pushes it as a narration line. Called with
+    /// the narrating entry point so the text reaches the player.
+    NarrateMessage {
+        key: String,
+        #[serde(default)]
+        vars: Vec<(String, String)>,
+    },
 }
 
 fn deserialize_i32ish<'de, D>(deserializer: D) -> Result<i32, D::Error>

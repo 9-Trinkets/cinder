@@ -382,6 +382,13 @@ impl CinderRuntime {
         let exit_ids: Vec<String> = current_room
             .exits
             .iter()
+            .filter(|e| {
+                e.requires_story_var.is_empty()
+                    || crate::engine::turn_policies::story_var_is_truthy(
+                        &state,
+                        &e.requires_story_var,
+                    )
+            })
             .map(|e| e.room_id.clone())
             .collect();
         let rooms_iter: Box<dyn Iterator<Item = &RoomDefinition>> =
@@ -461,6 +468,17 @@ impl CinderRuntime {
             advances_time: false,
         })];
         if state.current_room_id != room.id {
+            // Only allow moving to a currently-visible exit of the current room,
+            // so a gated (hidden) exit can't be reached by bypassing the menu.
+            let ok = self
+                .content
+                .resolve_exit_for(&state.current_room_id, room_id, |key| {
+                    crate::engine::turn_policies::story_var_is_truthy(&state, key)
+                })
+                .is_some();
+            if !ok {
+                return Err(format!("'{room_id}' is not an open exit of the current room").into());
+            }
             events.push(TimestampedWorldEvent::now(WorldEvent::PlayerMoved {
                 from_room_id: state.current_room_id.clone(),
                 to_room_id: room.id.clone(),
