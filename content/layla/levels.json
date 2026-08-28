@@ -1,0 +1,49 @@
+{
+  "default": [
+    {
+      "exp_required": 50,
+      "stat_changes": {
+        "hp": 3,
+        "strength": 1,
+        "defense": 1
+      },
+      "unlocks": []
+    },
+    {
+      "exp_required": 100,
+      "stat_changes": {
+        "hp": 3,
+        "strength": 1,
+        "defense": 1
+      },
+      "unlocks": []
+    },
+    {
+      "exp_required": 180,
+      "stat_changes": {
+        "hp": 4,
+        "strength": 2,
+        "defense": 1
+      },
+      "unlocks": []
+    },
+    {
+      "exp_required": 300,
+      "stat_changes": {
+        "hp": 4,
+        "strength": 2,
+        "defense": 2
+      },
+      "unlocks": []
+    },
+    {
+      "exp_required": 500,
+      "stat_changes": {
+        "hp": 5,
+        "strength": 3,
+        "defense": 2
+      },
+      "unlocks": []
+    }
+  ]
+}

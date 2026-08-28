@@ -1701,3 +1701,89 @@ fn defeating_an_actor_scatters_its_drops_into_the_room() {
         "got: {transcript}"
     );
 }
+
+#[test]
+fn defeating_an_actor_awards_full_xp_to_every_party_member_with_own_curve() {
+    let mut pack = reducer_test_pack();
+    pack.settings.combat = CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_ID.to_string(),
+        health_stat_id: "stamina".to_string(),
+        attack_stat_id: "confidence".to_string(),
+        defense_stat_id: "hunger".to_string(),
+        ..CombatSettingsDefinition::default()
+    };
+    // The default table levels anyone at 10 XP (L1 -> L2, +5 stamina). Blair
+    // gets a per-actor override needing 20 XP, so she does NOT level here.
+    pack.levels.default = vec![crate::content::types::LevelDefinition {
+        exp_required: 10,
+        stat_changes: BTreeMap::from([("stamina".to_string(), 5)]),
+        unlocks: vec!["power_slice".to_string()],
+    }];
+    pack.levels.actors = BTreeMap::from([(
+        ACTOR_B_ID.to_string(),
+        vec![crate::content::types::LevelDefinition {
+            exp_required: 20,
+            stat_changes: BTreeMap::from([("stamina".to_string(), 2)]),
+            unlocks: vec![],
+        }],
+    )]);
+    pack.actions.push(ActionDefinition {
+        id: "attack".to_string(),
+        command: "attack".to_string(),
+        target_mode: CommandTargetMode::Actor,
+        effects: vec![CommandEffect::AttackTarget],
+        event_text: "{actor_name} strikes {target_actor_name}.".to_string(),
+        ..ActionDefinition::default()
+    });
+    // A one-hp, 10-xp mob in the lounge.
+    let mut goblin = test_actor("goblin", "goblin", LOUNGE_ID);
+    goblin.attackable = true;
+    goblin.initial_stats = BTreeMap::from([("stamina".to_string(), 1)]);
+    goblin.xp_drop = 10;
+    pack.actors.push(goblin);
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    state.set_relationship(
+        ACTOR_B_ID,
+        crate::engine::state::ActorRelationship {
+            stance: ActorStance::Allied,
+            follows_player: true,
+        },
+    );
+
+    let _ = super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        LOUNGE_ID,
+        "attack",
+        None,
+        Some("goblin"),
+        Some("goblin"),
+        None,
+        None,
+        None,
+        None,
+        &mut Vec::new(),
+    )
+    .unwrap_or_default();
+
+    // Full 10 XP goes to the player (leveled 1->2 on the default curve, +5
+    // stamina) and to follower Blair — who keeps it on her own 20-XP curve,
+    // so she stays level 1 with 10/20 and no stat bonus.
+    assert!(state.actor_is_defeated("goblin", "stamina"));
+    assert_eq!(state.actor_xp(ACTOR_A_ID), 0);
+    assert_eq!(state.actor_level(ACTOR_A_ID), 2);
+    assert_eq!(state.actor_xp(ACTOR_B_ID), 10);
+    assert_eq!(state.actor_level(ACTOR_B_ID), 1);
+    let alex_stamina = state.actor_stat(ACTOR_A_ID, "stamina");
+    let blair_stamina = state.actor_stat(ACTOR_B_ID, "stamina");
+    assert_eq!(
+        alex_stamina,
+        blair_stamina + 5,
+        "Alex should be +5 stamina; Alex={alex_stamina}, Blair={blair_stamina}"
+    );
+}

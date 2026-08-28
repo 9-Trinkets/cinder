@@ -729,9 +729,9 @@ pub(super) fn actor_display_name(content: &ContentPack, actor_id: &str) -> Strin
 /// player can pick up. Narrates one line listing what appeared.
 /// Awards the defeated actor's full XP to the whole party — the player and
 /// every follower each get the entire drop, no splitting — and levels each of
-/// them independently on the shared curve, applying the level stat bonus per
-/// actor. Keeps XP/level per actor so differentiated classes/jobs can advance
-/// on their own curves later.
+/// them independently against its own level table (per-actor override or the
+/// pack default), applying that entry's stat changes. Keeps XP/level per actor
+/// so differentiated classes/jobs can advance on their own curves.
 pub(super) fn award_defeat_xp(
     state: &mut WorldState,
     content: &ContentPack,
@@ -741,11 +741,11 @@ pub(super) fn award_defeat_xp(
     let Some(xp) = content.actor(defeated_actor_id).map(|actor| actor.xp_drop) else {
         return;
     };
-    let combat = &content.settings.combat;
-    if xp == 0 || combat.xp_per_level.is_empty() {
+    let player_actor_id = &content.settings.combat.player_actor_id;
+    if xp == 0 || content.level_table(player_actor_id).is_empty() {
         return;
     }
-    let mut targets = vec![combat.player_actor_id.clone()];
+    let mut targets = vec![player_actor_id.clone()];
     targets.extend(
         state
             .relationships
@@ -755,26 +755,26 @@ pub(super) fn award_defeat_xp(
     );
     let mut leveled_any = false;
     for target in targets {
-        let mut xp = state.actor_xp.get(&target).copied().unwrap_or(0) + xp;
+        let mut accrued = state.actor_xp.get(&target).copied().unwrap_or(0) + xp;
         let mut level = state.actor_level.get(&target).copied().unwrap_or(1).max(1);
         let mut gained = 0;
-        while let Some(required) = combat.xp_per_level.get((level - 1) as usize).copied() {
-            if xp < required {
+        while let Some(definition) = content.level_definition(&target, level) {
+            if accrued < definition.exp_required {
                 break;
             }
-            xp -= required;
+            accrued -= definition.exp_required;
             level += 1;
             gained += 1;
-        }
-        state.actor_xp.insert(target.clone(), xp);
-        *state.actor_level.entry(target.clone()).or_insert(1) = level;
-        if gained > 0 {
-            leveled_any = true;
-            for (stat, delta) in &combat.level_stat_bonus {
+            for (stat, delta) in &definition.stat_changes {
                 if let Err(error) = state.adjust_actor_stat(&target, stat, *delta) {
                     eprintln!("[cinder] level stat error ({target}/{stat}): {error}");
                 }
             }
+        }
+        state.actor_xp.insert(target.clone(), accrued);
+        *state.actor_level.entry(target.clone()).or_insert(1) = level;
+        if gained > 0 {
+            leveled_any = true;
         }
     }
     if leveled_any {
@@ -782,10 +782,7 @@ pub(super) fn award_defeat_xp(
             "combat.level_up",
             &[(
                 "level",
-                state
-                    .actor_level(&combat.player_actor_id)
-                    .to_string()
-                    .as_str(),
+                state.actor_level(player_actor_id).to_string().as_str(),
             )],
         ) {
             lines.narration(line);

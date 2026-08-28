@@ -12,8 +12,9 @@ use super::response;
 
 /// The player's progress toward the next level. XP/level are per-actor now:
 /// `actor_xp` holds progress toward the *next* level (reset past each
-/// threshold on level-up), so `xp_max` is the threshold at index `level - 1`.
-/// A missing threshold means the actor is at max level (xp_max == 0).
+/// threshold on level-up), so `xp_max` is the threshold at the player's own
+/// current level. A missing threshold means the actor is at max level
+/// (xp_max == 0).
 fn xp_progress(
     state: &WorldState,
     content: &cinder_core::content::types::ContentPack,
@@ -22,11 +23,7 @@ fn xp_progress(
     let level = state.actor_level(player_id);
     let xp = state.actor_xp(player_id);
     let xp_max = content
-        .settings
-        .combat
-        .xp_per_level
-        .get((level - 1) as usize)
-        .copied()
+        .xp_required_for_next_level(player_id, level)
         .unwrap_or(0);
     (level, xp, xp_max)
 }

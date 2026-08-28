@@ -1,9 +1,9 @@
 use crate::content::types::{
     ActCastMember, ActionsDefinition, ActorDefinition, BeatsDefinition, ContentPack,
-    ContentSettingsDefinition, ItemDefinition, MovementConfigDefinition, OpeningDefinition,
-    OpeningMenuDefinition, OpeningMovieDefinition, PresentationDefinition, RoomDefinition,
-    RuleBundleProgressRef, RuleBundlesDefinition, SpeechConfigDefinition, SpeechIntentsConfig,
-    StatsDefinition, SystemTextDefinition, UiTextDefinition,
+    ContentSettingsDefinition, ItemDefinition, LevelingDefinition, MovementConfigDefinition,
+    OpeningDefinition, OpeningMenuDefinition, OpeningMovieDefinition, PresentationDefinition,
+    RoomDefinition, RuleBundleProgressRef, RuleBundlesDefinition, SpeechConfigDefinition,
+    SpeechIntentsConfig, StatsDefinition, SystemTextDefinition, UiTextDefinition,
 };
 use serde::de::DeserializeOwned;
 use serde_json::Value;
@@ -147,6 +147,7 @@ pub fn load_pack_from_dir_with_locale(
             "variables.json",
         )?
         .unwrap_or_default();
+    let levels = read_optional_json::<LevelingDefinition>(path, "levels.json")?.unwrap_or_default();
 
     let room_index = build_index(&rooms, |room| &room.id);
     let actor_index = build_index(&actors, |actor| &actor.id);
@@ -162,6 +163,15 @@ pub fn load_pack_from_dir_with_locale(
 
     let stage_ids: Vec<&str> = beats.stages.iter().map(|s| s.id.as_str()).collect();
     validate_actions(&actions, &room_ids, &stage_ids)?;
+
+    for actor_id in levels.actors.keys() {
+        require_known_id(
+            actor_id,
+            &actor_ids,
+            &format!("levels.actors '{actor_id}'"),
+            "actors",
+        )?;
+    }
 
     for id in &beats.initial_stage_ids {
         require_known_id(
@@ -502,6 +512,7 @@ pub fn load_pack_from_dir_with_locale(
         speech_intents,
         items,
         variables,
+        levels,
         messages,
         room_index,
         actor_index,

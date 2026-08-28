@@ -26,6 +26,8 @@ pub struct ContentPack {
     pub speech_intents: SpeechIntentsConfig,
     pub items: Vec<ItemDefinition>,
     pub variables: BTreeMap<String, VariableDeclaration>,
+    /// Per-actor leveling rules (XP thresholds, stat bonuses, future unlocks).
+    pub levels: LevelingDefinition,
     /// Locale-authored templates for engine-emitted narration, keyed by
     /// message id. The engine never hardcodes player-facing prose; emit
     /// sites skip lines whose key the pack does not define.
@@ -103,6 +105,32 @@ impl ContentPack {
 
     pub fn item(&self, item_id: &str) -> Option<&ItemDefinition> {
         self.items.iter().find(|item| item.id == item_id)
+    }
+
+    /// Advance table for an actor: their per-actor override if declared,
+    /// otherwise the pack's shared `default` table. Empty means no leveling.
+    pub fn level_table(&self, actor_id: &str) -> &[LevelDefinition] {
+        self.levels
+            .actors
+            .get(actor_id)
+            .map(Vec::as_slice)
+            .unwrap_or(&self.levels.default)
+    }
+
+    /// The growth entry governing an actor's transition from the given level
+    /// to the next (index `level - 1`). `None` when the table ends before that
+    /// level (the actor has hit their cap) or leveling is disabled.
+    pub fn level_definition(&self, actor_id: &str, level: u32) -> Option<&LevelDefinition> {
+        if level == 0 {
+            return None;
+        }
+        self.level_table(actor_id).get((level - 1) as usize)
+    }
+
+    /// XP an actor at `level` needs to reach the next level.
+    pub fn xp_required_for_next_level(&self, actor_id: &str, level: u32) -> Option<u32> {
+        self.level_definition(actor_id, level)
+            .map(|lvl| lvl.exp_required)
     }
 
     pub fn resolve_item_in_scope<'a>(
