@@ -1,9 +1,11 @@
 use cinder_core::content::loader;
-use cinder_core::content::types::{PanelDataSource, PanelSelectAction, UiTextDefinition};
+use cinder_core::content::types::{
+    CommandEffect, PanelDataSource, PanelSelectAction, UiTextDefinition,
+};
 use cinder_core::engine::runtime::{
     ActClosure, ActiveMenuInfo, CinderRuntime, LookOptionItem, MenuChoiceOption,
 };
-use cinder_core::engine::state::WorldState;
+use cinder_core::engine::state::{ActorStance, WorldState};
 use cinder_core::engine::turn_policies::action_is_available;
 use serde::Serialize;
 use std::collections::BTreeMap;
@@ -427,20 +429,32 @@ pub(super) fn build_ui_snapshot(
                 .map(|s| s.as_str())
                 .unwrap_or(&action.command);
             let options = match panel_config.data_source {
-                PanelDataSource::ActorsInRoom => runtime
-                    .current_room_talk_options()
-                    .map_err(|error| error.to_string())?
-                    .into_iter()
-                    .map(|opt| {
-                        let actor_id = opt.id.strip_prefix("actor:").unwrap_or(&opt.id);
-                        PanelOptionData {
-                            id: actor_id.to_string(),
-                            title: opt.label.clone(),
-                            subtitle: None,
-                            command: Some(format!("{} {}", phrase, actor_id)),
-                        }
-                    })
-                    .collect(),
+                PanelDataSource::ActorsInRoom => {
+                    let is_attack = action.has_effect(CommandEffect::AttackTarget);
+                    runtime
+                        .current_room_talk_options()
+                        .map_err(|error| error.to_string())?
+                        .into_iter()
+                        .filter(|opt| {
+                            if !is_attack {
+                                return true;
+                            }
+                            let actor_id = opt.id.strip_prefix("actor:").unwrap_or(&opt.id);
+                            // Never offer allies as attack targets so the
+                            // player can't accidentally strike their own party.
+                            state.stance(actor_id) != ActorStance::Allied
+                        })
+                        .map(|opt| {
+                            let actor_id = opt.id.strip_prefix("actor:").unwrap_or(&opt.id);
+                            PanelOptionData {
+                                id: actor_id.to_string(),
+                                title: opt.label.clone(),
+                                subtitle: None,
+                                command: Some(format!("{} {}", phrase, actor_id)),
+                            }
+                        })
+                        .collect()
+                }
                 PanelDataSource::Exits => runtime
                     .room_switch_options()
                     .map_err(|error| error.to_string())?

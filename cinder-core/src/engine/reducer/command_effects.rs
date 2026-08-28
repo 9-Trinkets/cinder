@@ -7,7 +7,8 @@ use crate::engine::hook_ids;
 use crate::engine::hooks::{apply_narrating_world_hook_effects, apply_world_hook_effects};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{
-    ActorRelationship, ActorStance, ConversationMemoryKind, ConversationMemoryLine, WorldState,
+    display_actor_name, ActorRelationship, ActorStance, ConversationMemoryKind,
+    ConversationMemoryLine, WorldState,
 };
 use crate::engine::turn_policies::apply_command_bundle_progress_effects;
 use serde_json::json;
@@ -753,7 +754,7 @@ pub(super) fn award_defeat_xp(
             .filter(|(_, relationship)| relationship.follows_player)
             .map(|(actor_id, _)| actor_id.clone()),
     );
-    let mut leveled_any = false;
+    let mut leveled: Vec<(String, u32)> = Vec::new();
     for target in targets {
         let mut accrued = state.actor_xp.get(&target).copied().unwrap_or(0) + xp;
         let mut level = state.actor_level.get(&target).copied().unwrap_or(1).max(1);
@@ -774,16 +775,22 @@ pub(super) fn award_defeat_xp(
         state.actor_xp.insert(target.clone(), accrued);
         *state.actor_level.entry(target.clone()).or_insert(1) = level;
         if gained > 0 {
-            leveled_any = true;
+            leveled.push((target, level));
         }
     }
-    if leveled_any {
+    // Narration is per actor (levels are tracked individually now) — each
+    // leveled member names itself and its own new level.
+    for (actor_id, new_level) in leveled {
+        let name = content
+            .actor(&actor_id)
+            .map(|actor| display_actor_name(state, actor))
+            .unwrap_or_else(|| actor_id.clone());
         if let Some(line) = content.render_message(
             "combat.level_up",
-            &[(
-                "level",
-                state.actor_level(player_actor_id).to_string().as_str(),
-            )],
+            &[
+                ("actor_name", name.as_str()),
+                ("level", new_level.to_string().as_str()),
+            ],
         ) {
             lines.narration(line);
         }

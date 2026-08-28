@@ -173,6 +173,12 @@ pub(crate) fn plan_wander_moves(content: &ContentPack, state: &WorldState) -> Ve
             continue;
         }
         let current_room_id = state.actor_room_id(&actor.id, &actor.room_id);
+        // Engaged: a hostile sharing the player's room is mid-fight and should
+        // strike, not wander off to another room. It resumes wandering once
+        // the player leaves.
+        if current_room_id == state.current_room_id {
+            continue;
+        }
         let neighbors = content.adjacent_room_ids(current_room_id);
         if neighbors.is_empty() {
             continue;
@@ -195,6 +201,12 @@ pub(crate) fn decide_movement(
     current_room_id: &str,
     preferred_target_room_id: Option<&str>,
 ) -> Result<Vec<WorldEvent>, Box<dyn Error>> {
+    // Engaged: a hostile sharing the player's room is mid-fight and should
+    // strike rather than move away. It resumes moving once the player leaves.
+    if state.stance(&actor.id) == ActorStance::Hostile && current_room_id == state.current_room_id
+    {
+        return Ok(vec![]);
+    }
     let target_room_id = required_movement_target_room_id(state, rules, current_room_id)
         .or_else(|| preferred_target_room_id.map(str::to_string));
     let Some(target_room_id) = target_room_id else {
@@ -841,4 +853,43 @@ fn next_room_toward(
         }
     }
     None
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::engine::test_fixtures::minimal_test_pack;
+
+    #[test]
+    fn engaged_hostile_does_not_wander_away_from_player_room() {
+        let mut content = minimal_test_pack();
+        assert!(content.actors.len() >= 2, "fixture needs two actors");
+        content.actors[0].room_id = "lounge".to_string();
+        content.actors[0].move_every_ticks = 1;
+        content.actors[1].room_id = "kitchen".to_string();
+        content.actors[1].move_every_ticks = 1;
+        let engaged_id = content.actors[0].id.clone();
+        let roaming_id = content.actors[1].id.clone();
+        let mut state = WorldState::new(&content);
+        state.current_room_id = "lounge".to_string();
+        state.set_stance(&engaged_id, ActorStance::Hostile);
+        state.set_stance(&roaming_id, ActorStance::Hostile);
+
+        let events = plan_wander_moves(&content, &state);
+
+        assert!(
+            !events.iter().any(|ev| matches!(
+                ev,
+                WorldEvent::ActorMoved { actor_id, .. } if actor_id == &engaged_id
+            )),
+            "engaged hostile moved away from the player's room: {events:?}"
+        );
+        assert!(
+            events.iter().any(|ev| matches!(
+                ev,
+                WorldEvent::ActorMoved { actor_id, .. } if actor_id == &roaming_id
+            )),
+            "roaming hostile should still wander: {events:?}"
+        );
+    }
 }

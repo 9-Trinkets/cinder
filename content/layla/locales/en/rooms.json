@@ -6276,6 +6276,13 @@
     "title": "The King's Grove",
     "summary": "The forest opens into a wide, still chamber. At its heart, enthroned in roots and pale light, sits the elf king.",
     "inspect_text": "The forest opens into a wide, still chamber. At its heart, enthroned in roots and pale light, sits the elf king.",
+    "descriptions": [
+      {
+        "actor_defeated": "elf-king-5",
+        "summary": "The forest opens into a wide, still chamber. Where the elf king once sat enthroned in roots and pale light, only a hollowed throne of grey bark remains.",
+        "inspect_text": "The forest opens into a wide, still chamber. Where the elf king once sat enthroned in roots and pale light, only a hollowed throne of grey bark remains."
+      }
+    ],
     "features": [],
     "exits": [
       {

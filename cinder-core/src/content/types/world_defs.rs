@@ -240,6 +240,22 @@ pub struct RoomDefinition {
     pub allow_rest: bool,
     pub features: Vec<RoomFeatureDefinition>,
     pub exits: Vec<RoomExitDefinition>,
+    /// Conditional description overrides, checked in order; the first whose
+    /// condition matches the current world state replaces the room's
+    /// `summary`/`inspect_text`. Keeps prose fresh as the world changes (e.g.
+    /// the throne room reads differently after its king falls).
+    #[serde(default)]
+    pub descriptions: Vec<RoomDescriptionOverride>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RoomDescriptionOverride {
+    /// When non-empty, this override applies only once the named actor has
+    /// been defeated.
+    #[serde(default)]
+    pub actor_defeated: String,
+    pub summary: String,
+    pub inspect_text: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

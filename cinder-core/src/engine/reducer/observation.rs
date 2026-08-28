@@ -48,9 +48,21 @@ pub(super) fn render_room_observation(
     mode: ObservationMode,
 ) -> Option<NarrativeLines> {
     let room = content.room(room_id)?;
+    let health_stat_id = &content.settings.combat.health_stat_id;
+    let active = room
+        .descriptions
+        .iter()
+        .find(|override_| {
+            override_.actor_defeated.is_empty()
+                || state.actor_is_defeated(&override_.actor_defeated, health_stat_id)
+        });
     let body = match mode {
-        ObservationMode::Summary => room.summary.clone(),
-        ObservationMode::Detailed => room.inspect_text.clone(),
+        ObservationMode::Summary => active
+            .map(|override_| override_.summary.clone())
+            .unwrap_or_else(|| room.summary.clone()),
+        ObservationMode::Detailed => active
+            .map(|override_| override_.inspect_text.clone())
+            .unwrap_or_else(|| room.inspect_text.clone()),
     };
     let features = if room.features.is_empty() {
         String::new()

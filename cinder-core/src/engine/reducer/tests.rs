@@ -5,7 +5,8 @@ use crate::content::types::{
     ActorPromptContext, AdvanceCondition, AdvanceSignal, BeatDefinition, BeatsDefinition,
     CombatSettingsDefinition, CommandEffect, CommandInputMode, CommandTargetMode, ContentPack,
     ContentSettingsDefinition, ItemDefinition, ItemStorageTarget, OpeningDefinition,
-    PresentationDefinition, RoomDefinition, RoomExitDefinition, RoomFeatureDefinition,
+    PresentationDefinition, RoomDefinition, RoomDescriptionOverride, RoomExitDefinition,
+    RoomFeatureDefinition,
     RuleBundleCompletionDefinition, RuleBundleDefinition, RuleBundleGuidanceDefinition,
     RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition, RuleBundleProgressRef,
     RuleBundlesDefinition, StatDefinition, StatsDefinition,
@@ -67,6 +68,7 @@ fn reducer_test_pack() -> ContentPack {
                 menu_label: None,
                 requires_story_var: String::new(),
             }],
+            descriptions: vec![],
         },
         RoomDefinition {
             id: KITCHEN_ID.to_string(),
@@ -82,6 +84,7 @@ fn reducer_test_pack() -> ContentPack {
                 menu_label: None,
                 requires_story_var: String::new(),
             }],
+            descriptions: vec![],
         },
     ];
     pack.actors = vec![
@@ -1753,7 +1756,7 @@ fn defeating_an_actor_awards_full_xp_to_every_party_member_with_own_curve() {
         },
     );
 
-    let _ = super::command_effects::handle_actor_command_used(
+    let lines = super::command_effects::handle_actor_command_used(
         &mut state,
         &pack,
         ACTOR_A_ID,
@@ -1779,6 +1782,20 @@ fn defeating_an_actor_awards_full_xp_to_every_party_member_with_own_curve() {
     assert_eq!(state.actor_level(ACTOR_A_ID), 2);
     assert_eq!(state.actor_xp(ACTOR_B_ID), 10);
     assert_eq!(state.actor_level(ACTOR_B_ID), 1);
+    // Narration is per actor: only the leveling actor is named with its own
+    // new level.
+    let transcripts = lines
+        .iter()
+        .map(|line| line.text.as_str())
+        .collect::<Vec<_>>();
+    assert!(
+        transcripts.iter().any(|t| t.contains(ACTOR_A_NAME) && t.contains("Level 2")),
+        "expected per-actor narration naming Alex at Level 2, got: {transcripts:?}"
+    );
+    assert!(
+        !transcripts.iter().any(|t| t.contains(ACTOR_B_NAME) && t.contains("Level 2")),
+        "Blair did not level; she should not be narrated, got: {transcripts:?}"
+    );
     let alex_stamina = state.actor_stat(ACTOR_A_ID, "stamina");
     let blair_stamina = state.actor_stat(ACTOR_B_ID, "stamina");
     assert_eq!(
@@ -1804,4 +1821,54 @@ fn level_reveal_follows_the_declared_room_prefix() {
         pack.levels_revealed_for_room("down-barrow"),
         "descended board reveals levels"
     );
+}
+
+#[test]
+fn room_observation_switches_to_defeat_override_description_once_actor_falls() {
+    let mut pack = reducer_test_pack();
+    pack.presentation.presentation_text.room_observation =
+        "{room_title} {body}".to_string();
+    pack.settings.combat = CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_ID.to_string(),
+        health_stat_id: "stamina".to_string(),
+        ..CombatSettingsDefinition::default()
+    };
+    let kitchen = pack
+        .rooms
+        .iter_mut()
+        .find(|room| room.id == KITCHEN_ID)
+        .expect("kitchen room");
+    kitchen.descriptions
+        .push(RoomDescriptionOverride {
+            actor_defeated: ACTOR_C_ID.to_string(),
+            summary: "The quiet kitchen is empty now.".to_string(),
+            inspect_text: "No one stands in the quiet kitchen.".to_string(),
+        },
+    );
+    let mut state = WorldState::new(&pack);
+
+    let before = super::observation::render_room_observation(
+        &pack,
+        &state,
+        KITCHEN_ID,
+        crate::engine::events::ObservationMode::Summary,
+    )
+    .expect("room observation")
+    .to_text();
+    assert!(before.contains("quiet kitchen"), "got: {before}");
+
+    state
+        .actor_stats
+        .entry(ACTOR_C_ID.to_string())
+        .or_default()
+        .insert("stamina".to_string(), 0);
+    let after = super::observation::render_room_observation(
+        &pack,
+        &state,
+        KITCHEN_ID,
+        crate::engine::events::ObservationMode::Summary,
+    )
+    .expect("room observation")
+    .to_text();
+    assert!(after.contains("empty now"), "got: {after}");
 }
