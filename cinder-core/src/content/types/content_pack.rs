@@ -133,6 +133,15 @@ impl ContentPack {
             .map(|lvl| lvl.exp_required)
     }
 
+    /// Whether party levels are shown in the sidebar. Levels stay hidden (as
+    /// a reward) until the player has travelled to a room on the board named
+    /// by `level_reveal_room_prefix`. An empty prefix keeps them always
+    /// visible.
+    pub fn levels_revealed_for_room(&self, room_id: &str) -> bool {
+        let prefix = &self.settings.level_reveal_room_prefix;
+        prefix.is_empty() || room_id.starts_with(prefix.as_str())
+    }
+
     pub fn resolve_item_in_scope<'a>(
         &'a self,
         state: &WorldState,

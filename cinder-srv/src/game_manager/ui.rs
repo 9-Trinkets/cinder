@@ -58,6 +58,8 @@ pub struct EquippedItem {
 pub struct PartyMember {
     pub label: String,
     pub count: u32,
+    /// Follower level (per-actor). Rendered only once levels are revealed.
+    pub level: u32,
 }
 
 /// A single stat value shown on the player's status.
@@ -73,9 +75,9 @@ pub struct PlayerStatus {
     pub hp: u32,
     pub hp_max: u32,
     pub stats: Vec<StatValue>,
-    /// Current shared party level.
+    /// The player's (per-actor) level.
     pub level: u32,
-    /// Shared party XP toward the next level (or cumulative if no curve).
+    /// The player's XP toward the next level (or cumulative if no curve).
     pub xp: u32,
     /// XP required to advance from the current level to the next (0 = maxed).
     pub xp_max: u32,
@@ -210,6 +212,10 @@ pub struct UiSnapshot {
     pub party: Vec<PartyMember>,
     /// The player's vitals and other stats for the sidebar.
     pub player: PlayerStatus,
+    /// Whether party levels are visible yet. Derived from the content's
+    /// `level_reveal_room_prefix`: false until the player has travelled to a
+    /// room on that board. Level info stays hidden to reward descent.
+    pub levels_revealed: bool,
     /// Loose items lying in the current room (dropped there).
     pub current_room_items: Vec<InventoryItem>,
     pub room_consumables: Vec<RoomConsumableGroup>,
@@ -526,10 +532,15 @@ pub(super) fn build_ui_snapshot(
                     .ok()
                     .flatten()
                     .unwrap_or_else(|| actor_id.clone());
+                let level = state.actor_level(actor_id);
                 if let Some(member) = members.iter_mut().find(|m| m.label == label) {
                     member.count += 1;
                 } else {
-                    members.push(PartyMember { label, count: 1 });
+                    members.push(PartyMember {
+                        label,
+                        count: 1,
+                        level,
+                    });
                 }
             }
             members.sort_by(|a, b| a.label.cmp(&b.label));
@@ -569,6 +580,7 @@ pub(super) fn build_ui_snapshot(
                 xp_max,
             }
         },
+        levels_revealed: content.levels_revealed_for_room(&current_room_id),
         current_room_items: state
             .loose_room_items(&current_room_id)
             .into_iter()

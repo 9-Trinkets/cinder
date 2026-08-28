@@ -208,6 +208,7 @@ export interface EquippedItem {
 export interface PartyMember {
   label: string
   count: number
+  level: number
 }
 
 export interface StatValue {
@@ -298,6 +299,7 @@ export interface UiSnapshot {
   equipped_items: EquippedItem[]
   party: PartyMember[]
   player: PlayerStatus
+  levels_revealed: boolean
   current_room_items: InventoryItem[]
   room_consumables: RoomConsumableGroup[]
   crafted_consumable_labels: string[]

@@ -1787,3 +1787,21 @@ fn defeating_an_actor_awards_full_xp_to_every_party_member_with_own_curve() {
         "Alex should be +5 stamina; Alex={alex_stamina}, Blair={blair_stamina}"
     );
 }
+
+#[test]
+fn level_reveal_follows_the_declared_room_prefix() {
+    let mut pack = minimal_test_pack();
+    assert!(
+        pack.levels_revealed_for_room("alpha"),
+        "empty prefix: levels always visible"
+    );
+    pack.settings.level_reveal_room_prefix = "down".to_string();
+    assert!(
+        !pack.levels_revealed_for_room("topside"),
+        "upper stays hidden"
+    );
+    assert!(
+        pack.levels_revealed_for_room("down-barrow"),
+        "descended board reveals levels"
+    );
+}

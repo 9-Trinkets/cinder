@@ -10,6 +10,7 @@
   "autonomous_actor_dialogue": false,
   "autonomous_hostility_mode": "rules",
   "show_act_closure": false,
+  "level_reveal_room_prefix": "d",
   "theme": {
     "base": "#101218",
     "surface": "#181c26",

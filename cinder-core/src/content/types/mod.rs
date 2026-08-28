@@ -67,6 +67,12 @@ pub struct ContentSettingsDefinition {
     pub show_act_closure: bool,
     #[serde(default)]
     pub show_relationship_sidebar: bool,
+    /// Room-id prefix that, once the player has travelled to a room on that
+    /// board, reveals party levels in the sidebar. Empty means levels are
+    /// always visible. Treats level info as a reward and foreshadows a
+    /// hierarchy (e.g. a chess board) when the player descends.
+    #[serde(default)]
+    pub level_reveal_room_prefix: String,
     /// How autonomous hostile strikes are decided on background ticks.
     /// `rules` selects deterministically; `llm` asks a validated LLM planner.
     #[serde(default)]
@@ -254,6 +260,7 @@ impl Default for ContentSettingsDefinition {
             workflow_id: String::default(),
             show_act_closure: true,
             show_relationship_sidebar: false,
+            level_reveal_room_prefix: String::default(),
             autonomous_hostility_mode: AutonomousHostilityMode::Rules,
             combat: CombatSettingsDefinition::default(),
             starting_items: BTreeMap::new(),
