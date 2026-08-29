@@ -9,5 +9,6 @@
   "channel_surfing_only": true,
   "autonomous_actor_dialogue": true,
   "show_act_closure": false,
-  "show_relationship_sidebar": true
+  "show_relationship_sidebar": true,
+  "show_vitals_sidebar": false
 }

@@ -305,6 +305,7 @@ export interface UiSnapshot {
   crafted_consumable_labels: string[]
   show_relationship_sidebar: boolean
   relationship_pairs: RelationshipPair[]
+  show_vitals_sidebar: boolean
   theme: ThemeDefinition
   ui_text: {
     language_name: string

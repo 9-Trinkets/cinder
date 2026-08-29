@@ -39,54 +39,58 @@ export default function StatusPanel({ uiSnapshot }: { uiSnapshot: api.UiSnapshot
         </p>
       </Section>
 
-      <Section title="Vitals" defaultOpen>
-        <div className="flex items-baseline justify-between text-xs">
-          <span className="text-text">HP</span>
-          <span className="text-muted">{player.hp}/{player.hp_max}</span>
-        </div>
-        <div className="h-1.5 w-full rounded-full bg-overlay overflow-hidden">
-          <div
-            className="h-full rounded-full transition-all duration-300"
-            style={{
-              width: `${player.hp_max > 0 ? (player.hp / player.hp_max) * 100 : 0}%`,
-              backgroundColor: 'var(--color-pine)',
-            }}
-          />
-        </div>
-        {player.stats.length > 0 && (
-          <ul className="space-y-0.5">
-            {player.stats.map(stat => (
-              <li key={stat.id} className="flex justify-between text-xs">
-                <span className="text-muted">{stat.id}</span>
-                <span className="text-text">{stat.value}</span>
-              </li>
-            ))}
-          </ul>
-        )}
-      </Section>
+      {uiSnapshot.show_vitals_sidebar && (
+        <>
+          <Section title="Vitals" defaultOpen>
+            <div className="flex items-baseline justify-between text-xs">
+              <span className="text-text">HP</span>
+              <span className="text-muted">{player.hp}/{player.hp_max}</span>
+            </div>
+            <div className="h-1.5 w-full rounded-full bg-overlay overflow-hidden">
+              <div
+                className="h-full rounded-full transition-all duration-300"
+                style={{
+                  width: `${player.hp_max > 0 ? (player.hp / player.hp_max) * 100 : 0}%`,
+                  backgroundColor: 'var(--color-pine)',
+                }}
+              />
+            </div>
+            {player.stats.length > 0 && (
+              <ul className="space-y-0.5">
+                {player.stats.map(stat => (
+                  <li key={stat.id} className="flex justify-between text-xs">
+                    <span className="text-muted">{stat.id}</span>
+                    <span className="text-text">{stat.value}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Section>
 
-      {uiSnapshot.levels_revealed && (
-        <Section title="Level" defaultOpen>
-          <div className="flex items-baseline justify-between text-xs">
-            <span className="text-text font-medium">Level {player.level}</span>
-            <span className="text-muted">
-              {player.xp_max > 0 ? `${player.xp} / ${player.xp_max} XP` : 'MAX'}
-            </span>
-          </div>
-          <div className="h-1.5 w-full rounded-full bg-overlay overflow-hidden">
-            <div
-              role="progressbar"
-              aria-valuenow={player.xp}
-              aria-valuemin={0}
-              aria-valuemax={player.xp_max || 1}
-              className="h-full rounded-full transition-all duration-300"
-              style={{
-                width: `${player.xp_max > 0 ? (player.xp / player.xp_max) * 100 : 100}%`,
-                backgroundColor: 'var(--color-gold)',
-              }}
-            />
-          </div>
-        </Section>
+          {uiSnapshot.levels_revealed && (
+            <Section title="Level" defaultOpen>
+              <div className="flex items-baseline justify-between text-xs">
+                <span className="text-text font-medium">Level {player.level}</span>
+                <span className="text-muted">
+                  {player.xp_max > 0 ? `${player.xp} / ${player.xp_max} XP` : 'MAX'}
+                </span>
+              </div>
+              <div className="h-1.5 w-full rounded-full bg-overlay overflow-hidden">
+                <div
+                  role="progressbar"
+                  aria-valuenow={player.xp}
+                  aria-valuemin={0}
+                  aria-valuemax={player.xp_max || 1}
+                  className="h-full rounded-full transition-all duration-300"
+                  style={{
+                    width: `${player.xp_max > 0 ? (player.xp / player.xp_max) * 100 : 100}%`,
+                    backgroundColor: 'var(--color-gold)',
+                  }}
+                />
+              </div>
+            </Section>
+          )}
+        </>
       )}
 
       {uiSnapshot.party.length > 0 && (

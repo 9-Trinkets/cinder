@@ -67,6 +67,11 @@ pub struct ContentSettingsDefinition {
     pub show_act_closure: bool,
     #[serde(default)]
     pub show_relationship_sidebar: bool,
+    /// Whether the sidebar shows the player's Vitals (HP + stats) and Level
+    /// sections. Combat packs (e.g. layla) enable these; story packs without a
+    /// combat system disable them to keep the sidebar focused.
+    #[serde(default = "default_true")]
+    pub show_vitals_sidebar: bool,
     /// Room-id prefix that, once the player has travelled to a room on that
     /// board, reveals party levels in the sidebar. Empty means levels are
     /// always visible. Treats level info as a reward and foreshadows a
@@ -260,6 +265,7 @@ impl Default for ContentSettingsDefinition {
             workflow_id: String::default(),
             show_act_closure: true,
             show_relationship_sidebar: false,
+            show_vitals_sidebar: true,
             level_reveal_room_prefix: String::default(),
             autonomous_hostility_mode: AutonomousHostilityMode::Rules,
             combat: CombatSettingsDefinition::default(),

@@ -12,6 +12,7 @@
   "act_member_alias": "patient",
   "speech_stamina_cost_floor": 0,
   "show_act_closure": false,
+  "show_vitals_sidebar": false,
   "theme": {
     "base": "#1c1820",
     "surface": "#2a2521",

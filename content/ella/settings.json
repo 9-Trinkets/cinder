@@ -6,5 +6,6 @@
   "npc_tick_interval_ms": 2000,
   "default_language": "en",
   "fallback_stage_id": "go-to-bed",
-  "fallback_required_story_vars": ["movie_title", "snack_title"]
+  "fallback_required_story_vars": ["movie_title", "snack_title"],
+  "show_vitals_sidebar": false
 }

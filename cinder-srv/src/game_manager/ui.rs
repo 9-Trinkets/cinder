@@ -224,6 +224,8 @@ pub struct UiSnapshot {
     pub crafted_consumable_labels: Vec<String>,
     pub show_relationship_sidebar: bool,
     pub relationship_pairs: Vec<cinder_core::engine::runtime::RelationshipPair>,
+    /// Whether the sidebar shows the Vitals + Level sections (combat packs).
+    pub show_vitals_sidebar: bool,
     pub theme: cinder_core::content::types::ThemeDefinition,
 }
 
@@ -706,6 +708,7 @@ pub(super) fn build_ui_snapshot(
             .into_iter()
             .collect(),
         show_relationship_sidebar: content.settings.show_relationship_sidebar,
+        show_vitals_sidebar: content.settings.show_vitals_sidebar,
         relationship_pairs: if content.settings.show_relationship_sidebar {
             runtime.relationship_pairs().unwrap_or_default()
         } else {
