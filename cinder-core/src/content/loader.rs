@@ -1,9 +1,10 @@
 use crate::content::types::{
-    ActCastMember, ActionsDefinition, ActorDefinition, BeatsDefinition, ContentPack,
-    ContentSettingsDefinition, ItemDefinition, LevelingDefinition, MovementConfigDefinition,
-    OpeningDefinition, OpeningMenuDefinition, OpeningMovieDefinition, PresentationDefinition,
-    RoomDefinition, RuleBundleProgressRef, RuleBundlesDefinition, SpeechConfigDefinition,
-    SpeechIntentsConfig, StatsDefinition, SystemTextDefinition, UiTextDefinition,
+    ActCastMember, ActionsDefinition, ActorDefinition, BeatsDefinition, BehaviorDefinition,
+    ContentPack, ContentSettingsDefinition, ItemDefinition, LevelingDefinition,
+    MovementConfigDefinition, OpeningDefinition, OpeningMenuDefinition, OpeningMovieDefinition,
+    PresentationDefinition, RoomDefinition, RuleBundleProgressRef, RuleBundlesDefinition,
+    SpeechConfigDefinition, SpeechIntentsConfig, StatsDefinition, SystemTextDefinition,
+    UiTextDefinition,
 };
 use serde::de::DeserializeOwned;
 use serde_json::Value;
@@ -119,6 +120,8 @@ pub fn load_pack_from_dir_with_locale(
     };
     let movement =
         read_optional_json::<MovementConfigDefinition>(path, "movement.json")?.unwrap_or_default();
+    let behavior =
+        read_optional_json::<BehaviorDefinition>(path, "behavior.json")?.unwrap_or_default();
     let speech =
         read_optional_json::<SpeechConfigDefinition>(path, "speech.json")?.unwrap_or_default();
     let rule_bundles = read_json::<RuleBundlesDefinition>(path, "rule_bundles.json")?;
@@ -506,6 +509,7 @@ pub fn load_pack_from_dir_with_locale(
         stats,
         actions,
         movement,
+        behavior,
         speech,
         rule_bundles,
         hooks,
@@ -775,5 +779,26 @@ impl<'a> LocalizedPaths<'a> {
             file_name,
             fallback_file_name,
         ))
+    }
+}
+
+#[cfg(test)]
+mod shipped_pack_load_tests {
+    use super::*;
+    #[test]
+    fn shipped_packs_load_behavior_and_movement() {
+        for pack in ["aera", "ella", "isla", "layla"] {
+            let dir = pack_dir(pack);
+            let loaded = load_pack_from_dir_with_locale(&dir, Some("en"))
+                .unwrap_or_else(|e| panic!("pack {pack} failed to load: {e}"));
+            assert!(
+                loaded.behavior.defaults.strike.is_some(),
+                "{pack}: strike default absent"
+            );
+            assert!(
+                loaded.behavior.defaults.hold.is_some(),
+                "{pack}: hold default absent"
+            );
+        }
     }
 }

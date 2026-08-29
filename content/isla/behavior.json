@@ -1,0 +1,48 @@
+{
+  "defaults": {
+    "strike": {
+      "rule": "effect_table",
+      "rule_config": {
+        "cases_path": "rules",
+        "next_on_match": "complete",
+        "next_on_default": "complete",
+        "default_payload_template": { "effects": [] }
+      },
+      "input_overlay": {
+        "rules": [
+          {
+            "conditions": [
+              { "path": "actor.stance", "operator": "equal", "value": "hostile" },
+              { "path": "actor.alive", "operator": "equal", "value": true },
+              { "path": "world.cooldown_elapsed", "operator": "equal", "value": true },
+              { "path": "world.in_player_room", "operator": "equal", "value": true }
+            ],
+            "payload_template": { "kind": "strike" }
+          }
+        ]
+      }
+    },
+    "hold": {
+      "rule": "effect_table",
+      "rule_config": {
+        "cases_path": "rules",
+        "next_on_match": "complete",
+        "next_on_default": "complete",
+        "default_payload_template": { "effects": [] }
+      },
+      "input_overlay": {
+        "rules": [
+          {
+            "conditions": [
+              { "path": "actor.stance", "operator": "equal", "value": "hostile" },
+              { "path": "actor.alive", "operator": "equal", "value": true },
+              { "path": "world.in_player_room", "operator": "equal", "value": true }
+            ],
+            "payload_template": { "kind": "hold" }
+          }
+        ]
+      }
+    }
+  },
+  "actors": {}
+}

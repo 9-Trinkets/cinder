@@ -15,7 +15,91 @@ pub struct MovementConfigDefinition {
     #[serde(default)]
     pub suppress_when: Option<Value>,
     #[serde(default)]
+    pub defaults: MovementDefaultsDefinition,
+    #[serde(default)]
     pub actors: BTreeMap<String, ActorMovementRulesDefinition>,
+}
+
+/// Pack-wide movement defaults, applied to any actor that doesn't declare its
+/// own rules/destination. Pure `movement.json` owns direction + cadence; the
+/// *eligibility* to hold vs. move is decided by `behavior.json`.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct MovementDefaultsDefinition {
+    #[serde(default)]
+    pub wander: Option<WanderDefinition>,
+}
+
+/// Destination directive for a wandering actor. `movement.json` is the single
+/// place that says *where* (and how often) an actor drifts when it is free to
+/// move; whether it is actually free to move is `behavior.json`'s concern.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct WanderDefinition {
+    /// How the destination is chosen when the actor wanders.
+    #[serde(default)]
+    pub mode: WanderMode,
+    /// How often the actor wanders: 1 = every tick, 2 = every other tick, etc.
+    /// 0 means it never wanders.
+    #[serde(default)]
+    pub cadence_ticks: u32,
+    /// Optional fixed destination; used by `WanderMode::To` and ignored
+    /// otherwise.
+    #[serde(default)]
+    pub room_id: String,
+}
+
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum WanderMode {
+    /// Pick a random reachable adjacent room each time.
+    #[default]
+    RandomAdjacent,
+    /// Step toward the player's current room.
+    TowardPlayer,
+    /// Stay put (movement suppressed).
+    Stay,
+    /// Move toward the fixed `room_id` destination.
+    To,
+}
+
+/// The behavior of a hostile actor during a tick, declared per pack in
+/// `behavior.json`. Movement *destination* and *cadence* stay in
+/// `movement.json`; this file governs the *eligibility* decisions — whether an
+/// actor strikes, holds, or is free to move. Each rule is a neuron symbolic
+/// hook (`effect_table`) evaluated against a rich actor/world input JSON, so
+/// all policy lives in content rather than Rust.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct BehaviorDefinition {
+    #[serde(default)]
+    pub defaults: BehaviorActorDefinition,
+    #[serde(default)]
+    pub actors: BTreeMap<String, BehaviorActorDefinition>,
+}
+
+/// The two behavior rules for one actor (or for the pack default). Per-actor
+/// entries override the correspondingly-named field of the default; fields
+/// left `null` inherit the default.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct BehaviorActorDefinition {
+    /// `effect_table` rule returning `[{ "kind": "strike" }]` when the actor
+    /// should strike this tick.
+    #[serde(default)]
+    pub strike: Option<Value>,
+    /// `effect_table` rule returning `[{ "kind": "hold" }]` when the actor must
+    /// stay put (blocking movement), or `[]` when it is free to move.
+    #[serde(default)]
+    pub hold: Option<Value>,
+}
+
+impl BehaviorActorDefinition {
+    pub fn resolved_with_default(
+        &self,
+        default: &BehaviorActorDefinition,
+    ) -> BehaviorActorDefinition {
+        BehaviorActorDefinition {
+            strike: self.strike.clone().or_else(|| default.strike.clone()),
+            hold: self.hold.clone().or_else(|| default.hold.clone()),
+        }
+    }
 }
 
 /// The single source of truth for speech-selection policy in a content pack.
@@ -137,6 +221,10 @@ pub enum RuleBundleCompletionTrigger {
 pub struct ActorMovementRulesDefinition {
     #[serde(default)]
     pub target_rules: Vec<ActorMovementTargetRuleDefinition>,
+    /// Per-actor wander directive; falls back to the pack-wide default in
+    /// `MovementConfigDefinition::defaults.wander`.
+    #[serde(default)]
+    pub wander: Option<WanderDefinition>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -345,10 +433,6 @@ pub struct ActorDefinition {
     /// while the actor is hostile; defaults to 4 when omitted.
     #[serde(default)]
     pub attack_interval_minutes: Option<u32>,
-    /// How often this actor wanders to a random adjacent room during ticks:
-    /// 1 = every tick, 2 = every other tick, etc. 0 means it never wanders.
-    #[serde(default)]
-    pub move_every_ticks: u32,
     /// Whether the actor starts hostile to the player (used for mobs that
     /// attack on sight, like the level-2 elf army).
     #[serde(default)]

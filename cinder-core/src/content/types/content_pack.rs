@@ -20,6 +20,7 @@ pub struct ContentPack {
     pub stats: StatsDefinition,
     pub actions: Vec<ActionDefinition>,
     pub movement: MovementConfigDefinition,
+    pub behavior: BehaviorDefinition,
     pub speech: SpeechConfigDefinition,
     pub rule_bundles: RuleBundlesDefinition,
     pub hooks: BTreeMap<String, Value>,

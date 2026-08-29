@@ -1,10 +1,12 @@
 use crate::content::types::{
     ActorDefinition, ActorMovementRulesDefinition, AutonomousHostilityMode, ContentPack,
+    WanderDefinition, WanderMode,
 };
 use crate::engine::actor_turn::movement::required_movement_target_room_id;
 use crate::engine::actor_turn::{
     build_actor_turn, decide_actor_turn_action, realize_actor_turn_action, run_actor_turn,
 };
+use crate::engine::behavior::should_hold;
 use crate::engine::conversation_memory::refresh_conversation_summaries;
 use crate::engine::dialogue::{
     ActorTurnActionDecision, DialogueGenerator, HostilityCandidate, HostilityPlanRequest,
@@ -146,11 +148,18 @@ pub(crate) fn run_actor_tick(
     })
 }
 
-/// Deterministic wander pass for the tick: hostile actors with a
-/// `move_every_ticks` cadence move to a random adjacent room on the ticks
-/// where `current_time_minutes` is a multiple of their cadence. So pawns
-/// (cadence 1) drift toward the player fast while knights (2) and stronger
-/// pieces lag behind, giving the player early, weaker encounters.
+/// Deterministic wander pass for the tick: hostile, living actors with a
+/// non-zero `wander` directive in `movement.json` (per-actor or the pack
+/// default) move on the ticks where `current_time_minutes` is a multiple of
+/// their `cadence_ticks`. So pawns (cadence 1) drift toward the player fast
+/// while knights (2) and stronger pieces lag behind, giving the player early,
+/// weaker encounters.
+///
+/// Whether an actor is *free* to move is decided by `behavior.json`'s `hold`
+/// rule (an engaged hostile sharing the player's room holds and strikes rather
+/// than wandering off); the destination is chosen from the `wander.mode` in
+/// `movement.json`. Nothing here is hardcoded: cadence, destination and
+/// hold-eligibility are all declared in content.
 pub(crate) fn plan_wander_moves(content: &ContentPack, state: &WorldState) -> Vec<WorldEvent> {
     if state.phase != crate::engine::state::GamePhase::Active {
         return Vec::new();
@@ -160,37 +169,94 @@ pub(crate) fn plan_wander_moves(content: &ContentPack, state: &WorldState) -> Ve
     let reachable = content.reachable_room_ids(&state.current_room_id);
     let mut events = Vec::new();
     for actor in &content.actors {
-        if actor.move_every_ticks == 0 {
+        let Some(wander) = resolve_wander(content, &actor.id) else {
+            continue;
+        };
+        if wander.cadence_ticks == 0 {
             continue;
         }
         if state.stance(&actor.id) != ActorStance::Hostile {
             continue;
         }
+        if state.actor_stat(&actor.id, &content.settings.combat.health_stat_id) <= 0 {
+            continue;
+        }
         if !reachable.contains(state.actor_room_id(&actor.id, &actor.room_id)) {
             continue;
         }
-        if state.current_time_minutes % actor.move_every_ticks != 0 {
+        if !state
+            .current_time_minutes
+            .is_multiple_of(wander.cadence_ticks)
+        {
             continue;
         }
         let current_room_id = state.actor_room_id(&actor.id, &actor.room_id);
-        // Engaged: a hostile sharing the player's room is mid-fight and should
-        // strike, not wander off to another room. It resumes wandering once
-        // the player leaves.
-        if current_room_id == state.current_room_id {
+        // A hostile held by its `behavior.json` `hold` rule (e.g. one sharing
+        // the player's room mid-fight) stays put and strikes instead of
+        // wandering; it resumes wandering once the player leaves.
+        if should_hold(content, state, &actor.id) {
             continue;
         }
-        let neighbors = content.adjacent_room_ids(current_room_id);
-        if neighbors.is_empty() {
+        let Some(to_room_id) = wander_destination(content, state, actor, current_room_id, &wander)
+        else {
+            continue;
+        };
+        if to_room_id == current_room_id {
             continue;
         }
-        let index = rand::thread_rng().gen_range(0..neighbors.len());
         events.push(WorldEvent::ActorMoved {
             actor_id: actor.id.clone(),
             from_room_id: current_room_id.to_string(),
-            to_room_id: neighbors[index].clone(),
+            to_room_id,
         });
     }
     events
+}
+
+/// Resolve the effective wander directive for an actor: per-actor override, or
+/// the pack-wide default from `movement.json`. `None` means the actor has no
+/// wander behavior at all.
+fn resolve_wander(content: &ContentPack, actor_id: &str) -> Option<WanderDefinition> {
+    content
+        .movement
+        .actors
+        .get(actor_id)
+        .and_then(|rules| rules.wander.clone())
+        .or_else(|| content.movement.defaults.wander.clone())
+}
+
+/// Choose the destination room for a wandering actor per its `wander.mode`.
+fn wander_destination(
+    content: &ContentPack,
+    state: &WorldState,
+    actor: &ActorDefinition,
+    current_room_id: &str,
+    wander: &WanderDefinition,
+) -> Option<String> {
+    match wander.mode {
+        WanderMode::RandomAdjacent => {
+            let neighbors = content.adjacent_room_ids(current_room_id);
+            if neighbors.is_empty() {
+                return None;
+            }
+            let index = rand::thread_rng().gen_range(0..neighbors.len());
+            Some(neighbors[index].clone())
+        }
+        WanderMode::TowardPlayer => {
+            next_room_toward(content, current_room_id, &state.current_room_id)
+        }
+        WanderMode::Stay => None,
+        WanderMode::To => {
+            // Drift back toward the actor's home room unless a fixed
+            // destination is given.
+            let destination = if wander.room_id.is_empty() {
+                actor.room_id.clone()
+            } else {
+                wander.room_id.clone()
+            };
+            next_room_toward(content, current_room_id, &destination)
+        }
+    }
 }
 
 pub(crate) fn decide_movement(
@@ -203,8 +269,7 @@ pub(crate) fn decide_movement(
 ) -> Result<Vec<WorldEvent>, Box<dyn Error>> {
     // Engaged: a hostile sharing the player's room is mid-fight and should
     // strike rather than move away. It resumes moving once the player leaves.
-    if state.stance(&actor.id) == ActorStance::Hostile && current_room_id == state.current_room_id
-    {
+    if should_hold(&content, state, &actor.id) {
         return Ok(vec![]);
     }
     let target_room_id = required_movement_target_room_id(state, rules, current_room_id)
@@ -865,15 +930,65 @@ mod tests {
         let mut content = minimal_test_pack();
         assert!(content.actors.len() >= 2, "fixture needs two actors");
         content.actors[0].room_id = "lounge".to_string();
-        content.actors[0].move_every_ticks = 1;
         content.actors[1].room_id = "kitchen".to_string();
-        content.actors[1].move_every_ticks = 1;
         let engaged_id = content.actors[0].id.clone();
         let roaming_id = content.actors[1].id.clone();
+        // Give both actors a wander cadence in movement.json, and a `behavior`
+        // `hold` rule that engages any hostile sharing the player's room.
+        content
+            .movement
+            .actors
+            .entry(engaged_id.clone())
+            .or_default()
+            .wander = Some(crate::content::types::WanderDefinition {
+            mode: crate::content::types::WanderMode::RandomAdjacent,
+            cadence_ticks: 1,
+            room_id: String::new(),
+        });
+        content
+            .movement
+            .actors
+            .entry(roaming_id.clone())
+            .or_default()
+            .wander = Some(crate::content::types::WanderDefinition {
+            mode: crate::content::types::WanderMode::RandomAdjacent,
+            cadence_ticks: 1,
+            room_id: String::new(),
+        });
+        let engaged_in_room_rule = serde_json::json!({
+            "rule": "effect_table",
+            "rule_config": {
+                "cases_path": "rules",
+                "next_on_match": "continue",
+                "next_on_default": "continue",
+                "default_payload_template": { "effects": [] }
+            },
+            "input_overlay": {
+                "rules": [{
+                    "conditions": [
+                        { "path": "actor.stance", "operator": "equal", "value": "hostile" },
+                        { "path": "actor.alive", "operator": "equal", "value": true },
+                        { "path": "world.in_player_room", "operator": "equal", "value": true }
+                    ],
+                    "payload_template": { "kind": "hold" }
+                }]
+            }
+        });
+        content.behavior.defaults.hold = Some(engaged_in_room_rule);
         let mut state = WorldState::new(&content);
         state.current_room_id = "lounge".to_string();
         state.set_stance(&engaged_id, ActorStance::Hostile);
         state.set_stance(&roaming_id, ActorStance::Hostile);
+        state
+            .actor_stats
+            .entry(engaged_id.clone())
+            .or_default()
+            .insert("hp".to_string(), 5);
+        state
+            .actor_stats
+            .entry(roaming_id.clone())
+            .or_default()
+            .insert("hp".to_string(), 5);
 
         let events = plan_wander_moves(&content, &state);
 

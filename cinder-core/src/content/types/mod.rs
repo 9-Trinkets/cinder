@@ -585,15 +585,15 @@ pub struct OpeningMovieFrameDefinition {
 mod world_defs;
 pub use world_defs::{
     ActorDefinition, ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition,
-    ActorPromptContext, ConsumableDefinition, ConsumableKind, ErrorTextDefinition,
-    MovementConfigDefinition, MovementTargetBehavior, PresentationDefinition,
-    PresentationTextDefinition, RoomDefinition, RoomDescriptionOverride, RoomExitDefinition,
-    RoomFeatureDefinition,
+    ActorPromptContext, BehaviorActorDefinition, BehaviorDefinition, ConsumableDefinition,
+    ConsumableKind, ErrorTextDefinition, MovementConfigDefinition, MovementDefaultsDefinition,
+    MovementTargetBehavior, PresentationDefinition, PresentationTextDefinition, RoomDefinition,
+    RoomDescriptionOverride, RoomExitDefinition, RoomFeatureDefinition,
     RuleBundleAffordancePriorityDefinition, RuleBundleAffordanceTarget,
     RuleBundleCompletionDefinition, RuleBundleCompletionTrigger,
     RuleBundleConditionalGuidanceDefinition, RuleBundleDefinition, RuleBundleGuidanceDefinition,
     RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition, RuleBundlesDefinition,
-    SpeechConfigDefinition, StatDefinition, StatsDefinition,
+    SpeechConfigDefinition, StatDefinition, StatsDefinition, WanderDefinition, WanderMode,
 };
 
 mod command_defs;

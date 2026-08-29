@@ -1,0 +1,25 @@
+{
+  "defaults": {
+    "wander": {
+      "mode": "random_adjacent",
+      "cadence_ticks": 0
+    }
+  },
+  "actors": {
+    "elf-pawn-1": { "wander": { "mode": "random_adjacent", "cadence_ticks": 1 } },
+    "elf-pawn-2": { "wander": { "mode": "random_adjacent", "cadence_ticks": 1 } },
+    "elf-pawn-3": { "wander": { "mode": "random_adjacent", "cadence_ticks": 1 } },
+    "elf-pawn-4": { "wander": { "mode": "random_adjacent", "cadence_ticks": 1 } },
+    "elf-pawn-5": { "wander": { "mode": "random_adjacent", "cadence_ticks": 1 } },
+    "elf-pawn-6": { "wander": { "mode": "random_adjacent", "cadence_ticks": 1 } },
+    "elf-pawn-7": { "wander": { "mode": "random_adjacent", "cadence_ticks": 1 } },
+    "elf-pawn-8": { "wander": { "mode": "random_adjacent", "cadence_ticks": 1 } },
+    "elf-rook-1": { "wander": { "mode": "random_adjacent", "cadence_ticks": 3 } },
+    "elf-knight-2": { "wander": { "mode": "random_adjacent", "cadence_ticks": 2 } },
+    "elf-bishop-3": { "wander": { "mode": "random_adjacent", "cadence_ticks": 3 } },
+    "elf-queen-4": { "wander": { "mode": "random_adjacent", "cadence_ticks": 4 } },
+    "elf-bishop-6": { "wander": { "mode": "random_adjacent", "cadence_ticks": 3 } },
+    "elf-knight-7": { "wander": { "mode": "random_adjacent", "cadence_ticks": 2 } },
+    "elf-rook-8": { "wander": { "mode": "random_adjacent", "cadence_ticks": 3 } }
+  }
+}

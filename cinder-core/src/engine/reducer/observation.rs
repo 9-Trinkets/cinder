@@ -49,13 +49,10 @@ pub(super) fn render_room_observation(
 ) -> Option<NarrativeLines> {
     let room = content.room(room_id)?;
     let health_stat_id = &content.settings.combat.health_stat_id;
-    let active = room
-        .descriptions
-        .iter()
-        .find(|override_| {
-            override_.actor_defeated.is_empty()
-                || state.actor_is_defeated(&override_.actor_defeated, health_stat_id)
-        });
+    let active = room.descriptions.iter().find(|override_| {
+        override_.actor_defeated.is_empty()
+            || state.actor_is_defeated(&override_.actor_defeated, health_stat_id)
+    });
     let body = match mode {
         ObservationMode::Summary => active
             .map(|override_| override_.summary.clone())

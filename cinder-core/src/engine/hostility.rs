@@ -1,46 +1,60 @@
 //! Hostile-strike policy: decides *which* hostile actors declare strikes on a
 //! background tick. The reducer resolves the mechanics of each declared
 //! [`WorldEvent::HostileStrike`] generically; this module only selects.
+//!
+//! The selection policy itself is content-driven: each pack's `behavior.json`
+//! `strike` rule decides per actor (see [`crate::engine::behavior`]).
+//! No strike eligibility is hardcoded in Rust.
 
 use crate::content::types::ContentPack;
+use crate::engine::behavior;
 use crate::engine::events::WorldEvent;
-use crate::engine::state::{ActorStance, GamePhase, WorldState};
+use crate::engine::state::WorldState;
 
-/// Rules policy: hostile actors sharing the player's room whose attack
-/// cooldown has elapsed declare one strike each.
+/// Rules policy: a hostile actor declares a strike when its pack's `behavior`
+/// `strike` rule fires.
 pub(crate) fn plan_rules_hostility(content: &ContentPack, state: &WorldState) -> Vec<WorldEvent> {
-    if state.phase != GamePhase::Active {
-        return Vec::new();
-    }
-    let current_time_minutes = state.current_time_minutes;
-    state
-        .relationships
+    let actor_ids = content
+        .actors
         .iter()
-        .filter(|(_, relationship)| relationship.stance == ActorStance::Hostile)
-        .filter(|(actor_id, _)| {
-            state.actor_stat(actor_id, &content.settings.combat.health_stat_id) > 0
-                && state
-                    .next_hostile_strike_at
-                    .get(*actor_id)
-                    .is_none_or(|next_strike| current_time_minutes >= *next_strike)
-                && {
-                    let default_room_id = content
-                        .actor(actor_id)
-                        .map(|actor| actor.room_id.clone())
-                        .unwrap_or_default();
-                    state.actor_room_id(actor_id, &default_room_id) == state.current_room_id
-                }
-        })
-        .map(|(actor_id, _)| WorldEvent::HostileStrike {
-            actor_id: actor_id.clone(),
-        })
+        .map(|actor| actor.id.clone())
+        .collect::<Vec<_>>();
+    actor_ids
+        .into_iter()
+        .filter_map(|actor_id| behavior::strike_event(content, state, &actor_id))
         .collect()
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::engine::state::GamePhase;
+    use crate::engine::state::{ActorStance, GamePhase};
+
+    /// The strike decision re-declared as a neuron `effect_table` rule: strike
+    /// when the actor is a living hostile sharing the player's room whose
+    /// attack cooldown has elapsed. Mirrors the historical built-in policy.
+    fn strike_default_rule() -> serde_json::Value {
+        serde_json::json!({
+            "rule": "effect_table",
+            "rule_config": {
+                "cases_path": "rules",
+                "next_on_match": "continue",
+                "next_on_default": "continue",
+                "default_payload_template": { "effects": [] }
+            },
+            "input_overlay": {
+                "rules": [{
+                    "conditions": [
+                        { "path": "actor.stance", "operator": "equal", "value": "hostile" },
+                        { "path": "actor.alive", "operator": "equal", "value": true },
+                        { "path": "world.cooldown_elapsed", "operator": "equal", "value": true },
+                        { "path": "world.in_player_room", "operator": "equal", "value": true }
+                    ],
+                    "payload_template": { "kind": "strike" }
+                }]
+            }
+        })
+    }
 
     /// Fixture reusing the synthetic pack's own actors: the first becomes the
     /// hostile creature sharing the player's room, the second waits elsewhere.
@@ -48,6 +62,9 @@ mod tests {
     fn hostile_fixture() -> (ContentPack, WorldState, String, String) {
         let mut content = crate::engine::test_fixtures::minimal_test_pack();
         assert!(content.actors.len() >= 2, "fixture needs two actors");
+        // Re-declare the strike eligibility as content (matching the historical
+        // hardcoded policy) so the fixture exercises the real content-driven path.
+        content.behavior.defaults.strike = Some(strike_default_rule());
         let brute_id = content.actors[0].id.clone();
         let bystander_id = content.actors[1].id.clone();
         content.actors[0].room_id = "hall".to_string();

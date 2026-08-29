@@ -6,10 +6,9 @@ use crate::content::types::{
     CombatSettingsDefinition, CommandEffect, CommandInputMode, CommandTargetMode, ContentPack,
     ContentSettingsDefinition, ItemDefinition, ItemStorageTarget, OpeningDefinition,
     PresentationDefinition, RoomDefinition, RoomDescriptionOverride, RoomExitDefinition,
-    RoomFeatureDefinition,
-    RuleBundleCompletionDefinition, RuleBundleDefinition, RuleBundleGuidanceDefinition,
-    RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition, RuleBundleProgressRef,
-    RuleBundlesDefinition, StatDefinition, StatsDefinition,
+    RoomFeatureDefinition, RuleBundleCompletionDefinition, RuleBundleDefinition,
+    RuleBundleGuidanceDefinition, RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition,
+    RuleBundleProgressRef, RuleBundlesDefinition, StatDefinition, StatsDefinition,
 };
 use crate::engine::state::{ActorStance, ConversationMemoryKind, GamePhase};
 use crate::engine::test_fixtures::minimal_test_pack;
@@ -252,7 +251,6 @@ fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
         drops: BTreeMap::new(),
         xp_drop: 0,
         attack_interval_minutes: None,
-        move_every_ticks: 0,
         initial_hostile: false,
         prompt_context: ActorPromptContext {
             character_notes: vec![],
@@ -1789,11 +1787,15 @@ fn defeating_an_actor_awards_full_xp_to_every_party_member_with_own_curve() {
         .map(|line| line.text.as_str())
         .collect::<Vec<_>>();
     assert!(
-        transcripts.iter().any(|t| t.contains(ACTOR_A_NAME) && t.contains("Level 2")),
+        transcripts
+            .iter()
+            .any(|t| t.contains(ACTOR_A_NAME) && t.contains("Level 2")),
         "expected per-actor narration naming Alex at Level 2, got: {transcripts:?}"
     );
     assert!(
-        !transcripts.iter().any(|t| t.contains(ACTOR_B_NAME) && t.contains("Level 2")),
+        !transcripts
+            .iter()
+            .any(|t| t.contains(ACTOR_B_NAME) && t.contains("Level 2")),
         "Blair did not level; she should not be narrated, got: {transcripts:?}"
     );
     let alex_stamina = state.actor_stat(ACTOR_A_ID, "stamina");
@@ -1826,8 +1828,7 @@ fn level_reveal_follows_the_declared_room_prefix() {
 #[test]
 fn room_observation_switches_to_defeat_override_description_once_actor_falls() {
     let mut pack = reducer_test_pack();
-    pack.presentation.presentation_text.room_observation =
-        "{room_title} {body}".to_string();
+    pack.presentation.presentation_text.room_observation = "{room_title} {body}".to_string();
     pack.settings.combat = CombatSettingsDefinition {
         player_actor_id: ACTOR_A_ID.to_string(),
         health_stat_id: "stamina".to_string(),
@@ -1838,13 +1839,11 @@ fn room_observation_switches_to_defeat_override_description_once_actor_falls() {
         .iter_mut()
         .find(|room| room.id == KITCHEN_ID)
         .expect("kitchen room");
-    kitchen.descriptions
-        .push(RoomDescriptionOverride {
-            actor_defeated: ACTOR_C_ID.to_string(),
-            summary: "The quiet kitchen is empty now.".to_string(),
-            inspect_text: "No one stands in the quiet kitchen.".to_string(),
-        },
-    );
+    kitchen.descriptions.push(RoomDescriptionOverride {
+        actor_defeated: ACTOR_C_ID.to_string(),
+        summary: "The quiet kitchen is empty now.".to_string(),
+        inspect_text: "No one stands in the quiet kitchen.".to_string(),
+    });
     let mut state = WorldState::new(&pack);
 
     let before = super::observation::render_room_observation(

@@ -7,8 +7,8 @@ use crate::engine::hook_ids;
 use crate::engine::hooks::{apply_narrating_world_hook_effects, apply_world_hook_effects};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{
-    display_actor_name, ActorRelationship, ActorStance, ConversationMemoryKind,
-    ConversationMemoryLine, WorldState,
+    ActorRelationship, ActorStance, ConversationMemoryKind, ConversationMemoryLine, WorldState,
+    display_actor_name,
 };
 use crate::engine::turn_policies::apply_command_bundle_progress_effects;
 use serde_json::json;

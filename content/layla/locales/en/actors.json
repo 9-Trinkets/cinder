@@ -237,7 +237,6 @@
     "inspect_text": "A elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 1,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -260,7 +259,6 @@
     "inspect_text": "A elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 1,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -283,7 +281,6 @@
     "inspect_text": "A elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 1,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -306,7 +303,6 @@
     "inspect_text": "A elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 1,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -329,7 +325,6 @@
     "inspect_text": "A elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 1,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -352,7 +347,6 @@
     "inspect_text": "A elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 1,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -375,7 +369,6 @@
     "inspect_text": "A elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 1,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -398,7 +391,6 @@
     "inspect_text": "A elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 1,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -421,7 +413,6 @@
     "inspect_text": "A elf rook of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 3,
     "initial_hostile": true,
     "xp_drop": 40,
     "initial_stats": {
@@ -444,7 +435,6 @@
     "inspect_text": "A elf knight of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 2,
     "initial_hostile": true,
     "xp_drop": 25,
     "initial_stats": {
@@ -467,7 +457,6 @@
     "inspect_text": "A elf bishop of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 3,
     "initial_hostile": true,
     "xp_drop": 25,
     "initial_stats": {
@@ -490,7 +479,6 @@
     "inspect_text": "A elf queen of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 4,
     "initial_hostile": true,
     "xp_drop": 60,
     "initial_stats": {
@@ -513,7 +501,6 @@
     "inspect_text": "A elf king of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 0,
     "initial_hostile": true,
     "xp_drop": 0,
     "initial_stats": {
@@ -536,7 +523,6 @@
     "inspect_text": "A elf bishop of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 3,
     "initial_hostile": true,
     "xp_drop": 25,
     "initial_stats": {
@@ -559,7 +545,6 @@
     "inspect_text": "A elf knight of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 2,
     "initial_hostile": true,
     "xp_drop": 25,
     "initial_stats": {
@@ -582,7 +567,6 @@
     "inspect_text": "A elf rook of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
-    "move_every_ticks": 3,
     "initial_hostile": true,
     "xp_drop": 40,
     "initial_stats": {
