@@ -19,6 +19,16 @@ fn try_resolve_menu_choice(
         let raw = raw_input.trim();
         let is_multi_select = menu.max_selections > 0;
         if is_multi_select && raw == "done" {
+            if menu.min_selections > 0
+                && planner_state.pending_menu_selections.len() < menu.min_selections
+            {
+                return Some((
+                    vec![WorldEvent::ActionRejected {
+                        message: render_dynamic_story_text(&menu.invalid_choice_text, planner_state),
+                    }],
+                    false,
+                ));
+            }
             return Some((
                 vec![WorldEvent::MenuChoiceMade {
                     menu_id: menu_id.to_string(),
@@ -115,14 +125,27 @@ pub(super) fn build_planned_turn(
                         let raw = aggregated.command.raw_input.trim();
                         let is_multi_select = menu.max_selections > 0;
                         if is_multi_select && raw == "done" {
-                            let option_id = "done".to_string();
-                            let title = "Done".to_string();
-                            planned.events.push(WorldEvent::MenuChoiceMade {
-                                menu_id: menu_id.to_string(),
-                                option_id,
-                                title,
-                            });
-                            true
+                            if menu.min_selections > 0
+                                && planner_state.pending_menu_selections.len()
+                                    < menu.min_selections
+                            {
+                                planned.events.push(WorldEvent::ActionRejected {
+                                    message: render_dynamic_story_text(
+                                        &menu.invalid_choice_text,
+                                        planner_state,
+                                    ),
+                                });
+                                false
+                            } else {
+                                let option_id = "done".to_string();
+                                let title = "Done".to_string();
+                                planned.events.push(WorldEvent::MenuChoiceMade {
+                                    menu_id: menu_id.to_string(),
+                                    option_id,
+                                    title,
+                                });
+                                true
+                            }
                         } else if is_multi_select && raw.starts_with("toggle:") {
                             let option_id = raw["toggle:".len()..].to_string();
                             let selected =

@@ -454,7 +454,7 @@ export default function GamePage() {
     if (!token || !id || commandPending || gameOver) return
     let trimmed = input.trim()
     if (!trimmed) {
-      if (activeMenu && (activeMenu.max_selections ?? 0) > 0 && menuSelections.size > 0) {
+      if (activeMenu && (activeMenu.max_selections ?? 0) > 0 && menuSelections.size >= (activeMenu.min_selections || 1)) {
         setInput('')
         await execCommand('done', 'Done')
       }
