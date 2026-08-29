@@ -125,12 +125,11 @@ pub(super) fn handle_hostile_strike(
             lines.narration(line);
         }
         let remaining = state.effective_actor_stat(content, &guard_id, &combat.health_stat_id);
-        if remaining <= 0 {
-            if let Some(line) =
+        if remaining <= 0
+            && let Some(line) =
                 content.render_message("combat.guard_falls", &[("guard", guard_name.as_str())])
-            {
-                lines.narration(line);
-            }
+        {
+            lines.narration(line);
         }
     } else {
         let damage = raw_damage;

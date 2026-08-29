@@ -8,7 +8,6 @@ import TranscriptPane from '../components/TranscriptPane'
 import StatusPanel from '../components/StatusPanel'
 import RelationshipChart from '../components/RelationshipChart'
 import MovieModal from '../components/MovieModal'
-import ActClosureModal from '../components/ActClosureModal'
 import QuickActionPanel, { type QuickPanel } from '../components/QuickActionPanel'
 import ConfirmDialog from '../components/ConfirmDialog'
 import { useToast } from '../components/Toast'
@@ -571,7 +570,6 @@ export default function GamePage() {
               onOverflow={action => {
                 const panel = (action as unknown as Record<string, unknown>).panel as string | undefined
                 if (panel) {
-                  const panelConfig = findPanelConfig(panel)
                   const options = uiSnapshot?.panel_options?.[panel] ?? []
                   if (options.length === 1) {
                     handleSelectPanelOption(panel, options[0])

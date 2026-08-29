@@ -586,7 +586,7 @@ pub(super) fn build_ui_snapshot(
                 })
                 .collect::<Vec<_>>();
             stats.sort_by(|a, b| a.id.cmp(&b.id));
-            let (level, xp, xp_max) = xp_progress(&state, &content);
+            let (level, xp, xp_max) = xp_progress(&state, content);
             PlayerStatus {
                 hp,
                 hp_max,

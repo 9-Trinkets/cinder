@@ -148,7 +148,7 @@ pub(super) fn render_room_observation(
                 .filter(|(id, _)| {
                     content
                         .item(id)
-                        .map_or(true, |item| item.look_description.is_empty())
+                        .is_none_or(|item| item.look_description.is_empty())
                 })
                 .map(|(id, count)| {
                     let label = content

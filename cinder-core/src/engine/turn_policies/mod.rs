@@ -264,14 +264,14 @@ pub fn action_is_available(
     }
 
     // Item-possession gating so the bar hides actions whose items you lack.
-    if let Some(item_id) = &a.consumes_item {
-        if !state.has_item_in_storage(
+    if let Some(item_id) = &a.consumes_item
+        && !state.has_item_in_storage(
             item_id,
             to_item_storage(a.consumes_item_storage.clone()),
             context_room_id,
-        ) {
-            return false;
-        }
+        )
+    {
+        return false;
     }
     if !a.requires_any.is_empty() || !a.consumes_any.is_empty() {
         let all_required: Vec<_> = a.requires_any.iter().chain(a.consumes_any.iter()).collect();

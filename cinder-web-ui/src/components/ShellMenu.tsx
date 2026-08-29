@@ -23,10 +23,6 @@ interface FlatItem {
   label: string
 }
 
-const CANONICAL_ORDER: string[] = [
-  'rooms', 'follow', 'language', 'exit',
-]
-
 const CANONICAL_FALLBACK: { id: string; labelKey: string }[] = [
   { id: 'language', labelKey: 'language_menu_label' },
   { id: 'exit', labelKey: 'exit_label' },
@@ -162,7 +158,7 @@ function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy }: MainMen
             key={child.id}
             variant="secondary"
             className="block w-full text-left"
-            onClick={() => handleItemClick(child.id, onViewChange, onClose, onExit)}
+            onClick={() => handleItemClick(child.id, onViewChange, onExit)}
           >
             {child.label}
           </Button>
@@ -227,7 +223,7 @@ function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy }: MainMen
             key={item.id}
             variant="secondary"
             className="block w-full text-left"
-            onClick={() => handleItemClick(item.id, onViewChange, onClose, onExit)}
+            onClick={() => handleItemClick(item.id, onViewChange, onExit)}
             disabled={busy}
           >
             {item.label}
@@ -259,7 +255,6 @@ const VIEW_ROUTE: Record<string, View> = {
 function handleItemClick(
   id: string,
   onViewChange: (v: View) => void,
-  onClose: () => void,
   onExit: () => void,
 ) {
   if (id === 'exit') { onExit(); return }
