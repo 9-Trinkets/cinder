@@ -168,6 +168,11 @@ pub struct UiTextDefinition {
     pub book_recommender_instructions: String,
     #[serde(default = "default_dynamic_menu_context_label")]
     pub dynamic_menu_context_label: String,
+    /// Section title for loose items lying in the current room, shown in the
+    /// sidebar. Layla calls this "On the ground"; story packs that don't drop
+    /// items in rooms can rename or repurpose it.
+    #[serde(default = "default_room_items_sidebar_label")]
+    pub room_items_sidebar_label: String,
     #[serde(default)]
     pub act_closure: ActClosureDefinition,
     #[serde(default)]
@@ -445,6 +450,10 @@ fn default_dynamic_menu_context_label() -> String {
     "Context".to_string()
 }
 
+fn default_room_items_sidebar_label() -> String {
+    "On the ground".to_string()
+}
+
 impl Default for UiTextDefinition {
     fn default() -> Self {
         Self {
@@ -510,6 +519,7 @@ impl Default for UiTextDefinition {
             perspective_review_system: default_perspective_review_system(),
             book_recommender_instructions: default_book_recommender_instructions(),
             dynamic_menu_context_label: default_dynamic_menu_context_label(),
+            room_items_sidebar_label: default_room_items_sidebar_label(),
             act_closure: ActClosureDefinition::default(),
             game_closure: ActClosureDefinition::default(),
             shell_menu: ShellMenuDefinition::default(),

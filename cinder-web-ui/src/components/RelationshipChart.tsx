@@ -1,4 +1,5 @@
 import * as api from '../api'
+import Section from './Section'
 
 const HEARTS = 5
 
@@ -6,8 +7,7 @@ export default function RelationshipChart({ pairs }: { pairs: api.RelationshipPa
   if (pairs.length === 0) return null
 
   return (
-    <div className="space-y-3">
-      <p className="text-xs text-muted uppercase tracking-wider">Relationships</p>
+    <Section title="Relationships" defaultOpen>
       {pairs.map((pair, i) => {
         const filled = Math.round((pair.attraction / 10) * HEARTS)
         return (
@@ -28,6 +28,6 @@ export default function RelationshipChart({ pairs }: { pairs: api.RelationshipPa
           </div>
         )
       })}
-    </div>
+    </Section>
   )
 }
