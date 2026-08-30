@@ -60,8 +60,23 @@
             }
           ],
           "payload_template": {
-            "kind": "defeat_actors_by_tag",
-            "tag": "elf"
+            "kind": "narrate_message",
+            "key": "king.defeated"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "elf-king-5"
+            }
+          ],
+          "payload_template": {
+            "kind": "convert_allies_by_tag",
+            "tag": "elf",
+            "follows_player": false,
+            "messages": []
           }
         }
       ]
