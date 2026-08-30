@@ -1980,6 +1980,13 @@
     "title": "The Center Hall",
     "summary": "The room is open and the floor is laid in a precise grid. Lines cross at every intersection. At the center stands a golem of pale stone, taller than the rest, perfectly still. It does not move. It does not need to.",
     "inspect_text": "The room is open and the floor is laid in a precise grid. Lines cross at every intersection. At the center stands a golem of pale stone, taller than the rest, perfectly still. It does not move. It does not need to.",
+    "descriptions": [
+      {
+        "actor_defeated": "golem-boss",
+        "summary": "The room is open and the floor is laid in a precise grid. Lines cross at every intersection. Where the warden once stood at the center, only a scatter of pale dust remains.",
+        "inspect_text": "The room is open and the floor is laid in a precise grid. Lines cross at every intersection. Where the warden once stood at the center, only a scatter of pale dust remains."
+      }
+    ],
     "features": [
       {
         "id": "r5c5-feature",

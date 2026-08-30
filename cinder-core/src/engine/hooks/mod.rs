@@ -179,6 +179,9 @@ fn apply_hook_effects(
             } => {
                 let health_stat_id = &content.settings.combat.health_stat_id;
                 for actor in &content.actors {
+                    if content.is_player_actor(&actor.id) {
+                        continue;
+                    }
                     if !actor.tags.iter().any(|actor_tag| actor_tag.as_str() == tag) {
                         continue;
                     }
@@ -218,6 +221,9 @@ fn apply_hook_effects(
             WorldHookEffect::DefeatActorsByTag { tag } => {
                 let health_stat_id = &content.settings.combat.health_stat_id;
                 for actor in &content.actors {
+                    if content.is_player_actor(&actor.id) {
+                        continue;
+                    }
                     if actor.tags.iter().any(|actor_tag| actor_tag.as_str() == tag) {
                         // A large negative delta clamps to the stat's min (0).
                         state

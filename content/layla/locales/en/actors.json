@@ -1,5 +1,30 @@
 [
   {
+    "id": "player",
+    "name": "Layla",
+    "room_id": "r1c1",
+    "initial_stats": {
+      "hp": 10,
+      "strength": 3,
+      "defense": 1
+    },
+    "aliases": [
+      "layla",
+      "me",
+      "myself"
+    ],
+    "inspect_text": "Yourself.",
+    "attackable": false,
+    "tags": [],
+    "prompt_context": {
+      "character_notes": [],
+      "subtext_notes": [],
+      "response_notes": [],
+      "behavior_examples": []
+    },
+    "game_data": {}
+  },
+  {
     "id": "golem-dark-nw",
     "name": "dark golem",
     "room_id": "r3c3",

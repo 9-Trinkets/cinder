@@ -43,6 +43,9 @@ impl CinderRuntime {
             });
         }
         for actor in &self.content.actors {
+            if self.content.is_player_actor(&actor.id) {
+                continue;
+            }
             let actor_room = state.actor_room_id(&actor.id, &actor.room_id);
             if actor_room == current_room_id
                 && !state.actor_is_defeated(&actor.id, &self.content.settings.combat.health_stat_id)
@@ -96,6 +99,9 @@ impl CinderRuntime {
         let current_room_id = &state.current_room_id;
         let mut options = Vec::new();
         for actor in &self.content.actors {
+            if self.content.is_player_actor(&actor.id) {
+                continue;
+            }
             let actor_room = state.actor_room_id(&actor.id, &actor.room_id);
             if actor_room == current_room_id
                 && !state.actor_is_defeated(&actor.id, &self.content.settings.combat.health_stat_id)
@@ -434,22 +440,28 @@ impl CinderRuntime {
             command: "none".to_string(),
             transcript_label: None,
         }];
-        options.extend(self.content.actors.iter().map(|actor| {
-            let room_id = state.actor_room_id(&actor.id, &actor.room_id);
-            let room_title = self
-                .content
-                .room(room_id)
-                .map(|room| room.title.clone())
-                .unwrap_or_else(|| room_id.to_string());
-            let actor_name = display_actor_name(&state, actor);
-            MenuChoiceOption {
-                prompt: follow_prompt.clone(),
-                title: actor_name.clone(),
-                menu_text: format!("{} ({room_title})", actor_name),
-                command: actor.id.clone(),
-                transcript_label: Some(actor_name),
-            }
-        }));
+        options.extend(
+            self.content
+                .actors
+                .iter()
+                .filter(|actor| !self.content.is_player_actor(&actor.id))
+                .map(|actor| {
+                    let room_id = state.actor_room_id(&actor.id, &actor.room_id);
+                    let room_title = self
+                        .content
+                        .room(room_id)
+                        .map(|room| room.title.clone())
+                        .unwrap_or_else(|| room_id.to_string());
+                    let actor_name = display_actor_name(&state, actor);
+                    MenuChoiceOption {
+                        prompt: follow_prompt.clone(),
+                        title: actor_name.clone(),
+                        menu_text: format!("{} ({room_title})", actor_name),
+                        command: actor.id.clone(),
+                        transcript_label: Some(actor_name),
+                    }
+                }),
+        );
         Ok(options)
     }
 

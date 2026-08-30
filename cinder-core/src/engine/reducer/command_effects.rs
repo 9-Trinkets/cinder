@@ -873,7 +873,10 @@ fn room_allies(state: &WorldState, content: &ContentPack, room_id: &str) -> Vec<
     state
         .relationships
         .iter()
-        .filter(|(_, relationship)| relationship.stance == ActorStance::Allied)
+        .filter(|(actor_id, relationship)| {
+            !content.is_player_actor(actor_id)
+                && relationship.stance == ActorStance::Allied
+        })
         .map(|(actor_id, _)| actor_id.clone())
         .filter(|actor_id| {
             !state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id)

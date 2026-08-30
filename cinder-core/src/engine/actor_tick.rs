@@ -98,8 +98,8 @@ pub(crate) fn run_actor_tick(
             .actors
             .iter()
             .filter(|actor| {
-                let room = state.actor_room_id(&actor.id, &actor.room_id);
-                reachable.contains(room)
+                !content.is_player_actor(&actor.id)
+                    && reachable.contains(state.actor_room_id(&actor.id, &actor.room_id))
             })
             .map(|actor| actor.id.clone())
             .collect(),
@@ -169,6 +169,9 @@ pub(crate) fn plan_wander_moves(content: &ContentPack, state: &WorldState) -> Ve
     let reachable = content.reachable_room_ids(&state.current_room_id);
     let mut events = Vec::new();
     for actor in &content.actors {
+        if content.is_player_actor(&actor.id) {
+            continue;
+        }
         let Some(wander) = resolve_wander(content, &actor.id) else {
             continue;
         };

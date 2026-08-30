@@ -74,6 +74,13 @@ impl ContentPack {
         self.actor_index.get(actor_id).map(|&i| &self.actors[i])
     }
 
+    /// Whether `actor_id` is the player-controlled actor. Packs may declare
+    /// the player as an ordinary actor entry (id matching
+    /// `combat.player_actor_id`); every NPC-oriented loop must skip it.
+    pub fn is_player_actor(&self, actor_id: &str) -> bool {
+        actor_id == self.settings.combat.player_actor_id
+    }
+
     pub fn hook(&self, hook_id: &str) -> Option<&Value> {
         self.hooks.get(hook_id)
     }
