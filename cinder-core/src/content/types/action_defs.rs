@@ -84,6 +84,7 @@ pub enum PanelDataSource {
     ActorsInRoom,
     Exits,
     Features,
+    CraftableItems,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -157,6 +158,8 @@ pub struct ActionItemCreation {
     pub creates_item_story_var: String,
     #[serde(default)]
     pub creates_item_resolve_from_target: bool,
+    #[serde(default)]
+    pub craftable_items: Vec<String>,
     #[serde(default)]
     pub storage: ActionItemStorageTarget,
 }

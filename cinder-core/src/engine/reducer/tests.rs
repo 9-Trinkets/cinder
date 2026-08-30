@@ -844,6 +844,7 @@ fn actor_commands_can_create_room_items_from_story_vars() {
             creates_item: "garlic-noodles".to_string(),
             creates_item_story_var: "cook_recipe".to_string(),
             creates_item_resolve_from_target: false,
+            craftable_items: Vec::new(),
             storage: ActionItemStorageTarget::CurrentRoom,
         }),
         ..ActionDefinition::default()
@@ -1052,7 +1053,7 @@ fn creating_an_item_in_a_room_can_complete_an_encirclement() {
         command: "trace".to_string(),
         target_mode: CommandTargetMode::None,
         item_creation: Some(ActionItemCreation {
-            creates_item: "chalk-marking".to_string(),
+            creates_item: "charm-sigil".to_string(),
             storage: ActionItemStorageTarget::CurrentRoom,
             ..ActionItemCreation::default()
         }),
@@ -1103,7 +1104,7 @@ fn creating_an_item_in_a_room_can_complete_an_encirclement() {
     )
     .expect("trace");
 
-    assert!(state.has_item_in_storage("chalk-marking", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
+    assert!(state.has_item_in_storage("charm-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
     assert_eq!(state.stance("golem"), ActorStance::Allied);
     assert!(
         lines

@@ -6,11 +6,11 @@
     "description": "A stub of chalk, warm in the hand, that never seems to wear down. Wherever she draws with it, a line of pale light stays behind in the stone."
   },
   {
-    "id": "chalk-marking",
-    "label": "chalk drawing",
+    "id": "charm-sigil",
+    "label": "charm sigil",
     "kind": "misc",
-    "description": "A tangle of geometric lines chalked into the floor — angles and arcs that almost make sense, like a diagram of something that isn't finished.",
-    "look_description": "Pale chalk lines glow faintly on the floor, tracing angles that almost make sense."
+    "description": "A closed ring of chalk traced around a vacant space on the floor. When an enemy is encircled on every side by such rings, the circle closes and draws it into step with Layla.",
+    "look_description": "A closed ring of pale chalk glows faintly on the floor, waiting to be completed around something."
   },
   {
     "id": "iron-chisel",

@@ -406,15 +406,23 @@
         "signals": []
       },
       "item_creation": {
-        "creates_item": "chalk-marking",
+        "creates_item": "charm-sigil",
+        "craftable_items": ["charm-sigil"],
         "storage": "current_room"
       },
       "available": {
-        "requires_room_without_item": "chalk-marking"
+        "requires_room_without_item": "charm-sigil"
       },
       "ui": {
-        "bar": false,
-        "overflow": true,
+        "bar": true,
+        "overflow": false,
+        "panel": "trace",
+        "panel_config": {
+          "title": "Inscribe",
+          "prompt": "Choose a mark to trace",
+          "data_source": "craftable_items",
+          "on_select": "execute_command"
+        },
         "group": "territory",
         "sort_order": 20
       },

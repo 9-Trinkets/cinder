@@ -142,7 +142,7 @@ export interface ActionBarAction {
 export interface PanelConfigData {
   title: string
   prompt: string
-  data_source: 'actors_in_room' | 'exits' | 'features'
+  data_source: 'actors_in_room' | 'exits' | 'features' | 'craftable_items'
   on_select: 'execute_command' | 'prefill_input' | 'switch_room' | 'follow_actor'
 }
 

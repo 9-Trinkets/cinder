@@ -484,6 +484,29 @@ pub(super) fn build_ui_snapshot(
                         command: Some(opt.command.clone()),
                     })
                     .collect(),
+                PanelDataSource::CraftableItems => action
+                    .item_creation
+                    .as_ref()
+                    .map(|ic| &ic.craftable_items)
+                    .filter(|craftables| !craftables.is_empty())
+                    .map(|craftables| {
+                        craftables
+                            .iter()
+                            .map(|item_id| {
+                                let title = content
+                                    .item(item_id)
+                                    .map(|item| item.label.clone())
+                                    .unwrap_or_else(|| item_id.clone());
+                                PanelOptionData {
+                                    id: item_id.clone(),
+                                    title,
+                                    subtitle: None,
+                                    command: Some(format!("{} {}", phrase, item_id)),
+                                }
+                            })
+                            .collect()
+                    })
+                    .unwrap_or_default(),
             };
             panel_options.insert(panel_name.clone(), options);
         }
