@@ -484,29 +484,58 @@ pub(super) fn build_ui_snapshot(
                         command: Some(opt.command.clone()),
                     })
                     .collect(),
-                PanelDataSource::CraftableItems => action
-                    .item_creation
-                    .as_ref()
-                    .map(|ic| &ic.craftable_items)
-                    .filter(|craftables| !craftables.is_empty())
-                    .map(|craftables| {
-                        craftables
-                            .iter()
-                            .map(|item_id| {
-                                let title = content
-                                    .item(item_id)
-                                    .map(|item| item.label.clone())
-                                    .unwrap_or_else(|| item_id.clone());
-                                PanelOptionData {
-                                    id: item_id.clone(),
-                                    title,
-                                    subtitle: None,
-                                    command: Some(format!("{} {}", phrase, item_id)),
-                                }
-                            })
-                            .collect()
-                    })
-                    .unwrap_or_default(),
+                PanelDataSource::CraftableItems => {
+                    let gates = action
+                        .item_creation
+                        .as_ref()
+                        .map(|ic| &ic.craftable_item_gates);
+                    action
+                        .item_creation
+                        .as_ref()
+                        .map(|ic| &ic.craftable_items)
+                        .filter(|craftables| !craftables.is_empty())
+                        .map(|craftables| {
+                            craftables
+                                .iter()
+                                .filter(|item_id| {
+                                    let unlocked = || -> bool {
+                                        let Some(gate) =
+                                            gates.and_then(|g| g.get(*item_id))
+                                        else {
+                                            return true;
+                                        };
+                                        if gate.is_empty() {
+                                            return true;
+                                        }
+                                        !matches!(
+                                            state
+                                                .story_vars
+                                                .get(gate)
+                                                .map(str::trim)
+                                                .unwrap_or("")
+                                                .to_ascii_lowercase()
+                                                .as_str(),
+                                            "" | "false" | "0"
+                                        )
+                                    };
+                                    unlocked()
+                                })
+                                .map(|item_id| {
+                                    let title = content
+                                        .item(item_id)
+                                        .map(|item| item.label.clone())
+                                        .unwrap_or_else(|| item_id.clone());
+                                    PanelOptionData {
+                                        id: item_id.clone(),
+                                        title,
+                                        subtitle: None,
+                                        command: Some(format!("{} {}", phrase, item_id)),
+                                    }
+                                })
+                                .collect()
+                        })
+                        .unwrap_or_default()
+                }
             };
             panel_options.insert(panel_name.clone(), options);
         }

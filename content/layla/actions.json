@@ -407,7 +407,10 @@
       },
       "item_creation": {
         "creates_item": "charm-sigil",
-        "craftable_items": ["charm-sigil"],
+        "craftable_items": ["charm-sigil", "drain-sigil"],
+        "craftable_item_gates": {
+          "drain-sigil": "knows_drain"
+        },
         "storage": "current_room"
       },
       "available": {
@@ -429,6 +432,42 @@
       "player_command": {
         "usage": "trace",
         "example": "trace",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "read_scroll",
+      "command": "READ SCROLL",
+      "label": "Read Crackling Scroll",
+      "group": "gear",
+      "phrases": [
+        "read scroll",
+        "read the scroll",
+        "open scroll",
+        "unroll scroll",
+        "study scroll"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "use_item"
+      ],
+      "item_id": "drain-scroll",
+      "event_text": "Layla unrolls the dry bark and works out the spiral. The words for draining fire crowd into her head.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 36
+      },
+      "player_command": {
+        "usage": "read scroll",
+        "example": "read scroll",
         "advances_time": true,
         "input": {
           "required": false

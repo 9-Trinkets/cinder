@@ -14,5 +14,6 @@
   "conversion.ring": "The {actor} lowers its head and falls in behind you.",
   "warden.reveal": "The grid falls silent. In the heart of the hall a section of the floor grinds open, and a ladder descends into a soft, phosphorescent glow. The first level is yours.",
   "warden.memory": "For a moment the settling dust hangs still, and Layla understands: the chalk in her hand and the magic circuits scored across the floor are the same thing — lines. A life she almost forgot rises up to meet her: the weight of a smooth stone, the grid of a Go board beneath her hands, and a voice that taught her that capture is just surrounding. The memory is gone almost as soon as it comes. But she knows now how to read the board. She has played it before.",
-  "king.defeated": "The elf king falls. The underground forest holds its breath. Then, one by one, the other elves lower their weapons and step back. They are not bound by any ring; they simply choose to let you pass."
+  "king.defeated": "The elf king falls. The underground forest holds its breath. Then, one by one, the other elves lower their weapons and step back. They are not bound by any ring; they simply choose to let you pass.",
+  "item.scroll_read.learned": "The dry bark crackles and grows warm in Layla's grasp. The spiral resolves: to drain a fire is to take its hunger into your hand and hold it. She knows the charmed lines she could score now — and the deeper ones that drink flame. The secret of the drain sigil settles behind her eyes."
 }

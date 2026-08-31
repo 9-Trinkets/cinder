@@ -106,7 +106,7 @@ pub(super) fn handle_actor_command_used(
         outbox,
     );
     apply_command_bundle_progress_effects(state, command);
-    if let Some(item_id) = resolved_created_item_id(state, command, &command_context) {
+    if let Some(item_id) = resolved_created_item_id(state, content, command, &command_context) {
         let storage = command
             .item_creation
             .as_ref()
@@ -150,15 +150,50 @@ pub(super) fn handle_actor_command_used(
 
 fn resolved_created_item_id(
     state: &WorldState,
+    content: &ContentPack,
     command: &ActionDefinition,
     command_context: &ActorCommandContext<'_>,
 ) -> Option<String> {
-    let item_id = &command.item_creation.as_ref()?.creates_item;
-    if command
-        .item_creation
-        .as_ref()
-        .is_some_and(|ic| ic.creates_item_resolve_from_target)
-    {
+    let item_creation = command.item_creation.as_ref()?;
+    let item_id = &item_creation.creates_item;
+    let craftable_unlocked = |craftable_id: &str| -> bool {
+        match item_creation.craftable_item_gates.get(craftable_id) {
+            None => true,
+            Some(gate) if gate.is_empty() => true,
+            Some(gate) => {
+                crate::engine::turn_policies::story_var_is_truthy(state, gate)
+            }
+        }
+    };
+    if !item_creation.craftable_items.is_empty() {
+        if let Some(input_val) = command_context
+            .freeform_text
+            .map(str::trim)
+            .filter(|s| !s.is_empty())
+        {
+            let input_lower = input_val.to_ascii_lowercase();
+            if let Some(matched) = item_creation.craftable_items.iter().find(|craftable_id| {
+                craftable_id.eq_ignore_ascii_case(input_val) && craftable_unlocked(craftable_id)
+            }) {
+                return Some(matched.clone());
+            }
+            if let Some(matched) = item_creation.craftable_items.iter().find(|craftable_id| {
+                craftable_unlocked(craftable_id)
+                    && content.item(craftable_id).is_some_and(|craftable_item| {
+                        craftable_item.label.to_ascii_lowercase().replace(' ', "")
+                            == input_lower.replace(' ', "")
+                    })
+            }) {
+                return Some(matched.clone());
+            }
+        }
+        return if craftable_unlocked(item_id) {
+            Some(item_id.clone())
+        } else {
+            None
+        };
+    }
+    if item_creation.creates_item_resolve_from_target {
         return Some(
             command_context
                 .target_actor_id
@@ -167,13 +202,15 @@ fn resolved_created_item_id(
         );
     }
     Some(
-        command
-            .item_creation
-            .as_ref()
-            .map(|ic| &ic.creates_item_story_var)
-            .and_then(|var_key| state.story_vars.get(var_key))
-            .unwrap_or(item_id)
-            .to_string(),
+        if item_creation.creates_item_story_var.is_empty() {
+            item_id.clone()
+        } else {
+            state
+                .story_vars
+                .get(&item_creation.creates_item_story_var)
+                .map(str::to_string)
+                .unwrap_or_else(|| item_id.clone())
+        },
     )
 }
 

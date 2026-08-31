@@ -83,26 +83,42 @@ fn resolved_created_item_id(
 ) -> Option<String> {
     let item_creation = action.item_creation.as_ref()?;
     let item_id = &item_creation.creates_item;
+    let craftable_unlocked = |craftable_id: &str| -> bool {
+        match item_creation.craftable_item_gates.get(craftable_id) {
+            None => true,
+            Some(gate) if gate.is_empty() => true,
+            Some(gate) => {
+                crate::engine::turn_policies::story_var_is_truthy(context.planner_state, gate)
+            }
+        }
+    };
     if !item_creation.craftable_items.is_empty() {
         if let Some(input_val) = input.map(str::trim).filter(|s| !s.is_empty()) {
             let input_lower = input_val.to_ascii_lowercase();
             if let Some(matched) = item_creation
                 .craftable_items
                 .iter()
-                .find(|craftable_id| craftable_id.eq_ignore_ascii_case(input_val))
+                .find(|craftable_id| {
+                    craftable_id.eq_ignore_ascii_case(input_val) && craftable_unlocked(craftable_id)
+                })
             {
                 return Some(matched.clone());
             }
             if let Some(matched) = item_creation.craftable_items.iter().find(|craftable_id| {
-                content.item(craftable_id).is_some_and(|craftable_item| {
-                    craftable_item.label.to_ascii_lowercase().replace(' ', "")
-                        == input_lower.replace(' ', "")
-                })
+                craftable_unlocked(craftable_id)
+                    && content.item(craftable_id).is_some_and(|craftable_item| {
+                        craftable_item.label.to_ascii_lowercase().replace(' ', "")
+                            == input_lower.replace(' ', "")
+                    })
             }) {
                 return Some(matched.clone());
             }
         }
-        return Some(item_id.clone());
+        return if craftable_unlocked(item_id) {
+            Some(item_id.clone())
+        } else {
+            None
+        };
     }
     if item_creation.creates_item_resolve_from_target {
         let input_val = input.unwrap_or_default().trim();

@@ -528,6 +528,9 @@
     "attack_interval_minutes": 1,
     "initial_hostile": true,
     "xp_drop": 0,
+    "drops": {
+      "drain-scroll": 1
+    },
     "initial_stats": {
       "hp": 20,
       "strength": 6,

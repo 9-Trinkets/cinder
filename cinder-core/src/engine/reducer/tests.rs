@@ -845,6 +845,7 @@ fn actor_commands_can_create_room_items_from_story_vars() {
             creates_item_story_var: "cook_recipe".to_string(),
             creates_item_resolve_from_target: false,
             craftable_items: Vec::new(),
+            craftable_item_gates: BTreeMap::new(),
             storage: ActionItemStorageTarget::CurrentRoom,
         }),
         ..ActionDefinition::default()
@@ -1112,6 +1113,78 @@ fn creating_an_item_in_a_room_can_complete_an_encirclement() {
             .any(|line| line.text.contains("turns toward you")),
         "got: {lines:?}"
     );
+}
+
+#[test]
+fn trace_craftable_is_gated_by_its_story_variable() {
+    let mut pack = reducer_test_pack();
+    pack.items.push(ItemDefinition {
+        id: "drain-sigil".to_string(),
+        label: "drain sigil".to_string(),
+        description: "A spiral chalk mark.".to_string(),
+        ..ItemDefinition::default()
+    });
+    pack.actions.push(ActionDefinition {
+        id: "trace".to_string(),
+        command: "trace".to_string(),
+        target_mode: CommandTargetMode::None,
+        item_creation: Some(ActionItemCreation {
+            creates_item: "charm-sigil".to_string(),
+            craftable_items: vec!["charm-sigil".to_string(), "drain-sigil".to_string()],
+            craftable_item_gates: BTreeMap::from([("drain-sigil".to_string(), "knows_drain".to_string())]),
+            storage: ActionItemStorageTarget::CurrentRoom,
+            ..ActionItemCreation::default()
+        }),
+        event_text: "{actor_name} draws chalk across the floor.".to_string(),
+        ..ActionDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = KITCHEN_ID.to_string();
+
+    // Without the story var, choosing the drain sigil falls back to the
+    // unlocked charm sigil; the locked craftable is never created.
+    super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        KITCHEN_ID,
+        "trace",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        Some("drain-sigil"),
+        &mut Vec::new(),
+    )
+    .expect("trace");
+    assert!(state.has_item_in_storage("charm-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
+    assert!(!state.has_item_in_storage("drain-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
+
+    // Once the scroll is read (knows_drain set), tracing the drain sigil works.
+    state.story_vars.set_unchecked("knows_drain", "true");
+    super::command_effects::handle_actor_command_used(
+        &mut state,
+        &pack,
+        ACTOR_A_ID,
+        ACTOR_A_NAME,
+        KITCHEN_ID,
+        "trace",
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        Some("drain-sigil"),
+        &mut Vec::new(),
+    )
+    .expect("trace drain-sigil");
+    assert!(state.has_item_in_storage("drain-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
 }
 
 #[test]

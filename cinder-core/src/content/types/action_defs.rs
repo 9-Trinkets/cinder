@@ -3,6 +3,7 @@ use super::{
     ItemStorageTarget, PlayerCommandTargetMode, RuleBundleProgressRef,
 };
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ActionAvailability {
@@ -160,6 +161,11 @@ pub struct ActionItemCreation {
     pub creates_item_resolve_from_target: bool,
     #[serde(default)]
     pub craftable_items: Vec<String>,
+    /// Optional story variable that must be set (truthy) before each craftable
+    /// item id becomes available to the player. Items with no entry are always
+    /// available. Used to gate a trace-craftable item behind learning it.
+    #[serde(default)]
+    pub craftable_item_gates: BTreeMap<String, String>,
     #[serde(default)]
     pub storage: ActionItemStorageTarget,
 }
