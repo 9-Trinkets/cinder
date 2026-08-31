@@ -7,8 +7,6 @@ use std::collections::BTreeMap;
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ActionAvailability {
-    #[serde(default)]
-    pub requires_actor_in_room: bool,
     /// Room must contain this item for the action to be available.
     #[serde(default)]
     pub requires_room_item: String,

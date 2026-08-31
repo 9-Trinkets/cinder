@@ -102,9 +102,6 @@
       "target_mode": "actor_optional",
       "outcome_mode": "dialogue",
       "effects": [],
-      "available": {
-        "requires_actor_in_room": true
-      },
       "ui": {
         "bar": true,
         "overflow": false,
@@ -147,9 +144,6 @@
         "attack_target"
       ],
       "event_text": "{actor_name} strikes {target_actor_name}.",
-      "available": {
-        "requires_actor_in_room": true
-      },
       "ui": {
         "bar": true,
         "overflow": false,

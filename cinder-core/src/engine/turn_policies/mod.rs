@@ -1,10 +1,10 @@
 use crate::content::types::{
     ActionDefinition, ActionItemStorageTarget, CommandEffect, ContentPack, ItemStorageTarget,
-    RuleBundleAffordanceTarget, RuleBundleCompletionTrigger,
+    PanelDataSource, RuleBundleAffordanceTarget, RuleBundleCompletionTrigger,
     RuleBundleConditionalGuidanceDefinition, RuleBundleDefinition, RuleBundleProgressRef,
 };
 use crate::engine::dialogue::{ActorTurnActionRequest, ActorTurnCommandInvocation};
-use crate::engine::state::WorldState;
+use crate::engine::state::{ActorStance, WorldState};
 
 const BUNDLE_ACTOR_COMPLETE_STORY_VAR_PREFIX: &str = "rule_bundle:actor_complete";
 const BUNDLE_PROGRESS_STORY_VAR_PREFIX: &str = "rule_bundle:progress";
@@ -218,16 +218,6 @@ pub fn action_is_available(
 ) -> bool {
     let a = &action.available;
 
-    if a.requires_actor_in_room {
-        let has_actor = content.actors.iter().any(|act| {
-            let room_id = state.actor_room_id(&act.id, &act.room_id);
-            room_id == context_room_id
-        });
-        if !has_actor {
-            return false;
-        }
-    }
-
     if !a.allowed_rooms.is_empty() && !a.allowed_rooms.contains(&context_room_id.to_string()) {
         return false;
     }
@@ -317,7 +307,56 @@ pub fn action_is_available(
         }
     }
 
+    if !action_has_available_target(content, state, action, context_room_id) {
+        return false;
+    }
+
     true
+}
+
+/// Whether a target-selection action currently has at least one eligible
+/// target. This is the generic "hide when there are no targets" rule: an
+/// action whose panel selects a target (actors in the room, or craftable
+/// items) is hidden while its target list is empty. Informational panels
+/// (`features`/look, `exits`/move) are never hidden here.
+fn action_has_available_target(
+    content: &ContentPack,
+    state: &WorldState,
+    action: &ActionDefinition,
+    room_id: &str,
+) -> bool {
+    let Some(panel_config) = &action.ui.panel_config else {
+        return true;
+    };
+    match panel_config.data_source {
+        PanelDataSource::ActorsInRoom => {
+            let is_attack = action.has_effect(CommandEffect::AttackTarget);
+            content.actors.iter().any(|actor| {
+                if content.is_player_actor(&actor.id)
+                    || state.actor_room_id(&actor.id, &actor.room_id) != room_id
+                    || state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
+                {
+                    return false;
+                }
+                if is_attack {
+                    let relationship = state.relationship(&actor.id);
+                    // Attack never targets party members (allies or followers).
+                    relationship.stance != ActorStance::Allied && !relationship.follows_player
+                } else {
+                    true
+                }
+            })
+        }
+        PanelDataSource::CraftableItems => action.item_creation.as_ref().is_some_and(|item_creation| {
+            item_creation.craftable_items.iter().any(|item_id| {
+                match item_creation.craftable_item_gates.get(item_id) {
+                    None => true,
+                    Some(gate) => gate.is_empty() || story_var_is_truthy(state, gate),
+                }
+            })
+        }),
+        PanelDataSource::Exits | PanelDataSource::Features => true,
+    }
 }
 
 fn bundle_guidance_notes_for_actor(
@@ -582,7 +621,8 @@ fn speech_trigger_matches(trigger: RuleBundleCompletionTrigger, event: BundleSpe
 mod tests {
     use super::*;
     use crate::content::types::{
-        ActionAvailability, CommandEffect, CommandTargetMode, ItemDefinition, ItemKind,
+        ActionAvailability, ActionDefinition, ActionItemCreation, ActionUi, CommandEffect,
+        CommandTargetMode, ItemDefinition, ItemKind, PanelConfig, PanelDataSource,
     };
     use crate::engine::state::WorldState;
 
@@ -679,5 +719,308 @@ mod tests {
             unequip,
             &state.current_room_id
         ));
+    }
+
+    /// A pack with one target-selection action per panel data source: `attack`
+    /// (actors in room, filters allies/followers), `speak` (actors in room),
+    /// `trace` (craftable items), plus informational `look` (features) and
+    /// `move` (exits).
+    fn target_pack() -> ContentPack {
+        let mut pack = crate::engine::test_fixtures::minimal_test_pack();
+        pack.settings.combat.health_stat_id = "stamina".to_string();
+        pack.actions.push(ActionDefinition {
+            id: "attack".to_string(),
+            command: "attack".to_string(),
+            effects: vec![CommandEffect::AttackTarget],
+            ui: ActionUi {
+                bar: true,
+                panel: Some("attack".to_string()),
+                panel_config: Some(PanelConfig {
+                    data_source: PanelDataSource::ActorsInRoom,
+                    ..PanelConfig::default()
+                }),
+                ..ActionUi::default()
+            },
+            ..ActionDefinition::default()
+        });
+        pack.actions.push(ActionDefinition {
+            id: "speak".to_string(),
+            command: "speak".to_string(),
+            ui: ActionUi {
+                bar: true,
+                panel: Some("talk".to_string()),
+                panel_config: Some(PanelConfig {
+                    data_source: PanelDataSource::ActorsInRoom,
+                    ..PanelConfig::default()
+                }),
+                ..ActionUi::default()
+            },
+            ..ActionDefinition::default()
+        });
+        pack.actions.push(ActionDefinition {
+            id: "trace".to_string(),
+            command: "trace".to_string(),
+            item_creation: Some(ActionItemCreation {
+                creates_item: "charm-sigil".to_string(),
+                craftable_items: vec!["charm-sigil".to_string(), "drain-sigil".to_string()],
+                craftable_item_gates: std::collections::BTreeMap::from([(
+                    "drain-sigil".to_string(),
+                    "knows_drain".to_string(),
+                )]),
+                ..ActionItemCreation::default()
+            }),
+            ui: ActionUi {
+                bar: true,
+                panel: Some("trace".to_string()),
+                panel_config: Some(PanelConfig {
+                    data_source: PanelDataSource::CraftableItems,
+                    ..PanelConfig::default()
+                }),
+                ..ActionUi::default()
+            },
+            ..ActionDefinition::default()
+        });
+        pack.actions.push(ActionDefinition {
+            id: "look".to_string(),
+            command: "look".to_string(),
+            ui: ActionUi {
+                bar: true,
+                panel: Some("look".to_string()),
+                panel_config: Some(PanelConfig {
+                    data_source: PanelDataSource::Features,
+                    ..PanelConfig::default()
+                }),
+                ..ActionUi::default()
+            },
+            ..ActionDefinition::default()
+        });
+        pack.actions.push(ActionDefinition {
+            id: "move".to_string(),
+            command: "move".to_string(),
+            ui: ActionUi {
+                bar: true,
+                panel: Some("move".to_string()),
+                panel_config: Some(PanelConfig {
+                    data_source: PanelDataSource::Exits,
+                    ..PanelConfig::default()
+                }),
+                ..ActionUi::default()
+            },
+            ..ActionDefinition::default()
+        });
+        pack.room_index = pack
+            .rooms
+            .iter()
+            .enumerate()
+            .map(|(i, r)| (r.id.clone(), i))
+            .collect();
+        pack.actor_index = pack
+            .actors
+            .iter()
+            .enumerate()
+            .map(|(i, a)| (a.id.clone(), i))
+            .collect();
+        pack.action_index = pack
+            .actions
+            .iter()
+            .enumerate()
+            .map(|(i, a)| (a.id.clone(), i))
+            .collect();
+        pack
+    }
+
+    fn live_in_lounge(pack: &ContentPack) -> WorldState {
+        let mut state = WorldState::new(pack);
+        state.current_room_id = "lounge".to_string();
+        state
+            .adjust_actor_stat("blair", &pack.settings.combat.health_stat_id, 50)
+            .expect("set blair hp");
+        state
+            .adjust_actor_stat("casey", &pack.settings.combat.health_stat_id, 50)
+            .expect("set casey hp");
+        state
+    }
+
+    fn defeat(s: &mut WorldState, actor_id: &str, health_stat_id: &str) {
+        s.adjust_actor_stat(actor_id, health_stat_id, -1000)
+            .expect("defeat actor");
+    }
+
+    #[test]
+    fn attack_hides_with_no_attackable_target() {
+        let pack = target_pack();
+        let attack = pack.action("attack").unwrap();
+
+        // A living neutral actor is a valid target.
+        let state = live_in_lounge(&pack);
+        assert!(action_is_available(
+            &pack,
+            &state,
+            attack,
+            &state.current_room_id
+        ));
+
+        // Only a defeated actor present -> hidden.
+        let mut state = live_in_lounge(&pack);
+        defeat(&mut state, "casey", &pack.settings.combat.health_stat_id);
+        defeat(&mut state, "blair", &pack.settings.combat.health_stat_id);
+        assert!(!action_is_available(
+            &pack,
+            &state,
+            attack,
+            &state.current_room_id
+        ));
+
+        // Only an ally present -> hidden.
+        let mut state = live_in_lounge(&pack);
+        state.set_stance("blair", ActorStance::Allied);
+        defeat(&mut state, "casey", &pack.settings.combat.health_stat_id);
+        assert!(!action_is_available(
+            &pack,
+            &state,
+            attack,
+            &state.current_room_id
+        ));
+
+        // Only a follower (not Allied stance) present -> hidden.
+        let mut state = live_in_lounge(&pack);
+        state.set_follows_player("blair", true);
+        defeat(&mut state, "casey", &pack.settings.combat.health_stat_id);
+        assert!(!action_is_available(
+            &pack,
+            &state,
+            attack,
+            &state.current_room_id
+        ));
+
+        // Only the player's own actor present -> hidden.
+        let mut state = live_in_lounge(&pack);
+        defeat(&mut state, "blair", &pack.settings.combat.health_stat_id);
+        defeat(&mut state, "casey", &pack.settings.combat.health_stat_id);
+        state.story_vars.set_unchecked("x", "y");
+        assert!(!action_is_available(
+            &pack,
+            &state,
+            attack,
+            &state.current_room_id
+        ));
+    }
+
+    #[test]
+    fn speak_accepts_allies_as_talk_targets() {
+        let pack = target_pack();
+        let speak = pack.action("speak").unwrap();
+        let mut state = live_in_lounge(&pack);
+        state.set_stance("casey", ActorStance::Allied);
+        defeat(&mut state, "blair", &pack.settings.combat.health_stat_id);
+        assert!(action_is_available(
+            &pack,
+            &state,
+            speak,
+            &state.current_room_id
+        ));
+    }
+
+    #[test]
+    fn speak_hides_with_no_living_actor() {
+        let pack = target_pack();
+        let speak = pack.action("speak").unwrap();
+        let mut state = live_in_lounge(&pack);
+        defeat(&mut state, "blair", &pack.settings.combat.health_stat_id);
+        defeat(&mut state, "casey", &pack.settings.combat.health_stat_id);
+        assert!(!action_is_available(
+            &pack,
+            &state,
+            speak,
+            &state.current_room_id
+        ));
+    }
+
+    #[test]
+    fn trace_hides_when_no_craftable_unlocked() {
+        let pack = target_pack();
+        let trace = pack.action("trace").unwrap();
+        let mut state = live_in_lounge(&pack);
+        state.story_vars.set_unchecked("knows_drain", "false");
+        // charm-sigil has no gate -> always unlocked -> trace stays visible.
+        assert!(action_is_available(
+            &pack,
+            &state,
+            trace,
+            &state.current_room_id
+        ));
+
+        // Gate every craftable behind a falsy story var.
+        let mut pack = target_pack();
+        let trace = pack
+            .actions
+            .iter_mut()
+            .find(|a| a.id == "trace")
+            .unwrap();
+        if let Some(ic) = &mut trace.item_creation {
+            ic.craftable_item_gates
+                .insert("charm-sigil".to_string(), "locked".to_string());
+        }
+        pack.action_index = pack
+            .actions
+            .iter()
+            .enumerate()
+            .map(|(i, a)| (a.id.clone(), i))
+            .collect();
+        let trace = pack.action("trace").unwrap();
+        let state = live_in_lounge(&pack);
+        assert!(!action_is_available(
+            &pack,
+            &state,
+            trace,
+            &state.current_room_id
+        ));
+
+        // Unlock one -> available again.
+        let mut state = state;
+        state.story_vars.set_unchecked("locked", "true");
+        assert!(action_is_available(
+            &pack,
+            &state,
+            trace,
+            &state.current_room_id
+        ));
+    }
+
+    #[test]
+    fn informational_panels_are_never_hidden_for_emptiness() {
+        let pack = target_pack();
+        let look = pack.action("look").unwrap();
+        let move_ = pack.action("move").unwrap();
+        let state = live_in_lounge(&pack);
+        // The lounge has no features and only kitchen as an exit, but look/move
+        // are informational and must remain available.
+        assert!(action_is_available(
+            &pack,
+            &state,
+            look,
+            &state.current_room_id
+        ));
+        assert!(action_is_available(
+            &pack,
+            &state,
+            move_,
+            &state.current_room_id
+        ));
+        assert!(action_is_available(
+            &pack,
+            &state,
+            move_,
+            "kitchen"
+        ));
+    }
+
+    #[test]
+    fn requires_actor_in_room_flag_is_removed() {
+        // The legacy field no longer exists; target-selector actions rely on
+        // the generic target check instead.
+        let pack = target_pack();
+        assert!(pack.action("attack").is_some());
+        assert!(pack.action("speak").is_some());
     }
 }

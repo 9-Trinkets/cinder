@@ -442,9 +442,11 @@ pub(super) fn build_ui_snapshot(
                                 return true;
                             }
                             let actor_id = opt.id.strip_prefix("actor:").unwrap_or(&opt.id);
-                            // Never offer allies as attack targets so the
-                            // player can't accidentally strike their own party.
-                            state.stance(actor_id) != ActorStance::Allied
+                            // Never offer allies or followers as attack targets so
+                            // the player can't accidentally strike their own party.
+                            let relationship = state.relationship(actor_id);
+                            relationship.stance != ActorStance::Allied
+                                && !relationship.follows_player
                         })
                         .map(|opt| {
                             let actor_id = opt.id.strip_prefix("actor:").unwrap_or(&opt.id);
