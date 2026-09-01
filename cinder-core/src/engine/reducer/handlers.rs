@@ -909,7 +909,60 @@ pub(super) fn handle_player_dropped_item(
     }
 }
 
-/// Renders the "item acquired" narration for a single item. A pack may define
+/// Applies per-tick drain to a hostile mob standing in a drained room (its
+/// current room holds the configured `drain_item_id`). Any hostile, living,
+/// non-allied mob is drained generically; a mob reduced to zero HP is defeated
+/// through the normal defeat path.
+pub(super) fn handle_actor_drained(
+    state: &mut WorldState,
+    content: &ContentPack,
+    actor_id: &str,
+    lines: &mut NarrativeLines,
+) {
+    let combat = &content.settings.combat;
+    let Some(drain_item_id) = combat.drain_item_id.as_deref() else {
+        return;
+    };
+    if combat.drain_damage_per_tick <= 0
+        || state.phase != GamePhase::Active
+        || state.stance(actor_id) != ActorStance::Hostile
+        || state.actor_stat(actor_id, &combat.health_stat_id) <= 0
+    {
+        return;
+    }
+    let default_room_id = content
+        .actor(actor_id)
+        .map(|actor| actor.room_id.clone())
+        .unwrap_or_default();
+    let room_id = state.actor_room_id(actor_id, &default_room_id).to_string();
+    if !state.has_item_in_storage(drain_item_id, ItemStorageTarget::CurrentRoom, &room_id) {
+        return;
+    }
+    if let Err(error) = state.adjust_actor_stat(
+        actor_id,
+        &combat.health_stat_id,
+        -combat.drain_damage_per_tick,
+    ) {
+        eprintln!("[cinder] drain stat error ({actor_id}): {error}");
+        return;
+    }
+    let remaining = state.actor_stat(actor_id, &combat.health_stat_id);
+    let actor_name = actor_display_name(content, actor_id);
+    if let Some(line) = content.render_message(
+        "combat.drain_hit",
+        &[
+            ("actor", actor_name.as_str()),
+            ("damage", combat.drain_damage_per_tick.to_string().as_str()),
+            ("remaining", remaining.to_string().as_str()),
+        ],
+    ) {
+        lines.narration(line);
+    }
+    if remaining <= 0 {
+        super::command_effects::defeat_actor(state, content, actor_id, room_id.as_str(), lines);
+    }
+}
+
 /// `item.<id>.<generic key>` to override the message; an empty override
 /// suppresses the line entirely.
 fn render_acquired_line(

@@ -167,6 +167,15 @@ pub struct CombatSettingsDefinition {
     /// Narration shown when the player actor's health stat reaches zero.
     #[serde(default = "default_player_defeat_text")]
     pub player_defeat_text: String,
+    /// When set, the room item that marks a room as drained. Any hostile,
+    /// living, non-allied mob whose current room holds this item loses
+    /// `drain_damage_per_tick` health each tick; at zero it is defeated
+    /// normally. `None` disables drain. Applies to any enemy mob generically.
+    #[serde(default)]
+    pub drain_item_id: Option<String>,
+    /// Health lost per tick by a hostile mob standing in a drained room.
+    #[serde(default)]
+    pub drain_damage_per_tick: i32,
 }
 
 /// One step of growth for an actor. `exp_required` is the XP needed to
@@ -213,6 +222,8 @@ impl Default for CombatSettingsDefinition {
             minimum_damage: default_minimum_damage(),
             default_attack_interval_minutes: default_attack_interval_minutes(),
             player_defeat_text: default_player_defeat_text(),
+            drain_item_id: None,
+            drain_damage_per_tick: 0,
         }
     }
 }

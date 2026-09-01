@@ -702,33 +702,13 @@ pub(super) fn apply_new_command_effects(
             }
         }
         if remaining <= 0 {
-            if let Some(line) =
-                content.render_message("combat.actor_defeated", &[("actor", target_name.as_str())])
-            {
-                lines.narration(line);
-            }
-            spawn_defeat_drops(
+            defeat_actor(
                 state,
                 content,
                 target_actor_id,
                 command_context.room_id,
                 lines,
             );
-            let actor_name = actor_display_name(content, target_actor_id);
-            apply_narrating_world_hook_effects(
-                state,
-                content,
-                hook_ids::ACTOR_DEFEATED,
-                json!({
-                    "actor_id": target_actor_id,
-                    "actor_name": actor_name,
-                    "room_id": command_context.room_id,
-                }),
-                lines,
-            )
-            .unwrap_or_else(|error| eprintln!("[cinder] hook warning (actor.defeated): {error}"));
-            award_defeat_xp(state, content, target_actor_id, lines);
-            state.set_relationship(target_actor_id, ActorRelationship::default());
             return;
         }
         let mut relationship = state.relationship(target_actor_id);
@@ -761,6 +741,40 @@ pub(super) fn actor_display_name(content: &ContentPack, actor_id: &str) -> Strin
         .actor(actor_id)
         .map(|actor| actor.name.clone())
         .unwrap_or_else(|| actor_id.to_string())
+}
+
+/// Runs the shared defeat sequence for an actor whose health reached zero:
+/// narrates the defeat, scatters its declared drops into the room, fires the
+/// `actor.defeated` hook, awards XP to the party, and resets its relationship.
+/// Called from combat and from drain (a mob drained to zero).
+pub(super) fn defeat_actor(
+    state: &mut WorldState,
+    content: &ContentPack,
+    actor_id: &str,
+    room_id: &str,
+    lines: &mut NarrativeLines,
+) {
+    let actor_name = actor_display_name(content, actor_id);
+    if let Some(line) =
+        content.render_message("combat.actor_defeated", &[("actor", actor_name.as_str())])
+    {
+        lines.narration(line);
+    }
+    spawn_defeat_drops(state, content, actor_id, room_id, lines);
+    apply_narrating_world_hook_effects(
+        state,
+        content,
+        hook_ids::ACTOR_DEFEATED,
+        json!({
+            "actor_id": actor_id,
+            "actor_name": actor_name,
+            "room_id": room_id,
+        }),
+        lines,
+    )
+    .unwrap_or_else(|error| eprintln!("[cinder] hook warning (actor.defeated): {error}"));
+    award_defeat_xp(state, content, actor_id, lines);
+    state.set_relationship(actor_id, ActorRelationship::default());
 }
 
 /// Scatters a defeated actor's declared drops into its room as loose items the

@@ -161,6 +161,13 @@ pub enum WorldEvent {
     HostileStrike {
         actor_id: String,
     },
+    /// A hostile mob stands inside a drained room (its current room holds the
+    /// configured `drain_item_id`) and loses HP this tick. Applies to any
+    /// hostile, living, non-allied mob; a drained actor that reaches zero HP is
+    /// defeated through the normal defeat path.
+    ActorDrained {
+        actor_id: String,
+    },
 }
 
 pub(crate) fn render_actor_action_text(actor_name: &str, action: &str) -> Result<String, String> {

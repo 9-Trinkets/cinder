@@ -1101,6 +1101,11 @@ impl CinderRuntime {
                     .into_iter()
                     .map(TimestampedWorldEvent::now),
             );
+            logged_events.extend(
+                crate::engine::actor_tick::plan_drain_events(self.content.as_ref(), &state)
+                    .into_iter()
+                    .map(TimestampedWorldEvent::now),
+            );
             let reduced = apply_events(&mut state, self.content.as_ref(), &logged_events);
             refresh_conversation_summaries(
                 self.content.as_ref(),

@@ -1860,6 +1860,90 @@ fn defeating_an_actor_scatters_its_drops_into_the_room() {
 }
 
 #[test]
+fn hostile_actor_in_a_drained_room_loses_hp_each_tick() {
+    let mut pack = reducer_test_pack();
+    pack.settings.combat = CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_ID.to_string(),
+        health_stat_id: "stamina".to_string(),
+        drain_item_id: Some("drain-sigil".to_string()),
+        drain_damage_per_tick: 2,
+        ..CombatSettingsDefinition::default()
+    };
+    let mut goblin = test_actor("goblin", "goblin", LOUNGE_ID);
+    goblin.initial_stats = BTreeMap::from([("stamina".to_string(), 5)]);
+    pack.actors.push(goblin);
+    let mut quiet = test_actor("quiet", "quiet goblin", KITCHEN_ID);
+    quiet.initial_stats = BTreeMap::from([("stamina".to_string(), 5)]);
+    pack.actors.push(quiet);
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    state.set_stance("goblin", ActorStance::Hostile);
+    state.set_stance("quiet", ActorStance::Hostile);
+    state.add_item_to_storage("drain-sigil", ItemStorageTarget::CurrentRoom, LOUNGE_ID);
+
+    let events = [
+        TimestampedWorldEvent::now(WorldEvent::ActorDrained {
+            actor_id: "goblin".to_string(),
+        }),
+        TimestampedWorldEvent::now(WorldEvent::ActorDrained {
+            actor_id: "quiet".to_string(),
+        }),
+    ];
+    apply_events(&mut state, &pack, &events);
+
+    assert_eq!(state.actor_stat("goblin", "stamina"), 3);
+    assert_eq!(state.actor_stat("quiet", "stamina"), 5);
+}
+
+#[test]
+fn drained_actor_that_reaches_zero_is_defeated_normally() {
+    let mut pack = reducer_test_pack();
+    pack.items.push(crate::content::types::ItemDefinition {
+        id: "drain-sigil".to_string(),
+        label: "drain sigil".to_string(),
+        ..ItemDefinition::default()
+    });
+    pack.items.push(crate::content::types::ItemDefinition {
+        id: "herb-salve".to_string(),
+        label: "herb salve".to_string(),
+        ..ItemDefinition::default()
+    });
+    pack.settings.combat = CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_ID.to_string(),
+        health_stat_id: "stamina".to_string(),
+        drain_item_id: Some("drain-sigil".to_string()),
+        drain_damage_per_tick: 2,
+        ..CombatSettingsDefinition::default()
+    };
+    let mut goblin = test_actor("goblin", "goblin", LOUNGE_ID);
+    goblin.initial_stats = BTreeMap::from([("stamina".to_string(), 1)]);
+    goblin.drops = BTreeMap::from([("herb-salve".to_string(), 2)]);
+    pack.actors.push(goblin);
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    state.set_stance("goblin", ActorStance::Hostile);
+    state.add_item_to_storage("drain-sigil", ItemStorageTarget::CurrentRoom, LOUNGE_ID);
+
+    let events = [TimestampedWorldEvent::now(WorldEvent::ActorDrained {
+        actor_id: "goblin".to_string(),
+    })];
+    apply_events(&mut state, &pack, &events);
+
+    assert!(state.actor_is_defeated("goblin", "stamina"));
+    assert_eq!(
+        state.loose_room_items(LOUNGE_ID),
+        vec![
+            ("drain-sigil".to_string(), 1),
+            ("herb-salve".to_string(), 2)
+        ]
+    );
+}
+
+#[test]
 fn defeating_an_actor_awards_full_xp_to_every_party_member_with_own_curve() {
     let mut pack = reducer_test_pack();
     pack.settings.combat = CombatSettingsDefinition {

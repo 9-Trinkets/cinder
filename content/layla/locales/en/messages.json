@@ -4,6 +4,7 @@
   "combat.cannot_attack_ally": "The {actor} fights at your side; you cannot raise a hand against it.",
   "combat.actor_defeated": "The {actor} crumbles to dust.",
   "combat.defeat_drop": "From the settling dust, something remains: {items}.",
+  "combat.drain_hit": "The spiral drinks heat from the {actor}. ({damage} HP drained, {remaining} HP remaining)",
   "combat.actor_wakes_hostile": "The {actor}'s eyes snap open. It turns to face you.",
   "combat.hostile_strike": "The {actor} strikes you! You take {damage} damage. ({remaining} HP remaining)",
   "conversion.encircled": "The {actor} shudders, its surface brightening. It turns toward you, no longer hostile.",
