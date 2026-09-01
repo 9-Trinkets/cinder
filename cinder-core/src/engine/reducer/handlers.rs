@@ -887,6 +887,28 @@ pub(super) fn handle_player_took_item(
     }
 }
 
+/// Moves an inventory item into the current room in response to the generic
+/// `drop <item>` command.
+pub(super) fn handle_player_dropped_item(
+    state: &mut WorldState,
+    content: &ContentPack,
+    item_id: &str,
+    lines: &mut NarrativeLines,
+) {
+    let room_id = state.current_room_id.clone();
+    let label = content
+        .item(item_id)
+        .map(|i| i.label.as_str())
+        .unwrap_or(item_id);
+    if state.remove_item(item_id) {
+        state.add_item_to_storage(item_id, ItemStorageTarget::CurrentRoom, &room_id);
+        if let Some(line) = content.render_message("item.dropped", &[("label", label)]) {
+            lines.narration(line);
+        }
+        super::command_effects::trigger_surrounded_hooks(state, content, item_id, lines);
+    }
+}
+
 /// Renders the "item acquired" narration for a single item. A pack may define
 /// `item.<id>.<generic key>` to override the message; an empty override
 /// suppresses the line entirely.

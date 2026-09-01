@@ -127,6 +127,11 @@ pub enum WorldEvent {
     PlayerTookItem {
         item_id: String,
     },
+    /// A player moved an inventory item into the current room via the generic
+    /// `drop <item>` command.
+    PlayerDroppedItem {
+        item_id: String,
+    },
     ItemAcquired {
         item_id: String,
         storage: ItemStorageTarget,

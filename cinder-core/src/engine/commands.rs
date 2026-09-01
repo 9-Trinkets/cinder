@@ -35,6 +35,12 @@ pub(crate) enum PlayerCommand {
     Take {
         target: String,
     },
+    /// A generic `drop <item>` command. The bare target is resolved against
+    /// the player's inventory by the planner, independent of any per-item
+    /// content action.
+    Drop {
+        target: String,
+    },
     Help,
     Quit,
     Unknown,
@@ -81,6 +87,11 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
         return PlayerCommand::Take { target };
     }
 
+    // Generic drop command, same precedence rules as take.
+    if let Some(target) = drop_phrase_target(trimmed) {
+        return PlayerCommand::Drop { target };
+    }
+
     PlayerCommand::Unknown
 }
 
@@ -94,6 +105,20 @@ fn take_phrase_target(trimmed: &str) -> Option<String> {
             if !target.is_empty() {
                 return Some(target.to_string());
             }
+        }
+    }
+    None
+}
+
+/// Extracts the item target from a generic drop phrase (`drop X`). Returns
+/// `None` for a bare/unparseable drop.
+fn drop_phrase_target(trimmed: &str) -> Option<String> {
+    let lower = trimmed.to_ascii_lowercase();
+    let prefix = "drop ";
+    if lower.starts_with(prefix) {
+        let target = trimmed[prefix.len()..].trim();
+        if !target.is_empty() {
+            return Some(target.to_string());
         }
     }
     None
@@ -402,5 +427,23 @@ mod tests {
         assert!(
             matches!(parse("take yourself") , PlayerCommand::Take { target } if target == "yourself")
         );
+    }
+
+    #[test]
+    fn drop_phrases_resolve_to_drop_command() {
+        assert!(
+            matches!(parse("drop ring"), PlayerCommand::Drop { target } if target == "ring")
+        );
+        assert!(
+            matches!(
+                parse("drop the cracked scroll"),
+                PlayerCommand::Drop { target } if target == "the cracked scroll"
+            )
+        );
+    }
+
+    #[test]
+    fn bare_drop_is_unknown() {
+        assert!(matches!(parse("drop"), PlayerCommand::Unknown));
     }
 }

@@ -87,6 +87,9 @@ pub enum PanelDataSource {
     /// Loose items lying in the current room, each picked up via the generic
     /// `take <item>` command.
     LooseRoomItems,
+    /// The player's droppable inventory items (not currently equipped), each
+    /// dropped via the generic `drop <item>` command.
+    InventoryItems,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

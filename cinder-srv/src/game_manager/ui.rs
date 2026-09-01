@@ -346,6 +346,33 @@ pub(super) fn build_ui_snapshot(
         }
     };
 
+    // The generic `drop <item>` command surfaces as a synthetic overflow
+    // action (via the same inventory picker model as authored panel actions)
+    // whenever the player holds a droppable item. Each entry dispatches
+    // `drop <id>`.
+    let drop_panel_options: Vec<PanelOptionData> = {
+        let droppable = droppable_inventory_items(&state);
+        if droppable.is_empty() {
+            vec![]
+        } else {
+            droppable
+                .into_iter()
+                .map(|item_id| {
+                    let label = content
+                        .item(&item_id)
+                        .map(|item| item.label.clone())
+                        .unwrap_or_else(|| item_id.clone());
+                    PanelOptionData {
+                        id: item_id.clone(),
+                        title: label,
+                        subtitle: None,
+                        command: Some(format!("drop {item_id}")),
+                    }
+                })
+                .collect()
+        }
+    };
+
     let look_options: Vec<LookOptionData> = runtime
         .current_room_look_options()
         .map_err(|error| error.to_string())?
@@ -460,6 +487,25 @@ pub(super) fn build_ui_snapshot(
 
     if let Ok(active_stages) = runtime.active_stage_ids() {
         append_stage_menu_overflow_actions(&mut overflow_actions, content, &active_stages);
+    }
+
+    // Surface the generic `drop <item>` overflow action when the player holds
+    // something droppable. Structure mirrors authored panel actions so moving
+    // it to the main bar later is a placement-only change.
+    if !drop_panel_options.is_empty() {
+        overflow_actions.push(OverflowAction {
+            id: "drop".to_string(),
+            label: content.ui_text.drop_label.clone(),
+            group: String::new(),
+            usage: "drop <item>".to_string(),
+            panel: "drop".to_string(),
+            panel_config: Some(PanelConfigData {
+                title: content.ui_text.drop_label.clone(),
+                prompt: String::new(),
+                data_source: PanelDataSource::InventoryItems,
+                on_select: PanelSelectAction::ExecuteCommand,
+            }),
+        });
     }
 
     let mut panel_options: BTreeMap<String, Vec<PanelOptionData>> = BTreeMap::new();
@@ -595,11 +641,27 @@ pub(super) fn build_ui_snapshot(
                         }
                     })
                     .collect(),
+                PanelDataSource::InventoryItems => droppable_inventory_items(&state)
+                    .into_iter()
+                    .map(|item_id| {
+                        let label = content
+                            .item(&item_id)
+                            .map(|item| item.label.clone())
+                            .unwrap_or_else(|| item_id.clone());
+                        PanelOptionData {
+                            id: item_id.clone(),
+                            title: label,
+                            subtitle: None,
+                            command: Some(format!("drop {item_id}")),
+                        }
+                    })
+                    .collect(),
             };
             panel_options.insert(panel_name.clone(), options);
         }
     }
     panel_options.insert("take".to_string(), take_panel_options);
+    panel_options.insert("drop".to_string(), drop_panel_options);
 
     Ok(UiSnapshot {
         pack_id: pack_id.to_string(),
@@ -847,6 +909,25 @@ fn menu_option_data(options: Vec<MenuChoiceOption>) -> Vec<MenuOptionData> {
             menu_text: option.menu_text,
         })
         .collect()
+}
+
+/// Ids of inventory items the player can currently drop (present and not
+/// equipped). Equipped items must be unequipped before they can be dropped.
+fn droppable_inventory_items(state: &WorldState) -> Vec<String> {
+    let mut ids: Vec<String> = state
+        .player_inventory
+        .iter()
+        .filter(|(item_id, count)| {
+            **count > 0
+                && !state
+                    .equipment
+                    .values()
+                    .any(|equipped| equipped.as_str() == item_id.as_str())
+        })
+        .map(|(item_id, _)| item_id.clone())
+        .collect();
+    ids.sort();
+    ids
 }
 
 fn append_stage_menu_overflow_actions(

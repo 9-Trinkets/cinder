@@ -12,7 +12,8 @@ use self::handlers::{
     handle_feature_observed, handle_help_shown, handle_hostile_strike, handle_item_acquired,
     handle_item_consumed, handle_item_observed, handle_menu_choice_made, handle_menu_opened,
     handle_menu_selection_toggled, handle_narrative_line, handle_pair_stat_adjusted,
-    handle_player_moved, handle_player_took_item, handle_turn_started, handle_unknown_input,
+    handle_player_dropped_item, handle_player_moved, handle_player_took_item, handle_turn_started,
+    handle_unknown_input,
 };
 
 pub(crate) use self::observation::render_actor_speech_line;
@@ -258,6 +259,9 @@ pub fn apply_events(
             }
             WorldEvent::PlayerTookItem { item_id } => {
                 handle_player_took_item(state, content, item_id, &mut lines);
+            }
+            WorldEvent::PlayerDroppedItem { item_id } => {
+                handle_player_dropped_item(state, content, item_id, &mut lines);
             }
             WorldEvent::ItemAcquired { item_id, storage } => {
                 handle_item_acquired(state, content, item_id, *storage, &mut lines);

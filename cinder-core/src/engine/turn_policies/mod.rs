@@ -357,6 +357,12 @@ fn action_has_available_target(
         }),
         PanelDataSource::Exits | PanelDataSource::Features => true,
         PanelDataSource::LooseRoomItems => !state.loose_room_items(room_id).is_empty(),
+        PanelDataSource::InventoryItems => state
+            .player_inventory
+            .iter()
+            .any(|(item_id, count)| {
+                *count > 0 && !state.equipment.values().any(|equipped| equipped == item_id)
+            }),
     }
 }
 

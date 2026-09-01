@@ -125,6 +125,69 @@ fn plan_take_command(
     }
 }
 
+/// Plans a generic `drop <item>` command. Resolves the bare target against the
+/// player's inventory (matching by id or label) and moves the first match from
+/// the inventory into the current room. Equipped items must be unequipped
+/// first and are never droppable. Emits an `ActionRejected` when the item is
+/// missing or currently equipped.
+fn plan_drop_command(
+    content: &ContentPack,
+    planner_state: &WorldState,
+    target: &str,
+    planned: &mut PlannedTurn,
+) -> bool {
+    let trimmed = target.trim();
+    if trimmed.is_empty() {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content.render_message("item.drop_nothing", &[]).unwrap_or_default(),
+        });
+        return false;
+    }
+    let target_lower = trimmed.to_ascii_lowercase();
+    let item_matches = |(item_id, label): (&str, &str)| {
+        item_id.eq_ignore_ascii_case(&target_lower) || label.eq_ignore_ascii_case(&target_lower)
+    };
+    let target_is_equipped = planner_state.equipment.values().any(|equipped_id| {
+        content
+            .item(equipped_id)
+            .is_some_and(|item| item_matches((equipped_id.as_str(), item.label.as_str())))
+    });
+    if target_is_equipped {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content
+                .render_message("item.drop_equipped", &[])
+                .unwrap_or_default(),
+        });
+        return false;
+    }
+    let matched = planner_state
+        .player_inventory
+        .iter()
+        .find_map(|(item_id, _)| {
+            content.item(item_id).and_then(|item| {
+                if item_matches((item_id.as_str(), item.label.as_str())) {
+                    Some((item_id.clone(), item.label.clone()))
+                } else {
+                    None
+                }
+            })
+        });
+    match matched {
+        Some((item_id, _label)) => {
+            planned.events.push(WorldEvent::PlayerDroppedItem { item_id });
+            true
+        }
+        None => {
+            planned.events.push(WorldEvent::ActionRejected {
+                message: content
+                    .render_message("item.drop_not_have", &[])
+                    .unwrap_or_default(),
+            });
+            false
+        }
+    }
+}
+
 pub(super) fn build_planned_turn(
     content: &ContentPack,
     aggregated: AggregatedTurn,
@@ -161,6 +224,12 @@ pub(super) fn build_planned_turn(
                 content,
                 planner_state,
                 &aggregated.world.current_room_id,
+                &target,
+                &mut planned,
+            ),
+            PlayerCommand::Drop { target } => plan_drop_command(
+                content,
+                planner_state,
                 &target,
                 &mut planned,
             ),

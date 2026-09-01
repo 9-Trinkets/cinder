@@ -176,6 +176,9 @@ pub struct UiTextDefinition {
     /// Verb label for the generic `take <item>` action-bar button/panel.
     #[serde(default = "default_take_label")]
     pub take_label: String,
+    /// Verb label for the generic `drop <item>` action/panel.
+    #[serde(default = "default_drop_label")]
+    pub drop_label: String,
     #[serde(default)]
     pub act_closure: ActClosureDefinition,
     #[serde(default)]
@@ -461,6 +464,10 @@ fn default_take_label() -> String {
     "Take".to_string()
 }
 
+fn default_drop_label() -> String {
+    "Drop".to_string()
+}
+
 impl Default for UiTextDefinition {
     fn default() -> Self {
         Self {
@@ -528,6 +535,7 @@ impl Default for UiTextDefinition {
             dynamic_menu_context_label: default_dynamic_menu_context_label(),
             room_items_sidebar_label: default_room_items_sidebar_label(),
             take_label: default_take_label(),
+            drop_label: default_drop_label(),
             act_closure: ActClosureDefinition::default(),
             game_closure: ActClosureDefinition::default(),
             shell_menu: ShellMenuDefinition::default(),
