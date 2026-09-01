@@ -4,7 +4,7 @@
   "combat.cannot_attack_ally": "The {actor} fights at your side; you cannot raise a hand against it.",
   "combat.actor_defeated": "The {actor} crumbles to dust.",
   "combat.defeat_drop": "From the settling dust, something remains: {items}.",
-  "combat.drain_hit": "The spiral drinks heat from the {actor}. ({damage} HP drained, {remaining} HP remaining)",
+  "combat.drain_hit": "The spiral drinks the {actor}'s strength. ({damage} HP drained, {remaining} HP remaining)",
   "combat.actor_wakes_hostile": "The {actor}'s eyes snap open. It turns to face you.",
   "combat.hostile_strike": "The {actor} strikes you! You take {damage} damage. ({remaining} HP remaining)",
   "conversion.encircled": "The {actor} shudders, its surface brightening. It turns toward you, no longer hostile.",
@@ -16,5 +16,5 @@
   "warden.reveal": "The grid falls silent. In the heart of the hall a section of the floor grinds open, and a ladder descends into a soft, phosphorescent glow. The first level is yours.",
   "warden.memory": "For a moment the settling dust hangs still, and Layla understands: the chalk in her hand and the magic circuits scored across the floor are the same thing — lines. A life she almost forgot rises up to meet her: the weight of a smooth stone, the grid of a Go board beneath her hands, and a voice that taught her that capture is just surrounding. The memory is gone almost as soon as it comes. But she knows now how to read the board. She has played it before.",
   "king.defeated": "The elf king falls. The underground forest holds its breath. Then, one by one, the other elves lower their weapons and step back. They are not bound by any ring; they simply choose to let you pass.",
-  "item.scroll_read.learned": "The dry bark crackles and grows warm in Layla's grasp. The spiral resolves: to drain a fire is to take its hunger into your hand and hold it. She knows the charmed lines she could score now — and the deeper ones that drink flame. The secret of the drain sigil settles behind her eyes."
+  "item.scroll_read.learned": "The dry bark grows warm in Layla's grasp. The spiral resolves: to drain is to take an enemy's strength into your hand and hold it, until it can hold nothing at all. She knows the charmed lines she could score now — and the deeper ones that sap whatever stands within. The secret of the drain sigil settles behind her eyes."
 }

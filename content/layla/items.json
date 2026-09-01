@@ -16,16 +16,16 @@
     "id": "drain-sigil",
     "label": "drain sigil",
     "kind": "misc",
-    "description": "A spiral chalk mark that drinks the heat from the ground it is traced on. Surrounded on every side, a fire thing finds no purchase and slowly burns down.",
+    "description": "A spiral chalk mark that drinks the energy from whatever stands on it. Each tick it stays, an enemy finds its strength quietly drained away.",
     "look_description": "A tight spiral of chalk that seems to drink the light from the floor, leaving the stone cold and grey."
   },
   {
     "id": "drain-scroll",
-    "label": "crackling scroll",
+    "label": "worn scroll",
     "kind": "misc",
     "use_hook": "item.scroll_read",
-    "description": "A dry scroll of bark, faintly warm, showing an intricate spiral in charcoal. Reading it crowds the words for draining fire into Layla's head.",
-    "look_description": "A spiral of charcoal spirals on the bark — a diagram for pulling heat out of a fire."
+    "description": "A dry scroll of old bark, faintly warm, showing an intricate spiral in charcoal. Reading it crowds the words for drawing a draining sigil into Layla's head.",
+    "look_description": "A spiral of charcoal spirals on the bark — a diagram for sapping the strength of whatever stands within."
   },
   {
     "id": "iron-chisel",

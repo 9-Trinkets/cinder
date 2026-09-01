@@ -402,7 +402,7 @@
     {
       "id": "read_scroll",
       "command": "READ SCROLL",
-      "label": "Read Crackling Scroll",
+      "label": "Read Worn Scroll",
       "group": "gear",
       "phrases": [
         "read scroll",
@@ -418,7 +418,7 @@
         "use_item"
       ],
       "item_id": "drain-scroll",
-      "event_text": "Layla unrolls the dry bark and works out the spiral. The words for draining fire crowd into her head.",
+      "event_text": "Layla unrolls the dry bark and works out the spiral. The words for drawing a draining sigil crowd into her head.",
       "available": {},
       "ui": {
         "bar": false,
