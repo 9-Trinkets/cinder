@@ -707,7 +707,7 @@ export default function GamePage() {
 
         {uiSnapshot && (
           <aside className="hidden lg:flex w-72 shrink-0 border-l border-subtle p-4 flex-col text-sm overflow-y-auto self-stretch">
-            <StatusPanel uiSnapshot={uiSnapshot} />
+            <StatusPanel uiSnapshot={uiSnapshot} onTakeItem={itemId => void execCommand(`take ${itemId}`)} />
             {uiSnapshot.show_relationship_sidebar && uiSnapshot.relationship_pairs.length > 0 && (
               <RelationshipChart pairs={uiSnapshot.relationship_pairs} />
             )}
@@ -815,7 +815,7 @@ export default function GamePage() {
 
       {showStatusModal && uiSnapshot && (
         <Modal title="Status" onClose={() => setShowStatusModal(false)}>
-          <StatusPanel uiSnapshot={uiSnapshot} />
+          <StatusPanel uiSnapshot={uiSnapshot} onTakeItem={itemId => void execCommand(`take ${itemId}`)} />
         </Modal>
       )}
 

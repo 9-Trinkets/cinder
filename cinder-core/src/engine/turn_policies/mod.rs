@@ -356,6 +356,7 @@ fn action_has_available_target(
             })
         }),
         PanelDataSource::Exits | PanelDataSource::Features => true,
+        PanelDataSource::LooseRoomItems => !state.loose_room_items(room_id).is_empty(),
     }
 }
 

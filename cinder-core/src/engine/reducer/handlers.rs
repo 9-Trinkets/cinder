@@ -866,6 +866,27 @@ pub(super) fn handle_item_acquired(
     }
 }
 
+/// Moves a loose item from the current room into the player's inventory in
+/// response to the generic `take <item>` command.
+pub(super) fn handle_player_took_item(
+    state: &mut WorldState,
+    content: &ContentPack,
+    item_id: &str,
+    lines: &mut NarrativeLines,
+) {
+    let room_id = state.current_room_id.clone();
+    let label = content
+        .item(item_id)
+        .map(|i| i.label.as_str())
+        .unwrap_or(item_id);
+    if state.remove_item_from_storage(item_id, ItemStorageTarget::CurrentRoom, &room_id) {
+        state.add_item(item_id);
+        if let Some(line) = content.render_message("item.taken", &[("label", label)]) {
+            lines.narration(line);
+        }
+    }
+}
+
 /// Renders the "item acquired" narration for a single item. A pack may define
 /// `item.<id>.<generic key>` to override the message; an empty override
 /// suppresses the line entirely.

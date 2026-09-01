@@ -122,6 +122,11 @@ pub enum WorldEvent {
         raw_input: String,
     },
     ActEnded,
+    /// A player moved a loose item from the current room into their
+    /// inventory via the generic `take <item>` command.
+    PlayerTookItem {
+        item_id: String,
+    },
     ItemAcquired {
         item_id: String,
         storage: ItemStorageTarget,

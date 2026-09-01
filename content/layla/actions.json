@@ -342,42 +342,6 @@
       }
     },
     {
-      "id": "pick_up_ring",
-      "command": "PICK UP RING",
-      "label": "Pick Up Ring",
-      "group": "gear",
-      "phrases": [
-        "pick up ring",
-        "take ring",
-        "retrieve ring"
-      ],
-      "player_enabled": true,
-      "target_mode": "none",
-      "outcome_mode": "event",
-      "effects": [
-        "pick_up_item"
-      ],
-      "item_id": "warden-ring",
-      "event_text": "{actor_name} lifts the still-warm warden ring from the dust.",
-      "available": {
-        "requires_room_item": "warden-ring"
-      },
-      "ui": {
-        "bar": false,
-        "overflow": true,
-        "group": "gear",
-        "sort_order": 35
-      },
-      "player_command": {
-        "usage": "pick up ring",
-        "example": "pick up ring",
-        "advances_time": true,
-        "input": {
-          "required": false
-        }
-      }
-    },
-    {
       "id": "trace",
       "command": "TRACE",
       "label": "Trace",
@@ -401,7 +365,10 @@
       },
       "item_creation": {
         "creates_item": "charm-sigil",
-        "craftable_items": ["charm-sigil", "drain-sigil"],
+        "craftable_items": [
+          "charm-sigil",
+          "drain-sigil"
+        ],
         "craftable_item_gates": {
           "drain-sigil": "knows_drain"
         },

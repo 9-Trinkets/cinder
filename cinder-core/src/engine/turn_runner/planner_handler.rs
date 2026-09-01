@@ -79,6 +79,52 @@ fn try_resolve_menu_choice(
         })
 }
 
+/// Plans a generic `take <item>` command. Resolves the bare target against
+/// loose items lying in the current room (matching by id or label) and moves
+/// the first match to the player's inventory. Emits an `ActionRejected` when
+/// nothing in the room matches.
+fn plan_take_command(
+    content: &ContentPack,
+    planner_state: &WorldState,
+    current_room_id: &str,
+    target: &str,
+    planned: &mut PlannedTurn,
+) -> bool {
+    let trimmed = target.trim();
+    let loose = planner_state.loose_room_items(current_room_id);
+    if loose.is_empty() || trimmed.is_empty() {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content.render_message("item.take_nothing", &[]).unwrap_or_default(),
+        });
+        return false;
+    }
+    let target_lower = trimmed.to_ascii_lowercase();
+    let matched = loose.iter().find(|(item_id, _count)| {
+        content
+            .item(item_id)
+            .is_some_and(|item| {
+                item.id.eq_ignore_ascii_case(&target_lower)
+                    || item.label.eq_ignore_ascii_case(&target_lower)
+            })
+    });
+    match matched {
+        Some((item_id, _count)) => {
+            planned.events.push(WorldEvent::PlayerTookItem {
+                item_id: item_id.clone(),
+            });
+            true
+        }
+        None => {
+            planned.events.push(WorldEvent::ActionRejected {
+                message: content
+                    .render_message("item.take_not_here", &[])
+                    .unwrap_or_default(),
+            });
+            false
+        }
+    }
+}
+
 pub(super) fn build_planned_turn(
     content: &ContentPack,
     aggregated: AggregatedTurn,
@@ -109,6 +155,13 @@ pub(super) fn build_planned_turn(
                     channel_surfing_only,
                     turn_number,
                 },
+                &mut planned,
+            ),
+            PlayerCommand::Take { target } => plan_take_command(
+                content,
+                planner_state,
+                &aggregated.world.current_room_id,
+                &target,
                 &mut planned,
             ),
             PlayerCommand::Help => {

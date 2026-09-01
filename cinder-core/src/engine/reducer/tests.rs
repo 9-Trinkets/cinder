@@ -819,6 +819,51 @@ fn item_events_keep_player_inventory_behavior_unchanged() {
 }
 
 #[test]
+fn player_take_moves_loose_item_to_inventory() {
+    let mut pack = reducer_test_pack();
+    pack.items = vec![ItemDefinition {
+        id: "ring".to_string(),
+        label: "warden ring".to_string(),
+        description: "A warm ring.".to_string(),
+        ..ItemDefinition::default()
+    }];
+    rebuild_test_pack_indexes(&mut pack);
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = KITCHEN_ID.to_string();
+
+    apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::ItemAcquired {
+            item_id: "ring".to_string(),
+            storage: ItemStorageTarget::CurrentRoom,
+        })],
+    );
+    assert!(state.has_item_in_storage("ring", ItemStorageTarget::CurrentRoom, KITCHEN_ID,));
+
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::PlayerTookItem {
+            item_id: "ring".to_string(),
+        })],
+    );
+
+    assert!(state.has_item("ring"));
+    assert!(!state.has_item_in_storage(
+        "ring",
+        ItemStorageTarget::CurrentRoom,
+        KITCHEN_ID,
+    ));
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|line| line.text.contains("warden ring"))
+    );
+}
+
+#[test]
 fn actor_commands_can_create_room_items_from_story_vars() {
     let mut pack = reducer_test_pack();
     pack.items = vec![

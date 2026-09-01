@@ -46,6 +46,9 @@ pub struct ObjectiveItem {
 pub struct InventoryItem {
     pub label: String,
     pub count: u32,
+    /// Present for loose room items so the UI can dispatch a generic
+    /// `take <id>` command.
+    pub id: Option<String>,
 }
 
 /// An item worn in one of the player's equipment slots.
@@ -284,7 +287,7 @@ pub(super) fn build_ui_snapshot(
         };
 
     let state = runtime.export_state().map_err(|e| e.to_string())?;
-    let action_bar_actions: Vec<ActionBarAction> = if !content.actions.is_empty() {
+    let mut action_bar_actions: Vec<ActionBarAction> = if !content.actions.is_empty() {
         content
             .actions
             .iter()
@@ -303,6 +306,44 @@ pub(super) fn build_ui_snapshot(
             .collect()
     } else {
         vec![]
+    };
+
+    // The generic `take <item>` command surfaces as a single action-bar button
+    // whenever a loose item lies in the current room. It reuses the same panel
+    // model as authored content actions: the button opens a picker listing each
+    // item (auto-selecting when only one is present), dispatching `take <id>`.
+    let take_panel_options: Vec<PanelOptionData> = {
+        let loose = state.loose_room_items(&state.current_room_id);
+        if loose.is_empty() {
+            vec![]
+        } else {
+            action_bar_actions.push(ActionBarAction {
+                id: "take".to_string(),
+                label: content.ui_text.take_label.clone(),
+                panel: Some("take".to_string()),
+                panel_config: Some(PanelConfigData {
+                    title: content.ui_text.room_items_sidebar_label.clone(),
+                    prompt: String::new(),
+                    data_source: PanelDataSource::LooseRoomItems,
+                    on_select: PanelSelectAction::ExecuteCommand,
+                }),
+            });
+            loose
+                .into_iter()
+                .map(|(item_id, _count)| {
+                    let label = content
+                        .item(&item_id)
+                        .map(|item| item.label.clone())
+                        .unwrap_or_else(|| item_id.clone());
+                    PanelOptionData {
+                        id: item_id.clone(),
+                        title: label,
+                        subtitle: None,
+                        command: Some(format!("take {item_id}")),
+                    }
+                })
+                .collect()
+        }
     };
 
     let look_options: Vec<LookOptionData> = runtime
@@ -538,10 +579,27 @@ pub(super) fn build_ui_snapshot(
                         })
                         .unwrap_or_default()
                 }
+                PanelDataSource::LooseRoomItems => state
+                    .loose_room_items(&state.current_room_id)
+                    .into_iter()
+                    .map(|(item_id, _count)| {
+                        let label = content
+                            .item(&item_id)
+                            .map(|item| item.label.clone())
+                            .unwrap_or_else(|| item_id.clone());
+                        PanelOptionData {
+                            id: item_id.clone(),
+                            title: label,
+                            subtitle: None,
+                            command: Some(format!("take {item_id}")),
+                        }
+                    })
+                    .collect(),
             };
             panel_options.insert(panel_name.clone(), options);
         }
     }
+    panel_options.insert("take".to_string(), take_panel_options);
 
     Ok(UiSnapshot {
         pack_id: pack_id.to_string(),
@@ -659,7 +717,11 @@ pub(super) fn build_ui_snapshot(
                     .item(&item_id)
                     .map(|item| item.label.clone())
                     .unwrap_or_else(|| item_id.clone());
-                InventoryItem { label, count }
+                InventoryItem {
+                    label,
+                    count,
+                    id: Some(item_id.clone()),
+                }
             })
             .collect(),
         equipped_items: {
@@ -690,7 +752,11 @@ pub(super) fn build_ui_snapshot(
                         .item(&id)
                         .map(|item| item.label.clone())
                         .unwrap_or_else(|| id.clone());
-                    InventoryItem { label, count }
+                    InventoryItem {
+                        label,
+                        count,
+                        id: None,
+                    }
                 })
                 .collect::<Vec<_>>();
             inventory.sort_by(|left, right| left.label.cmp(&right.label));

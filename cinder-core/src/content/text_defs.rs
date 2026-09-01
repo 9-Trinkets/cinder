@@ -173,6 +173,9 @@ pub struct UiTextDefinition {
     /// items in rooms can rename or repurpose it.
     #[serde(default = "default_room_items_sidebar_label")]
     pub room_items_sidebar_label: String,
+    /// Verb label for the generic `take <item>` action-bar button/panel.
+    #[serde(default = "default_take_label")]
+    pub take_label: String,
     #[serde(default)]
     pub act_closure: ActClosureDefinition,
     #[serde(default)]
@@ -454,6 +457,10 @@ fn default_room_items_sidebar_label() -> String {
     "On the ground".to_string()
 }
 
+fn default_take_label() -> String {
+    "Take".to_string()
+}
+
 impl Default for UiTextDefinition {
     fn default() -> Self {
         Self {
@@ -520,6 +527,7 @@ impl Default for UiTextDefinition {
             book_recommender_instructions: default_book_recommender_instructions(),
             dynamic_menu_context_label: default_dynamic_menu_context_label(),
             room_items_sidebar_label: default_room_items_sidebar_label(),
+            take_label: default_take_label(),
             act_closure: ActClosureDefinition::default(),
             game_closure: ActClosureDefinition::default(),
             shell_menu: ShellMenuDefinition::default(),

@@ -84,6 +84,9 @@ pub enum PanelDataSource {
     Exits,
     Features,
     CraftableItems,
+    /// Loose items lying in the current room, each picked up via the generic
+    /// `take <item>` command.
+    LooseRoomItems,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

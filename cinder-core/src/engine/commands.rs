@@ -29,6 +29,12 @@ pub(crate) enum PlayerCommand {
         command_id: String,
         input: Option<String>,
     },
+    /// A generic `take <item>` / `pick up <item>` / `get <item>` command. The
+    /// bare target is resolved against loose items in the current room by the
+    /// planner, independent of any per-item content action.
+    Take {
+        target: String,
+    },
     Help,
     Quit,
     Unknown,
@@ -69,7 +75,28 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
         }
     }
 
+    // Generic take command. Checked after content actions so a pack that
+    // authors its own `pick up X` action keeps precedence.
+    if let Some(target) = take_phrase_target(trimmed) {
+        return PlayerCommand::Take { target };
+    }
+
     PlayerCommand::Unknown
+}
+
+/// Extracts the item target from a generic take phrase (`take X`, `pick up X`,
+/// `get X`, `pickup X`). Returns `None` for a bare/unparseable take.
+fn take_phrase_target(trimmed: &str) -> Option<String> {
+    let lower = trimmed.to_ascii_lowercase();
+    for prefix in ["take ", "pick up ", "get ", "pickup "] {
+        if lower.starts_with(prefix) {
+            let target = trimmed[prefix.len()..].trim();
+            if !target.is_empty() {
+                return Some(target.to_string());
+            }
+        }
+    }
+    None
 }
 
 pub(crate) fn player_command_help_text(content: &ContentPack) -> String {
@@ -336,4 +363,44 @@ fn actor_references(
     }
     refs.extend(actor.aliases.iter().cloned());
     refs
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::engine::test_fixtures::minimal_test_pack;
+
+    fn parse(raw: &str) -> PlayerCommand {
+        parse_command(&minimal_test_pack(), raw)
+    }
+
+    #[test]
+    fn take_phrases_resolve_to_take_command() {
+        assert!(
+            matches!(parse("take ring"), PlayerCommand::Take { target } if target == "ring")
+        );
+        assert!(
+            matches!(parse("pick up scroll"), PlayerCommand::Take { target } if target == "scroll")
+        );
+        assert!(
+            matches!(parse("get coffee"), PlayerCommand::Take { target } if target == "coffee")
+        );
+        assert!(
+            matches!(parse("pickup badge"), PlayerCommand::Take { target } if target == "badge")
+        );
+        assert!(
+            matches!(
+                parse("take the cracked scroll"),
+                PlayerCommand::Take { target } if target == "the cracked scroll"
+            )
+        );
+    }
+
+    #[test]
+    fn bare_or_unmatched_take_is_not_user_visible() {
+        assert!(matches!(parse("take"), PlayerCommand::Unknown));
+        assert!(
+            matches!(parse("take yourself") , PlayerCommand::Take { target } if target == "yourself")
+        );
+    }
 }

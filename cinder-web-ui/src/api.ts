@@ -198,6 +198,8 @@ export type ActClosureSection =
 export interface InventoryItem {
   label: string
   count: number
+  /** Set for loose room items so the UI can dispatch `take <id>`. */
+  id?: string
 }
 
 export interface EquippedItem {

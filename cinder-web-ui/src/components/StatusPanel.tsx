@@ -1,7 +1,13 @@
 import * as api from '../api'
 import Section from './Section'
 
-export default function StatusPanel({ uiSnapshot }: { uiSnapshot: api.UiSnapshot }) {
+export default function StatusPanel({
+  uiSnapshot,
+  onTakeItem,
+}: {
+  uiSnapshot: api.UiSnapshot
+  onTakeItem?: (itemId: string) => void
+}) {
   const player = uiSnapshot.player
   return (
     <div>
@@ -110,7 +116,23 @@ export default function StatusPanel({ uiSnapshot }: { uiSnapshot: api.UiSnapshot
           <ul className="space-y-0.5">
             {uiSnapshot.current_room_items.map((item, i) => (
               <li key={i} className="text-text text-xs">
-                • {item.label}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
+                {(onTakeItem && item.id)
+                  ? (
+                    <button
+                      type="button"
+                      onClick={() => onTakeItem(item.id!)}
+                      className="hover:opacity-80 cursor-pointer text-left"
+                    >
+                      Take {item.label}
+                      {item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
+                    </button>
+                  )
+                  : (
+                    <span>
+                      • {item.label}
+                      {item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
+                    </span>
+                  )}
               </li>
             ))}
           </ul>
