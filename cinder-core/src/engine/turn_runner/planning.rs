@@ -95,13 +95,9 @@ fn resolved_created_item_id(
     if !item_creation.craftable_items.is_empty() {
         if let Some(input_val) = input.map(str::trim).filter(|s| !s.is_empty()) {
             let input_lower = input_val.to_ascii_lowercase();
-            if let Some(matched) = item_creation
-                .craftable_items
-                .iter()
-                .find(|craftable_id| {
-                    craftable_id.eq_ignore_ascii_case(input_val) && craftable_unlocked(craftable_id)
-                })
-            {
+            if let Some(matched) = item_creation.craftable_items.iter().find(|craftable_id| {
+                craftable_id.eq_ignore_ascii_case(input_val) && craftable_unlocked(craftable_id)
+            }) {
                 return Some(matched.clone());
             }
             if let Some(matched) = item_creation.craftable_items.iter().find(|craftable_id| {
@@ -120,7 +116,9 @@ fn resolved_created_item_id(
             None
         };
     }
-    if item_creation.creates_item_resolve_from_target {
+    if item_creation.creates_item_resolve_from_target
+        || !item_creation.creates_item_target_template.is_empty()
+    {
         let input_val = input.unwrap_or_default().trim();
         return Some(
             resolve_actor_reference_input(
@@ -129,7 +127,7 @@ fn resolved_created_item_id(
                 context.current_room_id,
                 input_val,
             )
-            .map(|resolved| format!("clip-{}", resolved.actor_id))
+            .map(|resolved| item_creation.resolve_target_item_id(Some(&resolved.actor_id)))
             .unwrap_or_else(|| item_id.clone()),
         );
     }

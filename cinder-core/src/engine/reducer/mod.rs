@@ -1,6 +1,11 @@
+mod actor_commands;
 mod beat_advance;
+mod combat;
 mod command_effects;
+mod encirclement;
+mod equipment;
 mod handlers;
+mod movement;
 mod observation;
 mod tick;
 

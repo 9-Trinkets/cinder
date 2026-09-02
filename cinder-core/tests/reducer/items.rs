@@ -176,6 +176,7 @@ fn actor_commands_can_create_room_items_from_story_vars() {
             creates_item: "garlic-noodles".to_string(),
             creates_item_story_var: "cook_recipe".to_string(),
             creates_item_resolve_from_target: false,
+            creates_item_target_template: String::new(),
             craftable_items: Vec::new(),
             craftable_item_gates: BTreeMap::new(),
             storage: ActionItemStorageTarget::CurrentRoom,
@@ -217,6 +218,52 @@ fn actor_commands_can_create_room_items_from_story_vars() {
         ItemStorageTarget::CurrentRoom,
         KITCHEN_ID,
     ));
+}
+
+#[test]
+fn actor_commands_can_create_target_derived_items_from_content_templates() {
+    let mut pack = reducer_test_pack();
+    pack.items.push(ItemDefinition {
+        id: "memory-blair".to_string(),
+        label: "memory of Blair".to_string(),
+        description: "A captured moment.".to_string(),
+        ..ItemDefinition::default()
+    });
+    pack.actions.push(ActionDefinition {
+        id: "capture".to_string(),
+        command: "capture".to_string(),
+        target_mode: CommandTargetMode::Actor,
+        event_text: "{actor_name} captures a memory of {target_actor_name}.".to_string(),
+        item_creation: Some(ActionItemCreation {
+            creates_item: "memory-blair".to_string(),
+            creates_item_target_template: "memory-{target_actor_id}".to_string(),
+            storage: ActionItemStorageTarget::CurrentRoom,
+            ..ActionItemCreation::default()
+        }),
+        ..ActionDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut pack);
+    let mut state = WorldState::new(&pack);
+
+    apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
+            actor_id: ACTOR_A_ID.to_string(),
+            actor_name: ACTOR_A_NAME.to_string(),
+            room_id: LOUNGE_ID.to_string(),
+            command_id: "capture".to_string(),
+            target_room_id: None,
+            target_actor_id: Some(ACTOR_B_ID.to_string()),
+            target_actor_name: Some(ACTOR_B_NAME.to_string()),
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        })],
+    );
+
+    assert!(state.has_item_in_storage("memory-blair", ItemStorageTarget::CurrentRoom, LOUNGE_ID,));
 }
 
 #[test]

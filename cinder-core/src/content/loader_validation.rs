@@ -78,6 +78,36 @@ pub(crate) fn validate_actions(
             )
             .into());
         }
+        if let Some(item_creation) = &action.item_creation {
+            let template = item_creation.creates_item_target_template.trim();
+            if !template.is_empty() {
+                if action.target_mode != CommandTargetMode::Actor {
+                    return Err(format!(
+                        "action '{}' with item_creation.creates_item_target_template must use \
+                         target_mode actor",
+                        action.id
+                    )
+                    .into());
+                }
+                if !template.contains("{target_actor_id}") {
+                    return Err(format!(
+                        "action '{}' item_creation.creates_item_target_template must contain \
+                         '{{target_actor_id}}'",
+                        action.id
+                    )
+                    .into());
+                }
+                let remainder = template.replace("{target_actor_id}", "");
+                if remainder.contains('{') || remainder.contains('}') {
+                    return Err(format!(
+                        "action '{}' item_creation.creates_item_target_template contains an \
+                         unsupported placeholder",
+                        action.id
+                    )
+                    .into());
+                }
+            }
+        }
     }
     Ok(())
 }

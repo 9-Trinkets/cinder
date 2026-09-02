@@ -959,7 +959,7 @@
       "hook_id": "actor.edited",
       "item_creation": {
         "creates_item": "clip-ren",
-        "creates_item_resolve_from_target": true,
+        "creates_item_target_template": "clip-{target_actor_id}",
         "storage": "current_room"
       },
       "available": {

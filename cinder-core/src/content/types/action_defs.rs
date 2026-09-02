@@ -163,6 +163,10 @@ pub struct ActionItemCreation {
     pub creates_item_story_var: String,
     #[serde(default)]
     pub creates_item_resolve_from_target: bool,
+    /// Optional item-id template for target-derived creation. The supported
+    /// placeholder is `{target_actor_id}`.
+    #[serde(default)]
+    pub creates_item_target_template: String,
     #[serde(default)]
     pub craftable_items: Vec<String>,
     /// Optional story variable that must be set (truthy) before each craftable
@@ -172,6 +176,25 @@ pub struct ActionItemCreation {
     pub craftable_item_gates: BTreeMap<String, String>,
     #[serde(default)]
     pub storage: ActionItemStorageTarget,
+}
+
+impl ActionItemCreation {
+    pub fn resolve_target_item_id(&self, target_actor_id: Option<&str>) -> String {
+        let Some(target_actor_id) = target_actor_id else {
+            return self.creates_item.clone();
+        };
+        if !self.creates_item_target_template.is_empty() {
+            return self
+                .creates_item_target_template
+                .replace("{target_actor_id}", target_actor_id);
+        }
+        if self.creates_item_resolve_from_target {
+            // Backward compatibility for packs authored before target item-id
+            // templates moved this naming policy into content.
+            return format!("clip-{target_actor_id}");
+        }
+        self.creates_item.clone()
+    }
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
