@@ -1,5 +1,6 @@
 mod beat_advance;
 mod combat;
+mod combat_policy;
 mod common;
 mod encirclement;
 mod equipment;

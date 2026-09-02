@@ -143,6 +143,7 @@ pub fn load_pack_from_dir_with_locale(
             "items",
         )?;
     }
+    validate_combat_settings(&settings)?;
     validate_items(&items, &settings, &stats.actor, &hooks)?;
     let variables: BTreeMap<String, crate::engine::state::VariableDeclaration> =
         read_optional_json::<BTreeMap<String, crate::engine::state::VariableDeclaration>>(
@@ -524,7 +525,9 @@ pub fn load_pack_from_dir_with_locale(
     })
 }
 
-use crate::content::loader_validation::{require_known_id, validate_actions, validate_items};
+use crate::content::loader_validation::{
+    require_known_id, validate_actions, validate_combat_settings, validate_items,
+};
 
 pub fn available_locales(path: &Path) -> Result<Vec<LocaleOption>, Box<dyn Error>> {
     let locales_dir = path.join("locales");

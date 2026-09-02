@@ -40,6 +40,15 @@
   ],
   "combat": {
     "drain_item_id": "drain-sigil",
-    "drain_damage_per_tick": 2
+    "drain_damage_per_tick": 2,
+    "xp_distribution": {
+      "recipients": "player_and_followers",
+      "mode": "full_each"
+    },
+    "ally_attack": {
+      "participants": "all_allies_in_room",
+      "mode": "attack_stat",
+      "contribution_percent": 100
+    }
   }
 }

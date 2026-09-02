@@ -125,6 +125,7 @@ pub(crate) fn validate_items(
         if item.equip_slot.trim().is_empty() {
             continue;
         }
+
         if !settings.equipment_slots.contains(&item.equip_slot) {
             return Err(format!(
                 "item '{}' equip_slot '{}' not declared in settings.equipment_slots",
@@ -153,6 +154,22 @@ pub(crate) fn validate_items(
                 .into());
             }
         }
+    }
+    Ok(())
+}
+
+pub(crate) fn validate_combat_settings(
+    settings: &ContentSettingsDefinition,
+) -> Result<(), Box<dyn Error>> {
+    let ally_attack = &settings.combat.ally_attack;
+    if ally_attack.contribution_percent > 1_000 {
+        return Err("combat.ally_attack.contribution_percent must be at most 1000".into());
+    }
+    if ally_attack
+        .maximum_per_ally
+        .is_some_and(|maximum| maximum < 0)
+    {
+        return Err("combat.ally_attack.maximum_per_ally must not be negative".into());
     }
     Ok(())
 }

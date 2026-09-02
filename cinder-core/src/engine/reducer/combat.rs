@@ -1,4 +1,7 @@
-use crate::content::types::{ContentPack, ItemStorageTarget};
+use crate::content::types::{
+    AllyAttackMode, AllyAttackParticipants, ContentPack, ItemStorageTarget, XpDistributionMode,
+    XpRecipientMode,
+};
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_narrating_world_hook_effects;
 use crate::engine::narrative::NarrativeLines;
@@ -25,11 +28,11 @@ pub(super) fn apply_attack_target(
     let target_defense =
         state.effective_actor_stat(content, target_actor_id, &combat.defense_stat_id);
     let base_damage = (player_attack - target_defense).max(combat.minimum_damage);
-    let allied_participants = room_allies(state, content, room_id);
+    let allied_participants = participating_allies(state, content, room_id);
     let ally_damage = allied_participants
         .iter()
-        .map(|actor_id| state.actor_stat(actor_id, &combat.attack_stat_id).max(0))
-        .sum::<i32>();
+        .map(|actor_id| ally_attack_contribution(state, content, actor_id))
+        .fold(0, i32::saturating_add);
     let total_damage = base_damage + ally_damage;
     let remaining = adjust_actor_stat(
         state,
@@ -49,7 +52,7 @@ pub(super) fn apply_attack_target(
         lines.narration(line);
     }
     for ally_id in &allied_participants {
-        let ally_damage = state.actor_stat(ally_id, &combat.attack_stat_id).max(0);
+        let ally_damage = ally_attack_contribution(state, content, ally_id);
         let ally_name = actor_display_name(content, ally_id);
         if let Some(line) = content.render_message(
             "combat.ally_joins_attack",
@@ -139,17 +142,23 @@ pub(super) fn award_defeat_xp(
     if xp == 0 || content.level_table(player_actor_id).is_empty() {
         return;
     }
-    let mut targets = vec![player_actor_id.clone()];
-    targets.extend(
-        state
-            .relationships
-            .iter()
-            .filter(|(_, relationship)| relationship.follows_player)
-            .map(|(actor_id, _)| actor_id.clone()),
+    let targets = xp_recipients(state, content);
+    let awards = distribute_xp(
+        xp,
+        targets.len(),
+        content.settings.combat.xp_distribution.mode,
     );
     let mut leveled: Vec<(String, u32)> = Vec::new();
-    for target in targets {
-        let mut accrued = state.actor_xp.get(&target).copied().unwrap_or(0) + xp;
+    for (target, award) in targets.into_iter().zip(awards) {
+        if award == 0 {
+            continue;
+        }
+        let mut accrued = state
+            .actor_xp
+            .get(&target)
+            .copied()
+            .unwrap_or(0)
+            .saturating_add(award);
         let mut level = state.actor_level.get(&target).copied().unwrap_or(1).max(1);
         let mut gained = 0;
         while let Some(definition) = content.level_definition(&target, level) {
@@ -256,12 +265,19 @@ pub(super) fn defeat_player_if_dead(
     state.phase = GamePhase::GameEnded;
 }
 
-fn room_allies(state: &WorldState, content: &ContentPack, room_id: &str) -> Vec<String> {
-    state
+fn participating_allies(state: &WorldState, content: &ContentPack, room_id: &str) -> Vec<String> {
+    let policy = &content.settings.combat.ally_attack;
+    if policy.participants == AllyAttackParticipants::Disabled {
+        return Vec::new();
+    }
+    let mut allies = state
         .relationships
         .iter()
         .filter(|(actor_id, relationship)| {
-            !content.is_player_actor(actor_id) && relationship.stance == ActorStance::Allied
+            !content.is_player_actor(actor_id)
+                && relationship.stance == ActorStance::Allied
+                && (policy.participants != AllyAttackParticipants::FollowersOnly
+                    || relationship.follows_player)
         })
         .map(|(actor_id, _)| actor_id.clone())
         .filter(|actor_id| {
@@ -274,5 +290,56 @@ fn room_allies(state: &WorldState, content: &ContentPack, room_id: &str) -> Vec<
                         .unwrap_or_default(),
                 ) == room_id
         })
-        .collect()
+        .collect::<Vec<_>>();
+    allies.sort();
+    allies
+}
+
+fn ally_attack_contribution(state: &WorldState, content: &ContentPack, actor_id: &str) -> i32 {
+    let policy = &content.settings.combat.ally_attack;
+    let raw = match policy.mode {
+        AllyAttackMode::AttackStat => state
+            .actor_stat(actor_id, &content.settings.combat.attack_stat_id)
+            .max(0),
+    };
+    let scaled = (i64::from(raw) * i64::from(policy.contribution_percent) / 100)
+        .min(i64::from(i32::MAX)) as i32;
+    policy
+        .maximum_per_ally
+        .map_or(scaled, |maximum| scaled.min(maximum))
+}
+
+fn xp_recipients(state: &WorldState, content: &ContentPack) -> Vec<String> {
+    let player_actor_id = &content.settings.combat.player_actor_id;
+    let mut recipients = vec![player_actor_id.clone()];
+    if content.settings.combat.xp_distribution.recipients == XpRecipientMode::PlayerAndFollowers {
+        let mut followers = state
+            .relationships
+            .iter()
+            .filter(|(actor_id, relationship)| {
+                actor_id.as_str() != player_actor_id && relationship.follows_player
+            })
+            .map(|(actor_id, _)| actor_id.clone())
+            .collect::<Vec<_>>();
+        followers.sort();
+        recipients.extend(followers);
+    }
+    recipients
+}
+
+fn distribute_xp(xp: u32, recipient_count: usize, mode: XpDistributionMode) -> Vec<u32> {
+    if recipient_count == 0 {
+        return Vec::new();
+    }
+    match mode {
+        XpDistributionMode::FullEach => vec![xp; recipient_count],
+        XpDistributionMode::SplitEvenly => {
+            let count = recipient_count as u32;
+            let base = xp / count;
+            let remainder = xp % count;
+            (0..recipient_count)
+                .map(|index| base + u32::from((index as u32) < remainder))
+                .collect()
+        }
+    }
 }

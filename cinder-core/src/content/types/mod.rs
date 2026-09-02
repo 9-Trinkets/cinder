@@ -10,6 +10,8 @@ use std::collections::{BTreeMap, BTreeSet};
 
 mod theme;
 pub use theme::ThemeDefinition;
+mod combat_defs;
+pub use combat_defs::*;
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct OpeningDefinition {
@@ -127,57 +129,6 @@ pub(super) fn default_true() -> bool {
     true
 }
 
-/// Policy selector for autonomous hostile strikes on background ticks.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum AutonomousHostilityMode {
-    /// Deterministic: every eligible hostile actor in the player's room
-    /// strikes when its cooldown elapses.
-    #[default]
-    Rules,
-    /// An LLM planner receives a grounded world snapshot and returns validated
-    /// strike decisions. The reducer still enforces eligibility, so the model
-    /// can never bypass pacing or range rules.
-    Llm,
-}
-
-/// Content-declared vocabulary for the generic hostile-strike mechanism.
-/// The engine never assumes specific stat ids or a player actor id; packs
-/// bind the mechanism to their own stats by filling this in.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct CombatSettingsDefinition {
-    /// Actor id that strikes are directed at and whose death ends the game.
-    #[serde(default = "default_player_actor_id")]
-    pub player_actor_id: String,
-    /// Stat id consulted for alive/defeated checks.
-    #[serde(default = "default_health_stat_id")]
-    pub health_stat_id: String,
-    /// Stat id read from the attacker when computing damage.
-    #[serde(default = "default_attack_stat_id")]
-    pub attack_stat_id: String,
-    /// Stat id read from the defender when computing damage.
-    #[serde(default = "default_defense_stat_id")]
-    pub defense_stat_id: String,
-    /// Lower bound for a single strike's damage after mitigation.
-    #[serde(default = "default_minimum_damage")]
-    pub minimum_damage: i32,
-    /// Cooldown used when an actor does not declare its own interval.
-    #[serde(default = "default_attack_interval_minutes")]
-    pub default_attack_interval_minutes: u32,
-    /// Narration shown when the player actor's health stat reaches zero.
-    #[serde(default = "default_player_defeat_text")]
-    pub player_defeat_text: String,
-    /// When set, the room item that marks a room as drained. Any hostile,
-    /// living, non-allied mob whose current room holds this item loses
-    /// `drain_damage_per_tick` health each tick; at zero it is defeated
-    /// normally. `None` disables drain. Applies to any enemy mob generically.
-    #[serde(default)]
-    pub drain_item_id: Option<String>,
-    /// Health lost per tick by a hostile mob standing in a drained room.
-    #[serde(default)]
-    pub drain_damage_per_tick: i32,
-}
-
 /// One step of growth for an actor. `exp_required` is the XP needed to
 /// advance from the *current* level (the entry's index + 1) to the next.
 /// `stat_changes` are deltas applied on reaching that next level; `unlocks`
@@ -210,51 +161,6 @@ pub struct LevelingDefinition {
     /// entry falls back to `default`.
     #[serde(default)]
     pub actors: BTreeMap<String, LevelTable>,
-}
-
-impl Default for CombatSettingsDefinition {
-    fn default() -> Self {
-        Self {
-            player_actor_id: default_player_actor_id(),
-            health_stat_id: default_health_stat_id(),
-            attack_stat_id: default_attack_stat_id(),
-            defense_stat_id: default_defense_stat_id(),
-            minimum_damage: default_minimum_damage(),
-            default_attack_interval_minutes: default_attack_interval_minutes(),
-            player_defeat_text: default_player_defeat_text(),
-            drain_item_id: None,
-            drain_damage_per_tick: 0,
-        }
-    }
-}
-
-fn default_player_actor_id() -> String {
-    "player".to_string()
-}
-
-fn default_health_stat_id() -> String {
-    "hp".to_string()
-}
-
-fn default_attack_stat_id() -> String {
-    "strength".to_string()
-}
-
-fn default_defense_stat_id() -> String {
-    "defense".to_string()
-}
-
-fn default_minimum_damage() -> i32 {
-    1
-}
-
-pub(super) fn default_attack_interval_minutes() -> u32 {
-    4
-}
-
-fn default_player_defeat_text() -> String {
-    "The world tilts. Your legs give out. The last thing you feel is the cold stone beneath your palms."
-        .to_string()
 }
 
 impl Default for ContentSettingsDefinition {
