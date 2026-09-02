@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Pre-commit hook source. Installed into .git/hooks/pre-commit by
+# scripts/install_hooks.sh with the absolute repo root baked in. Runs the
+# file-length warning scanner at every commit. Warning-only: always exits 0
+# so it never blocks a commit.
+set -u
+# REPO_ROOT is substituted at install time by install_hooks.sh.
+REPO_ROOT="__CINDER_REPO_ROOT__"
+
+if [ -f "$REPO_ROOT/scripts/check_file_lengths.py" ]; then
+    python3 "$REPO_ROOT/scripts/check_file_lengths.py" || true
+fi
+
+exit 0
