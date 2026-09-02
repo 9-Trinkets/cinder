@@ -279,8 +279,11 @@ pub(super) fn time_reached_signals(
 
 #[cfg(test)]
 mod tests {
-    use super::{advance_objective_for_signal, fallback_stage_to_activate};
-    use crate::content::types::{AdvanceSignal, BeatDefinition, BeatsDefinition};
+    use super::{
+        advance_conditions_met, advance_objective_for_signal, evaluate_advance_condition,
+        fallback_stage_to_activate,
+    };
+    use crate::content::types::{AdvanceCondition, AdvanceSignal, BeatDefinition, BeatsDefinition};
     use crate::engine::state::{VariableStore, WorldState};
 
     #[test]
@@ -303,6 +306,38 @@ mod tests {
         );
 
         assert_eq!(stage_id.as_deref(), Some("wind-down"));
+    }
+
+    #[test]
+    fn empty_advance_conditions_are_met() {
+        let pack = crate::engine::test_fixtures::minimal_test_pack();
+        let state = WorldState::new(&pack);
+
+        assert!(advance_conditions_met(&state, &[]));
+    }
+
+    #[test]
+    fn advance_condition_passes_when_threshold_is_met() {
+        let input = serde_json::json!({ "score": 5 });
+        let condition = AdvanceCondition {
+            path: "score".to_string(),
+            operator: "gte".to_string(),
+            value: serde_json::json!(4),
+        };
+
+        assert!(evaluate_advance_condition(&input, &condition));
+    }
+
+    #[test]
+    fn advance_condition_fails_when_threshold_is_not_met() {
+        let input = serde_json::json!({ "score": 2 });
+        let condition = AdvanceCondition {
+            path: "score".to_string(),
+            operator: "gte".to_string(),
+            value: serde_json::json!(4),
+        };
+
+        assert!(!evaluate_advance_condition(&input, &condition));
     }
 
     #[test]

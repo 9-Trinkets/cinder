@@ -314,6 +314,3 @@ pub fn apply_events(
         phase: state.phase.clone(),
     }
 }
-
-#[cfg(test)]
-mod tests;
