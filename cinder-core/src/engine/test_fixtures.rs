@@ -7,33 +7,98 @@
 use crate::content::loader::load_pack_from_dir;
 use crate::content::types::ContentPack;
 use std::fs;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::path::{Path, PathBuf};
+use std::sync::atomic::{AtomicU64, Ordering};
 
 /// A minimal pack with two rooms (`lounge`, `kitchen`), two actors (`blair`,
 /// `casey`), and hunger/stamina/confidence actor stats. Tests override fields
 /// they need rather than depending on any shipped pack's content.
 pub fn minimal_test_pack() -> ContentPack {
-    let base = temp_pack_dir();
-    let locale_dir = base.join("locales").join("en");
-    fs::create_dir_all(&locale_dir).expect("create locale dir");
-    fs::write(base.join("settings.json"), "{}").expect("write settings");
-    fs::write(base.join("rule_bundles.json"), r#"{ "bundles": [] }"#).expect("write rule bundles");
-    fs::write(locale_dir.join("ui.json"), "{}").expect("write ui");
-    fs::write(locale_dir.join("system.json"), minimal_system_text_json()).expect("write system");
-    fs::write(locale_dir.join("opening.json"), OPENING_JSON).expect("write opening");
-    fs::write(locale_dir.join("rooms.json"), ROOMS_JSON).expect("write rooms");
-    fs::write(locale_dir.join("actors.json"), ACTORS_JSON).expect("write actors");
-    fs::write(base.join("stats.json"), STATS_JSON).expect("write stats");
-    load_pack_from_dir(&base).expect("load synthetic pack")
+    load_test_pack_with_files(&[])
 }
 
-fn temp_pack_dir() -> std::path::PathBuf {
-    let unique = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .expect("clock")
-        .as_nanos();
-    std::env::temp_dir().join(format!("cinder-test-pack-{unique}"))
+/// Loads the minimal pack after replacing or adding the provided relative
+/// files. The on-disk pack is removed once loading finishes.
+pub fn load_test_pack_with_files(files: &[(&str, &str)]) -> ContentPack {
+    let base = TestDir::new("content-pack");
+    for (path, contents) in MINIMAL_PACK_FILES {
+        base.write(path, contents);
+    }
+    for (path, contents) in files {
+        base.write(path, contents);
+    }
+    load_pack_from_dir(base.path()).expect("load synthetic pack")
 }
+
+/// Rebuilds lookup indexes after a test mutates pack definitions.
+pub fn rebuild_test_pack_indexes(pack: &mut ContentPack) {
+    pack.room_index = pack
+        .rooms
+        .iter()
+        .enumerate()
+        .map(|(index, room)| (room.id.clone(), index))
+        .collect();
+    pack.actor_index = pack
+        .actors
+        .iter()
+        .enumerate()
+        .map(|(index, actor)| (actor.id.clone(), index))
+        .collect();
+    pack.action_index = pack
+        .actions
+        .iter()
+        .enumerate()
+        .map(|(index, action)| (action.id.clone(), index))
+        .collect();
+}
+
+/// A unique test directory under this crate's `target/` tree.
+pub struct TestDir {
+    path: PathBuf,
+}
+
+impl TestDir {
+    pub fn new(label: &str) -> Self {
+        static NEXT_ID: AtomicU64 = AtomicU64::new(0);
+
+        let unique = NEXT_ID.fetch_add(1, Ordering::Relaxed);
+        let path = PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("target")
+            .join("test-data")
+            .join(format!("{label}-{}-{unique}", std::process::id()));
+        fs::create_dir_all(&path).expect("create test directory");
+        Self { path }
+    }
+
+    pub fn path(&self) -> &Path {
+        &self.path
+    }
+
+    pub fn write(&self, relative_path: &str, contents: &str) {
+        let path = self.path.join(relative_path);
+        if let Some(parent) = path.parent() {
+            fs::create_dir_all(parent).expect("create test file parent");
+        }
+        fs::write(path, contents).expect("write test file");
+    }
+}
+
+impl Drop for TestDir {
+    fn drop(&mut self) {
+        let _ = fs::remove_dir_all(&self.path);
+    }
+}
+
+const MINIMAL_PACK_FILES: &[(&str, &str)] = &[
+    ("settings.json", "{}"),
+    ("rule_bundles.json", r#"{ "bundles": [] }"#),
+    ("locales/en/ui.json", "{}"),
+    ("locales/en/system.json", minimal_system_text_json()),
+    ("locales/en/opening.json", OPENING_JSON),
+    ("locales/en/rooms.json", ROOMS_JSON),
+    ("locales/en/actors.json", ACTORS_JSON),
+    ("stats.json", STATS_JSON),
+];
 
 const OPENING_JSON: &str = r#"{
   "id": "opening",
@@ -98,7 +163,7 @@ const STATS_JSON: &str = r#"{
 }"#;
 
 /// Minimal `system.json` that satisfies the loader's required-field checks.
-pub fn minimal_system_text_json() -> &'static str {
+pub const fn minimal_system_text_json() -> &'static str {
     r#"{
   "dialogue_system_prompt": "",
   "dialogue_section_character": "",

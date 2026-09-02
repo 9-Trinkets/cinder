@@ -1172,18 +1172,17 @@ use self::stats_trace::stats_trace_snapshot;
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::content::loader::load_pack_from_dir;
     use crate::engine::dialogue::ScriptedDialogueGenerator;
-    use std::fs;
+    use crate::engine::test_fixtures::{TestDir, load_test_pack_with_files};
     use std::sync::Arc;
-    use std::time::{SystemTime, UNIX_EPOCH};
 
     #[test]
     fn stage_assignment_caps_selected_actors_and_marks_stage_complete() {
-        let pack_dir = write_stage_assignment_test_pack();
-        let content = load_pack_from_dir(&pack_dir).expect("load test pack");
+        let content = stage_assignment_test_pack();
         let state = WorldState::new(&content);
-        let dialogue = Arc::new(ScriptedDialogueGenerator::new().with_stage_assignment(
+        let (runtime, _trace_dir) = stage_assignment_runtime(
+            content,
+            state,
             "dinner-prep",
             StageAssignment {
                 assignments: vec![
@@ -1204,17 +1203,7 @@ mod tests {
                     },
                 ],
             },
-        ));
-        let runtime = CinderRuntime::new_with_dialogue_generator_and_workflows(
-            content,
-            state,
-            false,
-            dialogue,
-            load_workflow(&workflow_path_for_id("cinder_turn")).expect("load turn workflow"),
-            load_workflow(&cinder_npc_tick_workflow_path()).expect("load npc tick workflow"),
-            std::env::temp_dir(),
-        )
-        .expect("build runtime");
+        );
 
         let first = runtime
             .apply_stage_assignments(TurnOutcome {
@@ -1266,15 +1255,16 @@ mod tests {
 
     #[test]
     fn stage_assignment_assigns_activity_hosts_via_story_vars_only() {
-        let pack_dir = write_stage_assignment_test_pack();
-        let content = load_pack_from_dir(&pack_dir).expect("load test pack");
+        let content = stage_assignment_test_pack();
         let mut state = WorldState::new(&content);
         state.active_objective_stage_ids = vec!["activity-split".to_string()];
         state.story_vars.set_unchecked("activity_room_a", "patio");
         state.story_vars.set_unchecked("activity_room_b", "studio");
         state.story_vars.set_unchecked("activity_host_a", "devon");
         state.story_vars.set_unchecked("activity_host_b", "alex");
-        let dialogue = Arc::new(ScriptedDialogueGenerator::new().with_stage_assignment(
+        let (runtime, _trace_dir) = stage_assignment_runtime(
+            content,
+            state,
             "activity-split",
             StageAssignment {
                 assignments: vec![
@@ -1290,17 +1280,7 @@ mod tests {
                     },
                 ],
             },
-        ));
-        let runtime = CinderRuntime::new_with_dialogue_generator_and_workflows(
-            content,
-            state,
-            false,
-            dialogue,
-            load_workflow(&workflow_path_for_id("cinder_turn")).expect("load turn workflow"),
-            load_workflow(&cinder_npc_tick_workflow_path()).expect("load npc tick workflow"),
-            std::env::temp_dir(),
-        )
-        .expect("build runtime");
+        );
 
         runtime
             .apply_stage_assignments(TurnOutcome {
@@ -1335,35 +1315,37 @@ mod tests {
         assert!(exported.actor_room_overrides.is_empty());
     }
 
-    fn write_stage_assignment_test_pack() -> std::path::PathBuf {
-        let unique = SystemTime::now()
-            .duration_since(UNIX_EPOCH)
-            .expect("clock")
-            .as_nanos();
-        let base = std::env::temp_dir().join(format!("cinder-stage-assignment-{unique}"));
-        let locale_dir = base.join("locales").join("en");
-        fs::create_dir_all(&locale_dir).expect("create locale dir");
-        fs::write(base.join("settings.json"), "{}").expect("write settings");
-        fs::write(base.join("rule_bundles.json"), r#"{ "bundles": [] }"#)
-            .expect("write rule bundles");
-        fs::write(locale_dir.join("ui.json"), "{}").expect("write ui");
-        fs::write(locale_dir.join("system.json"), minimal_system_text_json())
-            .expect("write system");
-        fs::write(
-            locale_dir.join("opening.json"),
-            r#"{
-  "id": "opening",
-  "title": "Test Opening",
-  "start_room_id": "lounge",
-  "start_time_minutes": 1080,
-  "intro_text": "Intro",
-  "help_text": "Help"
-}"#,
+    fn stage_assignment_test_pack() -> ContentPack {
+        load_test_pack_with_files(&[
+            ("locales/en/rooms.json", STAGE_ASSIGNMENT_ROOMS_JSON),
+            ("locales/en/actors.json", STAGE_ASSIGNMENT_ACTORS_JSON),
+            ("locales/en/beats.json", STAGE_ASSIGNMENT_BEATS_JSON),
+        ])
+    }
+
+    fn stage_assignment_runtime(
+        content: ContentPack,
+        state: WorldState,
+        stage_id: &str,
+        assignment: StageAssignment,
+    ) -> (CinderRuntime, TestDir) {
+        let dialogue =
+            Arc::new(ScriptedDialogueGenerator::new().with_stage_assignment(stage_id, assignment));
+        let trace_dir = TestDir::new("runtime-traces");
+        let runtime = CinderRuntime::new_with_dialogue_generator_and_workflows(
+            content,
+            state,
+            false,
+            dialogue,
+            load_workflow(&workflow_path_for_id("cinder_turn")).expect("load turn workflow"),
+            load_workflow(&cinder_npc_tick_workflow_path()).expect("load npc tick workflow"),
+            trace_dir.path().to_path_buf(),
         )
-        .expect("write opening");
-        fs::write(
-            locale_dir.join("rooms.json"),
-            r#"[
+        .expect("build runtime");
+        (runtime, trace_dir)
+    }
+
+    const STAGE_ASSIGNMENT_ROOMS_JSON: &str = r#"[
   {
     "id": "lounge",
     "title": "Lounge",
@@ -1396,12 +1378,9 @@ mod tests {
     "features": [],
     "exits": []
   }
-]"#,
-        )
-        .expect("write rooms");
-        fs::write(
-            locale_dir.join("actors.json"),
-            r#"[
+]"#;
+
+    const STAGE_ASSIGNMENT_ACTORS_JSON: &str = r#"[
   {
     "id": "alex",
     "name": "Alex",
@@ -1433,12 +1412,9 @@ mod tests {
     "initial_pair_stats": { "alex": { "connection": 1, "attraction": 0, "safety": 2 } },
     "prompt_context": {}
   }
-]"#,
-        )
-        .expect("write actors");
-        fs::write(
-            locale_dir.join("beats.json"),
-            r#"{
+]"#;
+
+    const STAGE_ASSIGNMENT_BEATS_JSON: &str = r#"{
   "initial_stage_ids": ["dinner-prep"],
   "stages": [
     {
@@ -1494,29 +1470,5 @@ mod tests {
       "update_message": "After split."
     }
   ]
-}"#,
-        )
-        .expect("write beats");
-        fs::write(
-            base.join("stats.json"),
-            r#"{
-  "actor": {
-    "confidence": { "default": 0 },
-    "stamina": { "default": 0 },
-    "hunger": { "default": 0 }
-  },
-  "pair": {
-    "connection": { "default": 0 },
-    "attraction": { "default": 0 },
-    "safety": { "default": 0 }
-  }
-}"#,
-        )
-        .expect("write stats");
-        base
-    }
-
-    fn minimal_system_text_json() -> &'static str {
-        crate::engine::test_fixtures::minimal_system_text_json()
-    }
+}"#;
 }

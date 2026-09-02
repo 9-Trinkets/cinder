@@ -632,9 +632,10 @@ mod tests {
         CommandTargetMode, ItemDefinition, ItemKind, PanelConfig, PanelDataSource,
     };
     use crate::engine::state::WorldState;
+    use crate::engine::test_fixtures::{minimal_test_pack, rebuild_test_pack_indexes};
 
     fn equipment_pack() -> ContentPack {
-        let mut pack = crate::engine::test_fixtures::minimal_test_pack();
+        let mut pack = minimal_test_pack();
         pack.settings.equipment_slots = ["weapon".to_string()].into_iter().collect();
         pack.items.push(ItemDefinition {
             id: "chisel".to_string(),
@@ -665,24 +666,7 @@ mod tests {
             available: ActionAvailability::default(),
             ..ActionDefinition::default()
         });
-        pack.room_index = pack
-            .rooms
-            .iter()
-            .enumerate()
-            .map(|(i, r)| (r.id.clone(), i))
-            .collect();
-        pack.actor_index = pack
-            .actors
-            .iter()
-            .enumerate()
-            .map(|(i, a)| (a.id.clone(), i))
-            .collect();
-        pack.action_index = pack
-            .actions
-            .iter()
-            .enumerate()
-            .map(|(i, a)| (a.id.clone(), i))
-            .collect();
+        rebuild_test_pack_indexes(&mut pack);
         pack
     }
 
@@ -733,7 +717,7 @@ mod tests {
     /// `trace` (craftable items), plus informational `look` (features) and
     /// `move` (exits).
     fn target_pack() -> ContentPack {
-        let mut pack = crate::engine::test_fixtures::minimal_test_pack();
+        let mut pack = minimal_test_pack();
         pack.settings.combat.health_stat_id = "stamina".to_string();
         pack.actions.push(ActionDefinition {
             id: "attack".to_string(),
@@ -815,24 +799,7 @@ mod tests {
             },
             ..ActionDefinition::default()
         });
-        pack.room_index = pack
-            .rooms
-            .iter()
-            .enumerate()
-            .map(|(i, r)| (r.id.clone(), i))
-            .collect();
-        pack.actor_index = pack
-            .actors
-            .iter()
-            .enumerate()
-            .map(|(i, a)| (a.id.clone(), i))
-            .collect();
-        pack.action_index = pack
-            .actions
-            .iter()
-            .enumerate()
-            .map(|(i, a)| (a.id.clone(), i))
-            .collect();
+        rebuild_test_pack_indexes(&mut pack);
         pack
     }
 
@@ -968,12 +935,7 @@ mod tests {
             ic.craftable_item_gates
                 .insert("charm-sigil".to_string(), "locked".to_string());
         }
-        pack.action_index = pack
-            .actions
-            .iter()
-            .enumerate()
-            .map(|(i, a)| (a.id.clone(), i))
-            .collect();
+        rebuild_test_pack_indexes(&mut pack);
         let trace = pack.action("trace").unwrap();
         let state = live_in_lounge(&pack);
         assert!(!action_is_available(
