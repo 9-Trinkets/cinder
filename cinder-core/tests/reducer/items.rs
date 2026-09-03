@@ -313,8 +313,7 @@ fn trace_craftable_is_gated_by_its_story_variable() {
         None,
         None,
         Some("drain-sigil"),
-    )
-    .lines;
+    );
     assert!(state.has_item_in_storage("charm-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
     assert!(!state.has_item_in_storage("drain-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
 
