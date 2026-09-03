@@ -42,5 +42,8 @@ pub(super) use movement::{
 pub(super) use observation::{
     handle_actor_observed, handle_actor_observed_actor, handle_actor_observed_feature,
     handle_actor_observed_room, handle_current_room_observed, handle_feature_observed,
+    ActorObservationContext,
 };
-pub(super) use speech::{handle_actor_spoke, handle_actor_spoke_to_room};
+pub(super) use speech::{
+    handle_actor_spoke, handle_actor_spoke_to_room, SpokeContext, SpokeToRoomContext,
+};

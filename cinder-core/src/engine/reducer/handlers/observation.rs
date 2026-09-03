@@ -55,7 +55,6 @@ pub(crate) fn handle_actor_observed(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
 pub(crate) fn handle_actor_observed_room(
     state: &mut WorldState,
     content: &ContentPack,
@@ -117,17 +116,24 @@ pub(crate) fn handle_actor_observed_feature(
     }
 }
 
-#[allow(clippy::too_many_arguments)]
+pub(crate) struct ActorObservationContext<'a> {
+    pub(crate) actor_id: &'a str,
+    pub(crate) actor_name: &'a str,
+    pub(crate) target_actor_id: &'a str,
+    pub(crate) target_actor_name: &'a str,
+}
+
 pub(crate) fn handle_actor_observed_actor(
     state: &mut WorldState,
     content: &ContentPack,
-    actor_id: &str,
-    actor_name: &str,
     room_id: &str,
-    target_actor_id: &str,
-    target_actor_name: &str,
     lines: &mut NarrativeLines,
+    ctx: ActorObservationContext<'_>,
 ) {
+    let actor_id = ctx.actor_id;
+    let actor_name = ctx.actor_name;
+    let target_actor_id = ctx.target_actor_id;
+    let target_actor_name = ctx.target_actor_name;
     if let Some(target_actor) = content.actor(target_actor_id) {
         state.mark_actor_studied_actor(actor_id, target_actor_id);
         state.push_actor_observation_note(actor_id, target_actor.inspect_text.clone());

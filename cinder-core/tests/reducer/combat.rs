@@ -135,17 +135,19 @@ fn defeating_an_actor_scatters_its_drops_into_the_room() {
     let lines = drive_actor_command(
         &mut state,
         &pack,
-        ACTOR_A_ID,
-        ACTOR_A_NAME,
-        LOUNGE_ID,
         "attack",
-        None,
-        Some("golem"),
-        Some("dark golem"),
-        None,
-        None,
-        None,
-        None,
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: LOUNGE_ID,
+            target_room_id: None,
+            target_actor_id: Some("golem"),
+            target_actor_name: Some("dark golem"),
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        },
     )
     .lines;
 
@@ -366,17 +368,19 @@ fn defeating_an_actor_awards_full_xp_to_every_party_member_with_own_curve() {
     let lines = drive_actor_command(
         &mut state,
         &pack,
-        ACTOR_A_ID,
-        ACTOR_A_NAME,
-        LOUNGE_ID,
         "attack",
-        None,
-        Some("goblin"),
-        Some("goblin"),
-        None,
-        None,
-        None,
-        None,
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: LOUNGE_ID,
+            target_room_id: None,
+            target_actor_id: Some("goblin"),
+            target_actor_name: Some("goblin"),
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        },
     )
     .lines;
 

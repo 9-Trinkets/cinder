@@ -19,8 +19,9 @@ use self::handlers::{
     handle_item_consumed, handle_item_observed, handle_menu_choice_made, handle_menu_opened,
     handle_menu_selection_toggled, handle_narrative_line, handle_pair_stat_adjusted,
     handle_player_dropped_item, handle_player_moved, handle_player_took_item, handle_turn_started,
-    handle_unknown_input,
+    handle_unknown_input, ActorObservationContext, SpokeContext, SpokeToRoomContext,
 };
+use self::actor_commands::ActorCommandContext;
 
 pub(crate) use self::observation::render_actor_speech_line;
 
@@ -90,14 +91,16 @@ pub fn apply_events(
                 handle_actor_spoke(
                     state,
                     content,
-                    actor_id,
-                    actor_name,
-                    other_person_id,
-                    other_person_name,
-                    other_person_message,
-                    room_id,
-                    text,
                     &mut lines,
+                    SpokeContext {
+                        actor_id,
+                        actor_name,
+                        other_person_id,
+                        other_person_name,
+                        other_person_message,
+                        room_id,
+                        text,
+                    },
                 );
             }
             WorldEvent::ActorSpokeToRoom {
@@ -110,12 +113,14 @@ pub fn apply_events(
                 handle_actor_spoke_to_room(
                     state,
                     content,
-                    actor_id,
-                    actor_name,
-                    audience_actor_ids,
-                    room_id,
-                    text,
                     &mut lines,
+                    SpokeToRoomContext {
+                        actor_id,
+                        actor_name,
+                        audience_actor_ids,
+                        room_id,
+                        text,
+                    },
                 );
             }
             WorldEvent::ActorStatAdjusted {
@@ -152,19 +157,21 @@ pub fn apply_events(
                 handle_actor_command_used_event(
                     state,
                     content,
-                    actor_id,
-                    actor_name,
-                    room_id,
-                    command_id,
-                    target_room_id.as_deref(),
-                    target_actor_id.as_deref(),
-                    target_actor_name.as_deref(),
-                    context_label.as_deref(),
-                    feature_id.as_deref(),
-                    consumable_id.as_deref(),
-                    freeform_text.as_deref(),
                     &mut lines,
                     &mut spawned_events,
+                    command_id,
+                    &ActorCommandContext {
+                        actor_id,
+                        actor_name,
+                        room_id,
+                        target_room_id: target_room_id.as_deref(),
+                        target_actor_id: target_actor_id.as_deref(),
+                        target_actor_name: target_actor_name.as_deref(),
+                        context_label: context_label.as_deref(),
+                        feature_id: feature_id.as_deref(),
+                        consumable_id: consumable_id.as_deref(),
+                        freeform_text: freeform_text.as_deref(),
+                    },
                 );
                 for event in spawned_events {
                     pending.push_back(TimestampedWorldEvent::now(event));
@@ -199,12 +206,14 @@ pub fn apply_events(
                 handle_actor_observed_actor(
                     state,
                     content,
-                    actor_id,
-                    actor_name,
                     room_id,
-                    target_actor_id,
-                    target_actor_name,
                     &mut lines,
+                    ActorObservationContext {
+                        actor_id,
+                        actor_name,
+                        target_actor_id,
+                        target_actor_name,
+                    },
                 );
             }
             WorldEvent::ActorRelocated {

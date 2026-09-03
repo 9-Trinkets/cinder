@@ -10,19 +10,29 @@ use crate::engine::turn_policies::{
 };
 use serde_json::json;
 
-#[allow(clippy::too_many_arguments)]
+pub(crate) struct SpokeContext<'a> {
+    pub(crate) actor_id: &'a str,
+    pub(crate) actor_name: &'a str,
+    pub(crate) other_person_id: &'a str,
+    pub(crate) other_person_name: &'a str,
+    pub(crate) other_person_message: &'a Option<String>,
+    pub(crate) room_id: &'a str,
+    pub(crate) text: &'a str,
+}
+
 pub(crate) fn handle_actor_spoke(
     state: &mut WorldState,
     content: &ContentPack,
-    actor_id: &str,
-    actor_name: &str,
-    other_person_id: &str,
-    other_person_name: &str,
-    other_person_message: &Option<String>,
-    room_id: &str,
-    text: &str,
     lines: &mut NarrativeLines,
+    ctx: SpokeContext<'_>,
 ) {
+    let actor_id = ctx.actor_id;
+    let actor_name = ctx.actor_name;
+    let other_person_id = ctx.other_person_id;
+    let other_person_name = ctx.other_person_name;
+    let other_person_message = ctx.other_person_message;
+    let room_id = ctx.room_id;
+    let text = ctx.text;
     mark_actor_objective_progress_for_speech_event(
         content,
         state,
@@ -95,17 +105,25 @@ pub(crate) fn handle_actor_spoke(
     lines.extend_narration(advance_house_progress_objectives(state, content));
 }
 
-#[allow(clippy::too_many_arguments)]
+pub(crate) struct SpokeToRoomContext<'a> {
+    pub(crate) actor_id: &'a str,
+    pub(crate) actor_name: &'a str,
+    pub(crate) audience_actor_ids: &'a [String],
+    pub(crate) room_id: &'a str,
+    pub(crate) text: &'a str,
+}
+
 pub(crate) fn handle_actor_spoke_to_room(
     state: &mut WorldState,
     content: &ContentPack,
-    actor_id: &str,
-    actor_name: &str,
-    audience_actor_ids: &[String],
-    room_id: &str,
-    text: &str,
     lines: &mut NarrativeLines,
+    ctx: SpokeToRoomContext<'_>,
 ) {
+    let actor_id = ctx.actor_id;
+    let actor_name = ctx.actor_name;
+    let audience_actor_ids = ctx.audience_actor_ids;
+    let room_id = ctx.room_id;
+    let text = ctx.text;
     mark_actor_objective_progress_for_speech_event(
         content,
         state,

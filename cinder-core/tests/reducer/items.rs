@@ -302,17 +302,19 @@ fn trace_craftable_is_gated_by_its_story_variable() {
     drive_actor_command(
         &mut state,
         &pack,
-        ACTOR_A_ID,
-        ACTOR_A_NAME,
-        KITCHEN_ID,
         "trace",
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        Some("drain-sigil"),
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: KITCHEN_ID,
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: Some("drain-sigil"),
+        },
     );
     assert!(state.has_item_in_storage("charm-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
     assert!(!state.has_item_in_storage("drain-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
@@ -322,17 +324,19 @@ fn trace_craftable_is_gated_by_its_story_variable() {
     drive_actor_command(
         &mut state,
         &pack,
-        ACTOR_A_ID,
-        ACTOR_A_NAME,
-        KITCHEN_ID,
         "trace",
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        Some("drain-sigil"),
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: KITCHEN_ID,
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: Some("drain-sigil"),
+        },
     );
     assert!(state.has_item_in_storage("drain-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
 }
@@ -367,17 +371,19 @@ fn drop_and_pick_up_item_move_it_between_inventory_and_room() {
     drive_actor_command(
         &mut state,
         &pack,
-        ACTOR_A_ID,
-        ACTOR_A_NAME,
-        LOUNGE_ID,
         "drop-marker",
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: LOUNGE_ID,
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        },
     );
 
     assert!(!state.has_item("stone-marker"));
@@ -389,17 +395,19 @@ fn drop_and_pick_up_item_move_it_between_inventory_and_room() {
     drive_actor_command(
         &mut state,
         &pack,
-        ACTOR_A_ID,
-        ACTOR_A_NAME,
-        LOUNGE_ID,
         "pick-up-marker",
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: LOUNGE_ID,
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        },
     );
 
     assert!(state.has_item("stone-marker"));

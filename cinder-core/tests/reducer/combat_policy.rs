@@ -41,17 +41,19 @@ fn attack_goblin(state: &mut WorldState, pack: &ContentPack) {
     drive_actor_command(
         state,
         pack,
-        ACTOR_A_ID,
-        ACTOR_A_NAME,
-        LOUNGE_ID,
         "attack",
-        None,
-        Some("goblin"),
-        Some("goblin"),
-        None,
-        None,
-        None,
-        None,
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: LOUNGE_ID,
+            target_room_id: None,
+            target_actor_id: Some("goblin"),
+            target_actor_name: Some("goblin"),
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        },
     );
 }
 

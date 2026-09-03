@@ -30,64 +30,44 @@ pub(super) struct ActorCommandContext<'a> {
     pub(super) freeform_text: Option<&'a str>,
 }
 
-#[allow(clippy::too_many_arguments)]
 pub(super) fn handle_actor_command_used(
     state: &mut WorldState,
     content: &ContentPack,
-    actor_id: &str,
-    actor_name: &str,
-    room_id: &str,
     command_id: &str,
-    target_room_id: Option<&str>,
-    target_actor_id: Option<&str>,
-    target_actor_name: Option<&str>,
-    context_label: Option<&str>,
-    feature_id: Option<&str>,
-    consumable_id: Option<&str>,
-    freeform_text: Option<&str>,
+    command_context: &ActorCommandContext<'_>,
     outbox: &mut Vec<WorldEvent>,
 ) -> Option<NarrativeLines> {
     let mut lines = NarrativeLines::default();
     let previous_current_room_id = state.current_room_id.clone();
-    let command_context = ActorCommandContext {
-        actor_id,
-        actor_name,
-        room_id,
-        target_room_id,
-        target_actor_id,
-        target_actor_name,
-        context_label,
-        feature_id,
-        consumable_id,
-        freeform_text,
-    };
     let command = content.command(command_id)?;
-    let (item_label, feature_label) = resolve_actor_command_labels(content, &command_context)?;
-    if !apply_actor_command_realization_effects(state, content, command, &command_context) {
+    let (item_label, feature_label) = resolve_actor_command_labels(content, command_context)?;
+    if !apply_actor_command_realization_effects(state, content, command, command_context) {
         return None;
     }
     let command_text = render_actor_command_text(
         content,
         command,
-        &command_context,
+        command_context,
         &item_label,
         &feature_label,
     )?;
-    record_actor_command_memory(state, content, command, &command_context, &command_text);
-    apply_actor_command_effects(state, content, command, &command_context);
-    if !command.has_effect(CommandEffect::MoveActor) && state.current_room_id == room_id {
+    record_actor_command_memory(state, content, command, command_context, &command_text);
+    apply_actor_command_effects(state, content, command, command_context);
+    if !command.has_effect(CommandEffect::MoveActor)
+        && state.current_room_id == command_context.room_id
+    {
         lines.narration(command_text.clone());
     }
     apply_new_command_effects(
         state,
         content,
         command,
-        &command_context,
+        command_context,
         &mut lines,
         outbox,
     );
     apply_command_objective_progress_effects(state, command);
-    if let Some(item_id) = resolved_created_item_id(state, content, command, &command_context) {
+    if let Some(item_id) = resolved_created_item_id(state, content, command, command_context) {
         let storage = command
             .item_creation
             .as_ref()
@@ -96,7 +76,7 @@ pub(super) fn handle_actor_command_used(
                 ActionItemStorageTarget::CurrentRoom => ItemStorageTarget::CurrentRoom,
             })
             .unwrap_or_default();
-        state.add_item_to_storage(&item_id, storage, room_id);
+        state.add_item_to_storage(&item_id, storage, command_context.room_id);
         if storage == ItemStorageTarget::CurrentRoom {
             trigger_surrounded_hooks(state, content, &item_id, &mut lines);
         }
@@ -104,21 +84,23 @@ pub(super) fn handle_actor_command_used(
     if command.has_effect(CommandEffect::MoveActor) {
         let fixed_destination =
             (!command.destination_room_id.is_empty()).then(|| command.destination_room_id.clone());
-        if let Some(to_room_id) = fixed_destination.or_else(|| target_room_id.map(str::to_string)) {
+        if let Some(to_room_id) =
+            fixed_destination.or_else(|| command_context.target_room_id.map(str::to_string))
+        {
             apply_actor_move_transition(
                 state,
                 content,
                 ActorMoveTransitionContext {
-                    actor_id,
-                    actor_name: Some(actor_name),
-                    from_room_id: room_id,
+                    actor_id: command_context.actor_id,
+                    actor_name: Some(command_context.actor_name),
+                    from_room_id: command_context.room_id,
                     to_room_id: &to_room_id,
                     command_text: Some(&command_text),
                 },
                 &mut lines,
             );
-        } else if previous_current_room_id == room_id
-            || state.followed_actor_id.as_deref() == Some(actor_id)
+        } else if previous_current_room_id == command_context.room_id
+            || state.followed_actor_id.as_deref() == Some(command_context.actor_id)
         {
             lines.narration(command_text);
         }

@@ -1,6 +1,8 @@
 use super::menus::handle_menu_opened;
+use crate::engine::reducer::actor_commands::{
+    ActorCommandContext, handle_actor_command_used,
+};
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
-use crate::engine::reducer::command_effects::handle_actor_command_used;
 use crate::engine::reducer::observation::render_story_text;
 use crate::content::types::ContentPack;
 use crate::engine::events::WorldEvent;
@@ -9,40 +11,17 @@ use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::WorldState;
 use serde_json::{Value, json};
 
-#[allow(clippy::too_many_arguments)]
 pub(crate) fn handle_actor_command_used_event(
     state: &mut WorldState,
     content: &ContentPack,
-    actor_id: &str,
-    actor_name: &str,
-    room_id: &str,
-    command_id: &str,
-    target_room_id: Option<&str>,
-    target_actor_id: Option<&str>,
-    target_actor_name: Option<&str>,
-    context_label: Option<&str>,
-    feature_id: Option<&str>,
-    consumable_id: Option<&str>,
-    freeform_text: Option<&str>,
     lines: &mut NarrativeLines,
     outbox: &mut Vec<WorldEvent>,
+    command_id: &str,
+    command_context: &ActorCommandContext<'_>,
 ) {
-    if let Some(new_lines) = handle_actor_command_used(
-        state,
-        content,
-        actor_id,
-        actor_name,
-        room_id,
-        command_id,
-        target_room_id,
-        target_actor_id,
-        target_actor_name,
-        context_label,
-        feature_id,
-        consumable_id,
-        freeform_text,
-        outbox,
-    ) {
+    if let Some(new_lines) =
+        handle_actor_command_used(state, content, command_id, command_context, outbox)
+    {
         lines.extend(new_lines.0);
     }
 }

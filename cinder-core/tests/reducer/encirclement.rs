@@ -53,17 +53,19 @@ fn encirclement_conversion_narration_follows_the_flag_placement() {
     let lines = drive_actor_command(
         &mut state,
         &pack,
-        ACTOR_A_ID,
-        ACTOR_A_NAME,
-        LOUNGE_ID,
         "place-flag",
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: LOUNGE_ID,
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        },
     )
     .lines;
 
@@ -125,17 +127,19 @@ fn creating_an_item_in_a_room_can_complete_an_encirclement() {
     let lines = drive_actor_command(
         &mut state,
         &pack,
-        ACTOR_A_ID,
-        ACTOR_A_NAME,
-        KITCHEN_ID,
         "trace",
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: KITCHEN_ID,
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        },
     )
     .lines;
 
