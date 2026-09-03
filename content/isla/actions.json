@@ -335,9 +335,9 @@
         "creates_item": "coffee",
         "storage": "player_inventory"
       },
-      "sets_bundle_progress": [
+      "sets_objective_progress": [
         {
-          "bundle_id": "reading-service-ritual",
+          "objective_id": "reading-service-ritual",
           "key": "coffee_ready"
         }
       ],
@@ -355,9 +355,9 @@
           "request-three-quarters",
           "ready-to-finish"
         ],
-        "blocked_by_bundle_progress": [
+        "blocked_by_objective_progress": [
           {
-            "bundle_id": "reading-service-ritual",
+            "objective_id": "reading-service-ritual",
             "key": "coffee_ready"
           }
         ]
@@ -398,9 +398,9 @@
         "creates_item": "tea",
         "storage": "player_inventory"
       },
-      "sets_bundle_progress": [
+      "sets_objective_progress": [
         {
-          "bundle_id": "reading-service-ritual",
+          "objective_id": "reading-service-ritual",
           "key": "tea_ready"
         }
       ],
@@ -418,9 +418,9 @@
           "request-three-quarters",
           "ready-to-finish"
         ],
-        "blocked_by_bundle_progress": [
+        "blocked_by_objective_progress": [
           {
-            "bundle_id": "reading-service-ritual",
+            "objective_id": "reading-service-ritual",
             "key": "tea_ready"
           }
         ]
@@ -462,9 +462,9 @@
         "creates_item": "pastry",
         "storage": "player_inventory"
       },
-      "sets_bundle_progress": [
+      "sets_objective_progress": [
         {
-          "bundle_id": "reading-service-ritual",
+          "objective_id": "reading-service-ritual",
           "key": "pastry_ready"
         }
       ],
@@ -482,9 +482,9 @@
           "request-three-quarters",
           "ready-to-finish"
         ],
-        "blocked_by_bundle_progress": [
+        "blocked_by_objective_progress": [
           {
-            "bundle_id": "reading-service-ritual",
+            "objective_id": "reading-service-ritual",
             "key": "pastry_ready"
           }
         ]
@@ -522,9 +522,9 @@
         "advances_time": false
       },
       "item_consumer": "first_actor_in_room",
-      "clears_bundle_progress": [
+      "clears_objective_progress": [
         {
-          "bundle_id": "reading-service-ritual",
+          "objective_id": "reading-service-ritual",
           "key": "coffee_ready"
         }
       ],
@@ -542,9 +542,9 @@
           "request-three-quarters",
           "ready-to-finish"
         ],
-        "required_bundle_progress": [
+        "required_objective_progress": [
           {
-            "bundle_id": "reading-service-ritual",
+            "objective_id": "reading-service-ritual",
             "key": "coffee_ready"
           }
         ],
@@ -584,9 +584,9 @@
         "advances_time": false
       },
       "item_consumer": "first_actor_in_room",
-      "clears_bundle_progress": [
+      "clears_objective_progress": [
         {
-          "bundle_id": "reading-service-ritual",
+          "objective_id": "reading-service-ritual",
           "key": "tea_ready"
         }
       ],
@@ -604,9 +604,9 @@
           "request-three-quarters",
           "ready-to-finish"
         ],
-        "required_bundle_progress": [
+        "required_objective_progress": [
           {
-            "bundle_id": "reading-service-ritual",
+            "objective_id": "reading-service-ritual",
             "key": "tea_ready"
           }
         ],
@@ -646,9 +646,9 @@
         "advances_time": false
       },
       "item_consumer": "first_actor_in_room",
-      "clears_bundle_progress": [
+      "clears_objective_progress": [
         {
-          "bundle_id": "reading-service-ritual",
+          "objective_id": "reading-service-ritual",
           "key": "pastry_ready"
         }
       ],
@@ -666,9 +666,9 @@
           "request-three-quarters",
           "ready-to-finish"
         ],
-        "required_bundle_progress": [
+        "required_objective_progress": [
           {
-            "bundle_id": "reading-service-ritual",
+            "objective_id": "reading-service-ritual",
             "key": "pastry_ready"
           }
         ],

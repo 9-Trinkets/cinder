@@ -1,4 +1,4 @@
-use super::{RuleBundleProgressRef, default_actor_targeted_speech, default_stat_default_value};
+use super::{BeatObjectiveProgressRef, default_actor_targeted_speech, default_stat_default_value};
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::BTreeMap;
@@ -130,33 +130,33 @@ fn default_speech_room_min_audience() -> usize {
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct RuleBundlesDefinition {
+pub struct BeatObjectivesDefinition {
     #[serde(default)]
-    pub bundles: Vec<RuleBundleDefinition>,
+    pub objectives: Vec<BeatObjectiveDefinition>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct RuleBundleDefinition {
+pub struct BeatObjectiveDefinition {
     #[serde(default)]
     pub id: String,
     #[serde(default)]
     pub stage_ids: Vec<String>,
     #[serde(default)]
-    pub progress: RuleBundleProgressDefinition,
+    pub progress: BeatObjectiveProgressDefinition,
     #[serde(default)]
-    pub completion: RuleBundleCompletionDefinition,
+    pub completion: BeatObjectiveCompletionDefinition,
     #[serde(default)]
-    pub guidance: RuleBundleGuidanceDefinition,
+    pub guidance: BeatObjectiveGuidanceDefinition,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
-pub struct RuleBundleProgressDefinition {
+pub struct BeatObjectiveProgressDefinition {
     #[serde(default)]
-    pub keys: Vec<RuleBundleProgressKeyDefinition>,
+    pub keys: Vec<BeatObjectiveProgressKeyDefinition>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
-pub struct RuleBundleProgressKeyDefinition {
+pub struct BeatObjectiveProgressKeyDefinition {
     #[serde(default)]
     pub key: String,
     #[serde(default)]
@@ -164,46 +164,46 @@ pub struct RuleBundleProgressKeyDefinition {
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct RuleBundleCompletionDefinition {
+pub struct BeatObjectiveCompletionDefinition {
     #[serde(default)]
-    pub mark_actor_complete_on: Vec<RuleBundleCompletionTrigger>,
+    pub mark_actor_complete_on: Vec<BeatObjectiveCompletionTrigger>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct RuleBundleGuidanceDefinition {
+pub struct BeatObjectiveGuidanceDefinition {
     #[serde(default)]
     pub prompt_note_if_actor_incomplete: String,
     #[serde(default)]
     pub prompt_note_if_others_incomplete: String,
     #[serde(default)]
-    pub prioritize: Vec<RuleBundleAffordancePriorityDefinition>,
+    pub prioritize: Vec<BeatObjectiveAffordancePriorityDefinition>,
     #[serde(default)]
-    pub conditional: Vec<RuleBundleConditionalGuidanceDefinition>,
+    pub conditional: Vec<BeatObjectiveConditionalGuidanceDefinition>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct RuleBundleConditionalGuidanceDefinition {
+pub struct BeatObjectiveConditionalGuidanceDefinition {
     #[serde(default)]
-    pub required_bundle_progress: Vec<RuleBundleProgressRef>,
+    pub required_objective_progress: Vec<BeatObjectiveProgressRef>,
     #[serde(default)]
-    pub blocked_by_bundle_progress: Vec<RuleBundleProgressRef>,
+    pub blocked_by_objective_progress: Vec<BeatObjectiveProgressRef>,
     #[serde(default)]
     pub prompt_note: String,
     #[serde(default)]
-    pub prioritize: Vec<RuleBundleAffordancePriorityDefinition>,
+    pub prioritize: Vec<BeatObjectiveAffordancePriorityDefinition>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct RuleBundleAffordancePriorityDefinition {
+pub struct BeatObjectiveAffordancePriorityDefinition {
     #[serde(default)]
     pub command_id: String,
     #[serde(default)]
-    pub target: RuleBundleAffordanceTarget,
+    pub target: BeatObjectiveAffordanceTarget,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
-pub enum RuleBundleAffordanceTarget {
+pub enum BeatObjectiveAffordanceTarget {
     #[default]
     Any,
     Actor,
@@ -212,7 +212,7 @@ pub enum RuleBundleAffordanceTarget {
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
-pub enum RuleBundleCompletionTrigger {
+pub enum BeatObjectiveCompletionTrigger {
     SpeechToActor,
     SpeechToRoom,
 }

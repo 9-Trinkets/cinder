@@ -1,19 +1,19 @@
 use crate::content::types::{
     ActionDefinition, ActionItemStorageTarget, CommandEffect, ContentPack, ItemStorageTarget,
-    PanelDataSource, RuleBundleAffordanceTarget, RuleBundleCompletionTrigger,
-    RuleBundleConditionalGuidanceDefinition, RuleBundleDefinition, RuleBundleProgressRef,
+    PanelDataSource, BeatObjectiveAffordanceTarget, BeatObjectiveCompletionTrigger,
+    BeatObjectiveConditionalGuidanceDefinition, BeatObjectiveDefinition, BeatObjectiveProgressRef,
 };
 use crate::engine::dialogue::{ActorTurnActionRequest, ActorTurnCommandInvocation};
 use crate::engine::state::{ActorStance, WorldState};
 
-const BUNDLE_ACTOR_COMPLETE_STORY_VAR_PREFIX: &str = "rule_bundle:actor_complete";
-const BUNDLE_PROGRESS_STORY_VAR_PREFIX: &str = "rule_bundle:progress";
+const OBJECTIVE_ACTOR_COMPLETE_STORY_VAR_PREFIX: &str = "beat_objective:actor_complete";
+const OBJECTIVE_PROGRESS_STORY_VAR_PREFIX: &str = "beat_objective:progress";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) enum CommandAvailabilityIssue {
     StageInactive,
-    MissingBundleProgress(Vec<String>),
-    BlockedByBundleProgress(Vec<String>),
+    MissingObjectiveProgress(Vec<String>),
+    BlockedByObjectiveProgress(Vec<String>),
     /// A room-item condition is unmet (`requires_room_item` / `requires_room_without_item`).
     RoomItemCondition(String),
 }
@@ -24,48 +24,48 @@ pub(crate) fn apply_actor_turn_policies(
     request: &mut ActorTurnActionRequest,
 ) {
     let actor_id = request.actor_id.clone();
-    for bundle in active_bundles(content, state)
-        .filter(|bundle| bundle_applies_to_actor(content, state, bundle, &actor_id))
+    for objective in active_objectives(content, state)
+        .filter(|objective| objective_applies_to_actor(content, state, objective, &actor_id))
     {
-        let notes = bundle_guidance_notes_for_actor(content, state, bundle, &actor_id);
+        let notes = objective_guidance_notes_for_actor(content, state, objective, &actor_id);
         request.current_beat_notes.extend(notes);
-        apply_bundle_affordance_priorities(bundle, content, state, request);
+        apply_objective_affordance_priorities(objective, content, state, request);
     }
 }
 
-pub(crate) fn actor_bundle_guidance_notes(
+pub(crate) fn actor_objective_guidance_notes(
     content: &ContentPack,
     state: &WorldState,
     actor_id: &str,
 ) -> Vec<String> {
-    active_bundles(content, state)
-        .filter(|bundle| bundle_applies_to_actor(content, state, bundle, actor_id))
-        .flat_map(|bundle| bundle_guidance_notes_for_actor(content, state, bundle, actor_id))
+    active_objectives(content, state)
+        .filter(|objective| objective_applies_to_actor(content, state, objective, actor_id))
+        .flat_map(|objective| objective_guidance_notes_for_actor(content, state, objective, actor_id))
         .collect()
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub(crate) enum BundleSpeechEvent {
+pub(crate) enum ObjectiveSpeechEvent {
     ToActor,
     ToRoom,
 }
 
-pub(crate) fn mark_actor_bundle_progress_for_speech_event(
+pub(crate) fn mark_actor_objective_progress_for_speech_event(
     content: &ContentPack,
     state: &mut WorldState,
     actor_id: &str,
-    event: BundleSpeechEvent,
+    event: ObjectiveSpeechEvent,
 ) {
-    let keys = active_bundles(content, state)
-        .filter(|bundle| bundle_applies_to_actor(content, state, bundle, actor_id))
-        .filter(|bundle| {
-            bundle
+    let keys = active_objectives(content, state)
+        .filter(|objective| objective_applies_to_actor(content, state, objective, actor_id))
+        .filter(|objective| {
+            objective
                 .completion
                 .mark_actor_complete_on
                 .iter()
                 .any(|trigger| speech_trigger_matches(*trigger, event))
         })
-        .map(|bundle| bundle_actor_complete_key(&bundle.id, actor_id))
+        .map(|objective| objective_actor_complete_key(&objective.id, actor_id))
         .collect::<Vec<_>>();
     for key in keys {
         state.story_vars.set_unchecked(&key, "true");
@@ -88,23 +88,23 @@ pub(crate) fn command_availability_issue(
     }
 
     let missing = a
-        .required_bundle_progress
+        .required_objective_progress
         .iter()
-        .filter(|progress| !bundle_progress_is_met(content, state, progress))
-        .map(|progress| bundle_progress_label(content, progress))
+        .filter(|progress| !objective_progress_is_met(content, state, progress))
+        .map(|progress| objective_progress_label(content, progress))
         .collect::<Vec<_>>();
     if !missing.is_empty() {
-        return Some(CommandAvailabilityIssue::MissingBundleProgress(missing));
+        return Some(CommandAvailabilityIssue::MissingObjectiveProgress(missing));
     }
 
     let blocked = a
-        .blocked_by_bundle_progress
+        .blocked_by_objective_progress
         .iter()
-        .filter(|progress| bundle_progress_is_met(content, state, progress))
-        .map(|progress| bundle_progress_label(content, progress))
+        .filter(|progress| objective_progress_is_met(content, state, progress))
+        .map(|progress| objective_progress_label(content, progress))
         .collect::<Vec<_>>();
     if !blocked.is_empty() {
-        return Some(CommandAvailabilityIssue::BlockedByBundleProgress(blocked));
+        return Some(CommandAvailabilityIssue::BlockedByObjectiveProgress(blocked));
     }
 
     if !a.requires_room_item.is_empty()
@@ -158,7 +158,7 @@ pub(crate) fn command_unavailable_message(
         CommandAvailabilityIssue::StageInactive => content
             .render_message("error.command_not_now", &[("verb", verb.as_str())])
             .unwrap_or_default(),
-        CommandAvailabilityIssue::MissingBundleProgress(labels) => {
+        CommandAvailabilityIssue::MissingObjectiveProgress(labels) => {
             let labels_text = labels.join(", ");
             content
                 .render_message(
@@ -167,7 +167,7 @@ pub(crate) fn command_unavailable_message(
                 )
                 .unwrap_or_default()
         }
-        CommandAvailabilityIssue::BlockedByBundleProgress(labels) => {
+        CommandAvailabilityIssue::BlockedByObjectiveProgress(labels) => {
             let labels_text = labels.join(", ");
             content
                 .render_message(
@@ -182,22 +182,22 @@ pub(crate) fn command_unavailable_message(
     }
 }
 
-pub(crate) fn apply_command_bundle_progress_effects(
+pub(crate) fn apply_command_objective_progress_effects(
     state: &mut WorldState,
     action: &ActionDefinition,
 ) {
-    for progress in &action.sets_bundle_progress {
+    for progress in &action.sets_objective_progress {
         state.story_vars.set_unchecked(
-            &bundle_progress_story_var_key(&progress.bundle_id, &progress.key),
+            &objective_progress_story_var_key(&progress.objective_id, &progress.key),
             "true",
         );
     }
-    for progress in &action.clears_bundle_progress {
+    for progress in &action.clears_objective_progress {
         state
             .story_vars
             .values_mut()
-            .remove(&bundle_progress_story_var_key(
-                &progress.bundle_id,
+            .remove(&objective_progress_story_var_key(
+                &progress.objective_id,
                 &progress.key,
             ));
     }
@@ -295,14 +295,14 @@ pub fn action_is_available(
         }
     }
 
-    for progress in &a.required_bundle_progress {
-        if !bundle_progress_is_met(content, state, progress) {
+    for progress in &a.required_objective_progress {
+        if !objective_progress_is_met(content, state, progress) {
             return false;
         }
     }
 
-    for progress in &a.blocked_by_bundle_progress {
-        if bundle_progress_is_met(content, state, progress) {
+    for progress in &a.blocked_by_objective_progress {
+        if objective_progress_is_met(content, state, progress) {
             return false;
         }
     }
@@ -366,10 +366,10 @@ fn action_has_available_target(
     }
 }
 
-fn bundle_guidance_notes_for_actor(
+fn objective_guidance_notes_for_actor(
     content: &ContentPack,
     state: &WorldState,
-    bundle: &RuleBundleDefinition,
+    objective: &BeatObjectiveDefinition,
     actor_id: &str,
 ) -> Vec<String> {
     let mut notes = Vec::new();
@@ -377,29 +377,29 @@ fn bundle_guidance_notes_for_actor(
         .actors
         .iter()
         .map(|actor| actor.id.as_str())
-        .filter(|actor_id| actor_is_complete(state, bundle, actor_id))
+        .filter(|actor_id| actor_is_complete(state, objective, actor_id))
         .count();
     if completed_actor_count < content.actors.len() {
-        let actor_is_complete = actor_is_complete(state, bundle, actor_id);
+        let actor_is_complete = actor_is_complete(state, objective, actor_id);
         if actor_is_complete {
-            if !bundle
+            if !objective
                 .guidance
                 .prompt_note_if_others_incomplete
                 .trim()
                 .is_empty()
             {
-                notes.push(bundle.guidance.prompt_note_if_others_incomplete.clone());
+                notes.push(objective.guidance.prompt_note_if_others_incomplete.clone());
             }
-        } else if !bundle
+        } else if !objective
             .guidance
             .prompt_note_if_actor_incomplete
             .trim()
             .is_empty()
         {
-            notes.push(bundle.guidance.prompt_note_if_actor_incomplete.clone());
+            notes.push(objective.guidance.prompt_note_if_actor_incomplete.clone());
         }
     }
-    for conditional in matching_conditional_guidance(content, state, bundle) {
+    for conditional in matching_conditional_guidance(content, state, objective) {
         if !conditional.prompt_note.trim().is_empty() {
             notes.push(conditional.prompt_note.clone());
         }
@@ -407,19 +407,19 @@ fn bundle_guidance_notes_for_actor(
     notes
 }
 
-fn apply_bundle_affordance_priorities(
-    bundle: &RuleBundleDefinition,
+fn apply_objective_affordance_priorities(
+    objective: &BeatObjectiveDefinition,
     content: &ContentPack,
     state: &WorldState,
     request: &mut ActorTurnActionRequest,
 ) {
-    let priorities = bundle
+    let priorities = objective
         .guidance
         .conditional
         .iter()
         .filter(|conditional| conditional_guidance_matches(content, state, conditional))
         .flat_map(|conditional| conditional.prioritize.iter())
-        .chain(bundle.guidance.prioritize.iter())
+        .chain(objective.guidance.prioritize.iter())
         .collect::<Vec<_>>();
     if priorities.is_empty() {
         return;
@@ -432,9 +432,9 @@ fn apply_bundle_affordance_priorities(
                 ..
             } = &affordance.invocation;
             let target_matches = match priority.target {
-                RuleBundleAffordanceTarget::Any => true,
-                RuleBundleAffordanceTarget::Actor => target_actor_id.is_some(),
-                RuleBundleAffordanceTarget::Room => target_actor_id.is_none(),
+                BeatObjectiveAffordanceTarget::Any => true,
+                BeatObjectiveAffordanceTarget::Actor => target_actor_id.is_some(),
+                BeatObjectiveAffordanceTarget::Room => target_actor_id.is_none(),
             };
             if *command_id == priority.command_id && target_matches {
                 return index;
@@ -444,12 +444,12 @@ fn apply_bundle_affordance_priorities(
     });
 }
 
-fn active_bundles<'a>(
+fn active_objectives<'a>(
     content: &'a ContentPack,
     state: &WorldState,
-) -> impl Iterator<Item = &'a RuleBundleDefinition> {
-    content.rule_bundles.bundles.iter().filter(|bundle| {
-        bundle_stage_ids(bundle).into_iter().any(|stage_id| {
+) -> impl Iterator<Item = &'a BeatObjectiveDefinition> {
+    content.beat_objectives.objectives.iter().filter(|objective| {
+        objective_stage_ids(objective).into_iter().any(|stage_id| {
             state
                 .active_objective_stage_ids
                 .iter()
@@ -458,13 +458,13 @@ fn active_bundles<'a>(
     })
 }
 
-fn bundle_applies_to_actor(
+fn objective_applies_to_actor(
     content: &ContentPack,
     state: &WorldState,
-    bundle: &RuleBundleDefinition,
+    objective: &BeatObjectiveDefinition,
     actor_id: &str,
 ) -> bool {
-    let active_stages = bundle_stage_ids(bundle)
+    let active_stages = objective_stage_ids(objective)
         .into_iter()
         .filter(|stage_id| {
             state
@@ -499,9 +499,9 @@ fn bundle_applies_to_actor(
     })
 }
 
-pub(crate) fn clear_inactive_bundle_state(content: &ContentPack, state: &mut WorldState) {
-    for bundle in content.rule_bundles.bundles.iter().filter(|bundle| {
-        !bundle_stage_ids(bundle).into_iter().any(|stage_id| {
+pub(crate) fn clear_inactive_objective_state(content: &ContentPack, state: &mut WorldState) {
+    for objective in content.beat_objectives.objectives.iter().filter(|objective| {
+        !objective_stage_ids(objective).into_iter().any(|stage_id| {
             state
                 .active_objective_stage_ids
                 .iter()
@@ -512,63 +512,63 @@ pub(crate) fn clear_inactive_bundle_state(content: &ContentPack, state: &mut Wor
             state
                 .story_vars
                 .values_mut()
-                .remove(&bundle_actor_complete_key(&bundle.id, &actor.id));
+                .remove(&objective_actor_complete_key(&objective.id, &actor.id));
         }
-        for progress in &bundle.progress.keys {
+        for progress in &objective.progress.keys {
             state
                 .story_vars
                 .values_mut()
-                .remove(&bundle_progress_story_var_key(&bundle.id, &progress.key));
+                .remove(&objective_progress_story_var_key(&objective.id, &progress.key));
         }
     }
 }
 
-fn bundle_stage_ids(bundle: &RuleBundleDefinition) -> Vec<&str> {
-    bundle.stage_ids.iter().map(String::as_str).collect()
+fn objective_stage_ids(objective: &BeatObjectiveDefinition) -> Vec<&str> {
+    objective.stage_ids.iter().map(String::as_str).collect()
 }
 
-fn actor_is_complete(state: &WorldState, bundle: &RuleBundleDefinition, actor_id: &str) -> bool {
+fn actor_is_complete(state: &WorldState, objective: &BeatObjectiveDefinition, actor_id: &str) -> bool {
     state
         .story_vars
-        .get(&bundle_actor_complete_key(&bundle.id, actor_id))
+        .get(&objective_actor_complete_key(&objective.id, actor_id))
         .is_some_and(|value| value == "true")
 }
 
-fn bundle_actor_complete_key(bundle_id: &str, actor_id: &str) -> String {
-    format!("{BUNDLE_ACTOR_COMPLETE_STORY_VAR_PREFIX}:{bundle_id}:{actor_id}")
+fn objective_actor_complete_key(objective_id: &str, actor_id: &str) -> String {
+    format!("{OBJECTIVE_ACTOR_COMPLETE_STORY_VAR_PREFIX}:{objective_id}:{actor_id}")
 }
 
-fn bundle_progress_story_var_key(bundle_id: &str, key: &str) -> String {
-    format!("{BUNDLE_PROGRESS_STORY_VAR_PREFIX}:{bundle_id}:{key}")
+fn objective_progress_story_var_key(objective_id: &str, key: &str) -> String {
+    format!("{OBJECTIVE_PROGRESS_STORY_VAR_PREFIX}:{objective_id}:{key}")
 }
 
-fn bundle_progress_is_met(
+fn objective_progress_is_met(
     content: &ContentPack,
     state: &WorldState,
-    progress: &RuleBundleProgressRef,
+    progress: &BeatObjectiveProgressRef,
 ) -> bool {
     content
-        .rule_bundles
-        .bundles
+        .beat_objectives
+        .objectives
         .iter()
-        .any(|bundle| bundle.id == progress.bundle_id)
+        .any(|objective| objective.id == progress.objective_id)
         && state
             .story_vars
-            .get(&bundle_progress_story_var_key(
-                &progress.bundle_id,
+            .get(&objective_progress_story_var_key(
+                &progress.objective_id,
                 &progress.key,
             ))
             .is_some_and(|value| value == "true")
 }
 
-fn bundle_progress_label(content: &ContentPack, progress: &RuleBundleProgressRef) -> String {
+fn objective_progress_label(content: &ContentPack, progress: &BeatObjectiveProgressRef) -> String {
     content
-        .rule_bundles
-        .bundles
+        .beat_objectives
+        .objectives
         .iter()
-        .find(|bundle| bundle.id == progress.bundle_id)
-        .and_then(|bundle| {
-            bundle
+        .find(|objective| objective.id == progress.objective_id)
+        .and_then(|objective| {
+            objective
                 .progress
                 .keys
                 .iter()
@@ -587,9 +587,9 @@ fn bundle_progress_label(content: &ContentPack, progress: &RuleBundleProgressRef
 fn matching_conditional_guidance<'a>(
     content: &'a ContentPack,
     state: &'a WorldState,
-    bundle: &'a RuleBundleDefinition,
-) -> impl Iterator<Item = &'a RuleBundleConditionalGuidanceDefinition> {
-    bundle
+    objective: &'a BeatObjectiveDefinition,
+) -> impl Iterator<Item = &'a BeatObjectiveConditionalGuidanceDefinition> {
+    objective
         .guidance
         .conditional
         .iter()
@@ -599,27 +599,27 @@ fn matching_conditional_guidance<'a>(
 fn conditional_guidance_matches(
     content: &ContentPack,
     state: &WorldState,
-    conditional: &RuleBundleConditionalGuidanceDefinition,
+    conditional: &BeatObjectiveConditionalGuidanceDefinition,
 ) -> bool {
     conditional
-        .required_bundle_progress
+        .required_objective_progress
         .iter()
-        .all(|progress| bundle_progress_is_met(content, state, progress))
+        .all(|progress| objective_progress_is_met(content, state, progress))
         && conditional
-            .blocked_by_bundle_progress
+            .blocked_by_objective_progress
             .iter()
-            .all(|progress| !bundle_progress_is_met(content, state, progress))
+            .all(|progress| !objective_progress_is_met(content, state, progress))
 }
 
-fn speech_trigger_matches(trigger: RuleBundleCompletionTrigger, event: BundleSpeechEvent) -> bool {
+fn speech_trigger_matches(trigger: BeatObjectiveCompletionTrigger, event: ObjectiveSpeechEvent) -> bool {
     matches!(
         (trigger, event),
         (
-            RuleBundleCompletionTrigger::SpeechToActor,
-            BundleSpeechEvent::ToActor
+            BeatObjectiveCompletionTrigger::SpeechToActor,
+            ObjectiveSpeechEvent::ToActor
         ) | (
-            RuleBundleCompletionTrigger::SpeechToRoom,
-            BundleSpeechEvent::ToRoom
+            BeatObjectiveCompletionTrigger::SpeechToRoom,
+            ObjectiveSpeechEvent::ToRoom
         )
     )
 }

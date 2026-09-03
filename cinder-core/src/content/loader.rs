@@ -2,7 +2,7 @@ use crate::content::types::{
     ActCastMember, ActionsDefinition, ActorDefinition, BeatsDefinition, BehaviorDefinition,
     ContentPack, ContentSettingsDefinition, ItemDefinition, LevelingDefinition,
     MovementConfigDefinition, OpeningDefinition, OpeningMenuDefinition, OpeningMovieDefinition,
-    PresentationDefinition, RoomDefinition, RuleBundleProgressRef, RuleBundlesDefinition,
+    PresentationDefinition, RoomDefinition, BeatObjectiveProgressRef, BeatObjectivesDefinition,
     SpeechConfigDefinition, SpeechIntentsConfig, StatsDefinition, SystemTextDefinition,
     UiTextDefinition,
 };
@@ -124,7 +124,7 @@ pub fn load_pack_from_dir_with_locale(
         read_optional_json::<BehaviorDefinition>(path, "behavior.json")?.unwrap_or_default();
     let speech =
         read_optional_json::<SpeechConfigDefinition>(path, "speech.json")?.unwrap_or_default();
-    let rule_bundles = read_json::<RuleBundlesDefinition>(path, "rule_bundles.json")?;
+    let beat_objectives = read_json::<BeatObjectivesDefinition>(path, "beat_objectives.json")?;
     let hooks =
         read_optional_json::<BTreeMap<String, Value>>(path, "hooks.json")?.unwrap_or_default();
     let speech_intents: SpeechIntentsConfig =
@@ -319,71 +319,71 @@ pub fn load_pack_from_dir_with_locale(
         )?;
     }
     let action_index_keys: Vec<&str> = action_index.keys().map(|k| k.as_str()).collect();
-    for bundle in &rule_bundles.bundles {
-        if bundle.id.trim().is_empty() {
-            return Err("rule_bundles.json bundles entries require non-empty id".into());
+    for objective in &beat_objectives.objectives {
+        if objective.id.trim().is_empty() {
+            return Err("beat_objectives.json objectives entries require non-empty id".into());
         }
-        let bundle_stage_ids = bundle
+        let objective_stage_ids = objective
             .stage_ids
             .iter()
             .map(String::as_str)
             .collect::<Vec<_>>();
-        if bundle_stage_ids.is_empty() {
+        if objective_stage_ids.is_empty() {
             return Err(format!(
-                "rule_bundles.json bundle '{}' requires at least one stage id",
-                bundle.id
+                "beat_objectives.json objective '{}' requires at least one stage id",
+                objective.id
             )
             .into());
         }
-        for stage_id in bundle_stage_ids {
+        for stage_id in objective_stage_ids {
             require_known_id(
                 stage_id,
                 &stage_ids,
                 &format!(
-                    "rule_bundles.json bundle '{}' stage id '{}'",
-                    bundle.id, stage_id
+                    "beat_objectives.json objective '{}' stage id '{}'",
+                    objective.id, stage_id
                 ),
                 "beats.stages",
             )?;
         }
         let mut seen_progress_keys = std::collections::BTreeSet::new();
-        for progress in &bundle.progress.keys {
+        for progress in &objective.progress.keys {
             if progress.key.trim().is_empty() {
                 return Err(format!(
-                    "rule_bundles.json bundle '{}' has progress entry with empty key",
-                    bundle.id
+                    "beat_objectives.json objective '{}' has progress entry with empty key",
+                    objective.id
                 )
                 .into());
             }
             if !seen_progress_keys.insert(progress.key.clone()) {
                 return Err(format!(
-                    "rule_bundles.json bundle '{}' has duplicate progress key '{}'",
-                    bundle.id, progress.key
+                    "beat_objectives.json objective '{}' has duplicate progress key '{}'",
+                    objective.id, progress.key
                 )
                 .into());
             }
         }
-        for priority in &bundle.guidance.prioritize {
+        for priority in &objective.guidance.prioritize {
             if priority.command_id.trim().is_empty() {
                 return Err(format!(
-                    "rule_bundles.json bundle '{}' has prioritize entry with empty command_id",
-                    bundle.id
+                    "beat_objectives.json objective '{}' has prioritize entry with empty command_id",
+                    objective.id
                 )
                 .into());
             }
             require_known_id(
                 &priority.command_id,
                 &action_index_keys,
-                &format!("rule_bundles.json bundle '{}' prioritize", bundle.id),
+                &format!("beat_objectives.json objective '{}' prioritize", objective.id),
                 "actions",
             )?;
         }
-        for (index, conditional) in bundle.guidance.conditional.iter().enumerate() {
+        for (index, conditional) in objective.guidance.conditional.iter().enumerate() {
             for priority in &conditional.prioritize {
                 if priority.command_id.trim().is_empty() {
                     return Err(format!(
-                        "rule_bundles.json bundle '{}' conditional guidance #{} has prioritize entry with empty command_id",
-                        bundle.id,
+                        "beat_objectives.json objective '{}' conditional guidance #{} has prioritize entry with empty command_id",
+                        objective.id,
                         index + 1
                     )
                     .into());
@@ -392,8 +392,8 @@ pub fn load_pack_from_dir_with_locale(
                     &priority.command_id,
                     &action_index_keys,
                     &format!(
-                        "rule_bundles.json bundle '{}' conditional guidance #{} prioritize",
-                        bundle.id,
+                        "beat_objectives.json objective '{}' conditional guidance #{} prioritize",
+                        objective.id,
                         index + 1
                     ),
                     "actions",
@@ -401,13 +401,13 @@ pub fn load_pack_from_dir_with_locale(
             }
         }
     }
-    let bundle_progress_keys = rule_bundles
-        .bundles
+    let objective_progress_keys = beat_objectives
+        .objectives
         .iter()
-        .map(|bundle| {
+        .map(|objective| {
             (
-                bundle.id.as_str(),
-                bundle
+                objective.id.as_str(),
+                objective
                     .progress
                     .keys
                     .iter()
@@ -428,30 +428,30 @@ pub fn load_pack_from_dir_with_locale(
                 "beats.stages",
             )?;
         }
-        validate_bundle_progress_refs(
-            &format!("action '{}' bundle progress", action.id),
+        validate_objective_progress_refs(
+            &format!("action '{}' objective progress", action.id),
             action
                 .available
-                .required_bundle_progress
+                .required_objective_progress
                 .iter()
-                .chain(action.available.blocked_by_bundle_progress.iter())
-                .chain(action.sets_bundle_progress.iter())
-                .chain(action.clears_bundle_progress.iter()),
-            &bundle_progress_keys,
+                .chain(action.available.blocked_by_objective_progress.iter())
+                .chain(action.sets_objective_progress.iter())
+                .chain(action.clears_objective_progress.iter()),
+            &objective_progress_keys,
         )?;
     }
-    for bundle in &rule_bundles.bundles {
-        for conditional in &bundle.guidance.conditional {
-            validate_bundle_progress_refs(
+    for objective in &beat_objectives.objectives {
+        for conditional in &objective.guidance.conditional {
+            validate_objective_progress_refs(
                 &format!(
-                    "rule_bundles.json bundle '{}' conditional guidance bundle progress",
-                    bundle.id
+                    "beat_objectives.json objective '{}' conditional guidance objective progress",
+                    objective.id
                 ),
                 conditional
-                    .required_bundle_progress
+                    .required_objective_progress
                     .iter()
-                    .chain(conditional.blocked_by_bundle_progress.iter()),
-                &bundle_progress_keys,
+                    .chain(conditional.blocked_by_objective_progress.iter()),
+                &objective_progress_keys,
             )?;
         }
     }
@@ -513,7 +513,7 @@ pub fn load_pack_from_dir_with_locale(
         movement,
         behavior,
         speech,
-        rule_bundles,
+        beat_objectives,
         hooks,
         speech_intents,
         items,
@@ -667,26 +667,26 @@ where
         .collect()
 }
 
-fn validate_bundle_progress_refs<'a>(
+fn validate_objective_progress_refs<'a>(
     owner: &str,
-    refs: impl IntoIterator<Item = &'a RuleBundleProgressRef>,
-    bundle_progress_keys: &BTreeMap<&str, std::collections::BTreeSet<&str>>,
+    refs: impl IntoIterator<Item = &'a BeatObjectiveProgressRef>,
+    objective_progress_keys: &BTreeMap<&str, std::collections::BTreeSet<&str>>,
 ) -> Result<(), Box<dyn Error>> {
     for progress in refs {
-        if progress.bundle_id.trim().is_empty() || progress.key.trim().is_empty() {
-            return Err(format!("{owner} refs require non-empty bundle_id and key").into());
+        if progress.objective_id.trim().is_empty() || progress.key.trim().is_empty() {
+            return Err(format!("{owner} refs require non-empty objective_id and key").into());
         }
-        let Some(keys) = bundle_progress_keys.get(progress.bundle_id.as_str()) else {
+        let Some(keys) = objective_progress_keys.get(progress.objective_id.as_str()) else {
             return Err(format!(
-                "{owner} bundle_id '{}' not found in rule_bundles",
-                progress.bundle_id
+                "{owner} objective_id '{}' not found in beat_objectives",
+                progress.objective_id
             )
             .into());
         };
         if !keys.contains(progress.key.as_str()) {
             return Err(format!(
-                "{owner} key '{}' not found in rule bundle '{}'",
-                progress.key, progress.bundle_id
+                "{owner} key '{}' not found in rule objective '{}'",
+                progress.key, progress.objective_id
             )
             .into());
         }

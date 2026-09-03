@@ -91,7 +91,7 @@ impl Drop for TestDir {
 
 const MINIMAL_PACK_FILES: &[(&str, &str)] = &[
     ("settings.json", "{}"),
-    ("rule_bundles.json", r#"{ "bundles": [] }"#),
+    ("beat_objectives.json", r#"{ "objectives": [] }"#),
     ("locales/en/ui.json", "{}"),
     ("locales/en/system.json", minimal_system_text_json()),
     ("locales/en/opening.json", OPENING_JSON),

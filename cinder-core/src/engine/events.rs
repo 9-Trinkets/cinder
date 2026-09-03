@@ -145,7 +145,7 @@ pub enum WorldEvent {
     ItemObserved {
         item_id: String,
     },
-    CommandBundleProgressApplied {
+    CommandObjectiveProgressApplied {
         command_id: String,
     },
     ContentEvent {

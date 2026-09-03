@@ -118,9 +118,9 @@ pub enum ItemConsumerTarget {
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
-pub struct RuleBundleProgressRef {
+pub struct BeatObjectiveProgressRef {
     #[serde(default)]
-    pub bundle_id: String,
+    pub objective_id: String,
     #[serde(default)]
     pub key: String,
 }

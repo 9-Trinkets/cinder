@@ -41,7 +41,7 @@ Display language can be switched in-game from `? Menu` → `Language`.
 
 Server-side debug binaries live under `cinder-srv/src/bin/debug/`.
 
-Inspect the latest persisted playthrough, including transcript and `rule_bundle:*`
+Inspect the latest persisted playthrough, including transcript and `beat_objective:*`
 story vars:
 
 ```bash

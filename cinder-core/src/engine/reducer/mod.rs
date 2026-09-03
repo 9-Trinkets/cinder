@@ -28,7 +28,7 @@ use crate::content::types::ContentPack;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{GamePhase, WorldState};
-use crate::engine::turn_policies::apply_command_bundle_progress_effects;
+use crate::engine::turn_policies::apply_command_objective_progress_effects;
 use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
 
@@ -291,9 +291,9 @@ pub fn apply_events(
             WorldEvent::ItemObserved { item_id } => {
                 handle_item_observed(state, content, item_id, &mut lines);
             }
-            WorldEvent::CommandBundleProgressApplied { command_id } => {
+            WorldEvent::CommandObjectiveProgressApplied { command_id } => {
                 if let Some(command) = content.command(command_id) {
-                    apply_command_bundle_progress_effects(state, command);
+                    apply_command_objective_progress_effects(state, command);
                 }
             }
             WorldEvent::ContentEvent { event_id, payload } => {

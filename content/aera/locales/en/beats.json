@@ -26,12 +26,12 @@
           "signal": "command_used",
           "conditions": [
             {
-              "path": "story_vars.values.rule_bundle:progress:dinner-prep-cook-and-check-in:meal_ready",
+              "path": "story_vars.values.beat_objective:progress:dinner-prep-cook-and-check-in:meal_ready",
               "operator": "equal",
               "value": "true"
             },
             {
-              "path": "story_vars.values.rule_bundle:progress:dinner-prep-cook-and-check-in:coffee_ready",
+              "path": "story_vars.values.beat_objective:progress:dinner-prep-cook-and-check-in:coffee_ready",
               "operator": "equal",
               "value": "true"
             }
@@ -175,12 +175,12 @@
           "signal": "command_used",
           "conditions": [
             {
-              "path": "story_vars.values.rule_bundle:progress:day2-breakfast-prep:breakfast_ready",
+              "path": "story_vars.values.beat_objective:progress:day2-breakfast-prep:breakfast_ready",
               "operator": "equal",
               "value": "true"
             },
             {
-              "path": "story_vars.values.rule_bundle:progress:day2-breakfast-prep:coffee_ready",
+              "path": "story_vars.values.beat_objective:progress:day2-breakfast-prep:coffee_ready",
               "operator": "equal",
               "value": "true"
             }

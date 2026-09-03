@@ -383,10 +383,10 @@ pub fn minimal_test_pack() -> ContentPack {
     fs::create_dir_all(&locale_dir).expect("create locale dir");
     fs::write(base.path().join("settings.json"), "{}").expect("write settings");
     fs::write(
-        base.path().join("rule_bundles.json"),
-        r#"{ "bundles": [] }"#,
+        base.path().join("beat_objectives.json"),
+        r#"{ "objectives": [] }"#,
     )
-    .expect("write rule bundles");
+    .expect("write rule objectives");
     fs::write(locale_dir.join("ui.json"), "{}").expect("write ui");
     fs::write(locale_dir.join("system.json"), minimal_system_text_json()).expect("write system");
     fs::write(locale_dir.join("opening.json"), OPENING_JSON).expect("write opening");

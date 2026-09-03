@@ -21,7 +21,7 @@ use crate::engine::state::{
     ActorStance, ConversationMemoryKind, ConversationMemoryLine, GamePhase, WorldState,
 };
 use crate::engine::turn_policies::{
-    BundleSpeechEvent, mark_actor_bundle_progress_for_speech_event,
+    ObjectiveSpeechEvent, mark_actor_objective_progress_for_speech_event,
 };
 use serde_json::{Value, json};
 
@@ -222,11 +222,11 @@ pub(super) fn handle_actor_spoke(
     text: &str,
     lines: &mut NarrativeLines,
 ) {
-    mark_actor_bundle_progress_for_speech_event(
+    mark_actor_objective_progress_for_speech_event(
         content,
         state,
         actor_id,
-        BundleSpeechEvent::ToActor,
+        ObjectiveSpeechEvent::ToActor,
     );
     let history = state.conversation_history(actor_id, other_person_id);
     let needs_other_person_line = other_person_message.as_ref().is_some_and(|message| {
@@ -305,11 +305,11 @@ pub(super) fn handle_actor_spoke_to_room(
     text: &str,
     lines: &mut NarrativeLines,
 ) {
-    mark_actor_bundle_progress_for_speech_event(
+    mark_actor_objective_progress_for_speech_event(
         content,
         state,
         actor_id,
-        BundleSpeechEvent::ToRoom,
+        ObjectiveSpeechEvent::ToRoom,
     );
     for audience_actor_id in audience_actor_ids.iter() {
         state.push_conversation_line(

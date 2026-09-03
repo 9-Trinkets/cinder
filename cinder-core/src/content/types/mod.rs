@@ -522,10 +522,10 @@ pub use world_defs::{
     ConsumableKind, ErrorTextDefinition, MovementConfigDefinition, MovementDefaultsDefinition,
     MovementTargetBehavior, PresentationDefinition, PresentationTextDefinition, RoomDefinition,
     RoomDescriptionOverride, RoomExitDefinition, RoomFeatureDefinition,
-    RuleBundleAffordancePriorityDefinition, RuleBundleAffordanceTarget,
-    RuleBundleCompletionDefinition, RuleBundleCompletionTrigger,
-    RuleBundleConditionalGuidanceDefinition, RuleBundleDefinition, RuleBundleGuidanceDefinition,
-    RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition, RuleBundlesDefinition,
+    BeatObjectiveAffordancePriorityDefinition, BeatObjectiveAffordanceTarget,
+    BeatObjectiveCompletionDefinition, BeatObjectiveCompletionTrigger,
+    BeatObjectiveConditionalGuidanceDefinition, BeatObjectiveDefinition, BeatObjectiveGuidanceDefinition,
+    BeatObjectiveProgressDefinition, BeatObjectiveProgressKeyDefinition, BeatObjectivesDefinition,
     SpeechConfigDefinition, StatDefinition, StatsDefinition, WanderDefinition, WanderMode,
 };
 
@@ -533,7 +533,7 @@ mod command_defs;
 pub use command_defs::{
     CommandEffect, CommandInputMode, CommandOutcomeMode, CommandTargetMode, ContentEventDefinition,
     ItemConsumerTarget, ItemStorageTarget, PlayerCommandInputMetadata, PlayerCommandMetadata,
-    PlayerCommandTargetMode, RuleBundleProgressRef,
+    PlayerCommandTargetMode, BeatObjectiveProgressRef,
 };
 
 mod action_defs;

@@ -1,5 +1,5 @@
 {
-  "bundles": [
+  "objectives": [
     {
       "id": "movie-night-choice",
       "stage_ids": ["talk-with-mom", "choose-movie"],

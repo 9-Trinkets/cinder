@@ -276,10 +276,10 @@ pub(super) fn plan_content_command(
     planned
         .events
         .push(content_event_for_command(action, payload));
-    if !action.sets_bundle_progress.is_empty() || !action.clears_bundle_progress.is_empty() {
+    if !action.sets_objective_progress.is_empty() || !action.clears_objective_progress.is_empty() {
         planned
             .events
-            .push(WorldEvent::CommandBundleProgressApplied {
+            .push(WorldEvent::CommandObjectiveProgressApplied {
                 command_id: action.id.clone(),
             });
     }

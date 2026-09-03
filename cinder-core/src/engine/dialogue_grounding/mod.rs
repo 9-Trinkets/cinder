@@ -5,7 +5,7 @@ use crate::engine::state::{
     ConversationMemoryKind, ConversationMemoryLine, WorldState, display_actor_name,
     remap_story_actor_id, render_dynamic_story_text, resolved_actor_prompt_context,
 };
-use crate::engine::turn_policies::actor_bundle_guidance_notes;
+use crate::engine::turn_policies::actor_objective_guidance_notes;
 const ROOM_RECENT_MEMORY_LIMIT: usize = 8;
 
 pub(crate) fn build_grounded_dialogue_request(
@@ -53,7 +53,7 @@ pub(crate) fn build_grounded_dialogue_request_for_exchange(
         &[("current_time", state.current_time_label().as_str())],
     );
     let setting_notes = build_setting_notes(content, state, actor, room, &current_time_note);
-    let objective_notes = current_objective_and_bundle_beat_notes(content, state, actor_id);
+    let objective_notes = current_stage_and_objective_notes(content, state, actor_id);
     let current_beat_notes = build_current_beat_notes(
         content,
         room,
@@ -145,7 +145,7 @@ pub(crate) fn build_grounded_dialogue_request_for_room(
         &[("current_time", state.current_time_label().as_str())],
     );
     let setting_notes = build_setting_notes(content, state, actor, room, &current_time_note);
-    let current_beat_notes = current_objective_and_bundle_beat_notes(content, state, actor_id);
+    let current_beat_notes = current_stage_and_objective_notes(content, state, actor_id);
     let prompt_context = resolved_actor_prompt_context(content, state, actor);
     let actor_name = display_actor_name(state, actor);
     let mut response_notes = prompt_context.response_notes.clone();
@@ -251,13 +251,13 @@ pub(crate) fn current_objective_beat_notes(
         .collect()
 }
 
-fn current_objective_and_bundle_beat_notes(
+fn current_stage_and_objective_notes(
     content: &ContentPack,
     state: &WorldState,
     actor_id: &str,
 ) -> Vec<String> {
     let mut notes = current_objective_beat_notes(content, state, Some(actor_id));
-    notes.extend(actor_bundle_guidance_notes(content, state, actor_id));
+    notes.extend(actor_objective_guidance_notes(content, state, actor_id));
     notes
 }
 

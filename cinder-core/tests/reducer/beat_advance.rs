@@ -1,9 +1,9 @@
 use super::common::*;
 use cinder_core::content::types::{
     ActionDefinition, AdvanceCondition, AdvanceSignal, BeatDefinition, BeatsDefinition,
-    CommandEffect, RuleBundleCompletionDefinition, RuleBundleDefinition,
-    RuleBundleGuidanceDefinition, RuleBundleProgressDefinition, RuleBundleProgressKeyDefinition,
-    RuleBundleProgressRef, RuleBundlesDefinition,
+    CommandEffect, BeatObjectiveCompletionDefinition, BeatObjectiveDefinition,
+    BeatObjectiveGuidanceDefinition, BeatObjectiveProgressDefinition, BeatObjectiveProgressKeyDefinition,
+    BeatObjectiveProgressRef, BeatObjectivesDefinition,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::reducer::apply_events;
@@ -11,7 +11,7 @@ use cinder_core::engine::state::WorldState;
 use serde_json::json;
 
 #[test]
-fn command_used_signal_can_advance_stage_after_bundle_completion_and_clears_progress() {
+fn command_used_signal_can_advance_stage_after_objective_completion_and_clears_progress() {
     let mut pack = reducer_test_pack();
     pack.beats = BeatsDefinition {
         initial_stage_ids: vec!["dinner-prep".to_string()],
@@ -21,7 +21,7 @@ fn command_used_signal_can_advance_stage_after_bundle_completion_and_clears_prog
                 advance_signals: vec![AdvanceSignal::Conditional {
                     signal: "command_used".to_string(),
                     conditions: vec![AdvanceCondition {
-                        path: "story_vars.values.rule_bundle:progress:dinner-prep-cook-and-check-in:meal_ready".to_string(),
+                        path: "story_vars.values.beat_objective:progress:dinner-prep-cook-and-check-in:meal_ready".to_string(),
                         operator: "equal".to_string(),
                         value: json!("true"),
                     }],
@@ -35,18 +35,18 @@ fn command_used_signal_can_advance_stage_after_bundle_completion_and_clears_prog
             },
         ],
     };
-    pack.rule_bundles = RuleBundlesDefinition {
-        bundles: vec![RuleBundleDefinition {
+    pack.beat_objectives = BeatObjectivesDefinition {
+        objectives: vec![BeatObjectiveDefinition {
             id: "dinner-prep-cook-and-check-in".to_string(),
             stage_ids: vec!["dinner-prep".to_string()],
-            progress: RuleBundleProgressDefinition {
-                keys: vec![RuleBundleProgressKeyDefinition {
+            progress: BeatObjectiveProgressDefinition {
+                keys: vec![BeatObjectiveProgressKeyDefinition {
                     key: "meal_ready".to_string(),
                     label: "meal ready".to_string(),
                 }],
             },
-            completion: RuleBundleCompletionDefinition::default(),
-            guidance: RuleBundleGuidanceDefinition::default(),
+            completion: BeatObjectiveCompletionDefinition::default(),
+            guidance: BeatObjectiveGuidanceDefinition::default(),
         }],
     };
     pack.actions.push(ActionDefinition {
@@ -54,8 +54,8 @@ fn command_used_signal_can_advance_stage_after_bundle_completion_and_clears_prog
         command: "COOK".to_string(),
         effects: vec![CommandEffect::RememberInRoom],
         event_text: "{actor_name} finishes dinner.".to_string(),
-        sets_bundle_progress: vec![RuleBundleProgressRef {
-            bundle_id: "dinner-prep-cook-and-check-in".to_string(),
+        sets_objective_progress: vec![BeatObjectiveProgressRef {
+            objective_id: "dinner-prep-cook-and-check-in".to_string(),
             key: "meal_ready".to_string(),
         }],
         ..ActionDefinition::default()
@@ -87,7 +87,7 @@ fn command_used_signal_can_advance_stage_after_bundle_completion_and_clears_prog
     assert_eq!(
         state
             .story_vars
-            .get("rule_bundle:progress:dinner-prep-cook-and-check-in:meal_ready"),
+            .get("beat_objective:progress:dinner-prep-cook-and-check-in:meal_ready"),
         None
     );
 }

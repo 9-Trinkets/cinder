@@ -1,6 +1,6 @@
 use crate::content::types::{AdvanceCondition, AdvanceEffect, ContentPack};
 use crate::engine::state::{GamePhase, VariableStore, WorldState};
-use crate::engine::turn_policies::clear_inactive_bundle_state;
+use crate::engine::turn_policies::clear_inactive_objective_state;
 
 pub(super) fn advance_objective_for_signal(
     state: &mut WorldState,
@@ -136,7 +136,7 @@ pub(super) fn advance_objective_for_signal(
     state
         .story_vars
         .clear_scoped(crate::engine::state::VariableScope::Stage);
-    clear_inactive_bundle_state(content, state);
+    clear_inactive_objective_state(content, state);
     if let Some(stage_id) = fallback_stage_to_activate(
         &content.settings.fallback_stage_id,
         &content.settings.fallback_required_story_vars,

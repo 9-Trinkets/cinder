@@ -8,7 +8,7 @@ use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{
     ActorStance, ConversationMemoryKind, ConversationMemoryLine, WorldState,
 };
-use crate::engine::turn_policies::apply_command_bundle_progress_effects;
+use crate::engine::turn_policies::apply_command_objective_progress_effects;
 use serde_json::json;
 
 use super::beat_advance::advance_objective_for_signal;
@@ -86,7 +86,7 @@ pub(super) fn handle_actor_command_used(
         &mut lines,
         outbox,
     );
-    apply_command_bundle_progress_effects(state, command);
+    apply_command_objective_progress_effects(state, command);
     if let Some(item_id) = resolved_created_item_id(state, content, command, &command_context) {
         let storage = command
             .item_creation

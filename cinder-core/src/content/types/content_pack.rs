@@ -22,7 +22,7 @@ pub struct ContentPack {
     pub movement: MovementConfigDefinition,
     pub behavior: BehaviorDefinition,
     pub speech: SpeechConfigDefinition,
-    pub rule_bundles: RuleBundlesDefinition,
+    pub beat_objectives: BeatObjectivesDefinition,
     pub hooks: BTreeMap<String, Value>,
     pub speech_intents: SpeechIntentsConfig,
     pub items: Vec<ItemDefinition>,

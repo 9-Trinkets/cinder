@@ -1,6 +1,6 @@
 use super::{
     CommandEffect, CommandInputMode, CommandOutcomeMode, CommandTargetMode, ConsumableKind,
-    ItemStorageTarget, PlayerCommandTargetMode, RuleBundleProgressRef,
+    ItemStorageTarget, PlayerCommandTargetMode, BeatObjectiveProgressRef,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -22,9 +22,9 @@ pub struct ActionAvailability {
     #[serde(default)]
     pub available_during: Vec<String>,
     #[serde(default)]
-    pub required_bundle_progress: Vec<RuleBundleProgressRef>,
+    pub required_objective_progress: Vec<BeatObjectiveProgressRef>,
     #[serde(default)]
-    pub blocked_by_bundle_progress: Vec<RuleBundleProgressRef>,
+    pub blocked_by_objective_progress: Vec<BeatObjectiveProgressRef>,
     #[serde(default)]
     pub requires_any: Vec<String>,
     #[serde(default)]
@@ -259,9 +259,9 @@ pub struct ActionDefinition {
     pub npc: Option<ActionNpc>,
 
     #[serde(default)]
-    pub sets_bundle_progress: Vec<RuleBundleProgressRef>,
+    pub sets_objective_progress: Vec<BeatObjectiveProgressRef>,
     #[serde(default)]
-    pub clears_bundle_progress: Vec<RuleBundleProgressRef>,
+    pub clears_objective_progress: Vec<BeatObjectiveProgressRef>,
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, Default)]

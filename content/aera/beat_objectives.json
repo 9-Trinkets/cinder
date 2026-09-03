@@ -1,5 +1,5 @@
 {
-  "bundles": [
+  "objectives": [
     {
       "id": "first-meeting-lounge-intros",
       "stage_ids": ["introduce-everyone-first-evening"],
@@ -82,19 +82,19 @@
         ],
         "conditional": [
           {
-            "required_bundle_progress": [
+            "required_objective_progress": [
               {
-                "bundle_id": "dinner-prep-cook-and-check-in",
+                "objective_id": "dinner-prep-cook-and-check-in",
                 "key": "vegetables_chopped"
               },
               {
-                "bundle_id": "dinner-prep-cook-and-check-in",
+                "objective_id": "dinner-prep-cook-and-check-in",
                 "key": "water_boiled"
               }
             ],
-            "blocked_by_bundle_progress": [
+            "blocked_by_objective_progress": [
               {
-                "bundle_id": "dinner-prep-cook-and-check-in",
+                "objective_id": "dinner-prep-cook-and-check-in",
                 "key": "meal_ready"
               }
             ],
@@ -107,19 +107,19 @@
             ]
           },
           {
-            "required_bundle_progress": [
+            "required_objective_progress": [
               {
-                "bundle_id": "dinner-prep-cook-and-check-in",
+                "objective_id": "dinner-prep-cook-and-check-in",
                 "key": "coffee_ground"
               },
               {
-                "bundle_id": "dinner-prep-cook-and-check-in",
+                "objective_id": "dinner-prep-cook-and-check-in",
                 "key": "water_boiled"
               }
             ],
-            "blocked_by_bundle_progress": [
+            "blocked_by_objective_progress": [
               {
-                "bundle_id": "dinner-prep-cook-and-check-in",
+                "objective_id": "dinner-prep-cook-and-check-in",
                 "key": "coffee_ready"
               }
             ],
@@ -253,19 +253,19 @@
         ],
         "conditional": [
           {
-            "required_bundle_progress": [
+            "required_objective_progress": [
               {
-                "bundle_id": "day2-breakfast-prep",
+                "objective_id": "day2-breakfast-prep",
                 "key": "fruit_prepped"
               },
               {
-                "bundle_id": "day2-breakfast-prep",
+                "objective_id": "day2-breakfast-prep",
                 "key": "toast_ready"
               }
             ],
-            "blocked_by_bundle_progress": [
+            "blocked_by_objective_progress": [
               {
-                "bundle_id": "day2-breakfast-prep",
+                "objective_id": "day2-breakfast-prep",
                 "key": "breakfast_ready"
               }
             ],

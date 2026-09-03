@@ -29,7 +29,7 @@ use std::collections::BTreeMap;
 use std::time::Duration;
 
 const DEFAULT_TRANSCRIPT_LIMIT: i64 = 120;
-const RULE_BUNDLE_PREFIX: &str = "rule_bundle:";
+const RULE_OBJECTIVE_PREFIX: &str = "beat_objective:";
 
 #[derive(Debug, Default, PartialEq, Eq)]
 struct CliArgs {
@@ -198,12 +198,12 @@ fn print_summary(play: &PlayRow, state: &WorldState, transcript: &[TranscriptRow
     );
     println!();
 
-    let bundle_vars = collect_bundle_story_vars(state);
-    if bundle_vars.is_empty() {
-        println!("bundle_story_vars: <none>");
+    let objective_vars = collect_objective_story_vars(state);
+    if objective_vars.is_empty() {
+        println!("objective_story_vars: <none>");
     } else {
-        println!("bundle_story_vars:");
-        for (key, value) in bundle_vars {
+        println!("objective_story_vars:");
+        for (key, value) in objective_vars {
             println!("  {key} = {value}");
         }
     }
@@ -218,19 +218,19 @@ fn print_summary(play: &PlayRow, state: &WorldState, transcript: &[TranscriptRow
     }
 }
 
-fn collect_bundle_story_vars(state: &WorldState) -> BTreeMap<String, String> {
+fn collect_objective_story_vars(state: &WorldState) -> BTreeMap<String, String> {
     state
         .story_vars
         .values()
         .iter()
-        .filter(|(key, _)| key.starts_with(RULE_BUNDLE_PREFIX))
+        .filter(|(key, _)| key.starts_with(RULE_OBJECTIVE_PREFIX))
         .map(|(key, value)| (key.clone(), value.clone()))
         .collect()
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{CliArgs, DEFAULT_TRANSCRIPT_LIMIT, collect_bundle_story_vars, parse_args};
+    use super::{CliArgs, DEFAULT_TRANSCRIPT_LIMIT, collect_objective_story_vars, parse_args};
     use cinder_core::engine::state::WorldState;
 
     #[test]
@@ -264,23 +264,23 @@ mod tests {
     }
 
     #[test]
-    fn collect_bundle_story_vars_filters_to_rule_bundle_keys() {
+    fn collect_objective_story_vars_filters_to_beat_objective_keys() {
         let content =
             cinder_core::content::loader::load_named_pack("aera", Some("en")).expect("load aera");
         let mut state = WorldState::new(&content);
         state
             .story_vars
-            .set_unchecked("rule_bundle:progress:test:meal", "true");
+            .set_unchecked("beat_objective:progress:test:meal", "true");
         state
             .story_vars
             .set_unchecked("cook_recipe", "garlic-noodles");
 
-        let bundle_vars = collect_bundle_story_vars(&state);
+        let objective_vars = collect_objective_story_vars(&state);
 
-        assert_eq!(bundle_vars.len(), 1);
+        assert_eq!(objective_vars.len(), 1);
         assert_eq!(
-            bundle_vars
-                .get("rule_bundle:progress:test:meal")
+            objective_vars
+                .get("beat_objective:progress:test:meal")
                 .map(String::as_str),
             Some("true")
         );

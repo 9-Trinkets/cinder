@@ -363,9 +363,9 @@
         "remember_in_room"
       ],
       "event_text": "{actor_name} claims the cutting board and starts chopping vegetables into a neat prep pile.",
-      "sets_bundle_progress": [
+      "sets_objective_progress": [
         {
-          "bundle_id": "dinner-prep-cook-and-check-in",
+          "objective_id": "dinner-prep-cook-and-check-in",
           "key": "vegetables_chopped"
         }
       ],
@@ -376,9 +376,9 @@
         "available_during": [
           "dinner-prep"
         ],
-        "blocked_by_bundle_progress": [
+        "blocked_by_objective_progress": [
           {
-            "bundle_id": "dinner-prep-cook-and-check-in",
+            "objective_id": "dinner-prep-cook-and-check-in",
             "key": "vegetables_chopped"
           }
         ]
@@ -406,9 +406,9 @@
         "remember_in_room"
       ],
       "event_text": "{actor_name} sets a pot to boil, filling the kitchen with the first real sense that dinner is underway.",
-      "sets_bundle_progress": [
+      "sets_objective_progress": [
         {
-          "bundle_id": "dinner-prep-cook-and-check-in",
+          "objective_id": "dinner-prep-cook-and-check-in",
           "key": "water_boiled"
         }
       ],
@@ -419,9 +419,9 @@
         "available_during": [
           "dinner-prep"
         ],
-        "blocked_by_bundle_progress": [
+        "blocked_by_objective_progress": [
           {
-            "bundle_id": "dinner-prep-cook-and-check-in",
+            "objective_id": "dinner-prep-cook-and-check-in",
             "key": "water_boiled"
           }
         ]
@@ -449,9 +449,9 @@
         "remember_in_room"
       ],
       "event_text": "{actor_name} measures out coffee beans and grinds them fresh, the kitchen taking on a warm roasted smell.",
-      "sets_bundle_progress": [
+      "sets_objective_progress": [
         {
-          "bundle_id": "dinner-prep-cook-and-check-in",
+          "objective_id": "dinner-prep-cook-and-check-in",
           "key": "coffee_ground"
         }
       ],
@@ -462,9 +462,9 @@
         "available_during": [
           "dinner-prep"
         ],
-        "blocked_by_bundle_progress": [
+        "blocked_by_objective_progress": [
           {
-            "bundle_id": "dinner-prep-cook-and-check-in",
+            "objective_id": "dinner-prep-cook-and-check-in",
             "key": "coffee_ground"
           }
         ]
@@ -498,9 +498,9 @@
         "creates_item_story_var": "cook_recipe",
         "storage": "current_room"
       },
-      "sets_bundle_progress": [
+      "sets_objective_progress": [
         {
-          "bundle_id": "dinner-prep-cook-and-check-in",
+          "objective_id": "dinner-prep-cook-and-check-in",
           "key": "meal_ready"
         }
       ],
@@ -511,19 +511,19 @@
         "available_during": [
           "dinner-prep"
         ],
-        "required_bundle_progress": [
+        "required_objective_progress": [
           {
-            "bundle_id": "dinner-prep-cook-and-check-in",
+            "objective_id": "dinner-prep-cook-and-check-in",
             "key": "vegetables_chopped"
           },
           {
-            "bundle_id": "dinner-prep-cook-and-check-in",
+            "objective_id": "dinner-prep-cook-and-check-in",
             "key": "water_boiled"
           }
         ],
-        "blocked_by_bundle_progress": [
+        "blocked_by_objective_progress": [
           {
-            "bundle_id": "dinner-prep-cook-and-check-in",
+            "objective_id": "dinner-prep-cook-and-check-in",
             "key": "meal_ready"
           }
         ]
@@ -557,9 +557,9 @@
         "creates_item_story_var": "brew_recipe",
         "storage": "current_room"
       },
-      "sets_bundle_progress": [
+      "sets_objective_progress": [
         {
-          "bundle_id": "dinner-prep-cook-and-check-in",
+          "objective_id": "dinner-prep-cook-and-check-in",
           "key": "coffee_ready"
         }
       ],
@@ -570,19 +570,19 @@
         "available_during": [
           "dinner-prep"
         ],
-        "required_bundle_progress": [
+        "required_objective_progress": [
           {
-            "bundle_id": "dinner-prep-cook-and-check-in",
+            "objective_id": "dinner-prep-cook-and-check-in",
             "key": "water_boiled"
           },
           {
-            "bundle_id": "dinner-prep-cook-and-check-in",
+            "objective_id": "dinner-prep-cook-and-check-in",
             "key": "coffee_ground"
           }
         ],
-        "blocked_by_bundle_progress": [
+        "blocked_by_objective_progress": [
           {
-            "bundle_id": "dinner-prep-cook-and-check-in",
+            "objective_id": "dinner-prep-cook-and-check-in",
             "key": "coffee_ready"
           }
         ]
@@ -610,9 +610,9 @@
         "remember_in_room"
       ],
       "event_text": "{actor_name} slices fruit into a bright breakfast pile, making the kitchen feel awake before anyone is fully ready to be.",
-      "sets_bundle_progress": [
+      "sets_objective_progress": [
         {
-          "bundle_id": "day2-breakfast-prep",
+          "objective_id": "day2-breakfast-prep",
           "key": "fruit_prepped"
         }
       ],
@@ -623,9 +623,9 @@
         "available_during": [
           "day2-breakfast-prep"
         ],
-        "blocked_by_bundle_progress": [
+        "blocked_by_objective_progress": [
           {
-            "bundle_id": "day2-breakfast-prep",
+            "objective_id": "day2-breakfast-prep",
             "key": "fruit_prepped"
           }
         ]
@@ -653,9 +653,9 @@
         "remember_in_room"
       ],
       "event_text": "{actor_name} tends a pan of toast until the kitchen smells warm and buttery in a way that makes the whole house feel lived in.",
-      "sets_bundle_progress": [
+      "sets_objective_progress": [
         {
-          "bundle_id": "day2-breakfast-prep",
+          "objective_id": "day2-breakfast-prep",
           "key": "toast_ready"
         }
       ],
@@ -666,9 +666,9 @@
         "available_during": [
           "day2-breakfast-prep"
         ],
-        "blocked_by_bundle_progress": [
+        "blocked_by_objective_progress": [
           {
-            "bundle_id": "day2-breakfast-prep",
+            "objective_id": "day2-breakfast-prep",
             "key": "toast_ready"
           }
         ]
@@ -702,9 +702,9 @@
         "creates_item_story_var": "brew_recipe",
         "storage": "current_room"
       },
-      "sets_bundle_progress": [
+      "sets_objective_progress": [
         {
-          "bundle_id": "day2-breakfast-prep",
+          "objective_id": "day2-breakfast-prep",
           "key": "coffee_ready"
         }
       ],
@@ -715,9 +715,9 @@
         "available_during": [
           "day2-breakfast-prep"
         ],
-        "blocked_by_bundle_progress": [
+        "blocked_by_objective_progress": [
           {
-            "bundle_id": "day2-breakfast-prep",
+            "objective_id": "day2-breakfast-prep",
             "key": "coffee_ready"
           }
         ]
@@ -750,9 +750,9 @@
         "creates_item": "honey-toast-and-fruit",
         "storage": "current_room"
       },
-      "sets_bundle_progress": [
+      "sets_objective_progress": [
         {
-          "bundle_id": "day2-breakfast-prep",
+          "objective_id": "day2-breakfast-prep",
           "key": "breakfast_ready"
         }
       ],
@@ -763,19 +763,19 @@
         "available_during": [
           "day2-breakfast-prep"
         ],
-        "required_bundle_progress": [
+        "required_objective_progress": [
           {
-            "bundle_id": "day2-breakfast-prep",
+            "objective_id": "day2-breakfast-prep",
             "key": "fruit_prepped"
           },
           {
-            "bundle_id": "day2-breakfast-prep",
+            "objective_id": "day2-breakfast-prep",
             "key": "toast_ready"
           }
         ],
-        "blocked_by_bundle_progress": [
+        "blocked_by_objective_progress": [
           {
-            "bundle_id": "day2-breakfast-prep",
+            "objective_id": "day2-breakfast-prep",
             "key": "breakfast_ready"
           }
         ]
