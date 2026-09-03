@@ -22,5 +22,7 @@ pub mod workflows;
 
 pub use hostile_actions as hostility;
 
-#[cfg(test)]
-pub(crate) mod test_fixtures;
+/// Shared synthetic content packs for tests and integrations (e.g. the
+/// `tests/` suite). Deliberately public so integration tests can build the
+/// canonical minimal pack without duplicating fixture code.
+pub mod test_fixtures;
