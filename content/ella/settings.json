@@ -5,6 +5,7 @@
   "typewriter_char_ms": 10,
   "npc_tick_interval_ms": 2000,
   "default_language": "en",
+  "actor_tick_scope": "current_board",
   "fallback_stage_id": "go-to-bed",
   "fallback_required_story_vars": ["movie_title", "snack_title"],
   "show_vitals_sidebar": false

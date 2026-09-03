@@ -12,6 +12,8 @@ mod theme;
 pub use theme::ThemeDefinition;
 mod combat_defs;
 pub use combat_defs::*;
+mod actor_tick_defs;
+pub use actor_tick_defs::*;
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct OpeningDefinition {
@@ -55,6 +57,9 @@ pub struct ContentSettingsDefinition {
     pub channel_surfing_only: bool,
     #[serde(default)]
     pub autonomous_actor_dialogue: bool,
+    /// Limits which actors participate in background ticks.
+    #[serde(default)]
+    pub actor_tick_scope: ActorTickScope,
     #[serde(default)]
     pub workflow_id: String,
     #[serde(default)]
@@ -175,6 +180,7 @@ impl Default for ContentSettingsDefinition {
             default_language: default_default_language(),
             channel_surfing_only: false,
             autonomous_actor_dialogue: false,
+            actor_tick_scope: ActorTickScope::default(),
             closure_perspective_actor_id: String::default(),
             act_member_alias: String::default(),
             fallback_stage_id: String::default(),
