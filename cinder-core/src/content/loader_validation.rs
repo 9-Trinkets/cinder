@@ -1,9 +1,9 @@
 use crate::content::types::{
     ActionDefinition, CommandEffect, CommandTargetMode, ContentSettingsDefinition, ItemDefinition,
-    StatDefinition,
+    PeriodicActorEffect, StatDefinition,
 };
 use serde_json::Value;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
 
 pub(crate) fn require_known_id(
@@ -172,4 +172,148 @@ pub(crate) fn validate_combat_settings(
         return Err("combat.ally_attack.maximum_per_ally must not be negative".into());
     }
     Ok(())
+}
+
+pub(crate) fn validate_periodic_actor_effects(
+    settings: &ContentSettingsDefinition,
+    items: &[ItemDefinition],
+    messages: &BTreeMap<String, String>,
+) -> Result<(), Box<dyn Error>> {
+    let item_ids = items
+        .iter()
+        .map(|item| item.id.as_str())
+        .collect::<Vec<_>>();
+    let mut effect_ids = BTreeSet::new();
+    for (index, definition) in settings.periodic_actor_effects.iter().enumerate() {
+        let id = definition.id.trim();
+        if id.is_empty() {
+            return Err(format!("periodic_actor_effects[{index}].id must not be empty").into());
+        }
+        if !effect_ids.insert(id) {
+            return Err(format!("periodic_actor_effects id '{id}' is duplicated").into());
+        }
+        let room_item = definition.trigger.room_item.trim();
+        if room_item.is_empty() {
+            return Err(format!(
+                "periodic_actor_effects '{id}' trigger.room_item must not be empty"
+            )
+            .into());
+        }
+        require_known_id(
+            room_item,
+            &item_ids,
+            &format!("periodic_actor_effects '{id}' trigger.room_item '{room_item}'"),
+            "items",
+        )?;
+        match definition.effect {
+            PeriodicActorEffect::Damage { amount } if amount <= 0 => {
+                return Err(format!(
+                    "periodic_actor_effects '{id}' damage amount must be positive"
+                )
+                .into());
+            }
+            PeriodicActorEffect::Damage { .. } => {}
+        }
+        let message = definition.message.trim();
+        if message.is_empty() {
+            return Err(format!("periodic_actor_effects '{id}' message must not be empty").into());
+        }
+        if !messages.contains_key(message) {
+            return Err(format!(
+                "periodic_actor_effects '{id}' message '{message}' not found in locale messages"
+            )
+            .into());
+        }
+    }
+    Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::content::types::{
+        PeriodicActorEffectDefinition, PeriodicActorEffectTargets, PeriodicActorEffectTrigger,
+    };
+
+    fn valid_fixture() -> (
+        ContentSettingsDefinition,
+        Vec<ItemDefinition>,
+        BTreeMap<String, String>,
+    ) {
+        let mut settings = ContentSettingsDefinition::default();
+        settings.periodic_actor_effects = vec![PeriodicActorEffectDefinition {
+            id: "hazard".to_string(),
+            trigger: PeriodicActorEffectTrigger {
+                room_item: "hazard-token".to_string(),
+            },
+            targets: PeriodicActorEffectTargets::HostileLiving,
+            effect: PeriodicActorEffect::Damage { amount: 2 },
+            message: "combat.hazard".to_string(),
+        }];
+        let items = vec![ItemDefinition {
+            id: "hazard-token".to_string(),
+            ..ItemDefinition::default()
+        }];
+        let messages = BTreeMap::from([("combat.hazard".to_string(), "Ouch.".to_string())]);
+        (settings, items, messages)
+    }
+
+    #[test]
+    fn accepts_valid_periodic_actor_effects() {
+        let (settings, items, messages) = valid_fixture();
+        validate_periodic_actor_effects(&settings, &items, &messages).unwrap();
+    }
+
+    #[test]
+    fn rejects_empty_and_duplicate_periodic_effect_ids() {
+        let (mut settings, items, messages) = valid_fixture();
+        settings.periodic_actor_effects[0].id = " ".to_string();
+        let error = validate_periodic_actor_effects(&settings, &items, &messages)
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("id must not be empty"), "{error}");
+
+        let (mut settings, items, messages) = valid_fixture();
+        settings
+            .periodic_actor_effects
+            .push(settings.periodic_actor_effects[0].clone());
+        let error = validate_periodic_actor_effects(&settings, &items, &messages)
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("id 'hazard' is duplicated"), "{error}");
+    }
+
+    #[test]
+    fn rejects_unknown_room_item_and_non_positive_damage() {
+        let (mut settings, items, messages) = valid_fixture();
+        settings.periodic_actor_effects[0].trigger.room_item = "missing".to_string();
+        let error = validate_periodic_actor_effects(&settings, &items, &messages)
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("'missing' not found in items"), "{error}");
+
+        let (mut settings, items, messages) = valid_fixture();
+        settings.periodic_actor_effects[0].effect = PeriodicActorEffect::Damage { amount: 0 };
+        let error = validate_periodic_actor_effects(&settings, &items, &messages)
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("damage amount must be positive"), "{error}");
+    }
+
+    #[test]
+    fn rejects_empty_or_unknown_periodic_effect_message() {
+        let (mut settings, items, messages) = valid_fixture();
+        settings.periodic_actor_effects[0].message = String::new();
+        let error = validate_periodic_actor_effects(&settings, &items, &messages)
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("message must not be empty"), "{error}");
+
+        let (mut settings, items, messages) = valid_fixture();
+        settings.periodic_actor_effects[0].message = "combat.missing".to_string();
+        let error = validate_periodic_actor_effects(&settings, &items, &messages)
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("not found in locale messages"), "{error}");
+    }
 }

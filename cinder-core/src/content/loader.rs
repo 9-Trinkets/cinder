@@ -144,6 +144,7 @@ pub fn load_pack_from_dir_with_locale(
         )?;
     }
     validate_combat_settings(&settings)?;
+    validate_periodic_actor_effects(&settings, &items, &messages)?;
     validate_items(&items, &settings, &stats.actor, &hooks)?;
     let variables: BTreeMap<String, crate::engine::state::VariableDeclaration> =
         read_optional_json::<BTreeMap<String, crate::engine::state::VariableDeclaration>>(
@@ -527,6 +528,7 @@ pub fn load_pack_from_dir_with_locale(
 
 use crate::content::loader_validation::{
     require_known_id, validate_actions, validate_combat_settings, validate_items,
+    validate_periodic_actor_effects,
 };
 
 pub fn available_locales(path: &Path) -> Result<Vec<LocaleOption>, Box<dyn Error>> {
@@ -802,6 +804,10 @@ mod shipped_pack_load_tests {
                 loaded.behavior.defaults.hold.is_some(),
                 "{pack}: hold default absent"
             );
+            if pack == "layla" {
+                assert_eq!(loaded.settings.periodic_actor_effects.len(), 1);
+                assert_eq!(loaded.settings.periodic_actor_effects[0].id, "drain_sigil");
+            }
         }
     }
 }

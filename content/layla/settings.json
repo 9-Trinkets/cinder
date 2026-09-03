@@ -10,6 +10,20 @@
   "autonomous_actor_dialogue": false,
   "actor_tick_scope": "current_board",
   "autonomous_hostility_mode": "rules",
+  "periodic_actor_effects": [
+    {
+      "id": "drain_sigil",
+      "trigger": {
+        "room_item": "drain-sigil"
+      },
+      "targets": "hostile_living",
+      "effect": {
+        "kind": "damage",
+        "amount": 2
+      },
+      "message": "combat.actor_drained"
+    }
+  ],
   "show_act_closure": false,
   "level_reveal_room_prefix": "d",
   "theme": {
@@ -40,8 +54,6 @@
     "ring"
   ],
   "combat": {
-    "drain_item_id": "drain-sigil",
-    "drain_damage_per_tick": 2,
     "xp_distribution": {
       "recipients": "player_and_followers",
       "mode": "full_each"

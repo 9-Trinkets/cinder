@@ -1,19 +1,23 @@
-//! Hostile-strike policy: decides *which* hostile actors declare strikes on a
+//! Hostile-action policy: decides *which* actors declare hostile strikes on a
 //! background tick. The reducer resolves the mechanics of each declared
 //! [`WorldEvent::HostileStrike`] generically; this module only selects.
 //!
 //! The selection policy itself is content-driven: each pack's `behavior.json`
 //! `strike` rule decides per actor (see [`crate::engine::behavior`]).
-//! No strike eligibility is hardcoded in Rust.
+//! Rust retains reducer eligibility backstops, cooldown scheduling, and damage
+//! mechanics, but does not add another selection policy here.
 
 use crate::content::types::ContentPack;
 use crate::engine::behavior;
 use crate::engine::events::WorldEvent;
 use crate::engine::state::WorldState;
 
-/// Rules policy: a hostile actor declares a strike when its pack's `behavior`
+/// Rules mode: an actor declares a strike when its pack's `behavior.json`
 /// `strike` rule fires.
-pub(crate) fn plan_rules_hostility(content: &ContentPack, state: &WorldState) -> Vec<WorldEvent> {
+pub(crate) fn plan_rules_hostile_actions(
+    content: &ContentPack,
+    state: &WorldState,
+) -> Vec<WorldEvent> {
     let actor_ids = content
         .actors
         .iter()
@@ -90,7 +94,7 @@ mod tests {
         let (content, mut state, brute_id, _) = hostile_fixture();
         state.set_stance(&brute_id, ActorStance::Hostile);
 
-        let events = plan_rules_hostility(&content, &state);
+        let events = plan_rules_hostile_actions(&content, &state);
 
         assert_eq!(
             events,
@@ -113,7 +117,7 @@ mod tests {
             .or_default()
             .insert("hp".to_string(), 0);
 
-        let events = plan_rules_hostility(&content, &state);
+        let events = plan_rules_hostile_actions(&content, &state);
 
         assert!(events.is_empty(), "no actor was eligible, got {events:?}");
     }
@@ -124,7 +128,7 @@ mod tests {
         state.current_room_id = "annex".to_string();
         state.set_stance(&brute_id, ActorStance::Hostile);
 
-        assert!(plan_rules_hostility(&content, &state).is_empty());
+        assert!(plan_rules_hostile_actions(&content, &state).is_empty());
     }
 
     #[test]
@@ -133,6 +137,6 @@ mod tests {
         state.phase = GamePhase::GameEnded;
         state.set_stance(&brute_id, ActorStance::Hostile);
 
-        assert!(plan_rules_hostility(&content, &state).is_empty());
+        assert!(plan_rules_hostile_actions(&content, &state).is_empty());
     }
 }

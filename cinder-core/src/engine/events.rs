@@ -161,12 +161,12 @@ pub enum WorldEvent {
     HostileStrike {
         actor_id: String,
     },
-    /// A hostile mob stands inside a drained room (its current room holds the
-    /// configured `drain_item_id`) and loses HP this tick. Applies to any
-    /// hostile, living, non-allied mob; a drained actor that reaches zero HP is
-    /// defeated through the normal defeat path.
-    ActorDrained {
+    /// A content-configured periodic actor effect applies. The reducer looks
+    /// up the effect by id, revalidates its trigger and target, and resolves
+    /// the generic mechanics.
+    PeriodicActorEffectApplied {
         actor_id: String,
+        effect_id: String,
     },
 }
 

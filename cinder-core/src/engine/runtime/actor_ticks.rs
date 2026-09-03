@@ -170,30 +170,30 @@ impl CinderRuntime {
                 .emit(&trace.role_name, &trace.topic, trace.payload)
                 .map_err(std::io::Error::other)?;
         }
-        if !tick.events.is_empty() {
-            let mut state = self
-                .state
-                .lock()
-                .map_err(|_| "failed to lock runtime state to apply npc events")?;
-            if state.phase != GamePhase::Active {
-                let phase = state.phase.clone();
-                return Ok((lines.to_text(), phase));
-            }
-            let mut logged_events = tick
-                .events
+        let mut state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state to apply npc events")?;
+        if state.phase != GamePhase::Active {
+            let phase = state.phase.clone();
+            return Ok((lines.to_text(), phase));
+        }
+        let mut logged_events = tick
+            .events
+            .into_iter()
+            .map(TimestampedWorldEvent::now)
+            .collect::<Vec<_>>();
+        logged_events.extend(
+            crate::engine::actor_tick::plan_wander_moves(self.content.as_ref(), &state)
                 .into_iter()
-                .map(TimestampedWorldEvent::now)
-                .collect::<Vec<_>>();
-            logged_events.extend(
-                crate::engine::actor_tick::plan_wander_moves(self.content.as_ref(), &state)
-                    .into_iter()
-                    .map(TimestampedWorldEvent::now),
-            );
-            logged_events.extend(
-                crate::engine::actor_tick::plan_drain_events(self.content.as_ref(), &state)
-                    .into_iter()
-                    .map(TimestampedWorldEvent::now),
-            );
+                .map(TimestampedWorldEvent::now),
+        );
+        logged_events.extend(
+            crate::engine::actor_tick::plan_periodic_effect_events(self.content.as_ref(), &state)
+                .into_iter()
+                .map(TimestampedWorldEvent::now),
+        );
+        if !logged_events.is_empty() {
             let reduced = apply_events(&mut state, self.content.as_ref(), &logged_events);
             refresh_conversation_summaries(
                 self.content.as_ref(),
@@ -203,6 +203,7 @@ impl CinderRuntime {
             .map_err(std::io::Error::other)?;
             lines.extend(reduced.lines.0);
         }
+        drop(state);
         let final_state = self
             .state
             .lock()

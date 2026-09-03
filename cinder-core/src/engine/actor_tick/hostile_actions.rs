@@ -5,22 +5,28 @@ use super::workflow::{
 use crate::content::types::{AutonomousHostilityMode, ContentPack};
 use crate::engine::dialogue::{HostilityCandidate, HostilityPlanRequest};
 use crate::engine::events::WorldEvent;
-use crate::engine::hostility::plan_rules_hostility;
-use crate::engine::state::{ActorStance, WorldState};
+use crate::engine::hostile_actions::plan_rules_hostile_actions;
+use crate::engine::state::WorldState;
 
 impl ActorTickRoleRunner {
     pub(super) fn handle_hostility_decide(&self, prompt: &str) -> Result<String, String> {
         let inbound = extract_inbound_message(prompt)?;
         let mut workflow_state: ActorTickWorkflowState =
             serde_json::from_str(&inbound).map_err(|error| error.to_string())?;
-        let eligible_events = plan_rules_hostility(self.content.as_ref(), &workflow_state.state);
+        // behavior.json defines the eligible strikes. The mode only chooses
+        // whether rules apply all of them or an LLM selects a validated subset.
+        let eligible_events =
+            plan_rules_hostile_actions(self.content.as_ref(), &workflow_state.state);
         let events = if matches!(
             self.content.settings.autonomous_hostility_mode,
             AutonomousHostilityMode::Llm
         ) && !eligible_events.is_empty()
         {
-            let request =
-                build_hostility_plan_request(self.content.as_ref(), &workflow_state.state);
+            let request = build_hostility_plan_request(
+                self.content.as_ref(),
+                &workflow_state.state,
+                &eligible_events,
+            );
             self.emit_trace(
                 "world_hostility",
                 "plan.request",
@@ -76,24 +82,21 @@ impl ActorTickRoleRunner {
     }
 }
 
-fn build_hostility_plan_request(content: &ContentPack, state: &WorldState) -> HostilityPlanRequest {
+fn build_hostility_plan_request(
+    content: &ContentPack,
+    state: &WorldState,
+    eligible_events: &[WorldEvent],
+) -> HostilityPlanRequest {
     let current_time_minutes = state.current_time_minutes;
-    let candidates = state
-        .relationships
+    let candidates = eligible_events
         .iter()
-        .filter(|(_, relationship)| relationship.stance == ActorStance::Hostile)
-        .filter(|(actor_id, _)| {
-            state.actor_stat(actor_id, &content.settings.combat.health_stat_id) > 0
-                && state.next_hostile_strike_at.contains_key(*actor_id)
-                && {
-                    let default_room_id = content
-                        .actor(actor_id)
-                        .map(|actor| actor.room_id.clone())
-                        .unwrap_or_default();
-                    state.actor_room_id(actor_id, &default_room_id) == state.current_room_id
-                }
+        .filter_map(|event| {
+            let WorldEvent::HostileStrike { actor_id } = event else {
+                return None;
+            };
+            Some(actor_id)
         })
-        .map(|(actor_id, _)| {
+        .map(|actor_id| {
             let actor = content.actor(actor_id);
             let due_at = *state
                 .next_hostile_strike_at
@@ -133,5 +136,29 @@ fn build_hostility_plan_request(content: &ContentPack, state: &WorldState) -> Ho
         ),
         candidates,
         system_prompt: content.system_text.hostility_planner_system_prompt.clone(),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn llm_candidates_come_only_from_behavior_selected_events() {
+        let content = crate::engine::test_fixtures::minimal_test_pack();
+        let mut state = WorldState::new(&content);
+        state.current_room_id = "kitchen".to_string();
+        let selected_actor_id = content.actors[0].id.clone();
+
+        let request = build_hostility_plan_request(
+            &content,
+            &state,
+            &[WorldEvent::HostileStrike {
+                actor_id: selected_actor_id.clone(),
+            }],
+        );
+
+        assert_eq!(request.candidates.len(), 1);
+        assert_eq!(request.candidates[0].actor_id, selected_actor_id);
     }
 }

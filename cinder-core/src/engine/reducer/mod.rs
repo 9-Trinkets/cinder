@@ -9,9 +9,10 @@ mod movement;
 mod observation;
 mod tick;
 
+use self::combat::handle_periodic_actor_effect_applied;
 use self::handlers::{
     apply_content_event, handle_act_ended, handle_action_rejected, handle_actor_command_used_event,
-    handle_actor_drained, handle_actor_moved, handle_actor_observed, handle_actor_observed_actor,
+    handle_actor_moved, handle_actor_observed, handle_actor_observed_actor,
     handle_actor_observed_feature, handle_actor_observed_room, handle_actor_relocated,
     handle_actor_spoke, handle_actor_spoke_to_room, handle_current_room_observed,
     handle_feature_observed, handle_help_shown, handle_hostile_strike, handle_item_acquired,
@@ -309,8 +310,13 @@ pub fn apply_events(
             WorldEvent::HostileStrike { actor_id } => {
                 handle_hostile_strike(state, content, actor_id, &mut lines);
             }
-            WorldEvent::ActorDrained { actor_id } => {
-                handle_actor_drained(state, content, actor_id, &mut lines);
+            WorldEvent::PeriodicActorEffectApplied {
+                actor_id,
+                effect_id,
+            } => {
+                handle_periodic_actor_effect_applied(
+                    state, content, actor_id, effect_id, &mut lines,
+                );
             }
         }
     }

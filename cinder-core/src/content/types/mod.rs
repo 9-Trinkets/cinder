@@ -85,10 +85,13 @@ pub struct ContentSettingsDefinition {
     /// hierarchy (e.g. a chess board) when the player descends.
     #[serde(default)]
     pub level_reveal_room_prefix: String,
-    /// How autonomous hostile strikes are decided on background ticks.
-    /// `rules` selects deterministically; `llm` asks a validated LLM planner.
+    /// `behavior.json` defines eligible hostile strikes. `rules` applies them
+    /// directly; `llm` asks a validated planner to choose a subset.
     #[serde(default)]
     pub autonomous_hostility_mode: AutonomousHostilityMode,
+    /// Content-authored actor effects evaluated after each background tick.
+    #[serde(default)]
+    pub periodic_actor_effects: Vec<PeriodicActorEffectDefinition>,
     /// Binds the generic strike mechanism to this pack's stat vocabulary.
     #[serde(default)]
     pub combat: CombatSettingsDefinition,
@@ -191,6 +194,7 @@ impl Default for ContentSettingsDefinition {
             show_vitals_sidebar: true,
             level_reveal_room_prefix: String::default(),
             autonomous_hostility_mode: AutonomousHostilityMode::Rules,
+            periodic_actor_effects: Vec::new(),
             combat: CombatSettingsDefinition::default(),
             starting_items: BTreeMap::new(),
             equipment_slots: BTreeSet::new(),

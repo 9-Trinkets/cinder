@@ -8,7 +8,7 @@ pub mod dialogue_grounding;
 pub mod events;
 pub mod hook_ids;
 pub mod hooks;
-pub mod hostility;
+pub mod hostile_actions;
 pub mod menus;
 pub mod narrative;
 pub mod neuron;
@@ -19,6 +19,8 @@ pub mod state;
 pub mod turn_policies;
 pub mod turn_runner;
 pub mod workflows;
+
+pub use hostile_actions as hostility;
 
 #[cfg(test)]
 pub(crate) mod test_fixtures;

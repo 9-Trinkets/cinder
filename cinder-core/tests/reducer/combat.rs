@@ -1,12 +1,25 @@
 use super::common::*;
 use cinder_core::content::types::{
     ActionDefinition, CombatSettingsDefinition, CommandEffect, CommandTargetMode, ItemDefinition,
-    ItemStorageTarget, StatDefinition,
+    ItemStorageTarget, LevelDefinition, PeriodicActorEffect, PeriodicActorEffectDefinition,
+    PeriodicActorEffectTargets, PeriodicActorEffectTrigger, StatDefinition,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::reducer::apply_events;
 use cinder_core::engine::state::{ActorStance, GamePhase, WorldState};
 use std::collections::BTreeMap;
+
+fn periodic_damage_definition() -> PeriodicActorEffectDefinition {
+    PeriodicActorEffectDefinition {
+        id: "room_hazard".to_string(),
+        trigger: PeriodicActorEffectTrigger {
+            room_item: "drain-sigil".to_string(),
+        },
+        targets: PeriodicActorEffectTargets::HostileLiving,
+        effect: PeriodicActorEffect::Damage { amount: 2 },
+        message: "combat.room_hazard".to_string(),
+    }
+}
 
 #[test]
 fn hostile_strike_uses_pack_declared_combat_vocabulary() {
@@ -153,15 +166,18 @@ fn defeating_an_actor_scatters_its_drops_into_the_room() {
 }
 
 #[test]
-fn hostile_actor_in_a_drained_room_loses_hp_each_tick() {
+fn configured_periodic_damage_affects_only_matching_actors() {
     let mut pack = reducer_test_pack();
     pack.settings.combat = CombatSettingsDefinition {
         player_actor_id: ACTOR_A_ID.to_string(),
         health_stat_id: "stamina".to_string(),
-        drain_item_id: Some("drain-sigil".to_string()),
-        drain_damage_per_tick: 2,
         ..CombatSettingsDefinition::default()
     };
+    pack.settings.periodic_actor_effects = vec![periodic_damage_definition()];
+    pack.messages.insert(
+        "combat.room_hazard".to_string(),
+        "{actor} loses {damage}; {remaining} remains.".to_string(),
+    );
     let mut goblin = test_actor("goblin", "goblin", LOUNGE_ID);
     goblin.initial_stats = BTreeMap::from([("stamina".to_string(), 5)]);
     pack.actors.push(goblin);
@@ -177,21 +193,24 @@ fn hostile_actor_in_a_drained_room_loses_hp_each_tick() {
     state.add_item_to_storage("drain-sigil", ItemStorageTarget::CurrentRoom, LOUNGE_ID);
 
     let events = [
-        TimestampedWorldEvent::now(WorldEvent::ActorDrained {
+        TimestampedWorldEvent::now(WorldEvent::PeriodicActorEffectApplied {
             actor_id: "goblin".to_string(),
+            effect_id: "room_hazard".to_string(),
         }),
-        TimestampedWorldEvent::now(WorldEvent::ActorDrained {
+        TimestampedWorldEvent::now(WorldEvent::PeriodicActorEffectApplied {
             actor_id: "quiet".to_string(),
+            effect_id: "room_hazard".to_string(),
         }),
     ];
-    apply_events(&mut state, &pack, &events);
+    let output = apply_events(&mut state, &pack, &events);
 
     assert_eq!(state.actor_stat("goblin", "stamina"), 3);
     assert_eq!(state.actor_stat("quiet", "stamina"), 5);
+    assert_eq!(output.lines.0[0].text, "goblin loses 2; 3 remains.");
 }
 
 #[test]
-fn drained_actor_that_reaches_zero_is_defeated_normally() {
+fn periodic_damage_at_zero_uses_normal_defeat_drop_and_xp_path() {
     let mut pack = reducer_test_pack();
     pack.items
         .push(cinder_core::content::types::ItemDefinition {
@@ -208,24 +227,43 @@ fn drained_actor_that_reaches_zero_is_defeated_normally() {
     pack.settings.combat = CombatSettingsDefinition {
         player_actor_id: ACTOR_A_ID.to_string(),
         health_stat_id: "stamina".to_string(),
-        drain_item_id: Some("drain-sigil".to_string()),
-        drain_damage_per_tick: 2,
         ..CombatSettingsDefinition::default()
     };
+    pack.settings.periodic_actor_effects = vec![periodic_damage_definition()];
+    pack.messages
+        .insert("combat.room_hazard".to_string(), String::new());
+    pack.levels.default = vec![LevelDefinition {
+        exp_required: 10,
+        ..LevelDefinition::default()
+    }];
+    pack.hooks.insert(
+        cinder_core::engine::hook_ids::ACTOR_DEFEATED.to_string(),
+        effect_hook(vec![serde_json::json!({
+            "kind": "adjust_actor_stat",
+            "actor_id": ACTOR_A_ID,
+            "stat": "stamina",
+            "delta": 1
+        })]),
+    );
     let mut goblin = test_actor("goblin", "goblin", LOUNGE_ID);
     goblin.initial_stats = BTreeMap::from([("stamina".to_string(), 1)]);
     goblin.drops = BTreeMap::from([("herb-salve".to_string(), 2)]);
+    goblin.xp_drop = 4;
     pack.actors.push(goblin);
     rebuild_test_pack_indexes(&mut pack);
 
     let mut state = WorldState::new(&pack);
+    let player_stamina = state.actor_stat(ACTOR_A_ID, "stamina");
     state.current_room_id = LOUNGE_ID.to_string();
     state.set_stance("goblin", ActorStance::Hostile);
     state.add_item_to_storage("drain-sigil", ItemStorageTarget::CurrentRoom, LOUNGE_ID);
 
-    let events = [TimestampedWorldEvent::now(WorldEvent::ActorDrained {
-        actor_id: "goblin".to_string(),
-    })];
+    let events = [TimestampedWorldEvent::now(
+        WorldEvent::PeriodicActorEffectApplied {
+            actor_id: "goblin".to_string(),
+            effect_id: "room_hazard".to_string(),
+        },
+    )];
     apply_events(&mut state, &pack, &events);
 
     assert!(state.actor_is_defeated("goblin", "stamina"));
@@ -236,6 +274,42 @@ fn drained_actor_that_reaches_zero_is_defeated_normally() {
             ("herb-salve".to_string(), 2)
         ]
     );
+    assert_eq!(state.actor_xp.get(ACTOR_A_ID), Some(&4));
+    assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), player_stamina + 1);
+}
+
+#[test]
+fn periodic_damage_uses_player_defeat_path_for_the_player_actor() {
+    let mut pack = reducer_test_pack();
+    pack.settings.combat.player_actor_id = ACTOR_A_ID.to_string();
+    pack.settings.combat.health_stat_id = "stamina".to_string();
+    let mut effect = periodic_damage_definition();
+    effect.targets = PeriodicActorEffectTargets::AnyLiving;
+    effect.effect = PeriodicActorEffect::Damage { amount: 99 };
+    pack.settings.periodic_actor_effects = vec![effect];
+    pack.items.push(ItemDefinition {
+        id: "drain-sigil".to_string(),
+        label: "drain sigil".to_string(),
+        ..ItemDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.add_item_to_storage("drain-sigil", ItemStorageTarget::CurrentRoom, LOUNGE_ID);
+
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(
+            WorldEvent::PeriodicActorEffectApplied {
+                actor_id: ACTOR_A_ID.to_string(),
+                effect_id: "room_hazard".to_string(),
+            },
+        )],
+    );
+
+    assert_eq!(state.phase, GamePhase::GameEnded);
+    assert_eq!(output.phase, GamePhase::GameEnded);
 }
 
 #[test]

@@ -88,10 +88,6 @@ pub struct CombatSettingsDefinition {
     #[serde(default = "default_player_defeat_text")]
     pub player_defeat_text: String,
     #[serde(default)]
-    pub drain_item_id: Option<String>,
-    #[serde(default)]
-    pub drain_damage_per_tick: i32,
-    #[serde(default)]
     pub xp_distribution: XpDistributionDefinition,
     #[serde(default)]
     pub ally_attack: AllyAttackDefinition,
@@ -107,8 +103,6 @@ impl Default for CombatSettingsDefinition {
             minimum_damage: default_minimum_damage(),
             default_attack_interval_minutes: default_attack_interval_minutes(),
             player_defeat_text: default_player_defeat_text(),
-            drain_item_id: None,
-            drain_damage_per_tick: 0,
             xp_distribution: XpDistributionDefinition::default(),
             ally_attack: AllyAttackDefinition::default(),
         }

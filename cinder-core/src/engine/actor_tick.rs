@@ -1,7 +1,7 @@
 mod actor_turn;
-mod drain;
-mod hostility;
+mod hostile_actions;
 mod movement;
+mod periodic_effects;
 mod workflow;
 
 use crate::content::types::{ActorTickScope, ContentPack};
@@ -12,8 +12,10 @@ use std::collections::BTreeSet;
 use std::error::Error;
 use std::fmt;
 
-pub(crate) use drain::plan_drain_events;
 pub(crate) use movement::{decide_movement, plan_wander_moves};
+pub(crate) use periodic_effects::{
+    plan_periodic_effect_events, target_matches as periodic_effect_target_matches,
+};
 pub(crate) use workflow::run_actor_tick;
 
 #[derive(Debug, Clone)]
