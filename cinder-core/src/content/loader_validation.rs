@@ -240,16 +240,18 @@ mod tests {
         Vec<ItemDefinition>,
         BTreeMap<String, String>,
     ) {
-        let mut settings = ContentSettingsDefinition::default();
-        settings.periodic_actor_effects = vec![PeriodicActorEffectDefinition {
-            id: "hazard".to_string(),
-            trigger: PeriodicActorEffectTrigger {
-                room_item: "hazard-token".to_string(),
-            },
-            targets: PeriodicActorEffectTargets::HostileLiving,
-            effect: PeriodicActorEffect::Damage { amount: 2 },
-            message: "combat.hazard".to_string(),
-        }];
+        let settings = ContentSettingsDefinition {
+            periodic_actor_effects: vec![PeriodicActorEffectDefinition {
+                id: "hazard".to_string(),
+                trigger: PeriodicActorEffectTrigger {
+                    room_item: "hazard-token".to_string(),
+                },
+                targets: PeriodicActorEffectTargets::HostileLiving,
+                effect: PeriodicActorEffect::Damage { amount: 2 },
+                message: "combat.hazard".to_string(),
+            }],
+            ..ContentSettingsDefinition::default()
+        };
         let items = vec![ItemDefinition {
             id: "hazard-token".to_string(),
             ..ItemDefinition::default()

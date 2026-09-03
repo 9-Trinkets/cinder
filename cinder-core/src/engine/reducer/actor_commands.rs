@@ -96,7 +96,7 @@ pub(super) fn handle_actor_command_used(
                 ActionItemStorageTarget::CurrentRoom => ItemStorageTarget::CurrentRoom,
             })
             .unwrap_or_default();
-        state.add_item_to_storage(&item_id, storage.clone(), room_id);
+        state.add_item_to_storage(&item_id, storage, room_id);
         if storage == ItemStorageTarget::CurrentRoom {
             trigger_surrounded_hooks(state, content, &item_id, &mut lines);
         }
