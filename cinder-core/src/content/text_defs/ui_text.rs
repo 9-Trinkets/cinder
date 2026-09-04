@@ -1,46 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct ShellMenuDefinition {
-    #[serde(default)]
-    pub items: Vec<ShellMenuItem>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ShellMenuItem {
-    pub id: String,
-    pub label: String,
-    #[serde(default)]
-    pub children: Vec<ShellMenuItem>,
-}
-
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct ActClosureDefinition {
-    #[serde(default)]
-    pub title: String,
-    #[serde(default)]
-    pub subtitle_template: String,
-    #[serde(default)]
-    pub sections: Vec<ActClosureSectionDefinition>,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ActClosureSectionDefinition {
-    #[serde(default)]
-    pub title: String,
-    pub source: ActClosureSource,
-}
-
-#[derive(Debug, Clone, Copy, Default, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(rename_all = "snake_case")]
-pub enum ActClosureSource {
-    PerspectiveRating,
-    PerspectiveReview,
-    RelationshipSummary,
-    ContinuationPreview,
-    #[default]
-    TranscriptHighlights,
-}
+use super::closure::{ActClosureDefinition, ShellMenuDefinition};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct UiTextDefinition {
@@ -187,241 +147,239 @@ pub struct UiTextDefinition {
     pub shell_menu: ShellMenuDefinition,
 }
 
-pub use crate::content::system_text_defs::SystemTextDefinition;
-
-fn default_language_name() -> String {
+pub(super) fn default_language_name() -> String {
     "English".to_string()
 }
 
-fn default_menu_button_label() -> String {
+pub(super) fn default_menu_button_label() -> String {
     "? Menu".to_string()
 }
 
-fn default_act_ended_title() -> String {
+pub(super) fn default_act_ended_title() -> String {
     "Session Ended".to_string()
 }
 
-fn default_game_over_hint() -> String {
+pub(super) fn default_game_over_hint() -> String {
     "↑/↓ or PageUp/PageDown scroll • q exits".to_string()
 }
 
-fn default_menu_option_list_title() -> String {
+pub(super) fn default_menu_option_list_title() -> String {
     "Choose an option".to_string()
 }
 
-fn default_menu_choice_hint() -> String {
+pub(super) fn default_menu_choice_hint() -> String {
     "Use ↑/↓ and Enter to choose.".to_string()
 }
 
-fn default_menu_choice_transcript() -> String {
+pub(super) fn default_menu_choice_transcript() -> String {
     "chose {title}".to_string()
 }
 
-fn default_shell_menu_title() -> String {
+pub(super) fn default_shell_menu_title() -> String {
     "Menu".to_string()
 }
 
-fn default_shell_menu_close_hint() -> String {
+pub(super) fn default_shell_menu_close_hint() -> String {
     "Use ↑/↓ and Enter to choose. Esc closes.".to_string()
 }
 
-fn default_help_label() -> String {
+pub(super) fn default_help_label() -> String {
     "Help".to_string()
 }
 
-fn default_resume_label() -> String {
+pub(super) fn default_resume_label() -> String {
     "Resume".to_string()
 }
 
-fn default_things_to_do_label() -> String {
+pub(super) fn default_things_to_do_label() -> String {
     "Things to do".to_string()
 }
 
-fn default_about_label() -> String {
+pub(super) fn default_about_label() -> String {
     "About".to_string()
 }
 
-fn default_exit_label() -> String {
+pub(super) fn default_exit_label() -> String {
     "Exit".to_string()
 }
 
-fn default_language_menu_label() -> String {
+pub(super) fn default_language_menu_label() -> String {
     "Language".to_string()
 }
 
-fn default_room_switcher_label() -> String {
+pub(super) fn default_room_switcher_label() -> String {
     "Rooms".to_string()
 }
 
-fn default_room_switcher_title() -> String {
+pub(super) fn default_room_switcher_title() -> String {
     "Switch rooms".to_string()
 }
 
-fn default_room_switch_transcript() -> String {
+pub(super) fn default_room_switch_transcript() -> String {
     "switched to {title}".to_string()
 }
 
-fn default_follow_actor_title() -> String {
+pub(super) fn default_follow_actor_title() -> String {
     "Follow someone".to_string()
 }
 
-fn default_follow_actor_transcript() -> String {
+pub(super) fn default_follow_actor_transcript() -> String {
     "following {title}".to_string()
 }
 
-fn default_follow_actor_stop_transcript() -> String {
+pub(super) fn default_follow_actor_stop_transcript() -> String {
     "stopped following anyone".to_string()
 }
 
-fn default_things_to_do_empty() -> String {
+pub(super) fn default_things_to_do_empty() -> String {
     "Nothing pressing right now.".to_string()
 }
 
-fn default_about_body() -> String {
+pub(super) fn default_about_body() -> String {
     "Made with love by 9 Trinkets\nwww.9trinkets.com".to_string()
 }
 
-fn default_language_modal_title() -> String {
+pub(super) fn default_language_modal_title() -> String {
     "Display language".to_string()
 }
 
-fn default_language_changed_text() -> String {
+pub(super) fn default_language_changed_text() -> String {
     "Display language changed to {language_name}.".to_string()
 }
 
-fn default_modal_close_hint() -> String {
+pub(super) fn default_modal_close_hint() -> String {
     "Press Enter or Esc to close.".to_string()
 }
 
-fn default_act_closure_title() -> String {
+pub(super) fn default_act_closure_title() -> String {
     "End of Day {day_number}".to_string()
 }
 
-fn default_act_closure_current_focus_label() -> String {
+pub(super) fn default_act_closure_current_focus_label() -> String {
     "Current focus".to_string()
 }
 
-fn default_act_closure_highlights_label() -> String {
+pub(super) fn default_act_closure_highlights_label() -> String {
     "Highlights".to_string()
 }
 
-fn default_act_closure_relationships_label() -> String {
+pub(super) fn default_act_closure_relationships_label() -> String {
     "Relationship status".to_string()
 }
 
-fn default_act_closure_empty_highlights() -> String {
+pub(super) fn default_act_closure_empty_highlights() -> String {
     "A quiet stretch, mostly observation and drift.".to_string()
 }
 
-fn default_act_closure_empty_relationships() -> String {
+pub(super) fn default_act_closure_empty_relationships() -> String {
     "No clear relationship shifts yet.".to_string()
 }
 
-fn default_final_summary_title() -> String {
+pub(super) fn default_final_summary_title() -> String {
     "Chapter Recap".to_string()
 }
 
-fn default_final_summary_highlights_label() -> String {
+pub(super) fn default_final_summary_highlights_label() -> String {
     "What happened".to_string()
 }
 
-fn default_final_summary_relationships_label() -> String {
+pub(super) fn default_final_summary_relationships_label() -> String {
     "Relationship status".to_string()
 }
 
-fn default_final_summary_preview_label() -> String {
+pub(super) fn default_final_summary_preview_label() -> String {
     "Next chapter".to_string()
 }
 
-fn default_final_summary_empty_preview() -> String {
+pub(super) fn default_final_summary_empty_preview() -> String {
     "The next chapter is still taking shape.".to_string()
 }
 
-fn default_exit_confirm_title() -> String {
+pub(super) fn default_exit_confirm_title() -> String {
     "Exit act?".to_string()
 }
 
-fn default_exit_confirm_body() -> String {
+pub(super) fn default_exit_confirm_body() -> String {
     "Press Enter to exit to the terminal, or Esc to keep playing.".to_string()
 }
 
-fn default_projector_skip_hint() -> String {
+pub(super) fn default_projector_skip_hint() -> String {
     "Press Enter to skip ahead. Esc closes.".to_string()
 }
 
-fn default_projector_title_prefix() -> String {
+pub(super) fn default_projector_title_prefix() -> String {
     "Projector".to_string()
 }
 
-fn default_error_prefix() -> String {
+pub(super) fn default_error_prefix() -> String {
     "Error:".to_string()
 }
 
-fn default_response_worker_disconnected() -> String {
+pub(super) fn default_response_worker_disconnected() -> String {
     "response worker disconnected.".to_string()
 }
 
-fn default_menu_unavailable() -> String {
+pub(super) fn default_menu_unavailable() -> String {
     "That menu is no longer available.".to_string()
 }
 
-fn default_npc_tick_soft_error() -> String {
+pub(super) fn default_npc_tick_soft_error() -> String {
     "{actor_name} blanks for a second, looking briefly confused.".to_string()
 }
 
-fn default_follow_actor_prompt() -> String {
+pub(super) fn default_follow_actor_prompt() -> String {
     "Choose someone to follow.".to_string()
 }
 
-fn default_follow_nobody_option() -> String {
+pub(super) fn default_follow_nobody_option() -> String {
     "Nobody".to_string()
 }
 
-fn default_follow_unknown_actor_name() -> String {
+pub(super) fn default_follow_unknown_actor_name() -> String {
     "Someone".to_string()
 }
 
-fn default_room_switch_prompt() -> String {
+pub(super) fn default_room_switch_prompt() -> String {
     "Switch channels from {}.".to_string()
 }
 
-fn default_commands_panel_title() -> String {
+pub(super) fn default_commands_panel_title() -> String {
     "Commands".to_string()
 }
 
-fn default_commands_panel_empty() -> String {
+pub(super) fn default_commands_panel_empty() -> String {
     "No additional commands available.".to_string()
 }
 
-fn default_commands_group_other() -> String {
+pub(super) fn default_commands_group_other() -> String {
     "Other".to_string()
 }
 
-fn default_commands_group_support() -> String {
+pub(super) fn default_commands_group_support() -> String {
     "Support".to_string()
 }
 
-fn default_commands_group_act() -> String {
+pub(super) fn default_commands_group_act() -> String {
     "Act".to_string()
 }
 
-fn default_look_panel_title() -> String {
+pub(super) fn default_look_panel_title() -> String {
     "Look".to_string()
 }
 
-fn default_look_group_room() -> String {
+pub(super) fn default_look_group_room() -> String {
     "Room".to_string()
 }
 
-fn default_look_group_things() -> String {
+pub(super) fn default_look_group_things() -> String {
     "Things".to_string()
 }
 
-fn default_look_group_people() -> String {
+pub(super) fn default_look_group_people() -> String {
     "People".to_string()
 }
 
-fn default_perspective_review_prompt() -> String {
+pub(super) fn default_perspective_review_prompt() -> String {
     r#"Cast Member: {actor_name}
 Other: {other_person_name}
 
@@ -442,105 +400,29 @@ The review text should be 2-5 sentences in the cast member's voice — honest an
         .to_string()
 }
 
-fn default_perspective_review_system() -> String {
+pub(super) fn default_perspective_review_system() -> String {
     "You write a short review from a cast member's perspective. Respond only with valid JSON."
         .to_string()
 }
 
-fn default_book_recommender_instructions() -> String {
+pub(super) fn default_book_recommender_instructions() -> String {
     "Generate exactly 3 fictional book recommendations. Each option must be a plausible novel title paired with a one-line thematic blurb that fits this specific character and this specific conversation. None of the options should be framed as the correct answer."
         .to_string()
 }
 
-fn default_dynamic_menu_context_label() -> String {
+pub(super) fn default_dynamic_menu_context_label() -> String {
     "Context".to_string()
 }
 
-fn default_room_items_sidebar_label() -> String {
+pub(super) fn default_room_items_sidebar_label() -> String {
     "On the ground".to_string()
 }
 
-fn default_take_label() -> String {
+pub(super) fn default_take_label() -> String {
     "Take".to_string()
 }
 
-fn default_drop_label() -> String {
+pub(super) fn default_drop_label() -> String {
     "Drop".to_string()
 }
 
-impl Default for UiTextDefinition {
-    fn default() -> Self {
-        Self {
-            language_name: default_language_name(),
-            menu_button_label: default_menu_button_label(),
-            act_ended_title: default_act_ended_title(),
-            game_over_hint: default_game_over_hint(),
-            menu_option_list_title: default_menu_option_list_title(),
-            menu_choice_hint: default_menu_choice_hint(),
-            menu_choice_transcript: default_menu_choice_transcript(),
-            shell_menu_title: default_shell_menu_title(),
-            shell_menu_close_hint: default_shell_menu_close_hint(),
-            help_label: default_help_label(),
-            resume_label: default_resume_label(),
-            things_to_do_label: default_things_to_do_label(),
-            about_label: default_about_label(),
-            exit_label: default_exit_label(),
-            language_menu_label: default_language_menu_label(),
-            room_switcher_label: default_room_switcher_label(),
-            room_switcher_title: default_room_switcher_title(),
-            room_switch_transcript: default_room_switch_transcript(),
-            follow_actor_title: default_follow_actor_title(),
-            follow_actor_transcript: default_follow_actor_transcript(),
-            follow_actor_stop_transcript: default_follow_actor_stop_transcript(),
-            things_to_do_empty: default_things_to_do_empty(),
-            about_body: default_about_body(),
-            language_modal_title: default_language_modal_title(),
-            language_changed_text: default_language_changed_text(),
-            modal_close_hint: default_modal_close_hint(),
-            act_closure_title: default_act_closure_title(),
-            act_closure_current_focus_label: default_act_closure_current_focus_label(),
-            act_closure_highlights_label: default_act_closure_highlights_label(),
-            act_closure_relationships_label: default_act_closure_relationships_label(),
-            act_closure_empty_highlights: default_act_closure_empty_highlights(),
-            act_closure_empty_relationships: default_act_closure_empty_relationships(),
-            final_summary_title: default_final_summary_title(),
-            final_summary_highlights_label: default_final_summary_highlights_label(),
-            final_summary_relationships_label: default_final_summary_relationships_label(),
-            final_summary_preview_label: default_final_summary_preview_label(),
-            final_summary_empty_preview: default_final_summary_empty_preview(),
-            exit_confirm_title: default_exit_confirm_title(),
-            exit_confirm_body: default_exit_confirm_body(),
-            projector_skip_hint: default_projector_skip_hint(),
-            projector_title_prefix: default_projector_title_prefix(),
-            error_prefix: default_error_prefix(),
-            response_worker_disconnected: default_response_worker_disconnected(),
-            menu_unavailable: default_menu_unavailable(),
-            npc_tick_soft_error: default_npc_tick_soft_error(),
-            follow_actor_prompt: default_follow_actor_prompt(),
-            follow_nobody_option: default_follow_nobody_option(),
-            follow_unknown_actor_name: default_follow_unknown_actor_name(),
-            room_switch_prompt: default_room_switch_prompt(),
-            commands_panel_title: default_commands_panel_title(),
-            commands_panel_empty: default_commands_panel_empty(),
-            commands_group_other: default_commands_group_other(),
-            commands_group_support: default_commands_group_support(),
-            commands_group_act: default_commands_group_act(),
-            look_panel_title: default_look_panel_title(),
-            look_group_room: default_look_group_room(),
-            look_group_things: default_look_group_things(),
-            look_group_people: default_look_group_people(),
-            perspective_review_prompt: default_perspective_review_prompt(),
-            perspective_review_system: default_perspective_review_system(),
-            book_recommender_instructions: default_book_recommender_instructions(),
-            dynamic_menu_context_label: default_dynamic_menu_context_label(),
-            room_items_sidebar_label: default_room_items_sidebar_label(),
-            take_label: default_take_label(),
-            drop_label: default_drop_label(),
-            act_closure: ActClosureDefinition::default(),
-            game_closure: ActClosureDefinition::default(),
-            shell_menu: ShellMenuDefinition::default(),
-        }
-    }
-}
-
-// ── SystemTextDefinition default helpers ─────────────────────────────────────
