@@ -1,6 +1,6 @@
 use super::{
-    CommandEffect, CommandInputMode, CommandOutcomeMode, CommandTargetMode, ConsumableKind,
-    ItemStorageTarget, PlayerCommandTargetMode, BeatObjectiveProgressRef,
+    BeatObjectiveProgressRef, CommandEffect, CommandInputMode, CommandOutcomeMode,
+    CommandTargetMode, ConsumableKind, ItemStorageTarget, PlayerCommandTargetMode,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -156,13 +156,12 @@ pub struct ActionPlayerCommand {
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct ActionItemCreation {
     #[serde(default)]
     pub creates_item: String,
     #[serde(default)]
     pub creates_item_story_var: String,
-    #[serde(default)]
-    pub creates_item_resolve_from_target: bool,
     /// Optional item-id template for target-derived creation. The supported
     /// placeholder is `{target_actor_id}`.
     #[serde(default)]
@@ -187,11 +186,6 @@ impl ActionItemCreation {
             return self
                 .creates_item_target_template
                 .replace("{target_actor_id}", target_actor_id);
-        }
-        if self.creates_item_resolve_from_target {
-            // Backward compatibility for packs authored before target item-id
-            // templates moved this naming policy into content.
-            return format!("clip-{target_actor_id}");
         }
         self.creates_item.clone()
     }
@@ -296,4 +290,23 @@ impl ActionDefinition {
 pub struct ActionsDefinition {
     #[serde(default)]
     pub actions: Vec<ActionDefinition>,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::ActionItemCreation;
+
+    #[test]
+    fn rejects_removed_target_item_compatibility_flag() {
+        let error = serde_json::from_str::<ActionItemCreation>(
+            r#"{"creates_item_resolve_from_target":true}"#,
+        )
+        .unwrap_err();
+
+        assert!(
+            error
+                .to_string()
+                .contains("creates_item_resolve_from_target")
+        );
+    }
 }

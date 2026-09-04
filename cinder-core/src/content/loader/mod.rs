@@ -8,10 +8,9 @@ use crate::content::loader::fs::{
     read_json, read_optional_json, read_optional_json_raw, LocalizedPaths,
 };
 use crate::content::loader::index::{build_index, collect_act_cast};
-use crate::content::loader::validation::{validate_contents, PackContext};
-use crate::content::loader_validation::{
-    require_known_id, validate_actions, validate_combat_settings, validate_items,
-    validate_periodic_actor_effects,
+use crate::content::loader::validation::{
+    PackContext, require_known_id, validate_actions, validate_combat_settings, validate_contents,
+    validate_items, validate_periodic_actor_effects,
 };
 use crate::content::types::{
     ActionsDefinition, ActorDefinition, BehaviorDefinition, BeatObjectivesDefinition,
@@ -93,19 +92,15 @@ pub fn load_pack_from_dir_with_locale(
         .read_optional::<UiTextDefinition>("ui.json")?
         .unwrap_or_default();
     let system_text = read_system_text(&paths)?;
-    let opening = paths
-        .read_required_with_fallback::<OpeningDefinition>("opening.json", Some("scenario.json"))?;
+    let opening = paths.read_required::<OpeningDefinition>("opening.json")?;
     let beats = paths
-        .read_optional_with_fallback::<BeatsDefinition>("beats.json", Some("objective_flow.json"))?
+        .read_optional::<BeatsDefinition>("beats.json")?
         .unwrap_or_default();
     let menus = paths
         .read_optional::<Vec<OpeningMenuDefinition>>("menus.json")?
         .unwrap_or_default();
     let mut movies = paths
-        .read_optional_with_fallback::<Vec<OpeningMovieDefinition>>(
-            "movies.json",
-            Some("projector_sequences.json"),
-        )?
+        .read_optional::<Vec<OpeningMovieDefinition>>("movies.json")?
         .unwrap_or_default();
     let presentation = paths
         .read_optional::<PresentationDefinition>("presentation.json")?

@@ -1,8 +1,8 @@
+use super::require_known_id;
 use crate::content::types::{
-    ActionDefinition, ActCastMember, ActorDefinition, BeatDefinition, BeatObjectiveProgressRef,
+    ActCastMember, ActionDefinition, ActorDefinition, BeatDefinition, BeatObjectiveProgressRef,
     BeatObjectivesDefinition, BeatsDefinition, LevelingDefinition, MovementConfigDefinition,
 };
-use crate::content::loader_validation::require_known_id;
 use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
 
@@ -48,7 +48,12 @@ pub(crate) fn validate_contents(ctx: &PackContext<'_>) -> Result<(), Box<dyn Err
         )?;
     }
 
-    validate_beat_stages(&ctx.beats.stages, ctx.actor_ids, ctx.room_ids, ctx.stage_ids)?;
+    validate_beat_stages(
+        &ctx.beats.stages,
+        ctx.actor_ids,
+        ctx.room_ids,
+        ctx.stage_ids,
+    )?;
     validate_actors(ctx.actors, ctx.room_index, ctx.item_ids)?;
     validate_movement(ctx.movement, ctx.actor_ids, ctx.room_ids, ctx.stage_ids)?;
 
@@ -290,7 +295,10 @@ fn validate_beat_objectives(
             require_known_id(
                 &priority.command_id,
                 action_index_keys,
-                &format!("beat_objectives.json objective '{}' prioritize", objective.id),
+                &format!(
+                    "beat_objectives.json objective '{}' prioritize",
+                    objective.id
+                ),
                 "actions",
             )?;
         }
@@ -394,10 +402,7 @@ fn validate_conditional_guidance_progress(
     Ok(())
 }
 
-fn validate_act_cast(
-    act_cast: &[ActCastMember],
-    actor_ids: &[&str],
-) -> Result<(), Box<dyn Error>> {
+fn validate_act_cast(act_cast: &[ActCastMember], actor_ids: &[&str]) -> Result<(), Box<dyn Error>> {
     if act_cast.is_empty() {
         return Ok(());
     }

@@ -1,3 +1,4 @@
+use super::require_known_id;
 use crate::content::types::{
     ActionDefinition, CommandEffect, CommandTargetMode, ContentSettingsDefinition, ItemDefinition,
     PeriodicActorEffect, StatDefinition,
@@ -5,19 +6,6 @@ use crate::content::types::{
 use serde_json::Value;
 use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
-
-pub(crate) fn require_known_id(
-    id: &str,
-    known: &[&str],
-    subject: &str,
-    collection: &str,
-) -> Result<(), Box<dyn Error>> {
-    if known.contains(&id) {
-        Ok(())
-    } else {
-        Err(format!("{subject} not found in {collection}").into())
-    }
-}
 
 pub(crate) fn validate_actions(
     actions: &[ActionDefinition],

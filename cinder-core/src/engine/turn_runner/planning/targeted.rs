@@ -1,6 +1,6 @@
 use super::super::types::PlannedTurn;
-use super::observe::{plan_move_to_room_target, plan_observe_target};
 use super::PlanningContext;
+use super::observe::{plan_move_to_room_target, plan_observe_target};
 use crate::content::types::{
     ActionDefinition, CommandEffect, ContentPack, PlayerCommandTargetMode,
 };
@@ -103,13 +103,20 @@ pub(super) fn plan_targeted_state_command(
                     true
                 } else if actors_here.is_empty() {
                     planned.events.push(WorldEvent::ActionRejected {
-                        message: "There's no one here to target.".to_string(),
+                        message: content
+                            .render_message("error.no_target", &[])
+                            .unwrap_or_default(),
                     });
                     false
                 } else {
                     let names: Vec<&str> = actors_here.iter().map(|a| a.name.as_str()).collect();
                     planned.events.push(WorldEvent::ActionRejected {
-                        message: format!("Who do you want to target? Try: {}", names.join(", ")),
+                        message: content
+                            .render_message(
+                                "error.target_required",
+                                &[("actors", names.join(", ").as_str())],
+                            )
+                            .unwrap_or_default(),
                     });
                     false
                 }

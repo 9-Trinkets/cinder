@@ -86,9 +86,7 @@ fn resolved_created_item_id(
             None
         };
     }
-    if item_creation.creates_item_resolve_from_target
-        || !item_creation.creates_item_target_template.is_empty()
-    {
+    if !item_creation.creates_item_target_template.is_empty() {
         let input_val = input.unwrap_or_default().trim();
         return Some(
             resolve_actor_reference_input(
@@ -172,7 +170,9 @@ pub(super) fn plan_content_command(
             && first_actor_in_room(content, context).is_none()
         {
             planned.events.push(WorldEvent::ActionRejected {
-                message: "There is no one here to serve.".to_string(),
+                message: content
+                    .render_message("error.no_actor_to_serve", &[])
+                    .unwrap_or_default(),
             });
             return false;
         }
@@ -212,7 +212,9 @@ pub(super) fn plan_content_command(
             && first_actor_in_room(content, context).is_none()
         {
             planned.events.push(WorldEvent::ActionRejected {
-                message: "There is no one here to serve.".to_string(),
+                message: content
+                    .render_message("error.no_actor_to_serve", &[])
+                    .unwrap_or_default(),
             });
             return false;
         }

@@ -175,7 +175,6 @@ fn actor_commands_can_create_room_items_from_story_vars() {
         item_creation: Some(ActionItemCreation {
             creates_item: "garlic-noodles".to_string(),
             creates_item_story_var: "cook_recipe".to_string(),
-            creates_item_resolve_from_target: false,
             creates_item_target_template: String::new(),
             craftable_items: Vec::new(),
             craftable_item_gates: BTreeMap::new(),

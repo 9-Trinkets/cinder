@@ -9,7 +9,6 @@ import RelationshipChart from '../components/RelationshipChart'
 import MovieModal from '../components/MovieModal'
 import QuickActionPanel from '../components/QuickActionPanel'
 import ConfirmDialog from '../components/ConfirmDialog'
-import ErrorBoundary from '../components/ErrorBoundary'
 import { themeVars } from '../utils/theme'
 import { useSession } from '../hooks/useSession'
 
@@ -74,7 +73,6 @@ export default function GamePage() {
   } = session
 
   return (
-    <ErrorBoundary>
     <div className="h-dvh flex flex-col bg-surface overflow-hidden">
       <div style={uiSnapshot?.theme ? themeVars(uiSnapshot.theme) : undefined} className="contents">
       <header className="sticky top-0 z-10 bg-surface flex items-center justify-between gap-3 px-4 py-3 border-b border-subtle shrink-0">
@@ -407,6 +405,5 @@ export default function GamePage() {
         />
       )}
     </div>
-    </ErrorBoundary>
   )
 }

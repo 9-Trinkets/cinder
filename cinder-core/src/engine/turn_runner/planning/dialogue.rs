@@ -97,7 +97,9 @@ pub(super) fn plan_dialogue_command(
                 metadata.advances_time
             } else {
                 planned.events.push(WorldEvent::ActionRejected {
-                    message: "There is no one here to listen to.".to_string(),
+                    message: content
+                        .render_message("error.no_actor_to_listen", &[])
+                        .unwrap_or_default(),
                 });
                 false
             }

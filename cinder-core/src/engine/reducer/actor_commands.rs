@@ -58,14 +58,7 @@ pub(super) fn handle_actor_command_used(
     {
         lines.narration(command_text.clone());
     }
-    apply_new_command_effects(
-        state,
-        content,
-        command,
-        command_context,
-        &mut lines,
-        outbox,
-    );
+    apply_new_command_effects(state, content, command, command_context, &mut lines, outbox);
     apply_command_objective_progress_effects(state, command);
     if let Some(item_id) = resolved_created_item_id(state, content, command, command_context) {
         let storage = command
@@ -147,9 +140,7 @@ fn resolved_created_item_id(
         }
         return unlocked(default_item_id).then(|| default_item_id.clone());
     }
-    if creation.creates_item_resolve_from_target
-        || !creation.creates_item_target_template.is_empty()
-    {
+    if !creation.creates_item_target_template.is_empty() {
         return Some(creation.resolve_target_item_id(context.target_actor_id));
     }
     Some(
