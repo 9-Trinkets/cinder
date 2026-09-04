@@ -84,12 +84,12 @@ pub(super) fn build_drop_panel_options(
 
 pub(super) fn build_look_options(runtime: &CinderRuntime) -> Result<Vec<LookOptionData>, String> {
     Ok(runtime
-        .current_room_look_options()
+        .room_interactable_options()
         .map_err(|error| error.to_string())?
         .into_iter()
-        .map(|option: cinder_core::engine::runtime::LookOptionItem| LookOptionData {
+        .map(|option| LookOptionData {
             id: option.id,
-            title: option.label,
+            title: option.title,
             command: option.command,
         })
         .collect())
@@ -97,13 +97,13 @@ pub(super) fn build_look_options(runtime: &CinderRuntime) -> Result<Vec<LookOpti
 
 pub(super) fn build_talk_options(runtime: &CinderRuntime) -> Result<Vec<MenuOptionData>, String> {
     Ok(runtime
-        .current_room_talk_options()
+        .panel_options(&PanelDataSource::ActorsInRoom)
         .map_err(|error| error.to_string())?
         .into_iter()
-        .map(|option: cinder_core::engine::runtime::LookOptionItem| MenuOptionData {
+        .map(|option| MenuOptionData {
             id: option.id,
-            title: option.label.clone(),
-            menu_text: option.label,
+            title: option.title.clone(),
+            menu_text: option.title,
         })
         .collect())
 }
@@ -242,7 +242,7 @@ pub(super) fn build_panel_options(
                 PanelDataSource::ActorsInRoom => {
                     let is_attack = action.has_effect(CommandEffect::AttackTarget);
                     runtime
-                        .current_room_talk_options()
+                        .panel_options(&PanelDataSource::ActorsInRoom)
                         .map_err(|error| error.to_string())?
                         .into_iter()
                         .filter(|opt| {
@@ -260,7 +260,7 @@ pub(super) fn build_panel_options(
                             let actor_id = opt.id.strip_prefix("actor:").unwrap_or(&opt.id);
                             PanelOptionData {
                                 id: actor_id.to_string(),
-                                title: opt.label.clone(),
+                                title: opt.title.clone(),
                                 subtitle: None,
                                 command: Some(format!("{} {}", phrase, actor_id)),
                             }
@@ -268,11 +268,11 @@ pub(super) fn build_panel_options(
                         .collect()
                 }
                 PanelDataSource::Exits => runtime
-                    .room_switch_options()
+                    .panel_options(&PanelDataSource::Exits)
                     .map_err(|error| error.to_string())?
                     .into_iter()
                     .map(|opt| PanelOptionData {
-                        id: opt.command.clone(),
+                        id: opt.id.clone(),
                         title: opt.title.clone(),
                         subtitle: if opt.menu_text.is_empty() {
                             None
@@ -283,13 +283,12 @@ pub(super) fn build_panel_options(
                     })
                     .collect(),
                 PanelDataSource::Features => runtime
-                    .current_room_look_options()
+                    .panel_options(&PanelDataSource::Features)
                     .map_err(|error| error.to_string())?
                     .into_iter()
-                    .filter(|opt| opt.id.starts_with("feature:"))
                     .map(|opt| PanelOptionData {
                         id: opt.id.clone(),
-                        title: opt.label.clone(),
+                        title: opt.title.clone(),
                         subtitle: None,
                         command: Some(opt.command.clone()),
                     })
@@ -297,24 +296,26 @@ pub(super) fn build_panel_options(
                 PanelDataSource::CraftableItems => craftable_item_panel_options(
                     content, state, action, phrase,
                 ),
-                PanelDataSource::LooseRoomItems => state
-                    .loose_room_items(&state.current_room_id)
+                PanelDataSource::LooseRoomItems => runtime
+                    .panel_options(&PanelDataSource::LooseRoomItems)
+                    .map_err(|error| error.to_string())?
                     .into_iter()
-                    .map(|(item_id, _count)| loose_item_option(content, &item_id))
+                    .map(|opt| PanelOptionData {
+                        id: opt.id.clone(),
+                        title: opt.title.clone(),
+                        subtitle: None,
+                        command: Some(opt.command.clone()),
+                    })
                     .collect(),
-                PanelDataSource::InventoryItems => droppable_inventory_items(state)
+                PanelDataSource::InventoryItems => runtime
+                    .panel_options(&PanelDataSource::InventoryItems)
+                    .map_err(|error| error.to_string())?
                     .into_iter()
-                    .map(|item_id| {
-                        let label = content
-                            .item(&item_id)
-                            .map(|item| item.label.clone())
-                            .unwrap_or_else(|| item_id.clone());
-                        PanelOptionData {
-                            id: item_id.clone(),
-                            title: label,
-                            subtitle: None,
-                            command: Some(format!("drop {item_id}")),
-                        }
+                    .map(|opt| PanelOptionData {
+                        id: opt.id.clone(),
+                        title: opt.title.clone(),
+                        subtitle: None,
+                        command: Some(opt.command.clone()),
                     })
                     .collect(),
             };

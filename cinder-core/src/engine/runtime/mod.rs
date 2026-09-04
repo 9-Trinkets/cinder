@@ -51,10 +51,11 @@ impl Clone for CinderRuntime {
 }
 
 #[derive(Debug, Clone, Serialize)]
-pub struct LookOptionItem {
+pub struct PanelOption {
     pub id: String,
-    pub label: String,
+    pub title: String,
     pub command: String,
+    pub menu_text: String,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -67,15 +68,6 @@ pub struct ActiveMenuInfo {
     pub min_selections: usize,
     #[serde(default)]
     pub selected_ids: Vec<String>,
-}
-
-#[derive(Debug, Clone)]
-pub struct MenuChoiceOption {
-    pub prompt: String,
-    pub title: String,
-    pub menu_text: String,
-    pub command: String,
-    pub transcript_label: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize)]

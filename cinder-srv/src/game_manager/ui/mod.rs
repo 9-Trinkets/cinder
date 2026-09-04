@@ -4,7 +4,7 @@ mod sidebar;
 
 use cinder_core::content::loader;
 use cinder_core::content::types::{PanelDataSource, UiTextDefinition};
-use cinder_core::engine::runtime::{ActClosure, CinderRuntime, MenuChoiceOption};
+use cinder_core::engine::runtime::{ActClosure, CinderRuntime, PanelOption};
 use cinder_core::engine::state::WorldState;
 use serde::Serialize;
 use std::collections::BTreeMap;
@@ -322,7 +322,7 @@ pub(super) fn build_ui_snapshot(
         secrets_total,
         rooms: menu_option_data(
             runtime
-                .room_switch_options()
+                .panel_options(&PanelDataSource::Exits)
                 .map_err(|error| error.to_string())?,
         ),
         follow_options: menu_option_data(
@@ -364,11 +364,11 @@ pub(super) fn build_ui_snapshot(
     })
 }
 
-fn menu_option_data(options: Vec<MenuChoiceOption>) -> Vec<MenuOptionData> {
+fn menu_option_data(options: Vec<PanelOption>) -> Vec<MenuOptionData> {
     options
         .into_iter()
         .map(|option| MenuOptionData {
-            id: option.command,
+            id: option.id,
             title: option.title,
             menu_text: option.menu_text,
         })
