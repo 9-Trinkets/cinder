@@ -278,6 +278,24 @@ mod shipped_pack_load_tests {
             if pack == "layla" {
                 assert_eq!(loaded.settings.periodic_actor_effects.len(), 1);
                 assert_eq!(loaded.settings.periodic_actor_effects[0].id, "drain_sigil");
+                assert_eq!(
+                    loaded.actor("fire-elemental").unwrap().drops,
+                    BTreeMap::from([("spawn-scroll".to_string(), 1)])
+                );
+                assert_eq!(
+                    loaded
+                        .item("spawn-scroll")
+                        .map(|item| item.use_hook.as_str()),
+                    Some("item.spawn_scroll_read")
+                );
+                assert_eq!(
+                    loaded
+                        .action("trace")
+                        .and_then(|action| action.item_creation.as_ref())
+                        .and_then(|creation| creation.craftable_item_gates.get("spawn-sigil"))
+                        .map(String::as_str),
+                    Some("knows_spawn")
+                );
             }
         }
     }

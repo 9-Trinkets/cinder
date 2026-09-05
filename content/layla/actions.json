@@ -367,10 +367,12 @@
         "creates_item": "charm-sigil",
         "craftable_items": [
           "charm-sigil",
-          "drain-sigil"
+          "drain-sigil",
+          "spawn-sigil"
         ],
         "craftable_item_gates": {
-          "drain-sigil": "knows_drain"
+          "drain-sigil": "knows_drain",
+          "spawn-sigil": "knows_spawn"
         },
         "storage": "current_room"
       },
@@ -391,6 +393,42 @@
       "player_command": {
         "usage": "trace",
         "example": "trace",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "read_spawn_scroll",
+      "command": "READ SPAWN SCROLL",
+      "label": "Read Ember Scroll",
+      "group": "gear",
+      "phrases": [
+        "read spawn scroll",
+        "read ember scroll",
+        "open ember scroll",
+        "unroll ember scroll",
+        "study ember scroll"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "use_item"
+      ],
+      "item_id": "spawn-scroll",
+      "event_text": "Layla unfolds the fire-cured bark and follows the amber circle. The lines for calling life into a sigil settle into her memory.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 37
+      },
+      "player_command": {
+        "usage": "read spawn scroll",
+        "example": "read ember scroll",
         "advances_time": true,
         "input": {
           "required": false

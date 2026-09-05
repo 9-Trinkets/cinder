@@ -30,6 +30,14 @@
     "look_description": "A spiral of charcoal spirals on the bark — a diagram for sapping the strength of whatever stands within."
   },
   {
+    "id": "spawn-scroll",
+    "label": "ember scroll",
+    "kind": "misc",
+    "use_hook": "item.spawn_scroll_read",
+    "description": "A sheet of fire-cured bark marked with a round amber sigil. Reading it reveals the lines that call a creature into being.",
+    "look_description": "Amber strokes circle a tiny ember at the scroll's center — a diagram for a spawning sigil."
+  },
+  {
     "id": "iron-chisel",
     "label": "iron chisel",
     "kind": "weapon",
@@ -63,6 +71,7 @@
     "label": "spawn sigil",
     "kind": "misc",
     "description": "A round sigil drawn in living amber, warm in the hand. It holds the raw names of creatures that can be summoned to this board. What answers the call, and how strong it stands, depends on the strength of the patron who traces it.",
-    "look_description": "A disc of warm amber chalk, its spiral glowing faintly. It hums when held, like a coal climbed down into the palm."
+    "look_description": "A disc of warm amber chalk, its spiral glowing faintly. It hums against the floor like a buried coal.",
+    "trace_mark": true
   }
 ]

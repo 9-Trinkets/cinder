@@ -246,5 +246,29 @@
     "input_overlay": {
       "rules": []
     }
+  },
+  "item.spawn_scroll_read": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "set_story_var",
+            "key": "knows_spawn",
+            "value": "true"
+          },
+          {
+            "kind": "narrate_message",
+            "key": "item.spawn_scroll_read.learned"
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
   }
 }
