@@ -35,8 +35,9 @@ fn equipping_an_item_with_equip_hook_converts_surviving_tagged_actors() {
     pack.hooks.insert(
         "item.core_equipped".to_string(),
         effect_hook(vec![json!({
-            "kind": "convert_allies_by_tag",
+            "kind": "set_stance_by_tag",
             "tag": "golem",
+            "stance": "allied",
             "follows_player": true,
             "messages": ["conversion.core"],
         })]),
@@ -133,7 +134,7 @@ fn converting_tagged_actors_to_neutral_stance_clears_the_ally_label() {
     pack.hooks.insert(
         "item.crown_equipped".to_string(),
         effect_hook(vec![json!({
-            "kind": "convert_allies_by_tag",
+            "kind": "set_stance_by_tag",
             "tag": "elf",
             "stance": "neutral",
             "follows_player": false,

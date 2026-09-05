@@ -172,11 +172,11 @@ fn apply_hook_effects(
                     }
                 }
             }
-            WorldHookEffect::ConvertAlliesByTag {
+            WorldHookEffect::SetStanceByTag {
                 tag,
+                stance,
                 follows_player,
                 messages,
-                stance,
             } => {
                 let health_stat_id = &content.settings.combat.health_stat_id;
                 for actor in &content.actors {
@@ -265,20 +265,18 @@ enum WorldHookEffect {
         #[serde(default)]
         messages: Vec<String>,
     },
-    /// Turns every living actor carrying `tag` into an ally (and optionally a
-    /// follower). Already-allied and defeated actors are left untouched, so
-    /// re-firing (e.g. re-equipping an item) is idempotent.
-    ConvertAlliesByTag {
+    /// Sets the stance of every living actor carrying `tag` (e.g. charming a
+    /// golem army into allies, or a rival elf host standing down to neutral
+    /// once its king falls). Also optionally converts them into followers.
+    /// Defeated actors and actors already in the target stance are left
+    /// untouched, so re-firing (e.g. re-equipping an item) is idempotent.
+    SetStanceByTag {
         tag: String,
+        stance: ActorStance,
         #[serde(default)]
         follows_player: bool,
         #[serde(default)]
         messages: Vec<String>,
-        /// Stance to set each surviving tagged actor to. Defaults to `Allied` so
-        /// existing packs keep charming; a pack that wants a rival army to stand
-        /// down (e.g. the elves after their king falls) passes `neutral` instead.
-        #[serde(default = "default_allied_stance")]
-        stance: ActorStance,
     },
     /// Sets a story variable (e.g. a flag marking a boss as defeated).
     SetStoryVar { key: String, value: String },
@@ -314,10 +312,6 @@ where
             "delta must be an integer or integer string, got {other}"
         ))),
     }
-}
-
-fn default_allied_stance() -> ActorStance {
-    ActorStance::Allied
 }
 
 fn actor_stats_input(state: &WorldState, actor_id: &str) -> Value {

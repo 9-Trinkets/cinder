@@ -87,7 +87,7 @@
             }
           ],
           "payload_template": {
-            "kind": "convert_allies_by_tag",
+            "kind": "set_stance_by_tag",
             "tag": "elf",
             "stance": "neutral",
             "follows_player": false,
@@ -130,8 +130,9 @@
             }
           ],
           "payload_template": {
-            "kind": "convert_allies_by_tag",
+            "kind": "set_stance_by_tag",
             "tag": "sprite",
+            "stance": "allied",
             "follows_player": false,
             "messages": [
               "conversion.fire"
@@ -207,8 +208,9 @@
         {
           "conditions": [],
           "payload_template": {
-            "kind": "convert_allies_by_tag",
+            "kind": "set_stance_by_tag",
             "tag": "golem",
+            "stance": "allied",
             "follows_player": true,
             "messages": [
               "conversion.ring"
