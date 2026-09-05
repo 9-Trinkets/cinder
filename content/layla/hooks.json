@@ -90,6 +90,9 @@
             "kind": "set_stance_by_tag",
             "tag": "elf",
             "stance": "neutral",
+            "from_stances": [
+              "hostile"
+            ],
             "follows_player": false,
             "messages": []
           }

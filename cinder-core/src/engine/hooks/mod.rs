@@ -175,6 +175,7 @@ fn apply_hook_effects(
             WorldHookEffect::SetStanceByTag {
                 tag,
                 stance,
+                from_stances,
                 follows_player,
                 messages,
             } => {
@@ -190,6 +191,9 @@ fn apply_hook_effects(
                         continue;
                     }
                     let mut relationship = state.relationship(&actor.id);
+                    if !from_stances.is_empty() && !from_stances.contains(&relationship.stance) {
+                        continue;
+                    }
                     if relationship.stance == stance {
                         continue;
                     }
@@ -265,14 +269,17 @@ enum WorldHookEffect {
         #[serde(default)]
         messages: Vec<String>,
     },
-    /// Sets the stance of every living actor carrying `tag` (e.g. charming a
-    /// golem army into allies, or a rival elf host standing down to neutral
-    /// once its king falls). Also optionally converts them into followers.
+    /// Sets the stance of matching living actors carrying `tag` (e.g. charming
+    /// a golem army into allies, or hostile elves standing down once their king
+    /// falls). `from_stances` can preserve actors already changed by another
+    /// effect. Also optionally converts matching actors into followers.
     /// Defeated actors and actors already in the target stance are left
     /// untouched, so re-firing (e.g. re-equipping an item) is idempotent.
     SetStanceByTag {
         tag: String,
         stance: ActorStance,
+        #[serde(default)]
+        from_stances: Vec<ActorStance>,
         #[serde(default)]
         follows_player: bool,
         #[serde(default)]

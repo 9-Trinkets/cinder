@@ -137,6 +137,7 @@ fn converting_tagged_actors_to_neutral_stance_clears_the_ally_label() {
             "kind": "set_stance_by_tag",
             "tag": "elf",
             "stance": "neutral",
+            "from_stances": ["hostile"],
             "follows_player": false,
             "messages": [],
         })]),
@@ -150,19 +151,24 @@ fn converting_tagged_actors_to_neutral_stance_clears_the_ally_label() {
         event_text: "{actor_name} claims the king's crown.".to_string(),
         ..ActionDefinition::default()
     });
-    // One surviving hostile elf and one dead elf.
+    // One surviving hostile elf, one previously charmed elf, and one dead elf.
     let mut elf_living = test_actor("elf-guard", "elf guard", KITCHEN_ID);
     elf_living.tags = vec!["elf".to_string()];
     elf_living.initial_stats = BTreeMap::from([("stamina".to_string(), 8)]);
+    let mut elf_charmed = test_actor("elf-charmed", "charmed elf", KITCHEN_ID);
+    elf_charmed.tags = vec!["elf".to_string()];
+    elf_charmed.initial_stats = BTreeMap::from([("stamina".to_string(), 8)]);
     let mut elf_dead = test_actor("elf-fallen", "fallen elf", KITCHEN_ID);
     elf_dead.tags = vec!["elf".to_string()];
     elf_dead.initial_stats = BTreeMap::from([("stamina".to_string(), 0)]);
-    pack.actors.extend([elf_living, elf_dead]);
+    pack.actors.extend([elf_living, elf_charmed, elf_dead]);
     rebuild_test_pack_indexes(&mut pack);
 
     let mut state = WorldState::new(&pack);
     state.current_room_id = LOUNGE_ID.to_string();
     state.set_stance("elf-guard", ActorStance::Hostile);
+    state.set_stance("elf-charmed", ActorStance::Allied);
+    state.set_follows_player("elf-charmed", true);
     state.add_item("king-crown");
 
     drive_actor_command(
@@ -183,9 +189,11 @@ fn converting_tagged_actors_to_neutral_stance_clears_the_ally_label() {
         },
     );
 
-    // The surviving elf stands down to neutral; the dead elf is left untouched.
+    // The hostile elf stands down; the charmed ally and dead elf are untouched.
     assert_eq!(state.stance("elf-guard"), ActorStance::Neutral);
     assert!(!state.relationship("elf-guard").follows_player);
+    assert_eq!(state.stance("elf-charmed"), ActorStance::Allied);
+    assert!(state.relationship("elf-charmed").follows_player);
     assert_eq!(state.stance("elf-fallen"), ActorStance::Neutral);
 
     // A hostile actor turned neutral renders without the "(ally)" suffix.
