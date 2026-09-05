@@ -6502,7 +6502,7 @@
     ],
     "exits": [
       {
-        "room_id": "o6",
+        "room_id": "o7",
         "label": "Clockwise",
         "aliases": [
           "cw"
@@ -6510,7 +6510,7 @@
         "menu_label": "Clockwise"
       },
       {
-        "room_id": "o7",
+        "room_id": "o6",
         "label": "Counter-clockwise",
         "aliases": [
           "ccw"
@@ -6558,7 +6558,7 @@
         "menu_label": "Clockwise"
       },
       {
-        "room_id": "o12",
+        "room_id": "oan",
         "label": "Counter-clockwise",
         "aliases": [
           "ccw",
@@ -6763,7 +6763,7 @@
     ],
     "exits": [
       {
-        "room_id": "o7",
+        "room_id": "oas",
         "label": "Clockwise",
         "aliases": [
           "cw",
@@ -6816,7 +6816,7 @@
         "menu_label": "Clockwise"
       },
       {
-        "room_id": "o6",
+        "room_id": "oas",
         "label": "Counter-clockwise",
         "aliases": [
           "ccw",
@@ -7021,7 +7021,7 @@
     ],
     "exits": [
       {
-        "room_id": "o1",
+        "room_id": "oan",
         "label": "Clockwise",
         "aliases": [
           "cw",
