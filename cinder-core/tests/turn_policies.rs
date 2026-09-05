@@ -22,6 +22,7 @@ fn equipment_pack() -> ContentPack {
         use_hook: String::new(),
         equip_hook: String::new(),
         look_description: String::new(),
+        trace_mark: false,
     });
     pack.actions.push(ActionDefinition {
         id: "equip".to_string(),

@@ -278,7 +278,9 @@ fn action_has_available_target(
             })
         }),
         PanelDataSource::Exits | PanelDataSource::Features => true,
-        PanelDataSource::LooseRoomItems => !state.loose_room_items(room_id).is_empty(),
+        PanelDataSource::LooseRoomItems => state.loose_room_items(room_id).iter().any(|(item_id, _)| {
+            content.item(item_id).is_none_or(|item| item.is_takeable())
+        }),
         PanelDataSource::InventoryItems => state
             .player_inventory
             .iter()

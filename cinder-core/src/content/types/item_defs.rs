@@ -44,10 +44,20 @@ pub struct ItemDefinition {
     /// room marks (e.g. chalk drawings) read as part of the room, not loot.
     #[serde(default)]
     pub look_description: String,
+    /// Whether this item is a persistent room mark (e.g. a chalk sigil)
+    /// rather than a portable object. Trace marks cannot be picked up via the
+    /// generic `take <item>` command and, once created in a room, cannot be
+    /// dropped or relocated there by the player.
+    #[serde(default)]
+    pub trace_mark: bool,
 }
 
 impl ItemDefinition {
     pub fn is_equippable(&self) -> bool {
         !self.equip_slot.is_empty()
+    }
+
+    pub fn is_takeable(&self) -> bool {
+        !self.trace_mark
     }
 }

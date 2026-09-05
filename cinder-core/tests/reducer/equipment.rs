@@ -26,6 +26,7 @@ fn equipping_an_item_with_equip_hook_converts_surviving_tagged_actors() {
             use_hook: String::new(),
             equip_hook: "item.core_equipped".to_string(),
             look_description: String::new(),
+            trace_mark: false,
         });
     pack.messages.insert(
         "conversion.core".to_string(),

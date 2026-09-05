@@ -26,18 +26,18 @@ impl CinderRuntime {
             PanelDataSource::LooseRoomItems => state
                 .loose_room_items(current_room_id)
                 .into_iter()
-                .map(|(item_id, _count)| {
-                    let title = self
-                        .content
-                        .item(&item_id)
-                        .map(|item| item.label.clone())
-                        .unwrap_or_else(|| item_id.clone());
-                    PanelOption {
-                        id: item_id.clone(),
-                        title,
-                        command: format!("take {item_id}"),
-                        menu_text: String::new(),
+                .filter_map(|(item_id, _count)| {
+                    let item = self.content.item(&item_id)?;
+                    if !item.is_takeable() {
+                        return None;
                     }
+                    Some((item_id.clone(), item.label.clone()))
+                })
+                .map(|(item_id, title)| PanelOption {
+                    id: item_id.clone(),
+                    title,
+                    command: format!("take {item_id}"),
+                    menu_text: String::new(),
                 })
                 .collect(),
             PanelDataSource::InventoryItems => self.inventory_panel_options(&state),

@@ -99,16 +99,34 @@ fn plan_take_command(
         return false;
     }
     let target_lower = trimmed.to_ascii_lowercase();
-    let matched = loose.iter().find(|(item_id, _count)| {
-        content
-            .item(item_id)
-            .is_some_and(|item| {
-                item.id.eq_ignore_ascii_case(&target_lower)
-                    || item.label.eq_ignore_ascii_case(&target_lower)
-            })
-    });
+    let mut matched = None;
+    let mut trace_label = None;
+    for (item_id, _count) in &loose {
+        let Some(item) = content.item(item_id) else {
+            continue;
+        };
+        let named = item.id.eq_ignore_ascii_case(&target_lower)
+            || item.label.eq_ignore_ascii_case(&target_lower);
+        if !named {
+            continue;
+        }
+        if item.is_takeable() {
+            matched = Some(item_id);
+        } else {
+            trace_label = Some(item.label.as_str());
+        }
+        break;
+    }
+    if let Some(label) = trace_label {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content
+                .render_message("item.takedenied", &[("label", label)])
+                .unwrap_or_default(),
+        });
+        return false;
+    }
     match matched {
-        Some((item_id, _count)) => {
+        Some(item_id) => {
             planned.events.push(WorldEvent::PlayerTookItem {
                 item_id: item_id.clone(),
             });
@@ -165,6 +183,9 @@ fn plan_drop_command(
         .iter()
         .find_map(|(item_id, _)| {
             content.item(item_id).and_then(|item| {
+                if !item.is_takeable() {
+                    return None;
+                }
                 if item_matches((item_id.as_str(), item.label.as_str())) {
                     Some((item_id.clone(), item.label.clone()))
                 } else {

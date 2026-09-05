@@ -412,3 +412,86 @@ fn drop_and_pick_up_item_move_it_between_inventory_and_room() {
     assert!(state.has_item("stone-marker"));
     assert!(state.loose_room_items(LOUNGE_ID).is_empty());
 }
+
+#[test]
+fn player_take_is_denied_for_trace_mark_items() {
+    let mut pack = reducer_test_pack();
+    pack.items = vec![ItemDefinition {
+        id: "chalk-sigil".to_string(),
+        label: "chalk sigil".to_string(),
+        description: "A chalk mark drawn on the floor.".to_string(),
+        trace_mark: true,
+        ..ItemDefinition::default()
+    }];
+    rebuild_test_pack_indexes(&mut pack);
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = KITCHEN_ID.to_string();
+
+    apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::ItemAcquired {
+            item_id: "chalk-sigil".to_string(),
+            storage: ItemStorageTarget::CurrentRoom,
+        })],
+    );
+    assert!(state.has_item_in_storage(
+        "chalk-sigil",
+        ItemStorageTarget::CurrentRoom,
+        KITCHEN_ID
+    ));
+
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::PlayerTookItem {
+            item_id: "chalk-sigil".to_string(),
+        })],
+    );
+
+    assert!(
+        state.has_item_in_storage("chalk-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID),
+        "trace mark must stay anchored in the room"
+    );
+    assert!(!state.has_item("chalk-sigil"), "trace mark cannot enter inventory");
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|line| line.text.contains("can't carry it away")),
+        "take denial should narrate the takedenied line"
+    );
+}
+
+#[test]
+fn player_drop_is_denied_for_trace_mark_items() {
+    let mut pack = reducer_test_pack();
+    pack.items = vec![ItemDefinition {
+        id: "chalk-sigil".to_string(),
+        label: "chalk sigil".to_string(),
+        description: "A chalk mark drawn on the floor.".to_string(),
+        trace_mark: true,
+        ..ItemDefinition::default()
+    }];
+    rebuild_test_pack_indexes(&mut pack);
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = KITCHEN_ID.to_string();
+    state.add_item("chalk-sigil");
+
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::PlayerDroppedItem {
+            item_id: "chalk-sigil".to_string(),
+        })],
+    );
+
+    assert!(state.has_item("chalk-sigil"), "trace mark should not be droppable");
+    assert!(state.loose_room_items(KITCHEN_ID).is_empty());
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|line| line.text.contains("can't carry it away"))
+    );
+}

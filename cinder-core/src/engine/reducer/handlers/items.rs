@@ -47,6 +47,12 @@ pub(crate) fn handle_player_took_item(
         .item(item_id)
         .map(|i| i.label.as_str())
         .unwrap_or(item_id);
+    if content.item(item_id).is_some_and(|item| !item.is_takeable()) {
+        if let Some(line) = content.render_message("item.takedenied", &[("label", label)]) {
+            lines.narration(line);
+        }
+        return;
+    }
     if state.remove_item_from_storage(item_id, ItemStorageTarget::CurrentRoom, &room_id) {
         state.add_item(item_id);
         if let Some(line) = content.render_message("item.taken", &[("label", label)]) {
@@ -68,6 +74,12 @@ pub(crate) fn handle_player_dropped_item(
         .item(item_id)
         .map(|i| i.label.as_str())
         .unwrap_or(item_id);
+    if content.item(item_id).is_some_and(|item| !item.is_takeable()) {
+        if let Some(line) = content.render_message("item.takedenied", &[("label", label)]) {
+            lines.narration(line);
+        }
+        return;
+    }
     if state.remove_item(item_id) {
         state.add_item_to_storage(item_id, ItemStorageTarget::CurrentRoom, &room_id);
         if let Some(line) = content.render_message("item.dropped", &[("label", label)]) {

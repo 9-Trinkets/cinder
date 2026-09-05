@@ -11,6 +11,7 @@
   "item.take_nothing": "There's nothing here to take.",
   "item.take_not_here": "There's no such thing here to take.",
   "item.taken": "You take the {label}.",
+  "item.takedenied": "The {label} is part of the floor now; you can't carry it away.",
   "item.drop_nothing": "You have nothing to drop.",
   "item.drop_not_have": "You don't have that to drop.",
   "item.drop_equipped": "Unequip the {label} before dropping it.",
