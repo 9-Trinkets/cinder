@@ -66,21 +66,13 @@ pub(super) fn build_party_members(
     content: &ContentPack,
 ) -> Vec<PartyMember> {
     let mut members: Vec<PartyMember> = Vec::new();
-    for actor_id in state
-        .relationships
-        .iter()
-        .filter_map(|(actor_id, relationship)| {
-            (relationship.follows_player
-                && actor_id.as_str() != content.settings.combat.player_actor_id)
-                .then_some(actor_id)
-        })
-    {
+    for actor_id in living_follower_ids(state, content) {
         let label = runtime
-            .actor_display_name(actor_id)
+            .actor_display_name(&actor_id)
             .ok()
             .flatten()
             .unwrap_or_else(|| actor_id.clone());
-        let level = state.actor_level(actor_id);
+        let level = state.actor_level(&actor_id);
         if let Some(member) = members.iter_mut().find(|m| m.label == label) {
             member.count += 1;
         } else {
@@ -93,6 +85,19 @@ pub(super) fn build_party_members(
     }
     members.sort_by(|a, b| a.label.cmp(&b.label));
     members
+}
+
+fn living_follower_ids(state: &WorldState, content: &ContentPack) -> Vec<String> {
+    state
+        .relationships
+        .iter()
+        .filter_map(|(actor_id, relationship)| {
+            (relationship.follows_player
+                && actor_id.as_str() != content.settings.combat.player_actor_id
+                && !state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id))
+            .then(|| actor_id.clone())
+        })
+        .collect()
 }
 
 pub(super) fn build_equipped_items(
@@ -161,4 +166,26 @@ pub(super) fn build_current_room_items(
             }
         })
         .collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use cinder_core::engine::test_fixtures::minimal_test_pack;
+
+    #[test]
+    fn defeated_followers_are_excluded_from_the_party() {
+        let mut content = minimal_test_pack();
+        content.settings.combat.health_stat_id = "stamina".to_string();
+        let living_id = content.actors[0].id.clone();
+        let defeated_id = content.actors[1].id.clone();
+        let mut state = WorldState::new(&content);
+        state.set_follows_player(&living_id, true);
+        state.set_follows_player(&defeated_id, true);
+        state
+            .adjust_actor_stat(&defeated_id, "stamina", -100)
+            .unwrap();
+
+        assert_eq!(living_follower_ids(&state, &content), vec![living_id]);
+    }
 }
