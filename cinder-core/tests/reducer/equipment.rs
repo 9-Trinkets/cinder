@@ -107,6 +107,111 @@ fn equipping_an_item_with_equip_hook_converts_surviving_tagged_actors() {
 }
 
 #[test]
+fn converting_tagged_actors_to_neutral_stance_clears_the_ally_label() {
+    let mut pack = reducer_test_pack();
+    pack.settings.combat = cinder_core::content::types::CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_ID.to_string(),
+        health_stat_id: "stamina".to_string(),
+        attack_stat_id: "confidence".to_string(),
+        defense_stat_id: "hunger".to_string(),
+        ..cinder_core::content::types::CombatSettingsDefinition::default()
+    };
+    pack.settings.equipment_slots = ["trinket".to_string()].into_iter().collect();
+    pack.items
+        .push(cinder_core::content::types::ItemDefinition {
+            id: "king-crown".to_string(),
+            label: "king crown".to_string(),
+            description: "The dead king's crown.".to_string(),
+            kind: cinder_core::content::types::ItemKind::Trinket,
+            equip_slot: "trinket".to_string(),
+            stat_bonuses: BTreeMap::new(),
+            use_hook: String::new(),
+            equip_hook: "item.crown_equipped".to_string(),
+            look_description: String::new(),
+            trace_mark: false,
+        });
+    pack.hooks.insert(
+        "item.crown_equipped".to_string(),
+        effect_hook(vec![json!({
+            "kind": "convert_allies_by_tag",
+            "tag": "elf",
+            "stance": "neutral",
+            "follows_player": false,
+            "messages": [],
+        })]),
+    );
+    pack.actions.push(ActionDefinition {
+        id: "equip-crown".to_string(),
+        command: "equip-crown".to_string(),
+        target_mode: CommandTargetMode::None,
+        effects: vec![CommandEffect::EquipItem],
+        item_id: "king-crown".to_string(),
+        event_text: "{actor_name} claims the king's crown.".to_string(),
+        ..ActionDefinition::default()
+    });
+    // One surviving hostile elf and one dead elf.
+    let mut elf_living = test_actor("elf-guard", "elf guard", KITCHEN_ID);
+    elf_living.tags = vec!["elf".to_string()];
+    elf_living.initial_stats = BTreeMap::from([("stamina".to_string(), 8)]);
+    let mut elf_dead = test_actor("elf-fallen", "fallen elf", KITCHEN_ID);
+    elf_dead.tags = vec!["elf".to_string()];
+    elf_dead.initial_stats = BTreeMap::from([("stamina".to_string(), 0)]);
+    pack.actors.extend([elf_living, elf_dead]);
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    state.set_stance("elf-guard", ActorStance::Hostile);
+    state.add_item("king-crown");
+
+    drive_actor_command(
+        &mut state,
+        &pack,
+        "equip-crown",
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: LOUNGE_ID,
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        },
+    );
+
+    // The surviving elf stands down to neutral; the dead elf is left untouched.
+    assert_eq!(state.stance("elf-guard"), ActorStance::Neutral);
+    assert!(!state.relationship("elf-guard").follows_player);
+    assert_eq!(state.stance("elf-fallen"), ActorStance::Neutral);
+
+    // A hostile actor turned neutral renders without the "(ally)" suffix.
+    pack.presentation.presentation_text.ally_suffix = " (ally)".to_string();
+    pack.presentation.presentation_text.hostile_suffix = " (enemy)".to_string();
+    pack.presentation.presentation_text.room_observation =
+        "{room_title} {body} {people}".to_string();
+    pack.presentation.presentation_text.people = "Here: {people}.".to_string();
+    state.current_room_id = KITCHEN_ID.to_string();
+    let text = cinder_core::engine::reducer::apply_events(
+        &mut state,
+        &pack,
+        &[cinder_core::engine::events::TimestampedWorldEvent::now(
+            cinder_core::engine::events::WorldEvent::CurrentRoomObserved {
+                room_id: KITCHEN_ID.to_string(),
+                mode: cinder_core::engine::events::ObservationMode::Summary,
+            },
+        )],
+    )
+    .lines
+    .to_text();
+    assert!(!text.contains("elf guard (ally)"), "got: {text}");
+    assert!(!text.contains("elf guard (enemy)"), "got: {text}");
+    assert!(text.contains("elf guard"), "got: {text}");
+}
+
+#[test]
 fn equip_and_unequip_change_effective_stats_and_inventory() {
     let pack = equipment_test_pack();
     let mut state = WorldState::new(&pack);

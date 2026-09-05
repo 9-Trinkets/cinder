@@ -89,6 +89,7 @@
           "payload_template": {
             "kind": "convert_allies_by_tag",
             "tag": "elf",
+            "stance": "neutral",
             "follows_player": false,
             "messages": []
           }

@@ -176,6 +176,7 @@ fn apply_hook_effects(
                 tag,
                 follows_player,
                 messages,
+                stance,
             } => {
                 let health_stat_id = &content.settings.combat.health_stat_id;
                 for actor in &content.actors {
@@ -189,10 +190,10 @@ fn apply_hook_effects(
                         continue;
                     }
                     let mut relationship = state.relationship(&actor.id);
-                    if relationship.stance == ActorStance::Allied {
+                    if relationship.stance == stance {
                         continue;
                     }
-                    relationship.stance = ActorStance::Allied;
+                    relationship.stance = stance;
                     relationship.follows_player = follows_player;
                     state.set_relationship(&actor.id, relationship);
                     if let Some(lines) = lines.as_deref_mut() {
@@ -273,6 +274,11 @@ enum WorldHookEffect {
         follows_player: bool,
         #[serde(default)]
         messages: Vec<String>,
+        /// Stance to set each surviving tagged actor to. Defaults to `Allied` so
+        /// existing packs keep charming; a pack that wants a rival army to stand
+        /// down (e.g. the elves after their king falls) passes `neutral` instead.
+        #[serde(default = "default_allied_stance")]
+        stance: ActorStance,
     },
     /// Sets a story variable (e.g. a flag marking a boss as defeated).
     SetStoryVar { key: String, value: String },
@@ -308,6 +314,10 @@ where
             "delta must be an integer or integer string, got {other}"
         ))),
     }
+}
+
+fn default_allied_stance() -> ActorStance {
+    ActorStance::Allied
 }
 
 fn actor_stats_input(state: &WorldState, actor_id: &str) -> Value {
