@@ -603,5 +603,119 @@
       "defense": 3
     },
     "prompt_context": {}
+  },
+  {
+    "id": "fire-elemental",
+    "name": "fire elemental",
+    "room_id": "oh",
+    "aliases": [
+      "fire elemental",
+      "elemental",
+      "fire",
+      "the elemental"
+    ],
+    "tags": [
+      "elemental",
+      "fire"
+    ],
+    "inspect_text": "It is not quite a body, not quite a flame. The shape in the pit holds itself together out of memory: a wide, patient form, made of the board's old fire. It does not flicker. It holds. A spiral of warmth beats slow inside it.",
+    "attackable": true,
+    "attack_kind": "fire",
+    "resistances": {
+      "physical": 100000
+    },
+    "attack_interval_minutes": 2,
+    "initial_hostile": true,
+    "drops": {
+      "spawn-sigil": 1
+    },
+    "initial_stats": {
+      "hp": 18,
+      "strength": 3,
+      "defense": 2
+    },
+    "prompt_context": {},
+    "guard": false
+  },
+  {
+    "id": "fire-sprite-1",
+    "name": "fire sprite",
+    "room_id": "o2",
+    "aliases": [
+      "sprite",
+      "fire sprite",
+      "wisp",
+      "spark"
+    ],
+    "tags": [
+      "sprite",
+      "fire"
+    ],
+    "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
+    "attackable": true,
+    "attack_kind": "fire",
+    "attack_interval_minutes": 1,
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "hp": 4,
+      "strength": 2,
+      "defense": 0
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "fire-sprite-2",
+    "name": "fire sprite",
+    "room_id": "o6",
+    "aliases": [
+      "sprite",
+      "fire sprite",
+      "wisp",
+      "spark"
+    ],
+    "tags": [
+      "sprite",
+      "fire"
+    ],
+    "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
+    "attackable": true,
+    "attack_kind": "fire",
+    "attack_interval_minutes": 1,
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "hp": 4,
+      "strength": 2,
+      "defense": 0
+    },
+    "prompt_context": {}
+  },
+  {
+    "id": "fire-sprite-3",
+    "name": "fire sprite",
+    "room_id": "o10",
+    "aliases": [
+      "sprite",
+      "fire sprite",
+      "wisp",
+      "spark"
+    ],
+    "tags": [
+      "sprite",
+      "fire"
+    ],
+    "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
+    "attackable": true,
+    "attack_kind": "fire",
+    "attack_interval_minutes": 1,
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "hp": 4,
+      "strength": 2,
+      "defense": 0
+    },
+    "prompt_context": {}
   }
 ]

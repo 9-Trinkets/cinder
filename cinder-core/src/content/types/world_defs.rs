@@ -437,6 +437,18 @@ pub struct ActorDefinition {
     /// attack on sight, like the level-2 elf army).
     #[serde(default)]
     pub initial_hostile: bool,
+    /// The element this actor's basic attacks deal (e.g. "physical", "fire").
+    /// Resistances on the *target* are consulted against this key. Empty
+    /// defaults to "physical".
+    #[serde(default)]
+    pub attack_kind: String,
+    /// Damage reduction per damage kind (arbitrary element strings like
+    /// "physical", "fire"). Each attack of that kind is reduced by the value;
+    /// when it reaches zero the fully-resisted hit narrates `combat.no_effect`
+    /// instead of `combat.attack_hit`. Partial resistance and weakness (via
+    /// negative values) work through the same map.
+    #[serde(default)]
+    pub resistances: BTreeMap<String, i32>,
     pub prompt_context: ActorPromptContext,
     #[serde(default)]
     pub act_cast: Option<ActorActCast>,
@@ -447,6 +459,16 @@ pub struct ActorDefinition {
 impl ActorDefinition {
     pub fn attack_interval_minutes(&self, default_minutes: u32) -> u32 {
         self.attack_interval_minutes.unwrap_or(default_minutes)
+    }
+
+    /// The element this actor's attacks deal, defaulting to "physical" when
+    /// the pack omits `attack_kind`.
+    pub fn attack_kind(&self) -> &str {
+        if self.attack_kind.is_empty() {
+            "physical"
+        } else {
+            &self.attack_kind
+        }
     }
 }
 

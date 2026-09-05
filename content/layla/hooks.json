@@ -60,6 +60,20 @@
             }
           ],
           "payload_template": {
+            "kind": "set_story_var",
+            "key": "elf_king_defeated",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "elf-king-5"
+            }
+          ],
+          "payload_template": {
             "kind": "narrate_message",
             "key": "king.defeated"
           }
@@ -77,6 +91,50 @@
             "tag": "elf",
             "follows_player": false,
             "messages": []
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "fire-elemental"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "elemental.release"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "fire-elemental"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "elemental_released",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "fire-elemental"
+            }
+          ],
+          "payload_template": {
+            "kind": "convert_allies_by_tag",
+            "tag": "sprite",
+            "follows_player": false,
+            "messages": [
+              "conversion.fire"
+            ]
           }
         }
       ]

@@ -55,5 +55,12 @@
     },
     "equip_hook": "item.ring_equipped",
     "description": "A heavy ring of dark stone, still warm. Slid onto her finger, the surviving golems bow to her will."
+  },
+  {
+    "id": "spawn-sigil",
+    "label": "spawn sigil",
+    "kind": "misc",
+    "description": "A round sigil drawn in living amber, warm in the hand. It holds the raw names of creatures that can be summoned to this board. What answers the call, and how strong it stands, depends on the strength of the patron who traces it.",
+    "look_description": "A disc of warm amber chalk, its spiral glowing faintly. It hums when held, like a coal climbed down into the palm."
   }
 ]

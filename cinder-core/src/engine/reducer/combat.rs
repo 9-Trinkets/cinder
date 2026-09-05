@@ -101,40 +101,54 @@ pub(super) fn apply_attack_target(
         .iter()
         .map(|actor_id| ally_attack_contribution(state, content, actor_id))
         .fold(0, i32::saturating_add);
-    let total_damage = base_damage + ally_damage;
-    let remaining = adjust_actor_stat(
-        state,
-        target_actor_id,
-        &combat.health_stat_id,
-        -total_damage,
-    );
+    let raw_damage = base_damage + ally_damage;
+    let attack_kind = content
+        .actor(&combat.player_actor_id)
+        .map(|actor| actor.attack_kind())
+        .unwrap_or("physical");
+    let total_damage = resisted_damage(content, target_actor_id, attack_kind, raw_damage);
     let target_name = actor_display_name(content, target_actor_id);
-    if let Some(line) = content.render_message(
-        "combat.attack_hit",
-        &[
-            ("actor", target_name.as_str()),
-            ("damage", total_damage.to_string().as_str()),
-            ("remaining", remaining.to_string().as_str()),
-        ],
-    ) {
-        lines.narration(line);
-    }
-    for ally_id in &allied_participants {
-        let ally_damage = ally_attack_contribution(state, content, ally_id);
-        let ally_name = actor_display_name(content, ally_id);
+    if raw_damage > 0 && total_damage == 0 {
         if let Some(line) = content.render_message(
-            "combat.ally_joins_attack",
+            "combat.no_effect",
+            &[("actor", target_name.as_str()), ("kind", attack_kind)],
+        ) {
+            lines.narration(line);
+        }
+    } else {
+        let remaining = adjust_actor_stat(
+            state,
+            target_actor_id,
+            &combat.health_stat_id,
+            -total_damage,
+        );
+        if let Some(line) = content.render_message(
+            "combat.attack_hit",
             &[
-                ("actor", ally_name.as_str()),
-                ("damage", ally_damage.to_string().as_str()),
+                ("actor", target_name.as_str()),
+                ("damage", total_damage.to_string().as_str()),
+                ("remaining", remaining.to_string().as_str()),
             ],
         ) {
             lines.narration(line);
         }
-    }
-    if remaining <= 0 {
-        defeat_actor(state, content, target_actor_id, room_id, lines);
-        return;
+        for ally_id in &allied_participants {
+            let ally_damage = ally_attack_contribution(state, content, ally_id);
+            let ally_name = actor_display_name(content, ally_id);
+            if let Some(line) = content.render_message(
+                "combat.ally_joins_attack",
+                &[
+                    ("actor", ally_name.as_str()),
+                    ("damage", ally_damage.to_string().as_str()),
+                ],
+            ) {
+                lines.narration(line);
+            }
+        }
+        if remaining <= 0 {
+            defeat_actor(state, content, target_actor_id, room_id, lines);
+            return;
+        }
     }
     let mut relationship = state.relationship(target_actor_id);
     if relationship.stance != ActorStance::Allied && relationship.stance != ActorStance::Hostile {
@@ -162,6 +176,18 @@ pub(super) fn actor_display_name(content: &ContentPack, actor_id: &str) -> Strin
         .actor(actor_id)
         .map(|actor| actor.name.clone())
         .unwrap_or_else(|| actor_id.to_string())
+}
+
+/// Applies a target actor's content-declared resistance to `damage` dealt in
+/// `kind`. Each point of resistance removes that much damage; the result is
+/// floored at zero so a fully-resisted hit yields true immunity (no minimum
+/// damage floor survives resistance). Negative resistance amplifies damage.
+pub(super) fn resisted_damage(content: &ContentPack, target_actor_id: &str, kind: &str, damage: i32) -> i32 {
+    let resistance = content
+        .actor(target_actor_id)
+        .map(|actor| actor.resistances.get(kind).copied().unwrap_or(0))
+        .unwrap_or(0);
+    (damage - resistance).max(0)
 }
 
 /// Runs the shared defeat sequence for an actor whose health reached zero.

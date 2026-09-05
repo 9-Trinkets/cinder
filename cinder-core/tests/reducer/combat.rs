@@ -418,3 +418,218 @@ fn defeating_an_actor_awards_full_xp_to_every_party_member_with_own_curve() {
         "Alex should be +5 stamina; Alex={alex_stamina}, Blair={blair_stamina}"
     );
 }
+
+#[test]
+fn fully_resisted_attack_deals_zero_and_narrates_no_effect() {
+    let mut pack = equipment_test_pack();
+    pack.actions.push(ActionDefinition {
+        id: "attack".to_string(),
+        command: "attack".to_string(),
+        target_mode: CommandTargetMode::Actor,
+        effects: vec![CommandEffect::AttackTarget],
+        event_text: "{actor_name} strikes {target_actor_name}.".to_string(),
+        ..ActionDefinition::default()
+    });
+    pack.messages.insert(
+        "combat.attack_hit".to_string(),
+        "{actor} takes {damage} damage ({remaining} remaining).".to_string(),
+    );
+    pack.messages.insert(
+        "combat.no_effect".to_string(),
+        "The {actor} is wholly unharmed by {kind}.".to_string(),
+    );
+    let mut golem = test_actor("golem", "obsidian golem", LOUNGE_ID);
+    golem.attackable = true;
+    golem.initial_stats = BTreeMap::from([("stamina".to_string(), 10)]);
+    golem.resistances = BTreeMap::from([("physical".to_string(), 999)]);
+    pack.actors.push(golem);
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+
+    let lines = drive_actor_command(
+        &mut state,
+        &pack,
+        "attack",
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: LOUNGE_ID,
+            target_room_id: None,
+            target_actor_id: Some("golem"),
+            target_actor_name: Some("obsidian golem"),
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        },
+    )
+    .lines;
+
+    assert_eq!(state.actor_stat("golem", "stamina"), 10);
+    assert!(!state.actor_is_defeated("golem", "stamina"));
+    assert_eq!(state.stance("golem"), ActorStance::Hostile);
+    let transcript = lines
+        .iter()
+        .map(|line| line.text.as_str())
+        .collect::<Vec<_>>()
+        .join("\n");
+    assert!(
+        transcript.contains("wholly unharmed by physical"),
+        "expected no_effect narration, got: {transcript}"
+    );
+    assert!(
+        !transcript.contains("takes"),
+        "expected no attack_hit narration, got: {transcript}"
+    );
+}
+
+#[test]
+fn partial_resistance_reduces_attack_damage() {
+    let mut pack = equipment_test_pack();
+    pack.actions.push(ActionDefinition {
+        id: "attack".to_string(),
+        command: "attack".to_string(),
+        target_mode: CommandTargetMode::Actor,
+        effects: vec![CommandEffect::AttackTarget],
+        event_text: "{actor_name} strikes {target_actor_name}.".to_string(),
+        ..ActionDefinition::default()
+    });
+    pack.messages.insert(
+        "combat.attack_hit".to_string(),
+        "{actor} takes {damage} damage ({remaining} remaining).".to_string(),
+    );
+    let mut golem = test_actor("golem", "cinder golem", LOUNGE_ID);
+    golem.attackable = true;
+    golem.initial_stats = BTreeMap::from([("stamina".to_string(), 10)]);
+    golem.resistances = BTreeMap::from([("physical".to_string(), 2)]);
+    pack.actors.push(golem);
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    // Attack 6 vs defense 0 → 6 raw; resistance 2 → 4 dealt.
+    state
+        .actor_stats
+        .entry(ACTOR_A_ID.to_string())
+        .or_default()
+        .insert("confidence".to_string(), 6);
+    state.current_room_id = LOUNGE_ID.to_string();
+
+    drive_actor_command(
+        &mut state,
+        &pack,
+        "attack",
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: LOUNGE_ID,
+            target_room_id: None,
+            target_actor_id: Some("golem"),
+            target_actor_name: Some("cinder golem"),
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        },
+    );
+
+    assert_eq!(state.actor_stat("golem", "stamina"), 6);
+}
+
+#[test]
+fn drain_damage_bypasses_physical_resistance() {
+    let mut pack = reducer_test_pack();
+    pack.settings.combat = CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_ID.to_string(),
+        health_stat_id: "stamina".to_string(),
+        ..CombatSettingsDefinition::default()
+    };
+    pack.settings.periodic_actor_effects = vec![periodic_damage_definition()];
+    pack.messages.insert(
+        "combat.room_hazard".to_string(),
+        "{actor} loses {damage}; {remaining} remains.".to_string(),
+    );
+    let mut elemental = test_actor("elemental", "fire elemental", LOUNGE_ID);
+    elemental.initial_stats = BTreeMap::from([("stamina".to_string(), 5)]);
+    elemental.resistances = BTreeMap::from([("physical".to_string(), 999)]);
+    pack.actors.push(elemental);
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    state.set_stance("elemental", ActorStance::Hostile);
+    state.add_item_to_storage("drain-sigil", ItemStorageTarget::CurrentRoom, LOUNGE_ID);
+
+    apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(
+            WorldEvent::PeriodicActorEffectApplied {
+                actor_id: "elemental".to_string(),
+                effect_id: "room_hazard".to_string(),
+            },
+        )],
+    );
+
+    assert_eq!(
+        state.actor_stat("elemental", "stamina"),
+        3,
+        "drain damage ignores physical resistance"
+    );
+}
+
+#[test]
+fn hostile_strike_respects_defender_resistance() {
+    let mut pack = reducer_test_pack();
+    pack.settings.combat = CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_ID.to_string(),
+        health_stat_id: "stamina".to_string(),
+        attack_stat_id: "confidence".to_string(),
+        defense_stat_id: "hunger".to_string(),
+        ..CombatSettingsDefinition::default()
+    };
+    pack.messages.insert(
+        "combat.hostile_strike".to_string(),
+        "{actor} strikes you for {damage} ({remaining} remaining).".to_string(),
+    );
+    pack.messages.insert(
+        "combat.no_effect".to_string(),
+        "You are unharmed by {kind}.".to_string(),
+    );
+    let mut player = test_actor(ACTOR_A_ID, ACTOR_A_NAME, LOUNGE_ID);
+    player.initial_stats = BTreeMap::from([("stamina".to_string(), 10)]);
+    // The defender shuts down fire entirely.
+    player.resistances = BTreeMap::from([("fire".to_string(), 999)]);
+    pack.actors = vec![player];
+    let mut salamander = test_actor("salamander", "salamander", LOUNGE_ID);
+    salamander.initial_stats = BTreeMap::from([("stamina".to_string(), 10)]);
+    salamander.attack_interval_minutes = Some(1);
+    salamander.attack_kind = "fire".to_string();
+    pack.actors.push(salamander);
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.set_stance("salamander", ActorStance::Hostile);
+
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::HostileStrike {
+            actor_id: "salamander".to_string(),
+        })],
+    );
+
+    assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), 10);
+    let transcript = output
+        .lines
+        .0
+        .iter()
+        .map(|line| line.text.as_str())
+        .collect::<Vec<_>>()
+        .join("\n");
+    assert!(
+        transcript.contains("unharmed by fire"),
+        "expected fire no_effect, got: {transcript}"
+    );
+}

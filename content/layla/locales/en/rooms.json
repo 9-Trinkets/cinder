@@ -6315,6 +6315,18 @@
           "n"
         ],
         "menu_label": "North"
+      },
+      {
+        "room_id": "oan",
+        "label": "Down",
+        "aliases": [
+          "d",
+          "down",
+          "abyss",
+          "descent"
+        ],
+        "menu_label": "Down",
+        "requires_story_var": "elf_king_defeated"
       }
     ]
   },
@@ -6406,6 +6418,680 @@
           "n"
         ],
         "menu_label": "North"
+      }
+    ]
+  },
+  {
+    "id": "oan",
+    "title": "The North Offering",
+    "summary": "A great dish of black glass stands against the north wall like an open mouth, gathering the ring that circles the board toward it.",
+    "inspect_text": "The store of the board: where the gathered stones were poured and counted. The glass around it is cool, but you know the heat this room was made to hold.",
+    "features": [
+      {
+        "id": "oan-fire-bowl",
+        "label": "the fire-bowl",
+        "aliases": [
+          "fire bowl",
+          "bowl",
+          "store",
+          "altar",
+          "fire dish",
+          "dish"
+        ],
+        "inspect_text": "A wide dish of black glass, deep as a man's chest. Its lip is scored where embers have been poured in and cleared away a thousand times."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "o1",
+        "label": "Clockwise",
+        "aliases": [
+          "cw"
+        ],
+        "menu_label": "Clockwise"
+      },
+      {
+        "room_id": "o12",
+        "label": "Counter-clockwise",
+        "aliases": [
+          "ccw"
+        ],
+        "menu_label": "Counter-clockwise"
+      },
+      {
+        "room_id": "oh",
+        "label": "To the Heart",
+        "aliases": [
+          "heart"
+        ],
+        "menu_label": "To the Heart"
+      },
+      {
+        "room_id": "d8c5",
+        "label": "Up",
+        "aliases": [
+          "u",
+          "up",
+          "ascend",
+          "climb"
+        ],
+        "menu_label": "Up",
+        "requires_story_var": "elf_king_defeated"
+      }
+    ]
+  },
+  {
+    "id": "oas",
+    "title": "The South Store",
+    "summary": "The ring bends south into a second dish, shallower than the first, and at its bottom a single ember smoulders.",
+    "inspect_text": "The far store of the board. One seed has been left behind — warm, steady, waiting for a hand to move it.",
+    "features": [
+      {
+        "id": "oas-fire-bowl",
+        "label": "the fire-bowl",
+        "aliases": [
+          "fire bowl",
+          "bowl",
+          "store",
+          "altar",
+          "fire dish",
+          "dish"
+        ],
+        "inspect_text": "A wide dish of black glass. A single ember smoulders at its bottom, the last seed of the south store."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "o6",
+        "label": "Clockwise",
+        "aliases": [
+          "cw"
+        ],
+        "menu_label": "Clockwise"
+      },
+      {
+        "room_id": "o7",
+        "label": "Counter-clockwise",
+        "aliases": [
+          "ccw"
+        ],
+        "menu_label": "Counter-clockwise"
+      },
+      {
+        "room_id": "oh",
+        "label": "To the Heart",
+        "aliases": [
+          "heart"
+        ],
+        "menu_label": "To the Heart"
+      }
+    ]
+  },
+  {
+    "id": "o1",
+    "title": "A Basin of Cooling Embers",
+    "summary": "A round chamber floored in black glass. In its center a broad depression holds one red coal that never quite dies.",
+    "inspect_text": "A round chamber floored in black glass. A single coal breathes in the depression, skirted by black glass. It does not warm the room — only the memory of warmth.",
+    "features": [
+      {
+        "id": "o1-basin",
+        "label": "the glass basin",
+        "aliases": [
+          "basin",
+          "bowl",
+          "cup",
+          "glass",
+          "bowl chamber"
+        ],
+        "inspect_text": "A single coal breathes in the depression, skirted by black glass. It does not warm the room — only the memory of warmth."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "o2",
+        "label": "Clockwise",
+        "aliases": [
+          "cw",
+          "clockwise",
+          "right"
+        ],
+        "menu_label": "Clockwise"
+      },
+      {
+        "room_id": "o12",
+        "label": "Counter-clockwise",
+        "aliases": [
+          "ccw",
+          "counterclockwise",
+          "cc",
+          "left"
+        ],
+        "menu_label": "Counter-clockwise"
+      }
+    ]
+  },
+  {
+    "id": "o2",
+    "title": "A Basin of Kept Embers",
+    "summary": "A round chamber floored in black glass. A film of embers lies over the glass, caught like seeds before sowing.",
+    "inspect_text": "A round chamber floored in black glass. Tiny embers fleck the floor like a scatter of seed, slightly warmer under the fingers than the surrounding glass.",
+    "features": [
+      {
+        "id": "o2-basin",
+        "label": "the glass basin",
+        "aliases": [
+          "basin",
+          "bowl",
+          "cup",
+          "glass",
+          "bowl chamber"
+        ],
+        "inspect_text": "Tiny embers fleck the floor like a scatter of seed, slightly warmer under the fingers than the surrounding glass."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "o3",
+        "label": "Clockwise",
+        "aliases": [
+          "cw",
+          "clockwise",
+          "right"
+        ],
+        "menu_label": "Clockwise"
+      },
+      {
+        "room_id": "o1",
+        "label": "Counter-clockwise",
+        "aliases": [
+          "ccw",
+          "counterclockwise",
+          "cc",
+          "left"
+        ],
+        "menu_label": "Counter-clockwise"
+      }
+    ]
+  },
+  {
+    "id": "o3",
+    "title": "A Basin Between Two Stores",
+    "summary": "A round chamber floored in black glass. Two faint lines of carved glass race away to either hand, joining the ring at the far store.",
+    "inspect_text": "A round chamber floored in black glass. Two scored lines run out of this chamber and vanish around the curve of the ring.",
+    "features": [
+      {
+        "id": "o3-basin",
+        "label": "the glass basin",
+        "aliases": [
+          "basin",
+          "bowl",
+          "cup",
+          "glass",
+          "bowl chamber"
+        ],
+        "inspect_text": "Two scored lines run out of this chamber and vanish around the curve of the ring."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "o4",
+        "label": "Clockwise",
+        "aliases": [
+          "cw",
+          "clockwise",
+          "right"
+        ],
+        "menu_label": "Clockwise"
+      },
+      {
+        "room_id": "o2",
+        "label": "Counter-clockwise",
+        "aliases": [
+          "ccw",
+          "counterclockwise",
+          "cc",
+          "left"
+        ],
+        "menu_label": "Counter-clockwise"
+      }
+    ]
+  },
+  {
+    "id": "o4",
+    "title": "A Basin of Ashen Glass",
+    "summary": "A round chamber floored in black glass. The bowl is cracked and cold, its stones pale as ash.",
+    "inspect_text": "A round chamber floored in black glass. The crack runs through the center of the bowl. Whatever burned here has long been taken.",
+    "features": [
+      {
+        "id": "o4-basin",
+        "label": "the glass basin",
+        "aliases": [
+          "basin",
+          "bowl",
+          "cup",
+          "glass",
+          "bowl chamber"
+        ],
+        "inspect_text": "The crack runs through the center of the bowl. Whatever burned here has long been taken."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "o5",
+        "label": "Clockwise",
+        "aliases": [
+          "cw",
+          "clockwise",
+          "right"
+        ],
+        "menu_label": "Clockwise"
+      },
+      {
+        "room_id": "o3",
+        "label": "Counter-clockwise",
+        "aliases": [
+          "ccw",
+          "counterclockwise",
+          "cc",
+          "left"
+        ],
+        "menu_label": "Counter-clockwise"
+      }
+    ]
+  },
+  {
+    "id": "o5",
+    "title": "A Basin That Remembers Fire",
+    "summary": "A round chamber floored in black glass. A dull warmth rises through the floor, here at the board's one true hearth.",
+    "inspect_text": "A round chamber floored in black glass. Heat wells up gently through the seams. Beneath, you sense the same dead fire you have felt all along: banked, waiting.",
+    "features": [
+      {
+        "id": "o5-basin",
+        "label": "the glass basin",
+        "aliases": [
+          "basin",
+          "bowl",
+          "cup",
+          "glass",
+          "bowl chamber"
+        ],
+        "inspect_text": "Heat wells up gently through the seams. Beneath, you sense the same dead fire you have felt all along: banked, waiting."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "o6",
+        "label": "Clockwise",
+        "aliases": [
+          "cw",
+          "clockwise",
+          "right"
+        ],
+        "menu_label": "Clockwise"
+      },
+      {
+        "room_id": "o4",
+        "label": "Counter-clockwise",
+        "aliases": [
+          "ccw",
+          "counterclockwise",
+          "cc",
+          "left"
+        ],
+        "menu_label": "Counter-clockwise"
+      }
+    ]
+  },
+  {
+    "id": "o6",
+    "title": "A Basin Near the South Store",
+    "summary": "A round chamber floored in black glass. The ring bends south toward a tall dark offering dish.",
+    "inspect_text": "A round chamber floored in black glass. The southern store is a tall column of shadow on the rim, its dish holding the last of the board's gathered light.",
+    "features": [
+      {
+        "id": "o6-basin",
+        "label": "the glass basin",
+        "aliases": [
+          "basin",
+          "bowl",
+          "cup",
+          "glass",
+          "bowl chamber"
+        ],
+        "inspect_text": "The southern store is a tall column of shadow on the rim, its dish holding the last of the board's gathered light."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "o7",
+        "label": "Clockwise",
+        "aliases": [
+          "cw",
+          "clockwise",
+          "right"
+        ],
+        "menu_label": "Clockwise"
+      },
+      {
+        "room_id": "o5",
+        "label": "Counter-clockwise",
+        "aliases": [
+          "ccw",
+          "counterclockwise",
+          "cc",
+          "left"
+        ],
+        "menu_label": "Counter-clockwise"
+      }
+    ]
+  },
+  {
+    "id": "o7",
+    "title": "A Basin of the Turning Board",
+    "summary": "A round chamber floored in black glass. The glass underfoot is worn to a shine, as if countless stones were slid across it.",
+    "inspect_text": "A round chamber floored in black glass. The floor is glass worn mirror-smooth, the recorded arc of a thousand unseen moves.",
+    "features": [
+      {
+        "id": "o7-basin",
+        "label": "the glass basin",
+        "aliases": [
+          "basin",
+          "bowl",
+          "cup",
+          "glass",
+          "bowl chamber"
+        ],
+        "inspect_text": "The floor is glass worn mirror-smooth, the recorded arc of a thousand unseen moves."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "o8",
+        "label": "Clockwise",
+        "aliases": [
+          "cw",
+          "clockwise",
+          "right"
+        ],
+        "menu_label": "Clockwise"
+      },
+      {
+        "room_id": "o6",
+        "label": "Counter-clockwise",
+        "aliases": [
+          "ccw",
+          "counterclockwise",
+          "cc",
+          "left"
+        ],
+        "menu_label": "Counter-clockwise"
+      }
+    ]
+  },
+  {
+    "id": "o8",
+    "title": "A Basin Where Seeds Were Slid",
+    "summary": "A round chamber floored in black glass. A scatter of seed-shaped embers sits in the bowl, none of them lit.",
+    "inspect_text": "A round chamber floored in black glass. Embers sit one by one, evenly spaced, exactly as seeds would be set out before a game.",
+    "features": [
+      {
+        "id": "o8-basin",
+        "label": "the glass basin",
+        "aliases": [
+          "basin",
+          "bowl",
+          "cup",
+          "glass",
+          "bowl chamber"
+        ],
+        "inspect_text": "Embers sit one by one, evenly spaced, exactly as seeds would be set out before a game."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "o9",
+        "label": "Clockwise",
+        "aliases": [
+          "cw",
+          "clockwise",
+          "right"
+        ],
+        "menu_label": "Clockwise"
+      },
+      {
+        "room_id": "o7",
+        "label": "Counter-clockwise",
+        "aliases": [
+          "ccw",
+          "counterclockwise",
+          "cc",
+          "left"
+        ],
+        "menu_label": "Counter-clockwise"
+      }
+    ]
+  },
+  {
+    "id": "o9",
+    "title": "A Basin of Deep Stillness",
+    "summary": "A round chamber floored in black glass. Nothing moves. The stillness here is older than the black glass itself.",
+    "inspect_text": "A round chamber floored in black glass. The air is cold and still. Even the ancient warmth of the board does not reach here.",
+    "features": [
+      {
+        "id": "o9-basin",
+        "label": "the glass basin",
+        "aliases": [
+          "basin",
+          "bowl",
+          "cup",
+          "glass",
+          "bowl chamber"
+        ],
+        "inspect_text": "The air is cold and still. Even the ancient warmth of the board does not reach here."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "o10",
+        "label": "Clockwise",
+        "aliases": [
+          "cw",
+          "clockwise",
+          "right"
+        ],
+        "menu_label": "Clockwise"
+      },
+      {
+        "room_id": "o8",
+        "label": "Counter-clockwise",
+        "aliases": [
+          "ccw",
+          "counterclockwise",
+          "cc",
+          "left"
+        ],
+        "menu_label": "Counter-clockwise"
+      }
+    ]
+  },
+  {
+    "id": "o10",
+    "title": "A Basin of the Long Ring",
+    "summary": "A round chamber floored in black glass. The ring stretches long in both directions, one arc fading into gloom.",
+    "inspect_text": "A round chamber floored in black glass. The ring doubles back on itself for a long way before either store or center appears.",
+    "features": [
+      {
+        "id": "o10-basin",
+        "label": "the glass basin",
+        "aliases": [
+          "basin",
+          "bowl",
+          "cup",
+          "glass",
+          "bowl chamber"
+        ],
+        "inspect_text": "The ring doubles back on itself for a long way before either store or center appears."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "o11",
+        "label": "Clockwise",
+        "aliases": [
+          "cw",
+          "clockwise",
+          "right"
+        ],
+        "menu_label": "Clockwise"
+      },
+      {
+        "room_id": "o9",
+        "label": "Counter-clockwise",
+        "aliases": [
+          "ccw",
+          "counterclockwise",
+          "cc",
+          "left"
+        ],
+        "menu_label": "Counter-clockwise"
+      }
+    ]
+  },
+  {
+    "id": "o11",
+    "title": "A Basin on the Far Arc",
+    "summary": "A round chamber floored in black glass. Far across the dark, the heart of the board glows a faint, banked orange.",
+    "inspect_text": "A round chamber floored in black glass. Across the dark the heart-pit burns at a steady, unhurried orange.",
+    "features": [
+      {
+        "id": "o11-basin",
+        "label": "the glass basin",
+        "aliases": [
+          "basin",
+          "bowl",
+          "cup",
+          "glass",
+          "bowl chamber"
+        ],
+        "inspect_text": "Across the dark the heart-pit burns at a steady, unhurried orange."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "o12",
+        "label": "Clockwise",
+        "aliases": [
+          "cw",
+          "clockwise",
+          "right"
+        ],
+        "menu_label": "Clockwise"
+      },
+      {
+        "room_id": "o10",
+        "label": "Counter-clockwise",
+        "aliases": [
+          "ccw",
+          "counterclockwise",
+          "cc",
+          "left"
+        ],
+        "menu_label": "Counter-clockwise"
+      }
+    ]
+  },
+  {
+    "id": "o12",
+    "title": "A Basin at the North Store",
+    "summary": "A round chamber floored in black glass. Northward, a monumental bowl gathers the ring into itself.",
+    "inspect_text": "A round chamber floored in black glass. The north store's dish shelves up beyond the rim, its mouth drinking the ring.",
+    "features": [
+      {
+        "id": "o12-basin",
+        "label": "the glass basin",
+        "aliases": [
+          "basin",
+          "bowl",
+          "cup",
+          "glass",
+          "bowl chamber"
+        ],
+        "inspect_text": "The north store's dish shelves up beyond the rim, its mouth drinking the ring."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "o1",
+        "label": "Clockwise",
+        "aliases": [
+          "cw",
+          "clockwise",
+          "right"
+        ],
+        "menu_label": "Clockwise"
+      },
+      {
+        "room_id": "o11",
+        "label": "Counter-clockwise",
+        "aliases": [
+          "ccw",
+          "counterclockwise",
+          "cc",
+          "left"
+        ],
+        "menu_label": "Counter-clockwise"
+      }
+    ]
+  },
+  {
+    "id": "oh",
+    "title": "The Heart-Pit",
+    "summary": "The ring's center opens into a shallow pit of black glass, and in it, on a cradle of embers, a fire burns — patient, watchful, alone.",
+    "inspect_text": "The ring's center opens into a shallow pit of black glass. In the cradle, a clot of embers holds to a deep, steady heat. Something in it watches the edge of the pit.",
+    "descriptions": [
+      {
+        "actor_defeated": "fire-elemental",
+        "summary": "The heart-pit is empty. Where the Fire Elemental burned, only a round cradle of black glass remains, still warm, holding a faint spiral of ash.",
+        "inspect_text": "The heart of the board is a shallow pit of black glass. Where the Fire Elemental burned, only a round cradle remains, still warm, holding a faint spiral of ash."
+      }
+    ],
+    "features": [
+      {
+        "id": "oh-coals",
+        "label": "the coals",
+        "aliases": [
+          "coals",
+          "ember",
+          "fire",
+          "heart",
+          "pit",
+          "cradle"
+        ],
+        "inspect_text": "In the cradle of the pit, a clot of embers burns with a deep, steady heat. It does not crackle. It does not spread. It simply holds."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "oan",
+        "label": "North Through the Store",
+        "aliases": [
+          "north",
+          "n",
+          "store",
+          "altar"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "oas",
+        "label": "South Through the Store",
+        "aliases": [
+          "south",
+          "s",
+          "store",
+          "altar"
+        ],
+        "menu_label": "South"
       }
     ]
   }

@@ -1,4 +1,5 @@
 use crate::engine::reducer::command_effects::{actor_display_name, defeat_player_if_dead};
+use crate::engine::reducer::combat::resisted_damage;
 use crate::content::types::ContentPack;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{ActorStance, GamePhase, WorldState};
@@ -45,50 +46,75 @@ pub(crate) fn handle_hostile_strike(
     let raw_damage = (state.actor_stat(actor_id, &combat.attack_stat_id)
         - state.effective_actor_stat(content, &combat.player_actor_id, &combat.defense_stat_id))
     .max(combat.minimum_damage);
+    let attack_kind = content
+        .actor(actor_id)
+        .map(|actor| actor.attack_kind())
+        .unwrap_or("physical");
     let actor_name = actor_display_name(content, actor_id);
+    let player_name = actor_display_name(content, &combat.player_actor_id);
     // A guarding follower intercepts the blow aimed at the player.
     if let Some(guard_id) = living_guard_in_room(state, content, state.current_room_id.as_str()) {
         let guard_defense = state
             .effective_actor_stat(content, &guard_id, &combat.defense_stat_id)
             .max(0);
-        let guard_takes = (raw_damage - guard_defense).max(0);
-        state
-            .adjust_actor_stat(&guard_id, &combat.health_stat_id, -guard_takes)
-            .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
+        let raw_guard_takes = (raw_damage - guard_defense).max(0);
+        let guard_takes = resisted_damage(content, &guard_id, attack_kind, raw_guard_takes);
         let guard_name = actor_display_name(content, &guard_id);
-        if let Some(line) = content.render_message(
-            "combat.guard_intercepts",
-            &[
-                ("actor", actor_name.as_str()),
-                ("guard", guard_name.as_str()),
-                ("damage", guard_takes.to_string().as_str()),
-            ],
-        ) {
-            lines.narration(line);
+        if raw_guard_takes > 0 && guard_takes == 0 {
+            if let Some(line) = content.render_message(
+                "combat.no_effect",
+                &[("actor", guard_name.as_str()), ("kind", attack_kind)],
+            ) {
+                lines.narration(line);
+            }
+        } else {
+            state
+                .adjust_actor_stat(&guard_id, &combat.health_stat_id, -guard_takes)
+                .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
+            if let Some(line) = content.render_message(
+                "combat.guard_intercepts",
+                &[
+                    ("actor", actor_name.as_str()),
+                    ("guard", guard_name.as_str()),
+                    ("damage", guard_takes.to_string().as_str()),
+                ],
+            ) {
+                lines.narration(line);
+            }
         }
         let remaining = state.effective_actor_stat(content, &guard_id, &combat.health_stat_id);
         if remaining <= 0
+            && guard_takes > 0
             && let Some(line) =
                 content.render_message("combat.guard_falls", &[("guard", guard_name.as_str())])
         {
             lines.narration(line);
         }
     } else {
-        let damage = raw_damage;
-        state
-            .adjust_actor_stat(&combat.player_actor_id, &combat.health_stat_id, -damage)
-            .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
-        let remaining =
-            state.effective_actor_stat(content, &combat.player_actor_id, &combat.health_stat_id);
-        if let Some(line) = content.render_message(
-            "combat.hostile_strike",
-            &[
-                ("actor", actor_name.as_str()),
-                ("damage", damage.to_string().as_str()),
-                ("remaining", remaining.to_string().as_str()),
-            ],
-        ) {
-            lines.narration(line);
+        let damage = resisted_damage(content, &combat.player_actor_id, attack_kind, raw_damage);
+        if raw_damage > 0 && damage == 0 {
+            if let Some(line) = content.render_message(
+                "combat.no_effect",
+                &[("actor", player_name.as_str()), ("kind", attack_kind)],
+            ) {
+                lines.narration(line);
+            }
+        } else {
+            state
+                .adjust_actor_stat(&combat.player_actor_id, &combat.health_stat_id, -damage)
+                .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
+            let remaining =
+                state.effective_actor_stat(content, &combat.player_actor_id, &combat.health_stat_id);
+            if let Some(line) = content.render_message(
+                "combat.hostile_strike",
+                &[
+                    ("actor", actor_name.as_str()),
+                    ("damage", damage.to_string().as_str()),
+                    ("remaining", remaining.to_string().as_str()),
+                ],
+            ) {
+                lines.narration(line);
+            }
         }
     }
     let interval = content
