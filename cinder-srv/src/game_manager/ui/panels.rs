@@ -38,7 +38,7 @@ pub(super) fn build_action_bar_and_take(
     // model as authored content actions: the button opens a picker listing each
     // item (auto-selecting when only one is present), dispatching `take <id>`.
     let take_panel_options: Vec<PanelOptionData> = {
-        let loose = state.loose_room_items(&state.current_room_id);
+        let loose = takeable_loose_items(content, state);
         if loose.is_empty() {
             vec![]
         } else {
@@ -61,6 +61,14 @@ pub(super) fn build_action_bar_and_take(
     };
 
     (action_bar_actions, take_panel_options)
+}
+
+fn takeable_loose_items(content: &ContentPack, state: &WorldState) -> Vec<(String, u32)> {
+    state
+        .loose_room_items(&state.current_room_id)
+        .into_iter()
+        .filter(|(item_id, _)| content.item(item_id).is_none_or(|item| item.is_takeable()))
+        .collect()
 }
 
 /// Option rows for the generic `drop <item>` overflow action.
@@ -407,5 +415,43 @@ fn loose_item_option(content: &ContentPack, item_id: &str) -> PanelOptionData {
             .unwrap_or_else(|| item_id.to_string()),
         subtitle: None,
         command: Some(format!("take {item_id}")),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use cinder_core::content::types::{ItemDefinition, ItemStorageTarget};
+    use cinder_core::engine::test_fixtures::minimal_test_pack;
+
+    #[test]
+    fn takeable_items_exclude_trace_marks() {
+        let mut content = minimal_test_pack();
+        content.items.extend([
+            ItemDefinition {
+                id: "sigil".to_string(),
+                label: "sigil".to_string(),
+                description: "A fixed mark.".to_string(),
+                trace_mark: true,
+                ..ItemDefinition::default()
+            },
+            ItemDefinition {
+                id: "scroll".to_string(),
+                label: "scroll".to_string(),
+                description: "A portable scroll.".to_string(),
+                ..ItemDefinition::default()
+            },
+        ]);
+        let mut state = WorldState::new(&content);
+        let room_id = state.current_room_id.clone();
+        state.add_item_to_storage("sigil", ItemStorageTarget::CurrentRoom, &room_id);
+
+        assert!(takeable_loose_items(&content, &state).is_empty());
+
+        state.add_item_to_storage("scroll", ItemStorageTarget::CurrentRoom, &room_id);
+        assert_eq!(
+            takeable_loose_items(&content, &state),
+            vec![("scroll".to_string(), 1)]
+        );
     }
 }
