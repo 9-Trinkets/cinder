@@ -268,12 +268,22 @@ fn actor_commands_can_create_target_derived_items_from_content_templates() {
 #[test]
 fn trace_craftable_is_gated_by_its_story_variable() {
     let mut pack = reducer_test_pack();
-    pack.items.push(ItemDefinition {
-        id: "drain-sigil".to_string(),
-        label: "drain sigil".to_string(),
-        description: "A spiral chalk mark.".to_string(),
-        ..ItemDefinition::default()
-    });
+    pack.items.extend([
+        ItemDefinition {
+            id: "charm-sigil".to_string(),
+            label: "charm sigil".to_string(),
+            description: "A ring-shaped chalk mark.".to_string(),
+            trace_mark: true,
+            ..ItemDefinition::default()
+        },
+        ItemDefinition {
+            id: "drain-sigil".to_string(),
+            label: "drain sigil".to_string(),
+            description: "A spiral chalk mark.".to_string(),
+            trace_mark: true,
+            ..ItemDefinition::default()
+        },
+    ]);
     pack.actions.push(ActionDefinition {
         id: "trace".to_string(),
         command: "trace".to_string(),
@@ -318,8 +328,30 @@ fn trace_craftable_is_gated_by_its_story_variable() {
     assert!(state.has_item_in_storage("charm-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
     assert!(!state.has_item_in_storage("drain-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
 
-    // Once the scroll is read (knows_drain set), tracing the drain sigil works.
+    // Once the scroll is read, bare trace selects the next available mark
+    // instead of trying to duplicate the existing charm sigil.
     state.story_vars.set_unchecked("knows_drain", "true");
+    drive_actor_command(
+        &mut state,
+        &pack,
+        "trace",
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: KITCHEN_ID,
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        },
+    );
+    assert!(state.has_item_in_storage("drain-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
+
+    // Different trace marks may coexist, but an explicitly selected duplicate
+    // cannot be stacked.
     drive_actor_command(
         &mut state,
         &pack,
@@ -337,7 +369,33 @@ fn trace_craftable_is_gated_by_its_story_variable() {
             freeform_text: Some("drain-sigil"),
         },
     );
-    assert!(state.has_item_in_storage("drain-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
+    assert_eq!(
+        state.item_count_in_storage("charm-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID,),
+        1
+    );
+    assert_eq!(
+        state.item_count_in_storage("drain-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID,),
+        1
+    );
+
+    let output = drive_actor_command(
+        &mut state,
+        &pack,
+        "trace",
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: KITCHEN_ID,
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        },
+    );
+    assert!(output.lines.is_empty());
 }
 
 #[test]

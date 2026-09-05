@@ -33,5 +33,7 @@
   "error.no_actor_to_serve": "There is no one here to serve.",
   "error.no_actor_to_listen": "There is no one here to listen to.",
   "error.no_target": "There's no one here to target.",
-  "error.target_required": "Who do you want to target? Try: {actors}"
+  "error.target_required": "Who do you want to target? Try: {actors}",
+  "error.trace_mark_exists": "A {label} is already traced here.",
+  "error.no_craftable_available": "There is nothing new to create here."
 }

@@ -9,11 +9,17 @@ pub(crate) fn handle_item_acquired(
     storage: ItemStorageTarget,
     lines: &mut NarrativeLines,
 ) {
+    let room_id = state.current_room_id.clone();
+    if storage == ItemStorageTarget::CurrentRoom
+        && content.item(item_id).is_some_and(|item| item.trace_mark)
+        && state.has_item_in_storage(item_id, storage, &room_id)
+    {
+        return;
+    }
     let label = content
         .item(item_id)
         .map(|i| i.label.as_str())
         .unwrap_or(item_id);
-    let room_id = state.current_room_id.clone();
     state.add_item_to_storage(item_id, storage, &room_id);
     match storage {
         ItemStorageTarget::PlayerInventory => {

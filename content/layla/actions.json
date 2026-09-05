@@ -374,9 +374,7 @@
         },
         "storage": "current_room"
       },
-      "available": {
-        "requires_room_without_item": "charm-sigil"
-      },
+      "available": {},
       "ui": {
         "bar": true,
         "overflow": false,

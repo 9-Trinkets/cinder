@@ -75,6 +75,22 @@ fn equip_and_unequip_are_mutually_exclusive_in_the_bar() {
 fn target_pack() -> ContentPack {
     let mut pack = minimal_test_pack();
     pack.settings.combat.health_stat_id = "stamina".to_string();
+    pack.items.extend([
+        ItemDefinition {
+            id: "charm-sigil".to_string(),
+            label: "charm sigil".to_string(),
+            description: "A chalk ring.".to_string(),
+            trace_mark: true,
+            ..ItemDefinition::default()
+        },
+        ItemDefinition {
+            id: "drain-sigil".to_string(),
+            label: "drain sigil".to_string(),
+            description: "A chalk spiral.".to_string(),
+            trace_mark: true,
+            ..ItemDefinition::default()
+        },
+    ]);
     pack.actions.push(ActionDefinition {
         id: "attack".to_string(),
         command: "attack".to_string(),
@@ -239,6 +255,23 @@ fn trace_hides_when_no_craftable_unlocked() {
     state.story_vars.set_unchecked("knows_drain", "false");
     // charm-sigil has no gate -> always unlocked -> trace stays visible.
     assert!(action_is_available(&pack, &state, trace, &state.current_room_id));
+    let room_id = state.current_room_id.clone();
+    state.add_item_to_storage(
+        "charm-sigil",
+        cinder_core::content::types::ItemStorageTarget::CurrentRoom,
+        &room_id,
+    );
+    assert!(!action_is_available(&pack, &state, trace, &state.current_room_id));
+
+    // Unlocking a different mark makes trace available again in the same room.
+    state.story_vars.set_unchecked("knows_drain", "true");
+    assert!(action_is_available(&pack, &state, trace, &state.current_room_id));
+    state.add_item_to_storage(
+        "drain-sigil",
+        cinder_core::content::types::ItemStorageTarget::CurrentRoom,
+        &room_id,
+    );
+    assert!(!action_is_available(&pack, &state, trace, &state.current_room_id));
 
     // Gate every craftable behind a falsy story var.
     let mut pack = target_pack();

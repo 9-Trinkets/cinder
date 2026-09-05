@@ -40,6 +40,29 @@ pub(super) fn handle_actor_command_used(
     let mut lines = NarrativeLines::default();
     let previous_current_room_id = state.current_room_id.clone();
     let command = content.command(command_id)?;
+    let created_item_id = resolved_created_item_id(state, content, command, command_context);
+    if command
+        .item_creation
+        .as_ref()
+        .is_some_and(|creation| !creation.craftable_items.is_empty())
+        && created_item_id.is_none()
+    {
+        return None;
+    }
+    if created_item_id.as_deref().is_some_and(|item_id| {
+        command
+            .item_creation
+            .as_ref()
+            .is_some_and(|creation| creation.storage == ActionItemStorageTarget::CurrentRoom)
+            && content.item(item_id).is_some_and(|item| item.trace_mark)
+            && state.has_item_in_storage(
+                item_id,
+                ItemStorageTarget::CurrentRoom,
+                command_context.room_id,
+            )
+    }) {
+        return None;
+    }
     let (item_label, feature_label) = resolve_actor_command_labels(content, command_context)?;
     if !apply_actor_command_realization_effects(state, content, command, command_context) {
         return None;
@@ -60,7 +83,7 @@ pub(super) fn handle_actor_command_used(
     }
     apply_new_command_effects(state, content, command, command_context, &mut lines, outbox);
     apply_command_objective_progress_effects(state, command);
-    if let Some(item_id) = resolved_created_item_id(state, content, command, command_context) {
+    if let Some(item_id) = created_item_id {
         let storage = command
             .item_creation
             .as_ref()
@@ -115,6 +138,16 @@ fn resolved_created_item_id(
         Some(gate) if gate.is_empty() => true,
         Some(gate) => crate::engine::turn_policies::story_var_is_truthy(state, gate),
     };
+    let available = |item_id: &str| {
+        unlocked(item_id)
+            && !(creation.storage == ActionItemStorageTarget::CurrentRoom
+                && content.item(item_id).is_some_and(|item| item.trace_mark)
+                && state.has_item_in_storage(
+                    item_id,
+                    ItemStorageTarget::CurrentRoom,
+                    context.room_id,
+                ))
+    };
     if !creation.craftable_items.is_empty() {
         if let Some(input) = context
             .freeform_text
@@ -138,7 +171,11 @@ fn resolved_created_item_id(
                 return Some(item_id.clone());
             }
         }
-        return unlocked(default_item_id).then(|| default_item_id.clone());
+        return creation
+            .craftable_items
+            .iter()
+            .find(|item_id| available(item_id))
+            .cloned();
     }
     if !creation.creates_item_target_template.is_empty() {
         return Some(creation.resolve_target_item_id(context.target_actor_id));

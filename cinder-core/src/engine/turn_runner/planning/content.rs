@@ -62,6 +62,15 @@ fn resolved_created_item_id(
             Some(gate) => story_var_is_truthy(context.planner_state, gate),
         }
     };
+    let craftable_available = |craftable_id: &str| {
+        craftable_unlocked(craftable_id)
+            && !trace_mark_already_in_room(
+                content,
+                context.planner_state,
+                craftable_id,
+                context.current_room_id,
+            )
+    };
     if !item_creation.craftable_items.is_empty() {
         if let Some(input_val) = input.map(str::trim).filter(|s| !s.is_empty()) {
             let input_lower = input_val.to_ascii_lowercase();
@@ -80,11 +89,11 @@ fn resolved_created_item_id(
                 return Some(matched.clone());
             }
         }
-        return if craftable_unlocked(item_id) {
-            Some(item_id.clone())
-        } else {
-            None
-        };
+        return item_creation
+            .craftable_items
+            .iter()
+            .find(|craftable_id| craftable_available(craftable_id))
+            .cloned();
     }
     if !item_creation.creates_item_target_template.is_empty() {
         let input_val = input.unwrap_or_default().trim();
@@ -106,6 +115,16 @@ fn resolved_created_item_id(
             .map(|value| value.to_string())
             .unwrap_or_else(|| item_id.clone()),
     )
+}
+
+fn trace_mark_already_in_room(
+    content: &ContentPack,
+    state: &crate::engine::state::WorldState,
+    item_id: &str,
+    room_id: &str,
+) -> bool {
+    content.item(item_id).is_some_and(|item| item.trace_mark)
+        && state.has_item_in_storage(item_id, ItemStorageTarget::CurrentRoom, room_id)
 }
 
 pub(super) fn plan_content_command(
@@ -224,6 +243,43 @@ pub(super) fn plan_content_command(
         .player_command
         .as_ref()
         .unwrap_or_else(|| panic!("action '{}' should define player_command", action.id));
+    let created_item_id = resolved_created_item_id(content, action, input, context);
+    if action
+        .item_creation
+        .as_ref()
+        .is_some_and(|creation| !creation.craftable_items.is_empty())
+        && created_item_id.is_none()
+    {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content
+                .render_message("error.no_craftable_available", &[])
+                .unwrap_or_default(),
+        });
+        return false;
+    }
+    if let Some(item_id) = created_item_id.as_deref()
+        && action
+            .item_creation
+            .as_ref()
+            .is_some_and(|creation| creation.storage == ActionItemStorageTarget::CurrentRoom)
+        && trace_mark_already_in_room(
+            content,
+            context.planner_state,
+            item_id,
+            context.current_room_id,
+        )
+    {
+        let label = content
+            .item(item_id)
+            .map(|item| item.label.as_str())
+            .unwrap_or(item_id);
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content
+                .render_message("error.trace_mark_exists", &[("label", label)])
+                .unwrap_or_default(),
+        });
+        return false;
+    }
     let mut payload = BTreeMap::new();
     if let Some(input_metadata) = &metadata.input {
         let value = input.unwrap_or_default().trim();
@@ -256,7 +312,7 @@ pub(super) fn plan_content_command(
             });
     }
 
-    if let Some(item_id) = resolved_created_item_id(content, action, input, context) {
+    if let Some(item_id) = created_item_id {
         planned.events.push(WorldEvent::ItemAcquired {
             item_id,
             storage: action

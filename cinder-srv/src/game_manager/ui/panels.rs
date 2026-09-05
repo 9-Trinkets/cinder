@@ -343,6 +343,15 @@ fn craftable_item_panel_options(
             craftables
                 .iter()
                 .filter(|item_id| {
+                    if content.item(item_id).is_some_and(|item| item.trace_mark)
+                        && state.has_item_in_storage(
+                            item_id,
+                            cinder_core::content::types::ItemStorageTarget::CurrentRoom,
+                            &state.current_room_id,
+                        )
+                    {
+                        return false;
+                    }
                     let unlocked = || -> bool {
                         let Some(gate) = gates.and_then(|g| g.get(*item_id)) else {
                             return true;

@@ -271,10 +271,17 @@ fn action_has_available_target(
         }
         PanelDataSource::CraftableItems => action.item_creation.as_ref().is_some_and(|item_creation| {
             item_creation.craftable_items.iter().any(|item_id| {
-                match item_creation.craftable_item_gates.get(item_id) {
+                let unlocked = match item_creation.craftable_item_gates.get(item_id) {
                     None => true,
                     Some(gate) => gate.is_empty() || story_var_is_truthy(state, gate),
-                }
+                };
+                let already_traced = content.item(item_id).is_some_and(|item| item.trace_mark)
+                    && state.has_item_in_storage(
+                        item_id,
+                        crate::content::types::ItemStorageTarget::CurrentRoom,
+                        room_id,
+                    );
+                unlocked && !already_traced
             })
         }),
         PanelDataSource::Exits | PanelDataSource::Features => true,
