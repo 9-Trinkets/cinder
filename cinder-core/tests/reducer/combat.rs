@@ -633,3 +633,75 @@ fn hostile_strike_respects_defender_resistance() {
         "expected fire no_effect, got: {transcript}"
     );
 }
+
+#[test]
+fn hostile_strike_intercepted_by_guard_takes_at_least_minimum_damage() {
+    let mut pack = reducer_test_pack();
+    pack.settings.combat = CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_ID.to_string(),
+        health_stat_id: "stamina".to_string(),
+        attack_stat_id: "confidence".to_string(),
+        defense_stat_id: "hunger".to_string(),
+        minimum_damage: 1,
+        ..CombatSettingsDefinition::default()
+    };
+    pack.messages.insert(
+        "combat.guard_intercepts".to_string(),
+        "{actor} strikes, but {guard} steps in front of you, taking {damage} damage.".to_string(),
+    );
+    let mut player = test_actor(ACTOR_A_ID, ACTOR_A_NAME, LOUNGE_ID);
+    player.initial_stats = BTreeMap::from([("stamina".to_string(), 10)]);
+    pack.actors = vec![player];
+    let mut salamander = test_actor("salamander", "salamander", LOUNGE_ID);
+    salamander.initial_stats = BTreeMap::from([("confidence".to_string(), 3)]);
+    salamander.attack_kind = "fire".to_string();
+    pack.actors.push(salamander);
+    // The guard soaks the entire blow against its own defense: defense 3 would
+    // theoretically zero it out, but the minimum-damage floor still applies.
+    let mut guard = test_actor("bodyguard", "golem bodyguard", LOUNGE_ID);
+    guard.guard = true;
+    guard.initial_stats = BTreeMap::from([
+        ("stamina".to_string(), 10),
+        ("hunger".to_string(), 3),
+    ]);
+    pack.actors.push(guard);
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.set_relationship(
+        "bodyguard",
+        cinder_core::engine::state::ActorRelationship {
+            stance: ActorStance::Allied,
+            follows_player: true,
+        },
+    );
+    state.set_stance("salamander", ActorStance::Hostile);
+
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::HostileStrike {
+            actor_id: "salamander".to_string(),
+        })],
+    );
+
+    // The player takes no damage; the guard absorbs the blow for at least the
+    // minimum-damage amount instead of a confusing zero.
+    assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), 10);
+    assert_eq!(state.actor_stat("bodyguard", "stamina"), 9);
+    let transcript = output
+        .lines
+        .0
+        .iter()
+        .map(|line| line.text.as_str())
+        .collect::<Vec<_>>()
+        .join("\n");
+    assert!(
+        transcript.contains("steps in front of you, taking 1 damage"),
+        "expected guard intercept narration, got: {transcript}"
+    );
+    assert!(
+        !transcript.contains("taking 0 damage"),
+        "guard should never report a zero-damage intercept, got: {transcript}"
+    );
+}

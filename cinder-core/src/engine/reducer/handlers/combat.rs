@@ -52,12 +52,15 @@ pub(crate) fn handle_hostile_strike(
         .unwrap_or("physical");
     let actor_name = actor_display_name(content, actor_id);
     let player_name = actor_display_name(content, &combat.player_actor_id);
-    // A guarding follower intercepts the blow aimed at the player.
+    // A guarding follower intercepts the blow aimed at the player. The guard
+    // soaks the attacker's raw strike against its own defense, floored by the
+    // minimum-damage rule just like a direct hit on the player.
     if let Some(guard_id) = living_guard_in_room(state, content, state.current_room_id.as_str()) {
         let guard_defense = state
             .effective_actor_stat(content, &guard_id, &combat.defense_stat_id)
             .max(0);
-        let raw_guard_takes = (raw_damage - guard_defense).max(0);
+        let raw_guard_takes = (state.actor_stat(actor_id, &combat.attack_stat_id) - guard_defense)
+            .max(combat.minimum_damage);
         let guard_takes = resisted_damage(content, &guard_id, attack_kind, raw_guard_takes);
         let guard_name = actor_display_name(content, &guard_id);
         if raw_guard_takes > 0 && guard_takes == 0 {
