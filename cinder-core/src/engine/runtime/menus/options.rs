@@ -84,7 +84,11 @@ impl CinderRuntime {
         })
     }
 
-    fn room_exit_panel_options(&self, state: &WorldState, current_room_id: &str) -> Vec<PanelOption> {
+    fn room_exit_panel_options(
+        &self,
+        state: &WorldState,
+        current_room_id: &str,
+    ) -> Vec<PanelOption> {
         let Some(current_room) = self.content.room(current_room_id) else {
             return Vec::new();
         };
@@ -111,7 +115,7 @@ impl CinderRuntime {
                         .filter(move |room| exit_ids.contains(&room.id)),
                 )
             };
-        rooms_iter
+        let mut options = rooms_iter
             .map(|room| {
                 let exit_label = current_room.exits.iter().find(|e| e.room_id == room.id);
                 let title = exit_label
@@ -124,7 +128,9 @@ impl CinderRuntime {
                     menu_text: title,
                 }
             })
-            .collect()
+            .collect::<Vec<_>>();
+        sort_panel_options(&mut options);
+        options
     }
 
     fn current_room_feature_panel_options(
@@ -296,5 +302,48 @@ impl CinderRuntime {
                 }),
         );
         Ok(options)
+    }
+}
+
+fn sort_panel_options(options: &mut [PanelOption]) {
+    options.sort_by(|left, right| {
+        left.title
+            .to_ascii_lowercase()
+            .cmp(&right.title.to_ascii_lowercase())
+            .then_with(|| left.id.cmp(&right.id))
+    });
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn move_panel_options_are_sorted_by_title_then_id() {
+        let mut options = vec![
+            panel_option("west", "West"),
+            panel_option("north-b", "North"),
+            panel_option("east", "east"),
+            panel_option("north-a", "North"),
+        ];
+
+        sort_panel_options(&mut options);
+
+        assert_eq!(
+            options
+                .into_iter()
+                .map(|option| option.id)
+                .collect::<Vec<_>>(),
+            vec!["east", "north-a", "north-b", "west"]
+        );
+    }
+
+    fn panel_option(id: &str, title: &str) -> PanelOption {
+        PanelOption {
+            id: id.to_string(),
+            title: title.to_string(),
+            command: id.to_string(),
+            menu_text: title.to_string(),
+        }
     }
 }
