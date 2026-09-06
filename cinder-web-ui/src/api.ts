@@ -151,6 +151,7 @@ export interface PanelOptionData {
   title: string
   subtitle?: string
   command?: string
+  disabled?: boolean
 }
 
 export interface OverflowAction {
@@ -364,6 +365,7 @@ export interface UiSnapshot {
     minimap_sidebar_label: string
     minimap_revealed_label: string
     minimap_charted_label: string
+    trace_mark_present_label: string
     talk_panel_title: string
     talk_panel_prompt: string
     menu_option_list_title: string

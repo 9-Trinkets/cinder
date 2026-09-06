@@ -86,6 +86,7 @@ pub(super) fn build_drop_panel_options(
                 .unwrap_or_else(|| item_id.clone()),
             subtitle: None,
             command: Some(format!("drop {item_id}")),
+            disabled: false,
         })
         .collect()
 }
@@ -271,6 +272,7 @@ pub(super) fn build_panel_options(
                                 title: opt.title.clone(),
                                 subtitle: None,
                                 command: Some(format!("{} {}", phrase, actor_id)),
+                                disabled: false,
                             }
                         })
                         .collect()
@@ -288,6 +290,7 @@ pub(super) fn build_panel_options(
                             Some(opt.menu_text)
                         },
                         command: Some(opt.command.clone()),
+                        disabled: false,
                     })
                     .collect(),
                 PanelDataSource::Features => runtime
@@ -299,6 +302,7 @@ pub(super) fn build_panel_options(
                         title: opt.title.clone(),
                         subtitle: None,
                         command: Some(opt.command.clone()),
+                        disabled: false,
                     })
                     .collect(),
                 PanelDataSource::CraftableItems => craftable_item_panel_options(
@@ -313,6 +317,7 @@ pub(super) fn build_panel_options(
                         title: opt.title.clone(),
                         subtitle: None,
                         command: Some(opt.command.clone()),
+                        disabled: false,
                     })
                     .collect(),
                 PanelDataSource::InventoryItems => runtime
@@ -324,6 +329,7 @@ pub(super) fn build_panel_options(
                         title: opt.title.clone(),
                         subtitle: None,
                         command: Some(opt.command.clone()),
+                        disabled: false,
                     })
                     .collect(),
             };
@@ -351,15 +357,6 @@ fn craftable_item_panel_options(
             craftables
                 .iter()
                 .filter(|item_id| {
-                    if content.item(item_id).is_some_and(|item| item.trace_mark)
-                        && state.has_item_in_storage(
-                            item_id,
-                            cinder_core::content::types::ItemStorageTarget::CurrentRoom,
-                            &state.current_room_id,
-                        )
-                    {
-                        return false;
-                    }
                     let unlocked = || -> bool {
                         let Some(gate) = gates.and_then(|g| g.get(*item_id)) else {
                             return true;
@@ -381,6 +378,12 @@ fn craftable_item_panel_options(
                     unlocked()
                 })
                 .map(|item_id| {
+                    let already_traced = content.item(item_id).is_some_and(|item| item.trace_mark)
+                        && state.has_item_in_storage(
+                            item_id,
+                            cinder_core::content::types::ItemStorageTarget::CurrentRoom,
+                            &state.current_room_id,
+                        );
                     let title = content
                         .item(item_id)
                         .map(|item| item.label.clone())
@@ -388,8 +391,10 @@ fn craftable_item_panel_options(
                     PanelOptionData {
                         id: item_id.clone(),
                         title,
-                        subtitle: None,
-                        command: Some(format!("{} {}", phrase, item_id)),
+                        subtitle: already_traced
+                            .then(|| content.ui_text.trace_mark_present_label.clone()),
+                        command: (!already_traced).then(|| format!("{} {}", phrase, item_id)),
+                        disabled: already_traced,
                     }
                 })
                 .collect()
@@ -415,43 +420,10 @@ fn loose_item_option(content: &ContentPack, item_id: &str) -> PanelOptionData {
             .unwrap_or_else(|| item_id.to_string()),
         subtitle: None,
         command: Some(format!("take {item_id}")),
+        disabled: false,
     }
 }
 
 #[cfg(test)]
-mod tests {
-    use super::*;
-    use cinder_core::content::types::{ItemDefinition, ItemStorageTarget};
-    use cinder_core::engine::test_fixtures::minimal_test_pack;
-
-    #[test]
-    fn takeable_items_exclude_trace_marks() {
-        let mut content = minimal_test_pack();
-        content.items.extend([
-            ItemDefinition {
-                id: "sigil".to_string(),
-                label: "sigil".to_string(),
-                description: "A fixed mark.".to_string(),
-                trace_mark: true,
-                ..ItemDefinition::default()
-            },
-            ItemDefinition {
-                id: "scroll".to_string(),
-                label: "scroll".to_string(),
-                description: "A portable scroll.".to_string(),
-                ..ItemDefinition::default()
-            },
-        ]);
-        let mut state = WorldState::new(&content);
-        let room_id = state.current_room_id.clone();
-        state.add_item_to_storage("sigil", ItemStorageTarget::CurrentRoom, &room_id);
-
-        assert!(takeable_loose_items(&content, &state).is_empty());
-
-        state.add_item_to_storage("scroll", ItemStorageTarget::CurrentRoom, &room_id);
-        assert_eq!(
-            takeable_loose_items(&content, &state),
-            vec![("scroll".to_string(), 1)]
-        );
-    }
-}
+#[path = "panels/panel_tests.rs"]
+mod tests;

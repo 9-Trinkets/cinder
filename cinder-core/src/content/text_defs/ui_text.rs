@@ -139,6 +139,8 @@ pub struct UiTextDefinition {
     pub minimap_revealed_label: String,
     #[serde(default = "default_minimap_charted_label")]
     pub minimap_charted_label: String,
+    #[serde(default = "default_trace_mark_present_label")]
+    pub trace_mark_present_label: String,
     /// Verb label for the generic `take <item>` action-bar button/panel.
     #[serde(default = "default_take_label")]
     pub take_label: String,
@@ -434,6 +436,10 @@ pub(super) fn default_minimap_revealed_label() -> String {
 
 pub(super) fn default_minimap_charted_label() -> String {
     "charted".to_string()
+}
+
+pub(super) fn default_trace_mark_present_label() -> String {
+    "Already traced here".to_string()
 }
 
 pub(super) fn default_take_label() -> String {

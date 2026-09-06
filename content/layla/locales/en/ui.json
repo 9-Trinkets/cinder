@@ -24,6 +24,7 @@
   "minimap_sidebar_label": "Map",
   "minimap_revealed_label": "Map revealed",
   "minimap_charted_label": "charted",
+  "trace_mark_present_label": "Already traced here",
   "act_closure_title": "Chapter Recap",
   "final_summary_title": "Chapter Recap",
   "final_summary_highlights_label": "What happened",

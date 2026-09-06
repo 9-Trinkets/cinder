@@ -114,8 +114,8 @@ const QuickActionPanel = memo(function QuickActionPanel({
                 <button
                   key={opt.id}
                   onClick={() => onSelectOption(panel, opt)}
-                  disabled={busy}
-                  className="block w-full text-left px-3 py-2 rounded-xl hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
+                  disabled={busy || opt.disabled}
+                  className="block w-full text-left px-3 py-2 rounded-xl hover:bg-overlay border border-subtle disabled:opacity-45 disabled:cursor-not-allowed cursor-pointer"
                 >
                   <span className="font-medium">{opt.title}</span>
                   {opt.subtitle && <span className="text-muted text-xs ml-2">{opt.subtitle}</span>}
