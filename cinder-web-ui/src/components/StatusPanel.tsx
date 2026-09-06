@@ -1,4 +1,5 @@
 import * as api from '../api'
+import Minimap from './Minimap'
 import Section from './Section'
 
 export default function StatusPanel({
@@ -18,6 +19,12 @@ export default function StatusPanel({
           {uiSnapshot.time_label ? <span className="text-muted ml-1">— {uiSnapshot.time_label}</span> : null}
         </p>
       </Section>
+
+      {uiSnapshot.minimap && (
+        <Section title={uiSnapshot.ui_text.minimap_sidebar_label || 'Map'} defaultOpen>
+          <Minimap map={uiSnapshot.minimap} uiText={uiSnapshot.ui_text} />
+        </Section>
+      )}
 
       {uiSnapshot.show_vitals_sidebar && (
         <>

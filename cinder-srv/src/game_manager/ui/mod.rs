@@ -1,3 +1,4 @@
+mod minimap;
 mod panels;
 mod room;
 mod sidebar;
@@ -16,6 +17,7 @@ use self::panels::{
     build_interactable_labels, build_look_options, build_overflow_actions, build_panel_options,
     build_talk_options,
 };
+use self::minimap::build_minimap;
 use self::room::{build_room_consumables, crafted_consumable_labels};
 use self::sidebar::{
     build_current_room_items, build_equipped_items, build_inventory, build_party_members,
@@ -78,6 +80,33 @@ pub struct PlayerStatus {
     pub xp: u32,
     /// XP required to advance from the current level to the next (0 = maxed).
     pub xp_max: u32,
+}
+
+#[derive(Clone, Serialize)]
+pub struct MinimapRoom {
+    pub id: String,
+    pub label: String,
+    pub x: f64,
+    pub y: f64,
+    pub current: bool,
+    pub visited: bool,
+}
+
+#[derive(Clone, Serialize)]
+pub struct MinimapConnection {
+    pub from: String,
+    pub to: String,
+}
+
+#[derive(Clone, Serialize)]
+pub struct MinimapData {
+    pub id: String,
+    pub label: String,
+    pub fully_revealed: bool,
+    pub visited_count: usize,
+    pub total_count: Option<usize>,
+    pub rooms: Vec<MinimapRoom>,
+    pub connections: Vec<MinimapConnection>,
 }
 
 #[derive(Clone, Serialize)]
@@ -209,6 +238,7 @@ pub struct UiSnapshot {
     pub party: Vec<PartyMember>,
     /// The player's vitals and other stats for the sidebar.
     pub player: PlayerStatus,
+    pub minimap: Option<MinimapData>,
     /// Whether party levels are visible yet. Derived from the content's
     /// `level_reveal_room_prefix`: false until the player has travelled to a
     /// room on that board. Level info stays hidden to reward descent.
@@ -347,6 +377,7 @@ pub(super) fn build_ui_snapshot(
         game_closure: response::game_closure_data(runtime, transcript_lines),
         party: build_party_members(runtime, &state, content),
         player: build_player_status(&state, content),
+        minimap: build_minimap(&state, content, &current_room_id),
         levels_revealed: content.levels_revealed_for_room(&current_room_id),
         current_room_items: build_current_room_items(content, &state, &current_room_id),
         equipped_items: build_equipped_items(&state, content),

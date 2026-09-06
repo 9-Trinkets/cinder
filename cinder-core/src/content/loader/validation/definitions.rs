@@ -1,11 +1,71 @@
 use super::require_known_id;
 use crate::content::types::{
     ActionDefinition, CommandEffect, CommandTargetMode, ContentSettingsDefinition, ItemDefinition,
-    PeriodicActorEffect, StatDefinition,
+    MapDefinition, MapRevealCondition, PeriodicActorEffect, StatDefinition,
 };
 use serde_json::Value;
 use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
+
+pub(crate) fn validate_maps(
+    maps: &[MapDefinition],
+    known_room_ids: &[&str],
+    known_actor_ids: &[&str],
+) -> Result<(), Box<dyn Error>> {
+    let mut map_ids = BTreeSet::new();
+    let mut mapped_room_ids = BTreeSet::new();
+    for map in maps {
+        if map.id.trim().is_empty() || !map_ids.insert(map.id.as_str()) {
+            return Err(format!("map id '{}' is empty or duplicated", map.id).into());
+        }
+        if map.label.trim().is_empty() {
+            return Err(format!("map '{}' must define a label", map.id).into());
+        }
+        if map.rooms.is_empty() {
+            return Err(format!("map '{}' must contain at least one room", map.id).into());
+        }
+        let mut positions = BTreeSet::new();
+        for room in &map.rooms {
+            require_known_id(
+                &room.room_id,
+                known_room_ids,
+                &format!("map '{}' room '{}'", map.id, room.room_id),
+                "rooms",
+            )?;
+            if !mapped_room_ids.insert(room.room_id.as_str()) {
+                return Err(format!("room '{}' appears in multiple maps", room.room_id).into());
+            }
+            if !positions.insert((room.x.to_bits(), room.y.to_bits())) {
+                return Err(format!(
+                    "map '{}' has multiple rooms at ({}, {})",
+                    map.id, room.x, room.y
+                )
+                .into());
+            }
+        }
+        for condition in &map.reveal_conditions {
+            match condition {
+                MapRevealCondition::ActorDefeated { actor_id } => {
+                    require_known_id(
+                        actor_id,
+                        known_actor_ids,
+                        &format!("map '{}' reveal actor '{}'", map.id, actor_id),
+                        "actors",
+                    )?;
+                }
+                MapRevealCondition::StoryVarTruthy { key } if key.trim().is_empty() => {
+                    return Err(format!(
+                        "map '{}' story_var_truthy reveal key must not be empty",
+                        map.id
+                    )
+                    .into());
+                }
+                MapRevealCondition::StoryVarTruthy { .. } => {}
+            }
+        }
+    }
+    Ok(())
+}
 
 pub(crate) fn validate_actions(
     actions: &[ActionDefinition],
@@ -220,7 +280,8 @@ pub(crate) fn validate_periodic_actor_effects(
 mod tests {
     use super::*;
     use crate::content::types::{
-        PeriodicActorEffectDefinition, PeriodicActorEffectTargets, PeriodicActorEffectTrigger,
+        MapRoomDefinition, PeriodicActorEffectDefinition, PeriodicActorEffectTargets,
+        PeriodicActorEffectTrigger,
     };
 
     fn valid_fixture() -> (
@@ -246,6 +307,28 @@ mod tests {
         }];
         let messages = BTreeMap::from([("combat.hazard".to_string(), "Ouch.".to_string())]);
         (settings, items, messages)
+    }
+
+    #[test]
+    fn rejects_empty_map_story_var_reveal_key() {
+        let maps = vec![MapDefinition {
+            id: "floor".to_string(),
+            label: "Floor".to_string(),
+            rooms: vec![MapRoomDefinition {
+                room_id: "room".to_string(),
+                x: 0.0,
+                y: 0.0,
+            }],
+            reveal_conditions: vec![MapRevealCondition::StoryVarTruthy {
+                key: " ".to_string(),
+            }],
+        }];
+
+        let error = validate_maps(&maps, &["room"], &[])
+            .unwrap_err()
+            .to_string();
+
+        assert!(error.contains("reveal key must not be empty"), "{error}");
     }
 
     #[test]

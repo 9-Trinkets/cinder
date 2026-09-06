@@ -2,7 +2,8 @@ mod definitions;
 mod references;
 
 pub(crate) use definitions::{
-    validate_actions, validate_combat_settings, validate_items, validate_periodic_actor_effects,
+    validate_actions, validate_combat_settings, validate_items, validate_maps,
+    validate_periodic_actor_effects,
 };
 pub(crate) use references::{PackContext, validate_contents};
 

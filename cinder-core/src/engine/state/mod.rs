@@ -167,6 +167,15 @@ impl WorldState {
             let index = rand::thread_rng().gen_range(0..ids.len());
             ids[index].clone()
         };
+        let mut actor_known_room_ids = content
+            .actors
+            .iter()
+            .map(|actor| (actor.id.clone(), BTreeSet::from([actor.room_id.clone()])))
+            .collect::<BTreeMap<_, _>>();
+        actor_known_room_ids.insert(
+            content.settings.combat.player_actor_id.clone(),
+            BTreeSet::from([start_room_id.clone()]),
+        );
         Self {
             current_room_id: start_room_id,
             turn_number: 0,
@@ -197,11 +206,7 @@ impl WorldState {
                 .iter()
                 .map(|stage_id| (stage_id.clone(), content.opening.start_time_minutes))
                 .collect(),
-            actor_known_room_ids: content
-                .actors
-                .iter()
-                .map(|actor| (actor.id.clone(), BTreeSet::from([actor.room_id.clone()])))
-                .collect(),
+            actor_known_room_ids,
             actor_observed_room_ids: BTreeMap::new(),
             actor_known_feature_ids: BTreeMap::new(),
             actor_known_actor_ids: BTreeMap::new(),

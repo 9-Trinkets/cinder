@@ -13,6 +13,9 @@ pub(super) use settings::{default_actor_targeted_speech, default_stat_default_va
 mod leveling;
 pub use leveling::{LevelDefinition, LevelTable, LevelingDefinition};
 
+mod map_defs;
+pub use map_defs::{MapDefinition, MapRevealCondition, MapRoomDefinition};
+
 mod speech;
 pub use speech::{SpeechIntentEffect, SpeechIntentLabel, SpeechIntentsConfig};
 

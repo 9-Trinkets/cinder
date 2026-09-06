@@ -227,6 +227,30 @@ export interface PlayerStatus {
   xp_max: number
 }
 
+export interface MinimapRoom {
+  id: string
+  label: string
+  x: number
+  y: number
+  current: boolean
+  visited: boolean
+}
+
+export interface MinimapConnection {
+  from: string
+  to: string
+}
+
+export interface MinimapData {
+  id: string
+  label: string
+  fully_revealed: boolean
+  visited_count: number
+  total_count: number | null
+  rooms: MinimapRoom[]
+  connections: MinimapConnection[]
+}
+
 export interface ConsumableInfo {
   id: string
   label: string
@@ -301,6 +325,7 @@ export interface UiSnapshot {
   equipped_items: EquippedItem[]
   party: PartyMember[]
   player: PlayerStatus
+  minimap: MinimapData | null
   levels_revealed: boolean
   current_room_items: InventoryItem[]
   room_consumables: RoomConsumableGroup[]
@@ -336,6 +361,9 @@ export interface UiSnapshot {
     look_group_things: string
     look_group_people: string
     room_items_sidebar_label: string
+    minimap_sidebar_label: string
+    minimap_revealed_label: string
+    minimap_charted_label: string
     talk_panel_title: string
     talk_panel_prompt: string
     menu_option_list_title: string

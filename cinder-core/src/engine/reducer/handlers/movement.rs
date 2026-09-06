@@ -55,6 +55,7 @@ pub(crate) fn handle_player_moved(
         &format!("room_left:{from_room_id}"),
     ));
     state.current_room_id = to_room_id.to_string();
+    state.mark_actor_room_visited(&content.settings.combat.player_actor_id, to_room_id);
     lines.extend_narration(advance_objective_for_signal(
         state,
         content,
@@ -81,6 +82,7 @@ pub(crate) fn sync_followers_to_room(
         if follower_id == content.settings.combat.player_actor_id {
             continue;
         }
+
         if state.actor_stat(&follower_id, &content.settings.combat.health_stat_id) <= 0 {
             continue;
         }
@@ -100,5 +102,25 @@ pub(crate) fn sync_followers_to_room(
                 lines.narration(line);
             }
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::engine::test_fixtures::minimal_test_pack;
+
+    #[test]
+    fn player_movement_records_room_visits() {
+        let mut content = minimal_test_pack();
+        content.settings.combat.player_actor_id = "player".to_string();
+        let mut state = WorldState::new(&content);
+        let mut lines = NarrativeLines::default();
+
+        assert!(state.actor_has_visited_room("player", "lounge"));
+
+        handle_player_moved(&mut state, &content, "kitchen", &mut lines);
+
+        assert!(state.actor_has_visited_room("player", "kitchen"));
     }
 }

@@ -14,6 +14,7 @@ pub struct ContentPack {
     pub menus: Vec<OpeningMenuDefinition>,
     pub movies: Vec<OpeningMovieDefinition>,
     pub presentation: PresentationDefinition,
+    pub maps: Vec<MapDefinition>,
     pub rooms: Vec<RoomDefinition>,
     pub actors: Vec<ActorDefinition>,
     pub act_cast: Vec<ActCastMember>,
@@ -45,6 +46,12 @@ pub struct RoomConsumableRef<'a> {
 }
 
 impl ContentPack {
+    pub fn map_for_room(&self, room_id: &str) -> Option<&MapDefinition> {
+        self.maps
+            .iter()
+            .find(|map| map.rooms.iter().any(|room| room.room_id == room_id))
+    }
+
     pub fn room(&self, room_id: &str) -> Option<&RoomDefinition> {
         self.room_index.get(room_id).map(|&i| &self.rooms[i])
     }

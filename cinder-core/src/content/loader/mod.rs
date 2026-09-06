@@ -10,14 +10,14 @@ use crate::content::loader::fs::{
 use crate::content::loader::index::{build_index, collect_act_cast};
 use crate::content::loader::validation::{
     PackContext, require_known_id, validate_actions, validate_combat_settings, validate_contents,
-    validate_items, validate_periodic_actor_effects,
+    validate_items, validate_maps, validate_periodic_actor_effects,
 };
 use crate::content::types::{
     ActionsDefinition, ActorDefinition, BehaviorDefinition, BeatObjectivesDefinition,
     BeatsDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition, LevelingDefinition,
-    MovementConfigDefinition, OpeningDefinition, OpeningMenuDefinition, OpeningMovieDefinition,
-    PresentationDefinition, RoomDefinition, SpeechConfigDefinition, SpeechIntentsConfig,
-    StatsDefinition, UiTextDefinition,
+    MapDefinition, MovementConfigDefinition, OpeningDefinition, OpeningMenuDefinition,
+    OpeningMovieDefinition, PresentationDefinition, RoomDefinition, SpeechConfigDefinition,
+    SpeechIntentsConfig, StatsDefinition, UiTextDefinition,
 };
 use serde_json::Value;
 use std::collections::BTreeMap;
@@ -105,6 +105,9 @@ pub fn load_pack_from_dir_with_locale(
     let presentation = paths
         .read_optional::<PresentationDefinition>("presentation.json")?
         .unwrap_or_default();
+    let maps = paths
+        .read_optional::<Vec<MapDefinition>>("maps.json")?
+        .unwrap_or_default();
     let messages = read_messages(&paths)?;
     for movie in &mut movies {
         for frame in &mut movie.frames {
@@ -173,6 +176,7 @@ pub fn load_pack_from_dir_with_locale(
         .map(|actor| actor.id.as_str())
         .collect::<Vec<_>>();
 
+    validate_maps(&maps, &room_ids, &actor_ids)?;
     let stage_ids: Vec<&str> = beats.stages.iter().map(|s| s.id.as_str()).collect();
     validate_actions(&actions, &room_ids, &stage_ids)?;
     validate_contents(&PackContext {
@@ -201,6 +205,7 @@ pub fn load_pack_from_dir_with_locale(
         menus,
         movies,
         presentation,
+        maps,
         rooms,
         actors,
         act_cast,
@@ -276,6 +281,23 @@ mod shipped_pack_load_tests {
                 "{pack}: hold default absent"
             );
             if pack == "layla" {
+                assert_eq!(loaded.maps.len(), 3);
+                assert_eq!(
+                    loaded
+                        .map_for_room("r1c1")
+                        .map(|map| (map.id.as_str(), map.rooms.len())),
+                    Some(("upper-works", 81))
+                );
+                assert_eq!(
+                    loaded
+                        .map_for_room("d8c5")
+                        .map(|map| map.id.as_str()),
+                    Some("deep-forest")
+                );
+                assert_eq!(
+                    loaded.map_for_room("oh").map(|map| map.id.as_str()),
+                    Some("outer-ring")
+                );
                 assert_eq!(loaded.settings.periodic_actor_effects.len(), 1);
                 assert_eq!(loaded.settings.periodic_actor_effects[0].id, "drain_sigil");
                 assert_eq!(

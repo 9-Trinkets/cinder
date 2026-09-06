@@ -208,8 +208,10 @@ fn build_runtime_impl(
     if state_json.is_empty() || state_json == "{}" {
         CinderRuntime::new(content, false).map_err(|e| format!("failed to create runtime: {e}"))
     } else {
-        let state: WorldState = serde_json::from_str(state_json)
+        let mut state: WorldState = serde_json::from_str(state_json)
             .map_err(|e| format!("failed to deserialize state: {e}"))?;
+        let current_room_id = state.current_room_id.clone();
+        state.mark_actor_room_visited(&content.settings.combat.player_actor_id, &current_room_id);
         CinderRuntime::from_state(content, state, false)
             .map_err(|e| format!("failed to create runtime from state: {e}"))
     }

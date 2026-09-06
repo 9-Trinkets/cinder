@@ -133,6 +133,12 @@ pub struct UiTextDefinition {
     /// items in rooms can rename or repurpose it.
     #[serde(default = "default_room_items_sidebar_label")]
     pub room_items_sidebar_label: String,
+    #[serde(default = "default_minimap_sidebar_label")]
+    pub minimap_sidebar_label: String,
+    #[serde(default = "default_minimap_revealed_label")]
+    pub minimap_revealed_label: String,
+    #[serde(default = "default_minimap_charted_label")]
+    pub minimap_charted_label: String,
     /// Verb label for the generic `take <item>` action-bar button/panel.
     #[serde(default = "default_take_label")]
     pub take_label: String,
@@ -418,6 +424,18 @@ pub(super) fn default_room_items_sidebar_label() -> String {
     "On the ground".to_string()
 }
 
+pub(super) fn default_minimap_sidebar_label() -> String {
+    "Map".to_string()
+}
+
+pub(super) fn default_minimap_revealed_label() -> String {
+    "Map revealed".to_string()
+}
+
+pub(super) fn default_minimap_charted_label() -> String {
+    "charted".to_string()
+}
+
 pub(super) fn default_take_label() -> String {
     "Take".to_string()
 }
@@ -425,4 +443,3 @@ pub(super) fn default_take_label() -> String {
 pub(super) fn default_drop_label() -> String {
     "Drop".to_string()
 }
-
