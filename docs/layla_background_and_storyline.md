@@ -74,8 +74,9 @@ is the resolution of that question.
 
 1. **Mechanics as levels, not a single identity.** Each level speaks its own
    game — the stone board is Go (surround territory rather than "kill monsters"),
-   the elf army below is chess, the fire-rooms are a board of old fire. Encircling
-   is the language of the *first* level, not the whole game. The board reveals
+   the elf army below is chess, the fire-rooms are a board of **mancala** (seed
+   and store). Encircling is the language of the *first* level, not the whole
+   game. The board reveals
    that Layla *knows* Go — she has played it before, against humans, in an
    earlier life. The chalk and the grid are the same thing: *lines*.
 2. **Mechanic-as-memory, mechanic-as-job-training.** Every shift in Layla's
@@ -155,10 +156,14 @@ contrast with the golems is deliberate: the warden-ring *binds* golems to her
 will; the elves *decline to be bound*. This is the game's freedom theme showing
 its first full face — and a warning about what rings do to a mind.
 
-### The Fire-Rooms (The Old Fire / the Elemental)
+### Level 3 — The Fire-Rooms (Mancala / the Old Fire / the Elemental)
 A set of basins and pits built around **old fire** — rooms named for embers,
 ash, and seeding ("A Basin That Remembers Fire," "A Basin Where Seeds Were
-Slid," "The Heart-Pit"). Home to:
+Slid," "The Heart-Pit"). This is the third remembered game-language: **mancala**
+(Go and chess are the first two), which Layla played against humans in an older
+life. The ring layout is a mancala board — the two offering dishes (the north
+and south stores) are the goal pits, the flanking basins are the sowing pits,
+and the embers are the seeds. Home to:
 - **fire sprites** — small children of the old fire, hostile, weak.
 - the **fire elemental** — "a wide, patient form, made of the board's old fire."
   It cannot be damaged by physical means; its form is held together by *memory*.
