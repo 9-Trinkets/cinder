@@ -100,9 +100,11 @@ is the resolution of that question.
 ## Notable Story Beats (Canon, from content + recorded intent)
 
 ### The Opening
-Layla wakes on cold stone. Scattered across the floor are **small stone
-markers** — old stakes driven by hands long gone — that she eventually learns to
-use as territory flags. Her hands know how to fight; her mind knows nothing.
+The opening scene — waking beside a golem in the mouth of the cave, the first
+actions available to her, and the feature-surface order that follows — is planned
+in detail in **`docs/layla/floor1_plan.md`** (Premise and Feature Surface Order).
+Canon only: Layla wakes with no memory. Her hands know how to fight; her mind
+knows nothing.
 
 ### The Chalk and the Sigils (Dungeon-Master Powers, Learned as "Memories")
 Layla's toolset is **magic chalk** that leaves pale light behind in the stone.
@@ -120,17 +122,23 @@ recalled skill:
   strength of the one who traces it. *As a master power: stock your dungeon with
   monsters.* Learned by reading the **ember scroll**.
 
-### Level 1 — The Stone Board (Golems)
-The surface board is a Go grid. Four **golems** stand guard:
-- **dark golems** (dark granite) and **pale golems** (pale marble) — silent,
-  passive until attacked; when attacked and left standing they *wake* and strike
-  until you fall or flee. A dark golem that is **surrounded by flagged rooms**
-  also wakes — it belongs to the one who marked the ground.
-- The **stone warden** (`golem-boss`) at the center — the largest, oldest, the
-  reason the board matters. It cannot be converted; only defeated. It drops the
-  **warden ring**, which bends surviving golems to Layla's will.
+### Level 1 — The Goblin Cave (Go)
+The floor-by-floor design for level 1 — cast and power economy (goblins, golems,
+the shaman), the loot justification, and the feature-surface order — lives in
+**`docs/layla/floor1_plan.md`**. What follows is only the storyline canon this
+level carries.
 
-**Beats on defeating the warden** (hook `warden.reveal` / `warden.memory`): a
+Level 1 is a **Go grid** that reads as a living **goblin cave**. A rare tribe of
+**goblins** hunts the floor beneath a **goblin shaman**, who made the **golems**
+from the stone. The golems are silent constructs — pieces that can be drawn into
+step with Layla by encircling rings; the goblins are conscious and hostile, and
+the weakest enemies on the floor. Their hunting is what justifies the weapons
+and healing found in the cave. (Details: `docs/layla/floor1_plan.md`.)
+
+The floor ends at the **goblin shaman** — strongest thing on it, and the only
+one that cannot be converted, only defeated.
+
+**Beats on defeating the shaman** (hook `shaman.reveal` / `shaman.memory`): a
 ladder grinds open and descends into phosphorescent glow — "the first level is
 yours." And a memory surfaces:
 
@@ -152,7 +160,7 @@ teaches the drain sigil.
 
 Defeating the **elf king** (hook `king.defeated`) does not bind the others by a
 ring — they simply *choose* to lower their weapons and let Layla pass. The
-contrast with the golems is deliberate: the warden-ring *binds* golems to her
+contrast with the golems is deliberate: the shaman's ring *binds* golems to her
 will; the elves *decline to be bound*. This is the game's freedom theme showing
 its first full face — and a warning about what rings do to a mind.
 
@@ -229,7 +237,7 @@ of her own arc should be felt by the endgame.
   tell them what they see, what they hear, and what they can reach.
 - Use **second person perspective** ("You wake up in a damp cellar.") to pull
   the player in. (Note: a few existing narration keys in `messages.json` — e.g.
-  `warden.memory` — are written in third person; port them to second person as
+  `shaman.memory` — are written in third person; port them to second person as
   they are touched.)
 
 ### The two voices: warm narration vs. cold system
@@ -262,11 +270,12 @@ of her own arc should be felt by the endgame.
 | PCA + subtext for Layla | `content/layla/locales/en/opening.json` → `prompt_context` |
 | Room prose / titles | `content/layla/locales/en/rooms.json` |
 | Actor prose / `inspect_text` | `content/layla/locales/en/actors.json` |
-| Key story narration | `content/layla/locales/en/messages.json` (e.g. `warden.reveal`, `warden.memory`, `king.defeated`, `elemental.release`, `item.scroll_read.learned`, `item.spawn_scroll_read.learned`) |
+| Key story narration | `content/layla/locales/en/messages.json` (e.g. `shaman.reveal`, `shaman.memory`, `king.defeated`, `elemental.release`, `item.scroll_read.learned`, `item.spawn_scroll_read.learned`) |
 | Items + sigil lore | `content/layla/items.json` |
 | Sizes / meshes / `starting_items` | `content/layla/settings.json` |
 | Level-up curve | `content/layla/levels.json` |
-| Beat / warden / king / elemental triggers | `content/layla/hooks.json` |
+| Floor-1 design & feature-surface plan | `docs/layla/floor1_plan.md` |
+| Beat / shaman / king / elemental triggers | `content/layla/hooks.json` |
 | Combat/narration wording | `content/layla/locales/en/messages.json` |
 
 ## Mechanical Summary (for reference)
@@ -275,7 +284,7 @@ of her own arc should be felt by the endgame.
   surrounded by chalk rings.
 - **Drain sigil** saps 2 HP per tick from hostile living targets standing on it.
 - **Guard followers** intercept damage aimed at Layla.
-- **Warden ring** (equip) bends surviving golems to her will.
+- **Shaman's ring** (equip) bends surviving golems to her will.
 - Level 2 thresholds depend on XP gained from defeated elves.
 - The physical fire form is invulnerable until it is *released* (reduced to a
   non-damaging state, then let go).
