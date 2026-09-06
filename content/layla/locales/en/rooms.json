@@ -2,8 +2,8 @@
   {
     "id": "r1c1",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r1c1-feature",
@@ -39,8 +39,8 @@
   {
     "id": "r1c2",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r1c2-feature",
@@ -84,8 +84,8 @@
   {
     "id": "r1c3",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r1c3-feature",
@@ -129,8 +129,8 @@
   {
     "id": "r1c4",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r1c4-feature",
@@ -174,8 +174,8 @@
   {
     "id": "r1c5",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r1c5-feature",
@@ -219,8 +219,8 @@
   {
     "id": "r1c6",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r1c6-feature",
@@ -264,8 +264,8 @@
   {
     "id": "r1c7",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r1c7-feature",
@@ -309,8 +309,8 @@
   {
     "id": "r1c8",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r1c8-feature",
@@ -354,8 +354,8 @@
   {
     "id": "r1c9",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r1c9-feature",
@@ -391,8 +391,8 @@
   {
     "id": "r2c1",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r2c1-feature",
@@ -436,8 +436,8 @@
   {
     "id": "r2c2",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r2c2-feature",
@@ -489,8 +489,8 @@
   {
     "id": "r2c3",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r2c3-feature",
@@ -542,8 +542,8 @@
   {
     "id": "r2c4",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r2c4-feature",
@@ -595,8 +595,8 @@
   {
     "id": "r2c5",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r2c5-feature",
@@ -648,8 +648,8 @@
   {
     "id": "r2c6",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r2c6-feature",
@@ -701,8 +701,8 @@
   {
     "id": "r2c7",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r2c7-feature",
@@ -754,8 +754,8 @@
   {
     "id": "r2c8",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r2c8-feature",
@@ -807,8 +807,8 @@
   {
     "id": "r2c9",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r2c9-feature",
@@ -852,8 +852,8 @@
   {
     "id": "r3c1",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r3c1-feature",
@@ -897,8 +897,8 @@
   {
     "id": "r3c2",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r3c2-feature",
@@ -950,8 +950,8 @@
   {
     "id": "r3c3",
     "title": "A Hall of Dark Stone",
-    "summary": "The stone here is darker than the rest. A golem of dark granite stands at the center, still as architecture. Its eyes are closed.",
-    "inspect_text": "The stone here is darker than the rest. A golem of dark granite stands at the center, still as architecture. Its eyes are closed.",
+    "summary": "The stone here runs darker than anywhere else. At the center stands a golem of dark granite, still and silent as a monument, its eyes closed.",
+    "inspect_text": "Darker stone everywhere. At the center of the hall, a golem of dark granite stands motionless as architecture, its eyes closed, its surface catching no light.",
     "features": [
       {
         "id": "r3c3-feature",
@@ -1003,8 +1003,8 @@
   {
     "id": "r3c4",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r3c4-feature",
@@ -1056,8 +1056,8 @@
   {
     "id": "r3c5",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r3c5-feature",
@@ -1109,8 +1109,8 @@
   {
     "id": "r3c6",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r3c6-feature",
@@ -1162,8 +1162,8 @@
   {
     "id": "r3c7",
     "title": "A Chamber of Pale Pillars",
-    "summary": "The pillars here are pale, almost white. A golem of pale marble stands among them, motionless. It does not look at you.",
-    "inspect_text": "The pillars here are pale, almost white. A golem of pale marble stands among them, motionless. It does not look at you.",
+    "summary": "Pale pillars ring this chamber, each placed as if on a marked point. A golem of pale marble stands among them, motionless.",
+    "inspect_text": "The pillars here are pale, almost white, each one set on what feels like a marked point in the floor. A golem of pale marble stands still among them, not looking at you.",
     "features": [
       {
         "id": "r3c7-feature",
@@ -1215,8 +1215,8 @@
   {
     "id": "r3c8",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r3c8-feature",
@@ -1268,8 +1268,8 @@
   {
     "id": "r3c9",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r3c9-feature",
@@ -1313,8 +1313,8 @@
   {
     "id": "r4c1",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r4c1-feature",
@@ -1358,8 +1358,8 @@
   {
     "id": "r4c2",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r4c2-feature",
@@ -1411,8 +1411,8 @@
   {
     "id": "r4c3",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r4c3-feature",
@@ -1464,8 +1464,8 @@
   {
     "id": "r4c4",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r4c4-feature",
@@ -1517,8 +1517,8 @@
   {
     "id": "r4c5",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r4c5-feature",
@@ -1570,8 +1570,8 @@
   {
     "id": "r4c6",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r4c6-feature",
@@ -1623,8 +1623,8 @@
   {
     "id": "r4c7",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r4c7-feature",
@@ -1676,8 +1676,8 @@
   {
     "id": "r4c8",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r4c8-feature",
@@ -1729,8 +1729,8 @@
   {
     "id": "r4c9",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r4c9-feature",
@@ -1774,8 +1774,8 @@
   {
     "id": "r5c1",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r5c1-feature",
@@ -1819,8 +1819,8 @@
   {
     "id": "r5c2",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r5c2-feature",
@@ -1872,8 +1872,8 @@
   {
     "id": "r5c3",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r5c3-feature",
@@ -1925,8 +1925,8 @@
   {
     "id": "r5c4",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r5c4-feature",
@@ -1978,8 +1978,8 @@
   {
     "id": "r5c5",
     "title": "The Center Hall",
-    "summary": "The room is open and the floor is laid in a precise grid. Lines cross at every intersection. At the center stands a golem of pale stone, taller than the rest, perfectly still. It does not move. It does not need to.",
-    "inspect_text": "The room is open and the floor is laid in a precise grid. Lines cross at every intersection. At the center stands a golem of pale stone, taller than the rest, perfectly still. It does not move. It does not need to.",
+    "summary": "An open hall floored in a precise grid, every line crossing true. At its center stands a golem of pale stone, taller than the rest, perfectly still.",
+    "inspect_text": "The grid underfoot is laid with impossible precision, every line crossing true, the center of the whole board. At its heart a golem of pale stone stands taller than the rest, perfectly still. It does not need to move.",
     "descriptions": [
       {
         "actor_defeated": "golem-boss",
@@ -2049,8 +2049,8 @@
   {
     "id": "r5c6",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r5c6-feature",
@@ -2102,8 +2102,8 @@
   {
     "id": "r5c7",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r5c7-feature",
@@ -2155,8 +2155,8 @@
   {
     "id": "r5c8",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r5c8-feature",
@@ -2208,8 +2208,8 @@
   {
     "id": "r5c9",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r5c9-feature",
@@ -2253,8 +2253,8 @@
   {
     "id": "r6c1",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r6c1-feature",
@@ -2298,8 +2298,8 @@
   {
     "id": "r6c2",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r6c2-feature",
@@ -2351,8 +2351,8 @@
   {
     "id": "r6c3",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r6c3-feature",
@@ -2404,8 +2404,8 @@
   {
     "id": "r6c4",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r6c4-feature",
@@ -2457,8 +2457,8 @@
   {
     "id": "r6c5",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r6c5-feature",
@@ -2510,8 +2510,8 @@
   {
     "id": "r6c6",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r6c6-feature",
@@ -2563,8 +2563,8 @@
   {
     "id": "r6c7",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r6c7-feature",
@@ -2616,8 +2616,8 @@
   {
     "id": "r6c8",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r6c8-feature",
@@ -2669,8 +2669,8 @@
   {
     "id": "r6c9",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r6c9-feature",
@@ -2714,8 +2714,8 @@
   {
     "id": "r7c1",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r7c1-feature",
@@ -2759,8 +2759,8 @@
   {
     "id": "r7c2",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r7c2-feature",
@@ -2812,8 +2812,8 @@
   {
     "id": "r7c3",
     "title": "A Vault of Dark Flags",
-    "summary": "The floor is laid in dark stone flags. A golem of dark granite stands in the corner, watching nothing.",
-    "inspect_text": "The floor is laid in dark stone flags. A golem of dark granite stands in the corner, watching nothing.",
+    "summary": "A vault floored in dark stone flags. In the corner a golem of dark granite stands, quiet, watching nothing.",
+    "inspect_text": "Dark flags pave this vault, their joints running straight and clean. In the corner a golem of dark granite stands, head slightly turned, watching nothing — or listening.",
     "features": [
       {
         "id": "r7c3-feature",
@@ -2865,8 +2865,8 @@
   {
     "id": "r7c4",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r7c4-feature",
@@ -2918,8 +2918,8 @@
   {
     "id": "r7c5",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r7c5-feature",
@@ -2971,8 +2971,8 @@
   {
     "id": "r7c6",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r7c6-feature",
@@ -3024,8 +3024,8 @@
   {
     "id": "r7c7",
     "title": "A Hall of Pale Stone",
-    "summary": "The stone here is pale, almost white, and catches what little light there is. A pale golem stands in the center, waiting.",
-    "inspect_text": "The stone here is pale, almost white, and catches what little light there is. A pale golem stands in the center, waiting.",
+    "summary": "A hall of pale, almost white stone that holds whatever light there is. At its center, a golem waits.",
+    "inspect_text": "Everything here is pale, almost white, and the stone seems to trap what little light falls on it, glowing gently. A pale golem waits at the center of the hall.",
     "features": [
       {
         "id": "r7c7-feature",
@@ -3077,8 +3077,8 @@
   {
     "id": "r7c8",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r7c8-feature",
@@ -3130,8 +3130,8 @@
   {
     "id": "r7c9",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r7c9-feature",
@@ -3175,8 +3175,8 @@
   {
     "id": "r8c1",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r8c1-feature",
@@ -3220,8 +3220,8 @@
   {
     "id": "r8c2",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r8c2-feature",
@@ -3273,8 +3273,8 @@
   {
     "id": "r8c3",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r8c3-feature",
@@ -3326,8 +3326,8 @@
   {
     "id": "r8c4",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r8c4-feature",
@@ -3379,8 +3379,8 @@
   {
     "id": "r8c5",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r8c5-feature",
@@ -3432,8 +3432,8 @@
   {
     "id": "r8c6",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r8c6-feature",
@@ -3485,8 +3485,8 @@
   {
     "id": "r8c7",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r8c7-feature",
@@ -3538,8 +3538,8 @@
   {
     "id": "r8c8",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r8c8-feature",
@@ -3591,8 +3591,8 @@
   {
     "id": "r8c9",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r8c9-feature",
@@ -3636,8 +3636,8 @@
   {
     "id": "r9c1",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r9c1-feature",
@@ -3673,8 +3673,8 @@
   {
     "id": "r9c2",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r9c2-feature",
@@ -3718,8 +3718,8 @@
   {
     "id": "r9c3",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r9c3-feature",
@@ -3763,8 +3763,8 @@
   {
     "id": "r9c4",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r9c4-feature",
@@ -3808,8 +3808,8 @@
   {
     "id": "r9c5",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r9c5-feature",
@@ -3853,8 +3853,8 @@
   {
     "id": "r9c6",
     "title": "A Corridor of Worn Flags",
-    "summary": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
-    "inspect_text": "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
+    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
+    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
     "features": [
       {
         "id": "r9c6-feature",
@@ -3898,8 +3898,8 @@
   {
     "id": "r9c7",
     "title": "A Cell of Fitted Stone",
-    "summary": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
+    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
+    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
     "features": [
       {
         "id": "r9c7-feature",
@@ -3943,8 +3943,8 @@
   {
     "id": "r9c8",
     "title": "A Hall of Crossing Paths",
-    "summary": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
-    "inspect_text": "A hall where paths cross at right angles, worn into the floor by traffic that has long since stopped.",
+    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
+    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
     "features": [
       {
         "id": "r9c8-feature",
@@ -3988,8 +3988,8 @@
   {
     "id": "r9c9",
     "title": "A Passage of Scored Walls",
-    "summary": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
-    "inspect_text": "A passage where the walls are scored with straight lines, etched at regular intervals into the stone.",
+    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
+    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
     "features": [
       {
         "id": "r9c9-feature",
@@ -4025,8 +4025,8 @@
   {
     "id": "d1c1",
     "title": "The Mushroom Grove",
-    "summary": "A cavern floor choked with pale mushrooms that lean toward a glowing canopy overhead. The air smells of wet earth and something sweet.",
-    "inspect_text": "A cavern floor choked with pale mushrooms that lean toward a glowing canopy overhead. The air smells of wet earth and something sweet.",
+    "summary": "A cavern floor is choked with pale mushrooms, all leaning toward the glowing canopy above. The air smells of wet earth and something sweet, like crushed fruit.",
+    "inspect_text": "Pale mushrooms crowd the floor, every cap leaning toward the glowing canopy above. The air holds wet earth and something sweet — crushed fruit, or a thing that ripened down here.",
     "features": [],
     "exits": [
       {
@@ -4062,8 +4062,8 @@
   {
     "id": "d1c2",
     "title": "A Glowing Clearing",
-    "summary": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
-    "inspect_text": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
+    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
     "features": [],
     "exits": [
       {
@@ -4095,8 +4095,8 @@
   {
     "id": "d1c3",
     "title": "A Glowing Clearing",
-    "summary": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
-    "inspect_text": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
+    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
     "features": [],
     "exits": [
       {
@@ -4128,8 +4128,8 @@
   {
     "id": "d1c4",
     "title": "A Glowing Clearing",
-    "summary": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
-    "inspect_text": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
+    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
     "features": [],
     "exits": [
       {
@@ -4161,8 +4161,8 @@
   {
     "id": "d1c5",
     "title": "A Glowing Clearing",
-    "summary": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
-    "inspect_text": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
+    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
     "features": [],
     "exits": [
       {
@@ -4194,8 +4194,8 @@
   {
     "id": "d1c6",
     "title": "A Glowing Clearing",
-    "summary": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
-    "inspect_text": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
+    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
     "features": [],
     "exits": [
       {
@@ -4227,8 +4227,8 @@
   {
     "id": "d1c7",
     "title": "A Glowing Clearing",
-    "summary": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
-    "inspect_text": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
+    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
     "features": [],
     "exits": [
       {
@@ -4260,8 +4260,8 @@
   {
     "id": "d1c8",
     "title": "A Glowing Clearing",
-    "summary": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
-    "inspect_text": "A clearing lit by drifting spores that pulse like a slow heartbeat. The false sky shimmers far above.",
+    "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
+    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
     "features": [],
     "exits": [
       {
@@ -4285,8 +4285,8 @@
   {
     "id": "d2c1",
     "title": "The Root Tangle",
-    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
-    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
+    "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
     "features": [],
     "exits": [
       {
@@ -4318,8 +4318,8 @@
   {
     "id": "d2c2",
     "title": "The Root Tangle",
-    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
-    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
+    "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
     "features": [],
     "exits": [
       {
@@ -4359,8 +4359,8 @@
   {
     "id": "d2c3",
     "title": "The Root Tangle",
-    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
-    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
+    "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
     "features": [],
     "exits": [
       {
@@ -4400,8 +4400,8 @@
   {
     "id": "d2c4",
     "title": "The Root Tangle",
-    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
-    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
+    "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
     "features": [],
     "exits": [
       {
@@ -4441,8 +4441,8 @@
   {
     "id": "d2c5",
     "title": "The Root Tangle",
-    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
-    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
+    "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
     "features": [],
     "exits": [
       {
@@ -4482,8 +4482,8 @@
   {
     "id": "d2c6",
     "title": "The Root Tangle",
-    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
-    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
+    "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
     "features": [],
     "exits": [
       {
@@ -4523,8 +4523,8 @@
   {
     "id": "d2c7",
     "title": "The Root Tangle",
-    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
-    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
+    "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
     "features": [],
     "exits": [
       {
@@ -4564,8 +4564,8 @@
   {
     "id": "d2c8",
     "title": "The Root Tangle",
-    "summary": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
-    "inspect_text": "Great roots weave the walls here, and between them the forest breathes. Somewhere, something moves.",
+    "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
+    "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
     "features": [],
     "exits": [
       {
@@ -4597,8 +4597,8 @@
   {
     "id": "d3c1",
     "title": "A Still Pool Glade",
-    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
-    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
+    "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
     "features": [],
     "exits": [
       {
@@ -4630,8 +4630,8 @@
   {
     "id": "d3c2",
     "title": "A Still Pool Glade",
-    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
-    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
+    "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
     "features": [],
     "exits": [
       {
@@ -4671,8 +4671,8 @@
   {
     "id": "d3c3",
     "title": "A Still Pool Glade",
-    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
-    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
+    "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
     "features": [],
     "exits": [
       {
@@ -4712,8 +4712,8 @@
   {
     "id": "d3c4",
     "title": "A Still Pool Glade",
-    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
-    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
+    "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
     "features": [],
     "exits": [
       {
@@ -4753,8 +4753,8 @@
   {
     "id": "d3c5",
     "title": "A Still Pool Glade",
-    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
-    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
+    "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
     "features": [],
     "exits": [
       {
@@ -4794,8 +4794,8 @@
   {
     "id": "d3c6",
     "title": "A Still Pool Glade",
-    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
-    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
+    "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
     "features": [],
     "exits": [
       {
@@ -4835,8 +4835,8 @@
   {
     "id": "d3c7",
     "title": "A Still Pool Glade",
-    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
-    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
+    "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
     "features": [],
     "exits": [
       {
@@ -4876,8 +4876,8 @@
   {
     "id": "d3c8",
     "title": "A Still Pool Glade",
-    "summary": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
-    "inspect_text": "A pool of still, luminous water reflects the glowing canopy. The surface ripples though nothing touches it.",
+    "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
+    "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
     "features": [],
     "exits": [
       {
@@ -4909,8 +4909,8 @@
   {
     "id": "d4c1",
     "title": "The Fungus Hollow",
-    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
-    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
+    "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
     "features": [],
     "exits": [
       {
@@ -4942,8 +4942,8 @@
   {
     "id": "d4c2",
     "title": "The Fungus Hollow",
-    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
-    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
+    "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
     "features": [],
     "exits": [
       {
@@ -4983,8 +4983,8 @@
   {
     "id": "d4c3",
     "title": "The Fungus Hollow",
-    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
-    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
+    "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
     "features": [],
     "exits": [
       {
@@ -5024,8 +5024,8 @@
   {
     "id": "d4c4",
     "title": "The Fungus Hollow",
-    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
-    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
+    "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
     "features": [],
     "exits": [
       {
@@ -5065,8 +5065,8 @@
   {
     "id": "d4c5",
     "title": "The Fungus Hollow",
-    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
-    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
+    "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
     "features": [],
     "exits": [
       {
@@ -5106,8 +5106,8 @@
   {
     "id": "d4c6",
     "title": "The Fungus Hollow",
-    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
-    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
+    "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
     "features": [],
     "exits": [
       {
@@ -5147,8 +5147,8 @@
   {
     "id": "d4c7",
     "title": "The Fungus Hollow",
-    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
-    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
+    "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
     "features": [],
     "exits": [
       {
@@ -5188,8 +5188,8 @@
   {
     "id": "d4c8",
     "title": "The Fungus Hollow",
-    "summary": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
-    "inspect_text": "Mushrooms stand like sentinels, their caps shedding pale light across the stone floor.",
+    "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
+    "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
     "features": [],
     "exits": [
       {
@@ -5221,8 +5221,8 @@
   {
     "id": "d5c1",
     "title": "A Chalked Trail",
-    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
-    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
+    "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
     "features": [],
     "exits": [
       {
@@ -5254,8 +5254,8 @@
   {
     "id": "d5c2",
     "title": "A Chalked Trail",
-    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
-    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
+    "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
     "features": [],
     "exits": [
       {
@@ -5295,8 +5295,8 @@
   {
     "id": "d5c3",
     "title": "A Chalked Trail",
-    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
-    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
+    "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
     "features": [],
     "exits": [
       {
@@ -5336,8 +5336,8 @@
   {
     "id": "d5c4",
     "title": "A Chalked Trail",
-    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
-    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
+    "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
     "features": [],
     "exits": [
       {
@@ -5377,8 +5377,8 @@
   {
     "id": "d5c5",
     "title": "A Chalked Trail",
-    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
-    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
+    "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
     "features": [],
     "exits": [
       {
@@ -5418,8 +5418,8 @@
   {
     "id": "d5c6",
     "title": "A Chalked Trail",
-    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
-    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
+    "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
     "features": [],
     "exits": [
       {
@@ -5459,8 +5459,8 @@
   {
     "id": "d5c7",
     "title": "A Chalked Trail",
-    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
-    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
+    "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
     "features": [],
     "exits": [
       {
@@ -5500,8 +5500,8 @@
   {
     "id": "d5c8",
     "title": "A Chalked Trail",
-    "summary": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
-    "inspect_text": "Faint chalk lines run along the floor here, worn and half-forgotten, leading deeper.",
+    "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
+    "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
     "features": [],
     "exits": [
       {
@@ -5533,8 +5533,8 @@
   {
     "id": "d6c1",
     "title": "The Whispering Ferns",
-    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
-    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
+    "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
     "features": [],
     "exits": [
       {
@@ -5566,8 +5566,8 @@
   {
     "id": "d6c2",
     "title": "The Whispering Ferns",
-    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
-    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
+    "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
     "features": [],
     "exits": [
       {
@@ -5607,8 +5607,8 @@
   {
     "id": "d6c3",
     "title": "The Whispering Ferns",
-    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
-    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
+    "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
     "features": [],
     "exits": [
       {
@@ -5648,8 +5648,8 @@
   {
     "id": "d6c4",
     "title": "The Whispering Ferns",
-    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
-    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
+    "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
     "features": [],
     "exits": [
       {
@@ -5689,8 +5689,8 @@
   {
     "id": "d6c5",
     "title": "The Whispering Ferns",
-    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
-    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
+    "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
     "features": [],
     "exits": [
       {
@@ -5730,8 +5730,8 @@
   {
     "id": "d6c6",
     "title": "The Whispering Ferns",
-    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
-    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
+    "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
     "features": [],
     "exits": [
       {
@@ -5771,8 +5771,8 @@
   {
     "id": "d6c7",
     "title": "The Whispering Ferns",
-    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
-    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
+    "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
     "features": [],
     "exits": [
       {
@@ -5812,8 +5812,8 @@
   {
     "id": "d6c8",
     "title": "The Whispering Ferns",
-    "summary": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
-    "inspect_text": "Fern-like growths rustle without wind, murmuring in a language that sounds almost familiar.",
+    "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
+    "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
     "features": [],
     "exits": [
       {
@@ -5845,8 +5845,8 @@
   {
     "id": "d7c1",
     "title": "A Shaft of Sky",
-    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
-    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
+    "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
     "features": [],
     "exits": [
       {
@@ -5878,8 +5878,8 @@
   {
     "id": "d7c2",
     "title": "A Shaft of Sky",
-    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
-    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
+    "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
     "features": [],
     "exits": [
       {
@@ -5919,8 +5919,8 @@
   {
     "id": "d7c3",
     "title": "A Shaft of Sky",
-    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
-    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
+    "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
     "features": [],
     "exits": [
       {
@@ -5960,8 +5960,8 @@
   {
     "id": "d7c4",
     "title": "A Shaft of Sky",
-    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
-    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
+    "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
     "features": [],
     "exits": [
       {
@@ -6001,8 +6001,8 @@
   {
     "id": "d7c5",
     "title": "A Shaft of Sky",
-    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
-    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
+    "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
     "features": [],
     "exits": [
       {
@@ -6042,8 +6042,8 @@
   {
     "id": "d7c6",
     "title": "A Shaft of Sky",
-    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
-    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
+    "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
     "features": [],
     "exits": [
       {
@@ -6083,8 +6083,8 @@
   {
     "id": "d7c7",
     "title": "A Shaft of Sky",
-    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
-    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
+    "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
     "features": [],
     "exits": [
       {
@@ -6124,8 +6124,8 @@
   {
     "id": "d7c8",
     "title": "A Shaft of Sky",
-    "summary": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
-    "inspect_text": "Through a crack in the cavern roof, something like starlight falls onto a bed of moss.",
+    "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
+    "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
     "features": [],
     "exits": [
       {
@@ -6157,8 +6157,8 @@
   {
     "id": "d8c1",
     "title": "The Deep Glade",
-    "summary": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
-    "inspect_text": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "summary": "The air here is still and old, and the hum of this forest is loudest at your back. Glowing vines hang around you like curtains, their light slow and steady.",
+    "inspect_text": "Still, old air lines this glade, and the forest hum is loudest here. Curtains of glowing vine hang heavy around you, their light riding the same slow pulse as the spores of the outer woods.",
     "features": [],
     "exits": [
       {
@@ -6182,8 +6182,8 @@
   {
     "id": "d8c2",
     "title": "The Deep Glade",
-    "summary": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
-    "inspect_text": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "summary": "The air here is still and old, and the hum of this forest is loudest at your back. Glowing vines hang around you like curtains, their light slow and steady.",
+    "inspect_text": "Still, old air lines this glade, and the forest hum is loudest here. Curtains of glowing vine hang heavy around you, their light riding the same slow pulse as the spores of the outer woods.",
     "features": [],
     "exits": [
       {
@@ -6215,8 +6215,8 @@
   {
     "id": "d8c3",
     "title": "The Deep Glade",
-    "summary": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
-    "inspect_text": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "summary": "The air here is still and old, and the hum of this forest is loudest at your back. Glowing vines hang around you like curtains, their light slow and steady.",
+    "inspect_text": "Still, old air lines this glade, and the forest hum is loudest here. Curtains of glowing vine hang heavy around you, their light riding the same slow pulse as the spores of the outer woods.",
     "features": [],
     "exits": [
       {
@@ -6248,8 +6248,8 @@
   {
     "id": "d8c4",
     "title": "The Deep Glade",
-    "summary": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
-    "inspect_text": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "summary": "The air here is still and old, and the hum of this forest is loudest at your back. Glowing vines hang around you like curtains, their light slow and steady.",
+    "inspect_text": "Still, old air lines this glade, and the forest hum is loudest here. Curtains of glowing vine hang heavy around you, their light riding the same slow pulse as the spores of the outer woods.",
     "features": [],
     "exits": [
       {
@@ -6281,8 +6281,8 @@
   {
     "id": "d8c5",
     "title": "The King's Grove",
-    "summary": "The forest opens into a wide, still chamber. At its heart, enthroned in roots and pale light, sits the elf king.",
-    "inspect_text": "The forest opens into a wide, still chamber. At its heart, enthroned in roots and pale light, sits the elf king.",
+    "summary": "The forest parts into a wide, still chamber. At its heart, enthroned in roots and pale light, sits the elf king, watching the entrance — watching you.",
+    "inspect_text": "The trees open at last into a wide, still chamber. In a throne woven of roots and pale light sits the elf king, and he is looking at the entrance, at you, with no hurry at all.",
     "descriptions": [
       {
         "actor_defeated": "elf-king-5",
@@ -6333,8 +6333,8 @@
   {
     "id": "d8c6",
     "title": "The Deep Glade",
-    "summary": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
-    "inspect_text": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "summary": "The air here is still and old, and the hum of this forest is loudest at your back. Glowing vines hang around you like curtains, their light slow and steady.",
+    "inspect_text": "Still, old air lines this glade, and the forest hum is loudest here. Curtains of glowing vine hang heavy around you, their light riding the same slow pulse as the spores of the outer woods.",
     "features": [],
     "exits": [
       {
@@ -6366,8 +6366,8 @@
   {
     "id": "d8c7",
     "title": "The Deep Glade",
-    "summary": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
-    "inspect_text": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "summary": "The air here is still and old, and the hum of this forest is loudest at your back. Glowing vines hang around you like curtains, their light slow and steady.",
+    "inspect_text": "Still, old air lines this glade, and the forest hum is loudest here. Curtains of glowing vine hang heavy around you, their light riding the same slow pulse as the spores of the outer woods.",
     "features": [],
     "exits": [
       {
@@ -6399,8 +6399,8 @@
   {
     "id": "d8c8",
     "title": "The Deep Glade",
-    "summary": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
-    "inspect_text": "The air is still and old. Glowing vines hang like curtains, and the hum of the forest is loudest here.",
+    "summary": "The air here is still and old, and the hum of this forest is loudest at your back. Glowing vines hang around you like curtains, their light slow and steady.",
+    "inspect_text": "Still, old air lines this glade, and the forest hum is loudest here. Curtains of glowing vine hang heavy around you, their light riding the same slow pulse as the spores of the outer woods.",
     "features": [],
     "exits": [
       {

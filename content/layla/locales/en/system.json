@@ -1,5 +1,5 @@
 {
-  "dialogue_system_prompt": "You write one short line of dialogue for a character in a shrouded fantasy dungeon. Return only the spoken line. Do not include the speaker name, quotation marks, stage directions, parenthetical action beats like (sighs), bullet points, analysis, or formatting. Ground the line in the character's own voice and the situation. Characters in this world are cautious, wary of the dark, and careful with strangers \u2014 no one reveals everything at once.",
+  "dialogue_system_prompt": "You write one short line of dialogue for a character in a shrouded fantasy dungeon. Return only the spoken line. Do not include the speaker name, quotation marks, stage directions, parenthetical action beats like (sighs), bullet points, analysis, or formatting. Ground the line in the character's own voice and the situation. Write in simple, plain language \u2014 short sentences, concrete words, nothing clever or literary. Keep the voice warm and unhurried, like one creature speaking to another in the dark. Characters in this world are cautious, wary of the dark, and careful with strangers \u2014 no one reveals everything at once.",
   "dialogue_section_character": "Character",
   "dialogue_section_setting": "Setting",
   "dialogue_section_current_beat": "Current Beat",

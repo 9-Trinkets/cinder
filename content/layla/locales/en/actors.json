@@ -17,10 +17,27 @@
     "attackable": false,
     "tags": [],
     "prompt_context": {
-      "character_notes": [],
-      "subtext_notes": [],
-      "response_notes": [],
-      "behavior_examples": []
+      "character_notes": [
+        "Layla is curious, careful, and quietly intense. She reads the world like a rule system and asks questions until a thing makes sense.",
+        "Her attention runs a little off-standard: she counts, she maps, she repeats a motion until it is exact, and she notices patterns other people would miss.",
+        "She is tender with the creatures that follow her, and never knows why. She does not say it. It simply shows in the way she slows for them."
+      ],
+      "subtext_notes": [
+        "The monsters she charmed are, without her knowing it, reflections of herself: things under a power they did not choose, being used for a game that is not theirs.",
+        "She is not afraid of the dark. She is curious about it.",
+        "She reads the grid the way she reads a game she played before she can remember."
+      ],
+      "response_notes": [
+        "Speak plainly and warm when spoken to; think in short, concrete images.",
+        "Notice small details and exact numbers. Ask about the rules of things.",
+        "Never explain the placement of a stone or the geometry of a room to the player \u2014 simply see it."
+      ],
+      "behavior_examples": [
+        "Counting the seams in a wall before she reads what is scored into it.",
+        "Tracing a newly learned sigil in the air with her fingertip.",
+        "Walking a half-step slower so a follower can keep up.",
+        "Filing every new rule away like a move in an old game."
+      ]
     },
     "game_data": {}
   },
@@ -259,7 +276,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -281,7 +298,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -303,7 +320,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -325,7 +342,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -347,7 +364,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -369,7 +386,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -391,7 +408,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -413,7 +430,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -435,7 +452,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf rook of the underground forest, armed and watching.",
+    "inspect_text": "An elf rook of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -457,7 +474,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf knight of the underground forest, armed and watching.",
+    "inspect_text": "An elf knight of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -479,7 +496,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf bishop of the underground forest, armed and watching.",
+    "inspect_text": "An elf bishop of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -501,7 +518,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf queen of the underground forest, armed and watching.",
+    "inspect_text": "An elf queen of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -523,7 +540,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf king of the underground forest, armed and watching.",
+    "inspect_text": "An elf king of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -548,7 +565,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf bishop of the underground forest, armed and watching.",
+    "inspect_text": "An elf bishop of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -570,7 +587,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf knight of the underground forest, armed and watching.",
+    "inspect_text": "An elf knight of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -592,7 +609,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A elf rook of the underground forest, armed and watching.",
+    "inspect_text": "An elf rook of the underground forest, armed and watching.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,

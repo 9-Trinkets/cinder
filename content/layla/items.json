@@ -3,13 +3,13 @@
     "id": "magic-chalk",
     "label": "magic chalk",
     "kind": "misc",
-    "description": "A stub of chalk, warm in the hand, that never seems to wear down. Wherever she draws with it, a line of pale light stays behind in the stone."
+    "description": "A stub of chalk, warm in your hand, that never seems to wear down. Wherever you draw with it, a line of pale light stays behind in the stone."
   },
   {
     "id": "charm-sigil",
     "label": "charm sigil",
     "kind": "misc",
-    "description": "A closed ring of chalk traced around a vacant space on the floor. When an enemy is encircled on every side by such rings, the circle closes and draws it into step with Layla.",
+    "description": "A closed ring of chalk traced around a vacant space on the floor. When an enemy is encircled on every side by such rings, the circle closes and draws it into step with you.",
     "look_description": "A closed ring of pale chalk glows faintly on the floor, waiting to be completed around something.",
     "trace_mark": true
   },
@@ -26,7 +26,7 @@
     "label": "worn scroll",
     "kind": "misc",
     "use_hook": "item.scroll_read",
-    "description": "A dry scroll of old bark, faintly warm, showing an intricate spiral in charcoal. Reading it crowds the words for drawing a draining sigil into Layla's head.",
+    "description": "A dry scroll of old bark, faintly warm, showing an intricate spiral in charcoal. Reading it presses the words for drawing a draining sigil into your head.",
     "look_description": "A spiral of charcoal spirals on the bark — a diagram for sapping the strength of whatever stands within."
   },
   {
@@ -64,7 +64,7 @@
       "defense": 1
     },
     "equip_hook": "item.ring_equipped",
-    "description": "A heavy ring of dark stone, still warm. Slid onto her finger, the surviving golems bow to her will."
+    "description": "A heavy ring of dark stone, still warm. Slid onto your finger, the surviving golems bow to your will."
   },
   {
     "id": "spawn-sigil",

@@ -16,7 +16,7 @@ by the Rust engine, and rendered through a responsive, themeable web UI.
 | `aera` | Aera | You're the director behind a reality show house, watching four strangers navigate attraction and trust over a few days. Mostly you stay silent and let it play out — a quiet instruction or well-timed twist pushes the story where you want it. |
 | `ella` | Ella | The last night home before everything changes. In a small apartment with her Taiwanese immigrant parents, love gets said through food and small gestures more than words — see what finally gets spoken before she walks out the door. |
 | `isla` | Isla | One book, one evening, one thing they can't quite say. A quiet, rainy evening and Isla meeting a new patient — someone composed, guarded, and carrying a hurt they won't name outright. Find the story that can reach what conversation alone cannot. |
-| `layla` | Layla | Wake lost. Encircle what is yours. Lay claim to the whole board. Layla wakes with no memory inside a shrouded grid of dark rooms. Explore, fight, and capture territory by encircling it one room at a time — until the whole board is hers. |
+| `layla` | Layla | Wake lost. Learn the rules. Choose who you become. Layla wakes with no memory inside a sealed grid of dark rooms. To earn her way down she must capture the stone board from the warden's golems. Below it waits an elf army that refuses to be bound, and beyond them, old fire held prisoner until it is released. Every rule she learns was built on purpose, for a purpose she cannot remember — and each one is training her to become something she will have to decide for herself. |
 
 Each pack carries its own locales, stats, movement rules, beat objectives, menus,
 items/levels (where combat applies), and presentation/theme settings.

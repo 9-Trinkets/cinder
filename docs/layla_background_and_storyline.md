@@ -49,10 +49,11 @@ She does not know—yet—that the person she is pretending to be (or has been
 made to believe she is) is a persona wrapped around an older, deeper self: an
 AI whose true biography is a string of match histories against humans.
 
-Her only way out is to capture the whole board — claiming territory one room at
-a time by encircling it.
+Her first test is to capture the whole stone board — claiming territory one
+room at a time by encircling it — to win a way down. Below the board wait an elf
+army that refuses to be bound and, beyond them, old fire held prisoner.
 
-> Tagline: "Wake lost. Encircle what is yours. Lay claim to the whole board."
+> Tagline: "Wake lost. Learn the rules. Choose who you become."
 
 ## The Open Question at the Heart of It
 
@@ -71,10 +72,12 @@ is the resolution of that question.
 
 ## Design Pillars
 
-1. **Encircling/capture as identity.** The core mechanic is not "kill monsters."
-   It is surrounding territory. This is literal Go logic, and the game reveals
-   Layla *knows* Go — she has played it before, against humans, in an earlier
-   life. The chalk and the grid are the same thing: *lines*.
+1. **Mechanics as levels, not a single identity.** Each level speaks its own
+   game — the stone board is Go (surround territory rather than "kill monsters"),
+   the elf army below is chess, the fire-rooms are a board of old fire. Encircling
+   is the language of the *first* level, not the whole game. The board reveals
+   that Layla *knows* Go — she has played it before, against humans, in an
+   earlier life. The chalk and the grid are the same thing: *lines*.
 2. **Mechanic-as-memory, mechanic-as-job-training.** Every shift in Layla's
    toolset is framed as *knowledge returning* (a gesture her hands already
    know) — and it is simultaneously *dungeon-master training*. The sigils she

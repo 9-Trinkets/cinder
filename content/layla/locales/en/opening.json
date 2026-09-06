@@ -14,20 +14,22 @@
     "r9c1", "r9c2", "r9c3", "r9c4", "r9c5", "r9c6", "r9c7", "r9c8", "r9c9"
   ],
   "start_time_minutes": 60,
-  "intro_text": "You wake on cold stone, in dark that has no bottom and no top. Your name is Layla \u2014 you know that much \u2014 and beyond it there is only a wall where your memories should be.\n\nYour hands remember things your mind does not: how to grip a weapon, how to move without sound, how to take a hit and stay standing. Whatever you were before you woke here, you were not soft.\n\nScattered across the stone floor, small markers jut from the ground like broken teeth \u2014 old stone stakes, driven in by hands long gone. They mean something. You can feel it, the way you can feel a word on the tip of your tongue.\n\nSomewhere above, something grinds against the dark. Somewhere ahead, there is a way out you cannot see yet.\n\nFind it. Get out. Whatever it takes.",
+  "intro_text": "You wake on cold stone. The dark has no bottom and no top. Your name is Layla \u2014 that you know. Past it, there is only a wall where your memories should be.\n\nYour hands remember what your mind does not: how to grip a weapon, how to move without sound, how to take a hit and stay standing. Whatever you were before this, you were not soft.\n\nStone markers jut from the floor like broken teeth \u2014 old stakes, driven in by hands long gone. They mean something. You can feel it, the way you can feel a word on the tip of your tongue.\n\nBeneath the quiet, a half-memory: a hand setting stones down one by one, a game played in another dark, with a voice counting the moves.\n\nAbove you, something grinds against the ceiling. Ahead, there is a way out you can't see yet.\n\nFind it. Get out. Whatever it takes.",
   "help_text": "Commands:\n{available_commands}\n- Tab switches focus between command and transcript\n- Up/Down recalls command history when command is focused\n- Up/Down scrolls the transcript when transcript is focused\n- PageUp/PageDown/Home/End scroll the transcript faster\n- ? opens the menu",
   "prompt_context": {
     "setting_notes": [
       "Layla is inside a sealed, lightless room made of fitted stone, somewhere underground.",
       "Layla has no memory of how she arrived here; she knows only her own name.",
       "Her body carries skills her mind cannot remember \u2014 she moves and fights like someone well trained.",
-      "Small stone markers are scattered across the grid floor \u2014 old stakes driven into the stone. Some can be placed or retrieved."
+      "Small stone markers are scattered across the grid floor \u2014 old stakes driven into the stone. Some can be placed or retrieved.",
+      "This place is laid out like a game board. Every rule she learns is a rule someone built on purpose, for a purpose she does not yet know."
     ],
     "subtext_notes": [
-      "Layla wakes with no memory but with a fighter's instincts and a stubborn, quiet resolve.",
-      "She treats the unknown dark with caution and competence, not fear.",
+      "Layla is curious and careful, not afraid \u2014 she treats the unknown dark with competence, the way an old player reads an unfamiliar board.",
+      "Her attention runs a little off-standard: she counts things, maps rooms as she crosses them, repeats a motion until it is exact. Patterns and order catch her the way a song catches other people.",
       "She is alone, and the silence is doing something to her.",
-      "The stone markers feel significant \u2014 like chess pieces, or territory markers. She does not yet understand their purpose."
+      "The stone markers feel significant \u2014 like chess pieces, or territory markers. She does not yet understand their purpose.",
+      "Her memory is gone, but her instinct is whole: she reads rule systems the way other people read faces."
     ]
   }
 }
