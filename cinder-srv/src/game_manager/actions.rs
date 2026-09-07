@@ -5,8 +5,8 @@ use sqlx::PgPool;
 use uuid::Uuid;
 
 use super::db::{
-    load_play_row, load_play_row_unlocked, narrative_role, parse_uuid,
-    replace_transcript_entries_with_lines, MAX_SESSION_WRITE_RETRIES, PendingTranscriptEntry,
+    insert_transcript_entries, load_play_row, load_play_row_unlocked, narrative_role, parse_uuid,
+    MAX_SESSION_WRITE_RETRIES, PendingTranscriptEntry,
 };
 use super::response::{act_closure_data, game_closure_data};
 use super::ui::build_ui_snapshot;
@@ -23,6 +23,7 @@ pub async fn create_play(
 
     let title = content.opening.title.clone();
     let locale = content.locale.clone();
+    let system_lines = content.opening.system_lines.clone();
 
     let runtime =
         CinderRuntime::new(content, false).map_err(|e| format!("failed to create runtime: {e}"))?;
@@ -31,6 +32,9 @@ pub async fn create_play(
         .current_intro_text()
         .map_err(|e| format!("intro text error: {e}"))?;
     let _ = runtime.push_transcript_line(&intro_text);
+    for system_line in &system_lines {
+        let _ = runtime.push_transcript_line(system_line);
+    }
     let initial_state_json = serde_json::to_string(
         &runtime
             .export_state()
@@ -55,8 +59,17 @@ pub async fn create_play(
     .execute(&mut *tx)
     .await
     .map_err(|e| format!("db insert error: {e}"))?;
-    replace_transcript_entries_with_lines(&mut tx, &play_id, std::slice::from_ref(&intro_text))
-        .await?;
+    let mut transcript_entries = vec![PendingTranscriptEntry {
+        role: "narrative".to_string(),
+        text: intro_text.clone(),
+    }];
+    transcript_entries.extend(system_lines.iter().map(|system_line| {
+        PendingTranscriptEntry {
+            role: "system".to_string(),
+            text: system_line.clone(),
+        }
+    }));
+    insert_transcript_entries(&mut tx, &play_id, 0, &transcript_entries).await?;
     tx.commit()
         .await
         .map_err(|e| format!("db commit error: {e}"))?;

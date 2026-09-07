@@ -49,6 +49,17 @@ pub struct ContentSettingsDefinition {
     /// combat system disable them to keep the sidebar focused.
     #[serde(default = "default_true")]
     pub show_vitals_sidebar: bool,
+    /// Story var that additionally gates the Vitals + Level sidebar sections.
+    /// Empty keeps the static `show_vitals_sidebar` behavior; non-empty shows
+    /// them only once the var is truthy (e.g. layered teaching: stats appear
+    /// only after `first_mob_defeated`).
+    #[serde(default)]
+    pub vitals_sidebar_story_var: String,
+    /// Story var that gates the whole minimap widget. Empty keeps the minimap
+    /// always rendered; non-empty hides it until the var is truthy (e.g. the
+    /// map is a boss-drop reward, revealed once `shaman_defeated`).
+    #[serde(default)]
+    pub minimap_requires_story_var: String,
     /// Room-id prefix that, once the player has travelled to a room on that
     /// board, reveals party levels in the sidebar. Empty means levels are
     /// always visible. Treats level info as a reward and foreshadows a
@@ -128,6 +139,8 @@ impl Default for ContentSettingsDefinition {
             show_act_closure: true,
             show_relationship_sidebar: false,
             show_vitals_sidebar: true,
+            vitals_sidebar_story_var: String::default(),
+            minimap_requires_story_var: String::default(),
             level_reveal_room_prefix: String::default(),
             autonomous_hostility_mode: AutonomousHostilityMode::Rules,
             periodic_actor_effects: Vec::new(),

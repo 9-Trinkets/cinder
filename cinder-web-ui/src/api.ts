@@ -84,7 +84,7 @@ export interface MovieData {
   narrative_lines: string[]
 }
 
-export type LineKind = 'narration' | 'heading' | 'player' | 'error'
+export type LineKind = 'narration' | 'heading' | 'player' | 'error' | 'system'
 
 export interface NarrativeLine {
   kind: LineKind

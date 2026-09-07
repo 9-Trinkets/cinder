@@ -14,6 +14,10 @@ pub struct OpeningDefinition {
     #[serde(default = "default_opening_start_time_minutes")]
     pub start_time_minutes: u32,
     pub intro_text: String,
+    /// Cold system-voice lines layered under `intro_text` at session start,
+    /// rendered as `NarrativeLineKind::System` (e.g. sigil teaching lines).
+    #[serde(default)]
+    pub system_lines: Vec<String>,
     pub help_text: String,
     #[serde(default)]
     pub prompt_context: OpeningPromptContext,

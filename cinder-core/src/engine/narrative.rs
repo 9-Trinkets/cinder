@@ -15,6 +15,9 @@ pub enum NarrativeLineKind {
     Player,
     /// A system/error feedback line.
     Error,
+    /// A cold, system-voice teaching line (e.g. sigil instructions at the
+    /// start of a level). Distinct from prose and from error feedback.
+    System,
 }
 
 /// A single line of narrative output, tagged with how it should be styled.
@@ -52,6 +55,13 @@ impl NarrativeLine {
             text: text.into(),
         }
     }
+
+    pub fn system(text: impl Into<String>) -> Self {
+        Self {
+            kind: NarrativeLineKind::System,
+            text: text.into(),
+        }
+    }
 }
 
 impl From<String> for NarrativeLine {
@@ -80,6 +90,10 @@ impl NarrativeLines {
 
     pub fn error(&mut self, text: impl Into<String>) {
         self.0.push(NarrativeLine::error(text));
+    }
+
+    pub fn system(&mut self, text: impl Into<String>) {
+        self.0.push(NarrativeLine::system(text));
     }
 
     /// Extends from a stream of plain strings, each becoming narration.

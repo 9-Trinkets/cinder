@@ -1,6 +1,6 @@
-import { memo } from 'react'
+import { memo, type CSSProperties } from 'react'
 
-export type LineKind = 'narration' | 'heading' | 'player' | 'error'
+export type LineKind = 'narration' | 'heading' | 'player' | 'error' | 'system'
 
 export interface Line {
   text: string
@@ -137,17 +137,22 @@ const TranscriptLine = memo(function TranscriptLine({
 }) {
   // Styling is decided by the line's declared kind, not by parsing its text.
   let className = 'text-text'
+  let style: CSSProperties | undefined
   if (line.kind === 'player') {
     className = 'text-foam font-mono text-xs'
   } else if (line.kind === 'heading') {
     className = 'text-iris font-bold'
   } else if (line.kind === 'error') {
     className = 'text-love italic text-xs'
+  } else if (line.kind === 'system') {
+    // Cold, clipped teaching lines in the crt-glow pale blue-white family.
+    className = 'text-xs'
+    style = { color: 'var(--color-crt-glow)' }
   }
 
   return (
     <div className="whitespace-pre-wrap text-sm leading-relaxed">
-      <span className={className}>
+      <span className={className} style={style}>
         <HighlightedText
           text={line.text}
           query={searchQuery ?? ''}

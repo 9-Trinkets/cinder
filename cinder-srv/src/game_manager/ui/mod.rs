@@ -252,6 +252,7 @@ pub struct UiSnapshot {
     pub show_relationship_sidebar: bool,
     pub relationship_pairs: Vec<cinder_core::engine::runtime::RelationshipPair>,
     /// Whether the sidebar shows the Vitals + Level sections (combat packs).
+    /// Honors `show_vitals_sidebar` and the `vitals_sidebar_story_var` gate.
     pub show_vitals_sidebar: bool,
     pub theme: cinder_core::content::types::ThemeDefinition,
 }
@@ -379,7 +380,11 @@ pub(super) fn build_ui_snapshot(
         game_closure: response::game_closure_data(runtime, transcript_lines),
         party: build_party_members(runtime, &state, content),
         player: build_player_status(&state, content),
-        minimap: build_minimap(&state, content, &current_room_id),
+        minimap: if content.minimap_shown(&state) {
+            build_minimap(&state, content, &current_room_id)
+        } else {
+            None
+        },
         levels_revealed: content.levels_revealed_for_room(&current_room_id),
         current_room_items: build_current_room_items(content, &state, &current_room_id),
         equipped_items: build_equipped_items(&state, content),
@@ -387,7 +392,7 @@ pub(super) fn build_ui_snapshot(
         room_consumables: build_room_consumables(runtime, content, &current_room_id),
         crafted_consumable_labels: crafted_consumable_labels(content, &current_room_id),
         show_relationship_sidebar: content.settings.show_relationship_sidebar,
-        show_vitals_sidebar: content.settings.show_vitals_sidebar,
+        show_vitals_sidebar: content.vitals_sidebar_shown(&state),
         relationship_pairs: if content.settings.show_relationship_sidebar {
             runtime.relationship_pairs().unwrap_or_default()
         } else {
