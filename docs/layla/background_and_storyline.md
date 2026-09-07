@@ -39,19 +39,21 @@ meant to serve.
 
 ## Premise (as the player experiences it)
 
-Layla wakes with no memory inside a sealed, lightless grid of fitted-stone
-rooms somewhere underground. All she knows is her own name — everything else is
-a wall where her memories should be. Her body remembers things her mind does
-not: how to grip a weapon, how to move without sound, how to take a hit and
-keep standing. Whatever she was before she woke here, she was not soft.
+Layla wakes with no memory in a goblin cave somewhere underground,
+beside a golem that does not move or speak. All she knows is her own name —
+everything else is a wall where her memories should be. Her body remembers
+things her mind does not: how to grip a weapon, how to move without sound, how
+to take a hit and keep standing. Whatever she was before she woke here, she was
+not soft.
 
 She does not know—yet—that the person she is pretending to be (or has been
 made to believe she is) is a persona wrapped around an older, deeper self: an
 AI whose true biography is a string of match histories against humans.
 
-Her first test is to capture the whole stone board — claiming territory one
-room at a time by encircling it — to win a way down. Below the board wait an elf
-army that refuses to be bound and, beyond them, old fire held prisoner.
+Her first test is to capture the cave from the goblin shaman — claiming
+territory one room at a time by encircling it — to win a way down. Below the
+cave wait an elf army that refuses to be bound and, beyond them, old fire held
+prisoner.
 
 > Tagline: "Wake lost. Learn the rules. Choose who you become."
 
@@ -73,12 +75,13 @@ is the resolution of that question.
 ## Design Pillars
 
 1. **Mechanics as levels, not a single identity.** Each level speaks its own
-   game — the stone board is Go (surround territory rather than "kill monsters"),
+   game — the goblin cave is Go (surround territory rather than "kill monsters"),
    the elf army below is chess, the fire-rooms are a board of **mancala** (seed
    and store). Encircling is the language of the *first* level, not the whole
    game. The board reveals
    that Layla *knows* Go — she has played it before, against humans, in an
-   earlier life. The chalk and the grid are the same thing: *lines*.
+   earlier life. The chalk and the worn patrolling tracks crossing the cave
+   floor are the same thing: *lines*.
 2. **Mechanic-as-memory, mechanic-as-job-training.** Every shift in Layla's
    toolset is framed as *knowledge returning* (a gesture her hands already
    know) — and it is simultaneously *dungeon-master training*. The sigils she
@@ -100,11 +103,11 @@ is the resolution of that question.
 ## Notable Story Beats (Canon, from content + recorded intent)
 
 ### The Opening
-The opening scene — waking beside a golem in the mouth of the cave, the first
-actions available to her, and the feature-surface order that follows — is planned
-in detail in **`docs/layla/floor1_plan.md`** (Premise and Feature Surface Order).
-Canon only: Layla wakes with no memory. Her hands know how to fight; her mind
-knows nothing.
+The opening scene — waking beside a golem in one of the cave's guard rooms, the
+first actions available to her, and the feature-surface order that follows — is
+planned in detail in **`docs/layla/floor1_plan.md`** (Premise and Feature
+Surface Order). Canon only: Layla wakes with no memory. Her hands know how to
+fight; her mind knows nothing.
 
 ### The Chalk and the Sigils (Dungeon-Master Powers, Learned as "Memories")
 Layla's toolset is **magic chalk** that leaves pale light behind in the stone.
@@ -284,7 +287,8 @@ of her own arc should be felt by the endgame.
   surrounded by chalk rings.
 - **Drain sigil** saps 2 HP per tick from hostile living targets standing on it.
 - **Guard followers** intercept damage aimed at Layla.
-- **Shaman's ring** (equip) bends surviving golems to her will.
+- **Shaman's ring** (equip) bends surviving golems to her will — the same
+  binding the shaman's chalk-ring marks carry.
 - Level 2 thresholds depend on XP gained from defeated elves.
 - The physical fire form is invulnerable until it is *released* (reduced to a
   non-damaging state, then let go).

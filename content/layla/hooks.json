@@ -16,12 +16,12 @@
             {
               "path": "actor_id",
               "operator": "equal",
-              "value": "golem-boss"
+              "value": "goblin-shaman"
             }
           ],
           "payload_template": {
             "kind": "set_story_var",
-            "key": "warden_defeated",
+            "key": "shaman_defeated",
             "value": "true"
           }
         },
@@ -30,12 +30,12 @@
             {
               "path": "actor_id",
               "operator": "equal",
-              "value": "golem-boss"
+              "value": "goblin-shaman"
             }
           ],
           "payload_template": {
             "kind": "narrate_message",
-            "key": "warden.reveal"
+            "key": "shaman.reveal"
           }
         },
         {
@@ -43,12 +43,68 @@
             {
               "path": "actor_id",
               "operator": "equal",
-              "value": "golem-boss"
+              "value": "goblin-shaman"
             }
           ],
           "payload_template": {
             "kind": "narrate_message",
-            "key": "warden.memory"
+            "key": "shaman.memory"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "goblin-1"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "first_mob_defeated",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "goblin-2"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "first_mob_defeated",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "goblin-3"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "first_mob_defeated",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "goblin-4"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "first_mob_defeated",
+            "value": "true"
           }
         },
         {
@@ -182,7 +238,13 @@
     "input_overlay": {
       "rules": [
         {
-          "conditions": [],
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "not_equal",
+              "value": "goblin-shaman"
+            }
+          ],
           "payload_template": {
             "kind": "convert_actor_to_ally",
             "actor_id": "$input.actor_id",

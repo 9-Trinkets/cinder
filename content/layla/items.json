@@ -38,25 +38,25 @@
     "look_description": "Amber strokes circle a tiny ember at the scroll's center — a diagram for a spawning sigil."
   },
   {
-    "id": "iron-chisel",
-    "label": "iron chisel",
+    "id": "chisel-axe",
+    "label": "chisel-axe",
     "kind": "weapon",
     "equip_slot": "weapon",
     "stat_bonuses": {
       "strength": 2
     },
-    "description": "A miner's chisel with a worn leather grip. It bites into stone like it remembers being made for it."
+    "description": "A wedge of chipped stone half-wrapped in greasy hide, a goblin's skinning tool. It bites into meat and stone alike."
   },
   {
-    "id": "herb-salve",
-    "label": "herb salve",
+    "id": "moss-poultice",
+    "label": "moss poultice",
     "kind": "potion",
     "use_hook": "item.salve_used",
-    "description": "A fragrant green paste in a clay pot. Village herbalists swear it knits wounds closed."
+    "description": "A wad of crushed herbs and wet moss tied in a scrap of hide. Goblin medicine — it mends wounds the way they mend hides."
   },
   {
-    "id": "warden-ring",
-    "label": "warden ring",
+    "id": "shaman-ring",
+    "label": "shaman's ring",
     "kind": "trinket",
     "equip_slot": "ring",
     "stat_bonuses": {
@@ -64,7 +64,7 @@
       "defense": 1
     },
     "equip_hook": "item.ring_equipped",
-    "description": "A heavy ring of dark stone, still warm. Slid onto your finger, the surviving golems bow to your will."
+    "description": "A ring of dark carved bone and clay, still warm from shaping. Slid onto your finger, the surviving golems bow to your will."
   },
   {
     "id": "spawn-sigil",

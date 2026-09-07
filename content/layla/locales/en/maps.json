@@ -1,7 +1,7 @@
 [
   {
     "id": "upper-works",
-    "label": "Upper Works",
+    "label": "The Cave",
     "rooms": [
       { "room_id": "r1c1", "x": 0, "y": 0 },
       { "room_id": "r1c2", "x": 1, "y": 0 },
@@ -86,7 +86,7 @@
       { "room_id": "r9c9", "x": 8, "y": 8 }
     ],
     "reveal_conditions": [
-      { "kind": "actor_defeated", "actor_id": "golem-boss" }
+      { "kind": "actor_defeated", "actor_id": "goblin-shaman" }
     ]
   },
   {

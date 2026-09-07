@@ -1,34 +1,29 @@
 {
   "id": "layla",
   "title": "Layla",
-  "start_room_id": "r1c1",
+  "start_room_id": "r3c3",
   "start_room_ids": [
-    "r1c1", "r1c2", "r1c3", "r1c4", "r1c5", "r1c6", "r1c7", "r1c8", "r1c9",
-    "r2c1", "r2c2", "r2c3", "r2c4", "r2c5", "r2c6", "r2c7", "r2c8", "r2c9",
-    "r3c1", "r3c2", "r3c3", "r3c4", "r3c5", "r3c6", "r3c7", "r3c8", "r3c9",
-    "r4c1", "r4c2", "r4c3", "r4c4", "r4c5", "r4c6", "r4c7", "r4c8", "r4c9",
-    "r5c1", "r5c2", "r5c3", "r5c4", "r5c5", "r5c6", "r5c7", "r5c8", "r5c9",
-    "r6c1", "r6c2", "r6c3", "r6c4", "r6c5", "r6c6", "r6c7", "r6c8", "r6c9",
-    "r7c1", "r7c2", "r7c3", "r7c4", "r7c5", "r7c6", "r7c7", "r7c8", "r7c9",
-    "r8c1", "r8c2", "r8c3", "r8c4", "r8c5", "r8c6", "r8c7", "r8c8", "r8c9",
-    "r9c1", "r9c2", "r9c3", "r9c4", "r9c5", "r9c6", "r9c7", "r9c8", "r9c9"
+    "r3c3",
+    "r3c7",
+    "r7c3",
+    "r7c7"
   ],
   "start_time_minutes": 60,
-  "intro_text": "You wake on cold stone. The dark has no bottom and no top. Your name is Layla \u2014 that you know. Past it, there is only a wall where your memories should be.\n\nYour hands remember what your mind does not: how to grip a weapon, how to move without sound, how to take a hit and stay standing. Whatever you were before this, you were not soft.\n\nStone markers jut from the floor like broken teeth \u2014 old stakes, driven in by hands long gone. They mean something. You can feel it, the way you can feel a word on the tip of your tongue.\n\nBeneath the quiet, a half-memory: a hand setting stones down one by one, a game played in another dark, with a voice counting the moves.\n\nAbove you, something grinds against the ceiling. Ahead, there is a way out you can't see yet.\n\nFind it. Get out. Whatever it takes.",
+  "intro_text": "You wake on cold stone in a cave. The dark has no bottom and no top. Your name is Layla \u2014 that you know. Past it, there is only a wall where your memories should be.\n\nYour hands remember what your mind does not: how to grip a weapon, how to move without sound, how to take a hit and stay standing. Whatever you were before this, you were not soft.\n\nIn your pocket, warm as a living thing, is a stub of chalk that never wears down. Wherever you draw with it, a pale line of light stays behind in the stone.\n\nBeside you stands a golem \u2014 a made thing of rough stone, no mouth, flat pebble eyes, a chalk ring marked on its chest, watching you the way a door watches. It does not move. It does not breathe.\n\nSomewhere deeper in the cave, something chitters. Something ticks, slow, against the floor.\n\nBeneath the quiet, a half-memory: a hand setting stones down one by one, a game played in another dark, with a voice counting the moves.\n\nFind it. Get out. Whatever it takes.",
   "help_text": "Commands:\n{available_commands}\n- Tab switches focus between command and transcript\n- Up/Down recalls command history when command is focused\n- Up/Down scrolls the transcript when transcript is focused\n- PageUp/PageDown/Home/End scroll the transcript faster\n- ? opens the menu",
   "prompt_context": {
     "setting_notes": [
-      "Layla is inside a sealed, lightless room made of fitted stone, somewhere underground.",
-      "Layla has no memory of how she arrived here; she knows only her own name.",
+      "Layla has woken in a living cave, somewhere underground, littered with the smell of old smoke, damp fur, and small, quick things.",
+      "Layla has no memory of how she arrived here; she knows only her own name. Beside her stands a golem of rough stone that was built here by someone's hand and does not move.",
       "Her body carries skills her mind cannot remember \u2014 she moves and fights like someone well trained.",
-      "Small stone markers are scattered across the grid floor \u2014 old stakes driven into the stone. Some can be placed or retrieved.",
-      "This place is laid out like a game board. Every rule she learns is a rule someone built on purpose, for a purpose she does not yet know."
+      "A chalk that never wears down is warm in her pocket. Wherever she draws with it, pale lines of light stay in the stone. She does not remember learning this.",
+      "The cave is a warren of dens and pits and crossed patrol tracks, and it is watched by stone things marked with chalk rings \u2014 made, not grown. Every rule she learns here is a rule someone built on purpose, for a purpose she does not yet know."
     ],
     "subtext_notes": [
       "Layla is curious and careful, not afraid \u2014 she treats the unknown dark with competence, the way an old player reads an unfamiliar board.",
-      "Her attention runs a little off-standard: she counts things, maps rooms as she crosses them, repeats a motion until it is exact. Patterns and order catch her the way a song catches other people.",
+      "Her attention runs a little off-standard: she counts things, maps rooms as she crosses them, repeats a motion until it is exact. Patterns and order catch her the way a song catches other people. A room worn into crossing tracks makes her want to measure it.",
       "She is alone, and the silence is doing something to her.",
-      "The stone markers feel significant \u2014 like chess pieces, or territory markers. She does not yet understand their purpose.",
+      "The chalk rings on the stone things feel significant \u2014 like territory markers, or the edge of a drawn line. She does not yet understand their purpose.",
       "Her memory is gone, but her instinct is whole: she reads rule systems the way other people read faces."
     ]
   }

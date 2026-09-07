@@ -1,20 +1,21 @@
 [
   {
     "id": "r1c1",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r1c1-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -38,20 +39,21 @@
   },
   {
     "id": "r1c2",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r1c2-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -83,20 +85,21 @@
   },
   {
     "id": "r1c3",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r1c3-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -128,20 +131,21 @@
   },
   {
     "id": "r1c4",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r1c4-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -173,20 +177,21 @@
   },
   {
     "id": "r1c5",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r1c5-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -218,20 +223,21 @@
   },
   {
     "id": "r1c6",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r1c6-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -263,20 +269,21 @@
   },
   {
     "id": "r1c7",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r1c7-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -308,20 +315,21 @@
   },
   {
     "id": "r1c8",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r1c8-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -353,20 +361,21 @@
   },
   {
     "id": "r1c9",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r1c9-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -390,20 +399,21 @@
   },
   {
     "id": "r2c1",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r2c1-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -435,20 +445,21 @@
   },
   {
     "id": "r2c2",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r2c2-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -488,20 +499,21 @@
   },
   {
     "id": "r2c3",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r2c3-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -541,20 +553,21 @@
   },
   {
     "id": "r2c4",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r2c4-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -594,20 +607,21 @@
   },
   {
     "id": "r2c5",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r2c5-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -647,20 +661,21 @@
   },
   {
     "id": "r2c6",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r2c6-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -700,20 +715,21 @@
   },
   {
     "id": "r2c7",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r2c7-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -753,20 +769,21 @@
   },
   {
     "id": "r2c8",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r2c8-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -806,20 +823,21 @@
   },
   {
     "id": "r2c9",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r2c9-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -851,20 +869,21 @@
   },
   {
     "id": "r3c1",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r3c1-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -896,20 +915,21 @@
   },
   {
     "id": "r3c2",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r3c2-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -949,20 +969,21 @@
   },
   {
     "id": "r3c3",
-    "title": "A Hall of Dark Stone",
-    "summary": "The stone here runs darker than anywhere else. At the center stands a golem of dark granite, still and silent as a monument, its eyes closed.",
-    "inspect_text": "Darker stone everywhere. At the center of the hall, a golem of dark granite stands motionless as architecture, its eyes closed, its surface catching no light.",
+    "title": "A Guarded Crossing",
+    "summary": "A golem of dark volcanic rock, lumped and broad stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
+    "inspect_text": "In the center of the room a golem of dark volcanic rock, lumped and broad stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
     "features": [
       {
         "id": "r3c3-feature",
-        "label": "a grid of dark stone",
+        "label": "the chalk-ring mark",
         "aliases": [
-          "grid",
-          "stone",
-          "dark",
-          "floor"
+          "mark",
+          "ring",
+          "chalk",
+          "golem",
+          "chest"
         ],
-        "inspect_text": "The floor is laid in dark stone, each block precise as a placed thing. The grid lines here are deeper, as if this room matters more than the others."
+        "inspect_text": "A pale chalk ring is marked on the golem’s chest and brow, in the same pale light as the frost on the sleeping wall."
       }
     ],
     "exits": [
@@ -1002,20 +1023,21 @@
   },
   {
     "id": "r3c4",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r3c4-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -1055,20 +1077,21 @@
   },
   {
     "id": "r3c5",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r3c5-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -1108,20 +1131,21 @@
   },
   {
     "id": "r3c6",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r3c6-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -1161,20 +1185,21 @@
   },
   {
     "id": "r3c7",
-    "title": "A Chamber of Pale Pillars",
-    "summary": "Pale pillars ring this chamber, each placed as if on a marked point. A golem of pale marble stands among them, motionless.",
-    "inspect_text": "The pillars here are pale, almost white, each one set on what feels like a marked point in the floor. A golem of pale marble stands still among them, not looking at you.",
+    "title": "A Guarded Crossing",
+    "summary": "A golem of pale river stone, smoothed and round stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
+    "inspect_text": "In the center of the room a golem of pale river stone, smoothed and round stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
     "features": [
       {
         "id": "r3c7-feature",
-        "label": "pale stone pillars",
+        "label": "the chalk-ring mark",
         "aliases": [
-          "pillar",
-          "pale",
-          "stone",
-          "marble"
+          "mark",
+          "ring",
+          "chalk",
+          "golem",
+          "chest"
         ],
-        "inspect_text": "The pillars are arranged in a pattern that feels deliberate. They mark positions on the floor like pieces on a board."
+        "inspect_text": "A pale chalk ring is marked on the golem’s chest and brow, barely glowing in the dim."
       }
     ],
     "exits": [
@@ -1214,20 +1239,21 @@
   },
   {
     "id": "r3c8",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r3c8-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -1267,20 +1293,21 @@
   },
   {
     "id": "r3c9",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r3c9-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -1312,20 +1339,21 @@
   },
   {
     "id": "r4c1",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r4c1-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -1357,20 +1385,21 @@
   },
   {
     "id": "r4c2",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r4c2-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -1410,20 +1439,21 @@
   },
   {
     "id": "r4c3",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r4c3-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -1463,20 +1493,21 @@
   },
   {
     "id": "r4c4",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r4c4-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -1516,20 +1547,21 @@
   },
   {
     "id": "r4c5",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r4c5-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -1569,20 +1601,21 @@
   },
   {
     "id": "r4c6",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r4c6-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -1622,20 +1655,21 @@
   },
   {
     "id": "r4c7",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r4c7-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -1675,20 +1709,21 @@
   },
   {
     "id": "r4c8",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r4c8-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -1728,20 +1763,21 @@
   },
   {
     "id": "r4c9",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r4c9-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -1773,20 +1809,21 @@
   },
   {
     "id": "r5c1",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r5c1-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -1818,20 +1855,21 @@
   },
   {
     "id": "r5c2",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r5c2-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -1871,20 +1909,21 @@
   },
   {
     "id": "r5c3",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r5c3-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -1924,20 +1963,21 @@
   },
   {
     "id": "r5c4",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r5c4-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -1977,27 +2017,28 @@
   },
   {
     "id": "r5c5",
-    "title": "The Center Hall",
-    "summary": "An open hall floored in a precise grid, every line crossing true. At its center stands a golem of pale stone, taller than the rest, perfectly still.",
-    "inspect_text": "The grid underfoot is laid with impossible precision, every line crossing true, the center of the whole board. At its heart a golem of pale stone stands taller than the rest, perfectly still. It does not need to move.",
+    "title": "The Work-Ring",
+    "summary": "The deepest chamber on this level. A wide circle of chalk glows on the cave floor — the same pale light as your own lines — and inside it, golems stand unfinished: a shoulder, a head with no seams yet, slabs of raw rock. The air is thick with ash and hot clay.",
+    "inspect_text": "You stop at the edge of a wide chalk circle drawn on the cave floor, glowing the same pale light as the lines you draw yourself. Inside it, golems are being made: a shoulder of dark volcanic rock, a head still without seams, slabs of raw stone waiting to be given a shape. The air tastes of ash and hot clay and burned herbs. At the ring’s center the goblin shaman works, hunched and patient, one pale hand pressed flat to the stone. Tock. Tock. A staff beating slow time against the floor.",
     "descriptions": [
       {
-        "actor_defeated": "golem-boss",
-        "summary": "The room is open and the floor is laid in a precise grid. Lines cross at every intersection. Where the warden once stood at the center, only a scatter of pale dust remains.",
-        "inspect_text": "The room is open and the floor is laid in a precise grid. Lines cross at every intersection. Where the warden once stood at the center, only a scatter of pale dust remains."
+        "actor_defeated": "goblin-shaman",
+        "summary": "The chalk ring lies scuffed and broken underfoot. The half-made golems stand unfinished, and there is no hand to finish them now. Only ash, and the cold smoke of an untended fire.",
+        "inspect_text": "The work-ring’s chalk is scuffed and broken under your feet. Half-made golems stand the way they were left — a shoulder, a seamless head, slabs of raw rock — and the dying fire twists one last thread of smoke at the room’s center. The air has gone still and cold."
       }
     ],
     "features": [
       {
         "id": "r5c5-feature",
-        "label": "a deep central grid",
+        "label": "the chalk ring",
         "aliases": [
-          "grid",
-          "center",
-          "line",
-          "intersection"
+          "ring",
+          "circle",
+          "chalk",
+          "work-ring",
+          "floor"
         ],
-        "inspect_text": "Lines cross the floor at precise intervals, forming a grid of squares. The intersections are worn smooth. This is the center of everything."
+        "inspect_text": "A circle of chalk drawn on the cave floor, wide enough to stand in, glowing the pale color of your own marks. It is the largest of its kind you have seen."
       }
     ],
     "exits": [
@@ -2042,26 +2083,27 @@
           "ladder"
         ],
         "menu_label": "Down",
-        "requires_story_var": "warden_defeated"
+        "requires_story_var": "shaman_defeated"
       }
     ]
   },
   {
     "id": "r5c6",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r5c6-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -2101,20 +2143,21 @@
   },
   {
     "id": "r5c7",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r5c7-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -2154,20 +2197,21 @@
   },
   {
     "id": "r5c8",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r5c8-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -2207,20 +2251,21 @@
   },
   {
     "id": "r5c9",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r5c9-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -2252,20 +2297,21 @@
   },
   {
     "id": "r6c1",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r6c1-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -2297,20 +2343,21 @@
   },
   {
     "id": "r6c2",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r6c2-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -2350,20 +2397,21 @@
   },
   {
     "id": "r6c3",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r6c3-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -2403,20 +2451,21 @@
   },
   {
     "id": "r6c4",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r6c4-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -2456,20 +2505,21 @@
   },
   {
     "id": "r6c5",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r6c5-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -2509,20 +2559,21 @@
   },
   {
     "id": "r6c6",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r6c6-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -2562,20 +2613,21 @@
   },
   {
     "id": "r6c7",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r6c7-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -2615,20 +2667,21 @@
   },
   {
     "id": "r6c8",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r6c8-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -2668,20 +2721,21 @@
   },
   {
     "id": "r6c9",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r6c9-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -2713,20 +2767,21 @@
   },
   {
     "id": "r7c1",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r7c1-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -2758,20 +2813,21 @@
   },
   {
     "id": "r7c2",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r7c2-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -2811,20 +2867,21 @@
   },
   {
     "id": "r7c3",
-    "title": "A Vault of Dark Flags",
-    "summary": "A vault floored in dark stone flags. In the corner a golem of dark granite stands, quiet, watching nothing.",
-    "inspect_text": "Dark flags pave this vault, their joints running straight and clean. In the corner a golem of dark granite stands, head slightly turned, watching nothing — or listening.",
+    "title": "A Guarded Crossing",
+    "summary": "A golem of dark volcanic rock, lumped and broad stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
+    "inspect_text": "In the center of the room a golem of dark volcanic rock, lumped and broad stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
     "features": [
       {
         "id": "r7c3-feature",
-        "label": "dark fitted flags",
+        "label": "the chalk-ring mark",
         "aliases": [
-          "flag",
-          "stone",
-          "dark",
-          "floor"
+          "mark",
+          "ring",
+          "chalk",
+          "golem",
+          "chest"
         ],
-        "inspect_text": "Each flag is cut from dark stone, fitted precisely against its neighbors. The joints form a grid."
+        "inspect_text": "A pale chalk ring is marked on the golem’s chest and brow, in the same pale light as the frost on the sleeping wall."
       }
     ],
     "exits": [
@@ -2864,20 +2921,21 @@
   },
   {
     "id": "r7c4",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r7c4-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -2917,20 +2975,21 @@
   },
   {
     "id": "r7c5",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r7c5-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -2970,20 +3029,21 @@
   },
   {
     "id": "r7c6",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r7c6-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -3023,20 +3083,21 @@
   },
   {
     "id": "r7c7",
-    "title": "A Hall of Pale Stone",
-    "summary": "A hall of pale, almost white stone that holds whatever light there is. At its center, a golem waits.",
-    "inspect_text": "Everything here is pale, almost white, and the stone seems to trap what little light falls on it, glowing gently. A pale golem waits at the center of the hall.",
+    "title": "A Guarded Crossing",
+    "summary": "A golem of pale river stone, smoothed and round stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
+    "inspect_text": "In the center of the room a golem of pale river stone, smoothed and round stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
     "features": [
       {
         "id": "r7c7-feature",
-        "label": "luminous pale stone",
+        "label": "the chalk-ring mark",
         "aliases": [
-          "stone",
-          "pale",
-          "light",
-          "glow"
+          "mark",
+          "ring",
+          "chalk",
+          "golem",
+          "chest"
         ],
-        "inspect_text": "The stone holds light like a memory. The grid lines on the floor glow faintly, as if something is beneath them."
+        "inspect_text": "A pale chalk ring is marked on the golem’s chest and brow, barely glowing in the dim."
       }
     ],
     "exits": [
@@ -3076,20 +3137,21 @@
   },
   {
     "id": "r7c8",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r7c8-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -3129,20 +3191,21 @@
   },
   {
     "id": "r7c9",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r7c9-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -3174,20 +3237,21 @@
   },
   {
     "id": "r8c1",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r8c1-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -3219,20 +3283,21 @@
   },
   {
     "id": "r8c2",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r8c2-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -3272,20 +3337,21 @@
   },
   {
     "id": "r8c3",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r8c3-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -3325,20 +3391,21 @@
   },
   {
     "id": "r8c4",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r8c4-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -3378,20 +3445,21 @@
   },
   {
     "id": "r8c5",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r8c5-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -3431,20 +3499,21 @@
   },
   {
     "id": "r8c6",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r8c6-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -3484,20 +3553,21 @@
   },
   {
     "id": "r8c7",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r8c7-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -3537,20 +3607,21 @@
   },
   {
     "id": "r8c8",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r8c8-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -3590,20 +3661,21 @@
   },
   {
     "id": "r8c9",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r8c9-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -3635,20 +3707,21 @@
   },
   {
     "id": "r9c1",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r9c1-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -3672,20 +3745,21 @@
   },
   {
     "id": "r9c2",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r9c2-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -3717,20 +3791,21 @@
   },
   {
     "id": "r9c3",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r9c3-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -3762,20 +3837,21 @@
   },
   {
     "id": "r9c4",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r9c4-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -3807,20 +3883,21 @@
   },
   {
     "id": "r9c5",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r9c5-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -3852,20 +3929,21 @@
   },
   {
     "id": "r9c6",
-    "title": "A Corridor of Worn Flags",
-    "summary": "A long corridor paved in stone flags cut to a single size. Where they meet, their joints form clean, straight lines.",
-    "inspect_text": "The corridor runs straight under your feet. Each stone flag is cut to the same size, and the joints between them run true, north to south, an unbroken line of seams.",
+    "title": "A Fire-Pit Chamber",
+    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
+    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
     "features": [
       {
         "id": "r9c6-feature",
-        "label": "the fitted flagstones",
+        "label": "the ember pit",
         "aliases": [
-          "flagstone",
-          "flag",
-          "floor",
-          "joint"
+          "pit",
+          "embers",
+          "fire",
+          "coals",
+          "stone ring"
         ],
-        "inspect_text": "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone."
+        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
       }
     ],
     "exits": [
@@ -3897,20 +3975,21 @@
   },
   {
     "id": "r9c7",
-    "title": "A Cell of Fitted Stone",
-    "summary": "A small chamber built of fitted stone. The floor is laid in a grid, lines crossing at every intersection.",
-    "inspect_text": "A small room of fitted stone, close enough that your shoulders nearly brush the walls. The floor is a grid: thin lines cross at every intersection, and at each crossing a small hollow has been worn smooth.",
+    "title": "A Den",
+    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
+    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r9c7-feature",
-        "label": "a grid scored into the floor",
+        "label": "the bone pile",
         "aliases": [
-          "grid",
-          "floor",
-          "line",
-          "intersection"
+          "bones",
+          "bone",
+          "pile",
+          "stack",
+          "corner"
         ],
-        "inspect_text": "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
       }
     ],
     "exits": [
@@ -3942,20 +4021,21 @@
   },
   {
     "id": "r9c8",
-    "title": "A Hall of Crossing Paths",
-    "summary": "A wide hall where two paths cross at right angles, worn into the floor by centuries of traffic.",
-    "inspect_text": "Two paths cross here at a clean right angle, worn deep into the stone. Where they meet, the floor is polished mirror-smooth, as if generations of feet passed through this single point.",
+    "title": "A Hunting Ground",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
         "id": "r9c8-feature",
-        "label": "worn crossing paths",
+        "label": "the gutting stone",
         "aliases": [
-          "path",
-          "cross",
-          "floor",
-          "worn"
+          "stone",
+          "gutting stone",
+          "meat",
+          "frame",
+          "grease"
         ],
-        "inspect_text": "Two paths cross here, worn into the stone. Where they meet, the floor is polished smooth. The intersections feel deliberate, like points on a grid."
+        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
       }
     ],
     "exits": [
@@ -3987,20 +4067,21 @@
   },
   {
     "id": "r9c9",
-    "title": "A Passage of Scored Walls",
-    "summary": "A narrow passage carved through the rock, its walls scored with straight, deliberate lines. You run a hand along them: every stroke cut with the same care.",
-    "inspect_text": "You stand in a passage where every wall is scored with straight lines, cut at exact intervals and at precise right angles. The grooves are deep enough to trace with a fingertip, as if a rule was laid down before the stone was.",
+    "title": "A Crossing of Worn Tracks",
+    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
+    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
     "features": [
       {
         "id": "r9c9-feature",
-        "label": "scored lines in the wall",
+        "label": "the worn crossing tracks",
         "aliases": [
-          "line",
-          "wall",
-          "score",
-          "mark"
+          "tracks",
+          "track",
+          "crossing",
+          "grooves",
+          "floor"
         ],
-        "inspect_text": "The lines are cut with precision, crossing at exact right angles. They form a small grid on the wall, like a board marked for a game no one is playing."
+        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
       }
     ],
     "exits": [
@@ -4055,7 +4136,7 @@
           "climb"
         ],
         "menu_label": "Up",
-        "requires_story_var": "warden_defeated"
+        "requires_story_var": "shaman_defeated"
       }
     ]
   },

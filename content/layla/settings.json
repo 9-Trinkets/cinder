@@ -1,7 +1,7 @@
 {
   "title": "Layla",
   "tagline": "Wake lost. Learn the rules. Choose who you become.",
-  "description": "Layla wakes with no memory inside a sealed grid of dark rooms. To earn her way down she must capture the stone board from the warden's golems \u2014 claiming territory one room at a time. Below it waits an elf army that refuses to be bound, and beyond them, old fire held prisoner until it is released. Every rule she learns was built on purpose, for a purpose she cannot remember \u2014 and each one is training her to become something she will have to decide for herself.",
+  "description": "Layla wakes with no memory in a goblin cave, beside a golem that does not move. To win her way out she must capture the cave from the shaman and its chalk-marked servants \u2014 claiming territory one room at a time. Below it waits an elf army that refuses to be bound, and beyond them, old fire held prisoner until it is released. Every rule she learns was built on purpose, for a purpose she cannot remember \u2014 and each one is training her to become something she will have to decide for herself.",
   "typewriter_char_ms": 12,
   "npc_tick_interval_ms": 2000,
   "tick_minutes_per_turn": 1,
@@ -45,9 +45,7 @@
     "crt_bez": "#0b0d12"
   },
   "starting_items": {
-    "magic-chalk": 1,
-    "iron-chisel": 1,
-    "herb-salve": 2
+    "magic-chalk": 1
   },
   "equipment_slots": [
     "weapon",
