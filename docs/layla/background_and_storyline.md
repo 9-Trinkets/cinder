@@ -243,15 +243,28 @@ of her own arc should be felt by the endgame.
   `shaman.memory` — are written in third person; port them to second person as
   they are touched.)
 
-### The two voices: warm narration vs. cold system
+### The two voices: warm narration vs. the handler
 - Layla's world has a **system layer**: reading a scroll that describes how to
   trace a sigil, calling up a holographic menu to inspect her stats, accepting
   inventory/equipment feedback, and so on.
-- **System messages and UI are cold and machine-like** — clipped, literal,
-  unemotional. This is the corporation's voice.
+- **System messages come from Layla's human handler** — a young, inexperienced
+  man working from corporate SOPs and playbooks. He is procedural because he is
+  afraid of getting the procedure wrong, not because he is emotionless.
+- His personality should be strong and recognizable. He corrects himself,
+  admits when his display or instructions fail, and reaches for phrases like
+  "the playbook says" or "I'm supposed to tell you." He sometimes calls Layla
+  by name or checks whether she is all right, then remembers that he is not
+  supposed to treat her like a person.
+- Keep his lines short enough to function as operational feedback. Do not turn
+  every message into a monologue, joke, or display of incompetence. Critical
+  information must remain clear even when he is nervous.
+- The handler voices errors, help and objective framing, inventory/equipment
+  feedback, connection failures, and explicit system directives. He does not
+  narrate rooms, combat, memories, character actions, or dialogue.
 - **Regular narration is warm and light** — Layla's own perception of the
-  world. The contrast between the two is intentional and should be kept sharp:
-  the warmer the story prose, the colder the system text next to it.
+  world. The contrast remains intentional: the narration is immediate and
+  sensory, while the handler is remote, procedural, anxious, and increasingly
+  unable to keep emotional distance.
 
 ### Who Layla is on the page
 - Layla is **naturally curious**, and her behaviors are **slightly autistic**:

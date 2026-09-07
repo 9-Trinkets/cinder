@@ -1,16 +1,16 @@
 {
   "error_text": {
-    "room_missing": "The room data could not be found.",
-    "cannot_go": "You can't go to {target} from here.",
-    "actor_not_here": "{actor_name} isn't here right now.",
-    "actor_unknown": "You don't see anyone called {target} here.",
-    "feature_unknown": "You don't notice anything called {target} here.",
-    "unknown_input": "I don't know how to `{raw_input}` yet. Try {available_commands}.",
-    "dialogue_unavailable": "{actor_name} doesn't answer right now. Dialogue error: {error}"
+    "room_missing": "Wait. I lost the room record. That's on my side, Layla, not yours.",
+    "cannot_go": "No, sorry. The route sheet doesn't show a path to {target} from there.",
+    "actor_not_here": "I don't have {actor_name} in your room right now. Unless my tracker is lagging again.",
+    "actor_unknown": "I can't match {target} to anyone near you. Check the name for me.",
+    "feature_unknown": "I can't match {target} to anything in the room. The recognition guide says to try a simpler name.",
+    "unknown_input": "I don't have `{raw_input}` in the approved playbook. Try {available_commands}. Sorry—I know that's not very helpful.",
+    "dialogue_unavailable": "{actor_name} isn't answering. The dialogue channel returned: {error}. That's my console. Give me a second."
   },
   "presentation_text": {
     "room_observation": "{body}{features}{items}{people}{exits}",
-    "objective": "\n\nObjective:\n{objective}",
+    "objective": "\n\nHandler:\n{objective}",
     "features": "\n\nYou notice: {features}.",
     "people": "\n\nHere with you: {people}.",
     "exits": "\n\nExits: {exits}.",
