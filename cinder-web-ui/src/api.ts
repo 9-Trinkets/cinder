@@ -3,6 +3,21 @@ const BASE = configuredBase
   ? configuredBase.replace(/\/+$/, '') + '/api'
   : '/api'
 
+export function gameTicksWebSocketUrl(
+  sessionId: string,
+  token: string,
+  intervalMs: number,
+) {
+  const url = new URL(
+    `${BASE}/games/${encodeURIComponent(sessionId)}/ws`,
+    window.location.origin,
+  )
+  url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:'
+  url.searchParams.set('token', token)
+  url.searchParams.set('tick_ms', intervalMs.toString())
+  return url.toString()
+}
+
 async function req<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {
     ...init,

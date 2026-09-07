@@ -24,9 +24,7 @@ export function useNpcTicks(params: {
     if (intervalMs <= 0) return
     if (blocked) return
 
-    const proto = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const wsUrl = `${proto}//${window.location.host}/api/games/${id}/ws?token=${token}&tick_ms=${intervalMs}`
-    const ws = new WebSocket(wsUrl)
+    const ws = new WebSocket(api.gameTicksWebSocketUrl(id, token, intervalMs))
 
     ws.onmessage = (event) => {
       if (inputValueRef.current.trim().length > 0) return
