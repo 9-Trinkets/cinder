@@ -238,6 +238,7 @@ pub fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
         id: id.to_string(),
         name: name.to_string(),
         room_id: room_id.to_string(),
+        level: 1,
         initial_stats: BTreeMap::new(),
         initial_pair_stats: BTreeMap::new(),
         aliases: vec![],

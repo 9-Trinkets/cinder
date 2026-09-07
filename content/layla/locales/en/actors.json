@@ -6,7 +6,8 @@
     "initial_stats": {
       "hp": 10,
       "strength": 3,
-      "defense": 1
+      "defense": 1,
+      "intelligence": 5
     },
     "aliases": [
       "layla",
@@ -39,7 +40,8 @@
         "Filing every new rule away like a move in an old game."
       ]
     },
-    "game_data": {}
+    "game_data": {},
+    "level": 1
   },
   {
     "id": "golem-dark-nw",
@@ -47,7 +49,8 @@
     "room_id": "r3c3",
     "initial_stats": {
       "hp": 8,
-      "strength": 2
+      "strength": 2,
+      "intelligence": 1
     },
     "aliases": [
       "golem",
@@ -82,7 +85,8 @@
     "tags": [
       "golem"
     ],
-    "guard": true
+    "guard": true,
+    "level": 1
   },
   {
     "id": "golem-pale-ne",
@@ -90,7 +94,8 @@
     "room_id": "r3c7",
     "initial_stats": {
       "hp": 8,
-      "strength": 2
+      "strength": 2,
+      "intelligence": 1
     },
     "aliases": [
       "golem",
@@ -125,7 +130,8 @@
     "tags": [
       "golem"
     ],
-    "guard": false
+    "guard": false,
+    "level": 1
   },
   {
     "id": "goblin-shaman",
@@ -134,7 +140,8 @@
     "initial_stats": {
       "hp": 24,
       "strength": 5,
-      "defense": 1
+      "defense": 1,
+      "intelligence": 6
     },
     "aliases": [
       "shaman",
@@ -177,7 +184,8 @@
       "goblin",
       "shaman"
     ],
-    "guard": false
+    "guard": false,
+    "level": 6
   },
   {
     "id": "golem-dark-sw",
@@ -185,7 +193,8 @@
     "room_id": "r7c3",
     "initial_stats": {
       "hp": 8,
-      "strength": 2
+      "strength": 2,
+      "intelligence": 1
     },
     "aliases": [
       "golem",
@@ -220,7 +229,8 @@
     "tags": [
       "golem"
     ],
-    "guard": true
+    "guard": true,
+    "level": 1
   },
   {
     "id": "golem-pale-se",
@@ -228,7 +238,8 @@
     "room_id": "r7c7",
     "initial_stats": {
       "hp": 8,
-      "strength": 2
+      "strength": 2,
+      "intelligence": 1
     },
     "aliases": [
       "golem",
@@ -263,7 +274,8 @@
     "tags": [
       "golem"
     ],
-    "guard": false
+    "guard": false,
+    "level": 1
   },
   {
     "id": "goblin-1",
@@ -271,7 +283,8 @@
     "room_id": "r2c2",
     "initial_stats": {
       "hp": 5,
-      "strength": 1
+      "strength": 1,
+      "intelligence": 2
     },
     "aliases": [
       "goblin",
@@ -310,7 +323,8 @@
     "tags": [
       "goblin"
     ],
-    "guard": false
+    "guard": false,
+    "level": 1
   },
   {
     "id": "goblin-2",
@@ -318,7 +332,8 @@
     "room_id": "r2c8",
     "initial_stats": {
       "hp": 5,
-      "strength": 1
+      "strength": 1,
+      "intelligence": 2
     },
     "aliases": [
       "goblin",
@@ -357,7 +372,8 @@
     "tags": [
       "goblin"
     ],
-    "guard": false
+    "guard": false,
+    "level": 1
   },
   {
     "id": "goblin-3",
@@ -365,7 +381,8 @@
     "room_id": "r8c2",
     "initial_stats": {
       "hp": 4,
-      "strength": 2
+      "strength": 2,
+      "intelligence": 2
     },
     "aliases": [
       "goblin",
@@ -404,7 +421,8 @@
     "tags": [
       "goblin"
     ],
-    "guard": false
+    "guard": false,
+    "level": 1
   },
   {
     "id": "goblin-4",
@@ -412,7 +430,8 @@
     "room_id": "r8c8",
     "initial_stats": {
       "hp": 4,
-      "strength": 2
+      "strength": 2,
+      "intelligence": 2
     },
     "aliases": [
       "goblin",
@@ -451,7 +470,8 @@
     "tags": [
       "goblin"
     ],
-    "guard": false
+    "guard": false,
+    "level": 1
   },
   {
     "id": "elf-pawn-1",
@@ -471,9 +491,11 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1
+      "defense": 1,
+      "intelligence": 3
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 3
   },
   {
     "id": "elf-pawn-2",
@@ -493,9 +515,11 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1
+      "defense": 1,
+      "intelligence": 3
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 3
   },
   {
     "id": "elf-pawn-3",
@@ -515,9 +539,11 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1
+      "defense": 1,
+      "intelligence": 3
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 3
   },
   {
     "id": "elf-pawn-4",
@@ -537,9 +563,11 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1
+      "defense": 1,
+      "intelligence": 3
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 3
   },
   {
     "id": "elf-pawn-5",
@@ -559,9 +587,11 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1
+      "defense": 1,
+      "intelligence": 3
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 3
   },
   {
     "id": "elf-pawn-6",
@@ -581,9 +611,11 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1
+      "defense": 1,
+      "intelligence": 3
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 3
   },
   {
     "id": "elf-pawn-7",
@@ -603,9 +635,11 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1
+      "defense": 1,
+      "intelligence": 3
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 3
   },
   {
     "id": "elf-pawn-8",
@@ -625,9 +659,11 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1
+      "defense": 1,
+      "intelligence": 3
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 3
   },
   {
     "id": "elf-rook-1",
@@ -647,9 +683,11 @@
     "initial_stats": {
       "hp": 14,
       "strength": 5,
-      "defense": 3
+      "defense": 3,
+      "intelligence": 4
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 5
   },
   {
     "id": "elf-knight-2",
@@ -669,9 +707,11 @@
     "initial_stats": {
       "hp": 10,
       "strength": 4,
-      "defense": 2
+      "defense": 2,
+      "intelligence": 4
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 4
   },
   {
     "id": "elf-bishop-3",
@@ -691,9 +731,11 @@
     "initial_stats": {
       "hp": 10,
       "strength": 4,
-      "defense": 2
+      "defense": 2,
+      "intelligence": 4
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 4
   },
   {
     "id": "elf-queen-4",
@@ -713,9 +755,11 @@
     "initial_stats": {
       "hp": 16,
       "strength": 6,
-      "defense": 3
+      "defense": 3,
+      "intelligence": 6
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 6
   },
   {
     "id": "elf-king-5",
@@ -738,9 +782,11 @@
     "initial_stats": {
       "hp": 20,
       "strength": 6,
-      "defense": 4
+      "defense": 4,
+      "intelligence": 7
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 8
   },
   {
     "id": "elf-bishop-6",
@@ -760,9 +806,11 @@
     "initial_stats": {
       "hp": 10,
       "strength": 4,
-      "defense": 2
+      "defense": 2,
+      "intelligence": 4
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 4
   },
   {
     "id": "elf-knight-7",
@@ -782,9 +830,11 @@
     "initial_stats": {
       "hp": 10,
       "strength": 4,
-      "defense": 2
+      "defense": 2,
+      "intelligence": 4
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 4
   },
   {
     "id": "elf-rook-8",
@@ -804,9 +854,11 @@
     "initial_stats": {
       "hp": 14,
       "strength": 5,
-      "defense": 3
+      "defense": 3,
+      "intelligence": 4
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 5
   },
   {
     "id": "fire-elemental",
@@ -836,10 +888,12 @@
     "initial_stats": {
       "hp": 18,
       "strength": 3,
-      "defense": 2
+      "defense": 2,
+      "intelligence": 7
     },
     "prompt_context": {},
-    "guard": false
+    "guard": false,
+    "level": 5
   },
   {
     "id": "fire-sprite-1",
@@ -864,9 +918,11 @@
     "initial_stats": {
       "hp": 4,
       "strength": 2,
-      "defense": 0
+      "defense": 0,
+      "intelligence": 2
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 3
   },
   {
     "id": "fire-sprite-2",
@@ -891,9 +947,11 @@
     "initial_stats": {
       "hp": 4,
       "strength": 2,
-      "defense": 0
+      "defense": 0,
+      "intelligence": 2
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 3
   },
   {
     "id": "fire-sprite-3",
@@ -918,8 +976,10 @@
     "initial_stats": {
       "hp": 4,
       "strength": 2,
-      "defense": 0
+      "defense": 0,
+      "intelligence": 2
     },
-    "prompt_context": {}
+    "prompt_context": {},
+    "level": 3
   }
 ]

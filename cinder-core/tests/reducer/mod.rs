@@ -1,4 +1,5 @@
 mod beat_advance;
+mod charm;
 mod combat;
 mod combat_policy;
 mod common;

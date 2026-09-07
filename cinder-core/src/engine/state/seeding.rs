@@ -44,6 +44,14 @@ pub(super) fn seeded_actor_stats(
         .collect()
 }
 
+pub(super) fn seeded_actor_levels(content: &ContentPack) -> BTreeMap<String, u32> {
+    content
+        .actors
+        .iter()
+        .map(|actor| (actor.id.clone(), actor.level.max(1)))
+        .collect()
+}
+
 pub(super) fn seeded_feature_consumable_stock(content: &ContentPack) -> BTreeMap<String, u32> {
     let mut stock = BTreeMap::new();
     for room in &content.rooms {

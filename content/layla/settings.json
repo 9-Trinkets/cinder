@@ -63,5 +63,6 @@
       "mode": "attack_stat",
       "contribution_percent": 100
     }
-  }
+  },
+  "charm_rule": "int_and_level"
 }

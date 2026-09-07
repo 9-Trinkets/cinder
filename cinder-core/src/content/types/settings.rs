@@ -7,6 +7,24 @@ use super::{
     PeriodicActorEffectDefinition, ThemeDefinition,
 };
 
+/// How the "actor surrounded" conversion hook decides whether an encircled
+/// non-player actor actually converts.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum CharmRule {
+    /// Every candidate the pack's `actor.surrounded` hook names converts. The
+    /// pack is fully responsible for gating (e.g. via hook conditions).
+    #[default]
+    None,
+    /// A candidate converts only when the player out-scores it:
+    /// `player_int + player_level >= target_int + 2*target_level`, where int is
+    /// the `intelligence` actor stat (player side uses the effective value so
+    /// equipped bonuses count). Failures narrate a cold system line instead of
+    /// converting. Used by layla so bosses stay un-charmable by numbers, not by
+    /// special-cased hook conditions.
+    IntAndLevel,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContentSettingsDefinition {
     #[serde(default)]
@@ -76,6 +94,10 @@ pub struct ContentSettingsDefinition {
     /// Binds the generic strike mechanism to this pack's stat vocabulary.
     #[serde(default)]
     pub combat: CombatSettingsDefinition,
+    /// Whether encircling an actor converts it at all, and under what rule
+    /// (see [`CharmRule`]).
+    #[serde(default)]
+    pub charm_rule: CharmRule,
     /// Items the player starts with, item id → count. Seed a finite resource
     /// (e.g. layla's stone markers) here so it can be dropped into rooms and
     /// picked back up.
@@ -145,6 +167,7 @@ impl Default for ContentSettingsDefinition {
             autonomous_hostility_mode: AutonomousHostilityMode::Rules,
             periodic_actor_effects: Vec::new(),
             combat: CombatSettingsDefinition::default(),
+            charm_rule: CharmRule::None,
             starting_items: BTreeMap::new(),
             equipment_slots: BTreeSet::new(),
             theme: ThemeDefinition::default(),

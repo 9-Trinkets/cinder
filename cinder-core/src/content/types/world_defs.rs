@@ -402,6 +402,11 @@ pub struct ActorDefinition {
     pub id: String,
     pub name: String,
     pub room_id: String,
+    /// Starting level for this actor, seeded into world state at session
+    /// creation and read by level-gated rules (e.g. the charm formula).
+    /// Defaults to 1.
+    #[serde(default = "default_actor_level")]
+    pub level: u32,
     #[serde(default)]
     pub initial_stats: BTreeMap<String, i32>,
     #[serde(default)]
@@ -470,6 +475,10 @@ impl ActorDefinition {
             &self.attack_kind
         }
     }
+}
+
+fn default_actor_level() -> u32 {
+    1
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

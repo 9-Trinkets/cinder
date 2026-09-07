@@ -1,4 +1,4 @@
-use crate::content::types::{ContentPack, ItemStorageTarget};
+use crate::content::types::{CharmRule, ContentPack, ItemStorageTarget};
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_narrating_world_hook_effects;
 use crate::engine::narrative::NarrativeLines;
@@ -6,6 +6,35 @@ use crate::engine::state::{ActorStance, WorldState};
 use serde_json::json;
 
 use super::combat::actor_display_name;
+
+/// Cold text narrated when the pack's charm rule refuses an encircled actor,
+/// keeping the refusal diegetic instead of silently failing.
+fn charm_refused_line() -> String {
+    "THE RING DOES NOT HOLD.".to_string()
+}
+
+/// Whether the pack's charm rule lets an encircled actor convert. With no
+/// rule (`CharmRule::None`) every candidate converts and the pack gates via
+/// its own hook conditions. With `IntAndLevel` the player must out-score the
+/// target: `player_int + player_level >= target_int + 2*target_level`. The
+/// player int is the *effective* value so equipped bonuses (e.g. a ring) count.
+fn charm_rule_passes(
+    state: &WorldState,
+    content: &ContentPack,
+    target_actor_id: &str,
+) -> bool {
+    let CharmRule::IntAndLevel = content.settings.charm_rule else {
+        return true;
+    };
+    let player_id = &content.settings.combat.player_actor_id;
+    let player_int = state
+        .effective_actor_stat(content, player_id, "intelligence")
+        .max(0) as u32;
+    let player_level = state.actor_level(player_id);
+    let target_int = state.actor_stat(target_actor_id, "intelligence").max(0) as u32;
+    let target_level = state.actor_level(target_actor_id);
+    player_int + player_level >= target_int + 2 * target_level
+}
 
 /// Fires the content-authored `actor.surrounded` hook for each living,
 /// non-allied actor whose neighboring rooms all contain the triggering item.
@@ -36,6 +65,10 @@ pub(super) fn trigger_surrounded_hooks(
             .iter()
             .all(|n| state.has_item_in_storage(item_id, ItemStorageTarget::CurrentRoom, n))
         {
+            continue;
+        }
+        if !charm_rule_passes(state, content, &actor.id) {
+            lines.system(charm_refused_line());
             continue;
         }
         let actor_name = actor_display_name(content, &actor.id);

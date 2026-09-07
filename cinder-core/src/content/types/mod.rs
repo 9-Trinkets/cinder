@@ -7,7 +7,7 @@ use serde_json::Value;
 use std::collections::{BTreeMap, HashMap};
 
 mod settings;
-pub use settings::ContentSettingsDefinition;
+pub use settings::{CharmRule, ContentSettingsDefinition};
 pub(super) use settings::{default_actor_targeted_speech, default_stat_default_value};
 
 mod leveling;

@@ -240,7 +240,7 @@ impl WorldState {
             next_hostile_strike_at: BTreeMap::new(),
             equipment: BTreeMap::new(),
             actor_xp: BTreeMap::new(),
-            actor_level: BTreeMap::new(),
+            actor_level: seeded_actor_levels(content),
         }
     }
 
@@ -281,7 +281,9 @@ pub struct WorldSnapshot {
 }
 
 mod seeding;
-use seeding::{seeded_actor_stats, seeded_feature_consumable_stock, seeded_pair_stats};
+use seeding::{
+    seeded_actor_levels, seeded_actor_stats, seeded_feature_consumable_stock, seeded_pair_stats,
+};
 mod act_cast;
 pub use act_cast::{
     ActFeedbackSummary, ActHistoryEntry, ActSeriesState, CastMemberRecord, advance_to_next_act,
