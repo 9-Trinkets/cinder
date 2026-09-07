@@ -225,6 +225,43 @@
       ]
     }
   },
+  "actor.attacked": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": [
+                "goblin",
+                "golem"
+              ]
+            },
+            {
+              "path": "actor_id",
+              "operator": "not_equal",
+              "value": "goblin-shaman"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "layla_attacked_floor_one_mob",
+            "value": "true"
+          }
+        }
+      ]
+    }
+  },
   "actor.surrounded": {
     "rule": "effect_table",
     "rule_config": {

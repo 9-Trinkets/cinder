@@ -1,14 +1,19 @@
 use crate::content::types::{
-    AllyAttackMode, AllyAttackParticipants, ContentPack, ItemStorageTarget, PeriodicActorEffect,
-    XpDistributionMode, XpRecipientMode,
+    AllyAttackMode, AllyAttackParticipants, ContentPack, DropSpec, ItemStorageTarget,
+    PeriodicActorEffect, XpDistributionMode, XpRecipientMode,
 };
 use crate::engine::hook_ids;
-use crate::engine::hooks::apply_narrating_world_hook_effects;
+use crate::engine::hooks::{
+    apply_narrating_world_hook_effects, apply_world_hook_effects,
+};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{
     ActorRelationship, ActorStance, GamePhase, WorldState, display_actor_name,
 };
+use crate::engine::turn_policies::story_var_is_truthy;
 use serde_json::json;
+
+static VEC_EMPTY_TAGS: Vec<String> = Vec::new();
 
 pub(super) fn handle_periodic_actor_effect_applied(
     state: &mut WorldState,
@@ -81,6 +86,7 @@ pub(super) fn handle_periodic_actor_effect_applied(
 pub(super) fn apply_attack_target(
     state: &mut WorldState,
     content: &ContentPack,
+    attacker_actor_id: &str,
     target_actor_id: &str,
     room_id: &str,
     lines: &mut NarrativeLines,
@@ -90,6 +96,29 @@ pub(super) fn apply_attack_target(
     // omits the planning-side message.
     if state.stance(target_actor_id) == ActorStance::Allied {
         return;
+    }
+    let target_name = actor_display_name(content, target_actor_id);
+    // `actor.attacked` fires for this pack only when the player themselves
+    // issues the attack action (follower damage boosts and periodic effects
+    // never reach this point). Packs use it to record run-rule flags, e.g. a
+    // clean-floor reward that is forfeited by attacking ordinary mobs.
+    if attacker_actor_id == content.settings.combat.player_actor_id {
+        let target_tags = content
+            .actor(target_actor_id)
+            .map(|actor| &actor.tags)
+            .unwrap_or(&VEC_EMPTY_TAGS);
+        apply_world_hook_effects(
+            state,
+            content,
+            hook_ids::ACTOR_ATTACKED,
+            json!({
+                "actor_id": target_actor_id,
+                "actor_name": target_name,
+                "attacker_id": attacker_actor_id,
+                "tags": target_tags,
+            }),
+        )
+        .unwrap_or_else(|error| eprintln!("[cinder] hook warning (actor.attacked): {error}"));
     }
     let player_attack =
         state.effective_actor_stat(content, &combat.player_actor_id, &combat.attack_stat_id);
@@ -107,7 +136,6 @@ pub(super) fn apply_attack_target(
         .map(|actor| actor.attack_kind())
         .unwrap_or("physical");
     let total_damage = resisted_damage(content, target_actor_id, attack_kind, raw_damage);
-    let target_name = actor_display_name(content, target_actor_id);
     if raw_damage > 0 && total_damage == 0 {
         if let Some(line) = content.render_message(
             "combat.no_effect",
@@ -305,12 +333,27 @@ pub(super) fn spawn_defeat_drops(
         return;
     }
     let mut dropped_labels = Vec::new();
-    for (item_id, count) in &actor.drops {
-        for _ in 0..*count {
+    for (item_id, spec) in &actor.drops {
+        let count = match spec {
+            DropSpec::Always(count) => *count,
+            DropSpec::Conditional(conditional) => {
+                if !conditional.skip_when_story_var.is_empty()
+                    && story_var_is_truthy(state, &conditional.skip_when_story_var)
+                {
+                    0
+                } else {
+                    conditional.count
+                }
+            }
+        };
+        if count == 0 {
+            continue;
+        }
+        for _ in 0..count {
             state.add_item_to_storage(item_id, ItemStorageTarget::CurrentRoom, room_id);
         }
         if let Some(item) = content.item(item_id) {
-            dropped_labels.push(if *count > 1 {
+            dropped_labels.push(if count > 1 {
                 format!("{} x{count}", item.label)
             } else {
                 item.label.clone()

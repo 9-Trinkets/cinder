@@ -57,6 +57,13 @@ pub(super) fn apply_new_command_effects(
         let Some(target_actor_id) = context.target_actor_id else {
             return;
         };
-        apply_attack_target(state, content, target_actor_id, context.room_id, lines);
+        apply_attack_target(
+            state,
+            content,
+            context.actor_id,
+            target_actor_id,
+            context.room_id,
+            lines,
+        );
     }
 }

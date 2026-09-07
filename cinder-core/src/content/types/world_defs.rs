@@ -428,9 +428,9 @@ pub struct ActorDefinition {
     #[serde(default)]
     pub guard: bool,
     /// Items scattered into this actor's room as loose items when it is
-    /// defeated by the player's attack, item id → count.
+    /// defeated by the player's attack, item id → drop spec.
     #[serde(default)]
-    pub drops: BTreeMap<String, u32>,
+    pub drops: BTreeMap<String, DropSpec>,
     /// XP awarded to the whole party when this actor is defeated.
     #[serde(default)]
     pub xp_drop: u32,
@@ -479,6 +479,26 @@ impl ActorDefinition {
 
 fn default_actor_level() -> u32 {
     1
+}
+
+/// A single entry in an actor's `drops` table: either a plain count (the item
+/// always scatters on defeat) or a conditional spec whose story-var gate lets
+/// packs withhold loot based on how the run went (e.g. a boss ring only from a
+/// clean pacifist floor).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum DropSpec {
+    Always(u32),
+    Conditional(DropConditionSpec),
+}
+
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+pub struct DropConditionSpec {
+    pub count: u32,
+    /// When truthy, the item is not dropped and is excluded from the defeat
+    /// drop narration.
+    #[serde(default)]
+    pub skip_when_story_var: String,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

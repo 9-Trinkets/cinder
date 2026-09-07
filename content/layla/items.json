@@ -60,11 +60,10 @@
     "kind": "trinket",
     "equip_slot": "ring",
     "stat_bonuses": {
-      "strength": 1,
-      "defense": 1
+      "intelligence": 4
     },
     "equip_hook": "item.ring_equipped",
-    "description": "A ring of dark carved bone and clay, still warm from shaping. Slid onto your finger, the surviving golems bow to your will."
+    "description": "A ring of dark carved bone and clay, still warm from shaping. It holds the shaman's cunning, an eye for shape and purpose. On your finger it sharpens your mind, and the surviving golems bow to your will."
   },
   {
     "id": "spawn-sigil",

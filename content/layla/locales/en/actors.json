@@ -177,7 +177,10 @@
     "attackable": true,
     "attack_interval_minutes": 3,
     "drops": {
-      "shaman-ring": 1
+      "shaman-ring": {
+        "count": 1,
+        "skip_when_story_var": "layla_attacked_floor_one_mob"
+      }
     },
     "tags": [
       "golem",

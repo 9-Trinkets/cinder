@@ -1,8 +1,9 @@
 use super::common::*;
 use cinder_core::content::types::{
-    ActionDefinition, CombatSettingsDefinition, CommandEffect, CommandTargetMode, ItemDefinition,
-    ItemStorageTarget, LevelDefinition, PeriodicActorEffect, PeriodicActorEffectDefinition,
-    PeriodicActorEffectTargets, PeriodicActorEffectTrigger, StatDefinition,
+    ActionDefinition, CombatSettingsDefinition, CommandEffect, CommandTargetMode, DropSpec,
+    ItemDefinition, ItemStorageTarget, LevelDefinition, PeriodicActorEffect,
+    PeriodicActorEffectDefinition, PeriodicActorEffectTargets, PeriodicActorEffectTrigger,
+    StatDefinition,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::reducer::apply_events;
@@ -118,7 +119,7 @@ fn defeating_an_actor_scatters_its_drops_into_the_room() {
     let mut golem = test_actor("golem", "dark golem", LOUNGE_ID);
     golem.attackable = true;
     golem.initial_stats = BTreeMap::from([("stamina".to_string(), 1)]);
-    golem.drops = BTreeMap::from([("herb-salve".to_string(), 2)]);
+    golem.drops = BTreeMap::from([("herb-salve".to_string(), DropSpec::Always(2))]);
     pack.actors.push(golem);
     pack.items
         .push(cinder_core::content::types::ItemDefinition {
@@ -249,7 +250,7 @@ fn periodic_damage_at_zero_uses_normal_defeat_drop_and_xp_path() {
     );
     let mut goblin = test_actor("goblin", "goblin", LOUNGE_ID);
     goblin.initial_stats = BTreeMap::from([("stamina".to_string(), 1)]);
-    goblin.drops = BTreeMap::from([("herb-salve".to_string(), 2)]);
+    goblin.drops = BTreeMap::from([("herb-salve".to_string(), DropSpec::Always(2))]);
     goblin.xp_drop = 4;
     pack.actors.push(goblin);
     rebuild_test_pack_indexes(&mut pack);

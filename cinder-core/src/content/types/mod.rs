@@ -46,6 +46,7 @@ pub use world_defs::{
     BeatObjectiveConditionalGuidanceDefinition, BeatObjectiveDefinition, BeatObjectiveGuidanceDefinition,
     BeatObjectiveProgressDefinition, BeatObjectiveProgressKeyDefinition, BeatObjectivesDefinition,
     SpeechConfigDefinition, StatDefinition, StatsDefinition, WanderDefinition, WanderMode,
+    DropConditionSpec, DropSpec,
 };
 
 mod command_defs;

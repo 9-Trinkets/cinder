@@ -266,6 +266,7 @@ pub fn available_locales(path: &Path) -> Result<Vec<LocaleOption>, Box<dyn Error
 #[cfg(test)]
 mod shipped_pack_load_tests {
     use super::*;
+    use crate::content::types::DropSpec;
     #[test]
     fn shipped_packs_load_behavior_and_movement() {
         for pack in ["aera", "ella", "isla", "layla"] {
@@ -302,7 +303,7 @@ mod shipped_pack_load_tests {
                 assert_eq!(loaded.settings.periodic_actor_effects[0].id, "drain_sigil");
                 assert_eq!(
                     loaded.actor("fire-elemental").unwrap().drops,
-                    BTreeMap::from([("spawn-scroll".to_string(), 1)])
+                    BTreeMap::from([("spawn-scroll".to_string(), DropSpec::Always(1))])
                 );
                 assert_eq!(
                     loaded

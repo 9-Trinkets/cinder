@@ -3,6 +3,7 @@ mod charm;
 mod combat;
 mod combat_policy;
 mod common;
+mod defeat_drops;
 mod encirclement;
 mod equipment;
 mod items;
