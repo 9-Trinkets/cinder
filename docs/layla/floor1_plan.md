@@ -161,11 +161,12 @@ hunt-goblins (or looting their camps) yields their gear:
   hide. Goblin medicine; heals when used. (Rename of `herb-salve`.)
 
 Starting inventory is **empty** in intent: Layla wakes with nothing but what she
-finds. *Deviated for this content pass:* `starting_items = { magic-chalk: 1 }`,
-because the chalk is required for `trace` and the engine has no loose-item
-seeding mechanism yet (the chalk-on-floor pickup is pending engine work outside
-this content pass). The full empty start lands with that. Exact drop placement
-was set during implementation (see [Open Threads](#open-threads)).
+finds. *Decision:* the **magic-chalk is a deliberate starting item** —
+`starting_items = { magic-chalk: 1 }` — and stays on her for the whole floor.
+No loose-on-the-floor pickup, no `requires_equipped_item` gate on `trace`: the
+chalk is simply on her and the sigil-teaching system line fires at game start.
+Exact drop placement was set during implementation (see
+[Open Threads](#open-threads)).
 
 ---
 
@@ -197,15 +198,12 @@ Every system feature unlocks through a diegetic act. Each lock sets a story var
 
 | # | Diegetic beat | Feature unlocks | Mechanic |
 |---|---|---|---|
-| 1 | Start, in a guard room with a golem | **Look**, **Pick up**, **Attack** | attack is target-gated only (golem is a legit neutral target in the room) — no gate |
-| 2 | **Look** at the room | room desc + exits; **Move** appears | story var on first look → `requires_story_var` |
-| 3 | **Pick up** the chalk (loose on the floor) | **Equip** appears | possession gate (existing) |
-| 4 | **Equip** the chalk | **Trace** appears | `requires_equipped_item` (new knob) |
-| 5 | Chalk pickup emits cold **system message** teaching sigil → charm (trace a closed ring around an enemy until it closes and draws it into step) | — | `NarrativeLineKind::System` |
-| 6 | **Defeat the first mob** (a goblin — or the golem) | **Stats / vitals sidebar** | `actor.defeated` → `vitals_sidebar_story_var` (new knob) |
-| 7 | **First charm** (ring a golem) | **Party / follower bar** | already derived from follower existence — no gate |
-| 8 | **Defeat the shaman** (first boss) | **Map / minimap** | `shaman_defeated` → `minimap_requires_story_var` (new knob) |
-| 9 | **Descend to floor 2 (the chess level)** | **Level / XP section** appears on the sidebar | XP accrues silently on floor 1; the levels display is itself an unlocked feature, gated on descending (story var) |
+| 1 | Start, in a guard room with a golem, chalk already in her pocket | **Look**, **Attack** | attack is target-gated only (golem is a legit neutral target in the room) — no gate |
+| 2 | Chalk teaching line fires at start (cold **system message** → sigil → charm: trace a closed ring around an enemy until it closes and draws it into step) | **Trace** is available from the start | `NarrativeLineKind::System` — chalk is on Layla, so there is no pickup/equip gate to climb |
+| 3 | **Defeat the first mob** (a goblin — or the golem) | **Stats / vitals sidebar** | `actor.defeated` → `vitals_sidebar_story_var` (new knob) |
+| 4 | **First charm** (ring a golem) | **Party / follower bar** | already derived from follower existence — no gate |
+| 5 | **Defeat the shaman** (first boss) | **Map / minimap** widget | `shaman_defeated` → `minimap_requires_story_var` (new knob) |
+| 6 | **Descend to floor 2 (the chess level)** | **Level / XP section** appears on the sidebar | XP accrues silently on floor 1; the levels display is itself an unlocked feature, gated on descending (`level_reveal_room_prefix: "d"`) |
 
 ### On XP and levels (explicit design choice)
 
@@ -224,7 +222,8 @@ Every system feature unlocks through a diegetic act. Each lock sets a story var
   player-echo (`text-foam`).
 - Voice: clipped, literal, unemotional — the corporation's voice. Keeps the
   warm narration / cold system contrast sharp.
-- First use: the sigil-teaching line after chalk pickup.
+- First use: the sigil-teaching line at session start, carried by the opening's
+  `system_lines` (layered under the intro). Content-authored, not hardcoded.
 
 ---
 
@@ -233,16 +232,18 @@ Every system feature unlocks through a diegetic act. Each lock sets a story var
 Additions to the engine (cinder-core / cinder-srv + web UI) required to support
 the surface order:
 
-1. `requires_equipped_item` on `ActionAvailability` — gates an action on a
-   specific equipped item (trace → chalk equipped). Equip actions already gate
-   on possession; this extends the same idea to equipped state.
-2. `vitals_sidebar_story_var` — replaces the static `show_vitals_sidebar` bool
+1. `vitals_sidebar_story_var` — replaces the static `show_vitals_sidebar` bool
    with "vitals shown when this story var is truthy."
-3. `minimap_requires_story_var` — hide the minimap until a story var is truthy
+2. `minimap_requires_story_var` — hide the minimap until a story var is truthy
    (currently the minimap always renders).
-4. Levels-section visibility — only rendered when a story var is set
-   (e.g. `descended`), so XP can accrue without a visible level bar.
-5. `NarrativeLineKind::System` + UI color mapping (pale blue-white).
+3. Levels-section visibility — already implemented as
+   `level_reveal_room_prefix` (rooms on the "d" board reveal party levels), so
+   XP can accrue without a visible level bar on floor 1.
+4. `NarrativeLineKind::System` + UI color mapping (pale blue-white) + an
+   opening-level `system_lines` field so content can emit cold teaching lines.
+5. *(Removed during implementation)* `requires_equipped_item` — dropped with the
+   chalk-on-floor pickup. The chalk stays in Layla's starting inventory and
+   `trace` is available from the start.
 
 ---
 
@@ -250,12 +251,13 @@ the surface order:
 
 | Story var | Set by | Gates |
 |---|---|---|
-| `looked_room` | first room look | Move |
-| `chalk_equipped` | equip hook / equipped-item knob | Trace |
-| `first_mob_defeated` | `actor.defeated` on first kill | Stats/vitals |
-| `shaman_defeated` | `actor.defeated` on the shaman | Map/minimap |
-| `descended` | leaving floor 1 | Level/XP section |
+| `first_mob_defeated` | `actor.defeated` on first kill | Stats/vitals (`vitals_sidebar_story_var`) |
+| `shaman_defeated` | `actor.defeated` on the shaman | Map/minimap widget (`minimap_requires_story_var`) |
 | `knows_drain` / `knows_spawn` | `item.scroll_read` / `item.spawn_scroll_read` (already implemented) | drain / spawn sigils |
+
+Levels are gated by `level_reveal_room_prefix: "d"` (room-based, not a story
+var). No `chalk_equipped` / `looked_room` gates: the chalk is on Layla at start
+and `trace`/`move` are available immediately.
 
 ---
 
