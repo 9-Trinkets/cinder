@@ -7,10 +7,7 @@ use crate::engine::events::{WorldEvent, render_actor_action_text};
 use crate::engine::turn_policies::{command_availability_issue, command_unavailable_message};
 
 use super::builder::ActorTurnRealizationContext;
-use super::dialogue::{
-    RoomSpeakDialogueTarget, actor_action_dialogue, actor_room_speak_dialogue,
-    actor_to_actor_dialogue,
-};
+use super::dialogue::{actor_action_dialogue, actor_room_speak_dialogue, actor_to_actor_dialogue};
 use super::movement::planned_move_target_room_id;
 use super::targeting::{
     resolve_command_consumable_fields, resolve_inspect_actor_name, resolve_target_actor_name,
@@ -128,9 +125,6 @@ pub fn realize_actor_turn_action(
                         actor,
                         &realization_context.current_room_id,
                         emit_trace,
-                        RoomSpeakDialogueTarget {
-                            audience: &realization_context.talk_targets,
-                        },
                     ),
                 };
             }

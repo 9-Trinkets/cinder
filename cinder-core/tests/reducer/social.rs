@@ -1,5 +1,6 @@
 use super::common::*;
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
+use cinder_core::engine::messaging::ChannelMessage;
 use cinder_core::engine::reducer::apply_events;
 use cinder_core::engine::state::{ConversationMemoryKind, WorldState};
 
@@ -154,14 +155,14 @@ fn speech_increases_connection_and_confidence() {
     let pack = reducer_test_pack();
     let mut state = WorldState::new(&pack);
     let starting_confidence = state.actor_stat(ACTOR_A_ID, "confidence");
-    let events = [TimestampedWorldEvent::now(WorldEvent::ActorSpoke {
-        actor_id: ACTOR_A_ID.to_string(),
-        actor_name: ACTOR_A_NAME.to_string(),
-        other_person_id: ACTOR_B_ID.to_string(),
-        other_person_name: ACTOR_B_NAME.to_string(),
-        other_person_message: None,
-        room_id: LOUNGE_ID.to_string(),
-        text: "Hey.".to_string(),
+    let events = [TimestampedWorldEvent::now(WorldEvent::ChannelMessage {
+        message: ChannelMessage::targeted(
+            (ACTOR_A_ID, ACTOR_A_NAME),
+            (ACTOR_B_ID, ACTOR_B_NAME),
+            "Hey.",
+            LOUNGE_ID,
+            None,
+        ),
     })];
 
     apply_events(&mut state, &pack, &events);
@@ -198,14 +199,14 @@ fn visible_speech_lines_include_target_when_present() {
     let pack = reducer_test_pack();
     let mut state = WorldState::new(&pack);
     state.current_room_id = LOUNGE_ID.to_string();
-    let events = [TimestampedWorldEvent::now(WorldEvent::ActorSpoke {
-        actor_id: ACTOR_A_ID.to_string(),
-        actor_name: ACTOR_A_NAME.to_string(),
-        other_person_id: ACTOR_B_ID.to_string(),
-        other_person_name: ACTOR_B_NAME.to_string(),
-        other_person_message: None,
-        room_id: LOUNGE_ID.to_string(),
-        text: "Hey.".to_string(),
+    let events = [TimestampedWorldEvent::now(WorldEvent::ChannelMessage {
+        message: ChannelMessage::targeted(
+            (ACTOR_A_ID, ACTOR_A_NAME),
+            (ACTOR_B_ID, ACTOR_B_NAME),
+            "Hey.",
+            LOUNGE_ID,
+            None,
+        ),
     })];
 
     let output = apply_events(&mut state, &pack, &events);

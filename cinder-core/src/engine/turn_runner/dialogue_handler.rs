@@ -4,6 +4,7 @@ use crate::engine::dialogue::{
     DialogueGenerator, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
 };
 use crate::engine::events::WorldEvent;
+use crate::engine::messaging::ChannelMessage;
 
 fn apply_speech_intent_effects(
     content: &ContentPack,
@@ -96,14 +97,14 @@ pub(super) fn handle_actor_dialogue(
                 target_person_message: request.other_person_message.clone(),
                 spoken_line: text,
             };
-            planned.events.push(WorldEvent::ActorSpoke {
-                actor_id: request.actor_id,
-                actor_name: request.actor_name,
-                other_person_id: request.other_person_id,
-                other_person_name: request.other_person_name,
-                other_person_message: request.other_person_message,
-                room_id: request.current_room_id,
-                text: attraction_request.spoken_line.clone(),
+            planned.events.push(WorldEvent::ChannelMessage {
+                message: ChannelMessage::targeted(
+                    (&request.actor_id, &request.actor_name),
+                    (&request.other_person_id, &request.other_person_name),
+                    &attraction_request.spoken_line,
+                    &request.current_room_id,
+                    request.other_person_message.as_deref(),
+                ),
             });
             let attraction_prompt =
                 dialogue.build_direct_speech_intent_prompt(&attraction_request, intents);

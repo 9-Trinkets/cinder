@@ -44,7 +44,4 @@ pub(super) use observation::{
     handle_actor_observed_room, handle_current_room_observed, handle_feature_observed,
     ActorObservationContext,
 };
-pub(super) use speech::{
-    handle_actor_spoke, handle_actor_spoke_to_room, handle_channel_message, SpokeContext,
-    SpokeToRoomContext,
-};
+pub(super) use speech::handle_channel_message;

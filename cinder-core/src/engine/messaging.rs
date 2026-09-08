@@ -27,6 +27,9 @@ use crate::content::types::ContentPack;
 use crate::engine::state::{WorldState, display_actor_name};
 use serde::{Deserialize, Serialize};
 
+/// The stable channel id for any implicit local (same-room) speech channel.
+pub const LOCAL_CHANNEL_ID: &str = "local";
+
 /// The transport semantics of a messaging channel: what must hold for a
 /// message on this channel to reach its audience.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -157,6 +160,7 @@ impl MessagingChannel {
                 .map(|actor| display_actor_name(state, actor))
                 .unwrap_or_else(|| speaker_id.to_string()),
             audience,
+            in_reply_to: None,
             text,
             delivery: ChannelDelivery {
                 kind: self.kind,
@@ -190,12 +194,90 @@ pub struct ChannelMessage {
     pub speaker_id: String,
     pub speaker_name: String,
     pub audience: ChannelAudience,
+    /// The recipient's preceding line this message answers, when the speaker
+    /// is replying (e.g. the player's words an NPC responds to). Used to
+    /// avoid duplicating the recipient's line into conversation memory.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub in_reply_to: Option<String>,
     pub text: String,
     pub delivery: ChannelDelivery,
 }
 
+impl ChannelMessage {
+    /// A same-room message directed at one named participant (shared-room
+    /// presence enforced by the reducer).
+    pub fn targeted(
+        speaker: (&str, &str),
+        recipient: (&str, &str),
+        text: &str,
+        room_id: &str,
+        in_reply_to: Option<&str>,
+    ) -> Self {
+        Self {
+            channel_id: LOCAL_CHANNEL_ID.to_string(),
+            speaker_id: speaker.0.to_string(),
+            speaker_name: speaker.1.to_string(),
+            audience: ChannelAudience::Targeted {
+                recipient_id: recipient.0.to_string(),
+                recipient_name: recipient.1.to_string(),
+            },
+            in_reply_to: in_reply_to.map(str::to_string),
+            text: text.to_string(),
+            delivery: ChannelDelivery {
+                kind: ChannelKind::Local,
+                room_id: Some(room_id.to_string()),
+                recipients: vec![recipient.0.to_string()],
+            },
+        }
+    }
+
+    /// A same-room announcement to everyone present in `room_id`. The hearing
+    /// audience is resolved through the local channel, so shared-room
+    /// presence is enforced here.
+    pub fn room_broadcast(
+        content: &ContentPack,
+        state: &WorldState,
+        speaker: (&str, &str),
+        text: &str,
+        room_id: &str,
+    ) -> Self {
+        Self {
+            channel_id: LOCAL_CHANNEL_ID.to_string(),
+            speaker_id: speaker.0.to_string(),
+            speaker_name: speaker.1.to_string(),
+            audience: ChannelAudience::Broadcast,
+            in_reply_to: None,
+            text: text.to_string(),
+            delivery: ChannelDelivery {
+                kind: ChannelKind::Local,
+                room_id: Some(room_id.to_string()),
+                recipients: MessagingChannel::local().hearing_audience(
+                    content,
+                    state,
+                    speaker.0,
+                    Some(room_id),
+                ),
+            },
+        }
+    }
+}
+
+impl MessagingChannel {
+    /// The implicit public local channel used for same-room speech.
+    pub fn local() -> Self {
+        Self {
+            id: LOCAL_CHANNEL_ID.to_string(),
+            kind: ChannelKind::Local,
+            privacy: ChannelPrivacy::Public,
+            availability: ChannelAvailability::Always,
+            participants: vec![],
+            label: None,
+        }
+    }
+}
+
 /// The actors in `room_id` that hear a message: everyone present except the
-/// speaker, the player, and defeated actors.
+/// speaker and defeated actors.
 fn room_hearing_audience(
     content: &ContentPack,
     state: &WorldState,
@@ -212,7 +294,6 @@ fn room_hearing_audience(
         .filter(|actor| {
             let id = &actor.id;
             id != speaker_id
-                && !content.is_player_actor(id)
                 && !state.actor_is_defeated(id, health_stat_id)
                 && state.actor_room_id(id, &actor.room_id) == room_id
         })

@@ -7,6 +7,7 @@ use crate::engine::dialogue_grounding::{
     latest_other_person_message,
 };
 use crate::engine::events::WorldEvent;
+use crate::engine::messaging::ChannelMessage;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
 use std::error::Error;
 
@@ -244,14 +245,14 @@ pub(crate) fn actor_to_actor_dialogue(
     .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
     let actor_id = actor.id.clone();
     let other_person_id = target.actor_id.clone();
-    let mut events = vec![WorldEvent::ActorSpoke {
-        actor_id: actor.id.clone(),
-        actor_name: actor.name.clone(),
-        other_person_id: target.actor_id.clone(),
-        other_person_name: target.actor_name.clone(),
-        other_person_message,
-        room_id: current_room_id.to_string(),
-        text: attraction_request.spoken_line.clone(),
+    let mut events = vec![WorldEvent::ChannelMessage {
+        message: ChannelMessage::targeted(
+            (&actor.id, &actor.name),
+            (&target.actor_id, &target.actor_name),
+            &attraction_request.spoken_line,
+            current_room_id,
+            other_person_message.as_deref(),
+        ),
     }];
     if let Some(intent) = intents
         .iter()
@@ -280,10 +281,6 @@ pub(crate) fn actor_to_actor_dialogue(
     Ok(events)
 }
 
-pub(crate) struct RoomSpeakDialogueTarget<'a> {
-    pub audience: &'a [ActorTurnTargetContext],
-}
-
 pub(crate) fn actor_room_speak_dialogue(
     content: &ContentPack,
     dialogue: &dyn DialogueGenerator,
@@ -291,7 +288,6 @@ pub(crate) fn actor_room_speak_dialogue(
     actor: &ActorDefinition,
     current_room_id: &str,
     emit_trace: &mut dyn FnMut(&str, &str, serde_json::Value) -> Result<(), String>,
-    target: RoomSpeakDialogueTarget<'_>,
 ) -> Result<Vec<WorldEvent>, Box<dyn Error>> {
     let request = crate::engine::dialogue_grounding::build_grounded_dialogue_request_for_room(
         content,
@@ -351,16 +347,14 @@ pub(crate) fn actor_room_speak_dialogue(
             return Err(Box::new(std::io::Error::other(error)));
         }
     };
-    Ok(vec![WorldEvent::ActorSpokeToRoom {
-        actor_id: actor.id.clone(),
-        actor_name: actor.name.clone(),
-        audience_actor_ids: target
-            .audience
-            .iter()
-            .map(|actor| actor.actor_id.clone())
-            .collect(),
-        room_id: current_room_id.to_string(),
-        text,
+    Ok(vec![WorldEvent::ChannelMessage {
+        message: ChannelMessage::room_broadcast(
+            content,
+            state,
+            (&actor.id, &actor.name),
+            &text,
+            current_room_id,
+        ),
     }])
 }
 

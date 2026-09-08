@@ -16,6 +16,7 @@ use crate::engine::dialogue::DialogueGenerator;
 use crate::engine::dialogue_grounding::build_grounded_dialogue_request;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
 use crate::engine::menus::{PendingMenuDialogue, menu_to_offer_for_pending_dialogue};
+use crate::engine::messaging::ChannelMessage;
 use crate::engine::neuron::{
     LocalWorkflowRunner, WorkflowDefinition, WorkflowRoleConfig, WorkflowTraceContext, run_workflow,
 };
@@ -206,18 +207,19 @@ impl CinderRoleRunner {
             },
             |role, topic, payload| self.emit_trace(role, topic, payload),
         )? {
-            planned.events.push(WorldEvent::ActorSpoke {
-                actor_id: pending.actor_id.clone(),
-                actor_name: self
-                    .content
-                    .actor(&pending.actor_id)
-                    .map(|actor| actor.name.clone())
-                    .unwrap_or_else(|| pending.actor_id.clone()),
-                other_person_id: pending.other_person_id.clone(),
-                other_person_name: pending.other_person_name.clone(),
-                other_person_message: pending.other_person_message.clone(),
-                room_id: pending.current_room_id.clone(),
-                text: menu.proposal_line.clone(),
+            let speaker_name = self
+                .content
+                .actor(&pending.actor_id)
+                .map(|actor| actor.name.clone())
+                .unwrap_or_else(|| pending.actor_id.clone());
+            planned.events.push(WorldEvent::ChannelMessage {
+                message: ChannelMessage::targeted(
+                    (&pending.actor_id, &speaker_name),
+                    (&pending.other_person_id, &pending.other_person_name),
+                    &menu.proposal_line,
+                    &pending.current_room_id,
+                    pending.other_person_message.as_deref(),
+                ),
             });
             planned.events.push(WorldEvent::MenuOpened {
                 menu_id: menu.id.clone(),

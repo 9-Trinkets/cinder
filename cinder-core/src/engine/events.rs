@@ -28,25 +28,9 @@ pub enum WorldEvent {
     ActorObserved {
         actor_id: String,
     },
-    ActorSpoke {
-        actor_id: String,
-        actor_name: String,
-        other_person_id: String,
-        other_person_name: String,
-        other_person_message: Option<String>,
-        room_id: String,
-        text: String,
-    },
-    ActorSpokeToRoom {
-        actor_id: String,
-        actor_name: String,
-        audience_actor_ids: Vec<String>,
-        room_id: String,
-        text: String,
-    },
     /// A message delivered over a messaging channel. Unifies same-room speech
-    /// (a public local channel) with remote communication such as the
-    /// handler's comms (a private direct channel). See
+    /// (the implicit public local channel) with remote communication such as
+    /// the handler's comms (a private direct channel). See
     /// [`crate::engine::messaging`].
     ChannelMessage {
         message: ChannelMessage,
