@@ -13,7 +13,7 @@ fn living_guard_in_room(
         .iter()
         .filter(|actor| actor.guard && state.relationship(&actor.id).follows_player)
         .filter(|actor| {
-            state.actor_room_id(&actor.id, &actor.room_id) == room_id
+            state.actor_is_in_room(content, &actor.id, room_id)
                 && !state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
         })
         .map(|actor| actor.id.clone())

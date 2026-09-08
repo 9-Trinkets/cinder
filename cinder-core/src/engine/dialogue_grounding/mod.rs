@@ -114,7 +114,7 @@ pub(crate) fn recent_room_memory(
         .iter()
         .filter(|other_actor| {
             other_actor.id != actor_id
-                && state.actor_room_id(&other_actor.id, &other_actor.room_id) == current_room_id
+                && state.actor_is_in_room(content, &other_actor.id, current_room_id)
         })
         .flat_map(|other_actor| state.conversation_history(actor_id, &other_actor.id).iter())
         .cloned()
@@ -298,7 +298,7 @@ pub(crate) fn build_setting_notes(
         .actors
         .iter()
         .filter(|other| {
-            state.actor_room_id(&other.id, &other.room_id) == room.id && other.id != actor.id
+            state.actor_is_in_room(content, &other.id, &room.id) && other.id != actor.id
         })
         .map(|other| display_actor_name(state, other))
         .collect::<Vec<_>>();

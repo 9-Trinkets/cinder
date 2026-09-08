@@ -173,9 +173,7 @@ impl WorldState {
             ids[index].clone()
         };
         let mut actor_known_room_ids = content
-            .actors
-            .iter()
-            .filter(|actor| !actor.is_offstage())
+            .onstage_actors()
             .map(|actor| (actor.id.clone(), BTreeSet::from([actor.room_id.clone()])))
             .collect::<BTreeMap<_, _>>();
         actor_known_room_ids.insert(

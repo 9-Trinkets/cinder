@@ -30,7 +30,7 @@ pub(crate) fn actors_in_room_except<'a>(
         .actors
         .iter()
         .filter(|other| {
-            other.id != actor_id && state.actor_room_id(&other.id, &other.room_id) == room_id
+            other.id != actor_id && state.actor_is_in_room(content, &other.id, room_id)
         })
         .collect()
 }

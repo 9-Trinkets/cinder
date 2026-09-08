@@ -1,4 +1,5 @@
 use super::*;
+use crate::content::types::ContentPack;
 
 impl WorldState {
     pub fn actor_room_id<'a>(&'a self, actor_id: &str, default_room_id: &'a str) -> &'a str {
@@ -6,6 +7,25 @@ impl WorldState {
             .get(actor_id)
             .map(String::as_str)
             .unwrap_or(default_room_id)
+    }
+
+    /// Whether `actor_id` is physically present in `room_id` right now.
+    /// The single presence predicate: resolves the actor's current room and
+    /// returns `false` for offstage actors, so no caller relies on the
+    /// sentinel empty room id "never matching" a real room.
+    pub fn actor_is_in_room(
+        &self,
+        content: &ContentPack,
+        actor_id: &str,
+        room_id: &str,
+    ) -> bool {
+        let Some(actor) = content.actor(actor_id) else {
+            return false;
+        };
+        if actor.is_offstage() {
+            return false;
+        }
+        self.actor_room_id(actor_id, &actor.room_id) == room_id
     }
 
     pub fn actor_has_visited_room(&self, actor_id: &str, room_id: &str) -> bool {

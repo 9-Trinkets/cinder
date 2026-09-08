@@ -146,7 +146,7 @@ pub(crate) fn resolve_actor_reference_input(
         content.actors.iter().filter(|actor| {
             !content.is_player_actor(&actor.id)
                 && !state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
-                && state.actor_room_id(&actor.id, &actor.room_id) == current_room_id
+                && state.actor_is_in_room(content, &actor.id, current_room_id)
         }),
         remainder,
         &content.settings.act_member_alias,
@@ -171,7 +171,7 @@ pub(crate) fn resolve_actor_reference_input(
             actor_id: actor.id.clone(),
             actor_name: display_actor_name(state, actor),
             player_message,
-            actor_in_room: state.actor_room_id(&actor.id, &actor.room_id) == current_room_id,
+            actor_in_room: state.actor_is_in_room(content, &actor.id, current_room_id),
         })
     })
 }

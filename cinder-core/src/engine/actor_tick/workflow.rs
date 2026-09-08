@@ -25,11 +25,9 @@ pub(crate) fn run_actor_tick(
     let input = ActorTickWorkflowState {
         state: state.clone(),
         remaining_actor_ids: content
-            .actors
-            .iter()
+            .onstage_actors()
             .filter(|actor| {
                 !content.is_player_actor(&actor.id)
-                    && !actor.is_offstage()
                     && room_is_in_tick_scope(
                         &scope_room_ids,
                         state.actor_room_id(&actor.id, &actor.room_id),

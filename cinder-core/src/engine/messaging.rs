@@ -294,9 +294,8 @@ fn room_hearing_audience(
         .filter(|actor| {
             let id = &actor.id;
             id != speaker_id
-                && !actor.is_offstage()
                 && !state.actor_is_defeated(id, health_stat_id)
-                && state.actor_room_id(id, &actor.room_id) == room_id
+                && state.actor_is_in_room(content, id, room_id)
         })
         .map(|actor| actor.id.clone())
         .collect()

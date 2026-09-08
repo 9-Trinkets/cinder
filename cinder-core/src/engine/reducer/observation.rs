@@ -14,7 +14,7 @@ pub(super) fn actors_in_room<'a>(
         .filter(|actor| {
             !content.is_player_actor(&actor.id)
                 && !state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
-                && state.actor_room_id(&actor.id, &actor.room_id) == room_id
+                && state.actor_is_in_room(content, &actor.id, room_id)
         })
         .collect()
 }

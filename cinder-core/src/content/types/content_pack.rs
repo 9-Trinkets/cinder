@@ -88,6 +88,13 @@ impl ContentPack {
         self.actor(actor_id).is_some_and(|actor| actor.is_offstage())
     }
 
+    /// Iterates the actors that occupy the world (onstage), excluding those
+    /// authored offstage. Spatial mechanics iterate this instead of
+    /// `self.actors` so the offstage rule lives in exactly one place.
+    pub fn onstage_actors(&self) -> impl Iterator<Item = &ActorDefinition> {
+        self.actors.iter().filter(|actor| !actor.is_offstage())
+    }
+
     /// Whether `actor_id` is the player-controlled actor. Packs may declare
     /// the player as an ordinary actor entry (id matching
     /// `combat.player_actor_id`); every NPC-oriented loop must skip it.

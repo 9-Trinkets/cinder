@@ -13,10 +13,7 @@ pub(crate) fn plan_periodic_effect_events(
     let scope_room_ids = tick_scope_room_ids(content, state);
     let mut events = Vec::new();
     for definition in &content.settings.periodic_actor_effects {
-        for actor in &content.actors {
-            if actor.is_offstage() {
-                continue;
-            }
+        for actor in content.onstage_actors() {
             if !target_matches(content, state, &actor.id, definition.targets) {
                 continue;
             }

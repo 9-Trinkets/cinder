@@ -17,8 +17,8 @@ pub(crate) fn plan_wander_moves(content: &ContentPack, state: &WorldState) -> Ve
     }
     let scope_room_ids = tick_scope_room_ids(content, state);
     let mut events = Vec::new();
-    for actor in &content.actors {
-        if content.is_player_actor(&actor.id) || actor.is_offstage() {
+    for actor in content.onstage_actors() {
+        if content.is_player_actor(&actor.id) {
             continue;
         }
         let Some(wander) = resolve_wander(content, &actor.id) else {

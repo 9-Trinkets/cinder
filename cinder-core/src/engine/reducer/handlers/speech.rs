@@ -49,7 +49,7 @@ fn handle_targeted_message(
     {
         let co_present = content
             .actor(recipient_id)
-            .map(|recipient| state.actor_room_id(recipient_id, &recipient.room_id) == room_id)
+            .map(|_| state.actor_is_in_room(content, recipient_id, room_id))
             // An unresolvable recipient is not gated (never over-restrict).
             .unwrap_or(true);
         if !co_present {

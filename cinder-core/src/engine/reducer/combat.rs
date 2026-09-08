@@ -449,13 +449,7 @@ fn participating_allies(state: &WorldState, content: &ContentPack, room_id: &str
         .map(|(actor_id, _)| actor_id.clone())
         .filter(|actor_id| {
             !state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id)
-                && state.actor_room_id(
-                    actor_id,
-                    content
-                        .actor(actor_id)
-                        .map(|actor| actor.room_id.as_str())
-                        .unwrap_or_default(),
-                ) == room_id
+                && state.actor_is_in_room(content, actor_id, room_id)
         })
         .collect::<Vec<_>>();
     allies.sort();
