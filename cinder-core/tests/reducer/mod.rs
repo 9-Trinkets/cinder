@@ -8,4 +8,5 @@ mod encirclement;
 mod equipment;
 mod items;
 mod observation;
+mod sigils;
 mod social;

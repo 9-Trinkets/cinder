@@ -15,6 +15,7 @@ fn periodic_damage_definition() -> PeriodicActorEffectDefinition {
         id: "room_hazard".to_string(),
         trigger: PeriodicActorEffectTrigger {
             room_item: "drain-sigil".to_string(),
+            ..PeriodicActorEffectTrigger::default()
         },
         targets: PeriodicActorEffectTargets::HostileLiving,
         effect: PeriodicActorEffect::Damage { amount: 2 },

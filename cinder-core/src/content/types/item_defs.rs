@@ -50,6 +50,12 @@ pub struct ItemDefinition {
     /// dropped or relocated there by the player.
     #[serde(default)]
     pub trace_mark: bool,
+    /// Whether completing a `actor.surrounded` conversion with this item spends
+    /// it: the item is removed from the room where it was just placed and that
+    /// placement stops converting further actors. Gives charm sigils their
+    /// one-shot behavior.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub consumed_on_surround_conversion: bool,
 }
 
 impl ItemDefinition {
@@ -60,4 +66,8 @@ impl ItemDefinition {
     pub fn is_takeable(&self) -> bool {
         !self.trace_mark
     }
+}
+
+fn is_false(value: &bool) -> bool {
+    !*value
 }

@@ -81,6 +81,36 @@ pub(super) fn handle_periodic_actor_effect_applied(
             defeat_actor(state, content, actor_id, &room_id, lines);
         }
     }
+    // A trigger with fixed activations burns one charge per actual application
+    // and, when the last charge goes, spends the room item itself. The planner
+    // keeps scheduling events while the item is present; once it fades the
+    // `has_item_in_storage` guard above stops further applications in the same
+    // batch.
+    if let Some(max_activations) = definition.trigger.max_activations {
+        let key = format!("{room_id}::{}", definition.trigger.room_item);
+        let remaining_charges = state
+            .room_item_charges
+            .get(&key)
+            .copied()
+            .unwrap_or(max_activations);
+        if remaining_charges <= 1 {
+            state.remove_items_from_room(&room_id, &definition.trigger.room_item);
+            if let Some(deplete_key) = definition.trigger.deplete_message.as_deref() {
+                let item_label = content
+                    .item(&definition.trigger.room_item)
+                    .map(|item| item.label.as_str())
+                    .unwrap_or(&definition.trigger.room_item);
+                if let Some(line) = content.render_message(
+                    deplete_key,
+                    &[("item", item_label), ("item_id", &definition.trigger.room_item)],
+                ) {
+                    lines.narration(line);
+                }
+            }
+        } else {
+            state.room_item_charges.insert(key, remaining_charges - 1);
+        }
+    }
 }
 
 pub(super) fn apply_attack_target(

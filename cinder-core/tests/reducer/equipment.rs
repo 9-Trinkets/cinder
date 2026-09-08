@@ -27,6 +27,7 @@ fn equipping_an_item_with_equip_hook_converts_surviving_tagged_actors() {
             equip_hook: "item.core_equipped".to_string(),
             look_description: String::new(),
             trace_mark: false,
+            consumed_on_surround_conversion: false,
         });
     pack.messages.insert(
         "conversion.core".to_string(),
@@ -130,6 +131,7 @@ fn converting_tagged_actors_to_neutral_stance_clears_the_ally_label() {
             equip_hook: "item.crown_equipped".to_string(),
             look_description: String::new(),
             trace_mark: false,
+            consumed_on_surround_conversion: false,
         });
     pack.hooks.insert(
         "item.crown_equipped".to_string(),

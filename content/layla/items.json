@@ -9,15 +9,16 @@
     "id": "charm-sigil",
     "label": "charm sigil",
     "kind": "misc",
-    "description": "A closed ring of chalk traced around a vacant space on the floor. When an enemy is encircled on every side by such rings, the circle closes and draws it into step with you.",
+    "description": "A closed ring of chalk traced around a vacant space on the floor. When an enemy is encircled on every side by such rings, the circle closes and draws it into step with you. The ring flares once and is spent.",
     "look_description": "A closed ring of pale chalk glows faintly on the floor, waiting to be completed around something.",
-    "trace_mark": true
+    "trace_mark": true,
+    "consumed_on_surround_conversion": true
   },
   {
     "id": "drain-sigil",
     "label": "drain sigil",
     "kind": "misc",
-    "description": "A spiral chalk mark that drinks the energy from whatever stands on it. Each tick it stays, an enemy finds its strength quietly drained away.",
+    "description": "A spiral chalk mark that drinks the energy from whatever stands on it. Each pass of the spiral drinks a little more, then the mark fades. It holds five drainings before it is spent.",
     "look_description": "A tight spiral of chalk that seems to drink the light from the floor, leaving the stone cold and grey.",
     "trace_mark": true
   },

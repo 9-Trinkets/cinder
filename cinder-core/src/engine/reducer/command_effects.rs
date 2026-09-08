@@ -31,7 +31,7 @@ pub(super) fn apply_new_command_effects(
         let room_id = context.room_id.to_string();
         if state.remove_item(&command.item_id) {
             state.add_item_to_storage(&command.item_id, ItemStorageTarget::CurrentRoom, &room_id);
-            trigger_surrounded_hooks(state, content, &command.item_id, lines);
+            trigger_surrounded_hooks(state, content, &command.item_id, &room_id, lines);
         }
     }
     if command.has_effect(CommandEffect::PickUpItem) {

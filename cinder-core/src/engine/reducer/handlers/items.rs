@@ -35,7 +35,7 @@ pub(crate) fn handle_item_acquired(
                 lines.narration(line);
             }
             // An item appearing in a room can complete an encirclement.
-            trigger_surrounded_hooks(state, content, item_id, lines);
+            trigger_surrounded_hooks(state, content, item_id, &room_id, lines);
         }
     }
 }
@@ -91,7 +91,7 @@ pub(crate) fn handle_player_dropped_item(
         if let Some(line) = content.render_message("item.dropped", &[("label", label)]) {
             lines.narration(line);
         }
-        trigger_surrounded_hooks(state, content, item_id, lines);
+        trigger_surrounded_hooks(state, content, item_id, &room_id, lines);
     }
 }
 

@@ -14,7 +14,9 @@
     {
       "id": "drain_sigil",
       "trigger": {
-        "room_item": "drain-sigil"
+        "room_item": "drain-sigil",
+        "max_activations": 5,
+        "deplete_message": "combat.drain_sigil_spent"
       },
       "targets": "hostile_living",
       "effect": {

@@ -327,6 +327,7 @@ pub fn equipment_test_pack() -> ContentPack {
             equip_hook: String::new(),
             look_description: String::new(),
             trace_mark: false,
+            consumed_on_surround_conversion: false,
         });
     pack.items
         .push(cinder_core::content::types::ItemDefinition {
@@ -340,6 +341,7 @@ pub fn equipment_test_pack() -> ContentPack {
             equip_hook: String::new(),
             look_description: String::new(),
             trace_mark: false,
+            consumed_on_surround_conversion: false,
         });
     pack.items
         .push(cinder_core::content::types::ItemDefinition {
@@ -353,6 +355,7 @@ pub fn equipment_test_pack() -> ContentPack {
             equip_hook: String::new(),
             look_description: String::new(),
             trace_mark: false,
+            consumed_on_surround_conversion: false,
         });
     pack.hooks.insert(
         "item.salve_used".to_string(),

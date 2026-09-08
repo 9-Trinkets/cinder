@@ -94,7 +94,13 @@ pub(super) fn handle_actor_command_used(
             .unwrap_or_default();
         state.add_item_to_storage(&item_id, storage, command_context.room_id);
         if storage == ItemStorageTarget::CurrentRoom {
-            trigger_surrounded_hooks(state, content, &item_id, &mut lines);
+            trigger_surrounded_hooks(
+                state,
+                content,
+                &item_id,
+                command_context.room_id,
+                &mut lines,
+            );
         }
     }
     if command.has_effect(CommandEffect::MoveActor) {

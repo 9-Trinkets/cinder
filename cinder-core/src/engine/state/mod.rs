@@ -75,6 +75,11 @@ pub struct WorldState {
     pub player_inventory: HashMap<String, u32>,
     #[serde(default)]
     pub room_item_stock: BTreeMap<String, u32>,
+    /// Remaining activations of charged room items, keyed like `room_item_stock`
+    /// (`room::item`). Absent entries mean the item is at full capacity; the
+    /// counter is cleared whenever a room stops holding the item.
+    #[serde(default)]
+    pub room_item_charges: BTreeMap<String, u32>,
     #[serde(default)]
     pub act_series: Option<ActSeriesState>,
     /// Per-actor relationship toward the player. Absent entries mean
@@ -222,6 +227,7 @@ impl WorldState {
                 .into_iter()
                 .collect(),
             room_item_stock: BTreeMap::new(),
+            room_item_charges: BTreeMap::new(),
             act_series: None,
             relationships: content
                 .actors

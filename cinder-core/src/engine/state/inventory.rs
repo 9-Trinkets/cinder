@@ -92,10 +92,21 @@ impl WorldState {
                 }
                 if let Some(0) = self.room_item_stock.get(&key) {
                     self.room_item_stock.remove(&key);
+                    self.room_item_charges.remove(&key);
                 }
                 removed
             }
         }
+    }
+
+    /// Removes every loose instance of `item_id` from `room_id` at once,
+    /// dropping the item's activation charges with it. Used when a charged
+    /// room item is spent (a drain sigil that ran out of activations).
+    pub fn remove_items_from_room(&mut self, room_id: &str, item_id: &str) -> bool {
+        let key = room_item_key(room_id, item_id);
+        let had = self.room_item_stock.remove(&key).is_some();
+        self.room_item_charges.remove(&key);
+        had
     }
 
     /// Loose items lying in `room_id` (from `ItemStorageTarget::CurrentRoom`),

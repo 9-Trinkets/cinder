@@ -294,6 +294,7 @@ mod tests {
                 id: "hazard".to_string(),
                 trigger: PeriodicActorEffectTrigger {
                     room_item: "hazard-token".to_string(),
+                    ..PeriodicActorEffectTrigger::default()
                 },
                 targets: PeriodicActorEffectTargets::HostileLiving,
                 effect: PeriodicActorEffect::Damage { amount: 2 },

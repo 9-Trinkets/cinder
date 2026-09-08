@@ -38,10 +38,14 @@ fn charm_rule_passes(
 
 /// Fires the content-authored `actor.surrounded` hook for each living,
 /// non-allied actor whose neighboring rooms all contain the triggering item.
+/// `source_room_id` is where the triggering item was just placed; a conversion
+/// caused by a single-use token (an item with `consumed_on_surround_conversion`)
+/// spends that token from the room.
 pub(super) fn trigger_surrounded_hooks(
     state: &mut WorldState,
     content: &ContentPack,
     item_id: &str,
+    source_room_id: &str,
     lines: &mut NarrativeLines,
 ) {
     let player_id = &content.settings.combat.player_actor_id;
@@ -85,5 +89,18 @@ pub(super) fn trigger_surrounded_hooks(
             lines,
         )
         .unwrap_or_else(|error| eprintln!("[cinder] hook warning (actor.surrounded): {error}"));
+        let relationship = state.relationship(&actor.id);
+        let converted = relationship.stance == ActorStance::Allied || relationship.follows_player;
+        if converted
+            && content
+                .item(item_id)
+                .is_some_and(|item| item.consumed_on_surround_conversion)
+        {
+            // The conversion spent the single-use token (e.g. a charm sigil):
+            // it fades from the room it was just placed in and this placement
+            // converts nothing else.
+            state.remove_items_from_room(source_room_id, item_id);
+            break;
+        }
     }
 }
