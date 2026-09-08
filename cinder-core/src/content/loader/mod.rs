@@ -187,6 +187,7 @@ pub fn load_pack_from_dir_with_locale(
         actions: &actions,
         beat_objectives: &beat_objectives,
         act_cast: &act_cast,
+        channels: &settings.channels,
         actor_ids: &actor_ids,
         room_ids: &room_ids,
         stage_ids: &stage_ids,
@@ -318,6 +319,24 @@ mod shipped_pack_load_tests {
                         .and_then(|creation| creation.craftable_item_gates.get("spawn-sigil"))
                         .map(String::as_str),
                     Some("knows_spawn")
+                );
+                let handler = loaded.actor("handler").unwrap();
+                assert!(
+                    handler.room_id.is_empty(),
+                    "handler must be offstage"
+                );
+                assert_eq!(
+                    handler
+                        .initial_relationship
+                        .as_ref()
+                        .map(|rel| (rel.stance, rel.follows_player)),
+                    Some((crate::engine::state::ActorStance::Allied, false))
+                );
+                assert_eq!(
+                    loaded
+                        .channel("handler-comms")
+                        .map(|channel| channel.participants.as_slice()),
+                    Some(&["player".to_string(), "handler".to_string()][..])
                 );
             }
         }

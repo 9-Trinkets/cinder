@@ -26,6 +26,19 @@
       "message": "combat.actor_drained"
     }
   ],
+  "channels": [
+    {
+      "id": "handler-comms",
+      "kind": "direct",
+      "privacy": "private",
+      "availability": "always",
+      "participants": [
+        "player",
+        "handler"
+      ],
+      "label": "Handler comms"
+    }
+  ],
   "show_act_closure": false,
   "vitals_sidebar_story_var": "first_mob_defeated",
   "minimap_requires_story_var": "shaman_defeated",

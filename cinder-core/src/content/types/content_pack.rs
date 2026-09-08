@@ -95,6 +95,16 @@ impl ContentPack {
         self.actors.iter().filter(|actor| !actor.is_offstage())
     }
 
+    /// The channel declared by the pack with this id (`settings.channels`).
+    /// The implicit `local` same-room channel is never declared and is not
+    /// returned; messaging wraps it directly.
+    pub fn channel(&self, channel_id: &str) -> Option<&MessagingChannel> {
+        self.settings
+            .channels
+            .iter()
+            .find(|channel| channel.id == channel_id)
+    }
+
     /// Whether `actor_id` is the player-controlled actor. Packs may declare
     /// the player as an ordinary actor entry (id matching
     /// `combat.player_actor_id`); every NPC-oriented loop must skip it.

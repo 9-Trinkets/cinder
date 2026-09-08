@@ -1,4 +1,5 @@
 use super::{BeatObjectiveProgressRef, default_actor_targeted_speech, default_stat_default_value};
+use crate::engine::state::ActorRelationship;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::BTreeMap;
@@ -447,6 +448,12 @@ pub struct ActorDefinition {
     /// attack on sight, like the level-2 elf army).
     #[serde(default)]
     pub initial_hostile: bool,
+    /// The actor's authored relationship toward the player, seeded into world
+    /// state at session creation. Absent = neutral/non-following. When set,
+    /// takes precedence over `initial_hostile` (which is shorthand for
+    /// `{ stance: hostile, follows_player: false }` and used by combat packs).
+    #[serde(default)]
+    pub initial_relationship: Option<ActorRelationship>,
     /// The element this actor's basic attacks deal (e.g. "physical", "fire").
     /// Resistances on the *target* are consulted against this key. Empty
     /// defaults to "physical".

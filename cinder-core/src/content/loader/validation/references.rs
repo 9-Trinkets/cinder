@@ -1,7 +1,8 @@
 use super::require_known_id;
 use crate::content::types::{
     ActCastMember, ActionDefinition, ActorDefinition, BeatDefinition, BeatObjectiveProgressRef,
-    BeatObjectivesDefinition, BeatsDefinition, LevelingDefinition, MovementConfigDefinition,
+    BeatObjectivesDefinition, BeatsDefinition, ChannelPrivacy, LevelingDefinition, MessagingChannel,
+    MovementConfigDefinition, LOCAL_CHANNEL_ID,
 };
 use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
@@ -16,6 +17,7 @@ pub(crate) struct PackContext<'a> {
     pub actions: &'a [ActionDefinition],
     pub beat_objectives: &'a BeatObjectivesDefinition,
     pub act_cast: &'a [ActCastMember],
+    pub channels: &'a [MessagingChannel],
     pub actor_ids: &'a [&'a str],
     pub room_ids: &'a [&'a str],
     pub stage_ids: &'a [&'a str],
@@ -73,6 +75,7 @@ pub(crate) fn validate_contents(ctx: &PackContext<'_>) -> Result<(), Box<dyn Err
         )?;
     }
     validate_act_cast(ctx.act_cast, ctx.actor_ids)?;
+    validate_channels(ctx.channels, ctx.actor_ids)?;
 
     Ok(())
 }
@@ -173,6 +176,43 @@ fn validate_actors(
                 &format!("actor '{}' drops '{item_id}'", actor.id),
                 "items",
             )?;
+        }
+    }
+    Ok(())
+}
+
+fn validate_channels(
+    channels: &[MessagingChannel],
+    actor_ids: &[&str],
+) -> Result<(), Box<dyn Error>> {
+    let mut seen_ids = BTreeSet::new();
+    for channel in channels {
+        if channel.id == LOCAL_CHANNEL_ID {
+            return Err(format!(
+                "channel id '{}' collides with the implicit local speech channel",
+                channel.id
+            )
+            .into());
+        }
+        if !seen_ids.insert(channel.id.as_str()) {
+            return Err(format!("duplicate channel id '{}'", channel.id).into());
+        }
+        if channel.privacy == ChannelPrivacy::Private {
+            if channel.participants.is_empty() {
+                return Err(format!(
+                    "private channel '{}' declares no participants",
+                    channel.id
+                )
+                .into());
+            }
+            for participant in &channel.participants {
+                require_known_id(
+                    participant,
+                    actor_ids,
+                    &format!("channel '{}' participant '{participant}'", channel.id),
+                    "actors",
+                )?;
+            }
         }
     }
     Ok(())
@@ -489,6 +529,7 @@ mod tests {
             xp_drop: 0,
             attack_interval_minutes: None,
             initial_hostile: false,
+            initial_relationship: None,
             attack_kind: String::new(),
             resistances: BTreeMap::new(),
             prompt_context: ActorPromptContext {
@@ -523,6 +564,59 @@ mod tests {
             &room_index,
             &[],
         );
+        assert!(result.is_ok(), "{result:?}");
+    }
+
+    fn channel(id: &str, participants: &[&str]) -> MessagingChannel {
+        MessagingChannel {
+            id: id.to_string(),
+            kind: crate::content::types::ChannelKind::Direct,
+            privacy: ChannelPrivacy::Private,
+            availability: crate::content::types::ChannelAvailability::Always,
+            participants: participants.iter().map(|id| id.to_string()).collect(),
+            label: None,
+        }
+    }
+
+    #[test]
+    fn private_channel_participants_must_resolve_to_actors() {
+        let error = validate_channels(&[channel("comms", &["player", "nobody"])], &["player", "blair"])
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("participant 'nobody'"), "{error}");
+    }
+
+    #[test]
+    fn private_channel_must_declare_participants() {
+        let error = validate_channels(&[channel("comms", &[])], &["player"])
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("declares no participants"), "{error}");
+    }
+
+    #[test]
+    fn a_pack_cannot_declare_the_implicit_local_channel() {
+        let error =
+            validate_channels(&[channel(LOCAL_CHANNEL_ID, &["player"])], &["player"])
+                .unwrap_err()
+                .to_string();
+        assert!(error.contains("implicit local speech channel"), "{error}");
+    }
+
+    #[test]
+    fn duplicate_channel_ids_are_rejected() {
+        let error = validate_channels(
+            &[channel("comms", &["player"]), channel("comms", &["blair"])],
+            &["player", "blair"],
+        )
+        .unwrap_err()
+        .to_string();
+        assert!(error.contains("duplicate channel id 'comms'"), "{error}");
+    }
+
+    #[test]
+    fn well_formed_private_channel_passes() {
+        let result = validate_channels(&[channel("comms", &["player", "handler"])], &["player", "handler"]);
         assert!(result.is_ok(), "{result:?}");
     }
 }

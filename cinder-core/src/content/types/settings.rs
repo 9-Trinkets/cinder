@@ -3,7 +3,7 @@ use std::collections::BTreeMap;
 use std::collections::{BTreeSet};
 
 use super::{
-    ActorTickScope, AutonomousHostilityMode, CombatSettingsDefinition,
+    ActorTickScope, AutonomousHostilityMode, CombatSettingsDefinition, MessagingChannel,
     PeriodicActorEffectDefinition, ThemeDefinition,
 };
 
@@ -91,6 +91,11 @@ pub struct ContentSettingsDefinition {
     /// Content-authored actor effects evaluated after each background tick.
     #[serde(default)]
     pub periodic_actor_effects: Vec<PeriodicActorEffectDefinition>,
+    /// Actor messaging channels the pack declares (e.g. the handler's private
+    /// remote comms). Same-room speech needs no declaration; the implicit
+    /// `local` channel is always available.
+    #[serde(default)]
+    pub channels: Vec<MessagingChannel>,
     /// Binds the generic strike mechanism to this pack's stat vocabulary.
     #[serde(default)]
     pub combat: CombatSettingsDefinition,
@@ -166,6 +171,7 @@ impl Default for ContentSettingsDefinition {
             level_reveal_room_prefix: String::default(),
             autonomous_hostility_mode: AutonomousHostilityMode::Rules,
             periodic_actor_effects: Vec::new(),
+            channels: Vec::new(),
             combat: CombatSettingsDefinition::default(),
             charm_rule: CharmRule::None,
             starting_items: BTreeMap::new(),

@@ -231,7 +231,14 @@ impl WorldState {
             relationships: content
                 .actors
                 .iter()
-                .filter(|actor| actor.initial_hostile)
+                .filter_map(|actor| {
+                    actor
+                        .initial_relationship
+                        .map(|relationship| (actor.id.clone(), relationship))
+                })
+                .chain(content.actors.iter().filter(|actor| {
+                    actor.initial_hostile && actor.initial_relationship.is_none()
+                })
                 .map(|actor| {
                     (
                         actor.id.clone(),
@@ -240,7 +247,7 @@ impl WorldState {
                             follows_player: false,
                         },
                     )
-                })
+                }))
                 .collect(),
             next_hostile_strike_at: BTreeMap::new(),
             equipment: BTreeMap::new(),
@@ -324,5 +331,25 @@ mod tests {
                 .is_empty(),
             "offstage actor must still carry its authored identity and stats"
         );
+    }
+
+    #[test]
+    fn authored_initial_relationship_seeds_allied_over_shorthand_hostile() {
+        let mut content = crate::engine::test_fixtures::minimal_test_pack();
+        let blair = content
+            .actors
+            .iter_mut()
+            .find(|actor| actor.id == "blair")
+            .unwrap();
+        blair.initial_hostile = true;
+        blair.initial_relationship = Some(ActorRelationship {
+            stance: ActorStance::Allied,
+            follows_player: false,
+        });
+        let state = WorldState::new(&content);
+
+        let relationship = state.relationship("blair");
+        assert_eq!(relationship.stance, ActorStance::Allied);
+        assert!(!relationship.follows_player);
     }
 }

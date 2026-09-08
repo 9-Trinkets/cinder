@@ -10,6 +10,9 @@ mod settings;
 pub use settings::{CharmRule, ContentSettingsDefinition};
 pub(super) use settings::{default_actor_targeted_speech, default_stat_default_value};
 
+mod channels;
+pub use channels::{ChannelAvailability, ChannelKind, ChannelPrivacy, MessagingChannel, LOCAL_CHANNEL_ID};
+
 mod leveling;
 pub use leveling::{LevelDefinition, LevelTable, LevelingDefinition};
 
