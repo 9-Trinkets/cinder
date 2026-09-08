@@ -1,0 +1,60 @@
+{
+  "sequences": [
+    {
+      "id": "handler-introduction",
+      "label": "Handler introduction",
+      "steps": [
+        {
+          "voice": "narrate",
+          "line": "Static scratches behind your ear. Beneath it, a young man's voice reads too quickly from a page."
+        },
+        {
+          "voice": "channel",
+          "channel_id": "handler-comms",
+          "speaker_id": "handler",
+          "recipient_id": "player",
+          "line": "Induction playbook, section one. Subject wakes with the chalk already in hand. Confirm comms, confirm subject response\u2014 Layla?"
+        },
+        {
+          "voice": "channel",
+          "channel_id": "handler-comms",
+          "speaker_id": "handler",
+          "recipient_id": "player",
+          "line": "Wait. The channel is live. Sorry. I thought I had another minute."
+        },
+        {
+          "voice": "channel",
+          "channel_id": "handler-comms",
+          "speaker_id": "player",
+          "recipient_id": "handler",
+          "line": "Who are you?"
+        },
+        {
+          "voice": "channel",
+          "channel_id": "handler-comms",
+          "speaker_id": "handler",
+          "recipient_id": "player",
+          "line": "I'm your assigned handler. That's the term in the playbook. I can hear you, but I'm not in the cave with you."
+        },
+        {
+          "voice": "narrate",
+          "line": "Paper shifts near his microphone. When he speaks again, he has found his place."
+        },
+        {
+          "voice": "channel",
+          "channel_id": "handler-comms",
+          "speaker_id": "handler",
+          "recipient_id": "player",
+          "line": "Okay. Procedure. Chalk in hand: draw a closed ring around one of the marked units. When the ring closes, it should follow you. Then capture the cave and reach the bottom. I'm supposed to tell you the rules are in the floor."
+        }
+      ],
+      "completion_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "handler_introduced",
+          "value": "true"
+        }
+      ]
+    }
+  ]
+}

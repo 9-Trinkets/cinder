@@ -10,8 +10,10 @@
 use crate::content::types::{
     AdvanceEffect, ContentPack, LOCAL_CHANNEL_ID, MessagingChannel, ScriptedLine, ScriptedSequence,
 };
-use crate::engine::events::WorldEvent;
+use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
 use crate::engine::messaging::ChannelAudience;
+use crate::engine::narrative::NarrativeLines;
+use crate::engine::reducer::apply_events;
 use crate::engine::state::{WorldState, display_actor_name};
 
 /// Emits the content events for the next step of every running scripted
@@ -69,6 +71,30 @@ pub(crate) fn advance_scripted_sequences(
         events.push(progress_event(sequence_id, next_index, finished));
     }
     events
+}
+
+/// Plays every currently deliverable queued step without advancing world time.
+/// This is used for session-opening exchanges, which must appear as part of
+/// the introduction rather than waiting behind unrelated player commands.
+pub(crate) fn drain_scripted_sequences(
+    content: &ContentPack,
+    state: &mut WorldState,
+) -> NarrativeLines {
+    let mut lines = NarrativeLines::default();
+    loop {
+        let events = advance_scripted_sequences(content, state);
+        if events.is_empty() {
+            break;
+        }
+        let timestamped = events
+            .into_iter()
+            .map(TimestampedWorldEvent::now)
+            .collect::<Vec<_>>();
+        lines
+            .0
+            .extend(apply_events(state, content, &timestamped).lines.0);
+    }
+    lines
 }
 
 fn sequence_gates_hold(sequence: &ScriptedSequence, state: &WorldState) -> bool {
@@ -190,9 +216,7 @@ fn progress_event(sequence_id: &str, next_step: usize, finished: bool) -> WorldE
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::content::types::{
-        ChannelAvailability, ChannelKind, ChannelPrivacy,
-    };
+    use crate::content::types::{ChannelAvailability, ChannelKind, ChannelPrivacy};
     use crate::engine::events::TimestampedWorldEvent;
     use crate::engine::reducer::apply_events;
     use crate::engine::test_fixtures::load_test_pack_with_files;
@@ -266,11 +290,15 @@ mod tests {
     }"#;
 
     fn scripted_pack() -> ContentPack {
-        load_test_pack_with_files(&[
+        let mut content = load_test_pack_with_files(&[
             ("settings.json", SETTINGS),
             ("locales/en/opening.json", OPENING),
             ("locales/en/sequences.json", SEQUENCES),
-        ])
+        ]);
+        content.presentation.presentation_text.actor_speech = "{actor_name}: {text}".to_string();
+        content.presentation.presentation_text.actor_targeted_speech =
+            "{actor_name} (to {target_name}): {text}".to_string();
+        content
     }
 
     fn apply_world_events(state: &mut WorldState, content: &ContentPack, events: &[WorldEvent]) {
@@ -348,6 +376,30 @@ mod tests {
         );
         assert_eq!(state.story_vars.get("opening_call_complete"), Some("true"));
         assert!(advance_scripted_sequences(&content, &state).is_empty());
+    }
+
+    #[test]
+    fn draining_plays_the_opening_exchange_without_advancing_time() {
+        let content = scripted_pack();
+        let mut state = WorldState::new(&content);
+        state.story_vars.set_unchecked("comms_ready", "true");
+        let starting_turn = state.turn_number;
+        let starting_time = state.current_time_minutes;
+
+        let lines = drain_scripted_sequences(&content, &mut state);
+
+        assert_eq!(lines.len(), 3);
+        assert_eq!(lines[0].text, "Blair (to Casey): Who are you?");
+        assert_eq!(lines[1].text, "Static answers before the voice does.");
+        assert_eq!(lines[2].text, "Casey (to Blair): Your assigned handler.");
+        assert_eq!(state.turn_number, starting_turn);
+        assert_eq!(state.current_time_minutes, starting_time);
+        assert!(
+            state
+                .scripted_sequence_playhead("opening-call")
+                .unwrap()
+                .finished
+        );
     }
 
     #[test]

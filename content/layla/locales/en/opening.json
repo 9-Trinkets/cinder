@@ -10,10 +10,7 @@
   ],
   "start_time_minutes": 60,
   "intro_text": "You wake on cold stone in a cave. The dark has no bottom and no top. Your name is Layla \u2014 that you know. Past it, there is only a wall where your memories should be.\n\nYour hands remember what your mind does not: how to grip a weapon, how to move without sound, how to take a hit and stay standing. Whatever you were before this, you were not soft.\n\nIn your pocket, warm as a living thing, is a stub of chalk that never wears down. Wherever you draw with it, a pale line of light stays behind in the stone.\n\nBeside you stands a golem \u2014 a made thing of rough stone, no mouth, flat pebble eyes, a chalk ring marked on its chest, watching you the way a door watches. It does not move. It does not breathe.\n\nSomewhere deeper in the cave, something chitters. Something ticks, slow, against the floor.\n\nBeneath the quiet, a half-memory: a hand setting stones down one by one, a game played in another dark, with a voice counting the moves.\n\nFind it. Get out. Whatever it takes.",
-  "system_lines": [
-    "Okay. I have the induction playbook. It says: chalk in hand, closed ring around one of the marked units. That should make it follow you. I think.",
-    "Next step is capture the cave and reach the bottom. Those are the words here, Layla. Sorry. The rules are in the floor."
-  ],
+  "opening_sequence_id": "handler-introduction",
   "help_text": "All right, the approved controls are below. If one of them fails, that's probably my console, not you.\n\nCommands:\n{available_commands}\n- Tab switches focus between command and transcript\n- Up/Down recalls command history when command is focused\n- Up/Down scrolls the transcript when transcript is focused\n- PageUp/PageDown/Home/End scroll the transcript faster\n- ? opens the menu",
   "prompt_context": {
     "setting_notes": [

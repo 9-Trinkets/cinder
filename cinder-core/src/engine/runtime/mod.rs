@@ -1,6 +1,8 @@
 use crate::content::types::{ContentPack, OpeningMenuOptionDefinition};
 use crate::engine::dialogue::{DialogueGenerator, SynapseDialogueGenerator};
+use crate::engine::narrative::NarrativeLines;
 use crate::engine::neuron::{WorkflowDefinition, load_workflow};
+use crate::engine::scripted::drain_scripted_sequences;
 use crate::engine::state::{
     ActFeedbackSummary, GamePhase, TurnOutcome, WorldState, advance_to_next_act,
     initialize_act_state,
@@ -85,6 +87,14 @@ pub enum ActClosureSection {
 }
 
 impl CinderRuntime {
+    pub fn drain_scripted_sequences(&self) -> Result<NarrativeLines, Box<dyn Error>> {
+        let mut state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for scripted sequences")?;
+        Ok(drain_scripted_sequences(self.content.as_ref(), &mut state))
+    }
+
     pub fn new(content: ContentPack, trace_events: bool) -> Result<Self, Box<dyn Error>> {
         let workflow_id = if content.settings.workflow_id.is_empty() {
             "cinder_turn".to_string()

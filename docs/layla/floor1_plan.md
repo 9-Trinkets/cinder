@@ -164,7 +164,9 @@ Starting inventory is **empty** in intent: Layla wakes with nothing but what she
 finds. *Decision:* the **magic-chalk is a deliberate starting item** —
 `starting_items = { magic-chalk: 1 }` — and stays on her for the whole floor.
 No loose-on-the-floor pickup, no `requires_equipped_item` gate on `trace`: the
-chalk is simply on her and the sigil-teaching system line fires at game start.
+chalk is simply on her and the handler teaches the sigil procedure at game
+start through the scripted opening comms exchange rather than a disembodied
+system message.
 Exact drop placement was set during implementation (see
 [Open Threads](#open-threads)).
 
@@ -199,7 +201,7 @@ Every system feature unlocks through a diegetic act. Each lock sets a story var
 | # | Diegetic beat | Feature unlocks | Mechanic |
 |---|---|---|---|
 | 1 | Start, in a guard room with a golem, chalk already in her pocket | **Look**, **Attack** | attack is target-gated only (golem is a legit neutral target in the room) — no gate |
-| 2 | Chalk teaching line fires at start (cold **system message** → sigil → charm: trace a closed ring around an enemy until it closes and draws it into step) | **Trace** is available from the start | `NarrativeLineKind::System` — chalk is on Layla, so there is no pickup/equip gate to climb |
+| 2 | The handler's opening comms exchange teaches the chalk procedure: trace a closed ring around an enemy until it closes and draws it into step | **Trace** is available from the start | Scripted `handler-comms` sequence — chalk is on Layla, so there is no pickup/equip gate to climb |
 | 3 | **Defeat the first mob** (a goblin — or the golem) | **Stats / vitals sidebar** | `actor.defeated` → `vitals_sidebar_story_var` (new knob) |
 | 4 | **First charm** (ring a golem) | **Party / follower bar** | already derived from follower existence — no gate |
 | 5 | **Defeat the shaman** (first boss) | **Map / minimap** widget | `shaman_defeated` → `minimap_requires_story_var` (new knob) |
@@ -239,8 +241,8 @@ the surface order:
 3. Levels-section visibility — already implemented as
    `level_reveal_room_prefix` (rooms on the "d" board reveal party levels), so
    XP can accrue without a visible level bar on floor 1.
-4. `NarrativeLineKind::System` + UI color mapping (pale blue-white) + an
-   opening-level `system_lines` field so content can emit cold teaching lines.
+4. A scripted opening sequence on `handler-comms` so the chalk procedure comes
+   from Layla's assigned handler rather than a disembodied system voice.
 5. *(Removed during implementation)* `requires_equipped_item` — dropped with the
    chalk-on-floor pickup. The chalk stays in Layla's starting inventory and
    `trace` is available from the start.

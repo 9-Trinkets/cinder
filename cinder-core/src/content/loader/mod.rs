@@ -348,6 +348,29 @@ mod shipped_pack_load_tests {
                         .map(|channel| channel.participants.as_slice()),
                     Some(&["player".to_string(), "handler".to_string()][..])
                 );
+                assert!(loaded.opening.system_lines.is_empty());
+                assert_eq!(
+                    loaded.opening.opening_sequence_id.as_deref(),
+                    Some("handler-introduction")
+                );
+                let opening_sequence = loaded.sequence("handler-introduction").unwrap();
+                assert_eq!(opening_sequence.steps.len(), 7);
+                assert!(matches!(
+                    &opening_sequence.steps[3],
+                    crate::content::types::ScriptedLine::Channel {
+                        speaker_id,
+                        recipient_id: Some(recipient_id),
+                        line,
+                        ..
+                    } if speaker_id == "player"
+                        && recipient_id == "handler"
+                        && line == "Who are you?"
+                ));
+                assert!(matches!(
+                    opening_sequence.completion_effects.as_slice(),
+                    [crate::content::types::AdvanceEffect::SetStoryVar { key, value }]
+                        if key == "handler_introduced" && value == "true"
+                ));
             }
         }
     }

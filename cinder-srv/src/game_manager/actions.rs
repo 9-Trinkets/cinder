@@ -5,12 +5,12 @@ use sqlx::PgPool;
 use uuid::Uuid;
 
 use super::db::{
-    insert_transcript_entries, load_play_row, load_play_row_unlocked, narrative_role, parse_uuid,
-    MAX_SESSION_WRITE_RETRIES, PendingTranscriptEntry,
+    MAX_SESSION_WRITE_RETRIES, PendingTranscriptEntry, insert_transcript_entries, load_play_row,
+    load_play_row_unlocked, narrative_role, parse_uuid,
 };
 use super::response::{act_closure_data, game_closure_data};
 use super::ui::build_ui_snapshot;
-use super::{build_runtime_impl, consume_projector_sequence, with_runtime, CommandResponse};
+use super::{CommandResponse, build_runtime_impl, consume_projector_sequence, with_runtime};
 
 pub async fn create_play(
     pool: &PgPool,
@@ -34,6 +34,12 @@ pub async fn create_play(
     let _ = runtime.push_transcript_line(&intro_text);
     for system_line in &system_lines {
         let _ = runtime.push_transcript_line(system_line);
+    }
+    let scripted_lines = runtime
+        .drain_scripted_sequences()
+        .map_err(|e| format!("opening sequence error: {e}"))?;
+    for line in scripted_lines.iter() {
+        let _ = runtime.push_transcript_line(&line.text);
     }
     let initial_state_json = serde_json::to_string(
         &runtime
@@ -63,11 +69,17 @@ pub async fn create_play(
         role: "narrative".to_string(),
         text: intro_text.clone(),
     }];
-    transcript_entries.extend(system_lines.iter().map(|system_line| {
-        PendingTranscriptEntry {
-            role: "system".to_string(),
-            text: system_line.clone(),
-        }
+    transcript_entries.extend(
+        system_lines
+            .iter()
+            .map(|system_line| PendingTranscriptEntry {
+                role: "system".to_string(),
+                text: system_line.clone(),
+            }),
+    );
+    transcript_entries.extend(scripted_lines.iter().map(|line| PendingTranscriptEntry {
+        role: narrative_role(&line.kind).to_string(),
+        text: line.text.clone(),
     }));
     insert_transcript_entries(&mut tx, &play_id, 0, &transcript_entries).await?;
     tx.commit()
