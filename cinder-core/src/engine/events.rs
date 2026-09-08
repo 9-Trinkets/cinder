@@ -1,4 +1,5 @@
 use crate::content::types::ItemStorageTarget;
+use crate::engine::messaging::ChannelMessage;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -42,6 +43,13 @@ pub enum WorldEvent {
         audience_actor_ids: Vec<String>,
         room_id: String,
         text: String,
+    },
+    /// A message delivered over a messaging channel. Unifies same-room speech
+    /// (a public local channel) with remote communication such as the
+    /// handler's comms (a private direct channel). See
+    /// [`crate::engine::messaging`].
+    ChannelMessage {
+        message: ChannelMessage,
     },
     ActorStatAdjusted {
         actor_id: String,

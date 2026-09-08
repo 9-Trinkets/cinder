@@ -3,6 +3,7 @@ use crate::engine::reducer::tick::advance_house_progress_objectives;
 use crate::content::types::ContentPack;
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_world_hook_effects;
+use crate::engine::messaging::{ChannelAudience, ChannelKind, ChannelMessage};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
 use crate::engine::turn_policies::{
@@ -18,6 +19,36 @@ pub(crate) struct SpokeContext<'a> {
     pub(crate) other_person_message: &'a Option<String>,
     pub(crate) room_id: &'a str,
     pub(crate) text: &'a str,
+}
+
+/// Renders a channel message for the player. Local speech is only narrated
+/// when it happens in the player's current room; direct comms is always
+/// narrated. Presentation is generic for now — styling by channel kind lands
+/// with the transcript presentation pass.
+pub(crate) fn handle_channel_message(
+    state: &WorldState,
+    content: &ContentPack,
+    lines: &mut NarrativeLines,
+    message: &ChannelMessage,
+) {
+    let hearable = match message.delivery.kind {
+        ChannelKind::Direct => true,
+        ChannelKind::Local => {
+            message.delivery.room_id.as_deref() == Some(&state.current_room_id)
+        }
+    };
+    if !hearable {
+        return;
+    }
+    lines.narration(render_actor_speech_line(
+        content,
+        &message.speaker_name,
+        match &message.audience {
+            ChannelAudience::Targeted { recipient_name, .. } => Some(recipient_name),
+            ChannelAudience::Broadcast => None,
+        },
+        &message.text,
+    ));
 }
 
 pub(crate) fn handle_actor_spoke(

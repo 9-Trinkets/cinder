@@ -45,5 +45,6 @@ pub(super) use observation::{
     ActorObservationContext,
 };
 pub(super) use speech::{
-    handle_actor_spoke, handle_actor_spoke_to_room, SpokeContext, SpokeToRoomContext,
+    handle_actor_spoke, handle_actor_spoke_to_room, handle_channel_message, SpokeContext,
+    SpokeToRoomContext,
 };
