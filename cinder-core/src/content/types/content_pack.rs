@@ -11,6 +11,9 @@ pub struct ContentPack {
     pub system_text: SystemTextDefinition,
     pub opening: OpeningDefinition,
     pub beats: BeatsDefinition,
+    /// Content-driven scripted conversation sequences (opening exchanges,
+    /// beat interstitials, etc.). Loaded from `sequences.json`.
+    pub sequences: SequencesDefinition,
     pub menus: Vec<OpeningMenuDefinition>,
     pub movies: Vec<OpeningMovieDefinition>,
     pub presentation: PresentationDefinition,
@@ -85,7 +88,8 @@ impl ContentPack {
     /// offstage (no spatial participation). Unknown actor ids are treated as
     /// onstage so callers can't accidentally hide a real actor.
     pub fn actor_is_offstage(&self, actor_id: &str) -> bool {
-        self.actor(actor_id).is_some_and(|actor| actor.is_offstage())
+        self.actor(actor_id)
+            .is_some_and(|actor| actor.is_offstage())
     }
 
     /// Iterates the actors that occupy the world (onstage), excluding those
@@ -103,6 +107,14 @@ impl ContentPack {
             .channels
             .iter()
             .find(|channel| channel.id == channel_id)
+    }
+
+    /// A scripted conversation sequence declared by the pack.
+    pub fn sequence(&self, sequence_id: &str) -> Option<&ScriptedSequence> {
+        self.sequences
+            .sequences
+            .iter()
+            .find(|sequence| sequence.id == sequence_id)
     }
 
     /// Whether `actor_id` is the player-controlled actor. Packs may declare

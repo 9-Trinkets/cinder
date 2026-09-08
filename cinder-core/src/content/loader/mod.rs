@@ -5,19 +5,19 @@ mod validation;
 
 use crate::content::loader::bundled::{read_messages, read_system_text};
 use crate::content::loader::fs::{
-    read_json, read_optional_json, read_optional_json_raw, LocalizedPaths,
+    LocalizedPaths, read_json, read_optional_json, read_optional_json_raw,
 };
 use crate::content::loader::index::{build_index, collect_act_cast};
 use crate::content::loader::validation::{
     PackContext, require_known_id, validate_actions, validate_combat_settings, validate_contents,
-    validate_items, validate_maps, validate_periodic_actor_effects,
+    validate_items, validate_maps, validate_periodic_actor_effects, validate_scripted_sequences,
 };
 use crate::content::types::{
-    ActionsDefinition, ActorDefinition, BehaviorDefinition, BeatObjectivesDefinition,
-    BeatsDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition, LevelingDefinition,
+    ActionsDefinition, ActorDefinition, BeatObjectivesDefinition, BeatsDefinition,
+    BehaviorDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition, LevelingDefinition,
     MapDefinition, MovementConfigDefinition, OpeningDefinition, OpeningMenuDefinition,
-    OpeningMovieDefinition, PresentationDefinition, RoomDefinition, SpeechConfigDefinition,
-    SpeechIntentsConfig, StatsDefinition, UiTextDefinition,
+    OpeningMovieDefinition, PresentationDefinition, RoomDefinition, SequencesDefinition,
+    SpeechConfigDefinition, SpeechIntentsConfig, StatsDefinition, UiTextDefinition,
 };
 use serde_json::Value;
 use std::collections::BTreeMap;
@@ -80,8 +80,8 @@ pub fn load_pack_from_dir_with_locale(
     path: &Path,
     locale: Option<&str>,
 ) -> Result<ContentPack, Box<dyn Error>> {
-    let settings = read_optional_json::<ContentSettingsDefinition>(path, "settings.json")?
-        .unwrap_or_default();
+    let settings =
+        read_optional_json::<ContentSettingsDefinition>(path, "settings.json")?.unwrap_or_default();
     let effective_locale = match locale {
         Some(locale) if !locale.trim().is_empty() => locale.to_string(),
         _ if !settings.default_language.trim().is_empty() => settings.default_language.clone(),
@@ -95,6 +95,9 @@ pub fn load_pack_from_dir_with_locale(
     let opening = paths.read_required::<OpeningDefinition>("opening.json")?;
     let beats = paths
         .read_optional::<BeatsDefinition>("beats.json")?
+        .unwrap_or_default();
+    let sequences = paths
+        .read_optional::<SequencesDefinition>("sequences.json")?
         .unwrap_or_default();
     let menus = paths
         .read_optional::<Vec<OpeningMenuDefinition>>("menus.json")?
@@ -175,8 +178,18 @@ pub fn load_pack_from_dir_with_locale(
         .iter()
         .map(|actor| actor.id.as_str())
         .collect::<Vec<_>>();
+    let actor_stat_ids = stats.actor.keys().map(String::as_str).collect::<Vec<_>>();
+    let pair_stat_ids = stats.pair.keys().map(String::as_str).collect::<Vec<_>>();
 
     validate_maps(&maps, &room_ids, &actor_ids)?;
+    validate_scripted_sequences(
+        &sequences,
+        opening.opening_sequence_id.as_deref(),
+        &settings.channels,
+        &actors,
+        &actor_stat_ids,
+        &pair_stat_ids,
+    )?;
     let stage_ids: Vec<&str> = beats.stages.iter().map(|s| s.id.as_str()).collect();
     validate_actions(&actions, &room_ids, &stage_ids)?;
     validate_contents(&PackContext {
@@ -203,6 +216,7 @@ pub fn load_pack_from_dir_with_locale(
         system_text,
         opening,
         beats,
+        sequences,
         menus,
         movies,
         presentation,
@@ -228,7 +242,8 @@ pub fn load_pack_from_dir_with_locale(
     })
 }
 
-pub fn available_locales(path: &Path) -> Result<Vec<LocaleOption>, Box<dyn Error>> {    let locales_dir = path.join("locales");
+pub fn available_locales(path: &Path) -> Result<Vec<LocaleOption>, Box<dyn Error>> {
+    let locales_dir = path.join("locales");
     let mut locales = Vec::new();
     if locales_dir.exists() {
         for entry in std_fs::read_dir(&locales_dir)? {
@@ -291,9 +306,7 @@ mod shipped_pack_load_tests {
                     Some(("upper-works", 81))
                 );
                 assert_eq!(
-                    loaded
-                        .map_for_room("d8c5")
-                        .map(|map| map.id.as_str()),
+                    loaded.map_for_room("d8c5").map(|map| map.id.as_str()),
                     Some("deep-forest")
                 );
                 assert_eq!(
@@ -321,10 +334,7 @@ mod shipped_pack_load_tests {
                     Some("knows_spawn")
                 );
                 let handler = loaded.actor("handler").unwrap();
-                assert!(
-                    handler.room_id.is_empty(),
-                    "handler must be offstage"
-                );
+                assert!(handler.room_id.is_empty(), "handler must be offstage");
                 assert_eq!(
                     handler
                         .initial_relationship

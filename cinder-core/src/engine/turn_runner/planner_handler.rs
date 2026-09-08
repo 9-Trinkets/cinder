@@ -6,6 +6,7 @@ use crate::engine::events::WorldEvent;
 use crate::engine::menus::{
     build_menu_choice_events, resolve_menu_choice, resolve_menu_choice_in_options,
 };
+use crate::engine::scripted::advance_scripted_sequences;
 use crate::engine::state::{WorldState, render_dynamic_story_text};
 
 fn try_resolve_menu_choice(
@@ -24,7 +25,10 @@ fn try_resolve_menu_choice(
             {
                 return Some((
                     vec![WorldEvent::ActionRejected {
-                        message: render_dynamic_story_text(&menu.invalid_choice_text, planner_state),
+                        message: render_dynamic_story_text(
+                            &menu.invalid_choice_text,
+                            planner_state,
+                        ),
                     }],
                     false,
                 ));
@@ -94,7 +98,9 @@ fn plan_take_command(
     let loose = planner_state.loose_room_items(current_room_id);
     if loose.is_empty() || trimmed.is_empty() {
         planned.events.push(WorldEvent::ActionRejected {
-            message: content.render_message("item.take_nothing", &[]).unwrap_or_default(),
+            message: content
+                .render_message("item.take_nothing", &[])
+                .unwrap_or_default(),
         });
         return false;
     }
@@ -157,7 +163,9 @@ fn plan_drop_command(
     let trimmed = target.trim();
     if trimmed.is_empty() {
         planned.events.push(WorldEvent::ActionRejected {
-            message: content.render_message("item.drop_nothing", &[]).unwrap_or_default(),
+            message: content
+                .render_message("item.drop_nothing", &[])
+                .unwrap_or_default(),
         });
         return false;
     }
@@ -195,7 +203,9 @@ fn plan_drop_command(
         });
     match matched {
         Some((item_id, _label)) => {
-            planned.events.push(WorldEvent::PlayerDroppedItem { item_id });
+            planned
+                .events
+                .push(WorldEvent::PlayerDroppedItem { item_id });
             true
         }
         None => {
@@ -248,12 +258,9 @@ pub(super) fn build_planned_turn(
                 &target,
                 &mut planned,
             ),
-            PlayerCommand::Drop { target } => plan_drop_command(
-                content,
-                planner_state,
-                &target,
-                &mut planned,
-            ),
+            PlayerCommand::Drop { target } => {
+                plan_drop_command(content, planner_state, &target, &mut planned)
+            }
             PlayerCommand::Help => {
                 planned.events.push(WorldEvent::HelpShown);
                 false
@@ -269,8 +276,7 @@ pub(super) fn build_planned_turn(
                         let is_multi_select = menu.max_selections > 0;
                         if is_multi_select && raw == "done" {
                             if menu.min_selections > 0
-                                && planner_state.pending_menu_selections.len()
-                                    < menu.min_selections
+                                && planner_state.pending_menu_selections.len() < menu.min_selections
                             {
                                 planned.events.push(WorldEvent::ActionRejected {
                                     message: render_dynamic_story_text(
@@ -382,6 +388,14 @@ pub(super) fn build_planned_turn(
             advances_time,
         },
     );
+    // Scripted sequences play one line per advancing turn, after the command's
+    // own events resolve. The planner emits the step's content event plus the
+    // playhead commit; the reducer advances the sequence.
+    if advances_time {
+        planned
+            .events
+            .extend(advance_scripted_sequences(content, planner_state));
+    }
     (planned, advances_time)
 }
 

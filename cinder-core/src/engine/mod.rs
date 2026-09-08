@@ -16,6 +16,7 @@ pub mod neuron;
 pub mod reducer;
 pub mod roles;
 pub mod runtime;
+pub mod scripted;
 pub mod state;
 pub mod turn_policies;
 pub mod turn_runner;

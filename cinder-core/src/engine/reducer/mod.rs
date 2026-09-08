@@ -9,19 +9,19 @@ mod movement;
 mod observation;
 mod tick;
 
+use self::actor_commands::ActorCommandContext;
 use self::combat::handle_periodic_actor_effect_applied;
 use self::handlers::{
-    apply_content_event, handle_act_ended, handle_action_rejected, handle_actor_command_used_event,
-    handle_actor_moved, handle_actor_observed, handle_actor_observed_actor,
-    handle_actor_observed_feature, handle_actor_observed_room, handle_actor_relocated,
-    handle_channel_message, handle_current_room_observed, handle_feature_observed, handle_help_shown,
-    handle_hostile_strike, handle_item_acquired, handle_item_consumed, handle_item_observed,
-    handle_menu_choice_made, handle_menu_opened, handle_menu_selection_toggled,
-    handle_narrative_line, handle_pair_stat_adjusted, handle_player_dropped_item,
-    handle_player_moved, handle_player_took_item, handle_turn_started, handle_unknown_input,
-    ActorObservationContext,
+    ActorObservationContext, apply_content_event, handle_act_ended, handle_action_rejected,
+    handle_actor_command_used_event, handle_actor_moved, handle_actor_observed,
+    handle_actor_observed_actor, handle_actor_observed_feature, handle_actor_observed_room,
+    handle_actor_relocated, handle_channel_message, handle_current_room_observed,
+    handle_feature_observed, handle_help_shown, handle_hostile_strike, handle_item_acquired,
+    handle_item_consumed, handle_item_observed, handle_menu_choice_made, handle_menu_opened,
+    handle_menu_selection_toggled, handle_narrative_line, handle_pair_stat_adjusted,
+    handle_player_dropped_item, handle_player_moved, handle_player_took_item, handle_turn_started,
+    handle_unknown_input,
 };
-use self::actor_commands::ActorCommandContext;
 
 pub(crate) use self::observation::render_actor_speech_line;
 
@@ -98,6 +98,9 @@ pub fn apply_events(
                 delta,
             } => {
                 handle_pair_stat_adjusted(state, participant_a_id, participant_b_id, stat, *delta);
+            }
+            WorldEvent::StoryVarSet { key, value } => {
+                state.story_vars.set_unchecked(key, value);
             }
             WorldEvent::ActorCommandUsed {
                 actor_id,
@@ -285,6 +288,13 @@ pub fn apply_events(
                 handle_periodic_actor_effect_applied(
                     state, content, actor_id, effect_id, &mut lines,
                 );
+            }
+            WorldEvent::ScriptedSequenceStepPlayed {
+                sequence_id,
+                next_step,
+                finished,
+            } => {
+                state.apply_scripted_sequence_progress(sequence_id, *next_step, *finished);
             }
         }
     }

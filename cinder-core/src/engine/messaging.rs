@@ -28,7 +28,7 @@ use crate::engine::state::{WorldState, display_actor_name};
 use serde::{Deserialize, Serialize};
 
 pub use crate::content::types::{
-    ChannelAvailability, ChannelKind, ChannelPrivacy, MessagingChannel, LOCAL_CHANNEL_ID,
+    ChannelAvailability, ChannelKind, ChannelPrivacy, LOCAL_CHANNEL_ID, MessagingChannel,
 };
 
 /// Who a channel message is addressed to.
@@ -51,9 +51,10 @@ impl MessagingChannel {
     pub fn is_available(&self, state: &WorldState) -> bool {
         match &self.availability {
             ChannelAvailability::Always => true,
-            ChannelAvailability::StoryVarGate { story_var, expected } => {
-                state.story_vars.get(story_var) == Some(expected.as_str())
-            }
+            ChannelAvailability::StoryVarGate {
+                story_var,
+                expected,
+            } => state.story_vars.get(story_var) == Some(expected.as_str()),
         }
     }
 
@@ -100,6 +101,10 @@ impl MessagingChannel {
         text: String,
         room_id: Option<&str>,
     ) -> ChannelMessage {
+        let mut recipients = self.hearing_audience(content, state, speaker_id, room_id);
+        if let ChannelAudience::Targeted { recipient_id, .. } = &audience {
+            recipients.retain(|actor_id| actor_id == recipient_id);
+        }
         ChannelMessage {
             channel_id: self.id.clone(),
             speaker_id: speaker_id.to_string(),
@@ -113,7 +118,7 @@ impl MessagingChannel {
             delivery: ChannelDelivery {
                 kind: self.kind,
                 room_id: room_id.map(str::to_string),
-                recipients: self.hearing_audience(content, state, speaker_id, room_id),
+                recipients,
             },
         }
     }
@@ -330,7 +335,9 @@ mod tests {
         // Casey is in the kitchen while Blair speaks from the lounge: a local
         // message does not reach her, but the direct channel still does.
         let (content, mut state) = open_roster_state();
-        state.actor_room_overrides.insert("casey".to_string(), "kitchen".to_string());
+        state
+            .actor_room_overrides
+            .insert("casey".to_string(), "kitchen".to_string());
         let room_id = state.current_room_id.clone();
 
         let local = local_channel();

@@ -5,7 +5,7 @@ pub(crate) use definitions::{
     validate_actions, validate_combat_settings, validate_items, validate_maps,
     validate_periodic_actor_effects,
 };
-pub(crate) use references::{PackContext, validate_contents};
+pub(crate) use references::{PackContext, validate_contents, validate_scripted_sequences};
 
 use std::error::Error;
 

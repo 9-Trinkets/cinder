@@ -1,8 +1,9 @@
 use super::require_known_id;
 use crate::content::types::{
-    ActCastMember, ActionDefinition, ActorDefinition, BeatDefinition, BeatObjectiveProgressRef,
-    BeatObjectivesDefinition, BeatsDefinition, ChannelPrivacy, LevelingDefinition, MessagingChannel,
-    MovementConfigDefinition, LOCAL_CHANNEL_ID,
+    ActCastMember, ActionDefinition, ActorDefinition, AdvanceEffect, BeatDefinition,
+    BeatObjectiveProgressRef, BeatObjectivesDefinition, BeatsDefinition, ChannelPrivacy,
+    LOCAL_CHANNEL_ID, LevelingDefinition, MessagingChannel, MovementConfigDefinition, ScriptedLine,
+    SequencesDefinition,
 };
 use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
@@ -199,11 +200,9 @@ fn validate_channels(
         }
         if channel.privacy == ChannelPrivacy::Private {
             if channel.participants.is_empty() {
-                return Err(format!(
-                    "private channel '{}' declares no participants",
-                    channel.id
-                )
-                .into());
+                return Err(
+                    format!("private channel '{}' declares no participants", channel.id).into(),
+                );
             }
             for participant in &channel.participants {
                 require_known_id(
@@ -214,6 +213,243 @@ fn validate_channels(
                 )?;
             }
         }
+    }
+    Ok(())
+}
+
+pub(crate) fn validate_scripted_sequences(
+    sequences: &SequencesDefinition,
+    opening_sequence_id: Option<&str>,
+    channels: &[MessagingChannel],
+    actors: &[ActorDefinition],
+    actor_stat_ids: &[&str],
+    pair_stat_ids: &[&str],
+) -> Result<(), Box<dyn Error>> {
+    let actor_ids = actors
+        .iter()
+        .map(|actor| actor.id.as_str())
+        .collect::<Vec<_>>();
+    let mut sequence_ids = BTreeSet::new();
+
+    for sequence in &sequences.sequences {
+        let sequence_id = sequence.id.trim();
+        if sequence_id.is_empty() {
+            return Err("sequences.json contains a sequence with an empty id".into());
+        }
+        if !sequence_ids.insert(sequence_id) {
+            return Err(format!("duplicate scripted sequence id '{sequence_id}'").into());
+        }
+        if sequence.steps.is_empty() {
+            return Err(format!("scripted sequence '{sequence_id}' has no steps").into());
+        }
+        for (index, gate) in sequence.gates.iter().enumerate() {
+            if gate.story_var.trim().is_empty() {
+                return Err(format!(
+                    "scripted sequence '{sequence_id}' gate[{index}] has an empty story_var"
+                )
+                .into());
+            }
+        }
+        for (index, step) in sequence.steps.iter().enumerate() {
+            validate_scripted_step(sequence_id, index, step, channels, actors, &actor_ids)?;
+        }
+        for (index, effect) in sequence.completion_effects.iter().enumerate() {
+            validate_sequence_effect(
+                sequence_id,
+                index,
+                effect,
+                &actor_ids,
+                actor_stat_ids,
+                pair_stat_ids,
+            )?;
+        }
+    }
+
+    if let Some(opening_sequence_id) = opening_sequence_id {
+        let known_sequence_ids = sequence_ids.iter().copied().collect::<Vec<_>>();
+        require_known_id(
+            opening_sequence_id,
+            &known_sequence_ids,
+            &format!("opening_sequence_id '{opening_sequence_id}'"),
+            "sequences.json",
+        )?;
+    }
+    Ok(())
+}
+
+fn validate_scripted_step(
+    sequence_id: &str,
+    index: usize,
+    step: &ScriptedLine,
+    channels: &[MessagingChannel],
+    actors: &[ActorDefinition],
+    actor_ids: &[&str],
+) -> Result<(), Box<dyn Error>> {
+    match step {
+        ScriptedLine::Narrate { line } => {
+            if line.trim().is_empty() {
+                return Err(format!(
+                    "scripted sequence '{sequence_id}' step[{index}] has an empty line"
+                )
+                .into());
+            }
+        }
+        ScriptedLine::Channel {
+            channel_id,
+            speaker_id,
+            recipient_id,
+            line,
+        } => {
+            if line.trim().is_empty() {
+                return Err(format!(
+                    "scripted sequence '{sequence_id}' step[{index}] has an empty line"
+                )
+                .into());
+            }
+            require_known_id(
+                speaker_id,
+                actor_ids,
+                &format!(
+                    "scripted sequence '{sequence_id}' step[{index}] speaker_id '{speaker_id}'"
+                ),
+                "actors",
+            )?;
+            if let Some(recipient_id) = recipient_id {
+                require_known_id(
+                    recipient_id,
+                    actor_ids,
+                    &format!(
+                        "scripted sequence '{sequence_id}' step[{index}] recipient_id \
+                         '{recipient_id}'"
+                    ),
+                    "actors",
+                )?;
+                if recipient_id == speaker_id {
+                    return Err(format!(
+                        "scripted sequence '{sequence_id}' step[{index}] speaker and recipient \
+                         must differ"
+                    )
+                    .into());
+                }
+            }
+            validate_sequence_channel_participants(
+                sequence_id,
+                index,
+                channel_id,
+                speaker_id,
+                recipient_id.as_deref(),
+                channels,
+                actors,
+            )?;
+        }
+    }
+    Ok(())
+}
+
+fn validate_sequence_channel_participants(
+    sequence_id: &str,
+    step_index: usize,
+    channel_id: &str,
+    speaker_id: &str,
+    recipient_id: Option<&str>,
+    channels: &[MessagingChannel],
+    actors: &[ActorDefinition],
+) -> Result<(), Box<dyn Error>> {
+    if channel_id == LOCAL_CHANNEL_ID {
+        for actor_id in std::iter::once(speaker_id).chain(recipient_id) {
+            if actors
+                .iter()
+                .find(|actor| actor.id == actor_id)
+                .is_some_and(ActorDefinition::is_offstage)
+            {
+                return Err(format!(
+                    "scripted sequence '{sequence_id}' step[{step_index}] uses offstage actor \
+                     '{actor_id}' on the local channel"
+                )
+                .into());
+            }
+        }
+        return Ok(());
+    }
+
+    let channel = channels
+        .iter()
+        .find(|channel| channel.id == channel_id)
+        .ok_or_else(|| {
+            format!(
+                "scripted sequence '{sequence_id}' step[{step_index}] channel_id \
+                 '{channel_id}' not found in channels"
+            )
+        })?;
+    for actor_id in std::iter::once(speaker_id).chain(recipient_id) {
+        if !channel
+            .participants
+            .iter()
+            .any(|participant| participant == actor_id)
+        {
+            return Err(format!(
+                "scripted sequence '{sequence_id}' step[{step_index}] actor '{actor_id}' is not \
+                 a participant of channel '{channel_id}'"
+            )
+            .into());
+        }
+    }
+    Ok(())
+}
+
+fn validate_sequence_effect(
+    sequence_id: &str,
+    effect_index: usize,
+    effect: &AdvanceEffect,
+    actor_ids: &[&str],
+    actor_stat_ids: &[&str],
+    pair_stat_ids: &[&str],
+) -> Result<(), Box<dyn Error>> {
+    let subject = format!("scripted sequence '{sequence_id}' completion_effects[{effect_index}]");
+    match effect {
+        AdvanceEffect::AdjustActorStat { actor_id, stat, .. } => {
+            require_known_id(
+                actor_id,
+                actor_ids,
+                &format!("{subject} actor_id '{actor_id}'"),
+                "actors",
+            )?;
+            require_known_id(
+                stat,
+                actor_stat_ids,
+                &format!("{subject} stat '{stat}'"),
+                "stats.actor",
+            )?;
+        }
+        AdvanceEffect::AdjustPairStat {
+            participant_a_id,
+            participant_b_id,
+            stat,
+            ..
+        } => {
+            require_known_id(
+                participant_a_id,
+                actor_ids,
+                &format!("{subject} participant_a_id '{participant_a_id}'"),
+                "actors",
+            )?;
+            require_known_id(
+                participant_b_id,
+                actor_ids,
+                &format!("{subject} participant_b_id '{participant_b_id}'"),
+                "actors",
+            )?;
+            require_known_id(
+                stat,
+                pair_stat_ids,
+                &format!("{subject} stat '{stat}'"),
+                "stats.pair",
+            )?;
+        }
+        AdvanceEffect::SetStoryVar { key, .. } if key.trim().is_empty() => {
+            return Err(format!("{subject} set_story_var key must not be empty").into());
+        }
+        AdvanceEffect::SetStoryVar { .. } => {}
     }
     Ok(())
 }
@@ -546,24 +782,16 @@ mod tests {
     #[test]
     fn onstage_actor_requires_an_existing_room() {
         let room_index = HashMap::from([("lounge".to_string(), 0)]);
-        let error = validate_actors(
-            &[actor("alex", "missing")],
-            &room_index,
-            &[],
-        )
-        .unwrap_err()
-        .to_string();
+        let error = validate_actors(&[actor("alex", "missing")], &room_index, &[])
+            .unwrap_err()
+            .to_string();
         assert!(error.contains("room_id 'missing' not found"), "{error}");
     }
 
     #[test]
     fn offstage_actor_skips_the_room_existence_check() {
         let room_index = HashMap::from([("lounge".to_string(), 0)]);
-        let result = validate_actors(
-            &[actor("handler", "")],
-            &room_index,
-            &[],
-        );
+        let result = validate_actors(&[actor("handler", "")], &room_index, &[]);
         assert!(result.is_ok(), "{result:?}");
     }
 
@@ -580,9 +808,12 @@ mod tests {
 
     #[test]
     fn private_channel_participants_must_resolve_to_actors() {
-        let error = validate_channels(&[channel("comms", &["player", "nobody"])], &["player", "blair"])
-            .unwrap_err()
-            .to_string();
+        let error = validate_channels(
+            &[channel("comms", &["player", "nobody"])],
+            &["player", "blair"],
+        )
+        .unwrap_err()
+        .to_string();
         assert!(error.contains("participant 'nobody'"), "{error}");
     }
 
@@ -596,10 +827,9 @@ mod tests {
 
     #[test]
     fn a_pack_cannot_declare_the_implicit_local_channel() {
-        let error =
-            validate_channels(&[channel(LOCAL_CHANNEL_ID, &["player"])], &["player"])
-                .unwrap_err()
-                .to_string();
+        let error = validate_channels(&[channel(LOCAL_CHANNEL_ID, &["player"])], &["player"])
+            .unwrap_err()
+            .to_string();
         assert!(error.contains("implicit local speech channel"), "{error}");
     }
 
@@ -616,7 +846,98 @@ mod tests {
 
     #[test]
     fn well_formed_private_channel_passes() {
-        let result = validate_channels(&[channel("comms", &["player", "handler"])], &["player", "handler"]);
+        let result = validate_channels(
+            &[channel("comms", &["player", "handler"])],
+            &["player", "handler"],
+        );
         assert!(result.is_ok(), "{result:?}");
+    }
+
+    fn scripted_sequence(step: ScriptedLine) -> SequencesDefinition {
+        SequencesDefinition {
+            sequences: vec![crate::content::types::ScriptedSequence {
+                id: "opening-call".to_string(),
+                label: String::new(),
+                gates: Vec::new(),
+                steps: vec![step],
+                completion_effects: Vec::new(),
+            }],
+        }
+    }
+
+    #[test]
+    fn scripted_channel_steps_require_known_channel_participants() {
+        let actors = [actor("player", "lounge"), actor("handler", "")];
+        let sequences = scripted_sequence(ScriptedLine::Channel {
+            channel_id: "handler-comms".to_string(),
+            speaker_id: "nobody".to_string(),
+            recipient_id: Some("player".to_string()),
+            line: "Testing.".to_string(),
+        });
+        let error = validate_scripted_sequences(
+            &sequences,
+            Some("opening-call"),
+            &[channel("handler-comms", &["player", "handler"])],
+            &actors,
+            &[],
+            &[],
+        )
+        .unwrap_err()
+        .to_string();
+        assert!(error.contains("speaker_id 'nobody'"), "{error}");
+
+        let sequences = scripted_sequence(ScriptedLine::Channel {
+            channel_id: "handler-comms".to_string(),
+            speaker_id: "handler".to_string(),
+            recipient_id: Some("player".to_string()),
+            line: "Testing.".to_string(),
+        });
+        let error = validate_scripted_sequences(
+            &sequences,
+            None,
+            &[channel("handler-comms", &["handler"])],
+            &actors,
+            &[],
+            &[],
+        )
+        .unwrap_err()
+        .to_string();
+        assert!(error.contains("player"), "{error}");
+        assert!(error.contains("not a participant"), "{error}");
+    }
+
+    #[test]
+    fn scripted_sequences_validate_opening_ids_and_completion_effects() {
+        let actors = [actor("player", "lounge"), actor("handler", "")];
+        let mut sequences = scripted_sequence(ScriptedLine::Narrate {
+            line: "Static whispers behind your ear.".to_string(),
+        });
+        sequences.sequences[0].completion_effects = vec![AdvanceEffect::AdjustActorStat {
+            actor_id: "player".to_string(),
+            stat: "confidence".to_string(),
+            delta: 1,
+        }];
+
+        validate_scripted_sequences(
+            &sequences,
+            Some("opening-call"),
+            &[],
+            &actors,
+            &["confidence"],
+            &[],
+        )
+        .unwrap();
+
+        let error = validate_scripted_sequences(
+            &sequences,
+            Some("missing"),
+            &[],
+            &actors,
+            &["confidence"],
+            &[],
+        )
+        .unwrap_err()
+        .to_string();
+        assert!(error.contains("opening_sequence_id 'missing'"), "{error}");
     }
 }

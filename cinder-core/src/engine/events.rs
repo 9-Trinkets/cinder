@@ -46,6 +46,10 @@ pub enum WorldEvent {
         stat: String,
         delta: i32,
     },
+    StoryVarSet {
+        key: String,
+        value: String,
+    },
     ActorCommandUsed {
         actor_id: String,
         actor_name: String,
@@ -159,6 +163,14 @@ pub enum WorldEvent {
     PeriodicActorEffectApplied {
         actor_id: String,
         effect_id: String,
+    },
+    /// Commits that one step of a content-driven scripted conversation
+    /// sequence played. The planner emits this alongside the step's content
+    /// event so the playhead advance stays in the deterministic event log.
+    ScriptedSequenceStepPlayed {
+        sequence_id: String,
+        next_step: usize,
+        finished: bool,
     },
 }
 

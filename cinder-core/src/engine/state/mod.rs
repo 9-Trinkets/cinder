@@ -11,12 +11,15 @@ pub use variable_store::{
     VariableDeclaration, VariableError, VariableScope, VariableStore, VariableType,
 };
 
-mod conversation;
-mod stats;
-mod relationships;
-mod inventory;
-mod tracking;
 mod clock;
+mod conversation;
+mod inventory;
+mod relationships;
+mod sequences;
+mod stats;
+mod tracking;
+
+pub use sequences::ScriptedSequencePlayhead;
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
@@ -105,6 +108,11 @@ pub struct WorldState {
     /// Per-actor current level. Absent entries read as 1.
     #[serde(default)]
     pub actor_level: BTreeMap<String, u32>,
+    /// Playheads of content-declared scripted conversation sequences, keyed by
+    /// sequence id. Every pack sequence is present at session creation; the
+    /// opening sequence starts running.
+    #[serde(default)]
+    pub scripted_sequences: BTreeMap<String, ScriptedSequencePlayhead>,
 }
 
 /// Discrete stance of an actor toward the player. Mutual exclusion is inherent:
@@ -180,6 +188,17 @@ impl WorldState {
             content.settings.combat.player_actor_id.clone(),
             BTreeSet::from([start_room_id.clone()]),
         );
+        let mut scripted_sequences = content
+            .sequences
+            .sequences
+            .iter()
+            .map(|sequence| (sequence.id.clone(), ScriptedSequencePlayhead::default()))
+            .collect::<BTreeMap<_, _>>();
+        if let Some(opening_sequence_id) = content.opening.opening_sequence_id.as_deref() {
+            if let Some(playhead) = scripted_sequences.get_mut(opening_sequence_id) {
+                *playhead = ScriptedSequencePlayhead::queued();
+            }
+        }
         Self {
             current_room_id: start_room_id,
             turn_number: 0,
@@ -236,23 +255,29 @@ impl WorldState {
                         .initial_relationship
                         .map(|relationship| (actor.id.clone(), relationship))
                 })
-                .chain(content.actors.iter().filter(|actor| {
-                    actor.initial_hostile && actor.initial_relationship.is_none()
-                })
-                .map(|actor| {
-                    (
-                        actor.id.clone(),
-                        ActorRelationship {
-                            stance: ActorStance::Hostile,
-                            follows_player: false,
-                        },
-                    )
-                }))
+                .chain(
+                    content
+                        .actors
+                        .iter()
+                        .filter(|actor| {
+                            actor.initial_hostile && actor.initial_relationship.is_none()
+                        })
+                        .map(|actor| {
+                            (
+                                actor.id.clone(),
+                                ActorRelationship {
+                                    stance: ActorStance::Hostile,
+                                    follows_player: false,
+                                },
+                            )
+                        }),
+                )
                 .collect(),
             next_hostile_strike_at: BTreeMap::new(),
             equipment: BTreeMap::new(),
             actor_xp: BTreeMap::new(),
             actor_level: seeded_actor_levels(content),
+            scripted_sequences,
         }
     }
 
@@ -326,9 +351,7 @@ mod tests {
             "offstage actor must not be seeded a (nonexistent) home room"
         );
         assert!(
-            !state
-                .actor_stats_snapshot("blair")
-                .is_empty(),
+            !state.actor_stats_snapshot("blair").is_empty(),
             "offstage actor must still carry its authored identity and stats"
         );
     }

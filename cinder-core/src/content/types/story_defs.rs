@@ -18,6 +18,11 @@ pub struct OpeningDefinition {
     /// rendered as `NarrativeLineKind::System` (e.g. sigil teaching lines).
     #[serde(default)]
     pub system_lines: Vec<String>,
+    /// Id of a scripted conversation sequence queued to play at session start
+    /// (one line per advancing turn, before and alongside normal play). The
+    /// opening exchange between Layla's narration and the handler uses this.
+    #[serde(default)]
+    pub opening_sequence_id: Option<String>,
     pub help_text: String,
     #[serde(default)]
     pub prompt_context: OpeningPromptContext,
@@ -85,7 +90,7 @@ pub struct AdvanceCondition {
     pub value: serde_json::Value,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum AdvanceEffect {
     AdjustActorStat {
