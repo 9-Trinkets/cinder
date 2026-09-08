@@ -1,4 +1,4 @@
-use cinder_core::content::types::{CommandEffect, ContentPack, PanelConfig, PanelDataSource, PanelSelectAction};
+use cinder_core::content::types::{ActionDefinition, CommandEffect, ContentPack, PanelConfig, PanelDataSource, PanelSelectAction};
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::{ActorStance, WorldState};
 use cinder_core::engine::turn_policies::action_is_available;
@@ -151,6 +151,27 @@ pub(super) fn build_interactable_labels(look_options: &[LookOptionData]) -> Vec<
     labels
 }
 
+/// Display title for an overflow action button: the authored `label` (e.g.
+/// "Use Moss Poultice") when present, otherwise a title-cased form of the
+/// action id as a fallback for legacy actions without a label.
+fn overflow_action_title(action: &ActionDefinition) -> String {
+    if !action.label.is_empty() {
+        return action.label.clone();
+    }
+    action
+        .id
+        .split('_')
+        .map(|word| {
+            let mut chars = word.chars();
+            chars
+                .next()
+                .map(|first: char| first.to_uppercase().to_string() + chars.as_str())
+                .unwrap_or_default()
+        })
+        .collect::<Vec<_>>()
+        .join(" ")
+}
+
 pub(super) fn build_overflow_actions(
     runtime: &CinderRuntime,
     content: &ContentPack,
@@ -177,18 +198,7 @@ pub(super) fn build_overflow_actions(
             action_is_available(content, state, a, &current_room_id)
         })
         .map(|a| {
-            let label = a
-                .id
-                .split('_')
-                .map(|word| {
-                    let mut chars = word.chars();
-                    chars
-                        .next()
-                        .map(|first: char| first.to_uppercase().to_string() + chars.as_str())
-                        .unwrap_or_default()
-                })
-                .collect::<Vec<_>>()
-                .join(" ");
+            let label = overflow_action_title(a);
             let usage = a
                 .player_command
                 .as_ref()

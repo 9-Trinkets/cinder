@@ -5,6 +5,23 @@ use cinder_core::content::types::{
 use cinder_core::engine::test_fixtures::minimal_test_pack;
 
 #[test]
+fn overflow_label_prefers_the_authored_action_label() {
+    let action = ActionDefinition {
+        id: "use_salve".to_string(),
+        label: "Use Moss Poultice".to_string(),
+        ..ActionDefinition::default()
+    };
+    assert_eq!(overflow_action_title(&action), "Use Moss Poultice");
+
+    let legacy = ActionDefinition {
+        id: "use_salve".to_string(),
+        label: String::new(),
+        ..ActionDefinition::default()
+    };
+    assert_eq!(overflow_action_title(&legacy), "Use Salve");
+}
+
+#[test]
 fn takeable_items_exclude_trace_marks() {
     let mut content = minimal_test_pack();
     content.items.extend([
