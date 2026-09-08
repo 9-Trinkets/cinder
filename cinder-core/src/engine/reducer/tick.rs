@@ -97,6 +97,9 @@ pub(super) fn advance_house_progress_objectives(
 
 pub(super) fn increment_shared_room_safety(state: &mut WorldState, content: &ContentPack) {
     for actor in &content.actors {
+        if actor.is_offstage() {
+            continue;
+        }
         let room_id = state.actor_room_id(&actor.id, &actor.room_id).to_string();
         for other in content.actors.iter().filter(|other| other.id > actor.id) {
             let other_room_id = state.actor_room_id(&other.id, &other.room_id).to_string();

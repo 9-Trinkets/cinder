@@ -294,6 +294,7 @@ fn room_hearing_audience(
         .filter(|actor| {
             let id = &actor.id;
             id != speaker_id
+                && !actor.is_offstage()
                 && !state.actor_is_defeated(id, health_stat_id)
                 && state.actor_room_id(id, &actor.room_id) == room_id
         })
@@ -390,6 +391,25 @@ mod tests {
         let remote = direct_channel().hearing_audience(&content, &state, "blair", None);
         assert!(audience.is_empty());
         assert_eq!(remote, vec!["casey".to_string()]);
+    }
+
+    #[test]
+    fn local_audience_excludes_offstage_actors_even_when_overridden_into_the_room() {
+        let mut content = minimal_test_pack();
+        let casey = content
+            .actors
+            .iter_mut()
+            .find(|actor| actor.id == "casey")
+            .unwrap();
+        casey.room_id.clear();
+        let mut state = WorldState::new(&content);
+        // A runtime override tries to place the offstage actor in the room:
+        // offstage still excludes them from local presence.
+        state
+            .actor_room_overrides
+            .insert("casey".to_string(), "lounge".to_string());
+        let audience = local_channel().hearing_audience(&content, &state, "blair", Some("lounge"));
+        assert!(audience.is_empty());
     }
 
     #[test]

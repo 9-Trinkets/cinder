@@ -159,7 +159,7 @@ fn validate_actors(
     item_ids: &[&str],
 ) -> Result<(), Box<dyn Error>> {
     for actor in actors {
-        if !room_index.contains_key(&actor.room_id) {
+        if !actor.is_offstage() && !room_index.contains_key(&actor.room_id) {
             return Err(format!(
                 "actor '{}' room_id '{}' not found in rooms",
                 actor.id, actor.room_id
@@ -463,4 +463,66 @@ pub(crate) fn validate_objective_progress_refs<'a>(
         }
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::content::types::ActorPromptContext;
+    use std::collections::HashMap;
+
+    fn actor(id: &str, room_id: &str) -> ActorDefinition {
+        ActorDefinition {
+            id: id.to_string(),
+            name: id.to_string(),
+            room_id: room_id.to_string(),
+            level: 1,
+            initial_stats: BTreeMap::new(),
+            initial_pair_stats: BTreeMap::new(),
+            aliases: Vec::new(),
+            tags: Vec::new(),
+            inspect_text: String::new(),
+            required_consumable_tags: Vec::new(),
+            attackable: false,
+            guard: false,
+            drops: BTreeMap::new(),
+            xp_drop: 0,
+            attack_interval_minutes: None,
+            initial_hostile: false,
+            attack_kind: String::new(),
+            resistances: BTreeMap::new(),
+            prompt_context: ActorPromptContext {
+                character_notes: Vec::new(),
+                subtext_notes: Vec::new(),
+                response_notes: Vec::new(),
+                behavior_examples: Vec::new(),
+            },
+            act_cast: None,
+            game_data: BTreeMap::new(),
+        }
+    }
+
+    #[test]
+    fn onstage_actor_requires_an_existing_room() {
+        let room_index = HashMap::from([("lounge".to_string(), 0)]);
+        let error = validate_actors(
+            &[actor("alex", "missing")],
+            &room_index,
+            &[],
+        )
+        .unwrap_err()
+        .to_string();
+        assert!(error.contains("room_id 'missing' not found"), "{error}");
+    }
+
+    #[test]
+    fn offstage_actor_skips_the_room_existence_check() {
+        let room_index = HashMap::from([("lounge".to_string(), 0)]);
+        let result = validate_actors(
+            &[actor("handler", "")],
+            &room_index,
+            &[],
+        );
+        assert!(result.is_ok(), "{result:?}");
+    }
 }

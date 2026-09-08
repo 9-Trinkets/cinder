@@ -29,6 +29,7 @@ pub(crate) fn run_actor_tick(
             .iter()
             .filter(|actor| {
                 !content.is_player_actor(&actor.id)
+                    && !actor.is_offstage()
                     && room_is_in_tick_scope(
                         &scope_room_ids,
                         state.actor_room_id(&actor.id, &actor.room_id),

@@ -401,6 +401,11 @@ pub struct ActorPromptContext {
 pub struct ActorDefinition {
     pub id: String,
     pub name: String,
+    /// The actor's home room. Omitted or empty means the actor is offstage:
+    /// it has no spatial location and is excluded from movement, room
+    /// observation, combat, targeting, party, and proximity while keeping its
+    /// identity, relationships, and conversation memory.
+    #[serde(default)]
     pub room_id: String,
     /// Starting level for this actor, seeded into world state at session
     /// creation and read by level-gated rules (e.g. the charm formula).
@@ -462,6 +467,14 @@ pub struct ActorDefinition {
 }
 
 impl ActorDefinition {
+    /// Whether the actor has no home room and therefore no spatial location.
+    /// Offstage actors never participate in movement, room observation,
+    /// combat, targeting, party, or proximity, but keep their identity,
+    /// relationships, and conversation memory.
+    pub fn is_offstage(&self) -> bool {
+        self.room_id.trim().is_empty()
+    }
+
     pub fn attack_interval_minutes(&self, default_minutes: u32) -> u32 {
         self.attack_interval_minutes.unwrap_or(default_minutes)
     }

@@ -91,12 +91,13 @@ fn living_follower_ids(state: &WorldState, content: &ContentPack) -> Vec<String>
     state
         .relationships
         .iter()
-        .filter_map(|(actor_id, relationship)| {
-            (relationship.follows_player
+        .filter(|(actor_id, relationship)| {
+            relationship.follows_player
                 && actor_id.as_str() != content.settings.combat.player_actor_id
-                && !state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id))
-            .then(|| actor_id.clone())
+                && !content.actor_is_offstage(actor_id)
+                && !state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id)
         })
+        .map(|(actor_id, _)| actor_id.clone())
         .collect()
 }
 

@@ -81,6 +81,13 @@ impl ContentPack {
         self.actor_index.get(actor_id).map(|&i| &self.actors[i])
     }
 
+    /// Whether `actor_id` is authored without a home room and is therefore
+    /// offstage (no spatial participation). Unknown actor ids are treated as
+    /// onstage so callers can't accidentally hide a real actor.
+    pub fn actor_is_offstage(&self, actor_id: &str) -> bool {
+        self.actor(actor_id).is_some_and(|actor| actor.is_offstage())
+    }
+
     /// Whether `actor_id` is the player-controlled actor. Packs may declare
     /// the player as an ordinary actor entry (id matching
     /// `combat.player_actor_id`); every NPC-oriented loop must skip it.

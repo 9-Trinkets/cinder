@@ -175,6 +175,7 @@ impl WorldState {
         let mut actor_known_room_ids = content
             .actors
             .iter()
+            .filter(|actor| !actor.is_offstage())
             .map(|actor| (actor.id.clone(), BTreeSet::from([actor.room_id.clone()])))
             .collect::<BTreeMap<_, _>>();
         actor_known_room_ids.insert(
@@ -297,3 +298,33 @@ pub use act_cast::{
     initialize_act_state, remap_story_actor_id, render_dynamic_story_text,
     resolved_actor_prompt_context, story_actor_matches,
 };
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn offstage_actor_has_no_seeded_home_room_but_keeps_identity() {
+        let mut content = crate::engine::test_fixtures::minimal_test_pack();
+        content
+            .actors
+            .iter_mut()
+            .find(|actor| actor.id == "blair")
+            .unwrap()
+            .room_id
+            .clear();
+        let state = WorldState::new(&content);
+
+        assert!(content.actor("blair").unwrap().is_offstage());
+        assert!(
+            !state.actor_known_room_ids.contains_key("blair"),
+            "offstage actor must not be seeded a (nonexistent) home room"
+        );
+        assert!(
+            !state
+                .actor_stats_snapshot("blair")
+                .is_empty(),
+            "offstage actor must still carry its authored identity and stats"
+        );
+    }
+}

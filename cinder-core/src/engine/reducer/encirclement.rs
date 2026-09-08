@@ -50,7 +50,7 @@ pub(super) fn trigger_surrounded_hooks(
 ) {
     let player_id = &content.settings.combat.player_actor_id;
     for actor in &content.actors {
-        if actor.id == *player_id {
+        if actor.id == *player_id || actor.is_offstage() {
             continue;
         }
         let relationship = state.relationship(&actor.id);

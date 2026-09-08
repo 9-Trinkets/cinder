@@ -82,6 +82,11 @@ pub(crate) fn sync_followers_to_room(
         if follower_id == content.settings.combat.player_actor_id {
             continue;
         }
+        // Offstage followers (e.g. a remote handler) are not physically drawn
+        // into the player's room by party membership.
+        if content.actor_is_offstage(&follower_id) {
+            continue;
+        }
 
         if state.actor_stat(&follower_id, &content.settings.combat.health_stat_id) <= 0 {
             continue;
@@ -122,5 +127,27 @@ mod tests {
         handle_player_moved(&mut state, &content, "kitchen", &mut lines);
 
         assert!(state.actor_has_visited_room("player", "kitchen"));
+    }
+
+    #[test]
+    fn offstage_follower_is_not_dragged_into_the_player_room() {
+        let mut content = minimal_test_pack();
+        content.settings.combat.player_actor_id = "player".to_string();
+        let blair = content
+            .actors
+            .iter_mut()
+            .find(|actor| actor.id == "blair")
+            .unwrap();
+        blair.room_id.clear();
+        let mut state = WorldState::new(&content);
+        let mut relationship = state.relationship("blair");
+        relationship.follows_player = true;
+        state.set_relationship("blair", relationship);
+        let mut lines = NarrativeLines::default();
+
+        handle_player_moved(&mut state, &content, "kitchen", &mut lines);
+
+        assert!(!state.actor_room_overrides.contains_key("blair"));
+        assert_eq!(state.actor_room_id("blair", ""), "");
     }
 }
