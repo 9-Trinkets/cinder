@@ -39,29 +39,18 @@ function isKnownMenuItem(id: string): boolean {
 }
 
 function flattenItems(t: UiSnapshot['ui_text']): FlatItem[] {
-  let declared = t.shell_menu.items
-    .filter(item => isKnownMenuItem(item.id))
-    .map(item => ({ id: item.id, label: item.label }))
-
-  if (declared.length === 0) {
-    declared = CANONICAL_FALLBACK
-      .map(entry => ({ id: entry.id, label: t[entry.labelKey as keyof typeof t] as string || entry.id }))
-      .filter(i => isKnownMenuItem(i.id))
+  // The menu is pack-authored: only what the pack declares (that maps to a
+  // known platform view) is shown, so no capability is forced in for packs
+  // that route it elsewhere (e.g. room switching via the Move panel).
+  if (t.shell_menu.items.length > 0) {
+    return t.shell_menu.items
+      .filter(item => isKnownMenuItem(item.id))
+      .map(item => ({ id: item.id, label: item.label }))
   }
 
-  // Rooms and language are web-platform capabilities backed by the UI
-  // snapshot; surface them even when a pack does not list them, so the menu
-  // never collapses to just "Exit" on viewports without the sidebar. Follow
-  // stays pack-authored: it is an escort-mode feature only some packs use.
-  const ids = new Set(declared.map(i => i.id))
-  const canonical: FlatItem[] = [
-    { id: 'rooms', label: t.room_switcher_title as string || 'Rooms' },
-    { id: 'language', label: t.language_menu_label as string || 'Language' },
-  ].filter(item => !ids.has(item.id))
-
-  const extras = declared.filter(i => i.id !== 'exit')
-  const exit = declared.find(i => i.id === 'exit')
-  return exit ? [...canonical, ...extras, exit] : [...canonical, ...extras]
+  return CANONICAL_FALLBACK
+    .map(entry => ({ id: entry.id, label: t[entry.labelKey as keyof typeof t] as string || entry.id }))
+    .filter(i => isKnownMenuItem(i.id))
 }
 
 export default function ShellMenu({
