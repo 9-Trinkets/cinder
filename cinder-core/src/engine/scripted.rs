@@ -389,8 +389,20 @@ mod tests {
         let lines = drain_scripted_sequences(&content, &mut state);
 
         assert_eq!(lines.len(), 3);
+        assert_eq!(
+            lines[0].kind,
+            crate::engine::narrative::NarrativeLineKind::Channel
+        );
         assert_eq!(lines[0].text, "Blair (to Casey): Who are you?");
+        assert_eq!(
+            lines[1].kind,
+            crate::engine::narrative::NarrativeLineKind::Narration
+        );
         assert_eq!(lines[1].text, "Static answers before the voice does.");
+        assert_eq!(
+            lines[2].kind,
+            crate::engine::narrative::NarrativeLineKind::Channel
+        );
         assert_eq!(lines[2].text, "Casey (to Blair): Your assigned handler.");
         assert_eq!(state.turn_number, starting_turn);
         assert_eq!(state.current_time_minutes, starting_time);

@@ -18,6 +18,9 @@ pub enum NarrativeLineKind {
     /// A cold, system-voice teaching line (e.g. sigil instructions at the
     /// start of a level). Distinct from prose and from error feedback.
     System,
+    /// A remote comms message (e.g. the handler's radio check-ins over the
+    /// handler-comms channel). Distinct from spoken-in-room dialogue.
+    Channel,
 }
 
 /// A single line of narrative output, tagged with how it should be styled.
@@ -62,6 +65,13 @@ impl NarrativeLine {
             text: text.into(),
         }
     }
+
+    pub fn channel(text: impl Into<String>) -> Self {
+        Self {
+            kind: NarrativeLineKind::Channel,
+            text: text.into(),
+        }
+    }
 }
 
 impl From<String> for NarrativeLine {
@@ -94,6 +104,10 @@ impl NarrativeLines {
 
     pub fn system(&mut self, text: impl Into<String>) {
         self.0.push(NarrativeLine::system(text));
+    }
+
+    pub fn channel(&mut self, text: impl Into<String>) {
+        self.0.push(NarrativeLine::channel(text));
     }
 
     /// Extends from a stream of plain strings, each becoming narration.

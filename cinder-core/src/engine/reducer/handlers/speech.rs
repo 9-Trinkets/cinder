@@ -123,12 +123,17 @@ fn handle_targeted_message(
         state.turn_number,
     );
     if message_hearable(state, message) {
-        lines.narration(render_actor_speech_line(
+        let line = render_actor_speech_line(
             content,
             actor_name,
             Some(recipient_name),
             &message.text,
-        ));
+        );
+        if message.delivery.kind == ChannelKind::Direct {
+            lines.channel(line);
+        } else {
+            lines.narration(line);
+        }
     }
 }
 
@@ -174,7 +179,12 @@ fn handle_broadcast_message(
         .unwrap_or_else(|error| eprintln!("[cinder] hook warning (speech): {error}"));
     }
     if message_hearable(state, message) {
-        lines.narration(render_actor_speech_line(content, actor_name, None, &message.text));
+        let line = render_actor_speech_line(content, actor_name, None, &message.text);
+        if message.delivery.kind == ChannelKind::Direct {
+            lines.channel(line);
+        } else {
+            lines.narration(line);
+        }
     }
 }
 

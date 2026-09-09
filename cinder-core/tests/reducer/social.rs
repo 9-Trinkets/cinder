@@ -1,6 +1,7 @@
 use super::common::*;
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::messaging::ChannelMessage;
+use cinder_core::engine::narrative::NarrativeLineKind;
 use cinder_core::engine::reducer::apply_events;
 use cinder_core::engine::state::{ConversationMemoryKind, WorldState};
 
@@ -211,12 +212,13 @@ fn visible_speech_lines_include_target_when_present() {
 
     let output = apply_events(&mut state, &pack, &events);
 
-    assert!(
-        output
-            .lines
-            .iter()
-            .any(|line| line.text == "Alex (to Blair): Hey.")
-    );
+    let targeted = output
+        .lines
+        .iter()
+        .find(|line| line.text == "Alex (to Blair): Hey.")
+        .expect("targeted speech should be rendered");
+    // Same-room speech stays prose; only remote comms get the channel kind.
+    assert_eq!(targeted.kind, NarrativeLineKind::Narration);
 }
 
 #[test]

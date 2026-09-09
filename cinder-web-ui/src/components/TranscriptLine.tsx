@@ -1,6 +1,6 @@
 import { memo, type CSSProperties } from 'react'
 
-export type LineKind = 'narration' | 'heading' | 'player' | 'error' | 'system'
+export type LineKind = 'narration' | 'heading' | 'player' | 'error' | 'system' | 'channel'
 
 export interface Line {
   text: string
@@ -148,6 +148,10 @@ const TranscriptLine = memo(function TranscriptLine({
     // Cold, clipped teaching lines in the crt-glow pale blue-white family.
     className = 'text-xs'
     style = { color: 'var(--color-crt-glow)' }
+  } else if (line.kind === 'channel') {
+    // Remote comms (e.g. the handler's radio check-ins): a warm transmitted
+    // voice, distinct from spoken-in-room dialogue and cold system lines.
+    className = 'text-rose italic'
   }
 
   return (

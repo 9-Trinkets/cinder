@@ -22,6 +22,7 @@ pub(super) fn narrative_role(kind: &cinder_core::engine::narrative::NarrativeLin
         cinder_core::engine::narrative::NarrativeLineKind::Error => "error",
         cinder_core::engine::narrative::NarrativeLineKind::Narration => "narrative",
         cinder_core::engine::narrative::NarrativeLineKind::System => "system",
+        cinder_core::engine::narrative::NarrativeLineKind::Channel => "channel",
     }
 }
 
@@ -31,6 +32,7 @@ pub(super) fn narrative_kind(role: &str) -> cinder_core::engine::narrative::Narr
         "heading" => cinder_core::engine::narrative::NarrativeLineKind::Heading,
         "error" => cinder_core::engine::narrative::NarrativeLineKind::Error,
         "system" => cinder_core::engine::narrative::NarrativeLineKind::System,
+        "channel" => cinder_core::engine::narrative::NarrativeLineKind::Channel,
         _ => cinder_core::engine::narrative::NarrativeLineKind::Narration,
     }
 }
