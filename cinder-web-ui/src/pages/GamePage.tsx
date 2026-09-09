@@ -305,6 +305,7 @@ export default function GamePage() {
           onChangeLocale={doChangeLocale}
           onExit={doExit}
           busy={busy}
+          onTakeItem={itemId => void execCommand(`take ${itemId}`)}
         />
       )}
 

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Modal from './Modal'
 import Button from './Button'
 import Badge from './Badge'
+import StatusPanel from './StatusPanel'
 import type { UiSnapshot } from '../api'
 
 type View = 'main' | 'rooms' | 'follow' | 'language'
@@ -16,6 +17,7 @@ interface ShellMenuProps {
   onChangeLocale: (locale: string) => void
   onExit: () => void
   busy: boolean
+  onTakeItem?: (itemId: string) => void
 }
 
 interface FlatItem {
@@ -72,6 +74,7 @@ export default function ShellMenu({
   onChangeLocale,
   onExit,
   busy,
+  onTakeItem,
 }: ShellMenuProps) {
   const t = ui.ui_text
   const items = flattenItems(t)
@@ -144,6 +147,7 @@ export default function ShellMenu({
     onClose={onClose}
     onExit={onExit}
     busy={busy}
+    onTakeItem={onTakeItem}
   />
 }
 
@@ -155,9 +159,10 @@ interface MainMenuProps {
   onClose: () => void
   onExit: () => void
   busy: boolean
+  onTakeItem?: (itemId: string) => void
 }
 
-function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy }: MainMenuProps) {
+function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy, onTakeItem }: MainMenuProps) {
   const [submenu, setSubmenu] = useState<{ id: string; label: string }[] | null>(null)
   const [submenuTitle, setSubmenuTitle] = useState('')
 
@@ -193,6 +198,12 @@ function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy }: MainMen
             </Badge>
           )}
         </div>
+      </div>
+      {/* On viewports without the sidebar the menu is the only status surface,
+          so render the packed status sections (map, vitals, level, party, …)
+          here; the sidebar already shows them on larger screens. */}
+      <div className="lg:hidden mb-1">
+        <StatusPanel uiSnapshot={ui} onTakeItem={onTakeItem} />
       </div>
       {items.map((item) => {
         const packItem = t.shell_menu.items.find(i => i.id === item.id)
