@@ -354,7 +354,7 @@ mod shipped_pack_load_tests {
                 );
                 assert_eq!(
                     loaded.message("item.acquired_inventory"),
-                    Some("Okay, inventory shows {label} ready. Keep it close. Sorry\u{2014}that sounded like an order.")
+                    Some("The inventory scan picked up the {label} \u{2014} you've got it on you now. Keep it close. Sorry, that came out like an order.")
                 );
                 assert_eq!(
                     loaded.message_voice("item.acquired_inventory"),

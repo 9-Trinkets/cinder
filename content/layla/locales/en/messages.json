@@ -21,48 +21,48 @@
     "item.spawn_scroll_read.learned": "The fire-cured bark is cool against your palm. The amber circle resolves into a dictated rule: spawn \u2014 call one creature into the empty space. What answers, and how strong it stands, depends on the strength of the hand that draws it. The lines settle into your hand. You know the shape.",
     "item.acquired_inventory": {
         "voice": "handler",
-        "text": "Okay, inventory shows {label} ready. Keep it close. Sorry\u2014that sounded like an order."
+        "text": "The inventory scan picked up the {label} \u2014 you've got it on you now. Keep it close. Sorry, that came out like an order."
     },
     "item.acquired_room": {
         "voice": "handler",
-        "text": "I have the {label} logged at your position. It should be right there."
+        "text": "I have the {label} down at your position \u2014 it should be right there on the ground. Let me know if the scan's lying."
     },
     "item.consumed_player": {
         "voice": "handler",
-        "text": "The monitor says you finished the {label}. Are you feeling all right? I mean\u2014status looks stable."
+        "text": "The monitor shows the {label} used. Are you all right? I mean \u2014 vitals look stable. That's what I meant."
     },
     "item.consumed_actor": {
         "voice": "handler",
-        "text": "Logged: {consumer_name} accepted the {label}. The handling guide says that's expected."
+        "text": "{consumer_name} accepted the {label}. The guide says that's expected. I don't know how the guide would know, but okay."
     },
     "item.consumed_use": {
         "voice": "handler",
-        "text": "The {label} registered as used. Good. I think that worked."
+        "text": "The {label}'s registering as used. Good. I think that worked."
     },
     "item.take_nothing": "I'm not showing anything there to take. Check the floor anyway; the scanner misses things.",
     "item.take_not_here": "I can't locate that item at your position. Sorry.",
     "item.taken": {
         "voice": "handler",
-        "text": "Got it. The {label} is in your inventory now."
+        "text": "Got it. The {label}'s in your inventory now. I checked the list twice."
     },
     "item.takedenied": {
         "voice": "handler",
-        "text": "Don't pull at the {label}. The field notes say it's anchored to the floor."
+        "text": "Leave the {label} where it is \u2014 the field notes say it's anchored to the floor. I'd rather not find out if they're wrong."
     },
-    "item.drop_nothing": "Your inventory is empty. At least, that's what my panel says.",
-    "item.drop_not_have": "I can't find that in your inventory. Let me know if you can see it and I can't.",
-    "item.drop_equipped": "The procedure says you have to unequip the {label} before you drop it.",
+    "item.drop_nothing": "Your inventory's empty, or my panel is. At least, that's what my panel says.",
+    "item.drop_not_have": "I can't find that in your inventory. If you can see it and I can't, tell me and I'll trust you over the readout.",
+    "item.drop_equipped": "The procedure says you have to unequip the {label} before you drop it. I know, it's a rule with extra steps.",
     "item.dropped": {
         "voice": "handler",
-        "text": "Logged. The {label} is on the ground at your position."
+        "text": "The {label}'s on the ground at your position now. I've got it logged. I log everything."
     },
     "equipment.equipped": {
         "voice": "handler",
-        "text": "The {item} is ready. The display reports: {bonuses}. Does it feel secure?"
+        "text": "The {item}'s showing equipped \u2014 {bonuses}. Does that feel right to you? I can only see numbers."
     },
     "equipment.unequipped": {
         "voice": "handler",
-        "text": "Okay, the {item} is stowed."
+        "text": "Okay, the {item}'s stowed. Off the board, so to speak."
     },
     "equipment.not_equipped": "The {item} isn't equipped. I checked twice.",
     "equipment.already_equipped": "You already have the {item} equipped. Sorry\u2014the panel made it look like it hadn't updated.",
