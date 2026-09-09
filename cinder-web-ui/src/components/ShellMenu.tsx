@@ -37,17 +37,29 @@ function isKnownMenuItem(id: string): boolean {
 }
 
 function flattenItems(t: UiSnapshot['ui_text']): FlatItem[] {
-  if (t.shell_menu.items.length > 0) {
-    return t.shell_menu.items
-      .filter(item => isKnownMenuItem(item.id))
-      .map(item => ({ id: item.id, label: item.label }))
+  let declared = t.shell_menu.items
+    .filter(item => isKnownMenuItem(item.id))
+    .map(item => ({ id: item.id, label: item.label }))
+
+  if (declared.length === 0) {
+    declared = CANONICAL_FALLBACK
+      .map(entry => ({ id: entry.id, label: t[entry.labelKey as keyof typeof t] as string || entry.id }))
+      .filter(i => isKnownMenuItem(i.id))
   }
 
-  const out: FlatItem[] = []
-  for (const entry of CANONICAL_FALLBACK) {
-    out.push({ id: entry.id, label: t[entry.labelKey as keyof typeof t] as string || entry.id })
-  }
-  return out.filter(i => isKnownMenuItem(i.id))
+  // Rooms/follow/language are web-platform capabilities backed by the UI
+  // snapshot; surface them even when a pack does not list them, so the menu
+  // never collapses to just "Exit" on viewports without the sidebar.
+  const ids = new Set(declared.map(i => i.id))
+  const canonical: FlatItem[] = [
+    { id: 'rooms', label: t.room_switcher_title as string || 'Rooms' },
+    { id: 'follow', label: t.follow_actor_title as string || 'Follow' },
+    { id: 'language', label: t.language_menu_label as string || 'Language' },
+  ].filter(item => !ids.has(item.id))
+
+  const extras = declared.filter(i => i.id !== 'exit')
+  const exit = declared.find(i => i.id === 'exit')
+  return exit ? [...canonical, ...extras, exit] : [...canonical, ...extras]
 }
 
 export default function ShellMenu({
