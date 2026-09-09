@@ -379,9 +379,9 @@ mod shipped_pack_load_tests {
                     Some("handler-introduction")
                 );
                 let opening_sequence = loaded.sequence("handler-introduction").unwrap();
-                assert_eq!(opening_sequence.steps.len(), 7);
+                assert_eq!(opening_sequence.steps.len(), 5);
                 assert!(matches!(
-                    &opening_sequence.steps[3],
+                    &opening_sequence.steps[2],
                     crate::content::types::ScriptedLine::Channel {
                         speaker_id,
                         recipient_id: Some(recipient_id),
