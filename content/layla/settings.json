@@ -80,5 +80,146 @@
       "contribution_percent": 100
     }
   },
+  "party": {
+    "roles": [
+      {
+        "id": "defender"
+      },
+      {
+        "id": "striker"
+      }
+    ],
+    "actor_roles": {
+      "golem-dark-nw": [
+        "defender"
+      ],
+      "golem-dark-sw": [
+        "defender"
+      ],
+      "golem-pale-ne": [
+        "striker"
+      ],
+      "golem-pale-se": [
+        "striker"
+      ]
+    },
+    "combat_rules": [
+      {
+        "id": "survival-hold",
+        "tier": "survival",
+        "window": "after_hostile_damage",
+        "action": "hold",
+        "conditions": [
+          {
+            "condition": "actor_health_at_most_percent",
+            "percent": 25
+          }
+        ],
+        "target": "self_actor",
+        "cooldown": {
+          "mode": "actor_combat_interval"
+        },
+        "message": "combat.party_holds"
+      },
+      {
+        "id": "ordered-guard",
+        "tier": "explicit_order",
+        "window": "before_hostile_damage",
+        "action": "intercept",
+        "conditions": [
+          {
+            "condition": "order_is",
+            "orders": [
+              "guard"
+            ]
+          }
+        ],
+        "target": "player",
+        "candidate_priority": [
+          {
+            "priority": "highest_health_percent"
+          },
+          {
+            "priority": "highest_defense"
+          },
+          {
+            "priority": "content_order"
+          }
+        ],
+        "cooldown": {
+          "mode": "actor_combat_interval"
+        },
+        "message": "combat.guard_intercepts"
+      },
+      {
+        "id": "ordered-assist",
+        "tier": "explicit_order",
+        "window": "after_hostile_damage",
+        "action": "counterattack",
+        "conditions": [
+          {
+            "condition": "order_is",
+            "orders": [
+              "assist"
+            ]
+          }
+        ],
+        "target": "attacker",
+        "cooldown": {
+          "mode": "actor_combat_interval"
+        },
+        "message": "combat.party_counterattack"
+      },
+      {
+        "id": "defender-default",
+        "tier": "default_role",
+        "window": "before_hostile_damage",
+        "action": "intercept",
+        "conditions": [
+          {
+            "condition": "has_role",
+            "role_id": "defender"
+          },
+          {
+            "condition": "actor_health_at_least_percent",
+            "percent": 25
+          }
+        ],
+        "target": "player",
+        "candidate_priority": [
+          {
+            "priority": "highest_health_percent"
+          },
+          {
+            "priority": "highest_defense"
+          },
+          {
+            "priority": "content_order"
+          }
+        ],
+        "cooldown": {
+          "mode": "actor_combat_interval"
+        },
+        "message": "combat.guard_intercepts"
+      },
+      {
+        "id": "striker-default",
+        "tier": "default_role",
+        "window": "after_hostile_damage",
+        "action": "counterattack",
+        "conditions": [
+          {
+            "condition": "has_role",
+            "role_id": "striker"
+          }
+        ],
+        "target": "attacker",
+        "cooldown": {
+          "mode": "actor_combat_interval"
+        },
+        "message": "combat.party_counterattack"
+      }
+    ]
+  },
   "charm_rule": "int_and_level"
 }

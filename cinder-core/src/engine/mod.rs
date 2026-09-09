@@ -13,6 +13,7 @@ pub mod menus;
 pub mod messaging;
 pub mod narrative;
 pub mod neuron;
+mod party_policy;
 pub mod reducer;
 pub mod roles;
 pub mod runtime;

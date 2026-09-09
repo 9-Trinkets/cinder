@@ -14,6 +14,7 @@ pub use variable_store::{
 mod clock;
 mod conversation;
 mod inventory;
+mod party;
 mod relationships;
 mod sequences;
 mod stats;
@@ -90,6 +91,14 @@ pub struct WorldState {
     /// never touch relationships carry no state.
     #[serde(default)]
     pub relationships: BTreeMap<String, ActorRelationship>,
+    /// Latest persistent order for each allied actor. Terminal entries remain
+    /// available for status/failure presentation until a new order replaces
+    /// them.
+    #[serde(default)]
+    pub party_orders: BTreeMap<String, crate::content::types::PartyOrder>,
+    /// Earliest game minute at which each party member may react again.
+    #[serde(default)]
+    pub party_reaction_ready_at: BTreeMap<String, u32>,
     /// Next game-minute at which each hostile actor may autonomously strike
     /// the player. Only meaningful while the stance is hostile; entries are
     /// seeded when a mob wakes and cleared when it leaves hostility.
@@ -273,6 +282,8 @@ impl WorldState {
                         }),
                 )
                 .collect(),
+            party_orders: BTreeMap::new(),
+            party_reaction_ready_at: BTreeMap::new(),
             next_hostile_strike_at: BTreeMap::new(),
             equipment: BTreeMap::new(),
             actor_xp: BTreeMap::new(),

@@ -1,10 +1,10 @@
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
-use std::collections::{BTreeSet};
+use std::collections::BTreeSet;
 
 use super::{
     ActorTickScope, AutonomousHostilityMode, CombatSettingsDefinition, MessagingChannel,
-    PeriodicActorEffectDefinition, ThemeDefinition,
+    PartyPolicyDefinition, PeriodicActorEffectDefinition, ThemeDefinition,
 };
 
 /// How the "actor surrounded" conversion hook decides whether an encircled
@@ -105,6 +105,9 @@ pub struct ContentSettingsDefinition {
     /// Binds the generic strike mechanism to this pack's stat vocabulary.
     #[serde(default)]
     pub combat: CombatSettingsDefinition,
+    /// Typed actor roles and ordered autonomous party combat rules.
+    #[serde(default)]
+    pub party: PartyPolicyDefinition,
     /// Whether encircling an actor converts it at all, and under what rule
     /// (see [`CharmRule`]).
     #[serde(default)]
@@ -180,6 +183,7 @@ impl Default for ContentSettingsDefinition {
             channels: Vec::new(),
             feedback_channel_id: String::default(),
             combat: CombatSettingsDefinition::default(),
+            party: PartyPolicyDefinition::default(),
             charm_rule: CharmRule::None,
             starting_items: BTreeMap::new(),
             equipment_slots: BTreeSet::new(),

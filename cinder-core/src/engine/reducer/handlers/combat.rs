@@ -1,9 +1,10 @@
-use crate::engine::reducer::command_effects::{actor_display_name, defeat_player_if_dead};
-use crate::engine::reducer::combat::resisted_damage;
 use crate::content::types::ContentPack;
 use crate::engine::narrative::NarrativeLines;
+use crate::engine::party_policy::{consume_party_reaction, select_defensive_reaction};
+use crate::engine::reducer::combat::resisted_damage;
+use crate::engine::reducer::command_effects::{actor_display_name, defeat_player_if_dead};
 use crate::engine::state::{ActorStance, GamePhase, WorldState};
-fn living_guard_in_room(
+fn legacy_guard_in_room(
     state: &WorldState,
     content: &ContentPack,
     room_id: &str,
@@ -55,7 +56,20 @@ pub(crate) fn handle_hostile_strike(
     // A guarding follower intercepts the blow aimed at the player. The guard
     // soaks the attacker's raw strike against its own defense, floored by the
     // minimum-damage rule just like a direct hit on the player.
-    if let Some(guard_id) = living_guard_in_room(state, content, state.current_room_id.as_str()) {
+    let defensive_reaction = select_defensive_reaction(content, state);
+    let guard_id = defensive_reaction
+        .as_ref()
+        .map(|decision| decision.actor_id.clone())
+        .or_else(|| {
+            content
+                .settings
+                .party
+                .combat_rules
+                .is_empty()
+                .then(|| legacy_guard_in_room(state, content, state.current_room_id.as_str()))
+                .flatten()
+        });
+    if let Some(guard_id) = guard_id {
         let guard_defense = state
             .effective_actor_stat(content, &guard_id, &combat.defense_stat_id)
             .max(0);
@@ -74,8 +88,13 @@ pub(crate) fn handle_hostile_strike(
             state
                 .adjust_actor_stat(&guard_id, &combat.health_stat_id, -guard_takes)
                 .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
+            let message = defensive_reaction
+                .as_ref()
+                .map(|decision| decision.message.as_str())
+                .filter(|message| !message.is_empty())
+                .unwrap_or("combat.guard_intercepts");
             if let Some(line) = content.render_message(
-                "combat.guard_intercepts",
+                message,
                 &[
                     ("actor", actor_name.as_str()),
                     ("guard", guard_name.as_str()),
@@ -93,6 +112,9 @@ pub(crate) fn handle_hostile_strike(
         {
             lines.narration(line);
         }
+        if let Some(decision) = defensive_reaction.as_ref() {
+            consume_party_reaction(content, state, decision);
+        }
     } else {
         let damage = resisted_damage(content, &combat.player_actor_id, attack_kind, raw_damage);
         if raw_damage > 0 && damage == 0 {
@@ -106,8 +128,11 @@ pub(crate) fn handle_hostile_strike(
             state
                 .adjust_actor_stat(&combat.player_actor_id, &combat.health_stat_id, -damage)
                 .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
-            let remaining =
-                state.effective_actor_stat(content, &combat.player_actor_id, &combat.health_stat_id);
+            let remaining = state.effective_actor_stat(
+                content,
+                &combat.player_actor_id,
+                &combat.health_stat_id,
+            );
             if let Some(line) = content.render_message(
                 "combat.hostile_strike",
                 &[

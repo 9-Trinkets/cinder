@@ -10,8 +10,8 @@ use crate::content::loader::fs::{
 use crate::content::loader::index::{build_index, collect_act_cast};
 use crate::content::loader::validation::{
     PackContext, require_known_id, validate_actions, validate_combat_settings, validate_contents,
-    validate_feedback_channel, validate_items, validate_maps, validate_periodic_actor_effects,
-    validate_scripted_sequences,
+    validate_feedback_channel, validate_items, validate_maps, validate_party_policy,
+    validate_periodic_actor_effects, validate_scripted_sequences,
 };
 use crate::content::types::{
     ActionsDefinition, ActorDefinition, BeatObjectivesDefinition, BeatsDefinition,
@@ -183,6 +183,7 @@ pub fn load_pack_from_dir_with_locale(
     let pair_stat_ids = stats.pair.keys().map(String::as_str).collect::<Vec<_>>();
 
     validate_maps(&maps, &room_ids, &actor_ids)?;
+    validate_party_policy(&settings.party, &actor_ids, &messages)?;
     validate_scripted_sequences(
         &sequences,
         opening.opening_sequence_id.as_deref(),
@@ -354,7 +355,9 @@ mod shipped_pack_load_tests {
                 );
                 assert_eq!(
                     loaded.message("item.acquired_inventory"),
-                    Some("The inventory scan picked up the {label} \u{2014} you've got it on you now. Keep it close. Sorry, that came out like an order.")
+                    Some(
+                        "The inventory scan picked up the {label} \u{2014} you've got it on you now. Keep it close. Sorry, that came out like an order."
+                    )
                 );
                 assert_eq!(
                     loaded.message_voice("item.acquired_inventory"),
@@ -368,8 +371,33 @@ mod shipped_pack_load_tests {
                     loaded.message_voice("combat.attack_hit"),
                     PackMessageVoice::Narration
                 );
+                assert_eq!(loaded.settings.party.roles.len(), 2);
                 assert_eq!(
-                    loaded.channel("handler-comms")
+                    loaded
+                        .settings
+                        .party
+                        .actor_roles
+                        .get("golem-dark-nw")
+                        .map(Vec::as_slice),
+                    Some(&["defender".to_string()][..])
+                );
+                assert_eq!(
+                    loaded
+                        .settings
+                        .party
+                        .actor_roles
+                        .get("golem-pale-ne")
+                        .map(Vec::as_slice),
+                    Some(&["striker".to_string()][..])
+                );
+                assert_eq!(loaded.settings.party.combat_rules.len(), 5);
+                assert_eq!(
+                    loaded.settings.party.combat_rules[0].tier,
+                    crate::content::types::PartyDecisionTier::Survival
+                );
+                assert_eq!(
+                    loaded
+                        .channel("handler-comms")
                         .map(|channel| channel.participants.as_slice()),
                     Some(&["player".to_string(), "handler".to_string()][..])
                 );

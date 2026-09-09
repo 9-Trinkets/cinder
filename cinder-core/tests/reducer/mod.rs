@@ -9,5 +9,6 @@ mod equipment;
 mod feedback;
 mod items;
 mod observation;
+mod party_defense;
 mod sigils;
 mod social;
