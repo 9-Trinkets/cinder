@@ -80,6 +80,7 @@ export function useSession() {
       channelSurfingOnly.current = snap.channel_surfing_only
       setUiSnapshot(snap)
       setActiveMenu(snap.active_menu ?? null)
+      setGameOver(snap.game_closure !== null)
     }).catch(() => {}).finally(() => {
       refreshInFlightRef.current = false
       if (refreshQueuedRef.current) {
@@ -364,6 +365,7 @@ export function useSession() {
         channelSurfingOnly.current = snap.channel_surfing_only
         setUiSnapshot(snap)
         setActiveMenu(snap.active_menu ?? null)
+        setGameOver(snap.game_closure !== null)
       })
       .catch(() => {})
 
