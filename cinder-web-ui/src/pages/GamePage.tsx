@@ -73,8 +73,10 @@ export default function GamePage() {
   } = session
 
   return (
-    <div className="h-dvh flex flex-col bg-surface overflow-hidden">
-      <div style={uiSnapshot?.theme ? themeVars(uiSnapshot.theme) : undefined} className="contents">
+    <div
+      style={uiSnapshot?.theme ? themeVars(uiSnapshot.theme) : undefined}
+      className="h-dvh flex flex-col bg-surface overflow-hidden"
+    >
       <header className="sticky top-0 z-10 bg-surface flex items-center justify-between gap-3 px-4 py-3 border-b border-subtle shrink-0">
         <div className="flex items-center gap-2">
           <button onClick={() => navigate(`/games/pack/${uiSnapshot?.pack_id}`)} className="text-sm text-muted hover:text-text cursor-pointer">&larr; Back</button>
@@ -109,7 +111,7 @@ export default function GamePage() {
         </button>
       )}
 
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex min-h-0 overflow-hidden">
         <div className="flex-1 flex flex-col overflow-hidden">
           <TranscriptPane
             lines={lines}
@@ -283,14 +285,13 @@ export default function GamePage() {
         </div>
 
         {uiSnapshot && (
-          <aside className="hidden lg:flex w-72 shrink-0 border-l border-subtle p-4 flex-col text-sm overflow-y-auto self-stretch">
+          <aside className="hidden lg:flex lg:w-64 xl:w-72 2xl:w-80 min-h-0 shrink-0 border-l border-subtle p-4 flex-col text-sm overflow-y-auto">
             <StatusPanel uiSnapshot={uiSnapshot} onTakeItem={itemId => void execCommand(`take ${itemId}`)} />
             {uiSnapshot.show_relationship_sidebar && uiSnapshot.relationship_pairs.length > 0 && (
               <RelationshipChart pairs={uiSnapshot.relationship_pairs} />
             )}
           </aside>
         )}
-      </div>
       </div>
 
       {showMenu && uiSnapshot && (
