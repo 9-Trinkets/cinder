@@ -219,8 +219,7 @@ fn validate_channels(
 
 /// A pack's `settings.feedback_channel_id`, when set, must name a declared
 /// *direct* comms channel with a fixed private roster that resolves at least
-/// one non-player speaker — the actor who fronts deterministic operational
-/// feedback to the player.
+/// one non-player speaker for explicit handler-voiced commentary.
 pub(crate) fn validate_feedback_channel(
     feedback_channel_id: &str,
     player_actor_id: &str,

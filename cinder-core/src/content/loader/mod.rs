@@ -355,16 +355,18 @@ mod shipped_pack_load_tests {
                 );
                 assert_eq!(
                     loaded.message("item.acquired_inventory"),
-                    Some(
-                        "The inventory scan picked up the {label} \u{2014} you've got it on you now. Keep it close. Sorry, that came out like an order."
-                    )
+                    Some("INVENTORY UPDATED: {label} acquired.")
                 );
                 assert_eq!(
                     loaded.message_voice("item.acquired_inventory"),
-                    PackMessageVoice::Handler
+                    PackMessageVoice::System
                 );
                 assert_eq!(
                     loaded.message_voice("item.consumed_use"),
+                    PackMessageVoice::System
+                );
+                assert_eq!(
+                    loaded.message_voice("item.takedenied"),
                     PackMessageVoice::Handler
                 );
                 assert_eq!(

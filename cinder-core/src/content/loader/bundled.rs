@@ -9,7 +9,7 @@ use std::error::Error;
 /// keys they define; anything else falls back to the bundled value. This keeps
 /// the engine's default player-facing narration in a JSON file rather than
 /// hardcoded in Rust. Entries may be plain strings (world narration) or
-/// voice-tagged handler messages (see [`PackMessage`]).
+/// explicitly system- or handler-voiced messages (see [`PackMessage`]).
 pub fn read_messages(
     paths: &LocalizedPaths<'_>,
 ) -> Result<BTreeMap<String, PackMessage>, Box<dyn Error>> {

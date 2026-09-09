@@ -8,10 +8,8 @@ use cinder_core::engine::reducer::apply_events;
 use cinder_core::engine::state::WorldState;
 use std::collections::BTreeMap;
 
-/// A pack that fronts deterministic operational feedback through a handler
-/// comms channel (like layla): a direct "handler-comms" roster whose
-/// non-player speaker ("handler") gets attributed feedback lines, plus a
-/// handler-voiced and a world-narrated engine message.
+/// A pack with an explicit handler commentary channel and messages covering
+/// handler, system, and narration delivery.
 pub fn handler_feedback_pack() -> ContentPack {
     let mut pack = reducer_test_pack();
     pack.settings.channels.push(MessagingChannel {
@@ -23,12 +21,21 @@ pub fn handler_feedback_pack() -> ContentPack {
         label: None,
     });
     pack.settings.feedback_channel_id = "handler-comms".to_string();
-    pack.actors.push(test_actor("handler", "Handler", LOUNGE_ID));
+    pack.actors
+        .push(test_actor("handler", "Handler", LOUNGE_ID));
     pack.messages = BTreeMap::from([
         (
             "item.acquired_inventory".to_string(),
-            PackMessage::Handler {
+            PackMessage::Voiced {
+                voice: cinder_core::content::types::PackMessageVoice::Handler,
                 text: "{label} logged as ready.".to_string(),
+            },
+        ),
+        (
+            "item.acquired_room".to_string(),
+            PackMessage::Voiced {
+                voice: cinder_core::content::types::PackMessageVoice::System,
+                text: "OBJECT REGISTERED: {label}.".to_string(),
             },
         ),
         (
@@ -41,7 +48,7 @@ pub fn handler_feedback_pack() -> ContentPack {
 }
 
 #[test]
-fn action_rejected_renders_as_handler_channel_line_when_feedback_channel_declared() {
+fn action_rejected_stays_automated_when_handler_channel_is_declared() {
     let pack = handler_feedback_pack();
     let mut state = WorldState::new(&pack);
 
@@ -49,16 +56,16 @@ fn action_rejected_renders_as_handler_channel_line_when_feedback_channel_declare
         &mut state,
         &pack,
         &[TimestampedWorldEvent::now(WorldEvent::ActionRejected {
-            message: "I can't authorize that action from here.".to_string(),
+            message: "ACTION UNAVAILABLE.".to_string(),
         })],
     );
 
     let line = output
         .lines
         .iter()
-        .find(|line| line.text == "Handler: I can't authorize that action from here.")
-        .expect("the error should be attributed to the handler");
-    assert_eq!(line.kind, NarrativeLineKind::Channel);
+        .find(|line| line.text == "ACTION UNAVAILABLE.")
+        .expect("the automated error should remain visible");
+    assert_eq!(line.kind, NarrativeLineKind::Error);
 }
 
 #[test]
@@ -112,6 +119,35 @@ fn handler_voiced_messages_render_as_handler_channel_lines() {
         "handler-voiced messages should be attributed to the handler: {:?}",
         output.lines
     );
+}
+
+#[test]
+fn system_voiced_messages_render_as_system_lines() {
+    let mut pack = handler_feedback_pack();
+    pack.items = vec![cinder_core::content::types::ItemDefinition {
+        id: "coffee".to_string(),
+        label: "coffee".to_string(),
+        description: "Fresh coffee.".to_string(),
+        ..cinder_core::content::types::ItemDefinition::default()
+    }];
+    rebuild_test_pack_indexes(&mut pack);
+    let mut state = WorldState::new(&pack);
+
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::ItemAcquired {
+            item_id: "coffee".to_string(),
+            storage: cinder_core::content::types::ItemStorageTarget::CurrentRoom,
+        })],
+    );
+
+    let line = output
+        .lines
+        .iter()
+        .find(|line| line.text == "OBJECT REGISTERED: coffee.")
+        .expect("system feedback should be emitted");
+    assert_eq!(line.kind, NarrativeLineKind::System);
 }
 
 #[test]

@@ -6,7 +6,6 @@ use crate::engine::state::{ActorStance, WorldState};
 use serde_json::json;
 
 use super::combat::actor_display_name;
-use super::handlers::push_feedback_line;
 
 /// Cold text narrated when the pack's charm rule refuses an encircled actor,
 /// keeping the refusal diegetic instead of silently failing.
@@ -73,9 +72,7 @@ pub(super) fn trigger_surrounded_hooks(
             continue;
         }
         if !charm_rule_passes(state, content, &actor.id) {
-            push_feedback_line(lines, content, charm_refused_line(), |lines, text| {
-                lines.system(text);
-            });
+            lines.system(charm_refused_line());
             continue;
         }
         let actor_name = actor_display_name(content, &actor.id);

@@ -24,64 +24,64 @@
     "item.scroll_read.learned": "The dry bark is cool in your hand. The spiral unrolls behind your eyes, exact as a dictated rule: drain \u2014 take the strength of what stands within the circle and hold it until it holds nothing at all. The lines settle into your hand. You know the drain sigil.",
     "item.spawn_scroll_read.learned": "The fire-cured bark is cool against your palm. The amber circle resolves into a dictated rule: spawn \u2014 call one creature into the empty space. What answers, and how strong it stands, depends on the strength of the hand that draws it. The lines settle into your hand. You know the shape.",
     "item.acquired_inventory": {
-        "voice": "handler",
-        "text": "The inventory scan picked up the {label} \u2014 you've got it on you now. Keep it close. Sorry, that came out like an order."
+        "voice": "system",
+        "text": "INVENTORY UPDATED: {label} acquired."
     },
     "item.acquired_room": {
-        "voice": "handler",
-        "text": "I have the {label} down at your position \u2014 it should be right there on the ground. Let me know if the scan's lying."
+        "voice": "system",
+        "text": "LOCAL OBJECT REGISTERED: {label}."
     },
     "item.consumed_player": {
-        "voice": "handler",
-        "text": "The monitor shows the {label} used. Are you all right? I mean \u2014 vitals look stable. That's what I meant."
+        "voice": "system",
+        "text": "ITEM CONSUMED: {label}."
     },
     "item.consumed_actor": {
-        "voice": "handler",
-        "text": "{consumer_name} accepted the {label}. The guide says that's expected. I don't know how the guide would know, but okay."
+        "voice": "system",
+        "text": "ITEM TRANSFERRED: {label} to {consumer_name}."
     },
     "item.consumed_use": {
-        "voice": "handler",
-        "text": "The {label}'s registering as used. Good. I think that worked."
+        "voice": "system",
+        "text": "ITEM EXPENDED: {label}."
     },
-    "item.take_nothing": "I'm not showing anything there to take. Check the floor anyway; the scanner misses things.",
-    "item.take_not_here": "I can't locate that item at your position. Sorry.",
+    "item.take_nothing": "NO TAKEABLE OBJECT DETECTED.",
+    "item.take_not_here": "OBJECT NOT PRESENT AT CURRENT POSITION.",
     "item.taken": {
-        "voice": "handler",
-        "text": "Got it. The {label}'s in your inventory now. I checked the list twice."
+        "voice": "system",
+        "text": "INVENTORY UPDATED: {label} acquired."
     },
     "item.takedenied": {
         "voice": "handler",
         "text": "Leave the {label} where it is \u2014 the field notes say it's anchored to the floor. I'd rather not find out if they're wrong."
     },
-    "item.drop_nothing": "Your inventory's empty, or my panel is. At least, that's what my panel says.",
-    "item.drop_not_have": "I can't find that in your inventory. If you can see it and I can't, tell me and I'll trust you over the readout.",
-    "item.drop_equipped": "The procedure says you have to unequip the {label} before you drop it. I know, it's a rule with extra steps.",
+    "item.drop_nothing": "INVENTORY EMPTY.",
+    "item.drop_not_have": "OBJECT NOT PRESENT IN INVENTORY.",
+    "item.drop_equipped": "UNEQUIP {label} BEFORE DROPPING.",
     "item.dropped": {
-        "voice": "handler",
-        "text": "The {label}'s on the ground at your position now. I've got it logged. I log everything."
+        "voice": "system",
+        "text": "LOCAL OBJECT REGISTERED: {label}."
     },
     "equipment.equipped": {
-        "voice": "handler",
-        "text": "The {item}'s showing equipped \u2014 {bonuses}. Does that feel right to you? I can only see numbers."
+        "voice": "system",
+        "text": "EQUIPPED: {item}. {bonuses}."
     },
     "equipment.unequipped": {
-        "voice": "handler",
-        "text": "Okay, the {item}'s stowed. Off the board, so to speak."
+        "voice": "system",
+        "text": "UNEQUIPPED: {item}."
     },
-    "equipment.not_equipped": "The {item} isn't equipped. I checked twice.",
-    "equipment.already_equipped": "You already have the {item} equipped. Sorry\u2014the panel made it look like it hadn't updated.",
-    "error.command_not_now": "Hold on, Layla. The procedure won't let you {verb} right now.",
-    "error.command_needs_more": "Not yet. The checklist still needs: {labels}. I know. I'm sorry.",
-    "error.command_blocked_by_progress": "The system won't let you {verb} again. It already marked these ready: {labels}.",
-    "error.cannot_command_here": "I can't authorize `{command}` from there. The playbook says you need to be in the {room} first.",
-    "error.missing_item": "I don't see any {label} ready in your inventory.",
-    "error.nothing_to_consume": "There's nothing available to consume. Please don't try something unlisted.",
-    "error.no_actor_to_serve": "There's no one there to serve. That's the wording in the procedure, not mine.",
-    "error.no_actor_to_listen": "I don't have anyone nearby who can listen.",
-    "error.no_target": "I can't identify a valid target near you.",
-    "error.target_required": "I need a target before I can clear that action. Try: {actors}.",
-    "error.trace_mark_exists": "You already traced a {label} there. The SOP says one of each kind per room.",
-    "error.no_craftable_available": "There's nothing new you can make there. I checked the unlock table.",
+    "equipment.not_equipped": "OBJECT NOT EQUIPPED: {item}.",
+    "equipment.already_equipped": "OBJECT ALREADY EQUIPPED: {item}.",
+    "error.command_not_now": "ACTION UNAVAILABLE: {verb}.",
+    "error.command_needs_more": "ACTION REQUIREMENTS INCOMPLETE: {labels}.",
+    "error.command_blocked_by_progress": "ACTION ALREADY RESOLVED: {labels}.",
+    "error.cannot_command_here": "INVALID POSITION FOR `{command}`. REQUIRED LOCATION: {room}.",
+    "error.missing_item": "REQUIRED OBJECT NOT FOUND: {label}.",
+    "error.nothing_to_consume": "NO CONSUMABLE OBJECT AVAILABLE.",
+    "error.no_actor_to_serve": "NO VALID RECIPIENT PRESENT.",
+    "error.no_actor_to_listen": "NO LISTENER PRESENT.",
+    "error.no_target": "NO VALID TARGET PRESENT.",
+    "error.target_required": "TARGET REQUIRED. VALID TARGETS: {actors}.",
+    "error.trace_mark_exists": "TRACE ALREADY PRESENT: {label}.",
+    "error.no_craftable_available": "NO NEW TRACE PATTERN AVAILABLE.",
     "combat.no_effect": "The {kind} passes over the {actor} like wind over stone. No damage is done.",
     "elemental.release": "The fire elemental does not fall \u2014 it lets go. Its fire unknots, loosens, and the spiral in its chest unwinds like a long-held breath. It is released back to the elemental realm, and the board is suddenly, quietly cool. You stand at the edge of the pit and let it go.",
     "conversion.fire": "The {actor} flickers once, then settles at a low, steady glow. It turns to you, no longer afraid, no longer opposed. You hold still in the drift of its warmth."

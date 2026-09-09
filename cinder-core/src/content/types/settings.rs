@@ -96,10 +96,9 @@ pub struct ContentSettingsDefinition {
     /// `local` channel is always available.
     #[serde(default)]
     pub channels: Vec<MessagingChannel>,
-    /// Id of the *direct* channel whose non-player speaker fronts deterministic
-    /// operational feedback — errors, help, and inventory/equipment messages —
-    /// as handler-attributed comms (`Channel` narrative lines). Empty keeps the
-    /// default feedback styling (error/system/narration) for the pack.
+    /// Id of the *direct* channel used when a pack message explicitly selects
+    /// the `handler` voice. Automated feedback keeps its own error, system, or
+    /// narration delivery unless the individual message opts into commentary.
     #[serde(default)]
     pub feedback_channel_id: String,
     /// Binds the generic strike mechanism to this pack's stat vocabulary.
