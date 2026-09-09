@@ -47,13 +47,13 @@ function flattenItems(t: UiSnapshot['ui_text']): FlatItem[] {
       .filter(i => isKnownMenuItem(i.id))
   }
 
-  // Rooms/follow/language are web-platform capabilities backed by the UI
+  // Rooms and language are web-platform capabilities backed by the UI
   // snapshot; surface them even when a pack does not list them, so the menu
-  // never collapses to just "Exit" on viewports without the sidebar.
+  // never collapses to just "Exit" on viewports without the sidebar. Follow
+  // stays pack-authored: it is an escort-mode feature only some packs use.
   const ids = new Set(declared.map(i => i.id))
   const canonical: FlatItem[] = [
     { id: 'rooms', label: t.room_switcher_title as string || 'Rooms' },
-    { id: 'follow', label: t.follow_actor_title as string || 'Follow' },
     { id: 'language', label: t.language_menu_label as string || 'Language' },
   ].filter(item => !ids.has(item.id))
 
