@@ -183,7 +183,7 @@ pub fn load_pack_from_dir_with_locale(
     let pair_stat_ids = stats.pair.keys().map(String::as_str).collect::<Vec<_>>();
 
     validate_maps(&maps, &room_ids, &actor_ids)?;
-    validate_party_policy(&settings.party, &actor_ids, &messages)?;
+    validate_party_policy(&settings.party, &actor_ids, &actor_stat_ids, &messages)?;
     validate_scripted_sequences(
         &sequences,
         opening.opening_sequence_id.as_deref(),

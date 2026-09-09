@@ -1,6 +1,7 @@
 use crate::content::types::{
     ContentPack, PartyCandidatePriority, PartyDecisionCondition, PartyDecisionTier, PartyOrderKind,
-    PartyReactionAction, PartyReactionCooldown, PartyReactionWindow,
+    PartyOrderTarget, PartyReactionAction, PartyReactionCooldown, PartyReactionWindow,
+    PartySupportEffect, PartyTargetSelection,
 };
 use crate::engine::state::{ActorStance, WorldState};
 use std::cmp::Ordering;
@@ -9,6 +10,9 @@ use std::cmp::Ordering;
 pub(crate) struct PartyReactionDecision {
     pub actor_id: String,
     pub rule_id: String,
+    pub action: PartyReactionAction,
+    pub target: PartyTargetSelection,
+    pub support_effect: Option<PartySupportEffect>,
     pub message: String,
     pub cooldown: PartyReactionCooldown,
 }
@@ -51,6 +55,9 @@ pub(crate) fn select_defensive_reaction(
                 return Some(PartyReactionDecision {
                     actor_id: candidate.actor_id.to_string(),
                     rule_id: rule.id.clone(),
+                    action: rule.action,
+                    target: rule.target,
+                    support_effect: rule.support_effect.clone(),
                     message: rule.message.clone(),
                     cooldown: rule.cooldown,
                 });
@@ -58,6 +65,45 @@ pub(crate) fn select_defensive_reaction(
         }
     }
     None
+}
+
+pub(crate) fn select_post_damage_reactions(
+    content: &ContentPack,
+    state: &WorldState,
+) -> Vec<PartyReactionDecision> {
+    content
+        .onstage_actors()
+        .filter(|actor| actor_is_reaction_eligible(content, state, &actor.id))
+        .filter_map(|actor| {
+            PartyDecisionTier::EVALUATION_ORDER
+                .into_iter()
+                .find_map(|tier| {
+                    content.settings.party.combat_rules.iter().find(|rule| {
+                        rule.tier == tier
+                            && rule.window == PartyReactionWindow::AfterHostileDamage
+                            && matches!(
+                                rule.action,
+                                PartyReactionAction::Counterattack
+                                    | PartyReactionAction::Support
+                                    | PartyReactionAction::Hold
+                            )
+                            && tier_allows_actor(state, &actor.id, tier)
+                            && rule.conditions.iter().all(|condition| {
+                                condition_matches(content, state, &actor.id, condition)
+                            })
+                    })
+                })
+                .map(|rule| PartyReactionDecision {
+                    actor_id: actor.id.clone(),
+                    rule_id: rule.id.clone(),
+                    action: rule.action,
+                    target: rule.target,
+                    support_effect: rule.support_effect.clone(),
+                    message: rule.message.clone(),
+                    cooldown: rule.cooldown,
+                })
+        })
+        .collect()
 }
 
 pub(crate) fn consume_party_reaction(
@@ -82,6 +128,28 @@ pub(crate) fn consume_party_reaction(
     );
 }
 
+pub(crate) fn resolve_party_reaction_target(
+    content: &ContentPack,
+    state: &WorldState,
+    decision: &PartyReactionDecision,
+    attacker_id: &str,
+) -> Option<String> {
+    match decision.target {
+        PartyTargetSelection::SelfActor => Some(decision.actor_id.clone()),
+        PartyTargetSelection::Player => Some(content.settings.combat.player_actor_id.clone()),
+        PartyTargetSelection::Attacker => Some(attacker_id.to_string()),
+        PartyTargetSelection::OrderTarget => {
+            state
+                .active_party_order(&decision.actor_id)
+                .and_then(|order| match &order.target {
+                    PartyOrderTarget::Actor { actor_id } => Some(actor_id.clone()),
+                    PartyOrderTarget::None | PartyOrderTarget::Room { .. } => None,
+                })
+        }
+        PartyTargetSelection::LowestHealthAlly => lowest_health_ally(content, state),
+    }
+}
+
 fn tier_allows_actor(state: &WorldState, actor_id: &str, tier: PartyDecisionTier) -> bool {
     if tier != PartyDecisionTier::DefaultRole {
         return true;
@@ -89,6 +157,17 @@ fn tier_allows_actor(state: &WorldState, actor_id: &str, tier: PartyDecisionTier
     state
         .active_party_order(actor_id)
         .is_none_or(|order| order.kind == PartyOrderKind::Follow)
+}
+
+fn actor_is_reaction_eligible(content: &ContentPack, state: &WorldState, actor_id: &str) -> bool {
+    actor_id != content.settings.combat.player_actor_id
+        && state.stance(actor_id) == ActorStance::Allied
+        && state.actor_is_in_room(content, actor_id, &state.current_room_id)
+        && !state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id)
+        && state
+            .party_reaction_ready_at
+            .get(actor_id)
+            .is_none_or(|ready_at| *ready_at <= state.current_time_minutes)
 }
 
 fn condition_matches(
@@ -148,6 +227,30 @@ fn health_values(content: &ContentPack, state: &WorldState, actor_id: &str) -> (
         .copied()
         .sum::<i32>();
     (current, initial.saturating_add(growth).max(1))
+}
+
+fn lowest_health_ally(content: &ContentPack, state: &WorldState) -> Option<String> {
+    let player_id = content.settings.combat.player_actor_id.as_str();
+    std::iter::once(player_id)
+        .chain(
+            content
+                .onstage_actors()
+                .map(|actor| actor.id.as_str())
+                .filter(|actor_id| *actor_id != player_id)
+                .filter(|actor_id| state.stance(actor_id) == ActorStance::Allied),
+        )
+        .filter(|actor_id| {
+            (*actor_id == player_id
+                || state.actor_is_in_room(content, actor_id, &state.current_room_id))
+                && !state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id)
+        })
+        .min_by(|left, right| {
+            let (left_current, left_max) = health_values(content, state, left);
+            let (right_current, right_max) = health_values(content, state, right);
+            (i64::from(left_current) * i64::from(right_max))
+                .cmp(&(i64::from(right_current) * i64::from(left_max)))
+        })
+        .map(str::to_string)
 }
 
 #[derive(Debug)]
@@ -243,6 +346,7 @@ mod tests {
                     }],
                     target: PartyTargetSelection::Player,
                     candidate_priority: vec![PartyCandidatePriority::ContentOrder],
+                    support_effect: None,
                     cooldown: PartyReactionCooldown::ActorCombatInterval,
                     message: "combat.guard".to_string(),
                 },
@@ -259,6 +363,7 @@ mod tests {
                         PartyCandidatePriority::HighestHealthPercent,
                         PartyCandidatePriority::HighestDefense,
                     ],
+                    support_effect: None,
                     cooldown: PartyReactionCooldown::ActorCombatInterval,
                     message: "combat.guard".to_string(),
                 },

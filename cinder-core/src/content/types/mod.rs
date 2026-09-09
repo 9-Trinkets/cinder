@@ -26,7 +26,7 @@ pub use party_defs::{
     PartyCandidatePriority, PartyCombatDecisionRule, PartyDecisionCondition, PartyDecisionTier,
     PartyOrder, PartyOrderKind, PartyOrderStatus, PartyOrderTarget, PartyPolicyDefinition,
     PartyReactionAction, PartyReactionCooldown, PartyReactionWindow, PartyRoleDefinition,
-    PartyTargetSelection,
+    PartySupportEffect, PartyTargetSelection,
 };
 
 mod leveling;

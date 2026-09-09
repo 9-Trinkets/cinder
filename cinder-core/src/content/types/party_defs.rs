@@ -128,6 +128,12 @@ pub enum PartyCandidatePriority {
     ContentOrder,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(tag = "effect", rename_all = "snake_case")]
+pub enum PartySupportEffect {
+    AdjustActorStat { stat: String, delta: i32 },
+}
+
 /// One deterministic combat choice. Rules retain authored order within their
 /// precedence tier; the first eligible rule wins for each actor and window.
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -141,6 +147,8 @@ pub struct PartyCombatDecisionRule {
     pub target: PartyTargetSelection,
     #[serde(default)]
     pub candidate_priority: Vec<PartyCandidatePriority>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub support_effect: Option<PartySupportEffect>,
     #[serde(default)]
     pub cooldown: PartyReactionCooldown,
     /// Locale message key used when this action resolves.
@@ -202,6 +210,7 @@ mod tests {
                     PartyCandidatePriority::HighestDefense,
                     PartyCandidatePriority::ContentOrder,
                 ],
+                support_effect: None,
                 cooldown: PartyReactionCooldown::ActorCombatInterval,
                 message: "combat.guard_intercepts".to_string(),
             }],

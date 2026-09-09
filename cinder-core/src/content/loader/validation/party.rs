@@ -2,6 +2,7 @@ use super::require_known_id;
 use crate::content::types::{
     PackMessage, PartyCandidatePriority, PartyDecisionCondition, PartyDecisionTier,
     PartyPolicyDefinition, PartyReactionAction, PartyReactionCooldown, PartyReactionWindow,
+    PartySupportEffect, PartyTargetSelection,
 };
 use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
@@ -9,6 +10,7 @@ use std::error::Error;
 pub(crate) fn validate_party_policy(
     policy: &PartyPolicyDefinition,
     actor_ids: &[&str],
+    actor_stat_ids: &[&str],
     messages: &BTreeMap<String, PackMessage>,
 ) -> Result<(), Box<dyn Error>> {
     let mut role_ids = BTreeSet::new();
@@ -50,7 +52,7 @@ pub(crate) fn validate_party_policy(
         if !rule_ids.insert(rule_id) {
             return Err(format!("duplicate party combat rule id '{rule_id}'").into());
         }
-        validate_rule(rule, &role_ids, messages)?;
+        validate_rule(rule, &role_ids, actor_stat_ids, messages)?;
     }
     Ok(())
 }
@@ -70,6 +72,7 @@ fn require_known_role(
 fn validate_rule(
     rule: &crate::content::types::PartyCombatDecisionRule,
     role_ids: &BTreeSet<&str>,
+    actor_stat_ids: &[&str],
     messages: &BTreeMap<String, PackMessage>,
 ) -> Result<(), Box<dyn Error>> {
     let has_order_condition = rule
@@ -151,14 +154,25 @@ fn validate_rule(
         (
             PartyReactionWindow::BeforeHostileDamage,
             PartyReactionAction::Intercept,
-            crate::content::types::PartyTargetSelection::Player,
+            PartyTargetSelection::Player,
         )
         | (
             PartyReactionWindow::AfterHostileDamage,
-            PartyReactionAction::Counterattack
-            | PartyReactionAction::Support
-            | PartyReactionAction::Hold,
-            _,
+            PartyReactionAction::Counterattack,
+            PartyTargetSelection::Attacker,
+        )
+        | (
+            PartyReactionWindow::AfterHostileDamage,
+            PartyReactionAction::Support,
+            PartyTargetSelection::SelfActor
+            | PartyTargetSelection::Player
+            | PartyTargetSelection::OrderTarget
+            | PartyTargetSelection::LowestHealthAlly,
+        )
+        | (
+            PartyReactionWindow::AfterHostileDamage,
+            PartyReactionAction::Hold,
+            PartyTargetSelection::SelfActor,
         ) => {}
         _ => {
             return Err(format!(
@@ -167,6 +181,41 @@ fn validate_rule(
             )
             .into());
         }
+    }
+    match (&rule.action, &rule.support_effect) {
+        (
+            PartyReactionAction::Support,
+            Some(PartySupportEffect::AdjustActorStat { stat, delta }),
+        ) => {
+            require_known_id(
+                stat,
+                actor_stat_ids,
+                &format!("party combat rule '{}' support stat '{stat}'", rule.id),
+                "stats.actor",
+            )?;
+            if *delta <= 0 {
+                return Err(format!(
+                    "party combat rule '{}' support stat delta must be positive",
+                    rule.id
+                )
+                .into());
+            }
+        }
+        (PartyReactionAction::Support, None) => {
+            return Err(format!(
+                "party combat rule '{}' support action requires support_effect",
+                rule.id
+            )
+            .into());
+        }
+        (_, Some(_)) => {
+            return Err(format!(
+                "party combat rule '{}' has support_effect but is not a support action",
+                rule.id
+            )
+            .into());
+        }
+        (_, None) => {}
     }
     if !rule.message.trim().is_empty() && !messages.contains_key(&rule.message) {
         return Err(format!(
@@ -203,6 +252,7 @@ mod tests {
                 }],
                 target: PartyTargetSelection::Player,
                 candidate_priority: Vec::new(),
+                support_effect: None,
                 cooldown: PartyReactionCooldown::ActorCombatInterval,
                 message: "combat.guard".to_string(),
             }],
@@ -214,6 +264,7 @@ mod tests {
         validate_party_policy(
             &valid_policy(),
             &["guard"],
+            &["stamina"],
             &BTreeMap::from([(
                 "combat.guard".to_string(),
                 PackMessage::Narration("Guard.".to_string()),
@@ -228,16 +279,48 @@ mod tests {
         policy
             .actor_roles
             .insert("guard".to_string(), vec!["missing".to_string()]);
-        let error = validate_party_policy(&policy, &["guard"], &BTreeMap::new())
+        let error = validate_party_policy(&policy, &["guard"], &["stamina"], &BTreeMap::new())
             .unwrap_err()
             .to_string();
         assert!(error.contains("not declared"), "{error}");
 
         let mut policy = valid_policy();
         policy.combat_rules[0].conditions.clear();
-        let error = validate_party_policy(&policy, &["guard"], &BTreeMap::new())
+        let error = validate_party_policy(&policy, &["guard"], &["stamina"], &BTreeMap::new())
             .unwrap_err()
             .to_string();
         assert!(error.contains("no order_is condition"), "{error}");
+    }
+
+    #[test]
+    fn validates_support_effects_and_targets() {
+        let mut policy = valid_policy();
+        let rule = &mut policy.combat_rules[0];
+        rule.window = PartyReactionWindow::AfterHostileDamage;
+        rule.action = PartyReactionAction::Support;
+        rule.target = PartyTargetSelection::Player;
+        rule.message.clear();
+        rule.support_effect = Some(PartySupportEffect::AdjustActorStat {
+            stat: "stamina".to_string(),
+            delta: 2,
+        });
+        validate_party_policy(&policy, &["guard"], &["stamina"], &BTreeMap::new()).unwrap();
+
+        let mut invalid = policy.clone();
+        invalid.combat_rules[0].support_effect = Some(PartySupportEffect::AdjustActorStat {
+            stat: "stamina".to_string(),
+            delta: 0,
+        });
+        let error = validate_party_policy(&invalid, &["guard"], &["stamina"], &BTreeMap::new())
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("must be positive"), "{error}");
+
+        let mut invalid = policy;
+        invalid.combat_rules[0].target = PartyTargetSelection::Attacker;
+        let error = validate_party_policy(&invalid, &["guard"], &["stamina"], &BTreeMap::new())
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("incompatible"), "{error}");
     }
 }

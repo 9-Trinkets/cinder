@@ -10,5 +10,6 @@ mod feedback;
 mod items;
 mod observation;
 mod party_defense;
+mod party_reactions;
 mod sigils;
 mod social;
