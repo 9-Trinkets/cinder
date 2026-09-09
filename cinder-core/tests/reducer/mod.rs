@@ -6,6 +6,7 @@ mod common;
 mod defeat_drops;
 mod encirclement;
 mod equipment;
+mod feedback;
 mod items;
 mod observation;
 mod sigils;

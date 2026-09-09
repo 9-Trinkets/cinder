@@ -1,5 +1,5 @@
 use crate::content::loader::fs::{localized_file_path, read_optional_path, read_required_path, LocalizedPaths};
-use crate::content::types::SystemTextDefinition;
+use crate::content::types::{PackMessage, SystemTextDefinition};
 use serde_json::Value;
 use std::collections::BTreeMap;
 use std::error::Error;
@@ -8,13 +8,16 @@ use std::error::Error;
 /// `messages_defaults.json`. Packs override the engine's default narration
 /// keys they define; anything else falls back to the bundled value. This keeps
 /// the engine's default player-facing narration in a JSON file rather than
-/// hardcoded in Rust.
-pub fn read_messages(paths: &LocalizedPaths<'_>) -> Result<BTreeMap<String, String>, Box<dyn Error>> {
-    let defaults: BTreeMap<String, String> =
+/// hardcoded in Rust. Entries may be plain strings (world narration) or
+/// voice-tagged handler messages (see [`PackMessage`]).
+pub fn read_messages(
+    paths: &LocalizedPaths<'_>,
+) -> Result<BTreeMap<String, PackMessage>, Box<dyn Error>> {
+    let defaults: BTreeMap<String, PackMessage> =
         serde_json::from_str(include_str!("../messages_defaults.json"))
             .expect("invalid bundled messages_defaults.json");
     let mut merged = defaults;
-    let pack_messages = read_optional_path::<BTreeMap<String, String>>(&localized_file_path(
+    let pack_messages = read_optional_path::<BTreeMap<String, PackMessage>>(&localized_file_path(
         paths.root,
         paths.locale,
         "messages.json",

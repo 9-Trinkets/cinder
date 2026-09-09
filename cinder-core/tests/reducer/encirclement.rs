@@ -1,7 +1,7 @@
 use super::common::*;
 use cinder_core::content::types::{
     ActionDefinition, ActionItemCreation, ActionItemStorageTarget, ActorDefinition, CommandEffect,
-    CommandTargetMode, ItemStorageTarget,
+    CommandTargetMode, ItemStorageTarget, PackMessage,
 };
 use cinder_core::engine::state::{ActorStance, WorldState};
 use serde_json::json;
@@ -20,11 +20,11 @@ fn encirclement_conversion_narration_follows_the_flag_placement() {
     });
     pack.messages.insert(
         "conversion.encircled".to_string(),
-        "The {actor} turns toward you, no longer hostile.".to_string(),
+        PackMessage::Narration("The {actor} turns toward you, no longer hostile.".to_string()),
     );
     pack.messages.insert(
         "conversion.encircled_follows".to_string(),
-        "The {actor} falls in behind you.".to_string(),
+        PackMessage::Narration("The {actor} falls in behind you.".to_string()),
     );
     // A golem in the lounge converts via the `actor.surrounded` hook once its
     // only neighbor (the kitchen) holds a stone marker.
@@ -100,7 +100,7 @@ fn creating_an_item_in_a_room_can_complete_an_encirclement() {
     });
     pack.messages.insert(
         "conversion.encircled".to_string(),
-        "The {actor} turns toward you, no longer hostile.".to_string(),
+        PackMessage::Narration("The {actor} turns toward you, no longer hostile.".to_string()),
     );
     // A golem in the lounge is encircled once its only neighbor (the kitchen)
     // holds a chalk marking created by the trace action.

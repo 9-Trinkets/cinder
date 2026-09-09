@@ -6,6 +6,9 @@ pub use super::text_defs::{
 use serde_json::Value;
 use std::collections::{BTreeMap, HashMap};
 
+mod messages;
+pub use messages::{PackMessage, PackMessageVoice};
+
 mod settings;
 pub use settings::{CharmRule, ContentSettingsDefinition};
 pub(super) use settings::{default_actor_targeted_speech, default_stat_default_value};

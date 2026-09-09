@@ -2,7 +2,7 @@ use super::common::*;
 use cinder_core::content::types::{
     ActionDefinition, ActionItemCreation, ActionItemStorageTarget, CharmRule,
     CombatSettingsDefinition, CommandEffect, CommandTargetMode, ContentPack, ItemDefinition,
-    ItemKind, ItemStorageTarget, StatDefinition,
+    ItemKind, ItemStorageTarget, PackMessage, StatDefinition,
 };
 use cinder_core::engine::reducer::ReducerOutput;
 use cinder_core::engine::state::{ActorStance, WorldState};
@@ -73,7 +73,7 @@ fn charm_test_pack() -> ContentPack {
     });
     pack.messages.insert(
         "conversion.encircled".to_string(),
-        "The {actor} turns toward you, no longer hostile.".to_string(),
+        PackMessage::Narration("The {actor} turns toward you, no longer hostile.".to_string()),
     );
     pack.hooks.insert(
         "actor.surrounded".to_string(),

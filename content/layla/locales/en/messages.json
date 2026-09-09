@@ -19,21 +19,51 @@
     "king.defeated": "The elf king falls. The forest holds its breath. Then, one by one, the other elves lower their weapons and step back. No ring binds them \u2014 they simply choose to let you pass. You feel their eyes on you a long moment, and you lower your own blade.",
     "item.scroll_read.learned": "The dry bark is cool in your hand. The spiral unrolls behind your eyes, exact as a dictated rule: drain \u2014 take the strength of what stands within the circle and hold it until it holds nothing at all. The lines settle into your hand. You know the drain sigil.",
     "item.spawn_scroll_read.learned": "The fire-cured bark is cool against your palm. The amber circle resolves into a dictated rule: spawn \u2014 call one creature into the empty space. What answers, and how strong it stands, depends on the strength of the hand that draws it. The lines settle into your hand. You know the shape.",
-    "item.acquired_inventory": "Okay, inventory shows {label} ready. Keep it close. Sorry\u2014that sounded like an order.",
-    "item.acquired_room": "I have the {label} logged at your position. It should be right there.",
-    "item.consumed_player": "The monitor says you finished the {label}. Are you feeling all right? I mean\u2014status looks stable.",
-    "item.consumed_actor": "Logged: {consumer_name} accepted the {label}. The handling guide says that's expected.",
-    "item.consumed_use": "The {label} registered as used. Good. I think that worked.",
+    "item.acquired_inventory": {
+        "voice": "handler",
+        "text": "Okay, inventory shows {label} ready. Keep it close. Sorry\u2014that sounded like an order."
+    },
+    "item.acquired_room": {
+        "voice": "handler",
+        "text": "I have the {label} logged at your position. It should be right there."
+    },
+    "item.consumed_player": {
+        "voice": "handler",
+        "text": "The monitor says you finished the {label}. Are you feeling all right? I mean\u2014status looks stable."
+    },
+    "item.consumed_actor": {
+        "voice": "handler",
+        "text": "Logged: {consumer_name} accepted the {label}. The handling guide says that's expected."
+    },
+    "item.consumed_use": {
+        "voice": "handler",
+        "text": "The {label} registered as used. Good. I think that worked."
+    },
     "item.take_nothing": "I'm not showing anything there to take. Check the floor anyway; the scanner misses things.",
     "item.take_not_here": "I can't locate that item at your position. Sorry.",
-    "item.taken": "Got it. The {label} is in your inventory now.",
-    "item.takedenied": "Don't pull at the {label}. The field notes say it's anchored to the floor.",
+    "item.taken": {
+        "voice": "handler",
+        "text": "Got it. The {label} is in your inventory now."
+    },
+    "item.takedenied": {
+        "voice": "handler",
+        "text": "Don't pull at the {label}. The field notes say it's anchored to the floor."
+    },
     "item.drop_nothing": "Your inventory is empty. At least, that's what my panel says.",
     "item.drop_not_have": "I can't find that in your inventory. Let me know if you can see it and I can't.",
     "item.drop_equipped": "The procedure says you have to unequip the {label} before you drop it.",
-    "item.dropped": "Logged. The {label} is on the ground at your position.",
-    "equipment.equipped": "The {item} is ready. The display reports: {bonuses}. Does it feel secure?",
-    "equipment.unequipped": "Okay, the {item} is stowed.",
+    "item.dropped": {
+        "voice": "handler",
+        "text": "Logged. The {label} is on the ground at your position."
+    },
+    "equipment.equipped": {
+        "voice": "handler",
+        "text": "The {item} is ready. The display reports: {bonuses}. Does it feel secure?"
+    },
+    "equipment.unequipped": {
+        "voice": "handler",
+        "text": "Okay, the {item} is stowed."
+    },
     "equipment.not_equipped": "The {item} isn't equipped. I checked twice.",
     "equipment.already_equipped": "You already have the {item} equipped. Sorry\u2014the panel made it look like it hadn't updated.",
     "error.command_not_now": "Hold on, Layla. The procedure won't let you {verb} right now.",

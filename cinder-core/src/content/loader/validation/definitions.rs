@@ -1,7 +1,7 @@
 use super::require_known_id;
 use crate::content::types::{
     ActionDefinition, CommandEffect, CommandTargetMode, ContentSettingsDefinition, ItemDefinition,
-    MapDefinition, MapRevealCondition, PeriodicActorEffect, StatDefinition,
+    MapDefinition, MapRevealCondition, PackMessage, PeriodicActorEffect, StatDefinition,
 };
 use serde_json::Value;
 use std::collections::{BTreeMap, BTreeSet};
@@ -225,7 +225,7 @@ pub(crate) fn validate_combat_settings(
 pub(crate) fn validate_periodic_actor_effects(
     settings: &ContentSettingsDefinition,
     items: &[ItemDefinition],
-    messages: &BTreeMap<String, String>,
+    messages: &BTreeMap<String, PackMessage>,
 ) -> Result<(), Box<dyn Error>> {
     let item_ids = items
         .iter()
@@ -287,7 +287,7 @@ mod tests {
     fn valid_fixture() -> (
         ContentSettingsDefinition,
         Vec<ItemDefinition>,
-        BTreeMap<String, String>,
+        BTreeMap<String, PackMessage>,
     ) {
         let settings = ContentSettingsDefinition {
             periodic_actor_effects: vec![PeriodicActorEffectDefinition {
@@ -306,7 +306,10 @@ mod tests {
             id: "hazard-token".to_string(),
             ..ItemDefinition::default()
         }];
-        let messages = BTreeMap::from([("combat.hazard".to_string(), "Ouch.".to_string())]);
+        let messages = BTreeMap::from([(
+            "combat.hazard".to_string(),
+            PackMessage::Narration("Ouch.".to_string()),
+        )]);
         (settings, items, messages)
     }
 

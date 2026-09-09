@@ -1,9 +1,9 @@
 use super::require_known_id;
 use crate::content::types::{
     ActCastMember, ActionDefinition, ActorDefinition, AdvanceEffect, BeatDefinition,
-    BeatObjectiveProgressRef, BeatObjectivesDefinition, BeatsDefinition, ChannelPrivacy,
-    LOCAL_CHANNEL_ID, LevelingDefinition, MessagingChannel, MovementConfigDefinition, ScriptedLine,
-    SequencesDefinition,
+    BeatObjectiveProgressRef, BeatObjectivesDefinition, BeatsDefinition, ChannelKind,
+    ChannelPrivacy, LOCAL_CHANNEL_ID, LevelingDefinition, MessagingChannel, MovementConfigDefinition,
+    ScriptedLine, SequencesDefinition,
 };
 use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
@@ -213,6 +213,51 @@ fn validate_channels(
                 )?;
             }
         }
+    }
+    Ok(())
+}
+
+/// A pack's `settings.feedback_channel_id`, when set, must name a declared
+/// *direct* comms channel with a fixed private roster that resolves at least
+/// one non-player speaker — the actor who fronts deterministic operational
+/// feedback to the player.
+pub(crate) fn validate_feedback_channel(
+    feedback_channel_id: &str,
+    player_actor_id: &str,
+    channels: &[MessagingChannel],
+) -> Result<(), Box<dyn Error>> {
+    if feedback_channel_id.trim().is_empty() {
+        return Ok(());
+    }
+    let channel = channels
+        .iter()
+        .find(|channel| channel.id == feedback_channel_id)
+        .ok_or_else(|| {
+            format!(
+                "feedback_channel_id '{feedback_channel_id}' not found in settings.channels"
+            )
+        })?;
+    if channel.kind != ChannelKind::Direct {
+        return Err(format!(
+            "feedback_channel_id '{feedback_channel_id}' must be a direct channel (kind 'direct')"
+        )
+        .into());
+    }
+    if channel.privacy != ChannelPrivacy::Private {
+        return Err(format!(
+            "feedback_channel_id '{feedback_channel_id}' must be a private channel"
+        )
+        .into());
+    }
+    if !channel
+        .participants
+        .iter()
+        .any(|participant| participant != player_actor_id)
+    {
+        return Err(format!(
+            "feedback_channel_id '{feedback_channel_id}' needs a non-player speaker in participants"
+        )
+        .into());
     }
     Ok(())
 }
@@ -849,6 +894,42 @@ mod tests {
         let result = validate_channels(
             &[channel("comms", &["player", "handler"])],
             &["player", "handler"],
+        );
+        assert!(result.is_ok(), "{result:?}");
+    }
+
+    #[test]
+    fn feedback_channel_must_reference_a_declared_channel() {
+        let error = validate_feedback_channel("handler-comms", "player", &[])
+            .unwrap_err()
+            .to_string();
+        assert!(error.contains("not found in settings.channels"), "{error}");
+    }
+
+    #[test]
+    fn empty_feedback_channel_id_is_allowed() {
+        let result = validate_feedback_channel("", "player", &[]);
+        assert!(result.is_ok(), "{result:?}");
+    }
+
+    #[test]
+    fn feedback_channel_must_keep_a_non_player_speaker() {
+        let error = validate_feedback_channel(
+            "comms",
+            "player",
+            &[channel("comms", &["player"])],
+        )
+        .unwrap_err()
+        .to_string();
+        assert!(error.contains("non-player speaker"), "{error}");
+    }
+
+    #[test]
+    fn well_formed_feedback_channel_passes() {
+        let result = validate_feedback_channel(
+            "handler-comms",
+            "player",
+            &[channel("handler-comms", &["player", "handler"])],
         );
         assert!(result.is_ok(), "{result:?}");
     }

@@ -1,7 +1,7 @@
 use super::common::*;
 use cinder_core::content::types::{
     ActionDefinition, ActionItemCreation, ActionItemStorageTarget, CommandTargetMode,
-    CombatSettingsDefinition, ItemDefinition, ItemStorageTarget, PeriodicActorEffect,
+    CombatSettingsDefinition, ItemDefinition, ItemStorageTarget, PackMessage, PeriodicActorEffect,
     PeriodicActorEffectDefinition, PeriodicActorEffectTargets, PeriodicActorEffectTrigger,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
@@ -42,10 +42,12 @@ fn drain_sigil_has_fixed_activations_and_fades_when_spent() {
     pack.settings.periodic_actor_effects = vec![drain_effect(Some(5))];
     pack.messages.insert(
         "combat.room_hazard".to_string(),
-        "{actor} loses {damage}; {remaining} remains.".to_string(),
+        PackMessage::Narration("{actor} loses {damage}; {remaining} remains.".to_string()),
     );
-    pack.messages
-        .insert("combat.room_hazard_spent".to_string(), "The spiral gutters out.".to_string());
+    pack.messages.insert(
+        "combat.room_hazard_spent".to_string(),
+        PackMessage::Narration("The spiral gutters out.".to_string()),
+    );
     let mut goblin = test_actor("goblin", "goblin", LOUNGE_ID);
     goblin.initial_stats = BTreeMap::from([("stamina".to_string(), 15)]);
     pack.actors.push(goblin);
@@ -100,7 +102,7 @@ fn drain_sigil_without_a_charge_limit_never_fades() {
     pack.settings.periodic_actor_effects = vec![drain_effect(None)];
     pack.messages.insert(
         "combat.room_hazard".to_string(),
-        "{actor} loses {damage}; {remaining} remains.".to_string(),
+        PackMessage::Narration("{actor} loses {damage}; {remaining} remains.".to_string()),
     );
     let mut goblin = test_actor("goblin", "goblin", LOUNGE_ID);
     goblin.initial_stats = BTreeMap::from([("stamina".to_string(), 15)]);
@@ -148,7 +150,7 @@ fn charm_sigil_converts_a_single_actor_and_is_consumed() {
     });
     pack.messages.insert(
         "conversion.encircled".to_string(),
-        "The {actor} turns toward you, no longer hostile.".to_string(),
+        PackMessage::Narration("The {actor} turns toward you, no longer hostile.".to_string()),
     );
     // Both golems share the lounge; its only neighbor (the kitchen) fills with
     // the freshly traced charm, so either would convert from the same placement.

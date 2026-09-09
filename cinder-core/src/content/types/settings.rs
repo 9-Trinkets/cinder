@@ -96,6 +96,12 @@ pub struct ContentSettingsDefinition {
     /// `local` channel is always available.
     #[serde(default)]
     pub channels: Vec<MessagingChannel>,
+    /// Id of the *direct* channel whose non-player speaker fronts deterministic
+    /// operational feedback — errors, help, and inventory/equipment messages —
+    /// as handler-attributed comms (`Channel` narrative lines). Empty keeps the
+    /// default feedback styling (error/system/narration) for the pack.
+    #[serde(default)]
+    pub feedback_channel_id: String,
     /// Binds the generic strike mechanism to this pack's stat vocabulary.
     #[serde(default)]
     pub combat: CombatSettingsDefinition,
@@ -172,6 +178,7 @@ impl Default for ContentSettingsDefinition {
             autonomous_hostility_mode: AutonomousHostilityMode::Rules,
             periodic_actor_effects: Vec::new(),
             channels: Vec::new(),
+            feedback_channel_id: String::default(),
             combat: CombatSettingsDefinition::default(),
             charm_rule: CharmRule::None,
             starting_items: BTreeMap::new(),

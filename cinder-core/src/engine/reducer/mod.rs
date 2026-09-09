@@ -223,7 +223,7 @@ pub fn apply_events(
                 handle_narrative_line(text, &mut lines);
             }
             WorldEvent::ActionRejected { message } => {
-                handle_action_rejected(message, &mut lines);
+                handle_action_rejected(message, content, &mut lines);
             }
             WorldEvent::HelpShown => {
                 handle_help_shown(state, content, &mut lines);

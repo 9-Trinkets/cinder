@@ -1,7 +1,7 @@
 use super::common::*;
 use cinder_core::content::types::{
     ActionDefinition, CombatSettingsDefinition, CommandEffect, CommandTargetMode, DropSpec,
-    ItemDefinition, ItemStorageTarget, LevelDefinition, PeriodicActorEffect,
+    ItemDefinition, ItemStorageTarget, LevelDefinition, PackMessage, PeriodicActorEffect,
     PeriodicActorEffectDefinition, PeriodicActorEffectTargets, PeriodicActorEffectTrigger,
     StatDefinition,
 };
@@ -180,7 +180,7 @@ fn configured_periodic_damage_affects_only_matching_actors() {
     pack.settings.periodic_actor_effects = vec![periodic_damage_definition()];
     pack.messages.insert(
         "combat.room_hazard".to_string(),
-        "{actor} loses {damage}; {remaining} remains.".to_string(),
+        PackMessage::Narration("{actor} loses {damage}; {remaining} remains.".to_string()),
     );
     let mut goblin = test_actor("goblin", "goblin", LOUNGE_ID);
     goblin.initial_stats = BTreeMap::from([("stamina".to_string(), 5)]);
@@ -234,8 +234,10 @@ fn periodic_damage_at_zero_uses_normal_defeat_drop_and_xp_path() {
         ..CombatSettingsDefinition::default()
     };
     pack.settings.periodic_actor_effects = vec![periodic_damage_definition()];
-    pack.messages
-        .insert("combat.room_hazard".to_string(), String::new());
+    pack.messages.insert(
+        "combat.room_hazard".to_string(),
+        PackMessage::Narration(String::new()),
+    );
     pack.levels.default = vec![LevelDefinition {
         exp_required: 10,
         ..LevelDefinition::default()
@@ -434,11 +436,11 @@ fn fully_resisted_attack_deals_zero_and_narrates_no_effect() {
     });
     pack.messages.insert(
         "combat.attack_hit".to_string(),
-        "{actor} takes {damage} damage ({remaining} remaining).".to_string(),
+        PackMessage::Narration("{actor} takes {damage} damage ({remaining} remaining).".to_string()),
     );
     pack.messages.insert(
         "combat.no_effect".to_string(),
-        "The {actor} is wholly unharmed by {kind}.".to_string(),
+        PackMessage::Narration("The {actor} is wholly unharmed by {kind}.".to_string()),
     );
     let mut golem = test_actor("golem", "obsidian golem", LOUNGE_ID);
     golem.attackable = true;
@@ -500,7 +502,7 @@ fn partial_resistance_reduces_attack_damage() {
     });
     pack.messages.insert(
         "combat.attack_hit".to_string(),
-        "{actor} takes {damage} damage ({remaining} remaining).".to_string(),
+        PackMessage::Narration("{actor} takes {damage} damage ({remaining} remaining).".to_string()),
     );
     let mut golem = test_actor("golem", "cinder golem", LOUNGE_ID);
     golem.attackable = true;
@@ -550,7 +552,7 @@ fn drain_damage_bypasses_physical_resistance() {
     pack.settings.periodic_actor_effects = vec![periodic_damage_definition()];
     pack.messages.insert(
         "combat.room_hazard".to_string(),
-        "{actor} loses {damage}; {remaining} remains.".to_string(),
+        PackMessage::Narration("{actor} loses {damage}; {remaining} remains.".to_string()),
     );
     let mut elemental = test_actor("elemental", "fire elemental", LOUNGE_ID);
     elemental.initial_stats = BTreeMap::from([("stamina".to_string(), 5)]);
@@ -593,11 +595,11 @@ fn hostile_strike_respects_defender_resistance() {
     };
     pack.messages.insert(
         "combat.hostile_strike".to_string(),
-        "{actor} strikes you for {damage} ({remaining} remaining).".to_string(),
+        PackMessage::Narration("{actor} strikes you for {damage} ({remaining} remaining).".to_string()),
     );
     pack.messages.insert(
         "combat.no_effect".to_string(),
-        "You are unharmed by {kind}.".to_string(),
+        PackMessage::Narration("You are unharmed by {kind}.".to_string()),
     );
     let mut player = test_actor(ACTOR_A_ID, ACTOR_A_NAME, LOUNGE_ID);
     player.initial_stats = BTreeMap::from([("stamina".to_string(), 10)]);
@@ -649,7 +651,10 @@ fn hostile_strike_intercepted_by_guard_takes_at_least_minimum_damage() {
     };
     pack.messages.insert(
         "combat.guard_intercepts".to_string(),
-        "{actor} strikes, but {guard} steps in front of you, taking {damage} damage.".to_string(),
+        PackMessage::Narration(
+            "{actor} strikes, but {guard} steps in front of you, taking {damage} damage."
+                .to_string(),
+        ),
     );
     let mut player = test_actor(ACTOR_A_ID, ACTOR_A_NAME, LOUNGE_ID);
     player.initial_stats = BTreeMap::from([("stamina".to_string(), 10)]);

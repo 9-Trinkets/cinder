@@ -1,5 +1,7 @@
 use super::common::*;
-use cinder_core::content::types::{ActionDefinition, CommandEffect, CommandTargetMode};
+use cinder_core::content::types::{
+    ActionDefinition, CommandEffect, CommandTargetMode, PackMessage,
+};
 use cinder_core::engine::state::{ActorStance, WorldState};
 use serde_json::json;
 use std::collections::BTreeMap;
@@ -31,7 +33,7 @@ fn equipping_an_item_with_equip_hook_converts_surviving_tagged_actors() {
         });
     pack.messages.insert(
         "conversion.core".to_string(),
-        "The {actor} bows its head and falls in behind you.".to_string(),
+        PackMessage::Narration("The {actor} bows its head and falls in behind you.".to_string()),
     );
     pack.hooks.insert(
         "item.core_equipped".to_string(),

@@ -5,6 +5,9 @@ use crate::content::types::ContentPack;
 use crate::engine::events::ObservationMode;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::WorldState;
+
+use super::feedback::push_feedback_line;
+
 pub(crate) fn handle_current_room_observed(
     state: &mut WorldState,
     content: &ContentPack,
@@ -15,7 +18,12 @@ pub(crate) fn handle_current_room_observed(
     if let Some(observation) = render_room_observation(content, state, room_id, mode) {
         lines.extend(observation.0);
     } else {
-        lines.error(content.presentation.error_text.room_missing.clone());
+        push_feedback_line(
+            lines,
+            content,
+            content.presentation.error_text.room_missing.clone(),
+            |lines, text| lines.error(text),
+        );
     }
 }
 

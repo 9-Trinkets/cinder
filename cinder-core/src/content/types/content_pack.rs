@@ -35,8 +35,9 @@ pub struct ContentPack {
     pub levels: LevelingDefinition,
     /// Locale-authored templates for engine-emitted narration, keyed by
     /// message id. The engine never hardcodes player-facing prose; emit
-    /// sites skip lines whose key the pack does not define.
-    pub messages: BTreeMap<String, String>,
+    /// sites skip lines whose key the pack does not define. Entries may be
+    /// plain strings (world narration) or voice-tagged handler messages.
+    pub messages: BTreeMap<String, PackMessage>,
     pub room_index: HashMap<String, usize>,
     pub actor_index: HashMap<String, usize>,
     pub action_index: HashMap<String, usize>,
@@ -412,7 +413,16 @@ impl ContentPack {
 
     /// Template for a pack-authored engine message, if the pack defines it.
     pub fn message(&self, key: &str) -> Option<&str> {
-        self.messages.get(key).map(|t| t.as_str())
+        self.messages.get(key).map(|message| message.text())
+    }
+
+    /// Who voices a pack-authored engine message. Unknown keys are world
+    /// narration, so packs that never tag a voice keep their current styling.
+    pub fn message_voice(&self, key: &str) -> PackMessageVoice {
+        self.messages
+            .get(key)
+            .map(PackMessage::voice)
+            .unwrap_or_default()
     }
 
     /// Render a pack-authored engine message, if the pack defines it.

@@ -10,7 +10,8 @@ use crate::content::loader::fs::{
 use crate::content::loader::index::{build_index, collect_act_cast};
 use crate::content::loader::validation::{
     PackContext, require_known_id, validate_actions, validate_combat_settings, validate_contents,
-    validate_items, validate_maps, validate_periodic_actor_effects, validate_scripted_sequences,
+    validate_feedback_channel, validate_items, validate_maps, validate_periodic_actor_effects,
+    validate_scripted_sequences,
 };
 use crate::content::types::{
     ActionsDefinition, ActorDefinition, BeatObjectivesDefinition, BeatsDefinition,
@@ -208,6 +209,11 @@ pub fn load_pack_from_dir_with_locale(
         room_index: &room_index,
         action_index: &action_index,
     })?;
+    validate_feedback_channel(
+        &settings.feedback_channel_id,
+        &settings.combat.player_actor_id,
+        &settings.channels,
+    )?;
 
     Ok(ContentPack {
         locale: effective_locale,
@@ -282,7 +288,7 @@ pub fn available_locales(path: &Path) -> Result<Vec<LocaleOption>, Box<dyn Error
 #[cfg(test)]
 mod shipped_pack_load_tests {
     use super::*;
-    use crate::content::types::DropSpec;
+    use crate::content::types::{DropSpec, PackMessageVoice};
     #[test]
     fn shipped_packs_load_behavior_and_movement() {
         for pack in ["aera", "ella", "isla", "layla"] {
@@ -343,8 +349,27 @@ mod shipped_pack_load_tests {
                     Some((crate::engine::state::ActorStance::Allied, false))
                 );
                 assert_eq!(
-                    loaded
-                        .channel("handler-comms")
+                    loaded.settings.feedback_channel_id.as_str(),
+                    "handler-comms"
+                );
+                assert_eq!(
+                    loaded.message("item.acquired_inventory"),
+                    Some("Okay, inventory shows {label} ready. Keep it close. Sorry\u{2014}that sounded like an order.")
+                );
+                assert_eq!(
+                    loaded.message_voice("item.acquired_inventory"),
+                    PackMessageVoice::Handler
+                );
+                assert_eq!(
+                    loaded.message_voice("item.consumed_use"),
+                    PackMessageVoice::Handler
+                );
+                assert_eq!(
+                    loaded.message_voice("combat.attack_hit"),
+                    PackMessageVoice::Narration
+                );
+                assert_eq!(
+                    loaded.channel("handler-comms")
                         .map(|channel| channel.participants.as_slice()),
                     Some(&["player".to_string(), "handler".to_string()][..])
                 );

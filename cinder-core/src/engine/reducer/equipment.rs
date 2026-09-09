@@ -5,6 +5,7 @@ use crate::engine::state::WorldState;
 use serde_json::json;
 
 use super::combat::actor_display_name;
+use super::handlers::push_rendered_message;
 
 /// Equips one unit of the action's item, returning the previous occupant of
 /// the slot to inventory. Bonuses remain derived from equipment.
@@ -48,7 +49,12 @@ pub(super) fn apply_equip(
         }
     }
     if let Some(line) = render_equipment_message(content, state, "equipment.equipped", item) {
-        lines.narration(line);
+        push_rendered_message(
+            lines,
+            content,
+            line,
+            content.message_voice("equipment.equipped"),
+        );
     }
 }
 
@@ -67,7 +73,12 @@ pub(super) fn apply_unequip(
     state.equipment.remove(&item.equip_slot);
     state.add_item(&command.item_id);
     if let Some(line) = render_equipment_message(content, state, "equipment.unequipped", item) {
-        lines.narration(line);
+        push_rendered_message(
+            lines,
+            content,
+            line,
+            content.message_voice("equipment.unequipped"),
+        );
     }
 }
 
