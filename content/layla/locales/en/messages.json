@@ -24,7 +24,7 @@
     "party.order_member_ambiguous": "PARTY MEMBER REFERENCE IS AMBIGUOUS.",
     "conversion.encircled": "The {actor} shudders, its surface brightening. It turns toward you, no longer hostile.",
     "conversion.encircled_follows": "The {actor} falls in behind you. You slow a little, so it can keep up.",
-    "follow.actor_follows": "The {actor} follows you, a quiet step behind.",
+    "follow.actor_follows": "The {actor} folds into chalk-light and crosses the boards in a single step, resolving into place beside you.",
     "item.used": "Warmth spreads from the {item}. You feel mended.",
     "item.charm-sigil.acquired_room": "",
     "conversion.ring": "The {actor} lowers its head and falls in behind you. You watch for a moment, then turn to go.",
