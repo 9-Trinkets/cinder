@@ -73,6 +73,11 @@ pub(super) fn trigger_surrounded_hooks(
         }
         if !charm_rule_passes(state, content, &actor.id) {
             lines.system(charm_refused_line());
+            // A refused charm spends the ring: the sigils surrounding this
+            // target fade, so the encirclement must be rebuilt to try again.
+            for neighbor in &neighbors {
+                state.remove_items_from_room(neighbor, item_id);
+            }
             continue;
         }
         let actor_name = actor_display_name(content, &actor.id);

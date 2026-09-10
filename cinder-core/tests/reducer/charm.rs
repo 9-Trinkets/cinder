@@ -163,6 +163,10 @@ fn charm_rule_refuses_a_strong_pawn_at_start() {
         "expected a cold refusal line, got {:?}",
         output.lines
     );
+    assert!(
+        !state.has_item_in_storage("charm-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID),
+        "a refused charm must spend the encircling sigils"
+    );
 }
 
 #[test]
@@ -188,6 +192,10 @@ fn shaman_is_not_charmable_at_start_without_a_hard_gate() {
             .any(|line| line.text.contains(CHARM_REFUSED)),
         "expected a cold refusal line, got {:?}",
         output.lines
+    );
+    assert!(
+        !state.has_item_in_storage("charm-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID),
+        "a refused charm must spend the encircling sigils"
     );
 }
 
@@ -262,7 +270,8 @@ fn equipping_an_intelligence_ring_widens_charm_range() {
         },
     );
     assert_eq!(state.equipped_item("ring"), Some("int-ring"));
-    // The pawn is no longer encircled (sigil stayed in the kitchen); draw again.
+    // The refused charm spent the kitchen sigil, so the pawn is un-encircled;
+    // draw again across the ring to attempt the conversion.
     let _ = equipped;
     state
         .add_item_to_storage("charm-sigil", ItemStorageTarget::CurrentRoom, LOUNGE_ID);
