@@ -18,6 +18,7 @@ interface ShellMenuProps {
   onExit: () => void
   busy: boolean
   onTakeItem?: (itemId: string) => void
+  onOpenPanel?: (panel: string) => void
 }
 
 interface FlatItem {
@@ -64,6 +65,7 @@ export default function ShellMenu({
   onExit,
   busy,
   onTakeItem,
+  onOpenPanel,
 }: ShellMenuProps) {
   const t = ui.ui_text
   const items = flattenItems(t)
@@ -137,6 +139,7 @@ export default function ShellMenu({
     onExit={onExit}
     busy={busy}
     onTakeItem={onTakeItem}
+    onOpenPanel={onOpenPanel}
   />
 }
 
@@ -149,9 +152,20 @@ interface MainMenuProps {
   onExit: () => void
   busy: boolean
   onTakeItem?: (itemId: string) => void
+  onOpenPanel?: (panel: string) => void
 }
 
-function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy, onTakeItem }: MainMenuProps) {
+function MainMenu({
+  items,
+  t,
+  ui,
+  onViewChange,
+  onClose,
+  onExit,
+  busy,
+  onTakeItem,
+  onOpenPanel,
+}: MainMenuProps) {
   const [submenu, setSubmenu] = useState<{ id: string; label: string }[] | null>(null)
   const [submenuTitle, setSubmenuTitle] = useState('')
 
@@ -192,7 +206,7 @@ function MainMenu({ items, t, ui, onViewChange, onClose, onExit, busy, onTakeIte
           so render the packed status sections (map, vitals, level, party, …)
           here; the sidebar already shows them on larger screens. */}
       <div className="lg:hidden mb-1">
-        <StatusPanel uiSnapshot={ui} onTakeItem={onTakeItem} />
+        <StatusPanel uiSnapshot={ui} onTakeItem={onTakeItem} onOpenPanel={onOpenPanel} />
       </div>
       {items.map((item) => {
         const packItem = t.shell_menu.items.find(i => i.id === item.id)

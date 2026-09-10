@@ -115,10 +115,20 @@ const QuickActionPanel = memo(function QuickActionPanel({
                   key={opt.id}
                   onClick={() => onSelectOption(panel, opt)}
                   disabled={busy || opt.disabled}
-                  className="block w-full text-left px-3 py-2 rounded-xl hover:bg-overlay border border-subtle disabled:opacity-45 disabled:cursor-not-allowed cursor-pointer"
+                  aria-pressed={opt.selected}
+                  className={`group block w-full text-left px-3 py-2.5 rounded-xl border transition duration-200 ${
+                    opt.selected
+                      ? 'border-gold/50 bg-gold/10 text-text cursor-default'
+                      : 'border-subtle hover:bg-overlay hover:border-muted cursor-pointer'
+                  } disabled:cursor-not-allowed`}
                 >
-                  <span className="font-medium">{opt.title}</span>
-                  {opt.subtitle && <span className="text-muted text-xs ml-2">{opt.subtitle}</span>}
+                  <span className="flex items-center justify-between gap-3">
+                    <span>
+                      <span className="block font-medium">{opt.title}</span>
+                      {opt.subtitle && <span className="block text-muted text-xs mt-0.5">{opt.subtitle}</span>}
+                    </span>
+                    {opt.selected && <span className="text-gold text-sm" aria-label="Current order">✓</span>}
+                  </span>
                 </button>
               ))}
             </div>

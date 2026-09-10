@@ -85,11 +85,7 @@ fn trace_panel_keeps_already_traced_unlocked_marks_visible() {
     state.story_vars.set_unchecked("knows_drain", "true");
     state.story_vars.set_unchecked("knows_spawn", "true");
     let room_id = state.current_room_id.clone();
-    state.add_item_to_storage(
-        "drain-sigil",
-        ItemStorageTarget::CurrentRoom,
-        &room_id,
-    );
+    state.add_item_to_storage("drain-sigil", ItemStorageTarget::CurrentRoom, &room_id);
 
     let options = craftable_item_panel_options(&content, &state, &action, "trace");
 

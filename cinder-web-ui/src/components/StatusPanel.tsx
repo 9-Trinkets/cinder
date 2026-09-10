@@ -5,9 +5,11 @@ import Section from './Section'
 export default function StatusPanel({
   uiSnapshot,
   onTakeItem,
+  onOpenPanel,
 }: {
   uiSnapshot: api.UiSnapshot
   onTakeItem?: (itemId: string) => void
+  onOpenPanel?: (panel: string) => void
 }) {
   const player = uiSnapshot.player
   return (
@@ -82,12 +84,34 @@ export default function StatusPanel({
 
       {uiSnapshot.party.length > 0 && (
         <Section title="Party" defaultOpen>
-          <ul className="space-y-0.5">
-            {uiSnapshot.party.map((member, i) => (
-              <li key={i} className="text-pine font-medium text-xs">
-                • {member.label}
-                {member.count > 1 ? <span className="text-muted ml-1">×{member.count}</span> : null}
-                {uiSnapshot.levels_revealed ? <span className="text-muted ml-1">— Lv {member.level}</span> : null}
+          <ul className="space-y-2">
+            {uiSnapshot.party.map(member => (
+              <li key={member.id}>
+                <button
+                  type="button"
+                  onClick={() => onOpenPanel?.(member.order_panel)}
+                  className="group w-full rounded-lg border border-subtle bg-surface/40 px-2.5 py-2 text-left transition duration-200 hover:border-pine/50 hover:bg-overlay cursor-pointer"
+                >
+                  <span className="flex items-start justify-between gap-2">
+                    <span className="min-w-0">
+                      <span className="block truncate text-xs font-medium text-text">{member.label}</span>
+                      <span className="mt-0.5 block text-[10px] uppercase tracking-[0.14em] text-pine">
+                        {member.order === 'guard' ? 'Guarding' : 'Assisting'}
+                        {uiSnapshot.levels_revealed ? ` · Lv ${member.level}` : ''}
+                      </span>
+                    </span>
+                    <span className="text-muted transition-transform duration-200 group-hover:translate-x-0.5">›</span>
+                  </span>
+                  <span className="mt-1.5 flex items-center gap-2">
+                    <span className="h-1 flex-1 overflow-hidden rounded-full bg-overlay">
+                      <span
+                        className="block h-full rounded-full bg-pine transition-[width] duration-300"
+                        style={{ width: `${member.hp_max > 0 ? (member.hp / member.hp_max) * 100 : 0}%` }}
+                      />
+                    </span>
+                    <span className="text-[10px] tabular-nums text-muted">{member.hp}/{member.hp_max}</span>
+                  </span>
+                </button>
               </li>
             ))}
           </ul>

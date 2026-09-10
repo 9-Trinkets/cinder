@@ -12,12 +12,12 @@ use std::collections::BTreeMap;
 
 use super::response;
 
+use self::minimap::build_minimap;
 use self::panels::{
     build_action_bar_and_take, build_active_menu, build_drop_panel_options,
     build_interactable_labels, build_look_options, build_overflow_actions, build_panel_options,
     build_talk_options,
 };
-use self::minimap::build_minimap;
 use self::room::{build_room_consumables, crafted_consumable_labels};
 use self::sidebar::{
     build_current_room_items, build_equipped_items, build_inventory, build_party_members,
@@ -52,13 +52,16 @@ pub struct EquippedItem {
     pub label: String,
 }
 
-/// A group of same-named followers in the party.
+/// One living follower and its current combat directive.
 #[derive(Clone, Serialize)]
 pub struct PartyMember {
+    pub id: String,
     pub label: String,
-    pub count: u32,
-    /// Follower level (per-actor). Rendered only once levels are revealed.
     pub level: u32,
+    pub hp: u32,
+    pub hp_max: u32,
+    pub order: String,
+    pub order_panel: String,
 }
 
 /// A single stat value shown on the player's status.
@@ -152,6 +155,8 @@ pub struct PanelOptionData {
     pub command: Option<String>,
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub disabled: bool,
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub selected: bool,
 }
 
 #[derive(Clone, Serialize)]
@@ -236,7 +241,7 @@ pub struct UiSnapshot {
     pub inventory: Vec<InventoryItem>,
     /// Items worn in the player's equipment slots (slot → label).
     pub equipped_items: Vec<EquippedItem>,
-    /// Followers grouped by name (e.g. "dark golem" ×2).
+    /// Living followers, listed individually so each can receive an order.
     pub party: Vec<PartyMember>,
     /// The player's vitals and other stats for the sidebar.
     pub player: PlayerStatus,
@@ -308,8 +313,7 @@ pub(super) fn build_ui_snapshot(
 
     let state = runtime.export_state().map_err(|e| e.to_string())?;
 
-    let (action_bar_actions, take_panel_options) =
-        build_action_bar_and_take(content, &state);
+    let (action_bar_actions, take_panel_options) = build_action_bar_and_take(content, &state);
     let drop_panel_options = build_drop_panel_options(content, &state);
     let look_options = build_look_options(runtime)?;
     let talk_options = build_talk_options(runtime)?;
@@ -320,20 +324,17 @@ pub(super) fn build_ui_snapshot(
         .iter()
         .map(|action| action.id.as_str())
         .collect();
-    let overflow_actions = build_overflow_actions(
-        runtime,
-        content,
-        &state,
-        &bar_ids,
-        &drop_panel_options,
-    )?;
-    let panel_options = build_panel_options(
+    let overflow_actions =
+        build_overflow_actions(runtime, content, &state, &bar_ids, &drop_panel_options)?;
+    let party = build_party_members(runtime, &state, content);
+    let mut panel_options = build_panel_options(
         runtime,
         content,
         &state,
         take_panel_options,
         drop_panel_options,
     )?;
+    panel_options.extend(sidebar::build_party_order_panels(&party));
 
     Ok(UiSnapshot {
         pack_id: pack_id.to_string(),
@@ -378,7 +379,7 @@ pub(super) fn build_ui_snapshot(
             None
         },
         game_closure: response::game_closure_data(runtime, transcript_lines),
-        party: build_party_members(runtime, &state, content),
+        party,
         player: build_player_status(&state, content),
         minimap: if content.minimap_shown(&state) {
             build_minimap(&state, content, &current_room_id)

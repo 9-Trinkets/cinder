@@ -1,12 +1,14 @@
-use cinder_core::content::types::{ActionDefinition, CommandEffect, ContentPack, PanelConfig, PanelDataSource, PanelSelectAction};
+use cinder_core::content::types::{
+    ActionDefinition, CommandEffect, ContentPack, PanelConfig, PanelDataSource, PanelSelectAction,
+};
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::{ActorStance, WorldState};
 use cinder_core::engine::turn_policies::action_is_available;
 use std::collections::BTreeMap;
 
 use super::{
-    droppable_inventory_items, ActionBarAction, ActiveMenuData, LookOptionData, MenuOptionData,
-    OverflowAction, PanelConfigData, PanelOptionData,
+    ActionBarAction, ActiveMenuData, LookOptionData, MenuOptionData, OverflowAction,
+    PanelConfigData, PanelOptionData, droppable_inventory_items,
 };
 
 /// Builds the action bar, and also computes the option rows for the generic
@@ -87,6 +89,7 @@ pub(super) fn build_drop_panel_options(
             subtitle: None,
             command: Some(format!("drop {item_id}")),
             disabled: false,
+            selected: false,
         })
         .collect()
 }
@@ -121,21 +124,23 @@ pub(super) fn build_active_menu(runtime: &CinderRuntime) -> Result<Option<Active
     Ok(runtime
         .current_active_menu_info()
         .map_err(|error| error.to_string())?
-        .map(|info: cinder_core::engine::runtime::ActiveMenuInfo| ActiveMenuData {
-            prompt: info.prompt,
-            max_selections: info.max_selections,
-            min_selections: info.min_selections,
-            selected_ids: info.selected_ids,
-            options: info
-                .options
-                .into_iter()
-                .map(|option| MenuOptionData {
-                    id: option.id,
-                    title: option.title,
-                    menu_text: option.menu_text,
-                })
-                .collect(),
-        }))
+        .map(
+            |info: cinder_core::engine::runtime::ActiveMenuInfo| ActiveMenuData {
+                prompt: info.prompt,
+                max_selections: info.max_selections,
+                min_selections: info.min_selections,
+                selected_ids: info.selected_ids,
+                options: info
+                    .options
+                    .into_iter()
+                    .map(|option| MenuOptionData {
+                        id: option.id,
+                        title: option.title,
+                        menu_text: option.menu_text,
+                    })
+                    .collect(),
+            },
+        ))
 }
 
 /// Names the transcript can highlight as interactable: actors, features, and
@@ -283,6 +288,7 @@ pub(super) fn build_panel_options(
                                 subtitle: None,
                                 command: Some(format!("{} {}", phrase, actor_id)),
                                 disabled: false,
+                                selected: false,
                             }
                         })
                         .collect()
@@ -301,6 +307,7 @@ pub(super) fn build_panel_options(
                         },
                         command: Some(opt.command.clone()),
                         disabled: false,
+                        selected: false,
                     })
                     .collect(),
                 PanelDataSource::Features => runtime
@@ -313,11 +320,12 @@ pub(super) fn build_panel_options(
                         subtitle: None,
                         command: Some(opt.command.clone()),
                         disabled: false,
+                        selected: false,
                     })
                     .collect(),
-                PanelDataSource::CraftableItems => craftable_item_panel_options(
-                    content, state, action, phrase,
-                ),
+                PanelDataSource::CraftableItems => {
+                    craftable_item_panel_options(content, state, action, phrase)
+                }
                 PanelDataSource::LooseRoomItems => runtime
                     .panel_options(&PanelDataSource::LooseRoomItems)
                     .map_err(|error| error.to_string())?
@@ -328,6 +336,7 @@ pub(super) fn build_panel_options(
                         subtitle: None,
                         command: Some(opt.command.clone()),
                         disabled: false,
+                        selected: false,
                     })
                     .collect(),
                 PanelDataSource::InventoryItems => runtime
@@ -340,6 +349,7 @@ pub(super) fn build_panel_options(
                         subtitle: None,
                         command: Some(opt.command.clone()),
                         disabled: false,
+                        selected: false,
                     })
                     .collect(),
             };
@@ -357,7 +367,10 @@ fn craftable_item_panel_options(
     action: &cinder_core::content::types::ActionDefinition,
     phrase: &str,
 ) -> Vec<PanelOptionData> {
-    let gates = action.item_creation.as_ref().map(|ic| &ic.craftable_item_gates);
+    let gates = action
+        .item_creation
+        .as_ref()
+        .map(|ic| &ic.craftable_item_gates);
     action
         .item_creation
         .as_ref()
@@ -405,6 +418,7 @@ fn craftable_item_panel_options(
                             .then(|| content.ui_text.trace_mark_present_label.clone()),
                         command: (!already_traced).then(|| format!("{} {}", phrase, item_id)),
                         disabled: already_traced,
+                        selected: false,
                     }
                 })
                 .collect()
@@ -431,6 +445,7 @@ fn loose_item_option(content: &ContentPack, item_id: &str) -> PanelOptionData {
         subtitle: None,
         command: Some(format!("take {item_id}")),
         disabled: false,
+        selected: false,
     }
 }
 

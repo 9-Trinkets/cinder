@@ -1,18 +1,16 @@
-use cinder_core::content::types::ContentPack;
+use cinder_core::content::types::{ContentPack, PartyOrderKind};
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 
-use super::{EquippedItem, InventoryItem, PartyMember, PlayerStatus, StatValue};
+use super::{EquippedItem, InventoryItem, PanelOptionData, PartyMember, PlayerStatus, StatValue};
+use std::collections::BTreeMap;
 
 /// The player's progress toward the next level. XP/level are per-actor now:
 /// `actor_xp` holds progress toward the *next* level (reset past each
 /// threshold on level-up), so `xp_max` is the threshold at the player's own
 /// current level. A missing threshold means the actor is at max level
 /// (xp_max == 0).
-pub(super) fn xp_progress(
-    state: &WorldState,
-    content: &ContentPack,
-) -> (u32, u32, u32) {
+pub(super) fn xp_progress(state: &WorldState, content: &ContentPack) -> (u32, u32, u32) {
     let player_id = &content.settings.combat.player_actor_id;
     let level = state.actor_level(player_id);
     let xp = state.actor_xp(player_id);
@@ -22,10 +20,7 @@ pub(super) fn xp_progress(
     (level, xp, xp_max)
 }
 
-pub(super) fn build_player_status(
-    state: &WorldState,
-    content: &ContentPack,
-) -> PlayerStatus {
+pub(super) fn build_player_status(state: &WorldState, content: &ContentPack) -> PlayerStatus {
     let player_id = &content.settings.combat.player_actor_id;
     let health_stat = &content.settings.combat.health_stat_id;
     let hp = state
@@ -65,26 +60,100 @@ pub(super) fn build_party_members(
     state: &WorldState,
     content: &ContentPack,
 ) -> Vec<PartyMember> {
-    let mut members: Vec<PartyMember> = Vec::new();
-    for actor_id in living_follower_ids(state, content) {
+    let follower_ids = living_follower_ids(state, content);
+    let mut label_totals = BTreeMap::<String, usize>::new();
+    for actor_id in &follower_ids {
         let label = runtime
-            .actor_display_name(&actor_id)
+            .actor_display_name(actor_id)
             .ok()
             .flatten()
             .unwrap_or_else(|| actor_id.clone());
-        let level = state.actor_level(&actor_id);
-        if let Some(member) = members.iter_mut().find(|m| m.label == label) {
-            member.count += 1;
-        } else {
-            members.push(PartyMember {
-                label,
-                count: 1,
-                level,
-            });
-        }
+        *label_totals.entry(label).or_default() += 1;
     }
-    members.sort_by(|a, b| a.label.cmp(&b.label));
+    let mut label_indexes = BTreeMap::<String, usize>::new();
+    let health_stat = &content.settings.combat.health_stat_id;
+    let mut members = follower_ids
+        .into_iter()
+        .map(|actor_id| {
+            let base_label = runtime
+                .actor_display_name(&actor_id)
+                .ok()
+                .flatten()
+                .unwrap_or_else(|| actor_id.clone());
+            let index = label_indexes.entry(base_label.clone()).or_default();
+            *index += 1;
+            let label = if label_totals.get(&base_label).copied().unwrap_or(0) > 1 {
+                format!("{base_label} {index}")
+            } else {
+                base_label
+            };
+            let hp = state.actor_stat(&actor_id, health_stat).max(0) as u32;
+            let hp_max = state
+                .initial_actor_stats
+                .get(&actor_id)
+                .and_then(|stats| stats.get(health_stat))
+                .copied()
+                .unwrap_or(hp as i32)
+                .max(1) as u32;
+            let order = state
+                .party_order(content, &actor_id)
+                .unwrap_or(PartyOrderKind::Assist);
+            PartyMember {
+                id: actor_id.clone(),
+                label,
+                level: state.actor_level(&actor_id),
+                hp,
+                hp_max,
+                order: order_label(order).to_string(),
+                order_panel: format!("party-order:{actor_id}"),
+            }
+        })
+        .collect::<Vec<_>>();
+    members.sort_by(|a, b| a.label.cmp(&b.label).then_with(|| a.id.cmp(&b.id)));
     members
+}
+
+pub(super) fn build_party_order_panels(
+    members: &[PartyMember],
+) -> BTreeMap<String, Vec<PanelOptionData>> {
+    members
+        .iter()
+        .map(|member| {
+            let options = [
+                (
+                    PartyOrderKind::Guard,
+                    "Guard",
+                    "Intercept attacks against Layla.",
+                ),
+                (
+                    PartyOrderKind::Assist,
+                    "Assist",
+                    "Counterattack enemies that strike the party.",
+                ),
+            ]
+            .into_iter()
+            .map(|(order, title, subtitle)| {
+                let selected = member.order == order_label(order);
+                PanelOptionData {
+                    id: order_label(order).to_string(),
+                    title: title.to_string(),
+                    subtitle: Some(subtitle.to_string()),
+                    command: Some(format!("order {} {}", member.id, order_label(order))),
+                    disabled: selected,
+                    selected,
+                }
+            })
+            .collect();
+            (member.order_panel.clone(), options)
+        })
+        .collect()
+}
+
+fn order_label(order: PartyOrderKind) -> &'static str {
+    match order {
+        PartyOrderKind::Guard => "guard",
+        PartyOrderKind::Assist => "assist",
+    }
 }
 
 fn living_follower_ids(state: &WorldState, content: &ContentPack) -> Vec<String> {
@@ -101,10 +170,7 @@ fn living_follower_ids(state: &WorldState, content: &ContentPack) -> Vec<String>
         .collect()
 }
 
-pub(super) fn build_equipped_items(
-    state: &WorldState,
-    content: &ContentPack,
-) -> Vec<EquippedItem> {
+pub(super) fn build_equipped_items(state: &WorldState, content: &ContentPack) -> Vec<EquippedItem> {
     let mut items: Vec<EquippedItem> = state
         .equipment
         .iter()
@@ -188,5 +254,28 @@ mod tests {
             .unwrap();
 
         assert_eq!(living_follower_ids(&state, &content), vec![living_id]);
+    }
+
+    #[test]
+    fn party_order_panels_mark_the_current_order_and_use_actor_ids() {
+        let members = vec![PartyMember {
+            id: "dark-golem-2".to_string(),
+            label: "dark golem 2".to_string(),
+            level: 1,
+            hp: 8,
+            hp_max: 8,
+            order: "guard".to_string(),
+            order_panel: "party-order:dark-golem-2".to_string(),
+        }];
+
+        let panels = build_party_order_panels(&members);
+        let options = &panels["party-order:dark-golem-2"];
+
+        assert!(options[0].selected);
+        assert!(options[0].disabled);
+        assert_eq!(
+            options[1].command.as_deref(),
+            Some("order dark-golem-2 assist")
+        );
     }
 }

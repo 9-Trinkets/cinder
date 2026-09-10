@@ -56,10 +56,18 @@ export function useSession() {
   const activeMenuTitle = activeMenu?.prompt?.trim() || uiSnapshot?.ui_text.menu_option_list_title || 'Choose'
 
   function findPanelConfig(panelName: string): api.PanelConfigData | undefined {
-    return (
+    const configured =
       uiSnapshot?.action_bar_actions.find(a => a.panel === panelName)?.panel_config ??
       uiSnapshot?.overflow_actions.find(a => a.panel === panelName)?.panel_config
-    )
+    if (configured) return configured
+    const member = uiSnapshot?.party.find(item => item.order_panel === panelName)
+    if (!member) return undefined
+    return {
+      title: `Orders — ${member.label}`,
+      prompt: 'Choose how this party member should respond in combat.',
+      data_source: 'actors_in_room',
+      on_select: 'execute_command',
+    }
   }
 
   function focusInputToEnd() {
@@ -262,7 +270,10 @@ export function useSession() {
   function handleSelectPanelOption(panelName: string, option: api.PanelOptionData) {
     const config = findPanelConfig(panelName)
     setQuickPanel(null)
-    if (!config) return
+    if (!config) {
+      if (option.command) void execCommand(option.command)
+      return
+    }
     switch (config.on_select) {
       case 'execute_command':
         if (option.command) void execCommand(option.command)

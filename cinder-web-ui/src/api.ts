@@ -167,6 +167,7 @@ export interface PanelOptionData {
   subtitle?: string
   command?: string
   disabled?: boolean
+  selected?: boolean
 }
 
 export interface OverflowAction {
@@ -224,9 +225,13 @@ export interface EquippedItem {
 }
 
 export interface PartyMember {
+  id: string
   label: string
-  count: number
   level: number
+  hp: number
+  hp_max: number
+  order: 'guard' | 'assist'
+  order_panel: string
 }
 
 export interface StatValue {
