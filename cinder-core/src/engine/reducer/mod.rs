@@ -19,8 +19,8 @@ use self::handlers::{
     handle_feature_observed, handle_help_shown, handle_hostile_strike, handle_item_acquired,
     handle_item_consumed, handle_item_observed, handle_menu_choice_made, handle_menu_opened,
     handle_menu_selection_toggled, handle_narrative_line, handle_pair_stat_adjusted,
-    handle_player_dropped_item, handle_player_moved, handle_player_took_item, handle_turn_started,
-    handle_unknown_input,
+    handle_party_order_assigned, handle_player_dropped_item, handle_player_moved,
+    handle_player_took_item, handle_turn_started, handle_unknown_input,
 };
 
 pub(crate) use self::observation::render_actor_speech_line;
@@ -224,6 +224,9 @@ pub fn apply_events(
             }
             WorldEvent::ActionRejected { message } => {
                 handle_action_rejected(message, content, &mut lines);
+            }
+            WorldEvent::PartyOrderAssigned { actor_id, order } => {
+                handle_party_order_assigned(state, content, actor_id, *order, &mut lines);
             }
             WorldEvent::HelpShown => {
                 handle_help_shown(state, content, &mut lines);

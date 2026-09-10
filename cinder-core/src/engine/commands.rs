@@ -1,4 +1,4 @@
-use crate::content::types::{ActionDefinition, ActorDefinition, ContentPack};
+use crate::content::types::{ActionDefinition, ActorDefinition, ContentPack, PartyOrderKind};
 use crate::engine::state::{WorldState, current_cast_member_actor_id, display_actor_name};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -40,6 +40,10 @@ pub(crate) enum PlayerCommand {
     /// content action.
     Drop {
         target: String,
+    },
+    PartyOrder {
+        actor_reference: String,
+        order: PartyOrderKind,
     },
     Help,
     Quit,
@@ -91,8 +95,29 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
     if let Some(target) = drop_phrase_target(trimmed) {
         return PlayerCommand::Drop { target };
     }
+    if let Some((actor_reference, order)) = party_order_phrase(trimmed) {
+        return PlayerCommand::PartyOrder {
+            actor_reference,
+            order,
+        };
+    }
 
     PlayerCommand::Unknown
+}
+
+fn party_order_phrase(trimmed: &str) -> Option<(String, PartyOrderKind)> {
+    if !trimmed.to_ascii_lowercase().starts_with("order ") {
+        return None;
+    }
+    let remainder = &trimmed["order ".len()..];
+    let (actor_reference, order) = remainder.rsplit_once(' ')?;
+    let order = match order.to_ascii_lowercase().as_str() {
+        "guard" => PartyOrderKind::Guard,
+        "assist" => PartyOrderKind::Assist,
+        _ => return None,
+    };
+    let actor_reference = actor_reference.trim();
+    (!actor_reference.is_empty()).then(|| (actor_reference.to_string(), order))
 }
 
 /// Extracts the item target from a generic take phrase (`take X`, `pick up X`,
@@ -269,6 +294,12 @@ fn player_command_help_lines(content: &ContentPack) -> Vec<String> {
         if metadata.usage.is_empty() {
             continue;
         }
+        if !content.settings.party.initial_orders.is_empty() {
+            groups
+                .entry("general".to_string())
+                .or_default()
+                .push("- order <party member> guard|assist".to_string());
+        }
         let group = if action.group.is_empty() {
             "general"
         } else {
@@ -401,9 +432,7 @@ mod tests {
 
     #[test]
     fn take_phrases_resolve_to_take_command() {
-        assert!(
-            matches!(parse("take ring"), PlayerCommand::Take { target } if target == "ring")
-        );
+        assert!(matches!(parse("take ring"), PlayerCommand::Take { target } if target == "ring"));
         assert!(
             matches!(parse("pick up scroll"), PlayerCommand::Take { target } if target == "scroll")
         );
@@ -413,12 +442,10 @@ mod tests {
         assert!(
             matches!(parse("pickup badge"), PlayerCommand::Take { target } if target == "badge")
         );
-        assert!(
-            matches!(
-                parse("take the cracked scroll"),
-                PlayerCommand::Take { target } if target == "the cracked scroll"
-            )
-        );
+        assert!(matches!(
+            parse("take the cracked scroll"),
+            PlayerCommand::Take { target } if target == "the cracked scroll"
+        ));
     }
 
     #[test]
@@ -430,16 +457,30 @@ mod tests {
     }
 
     #[test]
+    fn party_order_phrases_resolve_to_single_member_orders() {
+        assert!(matches!(
+            parse("order blair guard"),
+            PlayerCommand::PartyOrder {
+                actor_reference,
+                order: PartyOrderKind::Guard,
+            } if actor_reference == "blair"
+        ));
+        assert!(matches!(
+            parse("order dark golem 1 assist"),
+            PlayerCommand::PartyOrder {
+                actor_reference,
+                order: PartyOrderKind::Assist,
+            } if actor_reference == "dark golem 1"
+        ));
+    }
+
+    #[test]
     fn drop_phrases_resolve_to_drop_command() {
-        assert!(
-            matches!(parse("drop ring"), PlayerCommand::Drop { target } if target == "ring")
-        );
-        assert!(
-            matches!(
-                parse("drop the cracked scroll"),
-                PlayerCommand::Drop { target } if target == "the cracked scroll"
-            )
-        );
+        assert!(matches!(parse("drop ring"), PlayerCommand::Drop { target } if target == "ring"));
+        assert!(matches!(
+            parse("drop the cracked scroll"),
+            PlayerCommand::Drop { target } if target == "the cracked scroll"
+        ));
     }
 
     #[test]

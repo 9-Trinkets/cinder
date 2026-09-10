@@ -12,6 +12,16 @@
     "combat.guard_falls": "The {guard} breaks apart where it stands.",
     "combat.party_counterattack": "The {actor} answers the strike, hitting the {target} for {damage} damage. ({remaining} HP remaining)",
     "combat.party_holds": "The {actor} holds back, too damaged to risk another move.",
+    "party.order_guard_assigned": {
+        "voice": "system",
+        "text": "ORDER UPDATED: {actor} assigned to GUARD."
+    },
+    "party.order_assist_assigned": {
+        "voice": "system",
+        "text": "ORDER UPDATED: {actor} assigned to ASSIST."
+    },
+    "party.order_member_unavailable": "PARTY MEMBER NOT AVAILABLE AT CURRENT POSITION.",
+    "party.order_member_ambiguous": "PARTY MEMBER REFERENCE IS AMBIGUOUS.",
     "conversion.encircled": "The {actor} shudders, its surface brightening. It turns toward you, no longer hostile.",
     "conversion.encircled_follows": "The {actor} falls in behind you. You slow a little, so it can keep up.",
     "follow.actor_follows": "The {actor} follows you, a quiet step behind.",

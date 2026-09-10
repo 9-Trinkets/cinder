@@ -1,76 +1,27 @@
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
-/// Persistent instruction assigned to an allied actor.
+/// Persistent combat directive assigned to an allied actor. Party members
+/// continue following the player under either directive.
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum PartyOrderKind {
     #[default]
-    Follow,
-    Hold,
     Guard,
     Assist,
-    Scout,
-    Hunt,
 }
 
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(tag = "kind", rename_all = "snake_case")]
-pub enum PartyOrderTarget {
-    #[default]
-    None,
-    Room {
-        room_id: String,
-    },
-    Actor {
-        actor_id: String,
-    },
-}
-
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum PartyOrderStatus {
-    #[default]
-    Active,
-    Completed,
-    Cancelled,
-    Failed,
-}
-
-/// Save-compatible order state. World state will store one entry per ordered
-/// party member; content policies inspect `kind`, while lifecycle code owns
-/// status transitions and failure codes.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct PartyOrder {
-    pub kind: PartyOrderKind,
-    #[serde(default)]
-    pub target: PartyOrderTarget,
-    #[serde(default)]
-    pub status: PartyOrderStatus,
-    pub issued_at_minutes: u32,
-    pub updated_at_minutes: u32,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub failure_code: Option<String>,
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-pub struct PartyRoleDefinition {
-    pub id: String,
-}
-
-/// Fixed precedence tier. Survival rules may interrupt an unsafe order;
-/// explicit orders override role defaults.
+/// Fixed precedence tier. Survival rules may temporarily interrupt the
+/// member's persistent combat directive.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum PartyDecisionTier {
     Survival,
-    ExplicitOrder,
-    DefaultRole,
+    Order,
 }
 
 impl PartyDecisionTier {
-    pub const EVALUATION_ORDER: [Self; 3] =
-        [Self::Survival, Self::ExplicitOrder, Self::DefaultRole];
+    pub const EVALUATION_ORDER: [Self; 2] = [Self::Survival, Self::Order];
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -102,7 +53,6 @@ pub enum PartyReactionCooldown {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "condition", rename_all = "snake_case")]
 pub enum PartyDecisionCondition {
-    HasRole { role_id: String },
     OrderIs { orders: Vec<PartyOrderKind> },
     ActorHealthAtMostPercent { percent: u8 },
     ActorHealthAtLeastPercent { percent: u8 },
@@ -115,14 +65,12 @@ pub enum PartyTargetSelection {
     SelfActor,
     Player,
     Attacker,
-    OrderTarget,
     LowestHealthAlly,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "priority", rename_all = "snake_case")]
 pub enum PartyCandidatePriority {
-    RoleOrder { role_ids: Vec<String> },
     HighestHealthPercent,
     HighestDefense,
     ContentOrder,
@@ -156,14 +104,12 @@ pub struct PartyCombatDecisionRule {
     pub message: String,
 }
 
-/// Content-authored party roles and ordered combat policy. Empty defaults keep
-/// existing packs behavior-compatible until they opt into policy evaluation.
+/// Content-authored initial directives and ordered combat policy. Empty
+/// defaults keep packs without controllable parties behavior-compatible.
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PartyPolicyDefinition {
     #[serde(default)]
-    pub roles: Vec<PartyRoleDefinition>,
-    #[serde(default)]
-    pub actor_roles: BTreeMap<String, Vec<String>>,
+    pub initial_orders: BTreeMap<String, PartyOrderKind>,
     #[serde(default)]
     pub combat_rules: Vec<PartyCombatDecisionRule>,
 }
@@ -174,31 +120,11 @@ mod tests {
 
     #[test]
     fn party_orders_and_policy_round_trip_through_json() {
-        let order = PartyOrder {
-            kind: PartyOrderKind::Scout,
-            target: PartyOrderTarget::Room {
-                room_id: "north-pass".to_string(),
-            },
-            status: PartyOrderStatus::Active,
-            issued_at_minutes: 10,
-            updated_at_minutes: 10,
-            failure_code: None,
-        };
-        let restored: PartyOrder =
-            serde_json::from_value(serde_json::to_value(&order).unwrap()).unwrap();
-        assert_eq!(restored, order);
-
         let policy = PartyPolicyDefinition {
-            roles: vec![PartyRoleDefinition {
-                id: "defender".to_string(),
-            }],
-            actor_roles: BTreeMap::from([(
-                "stone-guard".to_string(),
-                vec!["defender".to_string()],
-            )]),
+            initial_orders: BTreeMap::from([("stone-guard".to_string(), PartyOrderKind::Guard)]),
             combat_rules: vec![PartyCombatDecisionRule {
                 id: "guard-player".to_string(),
-                tier: PartyDecisionTier::ExplicitOrder,
+                tier: PartyDecisionTier::Order,
                 window: PartyReactionWindow::BeforeHostileDamage,
                 action: PartyReactionAction::Intercept,
                 conditions: vec![PartyDecisionCondition::OrderIs {
@@ -226,11 +152,7 @@ mod tests {
         assert_eq!(policy, PartyPolicyDefinition::default());
         assert_eq!(
             PartyDecisionTier::EVALUATION_ORDER,
-            [
-                PartyDecisionTier::Survival,
-                PartyDecisionTier::ExplicitOrder,
-                PartyDecisionTier::DefaultRole,
-            ]
+            [PartyDecisionTier::Survival, PartyDecisionTier::Order]
         );
     }
 }

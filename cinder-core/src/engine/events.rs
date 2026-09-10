@@ -1,4 +1,4 @@
-use crate::content::types::ItemStorageTarget;
+use crate::content::types::{ItemStorageTarget, PartyOrderKind};
 use crate::engine::messaging::ChannelMessage;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -112,6 +112,10 @@ pub enum WorldEvent {
     },
     ActionRejected {
         message: String,
+    },
+    PartyOrderAssigned {
+        actor_id: String,
+        order: PartyOrderKind,
     },
     HelpShown,
     UnknownInput {

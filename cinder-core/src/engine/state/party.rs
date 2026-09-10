@@ -1,86 +1,36 @@
 use super::{ActorStance, WorldState, remap_story_actor_id};
-use crate::content::types::{
-    ContentPack, PartyOrder, PartyOrderKind, PartyOrderStatus, PartyOrderTarget,
-};
-
-impl PartyOrder {
-    pub fn is_active(&self) -> bool {
-        self.status == PartyOrderStatus::Active
-    }
-}
+use crate::content::types::{ContentPack, PartyOrderKind};
 
 impl WorldState {
-    pub fn party_order(&self, actor_id: &str) -> Option<&PartyOrder> {
+    pub fn party_order(&self, content: &ContentPack, actor_id: &str) -> Option<PartyOrderKind> {
         let actor_id = remap_story_actor_id(self, actor_id);
-        self.party_orders.get(actor_id)
-    }
-
-    pub fn active_party_order(&self, actor_id: &str) -> Option<&PartyOrder> {
-        self.party_order(actor_id).filter(|order| order.is_active())
+        self.party_orders
+            .get(actor_id)
+            .copied()
+            .or_else(|| content.settings.party.initial_orders.get(actor_id).copied())
     }
 
     pub fn assign_party_order(
         &mut self,
         content: &ContentPack,
         actor_id: &str,
-        kind: PartyOrderKind,
-        target: PartyOrderTarget,
+        order: PartyOrderKind,
     ) -> Result<(), String> {
         let actor_id = remap_story_actor_id(self, actor_id).to_string();
         validate_party_member(content, self, &actor_id)?;
-        validate_order_target(content, &actor_id, kind, &target)?;
-        let now = self.current_time_minutes;
-        self.party_orders.insert(
-            actor_id,
-            PartyOrder {
-                kind,
-                target,
-                status: PartyOrderStatus::Active,
-                issued_at_minutes: now,
-                updated_at_minutes: now,
-                failure_code: None,
-            },
-        );
+        self.party_orders.insert(actor_id.clone(), order);
+        self.set_follows_player(&actor_id, true);
         Ok(())
     }
 
-    pub fn complete_party_order(&mut self, actor_id: &str) -> Result<(), String> {
-        self.transition_party_order(actor_id, PartyOrderStatus::Completed, None)
-    }
-
-    pub fn cancel_party_order(&mut self, actor_id: &str) -> Result<(), String> {
-        self.transition_party_order(actor_id, PartyOrderStatus::Cancelled, None)
-    }
-
-    pub fn fail_party_order(&mut self, actor_id: &str, failure_code: &str) -> Result<(), String> {
-        if failure_code.trim().is_empty() {
-            return Err("party order failure code must not be empty".to_string());
-        }
-        self.transition_party_order(
-            actor_id,
-            PartyOrderStatus::Failed,
-            Some(failure_code.to_string()),
-        )
-    }
-
-    fn transition_party_order(
-        &mut self,
-        actor_id: &str,
-        status: PartyOrderStatus,
-        failure_code: Option<String>,
-    ) -> Result<(), String> {
+    pub fn initialize_party_order(&mut self, content: &ContentPack, actor_id: &str) {
         let actor_id = remap_story_actor_id(self, actor_id).to_string();
-        let order = self
-            .party_orders
-            .get_mut(&actor_id)
-            .ok_or_else(|| format!("actor '{actor_id}' has no party order"))?;
-        if !order.is_active() {
-            return Err(format!("actor '{actor_id}' party order is not active"));
+        if self.party_orders.contains_key(&actor_id) {
+            return;
         }
-        order.status = status;
-        order.updated_at_minutes = self.current_time_minutes;
-        order.failure_code = failure_code;
-        Ok(())
+        if let Some(order) = content.settings.party.initial_orders.get(&actor_id) {
+            self.party_orders.insert(actor_id, *order);
+        }
     }
 }
 
@@ -103,51 +53,25 @@ fn validate_party_member(
     if state.stance(actor_id) != ActorStance::Allied {
         return Err(format!("actor '{actor_id}' is not allied"));
     }
-    Ok(())
-}
-
-fn validate_order_target(
-    content: &ContentPack,
-    ordered_actor_id: &str,
-    kind: PartyOrderKind,
-    target: &PartyOrderTarget,
-) -> Result<(), String> {
-    match (kind, target) {
-        (
-            PartyOrderKind::Follow | PartyOrderKind::Guard | PartyOrderKind::Assist,
-            PartyOrderTarget::None,
-        ) => Ok(()),
-        (PartyOrderKind::Hold | PartyOrderKind::Scout, PartyOrderTarget::Room { room_id }) => {
-            content
-                .room(room_id)
-                .map(|_| ())
-                .ok_or_else(|| format!("unknown party order room '{room_id}'"))
-        }
-        (PartyOrderKind::Hunt, PartyOrderTarget::Actor { actor_id }) => {
-            if actor_id == ordered_actor_id {
-                return Err("a party member cannot hunt itself".to_string());
-            }
-            let target = content
-                .actor(actor_id)
-                .ok_or_else(|| format!("unknown party order target actor '{actor_id}'"))?;
-            if target.is_offstage() {
-                return Err(format!(
-                    "offstage actor '{actor_id}' cannot be a party order target"
-                ));
-            }
-            Ok(())
-        }
-        _ => Err(format!("invalid target for {kind:?} party order")),
+    if !state.actor_is_in_room(content, actor_id, &state.current_room_id) {
+        return Err(format!("actor '{actor_id}' is not in the current room"));
     }
+    if state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id) {
+        return Err(format!("actor '{actor_id}' is defeated"));
+    }
+    Ok(())
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::engine::test_fixtures::minimal_test_pack;
+    use std::collections::BTreeMap;
 
     fn allied_state() -> (ContentPack, WorldState) {
-        let content = minimal_test_pack();
+        let mut content = minimal_test_pack();
+        content.settings.party.initial_orders =
+            BTreeMap::from([("blair".to_string(), PartyOrderKind::Guard)]);
         let mut state = WorldState::new(&content);
         state.set_stance("blair", ActorStance::Allied);
         state.set_follows_player("blair", true);
@@ -155,138 +79,79 @@ mod tests {
     }
 
     #[test]
-    fn assigns_and_transitions_party_orders() {
+    fn content_initial_order_applies_until_overridden() {
         let (content, mut state) = allied_state();
-        state.current_time_minutes = 20;
+        assert_eq!(
+            state.party_order(&content, "blair"),
+            Some(PartyOrderKind::Guard)
+        );
+
         state
-            .assign_party_order(
-                &content,
-                "blair",
-                PartyOrderKind::Scout,
-                PartyOrderTarget::Room {
-                    room_id: "kitchen".to_string(),
-                },
-            )
+            .assign_party_order(&content, "blair", PartyOrderKind::Assist)
             .unwrap();
         assert_eq!(
-            state.active_party_order("blair").map(|order| order.kind),
-            Some(PartyOrderKind::Scout)
+            state.party_order(&content, "blair"),
+            Some(PartyOrderKind::Assist)
         );
-        assert_eq!(state.party_order("blair").unwrap().issued_at_minutes, 20);
-
-        state.current_time_minutes = 30;
-        state.complete_party_order("blair").unwrap();
-        let order = state.party_order("blair").unwrap();
-        assert_eq!(order.status, PartyOrderStatus::Completed);
-        assert_eq!(order.updated_at_minutes, 30);
-        assert!(state.active_party_order("blair").is_none());
+        assert!(state.follows_player("blair"));
     }
 
     #[test]
-    fn reassignment_replaces_terminal_state_and_failure_code() {
-        let (content, mut state) = allied_state();
-        state
-            .assign_party_order(
-                &content,
-                "blair",
-                PartyOrderKind::Hold,
-                PartyOrderTarget::Room {
-                    room_id: "lounge".to_string(),
-                },
-            )
-            .unwrap();
-        state.fail_party_order("blair", "route_blocked").unwrap();
-
-        state.current_time_minutes = 40;
-        state
-            .assign_party_order(
-                &content,
-                "blair",
-                PartyOrderKind::Follow,
-                PartyOrderTarget::None,
-            )
-            .unwrap();
-        let order = state.party_order("blair").unwrap();
-        assert_eq!(order.status, PartyOrderStatus::Active);
-        assert_eq!(order.failure_code, None);
-        assert_eq!(order.issued_at_minutes, 40);
-    }
-
-    #[test]
-    fn cancellation_is_terminal_until_reassigned() {
-        let (content, mut state) = allied_state();
-        state
-            .assign_party_order(
-                &content,
-                "blair",
-                PartyOrderKind::Guard,
-                PartyOrderTarget::None,
-            )
-            .unwrap();
-        state.cancel_party_order("blair").unwrap();
-
-        assert_eq!(
-            state.party_order("blair").map(|order| order.status),
-            Some(PartyOrderStatus::Cancelled)
-        );
-        let error = state.complete_party_order("blair").unwrap_err();
-        assert!(error.contains("not active"), "{error}");
-    }
-
-    #[test]
-    fn orders_validate_members_and_targets() {
+    fn orders_require_a_living_allied_member_in_the_current_room() {
         let (content, mut state) = allied_state();
         let error = state
-            .assign_party_order(
-                &content,
-                "casey",
-                PartyOrderKind::Follow,
-                PartyOrderTarget::None,
-            )
+            .assign_party_order(&content, "casey", PartyOrderKind::Guard)
             .unwrap_err();
         assert!(error.contains("not allied"), "{error}");
 
+        state
+            .actor_room_overrides
+            .insert("blair".to_string(), "kitchen".to_string());
         let error = state
-            .assign_party_order(
-                &content,
-                "blair",
-                PartyOrderKind::Scout,
-                PartyOrderTarget::None,
-            )
+            .assign_party_order(&content, "blair", PartyOrderKind::Assist)
             .unwrap_err();
-        assert!(error.contains("invalid target"), "{error}");
+        assert!(error.contains("not in the current room"), "{error}");
     }
 
     #[test]
-    fn alliance_following_and_orders_remain_independent() {
-        let (content, mut state) = allied_state();
-        state
-            .assign_party_order(
-                &content,
-                "blair",
-                PartyOrderKind::Hold,
-                PartyOrderTarget::Room {
-                    room_id: "lounge".to_string(),
-                },
-            )
-            .unwrap();
-        state.set_follows_player("blair", false);
-
-        assert_eq!(state.stance("blair"), ActorStance::Allied);
-        assert!(!state.follows_player("blair"));
+    fn old_saves_default_to_content_initial_orders() {
+        let (content, state) = allied_state();
+        let mut value = serde_json::to_value(&state).unwrap();
+        value.as_object_mut().unwrap().remove("party_orders");
+        let restored: WorldState = serde_json::from_value(value).unwrap();
         assert_eq!(
-            state.active_party_order("blair").map(|order| order.kind),
-            Some(PartyOrderKind::Hold)
+            restored.party_order(&content, "blair"),
+            Some(PartyOrderKind::Guard)
         );
     }
 
     #[test]
-    fn old_saves_default_to_no_party_orders() {
-        let (_, state) = allied_state();
+    fn legacy_order_objects_restore_supported_directives() {
+        let (content, state) = allied_state();
         let mut value = serde_json::to_value(&state).unwrap();
-        value.as_object_mut().unwrap().remove("party_orders");
+        value["party_orders"] = serde_json::json!({
+            "blair": {
+                "kind": "assist",
+                "target": { "kind": "none" },
+                "status": "active",
+                "issued_at_minutes": 0,
+                "updated_at_minutes": 0
+            },
+            "casey": {
+                "kind": "follow",
+                "target": { "kind": "none" },
+                "status": "active",
+                "issued_at_minutes": 0,
+                "updated_at_minutes": 0
+            }
+        });
 
         let restored: WorldState = serde_json::from_value(value).unwrap();
-        assert!(restored.party_orders.is_empty());
+
+        assert_eq!(
+            restored.party_order(&content, "blair"),
+            Some(PartyOrderKind::Assist)
+        );
+        assert!(!restored.party_orders.contains_key("casey"));
     }
 }

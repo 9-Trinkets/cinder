@@ -160,6 +160,7 @@ fn apply_hook_effects(
                 relationship.stance = ActorStance::Allied;
                 relationship.follows_player = follows_player;
                 state.set_relationship(&actor_id, relationship);
+                state.initialize_party_order(content, &actor_id);
                 if let Some(lines) = lines.as_deref_mut() {
                     let actor_name = content
                         .actor(&actor_id)
@@ -200,6 +201,9 @@ fn apply_hook_effects(
                     relationship.stance = stance;
                     relationship.follows_player = follows_player;
                     state.set_relationship(&actor.id, relationship);
+                    if stance == ActorStance::Allied {
+                        state.initialize_party_order(content, &actor.id);
+                    }
                     if let Some(lines) = lines.as_deref_mut() {
                         for key in &messages {
                             if let Some(line) =

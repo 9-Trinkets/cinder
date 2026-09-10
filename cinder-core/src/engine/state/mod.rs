@@ -91,11 +91,9 @@ pub struct WorldState {
     /// never touch relationships carry no state.
     #[serde(default)]
     pub relationships: BTreeMap<String, ActorRelationship>,
-    /// Latest persistent order for each allied actor. Terminal entries remain
-    /// available for status/failure presentation until a new order replaces
-    /// them.
-    #[serde(default)]
-    pub party_orders: BTreeMap<String, crate::content::types::PartyOrder>,
+    /// Persistent Guard/Assist directive for each allied party member.
+    #[serde(default, deserialize_with = "deserialize_party_orders")]
+    pub party_orders: BTreeMap<String, crate::content::types::PartyOrderKind>,
     /// Earliest game minute at which each party member may react again.
     #[serde(default)]
     pub party_reaction_ready_at: BTreeMap<String, u32>,
@@ -122,6 +120,38 @@ pub struct WorldState {
     /// opening sequence starts running.
     #[serde(default)]
     pub scripted_sequences: BTreeMap<String, ScriptedSequencePlayhead>,
+}
+
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum SavedPartyOrder {
+    Current(crate::content::types::PartyOrderKind),
+    Legacy { kind: String },
+}
+
+fn deserialize_party_orders<'de, D>(
+    deserializer: D,
+) -> Result<BTreeMap<String, crate::content::types::PartyOrderKind>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    let saved = BTreeMap::<String, SavedPartyOrder>::deserialize(deserializer)?;
+    Ok(saved
+        .into_iter()
+        .filter_map(|(actor_id, order)| {
+            let order = match order {
+                SavedPartyOrder::Current(order) => Some(order),
+                SavedPartyOrder::Legacy { kind } if kind == "guard" => {
+                    Some(crate::content::types::PartyOrderKind::Guard)
+                }
+                SavedPartyOrder::Legacy { kind } if kind == "assist" => {
+                    Some(crate::content::types::PartyOrderKind::Assist)
+                }
+                SavedPartyOrder::Legacy { .. } => None,
+            };
+            order.map(|order| (actor_id, order))
+        })
+        .collect())
 }
 
 /// Discrete stance of an actor toward the player. Mutual exclusion is inherent:

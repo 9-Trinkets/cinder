@@ -1,7 +1,7 @@
 use crate::content::types::{
-    ContentPack, PartyCandidatePriority, PartyDecisionCondition, PartyDecisionTier, PartyOrderKind,
-    PartyOrderTarget, PartyReactionAction, PartyReactionCooldown, PartyReactionWindow,
-    PartySupportEffect, PartyTargetSelection,
+    ContentPack, PartyCandidatePriority, PartyDecisionCondition, PartyDecisionTier,
+    PartyReactionAction, PartyReactionCooldown, PartyReactionWindow, PartySupportEffect,
+    PartyTargetSelection,
 };
 use crate::engine::state::{ActorStance, WorldState};
 use std::cmp::Ordering;
@@ -40,7 +40,6 @@ pub(crate) fn select_defensive_reaction(
                             .party_reaction_ready_at
                             .get(&actor.id)
                             .is_none_or(|ready_at| *ready_at <= state.current_time_minutes)
-                        && tier_allows_actor(state, &actor.id, tier)
                         && rule.conditions.iter().all(|condition| {
                             condition_matches(content, state, &actor.id, condition)
                         })
@@ -87,7 +86,6 @@ pub(crate) fn select_post_damage_reactions(
                                     | PartyReactionAction::Support
                                     | PartyReactionAction::Hold
                             )
-                            && tier_allows_actor(state, &actor.id, tier)
                             && rule.conditions.iter().all(|condition| {
                                 condition_matches(content, state, &actor.id, condition)
                             })
@@ -138,25 +136,8 @@ pub(crate) fn resolve_party_reaction_target(
         PartyTargetSelection::SelfActor => Some(decision.actor_id.clone()),
         PartyTargetSelection::Player => Some(content.settings.combat.player_actor_id.clone()),
         PartyTargetSelection::Attacker => Some(attacker_id.to_string()),
-        PartyTargetSelection::OrderTarget => {
-            state
-                .active_party_order(&decision.actor_id)
-                .and_then(|order| match &order.target {
-                    PartyOrderTarget::Actor { actor_id } => Some(actor_id.clone()),
-                    PartyOrderTarget::None | PartyOrderTarget::Room { .. } => None,
-                })
-        }
         PartyTargetSelection::LowestHealthAlly => lowest_health_ally(content, state),
     }
-}
-
-fn tier_allows_actor(state: &WorldState, actor_id: &str, tier: PartyDecisionTier) -> bool {
-    if tier != PartyDecisionTier::DefaultRole {
-        return true;
-    }
-    state
-        .active_party_order(actor_id)
-        .is_none_or(|order| order.kind == PartyOrderKind::Follow)
 }
 
 fn actor_is_reaction_eligible(content: &ContentPack, state: &WorldState, actor_id: &str) -> bool {
@@ -177,15 +158,9 @@ fn condition_matches(
     condition: &PartyDecisionCondition,
 ) -> bool {
     match condition {
-        PartyDecisionCondition::HasRole { role_id } => content
-            .settings
-            .party
-            .actor_roles
-            .get(actor_id)
-            .is_some_and(|roles| roles.iter().any(|role| role == role_id)),
         PartyDecisionCondition::OrderIs { orders } => state
-            .active_party_order(actor_id)
-            .is_some_and(|order| orders.contains(&order.kind)),
+            .party_order(content, actor_id)
+            .is_some_and(|order| orders.contains(&order)),
         PartyDecisionCondition::ActorHealthAtMostPercent { percent } => {
             health_percent_at_most(content, state, actor_id, *percent)
         }
@@ -268,12 +243,6 @@ fn compare_candidates(
 ) -> Ordering {
     for priority in &rule.candidate_priority {
         let ordering = match priority {
-            PartyCandidatePriority::RoleOrder { role_ids } => role_rank(
-                content,
-                left.actor_id,
-                role_ids,
-            )
-            .cmp(&role_rank(content, right.actor_id, role_ids)),
             PartyCandidatePriority::HighestHealthPercent => {
                 let (left_current, left_max) = health_values(content, state, left.actor_id);
                 let (right_current, right_max) = health_values(content, state, right.actor_id);
@@ -300,20 +269,11 @@ fn compare_candidates(
     left.content_index.cmp(&right.content_index)
 }
 
-fn role_rank(content: &ContentPack, actor_id: &str, role_ids: &[String]) -> usize {
-    let assigned = content.settings.party.actor_roles.get(actor_id);
-    role_ids
-        .iter()
-        .position(|role_id| assigned.is_some_and(|roles| roles.iter().any(|role| role == role_id)))
-        .unwrap_or(usize::MAX)
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::content::types::{
-        PartyCombatDecisionRule, PartyOrderTarget, PartyPolicyDefinition, PartyRoleDefinition,
-        PartyTargetSelection,
+        PartyCombatDecisionRule, PartyOrderKind, PartyPolicyDefinition, PartyTargetSelection,
     };
     use crate::engine::test_fixtures::{minimal_test_pack, rebuild_test_pack_indexes};
 
@@ -328,46 +288,27 @@ mod tests {
         drew.room_id = "lounge".to_string();
         content.actors.push(drew);
         content.settings.party = PartyPolicyDefinition {
-            roles: vec![PartyRoleDefinition {
-                id: "defender".to_string(),
-            }],
-            actor_roles: std::collections::BTreeMap::from([
-                ("casey".to_string(), vec!["defender".to_string()]),
-                ("drew".to_string(), vec!["defender".to_string()]),
+            initial_orders: std::collections::BTreeMap::from([
+                ("casey".to_string(), PartyOrderKind::Guard),
+                ("drew".to_string(), PartyOrderKind::Guard),
             ]),
-            combat_rules: vec![
-                PartyCombatDecisionRule {
-                    id: "ordered-guard".to_string(),
-                    tier: PartyDecisionTier::ExplicitOrder,
-                    window: PartyReactionWindow::BeforeHostileDamage,
-                    action: PartyReactionAction::Intercept,
-                    conditions: vec![PartyDecisionCondition::OrderIs {
-                        orders: vec![PartyOrderKind::Guard],
-                    }],
-                    target: PartyTargetSelection::Player,
-                    candidate_priority: vec![PartyCandidatePriority::ContentOrder],
-                    support_effect: None,
-                    cooldown: PartyReactionCooldown::ActorCombatInterval,
-                    message: "combat.guard".to_string(),
-                },
-                PartyCombatDecisionRule {
-                    id: "default-defender".to_string(),
-                    tier: PartyDecisionTier::DefaultRole,
-                    window: PartyReactionWindow::BeforeHostileDamage,
-                    action: PartyReactionAction::Intercept,
-                    conditions: vec![PartyDecisionCondition::HasRole {
-                        role_id: "defender".to_string(),
-                    }],
-                    target: PartyTargetSelection::Player,
-                    candidate_priority: vec![
-                        PartyCandidatePriority::HighestHealthPercent,
-                        PartyCandidatePriority::HighestDefense,
-                    ],
-                    support_effect: None,
-                    cooldown: PartyReactionCooldown::ActorCombatInterval,
-                    message: "combat.guard".to_string(),
-                },
-            ],
+            combat_rules: vec![PartyCombatDecisionRule {
+                id: "guard-order".to_string(),
+                tier: PartyDecisionTier::Order,
+                window: PartyReactionWindow::BeforeHostileDamage,
+                action: PartyReactionAction::Intercept,
+                conditions: vec![PartyDecisionCondition::OrderIs {
+                    orders: vec![PartyOrderKind::Guard],
+                }],
+                target: PartyTargetSelection::Player,
+                candidate_priority: vec![
+                    PartyCandidatePriority::HighestHealthPercent,
+                    PartyCandidatePriority::HighestDefense,
+                ],
+                support_effect: None,
+                cooldown: PartyReactionCooldown::ActorCombatInterval,
+                message: "combat.guard".to_string(),
+            }],
         };
         rebuild_test_pack_indexes(&mut content);
         content
@@ -385,40 +326,30 @@ mod tests {
     }
 
     #[test]
-    fn explicit_guard_order_overrides_health_priority_and_consumes_readiness() {
+    fn guard_order_uses_priority_and_consumes_readiness() {
         let content = defensive_pack();
         let mut state = allied_state(&content);
         state.adjust_actor_stat("casey", "stamina", -5).unwrap();
         state
-            .assign_party_order(
-                &content,
-                "casey",
-                PartyOrderKind::Guard,
-                PartyOrderTarget::None,
-            )
+            .assign_party_order(&content, "casey", PartyOrderKind::Guard)
             .unwrap();
 
         let decision = select_defensive_reaction(&content, &state).unwrap();
-        assert_eq!(decision.actor_id, "casey");
-        assert_eq!(decision.rule_id, "ordered-guard");
+        assert_eq!(decision.actor_id, "drew");
+        assert_eq!(decision.rule_id, "guard-order");
 
         consume_party_reaction(&content, &mut state, &decision);
         let next = select_defensive_reaction(&content, &state).unwrap();
-        assert_eq!(next.actor_id, "drew");
-        assert_eq!(next.rule_id, "default-defender");
+        assert_eq!(next.actor_id, "casey");
+        assert_eq!(next.rule_id, "guard-order");
     }
 
     #[test]
-    fn non_guard_orders_suppress_default_role_behavior() {
+    fn assist_order_suppresses_guard_behavior() {
         let content = defensive_pack();
         let mut state = allied_state(&content);
         state
-            .assign_party_order(
-                &content,
-                "casey",
-                PartyOrderKind::Assist,
-                PartyOrderTarget::None,
-            )
+            .assign_party_order(&content, "casey", PartyOrderKind::Assist)
             .unwrap();
         state.adjust_actor_stat("drew", "stamina", -6).unwrap();
 

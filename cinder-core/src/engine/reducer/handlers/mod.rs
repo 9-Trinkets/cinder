@@ -21,6 +21,7 @@ mod lifecycle;
 mod menus;
 mod movement;
 mod observation;
+mod party;
 mod speech;
 
 pub(super) use combat::{handle_hostile_strike, handle_pair_stat_adjusted};
@@ -41,8 +42,9 @@ pub(super) use movement::{
     handle_actor_moved, handle_actor_relocated, handle_player_moved, sync_followers_to_room,
 };
 pub(super) use observation::{
-    handle_actor_observed, handle_actor_observed_actor, handle_actor_observed_feature,
-    handle_actor_observed_room, handle_current_room_observed, handle_feature_observed,
-    ActorObservationContext,
+    ActorObservationContext, handle_actor_observed, handle_actor_observed_actor,
+    handle_actor_observed_feature, handle_actor_observed_room, handle_current_room_observed,
+    handle_feature_observed,
 };
+pub(super) use party::handle_party_order_assigned;
 pub(super) use speech::handle_channel_message;

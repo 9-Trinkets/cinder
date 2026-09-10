@@ -81,27 +81,11 @@
     }
   },
   "party": {
-    "roles": [
-      {
-        "id": "defender"
-      },
-      {
-        "id": "striker"
-      }
-    ],
-    "actor_roles": {
-      "golem-dark-nw": [
-        "defender"
-      ],
-      "golem-dark-sw": [
-        "defender"
-      ],
-      "golem-pale-ne": [
-        "striker"
-      ],
-      "golem-pale-se": [
-        "striker"
-      ]
+    "initial_orders": {
+      "golem-dark-nw": "guard",
+      "golem-dark-sw": "guard",
+      "golem-pale-ne": "assist",
+      "golem-pale-se": "assist"
     },
     "combat_rules": [
       {
@@ -122,8 +106,8 @@
         "message": "combat.party_holds"
       },
       {
-        "id": "ordered-guard",
-        "tier": "explicit_order",
+        "id": "guard-order",
+        "tier": "order",
         "window": "before_hostile_damage",
         "action": "intercept",
         "conditions": [
@@ -132,53 +116,6 @@
             "orders": [
               "guard"
             ]
-          }
-        ],
-        "target": "player",
-        "candidate_priority": [
-          {
-            "priority": "highest_health_percent"
-          },
-          {
-            "priority": "highest_defense"
-          },
-          {
-            "priority": "content_order"
-          }
-        ],
-        "cooldown": {
-          "mode": "actor_combat_interval"
-        },
-        "message": "combat.guard_intercepts"
-      },
-      {
-        "id": "ordered-assist",
-        "tier": "explicit_order",
-        "window": "after_hostile_damage",
-        "action": "counterattack",
-        "conditions": [
-          {
-            "condition": "order_is",
-            "orders": [
-              "assist"
-            ]
-          }
-        ],
-        "target": "attacker",
-        "cooldown": {
-          "mode": "actor_combat_interval"
-        },
-        "message": "combat.party_counterattack"
-      },
-      {
-        "id": "defender-default",
-        "tier": "default_role",
-        "window": "before_hostile_damage",
-        "action": "intercept",
-        "conditions": [
-          {
-            "condition": "has_role",
-            "role_id": "defender"
           },
           {
             "condition": "actor_health_at_least_percent",
@@ -203,14 +140,16 @@
         "message": "combat.guard_intercepts"
       },
       {
-        "id": "striker-default",
-        "tier": "default_role",
+        "id": "assist-order",
+        "tier": "order",
         "window": "after_hostile_damage",
         "action": "counterattack",
         "conditions": [
           {
-            "condition": "has_role",
-            "role_id": "striker"
+            "condition": "order_is",
+            "orders": [
+              "assist"
+            ]
           }
         ],
         "target": "attacker",

@@ -373,26 +373,25 @@ mod shipped_pack_load_tests {
                     loaded.message_voice("combat.attack_hit"),
                     PackMessageVoice::Narration
                 );
-                assert_eq!(loaded.settings.party.roles.len(), 2);
                 assert_eq!(
                     loaded
                         .settings
                         .party
-                        .actor_roles
+                        .initial_orders
                         .get("golem-dark-nw")
-                        .map(Vec::as_slice),
-                    Some(&["defender".to_string()][..])
+                        .copied(),
+                    Some(crate::content::types::PartyOrderKind::Guard)
                 );
                 assert_eq!(
                     loaded
                         .settings
                         .party
-                        .actor_roles
+                        .initial_orders
                         .get("golem-pale-ne")
-                        .map(Vec::as_slice),
-                    Some(&["striker".to_string()][..])
+                        .copied(),
+                    Some(crate::content::types::PartyOrderKind::Assist)
                 );
-                assert_eq!(loaded.settings.party.combat_rules.len(), 5);
+                assert_eq!(loaded.settings.party.combat_rules.len(), 3);
                 assert_eq!(
                     loaded.settings.party.combat_rules[0].tier,
                     crate::content::types::PartyDecisionTier::Survival

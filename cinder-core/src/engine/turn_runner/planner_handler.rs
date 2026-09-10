@@ -219,6 +219,54 @@ fn plan_drop_command(
     }
 }
 
+fn plan_party_order(
+    content: &ContentPack,
+    planner_state: &WorldState,
+    current_room_id: &str,
+    actor_reference: &str,
+    order: crate::content::types::PartyOrderKind,
+    planned: &mut PlannedTurn,
+) -> bool {
+    let reference = actor_reference.trim();
+    let mut matches = content
+        .onstage_actors()
+        .filter(|actor| {
+            planner_state.stance(&actor.id) == crate::engine::state::ActorStance::Allied
+                && planner_state.actor_is_in_room(content, &actor.id, current_room_id)
+                && !planner_state
+                    .actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
+        })
+        .filter(|actor| {
+            actor.id.eq_ignore_ascii_case(reference)
+                || actor.name.eq_ignore_ascii_case(reference)
+                || actor
+                    .aliases
+                    .iter()
+                    .any(|alias| alias.eq_ignore_ascii_case(reference))
+        });
+    let Some(actor) = matches.next() else {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content
+                .render_message("party.order_member_unavailable", &[])
+                .unwrap_or_default(),
+        });
+        return false;
+    };
+    if matches.next().is_some() {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content
+                .render_message("party.order_member_ambiguous", &[])
+                .unwrap_or_default(),
+        });
+        return false;
+    }
+    planned.events.push(WorldEvent::PartyOrderAssigned {
+        actor_id: actor.id.clone(),
+        order,
+    });
+    false
+}
+
 pub(super) fn build_planned_turn(
     content: &ContentPack,
     aggregated: AggregatedTurn,
@@ -261,6 +309,17 @@ pub(super) fn build_planned_turn(
             PlayerCommand::Drop { target } => {
                 plan_drop_command(content, planner_state, &target, &mut planned)
             }
+            PlayerCommand::PartyOrder {
+                actor_reference,
+                order,
+            } => plan_party_order(
+                content,
+                planner_state,
+                &aggregated.world.current_room_id,
+                &actor_reference,
+                order,
+                &mut planned,
+            ),
             PlayerCommand::Help => {
                 planned.events.push(WorldEvent::HelpShown);
                 false
@@ -413,4 +472,96 @@ pub(super) fn resolve_next_role(
         next,
         message: serde_json::to_string(planned).map_err(|error| error.to_string())?,
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::content::types::PartyOrderKind;
+    use crate::engine::commands::PlayerCommand;
+    use crate::engine::state::{ActorStance, WorldSnapshot};
+    use crate::engine::test_fixtures::{minimal_test_pack, rebuild_test_pack_indexes};
+    use crate::engine::turn_runner::types::{AggregatedTurn, CommandSignal};
+
+    fn plan_order(
+        content: &ContentPack,
+        state: &WorldState,
+        actor_reference: &str,
+        order: PartyOrderKind,
+    ) -> (PlannedTurn, bool) {
+        build_planned_turn(
+            content,
+            AggregatedTurn {
+                command: CommandSignal {
+                    raw_input: format!("order {actor_reference} {order:?}"),
+                    command: PlayerCommand::PartyOrder {
+                        actor_reference: actor_reference.to_string(),
+                        order,
+                    },
+                },
+                world: WorldSnapshot {
+                    turn_number: state.turn_number,
+                    current_room_id: state.current_room_id.clone(),
+                },
+            },
+            state,
+            state.turn_number + 1,
+            false,
+        )
+    }
+
+    #[test]
+    fn party_order_resolves_an_allied_member_by_stable_id_without_advancing_time() {
+        let content = minimal_test_pack();
+        let mut state = WorldState::new(&content);
+        state.set_stance("blair", ActorStance::Allied);
+
+        let (planned, advances_time) =
+            plan_order(&content, &state, "blair", PartyOrderKind::Assist);
+
+        assert!(!advances_time);
+        assert!(planned.events.iter().any(|event| matches!(
+            event,
+            WorldEvent::PartyOrderAssigned { actor_id, order: PartyOrderKind::Assist }
+                if actor_id == "blair"
+        )));
+    }
+
+    #[test]
+    fn party_order_rejects_members_outside_the_current_party() {
+        let content = minimal_test_pack();
+        let state = WorldState::new(&content);
+
+        let (planned, advances_time) = plan_order(&content, &state, "blair", PartyOrderKind::Guard);
+
+        assert!(!advances_time);
+        assert!(
+            planned
+                .events
+                .iter()
+                .any(|event| matches!(event, WorldEvent::ActionRejected { .. }))
+        );
+    }
+
+    #[test]
+    fn party_order_rejects_ambiguous_member_names() {
+        let mut content = minimal_test_pack();
+        let mut duplicate = content.actor("blair").unwrap().clone();
+        duplicate.id = "other-blair".to_string();
+        content.actors.push(duplicate);
+        rebuild_test_pack_indexes(&mut content);
+        let mut state = WorldState::new(&content);
+        state.set_stance("blair", ActorStance::Allied);
+        state.set_stance("other-blair", ActorStance::Allied);
+
+        let (planned, advances_time) = plan_order(&content, &state, "Blair", PartyOrderKind::Guard);
+
+        assert!(!advances_time);
+        assert!(
+            planned
+                .events
+                .iter()
+                .any(|event| matches!(event, WorldEvent::ActionRejected { .. }))
+        );
+    }
 }

@@ -1,8 +1,8 @@
 use super::common::*;
 use cinder_core::content::types::{
     PackMessage, PartyCandidatePriority, PartyCombatDecisionRule, PartyDecisionCondition,
-    PartyDecisionTier, PartyPolicyDefinition, PartyReactionAction, PartyReactionCooldown,
-    PartyReactionWindow, PartyRoleDefinition, PartyTargetSelection,
+    PartyDecisionTier, PartyOrderKind, PartyPolicyDefinition, PartyReactionAction,
+    PartyReactionCooldown, PartyReactionWindow, PartyTargetSelection,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::reducer::apply_events;
@@ -17,17 +17,14 @@ fn policy_selected_defender_takes_the_full_unsplit_strike_and_becomes_unready() 
     pack.settings.combat.attack_stat_id = "confidence".to_string();
     pack.settings.combat.defense_stat_id = "hunger".to_string();
     pack.settings.party = PartyPolicyDefinition {
-        roles: vec![PartyRoleDefinition {
-            id: "defender".to_string(),
-        }],
-        actor_roles: BTreeMap::from([(ACTOR_B_ID.to_string(), vec!["defender".to_string()])]),
+        initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), PartyOrderKind::Guard)]),
         combat_rules: vec![PartyCombatDecisionRule {
             id: "defender-intercepts".to_string(),
-            tier: PartyDecisionTier::DefaultRole,
+            tier: PartyDecisionTier::Order,
             window: PartyReactionWindow::BeforeHostileDamage,
             action: PartyReactionAction::Intercept,
-            conditions: vec![PartyDecisionCondition::HasRole {
-                role_id: "defender".to_string(),
+            conditions: vec![PartyDecisionCondition::OrderIs {
+                orders: vec![PartyOrderKind::Guard],
             }],
             target: PartyTargetSelection::Player,
             candidate_priority: vec![PartyCandidatePriority::HighestDefense],
@@ -75,17 +72,14 @@ fn a_policy_with_no_ready_defender_falls_back_to_player_damage() {
     pack.settings.combat.attack_stat_id = "confidence".to_string();
     pack.settings.combat.defense_stat_id = "hunger".to_string();
     pack.settings.party = PartyPolicyDefinition {
-        roles: vec![PartyRoleDefinition {
-            id: "defender".to_string(),
-        }],
-        actor_roles: BTreeMap::from([(ACTOR_B_ID.to_string(), vec!["defender".to_string()])]),
+        initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), PartyOrderKind::Guard)]),
         combat_rules: vec![PartyCombatDecisionRule {
             id: "defender-intercepts".to_string(),
-            tier: PartyDecisionTier::DefaultRole,
+            tier: PartyDecisionTier::Order,
             window: PartyReactionWindow::BeforeHostileDamage,
             action: PartyReactionAction::Intercept,
-            conditions: vec![PartyDecisionCondition::HasRole {
-                role_id: "defender".to_string(),
+            conditions: vec![PartyDecisionCondition::OrderIs {
+                orders: vec![PartyOrderKind::Guard],
             }],
             target: PartyTargetSelection::Player,
             candidate_priority: vec![],

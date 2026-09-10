@@ -1,8 +1,8 @@
 use super::require_known_id;
 use crate::content::types::{
-    PackMessage, PartyCandidatePriority, PartyDecisionCondition, PartyDecisionTier,
-    PartyPolicyDefinition, PartyReactionAction, PartyReactionCooldown, PartyReactionWindow,
-    PartySupportEffect, PartyTargetSelection,
+    PackMessage, PartyDecisionCondition, PartyDecisionTier, PartyPolicyDefinition,
+    PartyReactionAction, PartyReactionCooldown, PartyReactionWindow, PartySupportEffect,
+    PartyTargetSelection,
 };
 use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
@@ -13,34 +13,13 @@ pub(crate) fn validate_party_policy(
     actor_stat_ids: &[&str],
     messages: &BTreeMap<String, PackMessage>,
 ) -> Result<(), Box<dyn Error>> {
-    let mut role_ids = BTreeSet::new();
-    for role in &policy.roles {
-        let role_id = role.id.trim();
-        if role_id.is_empty() {
-            return Err("party.roles contains an empty role id".into());
-        }
-        if !role_ids.insert(role_id) {
-            return Err(format!("duplicate party role id '{role_id}'").into());
-        }
-    }
-
-    for (actor_id, assigned_roles) in &policy.actor_roles {
+    for actor_id in policy.initial_orders.keys() {
         require_known_id(
             actor_id,
             actor_ids,
-            &format!("party.actor_roles actor '{actor_id}'"),
+            &format!("party.initial_orders actor '{actor_id}'"),
             "actors",
         )?;
-        let mut actor_role_ids = BTreeSet::new();
-        for role_id in assigned_roles {
-            require_known_role(role_id, &role_ids, actor_id)?;
-            if !actor_role_ids.insert(role_id.as_str()) {
-                return Err(format!(
-                    "party.actor_roles actor '{actor_id}' repeats role '{role_id}'"
-                )
-                .into());
-            }
-        }
     }
 
     let mut rule_ids = BTreeSet::new();
@@ -52,26 +31,13 @@ pub(crate) fn validate_party_policy(
         if !rule_ids.insert(rule_id) {
             return Err(format!("duplicate party combat rule id '{rule_id}'").into());
         }
-        validate_rule(rule, &role_ids, actor_stat_ids, messages)?;
+        validate_rule(rule, actor_stat_ids, messages)?;
     }
     Ok(())
 }
 
-fn require_known_role(
-    role_id: &str,
-    known_role_ids: &BTreeSet<&str>,
-    subject: &str,
-) -> Result<(), Box<dyn Error>> {
-    if known_role_ids.contains(role_id) {
-        Ok(())
-    } else {
-        Err(format!("party role '{role_id}' referenced by '{subject}' is not declared").into())
-    }
-}
-
 fn validate_rule(
     rule: &crate::content::types::PartyCombatDecisionRule,
-    role_ids: &BTreeSet<&str>,
     actor_stat_ids: &[&str],
     messages: &BTreeMap<String, PackMessage>,
 ) -> Result<(), Box<dyn Error>> {
@@ -79,29 +45,15 @@ fn validate_rule(
         .conditions
         .iter()
         .any(|condition| matches!(condition, PartyDecisionCondition::OrderIs { .. }));
-    let has_role_condition = rule
-        .conditions
-        .iter()
-        .any(|condition| matches!(condition, PartyDecisionCondition::HasRole { .. }));
-    if rule.tier == PartyDecisionTier::ExplicitOrder && !has_order_condition {
+    if rule.tier == PartyDecisionTier::Order && !has_order_condition {
         return Err(format!(
-            "party combat rule '{}' is explicit_order but has no order_is condition",
-            rule.id
-        )
-        .into());
-    }
-    if rule.tier == PartyDecisionTier::DefaultRole && !has_role_condition {
-        return Err(format!(
-            "party combat rule '{}' is default_role but has no has_role condition",
+            "party combat rule '{}' is order-tier but has no order_is condition",
             rule.id
         )
         .into());
     }
     for condition in &rule.conditions {
         match condition {
-            PartyDecisionCondition::HasRole { role_id } => {
-                require_known_role(role_id, role_ids, &rule.id)?;
-            }
             PartyDecisionCondition::OrderIs { orders } if orders.is_empty() => {
                 return Err(format!(
                     "party combat rule '{}' has an empty order_is condition",
@@ -123,23 +75,7 @@ fn validate_rule(
             _ => {}
         }
     }
-    for priority in &rule.candidate_priority {
-        if let PartyCandidatePriority::RoleOrder {
-            role_ids: priority_roles,
-        } = priority
-        {
-            if priority_roles.is_empty() {
-                return Err(format!(
-                    "party combat rule '{}' role_order priority must not be empty",
-                    rule.id
-                )
-                .into());
-            }
-            for role_id in priority_roles {
-                require_known_role(role_id, role_ids, &rule.id)?;
-            }
-        }
-    }
+    let _ = &rule.candidate_priority;
     if matches!(
         rule.cooldown,
         PartyReactionCooldown::FixedMinutes { minutes: 0 }
@@ -166,7 +102,6 @@ fn validate_rule(
             PartyReactionAction::Support,
             PartyTargetSelection::SelfActor
             | PartyTargetSelection::Player
-            | PartyTargetSelection::OrderTarget
             | PartyTargetSelection::LowestHealthAlly,
         )
         | (
@@ -233,18 +168,15 @@ mod tests {
     use crate::content::types::{
         PackMessage, PartyCombatDecisionRule, PartyDecisionCondition, PartyDecisionTier,
         PartyOrderKind, PartyReactionAction, PartyReactionCooldown, PartyReactionWindow,
-        PartyRoleDefinition, PartyTargetSelection,
+        PartyTargetSelection,
     };
 
     fn valid_policy() -> PartyPolicyDefinition {
         PartyPolicyDefinition {
-            roles: vec![PartyRoleDefinition {
-                id: "defender".to_string(),
-            }],
-            actor_roles: BTreeMap::from([("guard".to_string(), vec!["defender".to_string()])]),
+            initial_orders: BTreeMap::from([("guard".to_string(), PartyOrderKind::Guard)]),
             combat_rules: vec![PartyCombatDecisionRule {
                 id: "ordered-guard".to_string(),
-                tier: PartyDecisionTier::ExplicitOrder,
+                tier: PartyDecisionTier::Order,
                 window: PartyReactionWindow::BeforeHostileDamage,
                 action: PartyReactionAction::Intercept,
                 conditions: vec![PartyDecisionCondition::OrderIs {
@@ -274,15 +206,15 @@ mod tests {
     }
 
     #[test]
-    fn rejects_unknown_roles_and_invalid_explicit_order_rules() {
+    fn rejects_unknown_initial_actors_and_invalid_order_rules() {
         let mut policy = valid_policy();
         policy
-            .actor_roles
-            .insert("guard".to_string(), vec!["missing".to_string()]);
+            .initial_orders
+            .insert("missing".to_string(), PartyOrderKind::Guard);
         let error = validate_party_policy(&policy, &["guard"], &["stamina"], &BTreeMap::new())
             .unwrap_err()
             .to_string();
-        assert!(error.contains("not declared"), "{error}");
+        assert!(error.contains("not found"), "{error}");
 
         let mut policy = valid_policy();
         policy.combat_rules[0].conditions.clear();
