@@ -1,10 +1,8 @@
 mod beat_advance;
-mod charm;
 mod combat;
 mod combat_policy;
 mod common;
 mod defeat_drops;
-mod encirclement;
 mod equipment;
 mod feedback;
 mod items;
@@ -14,3 +12,4 @@ mod party_orders;
 mod party_reactions;
 mod sigils;
 mod social;
+mod surround;

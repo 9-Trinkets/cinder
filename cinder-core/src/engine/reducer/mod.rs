@@ -2,7 +2,7 @@ mod actor_commands;
 mod beat_advance;
 mod combat;
 mod command_effects;
-mod encirclement;
+mod surround;
 mod equipment;
 mod handlers;
 mod movement;

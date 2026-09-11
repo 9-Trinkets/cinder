@@ -12,6 +12,7 @@
   "party.order_assist_assigned": "{actor} is now assisting you.",
   "party.order_member_unavailable": "That party member is not available here.",
   "party.order_member_ambiguous": "That party member name is ambiguous.",
+  "surround.refused": "The pattern holds, and the circle does not close.",
   "item.take_nothing": "There's nothing here to take.",
   "item.take_not_here": "There's no such thing here to take.",
   "item.taken": "You take the {label}.",

@@ -16,7 +16,7 @@ pub(super) use super::actor_commands::{
 pub(super) use super::combat::{
     actor_display_name, award_defeat_xp, defeat_actor, defeat_player_if_dead, spawn_defeat_drops,
 };
-pub(super) use super::encirclement::trigger_surrounded_hooks;
+pub(super) use super::surround::trigger_surrounded_hooks;
 pub(super) use super::movement::{ActorMoveTransitionContext, apply_actor_move_transition};
 
 pub(super) fn apply_new_command_effects(

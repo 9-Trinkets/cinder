@@ -1,4 +1,4 @@
-use crate::content::types::{CharmRule, ContentPack, ItemStorageTarget};
+use crate::content::types::{ContentPack, ItemStorageTarget, SurroundRule};
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_narrating_world_hook_effects;
 use crate::engine::narrative::NarrativeLines;
@@ -6,34 +6,30 @@ use crate::engine::state::{ActorStance, WorldState};
 use serde_json::json;
 
 use super::combat::actor_display_name;
+use super::handlers::push_message;
 
-/// Cold text narrated when the pack's charm rule refuses an encircled actor,
-/// keeping the refusal diegetic instead of silently failing.
-fn charm_refused_line() -> String {
-    "THE RING DOES NOT HOLD.".to_string()
-}
-
-/// Whether the pack's charm rule lets an encircled actor convert. With no
-/// rule (`CharmRule::None`) every candidate converts and the pack gates via
-/// its own hook conditions. With `IntAndLevel` the player must out-score the
-/// target: `player_int + player_level >= target_int + 2*target_level`. The
-/// player int is the *effective* value so equipped bonuses (e.g. a ring) count.
-fn charm_rule_passes(
+/// Whether the pack's surround gate lets an encircled actor convert. With no
+/// rule (`SurroundRule::None`) every candidate converts and the pack gates via
+/// its own hook conditions. With `Resistance` the player must out-score the
+/// target against the configured stat: `player_stat + player_level >=
+/// target_stat + 2*target_level`. The player stat is the *effective* value so
+/// equipped bonuses count.
+fn surround_rule_passes(
     state: &WorldState,
     content: &ContentPack,
     target_actor_id: &str,
 ) -> bool {
-    let CharmRule::IntAndLevel = content.settings.charm_rule else {
+    let SurroundRule::Resistance { stat } = &content.settings.surround_rule else {
         return true;
     };
     let player_id = &content.settings.combat.player_actor_id;
-    let player_int = state
-        .effective_actor_stat(content, player_id, "intelligence")
+    let player_stat = state
+        .effective_actor_stat(content, player_id, stat)
         .max(0) as u32;
     let player_level = state.actor_level(player_id);
-    let target_int = state.actor_stat(target_actor_id, "intelligence").max(0) as u32;
+    let target_stat = state.actor_stat(target_actor_id, stat).max(0) as u32;
     let target_level = state.actor_level(target_actor_id);
-    player_int + player_level >= target_int + 2 * target_level
+    player_stat + player_level >= target_stat + 2 * target_level
 }
 
 /// Fires the content-authored `actor.surrounded` hook for each living,
@@ -71,10 +67,11 @@ pub(super) fn trigger_surrounded_hooks(
         {
             continue;
         }
-        if !charm_rule_passes(state, content, &actor.id) {
-            lines.system(charm_refused_line());
-            // A refused charm spends the ring: the sigils surrounding this
-            // target fade, so the encirclement must be rebuilt to try again.
+        if !surround_rule_passes(state, content, &actor.id) {
+            push_message(lines, content, "surround.refused", &[]);
+            // A refused conversion spends the ring: the encircling items fade
+            // from this target's neighbors, so the ring must be rebuilt before
+            // the attempt can repeat.
             for neighbor in &neighbors {
                 state.remove_items_from_room(neighbor, item_id);
             }
@@ -101,9 +98,8 @@ pub(super) fn trigger_surrounded_hooks(
                 .item(item_id)
                 .is_some_and(|item| item.consumed_on_surround_conversion)
         {
-            // The conversion spent the single-use token (e.g. a charm sigil):
-            // it fades from the room it was just placed in and this placement
-            // converts nothing else.
+            // The conversion spent the single-use token: it fades from the room
+            // it was just placed in and this placement converts nothing else.
             state.remove_items_from_room(source_room_id, item_id);
             break;
         }

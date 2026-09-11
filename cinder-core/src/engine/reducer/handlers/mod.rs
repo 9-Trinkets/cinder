@@ -28,7 +28,7 @@ pub(super) use combat::{handle_hostile_strike, handle_pair_stat_adjusted};
 pub(super) use directives::{apply_content_event, handle_actor_command_used_event};
 pub(super) use feedback::{
     handle_action_rejected, handle_help_shown, handle_narrative_line, handle_unknown_input,
-    push_rendered_message,
+    push_message, push_rendered_message,
 };
 pub(super) use items::{
     handle_item_acquired, handle_item_consumed, handle_item_observed, handle_player_dropped_item,

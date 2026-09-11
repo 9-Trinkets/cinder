@@ -13,7 +13,7 @@ use serde_json::json;
 
 use super::beat_advance::advance_objective_for_signal;
 use super::command_effects::apply_new_command_effects;
-use super::encirclement::trigger_surrounded_hooks;
+use super::surround::trigger_surrounded_hooks;
 use super::movement::{ActorMoveTransitionContext, apply_actor_move_transition};
 use super::tick::record_room_action_memory;
 

@@ -38,7 +38,7 @@ pub(crate) fn handle_item_acquired(
             {
                 push_rendered_message(lines, content, line, voice);
             }
-            // An item appearing in a room can complete an encirclement.
+            // An item appearing in a room can complete a surround.
             trigger_surrounded_hooks(state, content, item_id, &room_id, lines);
         }
     }

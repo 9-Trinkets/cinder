@@ -8,21 +8,65 @@ use super::{
 };
 
 /// How the "actor surrounded" conversion hook decides whether an encircled
-/// non-player actor actually converts.
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum CharmRule {
+/// non-player actor actually converts. The rule is a pure numeric gate; which
+/// text narrates a refused conversion is the pack's `surround.refused` message.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize)]
+#[serde(tag = "mode", rename_all = "snake_case")]
+pub enum SurroundRule {
     /// Every candidate the pack's `actor.surrounded` hook names converts. The
     /// pack is fully responsible for gating (e.g. via hook conditions).
     #[default]
     None,
-    /// A candidate converts only when the player out-scores it:
-    /// `player_int + player_level >= target_int + 2*target_level`, where int is
-    /// the `intelligence` actor stat (player side uses the effective value so
-    /// equipped bonuses count). Failures narrate a cold system line instead of
-    /// converting. Used by layla so bosses stay un-charmable by numbers, not by
-    /// special-cased hook conditions.
-    IntAndLevel,
+    /// A candidate converts only when the player out-scores it against the
+    /// named stat: `player_stat + player_level >= target_stat + 2*target_level`.
+    /// Player side uses the effective value, so equipped bonuses count.
+    Resistance {
+        /// Actor stat the gate compares (e.g. the pack's mental stat).
+        #[serde(default = "default_resistance_stat")]
+        stat: String,
+    },
+}
+
+fn default_resistance_stat() -> String {
+    "intelligence".to_string()
+}
+
+impl<'de> Deserialize<'de> for SurroundRule {
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+    where
+        D: serde::Deserializer<'de>,
+    {
+        #[derive(Deserialize)]
+        #[serde(untagged)]
+        enum Repr {
+            Plain(String),
+            Spec(Spec),
+        }
+        #[derive(Deserialize)]
+        struct Spec {
+            mode: String,
+            #[serde(default = "default_resistance_stat")]
+            stat: String,
+        }
+        match Repr::deserialize(deserializer)? {
+            Repr::Plain(plain) => match plain.as_str() {
+                "none" => Ok(SurroundRule::None),
+                "int_and_level" => Ok(SurroundRule::Resistance {
+                    stat: default_resistance_stat(),
+                }),
+                other => Err(serde::de::Error::custom(format!(
+                    "unknown surround rule '{other}'"
+                ))),
+            },
+            Repr::Spec(spec) => match spec.mode.as_str() {
+                "none" => Ok(SurroundRule::None),
+                "resistance" => Ok(SurroundRule::Resistance { stat: spec.stat }),
+                other => Err(serde::de::Error::custom(format!(
+                    "unknown surround rule mode '{other}'"
+                ))),
+            },
+        }
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -107,12 +151,13 @@ pub struct ContentSettingsDefinition {
     /// Typed actor roles and ordered autonomous party combat rules.
     #[serde(default)]
     pub party: PartyPolicyDefinition,
-    /// Whether encircling an actor converts it at all, and under what rule
-    /// (see [`CharmRule`]).
-    #[serde(default)]
-    pub charm_rule: CharmRule,
+    /// Whether encircling an actor converts it at all, and under what numeric
+    /// gate (see [`SurroundRule`]). Refused conversions narrate the pack's
+    /// `surround.refused` message.
+    #[serde(default, alias = "charm_rule")]
+    pub surround_rule: SurroundRule,
     /// Items the player starts with, item id → count. Seed a finite resource
-    /// (e.g. layla's stone markers) here so it can be dropped into rooms and
+    /// (e.g. a pack's dropped markers) here so it can be dropped into rooms and
     /// picked back up.
     #[serde(default)]
     pub starting_items: BTreeMap<String, u32>,
@@ -183,7 +228,7 @@ impl Default for ContentSettingsDefinition {
             feedback_channel_id: String::default(),
             combat: CombatSettingsDefinition::default(),
             party: PartyPolicyDefinition::default(),
-            charm_rule: CharmRule::None,
+            surround_rule: SurroundRule::None,
             starting_items: BTreeMap::new(),
             equipment_slots: BTreeSet::new(),
             theme: ThemeDefinition::default(),
