@@ -334,7 +334,7 @@ pub(super) fn build_ui_snapshot(
         take_panel_options,
         drop_panel_options,
     )?;
-    panel_options.extend(sidebar::build_party_order_panels(&party));
+    panel_options.extend(sidebar::build_party_order_panels(content, &party));
 
     Ok(UiSnapshot {
         pack_id: pack_id.to_string(),

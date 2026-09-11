@@ -230,7 +230,7 @@ export interface PartyMember {
   level: number
   hp: number
   hp_max: number
-  order: 'guard' | 'assist'
+  order: string
   order_panel: string
 }
 

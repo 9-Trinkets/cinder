@@ -1,4 +1,4 @@
-use cinder_core::content::types::{ContentPack, PartyOrderKind};
+use cinder_core::content::types::ContentPack;
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 
@@ -95,16 +95,14 @@ pub(super) fn build_party_members(
                 .copied()
                 .unwrap_or(hp as i32)
                 .max(1) as u32;
-            let order = state
-                .party_order(content, &actor_id)
-                .unwrap_or(PartyOrderKind::Assist);
+            let order = state.party_order(content, &actor_id).unwrap_or_default();
             PartyMember {
                 id: actor_id.clone(),
                 label,
                 level: state.actor_level(&actor_id),
                 hp,
                 hp_max,
-                order: order_label(order).to_string(),
+                order,
                 order_panel: format!("party-order:{actor_id}"),
             }
         })
@@ -114,46 +112,43 @@ pub(super) fn build_party_members(
 }
 
 pub(super) fn build_party_order_panels(
+    content: &ContentPack,
     members: &[PartyMember],
 ) -> BTreeMap<String, Vec<PanelOptionData>> {
+    let directives = content.settings.party.directives();
     members
         .iter()
         .map(|member| {
-            let options = [
-                (
-                    PartyOrderKind::Guard,
-                    "Guard",
-                    "Intercept attacks against Layla.",
-                ),
-                (
-                    PartyOrderKind::Assist,
-                    "Assist",
-                    "Counterattack enemies that strike the party.",
-                ),
-            ]
-            .into_iter()
-            .map(|(order, title, subtitle)| {
-                let selected = member.order == order_label(order);
-                PanelOptionData {
-                    id: order_label(order).to_string(),
-                    title: title.to_string(),
-                    subtitle: Some(subtitle.to_string()),
-                    command: Some(format!("order {} {}", member.id, order_label(order))),
-                    disabled: selected,
-                    selected,
-                }
-            })
-            .collect();
+            let options = directives
+                .iter()
+                .map(|directive| {
+                    let title = content
+                        .render_message(&format!("party.directive.{directive}.title"), &[])
+                        .unwrap_or_else(|| {
+                            let mut chars = directive.chars();
+                            match chars.next() {
+                                Some(first) => {
+                                    first.to_uppercase().collect::<String>() + chars.as_str()
+                                }
+                                None => directive.clone(),
+                            }
+                        });
+                    let subtitle = content
+                        .render_message(&format!("party.directive.{directive}.subtitle"), &[]);
+                    let selected = member.order == *directive;
+                    PanelOptionData {
+                        id: directive.clone(),
+                        title,
+                        subtitle,
+                        command: Some(format!("order {} {}", member.id, directive)),
+                        disabled: selected,
+                        selected,
+                    }
+                })
+                .collect();
             (member.order_panel.clone(), options)
         })
         .collect()
-}
-
-fn order_label(order: PartyOrderKind) -> &'static str {
-    match order {
-        PartyOrderKind::Guard => "guard",
-        PartyOrderKind::Assist => "assist",
-    }
 }
 
 fn living_follower_ids(state: &WorldState, content: &ContentPack) -> Vec<String> {
@@ -258,6 +253,11 @@ mod tests {
 
     #[test]
     fn party_order_panels_mark_the_current_order_and_use_actor_ids() {
+        let mut content = minimal_test_pack();
+        content.settings.party.initial_orders = std::collections::BTreeMap::from([
+            ("guide-a".to_string(), "assist".to_string()),
+            ("guide-b".to_string(), "guard".to_string()),
+        ]);
         let members = vec![PartyMember {
             id: "dark-golem-2".to_string(),
             label: "dark golem 2".to_string(),
@@ -268,14 +268,16 @@ mod tests {
             order_panel: "party-order:dark-golem-2".to_string(),
         }];
 
-        let panels = build_party_order_panels(&members);
+        let panels = build_party_order_panels(&content, &members);
         let options = &panels["party-order:dark-golem-2"];
 
-        assert!(options[0].selected);
-        assert!(options[0].disabled);
+        assert_eq!(options[0].id, "assist");
         assert_eq!(
-            options[1].command.as_deref(),
+            options[0].command.as_deref(),
             Some("order dark-golem-2 assist")
         );
+        assert_eq!(options[1].id, "guard");
+        assert!(options[1].selected);
+        assert!(options[1].disabled);
     }
 }

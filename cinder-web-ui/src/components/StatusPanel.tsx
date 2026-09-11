@@ -2,6 +2,11 @@ import * as api from '../api'
 import Minimap from './Minimap'
 import Section from './Section'
 
+const orderLabel = (order: string) => {
+  const known: Record<string, string> = { guard: 'Guarding', assist: 'Assisting' }
+  return known[order] ?? `Order: ${order}`
+}
+
 export default function StatusPanel({
   uiSnapshot,
   onTakeItem,
@@ -96,7 +101,7 @@ export default function StatusPanel({
                     <span className="min-w-0">
                       <span className="block truncate text-xs font-medium text-text">{member.label}</span>
                       <span className="mt-0.5 block text-[10px] uppercase tracking-[0.14em] text-pine">
-                        {member.order === 'guard' ? 'Guarding' : 'Assisting'}
+                        {member.order ? orderLabel(member.order) : 'No order'}
                         {uiSnapshot.levels_revealed ? ` · Lv ${member.level}` : ''}
                       </span>
                     </span>
