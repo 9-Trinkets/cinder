@@ -160,5 +160,8 @@
       }
     ]
   },
-  "charm_rule": "int_and_level"
+  "surround_rule": {
+    "mode": "resistance",
+    "stat": "intelligence"
+  }
 }
