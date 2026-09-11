@@ -517,13 +517,13 @@ mod tests {
         state.set_stance("blair", ActorStance::Allied);
 
         let (planned, advances_time) =
-            plan_order(&content, &state, "blair", PartyOrderKind::Assist);
+            plan_order(&content, &state, "blair", "assist".to_string());
 
         assert!(!advances_time);
         assert!(planned.events.iter().any(|event| matches!(
             event,
-            WorldEvent::PartyOrderAssigned { actor_id, order: PartyOrderKind::Assist }
-                if actor_id == "blair"
+            WorldEvent::PartyOrderAssigned { actor_id, order }
+                if actor_id == "blair" && order == "assist"
         )));
     }
 
@@ -532,7 +532,7 @@ mod tests {
         let content = minimal_test_pack();
         let state = WorldState::new(&content);
 
-        let (planned, advances_time) = plan_order(&content, &state, "blair", PartyOrderKind::Guard);
+        let (planned, advances_time) = plan_order(&content, &state, "blair", "guard".to_string());
 
         assert!(!advances_time);
         assert!(
@@ -554,7 +554,7 @@ mod tests {
         state.set_stance("blair", ActorStance::Allied);
         state.set_stance("other-blair", ActorStance::Allied);
 
-        let (planned, advances_time) = plan_order(&content, &state, "Blair", PartyOrderKind::Guard);
+        let (planned, advances_time) = plan_order(&content, &state, "Blair", "guard".to_string());
 
         assert!(!advances_time);
         assert!(

@@ -1,7 +1,7 @@
 use super::common::*;
 use cinder_core::content::types::{
     PackMessage, PartyCandidatePriority, PartyCombatDecisionRule, PartyDecisionCondition,
-    PartyDecisionTier, PartyOrderKind, PartyPolicyDefinition, PartyReactionAction,
+    PartyDecisionTier, PartyPolicyDefinition, PartyReactionAction,
     PartyReactionCooldown, PartyReactionWindow, PartyTargetSelection,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
@@ -17,14 +17,14 @@ fn policy_selected_defender_takes_the_full_unsplit_strike_and_becomes_unready() 
     pack.settings.combat.attack_stat_id = "confidence".to_string();
     pack.settings.combat.defense_stat_id = "hunger".to_string();
     pack.settings.party = PartyPolicyDefinition {
-        initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), PartyOrderKind::Guard)]),
+        initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), "guard".to_string())]),
         combat_rules: vec![PartyCombatDecisionRule {
             id: "defender-intercepts".to_string(),
             tier: PartyDecisionTier::Order,
             window: PartyReactionWindow::BeforeHostileDamage,
             action: PartyReactionAction::Intercept,
             conditions: vec![PartyDecisionCondition::OrderIs {
-                orders: vec![PartyOrderKind::Guard],
+                orders: vec!["guard".to_string()],
             }],
             target: PartyTargetSelection::Player,
             candidate_priority: vec![PartyCandidatePriority::HighestDefense],
@@ -72,14 +72,14 @@ fn a_policy_with_no_ready_defender_falls_back_to_player_damage() {
     pack.settings.combat.attack_stat_id = "confidence".to_string();
     pack.settings.combat.defense_stat_id = "hunger".to_string();
     pack.settings.party = PartyPolicyDefinition {
-        initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), PartyOrderKind::Guard)]),
+        initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), "guard".to_string())]),
         combat_rules: vec![PartyCombatDecisionRule {
             id: "defender-intercepts".to_string(),
             tier: PartyDecisionTier::Order,
             window: PartyReactionWindow::BeforeHostileDamage,
             action: PartyReactionAction::Intercept,
             conditions: vec![PartyDecisionCondition::OrderIs {
-                orders: vec![PartyOrderKind::Guard],
+                orders: vec!["guard".to_string()],
             }],
             target: PartyTargetSelection::Player,
             candidate_priority: vec![],

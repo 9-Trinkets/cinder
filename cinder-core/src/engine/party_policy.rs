@@ -273,7 +273,7 @@ fn compare_candidates(
 mod tests {
     use super::*;
     use crate::content::types::{
-        PartyCombatDecisionRule, PartyOrderKind, PartyPolicyDefinition, PartyTargetSelection,
+        PartyCombatDecisionRule, PartyPolicyDefinition, PartyTargetSelection,
     };
     use crate::engine::test_fixtures::{minimal_test_pack, rebuild_test_pack_indexes};
 
@@ -289,8 +289,8 @@ mod tests {
         content.actors.push(drew);
         content.settings.party = PartyPolicyDefinition {
             initial_orders: std::collections::BTreeMap::from([
-                ("casey".to_string(), PartyOrderKind::Guard),
-                ("drew".to_string(), PartyOrderKind::Guard),
+                ("casey".to_string(), "guard".to_string()),
+                ("drew".to_string(), "guard".to_string()),
             ]),
             combat_rules: vec![PartyCombatDecisionRule {
                 id: "guard-order".to_string(),
@@ -298,7 +298,7 @@ mod tests {
                 window: PartyReactionWindow::BeforeHostileDamage,
                 action: PartyReactionAction::Intercept,
                 conditions: vec![PartyDecisionCondition::OrderIs {
-                    orders: vec![PartyOrderKind::Guard],
+                    orders: vec!["guard".to_string()],
                 }],
                 target: PartyTargetSelection::Player,
                 candidate_priority: vec![
@@ -331,7 +331,7 @@ mod tests {
         let mut state = allied_state(&content);
         state.adjust_actor_stat("casey", "stamina", -5).unwrap();
         state
-            .assign_party_order(&content, "casey", PartyOrderKind::Guard)
+            .assign_party_order(&content, "casey", "guard".to_string())
             .unwrap();
 
         let decision = select_defensive_reaction(&content, &state).unwrap();
@@ -349,7 +349,7 @@ mod tests {
         let content = defensive_pack();
         let mut state = allied_state(&content);
         state
-            .assign_party_order(&content, "casey", PartyOrderKind::Assist)
+            .assign_party_order(&content, "casey", "assist".to_string())
             .unwrap();
         state.adjust_actor_stat("drew", "stamina", -6).unwrap();
 

@@ -105,17 +105,19 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
     PlayerCommand::Unknown
 }
 
+/// A pack-defined party directive assigned to a member (`order <member>
+/// <directive>`). Any single-word directive id is accepted; whether it does
+/// anything reflects the pack's `OrderIs` combat rules.
 fn party_order_phrase(trimmed: &str) -> Option<(String, PartyOrderKind)> {
     if !trimmed.to_ascii_lowercase().starts_with("order ") {
         return None;
     }
     let remainder = &trimmed["order ".len()..];
     let (actor_reference, order) = remainder.rsplit_once(' ')?;
-    let order = match order.to_ascii_lowercase().as_str() {
-        "guard" => PartyOrderKind::Guard,
-        "assist" => PartyOrderKind::Assist,
-        _ => return None,
-    };
+    let order = order.trim().to_ascii_lowercase();
+    if order.is_empty() {
+        return None;
+    }
     let actor_reference = actor_reference.trim();
     (!actor_reference.is_empty()).then(|| (actor_reference.to_string(), order))
 }
@@ -283,6 +285,19 @@ fn best_player_action_match<'a>(
 fn player_command_help_lines(content: &ContentPack) -> Vec<String> {
     let mut groups: BTreeMap<String, Vec<String>> = BTreeMap::new();
 
+    if !content.settings.party.initial_orders.is_empty() {
+        let directives = content.settings.party.directives();
+        let usage = if directives.is_empty() {
+            "<directive>".to_string()
+        } else {
+            directives.join("|")
+        };
+        groups
+            .entry("general".to_string())
+            .or_default()
+            .push(format!("- order <party member> {usage}"));
+    }
+
     for action in content
         .actions
         .iter()
@@ -293,12 +308,6 @@ fn player_command_help_lines(content: &ContentPack) -> Vec<String> {
         };
         if metadata.usage.is_empty() {
             continue;
-        }
-        if !content.settings.party.initial_orders.is_empty() {
-            groups
-                .entry("general".to_string())
-                .or_default()
-                .push("- order <party member> guard|assist".to_string());
         }
         let group = if action.group.is_empty() {
             "general"
@@ -462,15 +471,23 @@ mod tests {
             parse("order blair guard"),
             PlayerCommand::PartyOrder {
                 actor_reference,
-                order: PartyOrderKind::Guard,
-            } if actor_reference == "blair"
+                order,
+            } if actor_reference == "blair" && order == "guard"
         ));
         assert!(matches!(
             parse("order dark golem 1 assist"),
             PlayerCommand::PartyOrder {
                 actor_reference,
-                order: PartyOrderKind::Assist,
-            } if actor_reference == "dark golem 1"
+                order,
+            } if actor_reference == "dark golem 1" && order == "assist"
+        ));
+        // Directives are pack-defined; any single word is accepted verbatim.
+        assert!(matches!(
+            parse("order blair rally"),
+            PlayerCommand::PartyOrder {
+                actor_reference,
+                order,
+            } if actor_reference == "blair" && order == "rally"
         ));
     }
 

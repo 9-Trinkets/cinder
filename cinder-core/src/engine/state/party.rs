@@ -6,8 +6,8 @@ impl WorldState {
         let actor_id = remap_story_actor_id(self, actor_id);
         self.party_orders
             .get(actor_id)
-            .copied()
-            .or_else(|| content.settings.party.initial_orders.get(actor_id).copied())
+            .cloned()
+            .or_else(|| content.settings.party.initial_orders.get(actor_id).cloned())
     }
 
     pub fn assign_party_order(
@@ -29,7 +29,7 @@ impl WorldState {
             return;
         }
         if let Some(order) = content.settings.party.initial_orders.get(&actor_id) {
-            self.party_orders.insert(actor_id, *order);
+            self.party_orders.insert(actor_id, order.clone());
         }
     }
 }
@@ -71,7 +71,7 @@ mod tests {
     fn allied_state() -> (ContentPack, WorldState) {
         let mut content = minimal_test_pack();
         content.settings.party.initial_orders =
-            BTreeMap::from([("blair".to_string(), PartyOrderKind::Guard)]);
+            BTreeMap::from([("blair".to_string(), "guard".to_string())]);
         let mut state = WorldState::new(&content);
         state.set_stance("blair", ActorStance::Allied);
         state.set_follows_player("blair", true);
@@ -83,15 +83,15 @@ mod tests {
         let (content, mut state) = allied_state();
         assert_eq!(
             state.party_order(&content, "blair"),
-            Some(PartyOrderKind::Guard)
+            Some("guard".to_string())
         );
 
         state
-            .assign_party_order(&content, "blair", PartyOrderKind::Assist)
+            .assign_party_order(&content, "blair", "assist".to_string())
             .unwrap();
         assert_eq!(
             state.party_order(&content, "blair"),
-            Some(PartyOrderKind::Assist)
+            Some("assist".to_string())
         );
         assert!(state.follows_player("blair"));
     }
@@ -100,7 +100,7 @@ mod tests {
     fn orders_require_a_living_allied_member_in_the_current_room() {
         let (content, mut state) = allied_state();
         let error = state
-            .assign_party_order(&content, "casey", PartyOrderKind::Guard)
+            .assign_party_order(&content, "casey", "guard".to_string())
             .unwrap_err();
         assert!(error.contains("not allied"), "{error}");
 
@@ -108,7 +108,7 @@ mod tests {
             .actor_room_overrides
             .insert("blair".to_string(), "kitchen".to_string());
         let error = state
-            .assign_party_order(&content, "blair", PartyOrderKind::Assist)
+            .assign_party_order(&content, "blair", "assist".to_string())
             .unwrap_err();
         assert!(error.contains("not in the current room"), "{error}");
     }
@@ -121,12 +121,12 @@ mod tests {
         let restored: WorldState = serde_json::from_value(value).unwrap();
         assert_eq!(
             restored.party_order(&content, "blair"),
-            Some(PartyOrderKind::Guard)
+            Some("guard".to_string())
         );
     }
 
     #[test]
-    fn legacy_order_objects_restore_supported_directives() {
+    fn legacy_order_objects_restore_as_directives() {
         let (content, state) = allied_state();
         let mut value = serde_json::to_value(&state).unwrap();
         value["party_orders"] = serde_json::json!({
@@ -150,8 +150,11 @@ mod tests {
 
         assert_eq!(
             restored.party_order(&content, "blair"),
-            Some(PartyOrderKind::Assist)
+            Some("assist".to_string())
         );
-        assert!(!restored.party_orders.contains_key("casey"));
+        assert_eq!(
+            restored.party_orders.get("casey"),
+            Some(&"follow".to_string())
+        );
     }
 }

@@ -141,13 +141,8 @@ where
         .filter_map(|(actor_id, order)| {
             let order = match order {
                 SavedPartyOrder::Current(order) => Some(order),
-                SavedPartyOrder::Legacy { kind } if kind == "guard" => {
-                    Some(crate::content::types::PartyOrderKind::Guard)
-                }
-                SavedPartyOrder::Legacy { kind } if kind == "assist" => {
-                    Some(crate::content::types::PartyOrderKind::Assist)
-                }
-                SavedPartyOrder::Legacy { .. } => None,
+                SavedPartyOrder::Legacy { kind } if kind.is_empty() => None,
+                SavedPartyOrder::Legacy { kind } => Some(kind),
             };
             order.map(|order| (actor_id, order))
         })

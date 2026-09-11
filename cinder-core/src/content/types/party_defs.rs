@@ -1,15 +1,11 @@
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
-/// Persistent combat directive assigned to an allied actor. Party members
-/// continue following the player under either directive.
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum PartyOrderKind {
-    #[default]
-    Guard,
-    Assist,
-}
+/// A content-defined combat directive a party member is assigned (e.g.
+/// `"guard"`). Directives are arbitrary pack-authored ids; the engine never
+/// interprets them. The pack's `OrderIs` rules decide what each directive does,
+/// and its `party.order_<id>_assigned` message narrates the assignment.
+pub type PartyOrderKind = String;
 
 /// Fixed precedence tier. Survival rules may temporarily interrupt the
 /// member's persistent combat directive.
@@ -114,6 +110,32 @@ pub struct PartyPolicyDefinition {
     pub combat_rules: Vec<PartyCombatDecisionRule>,
 }
 
+impl PartyPolicyDefinition {
+    /// The distinct directive ids this policy references, in sorted order:
+    /// every initial order plus every directive named by an `OrderIs`
+    /// condition. Used to build `order <member> <directive>` affordances.
+    pub fn directives(&self) -> Vec<String> {
+        let mut seen = BTreeSet::new();
+        for directive in self.initial_orders.values() {
+            if !directive.is_empty() {
+                seen.insert(directive.clone());
+            }
+        }
+        for rule in &self.combat_rules {
+            for condition in &rule.conditions {
+                if let PartyDecisionCondition::OrderIs { orders } = condition {
+                    for order in orders {
+                        if !order.is_empty() {
+                            seen.insert(order.clone());
+                        }
+                    }
+                }
+            }
+        }
+        seen.into_iter().collect()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -121,14 +143,14 @@ mod tests {
     #[test]
     fn party_orders_and_policy_round_trip_through_json() {
         let policy = PartyPolicyDefinition {
-            initial_orders: BTreeMap::from([("stone-guard".to_string(), PartyOrderKind::Guard)]),
+            initial_orders: BTreeMap::from([("stone-guard".to_string(), "guard".to_string())]),
             combat_rules: vec![PartyCombatDecisionRule {
                 id: "guard-player".to_string(),
                 tier: PartyDecisionTier::Order,
                 window: PartyReactionWindow::BeforeHostileDamage,
                 action: PartyReactionAction::Intercept,
                 conditions: vec![PartyDecisionCondition::OrderIs {
-                    orders: vec![PartyOrderKind::Guard],
+                    orders: vec!["guard".to_string()],
                 }],
                 target: PartyTargetSelection::Player,
                 candidate_priority: vec![
@@ -154,5 +176,32 @@ mod tests {
             PartyDecisionTier::EVALUATION_ORDER,
             [PartyDecisionTier::Survival, PartyDecisionTier::Order]
         );
+    }
+
+    #[test]
+    fn directives_union_initial_orders_and_condition_orders() {
+        let policy = PartyPolicyDefinition {
+            initial_orders: BTreeMap::from([("a".to_string(), "assist".to_string())]),
+            combat_rules: vec![PartyCombatDecisionRule {
+                id: "r".to_string(),
+                tier: PartyDecisionTier::Order,
+                window: PartyReactionWindow::AfterHostileDamage,
+                action: PartyReactionAction::Counterattack,
+                conditions: vec![
+                    PartyDecisionCondition::OrderIs {
+                        orders: vec!["assist".to_string()],
+                    },
+                    PartyDecisionCondition::OrderIs {
+                        orders: vec!["rally".to_string()],
+                    },
+                ],
+                target: PartyTargetSelection::Attacker,
+                candidate_priority: Vec::new(),
+                support_effect: None,
+                cooldown: PartyReactionCooldown::ActorCombatInterval,
+                message: "combat.counter".to_string(),
+            }],
+        };
+        assert_eq!(policy.directives(), vec!["assist", "rally"]);
     }
 }

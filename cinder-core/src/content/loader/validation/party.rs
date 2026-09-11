@@ -167,20 +167,20 @@ mod tests {
     use super::*;
     use crate::content::types::{
         PackMessage, PartyCombatDecisionRule, PartyDecisionCondition, PartyDecisionTier,
-        PartyOrderKind, PartyReactionAction, PartyReactionCooldown, PartyReactionWindow,
+        PartyReactionAction, PartyReactionCooldown, PartyReactionWindow,
         PartyTargetSelection,
     };
 
     fn valid_policy() -> PartyPolicyDefinition {
         PartyPolicyDefinition {
-            initial_orders: BTreeMap::from([("guard".to_string(), PartyOrderKind::Guard)]),
+            initial_orders: BTreeMap::from([("guard".to_string(), "guard".to_string())]),
             combat_rules: vec![PartyCombatDecisionRule {
                 id: "ordered-guard".to_string(),
                 tier: PartyDecisionTier::Order,
                 window: PartyReactionWindow::BeforeHostileDamage,
                 action: PartyReactionAction::Intercept,
                 conditions: vec![PartyDecisionCondition::OrderIs {
-                    orders: vec![PartyOrderKind::Guard],
+                    orders: vec!["guard".to_string()],
                 }],
                 target: PartyTargetSelection::Player,
                 candidate_priority: Vec::new(),
@@ -210,7 +210,7 @@ mod tests {
         let mut policy = valid_policy();
         policy
             .initial_orders
-            .insert("missing".to_string(), PartyOrderKind::Guard);
+            .insert("missing".to_string(), "guard".to_string());
         let error = validate_party_policy(&policy, &["guard"], &["stamina"], &BTreeMap::new())
             .unwrap_err()
             .to_string();

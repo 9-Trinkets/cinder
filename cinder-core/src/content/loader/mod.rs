@@ -379,8 +379,8 @@ mod shipped_pack_load_tests {
                         .party
                         .initial_orders
                         .get("golem-dark-nw")
-                        .copied(),
-                    Some(crate::content::types::PartyOrderKind::Guard)
+                        .cloned(),
+                    Some("guard".to_string())
                 );
                 assert_eq!(
                     loaded
@@ -388,8 +388,8 @@ mod shipped_pack_load_tests {
                         .party
                         .initial_orders
                         .get("golem-pale-ne")
-                        .copied(),
-                    Some(crate::content::types::PartyOrderKind::Assist)
+                        .cloned(),
+                    Some("assist".to_string())
                 );
                 assert_eq!(loaded.settings.party.combat_rules.len(), 3);
                 assert_eq!(

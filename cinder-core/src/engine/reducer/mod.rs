@@ -226,7 +226,7 @@ pub fn apply_events(
                 handle_action_rejected(message, content, &mut lines);
             }
             WorldEvent::PartyOrderAssigned { actor_id, order } => {
-                handle_party_order_assigned(state, content, actor_id, *order, &mut lines);
+                handle_party_order_assigned(state, content, actor_id, (*order).clone(), &mut lines);
             }
             WorldEvent::HelpShown => {
                 handle_help_shown(state, content, &mut lines);

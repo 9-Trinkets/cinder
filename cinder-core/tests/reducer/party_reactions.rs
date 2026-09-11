@@ -120,13 +120,13 @@ fn hostile_strike(state: &mut WorldState, pack: &cinder_core::content::types::Co
 #[test]
 fn default_striker_counterattacks_with_its_own_kind_and_target_resistance() {
     let pack = reaction_pack(
-        BTreeMap::from([(ACTOR_B_ID.to_string(), PartyOrderKind::Assist)]),
+        BTreeMap::from([(ACTOR_B_ID.to_string(), "assist".to_string())]),
         vec![rule(
             "striker-default",
             PartyDecisionTier::Order,
             PartyReactionAction::Counterattack,
             vec![PartyDecisionCondition::OrderIs {
-                orders: vec![PartyOrderKind::Assist],
+                orders: vec!["assist".to_string()],
             }],
             PartyTargetSelection::Attacker,
         )],
@@ -151,14 +151,14 @@ fn explicit_assist_reacts_without_a_default_combat_role() {
             PartyDecisionTier::Order,
             PartyReactionAction::Counterattack,
             vec![PartyDecisionCondition::OrderIs {
-                orders: vec![PartyOrderKind::Assist],
+                orders: vec!["assist".to_string()],
             }],
             PartyTargetSelection::Attacker,
         )],
     );
     let mut state = combat_state(&pack);
     state
-        .assign_party_order(&pack, ACTOR_B_ID, PartyOrderKind::Assist)
+        .assign_party_order(&pack, ACTOR_B_ID, "assist".to_string())
         .unwrap();
 
     hostile_strike(&mut state, &pack);
@@ -180,7 +180,7 @@ fn survival_hold_interrupts_an_assist_order_and_consumes_readiness() {
         PartyDecisionTier::Order,
         PartyReactionAction::Counterattack,
         vec![PartyDecisionCondition::OrderIs {
-            orders: vec![PartyOrderKind::Assist],
+            orders: vec!["assist".to_string()],
         }],
         PartyTargetSelection::Attacker,
     );
@@ -188,7 +188,7 @@ fn survival_hold_interrupts_an_assist_order_and_consumes_readiness() {
     let mut state = combat_state(&pack);
     state.adjust_actor_stat(ACTOR_B_ID, "stamina", -8).unwrap();
     state
-        .assign_party_order(&pack, ACTOR_B_ID, PartyOrderKind::Assist)
+        .assign_party_order(&pack, ACTOR_B_ID, "assist".to_string())
         .unwrap();
 
     let output = apply_events(
@@ -211,7 +211,7 @@ fn support_applies_its_authored_effect_to_the_selected_target() {
         PartyDecisionTier::Order,
         PartyReactionAction::Support,
         vec![PartyDecisionCondition::OrderIs {
-            orders: vec![PartyOrderKind::Assist],
+            orders: vec!["assist".to_string()],
         }],
         PartyTargetSelection::Player,
     );
@@ -220,7 +220,7 @@ fn support_applies_its_authored_effect_to_the_selected_target() {
         delta: 3,
     });
     let pack = reaction_pack(
-        BTreeMap::from([(ACTOR_B_ID.to_string(), PartyOrderKind::Assist)]),
+        BTreeMap::from([(ACTOR_B_ID.to_string(), "assist".to_string())]),
         vec![support],
     );
     let mut state = combat_state(&pack);
@@ -246,7 +246,7 @@ fn an_interceptor_cannot_counterattack_during_the_same_interval() {
         window: PartyReactionWindow::BeforeHostileDamage,
         action: PartyReactionAction::Intercept,
         conditions: vec![PartyDecisionCondition::OrderIs {
-            orders: vec![PartyOrderKind::Guard],
+            orders: vec!["guard".to_string()],
         }],
         target: PartyTargetSelection::Player,
         candidate_priority: vec![],
@@ -259,12 +259,12 @@ fn an_interceptor_cannot_counterattack_during_the_same_interval() {
         PartyDecisionTier::Order,
         PartyReactionAction::Counterattack,
         vec![PartyDecisionCondition::OrderIs {
-            orders: vec![PartyOrderKind::Assist],
+            orders: vec!["assist".to_string()],
         }],
         PartyTargetSelection::Attacker,
     );
     let pack = reaction_pack(
-        BTreeMap::from([(ACTOR_B_ID.to_string(), PartyOrderKind::Guard)]),
+        BTreeMap::from([(ACTOR_B_ID.to_string(), "guard".to_string())]),
         vec![intercept, counter],
     );
     let mut state = combat_state(&pack);
@@ -278,13 +278,13 @@ fn an_interceptor_cannot_counterattack_during_the_same_interval() {
 #[test]
 fn player_defeat_ends_the_strike_before_party_reactions() {
     let pack = reaction_pack(
-        BTreeMap::from([(ACTOR_B_ID.to_string(), PartyOrderKind::Assist)]),
+        BTreeMap::from([(ACTOR_B_ID.to_string(), "assist".to_string())]),
         vec![rule(
             "striker-default",
             PartyDecisionTier::Order,
             PartyReactionAction::Counterattack,
             vec![PartyDecisionCondition::OrderIs {
-                orders: vec![PartyOrderKind::Assist],
+                orders: vec!["assist".to_string()],
             }],
             PartyTargetSelection::Attacker,
         )],
@@ -302,15 +302,15 @@ fn player_defeat_ends_the_strike_before_party_reactions() {
 fn multiple_ready_members_counterattack_separately_until_the_attacker_falls() {
     let mut pack = reaction_pack(
         BTreeMap::from([
-            (ACTOR_B_ID.to_string(), PartyOrderKind::Assist),
-            (SECOND_ALLY_ID.to_string(), PartyOrderKind::Assist),
+            (ACTOR_B_ID.to_string(), "assist".to_string()),
+            (SECOND_ALLY_ID.to_string(), "assist".to_string()),
         ]),
         vec![rule(
             "striker-default",
             PartyDecisionTier::Order,
             PartyReactionAction::Counterattack,
             vec![PartyDecisionCondition::OrderIs {
-                orders: vec![PartyOrderKind::Assist],
+                orders: vec!["assist".to_string()],
             }],
             PartyTargetSelection::Attacker,
         )],
