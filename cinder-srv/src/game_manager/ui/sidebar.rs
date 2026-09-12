@@ -166,16 +166,22 @@ fn living_follower_ids(state: &WorldState, content: &ContentPack) -> Vec<String>
 }
 
 pub(super) fn build_equipped_items(state: &WorldState, content: &ContentPack) -> Vec<EquippedItem> {
-    let mut items: Vec<EquippedItem> = state
-        .equipment
-        .iter()
-        .map(|(slot, item_id)| {
+    // A multi-slot item (e.g. a two-hand weapon) is listed once, with its
+    // slots joined, instead of once per occupied slot.
+    let mut slot_by_item: std::collections::BTreeMap<&str, Vec<&str>> = std::collections::BTreeMap::new();
+    for (slot, item_id) in &state.equipment {
+        slot_by_item.entry(item_id).or_default().push(slot);
+    }
+    let mut items: Vec<EquippedItem> = slot_by_item
+        .into_iter()
+        .map(|(item_id, mut slots)| {
+            slots.sort();
             let label = content
                 .item(item_id)
                 .map(|item| item.label.clone())
-                .unwrap_or_else(|| item_id.clone());
+                .unwrap_or_else(|| item_id.to_string());
             EquippedItem {
-                slot: slot.clone(),
+                slot: slots.join("+"),
                 label,
             }
         })
