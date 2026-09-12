@@ -25,7 +25,7 @@ export default function PackDetailPage() {
   const location = useLocation()
   const { showToast } = useToast()
   const [pack, setPack] = useState<api.PackInfo | null>(null)
-  const [sessions, setSessions] = useState<api.SessionInfo[]>([])
+  const [plays, setPlays] = useState<api.PlayInfo[]>([])
   const [loading, setLoading] = useState(true)
   const [creating, setCreating] = useState(false)
   const [deleting, setDeleting] = useState<string | null>(null)
@@ -36,12 +36,12 @@ export default function PackDetailPage() {
     if (!token || !packId) return
     setError(null)
     try {
-      const [packs, allSessions] = await Promise.all([
+      const [packs, allPlays] = await Promise.all([
         api.listPacks(token),
-        api.listSessions(token),
+        api.listPlays(token),
       ])
       setPack(packs.find(p => p.id === packId) ?? null)
-      setSessions(allSessions.filter(s => s.pack_id === packId))
+      setPlays(allPlays.filter(p => p.pack_id === packId))
     } catch (err) {
       setError(err instanceof Error ? err.message : 'failed to load')
     } finally {
@@ -51,13 +51,13 @@ export default function PackDetailPage() {
 
   useEffect(() => { load() }, [token, packId, location.key])
 
-  async function doDelete(sessionId: string) {
+  async function doDelete(playId: string) {
     if (!token || deleting) return
     setConfirmDelete(null)
-    setDeleting(sessionId)
+    setDeleting(playId)
     try {
-      await api.deleteSession(token, sessionId)
-      setSessions(prev => prev.filter(s => s.session_id !== sessionId))
+      await api.deletePlay(token, playId)
+      setPlays(prev => prev.filter(p => p.play_id !== playId))
     } catch (err: unknown) {
       showToast(err instanceof Error ? err.message : 'failed to delete', 'error')
     } finally {
@@ -69,10 +69,10 @@ export default function PackDetailPage() {
     if (!token || !packId) return
     setCreating(true)
     try {
-      const session = await api.createSession(token, packId)
-      navigate(`/games/${session.session_id}`, { state: { title: session.title, intro_text: session.intro_text } })
+      const play = await api.createPlay(token, packId)
+      navigate(`/games/${play.play_id}`, { state: { title: play.title, intro_text: play.intro_text } })
     } catch (err: unknown) {
-      showToast(err instanceof Error ? err.message : 'failed to create session', 'error')
+      showToast(err instanceof Error ? err.message : 'failed to create play', 'error')
     } finally {
       setCreating(false)
     }
@@ -113,32 +113,32 @@ export default function PackDetailPage() {
             </section>
 
             <section>
-              <h2 className="text-lg font-semibold text-text mb-4">Sessions</h2>
-              {sessions.length === 0 ? (
-                <p className="text-muted">No sessions yet.</p>
+              <h2 className="text-lg font-semibold text-text mb-4">Plays</h2>
+              {plays.length === 0 ? (
+                <p className="text-muted">No plays yet.</p>
               ) : (
                 <div className="space-y-2">
-                  {sessions.map(s => (
-                    <Card key={s.session_id} className="flex items-center px-4 py-3 group">
+                  {plays.map(p => (
+                    <Card key={p.play_id} className="flex items-center px-4 py-3 group">
                       <div
-                        onClick={() => navigate(`/games/${s.session_id}`)}
+                        onClick={() => navigate(`/games/${p.play_id}`)}
                         className="flex-1 flex items-center justify-between cursor-pointer"
                       >
                         <span className="text-text">
-                          {s.current_room_name
-                            ? `Day ${s.day_number} — ${s.current_room_name}`
-                            : `Session started ${fmtTime(s.created_at)}`}
+                          {p.current_room_name
+                            ? `Day ${p.day_number} — ${p.current_room_name}`
+                            : `Play started ${fmtTime(p.created_at)}`}
                         </span>
-                        <span className="text-faint text-xs">{fmtTime(s.updated_at)}</span>
+                        <span className="text-faint text-xs">{fmtTime(p.updated_at)}</span>
                       </div>
                       <Button
                         variant="ghost"
                         size="sm"
-                        onClick={() => setConfirmDelete(s.session_id)}
-                        disabled={deleting === s.session_id}
+                        onClick={() => setConfirmDelete(p.play_id)}
+                        disabled={deleting === p.play_id}
                         className="ml-3 opacity-0 group-hover:opacity-100"
                       >
-                        {deleting === s.session_id ? '...' : '✕'}
+                        {deleting === p.play_id ? '...' : '✕'}
                       </Button>
                     </Card>
                   ))}
@@ -151,8 +151,8 @@ export default function PackDetailPage() {
 
       {confirmDelete && (
         <ConfirmDialog
-          title="Delete session"
-          message="Delete this session? This cannot be undone."
+          title="Delete play"
+          message="Delete this play? This cannot be undone."
           confirmLabel="Delete"
           onConfirm={() => doDelete(confirmDelete)}
           onCancel={() => setConfirmDelete(null)}

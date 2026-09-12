@@ -20,9 +20,10 @@ fn internal<E: ToString>(e: E) -> (StatusCode, String) {
 }
 
 #[derive(Serialize)]
-pub struct SessionInfo {
-    #[serde(rename = "session_id")]
+pub struct PlayInfo {
     pub play_id: String,
+    #[serde(rename = "session_id")]
+    pub session_id: String,
     pub pack_id: String,
     pub created_at: String,
     pub updated_at: String,
@@ -36,10 +37,16 @@ pub struct SessionInfo {
     pub current_room_name: String,
 }
 
+#[allow(dead_code)]
+pub type SessionInfo = PlayInfo;
+
 #[derive(Deserialize)]
-pub struct CreateSessionRequest {
+pub struct CreatePlayRequest {
     pub pack_id: String,
 }
+
+#[allow(dead_code)]
+pub type CreateSessionRequest = CreatePlayRequest;
 
 pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
     let auth_routes = Router::new()
@@ -47,7 +54,7 @@ pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/api/games", get(list_plays).post(create_play))
         .route("/api/games/{id}/command", post(run_command))
         .route("/api/games/{id}/tick", post(run_tick))
-        .route("/api/games/{id}/ui", get(session_ui))
+        .route("/api/games/{id}/ui", get(play_ui))
         .route("/api/games/{id}/transcript", get(transcript_handler))
         .route("/api/games/{id}/room", post(switch_room_handler))
         .route("/api/games/{id}/follow", post(follow_actor_handler))
@@ -69,14 +76,15 @@ pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
 pub async fn create_play(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
-    Json(req): Json<CreateSessionRequest>,
-) -> Result<Json<SessionInfo>, (StatusCode, String)> {
+    Json(req): Json<CreatePlayRequest>,
+) -> Result<Json<PlayInfo>, (StatusCode, String)> {
     let (play_id, title, intro_text) =
         game_manager::create_play(&state.pool, &auth.id, &req.pack_id)
             .await
             .map_err(internal)?;
 
-    Ok(Json(SessionInfo {
+    Ok(Json(PlayInfo {
+        session_id: play_id.clone(),
         play_id,
         pack_id: req.pack_id,
         created_at: now_unix_secs(),
@@ -124,7 +132,7 @@ pub async fn list_packs() -> Json<Vec<PackInfo>> {
 pub async fn list_plays(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
-) -> Result<Json<Vec<SessionInfo>>, (StatusCode, String)> {
+) -> Result<Json<Vec<PlayInfo>>, (StatusCode, String)> {
     let rows = sqlx::query_as::<_, (String, String, i64, i64, Option<String>, Option<i64>)>(
         "SELECT id::text, pack_id, EXTRACT(EPOCH FROM created_at)::bigint, EXTRACT(EPOCH FROM updated_at)::bigint, \
          state_json->>'current_room_id', (state_json->>'current_time_minutes')::bigint \
@@ -162,7 +170,8 @@ pub async fn list_plays(
                             titles.get(&room_id).cloned().unwrap_or(room_id)
                         })
                         .unwrap_or_default();
-                    SessionInfo {
+                    PlayInfo {
+                        session_id: id.clone(),
                         play_id: id,
                         pack_id,
                         created_at: created_at.to_string(),
@@ -217,7 +226,7 @@ pub async fn transcript_handler(
     Ok(Json(lines))
 }
 
-pub async fn session_ui(
+pub async fn play_ui(
     State(state): State<Arc<AppState>>,
     auth: AuthPlayer,
     Path(play_id): Path<String>,
@@ -285,7 +294,7 @@ pub async fn continue_play_handler(
     auth: AuthPlayer,
     Path(play_id): Path<String>,
 ) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
-    let response = game_manager::play_id(&state.pool, &play_id, &auth.id)
+    let response = game_manager::continue_play(&state.pool, &play_id, &auth.id)
         .await
         .map_err(internal)?;
     Ok(Json(response))

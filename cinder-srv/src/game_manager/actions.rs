@@ -5,8 +5,8 @@ use sqlx::PgPool;
 use uuid::Uuid;
 
 use super::db::{
-    MAX_SESSION_WRITE_RETRIES, PendingTranscriptEntry, insert_transcript_entries, load_play_row,
-    load_play_row_unlocked, narrative_role, parse_uuid,
+    insert_transcript_entries, load_play_row, load_play_row_unlocked, narrative_role, parse_uuid,
+    PendingTranscriptEntry, MAX_PLAY_WRITE_RETRIES,
 };
 use super::response::{act_closure_data, game_closure_data};
 use super::ui::build_ui_snapshot;
@@ -95,7 +95,7 @@ pub async fn run_command(
     player_id: &str,
     input: &str,
 ) -> Result<CommandResponse, String> {
-    let play_id = parse_uuid(play_id, "session id")?;
+    let play_id = parse_uuid(play_id, "play id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let input_owned = input.to_string();
     with_runtime(
@@ -105,7 +105,7 @@ pub async fn run_command(
         move |runtime, pack_id, transcript_lines| {
             // A command sent while a game-over already committed (e.g. a
             // queued action racing on the network) must not mutate the ended
-            // session; return the ending snapshot as-is.
+            // play; return the ending snapshot as-is.
             if runtime
                 .export_state()
                 .map(|state| state.phase == GamePhase::GameEnded)
@@ -226,7 +226,7 @@ pub async fn run_realtime_tick(
     play_id: &str,
     player_id: &str,
 ) -> Result<CommandResponse, String> {
-    let play_id = parse_uuid(play_id, "session id")?;
+    let play_id = parse_uuid(play_id, "play id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     with_runtime(
         pool,
@@ -290,7 +290,7 @@ pub async fn switch_room(
     player_id: &str,
     room_id: &str,
 ) -> Result<CommandResponse, String> {
-    let play_id = parse_uuid(play_id, "session id")?;
+    let play_id = parse_uuid(play_id, "play id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let room_id = room_id.to_string();
     with_runtime(
@@ -330,7 +330,7 @@ pub async fn follow_actor(
     player_id: &str,
     actor_id: Option<&str>,
 ) -> Result<CommandResponse, String> {
-    let play_id = parse_uuid(play_id, "session id")?;
+    let play_id = parse_uuid(play_id, "play id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let actor_id = actor_id.map(|s| s.to_string());
     with_runtime(
@@ -370,11 +370,11 @@ pub async fn set_locale(
     player_id: &str,
     locale: &str,
 ) -> Result<CommandResponse, String> {
-    let play_id = parse_uuid(play_id, "session id")?;
+    let play_id = parse_uuid(play_id, "play id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let locale = locale.to_string();
 
-    for _attempt in 0..MAX_SESSION_WRITE_RETRIES {
+    for _attempt in 0..MAX_PLAY_WRITE_RETRIES {
         let (pack_id, previous_locale, state_json) =
             load_play_row_unlocked(pool, &play_id, &player_id).await?;
         let target_locale = locale.clone();
@@ -451,15 +451,15 @@ pub async fn set_locale(
         });
     }
 
-    Err("session changed too frequently; please retry".to_string())
+    Err("play changed too frequently; please retry".to_string())
 }
 
-pub async fn play_id(
+pub async fn continue_play(
     pool: &PgPool,
     play_id: &str,
     player_id: &str,
 ) -> Result<CommandResponse, String> {
-    let play_id = parse_uuid(play_id, "session id")?;
+    let play_id = parse_uuid(play_id, "play id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     with_runtime(
         pool,
@@ -468,7 +468,7 @@ pub async fn play_id(
         move |runtime, pack_id, _transcript_lines| {
             runtime
                 .continue_after_act()
-                .map_err(|e| format!("session continuation error: {e}"))?;
+                .map_err(|e| format!("play continuation error: {e}"))?;
             let ui_snapshot = build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
             Ok((
                 CommandResponse {

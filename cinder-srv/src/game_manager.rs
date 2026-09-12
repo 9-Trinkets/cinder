@@ -11,15 +11,16 @@ mod response;
 mod ui;
 
 pub use self::actions::{
-    create_play, follow_actor, play_id, run_command, run_realtime_tick, set_locale, switch_room,
+    continue_play, create_play, follow_actor, run_command, run_realtime_tick, set_locale,
+    switch_room,
 };
-pub use self::response::{CommandResponse, consume_projector_sequence};
+pub use self::response::{consume_projector_sequence, CommandResponse};
 pub use self::ui::UiSnapshot;
 
 use db::{
     fetch_transcript_lines, insert_transcript_entries, load_play_row, load_play_row_unlocked,
-    narrative_kind, replace_transcript_entries_with_lines, transcript_lines_from_state_json,
-    parse_uuid, MAX_SESSION_WRITE_RETRIES, PendingTranscriptEntry,
+    narrative_kind, parse_uuid, replace_transcript_entries_with_lines,
+    transcript_lines_from_state_json, PendingTranscriptEntry, MAX_PLAY_WRITE_RETRIES,
 };
 
 async fn with_runtime<F, R>(
@@ -37,7 +38,7 @@ where
 {
     let f = Arc::new(f);
 
-    for _attempt in 0..MAX_SESSION_WRITE_RETRIES {
+    for _attempt in 0..MAX_PLAY_WRITE_RETRIES {
         let (pack_id, locale, state_json) =
             load_play_row_unlocked(pool, play_id, player_id).await?;
         let transcript_lines = {
@@ -116,7 +117,7 @@ where
         return Ok(result);
     }
 
-    Err("session changed too frequently; please retry".to_string())
+    Err("play changed too frequently; please retry".to_string())
 }
 
 // ── Public queries ──────────────────────────────────
@@ -126,7 +127,7 @@ pub async fn get_play_ui(
     play_id: &str,
     player_id: &str,
 ) -> Result<UiSnapshot, String> {
-    let play_id = parse_uuid(play_id, "session id")?;
+    let play_id = parse_uuid(play_id, "play id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let (pack_id, locale, state_json) = load_play_row_unlocked(pool, &play_id, &player_id).await?;
     let transcript_lines = fetch_transcript_lines(pool, &play_id, &player_id).await?;
@@ -153,7 +154,7 @@ pub async fn get_transcript(
     play_id: &str,
     player_id: &str,
 ) -> Result<Vec<cinder_core::engine::narrative::NarrativeLine>, String> {
-    let play_id = parse_uuid(play_id, "session id")?;
+    let play_id = parse_uuid(play_id, "play id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     let mut tx = pool
         .begin()

@@ -4,12 +4,12 @@ const BASE = configuredBase
   : '/api'
 
 export function gameTicksWebSocketUrl(
-  sessionId: string,
+  playId: string,
   token: string,
   intervalMs: number,
 ) {
   const url = new URL(
-    `${BASE}/games/${encodeURIComponent(sessionId)}/ws`,
+    `${BASE}/games/${encodeURIComponent(playId)}/ws`,
     window.location.origin,
   )
   url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:'
@@ -63,8 +63,9 @@ export function login(username: string, password: string) {
   })
 }
 
-export interface SessionInfo {
-  session_id: string
+export interface PlayInfo {
+  play_id: string
+  session_id?: string
   pack_id: string
   created_at: string
   updated_at: string
@@ -74,19 +75,23 @@ export interface SessionInfo {
   current_room_name: string
 }
 
-export function createSession(token: string, packId: string) {
-  return req<SessionInfo>('/games', {
+export type SessionInfo = PlayInfo
+
+export function createPlay(token: string, packId: string) {
+  return req<PlayInfo>('/games', {
     method: 'POST',
     headers: authHeader(token),
     body: JSON.stringify({ pack_id: packId }),
   })
 }
+export const createSession = createPlay
 
-export function listSessions(token: string) {
-  return req<SessionInfo[]>('/games', {
+export function listPlays(token: string) {
+  return req<PlayInfo[]>('/games', {
     headers: authHeader(token),
   })
 }
+export const listSessions = listPlays
 
 export interface MovieFrameData {
   text: string
@@ -116,16 +121,16 @@ export interface CommandResponse {
   ui_snapshot: UiSnapshot | null
 }
 
-export function runCommand(token: string, sessionId: string, input: string) {
-  return req<CommandResponse>(`/games/${sessionId}/command`, {
+export function runCommand(token: string, playId: string, input: string) {
+  return req<CommandResponse>(`/games/${playId}/command`, {
     method: 'POST',
     headers: authHeader(token),
     body: JSON.stringify({ input }),
   })
 }
 
-export function runRealtimeTick(token: string, sessionId: string) {
-  return req<CommandResponse>(`/games/${sessionId}/tick`, {
+export function runRealtimeTick(token: string, playId: string) {
+  return req<CommandResponse>(`/games/${playId}/tick`, {
     method: 'POST',
     headers: authHeader(token),
   })
@@ -399,55 +404,58 @@ export interface UiSnapshot {
   }
 }
 
-export function fetchSessionUi(token: string, sessionId: string) {
-  return req<UiSnapshot>(`/games/${sessionId}/ui`, {
+export function fetchPlayUi(token: string, playId: string) {
+  return req<UiSnapshot>(`/games/${playId}/ui`, {
     headers: authHeader(token),
   })
 }
+export const fetchSessionUi = fetchPlayUi
 
-export function switchRoom(token: string, sessionId: string, roomId: string) {
-  return req<CommandResponse>(`/games/${sessionId}/room`, {
+export function switchRoom(token: string, playId: string, roomId: string) {
+  return req<CommandResponse>(`/games/${playId}/room`, {
     method: 'POST',
     headers: authHeader(token),
     body: JSON.stringify({ room_id: roomId }),
   })
 }
 
-export function followActor(token: string, sessionId: string, actorId: string | null) {
-  return req<CommandResponse>(`/games/${sessionId}/follow`, {
+export function followActor(token: string, playId: string, actorId: string | null) {
+  return req<CommandResponse>(`/games/${playId}/follow`, {
     method: 'POST',
     headers: authHeader(token),
     body: JSON.stringify({ actor_id: actorId }),
   })
 }
 
-export function setLocale(token: string, sessionId: string, locale: string) {
-  return req<CommandResponse>(`/games/${sessionId}/locale`, {
+export function setLocale(token: string, playId: string, locale: string) {
+  return req<CommandResponse>(`/games/${playId}/locale`, {
     method: 'POST',
     headers: authHeader(token),
     body: JSON.stringify({ locale }),
   })
 }
 
-export function continueSession(token: string, sessionId: string) {
-  return req<CommandResponse>(`/games/${sessionId}/continue`, {
+export function continuePlay(token: string, playId: string) {
+  return req<CommandResponse>(`/games/${playId}/continue`, {
     method: 'POST',
     headers: authHeader(token),
   })
 }
+export const continueSession = continuePlay
 
-export function fetchTranscript(token: string, sessionId: string) {
-  return req<NarrativeLine[]>(`/games/${sessionId}/transcript`, {
+export function fetchTranscript(token: string, playId: string) {
+  return req<NarrativeLine[]>(`/games/${playId}/transcript`, {
     headers: authHeader(token),
   })
 }
 
-export function deleteSession(token: string, sessionId: string) {
-  return req<void>(`/games/${sessionId}`, {
+export function deletePlay(token: string, playId: string) {
+  return req<void>(`/games/${playId}`, {
     method: 'DELETE',
     headers: authHeader(token),
   })
 }
+export const deleteSession = deletePlay
 
 export interface PackInfo {
   id: string

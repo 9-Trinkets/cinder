@@ -10,12 +10,12 @@ import MovieModal from '../components/MovieModal'
 import QuickActionPanel from '../components/QuickActionPanel'
 import ConfirmDialog from '../components/ConfirmDialog'
 import { themeVars } from '../utils/theme'
-import { useSession } from '../hooks/useSession'
+import { usePlay } from '../hooks/usePlay'
 
 export default function GamePage() {
   const navigate = useNavigate()
   const { logout } = useAuth()
-  const session = useSession()
+  const play = usePlay()
   const {
     uiSnapshot,
     openMenu,
@@ -28,7 +28,7 @@ export default function GamePage() {
     applyCommandResponse,
     token,
     id,
-    setSessionClosure,
+    setActClosure,
     setGameClosure,
     transcriptRef,
     bottomRef,
@@ -70,7 +70,7 @@ export default function GamePage() {
     setShowStatusModal,
     showExitConfirm,
     setShowExitConfirm,
-  } = session
+  } = play
 
   return (
     <div
@@ -125,9 +125,9 @@ export default function GamePage() {
             bottomRef={bottomRef}
             onScroll={handleTranscriptScroll}
             onDismissClosure={() => {
-              setSessionClosure(null)
+              setActClosure(null)
               if (token && id) {
-                api.continueSession(token, id).then(res => {
+                api.continuePlay(token, id).then(res => {
                   applyCommandResponse(res)
                 }).catch(() => {})
               }

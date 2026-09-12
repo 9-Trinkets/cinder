@@ -2,9 +2,9 @@ use cinder_core::engine::state::WorldState;
 use sqlx::{PgPool, Postgres, Transaction};
 use uuid::Uuid;
 
-pub(super) type SessionRow = (String, String, String);
+pub(super) type PlayRow = (String, String, String);
 pub(super) const MAX_TRANSCRIPT_LINES: i64 = 200;
-pub(super) const MAX_SESSION_WRITE_RETRIES: usize = 5;
+pub(super) const MAX_PLAY_WRITE_RETRIES: usize = 5;
 
 #[derive(Debug)]
 pub(super) struct PendingTranscriptEntry {
@@ -42,28 +42,28 @@ pub(super) async fn load_play_row(
     play_id: &Uuid,
     player_id: &Uuid,
     for_update: bool,
-) -> Result<SessionRow, String> {
+) -> Result<PlayRow, String> {
     let query = if for_update {
         "SELECT pack_id, locale, state_json::text FROM game_plays WHERE id = $1 AND player_id = $2 FOR UPDATE"
     } else {
         "SELECT pack_id, locale, state_json::text FROM game_plays WHERE id = $1 AND player_id = $2"
     };
 
-    sqlx::query_as::<_, SessionRow>(query)
+    sqlx::query_as::<_, PlayRow>(query)
         .bind(play_id)
         .bind(player_id)
         .fetch_optional(&mut **tx)
         .await
         .map_err(|e| format!("db error: {e}"))?
-        .ok_or_else(|| "session not found".to_string())
+        .ok_or_else(|| "play not found".to_string())
 }
 
 pub(super) async fn load_play_row_unlocked(
     pool: &PgPool,
     play_id: &Uuid,
     player_id: &Uuid,
-) -> Result<SessionRow, String> {
-    sqlx::query_as::<_, SessionRow>(
+) -> Result<PlayRow, String> {
+    sqlx::query_as::<_, PlayRow>(
         "SELECT pack_id, locale, state_json::text FROM game_plays WHERE id = $1 AND player_id = $2",
     )
     .bind(play_id)
@@ -71,7 +71,7 @@ pub(super) async fn load_play_row_unlocked(
     .fetch_optional(pool)
     .await
     .map_err(|e| format!("db error: {e}"))?
-    .ok_or_else(|| "session not found".to_string())
+    .ok_or_else(|| "play not found".to_string())
 }
 
 pub(super) async fn fetch_transcript_lines(

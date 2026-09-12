@@ -107,9 +107,9 @@ Display language can be switched in-game from the menu.
 - `GET  /api/games`, `POST /api/games` — list or create a playthrough.
 - `POST /api/games/{id}/command` — submit a player command.
 - `POST /api/games/{id}/tick` — advance an NPC tick.
-- `GET  /api/games/{id}/ui`, `GET /api/games/{id}/transcript` — session snapshot.
+- `GET  /api/games/{id}/ui`, `GET /api/games/{id}/transcript` — play snapshot.
 - `POST /api/games/{id}/room`, `POST /api/games/{id}/follow`,
-  `POST /api/games/{id}/locale`, `POST /api/games/{id}/continue` — session actions.
+  `POST /api/games/{id}/locale`, `POST /api/games/{id}/continue` — play actions.
 - `DELETE /api/games/{id}` — delete a playthrough.
 - `GET  /api/games/{id}/ws` — WebSocket for live NPC ticks.
 
