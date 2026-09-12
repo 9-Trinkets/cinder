@@ -6,7 +6,7 @@ mod sidebar;
 use cinder_core::content::loader;
 use cinder_core::content::types::{PanelDataSource, UiTextDefinition};
 use cinder_core::engine::runtime::{ActClosure, CinderRuntime, PanelOption};
-use cinder_core::engine::state::WorldState;
+use cinder_core::engine::state::{GamePhase, WorldState};
 use serde::Serialize;
 use std::collections::BTreeMap;
 
@@ -238,6 +238,11 @@ pub struct UiSnapshot {
     pub ui_text: UiTextDefinition,
     pub act_closure: Option<ActClosure>,
     pub game_closure: Option<ActClosure>,
+    /// Whether the game has ended (phase-derived, independent of whether any
+    /// game-closure text is configured). The single source of truth the web UI
+    /// uses to lock command input at game over.
+    #[serde(default)]
+    pub game_over: bool,
     pub inventory: Vec<InventoryItem>,
     /// Items worn in the player's equipment slots (slot → label).
     pub equipped_items: Vec<EquippedItem>,
@@ -379,6 +384,7 @@ pub(super) fn build_ui_snapshot(
             None
         },
         game_closure: response::game_closure_data(runtime, transcript_lines),
+        game_over: state.phase != GamePhase::Active,
         party,
         player: build_player_status(&state, content),
         minimap: if content.minimap_shown(&state) {

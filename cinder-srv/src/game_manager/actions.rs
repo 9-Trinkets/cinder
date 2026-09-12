@@ -103,6 +103,26 @@ pub async fn run_command(
         &play_id,
         &player_id,
         move |runtime, pack_id, transcript_lines| {
+            // A command sent while a game-over already committed (e.g. a
+            // queued action racing on the network) must not mutate the ended
+            // session; return the ending snapshot as-is.
+            if runtime
+                .export_state()
+                .map(|state| state.phase == GamePhase::GameEnded)
+                .unwrap_or(false)
+            {
+                let ui_snapshot = build_ui_snapshot(runtime, pack_id, transcript_lines)?;
+                let response = CommandResponse {
+                    text: String::new(),
+                    lines: Vec::new(),
+                    game_over: true,
+                    movie: None,
+                    act_closure: None,
+                    game_closure: ui_snapshot.game_closure.clone(),
+                    ui_snapshot: Some(ui_snapshot),
+                };
+                return Ok((response, Vec::new()));
+            }
             let mut outcome = runtime
                 .run_turn(&input_owned)
                 .map_err(|e| format!("turn error: {e}"))?;
