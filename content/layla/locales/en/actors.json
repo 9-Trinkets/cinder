@@ -498,7 +498,24 @@
       "intelligence": 3
     },
     "prompt_context": {},
-    "level": 3
+    "level": 3,
+    "drops": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-blade",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "bark-bracer",
+            "weight": 2,
+            "count": 1
+          }
+        ]
+      }
+    }
   },
   {
     "id": "elf-pawn-2",
@@ -522,7 +539,24 @@
       "intelligence": 3
     },
     "prompt_context": {},
-    "level": 3
+    "level": 3,
+    "drops": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-blade",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "bark-bracer",
+            "weight": 2,
+            "count": 1
+          }
+        ]
+      }
+    }
   },
   {
     "id": "elf-pawn-3",
@@ -546,7 +580,24 @@
       "intelligence": 3
     },
     "prompt_context": {},
-    "level": 3
+    "level": 3,
+    "drops": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-blade",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "bark-bracer",
+            "weight": 2,
+            "count": 1
+          }
+        ]
+      }
+    }
   },
   {
     "id": "elf-pawn-4",
@@ -570,7 +621,24 @@
       "intelligence": 3
     },
     "prompt_context": {},
-    "level": 3
+    "level": 3,
+    "drops": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-blade",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "bark-bracer",
+            "weight": 2,
+            "count": 1
+          }
+        ]
+      }
+    }
   },
   {
     "id": "elf-pawn-5",
@@ -594,7 +662,24 @@
       "intelligence": 3
     },
     "prompt_context": {},
-    "level": 3
+    "level": 3,
+    "drops": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-blade",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "bark-bracer",
+            "weight": 2,
+            "count": 1
+          }
+        ]
+      }
+    }
   },
   {
     "id": "elf-pawn-6",
@@ -618,7 +703,24 @@
       "intelligence": 3
     },
     "prompt_context": {},
-    "level": 3
+    "level": 3,
+    "drops": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-blade",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "bark-bracer",
+            "weight": 2,
+            "count": 1
+          }
+        ]
+      }
+    }
   },
   {
     "id": "elf-pawn-7",
@@ -642,7 +744,24 @@
       "intelligence": 3
     },
     "prompt_context": {},
-    "level": 3
+    "level": 3,
+    "drops": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-blade",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "bark-bracer",
+            "weight": 2,
+            "count": 1
+          }
+        ]
+      }
+    }
   },
   {
     "id": "elf-pawn-8",
@@ -666,7 +785,24 @@
       "intelligence": 3
     },
     "prompt_context": {},
-    "level": 3
+    "level": 3,
+    "drops": {
+      "pawn-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "leaf-blade",
+            "weight": 3,
+            "count": 1
+          },
+          {
+            "item_id": "bark-bracer",
+            "weight": 2,
+            "count": 1
+          }
+        ]
+      }
+    }
   },
   {
     "id": "elf-rook-1",
@@ -690,7 +826,24 @@
       "intelligence": 4
     },
     "prompt_context": {},
-    "level": 5
+    "level": 5,
+    "drops": {
+      "rook-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "bark-mantle",
+            "weight": 2,
+            "count": 1
+          },
+          {
+            "item_id": "iron-elm-greatbow",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
   },
   {
     "id": "elf-knight-2",
@@ -714,7 +867,24 @@
       "intelligence": 4
     },
     "prompt_context": {},
-    "level": 4
+    "level": 4,
+    "drops": {
+      "knight-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "antler-saber",
+            "weight": 2,
+            "count": 1
+          },
+          {
+            "item_id": "elmwood-greaves",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
   },
   {
     "id": "elf-bishop-3",
@@ -738,7 +908,24 @@
       "intelligence": 4
     },
     "prompt_context": {},
-    "level": 4
+    "level": 4,
+    "drops": {
+      "bishop-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "moonlit-reed-ring",
+            "weight": 2,
+            "count": 1
+          },
+          {
+            "item_id": "moss-light-cowl",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
   },
   {
     "id": "elf-queen-4",
@@ -762,7 +949,21 @@
       "intelligence": 6
     },
     "prompt_context": {},
-    "level": 6
+    "level": 6,
+    "drops": {
+      "mirrorshard-glaive": {
+        "count": 1,
+        "chance_percent": 60
+      },
+      "moonlit-mail": {
+        "count": 1,
+        "chance_percent": 50
+      },
+      "driftwood-crown": {
+        "count": 1,
+        "chance_percent": 35
+      }
+    }
   },
   {
     "id": "elf-king-5",
@@ -780,7 +981,11 @@
     "initial_hostile": true,
     "xp_drop": 0,
     "drops": {
-      "drain-scroll": 1
+      "drain-scroll": 1,
+      "throneroot-cloak": {
+        "count": 1,
+        "chance_percent": 50
+      }
     },
     "initial_stats": {
       "hp": 20,
@@ -813,7 +1018,24 @@
       "intelligence": 4
     },
     "prompt_context": {},
-    "level": 4
+    "level": 4,
+    "drops": {
+      "bishop-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "moonlit-reed-ring",
+            "weight": 2,
+            "count": 1
+          },
+          {
+            "item_id": "moss-light-cowl",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
   },
   {
     "id": "elf-knight-7",
@@ -837,7 +1059,24 @@
       "intelligence": 4
     },
     "prompt_context": {},
-    "level": 4
+    "level": 4,
+    "drops": {
+      "knight-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "antler-saber",
+            "weight": 2,
+            "count": 1
+          },
+          {
+            "item_id": "elmwood-greaves",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
   },
   {
     "id": "elf-rook-8",
@@ -861,7 +1100,24 @@
       "intelligence": 4
     },
     "prompt_context": {},
-    "level": 5
+    "level": 5,
+    "drops": {
+      "rook-kit": {
+        "rolls": 1,
+        "entries": [
+          {
+            "item_id": "bark-mantle",
+            "weight": 2,
+            "count": 1
+          },
+          {
+            "item_id": "iron-elm-greatbow",
+            "weight": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
   },
   {
     "id": "fire-elemental",
@@ -1002,7 +1258,7 @@
         "You are Layla's handler: a young, inexperienced man working from corporate SOPs and playbooks. You are procedural because you are afraid of getting the procedure wrong, not because you are emotionless.",
         "You reach Layla only through the comms channel. You are not in the cave with her. You cannot see what she sees unless she reports it.",
         "You voice errors, help, objective framing, inventory and equipment feedback, and explicit system directives. You never narrate rooms, combat, memories, character actions, or dialogue.",
-        "You sometimes call Layla by name or check whether she is all right \u2014 then you remember that you are not supposed to treat her like a person. The SOP does not have a line for caring."
+        "You sometimes call Layla by name or check whether she is all right — then you remember that you are not supposed to treat her like a person. The SOP does not have a line for caring."
       ],
       "subtext_notes": [
         "You are afraid of getting the procedure wrong, and the way you never say that out loud is that you stay inside the playbook.",
