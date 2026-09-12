@@ -92,7 +92,46 @@ impl WorldState {
     /// checks) must use this instead of `actor_stat`. The write path still
     /// clamps the base to the stat's declared min/max; equipment can push the
     /// effective value past those bounds by design.
-    pub fn effective_actor_stat(
+    /// Full (undamaged) value for a stat: the actor's seeded value plus the
+/// growth granted by every level already reached. Damage only drives the
+/// stored stat below this, so it is the natural "max" to display alongside
+/// the current value.
+pub fn actor_stat_maximum(&self, content: &ContentPack, actor_id: &str, stat_key: &str) -> i32 {
+    let definition = self.actor_stat_defs.get(stat_key).cloned();
+    let initial = self
+        .initial_actor_stats
+        .get(actor_id)
+        .and_then(|stats| stats.get(stat_key))
+        .copied()
+        .unwrap_or_else(|| definition.as_ref().map(|stat| stat.default).unwrap_or(0));
+    let level = self.actor_level.get(actor_id).copied().unwrap_or(1).max(1);
+    let growth = (1..level)
+        .filter_map(|prior_level| content.level_definition(actor_id, prior_level))
+        .filter_map(|definition| definition.stat_changes.get(stat_key))
+        .copied()
+        .sum::<i32>();
+    let full = initial.saturating_add(growth);
+    definition
+        .map(|definition| definition.clamp(full))
+        .unwrap_or(full)
+}
+
+/// Full stat value the player can display: the natural maximum plus the
+/// equipped bonuses the current value itself also carries.
+pub fn effective_actor_stat_maximum(
+    &self,
+    content: &ContentPack,
+    actor_id: &str,
+    stat_key: &str,
+) -> i32 {
+    let mut value = self.actor_stat_maximum(content, actor_id, stat_key);
+    if actor_id == content.settings.combat.player_actor_id {
+        value += self.equipped_stat_bonus(content, stat_key);
+    }
+    value
+}
+
+pub fn effective_actor_stat(
         &self,
         content: &ContentPack,
         actor_id: &str,

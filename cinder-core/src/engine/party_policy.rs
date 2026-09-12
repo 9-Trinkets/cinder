@@ -189,19 +189,8 @@ fn health_percent_at_most(
 fn health_values(content: &ContentPack, state: &WorldState, actor_id: &str) -> (i32, i32) {
     let health_stat = &content.settings.combat.health_stat_id;
     let current = state.actor_stat(actor_id, health_stat).max(0);
-    let initial = state
-        .initial_actor_stats
-        .get(actor_id)
-        .and_then(|stats| stats.get(health_stat))
-        .copied()
-        .unwrap_or(current);
-    let level = state.actor_level.get(actor_id).copied().unwrap_or(1);
-    let growth = (1..level)
-        .filter_map(|prior_level| content.level_definition(actor_id, prior_level))
-        .filter_map(|definition| definition.stat_changes.get(health_stat))
-        .copied()
-        .sum::<i32>();
-    (current, initial.saturating_add(growth).max(1))
+    let maximum = state.actor_stat_maximum(content, actor_id, health_stat).max(1);
+    (current, maximum)
 }
 
 fn lowest_health_ally(content: &ContentPack, state: &WorldState) -> Option<String> {
