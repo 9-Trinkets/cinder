@@ -167,7 +167,14 @@ fn living_follower_ids(state: &WorldState, content: &ContentPack) -> Vec<String>
 
 pub(super) fn build_equipped_items(state: &WorldState, content: &ContentPack) -> Vec<EquippedItem> {
     // A multi-slot item (e.g. a two-hand weapon) is listed once, with its
-    // slots joined, instead of once per occupied slot.
+    // slots joined in the pack's declared order.
+    let declared = &content.settings.equipment_slots;
+    let slot_rank = |slot: &str| {
+        declared
+            .iter()
+            .position(|declared_slot| declared_slot == slot)
+            .unwrap_or(usize::MAX)
+    };
     let mut slot_by_item: std::collections::BTreeMap<&str, Vec<&str>> = std::collections::BTreeMap::new();
     for (slot, item_id) in &state.equipment {
         slot_by_item.entry(item_id).or_default().push(slot);
@@ -175,7 +182,7 @@ pub(super) fn build_equipped_items(state: &WorldState, content: &ContentPack) ->
     let mut items: Vec<EquippedItem> = slot_by_item
         .into_iter()
         .map(|(item_id, mut slots)| {
-            slots.sort();
+            slots.sort_by_key(|slot| slot_rank(slot));
             let label = content
                 .item(item_id)
                 .map(|item| item.label.clone())
@@ -186,7 +193,13 @@ pub(super) fn build_equipped_items(state: &WorldState, content: &ContentPack) ->
             }
         })
         .collect();
-    items.sort_by(|left, right| left.slot.cmp(&right.slot));
+    items.sort_by_key(|item| {
+        item.slot
+            .split('+')
+            .map(slot_rank)
+            .min()
+            .unwrap_or(usize::MAX)
+    });
     items
 }
 
