@@ -211,8 +211,8 @@ pub fn action_is_available(
     if action.has_effect(CommandEffect::UnequipItem) {
         let equipped = content
             .item(&action.item_id)
-            .and_then(|item| state.equipped_item(&item.equip_slot));
-        if equipped != Some(action.item_id.as_str()) {
+            .is_some_and(|item| state.item_is_equipped(item));
+        if !equipped {
             return false;
         }
     }

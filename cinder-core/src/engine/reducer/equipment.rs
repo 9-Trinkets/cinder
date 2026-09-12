@@ -3,12 +3,15 @@ use crate::engine::hooks::apply_narrating_world_hook_effects;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::WorldState;
 use serde_json::json;
+use std::collections::BTreeSet;
 
 use super::combat::actor_display_name;
 use super::handlers::push_rendered_message;
 
-/// Equips one unit of the action's item, returning the previous occupant of
-/// the slot to inventory. Bonuses remain derived from equipment.
+/// Equips one unit of the action's item. Multi-slot items (e.g. two-hand
+/// weapons) occupy every declared slot; the previous occupants of all those
+/// slots return to inventory, so a two-hander swapped for a pair frees both
+/// hands and vice-versa. Bonuses remain derived from equipment.
 pub(super) fn apply_equip(
     state: &mut WorldState,
     content: &ContentPack,
@@ -18,17 +21,42 @@ pub(super) fn apply_equip(
     let Some(item) = content.item(&command.item_id) else {
         return;
     };
-    if !item.is_equippable() || !state.has_item(&command.item_id) {
+    if !item.is_equippable()
+        || !state.has_item(&command.item_id)
+        || !item
+            .occupied_slots()
+            .iter()
+            .all(|slot| content.settings.equipment_slots.contains(slot))
+    {
         return;
     }
-    let previous = state.equipment.get(&item.equip_slot).cloned();
     if !state.remove_item(&command.item_id) {
         return;
     }
-    state
+    // Free every previously-equipped item that shares one of the new item's
+    // slots, across all of that old item's slots. Swapping a two-hand weapon
+    // for a one-hander returns the bow entirely instead of orphaning an
+    // off-hand, and the reverse clears both hands.
+    let item = content.item(&command.item_id).expect("guard checked the item");
+    let replaced: BTreeSet<String> = item
+        .occupied_slots()
+        .iter()
+        .filter_map(|slot| state.equipment.get(slot).cloned())
+        .filter(|old_item_id| old_item_id != &command.item_id)
+        .collect();
+    let dangling_slots: Vec<String> = state
         .equipment
-        .insert(item.equip_slot.clone(), command.item_id.clone());
-    if let Some(old_item_id) = previous.filter(|old| old.as_str() != command.item_id) {
+        .iter()
+        .filter(|(_, occupant)| replaced.contains(*occupant))
+        .map(|(slot, _)| slot.clone())
+        .collect();
+    for slot in dangling_slots {
+        state.equipment.remove(&slot);
+    }
+    for slot in item.occupied_slots() {
+        state.equipment.insert(slot.clone(), command.item_id.clone());
+    }
+    for old_item_id in replaced {
         state.add_item(&old_item_id);
     }
     if !item.equip_hook.is_empty() {
@@ -67,10 +95,12 @@ pub(super) fn apply_unequip(
     let Some(item) = content.item(&command.item_id) else {
         return;
     };
-    if state.equipment.get(&item.equip_slot).map(String::as_str) != Some(command.item_id.as_str()) {
+    if !state.item_is_equipped(item) {
         return;
     }
-    state.equipment.remove(&item.equip_slot);
+    for slot in item.occupied_slots() {
+        state.equipment.remove(slot);
+    }
     state.add_item(&command.item_id);
     if let Some(line) = render_equipment_message(content, state, "equipment.unequipped", item) {
         push_rendered_message(

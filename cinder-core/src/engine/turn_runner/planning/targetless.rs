@@ -38,9 +38,9 @@ pub(super) fn plan_targetless_command(
             .item(&action.item_id)
             .map(|item| item.label.as_str())
             .unwrap_or_default();
-        let already_equipped = content.item(&action.item_id).is_some_and(|item| {
-            context.planner_state.equipped_item(&item.equip_slot) == Some(action.item_id.as_str())
-        });
+        let already_equipped = content
+            .item(&action.item_id)
+            .is_some_and(|item| context.planner_state.item_is_equipped(item));
         if already_equipped {
             planned.events.push(WorldEvent::ActionRejected {
                 message: content
@@ -62,8 +62,8 @@ pub(super) fn plan_targetless_command(
     if action.has_effect(CommandEffect::UnequipItem) {
         let equipped = content
             .item(&action.item_id)
-            .and_then(|item| context.planner_state.equipment.get(&item.equip_slot));
-        if equipped.map(String::as_str) != Some(action.item_id.as_str()) {
+            .is_some_and(|item| context.planner_state.item_is_equipped(item));
+        if !equipped {
             planned.events.push(WorldEvent::ActionRejected {
                 message: content
                     .render_message(

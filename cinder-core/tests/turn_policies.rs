@@ -17,7 +17,7 @@ fn equipment_pack() -> ContentPack {
         label: "chisel".to_string(),
         description: "A chisel.".to_string(),
         kind: ItemKind::Weapon,
-        equip_slot: "weapon".to_string(),
+        equip_slots: vec!["weapon".to_string()],
         stat_bonuses: std::collections::BTreeMap::new(),
         use_hook: String::new(),
         equip_hook: String::new(),

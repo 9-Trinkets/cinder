@@ -268,8 +268,10 @@ pub(super) fn apply_actor_command_realization_effects(
                 };
                 if !item.is_equippable()
                     || !state.has_item(&command.item_id)
-                    || !content.settings.equipment_slots.contains(&item.equip_slot)
-                    || state.equipped_item(&item.equip_slot) == Some(command.item_id.as_str())
+                    || !item.occupied_slots().iter().all(|slot| {
+                        content.settings.equipment_slots.contains(slot)
+                    })
+                    || state.item_is_equipped(item)
                 {
                     return false;
                 }
@@ -278,7 +280,7 @@ pub(super) fn apply_actor_command_realization_effects(
                 let Some(item) = content.item(&command.item_id) else {
                     return false;
                 };
-                if state.equipped_item(&item.equip_slot) != Some(command.item_id.as_str()) {
+                if !state.item_is_equipped(item) {
                     return false;
                 }
             }

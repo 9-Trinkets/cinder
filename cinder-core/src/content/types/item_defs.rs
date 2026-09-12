@@ -22,10 +22,17 @@ pub struct ItemDefinition {
     pub description: String,
     #[serde(default)]
     pub kind: ItemKind,
-    /// Equipment slot this item occupies when equipped (e.g. "weapon"). Must
-    /// be declared in `settings.equipment_slots`; empty means not equippable.
-    #[serde(default)]
-    pub equip_slot: String,
+    /// Equipment slots this item occupies when equipped (e.g. `["weapon"]`).
+    /// One-handed items list a single slot; two-hand weapons list both hands
+    /// (e.g. `["weapon", "off-hand"]`). Every slot must be declared in
+    /// `settings.equipment_slots`; an empty list means not equippable. The
+    /// legacy singular `equip_slot` key is still accepted.
+    #[serde(
+        default,
+        alias = "equip_slot",
+        deserialize_with = "deserialize_equip_slots"
+    )]
+    pub equip_slots: Vec<String>,
     /// Stat id → bonus applied while this item is equipped. Keys must
     /// reference stats declared by the pack.
     #[serde(default)]
@@ -60,7 +67,12 @@ pub struct ItemDefinition {
 
 impl ItemDefinition {
     pub fn is_equippable(&self) -> bool {
-        !self.equip_slot.is_empty()
+        !self.equip_slots.is_empty()
+    }
+
+    /// Slots this item occupies while equipped.
+    pub fn occupied_slots(&self) -> &[String] {
+        &self.equip_slots
     }
 
     pub fn is_takeable(&self) -> bool {
@@ -68,6 +80,54 @@ impl ItemDefinition {
     }
 }
 
+fn deserialize_equip_slots<'de, D>(deserializer: D) -> Result<Vec<String>, D::Error>
+where
+    D: serde::Deserializer<'de>,
+{
+    #[derive(Deserialize)]
+    #[serde(untagged)]
+    enum OneOrMany {
+        One(String),
+        Many(Vec<String>),
+    }
+    Ok(match OneOrMany::deserialize(deserializer)? {
+        OneOrMany::One(slot) => vec![slot],
+        OneOrMany::Many(slots) => slots,
+    })
+}
+
 fn is_false(value: &bool) -> bool {
     !*value
+}
+
+#[cfg(test)]
+mod tests {
+    use super::ItemDefinition;
+
+    #[test]
+    fn legacy_singular_equip_slot_key_still_deserializes() {
+        let item: ItemDefinition =
+            serde_json::from_str(r#"{"id":"x","label":"x","description":"","equip_slot":"weapon"}"#)
+                .unwrap();
+        assert_eq!(item.equip_slots, vec!["weapon".to_string()]);
+    }
+
+    #[test]
+    fn two_hand_weapons_use_the_list_form() {
+        let item: ItemDefinition = serde_json::from_str(
+            r#"{"id":"x","label":"x","description":"","equip_slots":["weapon","off-hand"]}"#,
+        )
+        .unwrap();
+        assert_eq!(
+            item.occupied_slots(),
+            &["weapon".to_string(), "off-hand".to_string()]
+        );
+    }
+
+    #[test]
+    fn empty_equipment_is_not_equippable() {
+        let item: ItemDefinition =
+            serde_json::from_str(r#"{"id":"x","label":"x","description":""}"#).unwrap();
+        assert!(!item.is_equippable());
+    }
 }

@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 
 use super::*;
-use crate::content::types::ContentPack;
+use crate::content::types::{ContentPack, ItemDefinition};
 
 impl WorldState {
     /// Current level for an actor; absent entries read as level 1.
@@ -66,10 +66,14 @@ impl WorldState {
     }
 
     /// Sum of stat bonuses granted by the player's equipped items. Equipment
-    /// is player-scoped; other actors always get zero.
+    /// is player-scoped; other actors always get zero. A multi-slot item (e.g.
+    /// a two-hand weapon) pays its bonus once no matter how many slots it
+    /// occupies.
     pub fn equipped_stat_bonus(&self, content: &ContentPack, stat_key: &str) -> i32 {
+        let mut seen = std::collections::BTreeSet::new();
         self.equipment
             .values()
+            .filter(|item_id| seen.insert(item_id.as_str()))
             .filter_map(|item_id| content.item(item_id))
             .filter_map(|item| item.stat_bonuses.get(stat_key))
             .sum()
@@ -104,6 +108,17 @@ impl WorldState {
     /// Item id equipped in `slot_id`, if any.
     pub fn equipped_item(&self, slot_id: &str) -> Option<&str> {
         self.equipment.get(slot_id).map(String::as_str)
+    }
+
+    /// Whether `item` currently occupies every slot it requires (i.e. it is
+    /// fully equipped). Multi-slot items are only "equipped" when all their
+    /// slots hold this exact item.
+    pub fn item_is_equipped(&self, item: &ItemDefinition) -> bool {
+        let slots = item.occupied_slots();
+        !slots.is_empty()
+            && slots
+                .iter()
+                .all(|slot| self.equipment.get(slot).map(String::as_str) == Some(item.id.as_str()))
     }
 
     pub fn pair_stats_snapshot(

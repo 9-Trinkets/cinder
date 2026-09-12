@@ -63,7 +63,7 @@ fn surround_test_pack_with_refusal(refusal: Option<&str>) -> ContentPack {
         label: "ring of the open mind".to_string(),
         description: "A warm ring of dark bone.".to_string(),
         kind: ItemKind::Trinket,
-        equip_slot: "ring".to_string(),
+        equip_slots: vec!["ring".to_string()],
         stat_bonuses: BTreeMap::from([("intelligence".to_string(), 4)]),
         use_hook: String::new(),
         equip_hook: String::new(),

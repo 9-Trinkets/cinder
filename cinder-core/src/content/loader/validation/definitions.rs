@@ -170,16 +170,29 @@ pub(crate) fn validate_items(
     known_hooks: &BTreeMap<String, Value>,
 ) -> Result<(), Box<dyn Error>> {
     for item in items {
-        if item.equip_slot.trim().is_empty() {
+        if item.equip_slots.is_empty() {
             continue;
         }
 
-        if !settings.equipment_slots.contains(&item.equip_slot) {
-            return Err(format!(
-                "item '{}' equip_slot '{}' not declared in settings.equipment_slots",
-                item.id, item.equip_slot
-            )
-            .into());
+        let mut seen_slots = std::collections::BTreeSet::new();
+        for slot in &item.equip_slots {
+            if slot.trim().is_empty() {
+                return Err(format!("item '{}' declares an empty equip slot", item.id).into());
+            }
+            if !seen_slots.insert(slot.as_str()) {
+                return Err(format!(
+                    "item '{}' declares equip slot '{slot}' more than once",
+                    item.id
+                )
+                .into());
+            }
+            if !settings.equipment_slots.contains(slot) {
+                return Err(format!(
+                    "item '{}' equip slot '{slot}' not declared in settings.equipment_slots",
+                    item.id
+                )
+                .into());
+            }
         }
         for stat_id in item.stat_bonuses.keys() {
             if !known_stats.contains_key(stat_id) {
