@@ -15,4 +15,8 @@ if [ -f "$REPO_ROOT/scripts/check_test_placement.py" ]; then
     python3 "$REPO_ROOT/scripts/check_test_placement.py" || true
 fi
 
+if [ -f "$REPO_ROOT/scripts/check_content_references.py" ]; then
+    python3 "$REPO_ROOT/scripts/check_content_references.py" || true
+fi
+
 exit 0

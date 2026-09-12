@@ -1,18 +1,12 @@
 mod bundled;
 mod fs;
 mod index;
-mod validation;
 
 use crate::content::loader::bundled::{read_messages, read_system_text};
 use crate::content::loader::fs::{
     LocalizedPaths, read_json, read_optional_json, read_optional_json_raw,
 };
 use crate::content::loader::index::{build_index, collect_act_cast};
-use crate::content::loader::validation::{
-    IdIndex, IdKind, PackContext, require_known_id, validate_actions, validate_combat_settings,
-    validate_contents, validate_feedback_channel, validate_items, validate_maps,
-    validate_party_policy, validate_periodic_actor_effects, validate_scripted_sequences,
-};
 use crate::content::types::{
     ActionsDefinition, ActorDefinition, BeatObjectivesDefinition, BeatsDefinition,
     BehaviorDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition, LevelingDefinition,
@@ -145,21 +139,6 @@ pub fn load_pack_from_dir_with_locale(
         read_optional_json::<SpeechIntentsConfig>(path, "intents.json")?.unwrap_or_default();
     let items: Vec<ItemDefinition> =
         read_optional_json::<Vec<ItemDefinition>>(path, "items.json")?.unwrap_or_default();
-    let item_ids = items
-        .iter()
-        .map(|item| item.id.as_str())
-        .collect::<Vec<_>>();
-    for item_id in settings.starting_items.keys() {
-        require_known_id(
-            item_id,
-            &item_ids,
-            &format!("starting_items '{item_id}'"),
-            "items",
-        )?;
-    }
-    validate_combat_settings(&settings)?;
-    validate_periodic_actor_effects(&settings, &items, &messages)?;
-    validate_items(&items, &settings, &stats.actor, &hooks)?;
     let variables: BTreeMap<String, crate::engine::state::VariableDeclaration> =
         read_optional_json::<BTreeMap<String, crate::engine::state::VariableDeclaration>>(
             path,
@@ -171,61 +150,6 @@ pub fn load_pack_from_dir_with_locale(
     let room_index = build_index(&rooms, |room| &room.id);
     let actor_index = build_index(&actors, |actor| &actor.id);
     let action_index = build_index(&actions, |action| &action.id);
-    let room_ids = rooms
-        .iter()
-        .map(|room| room.id.as_str())
-        .collect::<Vec<_>>();
-    let actor_ids = actors
-        .iter()
-        .map(|actor| actor.id.as_str())
-        .collect::<Vec<_>>();
-    let actor_stat_ids = stats.actor.keys().map(String::as_str).collect::<Vec<_>>();
-    let pair_stat_ids = stats.pair.keys().map(String::as_str).collect::<Vec<_>>();
-
-    let stage_ids: Vec<&str> = beats.stages.iter().map(|s| s.id.as_str()).collect();
-    let mut ids = IdIndex::new(
-        &actor_ids,
-        &room_ids,
-        &stage_ids,
-        &item_ids,
-        &actor_stat_ids,
-        &pair_stat_ids,
-    );
-    ids.index(IdKind::Channel)
-        .extend(settings.channels.iter().map(|channel| channel.id.clone()));
-    ids.index(IdKind::Action)
-        .extend(action_index.keys().cloned());
-    ids.index(IdKind::Sequence)
-        .extend(sequences.sequences.iter().map(|sequence| sequence.id.clone()));
-    ids.index(IdKind::Objective)
-        .extend(beat_objectives.objectives.iter().map(|objective| objective.id.clone()));
-
-    validate_maps(&maps, &room_ids, &actor_ids)?;
-    validate_party_policy(&settings.party, &actor_ids, &actor_stat_ids, &messages)?;
-    validate_scripted_sequences(
-        &sequences,
-        opening.opening_sequence_id.as_deref(),
-        &settings.channels,
-        &actors,
-        &ids,
-    )?;
-    validate_actions(&actions, &room_ids, &stage_ids)?;
-    validate_contents(&PackContext {
-        levels: &levels,
-        beats: &beats,
-        actors: &actors,
-        movement: &movement,
-        actions: &actions,
-        beat_objectives: &beat_objectives,
-        act_cast: &act_cast,
-        channels: &settings.channels,
-        ids: &ids,
-    })?;
-    validate_feedback_channel(
-        &settings.feedback_channel_id,
-        &settings.combat.player_actor_id,
-        &settings.channels,
-    )?;
 
     Ok(ContentPack {
         locale: effective_locale,
