@@ -504,13 +504,13 @@
         "rolls": 1,
         "entries": [
           {
-            "item_id": "leaf-blade",
+            "item_id": "leaf-spear",
             "weight": 3,
             "count": 1
           },
           {
-            "item_id": "bark-bracer",
-            "weight": 2,
+            "item_id": "leaf-paste",
+            "weight": 1,
             "count": 1
           }
         ]
@@ -545,13 +545,13 @@
         "rolls": 1,
         "entries": [
           {
-            "item_id": "leaf-blade",
+            "item_id": "leaf-spear",
             "weight": 3,
             "count": 1
           },
           {
-            "item_id": "bark-bracer",
-            "weight": 2,
+            "item_id": "leaf-paste",
+            "weight": 1,
             "count": 1
           }
         ]
@@ -586,13 +586,13 @@
         "rolls": 1,
         "entries": [
           {
-            "item_id": "leaf-blade",
+            "item_id": "leaf-spear",
             "weight": 3,
             "count": 1
           },
           {
-            "item_id": "bark-bracer",
-            "weight": 2,
+            "item_id": "leaf-paste",
+            "weight": 1,
             "count": 1
           }
         ]
@@ -627,13 +627,13 @@
         "rolls": 1,
         "entries": [
           {
-            "item_id": "leaf-blade",
+            "item_id": "leaf-spear",
             "weight": 3,
             "count": 1
           },
           {
-            "item_id": "bark-bracer",
-            "weight": 2,
+            "item_id": "leaf-paste",
+            "weight": 1,
             "count": 1
           }
         ]
@@ -668,13 +668,13 @@
         "rolls": 1,
         "entries": [
           {
-            "item_id": "leaf-blade",
+            "item_id": "leaf-spear",
             "weight": 3,
             "count": 1
           },
           {
-            "item_id": "bark-bracer",
-            "weight": 2,
+            "item_id": "leaf-paste",
+            "weight": 1,
             "count": 1
           }
         ]
@@ -709,13 +709,13 @@
         "rolls": 1,
         "entries": [
           {
-            "item_id": "leaf-blade",
+            "item_id": "leaf-spear",
             "weight": 3,
             "count": 1
           },
           {
-            "item_id": "bark-bracer",
-            "weight": 2,
+            "item_id": "leaf-paste",
+            "weight": 1,
             "count": 1
           }
         ]
@@ -750,13 +750,13 @@
         "rolls": 1,
         "entries": [
           {
-            "item_id": "leaf-blade",
+            "item_id": "leaf-spear",
             "weight": 3,
             "count": 1
           },
           {
-            "item_id": "bark-bracer",
-            "weight": 2,
+            "item_id": "leaf-paste",
+            "weight": 1,
             "count": 1
           }
         ]
@@ -791,13 +791,13 @@
         "rolls": 1,
         "entries": [
           {
-            "item_id": "leaf-blade",
+            "item_id": "leaf-spear",
             "weight": 3,
             "count": 1
           },
           {
-            "item_id": "bark-bracer",
-            "weight": 2,
+            "item_id": "leaf-paste",
+            "weight": 1,
             "count": 1
           }
         ]
@@ -832,12 +832,12 @@
         "rolls": 1,
         "entries": [
           {
-            "item_id": "bark-mantle",
+            "item_id": "leaf-plate",
             "weight": 2,
             "count": 1
           },
           {
-            "item_id": "iron-elm-greatbow",
+            "item_id": "leaf-paste",
             "weight": 1,
             "count": 1
           }
@@ -873,12 +873,12 @@
         "rolls": 1,
         "entries": [
           {
-            "item_id": "antler-saber",
+            "item_id": "leaf-helm",
             "weight": 2,
             "count": 1
           },
           {
-            "item_id": "elmwood-greaves",
+            "item_id": "leaf-gloves",
             "weight": 1,
             "count": 1
           }
@@ -914,12 +914,12 @@
         "rolls": 1,
         "entries": [
           {
-            "item_id": "moonlit-reed-ring",
+            "item_id": "leaf-crook",
             "weight": 2,
             "count": 1
           },
           {
-            "item_id": "moss-light-cowl",
+            "item_id": "leaf-boots",
             "weight": 1,
             "count": 1
           }
@@ -951,17 +951,9 @@
     "prompt_context": {},
     "level": 6,
     "drops": {
-      "mirrorshard-glaive": {
-        "count": 1,
-        "chance_percent": 60
-      },
-      "moonlit-mail": {
+      "leaf-ring": {
         "count": 1,
         "chance_percent": 50
-      },
-      "driftwood-crown": {
-        "count": 1,
-        "chance_percent": 35
       }
     }
   },
@@ -982,9 +974,9 @@
     "xp_drop": 0,
     "drops": {
       "drain-scroll": 1,
-      "throneroot-cloak": {
+      "leaf-cloak": {
         "count": 1,
-        "chance_percent": 50
+        "chance_percent": 35
       }
     },
     "initial_stats": {
@@ -1024,12 +1016,12 @@
         "rolls": 1,
         "entries": [
           {
-            "item_id": "moonlit-reed-ring",
+            "item_id": "leaf-crook",
             "weight": 2,
             "count": 1
           },
           {
-            "item_id": "moss-light-cowl",
+            "item_id": "leaf-boots",
             "weight": 1,
             "count": 1
           }
@@ -1065,12 +1057,12 @@
         "rolls": 1,
         "entries": [
           {
-            "item_id": "antler-saber",
+            "item_id": "leaf-helm",
             "weight": 2,
             "count": 1
           },
           {
-            "item_id": "elmwood-greaves",
+            "item_id": "leaf-gloves",
             "weight": 1,
             "count": 1
           }
@@ -1106,12 +1098,12 @@
         "rolls": 1,
         "entries": [
           {
-            "item_id": "bark-mantle",
+            "item_id": "leaf-plate",
             "weight": 2,
             "count": 1
           },
           {
-            "item_id": "iron-elm-greatbow",
+            "item_id": "leaf-paste",
             "weight": 1,
             "count": 1
           }

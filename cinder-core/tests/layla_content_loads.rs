@@ -18,8 +18,8 @@ fn elf_chess_mobs_declarations_resolve() {
 
     assert!(pack.settings.equipment_slots.contains("off-hand"));
     assert!(pack.settings.equipment_slots.contains("cloak"));
-    assert!(pack.item("iron-elm-greatbow").unwrap().equip_slots.len() == 2);
-    assert!(pack.item("mirrorshard-glaive").is_some());
+    assert!(pack.item("leaf-crook").unwrap().equip_slots.len() == 2);
+    assert!(pack.item("leaf-cloak").is_some());
 
     let pawn = pack.actor("elf-pawn-1").unwrap();
     let DropSpec::Weighted(pool) = &pawn.drops["pawn-kit"] else {
@@ -28,15 +28,9 @@ fn elf_chess_mobs_declarations_resolve() {
     assert!(pack.item(&pool.entries[0].item_id).is_some());
 
     let queen = pack.actor("elf-queen-4").unwrap();
-    assert!(matches!(
-        queen.drops["mirrorshard-glaive"],
-        DropSpec::Chance(_)
-    ));
+    assert!(matches!(queen.drops["leaf-ring"], DropSpec::Chance(_)));
 
     let king = pack.actor("elf-king-5").unwrap();
     assert!(matches!(king.drops["drain-scroll"], DropSpec::Always(1)));
-    assert!(matches!(
-        king.drops["throneroot-cloak"],
-        DropSpec::Chance(_)
-    ));
+    assert!(matches!(king.drops["leaf-cloak"], DropSpec::Chance(_)));
 }
