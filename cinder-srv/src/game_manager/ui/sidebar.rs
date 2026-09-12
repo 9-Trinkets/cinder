@@ -26,13 +26,9 @@ pub(super) fn build_player_status(state: &WorldState, content: &ContentPack) -> 
     let hp = state
         .effective_actor_stat(content, player_id, health_stat)
         .max(0) as u32;
-    let hp_max = content
-        .stats
-        .actor
-        .get(health_stat)
-        .and_then(|stat| stat.max)
-        .map(|max| max.max(0) as u32)
-        .unwrap_or(hp);
+    let hp_max = state
+        .effective_actor_stat_maximum(content, player_id, health_stat)
+        .max(0) as u32;
     let mut stats = content
         .stats
         .actor
@@ -89,11 +85,7 @@ pub(super) fn build_party_members(
             };
             let hp = state.actor_stat(&actor_id, health_stat).max(0) as u32;
             let hp_max = state
-                .initial_actor_stats
-                .get(&actor_id)
-                .and_then(|stats| stats.get(health_stat))
-                .copied()
-                .unwrap_or(hp as i32)
+                .actor_stat_maximum(content, &actor_id, health_stat)
                 .max(1) as u32;
             let order = state.party_order(content, &actor_id).unwrap_or_default();
             PartyMember {
@@ -252,7 +244,32 @@ pub(super) fn build_current_room_items(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use cinder_core::content::types::LevelDefinition;
     use cinder_core::engine::test_fixtures::minimal_test_pack;
+
+    #[test]
+    fn member_hp_max_includes_level_up_growth() {
+        let mut content = minimal_test_pack();
+        content.settings.combat.health_stat_id = "stamina".to_string();
+        content.levels.default = vec![LevelDefinition {
+            exp_required: 0,
+            stat_changes: std::collections::BTreeMap::from([("stamina".to_string(), 4)]),
+            ..LevelDefinition::default()
+        }];
+        let mut state = WorldState::new(&content);
+        state.actor_level.insert("blair".to_string(), 2);
+        state.adjust_actor_stat("blair", "stamina", 4).unwrap();
+        state.adjust_actor_stat("blair", "stamina", -2).unwrap();
+        state.set_follows_player("blair", true);
+        let runtime = CinderRuntime::new(content.clone(), false).unwrap();
+
+        let members = build_party_members(&runtime, &state, &content);
+        let blair = members.into_iter().find(|member| member.id == "blair").unwrap();
+
+        assert_eq!(blair.level, 2);
+        assert_eq!(blair.hp, 8);
+        assert_eq!(blair.hp_max, 10);
+    }
 
     #[test]
     fn defeated_followers_are_excluded_from_the_party() {
