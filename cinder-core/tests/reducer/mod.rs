@@ -4,6 +4,7 @@ mod combat_policy;
 mod common;
 mod defeat_drops;
 mod equipment;
+mod equipment_slots;
 mod feedback;
 mod items;
 mod observation;
