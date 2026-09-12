@@ -7,6 +7,7 @@ mod equipment;
 mod equipment_slots;
 mod feedback;
 mod items;
+mod movement;
 mod observation;
 mod party_defense;
 mod party_orders;
