@@ -2,8 +2,8 @@ use super::require_known_id;
 use crate::content::types::{
     ActCastMember, ActionDefinition, ActorDefinition, AdvanceEffect, BeatDefinition,
     BeatObjectiveProgressRef, BeatObjectivesDefinition, BeatsDefinition, ChannelKind,
-    ChannelPrivacy, LOCAL_CHANNEL_ID, LevelingDefinition, MessagingChannel, MovementConfigDefinition,
-    ScriptedLine, SequencesDefinition,
+    ChannelPrivacy, DropSpec, LOCAL_CHANNEL_ID, LevelingDefinition, MessagingChannel,
+    MovementConfigDefinition, ScriptedLine, SequencesDefinition,
 };
 use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
@@ -170,13 +170,66 @@ fn validate_actors(
             )
             .into());
         }
-        for item_id in actor.drops.keys() {
-            require_known_id(
-                item_id,
-                item_ids,
-                &format!("actor '{}' drops '{item_id}'", actor.id),
-                "items",
-            )?;
+        for (key, spec) in &actor.drops {
+            match spec {
+                DropSpec::Always(_) | DropSpec::Conditional(_) => {
+                    require_known_id(
+                        key,
+                        item_ids,
+                        &format!("actor '{}' drops '{key}'", actor.id),
+                        "items",
+                    )?;
+                }
+                DropSpec::Chance(chance) => {
+                    if chance.chance_percent > 100 {
+                        return Err(format!(
+                            "actor '{}' drop '{key}' chance_percent {} exceeds 100",
+                            actor.id, chance.chance_percent
+                        )
+                        .into());
+                    }
+                    require_known_id(
+                        key,
+                        item_ids,
+                        &format!("actor '{}' drops '{key}'", actor.id),
+                        "items",
+                    )?;
+                }
+                DropSpec::Weighted(pool) => {
+                    if pool.rolls == 0 {
+                        return Err(format!(
+                            "actor '{}' drop pool '{key}' declares zero rolls",
+                            actor.id
+                        )
+                        .into());
+                    }
+                    if pool.entries.is_empty() {
+                        return Err(format!(
+                            "actor '{}' drop pool '{key}' declares no entries",
+                            actor.id
+                        )
+                        .into());
+                    }
+                    for entry in &pool.entries {
+                        if entry.weight == 0 {
+                            return Err(format!(
+                                "actor '{}' drop pool '{key}' entry '{}' has zero weight",
+                                actor.id, entry.item_id
+                            )
+                            .into());
+                        }
+                        require_known_id(
+                            &entry.item_id,
+                            item_ids,
+                            &format!(
+                                "actor '{}' drop pool '{key}' entry '{}'",
+                                actor.id, entry.item_id
+                            ),
+                            "items",
+                        )?;
+                    }
+                }
+            }
         }
     }
     Ok(())

@@ -1,6 +1,7 @@
 use super::common::*;
 use cinder_core::content::types::{
-    ActionDefinition, CommandEffect, CommandTargetMode, ContentPack, DropSpec,
+    ActionDefinition, CommandEffect, CommandTargetMode, ContentPack, DropChanceSpec, DropPoolEntry,
+    DropPoolSpec, DropSpec, ItemDefinition,
 };
 use cinder_core::engine::state::WorldState;
 use serde_json::json;
@@ -54,6 +55,27 @@ fn fresh_state(pack: &ContentPack) -> WorldState {
     let mut state = WorldState::new(pack);
     state.current_room_id = LOUNGE_ID.to_string();
     state
+}
+
+fn push_droppable_item(pack: &mut ContentPack, id: &str) {
+    pack.items.push(ItemDefinition {
+        id: id.to_string(),
+        label: id.to_string(),
+        description: String::new(),
+        ..ItemDefinition::default()
+    });
+}
+
+fn drive_defeat(pack: &ContentPack, drops: BTreeMap<String, DropSpec>) -> Vec<(String, u32)> {
+    let mut pack = pack.clone();
+    push_droppable_item(&mut pack, "leaf-blade");
+    push_droppable_item(&mut pack, "bark-bracer");
+    add_attackable_target(&mut pack, "golem", &["golem"], 1);
+    let golem = pack.actors.iter_mut().find(|actor| actor.id == "golem").unwrap();
+    golem.drops = drops;
+    let mut state = fresh_state(&pack);
+    drive_attack_on(&mut state, &pack, "golem");
+    state.loose_room_items(LOUNGE_ID)
 }
 
 #[test]
@@ -172,5 +194,123 @@ fn player_attack_records_the_flag_for_floor_mobs_but_not_the_boss() {
     assert!(
         !boss_state.story_vars.has(CLEAN_RUN_FLAG),
         "attacking the boss alone must not forfeit the clean run"
+    );
+}
+
+#[test]
+fn chance_spec_with_full_probability_always_scatters() {
+    let drops = BTreeMap::from([(
+        "leaf-blade".to_string(),
+        DropSpec::Chance(DropChanceSpec {
+            count: 1,
+            chance_percent: 100,
+        }),
+    )]);
+    assert_eq!(
+        drive_defeat(&attack_action_pack(), drops),
+        vec![("leaf-blade".to_string(), 1)]
+    );
+}
+
+#[test]
+fn chance_spec_with_zero_probability_never_scatters() {
+    let drops = BTreeMap::from([(
+        "leaf-blade".to_string(),
+        DropSpec::Chance(DropChanceSpec {
+            count: 1,
+            chance_percent: 0,
+        }),
+    )]);
+    assert!(drive_defeat(&attack_action_pack(), drops).is_empty());
+}
+
+#[test]
+fn chance_spec_respects_the_declared_count() {
+    let drops = BTreeMap::from([(
+        "leaf-blade".to_string(),
+        DropSpec::Chance(DropChanceSpec {
+            count: 3,
+            chance_percent: 100,
+        }),
+    )]);
+    assert_eq!(
+        drive_defeat(&attack_action_pack(), drops),
+        vec![("leaf-blade".to_string(), 3)]
+    );
+}
+
+#[test]
+fn weighted_pool_scatters_exactly_one_listed_entry_per_roll() {
+    let drops = BTreeMap::from([(
+        "pawn-kit".to_string(),
+        DropSpec::Weighted(DropPoolSpec {
+            rolls: 1,
+            entries: vec![
+                DropPoolEntry {
+                    item_id: "leaf-blade".to_string(),
+                    weight: 1,
+                    count: 1,
+                },
+                DropPoolEntry {
+                    item_id: "bark-bracer".to_string(),
+                    weight: 1,
+                    count: 1,
+                },
+            ],
+        }),
+    )]);
+    for _ in 0..20 {
+        let dropped = drive_defeat(&attack_action_pack(), drops.clone());
+        assert_eq!(dropped.len(), 1, "one roll picks one entry: {dropped:?}");
+        let (item_id, count) = &dropped[0];
+        assert_eq!(*count, 1);
+        assert!(
+            item_id == "leaf-blade" || item_id == "bark-bracer",
+            "unexpected pool winner: {item_id}"
+        );
+    }
+}
+
+#[test]
+fn weighted_pool_rolls_multiple_times_and_accumulates_counts() {
+    let drops = BTreeMap::from([(
+        "pawn-kit".to_string(),
+        DropSpec::Weighted(DropPoolSpec {
+            rolls: 3,
+            entries: vec![DropPoolEntry {
+                item_id: "leaf-blade".to_string(),
+                weight: 1,
+                count: 2,
+            }],
+        }),
+    )]);
+    assert_eq!(
+        drive_defeat(&attack_action_pack(), drops),
+        vec![("leaf-blade".to_string(), 6)]
+    );
+}
+
+#[test]
+fn mixed_specs_collapse_the_same_item_into_one_scatter_count() {
+    let drops = BTreeMap::from([
+        (
+            "leaf-blade".to_string(),
+            DropSpec::Always(1),
+        ),
+        (
+            "pawn-kit".to_string(),
+            DropSpec::Weighted(DropPoolSpec {
+                rolls: 1,
+                entries: vec![DropPoolEntry {
+                    item_id: "leaf-blade".to_string(),
+                    weight: 1,
+                    count: 1,
+                }],
+            }),
+        ),
+    ]);
+    assert_eq!(
+        drive_defeat(&attack_action_pack(), drops),
+        vec![("leaf-blade".to_string(), 2)]
     );
 }

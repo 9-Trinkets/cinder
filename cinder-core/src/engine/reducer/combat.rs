@@ -11,6 +11,8 @@ use crate::engine::state::{
     ActorRelationship, ActorStance, GamePhase, WorldState, display_actor_name,
 };
 use crate::engine::turn_policies::story_var_is_truthy;
+use rand::seq::SliceRandom;
+use rand::Rng;
 use serde_json::json;
 
 static VEC_EMPTY_TAGS: Vec<String> = Vec::new();
@@ -362,28 +364,63 @@ pub(super) fn spawn_defeat_drops(
     if actor.drops.is_empty() {
         return;
     }
-    let mut dropped_labels = Vec::new();
-    for (item_id, spec) in &actor.drops {
-        let count = match spec {
-            DropSpec::Always(count) => *count,
+    let mut rng = rand::thread_rng();
+    // Item id → count resolved across specs, so a weighted pool can never
+    // scatter the same suit twice and mixed specs collapse instead of stacking.
+    let mut resolved: Vec<(String, u32)> = Vec::new();
+    for (key, spec) in &actor.drops {
+        match spec {
+            DropSpec::Always(count) if *count > 0 => {
+                resolved.push((key.clone(), *count));
+            }
             DropSpec::Conditional(conditional) => {
-                if !conditional.skip_when_story_var.is_empty()
-                    && story_var_is_truthy(state, &conditional.skip_when_story_var)
-                {
-                    0
-                } else {
-                    conditional.count
+                let skipped = !conditional.skip_when_story_var.is_empty()
+                    && story_var_is_truthy(state, &conditional.skip_when_story_var);
+                if !skipped && conditional.count > 0 {
+                    resolved.push((key.clone(), conditional.count));
                 }
             }
-        };
-        if count == 0 {
-            continue;
+            DropSpec::Chance(chance) => {
+                let roll = rng.gen_range(0..100);
+                if roll < chance.chance_percent && chance.count > 0 {
+                    resolved.push((key.clone(), chance.count));
+                }
+            }
+            DropSpec::Weighted(pool) => {
+                if pool.rolls == 0 || pool.entries.is_empty() {
+                    continue;
+                }
+                for _ in 0..pool.rolls {
+                    let Ok(entry) = pool.entries.choose_weighted(&mut rng, |entry| entry.weight)
+                    else {
+                        continue;
+                    };
+                    if entry.count == 0 {
+                        continue;
+                    }
+                    if let Some((_, existing)) = resolved
+                        .iter_mut()
+                        .find(|(item_id, _)| item_id == &entry.item_id)
+                    {
+                        *existing += entry.count;
+                    } else {
+                        resolved.push((entry.item_id.clone(), entry.count));
+                    }
+                }
+            }
+            _ => {}
         }
-        for _ in 0..count {
+    }
+    if resolved.is_empty() {
+        return;
+    }
+    let mut dropped_labels = Vec::new();
+    for (item_id, count) in &resolved {
+        for _ in 0..*count {
             state.add_item_to_storage(item_id, ItemStorageTarget::CurrentRoom, room_id);
         }
         if let Some(item) = content.item(item_id) {
-            dropped_labels.push(if count > 1 {
+            dropped_labels.push(if *count > 1 {
                 format!("{} x{count}", item.label)
             } else {
                 item.label.clone()
