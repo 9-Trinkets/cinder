@@ -181,5 +181,17 @@
     "kind": "potion",
     "use_hook": "item.salve_used",
     "description": "A mash of green leaf stamped into a paste. It closes cuts the way a leaf closes over a torn edge."
+  },
+  {
+    "id": "leaf-buckler",
+    "label": "leaf buckler",
+    "kind": "armor",
+    "equip_slots": [
+      "off-hand"
+    ],
+    "stat_bonuses": {
+      "defense": 1
+    },
+    "description": "A small round shield of pressed leaves, light in the off hand. It catches blows that are meant for the heart."
   }
 ]

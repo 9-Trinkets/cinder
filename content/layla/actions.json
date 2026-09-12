@@ -1025,15 +1025,15 @@
       }
     },
     {
-      "id": "equip_leaf-paste",
-      "command": "EQUIP LEAF PASTE",
-      "label": "Equip Leaf Paste",
+      "id": "equip_leaf-buckler",
+      "command": "EQUIP LEAF BUCKLER",
+      "label": "Equip Leaf Buckler",
       "group": "gear",
       "phrases": [
-        "take up the paste",
-        "grip the paste",
-        "wield the paste",
-        "arm with the paste"
+        "take up the buckler",
+        "grip the buckler",
+        "wield the buckler",
+        "arm with the buckler"
       ],
       "player_enabled": true,
       "target_mode": "none",
@@ -1041,8 +1041,8 @@
       "effects": [
         "equip_item"
       ],
-      "item_id": "leaf-paste",
-      "event_text": "{actor_name} takes up the paste.",
+      "item_id": "leaf-buckler",
+      "event_text": "{actor_name} takes up the buckler.",
       "available": {},
       "ui": {
         "bar": false,
@@ -1051,8 +1051,8 @@
         "sort_order": 207
       },
       "player_command": {
-        "usage": "equip leaf paste",
-        "example": "equip leaf paste",
+        "usage": "equip leaf buckler",
+        "example": "equip leaf buckler",
         "advances_time": true,
         "input": {
           "required": false
@@ -1060,14 +1060,14 @@
       }
     },
     {
-      "id": "unequip_leaf-paste",
-      "command": "UNEQUIP LEAF PASTE",
-      "label": "Unequip Leaf Paste",
+      "id": "unequip_leaf-buckler",
+      "command": "UNEQUIP LEAF BUCKLER",
+      "label": "Unequip Leaf Buckler",
       "group": "gear",
       "phrases": [
-        "put away the paste",
-        "set down the paste",
-        "stow the paste"
+        "put away the buckler",
+        "set down the buckler",
+        "stow the buckler"
       ],
       "player_enabled": true,
       "target_mode": "none",
@@ -1075,8 +1075,8 @@
       "effects": [
         "unequip_item"
       ],
-      "item_id": "leaf-paste",
-      "event_text": "{actor_name} sets down the paste.",
+      "item_id": "leaf-buckler",
+      "event_text": "{actor_name} sets down the buckler.",
       "available": {},
       "ui": {
         "bar": false,
@@ -1085,8 +1085,43 @@
         "sort_order": 217
       },
       "player_command": {
-        "usage": "unequip leaf paste",
-        "example": "unequip leaf paste",
+        "usage": "unequip leaf buckler",
+        "example": "unequip leaf buckler",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "use_leaf-paste",
+      "command": "USE LEAF PASTE",
+      "label": "Use Leaf Paste",
+      "group": "gear",
+      "phrases": [
+        "use leaf paste",
+        "apply leaf paste",
+        "eat leaf paste",
+        "heal"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "use_item"
+      ],
+      "item_id": "leaf-paste",
+      "event_text": "{actor_name} presses the leaf paste into her wounds. It goes warm and green, and the hurt eases.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 227
+      },
+      "player_command": {
+        "usage": "use leaf paste",
+        "example": "use leaf paste",
         "advances_time": true,
         "input": {
           "required": false

@@ -20,6 +20,12 @@ fn elf_chess_mobs_declarations_resolve() {
     assert!(pack.settings.equipment_slots.contains("cloak"));
     assert!(pack.item("leaf-crook").unwrap().equip_slots.len() == 2);
     assert!(pack.item("leaf-cloak").is_some());
+    assert_eq!(
+        pack.item("leaf-buckler").unwrap().equip_slots,
+        vec!["off-hand".to_string()]
+    );
+    assert!(pack.item("leaf-paste").unwrap().equip_slots.is_empty());
+    assert_eq!(pack.item("leaf-paste").unwrap().use_hook, "item.salve_used");
 
     let pawn = pack.actor("elf-pawn-1").unwrap();
     let DropSpec::Weighted(pool) = &pawn.drops["pawn-kit"] else {
