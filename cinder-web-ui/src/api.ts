@@ -342,6 +342,7 @@ export interface UiSnapshot {
   active_menu: ActiveMenuData | null
   act_closure: ActClosureData | null
   game_closure: ActClosureData | null
+  game_over?: boolean
   inventory: InventoryItem[]
   equipped_items: EquippedItem[]
   party: PartyMember[]
