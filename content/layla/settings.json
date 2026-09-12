@@ -67,7 +67,13 @@
   },
   "equipment_slots": [
     "weapon",
-    "ring"
+    "off-hand",
+    "ring",
+    "helm",
+    "chest",
+    "boots",
+    "gloves",
+    "cloak"
   ],
   "combat": {
     "xp_distribution": {

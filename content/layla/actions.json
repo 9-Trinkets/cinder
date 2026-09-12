@@ -471,6 +471,834 @@
           "required": false
         }
       }
+    },
+    {
+      "id": "equip_leaf-blade",
+      "command": "EQUIP LEAF-BLADE",
+      "label": "Equip Leaf-blade",
+      "group": "gear",
+      "phrases": [
+        "equip leaf-blade",
+        "wear leaf-blade",
+        "ready leaf-blade",
+        "grip leaf-blade"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "equip_item"
+      ],
+      "item_id": "leaf-blade",
+      "event_text": "{actor_name} draws the elmwood leaf-blade from her boot and turns its edge eastward.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 47
+      },
+      "player_command": {
+        "usage": "equip Leaf-blade",
+        "example": "equip Leaf-blade",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "unequip_leaf-blade",
+      "command": "STOW LEAF-BLADE",
+      "label": "Stow Leaf-blade",
+      "group": "gear",
+      "phrases": [
+        "stow leaf-blade",
+        "sheathe leaf-blade",
+        "drop leaf-blade"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "unequip_item"
+      ],
+      "item_id": "leaf-blade",
+      "event_text": "{actor_name} works the leaf-blade back into the scabbard at her calf.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 48
+      },
+      "player_command": {
+        "usage": "stow Leaf-blade",
+        "example": "stow Leaf-blade",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "equip_bark-bracer",
+      "command": "EQUIP BARK BRACER",
+      "label": "Equip Bark Bracer",
+      "group": "gear",
+      "phrases": [
+        "equip bracer",
+        "bind bracer",
+        "wear bracer",
+        "take up bracer"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "equip_item"
+      ],
+      "item_id": "bark-bracer",
+      "event_text": "{actor_name} winds the bark bracer around her forearm until the root-thread takes.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 49
+      },
+      "player_command": {
+        "usage": "equip Bark Bracer",
+        "example": "equip Bark Bracer",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "unequip_bark-bracer",
+      "command": "STOW BARK BRACER",
+      "label": "Stow Bark Bracer",
+      "group": "gear",
+      "phrases": [
+        "stow bracer",
+        "unbind bracer",
+        "set down bracer"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "unequip_item"
+      ],
+      "item_id": "bark-bracer",
+      "event_text": "{actor_name} unwinds the bark bracer and sets it aside.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 50
+      },
+      "player_command": {
+        "usage": "stow Bark Bracer",
+        "example": "stow Bark Bracer",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "equip_antler-saber",
+      "command": "EQUIP ANTLER SABER",
+      "label": "Equip Antler Saber",
+      "group": "gear",
+      "phrases": [
+        "equip saber",
+        "draw antler saber",
+        "wield saber",
+        "ready saber"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "equip_item"
+      ],
+      "item_id": "antler-saber",
+      "event_text": "{actor_name} draws the antler saber and lets it ring once against the air.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 51
+      },
+      "player_command": {
+        "usage": "equip Antler Saber",
+        "example": "equip Antler Saber",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "unequip_antler-saber",
+      "command": "STOW ANTLER SABER",
+      "label": "Stow Antler Saber",
+      "group": "gear",
+      "phrases": [
+        "stow saber",
+        "sheathe saber",
+        "set aside saber"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "unequip_item"
+      ],
+      "item_id": "antler-saber",
+      "event_text": "{actor_name} turns the antler saber flat and sheathes it.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 52
+      },
+      "player_command": {
+        "usage": "stow Antler Saber",
+        "example": "stow Antler Saber",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "equip_elmwood-greaves",
+      "command": "EQUIP ELMWOOD GREAVES",
+      "label": "Equip Elmwood Greaves",
+      "group": "gear",
+      "phrases": [
+        "wear greaves",
+        "put on greaves",
+        "step into greaves",
+        "don greaves"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "equip_item"
+      ],
+      "item_id": "elmwood-greaves",
+      "event_text": "{actor_name} steps into the elmwood greaves and stamps; they ring like old stone.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 53
+      },
+      "player_command": {
+        "usage": "equip Elmwood Greaves",
+        "example": "equip Elmwood Greaves",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "unequip_elmwood-greaves",
+      "command": "STOW ELMWOOD GREAVES",
+      "label": "Stow Elmwood Greaves",
+      "group": "gear",
+      "phrases": [
+        "stow greaves",
+        "take off greaves",
+        "remove greaves"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "unequip_item"
+      ],
+      "item_id": "elmwood-greaves",
+      "event_text": "{actor_name} pulls the elmwood greaves off and sets them aside.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 54
+      },
+      "player_command": {
+        "usage": "stow Elmwood Greaves",
+        "example": "stow Elmwood Greaves",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "equip_iron-elm-greatbow",
+      "command": "EQUIP IRON-ELM GREATBOW",
+      "label": "Equip Iron-elm Greatbow",
+      "group": "gear",
+      "phrases": [
+        "string the greatbow",
+        "wield the greatbow",
+        "take up the greatbow",
+        "ready the greatbow"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "equip_item"
+      ],
+      "item_id": "iron-elm-greatbow",
+      "event_text": "{actor_name} braces the iron-elm greatbow across her shoulders; it takes both hands to hold.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 55
+      },
+      "player_command": {
+        "usage": "equip Iron-elm Greatbow",
+        "example": "equip Iron-elm Greatbow",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "unequip_iron-elm-greatbow",
+      "command": "STOW IRON-ELM GREATBOW",
+      "label": "Stow Iron-elm Greatbow",
+      "group": "gear",
+      "phrases": [
+        "unstring the greatbow",
+        "stow the greatbow",
+        "put down the greatbow"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "unequip_item"
+      ],
+      "item_id": "iron-elm-greatbow",
+      "event_text": "{actor_name} eases the iron-elm greatbow down and unstrings it.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 56
+      },
+      "player_command": {
+        "usage": "stow Iron-elm Greatbow",
+        "example": "stow Iron-elm Greatbow",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "equip_bark-mantle",
+      "command": "EQUIP BARK MANTLE",
+      "label": "Equip Bark Mantle",
+      "group": "gear",
+      "phrases": [
+        "wrap the bark mantle",
+        "don the bark mantle",
+        "wear the mantle",
+        "put on the mantle"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "equip_item"
+      ],
+      "item_id": "bark-mantle",
+      "event_text": "{actor_name} settles the bark mantle across her shoulders; the wood goes still against her.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 57
+      },
+      "player_command": {
+        "usage": "equip Bark Mantle",
+        "example": "equip Bark Mantle",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "unequip_bark-mantle",
+      "command": "STOW BARK MANTLE",
+      "label": "Stow Bark Mantle",
+      "group": "gear",
+      "phrases": [
+        "shrug off the mantle",
+        "set down the mantle",
+        "remove the mantle"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "unequip_item"
+      ],
+      "item_id": "bark-mantle",
+      "event_text": "{actor_name} shrugs the bark mantle from her shoulders.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 58
+      },
+      "player_command": {
+        "usage": "stow Bark Mantle",
+        "example": "stow Bark Mantle",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "equip_moonlit-reed-ring",
+      "command": "EQUIP MOONLIT REED RING",
+      "label": "Equip Moonlit Reed Ring",
+      "group": "gear",
+      "phrases": [
+        "wear the reed ring",
+        "slide on the reed ring",
+        "put on the reed ring",
+        "slip on the ring"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "equip_item"
+      ],
+      "item_id": "moonlit-reed-ring",
+      "event_text": "{actor_name} slides the moonlit reed ring onto her finger; the cool spreads up her arm.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 59
+      },
+      "player_command": {
+        "usage": "equip Moonlit Reed Ring",
+        "example": "equip Moonlit Reed Ring",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "unequip_moonlit-reed-ring",
+      "command": "STOW MOONLIT REED RING",
+      "label": "Stow Moonlit Reed Ring",
+      "group": "gear",
+      "phrases": [
+        "take off the reed ring",
+        "remove the reed ring",
+        "slide off the ring"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "unequip_item"
+      ],
+      "item_id": "moonlit-reed-ring",
+      "event_text": "{actor_name} works the reed ring off and the cool fades.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 60
+      },
+      "player_command": {
+        "usage": "stow Moonlit Reed Ring",
+        "example": "stow Moonlit Reed Ring",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "equip_moss-light-cowl",
+      "command": "EQUIP MOSS-LIGHT COWL",
+      "label": "Equip Moss-light Cowl",
+      "group": "gear",
+      "phrases": [
+        "pull on the cowl",
+        "wear the cowl",
+        "don the cowl",
+        "raise the cowl"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "equip_item"
+      ],
+      "item_id": "moss-light-cowl",
+      "event_text": "{actor_name} pulls the moss-light cowl over her head and the dim edges sharpen.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 61
+      },
+      "player_command": {
+        "usage": "equip Moss-light Cowl",
+        "example": "equip Moss-light Cowl",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "unequip_moss-light-cowl",
+      "command": "STOW MOSS-LIGHT COWL",
+      "label": "Stow Moss-light Cowl",
+      "group": "gear",
+      "phrases": [
+        "push back the cowl",
+        "take off the cowl",
+        "set down the cowl"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "unequip_item"
+      ],
+      "item_id": "moss-light-cowl",
+      "event_text": "{actor_name} pushes the moss-light cowl back off her forehead.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 62
+      },
+      "player_command": {
+        "usage": "stow Moss-light Cowl",
+        "example": "stow Moss-light Cowl",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "equip_mirrorshard-glaive",
+      "command": "EQUIP MIRRORSHARD GLAIVE",
+      "label": "Equip Mirrorshard Glaive",
+      "group": "gear",
+      "phrases": [
+        "take up the glaive",
+        "wield the glaive",
+        "ready the glaive",
+        "draw the glaive"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "equip_item"
+      ],
+      "item_id": "mirrorshard-glaive",
+      "event_text": "{actor_name} takes up the mirrorshard glaive; the trapped seam of moonlight turns with her hand.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 63
+      },
+      "player_command": {
+        "usage": "equip Mirrorshard Glaive",
+        "example": "equip Mirrorshard Glaive",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "unequip_mirrorshard-glaive",
+      "command": "STOW MIRRORSHARD GLAIVE",
+      "label": "Stow Mirrorshard Glaive",
+      "group": "gear",
+      "phrases": [
+        "set down the glaive",
+        "ground the glaive",
+        "stow the glaive"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "unequip_item"
+      ],
+      "item_id": "mirrorshard-glaive",
+      "event_text": "{actor_name} grounds the mirrorshard glaive against the stone.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 64
+      },
+      "player_command": {
+        "usage": "stow Mirrorshard Glaive",
+        "example": "stow Mirrorshard Glaive",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "equip_moonlit-mail",
+      "command": "EQUIP MOONLIT MAIL",
+      "label": "Equip Moonlit Mail",
+      "group": "gear",
+      "phrases": [
+        "don the mail",
+        "wear the mail",
+        "pull on the mail",
+        "put on the mail"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "equip_item"
+      ],
+      "item_id": "moonlit-mail",
+      "event_text": "{actor_name} pulls the moonlit mail over her head and the cold links settle like sleep.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 65
+      },
+      "player_command": {
+        "usage": "equip Moonlit Mail",
+        "example": "equip Moonlit Mail",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "unequip_moonlit-mail",
+      "command": "STOW MOONLIT MAIL",
+      "label": "Stow Moonlit Mail",
+      "group": "gear",
+      "phrases": [
+        "take off the mail",
+        "remove the mail",
+        "set down the mail"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "unequip_item"
+      ],
+      "item_id": "moonlit-mail",
+      "event_text": "{actor_name} slips the moonlit mail off and it sheds its light.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 66
+      },
+      "player_command": {
+        "usage": "stow Moonlit Mail",
+        "example": "stow Moonlit Mail",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "equip_driftwood-crown",
+      "command": "EQUIP DRIFTWOOD CROWN",
+      "label": "Equip Driftwood Crown",
+      "group": "gear",
+      "phrases": [
+        "set on the crown",
+        "wear the crown",
+        "don the crown",
+        "set the crown"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "equip_item"
+      ],
+      "item_id": "driftwood-crown",
+      "event_text": "{actor_name} sets the driftwood crown on her head; the weight of the root-dark comes down with it.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 67
+      },
+      "player_command": {
+        "usage": "equip Driftwood Crown",
+        "example": "equip Driftwood Crown",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "unequip_driftwood-crown",
+      "command": "STOW DRIFTWOOD CROWN",
+      "label": "Stow Driftwood Crown",
+      "group": "gear",
+      "phrases": [
+        "lift off the crown",
+        "remove the crown",
+        "set down the crown"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "unequip_item"
+      ],
+      "item_id": "driftwood-crown",
+      "event_text": "{actor_name} lifts the driftwood crown off and something old releases.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 68
+      },
+      "player_command": {
+        "usage": "stow Driftwood Crown",
+        "example": "stow Driftwood Crown",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "equip_throneroot-cloak",
+      "command": "EQUIP THRONEROOT CLOAK",
+      "label": "Equip Throneroot Cloak",
+      "group": "gear",
+      "phrases": [
+        "wrap the cloak",
+        "wear the cloak",
+        "throw on the cloak",
+        "don the cloak"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "equip_item"
+      ],
+      "item_id": "throneroot-cloak",
+      "event_text": "{actor_name} wraps the throneroot cloak around her; the fringe of roots settles at her feet.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 69
+      },
+      "player_command": {
+        "usage": "equip Throneroot Cloak",
+        "example": "equip Throneroot Cloak",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
+      "id": "unequip_throneroot-cloak",
+      "command": "STOW THRONEROOT CLOAK",
+      "label": "Stow Throneroot Cloak",
+      "group": "gear",
+      "phrases": [
+        "unwrap the cloak",
+        "take off the cloak",
+        "set down the cloak"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "unequip_item"
+      ],
+      "item_id": "throneroot-cloak",
+      "event_text": "{actor_name} unwraps the throneroot cloak and lays it over her arm.",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "group": "gear",
+        "sort_order": 70
+      },
+      "player_command": {
+        "usage": "stow Throneroot Cloak",
+        "example": "stow Throneroot Cloak",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
     }
   ]
 }

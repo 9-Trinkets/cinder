@@ -42,7 +42,9 @@
     "id": "chisel-axe",
     "label": "chisel-axe",
     "kind": "weapon",
-    "equip_slot": "weapon",
+    "equip_slots": [
+      "weapon"
+    ],
     "stat_bonuses": {
       "strength": 2
     },
@@ -59,7 +61,9 @@
     "id": "shaman-ring",
     "label": "shaman's ring",
     "kind": "trinket",
-    "equip_slot": "ring",
+    "equip_slots": [
+      "ring"
+    ],
     "stat_bonuses": {
       "intelligence": 4
     },
@@ -73,5 +77,151 @@
     "description": "A round sigil drawn in living amber, warm in the hand. It holds the raw names of creatures that can be summoned to this board. What answers the call, and how strong it stands, depends on the strength of the patron who traces it.",
     "look_description": "A disc of warm amber chalk, its spiral glowing faintly. It hums against the floor like a buried coal.",
     "trace_mark": true
+  },
+  {
+    "id": "leaf-blade",
+    "label": "elmwood leaf-blade",
+    "kind": "weapon",
+    "equip_slots": [
+      "weapon"
+    ],
+    "stat_bonuses": {
+      "strength": 1
+    },
+    "description": "A leaf-shaped blade turned from one piece of elmwood, edge oiled with black sap. The pawns of the pale army carry these in their boots; a quiet knife for a patient soldier."
+  },
+  {
+    "id": "bark-bracer",
+    "label": "bark bracer",
+    "kind": "armor",
+    "equip_slots": [
+      "gloves"
+    ],
+    "stat_bonuses": {
+      "defense": 1
+    },
+    "description": "A bracer of living bark bound to the forearm with root-thread. It answers to the arm as if it had grown there."
+  },
+  {
+    "id": "antler-saber",
+    "label": "antler saber",
+    "kind": "weapon",
+    "equip_slots": [
+      "weapon"
+    ],
+    "stat_bonuses": {
+      "strength": 2
+    },
+    "description": "A saber set on an antler hilt with three points whorled like a hilltop. It favors a long, singing reach."
+  },
+  {
+    "id": "elmwood-greaves",
+    "label": "elmwood greaves",
+    "kind": "armor",
+    "equip_slots": [
+      "boots"
+    ],
+    "stat_bonuses": {
+      "defense": 1
+    },
+    "description": "Greaves cut from iron-elm, old enough that the grain has gone to stone. They clatter like hooves on the stair."
+  },
+  {
+    "id": "iron-elm-greatbow",
+    "label": "iron-elm greatbow",
+    "kind": "weapon",
+    "equip_slots": [
+      "weapon",
+      "off-hand"
+    ],
+    "stat_bonuses": {
+      "strength": 3
+    },
+    "description": "A three-span greatbow cut from iron-elm and strung with dead root-cord. It takes two hands and a held breath, and puts a yard of wood through a company."
+  },
+  {
+    "id": "bark-mantle",
+    "label": "bark mantle",
+    "kind": "armor",
+    "equip_slots": [
+      "chest"
+    ],
+    "stat_bonuses": {
+      "defense": 2
+    },
+    "description": "A mantle of bark peeled from an old queen's tree, hardened into plate across the shoulders. The wood remembers what it was cut to shield."
+  },
+  {
+    "id": "moonlit-reed-ring",
+    "label": "moonlit reed ring",
+    "kind": "trinket",
+    "equip_slots": [
+      "ring"
+    ],
+    "stat_bonuses": {
+      "intelligence": 2
+    },
+    "description": "A ring braided from reeds that grew under the pale moon, cool to the touch. It sharpens the mind the way moonlight sharpens a silhouette."
+  },
+  {
+    "id": "moss-light-cowl",
+    "label": "moss-light cowl",
+    "kind": "armor",
+    "equip_slots": [
+      "helm"
+    ],
+    "stat_bonuses": {
+      "intelligence": 1
+    },
+    "description": "A cowl woven from moss that holds its own faint light. The light has nothing to say to anyone, but it reads the dark for you."
+  },
+  {
+    "id": "mirrorshard-glaive",
+    "label": "mirrorshard glaive",
+    "kind": "weapon",
+    "equip_slots": [
+      "weapon",
+      "off-hand"
+    ],
+    "stat_bonuses": {
+      "strength": 4
+    },
+    "description": "A glaive of trappers' glass, dark but for a seam of moonlight caught forever inside. Queen's-court steel, or the cold twin of it."
+  },
+  {
+    "id": "moonlit-mail",
+    "label": "moonlit mail",
+    "kind": "armor",
+    "equip_slots": [
+      "chest"
+    ],
+    "stat_bonuses": {
+      "defense": 3
+    },
+    "description": "Mail tempered under a milk-pale moon, each link a small cold eye. The moon's court wears it beneath their cloaks."
+  },
+  {
+    "id": "driftwood-crown",
+    "label": "driftwood crown",
+    "kind": "armor",
+    "equip_slots": [
+      "helm"
+    ],
+    "stat_bonuses": {
+      "intelligence": 2
+    },
+    "description": "A crown of pale driftwood grown in the root-dark, cool and smooth, without a single knot. The queen's crown is the eldest thing on the board."
+  },
+  {
+    "id": "throneroot-cloak",
+    "label": "throneroot cloak",
+    "kind": "armor",
+    "equip_slots": [
+      "cloak"
+    ],
+    "stat_bonuses": {
+      "intelligence": 2
+    },
+    "description": "A cloak of the king's throne-root, soft as river silt and fringed with fine sewn roots. It holds the weight of every word spoken at court."
   }
 ]
