@@ -93,15 +93,26 @@ pub(super) fn trigger_surrounded_hooks(
         .unwrap_or_else(|error| eprintln!("[cinder] hook warning (actor.surrounded): {error}"));
         let relationship = state.relationship(&actor.id);
         let converted = relationship.stance == ActorStance::Allied || relationship.follows_player;
-        if converted
-            && content
+        if converted {
+            // The closed ring draws the convert into the room the ring was
+            // drawn in, so a charmed mob joins the party immediately instead
+            // of staying in the room where it was encircled.
+            let party_room_id = state.current_room_id.clone();
+            if state.actor_room_id(&actor.id, &actor.room_id) != party_room_id {
+                state.mark_actor_room_visited(&actor.id, &party_room_id);
+                state
+                    .actor_room_overrides
+                    .insert(actor.id.clone(), party_room_id);
+            }
+            if content
                 .item(item_id)
                 .is_some_and(|item| item.consumed_on_surround_conversion)
-        {
-            // The conversion spent the single-use token: it fades from the room
-            // it was just placed in and this placement converts nothing else.
-            state.remove_items_from_room(source_room_id, item_id);
-            break;
+            {
+                // The conversion spent the single-use token: it fades from the room
+                // it was just placed in and this placement converts nothing else.
+                state.remove_items_from_room(source_room_id, item_id);
+                break;
+            }
         }
     }
 }

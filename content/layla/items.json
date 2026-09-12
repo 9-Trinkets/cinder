@@ -9,7 +9,7 @@
     "id": "charm-sigil",
     "label": "charm sigil",
     "kind": "misc",
-    "description": "A closed ring of chalk traced around a vacant space on the floor. When an enemy is encircled on every side by such rings, the circle closes and draws it into step with you. The ring flares once and is spent.",
+    "description": "A closed ring of chalk traced around a vacant space on the floor. When an enemy is encircled on every side by such rings, the circle closes and pulls it to your side. The ring flares once and is spent.",
     "look_description": "A closed ring of pale chalk glows faintly on the floor, waiting to be completed around something.",
     "trace_mark": true,
     "consumed_on_surround_conversion": true

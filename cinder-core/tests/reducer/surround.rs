@@ -271,6 +271,10 @@ fn creating_an_item_in_a_room_can_complete_a_surround() {
     assert!(state.has_item_in_storage("marker", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
     assert_eq!(state.stance("golem"), ActorStance::Allied);
     assert!(
+        state.actor_is_in_room(&pack, "golem", KITCHEN_ID),
+        "a converted golem must be drawn into the room the ring was drawn in"
+    );
+    assert!(
         lines
             .iter()
             .any(|line| line.text.contains("turns toward you")),
@@ -288,6 +292,10 @@ fn resistance_rule_converts_a_weak_target_at_start() {
     let output = trace_marker(&mut state, &pack);
 
     assert_eq!(state.stance("golem-child"), ActorStance::Allied);
+    assert!(
+        state.actor_is_in_room(&pack, "golem-child", KITCHEN_ID),
+        "a converted mob joins the party room the ring was drawn in"
+    );
     assert!(
         output
             .lines

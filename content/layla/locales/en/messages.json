@@ -31,7 +31,7 @@
         "text": "THE RING DOES NOT HOLD."
     },
     "conversion.encircled": "The {actor} shudders, its surface brightening. It turns toward you, no longer hostile.",
-    "conversion.encircled_follows": "The {actor} falls in behind you. You slow a little, so it can keep up.",
+    "conversion.encircled_follows": "The {actor} is pulled through the ring and falls in beside you.",
     "follow.actor_follows": "The {actor} folds into chalk-light and crosses the boards in a single step, resolving into place beside you.",
     "item.used": "Warmth spreads from the {item}. You feel mended.",
     "item.charm-sigil.acquired_room": "",
