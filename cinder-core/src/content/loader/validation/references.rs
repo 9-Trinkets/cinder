@@ -1,4 +1,3 @@
-use super::require_known_id;
 use crate::content::types::{
     ActCastMember, ActionDefinition, ActorDefinition, AdvanceEffect, BeatDefinition,
     BeatObjectiveProgressRef, BeatObjectivesDefinition, BeatsDefinition, ChannelKind,
@@ -7,6 +6,95 @@ use crate::content::types::{
 };
 use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
+
+/// The id namespace a reference resolves against. Picks the collection name
+/// used in the "not found in <collection>" half of an error message.
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub(crate) enum IdKind {
+    Actor,
+    Room,
+    Stage,
+    Item,
+    Channel,
+    Action,
+    Sequence,
+    Objective,
+    ActorStat,
+    PairStat,
+}
+
+impl IdKind {
+    fn collection(self) -> &'static str {
+        match self {
+            Self::Actor => "actors",
+            Self::Room => "rooms",
+            Self::Stage => "beats.stages",
+            Self::Item => "items",
+            Self::Channel => "channels",
+            Self::Action => "actions",
+            Self::Sequence => "sequences.json",
+            Self::Objective => "beat_objectives",
+            Self::ActorStat => "stats.actor",
+            Self::PairStat => "stats.pair",
+        }
+    }
+}
+
+/// Whole-pack id index built once at load time. Validators ask this single
+/// home whether an id exists instead of threading `Vec<&str>` slices through
+/// every call and checking membership inline.
+pub(crate) struct IdIndex {
+    sets: BTreeMap<IdKind, BTreeSet<String>>,
+}
+
+impl IdIndex {
+    /// Seeded with the namespaces common to every pack. Secondary namespaces
+    /// that some packs skip (channels, actions, sequences, objectives) are
+    /// added via [`IdIndex::index`].
+    pub(crate) fn new(
+        actors: &[&str],
+        rooms: &[&str],
+        stages: &[&str],
+        items: &[&str],
+        actor_stats: &[&str],
+        pair_stats: &[&str],
+    ) -> Self {
+        Self {
+            sets: BTreeMap::from([
+                (IdKind::Actor, ids_to_set(actors)),
+                (IdKind::Room, ids_to_set(rooms)),
+                (IdKind::Stage, ids_to_set(stages)),
+                (IdKind::Item, ids_to_set(items)),
+                (IdKind::ActorStat, ids_to_set(actor_stats)),
+                (IdKind::PairStat, ids_to_set(pair_stats)),
+            ]),
+        }
+    }
+
+    /// Mutable access for seeding an optional namespace after construction.
+    pub(crate) fn index(&mut self, kind: IdKind) -> &mut BTreeSet<String> {
+        self.sets.entry(kind).or_default()
+    }
+
+    /// Errors when `id` is absent from the named namespace, mirroring the old
+    /// `require_known_id` message `"{subject} not found in {collection}"`.
+    pub(crate) fn require(
+        &self,
+        kind: IdKind,
+        id: &str,
+        subject: &str,
+    ) -> Result<(), Box<dyn Error>> {
+        if self.sets.get(&kind).is_some_and(|ids| ids.contains(id)) {
+            Ok(())
+        } else {
+            Err(format!("{subject} not found in {}", kind.collection()).into())
+        }
+    }
+}
+
+fn ids_to_set(ids: &[&str]) -> BTreeSet<String> {
+    ids.iter().map(|id| (*id).to_string()).collect()
+}
 
 /// Everything the content loader has loaded that cross-file validation needs.
 /// Bundled into one context so validators stay small and readable.
@@ -19,12 +107,7 @@ pub(crate) struct PackContext<'a> {
     pub beat_objectives: &'a BeatObjectivesDefinition,
     pub act_cast: &'a [ActCastMember],
     pub channels: &'a [MessagingChannel],
-    pub actor_ids: &'a [&'a str],
-    pub room_ids: &'a [&'a str],
-    pub stage_ids: &'a [&'a str],
-    pub item_ids: &'a [&'a str],
-    pub room_index: &'a std::collections::HashMap<String, usize>,
-    pub action_index: &'a std::collections::HashMap<String, usize>,
+    pub ids: &'a IdIndex,
 }
 
 /// Runs all content-reference validation for a loaded pack, in a fixed order.
@@ -34,58 +117,47 @@ pub(crate) struct PackContext<'a> {
 /// and the act cast. Behavior is identical to the previous in-function loops.
 pub(crate) fn validate_contents(ctx: &PackContext<'_>) -> Result<(), Box<dyn Error>> {
     for actor_id in ctx.levels.actors.keys() {
-        require_known_id(
+        ctx.ids.require(
+            IdKind::Actor,
             actor_id,
-            ctx.actor_ids,
             &format!("levels.actors '{actor_id}'"),
-            "actors",
         )?;
     }
 
     for id in &ctx.beats.initial_stage_ids {
-        require_known_id(
+        ctx.ids.require(
+            IdKind::Stage,
             id,
-            ctx.stage_ids,
             &format!("initial_stage_id '{id}'"),
-            "beats.stages",
         )?;
     }
 
-    validate_beat_stages(
-        &ctx.beats.stages,
-        ctx.actor_ids,
-        ctx.room_ids,
-        ctx.stage_ids,
-    )?;
-    validate_actors(ctx.actors, ctx.room_index, ctx.item_ids)?;
-    validate_movement(ctx.movement, ctx.actor_ids, ctx.room_ids, ctx.stage_ids)?;
+    validate_beat_stages(&ctx.beats.stages, ctx.ids)?;
+    validate_actors(ctx.actors, ctx.ids)?;
+    validate_movement(ctx.movement, ctx.ids)?;
 
-    let action_index_keys: Vec<&str> = ctx.action_index.keys().map(|k| k.as_str()).collect();
-    validate_beat_objectives(ctx.beat_objectives, ctx.stage_ids, &action_index_keys)?;
+    validate_beat_objectives(ctx.beat_objectives, ctx.ids)?;
 
     let objective_progress_keys = objective_progress_keys(ctx.beat_objectives);
-    validate_action_objective_progress(ctx.actions, ctx.stage_ids, &objective_progress_keys)?;
+    validate_action_objective_progress(ctx.actions, ctx.ids, &objective_progress_keys)?;
     validate_conditional_guidance_progress(ctx.beat_objectives, &objective_progress_keys)?;
 
     for room_id in &ctx.movement.unreachable_rooms {
-        require_known_id(
+        ctx.ids.require(
+            IdKind::Room,
             room_id,
-            ctx.room_ids,
             &format!("movement.json unreachable_rooms entry '{room_id}'"),
-            "rooms",
         )?;
     }
-    validate_act_cast(ctx.act_cast, ctx.actor_ids)?;
-    validate_channels(ctx.channels, ctx.actor_ids)?;
+    validate_act_cast(ctx.act_cast, ctx.ids)?;
+    validate_channels(ctx.channels, ctx.ids)?;
 
     Ok(())
 }
 
 fn validate_beat_stages(
     stages: &[BeatDefinition],
-    actor_ids: &[&str],
-    room_ids: &[&str],
-    stage_ids: &[&str],
+    ids: &IdIndex,
 ) -> Result<(), Box<dyn Error>> {
     let valid_operators = [
         "equal",
@@ -99,45 +171,41 @@ fn validate_beat_stages(
     for stage in stages {
         if let Some(config) = &stage.stage_assignment {
             if !config.initiator_actor_id.trim().is_empty() {
-                require_known_id(
+                ids.require(
+                    IdKind::Actor,
                     &config.initiator_actor_id,
-                    actor_ids,
                     &format!(
                         "beat '{}' stage_assignment initiator_actor_id '{}'",
                         stage.id, config.initiator_actor_id
                     ),
-                    "actors",
                 )?;
             }
             if !config.selected_room_id.trim().is_empty() {
-                require_known_id(
+                ids.require(
+                    IdKind::Room,
                     &config.selected_room_id,
-                    room_ids,
                     &format!(
                         "beat '{}' stage_assignment selected_room_id '{}'",
                         stage.id, config.selected_room_id
                     ),
-                    "rooms",
                 )?;
             }
             if !config.remaining_room_id.trim().is_empty() {
-                require_known_id(
+                ids.require(
+                    IdKind::Room,
                     &config.remaining_room_id,
-                    room_ids,
                     &format!(
                         "beat '{}' stage_assignment remaining_room_id '{}'",
                         stage.id, config.remaining_room_id
                     ),
-                    "rooms",
                 )?;
             }
         }
         for id in &stage.next_stage_ids {
-            require_known_id(
+            ids.require(
+                IdKind::Stage,
                 id,
-                stage_ids,
                 &format!("beat '{}' next_stage_ids contains '{id}'", stage.id),
-                "beats.stages",
             )?;
         }
         for signal in &stage.advance_signals {
@@ -159,25 +227,23 @@ fn validate_beat_stages(
 
 fn validate_actors(
     actors: &[ActorDefinition],
-    room_index: &std::collections::HashMap<String, usize>,
-    item_ids: &[&str],
+    ids: &IdIndex,
 ) -> Result<(), Box<dyn Error>> {
     for actor in actors {
-        if !actor.is_offstage() && !room_index.contains_key(&actor.room_id) {
-            return Err(format!(
-                "actor '{}' room_id '{}' not found in rooms",
-                actor.id, actor.room_id
-            )
-            .into());
+        if !actor.is_offstage() {
+            ids.require(
+                IdKind::Room,
+                &actor.room_id,
+                &format!("actor '{}' room_id '{}'", actor.id, actor.room_id),
+            )?;
         }
         for (key, spec) in &actor.drops {
             match spec {
                 DropSpec::Always(_) | DropSpec::Conditional(_) => {
-                    require_known_id(
+                    ids.require(
+                        IdKind::Item,
                         key,
-                        item_ids,
                         &format!("actor '{}' drops '{key}'", actor.id),
-                        "items",
                     )?;
                 }
                 DropSpec::Chance(chance) => {
@@ -188,11 +254,10 @@ fn validate_actors(
                         )
                         .into());
                     }
-                    require_known_id(
+                    ids.require(
+                        IdKind::Item,
                         key,
-                        item_ids,
                         &format!("actor '{}' drops '{key}'", actor.id),
-                        "items",
                     )?;
                 }
                 DropSpec::Weighted(pool) => {
@@ -218,14 +283,13 @@ fn validate_actors(
                             )
                             .into());
                         }
-                        require_known_id(
+                        ids.require(
+                            IdKind::Item,
                             &entry.item_id,
-                            item_ids,
                             &format!(
                                 "actor '{}' drop pool '{key}' entry '{}'",
                                 actor.id, entry.item_id
                             ),
-                            "items",
                         )?;
                     }
                 }
@@ -237,7 +301,7 @@ fn validate_actors(
 
 fn validate_channels(
     channels: &[MessagingChannel],
-    actor_ids: &[&str],
+    ids: &IdIndex,
 ) -> Result<(), Box<dyn Error>> {
     let mut seen_ids = BTreeSet::new();
     for channel in channels {
@@ -258,11 +322,10 @@ fn validate_channels(
                 );
             }
             for participant in &channel.participants {
-                require_known_id(
+                ids.require(
+                    IdKind::Actor,
                     participant,
-                    actor_ids,
                     &format!("channel '{}' participant '{participant}'", channel.id),
-                    "actors",
                 )?;
             }
         }
@@ -319,13 +382,8 @@ pub(crate) fn validate_scripted_sequences(
     opening_sequence_id: Option<&str>,
     channels: &[MessagingChannel],
     actors: &[ActorDefinition],
-    actor_stat_ids: &[&str],
-    pair_stat_ids: &[&str],
+    ids: &IdIndex,
 ) -> Result<(), Box<dyn Error>> {
-    let actor_ids = actors
-        .iter()
-        .map(|actor| actor.id.as_str())
-        .collect::<Vec<_>>();
     let mut sequence_ids = BTreeSet::new();
 
     for sequence in &sequences.sequences {
@@ -348,27 +406,18 @@ pub(crate) fn validate_scripted_sequences(
             }
         }
         for (index, step) in sequence.steps.iter().enumerate() {
-            validate_scripted_step(sequence_id, index, step, channels, actors, &actor_ids)?;
+            validate_scripted_step(sequence_id, index, step, channels, actors, ids)?;
         }
         for (index, effect) in sequence.completion_effects.iter().enumerate() {
-            validate_sequence_effect(
-                sequence_id,
-                index,
-                effect,
-                &actor_ids,
-                actor_stat_ids,
-                pair_stat_ids,
-            )?;
+            validate_sequence_effect(sequence_id, index, effect, ids)?;
         }
     }
 
     if let Some(opening_sequence_id) = opening_sequence_id {
-        let known_sequence_ids = sequence_ids.iter().copied().collect::<Vec<_>>();
-        require_known_id(
+        ids.require(
+            IdKind::Sequence,
             opening_sequence_id,
-            &known_sequence_ids,
             &format!("opening_sequence_id '{opening_sequence_id}'"),
-            "sequences.json",
         )?;
     }
     Ok(())
@@ -380,7 +429,7 @@ fn validate_scripted_step(
     step: &ScriptedLine,
     channels: &[MessagingChannel],
     actors: &[ActorDefinition],
-    actor_ids: &[&str],
+    ids: &IdIndex,
 ) -> Result<(), Box<dyn Error>> {
     match step {
         ScriptedLine::Narrate { line } => {
@@ -403,23 +452,21 @@ fn validate_scripted_step(
                 )
                 .into());
             }
-            require_known_id(
+            ids.require(
+                IdKind::Actor,
                 speaker_id,
-                actor_ids,
                 &format!(
                     "scripted sequence '{sequence_id}' step[{index}] speaker_id '{speaker_id}'"
                 ),
-                "actors",
             )?;
             if let Some(recipient_id) = recipient_id {
-                require_known_id(
+                ids.require(
+                    IdKind::Actor,
                     recipient_id,
-                    actor_ids,
                     &format!(
                         "scripted sequence '{sequence_id}' step[{index}] recipient_id \
                          '{recipient_id}'"
                     ),
-                    "actors",
                 )?;
                 if recipient_id == speaker_id {
                     return Err(format!(
@@ -498,24 +545,20 @@ fn validate_sequence_effect(
     sequence_id: &str,
     effect_index: usize,
     effect: &AdvanceEffect,
-    actor_ids: &[&str],
-    actor_stat_ids: &[&str],
-    pair_stat_ids: &[&str],
+    ids: &IdIndex,
 ) -> Result<(), Box<dyn Error>> {
     let subject = format!("scripted sequence '{sequence_id}' completion_effects[{effect_index}]");
     match effect {
         AdvanceEffect::AdjustActorStat { actor_id, stat, .. } => {
-            require_known_id(
+            ids.require(
+                IdKind::Actor,
                 actor_id,
-                actor_ids,
                 &format!("{subject} actor_id '{actor_id}'"),
-                "actors",
             )?;
-            require_known_id(
+            ids.require(
+                IdKind::ActorStat,
                 stat,
-                actor_stat_ids,
                 &format!("{subject} stat '{stat}'"),
-                "stats.actor",
             )?;
         }
         AdvanceEffect::AdjustPairStat {
@@ -524,23 +567,20 @@ fn validate_sequence_effect(
             stat,
             ..
         } => {
-            require_known_id(
+            ids.require(
+                IdKind::Actor,
                 participant_a_id,
-                actor_ids,
                 &format!("{subject} participant_a_id '{participant_a_id}'"),
-                "actors",
             )?;
-            require_known_id(
+            ids.require(
+                IdKind::Actor,
                 participant_b_id,
-                actor_ids,
                 &format!("{subject} participant_b_id '{participant_b_id}'"),
-                "actors",
             )?;
-            require_known_id(
+            ids.require(
+                IdKind::PairStat,
                 stat,
-                pair_stat_ids,
                 &format!("{subject} stat '{stat}'"),
-                "stats.pair",
             )?;
         }
         AdvanceEffect::SetStoryVar { key, .. } if key.trim().is_empty() => {
@@ -553,16 +593,13 @@ fn validate_sequence_effect(
 
 fn validate_movement(
     movement: &MovementConfigDefinition,
-    actor_ids: &[&str],
-    room_ids: &[&str],
-    stage_ids: &[&str],
+    ids: &IdIndex,
 ) -> Result<(), Box<dyn Error>> {
     for actor_id in movement.actors.keys() {
-        require_known_id(
+        ids.require(
+            IdKind::Actor,
             actor_id,
-            actor_ids,
             &format!("movement.json actors key '{actor_id}'"),
-            "actors",
         )?;
     }
     for (actor_id, rules) in &movement.actors {
@@ -580,29 +617,26 @@ fn validate_movement(
                 );
             }
             if !rule.target_room_id.trim().is_empty() {
-                require_known_id(
+                ids.require(
+                    IdKind::Room,
                     &rule.target_room_id,
-                    room_ids,
                     &format!("{context} target_room_id '{}'", rule.target_room_id),
-                    "rooms",
                 )?;
             }
             for stage_id in &rule.any_active_stage_ids {
-                require_known_id(
+                ids.require(
+                    IdKind::Stage,
                     stage_id,
-                    stage_ids,
                     &format!("{context} any_active_stage_ids entry '{stage_id}'"),
-                    "beats.stages",
                 )?;
             }
         }
     }
     for stage_id in &movement.stage_locks {
-        require_known_id(
+        ids.require(
+            IdKind::Stage,
             stage_id,
-            stage_ids,
             &format!("movement.json stage_locks entry '{stage_id}'"),
-            "beats.stages",
         )?;
     }
     Ok(())
@@ -610,8 +644,7 @@ fn validate_movement(
 
 fn validate_beat_objectives(
     beat_objectives: &BeatObjectivesDefinition,
-    stage_ids: &[&str],
-    action_index_keys: &[&str],
+    ids: &IdIndex,
 ) -> Result<(), Box<dyn Error>> {
     for objective in &beat_objectives.objectives {
         if objective.id.trim().is_empty() {
@@ -630,14 +663,13 @@ fn validate_beat_objectives(
             .into());
         }
         for stage_id in objective_stage_ids {
-            require_known_id(
+            ids.require(
+                IdKind::Stage,
                 stage_id,
-                stage_ids,
                 &format!(
                     "beat_objectives.json objective '{}' stage id '{}'",
                     objective.id, stage_id
                 ),
-                "beats.stages",
             )?;
         }
         let mut seen_progress_keys = BTreeSet::new();
@@ -665,14 +697,13 @@ fn validate_beat_objectives(
                 )
                 .into());
             }
-            require_known_id(
+            ids.require(
+                IdKind::Action,
                 &priority.command_id,
-                action_index_keys,
                 &format!(
                     "beat_objectives.json objective '{}' prioritize",
                     objective.id
                 ),
-                "actions",
             )?;
         }
         for (index, conditional) in objective.guidance.conditional.iter().enumerate() {
@@ -685,15 +716,14 @@ fn validate_beat_objectives(
                     )
                     .into());
                 }
-                require_known_id(
+                ids.require(
+                    IdKind::Action,
                     &priority.command_id,
-                    action_index_keys,
                     &format!(
                         "beat_objectives.json objective '{}' conditional guidance #{} prioritize",
                         objective.id,
                         index + 1
                     ),
-                    "actions",
                 )?;
             }
         }
@@ -723,19 +753,18 @@ fn objective_progress_keys(
 
 fn validate_action_objective_progress(
     actions: &[ActionDefinition],
-    stage_ids: &[&str],
+    ids: &IdIndex,
     objective_progress_keys: &BTreeMap<&str, BTreeSet<&str>>,
 ) -> Result<(), Box<dyn Error>> {
     for action in actions {
         for stage_id in &action.available.available_during {
-            require_known_id(
+            ids.require(
+                IdKind::Stage,
                 stage_id,
-                stage_ids,
                 &format!(
                     "action '{}' available_during stage_id '{}'",
                     action.id, stage_id
                 ),
-                "beats.stages",
             )?;
         }
         validate_objective_progress_refs(
@@ -775,7 +804,7 @@ fn validate_conditional_guidance_progress(
     Ok(())
 }
 
-fn validate_act_cast(act_cast: &[ActCastMember], actor_ids: &[&str]) -> Result<(), Box<dyn Error>> {
+fn validate_act_cast(act_cast: &[ActCastMember], ids: &IdIndex) -> Result<(), Box<dyn Error>> {
     if act_cast.is_empty() {
         return Ok(());
     }
@@ -791,14 +820,13 @@ fn validate_act_cast(act_cast: &[ActCastMember], actor_ids: &[&str]) -> Result<(
         if member.actor_id.trim().is_empty() {
             return Err(format!("act_cast member '{}' is missing actor_id", member.id).into());
         }
-        require_known_id(
+        ids.require(
+            IdKind::Actor,
             &member.actor_id,
-            actor_ids,
             &format!(
                 "act_cast member '{}' actor_id '{}'",
                 member.id, member.actor_id
             ),
-            "actors",
         )?;
         if !seen_member_actor_ids.insert(member.actor_id.clone()) {
             return Err(format!(
@@ -842,7 +870,6 @@ pub(crate) fn validate_objective_progress_refs<'a>(
 mod tests {
     use super::*;
     use crate::content::types::ActorPromptContext;
-    use std::collections::HashMap;
 
     fn actor(id: &str, room_id: &str) -> ActorDefinition {
         ActorDefinition {
@@ -878,8 +905,8 @@ mod tests {
 
     #[test]
     fn onstage_actor_requires_an_existing_room() {
-        let room_index = HashMap::from([("lounge".to_string(), 0)]);
-        let error = validate_actors(&[actor("alex", "missing")], &room_index, &[])
+        let ids = IdIndex::new(&[], &["lounge"], &[], &[], &[], &[]);
+        let error = validate_actors(&[actor("alex", "missing")], &ids)
             .unwrap_err()
             .to_string();
         assert!(error.contains("room_id 'missing' not found"), "{error}");
@@ -887,8 +914,8 @@ mod tests {
 
     #[test]
     fn offstage_actor_skips_the_room_existence_check() {
-        let room_index = HashMap::from([("lounge".to_string(), 0)]);
-        let result = validate_actors(&[actor("handler", "")], &room_index, &[]);
+        let ids = IdIndex::new(&[], &["lounge"], &[], &[], &[], &[]);
+        let result = validate_actors(&[actor("handler", "")], &ids);
         assert!(result.is_ok(), "{result:?}");
     }
 
@@ -905,18 +932,17 @@ mod tests {
 
     #[test]
     fn private_channel_participants_must_resolve_to_actors() {
-        let error = validate_channels(
-            &[channel("comms", &["player", "nobody"])],
-            &["player", "blair"],
-        )
-        .unwrap_err()
-        .to_string();
+        let ids = IdIndex::new(&["player", "blair"], &[], &[], &[], &[], &[]);
+        let error = validate_channels(&[channel("comms", &["player", "nobody"])], &ids)
+            .unwrap_err()
+            .to_string();
         assert!(error.contains("participant 'nobody'"), "{error}");
     }
 
     #[test]
     fn private_channel_must_declare_participants() {
-        let error = validate_channels(&[channel("comms", &[])], &["player"])
+        let ids = IdIndex::new(&["player"], &[], &[], &[], &[], &[]);
+        let error = validate_channels(&[channel("comms", &[])], &ids)
             .unwrap_err()
             .to_string();
         assert!(error.contains("declares no participants"), "{error}");
@@ -924,7 +950,8 @@ mod tests {
 
     #[test]
     fn a_pack_cannot_declare_the_implicit_local_channel() {
-        let error = validate_channels(&[channel(LOCAL_CHANNEL_ID, &["player"])], &["player"])
+        let ids = IdIndex::new(&["player"], &[], &[], &[], &[], &[]);
+        let error = validate_channels(&[channel(LOCAL_CHANNEL_ID, &["player"])], &ids)
             .unwrap_err()
             .to_string();
         assert!(error.contains("implicit local speech channel"), "{error}");
@@ -932,9 +959,10 @@ mod tests {
 
     #[test]
     fn duplicate_channel_ids_are_rejected() {
+        let ids = IdIndex::new(&["player", "blair"], &[], &[], &[], &[], &[]);
         let error = validate_channels(
             &[channel("comms", &["player"]), channel("comms", &["blair"])],
-            &["player", "blair"],
+            &ids,
         )
         .unwrap_err()
         .to_string();
@@ -943,10 +971,8 @@ mod tests {
 
     #[test]
     fn well_formed_private_channel_passes() {
-        let result = validate_channels(
-            &[channel("comms", &["player", "handler"])],
-            &["player", "handler"],
-        );
+        let ids = IdIndex::new(&["player", "handler"], &[], &[], &[], &[], &[]);
+        let result = validate_channels(&[channel("comms", &["player", "handler"])], &ids);
         assert!(result.is_ok(), "{result:?}");
     }
 
@@ -1007,13 +1033,22 @@ mod tests {
             recipient_id: Some("player".to_string()),
             line: "Testing.".to_string(),
         });
+        let mut ids = IdIndex::new(
+            &["player", "handler"],
+            &["lounge"],
+            &[],
+            &[],
+            &[],
+            &[],
+        );
+        ids.index(IdKind::Sequence)
+            .extend(["opening-call".to_string()]);
         let error = validate_scripted_sequences(
             &sequences,
             Some("opening-call"),
             &[channel("handler-comms", &["player", "handler"])],
             &actors,
-            &[],
-            &[],
+            &ids,
         )
         .unwrap_err()
         .to_string();
@@ -1030,8 +1065,7 @@ mod tests {
             None,
             &[channel("handler-comms", &["handler"])],
             &actors,
-            &[],
-            &[],
+            &ids,
         )
         .unwrap_err()
         .to_string();
@@ -1050,27 +1084,29 @@ mod tests {
             stat: "confidence".to_string(),
             delta: 1,
         }];
+        let mut ids = IdIndex::new(
+            &["player", "handler"],
+            &["lounge"],
+            &[],
+            &[],
+            &["confidence"],
+            &[],
+        );
+        ids.index(IdKind::Sequence)
+            .extend(["opening-call".to_string()]);
 
         validate_scripted_sequences(
             &sequences,
             Some("opening-call"),
             &[],
             &actors,
-            &["confidence"],
-            &[],
+            &ids,
         )
         .unwrap();
 
-        let error = validate_scripted_sequences(
-            &sequences,
-            Some("missing"),
-            &[],
-            &actors,
-            &["confidence"],
-            &[],
-        )
-        .unwrap_err()
-        .to_string();
+        let error = validate_scripted_sequences(&sequences, Some("missing"), &[], &actors, &ids)
+            .unwrap_err()
+            .to_string();
         assert!(error.contains("opening_sequence_id 'missing'"), "{error}");
     }
 }

@@ -8,7 +8,8 @@ pub(crate) use definitions::{
 };
 pub(crate) use party::validate_party_policy;
 pub(crate) use references::{
-    PackContext, validate_contents, validate_feedback_channel, validate_scripted_sequences,
+    IdIndex, IdKind, PackContext, validate_contents, validate_feedback_channel,
+    validate_scripted_sequences,
 };
 
 use std::error::Error;
