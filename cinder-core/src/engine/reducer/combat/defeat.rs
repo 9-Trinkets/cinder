@@ -5,15 +5,16 @@ use crate::engine::hook_ids;
 use crate::engine::hooks::apply_narrating_world_hook_effects;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::observation::render_story_text;
-use crate::engine::state::{
-    ActorRelationship, GamePhase, WorldState, display_actor_name,
-};
+use crate::engine::reducer::summaries::summarize_actor_names;
+use crate::engine::state::{ActorRelationship, GamePhase, WorldState, display_actor_name};
 use crate::engine::turn_policies::story_var_is_truthy;
-use rand::seq::SliceRandom;
 use rand::Rng;
+use rand::seq::SliceRandom;
 use serde_json::json;
+use std::collections::BTreeMap;
 
 use super::actor_display_name;
+use crate::engine::reducer::handlers::push_message;
 
 /// Runs the shared defeat sequence for an actor whose health reached zero.
 pub(in crate::engine::reducer) fn defeat_actor(
@@ -99,19 +100,60 @@ pub(in crate::engine::reducer) fn award_defeat_xp(
             leveled.push((target, level));
         }
     }
+    let mut follower_levels = BTreeMap::<u32, Vec<String>>::new();
     for (actor_id, new_level) in leveled {
         let name = content
             .actor(&actor_id)
             .map(|actor| display_actor_name(state, actor))
             .unwrap_or_else(|| actor_id.clone());
-        if let Some(line) = content.render_message(
-            "combat.level_up",
-            &[
-                ("actor_name", name.as_str()),
-                ("level", new_level.to_string().as_str()),
-            ],
-        ) {
-            lines.narration(line);
+        if actor_id == *player_actor_id {
+            let level = new_level.to_string();
+            push_message(
+                lines,
+                content,
+                "combat.level_up",
+                &[("actor_name", name.as_str()), ("level", level.as_str())],
+            );
+        } else {
+            follower_levels.entry(new_level).or_default().push(name);
+        }
+    }
+    for (new_level, actor_names) in follower_levels {
+        let count = actor_names.len();
+        let key = if count >= 4 && content.messages.contains_key("combat.party_level_up_large") {
+            Some("combat.party_level_up_large")
+        } else if count > 1 && content.messages.contains_key("combat.party_level_up_group") {
+            Some("combat.party_level_up_group")
+        } else {
+            None
+        };
+        if let Some(key) = key {
+            let actors = summarize_actor_names(&actor_names).unwrap_or_default();
+            let count = count.to_string();
+            let level = new_level.to_string();
+            push_message(
+                lines,
+                content,
+                key,
+                &[
+                    ("actors", actors.as_str()),
+                    ("count", count.as_str()),
+                    ("level", level.as_str()),
+                ],
+            );
+        } else {
+            for actor_name in actor_names {
+                let level = new_level.to_string();
+                push_message(
+                    lines,
+                    content,
+                    "combat.level_up",
+                    &[
+                        ("actor_name", actor_name.as_str()),
+                        ("level", level.as_str()),
+                    ],
+                );
+            }
         }
     }
 }
@@ -156,8 +198,7 @@ pub(in crate::engine::reducer) fn spawn_defeat_drops(
                     continue;
                 }
                 for _ in 0..pool.rolls {
-                    let Ok(entry) =
-                        pool.entries.choose_weighted(&mut rng, |entry| entry.weight)
+                    let Ok(entry) = pool.entries.choose_weighted(&mut rng, |entry| entry.weight)
                     else {
                         continue;
                     };

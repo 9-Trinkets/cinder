@@ -1,12 +1,12 @@
-use crate::content::types::{ContentPack, PartyReactionAction, PartySupportEffect};
+use crate::content::types::ContentPack;
 use crate::engine::narrative::NarrativeLines;
-use crate::engine::party_policy::{
-    PartyReactionDecision, consume_party_reaction, resolve_party_reaction_target,
-    select_defensive_reaction, select_post_damage_reactions,
-};
-use crate::engine::reducer::combat::{defeat_actor, resisted_damage};
+use crate::engine::party_policy::{consume_party_reaction, select_defensive_reaction};
+use crate::engine::reducer::combat::resisted_damage;
 use crate::engine::reducer::command_effects::{actor_display_name, defeat_player_if_dead};
 use crate::engine::state::{ActorStance, GamePhase, WorldState};
+
+use super::combat_reactions::resolve_post_damage_reactions;
+
 fn legacy_guard_in_room(
     state: &WorldState,
     content: &ContentPack,
@@ -158,161 +158,6 @@ pub(crate) fn handle_hostile_strike(
     defeat_player_if_dead(state, content, lines);
     if state.phase == GamePhase::Active {
         resolve_post_damage_reactions(state, content, actor_id, lines);
-    }
-}
-
-fn resolve_post_damage_reactions(
-    state: &mut WorldState,
-    content: &ContentPack,
-    attacker_id: &str,
-    lines: &mut NarrativeLines,
-) {
-    for decision in select_post_damage_reactions(content, state) {
-        if state.actor_is_defeated(attacker_id, &content.settings.combat.health_stat_id) {
-            break;
-        }
-        let acted = match decision.action {
-            PartyReactionAction::Counterattack => {
-                resolve_counterattack(state, content, attacker_id, &decision, lines)
-            }
-            PartyReactionAction::Support => {
-                resolve_support(state, content, attacker_id, &decision, lines)
-            }
-            PartyReactionAction::Hold => {
-                render_hold(content, &decision, lines);
-                true
-            }
-            PartyReactionAction::Intercept => false,
-        };
-        if acted {
-            consume_party_reaction(content, state, &decision);
-        }
-    }
-}
-
-fn resolve_counterattack(
-    state: &mut WorldState,
-    content: &ContentPack,
-    attacker_id: &str,
-    decision: &PartyReactionDecision,
-    lines: &mut NarrativeLines,
-) -> bool {
-    let Some(target_id) = resolve_party_reaction_target(content, state, decision, attacker_id)
-    else {
-        return false;
-    };
-    if state.actor_is_defeated(&target_id, &content.settings.combat.health_stat_id) {
-        return false;
-    }
-    let combat = &content.settings.combat;
-    let raw_damage =
-        (state.effective_actor_stat(content, &decision.actor_id, &combat.attack_stat_id)
-            - state.effective_actor_stat(content, &target_id, &combat.defense_stat_id))
-        .max(combat.minimum_damage);
-    let attack_kind = content
-        .actor(&decision.actor_id)
-        .map(|actor| actor.attack_kind())
-        .unwrap_or("physical");
-    let damage = resisted_damage(content, &target_id, attack_kind, raw_damage);
-    let actor_name = actor_display_name(content, &decision.actor_id);
-    let target_name = actor_display_name(content, &target_id);
-    if raw_damage > 0 && damage == 0 {
-        if let Some(line) = content.render_message(
-            "combat.no_effect",
-            &[("actor", target_name.as_str()), ("kind", attack_kind)],
-        ) {
-            lines.narration(line);
-        }
-    } else {
-        state
-            .adjust_actor_stat(&target_id, &combat.health_stat_id, -damage)
-            .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
-        let remaining = state.effective_actor_stat(content, &target_id, &combat.health_stat_id);
-        if !decision.message.is_empty()
-            && let Some(line) = content.render_message(
-                &decision.message,
-                &[
-                    ("actor", actor_name.as_str()),
-                    ("target", target_name.as_str()),
-                    ("damage", damage.to_string().as_str()),
-                    ("remaining", remaining.to_string().as_str()),
-                    ("kind", attack_kind),
-                ],
-            )
-        {
-            lines.narration(line);
-        }
-        if remaining <= 0 {
-            let room_id = state.current_room_id.clone();
-            defeat_actor(state, content, &target_id, &room_id, lines);
-        }
-    }
-    true
-}
-
-fn resolve_support(
-    state: &mut WorldState,
-    content: &ContentPack,
-    attacker_id: &str,
-    decision: &PartyReactionDecision,
-    lines: &mut NarrativeLines,
-) -> bool {
-    let Some(target_id) = resolve_party_reaction_target(content, state, decision, attacker_id)
-    else {
-        return false;
-    };
-    let player_id = content.settings.combat.player_actor_id.as_str();
-    if (target_id != player_id && state.stance(&target_id) != ActorStance::Allied)
-        || (target_id != player_id
-            && !state.actor_is_in_room(content, &target_id, &state.current_room_id))
-        || state.actor_is_defeated(&target_id, &content.settings.combat.health_stat_id)
-    {
-        return false;
-    }
-    let Some(PartySupportEffect::AdjustActorStat { stat, delta }) =
-        decision.support_effect.as_ref()
-    else {
-        return false;
-    };
-    let before = state.actor_stat(&target_id, stat);
-    state
-        .adjust_actor_stat(&target_id, stat, *delta)
-        .unwrap_or_else(|error| eprintln!("[cinder] party support stat error: {error}"));
-    let remaining = state.actor_stat(&target_id, stat);
-    if !decision.message.is_empty() {
-        let actor_name = actor_display_name(content, &decision.actor_id);
-        let target_name = actor_display_name(content, &target_id);
-        if let Some(line) = content.render_message(
-            &decision.message,
-            &[
-                ("actor", actor_name.as_str()),
-                ("target", target_name.as_str()),
-                (
-                    "amount",
-                    remaining.saturating_sub(before).abs().to_string().as_str(),
-                ),
-                ("remaining", remaining.to_string().as_str()),
-                ("stat", stat.as_str()),
-            ],
-        ) {
-            lines.narration(line);
-        }
-    }
-    true
-}
-
-fn render_hold(
-    content: &ContentPack,
-    decision: &PartyReactionDecision,
-    lines: &mut NarrativeLines,
-) {
-    if decision.message.is_empty() {
-        return;
-    }
-    let actor_name = actor_display_name(content, &decision.actor_id);
-    if let Some(line) = content.render_message(&decision.message, &[("actor", actor_name.as_str())])
-    {
-        lines.narration(line);
     }
 }
 

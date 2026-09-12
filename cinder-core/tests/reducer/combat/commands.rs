@@ -1,6 +1,8 @@
 use super::super::common::*;
 use super::{attack_action, attack_input, transcript};
-use cinder_core::content::types::{CombatSettingsDefinition, DropSpec, ItemDefinition, LevelDefinition};
+use cinder_core::content::types::{
+    CombatSettingsDefinition, DropSpec, ItemDefinition, LevelDefinition,
+};
 use cinder_core::engine::state::{ActorStance, WorldState};
 use std::collections::BTreeMap;
 
@@ -128,6 +130,67 @@ fn defeating_an_actor_awards_full_xp_to_every_party_member_with_own_curve() {
         alex_stamina,
         blair_stamina + 5,
         "Alex should be +5 stamina; Alex={alex_stamina}, Blair={blair_stamina}"
+    );
+}
+
+#[test]
+fn simultaneous_follower_level_ups_are_grouped() {
+    let mut pack = reducer_test_pack();
+    pack.settings.combat = CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_ID.to_string(),
+        health_stat_id: "stamina".to_string(),
+        attack_stat_id: "confidence".to_string(),
+        defense_stat_id: "hunger".to_string(),
+        ..CombatSettingsDefinition::default()
+    };
+    pack.levels.default = vec![LevelDefinition {
+        exp_required: 10,
+        ..Default::default()
+    }];
+    pack.messages.insert(
+        "combat.party_level_up_group".to_string(),
+        cinder_core::content::types::PackMessage::Narration(
+            "{actors} reach Level {level}.".to_string(),
+        ),
+    );
+    attack_action(&mut pack);
+    let mut goblin = test_actor("goblin", "goblin", LOUNGE_ID);
+    goblin.attackable = true;
+    goblin.initial_stats = BTreeMap::from([("stamina".to_string(), 1)]);
+    goblin.xp_drop = 10;
+    pack.actors.push(goblin);
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    for actor_id in [ACTOR_B_ID, ACTOR_C_ID] {
+        state.set_relationship(
+            actor_id,
+            cinder_core::engine::state::ActorRelationship {
+                stance: ActorStance::Allied,
+                follows_player: true,
+            },
+        );
+    }
+
+    let lines = drive_actor_command(
+        &mut state,
+        &pack,
+        "attack",
+        attack_input(Some("goblin"), Some("goblin")),
+    )
+    .lines;
+
+    assert_eq!(state.actor_level(ACTOR_A_ID), 2);
+    assert_eq!(state.actor_level(ACTOR_B_ID), 2);
+    assert_eq!(state.actor_level(ACTOR_C_ID), 2);
+    assert_eq!(
+        lines
+            .iter()
+            .filter(|line| line.text.contains("reach Level"))
+            .map(|line| line.text.as_str())
+            .collect::<Vec<_>>(),
+        vec!["Blair and Casey reach Level 2."]
     );
 }
 

@@ -11,6 +11,7 @@ mod movement;
 mod observation;
 mod party_defense;
 mod party_orders;
+mod party_reaction_narration;
 mod party_reactions;
 mod sigils;
 mod social;

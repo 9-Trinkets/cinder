@@ -2,7 +2,7 @@ use super::common::*;
 use cinder_core::content::types::{
     ActionDefinition, AllyAttackDefinition, AllyAttackMode, AllyAttackParticipants,
     CombatSettingsDefinition, CommandEffect, CommandTargetMode, ContentPack, LevelDefinition,
-    XpDistributionDefinition, XpDistributionMode, XpRecipientMode,
+    PackMessage, XpDistributionDefinition, XpDistributionMode, XpRecipientMode,
 };
 use cinder_core::engine::state::{ActorRelationship, ActorStance, WorldState};
 use std::collections::BTreeMap;
@@ -143,4 +143,71 @@ fn ally_attack_policy_can_filter_scale_and_cap_contributions() {
     attack_goblin(&mut state, &pack);
 
     assert_eq!(state.actor_stat("goblin", "stamina"), 7);
+}
+
+#[test]
+fn multiple_ally_contributions_are_narrated_once() {
+    let mut pack = policy_test_pack();
+    pack.settings.combat.ally_attack = AllyAttackDefinition {
+        participants: AllyAttackParticipants::FollowersOnly,
+        mode: AllyAttackMode::AttackStat,
+        contribution_percent: 100,
+        maximum_per_ally: None,
+    };
+    pack.messages.insert(
+        "combat.ally_joins_attack".to_string(),
+        PackMessage::Narration("{actor} adds {damage}.".to_string()),
+    );
+    pack.messages.insert(
+        "combat.allies_join_attack".to_string(),
+        PackMessage::Narration("{actors} add {damage} together.".to_string()),
+    );
+    add_goblin(&mut pack, 30, 0);
+
+    let mut state = WorldState::new(&pack);
+    state
+        .actor_room_overrides
+        .insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
+    state
+        .actor_stats
+        .entry(ACTOR_B_ID.to_string())
+        .or_default()
+        .insert("confidence".to_string(), 3);
+    state
+        .actor_stats
+        .entry(ACTOR_C_ID.to_string())
+        .or_default()
+        .insert("confidence".to_string(), 4);
+    add_follower(&mut state, ACTOR_B_ID);
+    add_follower(&mut state, ACTOR_C_ID);
+
+    let output = drive_actor_command(
+        &mut state,
+        &pack,
+        "attack",
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: LOUNGE_ID,
+            target_actor_id: Some("goblin"),
+            target_actor_name: Some("goblin"),
+            ..ActorCommandInput::default()
+        },
+    );
+
+    assert_eq!(
+        output
+            .lines
+            .iter()
+            .filter(|line| line.text.contains("together"))
+            .map(|line| line.text.as_str())
+            .collect::<Vec<_>>(),
+        vec!["Blair and Casey add 7 together."]
+    );
+    assert!(
+        output
+            .lines
+            .iter()
+            .all(|line| !line.text.contains("Blair adds") && !line.text.contains("Casey adds"))
+    );
 }

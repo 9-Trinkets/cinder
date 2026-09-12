@@ -1,6 +1,8 @@
 {
     "combat.attack_hit": "You strike the {actor}. It takes {damage} damage. ({remaining} HP remaining)",
     "combat.ally_joins_attack": "The {actor} strikes alongside you for {damage} damage!",
+    "combat.allies_join_attack": "The {actors} add {damage} damage to your strike.",
+    "combat.party_joins_attack": "Your party adds {damage} damage to your strike.",
     "combat.cannot_attack_ally": "The {actor} fights at your side; you cannot raise a hand against it.",
     "combat.actor_defeated": "The {actor} crumbles to dust.",
     "combat.defeat_drop": "From the settling dust, something remains: {items}.",
@@ -11,7 +13,17 @@
     "combat.guard_intercepts": "The {guard} steps across the {actor}'s strike and takes {damage} damage.",
     "combat.guard_falls": "The {guard} breaks apart where it stands.",
     "combat.party_counterattack": "The {actor} answers the strike, hitting the {target} for {damage} damage. ({remaining} HP remaining)",
+    "combat.party_counterattack_group": "The {actors} answer the strike together, dealing {damage} damage to the {target}. ({remaining} HP remaining)",
+    "combat.party_counterattack_large": "Your party answers as one, dealing {damage} damage to the {target}. ({remaining} HP remaining)",
+    "combat.party_counterattack_no_effect_group": "The {actors} answer, but their {kind} attacks have no effect on the {target}.",
+    "combat.party_counterattack_no_effect_large": "Your party answers, but its {kind} attacks have no effect on the {target}.",
+    "combat.party_support_group": "The {actors} support {target}, restoring {amount} {stat}. ({remaining} remaining)",
+    "combat.party_support_large": "Your party supports {target}, restoring {amount} {stat}. ({remaining} remaining)",
     "combat.party_holds": "The {actor} holds back, too damaged to risk another move.",
+    "combat.party_holds_group": "The {actors} hold back, too damaged to risk another move.",
+    "combat.party_holds_large": "{count} wounded allies hold back.",
+    "combat.party_level_up_group": "The {actors} grow stronger. Level {level}.",
+    "combat.party_level_up_large": "{count} allies grow stronger. Level {level}.",
     "party.order_guard_assigned": {
         "voice": "system",
         "text": "ORDER UPDATED: {actor} assigned to GUARD."

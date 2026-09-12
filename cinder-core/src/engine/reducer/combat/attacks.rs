@@ -2,12 +2,12 @@ use crate::content::types::{AllyAttackMode, AllyAttackParticipants, ContentPack}
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::narrative::NarrativeLines;
+use crate::engine::reducer::handlers::push_message;
+use crate::engine::reducer::summaries::summarize_actor_names;
 use crate::engine::state::{ActorStance, WorldState};
 use serde_json::json;
 
-use super::{
-    actor_display_name, adjust_actor_stat, defeat_actor, resisted_damage, VEC_EMPTY_TAGS,
-};
+use super::{VEC_EMPTY_TAGS, actor_display_name, adjust_actor_stat, defeat_actor, resisted_damage};
 
 pub(in crate::engine::reducer) fn apply_attack_target(
     state: &mut WorldState,
@@ -86,22 +86,61 @@ pub(in crate::engine::reducer) fn apply_attack_target(
         ) {
             lines.narration(line);
         }
-        for ally_id in &allied_participants {
-            let ally_damage = ally_attack_contribution(state, content, ally_id);
-            let ally_name = actor_display_name(content, ally_id);
-            if let Some(line) = content.render_message(
-                "combat.ally_joins_attack",
-                &[
-                    ("actor", ally_name.as_str()),
-                    ("damage", ally_damage.to_string().as_str()),
-                ],
-            ) {
-                lines.narration(line);
-            }
-        }
+        render_ally_attack_contribution(state, content, &allied_participants, ally_damage, lines);
         if remaining <= 0 {
             defeat_actor(state, content, target_actor_id, room_id, lines);
             return;
+        }
+
+        fn render_ally_attack_contribution(
+            state: &WorldState,
+            content: &ContentPack,
+            allied_participants: &[String],
+            total_damage: i32,
+            lines: &mut NarrativeLines,
+        ) {
+            let count = allied_participants.len();
+            if count == 0 {
+                return;
+            }
+            let actor_names = allied_participants
+                .iter()
+                .map(|actor_id| actor_display_name(content, actor_id))
+                .collect::<Vec<_>>();
+            let group_key =
+                if count >= 4 && content.messages.contains_key("combat.party_joins_attack") {
+                    Some("combat.party_joins_attack")
+                } else if count > 1 && content.messages.contains_key("combat.allies_join_attack") {
+                    Some("combat.allies_join_attack")
+                } else {
+                    None
+                };
+            if let Some(key) = group_key
+                && let Some(actors) = summarize_actor_names(&actor_names)
+            {
+                let count = count.to_string();
+                let damage = total_damage.to_string();
+                push_message(
+                    lines,
+                    content,
+                    key,
+                    &[
+                        ("actors", actors.as_str()),
+                        ("count", count.as_str()),
+                        ("damage", damage.as_str()),
+                    ],
+                );
+                return;
+            }
+            for (ally_id, actor_name) in allied_participants.iter().zip(actor_names) {
+                let damage = ally_attack_contribution(state, content, ally_id).to_string();
+                push_message(
+                    lines,
+                    content,
+                    "combat.ally_joins_attack",
+                    &[("actor", actor_name.as_str()), ("damage", damage.as_str())],
+                );
+            }
         }
     }
     let mut relationship = state.relationship(target_actor_id);

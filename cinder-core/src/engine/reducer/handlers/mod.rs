@@ -4,6 +4,7 @@
 //! function here. Handlers are split by responsibility so no single file
 //! becomes a dumping ground:
 //! * `combat` — hostile strikes and stat damage.
+//! * `combat_reactions` — post-damage party reactions and narration.
 //! * `speech` — dialogue memory and speech-triggered objectives.
 //! * `observation` — inspecting rooms, features, and actors.
 //! * `movement` — placement, relocation, and follower syncing.
@@ -14,6 +15,7 @@
 //! * `directives` — resolving externally-directed commands and content events.
 
 mod combat;
+mod combat_reactions;
 mod directives;
 mod feedback;
 mod items;
