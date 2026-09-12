@@ -1,3 +1,5 @@
+mod equipment;
+
 use cinder_core::content::types::{
     ActionDefinition, CommandEffect, ContentPack, PanelConfig, PanelDataSource, PanelSelectAction,
 };
@@ -10,6 +12,7 @@ use super::{
     ActionBarAction, ActiveMenuData, LookOptionData, MenuOptionData, OverflowAction,
     PanelConfigData, PanelOptionData, droppable_inventory_items,
 };
+pub(super) use equipment::build_equipment_panel_options;
 
 /// Builds the action bar, and also computes the option rows for the generic
 /// `take <item>` picker that is only surfaced when a loose item lies in the
@@ -183,6 +186,7 @@ pub(super) fn build_overflow_actions(
     state: &WorldState,
     bar_ids: &[&str],
     drop_panel_options: &[PanelOptionData],
+    equipment_panel_options: &[PanelOptionData],
 ) -> Result<Vec<OverflowAction>, String> {
     let has_talk = bar_ids.contains(&"speak") || bar_ids.contains(&"talk");
     let modal_covered: Vec<&str> = vec!["inspect_feature", "inspect_actor"];
@@ -242,6 +246,21 @@ pub(super) fn build_overflow_actions(
             }),
         });
     }
+    if !equipment_panel_options.is_empty() {
+        overflow_actions.push(OverflowAction {
+            id: "equipment".to_string(),
+            label: "Equipment".to_string(),
+            group: String::new(),
+            usage: "equip <item> / unequip <item>".to_string(),
+            panel: "equipment".to_string(),
+            panel_config: Some(PanelConfigData {
+                title: "Equipment".to_string(),
+                prompt: "Choose an item to equip or stow.".to_string(),
+                data_source: PanelDataSource::InventoryItems,
+                on_select: PanelSelectAction::ExecuteCommand,
+            }),
+        });
+    }
 
     Ok(overflow_actions)
 }
@@ -252,6 +271,7 @@ pub(super) fn build_panel_options(
     state: &WorldState,
     take_panel_options: Vec<PanelOptionData>,
     drop_panel_options: Vec<PanelOptionData>,
+    equipment_panel_options: Vec<PanelOptionData>,
 ) -> Result<BTreeMap<String, Vec<PanelOptionData>>, String> {
     let mut panel_options: BTreeMap<String, Vec<PanelOptionData>> = BTreeMap::new();
     for action in &content.actions {
@@ -358,6 +378,7 @@ pub(super) fn build_panel_options(
     }
     panel_options.insert("take".to_string(), take_panel_options);
     panel_options.insert("drop".to_string(), drop_panel_options);
+    panel_options.insert("equipment".to_string(), equipment_panel_options);
     Ok(panel_options)
 }
 

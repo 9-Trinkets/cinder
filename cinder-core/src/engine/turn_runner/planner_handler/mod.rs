@@ -9,7 +9,7 @@ mod party;
 #[cfg(test)]
 mod planner_tests;
 
-use self::items::{plan_drop_command, plan_take_command};
+use self::items::{plan_drop_command, plan_equip_command, plan_take_command, plan_unequip_command};
 use self::menus::{plan_unknown_command, try_resolve_menu_choice};
 use self::party::plan_party_order;
 use super::planning::{PlanningContext, plan_authored_command};
@@ -61,6 +61,12 @@ pub(super) fn build_planned_turn(
             ),
             PlayerCommand::Drop { target } => {
                 plan_drop_command(content, planner_state, &target, &mut planned)
+            }
+            PlayerCommand::Equip { target } => {
+                plan_equip_command(content, planner_state, &target, &mut planned)
+            }
+            PlayerCommand::Unequip { target } => {
+                plan_unequip_command(content, planner_state, &target, &mut planned)
             }
             PlayerCommand::PartyOrder {
                 actor_reference,

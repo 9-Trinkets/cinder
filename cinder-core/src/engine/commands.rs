@@ -1,3 +1,5 @@
+mod items;
+
 use crate::content::types::{ActionDefinition, ActorDefinition, ContentPack, PartyOrderKind};
 use crate::engine::state::{WorldState, current_cast_member_actor_id, display_actor_name};
 use serde::{Deserialize, Serialize};
@@ -39,6 +41,14 @@ pub(crate) enum PlayerCommand {
     /// the player's inventory by the planner, independent of any per-item
     /// content action.
     Drop {
+        target: String,
+    },
+    /// A generic `equip <item>` command resolved against inventory.
+    Equip {
+        target: String,
+    },
+    /// A generic `unequip <item>` command resolved against equipped items.
+    Unequip {
         target: String,
     },
     PartyOrder {
@@ -85,15 +95,10 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
         }
     }
 
-    // Generic take command. Checked after content actions so a pack that
-    // authors its own `pick up X` action keeps precedence.
-    if let Some(target) = take_phrase_target(trimmed) {
-        return PlayerCommand::Take { target };
-    }
-
-    // Generic drop command, same precedence rules as take.
-    if let Some(target) = drop_phrase_target(trimmed) {
-        return PlayerCommand::Drop { target };
+    // Generic item commands are checked after authored actions so packs can
+    // retain custom phrases while using the shared engine flow by default.
+    if let Some(command) = items::parse_item_command(trimmed) {
+        return command;
     }
     if let Some((actor_reference, order)) = party_order_phrase(trimmed) {
         return PlayerCommand::PartyOrder {
@@ -120,35 +125,6 @@ fn party_order_phrase(trimmed: &str) -> Option<(String, PartyOrderKind)> {
     }
     let actor_reference = actor_reference.trim();
     (!actor_reference.is_empty()).then(|| (actor_reference.to_string(), order))
-}
-
-/// Extracts the item target from a generic take phrase (`take X`, `pick up X`,
-/// `get X`, `pickup X`). Returns `None` for a bare/unparseable take.
-fn take_phrase_target(trimmed: &str) -> Option<String> {
-    let lower = trimmed.to_ascii_lowercase();
-    for prefix in ["take ", "pick up ", "get ", "pickup "] {
-        if lower.starts_with(prefix) {
-            let target = trimmed[prefix.len()..].trim();
-            if !target.is_empty() {
-                return Some(target.to_string());
-            }
-        }
-    }
-    None
-}
-
-/// Extracts the item target from a generic drop phrase (`drop X`). Returns
-/// `None` for a bare/unparseable drop.
-fn drop_phrase_target(trimmed: &str) -> Option<String> {
-    let lower = trimmed.to_ascii_lowercase();
-    let prefix = "drop ";
-    if lower.starts_with(prefix) {
-        let target = trimmed[prefix.len()..].trim();
-        if !target.is_empty() {
-            return Some(target.to_string());
-        }
-    }
-    None
 }
 
 pub(crate) fn player_command_help_text(content: &ContentPack) -> String {
@@ -440,32 +416,6 @@ mod tests {
     }
 
     #[test]
-    fn take_phrases_resolve_to_take_command() {
-        assert!(matches!(parse("take ring"), PlayerCommand::Take { target } if target == "ring"));
-        assert!(
-            matches!(parse("pick up scroll"), PlayerCommand::Take { target } if target == "scroll")
-        );
-        assert!(
-            matches!(parse("get coffee"), PlayerCommand::Take { target } if target == "coffee")
-        );
-        assert!(
-            matches!(parse("pickup badge"), PlayerCommand::Take { target } if target == "badge")
-        );
-        assert!(matches!(
-            parse("take the cracked scroll"),
-            PlayerCommand::Take { target } if target == "the cracked scroll"
-        ));
-    }
-
-    #[test]
-    fn bare_or_unmatched_take_is_not_user_visible() {
-        assert!(matches!(parse("take"), PlayerCommand::Unknown));
-        assert!(
-            matches!(parse("take yourself") , PlayerCommand::Take { target } if target == "yourself")
-        );
-    }
-
-    #[test]
     fn party_order_phrases_resolve_to_single_member_orders() {
         assert!(matches!(
             parse("order blair guard"),
@@ -491,17 +441,4 @@ mod tests {
         ));
     }
 
-    #[test]
-    fn drop_phrases_resolve_to_drop_command() {
-        assert!(matches!(parse("drop ring"), PlayerCommand::Drop { target } if target == "ring"));
-        assert!(matches!(
-            parse("drop the cracked scroll"),
-            PlayerCommand::Drop { target } if target == "the cracked scroll"
-        ));
-    }
-
-    #[test]
-    fn bare_drop_is_unknown() {
-        assert!(matches!(parse("drop"), PlayerCommand::Unknown));
-    }
 }

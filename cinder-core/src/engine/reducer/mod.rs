@@ -244,6 +244,12 @@ pub fn apply_events(
             WorldEvent::PlayerDroppedItem { item_id } => {
                 handle_player_dropped_item(state, content, item_id, &mut lines);
             }
+            WorldEvent::PlayerEquippedItem { item_id } => {
+                equipment::apply_equip(state, content, item_id, &mut lines);
+            }
+            WorldEvent::PlayerUnequippedItem { item_id } => {
+                equipment::apply_unequip(state, content, item_id, &mut lines);
+            }
             WorldEvent::ItemAcquired { item_id, storage } => {
                 handle_item_acquired(state, content, item_id, *storage, &mut lines);
             }

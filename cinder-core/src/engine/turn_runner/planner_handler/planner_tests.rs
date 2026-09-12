@@ -1,5 +1,7 @@
 use super::build_planned_turn;
-use crate::content::types::{ContentPack, OpeningMenuDefinition, PartyOrderKind};
+use crate::content::types::{
+    ContentPack, ItemDefinition, ItemKind, OpeningMenuDefinition, PackMessage, PartyOrderKind,
+};
 use crate::engine::commands::PlayerCommand;
 use crate::engine::events::WorldEvent;
 use crate::engine::state::{ActorStance, WorldSnapshot, WorldState};
@@ -40,6 +42,30 @@ fn plan_order(
                     actor_reference: actor_reference.to_string(),
                     order,
                 },
+            },
+            world: WorldSnapshot {
+                turn_number: state.turn_number,
+                current_room_id: state.current_room_id.clone(),
+            },
+        },
+        state,
+        state.turn_number + 1,
+        false,
+    )
+}
+
+fn plan_command(
+    content: &ContentPack,
+    state: &WorldState,
+    raw_input: &str,
+    command: PlayerCommand,
+) -> (PlannedTurn, bool) {
+    build_planned_turn(
+        content,
+        AggregatedTurn {
+            command: CommandSignal {
+                raw_input: raw_input.to_string(),
+                command,
             },
             world: WorldSnapshot {
                 turn_number: state.turn_number,
@@ -156,4 +182,75 @@ fn party_order_rejects_ambiguous_member_names() {
             .iter()
             .any(|event| matches!(event, WorldEvent::ActionRejected { .. }))
     );
+}
+
+#[test]
+fn equipment_commands_resolve_stable_item_ids_and_advance_time() {
+    let mut content = minimal_test_pack();
+    content
+        .settings
+        .equipment_slots
+        .insert("weapon".to_string());
+    content.items.push(ItemDefinition {
+        id: "iron-chisel".to_string(),
+        label: "iron chisel".to_string(),
+        kind: ItemKind::Weapon,
+        equip_slots: vec!["weapon".to_string()],
+        ..ItemDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut content);
+    let mut state = WorldState::new(&content);
+    state.add_item("iron-chisel");
+
+    let (planned, advances_time) = plan_command(
+        &content,
+        &state,
+        "equip chisel",
+        PlayerCommand::Equip {
+            target: "chisel".to_string(),
+        },
+    );
+
+    assert!(advances_time);
+    assert!(planned.events.iter().any(|event| matches!(
+        event,
+        WorldEvent::PlayerEquippedItem { item_id } if item_id == "iron-chisel"
+    )));
+}
+
+#[test]
+fn equipment_commands_reject_items_outside_the_valid_source() {
+    let mut content = minimal_test_pack();
+    content
+        .settings
+        .equipment_slots
+        .insert("weapon".to_string());
+    content.messages.insert(
+        "equipment.item_not_held".to_string(),
+        PackMessage::Narration("Not held: {item}.".to_string()),
+    );
+    content.items.push(ItemDefinition {
+        id: "iron-chisel".to_string(),
+        label: "iron chisel".to_string(),
+        kind: ItemKind::Weapon,
+        equip_slots: vec!["weapon".to_string()],
+        ..ItemDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut content);
+    let state = WorldState::new(&content);
+
+    let (planned, advances_time) = plan_command(
+        &content,
+        &state,
+        "equip iron chisel",
+        PlayerCommand::Equip {
+            target: "iron-chisel".to_string(),
+        },
+    );
+
+    assert!(!advances_time);
+    assert!(planned.events.iter().any(|event| matches!(
+        event,
+        WorldEvent::ActionRejected { message } if message == "Not held: iron chisel."
+    )));
 }

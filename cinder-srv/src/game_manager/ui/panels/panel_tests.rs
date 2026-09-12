@@ -98,3 +98,59 @@ fn trace_panel_keeps_already_traced_unlocked_marks_visible() {
     assert_eq!(drain.subtitle.as_deref(), Some("Already traced here"));
     assert!(drain.command.is_none());
 }
+
+#[test]
+fn equipment_panel_lists_each_equipped_item_once_and_held_gear_separately() {
+    let mut content = minimal_test_pack();
+    content.settings.equipment_slots = ["weapon".to_string(), "off-hand".to_string()]
+        .into_iter()
+        .collect();
+    content.items.extend([
+        ItemDefinition {
+            id: "greatsword".to_string(),
+            label: "greatsword".to_string(),
+            equip_slots: vec!["weapon".to_string(), "off-hand".to_string()],
+            ..ItemDefinition::default()
+        },
+        ItemDefinition {
+            id: "dagger".to_string(),
+            label: "dagger".to_string(),
+            equip_slots: vec!["weapon".to_string()],
+            ..ItemDefinition::default()
+        },
+    ]);
+    let mut state = WorldState::new(&content);
+    state
+        .equipment
+        .insert("weapon".to_string(), "greatsword".to_string());
+    state
+        .equipment
+        .insert("off-hand".to_string(), "greatsword".to_string());
+    state.add_item("greatsword");
+    state.add_item("dagger");
+
+    let options = build_equipment_panel_options(&content, &state);
+
+    assert_eq!(options.len(), 2);
+    assert_eq!(options[0].id, "unequip:greatsword");
+    assert_eq!(options[0].command.as_deref(), Some("unequip greatsword"));
+    assert_eq!(options[1].id, "equip:dagger");
+    assert_eq!(options[1].command.as_deref(), Some("equip dagger"));
+    assert!(
+        options[1]
+            .subtitle
+            .as_deref()
+            .is_some_and(|subtitle| subtitle.contains("replaces greatsword"))
+    );
+
+    let runtime = CinderRuntime::new(content.clone(), false).unwrap();
+    let overflow =
+        build_overflow_actions(&runtime, &content, &state, &[], &[], &options).unwrap();
+    assert_eq!(
+        overflow
+            .iter()
+            .filter(|action| action.id == "equipment")
+            .count(),
+        1
+    );
+}

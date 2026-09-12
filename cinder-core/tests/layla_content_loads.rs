@@ -3,13 +3,21 @@
 //! and action hooks must keep resolving against the engine.
 
 use cinder_core::content::loader::load_named_pack;
-use cinder_core::content::types::DropSpec;
+use cinder_core::content::types::{CommandEffect, DropSpec};
 
 #[test]
 fn layla_pack_loads_and_validates() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     assert!(!pack.actors.is_empty());
     assert!(!pack.actions.is_empty());
+    assert!(pack.actions.iter().all(|action| {
+        !action.effects.iter().any(|effect| {
+            matches!(
+                effect,
+                CommandEffect::EquipItem | CommandEffect::UnequipItem
+            )
+        })
+    }));
 }
 
 #[test]

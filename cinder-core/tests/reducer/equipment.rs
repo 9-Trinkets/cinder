@@ -290,6 +290,38 @@ fn equip_and_unequip_change_effective_stats_and_inventory() {
 }
 
 #[test]
+fn generic_equipment_events_use_item_flavor_and_preserve_mechanics() {
+    let mut pack = equipment_test_pack();
+    pack.messages.insert(
+        "equipment.iron-chisel.equipped".to_string(),
+        PackMessage::Narration("{actor_name} readies the iron chisel.".to_string()),
+    );
+    let mut state = WorldState::new(&pack);
+    state.add_item("iron-chisel");
+
+    let output = cinder_core::engine::reducer::apply_events(
+        &mut state,
+        &pack,
+        &[cinder_core::engine::events::TimestampedWorldEvent::now(
+            cinder_core::engine::events::WorldEvent::PlayerEquippedItem {
+                item_id: "iron-chisel".to_string(),
+            },
+        )],
+    );
+
+    assert_eq!(state.equipped_item("weapon"), Some("iron-chisel"));
+    assert!(!state.has_item("iron-chisel"));
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|line| line.text == "Alex readies the iron chisel."),
+        "got: {:?}",
+        output.lines
+    );
+}
+
+#[test]
 fn equipping_a_second_weapon_replaces_the_first() {
     let mut pack = equipment_test_pack();
     pack.actions.push(ActionDefinition {

@@ -132,6 +132,12 @@ pub enum WorldEvent {
     PlayerDroppedItem {
         item_id: String,
     },
+    PlayerEquippedItem {
+        item_id: String,
+    },
+    PlayerUnequippedItem {
+        item_id: String,
+    },
     ItemAcquired {
         item_id: String,
         storage: ItemStorageTarget,

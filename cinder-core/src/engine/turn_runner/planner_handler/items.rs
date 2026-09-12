@@ -1,7 +1,7 @@
-use crate::engine::turn_runner::types::PlannedTurn;
 use crate::content::types::ContentPack;
 use crate::engine::events::WorldEvent;
 use crate::engine::state::WorldState;
+use crate::engine::turn_runner::types::PlannedTurn;
 
 /// Plans a generic `take <item>` command. Resolves the bare target against
 /// loose items lying in the current room (matching by id or label) and moves
@@ -89,6 +89,7 @@ pub(super) fn plan_drop_command(
         });
         return false;
     }
+
     let target_lower = trimmed.to_ascii_lowercase();
     let item_matches = |(item_id, label): (&str, &str)| {
         item_id.eq_ignore_ascii_case(&target_lower) || label.eq_ignore_ascii_case(&target_lower)
@@ -137,4 +138,138 @@ pub(super) fn plan_drop_command(
             false
         }
     }
+}
+
+pub(super) fn plan_equip_command(
+    content: &ContentPack,
+    planner_state: &WorldState,
+    target: &str,
+    planned: &mut PlannedTurn,
+) -> bool {
+    let target = target.trim();
+    let candidates = matching_items(content, target);
+    let held = candidates
+        .iter()
+        .copied()
+        .filter(|item| planner_state.has_item(&item.id))
+        .collect::<Vec<_>>();
+    if held.len() > 1 {
+        reject_equipment_command(content, planned, "equipment.ambiguous_item", target);
+        return false;
+    }
+    if let Some(item) = held.first().copied() {
+        if !item.is_equippable() {
+            reject_equipment_command(content, planned, "equipment.not_equippable", &item.label);
+            return false;
+        }
+        planned.events.push(WorldEvent::PlayerEquippedItem {
+            item_id: item.id.clone(),
+        });
+        return true;
+    }
+    if candidates
+        .iter()
+        .any(|item| planner_state.item_is_equipped(item))
+    {
+        let label = candidates
+            .iter()
+            .find(|item| planner_state.item_is_equipped(item))
+            .map(|item| item.label.as_str())
+            .unwrap_or(target);
+        reject_equipment_command(content, planned, "equipment.already_equipped", label);
+        return false;
+    }
+    let Some(item) = candidates.first() else {
+        reject_equipment_command(content, planned, "equipment.item_not_held", target);
+        return false;
+    };
+    if !item.is_equippable() {
+        reject_equipment_command(content, planned, "equipment.not_equippable", &item.label);
+        return false;
+    }
+    reject_equipment_command(content, planned, "equipment.item_not_held", &item.label);
+    false
+}
+
+pub(super) fn plan_unequip_command(
+    content: &ContentPack,
+    planner_state: &WorldState,
+    target: &str,
+    planned: &mut PlannedTurn,
+) -> bool {
+    let target = target.trim();
+    let equipped_ids = planner_state
+        .equipment
+        .values()
+        .map(String::as_str)
+        .collect::<std::collections::BTreeSet<_>>();
+    let matched = matching_items(content, target)
+        .into_iter()
+        .filter(|item| equipped_ids.contains(item.id.as_str()))
+        .collect::<Vec<_>>();
+    if matched.len() > 1 {
+        reject_equipment_command(content, planned, "equipment.ambiguous_item", target);
+        return false;
+    }
+    let Some(item) = matched.first() else {
+        reject_equipment_command(content, planned, "equipment.not_equipped", target);
+        return false;
+    };
+    planned.events.push(WorldEvent::PlayerUnequippedItem {
+        item_id: item.id.clone(),
+    });
+    true
+}
+
+fn matching_items<'a>(
+    content: &'a ContentPack,
+    target: &str,
+) -> Vec<&'a crate::content::types::ItemDefinition> {
+    let exact = content
+        .items
+        .iter()
+        .filter(|item| {
+            item.id.eq_ignore_ascii_case(target) || item.label.eq_ignore_ascii_case(target)
+        })
+        .collect::<Vec<_>>();
+    if !exact.is_empty() {
+        return exact;
+    }
+    let target_tokens = reference_tokens(target);
+    if target_tokens.is_empty() {
+        return Vec::new();
+    }
+    content
+        .items
+        .iter()
+        .filter(|item| {
+            let mut item_tokens = reference_tokens(&item.id);
+            item_tokens.extend(reference_tokens(&item.label));
+            target_tokens
+                .iter()
+                .all(|target_token| item_tokens.contains(target_token))
+        })
+        .collect()
+}
+
+fn reference_tokens(reference: &str) -> std::collections::BTreeSet<String> {
+    reference
+        .split(|character: char| !character.is_ascii_alphanumeric())
+        .filter(|token| !token.is_empty())
+        .map(str::to_ascii_lowercase)
+        .filter(|token| !matches!(token.as_str(), "a" | "an" | "the"))
+        .collect()
+}
+
+fn reject_equipment_command(
+    content: &ContentPack,
+    planned: &mut PlannedTurn,
+    message_key: &str,
+    item_label: &str,
+) {
+    planned.events.push(WorldEvent::ActionRejected {
+        message: content
+            .render_message(message_key, &[("item", item_label)])
+            .unwrap_or_default(),
+    });
 }
