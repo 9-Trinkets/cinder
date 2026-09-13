@@ -214,69 +214,13 @@ of her own arc should be felt by the endgame.
   is present. It should stay off-screen and impersonal — a system, not a villain
   with a face.
 
-## Tone / Voice Rules
+## Voice, Narration & Writing Guide
 
-- Narrate with restraint. The prose is precise, architectural, and quiet —
-  never florid.
-- Enemies are described in material terms (granite, marble, pale as bone), not
-  moral terms.
-- Layla's internal life is shown through *what she understands*, rarely through
-  what she feels. The exception is the recurring pull of half-remembered things
-  (the voice, the stone, the board) — the old AI surfacing through the new
-  persona.
-- Sigil/key-item lore is always framed as *knowledge returning* — never as
-  arbitrary game unlocks. (Its secondary read as dungeon-master training should
-  remain a subtext, not a lecture.)
+All guidelines for prose style, the 3-tier voice hierarchy (Sleek HUD vs. Handler Comms vs. Sensory Narration), second-person perspective, and Layla's characterization are documented in the dedicated guide:
 
-## Writing Guide
+👉 **[`docs/layla/narration_guide.md`](file:///Users/li-hsuanlung/Projects/cinder/docs/layla/narration_guide.md)**
 
-### Prose level
-- Keep the sentence and vocabulary **simple and straightforward** — at the
-  level of a young adult novel. Short, clear sentences. No purple prose, no
-  Latinate wall-of-words.
-- Write with **vivid imagery, structural clarity, and spatial logic** to
-  replace the missing graphics. Cinder has no rendered scene; the text *is*
-  the visuals. Your words must act as the player's **eyes, ears, and hands** —
-  tell them what they see, what they hear, and what they can reach.
-- Use **second person perspective** ("You wake up in a damp cellar.") to pull
-  the player in. (Note: a few existing narration keys in `messages.json` — e.g.
-  `shaman.memory` — are written in third person; port them to second person as
-  they are touched.)
-
-### The two voices: warm narration vs. the handler
-- Layla's world has a **system layer**: reading a scroll that describes how to
-  trace a sigil, calling up a holographic menu to inspect her stats, accepting
-  inventory/equipment feedback, and so on.
-- **System messages come from Layla's human handler** — a young, inexperienced
-  man working from corporate SOPs and playbooks. He is procedural because he is
-  afraid of getting the procedure wrong, not because he is emotionless.
-- His personality should be strong and recognizable. He corrects himself,
-  admits when his display or instructions fail, and reaches for phrases like
-  "the playbook says" or "I'm supposed to tell you." He sometimes calls Layla
-  by name or checks whether she is all right, then remembers that he is not
-  supposed to treat her like a person.
-- Keep his lines short enough to function as operational feedback. Do not turn
-  every message into a monologue, joke, or display of incompetence. Critical
-  information must remain clear even when he is nervous.
-- The handler voices errors, help and objective framing, inventory/equipment
-  feedback, connection failures, and explicit system directives. He does not
-  narrate rooms, combat, memories, character actions, or dialogue.
-- **Regular narration is warm and light** — Layla's own perception of the
-  world. The contrast remains intentional: the narration is immediate and
-  sensory, while the handler is remote, procedural, anxious, and increasingly
-  unable to keep emotional distance.
-
-### Who Layla is on the page
-- Layla is **naturally curious**, and her behaviors are **slightly autistic**:
-  she notices patterns, obsesses over rules and symmetries, gets absorbed in
-  the geometry of the board, and reads people/creatures through their systems
-  and habits.
-- Layla is **intensely empathetic toward the monsters she charmed** — and she
-  is **not aware that she is**. She does not see it as pity or identification.
-  But the charmed creatures remind her of herself: beings under external
-  control (the corporation / the game company) being made to serve a purpose
-  that is not their own. Write her care for them as instinct and softness she
-  cannot name — never as a narration that explains the parallel to the player.
+---
 
 ## Where Each Piece Lives (Content Map)
 

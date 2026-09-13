@@ -296,7 +296,7 @@ mod shipped_pack_load_tests {
                 );
                 assert_eq!(
                     loaded.message("item.acquired_inventory"),
-                    Some("INVENTORY UPDATED: {label} acquired.")
+                    Some("Picked up {label}.")
                 );
                 assert_eq!(
                     loaded.message_voice("item.acquired_inventory"),
