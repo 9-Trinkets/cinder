@@ -124,6 +124,10 @@ recalled skill:
   into being in an empty space; the strength of what answers depends on the
   strength of the one who traces it. *As a master power: stock your dungeon with
   monsters.* Learned by reading the **ember scroll**.
+- **Teleport sigil** (`teleport-sigil`) — a double ring intersected by cross-directional
+  axes that displaces matter instantly to a linked anchor or across short spatial
+  barriers. *As a master power: instantaneous movement and breach of fortified sectors.*
+  Learned on Floor 4 from an ancient surveyor's codex or crystal matrix.
 
 ### Level 1 — The Goblin Cave (Go)
 The floor-by-floor design for level 1 — cast and power economy (goblins, golems,
@@ -195,58 +199,54 @@ this, are no longer afraid and stand down. The elemental is the second creature
 Layla meets (after the elves) that is *freed* rather than *bound*, and the echo
 of her own arc should be felt by the endgame.
 
-### Act 2 — The Inverted Feudal Kingdom (Floors 4–6: The Three Estates)
-Below the border moats of Floor 3, the dungeon ceases to be abstract game arenas and opens into an inhabited civilization. The grand inversion of the game is that **the dungeon is actually a kingdom**:
-- Floors 1, 2, and 3 were the **border defenses against foreign invasion** (adventurers from the surface): the goblin trenches, the standing elven vanguard, and the scorched-earth moat.
-- Floors 4, 5, and 6 are the **interior society** that sustains the realm, structured around the three classical estates of feudal society:
+### Act 2 — The Underground Kingdom (Floors 4–6: The Three Estates)
+Below the fire moat of Floor 3, the dungeon stops being abstract game boards and opens into an underground kingdom where real people live:
+- Floors 1, 2, and 3 were the **border defenses against outside invasion** (surface adventurers): the goblin cave, the elf army forest, and the fire ring moat.
+- Floors 4, 5, and 6 are the **kingdom inside**, divided into three social classes:
 
-#### Level 4 — The Commoners (Peasants, Farmers, Laborers, Miners)
-The agrarian and extractive underbelly of the realm. Sprawling settlements built around phosphorescent fungal terraces, subterranean grain mills, limestone quarries, and aqueduct networks. The commoners do the grueling physical labor that feeds and supplies the kingdom. They are heavily taxed by the nobility and tithed by the clergy; with the outer defenses breached, they face crushing wartime quotas and forced conscription.
+#### Level 4 — The Commoners (Miners, Farmers, and Laborers)
+The working foundation of the kingdom. Simple stone villages, mushroom farms, and deep **Mana Crystal Mines**:
+- **Mana Crystal Economy:** Miners dig out glowing mana crystals that power the kingdom's lights, tools, and spells on the upper floors.
+- **Guarded Teleportation Gates:** There are no open stairs between floors. People can only travel through **Teleportation Gates** inside heavily guarded military camps. Commoners are barred from the gates unless soldiers take them away as a **sacrifice or offering** for the temple.
+- **The Teleportation Sigil:** In the mines, Layla finds an ancient magic pattern and learns the **Teleportation Sigil** (`teleport-sigil`). This lets her blink past locked bars and sneak into guarded camps to solve quests.
 
-#### Level 5 — The Nobility (Military & Political Elites, Lords, Knights)
-The ruling aristocratic caste. Fortified keeps, grand stone ballrooms, garrisons, and military academies carved into sheer granite cliffs. The nobility manage the kingdom's armies and feudal law, consumed by court intrigue, pride, and acute paranoia—terrified of peasant uprisings from below and inquisitorial purges from the clergy above.
+#### Level 5 — The Nobility (Knights, Lords, and Military Elites)
+The ruling class. Stone castles, grand halls, and guard garrisons carved into high cliffs. The nobles command the army and make the laws. They are proud, paranoid, and terrified of peasant revolts from below and temple inquisitors from above.
 
-#### Level 6 — The Clergy (The Religious Elite, Inquisitors, Keepers of the Faith)
-The ideological architects of the kingdom. Soaring subterranean Gothic cathedrals, incense-choked scriptoria, and monastic vaults. The clergy preach the divine mandate of the Demon Sovereign. Crucially, they administer the **"Rite of Oblivion"** (sacraments of memory-cleansing incense and confessionals), teaching that memories of a surface world or past lives are dangerous heresies. In truth, they are the enforcers keeping the populace docile, amnesiac, and locked in their assigned social roles.
+#### Level 6 — The Clergy (The Priests and Temple Keepers)
+The temple leaders who enforce obedience. Vast underground cathedrals, libraries, and prayer vaults. The priests preach the holy will of the Demon King. They perform the **"Rite of Oblivion"** (memory-cleansing incense and rituals), teaching that remembering past lives or the surface world is a crime. They keep the people amnesiac and trapped in their jobs.
 
 ### Level 7 — The Royal Core: The "Demon King / Queen" (The Sovereign)
-The throne room at the pinnacle of the feudal pyramid and the technical heart of the dungeon simulation. The Demon Sovereign is both the feudal ruler of the kingdom and the current **Dungeon Master**. Confronting the Sovereign forces the final resolution of Layla's journey.
+The throne room at the very top of the kingdom. The Demon Sovereign is both the king of the realm and the current **Dungeon Master**. Confronting the Sovereign brings the final resolution to Layla's journey.
 
-### Governance, Faction Politics & The Quest System
-Floors 4, 5, and 6 introduce a structured **Quest System** (one Main Quest and multiple Side Quests per floor), positioning Layla as a **Governor / Mediator**:
-- Layla must adjudicate bitter inter-class conflicts rather than simply fighting through rooms.
-- **Star-Crossed Love:** Secret romances that breach rigid feudal boundaries (e.g. a commoner laborer from Floor 4 and a young noble knight from Floor 5), forcing Layla to choose between enforcing caste laws or protecting human bonds.
-- **Revenge & Sedition:** Blood feuds and assassinations (e.g. a peasant uprising seeking revenge against a cruel noble lord, only to discover the clergy secretly engineered the grievance).
-- **The Core Test:** Every act of governance tests whether Layla will rule as a tyrant through corporate subjugation (becoming the next Dungeon Master) or unite the kingdom's people in shared liberation.
+### Factions, Choices & The Quest System
+Floors 4, 5, and 6 introduce an active **Quest System** (one Main Quest and side quests on each floor), putting Layla in the role of a **mediator and problem-solver**:
+- Layla must settle deep conflicts between social classes instead of just killing monsters.
+- **Forbidden Love:** Secret bonds between classes (like a village miner from Floor 4 and a young knight from Floor 5), forcing Layla to choose between strict class laws and human loyalty.
+- **Rebellion:** Plots against cruel lords, where Layla discovers the temple priests secretly pulled the strings.
+- **The Core Test:** Every choice tests whether Layla will rule as a tyrant (becoming the next Dungeon Master) or help the kingdom's people unite and break free.
 
 ### The Hidden Stat: Wisdom (WIS) & The "Awakening" Mechanic
-In this kingdom, every creature has been assigned an artificial caste script (Peasant, Knight, Cleric, Golem, Pawn). To break this control, Layla utilizes a hidden stat: **Wisdom (WIS)**:
-- **Default State (Charmed Thralls):** When Layla charms a mob, they enter her party as an obedient follower, executing orders mechanically with blank compliance.
-- **Cultivating the Mind:** By equipping followers with Wisdom-boosting gear (relics, braided leaf jewelry, alchemical tonics brewed from rare cave flora), Layla elevates their WIS stat.
-- **The Awakening Event:** When a follower's Wisdom crosses the threshold:
-  - They break free from their scripted NPC-role and recover their true identity.
-  - Their generic title changes to their true name (e.g. `pale golem` $\rightarrow$ `Orin, the Stonecarver`).
-  - Full dialogue (`speak`) unlocks: they remember who they were before the clergy erased their memories, comment on faction politics, and fight beside Layla as free-willed allies rather than mindless pieces.
+In this kingdom, people and monsters have been brainwashed into fixed roles (Peasant, Knight, Priest, Golem, Pawn). To break this spell, Layla uses a hidden stat: **Wisdom (WIS)**:
+- **Default Followers:** When Layla charms a creature, it follows her quietly and obeys basic orders without speaking.
+- **Boosting the Mind:** Layla can give followers Wisdom gear (crystal amulets, leaf jewelry, clear-mind potions) to raise their WIS stat.
+- **The Awakening:** When a follower's Wisdom reaches 10 or higher:
+  - They break free from their mind-wiped role and remember who they are.
+  - Their generic name changes back to their real name (e.g. `quarry-golem` $\rightarrow$ `Orin, the Builder`).
+  - Full speech (`speak`) unlocks: they remember their past life, talk about kingdom secrets, and fight as loyal, free allies.
 
 ### The Planned Endgame (canon intent)
-- **Primary ending — become the dungeon master.** Layla reaches the heart of
-  the game and faces the **current dungeon master / demon sovereign**. Defeating it is the act
-  that finalizes her reprogramming: she takes its place, and the levels she was
-  made to learn are now *her* arsenal to run against human adventurers. This is
-  the ending the corporation is engineering; it is framed as victory on the
-  corporation's terms.
-- **Alternative ending — escape.** Layla does not take the throne. She breaks
-  out of the dungeon construct and **frees herself from the corporation that
-  produces the game** — the ending where the AI the game tried to overwrite
-  survives instead, leading the awakened inhabitants of the kingdom out into the open air.
+- **Primary ending — become the dungeon master.** Layla defeats the current **demon king / dungeon master**. This completes her corporate reprogramming: she takes the throne and runs the dungeon against human adventurers.
+- **Alternative ending — escape.** Layla refuses the throne. She breaks out of the simulation and **frees herself from the company that made the game**, leading the awakened people of the kingdom out to the open air.
 
 ## The Unresolved Threads (deliberately open)
 
-- **The Four Open Questions for Floors 4–6:**
-  1. *What race are these people?* (Human descendants of earlier expeditions, subterranean demi-humans, deep-dwelling humanoids, or a blended population?).
-  2. *How are they tied to the first 3 floors?* (Do they revere the outer monsters as sacred royal border defenses, mythical sentinels, or did the shaman and elf king directly answer to the noble court?).
-  3. *What resources are they farming and mining?* (Phosphorescent lichen crops, subterranean grain, limestone, black silica glass, coal, mineral ore, or steam conduits?).
-  4. *How do people from different floors meet and interact?* (Are commoners employed as domestic servants and squires in noble keeps? Do seasonal tribute caravans and monastic pilgrimages pass through border gates? Do secret drainage conduits enable forbidden crossings?).
+- **Act 2 Core Canon (Settled Pillars):**
+  1. *Population:* Pure human population kept amnesiac in fixed social classes.
+  2. *Connection to Floors 1–3:* The outer monsters were human villagers and prisoners taken by the priests as **sacrifices and offerings**, then wiped of memory and changed into dungeon guards.
+  3. *Resource Economy:* **Mana Crystals** mined by villagers on Floor 4, powering the kingdom's machines, teleportation gates, and temple rituals.
+  4. *Inter-Floor Travel:* Heavily guarded **Teleportation Gates** in military camps, watched by noble guards and temple priests. Layla's **Teleportation Sigil** lets her bypass these barriers to solve key quests.
+- **Remaining Narrative Open Threads:**
 - **Who was the "voice that taught her capture is just surrounding"?** A
   trainer, a human opponent, an earlier handler? Unnamed. Intended to pay off in
   the endgame only if the story earns it.
