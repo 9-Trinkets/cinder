@@ -1114,7 +1114,7 @@
   {
     "id": "fire-elemental",
     "name": "fire elemental",
-    "room_id": "oh",
+    "room_id": "oas",
     "aliases": [
       "fire elemental",
       "elemental",
@@ -1276,5 +1276,92 @@
       "stance": "allied",
       "follows_player": false
     }
+  },
+  {
+    "id": "fire-sprite-4",
+    "name": "fire sprite",
+    "room_id": "o4",
+    "aliases": [
+      "sprite",
+      "fire sprite",
+      "wisp",
+      "spark"
+    ],
+    "tags": [
+      "sprite",
+      "fire"
+    ],
+    "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
+    "attackable": true,
+    "attack_kind": "fire",
+    "attack_interval_minutes": 1,
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "hp": 4,
+      "strength": 2,
+      "defense": 0,
+      "intelligence": 2
+    },
+    "prompt_context": {},
+    "level": 3
+  },
+  {
+    "id": "fire-sprite-5",
+    "name": "fire sprite",
+    "room_id": "o8",
+    "aliases": [
+      "sprite",
+      "fire sprite",
+      "wisp",
+      "spark"
+    ],
+    "tags": [
+      "sprite",
+      "fire"
+    ],
+    "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
+    "attackable": true,
+    "attack_kind": "fire",
+    "attack_interval_minutes": 1,
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "hp": 4,
+      "strength": 2,
+      "defense": 0,
+      "intelligence": 2
+    },
+    "prompt_context": {},
+    "level": 3
+  },
+  {
+    "id": "fire-sprite-6",
+    "name": "fire sprite",
+    "room_id": "o12",
+    "aliases": [
+      "sprite",
+      "fire sprite",
+      "wisp",
+      "spark"
+    ],
+    "tags": [
+      "sprite",
+      "fire"
+    ],
+    "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
+    "attackable": true,
+    "attack_kind": "fire",
+    "attack_interval_minutes": 1,
+    "initial_hostile": true,
+    "xp_drop": 10,
+    "initial_stats": {
+      "hp": 4,
+      "strength": 2,
+      "defense": 0,
+      "intelligence": 2
+    },
+    "prompt_context": {},
+    "level": 3
   }
 ]

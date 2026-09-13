@@ -102,6 +102,21 @@ fn wander_destination(
             };
             next_room_toward(content, current_room_id, &destination)
         }
+        WanderMode::ExitLabel => {
+            let room = content.room(current_room_id)?;
+            let target_exit = room.exits.iter().find(|exit| {
+                exit.label.eq_ignore_ascii_case(&wander.exit_label)
+                    || exit
+                        .aliases
+                        .iter()
+                        .any(|alias| alias.eq_ignore_ascii_case(&wander.exit_label))
+            })?;
+            if content.room_is_reachable(&target_exit.room_id) {
+                Some(target_exit.room_id.clone())
+            } else {
+                None
+            }
+        }
     }
 }
 
@@ -188,6 +203,7 @@ mod tests {
             mode: WanderMode::RandomAdjacent,
             cadence_ticks: 1,
             room_id: String::new(),
+            exit_label: String::new(),
         });
         content
             .movement
@@ -198,6 +214,7 @@ mod tests {
             mode: WanderMode::RandomAdjacent,
             cadence_ticks: 1,
             room_id: String::new(),
+            exit_label: String::new(),
         });
         content.behavior.defaults.hold = Some(serde_json::json!({
             "rule": "effect_table",
@@ -243,5 +260,20 @@ mod tests {
             event,
             WorldEvent::ActorMoved { actor_id, .. } if actor_id == &roaming_id
         )));
+    }
+
+    #[test]
+    fn exit_label_wander_follows_named_exit() {
+        let content = minimal_test_pack();
+        let wander = WanderDefinition {
+            mode: WanderMode::ExitLabel,
+            cadence_ticks: 1,
+            room_id: String::new(),
+            exit_label: "kitchen".to_string(),
+        };
+
+        let state = WorldState::new(&content);
+        let dest = wander_destination(&content, &state, &content.actors[0], "lounge", &wander);
+        assert_eq!(dest.as_deref(), Some("kitchen"));
     }
 }

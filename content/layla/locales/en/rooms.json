@@ -8080,6 +8080,17 @@
           "dish"
         ],
         "inspect_text": "A wide dish of black glass, deep as a man's chest. Its lip is scored where embers have been poured in and cleared away a thousand times."
+      },
+      {
+        "id": "oan-glass",
+        "label": "the black glass",
+        "aliases": [
+          "glass",
+          "floor",
+          "obsidian",
+          "black glass"
+        ],
+        "inspect_text": "Sheets of polished volcanic glass form the foundation of the north store, cool and slick beneath your boots."
       }
     ],
     "exits": [
@@ -8139,6 +8150,18 @@
           "dish"
         ],
         "inspect_text": "A wide dish of black glass. A single ember smoulders at its bottom, the last seed of the south store."
+      },
+      {
+        "id": "oas-ember",
+        "label": "the banked ember",
+        "aliases": [
+          "ember",
+          "seed",
+          "coal",
+          "fire",
+          "banked ember"
+        ],
+        "inspect_text": "A stubborn node of cherry-red heat pulsing softly in the soot of the south store."
       }
     ],
     "exits": [
@@ -8185,6 +8208,18 @@
           "bowl chamber"
         ],
         "inspect_text": "A single coal breathes in the depression, skirted by black glass. It does not warm the room — only the memory of warmth."
+      },
+      {
+        "id": "o1-cracks",
+        "label": "the thermal cracks",
+        "aliases": [
+          "cracks",
+          "crack",
+          "fissures",
+          "floor",
+          "glass"
+        ],
+        "inspect_text": "Hairline fractures spiderweb through the black glass floor, radiating dull warmth from heat chambers below."
       }
     ],
     "exits": [
@@ -8228,6 +8263,18 @@
           "bowl chamber"
         ],
         "inspect_text": "Tiny embers fleck the floor like a scatter of seed, slightly warmer under the fingers than the surrounding glass."
+      },
+      {
+        "id": "o2-cracks",
+        "label": "the thermal cracks",
+        "aliases": [
+          "cracks",
+          "crack",
+          "fissures",
+          "floor",
+          "glass"
+        ],
+        "inspect_text": "Hairline fractures spiderweb through the black glass floor, radiating dull warmth from heat chambers below."
       }
     ],
     "exits": [
@@ -8271,6 +8318,18 @@
           "bowl chamber"
         ],
         "inspect_text": "Two scored lines run out of this chamber and vanish around the curve of the ring."
+      },
+      {
+        "id": "o3-cracks",
+        "label": "the thermal cracks",
+        "aliases": [
+          "cracks",
+          "crack",
+          "fissures",
+          "floor",
+          "glass"
+        ],
+        "inspect_text": "Hairline fractures spiderweb through the black glass floor, radiating dull warmth from heat chambers below."
       }
     ],
     "exits": [
@@ -8314,6 +8373,18 @@
           "bowl chamber"
         ],
         "inspect_text": "The crack runs through the center of the bowl. Whatever burned here has long been taken."
+      },
+      {
+        "id": "o4-cracks",
+        "label": "the thermal cracks",
+        "aliases": [
+          "cracks",
+          "crack",
+          "fissures",
+          "floor",
+          "glass"
+        ],
+        "inspect_text": "Hairline fractures spiderweb through the black glass floor, radiating dull warmth from heat chambers below."
       }
     ],
     "exits": [
@@ -8357,6 +8428,18 @@
           "bowl chamber"
         ],
         "inspect_text": "Heat wells up gently through the seams. Beneath, you sense the same dead fire you have felt all along: banked, waiting."
+      },
+      {
+        "id": "o5-cracks",
+        "label": "the thermal cracks",
+        "aliases": [
+          "cracks",
+          "crack",
+          "fissures",
+          "floor",
+          "glass"
+        ],
+        "inspect_text": "Hairline fractures spiderweb through the black glass floor, radiating dull warmth from heat chambers below."
       }
     ],
     "exits": [
@@ -8400,6 +8483,18 @@
           "bowl chamber"
         ],
         "inspect_text": "The southern store is a tall column of shadow on the rim, its dish holding the last of the board's gathered light."
+      },
+      {
+        "id": "o6-cracks",
+        "label": "the thermal cracks",
+        "aliases": [
+          "cracks",
+          "crack",
+          "fissures",
+          "floor",
+          "glass"
+        ],
+        "inspect_text": "Hairline fractures spiderweb through the black glass floor, radiating dull warmth from heat chambers below."
       }
     ],
     "exits": [
@@ -8443,6 +8538,18 @@
           "bowl chamber"
         ],
         "inspect_text": "The floor is glass worn mirror-smooth, the recorded arc of a thousand unseen moves."
+      },
+      {
+        "id": "o7-ash",
+        "label": "the ash drifts",
+        "aliases": [
+          "ash",
+          "drifts",
+          "soot",
+          "dust",
+          "ash drifts"
+        ],
+        "inspect_text": "Fine grey soot and volcanic silt collected in the corners and grooves of the basin, shifting under draft and footstep."
       }
     ],
     "exits": [
@@ -8486,6 +8593,18 @@
           "bowl chamber"
         ],
         "inspect_text": "Embers sit one by one, evenly spaced, exactly as seeds would be set out before a game."
+      },
+      {
+        "id": "o8-ash",
+        "label": "the ash drifts",
+        "aliases": [
+          "ash",
+          "drifts",
+          "soot",
+          "dust",
+          "ash drifts"
+        ],
+        "inspect_text": "Fine grey soot and volcanic silt collected in the corners and grooves of the basin, shifting under draft and footstep."
       }
     ],
     "exits": [
@@ -8529,6 +8648,18 @@
           "bowl chamber"
         ],
         "inspect_text": "The air is cold and still. Even the ancient warmth of the board does not reach here."
+      },
+      {
+        "id": "o9-ash",
+        "label": "the ash drifts",
+        "aliases": [
+          "ash",
+          "drifts",
+          "soot",
+          "dust",
+          "ash drifts"
+        ],
+        "inspect_text": "Fine grey soot and volcanic silt collected in the corners and grooves of the basin, shifting under draft and footstep."
       }
     ],
     "exits": [
@@ -8572,6 +8703,18 @@
           "bowl chamber"
         ],
         "inspect_text": "The ring doubles back on itself for a long way before either store or center appears."
+      },
+      {
+        "id": "o10-ash",
+        "label": "the ash drifts",
+        "aliases": [
+          "ash",
+          "drifts",
+          "soot",
+          "dust",
+          "ash drifts"
+        ],
+        "inspect_text": "Fine grey soot and volcanic silt collected in the corners and grooves of the basin, shifting under draft and footstep."
       }
     ],
     "exits": [
@@ -8615,6 +8758,18 @@
           "bowl chamber"
         ],
         "inspect_text": "Across the dark the heart-pit burns at a steady, unhurried orange."
+      },
+      {
+        "id": "o11-ash",
+        "label": "the ash drifts",
+        "aliases": [
+          "ash",
+          "drifts",
+          "soot",
+          "dust",
+          "ash drifts"
+        ],
+        "inspect_text": "Fine grey soot and volcanic silt collected in the corners and grooves of the basin, shifting under draft and footstep."
       }
     ],
     "exits": [
@@ -8658,6 +8813,18 @@
           "bowl chamber"
         ],
         "inspect_text": "The north store's dish shelves up beyond the rim, its mouth drinking the ring."
+      },
+      {
+        "id": "o12-ash",
+        "label": "the ash drifts",
+        "aliases": [
+          "ash",
+          "drifts",
+          "soot",
+          "dust",
+          "ash drifts"
+        ],
+        "inspect_text": "Fine grey soot and volcanic silt collected in the corners and grooves of the basin, shifting under draft and footstep."
       }
     ],
     "exits": [
@@ -8709,6 +8876,18 @@
           "cradle"
         ],
         "inspect_text": "In the cradle of the pit, a clot of embers burns with a deep, steady heat. It does not crackle. It does not spread. It simply holds."
+      },
+      {
+        "id": "oh-cradle",
+        "label": "the obsidian cradle",
+        "aliases": [
+          "cradle",
+          "pit",
+          "hollow",
+          "obsidian cradle",
+          "glass"
+        ],
+        "inspect_text": "A sunken saucer of seamless black glass engineered to concentrate the cavern's elemental heat at its center."
       }
     ],
     "exits": [

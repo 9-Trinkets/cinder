@@ -137,6 +137,31 @@
         "mode": "random_adjacent",
         "cadence_ticks": 1
       }
+    },
+    "fire-elemental": {
+      "wander": {
+        "mode": "exit_label",
+        "exit_label": "Clockwise",
+        "cadence_ticks": 2
+      }
+    },
+    "fire-sprite-4": {
+      "wander": {
+        "mode": "random_adjacent",
+        "cadence_ticks": 1
+      }
+    },
+    "fire-sprite-5": {
+      "wander": {
+        "mode": "random_adjacent",
+        "cadence_ticks": 1
+      }
+    },
+    "fire-sprite-6": {
+      "wander": {
+        "mode": "random_adjacent",
+        "cadence_ticks": 1
+      }
     }
   }
 }

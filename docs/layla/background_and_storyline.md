@@ -170,6 +170,8 @@ will; the elves *decline to be bound*. This is the game's freedom theme showing
 its first full face — and a warning about what rings do to a mind.
 
 ### Level 3 — The Fire-Rooms (Mancala / the Old Fire / the Elemental)
+The floor-by-floor design for level 3 — cast, Mancala board architecture, kinetic boss movement, trap economy, and room feature architectures — lives in **`docs/layla/floor3_plan.md`**. What follows is the storyline canon this level carries.
+
 A ring of fire-rooms built around **old fire** — chambers named for embers and
 ash, winding around a central **Heart-Pit**. This is the third remembered
 game-language: **mancala** (Go and chess are the first two). Home to:

@@ -44,6 +44,10 @@ pub struct WanderDefinition {
     /// otherwise.
     #[serde(default)]
     pub room_id: String,
+    /// Optional exit label or alias; used by `WanderMode::ExitLabel` and
+    /// ignored otherwise.
+    #[serde(default)]
+    pub exit_label: String,
 }
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
@@ -58,6 +62,8 @@ pub enum WanderMode {
     Stay,
     /// Move toward the fixed `room_id` destination.
     To,
+    /// Follow an exit matching `exit_label` by label or alias.
+    ExitLabel,
 }
 
 /// Per-actor movement rules (and an optional per-actor wander directive) that
