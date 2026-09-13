@@ -7,6 +7,7 @@ import Card from '../components/Card'
 import ConfirmDialog from '../components/ConfirmDialog'
 import Skeleton from '../components/Skeleton'
 import { useToast } from '../components/Toast'
+import { toErrorMessage } from '../utils/error'
 
 function fmtTime(s: string): string {
   const n = Number(s)
@@ -43,7 +44,7 @@ export default function PackDetailPage() {
       setPack(packs.find(p => p.id === packId) ?? null)
       setPlays(allPlays.filter(p => p.pack_id === packId))
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'failed to load')
+      setError(toErrorMessage(err, 'failed to load'))
     } finally {
       setLoading(false)
     }
@@ -59,7 +60,7 @@ export default function PackDetailPage() {
       await api.deletePlay(token, playId)
       setPlays(prev => prev.filter(p => p.play_id !== playId))
     } catch (err: unknown) {
-      showToast(err instanceof Error ? err.message : 'failed to delete', 'error')
+      showToast(toErrorMessage(err, 'failed to delete'), 'error')
     } finally {
       setDeleting(null)
     }
@@ -72,7 +73,7 @@ export default function PackDetailPage() {
       const play = await api.createPlay(token, packId)
       navigate(`/games/${play.play_id}`, { state: { title: play.title, intro_text: play.intro_text } })
     } catch (err: unknown) {
-      showToast(err instanceof Error ? err.message : 'failed to create play', 'error')
+      showToast(toErrorMessage(err, 'failed to create play'), 'error')
     } finally {
       setCreating(false)
     }

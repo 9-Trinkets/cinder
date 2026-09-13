@@ -1,4 +1,5 @@
-use crate::content::types::{ItemStorageTarget, PartyOrderKind};
+use crate::content::types::{ContentPack, ItemStorageTarget, PartyOrderKind, SpeechIntentEffect};
+use crate::engine::dialogue::DirectSpeechIntentDecision;
 use crate::engine::messaging::ChannelMessage;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -225,6 +226,40 @@ fn now_millis() -> u128 {
         .duration_since(UNIX_EPOCH)
         .map(|duration| duration.as_millis())
         .unwrap_or(0)
+}
+
+pub(crate) fn apply_speech_intent_effects(
+    content: &ContentPack,
+    decision: &DirectSpeechIntentDecision,
+    actor_id: &str,
+    other_person_id: &str,
+) -> Vec<WorldEvent> {
+    let label = &decision.0;
+    let Some(intent) = content
+        .speech_intents
+        .intents
+        .iter()
+        .find(|i| i.label.eq_ignore_ascii_case(label))
+    else {
+        return Vec::new();
+    };
+    intent
+        .effects
+        .iter()
+        .map(|effect| match effect {
+            SpeechIntentEffect::ActorStat { stat, delta } => WorldEvent::ActorStatAdjusted {
+                actor_id: actor_id.to_string(),
+                stat: stat.clone(),
+                delta: *delta,
+            },
+            SpeechIntentEffect::PairStat { stat, delta } => WorldEvent::PairStatAdjusted {
+                participant_a_id: actor_id.to_string(),
+                participant_b_id: other_person_id.to_string(),
+                stat: stat.clone(),
+                delta: *delta,
+            },
+        })
+        .collect()
 }
 
 fn lowercase_sentence_start(text: &str) -> String {

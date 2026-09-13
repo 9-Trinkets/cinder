@@ -228,10 +228,10 @@ impl WorldState {
             .iter()
             .map(|sequence| (sequence.id.clone(), ScriptedSequencePlayhead::default()))
             .collect::<BTreeMap<_, _>>();
-        if let Some(opening_sequence_id) = content.opening.opening_sequence_id.as_deref() {
-            if let Some(playhead) = scripted_sequences.get_mut(opening_sequence_id) {
-                *playhead = ScriptedSequencePlayhead::queued();
-            }
+        if let Some(opening_sequence_id) = content.opening.opening_sequence_id.as_deref()
+            && let Some(playhead) = scripted_sequences.get_mut(opening_sequence_id)
+        {
+            *playhead = ScriptedSequencePlayhead::queued();
         }
         Self {
             current_room_id: start_room_id,

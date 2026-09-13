@@ -114,12 +114,10 @@ pub async fn run_command(
                 let ui_snapshot = build_ui_snapshot(runtime, pack_id, transcript_lines)?;
                 let response = CommandResponse {
                     text: String::new(),
-                    lines: Vec::new(),
                     game_over: true,
-                    movie: None,
-                    act_closure: None,
                     game_closure: ui_snapshot.game_closure.clone(),
                     ui_snapshot: Some(ui_snapshot),
+                    ..Default::default()
                 };
                 return Ok((response, Vec::new()));
             }
@@ -261,12 +259,12 @@ pub async fn run_realtime_tick(
             let is_game_over = outcome.phase != GamePhase::Active;
             let response = CommandResponse {
                 text: outcome.text.clone(),
-                lines: Vec::new(),
                 game_over: is_game_over,
                 movie,
                 act_closure,
                 game_closure,
                 ui_snapshot: Some(ui_snapshot),
+                ..Default::default()
             };
             let transcript_entries: Vec<PendingTranscriptEntry> = response
                 .text
@@ -308,15 +306,11 @@ pub async fn switch_room(
                 text: outcome.text.clone(),
             }];
             Ok((
-                CommandResponse {
-                    text: outcome.text,
-                    lines: Vec::new(),
-                    game_over: outcome.phase != GamePhase::Active,
-                    movie: None,
-                    act_closure: None,
-                    game_closure: None,
-                    ui_snapshot: Some(ui_snapshot),
-                },
+                CommandResponse::new(
+                    outcome.text,
+                    outcome.phase != GamePhase::Active,
+                    Some(ui_snapshot),
+                ),
                 transcript_entries,
             ))
         },
@@ -348,15 +342,11 @@ pub async fn follow_actor(
                 text: outcome.text.clone(),
             }];
             Ok((
-                CommandResponse {
-                    text: outcome.text,
-                    lines: Vec::new(),
-                    game_over: outcome.phase != GamePhase::Active,
-                    movie: None,
-                    act_closure: None,
-                    game_closure: None,
-                    ui_snapshot: Some(ui_snapshot),
-                },
+                CommandResponse::new(
+                    outcome.text,
+                    outcome.phase != GamePhase::Active,
+                    Some(ui_snapshot),
+                ),
                 transcript_entries,
             ))
         },
@@ -442,12 +432,11 @@ pub async fn set_locale(
 
         return Ok(CommandResponse {
             text: changed_text,
-            lines: Vec::new(),
             game_over: is_game_over,
-            movie: None,
             act_closure: ui_snapshot.act_closure.clone(),
             game_closure: ui_snapshot.game_closure.clone(),
             ui_snapshot: Some(ui_snapshot),
+            ..Default::default()
         });
     }
 
@@ -471,15 +460,7 @@ pub async fn continue_play(
                 .map_err(|e| format!("play continuation error: {e}"))?;
             let ui_snapshot = build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
             Ok((
-                CommandResponse {
-                    text: String::new(),
-                    lines: Vec::new(),
-                    game_over: false,
-                    movie: None,
-                    act_closure: None,
-                    game_closure: None,
-                    ui_snapshot: Some(ui_snapshot),
-                },
+                CommandResponse::new(String::new(), false, Some(ui_snapshot)),
                 Vec::new(),
             ))
         },

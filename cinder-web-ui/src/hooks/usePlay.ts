@@ -4,9 +4,14 @@ import { useAuth } from '../auth'
 import * as api from '../api'
 import { useToast } from '../components/Toast'
 import { useNpcTicks } from './useNpcTicks'
+import { toErrorMessage } from '../utils/error'
 import type { Line } from '../components/TranscriptLine'
-import type { QuickPanel } from '../components/QuickActionPanel'
-import { type MenuView, findPanelConfig, extractResponseLines } from './playUtils'
+import {
+  type MenuView,
+  type QuickPanel,
+  findPanelConfig,
+  extractResponseLines,
+} from './playUtils'
 
 export type { MenuView }
 
@@ -144,7 +149,7 @@ export function usePlay() {
       const res = await api.runCommand(token, id, cmd)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
-      showToast(err instanceof Error ? err.message : 'request failed', 'error')
+      showToast(toErrorMessage(err, 'request failed'), 'error')
     } finally {
       setCommandPending(false)
     }
@@ -166,7 +171,7 @@ export function usePlay() {
       const res = await api.runCommand(token, id, `toggle:${optionId}`)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
-      showToast(err instanceof Error ? err.message : 'request failed', 'error')
+      showToast(toErrorMessage(err, 'request failed'), 'error')
     } finally {
       setCommandPending(false)
     }
@@ -195,7 +200,7 @@ export function usePlay() {
       const res = await api.switchRoom(token, id, roomId)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
-      showToast(err instanceof Error ? err.message : 'request failed', 'error')
+      showToast(toErrorMessage(err, 'request failed'), 'error')
     } finally {
       setPanelBusy(false)
     }
@@ -211,7 +216,7 @@ export function usePlay() {
       const res = await api.followActor(token, id, actorId)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
-      showToast(err instanceof Error ? err.message : 'request failed', 'error')
+      showToast(toErrorMessage(err, 'request failed'), 'error')
     } finally {
       setPanelBusy(false)
     }
@@ -227,7 +232,7 @@ export function usePlay() {
       const res = await api.setLocale(token, id, locale)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
-      showToast(err instanceof Error ? err.message : 'request failed', 'error')
+      showToast(toErrorMessage(err, 'request failed'), 'error')
     } finally {
       setPanelBusy(false)
     }
@@ -385,7 +390,7 @@ export function usePlay() {
             applyCommandResponse(res, 'auto')
           })
           .catch(err => {
-            showToast(err instanceof Error ? err.message : 'failed to load', 'error')
+            showToast(toErrorMessage(err, 'failed to load'), 'error')
           })
           .finally(() => setInitializing(false))
       })
@@ -432,7 +437,6 @@ export function usePlay() {
     initializing,
     actClosure,
     setActClosure,
-    setSessionClosure: setActClosure,
     gameClosure,
     setGameClosure,
     uiSnapshot,
@@ -480,6 +484,4 @@ export function usePlay() {
     focusInputToEnd,
   }
 }
-
-export const useSession = usePlay
 

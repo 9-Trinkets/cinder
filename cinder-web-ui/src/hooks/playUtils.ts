@@ -2,6 +2,8 @@ import * as api from '../api'
 
 export type MenuView = 'main' | 'rooms' | 'follow' | 'language'
 
+export type QuickPanel = string | null
+
 export function findPanelConfig(
   uiSnapshot: api.UiSnapshot | null,
   panelName: string,

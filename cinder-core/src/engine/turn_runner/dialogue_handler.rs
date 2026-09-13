@@ -1,44 +1,11 @@
 use super::types::{PlannedTurn, RouteEnvelope};
-use crate::content::types::{ContentPack, SpeechIntentEffect};
+use crate::content::types::ContentPack;
 use crate::engine::dialogue::{
-    DialogueGenerator, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
+    DialogueGenerator, DirectSpeechIntentRequest,
 };
+use crate::engine::events::apply_speech_intent_effects;
 use crate::engine::events::WorldEvent;
 use crate::engine::messaging::ChannelMessage;
-
-fn apply_speech_intent_effects(
-    content: &ContentPack,
-    decision: &DirectSpeechIntentDecision,
-    actor_id: &str,
-    other_person_id: &str,
-) -> Vec<WorldEvent> {
-    let label = &decision.0;
-    let Some(intent) = content
-        .speech_intents
-        .intents
-        .iter()
-        .find(|i| i.label.eq_ignore_ascii_case(label))
-    else {
-        return Vec::new();
-    };
-    intent
-        .effects
-        .iter()
-        .map(|effect| match effect {
-            SpeechIntentEffect::ActorStat { stat, delta } => WorldEvent::ActorStatAdjusted {
-                actor_id: actor_id.to_string(),
-                stat: stat.clone(),
-                delta: *delta,
-            },
-            SpeechIntentEffect::PairStat { stat, delta } => WorldEvent::PairStatAdjusted {
-                participant_a_id: actor_id.to_string(),
-                participant_b_id: other_person_id.to_string(),
-                stat: stat.clone(),
-                delta: *delta,
-            },
-        })
-        .collect()
-}
 
 pub(super) fn handle_actor_dialogue(
     dialogue: &dyn DialogueGenerator,

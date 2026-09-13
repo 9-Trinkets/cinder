@@ -2,6 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { useAuth } from '../auth'
 import Button from '../components/Button'
 import Input from '../components/Input'
+import { toErrorMessage } from '../utils/error'
 
 export default function LoginPage() {
   const { login, signup } = useAuth()
@@ -22,7 +23,7 @@ export default function LoginPage() {
         await signup(username, password)
       }
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Request failed')
+      setError(toErrorMessage(err, 'Request failed'))
     } finally {
       setBusy(false)
     }

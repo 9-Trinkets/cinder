@@ -152,10 +152,7 @@ pub(super) fn render_room_observation(
                         .is_none_or(|item| item.look_description.is_empty())
                 })
                 .map(|(id, count)| {
-                    let label = content
-                        .item(id)
-                        .map(|item| item.label.as_str())
-                        .unwrap_or(id);
+                    let label = content.item_label(id);
                     if *count > 1 {
                         format!("{label} ×{count}")
                     } else {
@@ -225,11 +222,7 @@ pub(super) fn render_feature_consumables_line(
     room_id: &str,
     feature_id: &str,
 ) -> Option<String> {
-    let room = content.room(room_id)?;
-    let feature = room
-        .features
-        .iter()
-        .find(|feature| feature.id == feature_id)?;
+    let feature = content.feature(room_id, feature_id)?;
     let available = feature
         .consumables
         .iter()

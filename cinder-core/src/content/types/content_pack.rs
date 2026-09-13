@@ -60,6 +60,13 @@ impl ContentPack {
         self.room_index.get(room_id).map(|&i| &self.rooms[i])
     }
 
+    pub fn feature(&self, room_id: &str, feature_id: &str) -> Option<&RoomFeatureDefinition> {
+        self.room(room_id)?
+            .features
+            .iter()
+            .find(|feature| feature.id == feature_id)
+    }
+
     /// Exit resolution for the player, honouring story-var gates: an exit
     /// whose `requires_story_var` is not yet truthy is invisible and won't be
     /// resolved (as if it didn't exist).
@@ -157,6 +164,14 @@ impl ContentPack {
 
     pub fn item(&self, item_id: &str) -> Option<&ItemDefinition> {
         self.items.iter().find(|item| item.id == item_id)
+    }
+
+    /// Display label for an item, falling back to the raw id when the item is
+    /// unknown so callers always have a renderable name.
+    pub fn item_label<'a>(&'a self, item_id: &'a str) -> &'a str {
+        self.item(item_id)
+            .map(|item| item.label.as_str())
+            .unwrap_or(item_id)
     }
 
     /// Advance table for an actor: their per-actor override if declared,

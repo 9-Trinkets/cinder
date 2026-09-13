@@ -1,6 +1,7 @@
 import { memo, type CSSProperties } from 'react'
+import type { LineKind } from '../api'
 
-export type LineKind = 'narration' | 'heading' | 'player' | 'error' | 'system' | 'channel'
+export type { LineKind }
 
 export interface Line {
   text: string

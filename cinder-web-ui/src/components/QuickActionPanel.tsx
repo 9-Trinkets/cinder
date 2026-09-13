@@ -1,8 +1,7 @@
 import { memo } from 'react'
 import * as api from '../api'
 import { groupLookOptions, groupOverflowActions } from '../utils/grouping'
-
-export type QuickPanel = string | null
+import type { QuickPanel } from '../hooks/playUtils'
 
 const QuickActionPanel = memo(function QuickActionPanel({
   panel,

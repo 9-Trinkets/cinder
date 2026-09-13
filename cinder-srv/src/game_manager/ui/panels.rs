@@ -85,10 +85,7 @@ pub(super) fn build_drop_panel_options(
         .into_iter()
         .map(|item_id| PanelOptionData {
             id: item_id.clone(),
-            title: content
-                .item(&item_id)
-                .map(|item| item.label.clone())
-                .unwrap_or_else(|| item_id.clone()),
+            title: content.item_label(&item_id).to_string(),
             subtitle: None,
             command: Some(format!("drop {item_id}")),
             disabled: false,
@@ -428,10 +425,7 @@ fn craftable_item_panel_options(
                             cinder_core::content::types::ItemStorageTarget::CurrentRoom,
                             &state.current_room_id,
                         );
-                    let title = content
-                        .item(item_id)
-                        .map(|item| item.label.clone())
-                        .unwrap_or_else(|| item_id.clone());
+                    let title = content.item_label(item_id).to_string();
                     PanelOptionData {
                         id: item_id.clone(),
                         title,
@@ -459,10 +453,7 @@ pub(super) fn panel_config_data(pc: &PanelConfig) -> PanelConfigData {
 fn loose_item_option(content: &ContentPack, item_id: &str) -> PanelOptionData {
     PanelOptionData {
         id: item_id.to_string(),
-        title: content
-            .item(item_id)
-            .map(|item| item.label.clone())
-            .unwrap_or_else(|| item_id.to_string()),
+        title: content.item_label(item_id).to_string(),
         subtitle: None,
         command: Some(format!("take {item_id}")),
         disabled: false,

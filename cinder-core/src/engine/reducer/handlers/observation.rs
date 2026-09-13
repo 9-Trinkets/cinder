@@ -27,11 +27,7 @@ pub(crate) fn handle_feature_observed(
     feature_id: &str,
     lines: &mut NarrativeLines,
 ) {
-    if let Some(feature) = content.room(room_id).and_then(|room| {
-        room.features
-            .iter()
-            .find(|feature| feature.id == feature_id)
-    }) {
+    if let Some(feature) = content.feature(room_id, feature_id) {
         lines.narration(feature.inspect_text.clone());
         if let Some(consumables_line) =
             render_feature_consumables_line(content, state, room_id, feature_id)
@@ -92,12 +88,7 @@ pub(crate) fn handle_actor_observed_feature(
     feature_id: &str,
     lines: &mut NarrativeLines,
 ) {
-    if let Some((room, feature)) = content.room(room_id).and_then(|room| {
-        room.features
-            .iter()
-            .find(|feature| feature.id == feature_id)
-            .map(|feature| (room, feature))
-    }) {
+    if let Some(feature) = content.feature(room_id, feature_id) {
         state.mark_actor_feature_seen(actor_id, room_id, feature_id);
         state.push_actor_observation_note(actor_id, feature.inspect_text.clone());
         if state.current_room_id == room_id
@@ -111,7 +102,6 @@ pub(crate) fn handle_actor_observed_feature(
         {
             lines.narration(line);
         }
-        let _ = room;
     } else {
         lines.narration(content.presentation.error_text.room_missing.clone());
     }

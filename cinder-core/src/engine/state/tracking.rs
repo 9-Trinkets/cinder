@@ -9,6 +9,22 @@ impl WorldState {
             .unwrap_or(default_room_id)
     }
 
+    /// The actor's resolved current room: their override if one exists,
+    /// otherwise the home room declared in content (empty for unknown actors).
+    pub fn actor_current_room_id<'a>(
+        &'a self,
+        content: &'a ContentPack,
+        actor_id: &str,
+    ) -> &'a str {
+        if let Some(room_id) = self.actor_room_overrides.get(actor_id) {
+            return room_id;
+        }
+        content
+            .actor(actor_id)
+            .map(|actor| actor.room_id.as_str())
+            .unwrap_or_default()
+    }
+
     /// Whether `actor_id` is physically present in `room_id` right now.
     /// The single presence predicate: resolves the actor's current room and
     /// returns `false` for offstage actors, so no caller relies on the

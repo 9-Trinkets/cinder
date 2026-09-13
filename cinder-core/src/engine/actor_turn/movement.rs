@@ -60,11 +60,7 @@ pub(crate) fn is_actor_movement_locked(
     {
         return Ok(true);
     }
-    let default_room_id = content
-        .actor(actor_id)
-        .map(|actor| actor.room_id.clone())
-        .unwrap_or_default();
-    let current_room_id = state.actor_room_id(actor_id, &default_room_id);
+    let current_room_id = state.actor_current_room_id(content, actor_id);
     let rules = content.movement_rules(actor_id);
     if actor_is_locked_to_target_room(state, &rules, current_room_id) {
         return Ok(true);

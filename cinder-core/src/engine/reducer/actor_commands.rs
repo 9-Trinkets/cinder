@@ -207,11 +207,7 @@ pub(super) fn apply_actor_command_realization_effects(
                 let Some(feature_id) = context.feature_id else {
                     return false;
                 };
-                let Some(feature) = content.room(context.room_id).and_then(|room| {
-                    room.features
-                        .iter()
-                        .find(|feature| feature.id == feature_id)
-                }) else {
+                let Some(feature) = content.feature(context.room_id, feature_id) else {
                     return false;
                 };
                 state.mark_actor_feature_seen(context.actor_id, context.room_id, feature_id);
@@ -410,13 +406,7 @@ pub(super) fn resolve_actor_command_labels(
         String::new(),
         context
             .feature_id
-            .and_then(|feature_id| {
-                content
-                    .room(context.room_id)?
-                    .features
-                    .iter()
-                    .find(|feature| feature.id == feature_id)
-            })
+            .and_then(|feature_id| content.feature(context.room_id, feature_id))
             .map(|feature| feature.label.clone())
             .unwrap_or_default(),
     ))

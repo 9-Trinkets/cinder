@@ -169,7 +169,7 @@ pub(crate) fn build_chapter_script_summary_prompt(request: &ChapterScriptSummary
         template,
         &[(
             "transcript",
-            &format_chapter_lines(
+            &format_bullets(
                 &request.transcript_lines,
                 &text.chapter_script_summary_empty,
             ),
@@ -186,7 +186,7 @@ pub(crate) fn build_chapter_relationship_summary_prompt(
         template,
         &[(
             "pair_stats",
-            &format_chapter_lines(
+            &format_bullets(
                 &request.pair_stat_lines,
                 &text.chapter_relationship_summary_empty,
             ),
@@ -345,17 +345,6 @@ fn format_stat_map(stats: &std::collections::BTreeMap<String, i32>) -> String {
         .map(|(key, value)| format!("{key}={value}"))
         .collect::<Vec<_>>()
         .join(", ")
-}
-
-fn format_chapter_lines(lines: &[String], empty_message: &str) -> String {
-    if lines.is_empty() {
-        return format!("- {empty_message}");
-    }
-    lines
-        .iter()
-        .map(|line| format!("- {}", sanitize_statement(line)))
-        .collect::<Vec<_>>()
-        .join("\n")
 }
 
 pub(crate) fn format_memory(

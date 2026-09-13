@@ -16,7 +16,7 @@ pub struct MovieData {
     pub narrative_lines: Vec<String>,
 }
 
-#[derive(Clone, Serialize)]
+#[derive(Clone, Serialize, Default)]
 pub struct CommandResponse {
     pub text: String,
     /// The narrative lines behind `text`, each tagged with its styling kind.
@@ -27,6 +27,17 @@ pub struct CommandResponse {
     pub act_closure: Option<ActClosure>,
     pub game_closure: Option<ActClosure>,
     pub ui_snapshot: Option<UiSnapshot>,
+}
+
+impl CommandResponse {
+    pub fn new(text: String, game_over: bool, ui_snapshot: Option<UiSnapshot>) -> Self {
+        CommandResponse {
+            text,
+            game_over,
+            ui_snapshot,
+            ..Default::default()
+        }
+    }
 }
 
 pub(super) fn act_closure_data(

@@ -174,10 +174,7 @@ pub(super) fn plan_content_command(
             to_item_storage(action.available.consumes_item_storage.clone()),
             context.current_room_id,
         ) {
-            let label = content
-                .item(item_id)
-                .map(|i| i.label.as_str())
-                .unwrap_or(item_id);
+            let label = content.item_label(item_id);
             planned.events.push(WorldEvent::ActionRejected {
                 message: content
                     .render_message("error.missing_item", &[("label", label)])
@@ -269,10 +266,7 @@ pub(super) fn plan_content_command(
             context.current_room_id,
         )
     {
-        let label = content
-            .item(item_id)
-            .map(|item| item.label.as_str())
-            .unwrap_or(item_id);
+        let label = content.item_label(item_id);
         planned.events.push(WorldEvent::ActionRejected {
             message: content
                 .render_message("error.trace_mark_exists", &[("label", label)])

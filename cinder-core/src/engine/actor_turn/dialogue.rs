@@ -1,12 +1,12 @@
 use super::builder::ActorTurnTargetContext;
 use super::context::{SpeakCandidateContext, actors_in_room_except};
-use crate::content::types::{ActorDefinition, ContentPack, SpeechIntentEffect};
-use crate::engine::dialogue::{DialogueGenerator, DirectSpeechIntentRequest};
+use crate::content::types::{ActorDefinition, ContentPack};
+use crate::engine::dialogue::{DialogueGenerator, DialogueRequest, DirectSpeechIntentRequest};
 use crate::engine::dialogue_grounding::{
     build_grounded_dialogue_request_for_exchange, build_grounded_dialogue_request_for_room,
     latest_other_person_message,
 };
-use crate::engine::events::WorldEvent;
+use crate::engine::events::{WorldEvent, apply_speech_intent_effects};
 use crate::engine::messaging::ChannelMessage;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
 use std::error::Error;
@@ -27,57 +27,7 @@ pub(crate) fn actor_action_dialogue(
         "the room",
     )?;
     request.response_notes = content.system_text.actor_action_response_notes.clone();
-    let trace_backend = dialogue.trace_metadata("actor_dialogue");
-    emit_trace(
-        "actor_dialogue",
-        "model.request",
-        serde_json::json!({
-            "actor_id": request.actor_id,
-            "actor_name": request.actor_name,
-            "other_person_id": request.other_person_id,
-            "other_person_name": request.other_person_name,
-            "dialogue_request": request.clone(),
-            "prompt": dialogue.build_prompt(&request),
-            "backend": trace_backend.clone(),
-        }),
-    )
-    .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
-    match dialogue.generate(&request) {
-        Ok(text) => {
-            emit_trace(
-                "actor_dialogue",
-                "model.response",
-                serde_json::json!({
-                    "actor_id": request.actor_id,
-                    "actor_name": request.actor_name,
-                    "other_person_id": request.other_person_id,
-                    "other_person_name": request.other_person_name,
-                    "response_text": text.clone(),
-                    "backend": trace_backend,
-                }),
-            )
-            .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
-            Ok(text)
-        }
-        Err(error) => {
-            emit_trace(
-                "actor_dialogue",
-                "model.response",
-                serde_json::json!({
-                    "actor_id": request.actor_id,
-                    "actor_name": request.actor_name,
-                    "other_person_id": request.other_person_id,
-                    "other_person_name": request.other_person_name,
-                    "error": error.clone(),
-                    "backend": trace_backend,
-                }),
-            )
-            .map_err(|trace_error| -> Box<dyn Error> {
-                Box::new(std::io::Error::other(trace_error))
-            })?;
-            Err(Box::new(std::io::Error::other(error)))
-        }
-    }
+    generate_traced(dialogue, &request, emit_trace)
 }
 
 pub(crate) fn recent_actor_turn_memory(
@@ -142,57 +92,7 @@ pub(crate) fn actor_to_actor_dialogue(
         &target.actor_name,
         other_person_message.clone(),
     )?;
-    let trace_backend = dialogue.trace_metadata("actor_dialogue");
-    emit_trace(
-        "actor_dialogue",
-        "model.request",
-        serde_json::json!({
-            "actor_id": request.actor_id,
-            "actor_name": request.actor_name,
-            "other_person_id": request.other_person_id,
-            "other_person_name": request.other_person_name,
-            "dialogue_request": request.clone(),
-            "prompt": dialogue.build_prompt(&request),
-            "backend": trace_backend.clone(),
-        }),
-    )
-    .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
-    let text = match dialogue.generate(&request) {
-        Ok(text) => {
-            emit_trace(
-                "actor_dialogue",
-                "model.response",
-                serde_json::json!({
-                    "actor_id": request.actor_id,
-                    "actor_name": request.actor_name,
-                    "other_person_id": request.other_person_id,
-                    "other_person_name": request.other_person_name,
-                    "response_text": text.clone(),
-                    "backend": trace_backend,
-                }),
-            )
-            .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
-            text
-        }
-        Err(error) => {
-            emit_trace(
-                "actor_dialogue",
-                "model.response",
-                serde_json::json!({
-                    "actor_id": request.actor_id,
-                    "actor_name": request.actor_name,
-                    "other_person_id": request.other_person_id,
-                    "other_person_name": request.other_person_name,
-                    "error": error.clone(),
-                    "backend": trace_backend,
-                }),
-            )
-            .map_err(|trace_error| -> Box<dyn Error> {
-                Box::new(std::io::Error::other(trace_error))
-            })?;
-            return Err(Box::new(std::io::Error::other(error)));
-        }
-    };
+    let text = generate_traced(dialogue, &request, emit_trace)?;
     let attraction_request = DirectSpeechIntentRequest {
         locale: request.locale.clone(),
         system_text: request.system_text.clone(),
@@ -254,30 +154,12 @@ pub(crate) fn actor_to_actor_dialogue(
             other_person_message.as_deref(),
         ),
     }];
-    if let Some(intent) = intents
-        .iter()
-        .find(|i| i.label.eq_ignore_ascii_case(&decision.0))
-    {
-        for effect in &intent.effects {
-            match effect {
-                SpeechIntentEffect::ActorStat { stat, delta } => {
-                    events.push(WorldEvent::ActorStatAdjusted {
-                        actor_id: actor_id.clone(),
-                        stat: stat.clone(),
-                        delta: *delta,
-                    });
-                }
-                SpeechIntentEffect::PairStat { stat, delta } => {
-                    events.push(WorldEvent::PairStatAdjusted {
-                        participant_a_id: actor_id.clone(),
-                        participant_b_id: other_person_id.clone(),
-                        stat: stat.clone(),
-                        delta: *delta,
-                    });
-                }
-            }
-        }
-    }
+    events.extend(apply_speech_intent_effects(
+        content,
+        &decision,
+        &actor_id,
+        &other_person_id,
+    ));
     Ok(events)
 }
 
@@ -296,6 +178,23 @@ pub(crate) fn actor_room_speak_dialogue(
         current_room_id,
         "everyone here",
     )?;
+    let text = generate_traced(dialogue, &request, emit_trace)?;
+    Ok(vec![WorldEvent::ChannelMessage {
+        message: ChannelMessage::room_broadcast(
+            content,
+            state,
+            (&actor.id, &actor.name),
+            &text,
+            current_room_id,
+        ),
+    }])
+}
+
+fn generate_traced(
+    dialogue: &dyn DialogueGenerator,
+    request: &DialogueRequest,
+    emit_trace: &mut dyn FnMut(&str, &str, serde_json::Value) -> Result<(), String>,
+) -> Result<String, Box<dyn Error>> {
     let trace_backend = dialogue.trace_metadata("actor_dialogue");
     emit_trace(
         "actor_dialogue",
@@ -306,12 +205,12 @@ pub(crate) fn actor_room_speak_dialogue(
             "other_person_id": request.other_person_id,
             "other_person_name": request.other_person_name,
             "dialogue_request": request.clone(),
-            "prompt": dialogue.build_prompt(&request),
+            "prompt": dialogue.build_prompt(request),
             "backend": trace_backend.clone(),
         }),
     )
     .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
-    let text = match dialogue.generate(&request) {
+    match dialogue.generate(request) {
         Ok(text) => {
             emit_trace(
                 "actor_dialogue",
@@ -326,7 +225,7 @@ pub(crate) fn actor_room_speak_dialogue(
                 }),
             )
             .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
-            text
+            Ok(text)
         }
         Err(error) => {
             emit_trace(
@@ -344,18 +243,9 @@ pub(crate) fn actor_room_speak_dialogue(
             .map_err(|trace_error| -> Box<dyn Error> {
                 Box::new(std::io::Error::other(trace_error))
             })?;
-            return Err(Box::new(std::io::Error::other(error)));
+            Err(Box::new(std::io::Error::other(error)))
         }
-    };
-    Ok(vec![WorldEvent::ChannelMessage {
-        message: ChannelMessage::room_broadcast(
-            content,
-            state,
-            (&actor.id, &actor.name),
-            &text,
-            current_room_id,
-        ),
-    }])
+    }
 }
 
 pub(crate) fn actor_turn_setting_notes(

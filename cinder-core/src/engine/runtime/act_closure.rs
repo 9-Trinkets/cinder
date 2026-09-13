@@ -1,4 +1,5 @@
 use super::{ActClosure, ActClosureSection, CinderRuntime};
+use crate::content::text_defs::ActClosureDefinition;
 use crate::content::types::ActClosureSource;
 use crate::engine::dialogue::{
     ChapterRelationshipSummaryRequest, ChapterScriptSummaryRequest, SynapseChapterSummaryGenerator,
@@ -7,6 +8,7 @@ use crate::engine::dialogue_grounding::render_story_text;
 use crate::engine::state::{GamePhase, WorldState};
 use serde::Serialize;
 use std::error::Error;
+use std::sync::Mutex;
 
 #[derive(Debug, Clone, Serialize)]
 pub struct RelationshipPair {
@@ -177,147 +179,50 @@ impl CinderRuntime {
         &self,
         transcript_lines: &[String],
     ) -> Result<Option<ActClosure>, Box<dyn Error>> {
-        {
-            let cached = self.act_closure.lock().map_err(|error| error.to_string())?;
-            if let Some(closure) = cached.as_ref() {
-                return Ok(Some(closure.clone()));
-            }
-        }
-        {
-            let state = self
-                .state
-                .lock()
-                .map_err(|_| "failed to lock runtime state for act closure guard")?;
-            if state.phase != GamePhase::ActEnded {
-                return Ok(None);
-            }
-        }
-        let definition = &self.content.ui_text.act_closure;
-        if definition.sections.is_empty() || definition.title.trim().is_empty() {
-            return Ok(None);
-        }
-
-        let summary = definition
-            .sections
-            .iter()
-            .any(|section| {
-                matches!(
-                    section.source,
-                    ActClosureSource::TranscriptHighlights
-                        | ActClosureSource::RelationshipSummary
-                        | ActClosureSource::ContinuationPreview
-                )
-            })
-            .then(|| self.final_chapter_summary(transcript_lines))
-            .transpose()?;
-
-        let perspective = definition
-            .sections
-            .iter()
-            .any(|section| {
-                matches!(
-                    section.source,
-                    ActClosureSource::PerspectiveRating | ActClosureSource::PerspectiveReview
-                )
-            })
-            .then(|| self.build_perspective_review())
-            .transpose()?
-            .flatten();
-
-        let subject_name = perspective
-            .as_ref()
-            .map(|review| review.subject_name.clone())
-            .or_else(|| self.current_cast_member_name().ok().flatten());
-
-        let subtitle = if definition.subtitle_template.trim().is_empty() {
-            None
-        } else {
-            Some(self.content.render_template(
-                &definition.subtitle_template,
-                &[("subject_name", subject_name.as_deref().unwrap_or(""))],
-            ))
-        }
-        .filter(|value| !value.trim().is_empty());
-
-        let sections = definition
-            .sections
-            .iter()
-            .filter_map(|section| match section.source {
-                ActClosureSource::PerspectiveRating => {
-                    perspective
-                        .as_ref()
-                        .map(|review| ActClosureSection::Rating {
-                            title: section.title.clone(),
-                            value: review.review.rating,
-                            max: 5,
-                        })
-                }
-                ActClosureSource::PerspectiveReview => {
-                    perspective.as_ref().map(|review| ActClosureSection::Text {
-                        title: section.title.clone(),
-                        body: review.review.review_text.clone(),
-                    })
-                }
-                ActClosureSource::TranscriptHighlights => {
-                    summary.as_ref().map(|summary| ActClosureSection::Text {
-                        title: section.title.clone(),
-                        body: summary.what_happened.clone(),
-                    })
-                }
-                ActClosureSource::RelationshipSummary => {
-                    summary.as_ref().map(|summary| ActClosureSection::Text {
-                        title: section.title.clone(),
-                        body: summary.relationship_status.clone(),
-                    })
-                }
-                ActClosureSource::ContinuationPreview => {
-                    summary.as_ref().map(|summary| ActClosureSection::Text {
-                        title: section.title.clone(),
-                        body: summary.next_chapter_preview.clone(),
-                    })
-                }
-            })
-            .collect::<Vec<_>>();
-
-        if sections.is_empty() {
-            return Ok(None);
-        }
-
-        let closure = ActClosure {
-            title: definition.title.clone(),
-            subtitle,
-            sections,
-        };
-        {
-            let mut cached = self.act_closure.lock().map_err(|error| error.to_string())?;
-            *cached = Some(closure.clone());
-        }
-        Ok(Some(closure))
+        self.build_closure(
+            transcript_lines,
+            GamePhase::ActEnded,
+            &self.content.ui_text.act_closure,
+            &self.act_closure,
+            "act",
+        )
     }
 
     pub fn game_closure(
         &self,
         transcript_lines: &[String],
     ) -> Result<Option<ActClosure>, Box<dyn Error>> {
+        self.build_closure(
+            transcript_lines,
+            GamePhase::GameEnded,
+            &self.content.ui_text.game_closure,
+            &self.game_closure,
+            "game",
+        )
+    }
+
+    fn build_closure(
+        &self,
+        transcript_lines: &[String],
+        phase: GamePhase,
+        definition: &ActClosureDefinition,
+        cache: &Mutex<Option<ActClosure>>,
+        phase_label: &str,
+    ) -> Result<Option<ActClosure>, Box<dyn Error>> {
         {
-            let cached = self
-                .game_closure
-                .lock()
-                .map_err(|error| error.to_string())?;
+            let cached = cache.lock().map_err(|error| error.to_string())?;
             if let Some(closure) = cached.as_ref() {
                 return Ok(Some(closure.clone()));
             }
         }
         {
-            let state = self
-                .state
-                .lock()
-                .map_err(|_| "failed to lock runtime state for game closure guard")?;
-            if state.phase != GamePhase::GameEnded {
+            let state = self.state.lock().map_err(|_| {
+                format!("failed to lock runtime state for {phase_label} closure guard")
+            })?;
+            if state.phase != phase {
                 return Ok(None);
             }
         }
-        let definition = &self.content.ui_text.game_closure;
         if definition.sections.is_empty() || definition.title.trim().is_empty() {
             return Ok(None);
         }
@@ -414,10 +319,7 @@ impl CinderRuntime {
             sections,
         };
         {
-            let mut cached = self
-                .game_closure
-                .lock()
-                .map_err(|error| error.to_string())?;
+            let mut cached = cache.lock().map_err(|error| error.to_string())?;
             *cached = Some(closure.clone());
         }
         Ok(Some(closure))

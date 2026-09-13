@@ -5,6 +5,7 @@ import * as api from '../api'
 import Button from '../components/Button'
 import Card from '../components/Card'
 import Skeleton from '../components/Skeleton'
+import { toErrorMessage } from '../utils/error'
 
 export default function GamesPage() {
   const { token, logout } = useAuth()
@@ -17,7 +18,7 @@ export default function GamesPage() {
     if (!token) return
     api.listPacks(token)
       .then(setPacks)
-      .catch(err => setError(err instanceof Error ? err.message : 'failed to load'))
+      .catch(err => setError(toErrorMessage(err, 'failed to load')))
       .finally(() => setLoading(false))
   }, [token])
 

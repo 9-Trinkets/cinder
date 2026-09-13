@@ -43,12 +43,7 @@ pub(crate) fn build_equipment_panel_options(
         } else {
             let labels = replaced
                 .iter()
-                .map(|id| {
-                    content
-                        .item(id)
-                        .map(|equipped| equipped.label.as_str())
-                        .unwrap_or(id)
-                })
+                .map(|id| content.item_label(id).to_string())
                 .collect::<Vec<_>>()
                 .join(", ");
             format!(" | replaces {labels}")

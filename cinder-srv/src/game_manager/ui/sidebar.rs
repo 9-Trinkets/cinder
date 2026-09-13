@@ -175,10 +175,7 @@ pub(super) fn build_equipped_items(state: &WorldState, content: &ContentPack) ->
         .into_iter()
         .map(|(item_id, mut slots)| {
             slots.sort_by_key(|slot| slot_rank(slot));
-            let label = content
-                .item(item_id)
-                .map(|item| item.label.clone())
-                .unwrap_or_else(|| item_id.to_string());
+            let label = content.item_label(item_id).to_string();
             EquippedItem {
                 slot: slots.join("+"),
                 label,
@@ -204,10 +201,7 @@ pub(super) fn build_inventory(
         .unwrap_or_default()
         .into_iter()
         .map(|(id, count)| {
-            let label = content
-                .item(&id)
-                .map(|item| item.label.clone())
-                .unwrap_or_else(|| id.clone());
+            let label = content.item_label(&id).to_string();
             InventoryItem {
                 label,
                 count,
@@ -228,10 +222,7 @@ pub(super) fn build_current_room_items(
         .loose_room_items(current_room_id)
         .into_iter()
         .map(|(item_id, count)| {
-            let label = content
-                .item(&item_id)
-                .map(|item| item.label.clone())
-                .unwrap_or_else(|| item_id.clone());
+            let label = content.item_label(&item_id).to_string();
             InventoryItem {
                 label,
                 count,

@@ -200,9 +200,10 @@ fn resolve_support(
 ) -> Option<PartyReactionOutcome> {
     let target_id = resolve_party_reaction_target(content, state, decision, attacker_id)?;
     let player_id = content.settings.combat.player_actor_id.as_str();
-    if (target_id != player_id && state.stance(&target_id) != ActorStance::Allied)
-        || (target_id != player_id
-            && !state.actor_is_in_room(content, &target_id, &state.current_room_id))
+    let not_ally_or_outside = target_id != player_id
+        && (state.stance(&target_id) != ActorStance::Allied
+            || !state.actor_is_in_room(content, &target_id, &state.current_room_id));
+    if not_ally_or_outside
         || state.actor_is_defeated(&target_id, &content.settings.combat.health_stat_id)
     {
         return None;

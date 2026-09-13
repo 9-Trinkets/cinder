@@ -40,11 +40,7 @@ pub(crate) fn handle_hostile_strike(
     if state.current_time_minutes < *state.next_hostile_strike_at.get(actor_id).unwrap_or(&0) {
         return;
     }
-    let default_room_id = content
-        .actor(actor_id)
-        .map(|actor| actor.room_id.clone())
-        .unwrap_or_default();
-    if state.actor_room_id(actor_id, &default_room_id) != state.current_room_id {
+    if state.actor_current_room_id(content, actor_id) != state.current_room_id {
         return;
     }
     let raw_damage = (state.actor_stat(actor_id, &combat.attack_stat_id)

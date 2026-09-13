@@ -40,8 +40,18 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json()
 }
 
-function authHeader(token: string): HeadersInit {
-  return { Authorization: `Bearer ${token}` }
+async function reqAuth<T>(
+  path: string,
+  token: string,
+  init?: RequestInit,
+): Promise<T> {
+  return req<T>(path, {
+    ...init,
+    headers: {
+      Authorization: `Bearer ${token}`,
+      ...init?.headers,
+    },
+  })
 }
 
 export interface AuthResponse {
@@ -75,23 +85,16 @@ export interface PlayInfo {
   current_room_name: string
 }
 
-export type SessionInfo = PlayInfo
-
 export function createPlay(token: string, packId: string) {
-  return req<PlayInfo>('/games', {
+  return reqAuth<PlayInfo>('/games', token, {
     method: 'POST',
-    headers: authHeader(token),
     body: JSON.stringify({ pack_id: packId }),
   })
 }
-export const createSession = createPlay
 
 export function listPlays(token: string) {
-  return req<PlayInfo[]>('/games', {
-    headers: authHeader(token),
-  })
+  return reqAuth<PlayInfo[]>('/games', token)
 }
-export const listSessions = listPlays
 
 export interface MovieFrameData {
   text: string
@@ -122,17 +125,15 @@ export interface CommandResponse {
 }
 
 export function runCommand(token: string, playId: string, input: string) {
-  return req<CommandResponse>(`/games/${playId}/command`, {
+  return reqAuth<CommandResponse>(`/games/${playId}/command`, token, {
     method: 'POST',
-    headers: authHeader(token),
     body: JSON.stringify({ input }),
   })
 }
 
 export function runRealtimeTick(token: string, playId: string) {
-  return req<CommandResponse>(`/games/${playId}/tick`, {
+  return reqAuth<CommandResponse>(`/games/${playId}/tick`, token, {
     method: 'POST',
-    headers: authHeader(token),
   })
 }
 
@@ -405,57 +406,45 @@ export interface UiSnapshot {
 }
 
 export function fetchPlayUi(token: string, playId: string) {
-  return req<UiSnapshot>(`/games/${playId}/ui`, {
-    headers: authHeader(token),
-  })
+  return reqAuth<UiSnapshot>(`/games/${playId}/ui`, token)
 }
-export const fetchSessionUi = fetchPlayUi
 
 export function switchRoom(token: string, playId: string, roomId: string) {
-  return req<CommandResponse>(`/games/${playId}/room`, {
+  return reqAuth<CommandResponse>(`/games/${playId}/room`, token, {
     method: 'POST',
-    headers: authHeader(token),
     body: JSON.stringify({ room_id: roomId }),
   })
 }
 
 export function followActor(token: string, playId: string, actorId: string | null) {
-  return req<CommandResponse>(`/games/${playId}/follow`, {
+  return reqAuth<CommandResponse>(`/games/${playId}/follow`, token, {
     method: 'POST',
-    headers: authHeader(token),
     body: JSON.stringify({ actor_id: actorId }),
   })
 }
 
 export function setLocale(token: string, playId: string, locale: string) {
-  return req<CommandResponse>(`/games/${playId}/locale`, {
+  return reqAuth<CommandResponse>(`/games/${playId}/locale`, token, {
     method: 'POST',
-    headers: authHeader(token),
     body: JSON.stringify({ locale }),
   })
 }
 
 export function continuePlay(token: string, playId: string) {
-  return req<CommandResponse>(`/games/${playId}/continue`, {
+  return reqAuth<CommandResponse>(`/games/${playId}/continue`, token, {
     method: 'POST',
-    headers: authHeader(token),
   })
 }
-export const continueSession = continuePlay
 
 export function fetchTranscript(token: string, playId: string) {
-  return req<NarrativeLine[]>(`/games/${playId}/transcript`, {
-    headers: authHeader(token),
-  })
+  return reqAuth<NarrativeLine[]>(`/games/${playId}/transcript`, token)
 }
 
 export function deletePlay(token: string, playId: string) {
-  return req<void>(`/games/${playId}`, {
+  return reqAuth<void>(`/games/${playId}`, token, {
     method: 'DELETE',
-    headers: authHeader(token),
   })
 }
-export const deleteSession = deletePlay
 
 export interface PackInfo {
   id: string
@@ -466,7 +455,5 @@ export interface PackInfo {
 }
 
 export function listPacks(token: string) {
-  return req<PackInfo[]>('/packs', {
-    headers: authHeader(token),
-  })
+  return reqAuth<PackInfo[]>('/packs', token)
 }

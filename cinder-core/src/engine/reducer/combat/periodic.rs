@@ -29,11 +29,7 @@ pub(in crate::engine::reducer) fn handle_periodic_actor_effect_applied(
     {
         return;
     }
-    let default_room_id = content
-        .actor(actor_id)
-        .map(|actor| actor.room_id.as_str())
-        .unwrap_or_default();
-    let room_id = state.actor_room_id(actor_id, default_room_id).to_string();
+    let room_id = state.actor_current_room_id(content, actor_id).to_string();
     if !state.has_item_in_storage(
         &definition.trigger.room_item,
         ItemStorageTarget::CurrentRoom,
@@ -80,10 +76,7 @@ pub(in crate::engine::reducer) fn handle_periodic_actor_effect_applied(
         if remaining_charges <= 1 {
             state.remove_items_from_room(&room_id, &definition.trigger.room_item);
             if let Some(deplete_key) = definition.trigger.deplete_message.as_deref() {
-                let item_label = content
-                    .item(&definition.trigger.room_item)
-                    .map(|item| item.label.as_str())
-                    .unwrap_or(&definition.trigger.room_item);
+                let item_label = content.item_label(&definition.trigger.room_item);
                 if let Some(line) = content.render_message(
                     deplete_key,
                     &[("item", item_label), ("item_id", &definition.trigger.room_item)],

@@ -4,13 +4,12 @@ import Button from './Button'
 import Badge from './Badge'
 import StatusPanel from './StatusPanel'
 import type { UiSnapshot } from '../api'
-
-type View = 'main' | 'rooms' | 'follow' | 'language'
+import type { MenuView } from '../hooks/playUtils'
 
 interface ShellMenuProps {
   ui: UiSnapshot
-  view: View
-  onViewChange: (v: View) => void
+  view: MenuView
+  onViewChange: (v: MenuView) => void
   onClose: () => void
   onSwitchRoom: (roomId: string) => void
   onFollowActor: (actorId: string | null) => void
@@ -147,7 +146,7 @@ interface MainMenuProps {
   items: FlatItem[]
   t: UiSnapshot['ui_text']
   ui: UiSnapshot
-  onViewChange: (v: View) => void
+  onViewChange: (v: MenuView) => void
   onClose: () => void
   onExit: () => void
   busy: boolean
@@ -272,7 +271,7 @@ function MenuBackButton({ onClick }: { onClick: () => void }) {
   )
 }
 
-const VIEW_ROUTE: Record<string, View> = {
+const VIEW_ROUTE: Record<string, MenuView> = {
   rooms: 'rooms',
   follow: 'follow',
   language: 'language',
@@ -280,7 +279,7 @@ const VIEW_ROUTE: Record<string, View> = {
 
 function handleItemClick(
   id: string,
-  onViewChange: (v: View) => void,
+  onViewChange: (v: MenuView) => void,
   onExit: () => void,
 ) {
   if (id === 'exit') { onExit(); return }

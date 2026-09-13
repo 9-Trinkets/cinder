@@ -96,11 +96,7 @@ pub(crate) fn sync_followers_to_room(
         if state.actor_stat(&follower_id, &content.settings.combat.health_stat_id) <= 0 {
             continue;
         }
-        let default_room_id = content
-            .actor(&follower_id)
-            .map(|actor| actor.room_id.clone())
-            .unwrap_or_default();
-        let already_here = state.actor_room_id(&follower_id, &default_room_id) == to_room_id;
+        let already_here = state.actor_current_room_id(content, &follower_id) == to_room_id;
         if !already_here {
             state
                 .actor_room_overrides

@@ -19,10 +19,7 @@ pub(crate) fn handle_item_acquired(
     {
         return;
     }
-    let label = content
-        .item(item_id)
-        .map(|i| i.label.as_str())
-        .unwrap_or(item_id);
+    let label = content.item_label(item_id);
     state.add_item_to_storage(item_id, storage, &room_id);
     match storage {
         ItemStorageTarget::PlayerInventory => {
@@ -53,10 +50,7 @@ pub(crate) fn handle_player_took_item(
     lines: &mut NarrativeLines,
 ) {
     let room_id = state.current_room_id.clone();
-    let label = content
-        .item(item_id)
-        .map(|i| i.label.as_str())
-        .unwrap_or(item_id);
+    let label = content.item_label(item_id);
     if content.item(item_id).is_some_and(|item| !item.is_takeable()) {
         push_message(lines, content, "item.takedenied", &[("label", label)]);
         return;
@@ -76,10 +70,7 @@ pub(crate) fn handle_player_dropped_item(
     lines: &mut NarrativeLines,
 ) {
     let room_id = state.current_room_id.clone();
-    let label = content
-        .item(item_id)
-        .map(|i| i.label.as_str())
-        .unwrap_or(item_id);
+    let label = content.item_label(item_id);
     if content.item(item_id).is_some_and(|item| !item.is_takeable()) {
         push_message(lines, content, "item.takedenied", &[("label", label)]);
         return;
@@ -126,10 +117,7 @@ pub(crate) fn handle_item_consumed(
     consumer_name: Option<&str>,
     lines: &mut NarrativeLines,
 ) {
-    let label = content
-        .item(item_id)
-        .map(|i| i.label.as_str())
-        .unwrap_or(item_id);
+    let label = content.item_label(item_id);
     let room_id = state.current_room_id.clone();
     if state.remove_item_from_storage(item_id, storage, &room_id) {
         if consumer_id == Some(content.settings.combat.player_actor_id.as_str()) {
