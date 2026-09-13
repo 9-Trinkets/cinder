@@ -4108,7 +4108,31 @@
     "title": "The Mushroom Grove",
     "summary": "A cavern floor is choked with pale mushrooms, all leaning toward the glowing canopy above. The air smells of wet earth and something sweet, like crushed fruit.",
     "inspect_text": "Pale mushrooms crowd the floor, every cap leaning toward the glowing canopy above. The air holds wet earth and something sweet — crushed fruit, or a thing that ripened down here.",
-    "features": [],
+    "features": [
+      {
+        "id": "d1c1-mushrooms",
+        "label": "the pale mushrooms",
+        "aliases": [
+          "mushrooms",
+          "mushroom",
+          "caps",
+          "fungi",
+          "pale mushrooms"
+        ],
+        "inspect_text": "Cluster after cluster of knee-high mushrooms sprout from the moist cave soil. Their pale spongy caps all lean uniformly toward the canopy above, as if turning toward a subterranean sun."
+      },
+      {
+        "id": "d1c1-canopy",
+        "label": "the glowing canopy",
+        "aliases": [
+          "canopy",
+          "ceiling",
+          "false sky",
+          "glowing canopy"
+        ],
+        "inspect_text": "High above, living roots knit into an expansive vaulted ceiling woven with luminescent lichen and moss. A soft teal glow filters down through the gloom."
+      }
+    ],
     "exits": [
       {
         "room_id": "d1c2",
@@ -4145,7 +4169,32 @@
     "title": "A Glowing Clearing",
     "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
     "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
-    "features": [],
+    "features": [
+      {
+        "id": "d1c2-spores",
+        "label": "the drifting spores",
+        "aliases": [
+          "spores",
+          "spore",
+          "dust",
+          "drifting spores",
+          "motes"
+        ],
+        "inspect_text": "Glittering spores drift through the still air in lazy arcs, pulsing brighter and dimmer on an even, four-second cadence like a slow subterranean breath."
+      },
+      {
+        "id": "d1c2-sky",
+        "label": "the false sky",
+        "aliases": [
+          "false sky",
+          "sky",
+          "canopy",
+          "ceiling",
+          "glow"
+        ],
+        "inspect_text": "The cavern ceiling shimmers like an artificial twilight sky. It offers just enough illumination to cast sharp shadows and reveal the path ahead."
+      }
+    ],
     "exits": [
       {
         "room_id": "d1c1",
@@ -4178,7 +4227,32 @@
     "title": "A Glowing Clearing",
     "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
     "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
-    "features": [],
+    "features": [
+      {
+        "id": "d1c3-spores",
+        "label": "the drifting spores",
+        "aliases": [
+          "spores",
+          "spore",
+          "dust",
+          "drifting spores",
+          "motes"
+        ],
+        "inspect_text": "Glittering spores drift through the still air in lazy arcs, pulsing brighter and dimmer on an even, four-second cadence like a slow subterranean breath."
+      },
+      {
+        "id": "d1c3-sky",
+        "label": "the false sky",
+        "aliases": [
+          "false sky",
+          "sky",
+          "canopy",
+          "ceiling",
+          "glow"
+        ],
+        "inspect_text": "The cavern ceiling shimmers like an artificial twilight sky. It offers just enough illumination to cast sharp shadows and reveal the path ahead."
+      }
+    ],
     "exits": [
       {
         "room_id": "d1c2",
@@ -4211,7 +4285,32 @@
     "title": "A Glowing Clearing",
     "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
     "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
-    "features": [],
+    "features": [
+      {
+        "id": "d1c4-spores",
+        "label": "the drifting spores",
+        "aliases": [
+          "spores",
+          "spore",
+          "dust",
+          "drifting spores",
+          "motes"
+        ],
+        "inspect_text": "Glittering spores drift through the still air in lazy arcs, pulsing brighter and dimmer on an even, four-second cadence like a slow subterranean breath."
+      },
+      {
+        "id": "d1c4-sky",
+        "label": "the false sky",
+        "aliases": [
+          "false sky",
+          "sky",
+          "canopy",
+          "ceiling",
+          "glow"
+        ],
+        "inspect_text": "The cavern ceiling shimmers like an artificial twilight sky. It offers just enough illumination to cast sharp shadows and reveal the path ahead."
+      }
+    ],
     "exits": [
       {
         "room_id": "d1c3",
@@ -4244,7 +4343,32 @@
     "title": "A Glowing Clearing",
     "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
     "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
-    "features": [],
+    "features": [
+      {
+        "id": "d1c5-spores",
+        "label": "the drifting spores",
+        "aliases": [
+          "spores",
+          "spore",
+          "dust",
+          "drifting spores",
+          "motes"
+        ],
+        "inspect_text": "Glittering spores drift through the still air in lazy arcs, pulsing brighter and dimmer on an even, four-second cadence like a slow subterranean breath."
+      },
+      {
+        "id": "d1c5-sky",
+        "label": "the false sky",
+        "aliases": [
+          "false sky",
+          "sky",
+          "canopy",
+          "ceiling",
+          "glow"
+        ],
+        "inspect_text": "The cavern ceiling shimmers like an artificial twilight sky. It offers just enough illumination to cast sharp shadows and reveal the path ahead."
+      }
+    ],
     "exits": [
       {
         "room_id": "d1c4",
@@ -4277,7 +4401,32 @@
     "title": "A Glowing Clearing",
     "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
     "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
-    "features": [],
+    "features": [
+      {
+        "id": "d1c6-spores",
+        "label": "the drifting spores",
+        "aliases": [
+          "spores",
+          "spore",
+          "dust",
+          "drifting spores",
+          "motes"
+        ],
+        "inspect_text": "Glittering spores drift through the still air in lazy arcs, pulsing brighter and dimmer on an even, four-second cadence like a slow subterranean breath."
+      },
+      {
+        "id": "d1c6-sky",
+        "label": "the false sky",
+        "aliases": [
+          "false sky",
+          "sky",
+          "canopy",
+          "ceiling",
+          "glow"
+        ],
+        "inspect_text": "The cavern ceiling shimmers like an artificial twilight sky. It offers just enough illumination to cast sharp shadows and reveal the path ahead."
+      }
+    ],
     "exits": [
       {
         "room_id": "d1c5",
@@ -4310,7 +4459,32 @@
     "title": "A Glowing Clearing",
     "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
     "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
-    "features": [],
+    "features": [
+      {
+        "id": "d1c7-spores",
+        "label": "the drifting spores",
+        "aliases": [
+          "spores",
+          "spore",
+          "dust",
+          "drifting spores",
+          "motes"
+        ],
+        "inspect_text": "Glittering spores drift through the still air in lazy arcs, pulsing brighter and dimmer on an even, four-second cadence like a slow subterranean breath."
+      },
+      {
+        "id": "d1c7-sky",
+        "label": "the false sky",
+        "aliases": [
+          "false sky",
+          "sky",
+          "canopy",
+          "ceiling",
+          "glow"
+        ],
+        "inspect_text": "The cavern ceiling shimmers like an artificial twilight sky. It offers just enough illumination to cast sharp shadows and reveal the path ahead."
+      }
+    ],
     "exits": [
       {
         "room_id": "d1c6",
@@ -4343,7 +4517,32 @@
     "title": "A Glowing Clearing",
     "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
     "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
-    "features": [],
+    "features": [
+      {
+        "id": "d1c8-spores",
+        "label": "the drifting spores",
+        "aliases": [
+          "spores",
+          "spore",
+          "dust",
+          "drifting spores",
+          "motes"
+        ],
+        "inspect_text": "Glittering spores drift through the still air in lazy arcs, pulsing brighter and dimmer on an even, four-second cadence like a slow subterranean breath."
+      },
+      {
+        "id": "d1c8-sky",
+        "label": "the false sky",
+        "aliases": [
+          "false sky",
+          "sky",
+          "canopy",
+          "ceiling",
+          "glow"
+        ],
+        "inspect_text": "The cavern ceiling shimmers like an artificial twilight sky. It offers just enough illumination to cast sharp shadows and reveal the path ahead."
+      }
+    ],
     "exits": [
       {
         "room_id": "d1c7",
@@ -4368,7 +4567,32 @@
     "title": "The Root Tangle",
     "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
     "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
-    "features": [],
+    "features": [
+      {
+        "id": "d2c1-roots",
+        "label": "the root tangle",
+        "aliases": [
+          "roots",
+          "root",
+          "tangle",
+          "root tangle",
+          "wood"
+        ],
+        "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
+      },
+      {
+        "id": "d2c1-walls",
+        "label": "the living walls",
+        "aliases": [
+          "walls",
+          "wall",
+          "stone",
+          "rock",
+          "crevices"
+        ],
+        "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
+      }
+    ],
     "exits": [
       {
         "room_id": "d2c2",
@@ -4401,7 +4625,32 @@
     "title": "The Root Tangle",
     "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
     "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
-    "features": [],
+    "features": [
+      {
+        "id": "d2c2-roots",
+        "label": "the root tangle",
+        "aliases": [
+          "roots",
+          "root",
+          "tangle",
+          "root tangle",
+          "wood"
+        ],
+        "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
+      },
+      {
+        "id": "d2c2-walls",
+        "label": "the living walls",
+        "aliases": [
+          "walls",
+          "wall",
+          "stone",
+          "rock",
+          "crevices"
+        ],
+        "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
+      }
+    ],
     "exits": [
       {
         "room_id": "d2c1",
@@ -4442,7 +4691,32 @@
     "title": "The Root Tangle",
     "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
     "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
-    "features": [],
+    "features": [
+      {
+        "id": "d2c3-roots",
+        "label": "the root tangle",
+        "aliases": [
+          "roots",
+          "root",
+          "tangle",
+          "root tangle",
+          "wood"
+        ],
+        "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
+      },
+      {
+        "id": "d2c3-walls",
+        "label": "the living walls",
+        "aliases": [
+          "walls",
+          "wall",
+          "stone",
+          "rock",
+          "crevices"
+        ],
+        "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
+      }
+    ],
     "exits": [
       {
         "room_id": "d2c2",
@@ -4483,7 +4757,32 @@
     "title": "The Root Tangle",
     "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
     "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
-    "features": [],
+    "features": [
+      {
+        "id": "d2c4-roots",
+        "label": "the root tangle",
+        "aliases": [
+          "roots",
+          "root",
+          "tangle",
+          "root tangle",
+          "wood"
+        ],
+        "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
+      },
+      {
+        "id": "d2c4-walls",
+        "label": "the living walls",
+        "aliases": [
+          "walls",
+          "wall",
+          "stone",
+          "rock",
+          "crevices"
+        ],
+        "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
+      }
+    ],
     "exits": [
       {
         "room_id": "d2c3",
@@ -4524,7 +4823,32 @@
     "title": "The Root Tangle",
     "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
     "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
-    "features": [],
+    "features": [
+      {
+        "id": "d2c5-roots",
+        "label": "the root tangle",
+        "aliases": [
+          "roots",
+          "root",
+          "tangle",
+          "root tangle",
+          "wood"
+        ],
+        "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
+      },
+      {
+        "id": "d2c5-walls",
+        "label": "the living walls",
+        "aliases": [
+          "walls",
+          "wall",
+          "stone",
+          "rock",
+          "crevices"
+        ],
+        "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
+      }
+    ],
     "exits": [
       {
         "room_id": "d2c4",
@@ -4565,7 +4889,32 @@
     "title": "The Root Tangle",
     "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
     "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
-    "features": [],
+    "features": [
+      {
+        "id": "d2c6-roots",
+        "label": "the root tangle",
+        "aliases": [
+          "roots",
+          "root",
+          "tangle",
+          "root tangle",
+          "wood"
+        ],
+        "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
+      },
+      {
+        "id": "d2c6-walls",
+        "label": "the living walls",
+        "aliases": [
+          "walls",
+          "wall",
+          "stone",
+          "rock",
+          "crevices"
+        ],
+        "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
+      }
+    ],
     "exits": [
       {
         "room_id": "d2c5",
@@ -4606,7 +4955,32 @@
     "title": "The Root Tangle",
     "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
     "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
-    "features": [],
+    "features": [
+      {
+        "id": "d2c7-roots",
+        "label": "the root tangle",
+        "aliases": [
+          "roots",
+          "root",
+          "tangle",
+          "root tangle",
+          "wood"
+        ],
+        "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
+      },
+      {
+        "id": "d2c7-walls",
+        "label": "the living walls",
+        "aliases": [
+          "walls",
+          "wall",
+          "stone",
+          "rock",
+          "crevices"
+        ],
+        "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
+      }
+    ],
     "exits": [
       {
         "room_id": "d2c6",
@@ -4647,7 +5021,32 @@
     "title": "The Root Tangle",
     "summary": "Great roots as thick as your arm weave through the walls here, and between them the forest breathes in and out. Somewhere at the edge of your hearing, something keeps time with it.",
     "inspect_text": "Great roots lace the walls and ceiling here, and between them the quiet forest breathes. You listen for a moment; somewhere in the dark, something answers on the same slow rhythm.",
-    "features": [],
+    "features": [
+      {
+        "id": "d2c8-roots",
+        "label": "the root tangle",
+        "aliases": [
+          "roots",
+          "root",
+          "tangle",
+          "root tangle",
+          "wood"
+        ],
+        "inspect_text": "Gnarled roots as thick as your torso twist through cracks in the stone walls. They pulse with faint sap-warmth, flexing almost imperceptibly against the rock."
+      },
+      {
+        "id": "d2c8-walls",
+        "label": "the living walls",
+        "aliases": [
+          "walls",
+          "wall",
+          "stone",
+          "rock",
+          "crevices"
+        ],
+        "inspect_text": "Limestone blocks split by ancient wood. Cool water weeps down the fissures, feeding dense coats of dark moss."
+      }
+    ],
     "exits": [
       {
         "room_id": "d2c7",
@@ -4680,7 +5079,30 @@
     "title": "A Still Pool Glade",
     "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
     "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
-    "features": [],
+    "features": [
+      {
+        "id": "d3c1-pool",
+        "label": "the still pool",
+        "aliases": [
+          "pool",
+          "water",
+          "still pool",
+          "basin"
+        ],
+        "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
+      },
+      {
+        "id": "d3c1-ripples",
+        "label": "the ripples",
+        "aliases": [
+          "ripples",
+          "ripple",
+          "surface",
+          "water ripples"
+        ],
+        "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
+      }
+    ],
     "exits": [
       {
         "room_id": "d3c2",
@@ -4713,7 +5135,30 @@
     "title": "A Still Pool Glade",
     "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
     "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
-    "features": [],
+    "features": [
+      {
+        "id": "d3c2-pool",
+        "label": "the still pool",
+        "aliases": [
+          "pool",
+          "water",
+          "still pool",
+          "basin"
+        ],
+        "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
+      },
+      {
+        "id": "d3c2-ripples",
+        "label": "the ripples",
+        "aliases": [
+          "ripples",
+          "ripple",
+          "surface",
+          "water ripples"
+        ],
+        "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
+      }
+    ],
     "exits": [
       {
         "room_id": "d3c1",
@@ -4754,7 +5199,30 @@
     "title": "A Still Pool Glade",
     "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
     "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
-    "features": [],
+    "features": [
+      {
+        "id": "d3c3-pool",
+        "label": "the still pool",
+        "aliases": [
+          "pool",
+          "water",
+          "still pool",
+          "basin"
+        ],
+        "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
+      },
+      {
+        "id": "d3c3-ripples",
+        "label": "the ripples",
+        "aliases": [
+          "ripples",
+          "ripple",
+          "surface",
+          "water ripples"
+        ],
+        "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
+      }
+    ],
     "exits": [
       {
         "room_id": "d3c2",
@@ -4795,7 +5263,30 @@
     "title": "A Still Pool Glade",
     "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
     "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
-    "features": [],
+    "features": [
+      {
+        "id": "d3c4-pool",
+        "label": "the still pool",
+        "aliases": [
+          "pool",
+          "water",
+          "still pool",
+          "basin"
+        ],
+        "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
+      },
+      {
+        "id": "d3c4-ripples",
+        "label": "the ripples",
+        "aliases": [
+          "ripples",
+          "ripple",
+          "surface",
+          "water ripples"
+        ],
+        "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
+      }
+    ],
     "exits": [
       {
         "room_id": "d3c3",
@@ -4836,7 +5327,30 @@
     "title": "A Still Pool Glade",
     "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
     "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
-    "features": [],
+    "features": [
+      {
+        "id": "d3c5-pool",
+        "label": "the still pool",
+        "aliases": [
+          "pool",
+          "water",
+          "still pool",
+          "basin"
+        ],
+        "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
+      },
+      {
+        "id": "d3c5-ripples",
+        "label": "the ripples",
+        "aliases": [
+          "ripples",
+          "ripple",
+          "surface",
+          "water ripples"
+        ],
+        "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
+      }
+    ],
     "exits": [
       {
         "room_id": "d3c4",
@@ -4877,7 +5391,30 @@
     "title": "A Still Pool Glade",
     "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
     "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
-    "features": [],
+    "features": [
+      {
+        "id": "d3c6-pool",
+        "label": "the still pool",
+        "aliases": [
+          "pool",
+          "water",
+          "still pool",
+          "basin"
+        ],
+        "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
+      },
+      {
+        "id": "d3c6-ripples",
+        "label": "the ripples",
+        "aliases": [
+          "ripples",
+          "ripple",
+          "surface",
+          "water ripples"
+        ],
+        "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
+      }
+    ],
     "exits": [
       {
         "room_id": "d3c5",
@@ -4918,7 +5455,30 @@
     "title": "A Still Pool Glade",
     "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
     "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
-    "features": [],
+    "features": [
+      {
+        "id": "d3c7-pool",
+        "label": "the still pool",
+        "aliases": [
+          "pool",
+          "water",
+          "still pool",
+          "basin"
+        ],
+        "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
+      },
+      {
+        "id": "d3c7-ripples",
+        "label": "the ripples",
+        "aliases": [
+          "ripples",
+          "ripple",
+          "surface",
+          "water ripples"
+        ],
+        "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
+      }
+    ],
     "exits": [
       {
         "room_id": "d3c6",
@@ -4959,7 +5519,30 @@
     "title": "A Still Pool Glade",
     "summary": "A round pool of water glows softly, reflecting the canopy like a second sky. Its surface breaks into ripples, though no wind stirs and nothing touches it.",
     "inspect_text": "A pool of still, luminous water lies at your feet, holding the canopy above like a second sky. You watch a ripple cross it; there is no wind, and nothing you can see has touched the water.",
-    "features": [],
+    "features": [
+      {
+        "id": "d3c8-pool",
+        "label": "the still pool",
+        "aliases": [
+          "pool",
+          "water",
+          "still pool",
+          "basin"
+        ],
+        "inspect_text": "A wide limestone basin filled with clear, mineral-rich water. Its surface glows with reflected canopy light, deep enough to swallow a spear."
+      },
+      {
+        "id": "d3c8-ripples",
+        "label": "the ripples",
+        "aliases": [
+          "ripples",
+          "ripple",
+          "surface",
+          "water ripples"
+        ],
+        "inspect_text": "Concentric rings disturb the pool's glassy skin every few moments, though no water drips from above. Something stirs in deep subterranean channels below."
+      }
+    ],
     "exits": [
       {
         "room_id": "d3c7",
@@ -4992,7 +5575,31 @@
     "title": "The Fungus Hollow",
     "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
     "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
-    "features": [],
+    "features": [
+      {
+        "id": "d4c1-mushrooms",
+        "label": "the sentinel mushrooms",
+        "aliases": [
+          "mushrooms",
+          "mushroom",
+          "sentinels",
+          "caps",
+          "sentinel mushrooms"
+        ],
+        "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
+      },
+      {
+        "id": "d4c1-light",
+        "label": "the spore light",
+        "aliases": [
+          "spore light",
+          "light",
+          "pale light",
+          "glow"
+        ],
+        "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
+      }
+    ],
     "exits": [
       {
         "room_id": "d4c2",
@@ -5025,7 +5632,31 @@
     "title": "The Fungus Hollow",
     "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
     "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
-    "features": [],
+    "features": [
+      {
+        "id": "d4c2-mushrooms",
+        "label": "the sentinel mushrooms",
+        "aliases": [
+          "mushrooms",
+          "mushroom",
+          "sentinels",
+          "caps",
+          "sentinel mushrooms"
+        ],
+        "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
+      },
+      {
+        "id": "d4c2-light",
+        "label": "the spore light",
+        "aliases": [
+          "spore light",
+          "light",
+          "pale light",
+          "glow"
+        ],
+        "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
+      }
+    ],
     "exits": [
       {
         "room_id": "d4c1",
@@ -5066,7 +5697,31 @@
     "title": "The Fungus Hollow",
     "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
     "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
-    "features": [],
+    "features": [
+      {
+        "id": "d4c3-mushrooms",
+        "label": "the sentinel mushrooms",
+        "aliases": [
+          "mushrooms",
+          "mushroom",
+          "sentinels",
+          "caps",
+          "sentinel mushrooms"
+        ],
+        "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
+      },
+      {
+        "id": "d4c3-light",
+        "label": "the spore light",
+        "aliases": [
+          "spore light",
+          "light",
+          "pale light",
+          "glow"
+        ],
+        "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
+      }
+    ],
     "exits": [
       {
         "room_id": "d4c2",
@@ -5107,7 +5762,31 @@
     "title": "The Fungus Hollow",
     "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
     "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
-    "features": [],
+    "features": [
+      {
+        "id": "d4c4-mushrooms",
+        "label": "the sentinel mushrooms",
+        "aliases": [
+          "mushrooms",
+          "mushroom",
+          "sentinels",
+          "caps",
+          "sentinel mushrooms"
+        ],
+        "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
+      },
+      {
+        "id": "d4c4-light",
+        "label": "the spore light",
+        "aliases": [
+          "spore light",
+          "light",
+          "pale light",
+          "glow"
+        ],
+        "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
+      }
+    ],
     "exits": [
       {
         "room_id": "d4c3",
@@ -5148,7 +5827,31 @@
     "title": "The Fungus Hollow",
     "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
     "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
-    "features": [],
+    "features": [
+      {
+        "id": "d4c5-mushrooms",
+        "label": "the sentinel mushrooms",
+        "aliases": [
+          "mushrooms",
+          "mushroom",
+          "sentinels",
+          "caps",
+          "sentinel mushrooms"
+        ],
+        "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
+      },
+      {
+        "id": "d4c5-light",
+        "label": "the spore light",
+        "aliases": [
+          "spore light",
+          "light",
+          "pale light",
+          "glow"
+        ],
+        "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
+      }
+    ],
     "exits": [
       {
         "room_id": "d4c4",
@@ -5189,7 +5892,31 @@
     "title": "The Fungus Hollow",
     "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
     "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
-    "features": [],
+    "features": [
+      {
+        "id": "d4c6-mushrooms",
+        "label": "the sentinel mushrooms",
+        "aliases": [
+          "mushrooms",
+          "mushroom",
+          "sentinels",
+          "caps",
+          "sentinel mushrooms"
+        ],
+        "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
+      },
+      {
+        "id": "d4c6-light",
+        "label": "the spore light",
+        "aliases": [
+          "spore light",
+          "light",
+          "pale light",
+          "glow"
+        ],
+        "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
+      }
+    ],
     "exits": [
       {
         "room_id": "d4c5",
@@ -5230,7 +5957,31 @@
     "title": "The Fungus Hollow",
     "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
     "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
-    "features": [],
+    "features": [
+      {
+        "id": "d4c7-mushrooms",
+        "label": "the sentinel mushrooms",
+        "aliases": [
+          "mushrooms",
+          "mushroom",
+          "sentinels",
+          "caps",
+          "sentinel mushrooms"
+        ],
+        "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
+      },
+      {
+        "id": "d4c7-light",
+        "label": "the spore light",
+        "aliases": [
+          "spore light",
+          "light",
+          "pale light",
+          "glow"
+        ],
+        "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
+      }
+    ],
     "exits": [
       {
         "room_id": "d4c6",
@@ -5271,7 +6022,31 @@
     "title": "The Fungus Hollow",
     "summary": "Across the hollow, mushrooms stand like sentinels, each near the height of your knee, planted in even ranks. Their caps throw pale light across the stone.",
     "inspect_text": "Pale light falls across the hollow from a hundred mushroom caps, each set evenly apart like a field that was planted on purpose. The light is cool and steady, good enough to see by.",
-    "features": [],
+    "features": [
+      {
+        "id": "d4c8-mushrooms",
+        "label": "the sentinel mushrooms",
+        "aliases": [
+          "mushrooms",
+          "mushroom",
+          "sentinels",
+          "caps",
+          "sentinel mushrooms"
+        ],
+        "inspect_text": "Stout mushrooms stand in orderly, grid-like rows across the damp earth. Their flat caps cast pale rings of light onto the soil like miniature lanterns."
+      },
+      {
+        "id": "d4c8-light",
+        "label": "the spore light",
+        "aliases": [
+          "spore light",
+          "light",
+          "pale light",
+          "glow"
+        ],
+        "inspect_text": "Cool phosphorescence emanating from beneath the mushroom gills, lighting up the soil in quiet pools."
+      }
+    ],
     "exits": [
       {
         "room_id": "d4c7",
@@ -5304,7 +6079,32 @@
     "title": "A Chalked Trail",
     "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
     "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
-    "features": [],
+    "features": [
+      {
+        "id": "d5c1-trail",
+        "label": "the chalk trail",
+        "aliases": [
+          "trail",
+          "chalk",
+          "lines",
+          "chalk trail",
+          "chalk lines"
+        ],
+        "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
+      },
+      {
+        "id": "d5c1-marks",
+        "label": "the worn marks",
+        "aliases": [
+          "marks",
+          "mark",
+          "stone",
+          "floor",
+          "grooves"
+        ],
+        "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
+      }
+    ],
     "exits": [
       {
         "room_id": "d5c2",
@@ -5337,7 +6137,32 @@
     "title": "A Chalked Trail",
     "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
     "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
-    "features": [],
+    "features": [
+      {
+        "id": "d5c2-trail",
+        "label": "the chalk trail",
+        "aliases": [
+          "trail",
+          "chalk",
+          "lines",
+          "chalk trail",
+          "chalk lines"
+        ],
+        "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
+      },
+      {
+        "id": "d5c2-marks",
+        "label": "the worn marks",
+        "aliases": [
+          "marks",
+          "mark",
+          "stone",
+          "floor",
+          "grooves"
+        ],
+        "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
+      }
+    ],
     "exits": [
       {
         "room_id": "d5c1",
@@ -5378,7 +6203,32 @@
     "title": "A Chalked Trail",
     "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
     "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
-    "features": [],
+    "features": [
+      {
+        "id": "d5c3-trail",
+        "label": "the chalk trail",
+        "aliases": [
+          "trail",
+          "chalk",
+          "lines",
+          "chalk trail",
+          "chalk lines"
+        ],
+        "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
+      },
+      {
+        "id": "d5c3-marks",
+        "label": "the worn marks",
+        "aliases": [
+          "marks",
+          "mark",
+          "stone",
+          "floor",
+          "grooves"
+        ],
+        "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
+      }
+    ],
     "exits": [
       {
         "room_id": "d5c2",
@@ -5419,7 +6269,32 @@
     "title": "A Chalked Trail",
     "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
     "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
-    "features": [],
+    "features": [
+      {
+        "id": "d5c4-trail",
+        "label": "the chalk trail",
+        "aliases": [
+          "trail",
+          "chalk",
+          "lines",
+          "chalk trail",
+          "chalk lines"
+        ],
+        "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
+      },
+      {
+        "id": "d5c4-marks",
+        "label": "the worn marks",
+        "aliases": [
+          "marks",
+          "mark",
+          "stone",
+          "floor",
+          "grooves"
+        ],
+        "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
+      }
+    ],
     "exits": [
       {
         "room_id": "d5c3",
@@ -5460,7 +6335,32 @@
     "title": "A Chalked Trail",
     "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
     "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
-    "features": [],
+    "features": [
+      {
+        "id": "d5c5-trail",
+        "label": "the chalk trail",
+        "aliases": [
+          "trail",
+          "chalk",
+          "lines",
+          "chalk trail",
+          "chalk lines"
+        ],
+        "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
+      },
+      {
+        "id": "d5c5-marks",
+        "label": "the worn marks",
+        "aliases": [
+          "marks",
+          "mark",
+          "stone",
+          "floor",
+          "grooves"
+        ],
+        "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
+      }
+    ],
     "exits": [
       {
         "room_id": "d5c4",
@@ -5501,7 +6401,32 @@
     "title": "A Chalked Trail",
     "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
     "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
-    "features": [],
+    "features": [
+      {
+        "id": "d5c6-trail",
+        "label": "the chalk trail",
+        "aliases": [
+          "trail",
+          "chalk",
+          "lines",
+          "chalk trail",
+          "chalk lines"
+        ],
+        "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
+      },
+      {
+        "id": "d5c6-marks",
+        "label": "the worn marks",
+        "aliases": [
+          "marks",
+          "mark",
+          "stone",
+          "floor",
+          "grooves"
+        ],
+        "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
+      }
+    ],
     "exits": [
       {
         "room_id": "d5c5",
@@ -5542,7 +6467,32 @@
     "title": "A Chalked Trail",
     "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
     "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
-    "features": [],
+    "features": [
+      {
+        "id": "d5c7-trail",
+        "label": "the chalk trail",
+        "aliases": [
+          "trail",
+          "chalk",
+          "lines",
+          "chalk trail",
+          "chalk lines"
+        ],
+        "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
+      },
+      {
+        "id": "d5c7-marks",
+        "label": "the worn marks",
+        "aliases": [
+          "marks",
+          "mark",
+          "stone",
+          "floor",
+          "grooves"
+        ],
+        "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
+      }
+    ],
     "exits": [
       {
         "room_id": "d5c6",
@@ -5583,7 +6533,32 @@
     "title": "A Chalked Trail",
     "summary": "Faint chalk lines run along the floor at your feet, worn almost to nothing, leading deeper into the dark. Someone drew a path here long ago and left it.",
     "inspect_text": "Thin chalk lines run ahead of you along the stone, worn to ghosts of their old marks. They keep to the center of the passage and lead deeper, as if someone once walked this way often.",
-    "features": [],
+    "features": [
+      {
+        "id": "d5c8-trail",
+        "label": "the chalk trail",
+        "aliases": [
+          "trail",
+          "chalk",
+          "lines",
+          "chalk trail",
+          "chalk lines"
+        ],
+        "inspect_text": "Thin white lines drawn with ancient mineral chalk trace the floor down the center of the lane. They have faded over decades of foot traffic, yet the geometry remains straight and deliberate."
+      },
+      {
+        "id": "d5c8-marks",
+        "label": "the worn marks",
+        "aliases": [
+          "marks",
+          "mark",
+          "stone",
+          "floor",
+          "grooves"
+        ],
+        "inspect_text": "Faint geometric intersections scored into the bedrock. Someone mapped this corridor with precision long before you walked it."
+      }
+    ],
     "exits": [
       {
         "room_id": "d5c7",
@@ -5616,7 +6591,31 @@
     "title": "The Whispering Ferns",
     "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
     "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
-    "features": [],
+    "features": [
+      {
+        "id": "d6c1-ferns",
+        "label": "the whispering ferns",
+        "aliases": [
+          "ferns",
+          "fern",
+          "fronds",
+          "whispering ferns"
+        ],
+        "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
+      },
+      {
+        "id": "d6c1-whispers",
+        "label": "the rustling sound",
+        "aliases": [
+          "sound",
+          "whispers",
+          "whisper",
+          "murmur",
+          "rustle"
+        ],
+        "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
+      }
+    ],
     "exits": [
       {
         "room_id": "d6c2",
@@ -5649,7 +6648,31 @@
     "title": "The Whispering Ferns",
     "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
     "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
-    "features": [],
+    "features": [
+      {
+        "id": "d6c2-ferns",
+        "label": "the whispering ferns",
+        "aliases": [
+          "ferns",
+          "fern",
+          "fronds",
+          "whispering ferns"
+        ],
+        "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
+      },
+      {
+        "id": "d6c2-whispers",
+        "label": "the rustling sound",
+        "aliases": [
+          "sound",
+          "whispers",
+          "whisper",
+          "murmur",
+          "rustle"
+        ],
+        "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
+      }
+    ],
     "exits": [
       {
         "room_id": "d6c1",
@@ -5690,7 +6713,31 @@
     "title": "The Whispering Ferns",
     "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
     "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
-    "features": [],
+    "features": [
+      {
+        "id": "d6c3-ferns",
+        "label": "the whispering ferns",
+        "aliases": [
+          "ferns",
+          "fern",
+          "fronds",
+          "whispering ferns"
+        ],
+        "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
+      },
+      {
+        "id": "d6c3-whispers",
+        "label": "the rustling sound",
+        "aliases": [
+          "sound",
+          "whispers",
+          "whisper",
+          "murmur",
+          "rustle"
+        ],
+        "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
+      }
+    ],
     "exits": [
       {
         "room_id": "d6c2",
@@ -5731,7 +6778,31 @@
     "title": "The Whispering Ferns",
     "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
     "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
-    "features": [],
+    "features": [
+      {
+        "id": "d6c4-ferns",
+        "label": "the whispering ferns",
+        "aliases": [
+          "ferns",
+          "fern",
+          "fronds",
+          "whispering ferns"
+        ],
+        "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
+      },
+      {
+        "id": "d6c4-whispers",
+        "label": "the rustling sound",
+        "aliases": [
+          "sound",
+          "whispers",
+          "whisper",
+          "murmur",
+          "rustle"
+        ],
+        "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
+      }
+    ],
     "exits": [
       {
         "room_id": "d6c3",
@@ -5772,7 +6843,31 @@
     "title": "The Whispering Ferns",
     "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
     "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
-    "features": [],
+    "features": [
+      {
+        "id": "d6c5-ferns",
+        "label": "the whispering ferns",
+        "aliases": [
+          "ferns",
+          "fern",
+          "fronds",
+          "whispering ferns"
+        ],
+        "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
+      },
+      {
+        "id": "d6c5-whispers",
+        "label": "the rustling sound",
+        "aliases": [
+          "sound",
+          "whispers",
+          "whisper",
+          "murmur",
+          "rustle"
+        ],
+        "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
+      }
+    ],
     "exits": [
       {
         "room_id": "d6c4",
@@ -5813,7 +6908,31 @@
     "title": "The Whispering Ferns",
     "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
     "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
-    "features": [],
+    "features": [
+      {
+        "id": "d6c6-ferns",
+        "label": "the whispering ferns",
+        "aliases": [
+          "ferns",
+          "fern",
+          "fronds",
+          "whispering ferns"
+        ],
+        "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
+      },
+      {
+        "id": "d6c6-whispers",
+        "label": "the rustling sound",
+        "aliases": [
+          "sound",
+          "whispers",
+          "whisper",
+          "murmur",
+          "rustle"
+        ],
+        "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
+      }
+    ],
     "exits": [
       {
         "room_id": "d6c5",
@@ -5854,7 +6973,31 @@
     "title": "The Whispering Ferns",
     "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
     "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
-    "features": [],
+    "features": [
+      {
+        "id": "d6c7-ferns",
+        "label": "the whispering ferns",
+        "aliases": [
+          "ferns",
+          "fern",
+          "fronds",
+          "whispering ferns"
+        ],
+        "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
+      },
+      {
+        "id": "d6c7-whispers",
+        "label": "the rustling sound",
+        "aliases": [
+          "sound",
+          "whispers",
+          "whisper",
+          "murmur",
+          "rustle"
+        ],
+        "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
+      }
+    ],
     "exits": [
       {
         "room_id": "d6c6",
@@ -5895,7 +7038,31 @@
     "title": "The Whispering Ferns",
     "summary": "Fern-like growths as tall as your shoulder line the walls, rustling though there is no wind. They whisper in a language that sounds almost familiar.",
     "inspect_text": "Tall fern-shaped growths line the walls on both sides, and they murmur without any wind to move them. The sound is almost language, almost your name, never quite either.",
-    "features": [],
+    "features": [
+      {
+        "id": "d6c8-ferns",
+        "label": "the whispering ferns",
+        "aliases": [
+          "ferns",
+          "fern",
+          "fronds",
+          "whispering ferns"
+        ],
+        "inspect_text": "Towering fronds as tall as your shoulder rustle against each other in dry, rhythmic sibilance. In the rustling you catch fragments that sound uncannily like whispered syllables."
+      },
+      {
+        "id": "d6c8-whispers",
+        "label": "the rustling sound",
+        "aliases": [
+          "sound",
+          "whispers",
+          "whisper",
+          "murmur",
+          "rustle"
+        ],
+        "inspect_text": "The fronds move without wind, swaying in gentle synchrony with the breathing of the root-canopy."
+      }
+    ],
     "exits": [
       {
         "room_id": "d6c7",
@@ -5928,7 +7095,32 @@
     "title": "A Shaft of Sky",
     "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
     "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
-    "features": [],
+    "features": [
+      {
+        "id": "d7c1-shaft",
+        "label": "the shaft of sky",
+        "aliases": [
+          "shaft",
+          "sky",
+          "shaft of sky",
+          "light",
+          "crack",
+          "starlight"
+        ],
+        "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
+      },
+      {
+        "id": "d7c1-moss",
+        "label": "the moss bed",
+        "aliases": [
+          "moss",
+          "bed",
+          "moss bed",
+          "cushion"
+        ],
+        "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
+      }
+    ],
     "exits": [
       {
         "room_id": "d7c2",
@@ -5961,7 +7153,32 @@
     "title": "A Shaft of Sky",
     "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
     "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
-    "features": [],
+    "features": [
+      {
+        "id": "d7c2-shaft",
+        "label": "the shaft of sky",
+        "aliases": [
+          "shaft",
+          "sky",
+          "shaft of sky",
+          "light",
+          "crack",
+          "starlight"
+        ],
+        "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
+      },
+      {
+        "id": "d7c2-moss",
+        "label": "the moss bed",
+        "aliases": [
+          "moss",
+          "bed",
+          "moss bed",
+          "cushion"
+        ],
+        "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
+      }
+    ],
     "exits": [
       {
         "room_id": "d7c1",
@@ -6002,7 +7219,32 @@
     "title": "A Shaft of Sky",
     "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
     "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
-    "features": [],
+    "features": [
+      {
+        "id": "d7c3-shaft",
+        "label": "the shaft of sky",
+        "aliases": [
+          "shaft",
+          "sky",
+          "shaft of sky",
+          "light",
+          "crack",
+          "starlight"
+        ],
+        "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
+      },
+      {
+        "id": "d7c3-moss",
+        "label": "the moss bed",
+        "aliases": [
+          "moss",
+          "bed",
+          "moss bed",
+          "cushion"
+        ],
+        "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
+      }
+    ],
     "exits": [
       {
         "room_id": "d7c2",
@@ -6043,7 +7285,32 @@
     "title": "A Shaft of Sky",
     "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
     "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
-    "features": [],
+    "features": [
+      {
+        "id": "d7c4-shaft",
+        "label": "the shaft of sky",
+        "aliases": [
+          "shaft",
+          "sky",
+          "shaft of sky",
+          "light",
+          "crack",
+          "starlight"
+        ],
+        "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
+      },
+      {
+        "id": "d7c4-moss",
+        "label": "the moss bed",
+        "aliases": [
+          "moss",
+          "bed",
+          "moss bed",
+          "cushion"
+        ],
+        "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
+      }
+    ],
     "exits": [
       {
         "room_id": "d7c3",
@@ -6084,7 +7351,32 @@
     "title": "A Shaft of Sky",
     "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
     "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
-    "features": [],
+    "features": [
+      {
+        "id": "d7c5-shaft",
+        "label": "the shaft of sky",
+        "aliases": [
+          "shaft",
+          "sky",
+          "shaft of sky",
+          "light",
+          "crack",
+          "starlight"
+        ],
+        "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
+      },
+      {
+        "id": "d7c5-moss",
+        "label": "the moss bed",
+        "aliases": [
+          "moss",
+          "bed",
+          "moss bed",
+          "cushion"
+        ],
+        "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
+      }
+    ],
     "exits": [
       {
         "room_id": "d7c4",
@@ -6125,7 +7417,32 @@
     "title": "A Shaft of Sky",
     "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
     "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
-    "features": [],
+    "features": [
+      {
+        "id": "d7c6-shaft",
+        "label": "the shaft of sky",
+        "aliases": [
+          "shaft",
+          "sky",
+          "shaft of sky",
+          "light",
+          "crack",
+          "starlight"
+        ],
+        "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
+      },
+      {
+        "id": "d7c6-moss",
+        "label": "the moss bed",
+        "aliases": [
+          "moss",
+          "bed",
+          "moss bed",
+          "cushion"
+        ],
+        "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
+      }
+    ],
     "exits": [
       {
         "room_id": "d7c5",
@@ -6166,7 +7483,32 @@
     "title": "A Shaft of Sky",
     "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
     "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
-    "features": [],
+    "features": [
+      {
+        "id": "d7c7-shaft",
+        "label": "the shaft of sky",
+        "aliases": [
+          "shaft",
+          "sky",
+          "shaft of sky",
+          "light",
+          "crack",
+          "starlight"
+        ],
+        "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
+      },
+      {
+        "id": "d7c7-moss",
+        "label": "the moss bed",
+        "aliases": [
+          "moss",
+          "bed",
+          "moss bed",
+          "cushion"
+        ],
+        "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
+      }
+    ],
     "exits": [
       {
         "room_id": "d7c6",
@@ -6207,7 +7549,32 @@
     "title": "A Shaft of Sky",
     "summary": "A crack in the cavern roof opens far above, and through it falls a light like starlight, pooling onto a bed of moss. You tilt your head back to watch it.",
     "inspect_text": "Far above, a crack in the roof lets in a column of pale light that pools on the moss by your feet. It is the first true light you have seen down here, and it is very old.",
-    "features": [],
+    "features": [
+      {
+        "id": "d7c8-shaft",
+        "label": "the shaft of sky",
+        "aliases": [
+          "shaft",
+          "sky",
+          "shaft of sky",
+          "light",
+          "crack",
+          "starlight"
+        ],
+        "inspect_text": "A sheer chimney cut into the vault far above. Through it falls a clean, vertical beam of silver starlight, cutting through the damp mist like a spear."
+      },
+      {
+        "id": "d7c8-moss",
+        "label": "the moss bed",
+        "aliases": [
+          "moss",
+          "bed",
+          "moss bed",
+          "cushion"
+        ],
+        "inspect_text": "A thick velvet carpet of emerald moss thriving directly in the beam of starlight. It is cool and resilient beneath your boots."
+      }
+    ],
     "exits": [
       {
         "room_id": "d7c7",
@@ -6240,7 +7607,31 @@
     "title": "The Deep Glade",
     "summary": "The air here is still and old, and the hum of this forest is loudest at your back. Glowing vines hang around you like curtains, their light slow and steady.",
     "inspect_text": "Still, old air lines this glade, and the forest hum is loudest here. Curtains of glowing vine hang heavy around you, their light riding the same slow pulse as the spores of the outer woods.",
-    "features": [],
+    "features": [
+      {
+        "id": "d8c1-vines",
+        "label": "the glowing vines",
+        "aliases": [
+          "vines",
+          "vine",
+          "glowing vines",
+          "curtains",
+          "tendrils"
+        ],
+        "inspect_text": "Thick curtains of braided vine hang from the boughs like tapestries. Their pale teal veins throb in time with the forest's deep pulse."
+      },
+      {
+        "id": "d8c1-hum",
+        "label": "the forest hum",
+        "aliases": [
+          "hum",
+          "sound",
+          "vibration",
+          "canopy"
+        ],
+        "inspect_text": "A low vibration that thrums in your teeth and chest. The deep roots of the back rank anchor the entire cavern."
+      }
+    ],
     "exits": [
       {
         "room_id": "d8c2",
@@ -6265,7 +7656,31 @@
     "title": "The Deep Glade",
     "summary": "The air here is still and old, and the hum of this forest is loudest at your back. Glowing vines hang around you like curtains, their light slow and steady.",
     "inspect_text": "Still, old air lines this glade, and the forest hum is loudest here. Curtains of glowing vine hang heavy around you, their light riding the same slow pulse as the spores of the outer woods.",
-    "features": [],
+    "features": [
+      {
+        "id": "d8c2-vines",
+        "label": "the glowing vines",
+        "aliases": [
+          "vines",
+          "vine",
+          "glowing vines",
+          "curtains",
+          "tendrils"
+        ],
+        "inspect_text": "Thick curtains of braided vine hang from the boughs like tapestries. Their pale teal veins throb in time with the forest's deep pulse."
+      },
+      {
+        "id": "d8c2-hum",
+        "label": "the forest hum",
+        "aliases": [
+          "hum",
+          "sound",
+          "vibration",
+          "canopy"
+        ],
+        "inspect_text": "A low vibration that thrums in your teeth and chest. The deep roots of the back rank anchor the entire cavern."
+      }
+    ],
     "exits": [
       {
         "room_id": "d8c1",
@@ -6298,7 +7713,31 @@
     "title": "The Deep Glade",
     "summary": "The air here is still and old, and the hum of this forest is loudest at your back. Glowing vines hang around you like curtains, their light slow and steady.",
     "inspect_text": "Still, old air lines this glade, and the forest hum is loudest here. Curtains of glowing vine hang heavy around you, their light riding the same slow pulse as the spores of the outer woods.",
-    "features": [],
+    "features": [
+      {
+        "id": "d8c3-vines",
+        "label": "the glowing vines",
+        "aliases": [
+          "vines",
+          "vine",
+          "glowing vines",
+          "curtains",
+          "tendrils"
+        ],
+        "inspect_text": "Thick curtains of braided vine hang from the boughs like tapestries. Their pale teal veins throb in time with the forest's deep pulse."
+      },
+      {
+        "id": "d8c3-hum",
+        "label": "the forest hum",
+        "aliases": [
+          "hum",
+          "sound",
+          "vibration",
+          "canopy"
+        ],
+        "inspect_text": "A low vibration that thrums in your teeth and chest. The deep roots of the back rank anchor the entire cavern."
+      }
+    ],
     "exits": [
       {
         "room_id": "d8c2",
@@ -6331,7 +7770,31 @@
     "title": "The Deep Glade",
     "summary": "The air here is still and old, and the hum of this forest is loudest at your back. Glowing vines hang around you like curtains, their light slow and steady.",
     "inspect_text": "Still, old air lines this glade, and the forest hum is loudest here. Curtains of glowing vine hang heavy around you, their light riding the same slow pulse as the spores of the outer woods.",
-    "features": [],
+    "features": [
+      {
+        "id": "d8c4-vines",
+        "label": "the glowing vines",
+        "aliases": [
+          "vines",
+          "vine",
+          "glowing vines",
+          "curtains",
+          "tendrils"
+        ],
+        "inspect_text": "Thick curtains of braided vine hang from the boughs like tapestries. Their pale teal veins throb in time with the forest's deep pulse."
+      },
+      {
+        "id": "d8c4-hum",
+        "label": "the forest hum",
+        "aliases": [
+          "hum",
+          "sound",
+          "vibration",
+          "canopy"
+        ],
+        "inspect_text": "A low vibration that thrums in your teeth and chest. The deep roots of the back rank anchor the entire cavern."
+      }
+    ],
     "exits": [
       {
         "room_id": "d8c3",
@@ -6371,7 +7834,32 @@
         "inspect_text": "The forest opens into a wide, still chamber. Where the elf king once sat enthroned in roots and pale light, only a hollowed throne of grey bark remains."
       }
     ],
-    "features": [],
+    "features": [
+      {
+        "id": "d8c5-throne",
+        "label": "the root throne",
+        "aliases": [
+          "throne",
+          "roots",
+          "seat",
+          "bark",
+          "root throne",
+          "wood"
+        ],
+        "inspect_text": "A grand seat grown seamlessly out of living ash-grey roots and curled bark. Ancient carvings mark its high backrest, worn smooth by centuries of royal repose."
+      },
+      {
+        "id": "d8c5-glow",
+        "label": "the pale light",
+        "aliases": [
+          "light",
+          "glow",
+          "pale light",
+          "radiance"
+        ],
+        "inspect_text": "A concentrated corona of silver-green illumination bathing the center of the grove, undisturbed by drafts or smoke."
+      }
+    ],
     "exits": [
       {
         "room_id": "d8c4",
@@ -6416,7 +7904,31 @@
     "title": "The Deep Glade",
     "summary": "The air here is still and old, and the hum of this forest is loudest at your back. Glowing vines hang around you like curtains, their light slow and steady.",
     "inspect_text": "Still, old air lines this glade, and the forest hum is loudest here. Curtains of glowing vine hang heavy around you, their light riding the same slow pulse as the spores of the outer woods.",
-    "features": [],
+    "features": [
+      {
+        "id": "d8c6-vines",
+        "label": "the glowing vines",
+        "aliases": [
+          "vines",
+          "vine",
+          "glowing vines",
+          "curtains",
+          "tendrils"
+        ],
+        "inspect_text": "Thick curtains of braided vine hang from the boughs like tapestries. Their pale teal veins throb in time with the forest's deep pulse."
+      },
+      {
+        "id": "d8c6-hum",
+        "label": "the forest hum",
+        "aliases": [
+          "hum",
+          "sound",
+          "vibration",
+          "canopy"
+        ],
+        "inspect_text": "A low vibration that thrums in your teeth and chest. The deep roots of the back rank anchor the entire cavern."
+      }
+    ],
     "exits": [
       {
         "room_id": "d8c5",
@@ -6449,7 +7961,31 @@
     "title": "The Deep Glade",
     "summary": "The air here is still and old, and the hum of this forest is loudest at your back. Glowing vines hang around you like curtains, their light slow and steady.",
     "inspect_text": "Still, old air lines this glade, and the forest hum is loudest here. Curtains of glowing vine hang heavy around you, their light riding the same slow pulse as the spores of the outer woods.",
-    "features": [],
+    "features": [
+      {
+        "id": "d8c7-vines",
+        "label": "the glowing vines",
+        "aliases": [
+          "vines",
+          "vine",
+          "glowing vines",
+          "curtains",
+          "tendrils"
+        ],
+        "inspect_text": "Thick curtains of braided vine hang from the boughs like tapestries. Their pale teal veins throb in time with the forest's deep pulse."
+      },
+      {
+        "id": "d8c7-hum",
+        "label": "the forest hum",
+        "aliases": [
+          "hum",
+          "sound",
+          "vibration",
+          "canopy"
+        ],
+        "inspect_text": "A low vibration that thrums in your teeth and chest. The deep roots of the back rank anchor the entire cavern."
+      }
+    ],
     "exits": [
       {
         "room_id": "d8c6",
@@ -6482,7 +8018,31 @@
     "title": "The Deep Glade",
     "summary": "The air here is still and old, and the hum of this forest is loudest at your back. Glowing vines hang around you like curtains, their light slow and steady.",
     "inspect_text": "Still, old air lines this glade, and the forest hum is loudest here. Curtains of glowing vine hang heavy around you, their light riding the same slow pulse as the spores of the outer woods.",
-    "features": [],
+    "features": [
+      {
+        "id": "d8c8-vines",
+        "label": "the glowing vines",
+        "aliases": [
+          "vines",
+          "vine",
+          "glowing vines",
+          "curtains",
+          "tendrils"
+        ],
+        "inspect_text": "Thick curtains of braided vine hang from the boughs like tapestries. Their pale teal veins throb in time with the forest's deep pulse."
+      },
+      {
+        "id": "d8c8-hum",
+        "label": "the forest hum",
+        "aliases": [
+          "hum",
+          "sound",
+          "vibration",
+          "canopy"
+        ],
+        "inspect_text": "A low vibration that thrums in your teeth and chest. The deep roots of the back rank anchor the entire cavern."
+      }
+    ],
     "exits": [
       {
         "room_id": "d8c7",

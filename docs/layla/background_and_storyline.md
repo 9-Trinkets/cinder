@@ -155,6 +155,8 @@ someone (a trainer? an opponent? a handler?) taught her. The suppressed life
 is beginning to leak through the reprogramming.
 
 ### Level 2 — The Underground Forest (Elf Chess Army)
+The floor-by-floor design for level 2 — cast, chess metaphor, the leaf equipment set, and room feature architectures — lives in **`docs/layla/floor2_plan.md`**. What follows is the storyline canon this level carries.
+
 Below the board, in the descent rooms, lies an underground forest populated by a
 **full chess army of elves**: pawns, rooks, knights, bishops, a queen, and a
 **king**. (Chess — another language Layla speaks from an older life.) They are

@@ -486,7 +486,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -527,7 +527,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -568,7 +568,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -609,7 +609,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -650,7 +650,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -691,7 +691,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -732,7 +732,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -773,7 +773,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf pawn of the underground forest, armed and watching.",
+    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -814,7 +814,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf rook of the underground forest, armed and watching.",
+    "inspect_text": "A broad-shouldered elf sentinel armored in heavy plates of lacquered bark and compressed leaf. They stand like a living redoubt, unyielding and direct.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -855,7 +855,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf knight of the underground forest, armed and watching.",
+    "inspect_text": "An agile elf warrior bearing a crest of dark curved bark. They balance on the balls of their feet, ready to spring sideways or leap past obstacles in an instant.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -896,7 +896,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf bishop of the underground forest, armed and watching.",
+    "inspect_text": "An austere elf holding a tall crooked bough that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -937,7 +937,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf queen of the underground forest, armed and watching.",
+    "inspect_text": "A formidable elf commander whose braided leaf ring hums with quiet power. Her movements are fluid, swift, and completely without hesitation.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -967,7 +967,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf king of the underground forest, armed and watching.",
+    "inspect_text": "The sovereign of the underground forest, draped in a mantle of dark root-stitched leaves. He sits upon a throne grown from living wood, watching you approach with neither malice nor fear.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -998,7 +998,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf bishop of the underground forest, armed and watching.",
+    "inspect_text": "An austere elf holding a tall crooked bough that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -1039,7 +1039,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf knight of the underground forest, armed and watching.",
+    "inspect_text": "An agile elf warrior bearing a crest of dark curved bark. They balance on the balls of their feet, ready to spring sideways or leap past obstacles in an instant.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
@@ -1080,7 +1080,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An elf rook of the underground forest, armed and watching.",
+    "inspect_text": "A broad-shouldered elf sentinel armored in heavy plates of lacquered bark and compressed leaf. They stand like a living redoubt, unyielding and direct.",
     "attackable": true,
     "attack_interval_minutes": 1,
     "initial_hostile": true,
