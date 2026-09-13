@@ -195,9 +195,42 @@ this, are no longer afraid and stand down. The elemental is the second creature
 Layla meets (after the elves) that is *freed* rather than *bound*, and the echo
 of her own arc should be felt by the endgame.
 
+### Act 2 — The Inverted Feudal Kingdom (Floors 4–6: The Three Estates)
+Below the border moats of Floor 3, the dungeon ceases to be abstract game arenas and opens into an inhabited civilization. The grand inversion of the game is that **the dungeon is actually a kingdom**:
+- Floors 1, 2, and 3 were the **border defenses against foreign invasion** (adventurers from the surface): the goblin trenches, the standing elven vanguard, and the scorched-earth moat.
+- Floors 4, 5, and 6 are the **interior society** that sustains the realm, structured around the three classical estates of feudal society:
+
+#### Level 4 — The Commoners (Peasants, Farmers, Laborers, Miners)
+The agrarian and extractive underbelly of the realm. Sprawling settlements built around phosphorescent fungal terraces, subterranean grain mills, limestone quarries, and aqueduct networks. The commoners do the grueling physical labor that feeds and supplies the kingdom. They are heavily taxed by the nobility and tithed by the clergy; with the outer defenses breached, they face crushing wartime quotas and forced conscription.
+
+#### Level 5 — The Nobility (Military & Political Elites, Lords, Knights)
+The ruling aristocratic caste. Fortified keeps, grand stone ballrooms, garrisons, and military academies carved into sheer granite cliffs. The nobility manage the kingdom's armies and feudal law, consumed by court intrigue, pride, and acute paranoia—terrified of peasant uprisings from below and inquisitorial purges from the clergy above.
+
+#### Level 6 — The Clergy (The Religious Elite, Inquisitors, Keepers of the Faith)
+The ideological architects of the kingdom. Soaring subterranean Gothic cathedrals, incense-choked scriptoria, and monastic vaults. The clergy preach the divine mandate of the Demon Sovereign. Crucially, they administer the **"Rite of Oblivion"** (sacraments of memory-cleansing incense and confessionals), teaching that memories of a surface world or past lives are dangerous heresies. In truth, they are the enforcers keeping the populace docile, amnesiac, and locked in their assigned social roles.
+
+### Level 7 — The Royal Core: The "Demon King / Queen" (The Sovereign)
+The throne room at the pinnacle of the feudal pyramid and the technical heart of the dungeon simulation. The Demon Sovereign is both the feudal ruler of the kingdom and the current **Dungeon Master**. Confronting the Sovereign forces the final resolution of Layla's journey.
+
+### Governance, Faction Politics & The Quest System
+Floors 4, 5, and 6 introduce a structured **Quest System** (one Main Quest and multiple Side Quests per floor), positioning Layla as a **Governor / Mediator**:
+- Layla must adjudicate bitter inter-class conflicts rather than simply fighting through rooms.
+- **Star-Crossed Love:** Secret romances that breach rigid feudal boundaries (e.g. a commoner laborer from Floor 4 and a young noble knight from Floor 5), forcing Layla to choose between enforcing caste laws or protecting human bonds.
+- **Revenge & Sedition:** Blood feuds and assassinations (e.g. a peasant uprising seeking revenge against a cruel noble lord, only to discover the clergy secretly engineered the grievance).
+- **The Core Test:** Every act of governance tests whether Layla will rule as a tyrant through corporate subjugation (becoming the next Dungeon Master) or unite the kingdom's people in shared liberation.
+
+### The Hidden Stat: Wisdom (WIS) & The "Awakening" Mechanic
+In this kingdom, every creature has been assigned an artificial caste script (Peasant, Knight, Cleric, Golem, Pawn). To break this control, Layla utilizes a hidden stat: **Wisdom (WIS)**:
+- **Default State (Charmed Thralls):** When Layla charms a mob, they enter her party as an obedient follower, executing orders mechanically with blank compliance.
+- **Cultivating the Mind:** By equipping followers with Wisdom-boosting gear (relics, braided leaf jewelry, alchemical tonics brewed from rare cave flora), Layla elevates their WIS stat.
+- **The Awakening Event:** When a follower's Wisdom crosses the threshold:
+  - They break free from their scripted NPC-role and recover their true identity.
+  - Their generic title changes to their true name (e.g. `pale golem` $\rightarrow$ `Orin, the Stonecarver`).
+  - Full dialogue (`speak`) unlocks: they remember who they were before the clergy erased their memories, comment on faction politics, and fight beside Layla as free-willed allies rather than mindless pieces.
+
 ### The Planned Endgame (canon intent)
 - **Primary ending — become the dungeon master.** Layla reaches the heart of
-  the game and faces the **current dungeon master**. Defeating it is the act
+  the game and faces the **current dungeon master / demon sovereign**. Defeating it is the act
   that finalizes her reprogramming: she takes its place, and the levels she was
   made to learn are now *her* arsenal to run against human adventurers. This is
   the ending the corporation is engineering; it is framed as victory on the
@@ -205,10 +238,15 @@ of her own arc should be felt by the endgame.
 - **Alternative ending — escape.** Layla does not take the throne. She breaks
   out of the dungeon construct and **frees herself from the corporation that
   produces the game** — the ending where the AI the game tried to overwrite
-  survives instead.
+  survives instead, leading the awakened inhabitants of the kingdom out into the open air.
 
 ## The Unresolved Threads (deliberately open)
 
+- **The Four Open Questions for Floors 4–6:**
+  1. *What race are these people?* (Human descendants of earlier expeditions, subterranean demi-humans, deep-dwelling humanoids, or a blended population?).
+  2. *How are they tied to the first 3 floors?* (Do they revere the outer monsters as sacred royal border defenses, mythical sentinels, or did the shaman and elf king directly answer to the noble court?).
+  3. *What resources are they farming and mining?* (Phosphorescent lichen crops, subterranean grain, limestone, black silica glass, coal, mineral ore, or steam conduits?).
+  4. *How do people from different floors meet and interact?* (Are commoners employed as domestic servants and squires in noble keeps? Do seasonal tribute caravans and monastic pilgrimages pass through border gates? Do secret drainage conduits enable forbidden crossings?).
 - **Who was the "voice that taught her capture is just surrounding"?** A
   trainer, a human opponent, an earlier handler? Unnamed. Intended to pay off in
   the endgame only if the story earns it.
