@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -28,13 +29,13 @@ SKIP_DIRS = {"target", "node_modules", ".git", "dist", "build", ".vercel"}
 
 def iter_source_files(root: Path) -> list[Path]:
     files: list[Path] = []
-    for path in root.rglob("*"):
-        if not path.is_file():
-            continue
-        if any(part in SKIP_DIRS for part in path.relative_to(root).parts):
-            continue
-        if path.suffix in SOURCE_EXTS:
-            files.append(path)
+    for dirpath, dirnames, filenames in os.walk(root):
+        # Prune SKIP_DIRS in-place to avoid descending into ignored directories
+        dirnames[:] = [d for d in dirnames if d not in SKIP_DIRS]
+        for filename in filenames:
+            path = Path(dirpath) / filename
+            if path.suffix in SOURCE_EXTS:
+                files.append(path)
     return files
 
 

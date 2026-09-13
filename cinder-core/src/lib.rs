@@ -1,5 +1,8 @@
 pub mod content;
 pub mod engine;
+pub mod paths;
+
+pub use paths::project_dir;
 
 pub use content::loader;
 pub use content::types::{

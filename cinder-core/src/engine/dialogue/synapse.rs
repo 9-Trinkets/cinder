@@ -3,7 +3,6 @@ use crate::engine::neuron::{
     NeuronRoleService, RoleExecutionError, RoleExecutionResponse, RoleMetadata, WorkflowDefinition,
 };
 use serde_json::json;
-use std::path::PathBuf;
 use std::sync::mpsc;
 use std::time::Duration;
 
@@ -41,8 +40,9 @@ pub struct SynapseDialogueGenerator {
 }
 
 fn build_role_service() -> Result<NeuronRoleService, String> {
-    let config_path = PathBuf::from(env!("CINDER_PROJECT_DIR")).join("neuron.toml");
-    let dotenv_path = PathBuf::from(env!("CINDER_PROJECT_DIR")).join(".env");
+    let project_dir = crate::project_dir();
+    let config_path = project_dir.join("neuron.toml");
+    let dotenv_path = project_dir.join(".env");
     NeuronRoleService::new_with_config_path_and_dotenv_path(&config_path, &dotenv_path)
         .map_err(|error| format!("failed to initialize role execution service: {error}"))
 }

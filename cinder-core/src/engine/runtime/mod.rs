@@ -114,7 +114,7 @@ impl CinderRuntime {
             dialogue,
             workflow,
             load_workflow(&cinder_npc_tick_workflow_path())?,
-            PathBuf::from(env!("CINDER_PROJECT_DIR")).join(".cinder-state"),
+            crate::project_dir().join(".cinder-state"),
         )
     }
 
@@ -140,7 +140,7 @@ impl CinderRuntime {
             dialogue,
             workflow,
             load_workflow(&cinder_npc_tick_workflow_path())?,
-            PathBuf::from(env!("CINDER_PROJECT_DIR")).join(".cinder-state"),
+            crate::project_dir().join(".cinder-state"),
         )
     }
 

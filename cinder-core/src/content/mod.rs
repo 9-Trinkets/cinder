@@ -51,7 +51,7 @@ mod tests {
 
     #[test]
     fn template_placeholders_have_no_spaces() {
-        let content_dir = std::path::PathBuf::from(env!("CINDER_PROJECT_DIR")).join("content");
+        let content_dir = crate::loader::content_dir();
         let mut violations: BTreeMap<String, Vec<String>> = BTreeMap::new();
 
         for entry in std::fs::read_dir(&content_dir).unwrap().flatten() {

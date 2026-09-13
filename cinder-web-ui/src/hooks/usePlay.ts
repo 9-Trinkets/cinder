@@ -6,8 +6,9 @@ import { useToast } from '../components/Toast'
 import { useNpcTicks } from './useNpcTicks'
 import type { Line } from '../components/TranscriptLine'
 import type { QuickPanel } from '../components/QuickActionPanel'
+import { type MenuView, findPanelConfig, extractResponseLines } from './playUtils'
 
-export type MenuView = 'main' | 'rooms' | 'follow' | 'language'
+export type { MenuView }
 
 export function usePlay() {
   const { id } = useParams<{ id: string }>()
@@ -55,20 +56,7 @@ export function usePlay() {
   const busyLabel = commandPending ? 'Sending…' : panelBusy ? 'Updating…' : initializing ? 'Loading…' : null
   const activeMenuTitle = activeMenu?.prompt?.trim() || uiSnapshot?.ui_text.menu_option_list_title || 'Choose'
 
-  function findPanelConfig(panelName: string): api.PanelConfigData | undefined {
-    const configured =
-      uiSnapshot?.action_bar_actions.find(a => a.panel === panelName)?.panel_config ??
-      uiSnapshot?.overflow_actions.find(a => a.panel === panelName)?.panel_config
-    if (configured) return configured
-    const member = uiSnapshot?.party.find(item => item.order_panel === panelName)
-    if (!member) return undefined
-    return {
-      title: `Orders — ${member.label}`,
-      prompt: 'Choose how this party member should respond in combat.',
-      data_source: 'actors_in_room',
-      on_select: 'execute_command',
-    }
-  }
+  const getPanelConfig = (panelName: string) => findPanelConfig(uiSnapshot, panelName)
 
   function focusInputToEnd() {
     requestAnimationFrame(() => {
@@ -118,16 +106,7 @@ export function usePlay() {
   }
 
   function applyCommandResponse(res: api.CommandResponse, behavior: ScrollBehavior = 'auto') {
-    const typed = (res.lines ?? []).filter(l => l.text.trim())
-    if (typed.length > 0) {
-      appendLines(typed.map(l => ({ text: l.text, kind: l.kind })), behavior)
-    } else if (res.text) {
-      const chunks = res.text
-        .split(/\n\n+/)
-        .map(chunk => chunk.trim())
-        .filter(Boolean)
-      appendLines(chunks.length ? chunks.map(text => ({ text })) : [{ text: res.text }], behavior)
-    }
+    appendLines(extractResponseLines(res), behavior)
     if (res.ui_snapshot) {
       channelSurfingOnly.current = res.ui_snapshot.channel_surfing_only
       setUiSnapshot(res.ui_snapshot)
@@ -268,7 +247,7 @@ export function usePlay() {
   }
 
   function handleSelectPanelOption(panelName: string, option: api.PanelOptionData) {
-    const config = findPanelConfig(panelName)
+    const config = getPanelConfig(panelName)
     setQuickPanel(null)
     if (!config) {
       if (option.command) void execCommand(option.command)
@@ -495,7 +474,7 @@ export function usePlay() {
     doChangeLocale,
     doExit,
     send,
-    findPanelConfig,
+    findPanelConfig: getPanelConfig,
     handleSelectPanelOption,
     handleTranscriptScroll,
     focusInputToEnd,
