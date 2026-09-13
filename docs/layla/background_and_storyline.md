@@ -76,9 +76,9 @@ is the resolution of that question.
 
 1. **Mechanics as levels, not a single identity.** Each level speaks its own
    game — the goblin cave is Go (surround territory rather than "kill monsters"),
-   the elf army below is chess, the fire-rooms are a board of **mancala** (seed
-   and store). Encircling is the language of the *first* level, not the whole
-   game. The board reveals
+   the elf army below is chess, the fire-rooms are **mancala** — a clock that
+   must be read before it is fought. Encircling is the language of the
+   *first* level, not the whole game. The board reveals
    that Layla *knows* Go — she has played it before, against humans, in an
    earlier life. The chalk and the worn patrolling tracks crossing the cave
    floor are the same thing: *lines*.
@@ -168,17 +168,21 @@ will; the elves *decline to be bound*. This is the game's freedom theme showing
 its first full face — and a warning about what rings do to a mind.
 
 ### Level 3 — The Fire-Rooms (Mancala / the Old Fire / the Elemental)
-A set of basins and pits built around **old fire** — rooms named for embers,
-ash, and seeding ("A Basin That Remembers Fire," "A Basin Where Seeds Were
-Slid," "The Heart-Pit"). This is the third remembered game-language: **mancala**
-(Go and chess are the first two), which Layla played against humans in an older
-life. The ring layout is a mancala board — the two offering dishes (the north
-and south stores) are the goal pits, the flanking basins are the sowing pits,
-and the embers are the seeds. Home to:
+A ring of fire-rooms built around **old fire** — chambers named for embers and
+ash, winding around a central **Heart-Pit**. This is the third remembered
+game-language: **mancala** (Go and chess are the first two). Home to:
 - **fire sprites** — small children of the old fire, hostile, weak.
 - the **fire elemental** — "a wide, patient form, made of the board's old fire."
   It cannot be damaged by physical means; its form is held together by *memory*.
   It drops the **ember scroll** (spawn sigil).
+
+The elemental does not wait. It **circles the ring clockwise**, dwelling a
+fixed beat in each room and staying longer in its heart, and along its way it
+**spawns fire sprites**. The waves grow without limit — leave it alone too long
+and the sprites outnumber Layla's party and overwhelm it. The player must learn
+the elemental's cadence (how it moves, how long it lingers), move ahead of it to
+**pre-sow drain sigils** on its path, and lean on the **party** to clean sprites
+out fast so the pressure never compounds.
 
 Defeating the elemental is framed not as destruction but **release** (hook
 `elemental.release`): *"It does not fall — it lets go... released back to the
@@ -243,6 +247,9 @@ All guidelines for prose style, the 3-tier voice hierarchy (Sleek HUD vs. Handle
 - **Encircling** converts neutral-but-wakeable golems to allies when fully
   surrounded by chalk rings.
 - **Drain sigil** saps 2 HP per tick from hostile living targets standing on it.
+- **L3 clock (planned):** the fire elemental laps the ring clockwise on a fixed
+  cadence, dwelling longer in the Heart-Pit, and spawns fire sprites as it goes;
+  the party exists to keep the sprite waves from compounding.
 - **Guard followers** intercept damage aimed at Layla.
 - **Shaman's ring** (equip) bends surviving golems to her will — the same
   binding the shaman's chalk-ring marks carry.

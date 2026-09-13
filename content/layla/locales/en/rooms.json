@@ -1,9 +1,9 @@
 [
   {
     "id": "r1c1",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "A Drafty Crossing",
+    "summary": "Cold air draws down through a ceiling fissure, smelling of damp limestone and old soot. Faint parallel tracks cross here at clean right angles, their shallow grooves dusted with grey silt.",
+    "inspect_text": "You pause where two shallow channels cross at a strict right angle. A thin, cold draft moans through a split in the ceiling overhead, carrying the faint plink of distant water. You catch yourself counting the grooves: four parallel lines, exact as chalk markings on a slate.",
     "features": [
       {
         "id": "r1c1-feature",
@@ -15,7 +15,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
     "exits": [
@@ -39,9 +39,9 @@
   },
   {
     "id": "r1c2",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Cold Fire-Pit Chamber",
+    "summary": "A low circle of blackened stones holds a bed of sluggish, dying embers. A cold draft from a chimney overhead flattens the smoke, and the room smells of damp soot and wet earth.",
+    "inspect_text": "A circle of river stones surrounds a bed of embers struggling against a downdraft. The smoke is thin and cold, sucked toward a fissure in the rock above. You warm your hands a second above the faint orange glow; the heat barely cuts through the cave's chill.",
     "features": [
       {
         "id": "r1c2-feature",
@@ -53,7 +53,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
     "exits": [
@@ -85,9 +85,9 @@
   },
   {
     "id": "r1c3",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Outer Den",
+    "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
     "features": [
       {
         "id": "r1c3-feature",
@@ -99,7 +99,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
     "exits": [
@@ -131,9 +131,9 @@
   },
   {
     "id": "r1c4",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Scavenge Ground",
+    "summary": "A cold cavern room littered with splintered bones and dried sinew. A low dressing rock sits under a chimney draft, smelling of old, dried blood and wet slate.",
+    "inspect_text": "The air is cold and smells of dried sinew and stale blood. A flat limestone slab in the corner is gouged by rough flint scrapers, its surface stained dark. A draft pulls the smell away into high cracks, leaving the chamber stark and quiet.",
     "features": [
       {
         "id": "r1c4-feature",
@@ -145,7 +145,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
     "exits": [
@@ -177,9 +177,9 @@
   },
   {
     "id": "r1c5",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "A Drafty Crossing",
+    "summary": "Cold air draws down through a ceiling fissure, smelling of damp limestone and old soot. Faint parallel tracks cross here at clean right angles, their shallow grooves dusted with grey silt.",
+    "inspect_text": "You pause where two shallow channels cross at a strict right angle. A thin, cold draft moans through a split in the ceiling overhead, carrying the faint plink of distant water. You catch yourself counting the grooves: four parallel lines, exact as chalk markings on a slate.",
     "features": [
       {
         "id": "r1c5-feature",
@@ -191,7 +191,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
     "exits": [
@@ -223,9 +223,9 @@
   },
   {
     "id": "r1c6",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Cold Fire-Pit Chamber",
+    "summary": "A low circle of blackened stones holds a bed of sluggish, dying embers. A cold draft from a chimney overhead flattens the smoke, and the room smells of damp soot and wet earth.",
+    "inspect_text": "A circle of river stones surrounds a bed of embers struggling against a downdraft. The smoke is thin and cold, sucked toward a fissure in the rock above. You warm your hands a second above the faint orange glow; the heat barely cuts through the cave's chill.",
     "features": [
       {
         "id": "r1c6-feature",
@@ -237,7 +237,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
     "exits": [
@@ -269,9 +269,9 @@
   },
   {
     "id": "r1c7",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Outer Den",
+    "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
     "features": [
       {
         "id": "r1c7-feature",
@@ -283,7 +283,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
     "exits": [
@@ -315,9 +315,9 @@
   },
   {
     "id": "r1c8",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Scavenge Ground",
+    "summary": "A cold cavern room littered with splintered bones and dried sinew. A low dressing rock sits under a chimney draft, smelling of old, dried blood and wet slate.",
+    "inspect_text": "The air is cold and smells of dried sinew and stale blood. A flat limestone slab in the corner is gouged by rough flint scrapers, its surface stained dark. A draft pulls the smell away into high cracks, leaving the chamber stark and quiet.",
     "features": [
       {
         "id": "r1c8-feature",
@@ -329,7 +329,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
     "exits": [
@@ -361,9 +361,9 @@
   },
   {
     "id": "r1c9",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "A Drafty Crossing",
+    "summary": "Cold air draws down through a ceiling fissure, smelling of damp limestone and old soot. Faint parallel tracks cross here at clean right angles, their shallow grooves dusted with grey silt.",
+    "inspect_text": "You pause where two shallow channels cross at a strict right angle. A thin, cold draft moans through a split in the ceiling overhead, carrying the faint plink of distant water. You catch yourself counting the grooves: four parallel lines, exact as chalk markings on a slate.",
     "features": [
       {
         "id": "r1c9-feature",
@@ -375,7 +375,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
     "exits": [
@@ -399,9 +399,9 @@
   },
   {
     "id": "r2c1",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Cold Fire-Pit Chamber",
+    "summary": "A low circle of blackened stones holds a bed of sluggish, dying embers. A cold draft from a chimney overhead flattens the smoke, and the room smells of damp soot and wet earth.",
+    "inspect_text": "A circle of river stones surrounds a bed of embers struggling against a downdraft. The smoke is thin and cold, sucked toward a fissure in the rock above. You warm your hands a second above the faint orange glow; the heat barely cuts through the cave's chill.",
     "features": [
       {
         "id": "r2c1-feature",
@@ -413,7 +413,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
     "exits": [
@@ -445,9 +445,9 @@
   },
   {
     "id": "r2c2",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Outer Den",
+    "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
     "features": [
       {
         "id": "r2c2-feature",
@@ -459,7 +459,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
     "exits": [
@@ -499,9 +499,9 @@
   },
   {
     "id": "r2c3",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Scavenge Ground",
+    "summary": "A cold cavern room littered with splintered bones and dried sinew. A low dressing rock sits under a chimney draft, smelling of old, dried blood and wet slate.",
+    "inspect_text": "The air is cold and smells of dried sinew and stale blood. A flat limestone slab in the corner is gouged by rough flint scrapers, its surface stained dark. A draft pulls the smell away into high cracks, leaving the chamber stark and quiet.",
     "features": [
       {
         "id": "r2c3-feature",
@@ -513,7 +513,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
     "exits": [
@@ -553,9 +553,9 @@
   },
   {
     "id": "r2c4",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "A Drafty Crossing",
+    "summary": "Cold air draws down through a ceiling fissure, smelling of damp limestone and old soot. Faint parallel tracks cross here at clean right angles, their shallow grooves dusted with grey silt.",
+    "inspect_text": "You pause where two shallow channels cross at a strict right angle. A thin, cold draft moans through a split in the ceiling overhead, carrying the faint plink of distant water. You catch yourself counting the grooves: four parallel lines, exact as chalk markings on a slate.",
     "features": [
       {
         "id": "r2c4-feature",
@@ -567,7 +567,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
     "exits": [
@@ -607,9 +607,9 @@
   },
   {
     "id": "r2c5",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Cold Fire-Pit Chamber",
+    "summary": "A low circle of blackened stones holds a bed of sluggish, dying embers. A cold draft from a chimney overhead flattens the smoke, and the room smells of damp soot and wet earth.",
+    "inspect_text": "A circle of river stones surrounds a bed of embers struggling against a downdraft. The smoke is thin and cold, sucked toward a fissure in the rock above. You warm your hands a second above the faint orange glow; the heat barely cuts through the cave's chill.",
     "features": [
       {
         "id": "r2c5-feature",
@@ -621,7 +621,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
     "exits": [
@@ -661,9 +661,9 @@
   },
   {
     "id": "r2c6",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Outer Den",
+    "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
     "features": [
       {
         "id": "r2c6-feature",
@@ -675,7 +675,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
     "exits": [
@@ -715,9 +715,9 @@
   },
   {
     "id": "r2c7",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Scavenge Ground",
+    "summary": "A cold cavern room littered with splintered bones and dried sinew. A low dressing rock sits under a chimney draft, smelling of old, dried blood and wet slate.",
+    "inspect_text": "The air is cold and smells of dried sinew and stale blood. A flat limestone slab in the corner is gouged by rough flint scrapers, its surface stained dark. A draft pulls the smell away into high cracks, leaving the chamber stark and quiet.",
     "features": [
       {
         "id": "r2c7-feature",
@@ -729,7 +729,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
     "exits": [
@@ -769,9 +769,9 @@
   },
   {
     "id": "r2c8",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "A Drafty Crossing",
+    "summary": "Cold air draws down through a ceiling fissure, smelling of damp limestone and old soot. Faint parallel tracks cross here at clean right angles, their shallow grooves dusted with grey silt.",
+    "inspect_text": "You pause where two shallow channels cross at a strict right angle. A thin, cold draft moans through a split in the ceiling overhead, carrying the faint plink of distant water. You catch yourself counting the grooves: four parallel lines, exact as chalk markings on a slate.",
     "features": [
       {
         "id": "r2c8-feature",
@@ -783,7 +783,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
     "exits": [
@@ -823,9 +823,9 @@
   },
   {
     "id": "r2c9",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Cold Fire-Pit Chamber",
+    "summary": "A low circle of blackened stones holds a bed of sluggish, dying embers. A cold draft from a chimney overhead flattens the smoke, and the room smells of damp soot and wet earth.",
+    "inspect_text": "A circle of river stones surrounds a bed of embers struggling against a downdraft. The smoke is thin and cold, sucked toward a fissure in the rock above. You warm your hands a second above the faint orange glow; the heat barely cuts through the cave's chill.",
     "features": [
       {
         "id": "r2c9-feature",
@@ -837,7 +837,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
     "exits": [
@@ -869,9 +869,9 @@
   },
   {
     "id": "r3c1",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Outer Den",
+    "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
     "features": [
       {
         "id": "r3c1-feature",
@@ -883,7 +883,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
     "exits": [
@@ -915,9 +915,9 @@
   },
   {
     "id": "r3c2",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Scavenge Ground",
+    "summary": "A cold cavern room littered with splintered bones and dried sinew. A low dressing rock sits under a chimney draft, smelling of old, dried blood and wet slate.",
+    "inspect_text": "The air is cold and smells of dried sinew and stale blood. A flat limestone slab in the corner is gouged by rough flint scrapers, its surface stained dark. A draft pulls the smell away into high cracks, leaving the chamber stark and quiet.",
     "features": [
       {
         "id": "r3c2-feature",
@@ -929,7 +929,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
     "exits": [
@@ -1239,9 +1239,9 @@
   },
   {
     "id": "r3c8",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Cold Fire-Pit Chamber",
+    "summary": "A low circle of blackened stones holds a bed of sluggish, dying embers. A cold draft from a chimney overhead flattens the smoke, and the room smells of damp soot and wet earth.",
+    "inspect_text": "A circle of river stones surrounds a bed of embers struggling against a downdraft. The smoke is thin and cold, sucked toward a fissure in the rock above. You warm your hands a second above the faint orange glow; the heat barely cuts through the cave's chill.",
     "features": [
       {
         "id": "r3c8-feature",
@@ -1253,7 +1253,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
     "exits": [
@@ -1293,9 +1293,9 @@
   },
   {
     "id": "r3c9",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Outer Den",
+    "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
     "features": [
       {
         "id": "r3c9-feature",
@@ -1307,7 +1307,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
     "exits": [
@@ -1339,9 +1339,9 @@
   },
   {
     "id": "r4c1",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Scavenge Ground",
+    "summary": "A cold cavern room littered with splintered bones and dried sinew. A low dressing rock sits under a chimney draft, smelling of old, dried blood and wet slate.",
+    "inspect_text": "The air is cold and smells of dried sinew and stale blood. A flat limestone slab in the corner is gouged by rough flint scrapers, its surface stained dark. A draft pulls the smell away into high cracks, leaving the chamber stark and quiet.",
     "features": [
       {
         "id": "r4c1-feature",
@@ -1353,7 +1353,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
     "exits": [
@@ -1385,9 +1385,9 @@
   },
   {
     "id": "r4c2",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "A Drafty Crossing",
+    "summary": "Cold air draws down through a ceiling fissure, smelling of damp limestone and old soot. Faint parallel tracks cross here at clean right angles, their shallow grooves dusted with grey silt.",
+    "inspect_text": "You pause where two shallow channels cross at a strict right angle. A thin, cold draft moans through a split in the ceiling overhead, carrying the faint plink of distant water. You catch yourself counting the grooves: four parallel lines, exact as chalk markings on a slate.",
     "features": [
       {
         "id": "r4c2-feature",
@@ -1399,7 +1399,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
     "exits": [
@@ -1493,9 +1493,9 @@
   },
   {
     "id": "r4c4",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Inner Watch-Den",
+    "summary": "A warm, cramped den littered with thick wolf-pelts and hardened clay bowls. The floor vibrates with the shaman's drumming, and chalk markings cover the bedding wall.",
+    "inspect_text": "Thick predator pelts line the floor, warm from recent bodies. The air is pungent with animal musk and hot grease. Scored into the stone behind the beds are chalk rings and tallies, identical in spacing to the marks on your own knuckles. The staff strikes stone nearby: tock… tock.",
     "features": [
       {
         "id": "r4c4-feature",
@@ -1507,7 +1507,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A collection of thick hide bundles and carved bone amulets, dusted with fine lime chalk."
       }
     ],
     "exits": [
@@ -1547,9 +1547,9 @@
   },
   {
     "id": "r4c5",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Curing Vault",
+    "summary": "Thick smoke from burning pitch-wood hangs low over racks of cured meat and bone tools. The heat is steady, and the sound of the shaman's work echoes loudly off the scorched rock.",
+    "inspect_text": "Heavy, pungent smoke curls around drying frames loaded with salted venison and strips of hide. The center stone is stained black with resin and animal grease. Through the smoke, the rhythmic thud of the staff sounds directly through the opening: TOCK… TOCK.",
     "features": [
       {
         "id": "r4c5-feature",
@@ -1561,7 +1561,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A massive dressing slab, dark and greasy, flanked by neat rows of flint wedges and bone carving chisels."
       }
     ],
     "exits": [
@@ -1601,9 +1601,9 @@
   },
   {
     "id": "r4c6",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "The Convergence of Tracks",
+    "summary": "The patrolling channels deepen here, cut thick into stone and dusted with white chalk. They lead straight toward the central glow, and each strike of the shaman's staff vibrates hard through the floor.",
+    "inspect_text": "All the tracks of the floor seem to gather here. Four deep channels converge at clean perpendiculars, their edges powdered white with stray chalk. The air is dry and hot against your face. Every few seconds, the floor shudders with a dull, heavy thump: TOCK. Something massive is striking stone just beyond.",
     "features": [
       {
         "id": "r4c6-feature",
@@ -1615,7 +1615,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Deep grooves converging like lines on a grid, whitened by chalk dust dragged in on small feet."
       }
     ],
     "exits": [
@@ -1709,9 +1709,9 @@
   },
   {
     "id": "r4c8",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Outer Den",
+    "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
     "features": [
       {
         "id": "r4c8-feature",
@@ -1723,7 +1723,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
     "exits": [
@@ -1763,9 +1763,9 @@
   },
   {
     "id": "r4c9",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Scavenge Ground",
+    "summary": "A cold cavern room littered with splintered bones and dried sinew. A low dressing rock sits under a chimney draft, smelling of old, dried blood and wet slate.",
+    "inspect_text": "The air is cold and smells of dried sinew and stale blood. A flat limestone slab in the corner is gouged by rough flint scrapers, its surface stained dark. A draft pulls the smell away into high cracks, leaving the chamber stark and quiet.",
     "features": [
       {
         "id": "r4c9-feature",
@@ -1777,7 +1777,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
     "exits": [
@@ -1809,9 +1809,9 @@
   },
   {
     "id": "r5c1",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "A Drafty Crossing",
+    "summary": "Cold air draws down through a ceiling fissure, smelling of damp limestone and old soot. Faint parallel tracks cross here at clean right angles, their shallow grooves dusted with grey silt.",
+    "inspect_text": "You pause where two shallow channels cross at a strict right angle. A thin, cold draft moans through a split in the ceiling overhead, carrying the faint plink of distant water. You catch yourself counting the grooves: four parallel lines, exact as chalk markings on a slate.",
     "features": [
       {
         "id": "r5c1-feature",
@@ -1823,7 +1823,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
     "exits": [
@@ -1855,9 +1855,9 @@
   },
   {
     "id": "r5c2",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Cold Fire-Pit Chamber",
+    "summary": "A low circle of blackened stones holds a bed of sluggish, dying embers. A cold draft from a chimney overhead flattens the smoke, and the room smells of damp soot and wet earth.",
+    "inspect_text": "A circle of river stones surrounds a bed of embers struggling against a downdraft. The smoke is thin and cold, sucked toward a fissure in the rock above. You warm your hands a second above the faint orange glow; the heat barely cuts through the cave's chill.",
     "features": [
       {
         "id": "r5c2-feature",
@@ -1869,7 +1869,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
     "exits": [
@@ -1963,9 +1963,9 @@
   },
   {
     "id": "r5c4",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Curing Vault",
+    "summary": "Thick smoke from burning pitch-wood hangs low over racks of cured meat and bone tools. The heat is steady, and the sound of the shaman's work echoes loudly off the scorched rock.",
+    "inspect_text": "Heavy, pungent smoke curls around drying frames loaded with salted venison and strips of hide. The center stone is stained black with resin and animal grease. Through the smoke, the rhythmic thud of the staff sounds directly through the opening: TOCK… TOCK.",
     "features": [
       {
         "id": "r5c4-feature",
@@ -1977,7 +1977,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A massive dressing slab, dark and greasy, flanked by neat rows of flint wedges and bone carving chisels."
       }
     ],
     "exits": [
@@ -2089,9 +2089,9 @@
   },
   {
     "id": "r5c6",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Glowing Crucible Chamber",
+    "summary": "A wide pit of white-hot coals throbs with dry, baking heat. The stone walls are glazed red, and the air smells intensely of scorched clay and burned herbs.",
+    "inspect_text": "Baking heat hits your chest like a wall. A wide stone trough glows with banked, white-hot embers that cast leaping shadows up the jagged ceiling. The air tastes bitter with chalk dust and burned mountain-sage. From the adjacent opening, the rhythm of the staff sounds close enough to touch: TOCK.",
     "features": [
       {
         "id": "r5c6-feature",
@@ -2103,7 +2103,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "A heavy stone trough glowing white and cherry-red, radiating fierce heat that makes the air shimmer."
       }
     ],
     "exits": [
@@ -2197,9 +2197,9 @@
   },
   {
     "id": "r5c8",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Scavenge Ground",
+    "summary": "A cold cavern room littered with splintered bones and dried sinew. A low dressing rock sits under a chimney draft, smelling of old, dried blood and wet slate.",
+    "inspect_text": "The air is cold and smells of dried sinew and stale blood. A flat limestone slab in the corner is gouged by rough flint scrapers, its surface stained dark. A draft pulls the smell away into high cracks, leaving the chamber stark and quiet.",
     "features": [
       {
         "id": "r5c8-feature",
@@ -2211,7 +2211,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
     "exits": [
@@ -2251,9 +2251,9 @@
   },
   {
     "id": "r5c9",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "A Drafty Crossing",
+    "summary": "Cold air draws down through a ceiling fissure, smelling of damp limestone and old soot. Faint parallel tracks cross here at clean right angles, their shallow grooves dusted with grey silt.",
+    "inspect_text": "You pause where two shallow channels cross at a strict right angle. A thin, cold draft moans through a split in the ceiling overhead, carrying the faint plink of distant water. You catch yourself counting the grooves: four parallel lines, exact as chalk markings on a slate.",
     "features": [
       {
         "id": "r5c9-feature",
@@ -2265,7 +2265,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
     "exits": [
@@ -2297,9 +2297,9 @@
   },
   {
     "id": "r6c1",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Cold Fire-Pit Chamber",
+    "summary": "A low circle of blackened stones holds a bed of sluggish, dying embers. A cold draft from a chimney overhead flattens the smoke, and the room smells of damp soot and wet earth.",
+    "inspect_text": "A circle of river stones surrounds a bed of embers struggling against a downdraft. The smoke is thin and cold, sucked toward a fissure in the rock above. You warm your hands a second above the faint orange glow; the heat barely cuts through the cave's chill.",
     "features": [
       {
         "id": "r6c1-feature",
@@ -2311,7 +2311,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
     "exits": [
@@ -2343,9 +2343,9 @@
   },
   {
     "id": "r6c2",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Outer Den",
+    "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
     "features": [
       {
         "id": "r6c2-feature",
@@ -2357,7 +2357,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
     "exits": [
@@ -2451,9 +2451,9 @@
   },
   {
     "id": "r6c4",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "The Convergence of Tracks",
+    "summary": "The patrolling channels deepen here, cut thick into stone and dusted with white chalk. They lead straight toward the central glow, and each strike of the shaman's staff vibrates hard through the floor.",
+    "inspect_text": "All the tracks of the floor seem to gather here. Four deep channels converge at clean perpendiculars, their edges powdered white with stray chalk. The air is dry and hot against your face. Every few seconds, the floor shudders with a dull, heavy thump: TOCK. Something massive is striking stone just beyond.",
     "features": [
       {
         "id": "r6c4-feature",
@@ -2465,7 +2465,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Deep grooves converging like lines on a grid, whitened by chalk dust dragged in on small feet."
       }
     ],
     "exits": [
@@ -2505,9 +2505,9 @@
   },
   {
     "id": "r6c5",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Glowing Crucible Chamber",
+    "summary": "A wide pit of white-hot coals throbs with dry, baking heat. The stone walls are glazed red, and the air smells intensely of scorched clay and burned herbs.",
+    "inspect_text": "Baking heat hits your chest like a wall. A wide stone trough glows with banked, white-hot embers that cast leaping shadows up the jagged ceiling. The air tastes bitter with chalk dust and burned mountain-sage. From the adjacent opening, the rhythm of the staff sounds close enough to touch: TOCK.",
     "features": [
       {
         "id": "r6c5-feature",
@@ -2519,7 +2519,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "A heavy stone trough glowing white and cherry-red, radiating fierce heat that makes the air shimmer."
       }
     ],
     "exits": [
@@ -2559,9 +2559,9 @@
   },
   {
     "id": "r6c6",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Inner Watch-Den",
+    "summary": "A warm, cramped den littered with thick wolf-pelts and hardened clay bowls. The floor vibrates with the shaman's drumming, and chalk markings cover the bedding wall.",
+    "inspect_text": "Thick predator pelts line the floor, warm from recent bodies. The air is pungent with animal musk and hot grease. Scored into the stone behind the beds are chalk rings and tallies, identical in spacing to the marks on your own knuckles. The staff strikes stone nearby: tock… tock.",
     "features": [
       {
         "id": "r6c6-feature",
@@ -2573,7 +2573,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A collection of thick hide bundles and carved bone amulets, dusted with fine lime chalk."
       }
     ],
     "exits": [
@@ -2667,9 +2667,9 @@
   },
   {
     "id": "r6c8",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "A Drafty Crossing",
+    "summary": "Cold air draws down through a ceiling fissure, smelling of damp limestone and old soot. Faint parallel tracks cross here at clean right angles, their shallow grooves dusted with grey silt.",
+    "inspect_text": "You pause where two shallow channels cross at a strict right angle. A thin, cold draft moans through a split in the ceiling overhead, carrying the faint plink of distant water. You catch yourself counting the grooves: four parallel lines, exact as chalk markings on a slate.",
     "features": [
       {
         "id": "r6c8-feature",
@@ -2681,7 +2681,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
     "exits": [
@@ -2721,9 +2721,9 @@
   },
   {
     "id": "r6c9",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Cold Fire-Pit Chamber",
+    "summary": "A low circle of blackened stones holds a bed of sluggish, dying embers. A cold draft from a chimney overhead flattens the smoke, and the room smells of damp soot and wet earth.",
+    "inspect_text": "A circle of river stones surrounds a bed of embers struggling against a downdraft. The smoke is thin and cold, sucked toward a fissure in the rock above. You warm your hands a second above the faint orange glow; the heat barely cuts through the cave's chill.",
     "features": [
       {
         "id": "r6c9-feature",
@@ -2735,7 +2735,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
     "exits": [
@@ -2767,9 +2767,9 @@
   },
   {
     "id": "r7c1",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Outer Den",
+    "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
     "features": [
       {
         "id": "r7c1-feature",
@@ -2781,7 +2781,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
     "exits": [
@@ -2813,9 +2813,9 @@
   },
   {
     "id": "r7c2",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Scavenge Ground",
+    "summary": "A cold cavern room littered with splintered bones and dried sinew. A low dressing rock sits under a chimney draft, smelling of old, dried blood and wet slate.",
+    "inspect_text": "The air is cold and smells of dried sinew and stale blood. A flat limestone slab in the corner is gouged by rough flint scrapers, its surface stained dark. A draft pulls the smell away into high cracks, leaving the chamber stark and quiet.",
     "features": [
       {
         "id": "r7c2-feature",
@@ -2827,7 +2827,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
     "exits": [
@@ -3137,9 +3137,9 @@
   },
   {
     "id": "r7c8",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Cold Fire-Pit Chamber",
+    "summary": "A low circle of blackened stones holds a bed of sluggish, dying embers. A cold draft from a chimney overhead flattens the smoke, and the room smells of damp soot and wet earth.",
+    "inspect_text": "A circle of river stones surrounds a bed of embers struggling against a downdraft. The smoke is thin and cold, sucked toward a fissure in the rock above. You warm your hands a second above the faint orange glow; the heat barely cuts through the cave's chill.",
     "features": [
       {
         "id": "r7c8-feature",
@@ -3151,7 +3151,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
     "exits": [
@@ -3191,9 +3191,9 @@
   },
   {
     "id": "r7c9",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Outer Den",
+    "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
     "features": [
       {
         "id": "r7c9-feature",
@@ -3205,7 +3205,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
     "exits": [
@@ -3237,9 +3237,9 @@
   },
   {
     "id": "r8c1",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Scavenge Ground",
+    "summary": "A cold cavern room littered with splintered bones and dried sinew. A low dressing rock sits under a chimney draft, smelling of old, dried blood and wet slate.",
+    "inspect_text": "The air is cold and smells of dried sinew and stale blood. A flat limestone slab in the corner is gouged by rough flint scrapers, its surface stained dark. A draft pulls the smell away into high cracks, leaving the chamber stark and quiet.",
     "features": [
       {
         "id": "r8c1-feature",
@@ -3251,7 +3251,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
     "exits": [
@@ -3283,9 +3283,9 @@
   },
   {
     "id": "r8c2",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "A Drafty Crossing",
+    "summary": "Cold air draws down through a ceiling fissure, smelling of damp limestone and old soot. Faint parallel tracks cross here at clean right angles, their shallow grooves dusted with grey silt.",
+    "inspect_text": "You pause where two shallow channels cross at a strict right angle. A thin, cold draft moans through a split in the ceiling overhead, carrying the faint plink of distant water. You catch yourself counting the grooves: four parallel lines, exact as chalk markings on a slate.",
     "features": [
       {
         "id": "r8c2-feature",
@@ -3297,7 +3297,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
     "exits": [
@@ -3337,9 +3337,9 @@
   },
   {
     "id": "r8c3",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Cold Fire-Pit Chamber",
+    "summary": "A low circle of blackened stones holds a bed of sluggish, dying embers. A cold draft from a chimney overhead flattens the smoke, and the room smells of damp soot and wet earth.",
+    "inspect_text": "A circle of river stones surrounds a bed of embers struggling against a downdraft. The smoke is thin and cold, sucked toward a fissure in the rock above. You warm your hands a second above the faint orange glow; the heat barely cuts through the cave's chill.",
     "features": [
       {
         "id": "r8c3-feature",
@@ -3351,7 +3351,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
     "exits": [
@@ -3391,9 +3391,9 @@
   },
   {
     "id": "r8c4",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Outer Den",
+    "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
     "features": [
       {
         "id": "r8c4-feature",
@@ -3405,7 +3405,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
     "exits": [
@@ -3445,9 +3445,9 @@
   },
   {
     "id": "r8c5",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Scavenge Ground",
+    "summary": "A cold cavern room littered with splintered bones and dried sinew. A low dressing rock sits under a chimney draft, smelling of old, dried blood and wet slate.",
+    "inspect_text": "The air is cold and smells of dried sinew and stale blood. A flat limestone slab in the corner is gouged by rough flint scrapers, its surface stained dark. A draft pulls the smell away into high cracks, leaving the chamber stark and quiet.",
     "features": [
       {
         "id": "r8c5-feature",
@@ -3459,7 +3459,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
     "exits": [
@@ -3499,9 +3499,9 @@
   },
   {
     "id": "r8c6",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "A Drafty Crossing",
+    "summary": "Cold air draws down through a ceiling fissure, smelling of damp limestone and old soot. Faint parallel tracks cross here at clean right angles, their shallow grooves dusted with grey silt.",
+    "inspect_text": "You pause where two shallow channels cross at a strict right angle. A thin, cold draft moans through a split in the ceiling overhead, carrying the faint plink of distant water. You catch yourself counting the grooves: four parallel lines, exact as chalk markings on a slate.",
     "features": [
       {
         "id": "r8c6-feature",
@@ -3513,7 +3513,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
     "exits": [
@@ -3553,9 +3553,9 @@
   },
   {
     "id": "r8c7",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Cold Fire-Pit Chamber",
+    "summary": "A low circle of blackened stones holds a bed of sluggish, dying embers. A cold draft from a chimney overhead flattens the smoke, and the room smells of damp soot and wet earth.",
+    "inspect_text": "A circle of river stones surrounds a bed of embers struggling against a downdraft. The smoke is thin and cold, sucked toward a fissure in the rock above. You warm your hands a second above the faint orange glow; the heat barely cuts through the cave's chill.",
     "features": [
       {
         "id": "r8c7-feature",
@@ -3567,7 +3567,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
     "exits": [
@@ -3607,9 +3607,9 @@
   },
   {
     "id": "r8c8",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Outer Den",
+    "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
     "features": [
       {
         "id": "r8c8-feature",
@@ -3621,7 +3621,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
     "exits": [
@@ -3661,9 +3661,9 @@
   },
   {
     "id": "r8c9",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Scavenge Ground",
+    "summary": "A cold cavern room littered with splintered bones and dried sinew. A low dressing rock sits under a chimney draft, smelling of old, dried blood and wet slate.",
+    "inspect_text": "The air is cold and smells of dried sinew and stale blood. A flat limestone slab in the corner is gouged by rough flint scrapers, its surface stained dark. A draft pulls the smell away into high cracks, leaving the chamber stark and quiet.",
     "features": [
       {
         "id": "r8c9-feature",
@@ -3675,7 +3675,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
     "exits": [
@@ -3707,9 +3707,9 @@
   },
   {
     "id": "r9c1",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "A Drafty Crossing",
+    "summary": "Cold air draws down through a ceiling fissure, smelling of damp limestone and old soot. Faint parallel tracks cross here at clean right angles, their shallow grooves dusted with grey silt.",
+    "inspect_text": "You pause where two shallow channels cross at a strict right angle. A thin, cold draft moans through a split in the ceiling overhead, carrying the faint plink of distant water. You catch yourself counting the grooves: four parallel lines, exact as chalk markings on a slate.",
     "features": [
       {
         "id": "r9c1-feature",
@@ -3721,7 +3721,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
     "exits": [
@@ -3745,9 +3745,9 @@
   },
   {
     "id": "r9c2",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Cold Fire-Pit Chamber",
+    "summary": "A low circle of blackened stones holds a bed of sluggish, dying embers. A cold draft from a chimney overhead flattens the smoke, and the room smells of damp soot and wet earth.",
+    "inspect_text": "A circle of river stones surrounds a bed of embers struggling against a downdraft. The smoke is thin and cold, sucked toward a fissure in the rock above. You warm your hands a second above the faint orange glow; the heat barely cuts through the cave's chill.",
     "features": [
       {
         "id": "r9c2-feature",
@@ -3759,7 +3759,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
     "exits": [
@@ -3791,9 +3791,9 @@
   },
   {
     "id": "r9c3",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Outer Den",
+    "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
     "features": [
       {
         "id": "r9c3-feature",
@@ -3805,7 +3805,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
     "exits": [
@@ -3837,9 +3837,9 @@
   },
   {
     "id": "r9c4",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Scavenge Ground",
+    "summary": "A cold cavern room littered with splintered bones and dried sinew. A low dressing rock sits under a chimney draft, smelling of old, dried blood and wet slate.",
+    "inspect_text": "The air is cold and smells of dried sinew and stale blood. A flat limestone slab in the corner is gouged by rough flint scrapers, its surface stained dark. A draft pulls the smell away into high cracks, leaving the chamber stark and quiet.",
     "features": [
       {
         "id": "r9c4-feature",
@@ -3851,7 +3851,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
     "exits": [
@@ -3883,9 +3883,9 @@
   },
   {
     "id": "r9c5",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "A Drafty Crossing",
+    "summary": "Cold air draws down through a ceiling fissure, smelling of damp limestone and old soot. Faint parallel tracks cross here at clean right angles, their shallow grooves dusted with grey silt.",
+    "inspect_text": "You pause where two shallow channels cross at a strict right angle. A thin, cold draft moans through a split in the ceiling overhead, carrying the faint plink of distant water. You catch yourself counting the grooves: four parallel lines, exact as chalk markings on a slate.",
     "features": [
       {
         "id": "r9c5-feature",
@@ -3897,7 +3897,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
     "exits": [
@@ -3929,9 +3929,9 @@
   },
   {
     "id": "r9c6",
-    "title": "A Fire-Pit Chamber",
-    "summary": "A shallow pit of embers glows in the middle of the floor, ringed with stones scored black by long use. Smoke layers flat against the ceiling like a low roof, and the room is warm enough to sweat in.",
-    "inspect_text": "Heat meets you at the doorway. A shallow pit of embers throbs low in the center of the room, its ring of stones scarred by a thousand proddings with a fire-stick. The smoke hangs in a flat layer overhead, and your shadow stretches long across the floor. It smells of ash and old grease.",
+    "title": "A Cold Fire-Pit Chamber",
+    "summary": "A low circle of blackened stones holds a bed of sluggish, dying embers. A cold draft from a chimney overhead flattens the smoke, and the room smells of damp soot and wet earth.",
+    "inspect_text": "A circle of river stones surrounds a bed of embers struggling against a downdraft. The smoke is thin and cold, sucked toward a fissure in the rock above. You warm your hands a second above the faint orange glow; the heat barely cuts through the cave's chill.",
     "features": [
       {
         "id": "r9c6-feature",
@@ -3943,7 +3943,7 @@
           "coals",
           "stone ring"
         ],
-        "inspect_text": "A ring of fire-scarred stones, and inside it embers that never quite die out. The coals breathe, orange and patient."
+        "inspect_text": "Blackened river stones ringed around grey ash and dying orange coals. The stones are cold to the touch on their outer rim."
       }
     ],
     "exits": [
@@ -3975,9 +3975,9 @@
   },
   {
     "id": "r9c7",
-    "title": "A Den",
-    "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "title": "An Outer Den",
+    "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
     "features": [
       {
         "id": "r9c7-feature",
@@ -3989,7 +3989,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A small pile of dry, gnawed bones, sorted by size into neat little bundles."
       }
     ],
     "exits": [
@@ -4021,9 +4021,9 @@
   },
   {
     "id": "r9c8",
-    "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
-    "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
+    "title": "A Scavenge Ground",
+    "summary": "A cold cavern room littered with splintered bones and dried sinew. A low dressing rock sits under a chimney draft, smelling of old, dried blood and wet slate.",
+    "inspect_text": "The air is cold and smells of dried sinew and stale blood. A flat limestone slab in the corner is gouged by rough flint scrapers, its surface stained dark. A draft pulls the smell away into high cracks, leaving the chamber stark and quiet.",
     "features": [
       {
         "id": "r9c8-feature",
@@ -4035,7 +4035,7 @@
           "frame",
           "grease"
         ],
-        "inspect_text": "A slab of rock worn black and smooth at its center, where the tribe dresses its kills. The smell is richest here."
+        "inspect_text": "A flat limestone rock scarred by scraping blades, surrounded by dry shavings of antler and bone."
       }
     ],
     "exits": [
@@ -4067,9 +4067,9 @@
   },
   {
     "id": "r9c9",
-    "title": "A Crossing of Worn Tracks",
-    "summary": "The cave floor is worn into shallow channels here — old patrolling tracks, walked a thousand times by small feet. They cross at right angles as clean as a habit, and the air smells of dry dust and old smoke.",
-    "inspect_text": "You stop in a chamber where the floor is scored by generations of small feet into faint, parallel tracks. Two of them cross at a clean right angle, and you catch yourself measuring it the way you’d measure a line on a board. The tracks go on into the dark, one way and back.",
+    "title": "A Drafty Crossing",
+    "summary": "Cold air draws down through a ceiling fissure, smelling of damp limestone and old soot. Faint parallel tracks cross here at clean right angles, their shallow grooves dusted with grey silt.",
+    "inspect_text": "You pause where two shallow channels cross at a strict right angle. A thin, cold draft moans through a split in the ceiling overhead, carrying the faint plink of distant water. You catch yourself counting the grooves: four parallel lines, exact as chalk markings on a slate.",
     "features": [
       {
         "id": "r9c9-feature",
@@ -4081,7 +4081,7 @@
           "grooves",
           "floor"
         ],
-        "inspect_text": "Shallow channels worn into the stone by a thousand small crossings. Where two of them meet they make a right angle as exact as anything you could draw."
+        "inspect_text": "Shallow channels worn into cold stone. Silt has settled in the grooves, but the right angle where they intersect remains sharp and deliberate."
       }
     ],
     "exits": [
