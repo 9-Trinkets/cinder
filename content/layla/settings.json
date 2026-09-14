@@ -2,6 +2,11 @@
   "title": "Layla",
   "tagline": "Every rule you master brings you one step closer to the throne.",
   "description": "You wake in a cold stone cave with no memory, a silent stone golem at your feet, and a piece of glowing magic chalk in your hand.\n\nTo find a way out, you must learn the hidden rules of the dungeon. Trace glowing chalk marks to claim territory room by room, set traps, and turn hostile creatures into loyal allies.\n\nBut the deeper you go, the clearer it becomes: this place is not a random cave. It is a test built on purpose, and every rule you master is training you for something waiting at the bottom.",
+  "tags": [
+    "Dungeon Crawler",
+    "Sigil Magic",
+    "Party Tactics"
+  ],
   "npc_tick_interval_ms": 2000,
   "tick_minutes_per_turn": 1,
   "default_language": "en",

@@ -2,6 +2,11 @@
   "title": "Ella",
   "tagline": "The last night home before everything changes.",
   "description": "It's the night before Ella leaves for college. In a small apartment with her Taiwanese immigrant parents, love gets said through food and small gestures more than words — see what finally gets spoken before she walks out the door.",
+  "tags": [
+    "Slice of Life",
+    "Family Drama",
+    "Interactive Story"
+  ],
   "npc_tick_interval_ms": 2000,
   "default_language": "en",
   "actor_tick_scope": "current_board",

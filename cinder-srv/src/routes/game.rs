@@ -103,6 +103,7 @@ pub struct PackInfo {
     pub tagline: String,
     pub description: String,
     pub theme: cinder_core::content::types::ThemeDefinition,
+    pub tags: Vec<String>,
 }
 
 pub async fn list_packs() -> Json<Vec<PackInfo>> {
@@ -123,6 +124,7 @@ pub async fn list_packs() -> Json<Vec<PackInfo>> {
                     tagline: settings.tagline,
                     description: settings.description,
                     theme: settings.theme,
+                    tags: settings.tags,
                 }
             })
             .collect(),

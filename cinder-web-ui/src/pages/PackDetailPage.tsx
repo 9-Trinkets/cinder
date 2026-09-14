@@ -99,49 +99,96 @@ export default function PackDetailPage() {
           <p className="text-muted">Game not found.</p>
         ) : (
           <>
-            <section>
-              <div className="flex items-center gap-2 mb-2">
+            <section className="bg-surface/50 border border-subtle/80 rounded-xl p-6 shadow-xs">
+              <div className="flex items-center gap-2.5 mb-2">
                 <span
-                  className="inline-block w-4 h-4 rounded-full shrink-0"
+                  className="inline-block w-4 h-4 rounded-full shrink-0 shadow-xs"
                   style={{ backgroundColor: pack.theme.pine }}
                   aria-hidden="true"
                 />
-                <h1 className="text-xl font-bold text-text">{pack.title}</h1>
+                <h1 className="text-2xl font-bold text-text tracking-tight">{pack.title}</h1>
               </div>
-              {pack.tagline && <p className="text-muted mb-2">{pack.tagline}</p>}
-              {pack.description && <p className="text-text text-sm leading-relaxed whitespace-pre-line">{pack.description}</p>}
-              <div className="mt-4">
-                <Button variant="primary" onClick={create} disabled={creating}>
-                  {creating ? 'Starting…' : 'New Game'}
+
+              {pack.tags && pack.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {pack.tags.map(tag => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-0.5 rounded-md text-xs font-medium bg-overlay text-foam border border-subtle"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {pack.tagline && (
+                <p className="text-iris font-medium text-base mb-3 italic">
+                  "{pack.tagline}"
+                </p>
+              )}
+
+              {pack.description && (
+                <div className="text-text/85 text-sm leading-relaxed whitespace-pre-line bg-overlay/30 p-4 rounded-lg border border-subtle/40 mb-5">
+                  {pack.description}
+                </div>
+              )}
+
+              <div>
+                <Button variant="primary" onClick={create} disabled={creating} className="px-5 py-2 font-semibold shadow-xs">
+                  {creating ? 'Starting…' : '+ Start New Game'}
                 </Button>
               </div>
             </section>
 
             <section>
-              <h2 className="text-lg font-semibold text-text mb-4">Plays</h2>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-lg font-bold text-text">Plays</h2>
+                {plays.length > 0 && (
+                  <span className="text-xs font-medium text-muted bg-overlay px-2 py-0.5 rounded border border-subtle">
+                    {plays.length} {plays.length === 1 ? 'play' : 'plays'}
+                  </span>
+                )}
+              </div>
+
               {plays.length === 0 ? (
-                <p className="text-muted">No plays yet.</p>
+                <div className="text-center py-8 px-4 rounded-xl border border-dashed border-subtle bg-overlay/20">
+                  <p className="text-muted text-sm mb-2">No active plays yet.</p>
+                  <p className="text-faint text-xs">Click "+ Start New Game" above to begin your journey!</p>
+                </div>
               ) : (
                 <div className="space-y-2">
                   {plays.map(p => (
-                    <Card key={p.play_id} className="flex items-center px-4 py-3 group">
+                    <Card
+                      key={p.play_id}
+                      className="flex items-center px-4 py-3 group hover:border-text/30 hover:bg-highlight-low/10 transition-all duration-150"
+                    >
                       <div
                         onClick={() => navigate(`/games/${p.play_id}`)}
-                        className="flex-1 flex items-center justify-between cursor-pointer"
+                        className="flex-1 flex items-center justify-between cursor-pointer gap-3 min-w-0"
                       >
-                        <span className="text-text">
-                          {p.current_room_name
-                            ? `Day ${p.day_number} — ${p.current_room_name}`
-                            : `Play started ${fmtTime(p.created_at)}`}
-                        </span>
-                        <span className="text-faint text-xs">{fmtTime(p.updated_at)}</span>
+                        <div className="flex items-center gap-2.5 min-w-0">
+                          <span className="w-2 h-2 rounded-full bg-foam shrink-0 animate-pulse" />
+                          <span className="text-text font-medium text-sm truncate">
+                            {p.current_room_name
+                              ? `Day ${p.day_number} — ${p.current_room_name}`
+                              : `Play started ${fmtTime(p.created_at)}`}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-3 shrink-0">
+                          <span className="text-faint text-xs font-mono">{fmtTime(p.updated_at)}</span>
+                          <span className="text-xs font-medium text-foam group-hover:translate-x-0.5 transition-transform duration-150">
+                            Resume &rarr;
+                          </span>
+                        </div>
                       </div>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => setConfirmDelete(p.play_id)}
                         disabled={deleting === p.play_id}
-                        className="ml-3 opacity-0 group-hover:opacity-100"
+                        className="ml-2 opacity-0 group-hover:opacity-100 text-muted hover:text-love transition-opacity"
+                        title="Delete play"
                       >
                         {deleting === p.play_id ? '...' : '✕'}
                       </Button>

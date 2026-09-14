@@ -2,6 +2,11 @@
   "title": "Isla",
   "tagline": "One book, one evening, one thing they can't quite say.",
   "description": "It's a quiet, rainy evening, and Isla is meeting a new patient — someone composed, guarded, and carrying a hurt they won't name outright. Find the story that can reach what conversation alone cannot.",
+  "tags": [
+    "Bibliotherapy",
+    "Cozy Narrative",
+    "Branching Story"
+  ],
   "npc_tick_interval_ms": 60000,
   "tick_minutes_per_turn": 1,
   "default_language": "en",

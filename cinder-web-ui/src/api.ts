@@ -454,6 +454,7 @@ export interface PackInfo {
   tagline: string
   description: string
   theme: ThemeDefinition
+  tags?: string[]
 }
 
 export function listPacks(token: string) {

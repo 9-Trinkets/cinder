@@ -77,6 +77,8 @@ pub struct ContentSettingsDefinition {
     pub tagline: String,
     #[serde(default)]
     pub description: String,
+    #[serde(default)]
+    pub tags: Vec<String>,
     #[serde(default = "default_npc_tick_interval_ms")]
     pub npc_tick_interval_ms: u64,
     #[serde(default = "default_tick_minutes_per_turn")]
@@ -198,6 +200,7 @@ impl Default for ContentSettingsDefinition {
             title: String::default(),
             tagline: String::default(),
             description: String::default(),
+            tags: Vec::new(),
             npc_tick_interval_ms: default_npc_tick_interval_ms(),
             tick_minutes_per_turn: default_tick_minutes_per_turn(),
             default_language: default_default_language(),
