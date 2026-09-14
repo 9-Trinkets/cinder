@@ -110,7 +110,6 @@ fn periodic_damage_at_zero_uses_normal_defeat_drop_and_xp_path() {
     rebuild_test_pack_indexes(&mut pack);
 
     let mut state = WorldState::new(&pack);
-    let player_stamina = state.actor_stat(ACTOR_A_ID, "stamina");
     state.current_room_id = LOUNGE_ID.to_string();
     state.set_stance("goblin", ActorStance::Hostile);
     state.add_item_to_storage("drain-sigil", ItemStorageTarget::CurrentRoom, LOUNGE_ID);
@@ -132,7 +131,10 @@ fn periodic_damage_at_zero_uses_normal_defeat_drop_and_xp_path() {
         ]
     );
     assert_eq!(state.actor_xp.get(ACTOR_A_ID), Some(&4));
-    assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), player_stamina + 1);
+    assert_eq!(
+        state.actor_stat(ACTOR_A_ID, "stamina"),
+        state.actor_stat_maximum(&pack, ACTOR_A_ID, "stamina")
+    );
 }
 
 #[test]

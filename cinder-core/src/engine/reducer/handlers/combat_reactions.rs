@@ -176,7 +176,7 @@ fn resolve_counterattack(
         })
     } else {
         state
-            .adjust_actor_stat(&target_id, &combat.health_stat_id, -damage)
+            .adjust_actor_stat(content, &target_id, &combat.health_stat_id, -damage)
             .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
         let remaining = state.effective_actor_stat(content, &target_id, &combat.health_stat_id);
         Some(PartyReactionOutcome::Counterattack {
@@ -215,7 +215,7 @@ fn resolve_support(
     };
     let before = state.actor_stat(&target_id, stat);
     state
-        .adjust_actor_stat(&target_id, stat, *delta)
+        .adjust_actor_stat(content, &target_id, stat, *delta)
         .unwrap_or_else(|error| eprintln!("[cinder] party support stat error: {error}"));
     let remaining = state.actor_stat(&target_id, stat);
     let target_name = actor_display_name(content, &target_id);

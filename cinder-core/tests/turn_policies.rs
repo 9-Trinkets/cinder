@@ -180,16 +180,16 @@ fn live_in_lounge(pack: &ContentPack) -> WorldState {
     let mut state = WorldState::new(pack);
     state.current_room_id = "lounge".to_string();
     state
-        .adjust_actor_stat("blair", &pack.settings.combat.health_stat_id, 50)
+        .adjust_actor_stat(pack, "blair", &pack.settings.combat.health_stat_id, 50)
         .expect("set blair hp");
     state
-        .adjust_actor_stat("casey", &pack.settings.combat.health_stat_id, 50)
+        .adjust_actor_stat(pack, "casey", &pack.settings.combat.health_stat_id, 50)
         .expect("set casey hp");
     state
 }
 
-fn defeat(s: &mut WorldState, actor_id: &str, health_stat_id: &str) {
-    s.adjust_actor_stat(actor_id, health_stat_id, -1000)
+fn defeat(pack: &ContentPack, s: &mut WorldState, actor_id: &str, health_stat_id: &str) {
+    s.adjust_actor_stat(pack, actor_id, health_stat_id, -1000)
         .expect("defeat actor");
 }
 
@@ -204,26 +204,26 @@ fn attack_hides_with_no_attackable_target() {
 
     // Only a defeated actor present -> hidden.
     let mut state = live_in_lounge(&pack);
-    defeat(&mut state, "casey", &pack.settings.combat.health_stat_id);
-    defeat(&mut state, "blair", &pack.settings.combat.health_stat_id);
+    defeat(&pack, &mut state, "casey", &pack.settings.combat.health_stat_id);
+    defeat(&pack, &mut state, "blair", &pack.settings.combat.health_stat_id);
     assert!(!action_is_available(&pack, &state, attack, &state.current_room_id));
 
     // Only an ally present -> hidden.
     let mut state = live_in_lounge(&pack);
     state.set_stance("blair", ActorStance::Allied);
-    defeat(&mut state, "casey", &pack.settings.combat.health_stat_id);
+    defeat(&pack, &mut state, "casey", &pack.settings.combat.health_stat_id);
     assert!(!action_is_available(&pack, &state, attack, &state.current_room_id));
 
     // Only a follower (not Allied stance) present -> hidden.
     let mut state = live_in_lounge(&pack);
     state.set_follows_player("blair", true);
-    defeat(&mut state, "casey", &pack.settings.combat.health_stat_id);
+    defeat(&pack, &mut state, "casey", &pack.settings.combat.health_stat_id);
     assert!(!action_is_available(&pack, &state, attack, &state.current_room_id));
 
     // Only the player's own actor present -> hidden.
     let mut state = live_in_lounge(&pack);
-    defeat(&mut state, "blair", &pack.settings.combat.health_stat_id);
-    defeat(&mut state, "casey", &pack.settings.combat.health_stat_id);
+    defeat(&pack, &mut state, "blair", &pack.settings.combat.health_stat_id);
+    defeat(&pack, &mut state, "casey", &pack.settings.combat.health_stat_id);
     state.story_vars.set_unchecked("x", "y");
     assert!(!action_is_available(&pack, &state, attack, &state.current_room_id));
 }
@@ -234,7 +234,7 @@ fn speak_accepts_allies_as_talk_targets() {
     let speak = pack.action("speak").unwrap();
     let mut state = live_in_lounge(&pack);
     state.set_stance("casey", ActorStance::Allied);
-    defeat(&mut state, "blair", &pack.settings.combat.health_stat_id);
+    defeat(&pack, &mut state, "blair", &pack.settings.combat.health_stat_id);
     assert!(action_is_available(&pack, &state, speak, &state.current_room_id));
 }
 
@@ -243,8 +243,8 @@ fn speak_hides_with_no_living_actor() {
     let pack = target_pack();
     let speak = pack.action("speak").unwrap();
     let mut state = live_in_lounge(&pack);
-    defeat(&mut state, "blair", &pack.settings.combat.health_stat_id);
-    defeat(&mut state, "casey", &pack.settings.combat.health_stat_id);
+    defeat(&pack, &mut state, "blair", &pack.settings.combat.health_stat_id);
+    defeat(&pack, &mut state, "casey", &pack.settings.combat.health_stat_id);
     assert!(!action_is_available(&pack, &state, speak, &state.current_room_id));
 }
 

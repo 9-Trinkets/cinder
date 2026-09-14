@@ -88,8 +88,12 @@ pub(in crate::engine::reducer) fn award_defeat_xp(
             accrued -= definition.exp_required;
             level += 1;
             gained += 1;
+            // Apply growth while the new level (and thus the new natural max
+            // for health) is already recorded, so the health clamp cannot eat
+            // the level's own +hp growth.
+            *state.actor_level.entry(target.clone()).or_insert(1) = level;
             for (stat, delta) in &definition.stat_changes {
-                if let Err(error) = state.adjust_actor_stat(&target, stat, *delta) {
+                if let Err(error) = state.adjust_actor_stat(content, &target, stat, *delta) {
                     eprintln!("[cinder] level stat error ({target}/{stat}): {error}");
                 }
             }

@@ -120,7 +120,7 @@ fn rest_recovers_stamina() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = LOUNGE_ID.to_string();
     state
-        .adjust_actor_stat(ACTOR_A_ID, "stamina", -4)
+        .adjust_actor_stat(&pack, ACTOR_A_ID, "stamina", -4)
         .expect("known actor stat");
     let starting_stamina = state.actor_stat_u32(ACTOR_A_ID, "stamina");
     let events = [TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {

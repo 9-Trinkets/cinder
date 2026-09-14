@@ -77,7 +77,7 @@ fn survival_hold_interrupts_an_assist_order_and_consumes_readiness() {
     );
     let pack = reaction_pack(BTreeMap::new(), vec![hold, assist]);
     let mut state = combat_state(&pack);
-    state.adjust_actor_stat(ACTOR_B_ID, "stamina", -8).unwrap();
+    state.adjust_actor_stat(&pack, ACTOR_B_ID, "stamina", -8).unwrap();
     state
         .assign_party_order(&pack, ACTOR_B_ID, "assist".to_string())
         .unwrap();
@@ -181,7 +181,7 @@ fn player_defeat_ends_the_strike_before_party_reactions() {
         )],
     );
     let mut state = combat_state(&pack);
-    state.adjust_actor_stat(ACTOR_A_ID, "stamina", -19).unwrap();
+    state.adjust_actor_stat(&pack, ACTOR_A_ID, "stamina", -19).unwrap();
 
     let _ = hostile_strike(&mut state, &pack);
 

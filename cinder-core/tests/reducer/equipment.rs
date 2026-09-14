@@ -449,7 +449,9 @@ fn using_a_potion_consumes_it_and_fires_its_use_hook() {
     state.current_room_id = LOUNGE_ID.to_string();
     state.add_item("herb-salve");
     state.add_item("herb-salve");
-    let stamina_before = state.actor_stat(ACTOR_A_ID, "stamina");
+    state
+        .adjust_actor_stat(&pack, ACTOR_A_ID, "stamina", -2)
+        .unwrap();
 
     drive_actor_command(
         &mut state,
@@ -469,6 +471,27 @@ fn using_a_potion_consumes_it_and_fires_its_use_hook() {
         },
     );
 
-    assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), stamina_before + 2);
+    assert_eq!(
+        state.actor_stat(ACTOR_A_ID, "stamina"),
+        state.actor_stat_maximum(&pack, ACTOR_A_ID, "stamina")
+    );
     assert_eq!(state.item_count("herb-salve"), 1);
+}
+
+#[test]
+fn healing_never_exceeds_the_natural_stat_maximum() {
+    let pack = equipment_test_pack();
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    let natural_max = state.actor_stat_maximum(&pack, ACTOR_A_ID, "stamina");
+    assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), natural_max);
+
+    state
+        .adjust_actor_stat(&pack, ACTOR_A_ID, "stamina", 10)
+        .unwrap();
+    assert_eq!(
+        state.actor_stat(ACTOR_A_ID, "stamina"),
+        natural_max,
+        "a heal at full health must remain capped at the natural maximum"
+    );
 }

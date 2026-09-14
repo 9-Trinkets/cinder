@@ -72,6 +72,7 @@ pub(in crate::engine::reducer) fn apply_attack_target(
     } else {
         let remaining = adjust_actor_stat(
             state,
+            content,
             target_actor_id,
             &combat.health_stat_id,
             -total_damage,

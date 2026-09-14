@@ -98,7 +98,7 @@ pub(super) fn advance_objective_for_signal(
                         stat,
                         delta,
                     } => {
-                        if let Err(e) = state.adjust_actor_stat(actor_id, stat, *delta) {
+                        if let Err(e) = state.adjust_actor_stat(content, actor_id, stat, *delta) {
                             eprintln!("[cinder] on_advance_effect error: {e}");
                         }
                     }

@@ -318,7 +318,7 @@ mod tests {
     fn guard_order_uses_priority_and_consumes_readiness() {
         let content = defensive_pack();
         let mut state = allied_state(&content);
-        state.adjust_actor_stat("casey", "stamina", -5).unwrap();
+        state.adjust_actor_stat(&content, "casey", "stamina", -5).unwrap();
         state
             .assign_party_order(&content, "casey", "guard".to_string())
             .unwrap();
@@ -340,7 +340,7 @@ mod tests {
         state
             .assign_party_order(&content, "casey", "assist".to_string())
             .unwrap();
-        state.adjust_actor_stat("drew", "stamina", -6).unwrap();
+        state.adjust_actor_stat(&content, "drew", "stamina", -6).unwrap();
 
         let decision = select_defensive_reaction(&content, &state).unwrap();
         assert_eq!(decision.actor_id, "drew");

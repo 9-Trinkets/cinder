@@ -42,7 +42,7 @@ pub(in crate::engine::reducer) fn handle_periodic_actor_effect_applied(
         return;
     }
     let health_stat_id = &content.settings.combat.health_stat_id;
-    if let Err(error) = state.adjust_actor_stat(actor_id, health_stat_id, -*amount) {
+    if let Err(error) = state.adjust_actor_stat(content, actor_id, health_stat_id, -*amount) {
         eprintln!("[cinder] periodic effect stat error ({effect_id}, {actor_id}): {error}");
         return;
     }

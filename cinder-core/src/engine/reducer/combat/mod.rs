@@ -35,9 +35,15 @@ pub(super) fn resisted_damage(
     (damage - resistance).max(0)
 }
 
-fn adjust_actor_stat(state: &mut WorldState, actor_id: &str, stat: &str, delta: i32) -> i32 {
+fn adjust_actor_stat(
+    state: &mut WorldState,
+    content: &ContentPack,
+    actor_id: &str,
+    stat: &str,
+    delta: i32,
+) -> i32 {
     state
-        .adjust_actor_stat(actor_id, stat, delta)
+        .adjust_actor_stat(content, actor_id, stat, delta)
         .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
     state.actor_stat(actor_id, stat)
 }

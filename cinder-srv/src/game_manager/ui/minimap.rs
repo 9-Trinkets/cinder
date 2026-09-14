@@ -163,7 +163,7 @@ mod tests {
     fn defeating_reveal_actor_shows_the_complete_map() {
         let content = mapped_pack();
         let mut state = WorldState::new(&content);
-        state.adjust_actor_stat("casey", "stamina", -100).unwrap();
+        state.adjust_actor_stat(&content, "casey", "stamina", -100).unwrap();
 
         let minimap = build_minimap(&state, &content, "lounge").unwrap();
 

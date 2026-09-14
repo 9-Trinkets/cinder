@@ -26,9 +26,9 @@ fn multiple_holds_are_narrated_once() {
     add_second_ally(&mut pack);
     let mut state = combat_state(&pack);
     state.set_stance(SECOND_ALLY_ID, ActorStance::Allied);
-    state.adjust_actor_stat(ACTOR_B_ID, "stamina", -8).unwrap();
+    state.adjust_actor_stat(&pack, ACTOR_B_ID, "stamina", -8).unwrap();
     state
-        .adjust_actor_stat(SECOND_ALLY_ID, "stamina", -8)
+        .adjust_actor_stat(&pack, SECOND_ALLY_ID, "stamina", -8)
         .unwrap();
 
     let output = hostile_strike(&mut state, &pack);
@@ -72,7 +72,10 @@ fn matching_support_reactions_are_narrated_once() {
 
     let output = hostile_strike(&mut state, &pack);
 
-    assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), 22);
+    assert_eq!(
+        state.actor_stat(ACTOR_A_ID, "stamina"),
+        state.actor_stat_maximum(&pack, ACTOR_A_ID, "stamina")
+    );
     assert_eq!(
         output
             .lines
@@ -80,7 +83,7 @@ fn matching_support_reactions_are_narrated_once() {
             .filter(|line| line.text.contains("support Alex"))
             .map(|line| line.text.as_str())
             .collect::<Vec<_>>(),
-        vec!["Blair and Drew support Alex for 6. (22 remaining)"]
+        vec!["Blair and Drew support Alex for 4. (20 remaining)"]
     );
 }
 
@@ -205,7 +208,10 @@ fn empty_messages_suppress_normal_reaction_narration_without_suppressing_mechani
     let output = hostile_strike(&mut state, &pack);
 
     assert_eq!(state.actor_stat(ACTOR_C_ID, "stamina"), 12);
-    assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), 22);
+    assert_eq!(
+        state.actor_stat(ACTOR_A_ID, "stamina"),
+        state.actor_stat_maximum(&pack, ACTOR_A_ID, "stamina")
+    );
     for actor_id in [
         ACTOR_B_ID,
         SECOND_ALLY_ID,

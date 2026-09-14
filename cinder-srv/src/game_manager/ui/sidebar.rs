@@ -249,8 +249,8 @@ mod tests {
         }];
         let mut state = WorldState::new(&content);
         state.actor_level.insert("blair".to_string(), 2);
-        state.adjust_actor_stat("blair", "stamina", 4).unwrap();
-        state.adjust_actor_stat("blair", "stamina", -2).unwrap();
+        state.adjust_actor_stat(&content, "blair", "stamina", 4).unwrap();
+        state.adjust_actor_stat(&content, "blair", "stamina", -2).unwrap();
         state.set_follows_player("blair", true);
         let runtime = CinderRuntime::new(content.clone(), false).unwrap();
 
@@ -272,7 +272,7 @@ mod tests {
         state.set_follows_player(&living_id, true);
         state.set_follows_player(&defeated_id, true);
         state
-            .adjust_actor_stat(&defeated_id, "stamina", -100)
+            .adjust_actor_stat(&content, &defeated_id, "stamina", -100)
             .unwrap();
 
         assert_eq!(living_follower_ids(&state, &content), vec![living_id]);

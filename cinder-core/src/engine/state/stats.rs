@@ -248,6 +248,7 @@ pub fn effective_actor_stat(
 
     pub fn adjust_actor_stat(
         &mut self,
+        content: &ContentPack,
         actor_id: &str,
         stat_key: &str,
         delta: i32,
@@ -258,11 +259,22 @@ pub fn effective_actor_stat(
             .get(stat_key)
             .ok_or_else(|| format!("unknown actor stat '{stat_key}'"))?
             .clone();
-        let stats = self.actor_stats.entry(actor_id).or_default();
-        let value = stats
-            .entry(stat_key.to_string())
-            .or_insert(definition.default);
-        *value = definition.clamp(*value + delta);
+        let adjusted = self.actor_stat(&actor_id, stat_key) + delta;
+        let clamped = if stat_key == content.settings.combat.health_stat_id {
+            // The health pool is a resource that can be depleted below its
+            // natural maximum (seed + level growth) but never refilled above
+            // it. Clamping positive deltas against the declared content max
+            // lets a heal overshoot the value displayed as max, so cap it at
+            // the actor's natural maximum instead.
+            adjusted
+                .clamp(definition.min.unwrap_or(i32::MIN), self.actor_stat_maximum(content, &actor_id, stat_key))
+        } else {
+            definition.clamp(adjusted)
+        };
+        self.actor_stats
+            .entry(actor_id)
+            .or_default()
+            .insert(stat_key.to_string(), clamped);
         Ok(())
     }
 }

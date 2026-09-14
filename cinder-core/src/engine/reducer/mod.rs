@@ -88,7 +88,7 @@ pub fn apply_events(
                 stat,
                 delta,
             } => {
-                if let Err(e) = state.adjust_actor_stat(actor_id, stat, *delta) {
+                if let Err(e) = state.adjust_actor_stat(content, actor_id, stat, *delta) {
                     eprintln!("[cinder] ActorStatAdjusted error: {e}");
                 }
             }

@@ -150,7 +150,7 @@ fn apply_hook_effects(
                 actor_id,
                 stat,
                 delta,
-            } => state.adjust_actor_stat(&actor_id, &stat, delta)?,
+            } => state.adjust_actor_stat(content, &actor_id, &stat, delta)?,
             WorldHookEffect::ConvertActorToAlly {
                 actor_id,
                 follows_player,
@@ -236,7 +236,7 @@ fn apply_hook_effects(
                     if actor.tags.iter().any(|actor_tag| actor_tag.as_str() == tag) {
                         // A large negative delta clamps to the stat's min (0).
                         state
-                            .adjust_actor_stat(&actor.id, health_stat_id, i32::MIN / 2)
+                            .adjust_actor_stat(content, &actor.id, health_stat_id, i32::MIN / 2)
                             .unwrap_or_else(|error| {
                                 eprintln!("[cinder] defeat stat error: {error}")
                             });
