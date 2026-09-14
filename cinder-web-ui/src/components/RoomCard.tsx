@@ -19,26 +19,26 @@ export const RoomCard = memo(function RoomCard({
   const cleanTitle = title.replace(/^==\s*|\s*==$/g, '').trim()
 
   return (
-    <div className="my-5 rounded-xl bg-overlay/40 border border-subtle overflow-hidden shadow-xs">
-      <div className="px-4 py-3 bg-overlay/80 border-b border-subtle flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5 min-w-0">
-          <span className="w-2.5 h-2.5 rounded-full bg-foam shadow-[0_0_8px_rgba(156,207,216,0.4)] shrink-0" aria-hidden="true" />
-          <h2 className="font-bold text-text text-base sm:text-lg tracking-wide truncate font-prose">
-            <HighlightedText
-              text={cleanTitle}
-              query={searchQuery ?? ''}
-              craftedLabels={[]}
-              interactableLabels={[]}
-            />
-          </h2>
+    <article className="pt-8 pb-4 my-2">
+      <header className="mb-4">
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-muted">
+            Location
+          </span>
         </div>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-foam bg-pine/15 px-2 py-0.5 rounded border border-pine/30 shrink-0">
-          Room
-        </span>
-      </div>
+        <h2 className="text-xl sm:text-2xl font-bold font-prose text-text tracking-tight">
+          <HighlightedText
+            text={cleanTitle}
+            query={searchQuery ?? ''}
+            craftedLabels={[]}
+            interactableLabels={[]}
+          />
+        </h2>
+        <div className="h-px bg-gradient-to-r from-subtle/90 via-subtle/40 to-transparent mt-3" />
+      </header>
 
       {body && (
-        <div className="p-4 sm:p-5 text-sm leading-relaxed text-text/90 font-prose whitespace-pre-wrap">
+        <div className="text-base leading-[1.8] text-text font-prose whitespace-pre-wrap">
           <HighlightedText
             text={body}
             query={searchQuery ?? ''}
@@ -47,7 +47,7 @@ export const RoomCard = memo(function RoomCard({
           />
         </div>
       )}
-    </div>
+    </article>
   )
 })
 

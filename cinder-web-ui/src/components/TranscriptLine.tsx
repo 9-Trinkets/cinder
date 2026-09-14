@@ -140,21 +140,21 @@ const TranscriptLine = memo(function TranscriptLine({
   if (line.kind === 'heading') {
     const cleanHeading = line.text.replace(/^==\s*|\s*==$/g, '').trim()
     return (
-      <div className="my-5 py-3 px-4 rounded-xl bg-overlay/80 border border-subtle flex items-center justify-between gap-3 shadow-xs">
-        <div className="flex items-center gap-2.5 min-w-0">
-          <span className="w-2.5 h-2.5 rounded-full bg-foam shadow-[0_0_8px_rgba(156,207,216,0.4)] shrink-0" aria-hidden="true" />
-          <h2 className="font-bold text-text text-base sm:text-lg tracking-wide truncate font-prose">
-            <HighlightedText
-              text={cleanHeading}
-              query={searchQuery ?? ''}
-              craftedLabels={[]}
-              interactableLabels={[]}
-            />
-          </h2>
+      <div className="pt-8 pb-3 my-2">
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-muted">
+            Location
+          </span>
         </div>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-foam bg-pine/15 px-2 py-0.5 rounded border border-pine/30 shrink-0">
-          Room
-        </span>
+        <h2 className="text-xl sm:text-2xl font-bold font-prose text-text tracking-tight">
+          <HighlightedText
+            text={cleanHeading}
+            query={searchQuery ?? ''}
+            craftedLabels={[]}
+            interactableLabels={[]}
+          />
+        </h2>
+        <div className="h-px bg-gradient-to-r from-subtle/90 via-subtle/40 to-transparent mt-3" />
       </div>
     )
   }
@@ -264,7 +264,7 @@ const TranscriptLine = memo(function TranscriptLine({
 
   // 7. Standard Sensory Narration
   return (
-    <div className="whitespace-pre-wrap text-sm leading-relaxed py-0.5 text-text font-prose">
+    <div className="whitespace-pre-wrap text-base leading-[1.8] py-1 text-text font-prose">
       <HighlightedText
         text={line.text}
         query={searchQuery ?? ''}
