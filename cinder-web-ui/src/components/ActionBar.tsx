@@ -55,63 +55,65 @@ export const ActionBar = memo(function ActionBar({
   })
 
   return (
-    <div className="flex flex-wrap items-center gap-2 px-4 py-2.5 bg-surface/80">
-      {actions.map((action, idx) => {
-        const meta = getActionMeta(action.id, action.label)
-        const shortcutNum = idx < 9 ? idx + 1 : undefined
-        return (
-          <button
-            key={action.id}
-            onClick={() => onAction(action)}
-            disabled={busy || gameOver}
-            title={`Shortcut: ${shortcutNum ? `${shortcutNum} (or Alt+${shortcutNum})` : 'Action'}`}
-            className={`px-3 py-1.5 rounded-lg border text-sm font-medium flex items-center gap-1.5 transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer shadow-xs ${meta.borderClass} ${meta.bgClass} ${meta.textClass}`}
-          >
-            <span>{action.label}</span>
-            {shortcutNum && (
-              <kbd className="hidden sm:inline-block ml-1 px-1.5 py-0.5 rounded text-[10px] font-mono border border-current opacity-40 uppercase">
-                {shortcutNum}
-              </kbd>
-            )}
-          </button>
-        )
-      })}
+    <div className="border-t border-subtle/50 bg-surface/90">
+      <div className="max-w-2xl mx-auto flex flex-wrap items-center gap-1.5 px-4 py-2">
+        {actions.map((action, idx) => {
+          const meta = getActionMeta(action.id, action.label)
+          const shortcutNum = idx < 9 ? idx + 1 : undefined
+          return (
+            <button
+              key={action.id}
+              onClick={() => onAction(action)}
+              disabled={busy || gameOver}
+              title={`Shortcut: ${shortcutNum ? `${shortcutNum} (or Alt+${shortcutNum})` : 'Action'}`}
+              className={`px-2.5 py-1 rounded-md border text-xs sm:text-sm font-medium flex items-center gap-1 transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer ${meta.borderClass} ${meta.bgClass} ${meta.textClass}`}
+            >
+              <span>{action.label}</span>
+              {shortcutNum && (
+                <span className="hidden sm:inline-block font-mono text-[10px] opacity-40 ml-0.5 select-none">
+                  {shortcutNum}
+                </span>
+              )}
+            </button>
+          )
+        })}
 
-      {takeableRoomItems.map((item, idx) => {
-        const baseCount = actions.length
-        const shortcutNum = baseCount + idx < 9 ? baseCount + idx + 1 : undefined
-        return (
-          <button
-            key={`room-item-${item.id ?? item.label}-${idx}`}
-            onClick={() => onTakeItem(item)}
-            disabled={busy || gameOver}
-            title={`Take ${item.label}${shortcutNum ? ` (Shortcut: ${shortcutNum})` : ''}`}
-            className="px-3 py-1.5 rounded-lg border border-gold/40 hover:border-gold bg-gold/10 hover:bg-gold/20 text-gold text-sm font-medium flex items-center gap-1.5 transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer shadow-xs"
-          >
-            <span>Take {item.label}{item.count > 1 ? ` (${item.count})` : ''}</span>
-            {shortcutNum && (
-              <kbd className="hidden sm:inline-block ml-1 px-1.5 py-0.5 rounded text-[10px] font-mono border border-current opacity-40 uppercase">
-                {shortcutNum}
-              </kbd>
-            )}
-          </button>
-        )
-      })}
+        {takeableRoomItems.map((item, idx) => {
+          const baseCount = actions.length
+          const shortcutNum = baseCount + idx < 9 ? baseCount + idx + 1 : undefined
+          return (
+            <button
+              key={`room-item-${item.id ?? item.label}-${idx}`}
+              onClick={() => onTakeItem(item)}
+              disabled={busy || gameOver}
+              title={`Take ${item.label}${shortcutNum ? ` (Shortcut: ${shortcutNum})` : ''}`}
+              className="px-2.5 py-1 rounded-md border border-gold/40 hover:border-gold bg-gold/10 hover:bg-gold/20 text-gold text-xs sm:text-sm font-medium flex items-center gap-1 transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer"
+            >
+              <span>Take {item.label}{item.count > 1 ? ` (${item.count})` : ''}</span>
+              {shortcutNum && (
+                <span className="hidden sm:inline-block font-mono text-[10px] opacity-40 ml-0.5 select-none">
+                  {shortcutNum}
+                </span>
+              )}
+            </button>
+          )
+        })}
 
-      {hasOverflow && (
-        <button
-          onClick={onToggleOverflow}
-          disabled={busy || gameOver}
-          aria-label="More actions"
-          title="More actions (Shortcut: 0 or Alt+0)"
-          className="px-3 py-1.5 rounded-lg bg-overlay hover:bg-highlight-low border border-subtle text-muted hover:text-text text-sm font-medium transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer flex items-center gap-1.5 shadow-xs"
-        >
-          <span className="font-mono text-xs tracking-widest px-0.5">...</span>
-          <kbd className="hidden sm:inline-block ml-1 px-1.5 py-0.5 rounded text-[10px] font-mono border border-current opacity-40 uppercase">
-            0
-          </kbd>
-        </button>
-      )}
+        {hasOverflow && (
+          <button
+            onClick={onToggleOverflow}
+            disabled={busy || gameOver}
+            aria-label="More actions"
+            title="More actions (Shortcut: 0 or Alt+0)"
+            className="px-2.5 py-1 rounded-md bg-overlay hover:bg-highlight-low border border-subtle text-muted hover:text-text text-xs sm:text-sm font-medium transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer flex items-center gap-1"
+          >
+            <span className="font-mono text-xs tracking-widest px-0.5">&hellip;</span>
+            <span className="hidden sm:inline-block font-mono text-[10px] opacity-40 ml-0.5 select-none">
+              0
+            </span>
+          </button>
+        )}
+      </div>
     </div>
   )
 })

@@ -36,8 +36,8 @@ const QuickActionPanel = memo(function QuickActionPanel({
   const prompt = panelConfig?.prompt
 
   return (
-    <div className="absolute bottom-full inset-x-0 z-20 px-4 pb-2">
-      <div className="rounded-2xl border border-subtle bg-surface/98 shadow-2xl backdrop-blur-sm">
+    <div className="absolute bottom-full inset-x-0 z-20 px-4 pb-2 flex justify-center pointer-events-none">
+      <div className="max-w-2xl w-full pointer-events-auto rounded-2xl border border-subtle bg-surface/98 shadow-2xl backdrop-blur-sm">
         <div className="flex items-center justify-between px-4 py-3 border-b border-subtle">
           <div>
             <h3 className="text-sm font-semibold text-text">{title}</h3>

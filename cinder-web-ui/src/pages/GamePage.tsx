@@ -276,23 +276,25 @@ export default function GamePage() {
           {!channelSurfingOnly.current && (
             <div className="border-t border-subtle shrink-0 relative">
               {atSuggestions && atSuggestions.length > 0 && (
-                <div role="listbox" aria-label="Talk to" className="absolute bottom-full left-4 right-4 mb-1 rounded border border-subtle bg-overlay shadow-lg overflow-hidden">
-                  {atSuggestions.map(opt => (
-                    <button
-                      key={opt.id}
-                      role="option"
-                      onMouseDown={e => {
-                        e.preventDefault()
-                        setInput(`@${opt.title} `)
-                        setAtSuggestions(null)
-                        focusInputToEnd()
-                      }}
-                      className="block w-full text-left px-3 py-2 text-sm text-text transition duration-200 hover:bg-canvas cursor-pointer"
-                    >@{opt.title}</button>
-                  ))}
+                <div role="listbox" aria-label="Talk to" className="absolute bottom-full left-4 right-4 mb-1">
+                  <div className="max-w-2xl mx-auto rounded border border-subtle bg-overlay shadow-lg overflow-hidden">
+                    {atSuggestions.map(opt => (
+                      <button
+                        key={opt.id}
+                        role="option"
+                        onMouseDown={e => {
+                          e.preventDefault()
+                          setInput(`@${opt.title} `)
+                          setAtSuggestions(null)
+                          focusInputToEnd()
+                        }}
+                        className="block w-full text-left px-3 py-2 text-sm text-text transition duration-200 hover:bg-canvas cursor-pointer"
+                      >@{opt.title}</button>
+                    ))}
+                  </div>
                 </div>
               )}
-              <form onSubmit={send} className="flex gap-2 px-4 py-3">
+              <form onSubmit={send} className="max-w-2xl mx-auto flex gap-2 px-4 py-2.5">
                 <input
                   ref={inputRef}
                   className="flex-1 px-3 py-2 rounded bg-overlay border border-subtle text-text placeholder-faint focus:outline-none focus:border-pine text-sm font-mono"
