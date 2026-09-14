@@ -136,35 +136,143 @@ const TranscriptLine = memo(function TranscriptLine({
   craftedLabels?: string[]
   interactableLabels?: string[]
 }) {
-  // Styling is decided by the line's declared kind, not by parsing its text.
-  let className = 'text-text'
-  let style: CSSProperties | undefined
-  if (line.kind === 'player') {
-    className = 'text-foam font-mono text-xs'
-  } else if (line.kind === 'heading') {
-    className = 'text-iris font-bold'
-  } else if (line.kind === 'error') {
-    className = 'text-love italic text-xs'
-  } else if (line.kind === 'system') {
-    // Cold, clipped teaching lines in the crt-glow pale blue-white family.
-    className = 'text-xs'
-    style = { color: 'var(--color-crt-glow)' }
-  } else if (line.kind === 'channel') {
-    // Remote comms (e.g. the handler's radio check-ins): a warm transmitted
-    // voice, distinct from spoken-in-room dialogue and cold system lines.
-    className = 'text-rose italic'
+  // 1. Room Transition Banner (Heading)
+  if (line.kind === 'heading') {
+    const cleanHeading = line.text.replace(/^==\s*|\s*==$/g, '').trim()
+    return (
+      <div className="my-5 py-2.5 px-4 rounded-xl bg-overlay/50 border border-subtle flex items-center justify-between gap-3 shadow-xs">
+        <div className="flex items-center gap-2.5 min-w-0">
+          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-iris/20 text-iris text-xs shrink-0" aria-hidden="true">
+            📍
+          </span>
+          <h2 className="font-semibold text-text text-sm sm:text-base tracking-wide truncate font-prose">
+            <HighlightedText
+              text={cleanHeading}
+              query={searchQuery ?? ''}
+              craftedLabels={craftedLabels ?? []}
+              interactableLabels={interactableLabels ?? []}
+            />
+          </h2>
+        </div>
+        <span className="text-[10px] font-mono uppercase tracking-widest text-muted bg-surface/80 px-2 py-0.5 rounded border border-subtle shrink-0">
+          Room
+        </span>
+      </div>
+    )
   }
 
-  return (
-    <div className="whitespace-pre-wrap text-sm leading-relaxed">
-      <span className={className} style={style}>
+  // 2. Channel / Handler Comms
+  if (line.kind === 'channel') {
+    const match = line.text.match(/^([^:]+):\s*(.*)$/s)
+    const speaker = match ? match[1].trim() : 'Comms'
+    const content = match ? match[2].trim() : line.text
+
+    return (
+      <div className="my-2.5 pl-3.5 pr-4 py-2 rounded-r-xl border-l-2 border-rose/80 bg-rose/5 text-sm leading-relaxed font-prose">
+        <div className="flex items-center gap-1.5 mb-0.5">
+          <span className="text-xs" aria-hidden="true">📻</span>
+          <span className="font-mono text-[11px] font-semibold tracking-wider uppercase text-rose">
+            {speaker}
+          </span>
+        </div>
+        <div className="text-text italic text-sm">
+          <HighlightedText
+            text={content}
+            query={searchQuery ?? ''}
+            craftedLabels={craftedLabels ?? []}
+            interactableLabels={interactableLabels ?? []}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  // 3. Player Command Echo
+  if (line.kind === 'player') {
+    const rawText = line.text.startsWith('>') ? line.text.slice(1).trim() : line.text
+    return (
+      <div className="my-1.5 py-0.5 font-mono text-xs text-foam flex items-center gap-2">
+        <span className="text-muted/70 select-none" aria-hidden="true">❯</span>
+        <span className="font-medium">
+          <HighlightedText
+            text={rawText}
+            query={searchQuery ?? ''}
+            craftedLabels={craftedLabels ?? []}
+            interactableLabels={interactableLabels ?? []}
+          />
+        </span>
+      </div>
+    )
+  }
+
+  // 4. System / Teaching Line
+  if (line.kind === 'system') {
+    return (
+      <div
+        className="my-1.5 py-1 px-3 rounded bg-crt-glow/5 border border-crt-glow/20 text-xs font-mono"
+        style={{ color: 'var(--color-crt-glow)' }}
+      >
         <HighlightedText
           text={line.text}
           query={searchQuery ?? ''}
           craftedLabels={craftedLabels ?? []}
           interactableLabels={interactableLabels ?? []}
         />
-      </span>
+      </div>
+    )
+  }
+
+  // 5. Error Feedback
+  if (line.kind === 'error') {
+    return (
+      <div className="my-1.5 pl-3 pr-2 py-1 border-l-2 border-love/80 bg-love/5 text-xs text-love italic font-mono flex items-start gap-1.5 rounded-r">
+        <span aria-hidden="true" className="shrink-0">⚠️</span>
+        <div>
+          <HighlightedText
+            text={line.text}
+            query={searchQuery ?? ''}
+            craftedLabels={craftedLabels ?? []}
+            interactableLabels={interactableLabels ?? []}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  // 6. In-Room Character Dialogue (e.g. "Bess: ...", "Elder Valen: ...")
+  const dialogueMatch = line.text.match(/^([A-Z][a-zA-Z0-9_\s]{1,24}):\s*(["“].*|[A-Za-z].*)$/s)
+  if (dialogueMatch) {
+    const speaker = dialogueMatch[1].trim()
+    const speech = dialogueMatch[2].trim()
+    return (
+      <div className="my-2.5 pl-3.5 pr-4 py-2 rounded-r-xl border-l-2 border-pine/80 bg-pine/5 text-sm leading-relaxed font-prose">
+        <div className="flex items-center gap-1.5 mb-0.5">
+          <span className="text-xs" aria-hidden="true">💬</span>
+          <span className="font-semibold text-foam text-xs tracking-wide">
+            {speaker}
+          </span>
+        </div>
+        <div className="text-text text-sm">
+          <HighlightedText
+            text={speech}
+            query={searchQuery ?? ''}
+            craftedLabels={craftedLabels ?? []}
+            interactableLabels={interactableLabels ?? []}
+          />
+        </div>
+      </div>
+    )
+  }
+
+  // 7. Standard Sensory Narration
+  return (
+    <div className="whitespace-pre-wrap text-sm leading-relaxed py-0.5 text-text font-prose">
+      <HighlightedText
+        text={line.text}
+        query={searchQuery ?? ''}
+        craftedLabels={craftedLabels ?? []}
+        interactableLabels={interactableLabels ?? []}
+      />
     </div>
   )
 })
