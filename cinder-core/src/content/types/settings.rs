@@ -77,8 +77,6 @@ pub struct ContentSettingsDefinition {
     pub tagline: String,
     #[serde(default)]
     pub description: String,
-    #[serde(default = "default_typewriter_char_ms")]
-    pub typewriter_char_ms: u64,
     #[serde(default = "default_npc_tick_interval_ms")]
     pub npc_tick_interval_ms: u64,
     #[serde(default = "default_tick_minutes_per_turn")]
@@ -170,10 +168,6 @@ pub struct ContentSettingsDefinition {
     pub theme: ThemeDefinition,
 }
 
-fn default_typewriter_char_ms() -> u64 {
-    40
-}
-
 fn default_npc_tick_interval_ms() -> u64 {
     2_000
 }
@@ -204,7 +198,6 @@ impl Default for ContentSettingsDefinition {
             title: String::default(),
             tagline: String::default(),
             description: String::default(),
-            typewriter_char_ms: default_typewriter_char_ms(),
             npc_tick_interval_ms: default_npc_tick_interval_ms(),
             tick_minutes_per_turn: default_tick_minutes_per_turn(),
             default_language: default_default_language(),
