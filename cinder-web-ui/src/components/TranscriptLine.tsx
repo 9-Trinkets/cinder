@@ -166,14 +166,11 @@ const TranscriptLine = memo(function TranscriptLine({
     const content = match ? match[2].trim() : line.text
 
     return (
-      <div className="my-2.5 pl-3.5 pr-4 py-2 rounded-r-xl border-l-2 border-rose/80 bg-rose/5 text-sm leading-relaxed font-prose">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-rose shrink-0" aria-hidden="true" />
-          <span className="font-mono text-[11px] font-semibold tracking-wider uppercase text-rose">
-            Comms &bull; {speaker}
-          </span>
-        </div>
-        <div className="text-text italic text-sm">
+      <div className="my-3.5 pl-4 border-l-2 border-rose/60 font-prose">
+        <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-rose block mb-1">
+          Dispatch &bull; {speaker}
+        </span>
+        <div className="text-text text-base leading-[1.8] italic">
           <HighlightedText
             text={content}
             query={searchQuery ?? ''}
@@ -189,9 +186,9 @@ const TranscriptLine = memo(function TranscriptLine({
   if (line.kind === 'player') {
     const rawText = line.text.startsWith('>') ? line.text.slice(1).trim() : line.text
     return (
-      <div className="my-1.5 py-0.5 font-mono text-xs text-foam flex items-center gap-2">
-        <span className="text-muted/60 select-none font-bold font-mono" aria-hidden="true">&gt;</span>
-        <span className="font-medium">
+      <div className="my-2 py-0.5 font-mono text-xs text-muted/80 flex items-center gap-2">
+        <span className="text-muted/40 select-none font-bold" aria-hidden="true">&rsaquo;</span>
+        <span className="font-medium text-foam/90">
           <HighlightedText
             text={rawText}
             query={searchQuery ?? ''}
@@ -207,7 +204,7 @@ const TranscriptLine = memo(function TranscriptLine({
   if (line.kind === 'system') {
     return (
       <div
-        className="my-1.5 py-1 px-3 rounded bg-crt-glow/5 border border-crt-glow/20 text-xs font-mono"
+        className="my-2 pl-3 py-1 border-l border-crt-glow/40 text-xs font-mono"
         style={{ color: 'var(--color-crt-glow)' }}
       >
         <HighlightedText
@@ -223,8 +220,8 @@ const TranscriptLine = memo(function TranscriptLine({
   // 5. Error Feedback
   if (line.kind === 'error') {
     return (
-      <div className="my-1.5 pl-3 pr-2 py-1.5 border-l-2 border-love bg-love/10 text-xs text-love font-mono flex items-center gap-2 rounded-r">
-        <span className="font-bold text-[11px] uppercase tracking-wide opacity-80 shrink-0">[Error]</span>
+      <div className="my-2 pl-3 py-1 border-l-2 border-love text-xs text-love font-mono flex items-center gap-2">
+        <span className="font-semibold uppercase tracking-wider opacity-80 shrink-0">[Note]</span>
         <div>
           <HighlightedText
             text={line.text}
@@ -243,14 +240,11 @@ const TranscriptLine = memo(function TranscriptLine({
     const speaker = dialogueMatch[1].trim()
     const speech = dialogueMatch[2].trim()
     return (
-      <div className="my-2.5 pl-3.5 pr-4 py-2 rounded-r-xl border-l-2 border-pine/80 bg-pine/5 text-sm leading-relaxed font-prose">
-        <div className="flex items-center gap-2 mb-1">
-          <span className="w-1.5 h-1.5 rounded-full bg-foam shrink-0" aria-hidden="true" />
-          <span className="font-semibold text-foam text-xs tracking-wide uppercase">
-            {speaker}
-          </span>
-        </div>
-        <div className="text-text text-sm">
+      <div className="my-3.5 pl-4 border-l-2 border-pine/60 font-prose">
+        <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-foam block mb-1">
+          {speaker}
+        </span>
+        <div className="text-text text-base leading-[1.8]">
           <HighlightedText
             text={speech}
             query={searchQuery ?? ''}
