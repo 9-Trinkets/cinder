@@ -190,14 +190,16 @@ export function usePlay() {
     }
   }
 
-  async function doSwitchRoom(roomId: string) {
+  async function runPanelCommand(
+    command: (token: string, id: string) => Promise<api.CommandResponse>,
+  ) {
     if (!token || !id) return
     setShowMenu(false)
     setShowStatusModal(false)
     setPanelBusy(true)
     lastInteractionAtRef.current = Date.now()
     try {
-      const res = await api.switchRoom(token, id, roomId)
+      const res = await command(token, id)
       applyCommandResponse(res, 'smooth')
     } catch (err: unknown) {
       showToast(toErrorMessage(err, 'request failed'), 'error')
@@ -206,36 +208,19 @@ export function usePlay() {
     }
   }
 
-  async function doFollowActor(actorId: string | null) {
-    if (!token || !id) return
-    setShowMenu(false)
-    setShowStatusModal(false)
-    setPanelBusy(true)
-    lastInteractionAtRef.current = Date.now()
-    try {
-      const res = await api.followActor(token, id, actorId)
-      applyCommandResponse(res, 'smooth')
-    } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'request failed'), 'error')
-    } finally {
-      setPanelBusy(false)
-    }
+  function doSwitchRoom(roomId: string) {
+    if (!token || !id) return Promise.resolve()
+    return runPanelCommand((t, i) => api.switchRoom(t, i, roomId))
   }
 
-  async function doChangeLocale(locale: string) {
-    if (!token || !id) return
-    setShowMenu(false)
-    setShowStatusModal(false)
-    setPanelBusy(true)
-    lastInteractionAtRef.current = Date.now()
-    try {
-      const res = await api.setLocale(token, id, locale)
-      applyCommandResponse(res, 'smooth')
-    } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'request failed'), 'error')
-    } finally {
-      setPanelBusy(false)
-    }
+  function doFollowActor(actorId: string | null) {
+    if (!token || !id) return Promise.resolve()
+    return runPanelCommand((t, i) => api.followActor(t, i, actorId))
+  }
+
+  function doChangeLocale(locale: string) {
+    if (!token || !id) return Promise.resolve()
+    return runPanelCommand((t, i) => api.setLocale(t, i, locale))
   }
 
   function doExit() {
