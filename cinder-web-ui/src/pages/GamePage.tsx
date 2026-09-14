@@ -148,6 +148,17 @@ export default function GamePage() {
           }
         }
       }
+
+      // Check for '0' shortcut (More actions / overflow menu)
+      if (e.key === '0') {
+        const allowShortcut = !isInputActive || e.altKey
+        if (!allowShortcut) return
+        const hasOverflow = Boolean(uiSnapshot && uiSnapshot.overflow_actions?.length > 0)
+        if (hasOverflow) {
+          e.preventDefault()
+          setQuickPanel(current => current === 'overflow' ? null : 'overflow')
+        }
+      }
     }
 
     window.addEventListener('keydown', handleKeyDown)

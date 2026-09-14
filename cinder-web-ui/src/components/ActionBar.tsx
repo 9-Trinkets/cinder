@@ -103,10 +103,13 @@ export const ActionBar = memo(function ActionBar({
           onClick={onToggleOverflow}
           disabled={busy || gameOver}
           aria-label="More actions"
-          title="More actions"
-          className="px-3 py-1.5 rounded-lg bg-overlay hover:bg-highlight-low border border-subtle text-muted hover:text-text text-sm transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer flex items-center gap-1"
+          title="More actions (Shortcut: 0 or Alt+0)"
+          className="px-3 py-1.5 rounded-lg bg-overlay hover:bg-highlight-low border border-subtle text-muted hover:text-text text-sm font-medium transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer flex items-center gap-1.5 shadow-xs"
         >
-          <span className="font-mono text-xs tracking-widest px-1">...</span>
+          <span className="font-mono text-xs tracking-widest px-0.5">...</span>
+          <kbd className="hidden sm:inline-block ml-1 px-1.5 py-0.5 rounded text-[10px] font-mono border border-current opacity-40 uppercase">
+            0
+          </kbd>
         </button>
       )}
     </div>
