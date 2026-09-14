@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --color-base: #191724;
+  --color-canvas: #191724;
   --color-surface: #1f1d2e;
   --color-overlay: #26233a;
   --color-muted: #6e6a86;
@@ -21,6 +21,10 @@
   --color-crt-glow: #bcd6e8;
   --font-prose: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+:root {
+  --color-base: var(--color-canvas);
 }
 
 html {

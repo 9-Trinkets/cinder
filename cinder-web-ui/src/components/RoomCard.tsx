@@ -19,20 +19,20 @@ export const RoomCard = memo(function RoomCard({
   const cleanTitle = title.replace(/^==\s*|\s*==$/g, '').trim()
 
   return (
-    <div className="my-5 rounded-xl bg-overlay/50 border border-subtle/80 overflow-hidden shadow-xs">
-      <div className="px-4 py-2.5 bg-surface/80 border-b border-subtle/60 flex items-center justify-between gap-3">
+    <div className="my-5 rounded-xl bg-overlay/40 border border-subtle overflow-hidden shadow-xs">
+      <div className="px-4 py-3 bg-overlay/80 border-b border-subtle flex items-center justify-between gap-3">
         <div className="flex items-center gap-2.5 min-w-0">
-          <span className="w-2 h-2 rounded-full bg-iris shrink-0" aria-hidden="true" />
-          <h2 className="font-bold text-text text-sm sm:text-base tracking-wide truncate font-prose">
+          <span className="w-2.5 h-2.5 rounded-full bg-foam shadow-[0_0_8px_rgba(156,207,216,0.4)] shrink-0" aria-hidden="true" />
+          <h2 className="font-bold text-text text-base sm:text-lg tracking-wide truncate font-prose">
             <HighlightedText
               text={cleanTitle}
               query={searchQuery ?? ''}
-              craftedLabels={craftedLabels ?? []}
-              interactableLabels={interactableLabels ?? []}
+              craftedLabels={[]}
+              interactableLabels={[]}
             />
           </h2>
         </div>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-muted bg-overlay px-2 py-0.5 rounded border border-subtle/60 shrink-0">
+        <span className="text-[10px] font-mono uppercase tracking-widest text-foam bg-pine/15 px-2 py-0.5 rounded border border-pine/30 shrink-0">
           Room
         </span>
       </div>

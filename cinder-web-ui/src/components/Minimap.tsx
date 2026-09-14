@@ -29,7 +29,7 @@ export default function Minimap({
 
   return (
     <div className="space-y-2">
-      <div className="relative overflow-hidden rounded border border-subtle bg-base/35 p-1.5">
+      <div className="relative overflow-hidden rounded border border-subtle bg-canvas/35 p-1.5">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-[0.08]"

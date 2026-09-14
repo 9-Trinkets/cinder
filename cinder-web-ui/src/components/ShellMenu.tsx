@@ -188,7 +188,7 @@ function MainMenu({
 
   return (
     <Modal title={t.shell_menu_title} onClose={onClose}>
-      <div className="rounded-lg border border-subtle bg-base/30 px-3 py-3 text-xs text-muted">
+      <div className="rounded-lg border border-subtle bg-canvas/30 px-3 py-3 text-xs text-muted">
         <div className="flex flex-wrap gap-2">
           <Badge>{ui.current_room_name}</Badge>
           <Badge>

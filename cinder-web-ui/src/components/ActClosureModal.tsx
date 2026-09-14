@@ -9,7 +9,7 @@ const ActClosureModal = memo(function ActClosureModal({
   onDismiss: () => void
 }) {
   return (
-    <div className="fixed inset-0 bg-base/80 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-canvas/80 flex items-center justify-center z-50">
       <div className="bg-surface rounded-xl p-6 max-w-md w-full mx-4 shadow-2xl max-h-[80dvh] flex flex-col">
         <div className="overflow-y-auto flex-1 pr-1">
           <h2 className="text-xl font-bold text-center mb-2">{actClosure.title}</h2>

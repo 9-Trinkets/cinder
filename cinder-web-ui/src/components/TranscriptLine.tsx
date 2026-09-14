@@ -140,19 +140,19 @@ const TranscriptLine = memo(function TranscriptLine({
   if (line.kind === 'heading') {
     const cleanHeading = line.text.replace(/^==\s*|\s*==$/g, '').trim()
     return (
-      <div className="my-5 py-2.5 px-4 rounded-xl bg-overlay/50 border border-subtle flex items-center justify-between gap-3 shadow-xs">
+      <div className="my-5 py-3 px-4 rounded-xl bg-overlay/80 border border-subtle flex items-center justify-between gap-3 shadow-xs">
         <div className="flex items-center gap-2.5 min-w-0">
-          <span className="w-2 h-2 rounded-full bg-iris shrink-0" aria-hidden="true" />
-          <h2 className="font-semibold text-text text-sm sm:text-base tracking-wide truncate font-prose">
+          <span className="w-2.5 h-2.5 rounded-full bg-foam shadow-[0_0_8px_rgba(156,207,216,0.4)] shrink-0" aria-hidden="true" />
+          <h2 className="font-bold text-text text-base sm:text-lg tracking-wide truncate font-prose">
             <HighlightedText
               text={cleanHeading}
               query={searchQuery ?? ''}
-              craftedLabels={craftedLabels ?? []}
-              interactableLabels={interactableLabels ?? []}
+              craftedLabels={[]}
+              interactableLabels={[]}
             />
           </h2>
         </div>
-        <span className="text-[10px] font-mono uppercase tracking-widest text-muted bg-surface/80 px-2 py-0.5 rounded border border-subtle shrink-0">
+        <span className="text-[10px] font-mono uppercase tracking-widest text-foam bg-pine/15 px-2 py-0.5 rounded border border-pine/30 shrink-0">
           Room
         </span>
       </div>

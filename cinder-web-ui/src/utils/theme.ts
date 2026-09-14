@@ -3,6 +3,7 @@ import type { ThemeDefinition } from '../api'
 export function themeVars(theme: ThemeDefinition): React.CSSProperties {
   return {
     '--color-base': theme.base,
+    '--color-canvas': theme.base,
     '--color-surface': theme.surface,
     '--color-overlay': theme.overlay,
     '--color-muted': theme.muted,

@@ -177,7 +177,7 @@ export default function GamePage() {
             setQuickPanel(null)
             setShowStatusModal(true)
           }}
-          className="lg:hidden w-full text-left px-4 py-2 border-b border-subtle bg-base/40 cursor-pointer"
+          className="lg:hidden w-full text-left px-4 py-2 border-b border-subtle bg-canvas/40 cursor-pointer"
         >
           <div className="flex items-center gap-2 text-xs text-muted overflow-x-auto">
             <span className="shrink-0 rounded-full bg-overlay px-2 py-1 text-text">{uiSnapshot.current_room_name}</span>
@@ -276,7 +276,7 @@ export default function GamePage() {
                         setAtSuggestions(null)
                         focusInputToEnd()
                       }}
-                      className="block w-full text-left px-3 py-2 text-sm text-text transition duration-200 hover:bg-base cursor-pointer"
+                      className="block w-full text-left px-3 py-2 text-sm text-text transition duration-200 hover:bg-canvas cursor-pointer"
                     >@{opt.title}</button>
                   ))}
                 </div>
