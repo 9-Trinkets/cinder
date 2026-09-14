@@ -19,6 +19,8 @@
   --color-crafted-highlight: #f6c177;
   --color-subtle: #3c3a52;
   --color-crt-glow: #bcd6e8;
+  --font-prose: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, monospace;
 }
 
 html {
@@ -33,10 +35,18 @@ body, #root {
   min-height: 100dvh;
   background: var(--color-surface);
   color: var(--color-text);
-  font-family: ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, monospace;
-  font-variant-numeric: tabular-nums;
+  font-family: var(--font-prose);
 }
 
 body {
   overscroll-behavior-y: none;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.font-prose {
+  font-family: var(--font-prose);
 }

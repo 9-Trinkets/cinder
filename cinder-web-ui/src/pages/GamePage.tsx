@@ -232,7 +232,7 @@ export default function GamePage() {
               <form onSubmit={send} className="flex gap-2 px-4 py-3">
                 <input
                   ref={inputRef}
-                  className="flex-1 px-3 py-2 rounded bg-overlay border border-subtle text-text placeholder-faint focus:outline-none focus:border-pine text-sm"
+                  className="flex-1 px-3 py-2 rounded bg-overlay border border-subtle text-text placeholder-faint focus:outline-none focus:border-pine text-sm font-mono"
                   placeholder={gameOver ? 'Game over' : 'What do you do?'}
                   value={input}
                   onChange={e => {

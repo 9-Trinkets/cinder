@@ -316,6 +316,8 @@ export interface ThemeDefinition {
   crt_glow: string
   crt_dim: string
   crt_bez: string
+  font_prose?: string
+  font_mono?: string
 }
 
 export interface UiSnapshot {

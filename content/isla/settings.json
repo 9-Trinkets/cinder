@@ -29,6 +29,8 @@
     "crafted_highlight": "#d4a76a",
     "crt_glow": "#c8e6d0",
     "crt_dim": "#4a7a64",
-    "crt_bez": "#121418"
+    "crt_bez": "#121418",
+    "font_prose": "Georgia, 'Times New Roman', serif",
+    "font_mono": "ui-monospace, 'SFMono-Regular', Menlo, monospace"
   }
 }

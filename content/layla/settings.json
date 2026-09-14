@@ -59,7 +59,9 @@
     "crafted_highlight": "#d4a76a",
     "crt_glow": "#bcd6e8",
     "crt_dim": "#4a5a7a",
-    "crt_bez": "#0b0d12"
+    "crt_bez": "#0b0d12",
+    "font_prose": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    "font_mono": "ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, monospace"
   },
   "starting_items": {
     "magic-chalk": 1

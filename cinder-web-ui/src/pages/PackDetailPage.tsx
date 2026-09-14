@@ -8,6 +8,7 @@ import ConfirmDialog from '../components/ConfirmDialog'
 import Skeleton from '../components/Skeleton'
 import { useToast } from '../components/Toast'
 import { toErrorMessage } from '../utils/error'
+import { themeVars } from '../utils/theme'
 
 function fmtTime(s: string): string {
   const n = Number(s)
@@ -80,7 +81,10 @@ export default function PackDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div
+      style={pack?.theme ? themeVars(pack.theme) : undefined}
+      className="min-h-screen bg-surface font-prose"
+    >
       <header className="flex items-center justify-between px-6 py-4 border-b border-subtle">
         <button onClick={() => navigate('/games')} className="text-sm text-muted hover:text-text cursor-pointer">&larr; Games</button>
         <Button variant="ghost" onClick={logout}>Log out</Button>

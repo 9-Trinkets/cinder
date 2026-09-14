@@ -34,6 +34,10 @@ pub struct ThemeDefinition {
     pub crt_dim: String,
     #[serde(default = "default_crt_bez")]
     pub crt_bez: String,
+    #[serde(default = "default_font_prose")]
+    pub font_prose: String,
+    #[serde(default = "default_font_mono")]
+    pub font_mono: String,
 }
 
 impl Default for ThemeDefinition {
@@ -55,6 +59,8 @@ impl Default for ThemeDefinition {
             crt_glow: default_crt_glow(),
             crt_dim: default_crt_dim(),
             crt_bez: default_crt_bez(),
+            font_prose: default_font_prose(),
+            font_mono: default_font_mono(),
         }
     }
 }
@@ -106,4 +112,10 @@ fn default_crt_dim() -> String {
 }
 fn default_crt_bez() -> String {
     "#12141a".into()
+}
+fn default_font_prose() -> String {
+    "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif".into()
+}
+fn default_font_mono() -> String {
+    "ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, monospace".into()
 }
