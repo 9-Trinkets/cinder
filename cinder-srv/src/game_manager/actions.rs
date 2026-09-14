@@ -301,18 +301,28 @@ pub async fn switch_room(
                 .map_err(|e| format!("room switch error: {e}"))?;
             let _ = runtime.push_transcript_line(&outcome.text);
             let ui_snapshot = build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
-            let transcript_entries = vec![PendingTranscriptEntry {
-                role: "narrative".to_string(),
-                text: outcome.text.clone(),
-            }];
-            Ok((
-                CommandResponse::new(
-                    outcome.text,
-                    outcome.phase != GamePhase::Active,
-                    Some(ui_snapshot),
-                ),
-                transcript_entries,
-            ))
+            let transcript_entries = if outcome.lines.is_empty() {
+                vec![PendingTranscriptEntry {
+                    role: "narrative".to_string(),
+                    text: outcome.text.clone(),
+                }]
+            } else {
+                outcome
+                    .lines
+                    .iter()
+                    .map(|line| PendingTranscriptEntry {
+                        role: narrative_role(&line.kind).to_string(),
+                        text: line.text.clone(),
+                    })
+                    .collect()
+            };
+            let mut response = CommandResponse::new(
+                outcome.text,
+                outcome.phase != GamePhase::Active,
+                Some(ui_snapshot),
+            );
+            response.lines = outcome.lines.to_vec();
+            Ok((response, transcript_entries))
         },
     )
     .await
@@ -337,18 +347,28 @@ pub async fn follow_actor(
                 .map_err(|e| format!("follow error: {e}"))?;
             let _ = runtime.push_transcript_line(&outcome.text);
             let ui_snapshot = build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
-            let transcript_entries = vec![PendingTranscriptEntry {
-                role: "narrative".to_string(),
-                text: outcome.text.clone(),
-            }];
-            Ok((
-                CommandResponse::new(
-                    outcome.text,
-                    outcome.phase != GamePhase::Active,
-                    Some(ui_snapshot),
-                ),
-                transcript_entries,
-            ))
+            let transcript_entries = if outcome.lines.is_empty() {
+                vec![PendingTranscriptEntry {
+                    role: "narrative".to_string(),
+                    text: outcome.text.clone(),
+                }]
+            } else {
+                outcome
+                    .lines
+                    .iter()
+                    .map(|line| PendingTranscriptEntry {
+                        role: narrative_role(&line.kind).to_string(),
+                        text: line.text.clone(),
+                    })
+                    .collect()
+            };
+            let mut response = CommandResponse::new(
+                outcome.text,
+                outcome.phase != GamePhase::Active,
+                Some(ui_snapshot),
+            );
+            response.lines = outcome.lines.to_vec();
+            Ok((response, transcript_entries))
         },
     )
     .await

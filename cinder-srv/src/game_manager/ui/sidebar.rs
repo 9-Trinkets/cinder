@@ -221,6 +221,7 @@ pub(super) fn build_current_room_items(
     state
         .loose_room_items(current_room_id)
         .into_iter()
+        .filter(|(item_id, _)| content.item(item_id).is_none_or(|item| item.is_takeable()))
         .map(|(item_id, count)| {
             let label = content.item_label(&item_id).to_string();
             InventoryItem {
@@ -306,5 +307,31 @@ mod tests {
         assert_eq!(options[1].id, "guard");
         assert!(options[1].selected);
         assert!(options[1].disabled);
+    }
+
+    #[test]
+    fn build_current_room_items_excludes_trace_marks() {
+        let mut content = minimal_test_pack();
+        content.items.extend([
+            cinder_core::content::types::ItemDefinition {
+                id: "sigil".to_string(),
+                label: "sigil".to_string(),
+                trace_mark: true,
+                ..Default::default()
+            },
+            cinder_core::content::types::ItemDefinition {
+                id: "scroll".to_string(),
+                label: "scroll".to_string(),
+                ..Default::default()
+            },
+        ]);
+        let mut state = WorldState::new(&content);
+        let room_id = state.current_room_id.clone();
+        state.add_item_to_storage("sigil", cinder_core::content::types::ItemStorageTarget::CurrentRoom, &room_id);
+        state.add_item_to_storage("scroll", cinder_core::content::types::ItemStorageTarget::CurrentRoom, &room_id);
+
+        let items = build_current_room_items(&content, &state, &room_id);
+        assert_eq!(items.len(), 1);
+        assert_eq!(items[0].id.as_deref(), Some("scroll"));
     }
 }

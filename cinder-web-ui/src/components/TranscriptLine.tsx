@@ -88,7 +88,7 @@ function splitSegmentByLabels(
   return parts
 }
 
-function HighlightedText({
+export function HighlightedText({
   text,
   query,
   craftedLabels,
@@ -142,9 +142,7 @@ const TranscriptLine = memo(function TranscriptLine({
     return (
       <div className="my-5 py-2.5 px-4 rounded-xl bg-overlay/50 border border-subtle flex items-center justify-between gap-3 shadow-xs">
         <div className="flex items-center gap-2.5 min-w-0">
-          <span className="flex items-center justify-center w-6 h-6 rounded-full bg-iris/20 text-iris text-xs shrink-0" aria-hidden="true">
-            📍
-          </span>
+          <span className="w-2 h-2 rounded-full bg-iris shrink-0" aria-hidden="true" />
           <h2 className="font-semibold text-text text-sm sm:text-base tracking-wide truncate font-prose">
             <HighlightedText
               text={cleanHeading}
@@ -169,10 +167,10 @@ const TranscriptLine = memo(function TranscriptLine({
 
     return (
       <div className="my-2.5 pl-3.5 pr-4 py-2 rounded-r-xl border-l-2 border-rose/80 bg-rose/5 text-sm leading-relaxed font-prose">
-        <div className="flex items-center gap-1.5 mb-0.5">
-          <span className="text-xs" aria-hidden="true">📻</span>
+        <div className="flex items-center gap-2 mb-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-rose shrink-0" aria-hidden="true" />
           <span className="font-mono text-[11px] font-semibold tracking-wider uppercase text-rose">
-            {speaker}
+            Comms &bull; {speaker}
           </span>
         </div>
         <div className="text-text italic text-sm">
@@ -192,7 +190,7 @@ const TranscriptLine = memo(function TranscriptLine({
     const rawText = line.text.startsWith('>') ? line.text.slice(1).trim() : line.text
     return (
       <div className="my-1.5 py-0.5 font-mono text-xs text-foam flex items-center gap-2">
-        <span className="text-muted/70 select-none" aria-hidden="true">❯</span>
+        <span className="text-muted/60 select-none font-bold font-mono" aria-hidden="true">&gt;</span>
         <span className="font-medium">
           <HighlightedText
             text={rawText}
@@ -225,8 +223,8 @@ const TranscriptLine = memo(function TranscriptLine({
   // 5. Error Feedback
   if (line.kind === 'error') {
     return (
-      <div className="my-1.5 pl-3 pr-2 py-1 border-l-2 border-love/80 bg-love/5 text-xs text-love italic font-mono flex items-start gap-1.5 rounded-r">
-        <span aria-hidden="true" className="shrink-0">⚠️</span>
+      <div className="my-1.5 pl-3 pr-2 py-1.5 border-l-2 border-love bg-love/10 text-xs text-love font-mono flex items-center gap-2 rounded-r">
+        <span className="font-bold text-[11px] uppercase tracking-wide opacity-80 shrink-0">[Error]</span>
         <div>
           <HighlightedText
             text={line.text}
@@ -246,9 +244,9 @@ const TranscriptLine = memo(function TranscriptLine({
     const speech = dialogueMatch[2].trim()
     return (
       <div className="my-2.5 pl-3.5 pr-4 py-2 rounded-r-xl border-l-2 border-pine/80 bg-pine/5 text-sm leading-relaxed font-prose">
-        <div className="flex items-center gap-1.5 mb-0.5">
-          <span className="text-xs" aria-hidden="true">💬</span>
-          <span className="font-semibold text-foam text-xs tracking-wide">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-foam shrink-0" aria-hidden="true" />
+          <span className="font-semibold text-foam text-xs tracking-wide uppercase">
             {speaker}
           </span>
         </div>

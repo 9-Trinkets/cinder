@@ -12,33 +12,7 @@ import QuickActionPanel from '../components/QuickActionPanel'
 import ConfirmDialog from '../components/ConfirmDialog'
 import { themeVars } from '../utils/theme'
 import { usePlay } from '../hooks/usePlay'
-
-function getActionMeta(actionId: string, label: string): { icon: string; borderClass: string; textClass: string; bgClass: string } {
-  const id = actionId.toLowerCase()
-  const lbl = label.toLowerCase()
-  if (id.includes('look') || lbl.includes('look')) {
-    return { icon: '👁️', borderClass: 'border-iris/40 hover:border-iris', textClass: 'text-iris', bgClass: 'bg-iris/10 hover:bg-iris/20' }
-  }
-  if (id.includes('move') || lbl.includes('move')) {
-    return { icon: '🧭', borderClass: 'border-pine/40 hover:border-pine', textClass: 'text-foam', bgClass: 'bg-pine/10 hover:bg-pine/20' }
-  }
-  if (id.includes('attack') || lbl.includes('attack') || id.includes('strike')) {
-    return { icon: '⚔️', borderClass: 'border-love/40 hover:border-love', textClass: 'text-love font-medium', bgClass: 'bg-love/10 hover:bg-love/20' }
-  }
-  if (id.includes('speak') || lbl.includes('talk') || id.includes('talk')) {
-    return { icon: '💬', borderClass: 'border-rose/40 hover:border-rose', textClass: 'text-rose', bgClass: 'bg-rose/10 hover:bg-rose/20' }
-  }
-  if (id.includes('trace') || lbl.includes('trace') || id.includes('sigil')) {
-    return { icon: '✨', borderClass: 'border-gold/40 hover:border-gold', textClass: 'text-gold font-medium', bgClass: 'bg-gold/10 hover:bg-gold/20' }
-  }
-  if (id.includes('take') || lbl.includes('take') || id.includes('item') || id.includes('equip')) {
-    return { icon: '🎒', borderClass: 'border-gold/40 hover:border-gold', textClass: 'text-gold', bgClass: 'bg-gold/10 hover:bg-gold/20' }
-  }
-  if (id.includes('follow') || lbl.includes('follow')) {
-    return { icon: '👣', borderClass: 'border-pine/40 hover:border-pine', textClass: 'text-foam', bgClass: 'bg-pine/10 hover:bg-pine/20' }
-  }
-  return { icon: '⚡', borderClass: 'border-subtle hover:border-text/40', textClass: 'text-text', bgClass: 'bg-overlay hover:bg-highlight-low' }
-}
+import ActionBar from '../components/ActionBar'
 
 export default function GamePage() {
   const navigate = useNavigate()
@@ -163,7 +137,10 @@ export default function GamePage() {
           e.preventDefault()
           handleTriggerAction(actions[idx])
         } else {
-          const roomItems = uiSnapshot?.current_room_items ?? []
+          const roomItems = (uiSnapshot?.current_room_items ?? []).filter(item => {
+            const id = (item.id ?? item.label).toLowerCase()
+            return !id.includes('sigil') && !item.label.toLowerCase().includes('sigil')
+          })
           const itemIdx = idx - actions.length
           if (itemIdx >= 0 && itemIdx < roomItems.length) {
             e.preventDefault()
@@ -269,68 +246,20 @@ export default function GamePage() {
                 void execCommand(action.id)
               }}
             />
-          <div className="flex flex-wrap items-center gap-2 px-4 py-2.5 bg-surface/80">
-            {(uiSnapshot?.action_bar_actions ?? [
+          <ActionBar
+            actions={uiSnapshot?.action_bar_actions ?? [
               { id: 'look', label: 'Look' },
               { id: 'move', label: 'Move' },
               { id: 'follow', label: 'Follow' },
-            ]).map((action, idx) => {
-              const meta = getActionMeta(action.id, action.label)
-              const shortcutNum = idx < 9 ? idx + 1 : undefined
-              return (
-                <button
-                  key={action.id}
-                  onClick={() => handleTriggerAction(action)}
-                  disabled={busy || gameOver}
-                  title={`Shortcut: ${shortcutNum ? `${shortcutNum} (or Alt+${shortcutNum})` : 'Action'}`}
-                  className={`px-3 py-1.5 rounded-lg border text-sm font-medium flex items-center gap-1.5 transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer shadow-xs ${meta.borderClass} ${meta.bgClass} ${meta.textClass}`}
-                >
-                  <span className="text-base leading-none select-none">{meta.icon}</span>
-                  <span>{action.label}</span>
-                  {shortcutNum && (
-                    <kbd className="hidden sm:inline-block ml-1 px-1.5 py-0.5 rounded text-[10px] font-mono border border-current opacity-40 uppercase">
-                      {shortcutNum}
-                    </kbd>
-                  )}
-                </button>
-              )
-            })}
-
-            {/* Quick-take chips for loose items in room */}
-            {uiSnapshot?.current_room_items?.map((item, idx) => {
-              const baseCount = uiSnapshot?.action_bar_actions?.length ?? 3
-              const shortcutNum = baseCount + idx < 9 ? baseCount + idx + 1 : undefined
-              return (
-                <button
-                  key={`room-item-${item.id ?? item.label}-${idx}`}
-                  onClick={() => handleTakeItem(item)}
-                  disabled={busy || gameOver}
-                  title={`Take ${item.label}${shortcutNum ? ` (Shortcut: ${shortcutNum})` : ''}`}
-                  className="px-3 py-1.5 rounded-lg border border-gold/40 hover:border-gold bg-gold/10 hover:bg-gold/20 text-gold text-sm font-medium flex items-center gap-1.5 transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer shadow-xs"
-                >
-                  <span className="text-base leading-none select-none">🎒</span>
-                  <span>Take {item.label}{item.count > 1 ? ` (${item.count})` : ''}</span>
-                  {shortcutNum && (
-                    <kbd className="hidden sm:inline-block ml-1 px-1.5 py-0.5 rounded text-[10px] font-mono border border-current opacity-40 uppercase">
-                      {shortcutNum}
-                    </kbd>
-                  )}
-                </button>
-              )
-            })}
-
-            {uiSnapshot && uiSnapshot.overflow_actions?.length > 0 && (
-              <button
-                onClick={() => setQuickPanel(current => current === 'overflow' ? null : 'overflow')}
-                disabled={busy || gameOver}
-                aria-label="More actions"
-                title="More actions"
-                className="px-3 py-1.5 rounded-lg bg-overlay hover:bg-highlight-low border border-subtle text-muted hover:text-text text-sm transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer flex items-center gap-1"
-              >
-                <span>•••</span>
-              </button>
-            )}
-          </div>
+            ]}
+            roomItems={uiSnapshot?.current_room_items}
+            hasOverflow={Boolean(uiSnapshot && uiSnapshot.overflow_actions?.length > 0)}
+            busy={busy}
+            gameOver={gameOver}
+            onAction={handleTriggerAction}
+            onTakeItem={handleTakeItem}
+            onToggleOverflow={() => setQuickPanel(current => current === 'overflow' ? null : 'overflow')}
+          />
           </div>
 
           {!channelSurfingOnly.current && (
