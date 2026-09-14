@@ -55,7 +55,7 @@ territory one room at a time by encircling it — to win a way down. Below the
 cave wait an elf army that refuses to be bound and, beyond them, old fire held
 prisoner.
 
-> Tagline: "Wake lost. Learn the rules. Choose who you become."
+> Tagline: "Every rule you master brings you one step closer to the throne."
 
 ## The Open Question at the Heart of It
 

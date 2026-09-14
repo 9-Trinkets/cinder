@@ -1,7 +1,7 @@
 {
   "title": "Layla",
-  "tagline": "Wake lost. Learn the rules. Choose who you become.",
-  "description": "Layla wakes with no memory in a goblin cave, beside a golem that does not move. To win her way out she must capture the cave from the shaman and its chalk-marked servants \u2014 claiming territory one room at a time. Below it waits an elf army that refuses to be bound, and beyond them, old fire held prisoner until it is released. Every rule she learns was built on purpose, for a purpose she cannot remember \u2014 and each one is training her to become something she will have to decide for herself.",
+  "tagline": "Every rule you master brings you one step closer to the throne.",
+  "description": "You wake in a cold stone cave with no memory, a silent stone golem at your feet, and a piece of glowing magic chalk in your hand.\n\nTo find a way out, you must learn the hidden rules of the dungeon. Trace glowing chalk marks to claim territory room by room, set traps, and turn hostile creatures into loyal allies.\n\nBut the deeper you go, the clearer it becomes: this place is not a random cave. It is a test built on purpose, and every rule you master is training you for something waiting at the bottom.",
   "typewriter_char_ms": 12,
   "npc_tick_interval_ms": 2000,
   "tick_minutes_per_turn": 1,

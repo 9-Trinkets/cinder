@@ -105,7 +105,7 @@ export default function PackDetailPage() {
                 <h1 className="text-xl font-bold text-text">{pack.title}</h1>
               </div>
               {pack.tagline && <p className="text-muted mb-2">{pack.tagline}</p>}
-              {pack.description && <p className="text-text text-sm leading-relaxed">{pack.description}</p>}
+              {pack.description && <p className="text-text text-sm leading-relaxed whitespace-pre-line">{pack.description}</p>}
               <div className="mt-4">
                 <Button variant="primary" onClick={create} disabled={creating}>
                   {creating ? 'Starting…' : 'New Game'}
