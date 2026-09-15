@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import Modal from './Modal'
-import StatusPanel from './StatusPanel'
 import type { UiSnapshot } from '../api'
 import type { MenuView } from '../hooks/playUtils'
 
@@ -14,9 +13,6 @@ interface ShellMenuProps {
   onChangeLocale: (locale: string) => void
   onExit: () => void
   busy: boolean
-  onTakeItem?: (itemId: string) => void
-  onOpenPanel?: (panel: string) => void
-  initialTab?: 'folio' | 'menu'
 }
 
 interface FlatItem {
@@ -59,9 +55,6 @@ export default function ShellMenu({
   onChangeLocale,
   onExit,
   busy,
-  onTakeItem,
-  onOpenPanel,
-  initialTab = 'menu',
 }: ShellMenuProps) {
   const t = ui.ui_text
   const items = flattenItems(t)
@@ -161,9 +154,6 @@ export default function ShellMenu({
       onClose={onClose}
       onExit={onExit}
       busy={busy}
-      onTakeItem={onTakeItem}
-      onOpenPanel={onOpenPanel}
-      initialTab={initialTab}
     />
   )
 }
@@ -176,33 +166,6 @@ interface MainMenuProps {
   onClose: () => void
   onExit: () => void
   busy: boolean
-  onTakeItem?: (itemId: string) => void
-  onOpenPanel?: (panel: string) => void
-  initialTab?: 'folio' | 'menu'
-}
-
-function useIsDesktop(): boolean {
-  const [isDesktop, setIsDesktop] = useState(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return false
-    return window.matchMedia('(min-width: 1024px)').matches
-  })
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return
-    const mq = window.matchMedia('(min-width: 1024px)')
-    const handler = (e: MediaQueryListEvent | MediaQueryList) => {
-      setIsDesktop('matches' in e ? e.matches : mq.matches)
-    }
-    if (mq.addEventListener) {
-      mq.addEventListener('change', handler)
-      return () => mq.removeEventListener('change', handler)
-    } else if ('addListener' in mq) {
-      (mq as any).addListener(handler)
-      return () => (mq as any).removeListener(handler)
-    }
-  }, [])
-
-  return isDesktop
 }
 
 function MainMenu({
@@ -213,17 +176,9 @@ function MainMenu({
   onClose,
   onExit,
   busy,
-  onTakeItem,
-  onOpenPanel,
-  initialTab = 'menu',
 }: MainMenuProps) {
-  const isDesktop = useIsDesktop()
-  const [activeTab, setActiveTab] = useState<'folio' | 'menu'>(initialTab)
   const [submenu, setSubmenu] = useState<{ id: string; label: string }[] | null>(null)
   const [submenuTitle, setSubmenuTitle] = useState('')
-
-  // On desktop (lg+), the sidebar is permanently visible, so Folio is redundant.
-  const showFolio = !isDesktop && activeTab === 'folio'
 
   if (submenu !== null) {
     return (
@@ -247,129 +202,51 @@ function MainMenu({
   }
 
   return (
-    <Modal title={showFolio ? 'Traveler’s Folio' : (t.shell_menu_title || 'System Menu')} onClose={onClose}>
-      {!isDesktop && (
-        <div className="flex border-b border-subtle/70 -mt-1 mb-4">
-          <button
-            type="button"
-            onClick={() => setActiveTab('folio')}
-            className={`flex-1 pb-2.5 pt-1 text-center text-xs font-mono uppercase tracking-widest transition-colors cursor-pointer border-b-2 ${
-              activeTab === 'folio'
-                ? 'border-foam text-foam font-semibold'
-                : 'border-transparent text-muted hover:text-text'
-            }`}
-          >
-            Folio &bull; Status
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab('menu')}
-            className={`flex-1 pb-2.5 pt-1 text-center text-xs font-mono uppercase tracking-widest transition-colors cursor-pointer border-b-2 ${
-              activeTab === 'menu'
-                ? 'border-foam text-foam font-semibold'
-                : 'border-transparent text-muted hover:text-text'
-            }`}
-          >
-            System &bull; Menu
-          </button>
-        </div>
-      )}
+    <Modal title={t.shell_menu_title || 'System Menu'} onClose={onClose}>
+      <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40 my-1">
+        {items.map((item) => {
+          const packItem = t.shell_menu.items.find(i => i.id === item.id)
+          const hasChildren = packItem?.children && packItem.children.length > 0
 
-      {showFolio && (
-        <div className="space-y-4">
-          <div className="pb-3 border-b border-subtle/50">
-            <span className="text-[10px] font-mono uppercase tracking-widest text-muted block mb-1">
-              Current Location
-            </span>
-            <h3 className="text-xl font-bold font-prose text-text tracking-tight">
-              {ui.current_room_name}
-            </h3>
-            <div className="flex items-center gap-2.5 text-xs text-muted mt-1 font-mono">
-              <span>Day {ui.day_number}{ui.time_label ? ` — ${ui.time_label}` : ''}</span>
-              {ui.followed_actor_name && (
-                <>
-                  <span className="text-muted/40">&bull;</span>
-                  <span className="text-foam">Following {ui.followed_actor_name}</span>
-                </>
-              )}
-            </div>
-          </div>
-
-          <StatusPanel
-            uiSnapshot={ui}
-            onTakeItem={onTakeItem}
-            onOpenPanel={onOpenPanel}
-            hideLocation
-          />
-        </div>
-      )}
-
-      {!showFolio && (
-        <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40 my-1">
-          {items.map((item) => {
-            const packItem = t.shell_menu.items.find(i => i.id === item.id)
-            const hasChildren = packItem?.children && packItem.children.length > 0
-
-            if (item.id === 'exit') {
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={onExit}
-                  className="w-full py-3.5 px-1 flex items-center justify-between group text-left cursor-pointer transition-colors"
-                >
-                  <div>
-                    <span className="text-sm font-medium text-text group-hover:text-love transition-colors block">
-                      {item.label}
-                    </span>
-                    <span className="text-xs text-muted">
-                      Bookmark progress and return to library
-                    </span>
-                  </div>
-                  <span className="text-muted group-hover:text-love group-hover:translate-x-1 transition-transform">
-                    &rsaquo;
-                  </span>
-                </button>
-              )
-            }
-
-            let subtitle = ''
-            if (item.id === 'rooms') subtitle = 'Fast travel to discovered chambers'
-            else if (item.id === 'follow') subtitle = ui.followed_actor_name ? `Accompanying ${ui.followed_actor_name}` : 'Travel unaccompanied'
-            else if (item.id === 'language') subtitle = ui.locale_options.find(l => l.code === ui.current_locale)?.label || ui.current_locale
-
-            if (hasChildren) {
-              const children = packItem!.children!
-              return (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => {
-                    setSubmenu(children)
-                    setSubmenuTitle(item.label)
-                  }}
-                  className="w-full py-3.5 px-1 flex items-center justify-between group hover:text-foam text-left cursor-pointer transition-colors"
-                >
-                  <div>
-                    <span className="text-sm font-medium text-text group-hover:text-foam transition-colors block">
-                      {item.label}
-                    </span>
-                    {subtitle && <span className="text-xs text-muted">{subtitle}</span>}
-                  </div>
-                  <span className="text-muted group-hover:text-foam group-hover:translate-x-1 transition-transform">
-                    &rsaquo;
-                  </span>
-                </button>
-              )
-            }
-
+          if (item.id === 'exit') {
             return (
               <button
                 key={item.id}
                 type="button"
-                onClick={() => handleItemClick(item.id, onViewChange, onExit)}
-                disabled={busy}
-                className="w-full py-3.5 px-1 flex items-center justify-between group hover:text-foam text-left cursor-pointer transition-colors disabled:opacity-50"
+                onClick={onExit}
+                className="w-full py-3.5 px-1 flex items-center justify-between group text-left cursor-pointer transition-colors"
+              >
+                <div>
+                  <span className="text-sm font-medium text-text group-hover:text-love transition-colors block">
+                    {item.label}
+                  </span>
+                  <span className="text-xs text-muted">
+                    Bookmark progress and return to library
+                  </span>
+                </div>
+                <span className="text-muted group-hover:text-love group-hover:translate-x-1 transition-transform">
+                  &rsaquo;
+                </span>
+              </button>
+            )
+          }
+
+          let subtitle = ''
+          if (item.id === 'rooms') subtitle = 'Fast travel to discovered chambers'
+          else if (item.id === 'follow') subtitle = ui.followed_actor_name ? `Accompanying ${ui.followed_actor_name}` : 'Travel unaccompanied'
+          else if (item.id === 'language') subtitle = ui.locale_options.find(l => l.code === ui.current_locale)?.label || ui.current_locale
+
+          if (hasChildren) {
+            const children = packItem!.children!
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => {
+                  setSubmenu(children)
+                  setSubmenuTitle(item.label)
+                }}
+                className="w-full py-3.5 px-1 flex items-center justify-between group hover:text-foam text-left cursor-pointer transition-colors"
               >
                 <div>
                   <span className="text-sm font-medium text-text group-hover:text-foam transition-colors block">
@@ -382,9 +259,29 @@ function MainMenu({
                 </span>
               </button>
             )
-          })}
-        </div>
-      )}
+          }
+
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => handleItemClick(item.id, onViewChange, onExit)}
+              disabled={busy}
+              className="w-full py-3.5 px-1 flex items-center justify-between group hover:text-foam text-left cursor-pointer transition-colors disabled:opacity-50"
+            >
+              <div>
+                <span className="text-sm font-medium text-text group-hover:text-foam transition-colors block">
+                  {item.label}
+                </span>
+                {subtitle && <span className="text-xs text-muted">{subtitle}</span>}
+              </div>
+              <span className="text-muted group-hover:text-foam group-hover:translate-x-1 transition-transform">
+                &rsaquo;
+              </span>
+            </button>
+          )
+        })}
+      </div>
     </Modal>
   )
 }

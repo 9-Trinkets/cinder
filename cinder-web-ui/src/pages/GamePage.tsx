@@ -5,8 +5,7 @@ import * as api from '../api'
 import ShellMenu from '../components/ShellMenu'
 import Modal from '../components/Modal'
 import TranscriptPane from '../components/TranscriptPane'
-import StatusPanel from '../components/StatusPanel'
-import RelationshipChart from '../components/RelationshipChart'
+import FolioPanel from '../components/FolioPanel'
 import MovieModal from '../components/MovieModal'
 import QuickActionPanel from '../components/QuickActionPanel'
 import ConfirmDialog from '../components/ConfirmDialog'
@@ -71,7 +70,8 @@ export default function GamePage() {
     showExitConfirm,
     setShowExitConfirm,
   } = play
-  const [menuInitialTab, setMenuInitialTab] = useState<'folio' | 'menu'>('menu')
+  const [showFolio, setShowFolio] = useState(false)
+  const [showSidebar, setShowSidebar] = useState(true)
 
   const handleTriggerAction = (action: api.ActionBarAction) => {
     if (busy || gameOver) return
@@ -174,24 +174,32 @@ export default function GamePage() {
           <button onClick={() => navigate(`/games/pack/${uiSnapshot?.pack_id}`)} className="text-sm text-muted hover:text-text cursor-pointer">&larr; Back</button>
           <button
             type="button"
-            onClick={() => {
-              setMenuInitialTab('menu')
-              openMenu()
-            }}
+            onClick={openMenu}
             disabled={busy}
             className="text-sm px-2.5 py-1 rounded bg-overlay border border-subtle text-text transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
-          >&#9776; Menu</button>
+          >Menu</button>
         </div>
-        <button onClick={logout} className="text-sm text-muted transition duration-200 hover:text-love active:scale-[0.98] cursor-pointer">Log out</button>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => setShowSidebar(s => !s)}
+            className={`hidden lg:inline-flex text-xs font-mono uppercase tracking-wider px-2.5 py-1 rounded border transition-colors cursor-pointer ${
+              showSidebar
+                ? 'border-pine/40 text-foam bg-pine/10'
+                : 'border-subtle text-muted hover:text-text'
+            }`}
+            title={showSidebar ? 'Hide folio sidebar' : 'Show folio sidebar'}
+          >
+            Folio
+          </button>
+          <button onClick={logout} className="text-sm text-muted transition duration-200 hover:text-love active:scale-[0.98] cursor-pointer">Log out</button>
+        </div>
       </header>
 
       {uiSnapshot && (
         <button
           type="button"
-          onClick={() => {
-            setMenuInitialTab('folio')
-            openMenu()
-          }}
+          onClick={() => setShowFolio(true)}
           className="lg:hidden w-full text-left px-4 py-2.5 border-b border-subtle/60 bg-canvas/60 hover:bg-overlay/40 transition-colors cursor-pointer flex items-center justify-between"
           aria-label="Open status folio"
         >
@@ -359,23 +367,19 @@ export default function GamePage() {
           )}
         </div>
 
-        {uiSnapshot && (
+        {uiSnapshot && showSidebar && (
           <aside className="hidden lg:flex lg:w-64 xl:w-72 2xl:w-80 min-h-0 shrink-0 border-l border-subtle p-4 flex-col text-sm overflow-y-auto">
-            <StatusPanel
+            <FolioPanel
               uiSnapshot={uiSnapshot}
               onTakeItem={itemId => void execCommand(`take ${itemId}`)}
               onOpenPanel={setQuickPanel}
             />
-            {uiSnapshot.show_relationship_sidebar && uiSnapshot.relationship_pairs.length > 0 && (
-              <RelationshipChart pairs={uiSnapshot.relationship_pairs} />
-            )}
           </aside>
         )}
       </div>
 
       {showMenu && uiSnapshot && (
         <ShellMenu
-          key={menuInitialTab}
           ui={uiSnapshot}
           view={menuView}
           onViewChange={setMenuView}
@@ -385,13 +389,17 @@ export default function GamePage() {
           onChangeLocale={doChangeLocale}
           onExit={doExit}
           busy={busy}
-          onTakeItem={itemId => void execCommand(`take ${itemId}`)}
-          onOpenPanel={panel => {
-            setShowMenu(false)
-            setQuickPanel(panel)
-          }}
-          initialTab={menuInitialTab}
         />
+      )}
+
+      {showFolio && uiSnapshot && (
+        <Modal title="Traveler’s Folio" onClose={() => setShowFolio(false)}>
+          <FolioPanel
+            uiSnapshot={uiSnapshot}
+            onTakeItem={itemId => void execCommand(`take ${itemId}`)}
+            onOpenPanel={panel => { setShowFolio(false); setQuickPanel(panel) }}
+          />
+        </Modal>
       )}
 
       {activeMenu && (
