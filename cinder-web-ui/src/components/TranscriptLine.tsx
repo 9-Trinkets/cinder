@@ -234,26 +234,39 @@ const TranscriptLine = memo(function TranscriptLine({
     )
   }
 
-  // 6. In-Room Character Dialogue (e.g. "Bess: ...", "Elder Valen: ...")
-  const dialogueMatch = line.text.match(/^([A-Z][a-zA-Z0-9_\s]{1,24}):\s*(["“].*|[A-Za-z].*)$/s)
+  // 6. In-Room Character Dialogue (e.g. "Bess: ...", "Daichi (to Ren): ...")
+  const dialogueMatch = line.text.match(
+    /^([A-Z\u4e00-\u9fa5][a-zA-Z0-9_\s.'-\u4e00-\u9fa5]{0,24}?)(?:\s*(?:\(\s*(?:to\s+)?([^)]+)\)|（\s*(?:對\s*)?([^）]+)）))?\s*[:：]\s*(.*)$/s
+  )
   if (dialogueMatch) {
     const speaker = dialogueMatch[1].trim()
-    const speech = dialogueMatch[2].trim()
-    return (
-      <div className="my-3.5 pl-4 border-l-2 border-pine/60 font-prose">
-        <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-foam block mb-1">
-          {speaker}
-        </span>
-        <div className="text-text text-base leading-[1.8]">
-          <HighlightedText
-            text={speech}
-            query={searchQuery ?? ''}
-            craftedLabels={craftedLabels ?? []}
-            interactableLabels={interactableLabels ?? []}
-          />
+    const target = (dialogueMatch[2] || dialogueMatch[3])?.trim()
+    const speech = dialogueMatch[4].trim()
+
+    if (speaker && speech) {
+      return (
+        <div className="my-3.5 pl-4 border-l-2 border-pine/60 font-prose">
+          <div className="flex items-baseline gap-1.5 mb-1">
+            <span className="font-mono text-[10px] font-semibold tracking-widest uppercase text-foam">
+              {speaker}
+            </span>
+            {target && (
+              <span className="font-prose text-xs text-muted italic">
+                (to {target})
+              </span>
+            )}
+          </div>
+          <div className="text-text text-base leading-[1.8]">
+            <HighlightedText
+              text={speech}
+              query={searchQuery ?? ''}
+              craftedLabels={craftedLabels ?? []}
+              interactableLabels={interactableLabels ?? []}
+            />
+          </div>
         </div>
-      </div>
-    )
+      )
+    }
   }
 
   // 7. Standard Sensory Narration
