@@ -19,12 +19,15 @@ impl CinderRuntime {
                 .map_err(|_| "failed to lock runtime state to start npc tick")?;
             (state.phase.clone(), state.turn_number)
         };
-        if phase_at_entry != GamePhase::Active || turn_number == 0 {
+        let requires_first_action = !self.content.settings.channel_surfing_only
+            && !self.content.settings.autonomous_actor_dialogue;
+        if phase_at_entry != GamePhase::Active || (requires_first_action && turn_number == 0) {
             // A session that is already over must not re-emit or re-persist
             // the act-end narration: reconnecting realtime tickers would
             // otherwise grow the transcript by one line per visit.
-            // Also, a fresh session (turn_number == 0) must not tick until the
-            // player has taken their first action, protecting the opening.
+            // Also, a fresh session (turn_number == 0) for player-driven packs
+            // must not tick until the player has taken their first action,
+            // protecting the opening narrative from wandering threats.
             return Ok(TurnOutcome {
                 text: String::new(),
                 phase: phase_at_entry,

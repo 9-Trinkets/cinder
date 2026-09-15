@@ -104,17 +104,11 @@ impl CinderRuntime {
             })
             .map(|e| e.room_id.clone())
             .collect();
-        let rooms_iter: Box<dyn Iterator<Item = &crate::content::types::RoomDefinition>> =
-            if self.content.settings.channel_surfing_only {
-                Box::new(self.content.rooms.iter())
-            } else {
-                Box::new(
-                    self.content
-                        .rooms
-                        .iter()
-                        .filter(move |room| exit_ids.contains(&room.id)),
-                )
-            };
+        let rooms_iter = self
+            .content
+            .rooms
+            .iter()
+            .filter(move |room| exit_ids.contains(&room.id));
         let mut options = rooms_iter
             .map(|room| {
                 let exit_label = current_room.exits.iter().find(|e| e.room_id == room.id);
