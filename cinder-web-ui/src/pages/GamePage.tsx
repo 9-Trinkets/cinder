@@ -71,7 +71,7 @@ export default function GamePage() {
     showExitConfirm,
     setShowExitConfirm,
   } = play
-  const [menuInitialTab, setMenuInitialTab] = useState<'folio' | 'menu'>('folio')
+  const [menuInitialTab, setMenuInitialTab] = useState<'folio' | 'menu'>('menu')
 
   const handleTriggerAction = (action: api.ActionBarAction) => {
     if (busy || gameOver) return

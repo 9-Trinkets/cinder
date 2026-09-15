@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Modal from './Modal'
 import StatusPanel from './StatusPanel'
 import type { UiSnapshot } from '../api'
@@ -61,7 +61,7 @@ export default function ShellMenu({
   busy,
   onTakeItem,
   onOpenPanel,
-  initialTab = 'folio',
+  initialTab = 'menu',
 }: ShellMenuProps) {
   const t = ui.ui_text
   const items = flattenItems(t)
@@ -181,6 +181,30 @@ interface MainMenuProps {
   initialTab?: 'folio' | 'menu'
 }
 
+function useIsDesktop(): boolean {
+  const [isDesktop, setIsDesktop] = useState(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return false
+    return window.matchMedia('(min-width: 1024px)').matches
+  })
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return
+    const mq = window.matchMedia('(min-width: 1024px)')
+    const handler = (e: MediaQueryListEvent | MediaQueryList) => {
+      setIsDesktop('matches' in e ? e.matches : mq.matches)
+    }
+    if (mq.addEventListener) {
+      mq.addEventListener('change', handler)
+      return () => mq.removeEventListener('change', handler)
+    } else if ('addListener' in mq) {
+      (mq as any).addListener(handler)
+      return () => (mq as any).removeListener(handler)
+    }
+  }, [])
+
+  return isDesktop
+}
+
 function MainMenu({
   items,
   t,
@@ -191,11 +215,15 @@ function MainMenu({
   busy,
   onTakeItem,
   onOpenPanel,
-  initialTab = 'folio',
+  initialTab = 'menu',
 }: MainMenuProps) {
+  const isDesktop = useIsDesktop()
   const [activeTab, setActiveTab] = useState<'folio' | 'menu'>(initialTab)
   const [submenu, setSubmenu] = useState<{ id: string; label: string }[] | null>(null)
   const [submenuTitle, setSubmenuTitle] = useState('')
+
+  // On desktop (lg+), the sidebar is permanently visible, so Folio is redundant.
+  const showFolio = !isDesktop && activeTab === 'folio'
 
   if (submenu !== null) {
     return (
@@ -219,33 +247,35 @@ function MainMenu({
   }
 
   return (
-    <Modal title={activeTab === 'folio' ? 'Traveler’s Folio' : (t.shell_menu_title || 'System Menu')} onClose={onClose}>
-      <div className="flex border-b border-subtle/70 -mt-1 mb-4">
-        <button
-          type="button"
-          onClick={() => setActiveTab('folio')}
-          className={`flex-1 pb-2.5 pt-1 text-center text-xs font-mono uppercase tracking-widest transition-colors cursor-pointer border-b-2 ${
-            activeTab === 'folio'
-              ? 'border-foam text-foam font-semibold'
-              : 'border-transparent text-muted hover:text-text'
-          }`}
-        >
-          Folio &bull; Status
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab('menu')}
-          className={`flex-1 pb-2.5 pt-1 text-center text-xs font-mono uppercase tracking-widest transition-colors cursor-pointer border-b-2 ${
-            activeTab === 'menu'
-              ? 'border-foam text-foam font-semibold'
-              : 'border-transparent text-muted hover:text-text'
-          }`}
-        >
-          System &bull; Menu
-        </button>
-      </div>
+    <Modal title={showFolio ? 'Traveler’s Folio' : (t.shell_menu_title || 'System Menu')} onClose={onClose}>
+      {!isDesktop && (
+        <div className="flex border-b border-subtle/70 -mt-1 mb-4">
+          <button
+            type="button"
+            onClick={() => setActiveTab('folio')}
+            className={`flex-1 pb-2.5 pt-1 text-center text-xs font-mono uppercase tracking-widest transition-colors cursor-pointer border-b-2 ${
+              activeTab === 'folio'
+                ? 'border-foam text-foam font-semibold'
+                : 'border-transparent text-muted hover:text-text'
+            }`}
+          >
+            Folio &bull; Status
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('menu')}
+            className={`flex-1 pb-2.5 pt-1 text-center text-xs font-mono uppercase tracking-widest transition-colors cursor-pointer border-b-2 ${
+              activeTab === 'menu'
+                ? 'border-foam text-foam font-semibold'
+                : 'border-transparent text-muted hover:text-text'
+            }`}
+          >
+            System &bull; Menu
+          </button>
+        </div>
+      )}
 
-      {activeTab === 'folio' && (
+      {showFolio && (
         <div className="space-y-4">
           <div className="pb-3 border-b border-subtle/50">
             <span className="text-[10px] font-mono uppercase tracking-widest text-muted block mb-1">
@@ -274,7 +304,7 @@ function MainMenu({
         </div>
       )}
 
-      {activeTab === 'menu' && (
+      {!showFolio && (
         <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40 my-1">
           {items.map((item) => {
             const packItem = t.shell_menu.items.find(i => i.id === item.id)
