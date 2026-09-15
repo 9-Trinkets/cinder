@@ -341,6 +341,7 @@ export interface UiSnapshot {
   rooms: MenuOptionItem[]
   follow_options: MenuOptionItem[]
   autonomous_actor_dialogue: boolean
+  show_player_input: boolean
   action_bar_actions: ActionBarAction[]
   overflow_actions: OverflowAction[]
   look_options: LookOptionData[]

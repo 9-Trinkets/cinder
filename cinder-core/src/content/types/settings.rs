@@ -87,6 +87,11 @@ pub struct ContentSettingsDefinition {
     pub default_language: String,
     #[serde(default)]
     pub autonomous_actor_dialogue: bool,
+    /// Whether the web UI shows the player's free-text input box. Spectator
+    /// packs (e.g. Aera's control room) set this to false so the player
+    /// watches the show instead of typing commands.
+    #[serde(default = "default_true")]
+    pub show_player_input: bool,
     /// Limits which actors participate in background ticks.
     #[serde(default)]
     pub actor_tick_scope: ActorTickScope,
@@ -203,6 +208,7 @@ impl Default for ContentSettingsDefinition {
             tick_minutes_per_turn: default_tick_minutes_per_turn(),
             default_language: default_default_language(),
             autonomous_actor_dialogue: false,
+            show_player_input: true,
             actor_tick_scope: ActorTickScope::default(),
             closure_perspective_actor_id: String::default(),
             act_member_alias: String::default(),

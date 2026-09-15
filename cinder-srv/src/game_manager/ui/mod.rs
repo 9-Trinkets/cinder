@@ -137,6 +137,7 @@ pub(super) fn build_ui_snapshot(
                 .map_err(|error| error.to_string())?,
         ),
         autonomous_actor_dialogue: content.settings.autonomous_actor_dialogue,
+        show_player_input: content.settings.show_player_input,
         action_bar_actions,
         overflow_actions,
         look_options,

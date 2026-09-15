@@ -290,6 +290,7 @@ export default function GamePage() {
           />
           </div>
 
+          {uiSnapshot?.show_player_input !== false && (
           <div className="border-t border-subtle shrink-0 relative">
               {atSuggestions && atSuggestions.length > 0 && (
                 <div role="listbox" aria-label="Talk to" className="absolute bottom-full left-4 right-4 mb-1">
@@ -362,6 +363,7 @@ export default function GamePage() {
                 >Send</button>
               </form>
             </div>
+          )}
         </div>
 
         {uiSnapshot && showSidebar && (

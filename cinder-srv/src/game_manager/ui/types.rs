@@ -203,6 +203,10 @@ pub struct UiSnapshot {
     pub rooms: Vec<MenuOptionData>,
     pub follow_options: Vec<MenuOptionData>,
     pub autonomous_actor_dialogue: bool,
+    /// Whether the web UI should show the player's free-text input box.
+    /// False for spectator packs (e.g. Aera) where the player watches rather
+    /// than types commands.
+    pub show_player_input: bool,
     pub action_bar_actions: Vec<ActionBarAction>,
     pub overflow_actions: Vec<OverflowAction>,
     pub look_options: Vec<LookOptionData>,
