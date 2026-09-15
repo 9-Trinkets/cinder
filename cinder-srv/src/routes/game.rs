@@ -373,9 +373,18 @@ async fn handle_ws(
     loop {
         tokio::select! {
             _ = interval.tick() => {
+                let _ = socket.send(Message::Text(serde_json::json!({
+                    "type": "tick_status",
+                    "status": "generating"
+                }).to_string().into())).await;
+
                 match game_manager::run_realtime_tick(&pool, &play_id, &player_id).await {
                     Ok(resp) => {
                         if resp.text.is_empty() && resp.movie.is_none() && !resp.game_over && resp.act_closure.is_none() {
+                            let _ = socket.send(Message::Text(serde_json::json!({
+                                "type": "tick_status",
+                                "status": "idle"
+                            }).to_string().into())).await;
                             continue;
                         }
                         match serde_json::to_string(&resp) {
@@ -389,6 +398,10 @@ async fn handle_ws(
                     }
                     Err(e) => {
                         tracing::error!("ws tick error: {e}");
+                        let _ = socket.send(Message::Text(serde_json::json!({
+                            "type": "tick_status",
+                            "status": "idle"
+                        }).to_string().into())).await;
                         break;
                     }
                 }

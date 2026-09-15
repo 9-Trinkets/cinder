@@ -180,7 +180,12 @@ const TranscriptPane = memo(function TranscriptPane({
             ),
           )}
           {busyLabel && lines.length === 0 && <Skeleton lines={4} className="mb-2" />}
-          {busyLabel && <p className="text-muted text-sm italic">{busyLabel}</p>}
+          {busyLabel && (
+            <div className="flex items-center gap-2.5 py-3 text-muted text-sm font-serif italic tracking-wide">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent/70 animate-pulse" />
+              <span>{busyLabel}</span>
+            </div>
+          )}
           {actClosure && (
             <ActClosureModal actClosure={actClosure} onDismiss={onDismissClosure} />
           )}

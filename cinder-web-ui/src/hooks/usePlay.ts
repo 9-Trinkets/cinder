@@ -28,6 +28,7 @@ export function usePlay() {
   const [initializing, setInitializing] = useState(false)
   const [commandPending, setCommandPending] = useState(false)
   const [panelBusy, setPanelBusy] = useState(false)
+  const [tickGenerating, setTickGenerating] = useState(false)
   const [actClosure, setActClosure] = useState<api.ActClosureData | null>(null)
   const [gameClosure, setGameClosure] = useState<api.ActClosureData | null>(null)
   const [showMenu, setShowMenu] = useState(false)
@@ -58,7 +59,17 @@ export function usePlay() {
   const draftInputRef = useRef('')
 
   const busy = initializing || commandPending || panelBusy
-  const busyLabel = commandPending ? 'Sending…' : panelBusy ? 'Updating…' : initializing ? 'Loading…' : null
+  const roomName = uiSnapshot?.current_room_name?.toLowerCase()
+  const tickLabel = roomName ? `Observing ${roomName} · · ·` : 'Listening · · ·'
+  const busyLabel = commandPending
+    ? 'Sending…'
+    : panelBusy
+      ? 'Updating…'
+      : initializing
+        ? 'Loading…'
+        : tickGenerating
+          ? tickLabel
+          : null
   const activeMenuTitle = activeMenu?.prompt?.trim() || uiSnapshot?.ui_text.menu_option_list_title || 'Choose'
 
   const getPanelConfig = (panelName: string) => findPanelConfig(uiSnapshot, panelName)
@@ -407,6 +418,7 @@ export function usePlay() {
     blocked: busy || movie !== null || activeMenu !== null || showMenu || quickPanel !== null || !lines.some(l => l.kind === 'player'),
     inputValue: input,
     onTick: applyCommandResponse,
+    onTickStatus: setTickGenerating,
   })
 
   return {

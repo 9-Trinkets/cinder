@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react'
 import * as api from '../api'
 
 type TickCallback = (res: api.CommandResponse) => void
+type TickStatusCallback = (generating: boolean) => void
 
 export function useNpcTicks(params: {
   token: string | null
@@ -12,10 +13,13 @@ export function useNpcTicks(params: {
   blocked: boolean
   inputValue: string
   onTick: TickCallback
+  onTickStatus?: TickStatusCallback
 }) {
   const { token, id, gameOver, documentVisible, intervalMs, blocked, inputValue } = params
   const onTickRef = useRef<TickCallback>(() => {})
   onTickRef.current = params.onTick
+  const onTickStatusRef = useRef<TickStatusCallback | undefined>(params.onTickStatus)
+  onTickStatusRef.current = params.onTickStatus
   const inputValueRef = useRef(inputValue)
   inputValueRef.current = inputValue
 
@@ -29,7 +33,13 @@ export function useNpcTicks(params: {
     ws.onmessage = (event) => {
       if (inputValueRef.current.trim().length > 0) return
       try {
-        const res: api.CommandResponse = JSON.parse(event.data)
+        const data = JSON.parse(event.data)
+        if (data.type === 'tick_status') {
+          onTickStatusRef.current?.(data.status === 'generating')
+          return
+        }
+        onTickStatusRef.current?.(false)
+        const res: api.CommandResponse = data
         if (res.text || res.movie || res.game_over || res.act_closure || res.game_closure) {
           onTickRef.current(res)
         }
@@ -39,10 +49,12 @@ export function useNpcTicks(params: {
     }
 
     ws.onerror = () => {
+      onTickStatusRef.current?.(false)
       ws.close()
     }
 
     return () => {
+      onTickStatusRef.current?.(false)
       ws.close()
     }
   }, [token, id, gameOver, documentVisible, intervalMs, blocked])
