@@ -39,7 +39,6 @@ export default function GamePage() {
     findPanelConfig,
     handleSelectPanelOption,
     execCommand,
-    channelSurfingOnly,
     atSuggestions,
     input,
     setInput,
@@ -291,8 +290,7 @@ export default function GamePage() {
           />
           </div>
 
-          {!channelSurfingOnly.current && (
-            <div className="border-t border-subtle shrink-0 relative">
+          <div className="border-t border-subtle shrink-0 relative">
               {atSuggestions && atSuggestions.length > 0 && (
                 <div role="listbox" aria-label="Talk to" className="absolute bottom-full left-4 right-4 mb-1">
                   <div className="max-w-2xl mx-auto rounded border border-subtle bg-overlay shadow-lg overflow-hidden">
@@ -364,7 +362,6 @@ export default function GamePage() {
                 >Send</button>
               </form>
             </div>
-          )}
         </div>
 
         {uiSnapshot && showSidebar && (

@@ -44,7 +44,6 @@ export function usePlay() {
   const [atSuggestions, setAtSuggestions] = useState<api.MenuOptionItem[] | null>(null)
   const [documentVisible, setDocumentVisible] = useState(document.visibilityState === 'visible')
   const [showExitConfirm, setShowExitConfirm] = useState(false)
-  const channelSurfingOnly = useRef(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const transcriptRef = useRef<HTMLDivElement>(null)
   const nextKey = useRef(1)
@@ -60,12 +59,9 @@ export function usePlay() {
   const draftInputRef = useRef('')
 
   const busy = initializing || commandPending || panelBusy
-  const roomName = uiSnapshot?.current_room_name?.toLowerCase()
   const tickLabel = tickSpeaker
-    ? `${tickSpeaker} is speaking · · ·`
-    : roomName
-      ? `Observing ${roomName} · · ·`
-      : 'Listening · · ·'
+    ? `${tickSpeaker} is thinking · · ·`
+    : 'Thinking · · ·'
   const busyLabel = commandPending
     ? 'Sending…'
     : panelBusy
@@ -94,7 +90,6 @@ export function usePlay() {
     }
     refreshInFlightRef.current = true
     api.fetchPlayUi(token, id).then(snap => {
-      channelSurfingOnly.current = snap.channel_surfing_only
       setUiSnapshot(snap)
       setActiveMenu(snap.active_menu ?? null)
       setGameOver(snap.game_over ?? snap.game_closure !== null)
@@ -129,7 +124,6 @@ export function usePlay() {
   function applyCommandResponse(res: api.CommandResponse, behavior: ScrollBehavior = 'auto') {
     appendLines(extractResponseLines(res), behavior)
     if (res.ui_snapshot) {
-      channelSurfingOnly.current = res.ui_snapshot.channel_surfing_only
       setUiSnapshot(res.ui_snapshot)
       setActiveMenu(res.ui_snapshot.active_menu ?? null)
     } else {
@@ -199,7 +193,6 @@ export function usePlay() {
     setShowMenu(true)
     if (token && id) {
       api.fetchPlayUi(token, id).then(snap => {
-        channelSurfingOnly.current = snap.channel_surfing_only
         setUiSnapshot(snap)
         setActiveMenu(snap.active_menu ?? null)
       }).catch(() => {})
@@ -305,17 +298,6 @@ export function usePlay() {
       setQuickPanel(current => current === 'look' ? null : 'look')
       return
     }
-    const matchingBarAction = (uiSnapshot?.action_bar_actions ?? []).find(
-      a => a.id.toLowerCase() === lowerInput || a.label.toLowerCase() === lowerInput
-    )
-    if (matchingBarAction?.panel) {
-      const snap = uiSnapshot || await api.fetchPlayUi(token, id).catch(() => null)
-      if (snap?.channel_surfing_only) {
-        setUiSnapshot(snap)
-        setQuickPanel(current => current === matchingBarAction.panel ? null : matchingBarAction.panel ?? null)
-        return
-      }
-    }
     await execCommand(trimmed, displayInput)
   }
 
@@ -337,7 +319,7 @@ export function usePlay() {
     if (!autoScrollRef.current) return
     bottomRef.current?.scrollIntoView({ behavior: scrollBehaviorRef.current })
     scrollBehaviorRef.current = 'auto'
-  }, [lines])
+  }, [lines, busyLabel])
 
   useEffect(() => {
     const onVisibilityChange = () => setDocumentVisible(document.visibilityState === 'visible')
@@ -358,7 +340,6 @@ export function usePlay() {
 
     api.fetchPlayUi(token, id)
       .then(snap => {
-        channelSurfingOnly.current = snap.channel_surfing_only
         setUiSnapshot(snap)
         setActiveMenu(snap.active_menu ?? null)
         setGameOver(snap.game_closure !== null)
@@ -425,7 +406,7 @@ export function usePlay() {
     gameOver,
     documentVisible,
     intervalMs: uiSnapshot?.npc_tick_interval_ms ?? 0,
-    blocked: busy || movie !== null || activeMenu !== null || showMenu || quickPanel !== null || (!uiSnapshot?.channel_surfing_only && !lines.some(l => l.kind === 'player')),
+    blocked: busy || movie !== null || activeMenu !== null || showMenu || quickPanel !== null || (!uiSnapshot?.autonomous_actor_dialogue && !lines.some(l => l.kind === 'player')),
     inputValue: input,
     onTick: applyCommandResponse,
     onTickStatus: handleTickStatus,
@@ -466,7 +447,6 @@ export function usePlay() {
     setMovieFrame,
     atSuggestions,
     setAtSuggestions,
-    channelSurfingOnly,
     bottomRef,
     transcriptRef,
     inputRef,
