@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth'
 import * as api from '../api'
@@ -68,11 +68,10 @@ export default function GamePage() {
     movieFrame,
     setMovieFrame,
     closeMovie,
-    showStatusModal,
-    setShowStatusModal,
     showExitConfirm,
     setShowExitConfirm,
   } = play
+  const [menuInitialTab, setMenuInitialTab] = useState<'folio' | 'menu'>('folio')
 
   const handleTriggerAction = (action: api.ActionBarAction) => {
     if (busy || gameOver) return
@@ -174,9 +173,13 @@ export default function GamePage() {
         <div className="flex items-center gap-2">
           <button onClick={() => navigate(`/games/pack/${uiSnapshot?.pack_id}`)} className="text-sm text-muted hover:text-text cursor-pointer">&larr; Back</button>
           <button
-            onClick={openMenu}
+            type="button"
+            onClick={() => {
+              setMenuInitialTab('menu')
+              openMenu()
+            }}
             disabled={busy}
-            className="text-sm px-2 py-1 rounded bg-overlay border border-subtle text-text transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
+            className="text-sm px-2.5 py-1 rounded bg-overlay border border-subtle text-text transition duration-200 hover:brightness-110 active:scale-[0.98] disabled:opacity-50 cursor-pointer"
           >&#9776; Menu</button>
         </div>
         <button onClick={logout} className="text-sm text-muted transition duration-200 hover:text-love active:scale-[0.98] cursor-pointer">Log out</button>
@@ -184,23 +187,30 @@ export default function GamePage() {
 
       {uiSnapshot && (
         <button
+          type="button"
           onClick={() => {
-            setQuickPanel(null)
-            setShowStatusModal(true)
+            setMenuInitialTab('folio')
+            openMenu()
           }}
-          className="lg:hidden w-full text-left px-4 py-2 border-b border-subtle bg-canvas/40 cursor-pointer"
+          className="lg:hidden w-full text-left px-4 py-2.5 border-b border-subtle/60 bg-canvas/60 hover:bg-overlay/40 transition-colors cursor-pointer flex items-center justify-between"
+          aria-label="Open status folio"
         >
-          <div className="flex items-center gap-2 text-xs text-muted overflow-x-auto">
-            <span className="shrink-0 rounded-full bg-overlay px-2 py-1 text-text">{uiSnapshot.current_room_name}</span>
-            <span className="shrink-0 rounded-full bg-overlay px-2 py-1 text-text">
+          <div className="flex items-center gap-2 text-xs text-muted truncate">
+            <span className="font-semibold text-text truncate">{uiSnapshot.current_room_name}</span>
+            <span className="text-muted/40 font-mono">&bull;</span>
+            <span className="font-mono text-muted shrink-0">
               Day {uiSnapshot.day_number}{uiSnapshot.time_label ? ` — ${uiSnapshot.time_label}` : ''}
             </span>
             {uiSnapshot.followed_actor_name && (
-              <span className="shrink-0 rounded-full bg-pine/20 px-2 py-1 text-foam">
-                Following {uiSnapshot.followed_actor_name}
-              </span>
+              <>
+                <span className="text-muted/40 font-mono">&bull;</span>
+                <span className="text-foam truncate">With {uiSnapshot.followed_actor_name}</span>
+              </>
             )}
           </div>
+          <span className="text-xs font-mono uppercase tracking-widest text-muted/70 pl-2 shrink-0">
+            Folio &rsaquo;
+          </span>
         </button>
       )}
 
@@ -365,6 +375,7 @@ export default function GamePage() {
 
       {showMenu && uiSnapshot && (
         <ShellMenu
+          key={menuInitialTab}
           ui={uiSnapshot}
           view={menuView}
           onViewChange={setMenuView}
@@ -379,6 +390,7 @@ export default function GamePage() {
             setShowMenu(false)
             setQuickPanel(panel)
           }}
+          initialTab={menuInitialTab}
         />
       )}
 
@@ -463,19 +475,6 @@ export default function GamePage() {
           }}
           onClose={closeMovie}
         />
-      )}
-
-      {showStatusModal && uiSnapshot && (
-        <Modal title="Status" onClose={() => setShowStatusModal(false)}>
-          <StatusPanel
-            uiSnapshot={uiSnapshot}
-            onTakeItem={itemId => void execCommand(`take ${itemId}`)}
-            onOpenPanel={panel => {
-              setShowStatusModal(false)
-              setQuickPanel(panel)
-            }}
-          />
-        </Modal>
       )}
 
       {showExitConfirm && (

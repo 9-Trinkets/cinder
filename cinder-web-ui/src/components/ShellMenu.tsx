@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import Modal from './Modal'
-import Button from './Button'
-import Badge from './Badge'
 import StatusPanel from './StatusPanel'
 import type { UiSnapshot } from '../api'
 import type { MenuView } from '../hooks/playUtils'
@@ -18,6 +16,7 @@ interface ShellMenuProps {
   busy: boolean
   onTakeItem?: (itemId: string) => void
   onOpenPanel?: (panel: string) => void
+  initialTab?: 'folio' | 'menu'
 }
 
 interface FlatItem {
@@ -39,9 +38,6 @@ function isKnownMenuItem(id: string): boolean {
 }
 
 function flattenItems(t: UiSnapshot['ui_text']): FlatItem[] {
-  // The menu is pack-authored: only what the pack declares (that maps to a
-  // known platform view) is shown, so no capability is forced in for packs
-  // that route it elsewhere (e.g. room switching via the Move panel).
   if (t.shell_menu.items.length > 0) {
     return t.shell_menu.items
       .filter(item => isKnownMenuItem(item.id))
@@ -65,81 +61,111 @@ export default function ShellMenu({
   busy,
   onTakeItem,
   onOpenPanel,
+  initialTab = 'folio',
 }: ShellMenuProps) {
   const t = ui.ui_text
   const items = flattenItems(t)
 
   if (view === 'rooms') {
     return (
-      <Modal title={t.room_switcher_title} onClose={onClose}>
+      <Modal title={t.room_switcher_title || 'Fast Travel'} onClose={onClose}>
         <MenuBackButton onClick={() => onViewChange('main')} />
-        {ui.rooms.map((r) => (
-          <Button
-            key={r.id}
-            variant="secondary"
-            className="block w-full text-left"
-            onClick={() => onSwitchRoom(r.id)}
-            disabled={busy}
-          >
-            <span className="font-medium">{r.title}</span>
-            {r.menu_text && <span className="text-muted text-xs ml-2">{r.menu_text}</span>}
-          </Button>
-        ))}
+        <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40">
+          {ui.rooms.map((r) => (
+            <button
+              key={r.id}
+              type="button"
+              className="w-full py-3 px-1 flex items-center justify-between group hover:text-foam text-left cursor-pointer transition-colors disabled:opacity-50"
+              onClick={() => onSwitchRoom(r.id)}
+              disabled={busy}
+            >
+              <div>
+                <span className="text-sm font-medium text-text group-hover:text-foam transition-colors block">{r.title}</span>
+                {r.menu_text && <span className="text-xs text-muted">{r.menu_text}</span>}
+              </div>
+              <span className="text-xs text-foam opacity-0 group-hover:opacity-100 transition-opacity">Travel &rsaquo;</span>
+            </button>
+          ))}
+        </div>
       </Modal>
     )
   }
 
   if (view === 'follow') {
     return (
-      <Modal title={t.follow_actor_title} onClose={onClose}>
+      <Modal title={t.follow_actor_title || 'Companions'} onClose={onClose}>
         <MenuBackButton onClick={() => onViewChange('main')} />
-        {ui.follow_options.map((a) => (
-          <Button
-            key={a.id}
-            variant="secondary"
-            className="block w-full text-left"
-            onClick={() => onFollowActor(a.id === 'none' ? null : a.id)}
-            disabled={busy}
-          >
-            <span className="font-medium">{a.title}</span>
-            {a.menu_text && <span className="text-muted text-xs ml-2">{a.menu_text}</span>}
-          </Button>
-        ))}
+        <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40">
+          {ui.follow_options.map((a) => {
+            const isFollowing = (a.id === 'none' && !ui.followed_actor_name) ||
+              (a.title === ui.followed_actor_name)
+            return (
+              <button
+                key={a.id}
+                type="button"
+                className="w-full py-3 px-1 flex items-center justify-between group hover:text-foam text-left cursor-pointer transition-colors disabled:opacity-50"
+                onClick={() => onFollowActor(a.id === 'none' ? null : a.id)}
+                disabled={busy}
+              >
+                <div>
+                  <span className="text-sm font-medium text-text group-hover:text-foam transition-colors block">{a.title}</span>
+                  {a.menu_text && <span className="text-xs text-muted">{a.menu_text}</span>}
+                </div>
+                {isFollowing && (
+                  <span className="text-xs font-mono uppercase tracking-wider text-foam bg-pine/15 px-2 py-0.5 rounded border border-pine/30">
+                    Active
+                  </span>
+                )}
+              </button>
+            )
+          })}
+        </div>
       </Modal>
     )
   }
 
   if (view === 'language') {
     return (
-      <Modal title={t.language_modal_title} onClose={onClose}>
+      <Modal title={t.language_modal_title || 'Language'} onClose={onClose}>
         <MenuBackButton onClick={() => onViewChange('main')} />
-        {ui.locale_options.map((l) => (
-          <Button
-            key={l.code}
-            variant="secondary"
-            className={`block w-full text-left ${l.code === ui.current_locale ? '!bg-pine/20 !border-pine' : ''}`}
-            onClick={() => onChangeLocale(l.code)}
-            disabled={busy || l.code === ui.current_locale}
-          >
-            <span className="font-medium">{l.label}</span>
-            {l.code === ui.current_locale && <span className="text-pine text-xs ml-2">(current)</span>}
-          </Button>
-        ))}
+        <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40">
+          {ui.locale_options.map((l) => (
+            <button
+              key={l.code}
+              type="button"
+              className={`w-full py-3 px-1 flex items-center justify-between group text-left cursor-pointer transition-colors ${
+                l.code === ui.current_locale ? 'text-foam font-semibold' : 'text-text hover:text-foam'
+              }`}
+              onClick={() => onChangeLocale(l.code)}
+              disabled={busy || l.code === ui.current_locale}
+            >
+              <span className="text-sm">{l.label}</span>
+              {l.code === ui.current_locale && (
+                <span className="text-xs font-mono uppercase tracking-wider text-foam bg-pine/15 px-2 py-0.5 rounded border border-pine/30">
+                  Active
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
       </Modal>
     )
   }
 
-  return <MainMenu
-    items={items}
-    t={t}
-    ui={ui}
-    onViewChange={onViewChange}
-    onClose={onClose}
-    onExit={onExit}
-    busy={busy}
-    onTakeItem={onTakeItem}
-    onOpenPanel={onOpenPanel}
-  />
+  return (
+    <MainMenu
+      items={items}
+      t={t}
+      ui={ui}
+      onViewChange={onViewChange}
+      onClose={onClose}
+      onExit={onExit}
+      busy={busy}
+      onTakeItem={onTakeItem}
+      onOpenPanel={onOpenPanel}
+      initialTab={initialTab}
+    />
+  )
 }
 
 interface MainMenuProps {
@@ -152,6 +178,7 @@ interface MainMenuProps {
   busy: boolean
   onTakeItem?: (itemId: string) => void
   onOpenPanel?: (panel: string) => void
+  initialTab?: 'folio' | 'menu'
 }
 
 function MainMenu({
@@ -164,7 +191,9 @@ function MainMenu({
   busy,
   onTakeItem,
   onOpenPanel,
+  initialTab = 'folio',
 }: MainMenuProps) {
+  const [activeTab, setActiveTab] = useState<'folio' | 'menu'>(initialTab)
   const [submenu, setSubmenu] = useState<{ id: string; label: string }[] | null>(null)
   const [submenuTitle, setSubmenuTitle] = useState('')
 
@@ -172,102 +201,173 @@ function MainMenu({
     return (
       <Modal title={submenuTitle} onClose={onClose}>
         <MenuBackButton onClick={() => { setSubmenu(null); setSubmenuTitle('') }} />
-        {submenu.map((child) => (
-          <Button
-            key={child.id}
-            variant="secondary"
-            className="block w-full text-left"
-            onClick={() => handleItemClick(child.id, onViewChange, onExit)}
-          >
-            {child.label}
-          </Button>
-        ))}
+        <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40">
+          {submenu.map((child) => (
+            <button
+              key={child.id}
+              type="button"
+              className="w-full py-3 px-1 flex items-center justify-between group hover:text-foam text-left cursor-pointer transition-colors"
+              onClick={() => handleItemClick(child.id, onViewChange, onExit)}
+            >
+              <span className="text-sm font-medium text-text group-hover:text-foam transition-colors">{child.label}</span>
+              <span className="text-muted group-hover:text-foam group-hover:translate-x-1 transition-transform">&rsaquo;</span>
+            </button>
+          ))}
+        </div>
       </Modal>
     )
   }
 
   return (
-    <Modal title={t.shell_menu_title} onClose={onClose}>
-      <div className="rounded-lg border border-subtle bg-canvas/30 px-3 py-3 text-xs text-muted">
-        <div className="flex flex-wrap gap-2">
-          <Badge>{ui.current_room_name}</Badge>
-          <Badge>
-            Day {ui.day_number}{ui.time_label ? ` — ${ui.time_label}` : ''}
-          </Badge>
-          {ui.followed_actor_name && (
-            <Badge color="success">
-              Following {ui.followed_actor_name}
-            </Badge>
-          )}
-        </div>
+    <Modal title={activeTab === 'folio' ? 'Traveler’s Folio' : (t.shell_menu_title || 'System Menu')} onClose={onClose}>
+      <div className="flex border-b border-subtle/70 -mt-1 mb-4">
+        <button
+          type="button"
+          onClick={() => setActiveTab('folio')}
+          className={`flex-1 pb-2.5 pt-1 text-center text-xs font-mono uppercase tracking-widest transition-colors cursor-pointer border-b-2 ${
+            activeTab === 'folio'
+              ? 'border-foam text-foam font-semibold'
+              : 'border-transparent text-muted hover:text-text'
+          }`}
+        >
+          Folio &bull; Status
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('menu')}
+          className={`flex-1 pb-2.5 pt-1 text-center text-xs font-mono uppercase tracking-widest transition-colors cursor-pointer border-b-2 ${
+            activeTab === 'menu'
+              ? 'border-foam text-foam font-semibold'
+              : 'border-transparent text-muted hover:text-text'
+          }`}
+        >
+          System &bull; Menu
+        </button>
       </div>
-      {/* On viewports without the sidebar the menu is the only status surface,
-          so render the packed status sections (map, vitals, level, party, …)
-          here; the sidebar already shows them on larger screens. */}
-      <div className="lg:hidden mb-1">
-        <StatusPanel uiSnapshot={ui} onTakeItem={onTakeItem} onOpenPanel={onOpenPanel} />
-      </div>
-      {items.map((item) => {
-        const packItem = t.shell_menu.items.find(i => i.id === item.id)
-        const hasChildren = packItem?.children && packItem.children.length > 0
 
-        if (item.id === 'exit') {
-          return (
-            <div key={item.id}>
-              <hr className="border-subtle my-2" />
-              <Button
-                variant="secondary"
-                className="block w-full text-left"
-                onClick={onExit}
-              >
-                {item.label}
-              </Button>
+      {activeTab === 'folio' && (
+        <div className="space-y-4">
+          <div className="pb-3 border-b border-subtle/50">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-muted block mb-1">
+              Current Location
+            </span>
+            <h3 className="text-xl font-bold font-prose text-text tracking-tight">
+              {ui.current_room_name}
+            </h3>
+            <div className="flex items-center gap-2.5 text-xs text-muted mt-1 font-mono">
+              <span>Day {ui.day_number}{ui.time_label ? ` — ${ui.time_label}` : ''}</span>
+              {ui.followed_actor_name && (
+                <>
+                  <span className="text-muted/40">&bull;</span>
+                  <span className="text-foam">Following {ui.followed_actor_name}</span>
+                </>
+              )}
             </div>
-          )
-        }
+          </div>
 
-        if (hasChildren) {
-          const children = packItem!.children!
-          return (
-            <Button
-              key={item.id}
-              variant="secondary"
-              className="block w-full text-left"
-              onClick={() => {
-                setSubmenu(children)
-                setSubmenuTitle(item.label)
-              }}
-            >
-              {item.label} &rarr;
-            </Button>
-          )
-        }
+          <StatusPanel
+            uiSnapshot={ui}
+            onTakeItem={onTakeItem}
+            onOpenPanel={onOpenPanel}
+            hideLocation
+          />
+        </div>
+      )}
 
-        return (
-          <Button
-            key={item.id}
-            variant="secondary"
-            className="block w-full text-left"
-            onClick={() => handleItemClick(item.id, onViewChange, onExit)}
-            disabled={busy}
-          >
-            {item.label}
-          </Button>
-        )
-      })}
+      {activeTab === 'menu' && (
+        <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40 my-1">
+          {items.map((item) => {
+            const packItem = t.shell_menu.items.find(i => i.id === item.id)
+            const hasChildren = packItem?.children && packItem.children.length > 0
+
+            if (item.id === 'exit') {
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={onExit}
+                  className="w-full py-3.5 px-1 flex items-center justify-between group text-left cursor-pointer transition-colors"
+                >
+                  <div>
+                    <span className="text-sm font-medium text-text group-hover:text-love transition-colors block">
+                      {item.label}
+                    </span>
+                    <span className="text-xs text-muted">
+                      Bookmark progress and return to library
+                    </span>
+                  </div>
+                  <span className="text-muted group-hover:text-love group-hover:translate-x-1 transition-transform">
+                    &rsaquo;
+                  </span>
+                </button>
+              )
+            }
+
+            let subtitle = ''
+            if (item.id === 'rooms') subtitle = 'Fast travel to discovered chambers'
+            else if (item.id === 'follow') subtitle = ui.followed_actor_name ? `Accompanying ${ui.followed_actor_name}` : 'Travel unaccompanied'
+            else if (item.id === 'language') subtitle = ui.locale_options.find(l => l.code === ui.current_locale)?.label || ui.current_locale
+
+            if (hasChildren) {
+              const children = packItem!.children!
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => {
+                    setSubmenu(children)
+                    setSubmenuTitle(item.label)
+                  }}
+                  className="w-full py-3.5 px-1 flex items-center justify-between group hover:text-foam text-left cursor-pointer transition-colors"
+                >
+                  <div>
+                    <span className="text-sm font-medium text-text group-hover:text-foam transition-colors block">
+                      {item.label}
+                    </span>
+                    {subtitle && <span className="text-xs text-muted">{subtitle}</span>}
+                  </div>
+                  <span className="text-muted group-hover:text-foam group-hover:translate-x-1 transition-transform">
+                    &rsaquo;
+                  </span>
+                </button>
+              )
+            }
+
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => handleItemClick(item.id, onViewChange, onExit)}
+                disabled={busy}
+                className="w-full py-3.5 px-1 flex items-center justify-between group hover:text-foam text-left cursor-pointer transition-colors disabled:opacity-50"
+              >
+                <div>
+                  <span className="text-sm font-medium text-text group-hover:text-foam transition-colors block">
+                    {item.label}
+                  </span>
+                  {subtitle && <span className="text-xs text-muted">{subtitle}</span>}
+                </div>
+                <span className="text-muted group-hover:text-foam group-hover:translate-x-1 transition-transform">
+                  &rsaquo;
+                </span>
+              </button>
+            )
+          })}
+        </div>
+      )}
     </Modal>
   )
 }
 
 function MenuBackButton({ onClick }: { onClick: () => void }) {
   return (
-    <Button
-      variant="secondary"
-      className="block w-full text-left mb-2"
+    <button
+      type="button"
       onClick={onClick}
+      className="text-xs font-mono uppercase tracking-widest text-muted hover:text-text cursor-pointer flex items-center gap-1.5 mb-3 transition-colors"
     >
-      &larr; Back
-    </Button>
+      &lsaquo; Back
+    </button>
   )
 }
 

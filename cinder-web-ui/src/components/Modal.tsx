@@ -40,7 +40,7 @@ export default function Modal({
       >
         <div className="mx-auto mt-2 h-1.5 w-12 rounded-full bg-highlight-med sm:hidden" />
         <div className="flex items-center justify-between px-4 py-3 border-b border-subtle shrink-0 sm:px-5">
-          <h2 className="text-base font-semibold text-text">{title}</h2>
+          <h2 className="text-base font-bold font-prose text-text tracking-tight">{title}</h2>
           <button
             onClick={onClose}
             aria-label="Close"

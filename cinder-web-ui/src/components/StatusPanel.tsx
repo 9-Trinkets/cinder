@@ -11,21 +11,25 @@ export default function StatusPanel({
   uiSnapshot,
   onTakeItem,
   onOpenPanel,
+  hideLocation = false,
 }: {
   uiSnapshot: api.UiSnapshot
   onTakeItem?: (itemId: string) => void
   onOpenPanel?: (panel: string) => void
+  hideLocation?: boolean
 }) {
   const player = uiSnapshot.player
   return (
     <div>
-      <Section title="Location" defaultOpen>
-        <p className="text-text font-medium">{uiSnapshot.current_room_name}</p>
-        <p className="text-text text-xs">
-          Day {uiSnapshot.day_number}
-          {uiSnapshot.time_label ? <span className="text-muted ml-1">— {uiSnapshot.time_label}</span> : null}
-        </p>
-      </Section>
+      {!hideLocation && (
+        <Section title="Location" defaultOpen>
+          <p className="text-text font-medium">{uiSnapshot.current_room_name}</p>
+          <p className="text-text text-xs">
+            Day {uiSnapshot.day_number}
+            {uiSnapshot.time_label ? <span className="text-muted ml-1">— {uiSnapshot.time_label}</span> : null}
+          </p>
+        </Section>
+      )}
 
       {uiSnapshot.minimap && (
         <Section title={uiSnapshot.ui_text.minimap_sidebar_label || 'Map'} defaultOpen>
