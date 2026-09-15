@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import * as api from '../api'
 
 type TickCallback = (res: api.CommandResponse) => void
-type TickStatusCallback = (generating: boolean) => void
+type TickStatusCallback = (generating: boolean, actorName?: string) => void
 
 export function useNpcTicks(params: {
   token: string | null
@@ -35,7 +35,7 @@ export function useNpcTicks(params: {
       try {
         const data = JSON.parse(event.data)
         if (data.type === 'tick_status') {
-          onTickStatusRef.current?.(data.status === 'generating')
+          onTickStatusRef.current?.(data.status === 'generating', data.actor_name)
           return
         }
         onTickStatusRef.current?.(false)

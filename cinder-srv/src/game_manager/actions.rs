@@ -224,6 +224,18 @@ pub async fn run_realtime_tick(
     play_id: &str,
     player_id: &str,
 ) -> Result<CommandResponse, String> {
+    run_realtime_tick_with_status(pool, play_id, player_id, |_| {}).await
+}
+
+pub async fn run_realtime_tick_with_status<F>(
+    pool: &PgPool,
+    play_id: &str,
+    player_id: &str,
+    on_speaker: F,
+) -> Result<CommandResponse, String>
+where
+    F: Fn(&str) + Send + Sync + 'static,
+{
     let play_id = parse_uuid(play_id, "play id")?;
     let player_id = parse_uuid(player_id, "player id")?;
     with_runtime(
@@ -231,6 +243,9 @@ pub async fn run_realtime_tick(
         &play_id,
         &player_id,
         move |runtime, pack_id, transcript_lines| {
+            if let Some(speaker) = runtime.peek_upcoming_conversational_speaker() {
+                on_speaker(&speaker);
+            }
             let mut outcome = runtime.run_tick().map_err(|e| format!("tick error: {e}"))?;
             let act_closure = if outcome.phase == GamePhase::ActEnded
                 && runtime.content().settings.show_act_closure
@@ -270,7 +285,7 @@ pub async fn run_realtime_tick(
             let transcript_entries: Vec<PendingTranscriptEntry> = response
                 .text
                 .split("\n\n")
-                .map(|line| line.trim())
+                .map(str::trim)
                 .filter(|line| !line.is_empty())
                 .map(|line| PendingTranscriptEntry {
                     role: "narrative".to_string(),
@@ -471,20 +486,9 @@ pub async fn continue_play(
 ) -> Result<CommandResponse, String> {
     let play_id = parse_uuid(play_id, "play id")?;
     let player_id = parse_uuid(player_id, "player id")?;
-    with_runtime(
-        pool,
-        &play_id,
-        &player_id,
-        move |runtime, pack_id, _transcript_lines| {
-            runtime
-                .continue_after_act()
-                .map_err(|e| format!("play continuation error: {e}"))?;
-            let ui_snapshot = build_ui_snapshot(runtime, pack_id, _transcript_lines)?;
-            Ok((
-                CommandResponse::new(String::new(), false, Some(ui_snapshot)),
-                Vec::new(),
-            ))
-        },
-    )
-    .await
+    with_runtime(pool, &play_id, &player_id, move |runtime, pack_id, lines| {
+        runtime.continue_after_act().map_err(|e| format!("play continuation error: {e}"))?;
+        let ui_snapshot = build_ui_snapshot(runtime, pack_id, lines)?;
+        Ok((CommandResponse::new(String::new(), false, Some(ui_snapshot)), Vec::new()))
+    }).await
 }

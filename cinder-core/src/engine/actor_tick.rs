@@ -16,7 +16,7 @@ pub(crate) use movement::{decide_movement, plan_wander_moves};
 pub(crate) use periodic_effects::{
     plan_periodic_effect_events, target_matches as periodic_effect_target_matches,
 };
-pub(crate) use workflow::run_actor_tick;
+pub(crate) use workflow::{peek_conversational_speaker, run_actor_tick};
 
 #[derive(Debug, Clone)]
 pub struct ActorTickExecution {
@@ -74,7 +74,7 @@ impl fmt::Display for ActorTickError {
 
 impl Error for ActorTickError {}
 
-fn tick_scope_room_ids(content: &ContentPack, state: &WorldState) -> Option<BTreeSet<String>> {
+pub(crate) fn tick_scope_room_ids(content: &ContentPack, state: &WorldState) -> Option<BTreeSet<String>> {
     match content.settings.actor_tick_scope {
         ActorTickScope::CurrentBoard => Some(content.reachable_room_ids(&state.current_room_id)),
         ActorTickScope::AllRooms => None,

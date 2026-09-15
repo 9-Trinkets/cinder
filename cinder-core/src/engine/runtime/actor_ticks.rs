@@ -81,6 +81,43 @@ impl CinderRuntime {
         Ok(outcome)
     }
 
+    pub fn peek_upcoming_conversational_speaker(&self) -> Option<String> {
+        let (phase_at_entry, turn_number) = {
+            let state = self.state.lock().ok()?;
+            (state.phase.clone(), state.turn_number)
+        };
+        let requires_first_action = !self.content.settings.channel_surfing_only
+            && !self.content.settings.autonomous_actor_dialogue;
+        if phase_at_entry != GamePhase::Active || (requires_first_action && turn_number == 0) {
+            return None;
+        }
+        if !self.content.settings.autonomous_actor_dialogue {
+            return None;
+        }
+
+        let state = self.state.lock().ok()?;
+        let mut peek_state = state.clone();
+        peek_state.turn_number += 1;
+
+        let scope_room_ids = crate::engine::actor_tick::tick_scope_room_ids(
+            self.content.as_ref(),
+            &peek_state,
+        );
+        let speaker_id = crate::engine::actor_tick::peek_conversational_speaker(
+            self.content.as_ref(),
+            &peek_state,
+            &scope_room_ids,
+        )?;
+
+        let speaker_actor = self.content.actor(&speaker_id)?;
+        let actor_room = peek_state.actor_room_id(&speaker_id, &speaker_actor.room_id);
+        if actor_room == peek_state.current_room_id {
+            Some(speaker_actor.name.clone())
+        } else {
+            None
+        }
+    }
+
     fn actor_tick_soft_error_text(&self, error: &ActorTickError) -> String {
         let actor_name = error
             .trace_records

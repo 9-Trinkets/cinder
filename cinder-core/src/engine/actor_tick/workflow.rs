@@ -17,6 +17,73 @@ use std::collections::BTreeSet;
 use std::path::Path;
 use std::sync::{Arc, Mutex};
 
+pub(crate) fn peek_conversational_speaker(
+    content: &ContentPack,
+    state: &WorldState,
+    scope_room_ids: &Option<BTreeSet<String>>,
+) -> Option<String> {
+    if !content.settings.autonomous_actor_dialogue {
+        return None;
+    }
+
+    let candidate_actors: Vec<_> = content
+        .onstage_actors()
+        .filter(|actor| {
+            !content.is_player_actor(&actor.id)
+                && room_is_in_tick_scope(
+                    scope_room_ids,
+                    state.actor_room_id(&actor.id, &actor.room_id),
+                )
+        })
+        .collect();
+
+    let conversational: Vec<String> = candidate_actors
+        .into_iter()
+        .filter(|actor| {
+            let rules = content.movement_rules(&actor.id);
+            let current_room_id = state.actor_room_id(&actor.id, &actor.room_id);
+            required_movement_target_room_id(state, &rules, current_room_id).is_none()
+        })
+        .map(|actor| actor.id.clone())
+        .collect();
+
+    if conversational.is_empty() {
+        return None;
+    }
+
+    let observed_room_candidates: Vec<String> = conversational
+        .iter()
+        .filter(|id| {
+            content
+                .actor(id)
+                .map(|a| state.actor_room_id(id, &a.room_id) == state.current_room_id)
+                .unwrap_or(false)
+        })
+        .cloned()
+        .collect();
+
+    let pool = if !observed_room_candidates.is_empty() {
+        &observed_room_candidates
+    } else {
+        &conversational
+    };
+
+    let reply_target = pool.iter().find(|id| {
+        state.pending_replies.values().any(|pending| {
+            &pending.listener_id == *id && room_is_in_tick_scope(scope_room_ids, &pending.room_id)
+        })
+    });
+
+    let chosen_speaker = if let Some(target_id) = reply_target {
+        target_id.clone()
+    } else {
+        let idx = (state.turn_number as usize) % pool.len();
+        pool[idx].clone()
+    };
+
+    Some(chosen_speaker)
+}
+
 pub(crate) fn select_tick_actors(
     content: &ContentPack,
     state: &WorldState,
@@ -38,50 +105,17 @@ pub(crate) fn select_tick_actors(
     }
 
     let mut mandatory_movers = Vec::new();
-    let mut conversational = Vec::new();
-
-    for actor in candidate_actors {
+    for actor in &candidate_actors {
         let rules = content.movement_rules(&actor.id);
         let current_room_id = state.actor_room_id(&actor.id, &actor.room_id);
         if required_movement_target_room_id(state, &rules, current_room_id).is_some() {
             mandatory_movers.push(actor.id.clone());
-        } else {
-            conversational.push(actor.id.clone());
         }
     }
 
     let mut selected = mandatory_movers;
-    if !conversational.is_empty() {
-        let observed_room_candidates: Vec<String> = conversational
-            .iter()
-            .filter(|id| {
-                content
-                    .actor(id)
-                    .map(|a| state.actor_room_id(id, &a.room_id) == state.current_room_id)
-                    .unwrap_or(false)
-            })
-            .cloned()
-            .collect();
-
-        let pool = if !observed_room_candidates.is_empty() {
-            &observed_room_candidates
-        } else {
-            &conversational
-        };
-
-        let reply_target = pool.iter().find(|id| {
-            state.pending_replies.values().any(|pending| {
-                &pending.listener_id == *id && room_is_in_tick_scope(scope_room_ids, &pending.room_id)
-            })
-        });
-
-        let chosen_speaker = if let Some(target_id) = reply_target {
-            target_id.clone()
-        } else {
-            let idx = (state.turn_number as usize) % pool.len();
-            pool[idx].clone()
-        };
-        selected.push(chosen_speaker);
+    if let Some(speaker) = peek_conversational_speaker(content, state, scope_room_ids) {
+        selected.push(speaker);
     }
 
     selected
@@ -356,6 +390,26 @@ mod tests {
         state.set_pending_reply(&a1, &a0, "lounge", 1);
         let selected = select_tick_actors(&content, &state, &scope);
         assert_eq!(selected, vec![a0.clone()]);
+    }
+
+    #[test]
+    fn peek_conversational_speaker_identifies_speaker_when_autonomous() {
+        let mut content = minimal_test_pack();
+        content.settings.autonomous_actor_dialogue = true;
+        let mut state = WorldState::new(&content);
+        state.current_room_id = "lounge".to_string();
+        content.actors[0].room_id = "lounge".to_string();
+        content.actors[1].room_id = "lounge".to_string();
+        let a0 = content.actors[0].id.clone();
+        let a1 = content.actors[1].id.clone();
+
+        let scope = Some(BTreeSet::from(["lounge".to_string()]));
+
+        state.turn_number = 0;
+        assert_eq!(peek_conversational_speaker(&content, &state, &scope), Some(a0.clone()));
+
+        state.turn_number = 1;
+        assert_eq!(peek_conversational_speaker(&content, &state, &scope), Some(a1.clone()));
     }
 }
 

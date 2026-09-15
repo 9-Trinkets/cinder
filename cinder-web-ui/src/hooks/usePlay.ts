@@ -29,6 +29,7 @@ export function usePlay() {
   const [commandPending, setCommandPending] = useState(false)
   const [panelBusy, setPanelBusy] = useState(false)
   const [tickGenerating, setTickGenerating] = useState(false)
+  const [tickSpeaker, setTickSpeaker] = useState<string | null>(null)
   const [actClosure, setActClosure] = useState<api.ActClosureData | null>(null)
   const [gameClosure, setGameClosure] = useState<api.ActClosureData | null>(null)
   const [showMenu, setShowMenu] = useState(false)
@@ -60,7 +61,11 @@ export function usePlay() {
 
   const busy = initializing || commandPending || panelBusy
   const roomName = uiSnapshot?.current_room_name?.toLowerCase()
-  const tickLabel = roomName ? `Observing ${roomName} · · ·` : 'Listening · · ·'
+  const tickLabel = tickSpeaker
+    ? `${tickSpeaker} is speaking · · ·`
+    : roomName
+      ? `Observing ${roomName} · · ·`
+      : 'Listening · · ·'
   const busyLabel = commandPending
     ? 'Sending…'
     : panelBusy
@@ -409,6 +414,11 @@ export function usePlay() {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [showMenu])
 
+  const handleTickStatus = useCallback((generating: boolean, actorName?: string) => {
+    setTickGenerating(generating)
+    setTickSpeaker(generating && actorName ? actorName : null)
+  }, [])
+
   useNpcTicks({
     token,
     id,
@@ -418,7 +428,7 @@ export function usePlay() {
     blocked: busy || movie !== null || activeMenu !== null || showMenu || quickPanel !== null || (!uiSnapshot?.channel_surfing_only && !lines.some(l => l.kind === 'player')),
     inputValue: input,
     onTick: applyCommandResponse,
-    onTickStatus: setTickGenerating,
+    onTickStatus: handleTickStatus,
   })
 
   return {

@@ -358,14 +358,25 @@ pub async fn ws_tick_handler(
 }
 
 async fn handle_ws(
-    mut socket: axum::extract::ws::WebSocket,
+    socket: axum::extract::ws::WebSocket,
     pool: crate::db::DbPool,
     play_id: String,
     player_id: String,
     tick_ms: u64,
 ) {
     use axum::extract::ws::Message;
-    use futures_util::StreamExt;
+    use futures_util::{SinkExt, StreamExt};
+
+    let (mut ws_sender, mut ws_receiver) = socket.split();
+    let (out_tx, mut out_rx) = tokio::sync::mpsc::unbounded_channel::<Message>();
+
+    let writer_handle = tokio::spawn(async move {
+        while let Some(msg) = out_rx.recv().await {
+            if ws_sender.send(msg).await.is_err() {
+                break;
+            }
+        }
+    });
 
     let mut interval = tokio::time::interval(std::time::Duration::from_millis(tick_ms));
     interval.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Delay);
@@ -373,23 +384,28 @@ async fn handle_ws(
     loop {
         tokio::select! {
             _ = interval.tick() => {
-                let _ = socket.send(Message::Text(serde_json::json!({
-                    "type": "tick_status",
-                    "status": "generating"
-                }).to_string().into())).await;
+                let status_tx = out_tx.clone();
+                let on_speaker = move |actor_name: &str| {
+                    let _ = status_tx.send(Message::Text(serde_json::json!({
+                        "type": "tick_status",
+                        "status": "generating",
+                        "actor_name": actor_name
+                    }).to_string().into()));
+                };
 
-                match game_manager::run_realtime_tick(&pool, &play_id, &player_id).await {
+                match game_manager::run_realtime_tick_with_status(&pool, &play_id, &player_id, on_speaker).await {
                     Ok(resp) => {
+                        let _ = out_tx.send(Message::Text(serde_json::json!({
+                            "type": "tick_status",
+                            "status": "idle"
+                        }).to_string().into()));
+
                         if resp.text.is_empty() && resp.movie.is_none() && !resp.game_over && resp.act_closure.is_none() {
-                            let _ = socket.send(Message::Text(serde_json::json!({
-                                "type": "tick_status",
-                                "status": "idle"
-                            }).to_string().into())).await;
                             continue;
                         }
                         match serde_json::to_string(&resp) {
                             Ok(json) => {
-                                if socket.send(Message::Text(json.into())).await.is_err() {
+                                if out_tx.send(Message::Text(json.into())).is_err() {
                                     break;
                                 }
                             }
@@ -398,15 +414,15 @@ async fn handle_ws(
                     }
                     Err(e) => {
                         tracing::error!("ws tick error: {e}");
-                        let _ = socket.send(Message::Text(serde_json::json!({
+                        let _ = out_tx.send(Message::Text(serde_json::json!({
                             "type": "tick_status",
                             "status": "idle"
-                        }).to_string().into())).await;
+                        }).to_string().into()));
                         break;
                     }
                 }
             }
-            msg = socket.next() => {
+            msg = ws_receiver.next() => {
                 match msg {
                     Some(Ok(Message::Close(_))) | None => break,
                     _ => {}
@@ -414,4 +430,6 @@ async fn handle_ws(
             }
         }
     }
+
+    writer_handle.abort();
 }
