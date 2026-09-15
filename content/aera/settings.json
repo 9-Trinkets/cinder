@@ -10,7 +10,6 @@
   "npc_tick_interval_ms": 4000,
   "tick_minutes_per_turn": 10,
   "default_language": "en",
-  "allow_player_item_transfers": false,
   "autonomous_actor_dialogue": true,
   "actor_tick_scope": "current_board",
   "show_act_closure": false,

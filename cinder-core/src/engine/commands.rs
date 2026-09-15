@@ -98,7 +98,14 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
     // Generic item commands are checked after authored actions so packs can
     // retain custom phrases while using the shared engine flow by default.
     if let Some(command) = items::parse_item_command(trimmed) {
-        return command;
+        let is_allowed = match &command {
+            PlayerCommand::Take { .. } => content.player_can_take_items(),
+            PlayerCommand::Drop { .. } => content.player_can_drop_items(),
+            _ => true,
+        };
+        if is_allowed {
+            return command;
+        }
     }
     if let Some((actor_reference, order)) = party_order_phrase(trimmed) {
         return PlayerCommand::PartyOrder {

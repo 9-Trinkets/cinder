@@ -26,7 +26,11 @@ pub(super) fn build_action_bar_and_take(
         content
             .actions
             .iter()
-            .filter(|a| a.ui.bar && action_is_available(content, state, a, &state.current_room_id))
+            .filter(|a| {
+                a.player_enabled
+                    && a.ui.bar
+                    && action_is_available(content, state, a, &state.current_room_id)
+            })
             .map(|a| ActionBarAction {
                 id: a.id.clone(),
                 label: a.label.clone(),
@@ -42,24 +46,26 @@ pub(super) fn build_action_bar_and_take(
     // whenever a loose item lies in the current room. It reuses the same panel
     // model as authored content actions: the button opens a picker listing each
     // item (auto-selecting when only one is present), dispatching `take <id>`.
-    let take_panel_options: Vec<PanelOptionData> = if !content.settings.allow_player_item_transfers {
+    let take_panel_options: Vec<PanelOptionData> = if !content.player_can_take_items() {
         vec![]
     } else {
         let loose = takeable_loose_items(content, state);
         if loose.is_empty() {
             vec![]
         } else {
-            action_bar_actions.push(ActionBarAction {
-                id: "take".to_string(),
-                label: content.ui_text.take_label.clone(),
-                panel: Some("take".to_string()),
-                panel_config: Some(PanelConfigData {
-                    title: content.ui_text.room_items_sidebar_label.clone(),
-                    prompt: String::new(),
-                    data_source: PanelDataSource::LooseRoomItems,
-                    on_select: PanelSelectAction::ExecuteCommand,
-                }),
-            });
+            if !action_bar_actions.iter().any(|a| a.id == "take") {
+                action_bar_actions.push(ActionBarAction {
+                    id: "take".to_string(),
+                    label: content.ui_text.take_label.clone(),
+                    panel: Some("take".to_string()),
+                    panel_config: Some(PanelConfigData {
+                        title: content.ui_text.room_items_sidebar_label.clone(),
+                        prompt: String::new(),
+                        data_source: PanelDataSource::LooseRoomItems,
+                        on_select: PanelSelectAction::ExecuteCommand,
+                    }),
+                });
+            }
             loose
                 .into_iter()
                 .map(|(item_id, _count)| loose_item_option(content, &item_id))
@@ -83,7 +89,7 @@ pub(super) fn build_drop_panel_options(
     content: &ContentPack,
     state: &WorldState,
 ) -> Vec<PanelOptionData> {
-    if !content.settings.allow_player_item_transfers {
+    if !content.player_can_drop_items() {
         return vec![];
     }
     droppable_inventory_items(state)
@@ -233,7 +239,7 @@ pub(super) fn build_overflow_actions(
     // Surface the generic `drop <item>` overflow action when the player holds
     // something droppable. Structure mirrors authored panel actions so moving
     // it to the main bar later is a placement-only change.
-    if !drop_panel_options.is_empty() {
+    if !drop_panel_options.is_empty() && !overflow_actions.iter().any(|a| a.id == "drop") {
         overflow_actions.push(OverflowAction {
             id: "drop".to_string(),
             label: content.ui_text.drop_label.clone(),

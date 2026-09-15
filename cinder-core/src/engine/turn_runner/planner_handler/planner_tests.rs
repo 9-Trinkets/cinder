@@ -1,6 +1,7 @@
 use super::build_planned_turn;
 use crate::content::types::{
-    ContentPack, ItemDefinition, ItemKind, OpeningMenuDefinition, PackMessage, PartyOrderKind,
+    ActionDefinition, ContentPack, ItemDefinition, ItemKind, OpeningMenuDefinition, PackMessage,
+    PartyOrderKind,
 };
 use crate::engine::commands::PlayerCommand;
 use crate::engine::events::WorldEvent;
@@ -253,9 +254,8 @@ fn equipment_commands_reject_items_outside_the_valid_source() {
 }
 
 #[test]
-fn item_transfers_rejected_when_disallowed_by_settings() {
-    let mut content = minimal_test_pack();
-    content.settings.allow_player_item_transfers = false;
+fn item_transfers_rejected_when_not_declared_in_pack() {
+    let content = minimal_test_pack();
     let state = WorldState::new(&content);
 
     let (take_planned, take_advances) = plan_command(
@@ -284,5 +284,52 @@ fn item_transfers_rejected_when_disallowed_by_settings() {
     assert!(drop_planned.events.iter().any(|event| matches!(
         event,
         WorldEvent::UnknownInput { raw_input } if raw_input == "drop stone"
+    )));
+}
+
+#[test]
+fn item_transfers_accepted_when_declared_in_pack() {
+    let mut content = minimal_test_pack();
+    content.actions.push(ActionDefinition {
+        id: "take".to_string(),
+        player_enabled: true,
+        ..ActionDefinition::default()
+    });
+    content.actions.push(ActionDefinition {
+        id: "drop".to_string(),
+        player_enabled: true,
+        ..ActionDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut content);
+    let state = WorldState::new(&content);
+
+    let (take_planned, take_advances) = plan_command(
+        &content,
+        &state,
+        "take stone",
+        PlayerCommand::Take {
+            target: "stone".to_string(),
+        },
+    );
+    assert!(!take_advances);
+    // Not UnknownInput; item not found in room emits ActionRejected
+    assert!(take_planned.events.iter().any(|event| matches!(
+        event,
+        WorldEvent::ActionRejected { .. }
+    )));
+
+    let (drop_planned, drop_advances) = plan_command(
+        &content,
+        &state,
+        "drop stone",
+        PlayerCommand::Drop {
+            target: "stone".to_string(),
+        },
+    );
+    assert!(!drop_advances);
+    // Not UnknownInput; item not held in inventory emits ActionRejected
+    assert!(drop_planned.events.iter().any(|event| matches!(
+        event,
+        WorldEvent::ActionRejected { .. }
     )));
 }

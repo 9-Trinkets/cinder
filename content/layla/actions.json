@@ -368,6 +368,83 @@
           "required": false
         }
       }
+    },
+    {
+      "id": "take",
+      "command": "TAKE",
+      "label": "Take",
+      "group": "items",
+      "phrases": [
+        "take",
+        "pick up",
+        "get",
+        "pickup"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "pick_up_item"
+      ],
+      "available": {},
+      "ui": {
+        "bar": true,
+        "overflow": false,
+        "panel": "take",
+        "panel_config": {
+          "title": "In the room",
+          "prompt": "",
+          "data_source": "loose_room_items",
+          "on_select": "execute_command"
+        },
+        "group": "items",
+        "sort_order": 20
+      },
+      "player_command": {
+        "usage": "take <item>",
+        "example": "take iron chisel",
+        "advances_time": false,
+        "input": {
+          "required": true
+        }
+      }
+    },
+    {
+      "id": "drop",
+      "command": "DROP",
+      "label": "Drop",
+      "group": "items",
+      "phrases": [
+        "drop"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "effects": [
+        "drop_item"
+      ],
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": true,
+        "panel": "drop",
+        "panel_config": {
+          "title": "Drop an item",
+          "prompt": "",
+          "data_source": "inventory_items",
+          "on_select": "execute_command"
+        },
+        "group": "items",
+        "sort_order": 25
+      },
+      "player_command": {
+        "usage": "drop <item>",
+        "example": "drop stone",
+        "advances_time": false,
+        "input": {
+          "required": true
+        }
+      }
     }
   ]
 }

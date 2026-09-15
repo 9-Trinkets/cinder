@@ -154,6 +154,26 @@ impl ContentPack {
             .collect()
     }
 
+    pub fn player_action_enabled(&self, action_id: &str) -> bool {
+        self.action(action_id).is_some_and(|action| action.player_enabled)
+    }
+
+    /// Whether player item transfers (taking items) are declaratively enabled
+    /// by an action in this pack.
+    pub fn player_can_take_items(&self) -> bool {
+        self.actions
+            .iter()
+            .any(|a| a.player_enabled && (a.id == "take" || a.has_effect(CommandEffect::PickUpItem)))
+    }
+
+    /// Whether player item transfers (dropping items) are declaratively enabled
+    /// by an action in this pack.
+    pub fn player_can_drop_items(&self) -> bool {
+        self.actions
+            .iter()
+            .any(|a| a.player_enabled && (a.id == "drop" || a.has_effect(CommandEffect::DropItem)))
+    }
+
     pub fn action(&self, action_id: &str) -> Option<&ActionDefinition> {
         self.action_index.get(action_id).map(|&i| &self.actions[i])
     }

@@ -14,7 +14,7 @@ pub(super) fn plan_take_command(
     target: &str,
     planned: &mut PlannedTurn,
 ) -> bool {
-    if !content.settings.allow_player_item_transfers {
+    if !content.player_can_take_items() {
         planned.events.push(WorldEvent::UnknownInput {
             raw_input: format!("take {target}"),
         });
@@ -86,7 +86,7 @@ pub(super) fn plan_drop_command(
     target: &str,
     planned: &mut PlannedTurn,
 ) -> bool {
-    if !content.settings.allow_player_item_transfers {
+    if !content.player_can_drop_items() {
         planned.events.push(WorldEvent::UnknownInput {
             raw_input: format!("drop {target}"),
         });
