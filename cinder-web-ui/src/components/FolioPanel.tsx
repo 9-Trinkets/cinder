@@ -1,6 +1,5 @@
 import type * as api from '../api'
 import StatusPanel from './StatusPanel'
-import RelationshipChart from './RelationshipChart'
 
 interface FolioPanelProps {
   uiSnapshot: api.UiSnapshot
@@ -14,8 +13,8 @@ export default function FolioPanel({
   onOpenPanel,
 }: FolioPanelProps) {
   return (
-    <div className="space-y-4">
-      <div className="pb-3 border-b border-subtle/50">
+    <div>
+      <div className="pb-3 border-b border-subtle/50 mb-1">
         <span className="text-[10px] font-mono uppercase tracking-widest text-muted block mb-1">
           Current Location
         </span>
@@ -39,10 +38,6 @@ export default function FolioPanel({
         onOpenPanel={onOpenPanel}
         hideLocation
       />
-
-      {uiSnapshot.show_relationship_sidebar && uiSnapshot.relationship_pairs.length > 0 && (
-        <RelationshipChart pairs={uiSnapshot.relationship_pairs} />
-      )}
     </div>
   )
 }

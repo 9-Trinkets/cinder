@@ -1,6 +1,7 @@
 import * as api from '../api'
 import Minimap from './Minimap'
 import Section from './Section'
+import RelationshipChart from './RelationshipChart'
 
 const orderLabel = (order: string) => {
   const known: Record<string, string> = { guard: 'Guarding', assist: 'Assisting' }
@@ -226,6 +227,10 @@ export default function StatusPanel({
           {uiSnapshot.objective_message || 'No current objective.'}
         </p>
       </Section>
+
+      {uiSnapshot.show_relationship_sidebar && uiSnapshot.relationship_pairs.length > 0 && (
+        <RelationshipChart pairs={uiSnapshot.relationship_pairs} />
+      )}
     </div>
   )
 }
