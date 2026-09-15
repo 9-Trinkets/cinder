@@ -33,13 +33,6 @@ pub(super) fn plan_dialogue_command(
         .player_command
         .as_ref()
         .unwrap_or_else(|| panic!("action '{}' should define player_command", action.id));
-    if context.channel_surfing_only {
-        planned.events.push(WorldEvent::UnknownInput {
-            raw_input: context.raw_input.to_string(),
-        });
-        return false;
-    }
-
     match metadata.target_mode {
         PlayerCommandTargetMode::ActorReference => {
             let remainder = input.unwrap_or_default();

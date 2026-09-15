@@ -202,7 +202,7 @@ pub struct UiSnapshot {
     pub secrets_total: usize,
     pub rooms: Vec<MenuOptionData>,
     pub follow_options: Vec<MenuOptionData>,
-    pub channel_surfing_only: bool,
+    pub autonomous_actor_dialogue: bool,
     pub action_bar_actions: Vec<ActionBarAction>,
     pub overflow_actions: Vec<OverflowAction>,
     pub look_options: Vec<LookOptionData>,

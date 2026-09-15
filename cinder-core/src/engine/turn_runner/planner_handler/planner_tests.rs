@@ -23,7 +23,6 @@ fn plan_unknown(content: &ContentPack, state: &WorldState, raw_input: &str) -> (
         },
         state,
         state.turn_number + 1,
-        false,
     )
 }
 
@@ -50,7 +49,6 @@ fn plan_order(
         },
         state,
         state.turn_number + 1,
-        false,
     )
 }
 
@@ -74,7 +72,6 @@ fn plan_command(
         },
         state,
         state.turn_number + 1,
-        false,
     )
 }
 
@@ -252,5 +249,40 @@ fn equipment_commands_reject_items_outside_the_valid_source() {
     assert!(planned.events.iter().any(|event| matches!(
         event,
         WorldEvent::ActionRejected { message } if message == "Not held: iron chisel."
+    )));
+}
+
+#[test]
+fn item_transfers_rejected_when_disallowed_by_settings() {
+    let mut content = minimal_test_pack();
+    content.settings.allow_player_item_transfers = false;
+    let state = WorldState::new(&content);
+
+    let (take_planned, take_advances) = plan_command(
+        &content,
+        &state,
+        "take stone",
+        PlayerCommand::Take {
+            target: "stone".to_string(),
+        },
+    );
+    assert!(!take_advances);
+    assert!(take_planned.events.iter().any(|event| matches!(
+        event,
+        WorldEvent::UnknownInput { raw_input } if raw_input == "take stone"
+    )));
+
+    let (drop_planned, drop_advances) = plan_command(
+        &content,
+        &state,
+        "drop stone",
+        PlayerCommand::Drop {
+            target: "stone".to_string(),
+        },
+    );
+    assert!(!drop_advances);
+    assert!(drop_planned.events.iter().any(|event| matches!(
+        event,
+        WorldEvent::UnknownInput { raw_input } if raw_input == "drop stone"
     )));
 }

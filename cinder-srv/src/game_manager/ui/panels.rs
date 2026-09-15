@@ -42,7 +42,9 @@ pub(super) fn build_action_bar_and_take(
     // whenever a loose item lies in the current room. It reuses the same panel
     // model as authored content actions: the button opens a picker listing each
     // item (auto-selecting when only one is present), dispatching `take <id>`.
-    let take_panel_options: Vec<PanelOptionData> = {
+    let take_panel_options: Vec<PanelOptionData> = if !content.settings.allow_player_item_transfers {
+        vec![]
+    } else {
         let loose = takeable_loose_items(content, state);
         if loose.is_empty() {
             vec![]
@@ -81,6 +83,9 @@ pub(super) fn build_drop_panel_options(
     content: &ContentPack,
     state: &WorldState,
 ) -> Vec<PanelOptionData> {
+    if !content.settings.allow_player_item_transfers {
+        return vec![];
+    }
     droppable_inventory_items(state)
         .into_iter()
         .map(|item_id| PanelOptionData {

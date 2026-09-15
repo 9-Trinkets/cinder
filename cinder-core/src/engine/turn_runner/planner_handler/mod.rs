@@ -25,7 +25,6 @@ pub(super) fn build_planned_turn(
     aggregated: AggregatedTurn,
     planner_state: &WorldState,
     turn_number: u32,
-    channel_surfing_only: bool,
 ) -> (PlannedTurn, bool) {
     let mut planned = PlannedTurn {
         events: vec![],
@@ -47,7 +46,6 @@ pub(super) fn build_planned_turn(
                     raw_input: &aggregated.command.raw_input,
                     current_room_id: &aggregated.world.current_room_id,
                     planner_state,
-                    channel_surfing_only,
                     turn_number,
                 },
                 &mut planned,

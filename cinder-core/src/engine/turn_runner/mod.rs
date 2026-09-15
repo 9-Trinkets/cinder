@@ -159,17 +159,10 @@ impl CinderRoleRunner {
         let planner_state = self
             .state
             .lock()
-            .map_err(|_| "failed to lock planner state".to_string())?
-            .clone();
-        let channel_surfing_only = self.content.settings.channel_surfing_only;
+            .map_err(|_| "failed to lock planner state".to_string())?;
         let turn_number = aggregated.world.turn_number + 1;
-        let (planned, _) = build_planned_turn(
-            self.content.as_ref(),
-            aggregated,
-            &planner_state,
-            turn_number,
-            channel_surfing_only,
-        );
+        let (planned, _) =
+            build_planned_turn(self.content.as_ref(), aggregated, &planner_state, turn_number);
         resolve_next_role(
             &planned,
             || self.next_role_from(role_name, "menu_intent_clarifier"),

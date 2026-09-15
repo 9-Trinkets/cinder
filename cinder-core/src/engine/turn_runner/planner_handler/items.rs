@@ -14,6 +14,12 @@ pub(super) fn plan_take_command(
     target: &str,
     planned: &mut PlannedTurn,
 ) -> bool {
+    if !content.settings.allow_player_item_transfers {
+        planned.events.push(WorldEvent::UnknownInput {
+            raw_input: format!("take {target}"),
+        });
+        return false;
+    }
     let trimmed = target.trim();
     let loose = planner_state.loose_room_items(current_room_id);
     if loose.is_empty() || trimmed.is_empty() {
@@ -80,6 +86,12 @@ pub(super) fn plan_drop_command(
     target: &str,
     planned: &mut PlannedTurn,
 ) -> bool {
+    if !content.settings.allow_player_item_transfers {
+        planned.events.push(WorldEvent::UnknownInput {
+            raw_input: format!("drop {target}"),
+        });
+        return false;
+    }
     let trimmed = target.trim();
     if trimmed.is_empty() {
         planned.events.push(WorldEvent::ActionRejected {

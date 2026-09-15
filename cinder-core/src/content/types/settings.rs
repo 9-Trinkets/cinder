@@ -85,8 +85,8 @@ pub struct ContentSettingsDefinition {
     pub tick_minutes_per_turn: u32,
     #[serde(default = "default_default_language")]
     pub default_language: String,
-    #[serde(default)]
-    pub channel_surfing_only: bool,
+    #[serde(default = "default_true")]
+    pub allow_player_item_transfers: bool,
     #[serde(default)]
     pub autonomous_actor_dialogue: bool,
     /// Limits which actors participate in background ticks.
@@ -204,7 +204,7 @@ impl Default for ContentSettingsDefinition {
             npc_tick_interval_ms: default_npc_tick_interval_ms(),
             tick_minutes_per_turn: default_tick_minutes_per_turn(),
             default_language: default_default_language(),
-            channel_surfing_only: false,
+            allow_player_item_transfers: true,
             autonomous_actor_dialogue: false,
             actor_tick_scope: ActorTickScope::default(),
             closure_perspective_actor_id: String::default(),

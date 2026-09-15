@@ -136,7 +136,7 @@ pub(super) fn build_ui_snapshot(
                 .follow_actor_options()
                 .map_err(|error| error.to_string())?,
         ),
-        channel_surfing_only: content.settings.channel_surfing_only,
+        autonomous_actor_dialogue: content.settings.autonomous_actor_dialogue,
         action_bar_actions,
         overflow_actions,
         look_options,
