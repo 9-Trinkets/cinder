@@ -404,7 +404,7 @@ export function usePlay() {
     gameOver,
     documentVisible,
     intervalMs: uiSnapshot?.npc_tick_interval_ms ?? 0,
-    blocked: busy || movie !== null || activeMenu !== null || showMenu || quickPanel !== null || showStatusModal,
+    blocked: busy || movie !== null || activeMenu !== null || showMenu || quickPanel !== null || !lines.some(l => l.kind === 'player'),
     inputValue: input,
     onTick: applyCommandResponse,
   })

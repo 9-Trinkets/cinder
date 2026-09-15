@@ -12,17 +12,19 @@ use std::sync::Arc;
 
 impl CinderRuntime {
     pub fn run_tick(&self) -> Result<TurnOutcome, Box<dyn Error>> {
-        let phase_at_entry = {
+        let (phase_at_entry, turn_number) = {
             let state = self
                 .state
                 .lock()
                 .map_err(|_| "failed to lock runtime state to start npc tick")?;
-            state.phase.clone()
+            (state.phase.clone(), state.turn_number)
         };
-        if phase_at_entry != GamePhase::Active {
+        if phase_at_entry != GamePhase::Active || turn_number == 0 {
             // A session that is already over must not re-emit or re-persist
             // the act-end narration: reconnecting realtime tickers would
             // otherwise grow the transcript by one line per visit.
+            // Also, a fresh session (turn_number == 0) must not tick until the
+            // player has taken their first action, protecting the opening.
             return Ok(TurnOutcome {
                 text: String::new(),
                 phase: phase_at_entry,
