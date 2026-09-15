@@ -259,6 +259,7 @@ pub async fn run_realtime_tick(
             let is_game_over = outcome.phase != GamePhase::Active;
             let response = CommandResponse {
                 text: outcome.text.clone(),
+                lines: outcome.lines.clone(),
                 game_over: is_game_over,
                 movie,
                 act_closure,

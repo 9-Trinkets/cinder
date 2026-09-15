@@ -3,6 +3,7 @@ use super::{
     HostilityStageEnvelope, room_is_in_tick_scope, tick_scope_room_ids,
 };
 use crate::content::types::ContentPack;
+use crate::engine::actor_turn::movement::required_movement_target_room_id;
 use crate::engine::conversation_memory::refresh_conversation_summaries;
 use crate::engine::dialogue::DialogueGenerator;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
@@ -12,8 +13,79 @@ use crate::engine::neuron::{
 use crate::engine::reducer::apply_events;
 use crate::engine::state::{GamePhase, WorldState};
 use serde::{Deserialize, Serialize};
+use std::collections::BTreeSet;
 use std::path::Path;
 use std::sync::{Arc, Mutex};
+
+pub(crate) fn select_tick_actors(
+    content: &ContentPack,
+    state: &WorldState,
+    scope_room_ids: &Option<BTreeSet<String>>,
+) -> Vec<String> {
+    let candidate_actors: Vec<_> = content
+        .onstage_actors()
+        .filter(|actor| {
+            !content.is_player_actor(&actor.id)
+                && room_is_in_tick_scope(
+                    scope_room_ids,
+                    state.actor_room_id(&actor.id, &actor.room_id),
+                )
+        })
+        .collect();
+
+    if !content.settings.autonomous_actor_dialogue || candidate_actors.len() <= 1 {
+        return candidate_actors.into_iter().map(|actor| actor.id.clone()).collect();
+    }
+
+    let mut mandatory_movers = Vec::new();
+    let mut conversational = Vec::new();
+
+    for actor in candidate_actors {
+        let rules = content.movement_rules(&actor.id);
+        let current_room_id = state.actor_room_id(&actor.id, &actor.room_id);
+        if required_movement_target_room_id(state, &rules, current_room_id).is_some() {
+            mandatory_movers.push(actor.id.clone());
+        } else {
+            conversational.push(actor.id.clone());
+        }
+    }
+
+    let mut selected = mandatory_movers;
+    if !conversational.is_empty() {
+        let observed_room_candidates: Vec<String> = conversational
+            .iter()
+            .filter(|id| {
+                content
+                    .actor(id)
+                    .map(|a| state.actor_room_id(id, &a.room_id) == state.current_room_id)
+                    .unwrap_or(false)
+            })
+            .cloned()
+            .collect();
+
+        let pool = if !observed_room_candidates.is_empty() {
+            &observed_room_candidates
+        } else {
+            &conversational
+        };
+
+        let reply_target = pool.iter().find(|id| {
+            state.pending_replies.values().any(|pending| {
+                &pending.listener_id == *id && room_is_in_tick_scope(scope_room_ids, &pending.room_id)
+            })
+        });
+
+        let chosen_speaker = if let Some(target_id) = reply_target {
+            target_id.clone()
+        } else {
+            let idx = (state.turn_number as usize) % pool.len();
+            pool[idx].clone()
+        };
+        selected.push(chosen_speaker);
+    }
+
+    selected
+}
 
 pub(crate) fn run_actor_tick(
     content: Arc<ContentPack>,
@@ -22,19 +94,10 @@ pub(crate) fn run_actor_tick(
     state: &WorldState,
 ) -> Result<ActorTickExecution, ActorTickError> {
     let scope_room_ids = tick_scope_room_ids(content.as_ref(), state);
+    let remaining_actor_ids = select_tick_actors(content.as_ref(), state, &scope_room_ids);
     let input = ActorTickWorkflowState {
         state: state.clone(),
-        remaining_actor_ids: content
-            .onstage_actors()
-            .filter(|actor| {
-                !content.is_player_actor(&actor.id)
-                    && room_is_in_tick_scope(
-                        &scope_room_ids,
-                        state.actor_room_id(&actor.id, &actor.room_id),
-                    )
-            })
-            .map(|actor| actor.id.clone())
-            .collect(),
+        remaining_actor_ids,
         current_actor_id: None,
         emitted_events: Vec::new(),
         actor_turn_stage: ActorTurnStageEnvelope::Idle,
@@ -254,3 +317,45 @@ pub(super) fn extract_inbound_message(prompt: &str) -> Result<String, String> {
         Ok(inbound.to_string())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::engine::test_fixtures::minimal_test_pack;
+
+    #[test]
+    fn select_tick_actors_returns_all_when_not_autonomous() {
+        let content = minimal_test_pack();
+        let state = WorldState::new(&content);
+        let scope = Some(BTreeSet::from(["lounge".to_string(), "kitchen".to_string()]));
+        let selected = select_tick_actors(&content, &state, &scope);
+        assert_eq!(selected.len(), 2);
+    }
+
+    #[test]
+    fn select_tick_actors_turns_takes_one_conversational_when_autonomous() {
+        let mut content = minimal_test_pack();
+        content.settings.autonomous_actor_dialogue = true;
+        let mut state = WorldState::new(&content);
+        state.current_room_id = "lounge".to_string();
+        content.actors[0].room_id = "lounge".to_string();
+        content.actors[1].room_id = "lounge".to_string();
+        let a0 = content.actors[0].id.clone();
+        let a1 = content.actors[1].id.clone();
+
+        let scope = Some(BTreeSet::from(["lounge".to_string()]));
+
+        state.turn_number = 0;
+        let selected = select_tick_actors(&content, &state, &scope);
+        assert_eq!(selected, vec![a0.clone()]);
+
+        state.turn_number = 1;
+        let selected = select_tick_actors(&content, &state, &scope);
+        assert_eq!(selected, vec![a1.clone()]);
+
+        state.set_pending_reply(&a1, &a0, "lounge", 1);
+        let selected = select_tick_actors(&content, &state, &scope);
+        assert_eq!(selected, vec![a0.clone()]);
+    }
+}
+

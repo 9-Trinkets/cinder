@@ -32,10 +32,10 @@ impl CinderRuntime {
             });
         }
         let outcome = match self.run_actor_turns() {
-            Ok((text, phase)) => TurnOutcome {
+            Ok((text, phase, lines)) => TurnOutcome {
                 text,
                 phase,
-                lines: Vec::new(),
+                lines,
             },
             Err(error) => {
                 if let Some(actor_tick_error) = error.downcast_ref::<ActorTickError>() {
@@ -99,7 +99,9 @@ impl CinderRuntime {
         )
     }
 
-    fn run_actor_turns(&self) -> Result<(String, GamePhase), Box<dyn Error>> {
+    fn run_actor_turns(
+        &self,
+    ) -> Result<(String, GamePhase, Vec<crate::engine::narrative::NarrativeLine>), Box<dyn Error>> {
         let mut lines = NarrativeLines::default();
         let tracer = WorkflowTraceContext::new(self.trace_events, &self.trace_dir)?;
         tracer
@@ -120,7 +122,7 @@ impl CinderRuntime {
                 .map_err(|_| "failed to lock runtime state to start npc tick")?;
             if state.phase != GamePhase::Active {
                 let phase = state.phase.clone();
-                return Ok((String::new(), phase));
+                return Ok((String::new(), phase, Vec::new()));
             }
             let tick_start = [TimestampedWorldEvent::now(WorldEvent::TurnStarted {
                 turn_number: state.turn_number + 1,
@@ -143,7 +145,7 @@ impl CinderRuntime {
                 .map_err(|_| "failed to lock runtime state for npc turns")?;
             if state.phase != GamePhase::Active {
                 let phase = state.phase.clone();
-                return Ok((lines.to_text(), phase));
+                return Ok((lines.to_text(), phase, lines.0));
             }
             state.clone()
         };
@@ -195,7 +197,7 @@ impl CinderRuntime {
             .map_err(|_| "failed to lock runtime state to apply npc events")?;
         if state.phase != GamePhase::Active {
             let phase = state.phase.clone();
-            return Ok((lines.to_text(), phase));
+            return Ok((lines.to_text(), phase, lines.0));
         }
         let mut logged_events = tick
             .events
@@ -251,6 +253,6 @@ impl CinderRuntime {
                 }),
             )
             .map_err(std::io::Error::other)?;
-        Ok((lines.to_text(), phase))
+        Ok((lines.to_text(), phase, lines.0))
     }
 }
