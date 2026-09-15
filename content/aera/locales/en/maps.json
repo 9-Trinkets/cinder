@@ -1,0 +1,19 @@
+[
+  {
+    "id": "sharehouse",
+    "label": "Sharehouse",
+    "rooms": [
+      { "room_id": "kitchen", "x": 0, "y": 0 },
+      { "room_id": "dining-room", "x": 3, "y": 0 },
+      { "room_id": "patio", "x": 6, "y": 0 },
+      { "room_id": "entrance", "x": 0, "y": 2.5 },
+      { "room_id": "lounge", "x": 3, "y": 2.5 },
+      { "room_id": "studio", "x": 6, "y": 2.5 },
+      { "room_id": "guys-room", "x": 0, "y": 5 },
+      { "room_id": "girls-room", "x": 6, "y": 5 }
+    ],
+    "reveal_conditions": [
+      { "kind": "always" }
+    ]
+  }
+]

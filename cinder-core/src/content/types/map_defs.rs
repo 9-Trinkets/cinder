@@ -20,6 +20,7 @@ pub struct MapRoomDefinition {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum MapRevealCondition {
+    Always,
     ActorDefeated { actor_id: String },
     StoryVarTruthy { key: String },
 }

@@ -245,6 +245,15 @@ mod shipped_pack_load_tests {
                 loaded.behavior.defaults.hold.is_some(),
                 "{pack}: hold default absent"
             );
+            if pack == "aera" {
+                assert_eq!(loaded.maps.len(), 1);
+                assert_eq!(
+                    loaded
+                        .map_for_room("lounge")
+                        .map(|map| (map.id.as_str(), map.rooms.len())),
+                    Some(("sharehouse", 8))
+                );
+            }
             if pack == "layla" {
                 assert_eq!(loaded.maps.len(), 3);
                 assert_eq!(

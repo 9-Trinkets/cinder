@@ -98,6 +98,7 @@ fn reveal_condition_met(
     condition: &MapRevealCondition,
 ) -> bool {
     match condition {
+        MapRevealCondition::Always => true,
         MapRevealCondition::ActorDefeated { actor_id } => {
             state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id)
         }
@@ -207,5 +208,18 @@ mod tests {
         state.story_vars.set_unchecked("secret_open", "true");
         let revealed = build_minimap(&state, &content, "kitchen").unwrap();
         assert_eq!(revealed.connections.len(), 1);
+    }
+
+    #[test]
+    fn always_reveal_condition_reveals_map_from_start() {
+        let mut content = mapped_pack();
+        content.maps[0].reveal_conditions = vec![MapRevealCondition::Always];
+        let state = WorldState::new(&content);
+
+        let minimap = build_minimap(&state, &content, "lounge").unwrap();
+
+        assert!(minimap.fully_revealed);
+        assert_eq!(minimap.rooms.len(), 2);
+        assert_eq!(minimap.connections.len(), 1);
     }
 }
