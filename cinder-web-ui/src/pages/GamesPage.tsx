@@ -3,10 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth'
 import * as api from '../api'
 import Button from '../components/Button'
-import Card from '../components/Card'
 import Skeleton from '../components/Skeleton'
 import { toErrorMessage } from '../utils/error'
-
 
 export default function GamesPage() {
   const { token, logout } = useAuth()
@@ -32,20 +30,31 @@ export default function GamesPage() {
 
   return (
     <div className="min-h-screen bg-surface font-prose">
-      <header className="flex items-center justify-between px-6 py-4 border-b border-subtle">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-rose animate-pulse" />
-          <h1 className="text-xl font-bold tracking-wide text-rose">Cinder</h1>
+      <header className="border-b border-subtle/60 bg-surface/90">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <span className="w-2 h-2 rounded-full bg-rose shrink-0" aria-hidden="true" />
+            <span className="font-mono text-xs font-semibold tracking-widest uppercase text-rose">
+              Cinder
+            </span>
+          </div>
+          <Button variant="ghost" size="sm" onClick={logout} className="text-xs text-muted hover:text-text cursor-pointer">
+            Log out
+          </Button>
         </div>
-        <Button variant="ghost" onClick={logout}>Log out</Button>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-xl font-bold text-text">Choose Your Adventure</h2>
-            <p className="text-sm text-muted mt-0.5">Select a story pack or resume an active play</p>
-          </div>
+      <main className="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+        <div className="mb-8 pb-6 border-b border-subtle/50">
+          <span className="text-[10px] font-mono uppercase tracking-widest text-muted block mb-1.5">
+            Anthology &bull; Collected Tales
+          </span>
+          <h1 className="text-2xl sm:text-3xl font-bold font-prose text-text tracking-tight">
+            The Library
+          </h1>
+          <p className="text-sm sm:text-base text-muted font-prose mt-1.5 leading-relaxed">
+            Select a chronicle to explore, or resume an open journey.
+          </p>
         </div>
 
         {loading ? (
@@ -53,77 +62,61 @@ export default function GamesPage() {
         ) : error ? (
           <p className="text-love text-sm">{error}</p>
         ) : packs.length === 0 ? (
-          <p className="text-muted">No games available.</p>
+          <p className="text-muted italic">No tales are currently archived in this library.</p>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="divide-y divide-subtle/50">
             {packs.map(pack => {
               const packPlays = plays.filter(p => p.pack_id === pack.id)
               const latestPlay = packPlays[0]
 
               return (
-                <Card
+                <article
                   key={pack.id}
-                  className="p-5 cursor-pointer hover:border-text/30 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 flex flex-col justify-between group"
+                  onClick={() => navigate(`/games/pack/${pack.id}`)}
+                  className="py-6 sm:py-8 group cursor-pointer transition-colors duration-150"
                 >
-                  <button
-                    onClick={() => navigate(`/games/pack/${pack.id}`)}
-                    className="w-full text-left cursor-pointer flex-1 flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <div className="flex items-center gap-2 min-w-0">
-                          <span
-                            className="inline-block w-3 h-3 rounded-full shrink-0 shadow-xs"
-                            style={{ backgroundColor: pack.theme?.pine || '#5a7a64' }}
-                            aria-hidden="true"
-                          />
-                          <h3 className="text-text font-bold text-lg group-hover:text-foam transition-colors truncate">
-                            {pack.title}
-                          </h3>
-                        </div>
-
-                        {packPlays.length > 0 && (
-                          <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-pine/15 text-foam border border-pine/30 flex items-center gap-1.5 shrink-0">
-                            <span className="w-1.5 h-1.5 rounded-full bg-foam animate-pulse" />
-                            {packPlays.length} {packPlays.length === 1 ? 'play' : 'plays'}
-                          </span>
-                        )}
-                      </div>
-
+                  <div className="flex items-start justify-between gap-4 mb-2">
+                    <div className="min-w-0">
                       {pack.tags && pack.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5 my-2.5">
-                          {pack.tags.map(tag => (
-                            <span
-                              key={tag}
-                              className="px-2 py-0.5 rounded text-[11px] font-medium bg-overlay text-muted border border-subtle/80 tracking-tight"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-
-                      {pack.tagline && (
-                        <p className="text-text/75 text-sm leading-relaxed mb-4 italic line-clamp-2">
-                          "{pack.tagline}"
+                        <p className="font-mono text-[10px] uppercase tracking-widest text-muted mb-1.5 truncate">
+                          {pack.tags.join(' \u2022 ')}
                         </p>
                       )}
+                      <h2 className="text-xl sm:text-2xl font-bold font-prose text-text group-hover:text-foam transition-colors tracking-tight truncate">
+                        {pack.title}
+                      </h2>
                     </div>
 
-                    <div className="pt-3 border-t border-subtle/40 flex items-center justify-between text-xs text-muted">
-                      {latestPlay ? (
-                        <span className="truncate max-w-[170px] text-faint">
-                          Day {latestPlay.day_number} &bull; {latestPlay.current_room_name || 'In progress'}
-                        </span>
-                      ) : (
-                        <span className="text-faint">Ready to begin</span>
-                      )}
-                      <span className="font-medium text-foam group-hover:translate-x-1 transition-transform duration-150 inline-flex items-center gap-1">
-                        {latestPlay ? 'Resume' : 'Play'} &rarr;
+                    {packPlays.length > 0 ? (
+                      <span className="shrink-0 text-[10px] font-mono uppercase tracking-widest text-foam bg-pine/15 px-2.5 py-1 rounded border border-pine/30">
+                        {packPlays.length} {packPlays.length === 1 ? 'Chronicle' : 'Chronicles'}
                       </span>
-                    </div>
-                  </button>
-                </Card>
+                    ) : (
+                      <span className="shrink-0 text-[10px] font-mono uppercase tracking-widest text-muted/70 bg-overlay px-2.5 py-1 rounded border border-subtle/60">
+                        Unopened
+                      </span>
+                    )}
+                  </div>
+
+                  {pack.tagline && (
+                    <blockquote className="my-3 pl-3.5 border-l-2 border-subtle/60 text-sm sm:text-base italic text-text/80 leading-relaxed font-prose">
+                      &ldquo;{pack.tagline}&rdquo;
+                    </blockquote>
+                  )}
+
+                  <div className="mt-4 flex items-center justify-between text-xs text-muted">
+                    {latestPlay ? (
+                      <span className="text-faint font-mono text-xs truncate max-w-[280px]">
+                        Last reading: Day {latestPlay.day_number} &bull; {latestPlay.current_room_name || 'In progress'}
+                      </span>
+                    ) : (
+                      <span className="text-muted/60 text-xs">Awaiting first reading</span>
+                    )}
+                    <span className="font-medium text-foam group-hover:translate-x-1 transition-transform duration-150 inline-flex items-center gap-1.5 shrink-0">
+                      {latestPlay ? 'Resume Tale' : 'Read Story'} &rsaquo;
+                    </span>
+                  </div>
+                </article>
               )
             })}
           </div>
