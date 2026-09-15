@@ -27,9 +27,11 @@ pub(super) fn build_action_bar_and_take(
             .actions
             .iter()
             .filter(|a| {
-                a.player_enabled
-                    && a.ui.bar
-                    && action_is_available(content, state, a, &state.current_room_id)
+                // Bar visibility is governed by `ui.bar` + availability, not
+                // `player_enabled`: bar-only affordances (e.g. Aera's follow)
+                // keep `player_enabled: false` so the typed command doesn't
+                // resolve, while their bar button dispatches through a panel.
+                a.ui.bar && action_is_available(content, state, a, &state.current_room_id)
             })
             .map(|a| ActionBarAction {
                 id: a.id.clone(),

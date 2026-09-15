@@ -1,8 +1,43 @@
 use super::*;
 use cinder_core::content::types::{
-    ActionDefinition, ActionItemCreation, ItemDefinition, ItemStorageTarget,
+    ActionAvailability, ActionDefinition, ActionItemCreation, ActionUi, ItemDefinition,
+    ItemStorageTarget,
 };
-use cinder_core::engine::test_fixtures::minimal_test_pack;
+use cinder_core::engine::test_fixtures::{minimal_test_pack, rebuild_test_pack_indexes};
+
+#[test]
+fn bar_shows_actions_that_are_bar_only_even_when_not_typed_command() {
+    let mut content = minimal_test_pack();
+    content.actions = vec![
+        ActionDefinition {
+            id: "look".to_string(),
+            player_enabled: true,
+            ui: ActionUi {
+                bar: true,
+                ..ActionUi::default()
+            },
+            ..ActionDefinition::default()
+        },
+        ActionDefinition {
+            id: "follow".to_string(),
+            player_enabled: false,
+            ui: ActionUi {
+                bar: true,
+                ..ActionUi::default()
+            },
+            available: ActionAvailability::default(),
+            ..ActionDefinition::default()
+        },
+    ];
+    rebuild_test_pack_indexes(&mut content);
+    let state = WorldState::new(&content);
+
+    let (bar, _) = build_action_bar_and_take(&content, &state);
+
+    let ids: Vec<&str> = bar.iter().map(|action| action.id.as_str()).collect();
+    assert!(ids.contains(&"look"));
+    assert!(ids.contains(&"follow"));
+}
 
 #[test]
 fn overflow_label_prefers_the_authored_action_label() {
