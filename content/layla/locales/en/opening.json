@@ -9,7 +9,7 @@
     "r7c7"
   ],
   "start_time_minutes": 60,
-  "intro_text": "You wake on cold stone in the dark. Your name is Layla \u2014 that much you know. Past it, only a wall where your memories should be, though your body remembers what your mind does not: how to grip, how to move, how to take a hit and stay standing.\n\nIn your pocket rests a stub of chalk, faintly warm against the chill. Beside you in the gloom stands a made thing of rough stone \u2014 flat-eyed, silent, watching you like a closed door.\n\nDeeper in the cave, something chitters against the floor. Find a way out. Whatever it takes.",
+  "intro_text": "You surface out of the dark in stages \u2014 a voice already mid-sentence in your ear, waiting on your answer.",
   "opening_sequence_id": "handler-introduction",
   "help_text": "All right, the approved controls are below. If one of them fails, that's probably my console, not you.\n\nCommands:\n{available_commands}\n- Tab switches focus between command and transcript\n- Up/Down recalls command history when command is focused\n- Up/Down scrolls the transcript when transcript is focused\n- PageUp/PageDown/Home/End scroll the transcript faster\n- ? opens the menu",
   "prompt_context": {

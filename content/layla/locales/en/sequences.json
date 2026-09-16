@@ -5,36 +5,36 @@
       "label": "Handler introduction",
       "steps": [
         {
-          "voice": "narrate",
-          "line": "Static scratches behind your ear. A young man's voice, reading too quickly from a page, cuts off \u2014 then comes back careful, almost apologetic."
-        },
-        {
           "voice": "channel",
           "channel_id": "handler-comms",
           "speaker_id": "handler",
           "recipient_id": "player",
-          "line": "Layla? Sorry. That was a prep pass \u2014 not meant for your line."
+          "line": "Layla. Still with us? Good, because the alternative was a painfully long silence, and I've already got one of those booked for later. Sit up. Blink twice. There you go \u2014 see? I've trained you so well. Now tell me what you see."
         },
         {
           "voice": "channel",
           "channel_id": "handler-comms",
           "speaker_id": "player",
           "recipient_id": "handler",
-          "line": "Who are you?"
+          "line": "Who's there? Where am I?"
         },
         {
           "voice": "channel",
           "channel_id": "handler-comms",
           "speaker_id": "handler",
           "recipient_id": "player",
-          "line": "The handler on your channel. I can hear you, but I'm not in the cave with you."
+          "line": "Your handler. The one holding your leash from the surface \u2014 charming irony, I know. You're in a cave, cold, damp, and aggressively stone. Now that we've covered the who and the where, do the slow pan-around I asked for. I'm working with whatever you give me."
+        },
+        {
+          "voice": "narrate",
+          "line": "The dark keeps its own counsel, then gives way in pieces. Cold stone under your palm. The smell of old smoke and damp fur. A shape standing too still beside you \u2014 a made thing of rough stone, flat-eyed, watching like a closed door. Your name is Layla; past that, a wall. In your pocket, faintly warm, a stub of chalk. Somewhere deeper in the cave, something chitters against the floor. Your body remembers what your mind will not: how to grip, how to move, how to take a hit and stay standing. Find a way out. Whatever it takes."
         },
         {
           "voice": "channel",
           "channel_id": "handler-comms",
           "speaker_id": "handler",
           "recipient_id": "player",
-          "line": "And since you're awake \u2014 the chalk: draw a closed ring around one of the marked units. When the ring closes, it follows you. Capture the cave, reach the bottom. The rules are in the floor."
+          "line": "There. See? Furniture, all of it. Right \u2014 the chalk you're holding, the warm one. That's the whole job skill. Draw a closed ring around one of the marked stone units. When the ring closes, it follows you. Capture the cave, reach the bottom. The rules are in the floor, so mind the floor \u2014 it's the only supervisor here who isn't me."
         }
       ],
       "completion_effects": [

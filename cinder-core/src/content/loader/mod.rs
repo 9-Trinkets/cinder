@@ -360,7 +360,15 @@ mod shipped_pack_load_tests {
                 let opening_sequence = loaded.sequence("handler-introduction").unwrap();
                 assert_eq!(opening_sequence.steps.len(), 5);
                 assert!(matches!(
-                    &opening_sequence.steps[2],
+                    &opening_sequence.steps[0],
+                    crate::content::types::ScriptedLine::Channel {
+                        speaker_id,
+                        recipient_id: Some(recipient_id),
+                        ..
+                    } if speaker_id == "handler" && recipient_id == "player"
+                ));
+                assert!(matches!(
+                    &opening_sequence.steps[1],
                     crate::content::types::ScriptedLine::Channel {
                         speaker_id,
                         recipient_id: Some(recipient_id),
@@ -368,7 +376,7 @@ mod shipped_pack_load_tests {
                         ..
                     } if speaker_id == "player"
                         && recipient_id == "handler"
-                        && line == "Who are you?"
+                        && line == "Who's there? Where am I?"
                 ));
                 assert!(matches!(
                     opening_sequence.completion_effects.as_slice(),
