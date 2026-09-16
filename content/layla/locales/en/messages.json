@@ -213,5 +213,13 @@
     "equipment.ambiguous_item": {
         "voice": "handler",
         "text": "I have more than one match for {item}. Be a bit more specific?"
+    },
+    "handler.descend.deep_wood": {
+        "voice": "handler",
+        "text": "Floor two. A glowing wood under a cave — because a quiet, well-lit walkable warp would have been far too considerate. Keep the chalk ring hand ready; I'll keep the sarcasm mild."
+    },
+    "handler.descend.the_board": {
+        "voice": "handler",
+        "text": "Floor three. The actual board. Whatever the elf king left standing, I'd rather not hear it called \"the final boss\" — it's a dish of black glass holding the ring together. Mind the ember near the south store."
     }
 }

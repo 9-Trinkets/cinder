@@ -2,6 +2,7 @@ use crate::content::types::ContentPack;
 use crate::engine::hook_ids;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::neuron::evaluate_symbolic_value;
+use crate::engine::reducer::handlers::push_rendered_message;
 use crate::engine::state::{ActorStance, WorldState};
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Deserializer};
@@ -223,7 +224,7 @@ fn apply_hook_effects(
                     let replacements: Vec<(&str, &str)> =
                         vars.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
                     if let Some(line) = content.render_message(&key, &replacements) {
-                        lines.narration(line);
+                        push_rendered_message(lines, content, line, content.message_voice(&key));
                     }
                 }
             }
@@ -294,9 +295,10 @@ enum WorldHookEffect {
     /// Defeats every living actor carrying `tag` (e.g. an army crumbling when
     /// its commander falls).
     DefeatActorsByTag { tag: String },
-    /// Narration-only plot beat. Renders `key` through the pack's message
-    /// table (with any `vars`) and pushes it as a narration line. Called with
-    /// the narrating entry point so the text reaches the player.
+    /// Plot beat rendered through the pack's message table (with any `vars`),
+    /// honoring the key's voice (e.g. handler-voiced comms when a pack fronts
+    /// feedback through a handler channel). Called with the narrating entry
+    /// point so the text reaches the player.
     NarrateMessage {
         key: String,
         #[serde(default)]

@@ -363,5 +363,46 @@
     "input_overlay": {
       "rules": []
     }
+  },
+  "player.moved": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "d1c1"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.descend.deep_wood"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "oan"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.descend.the_board"
+          }
+        }
+      ]
+    }
   }
 }

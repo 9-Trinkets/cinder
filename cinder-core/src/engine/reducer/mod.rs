@@ -3,7 +3,7 @@ mod beat_advance;
 mod combat;
 mod command_effects;
 mod equipment;
-mod handlers;
+pub(crate) mod handlers;
 mod movement;
 mod observation;
 mod summaries;

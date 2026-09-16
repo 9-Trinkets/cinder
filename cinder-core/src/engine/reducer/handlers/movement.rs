@@ -1,4 +1,6 @@
 use crate::content::types::ContentPack;
+use crate::engine::hook_ids;
+use crate::engine::hooks::apply_narrating_world_hook_effects;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
 use crate::engine::reducer::command_effects::{
@@ -7,6 +9,7 @@ use crate::engine::reducer::command_effects::{
 use crate::engine::reducer::summaries::summarize_actor_names;
 use crate::engine::reducer::tick::advance_house_progress_objectives;
 use crate::engine::state::WorldState;
+use serde_json::json;
 
 use super::feedback::push_message;
 
@@ -66,6 +69,17 @@ pub(crate) fn handle_player_moved(
         &format!("room_entered:{to_room_id}"),
     ));
     sync_followers_to_room(state, content, to_room_id, lines);
+    apply_narrating_world_hook_effects(
+        state,
+        content,
+        hook_ids::PLAYER_MOVED,
+        json!({
+            "from_room_id": from_room_id,
+            "to_room_id": to_room_id,
+        }),
+        lines,
+    )
+    .unwrap_or_else(|error| eprintln!("[cinder] hook warning (player.moved): {error}"));
 }
 
 /// Moves every living follower into the player's room (used when the player
@@ -261,6 +275,72 @@ mod tests {
                 .collect::<Vec<_>>(),
             vec!["Your party follows close behind."]
         );
+    }
+
+    #[test]
+    fn player_moved_hook_renders_handler_voiced_line_on_descent() {
+        use crate::content::types::{
+            ChannelAvailability, ChannelKind, ChannelPrivacy, MessagingChannel, PackMessage,
+            PackMessageVoice,
+        };
+        use serde_json::json;
+
+        let mut content = minimal_test_pack();
+        content.settings.combat.player_actor_id = "player".to_string();
+        content.settings.feedback_channel_id = "handler-comms".to_string();
+        content.presentation.presentation_text.actor_speech =
+            "{actor_name}: {text}".to_string();
+        content.settings.channels = vec![MessagingChannel {
+            id: "handler-comms".to_string(),
+            kind: ChannelKind::Direct,
+            privacy: ChannelPrivacy::Private,
+            availability: ChannelAvailability::Always,
+            participants: vec!["player".to_string(), "blair".to_string()],
+            label: None,
+        }];
+        content.actors.iter_mut().find(|actor| actor.id == "blair").unwrap().name = "Handler".to_string();
+        content.messages.insert(
+            "handler.descend.deep_wood".to_string(),
+            PackMessage::Voiced {
+                voice: PackMessageVoice::Handler,
+                text: "Deeper. Of course it goes deeper.".to_string(),
+            },
+        );
+        content.hooks.insert(
+            "player.moved".to_string(),
+            json!({
+                "rule": "effect_table",
+                "rule_config": {
+                    "cases_path": "rules",
+                    "next_on_match": "complete",
+                    "next_on_default": "complete",
+                    "default_payload_template": { "effects": [] }
+                },
+                "input_overlay": {
+                    "rules": [
+                        {
+                            "conditions": [
+                                { "path": "to_room_id", "operator": "equal", "value": "d1c1" }
+                            ],
+                            "payload_template": {
+                                "kind": "narrate_message",
+                                "key": "handler.descend.deep_wood"
+                            }
+                        }
+                    ]
+                }
+            }),
+        );
+        let mut state = WorldState::new(&content);
+        let mut lines = NarrativeLines::default();
+
+        handle_player_moved(&mut state, &content, "d1c1", &mut lines);
+
+        assert!(lines
+            .0
+            .iter()
+            .any(|line| line.kind == NarrativeLineKind::Channel
+                && line.text.contains("Deeper")));
     }
 
     #[test]
