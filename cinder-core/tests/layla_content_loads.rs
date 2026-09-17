@@ -244,3 +244,118 @@ fn handler_descent_floor_3_tailored_commentary() {
     assert!(outcome.text.contains("You actually toppled the elf king. Try not to break whatever is left down on the board."));
     assert!(!outcome.text.contains("Floor three. The actual board"));
 }
+
+#[test]
+fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    state.current_room_id = "r5c5".to_string();
+    state.add_item_to_storage(
+        "shaman-ring",
+        cinder_core::content::types::ItemStorageTarget::CurrentRoom,
+        "r5c5",
+    );
+
+    let dialogue = std::sync::Arc::new(
+        cinder_core::engine::dialogue::ScriptedDialogueGenerator::new(),
+    );
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack.clone(),
+        state,
+        dialogue.clone(),
+    )
+    .expect("runtime creates");
+
+    // 1. take shaman-ring (exact id)
+    let outcome = runtime.run_turn("take shaman-ring").expect("turn runs");
+    assert!(outcome.text.contains("Picked up shaman's ring."));
+    {
+        let s = runtime.export_state().unwrap();
+        assert!(s.has_item("shaman-ring"));
+        assert!(s.loose_room_items("r5c5").is_empty());
+    }
+
+    // 2. drop shaman-ring (exact id)
+    let outcome = runtime.run_turn("drop shaman-ring").expect("turn runs");
+    assert!(outcome.text.contains("Placed shaman's ring on the ground."));
+    {
+        let s = runtime.export_state().unwrap();
+        assert!(!s.has_item("shaman-ring"));
+        assert_eq!(
+            s.loose_room_items("r5c5"),
+            vec![("shaman-ring".to_string(), 1)]
+        );
+    }
+
+    // 3. take shaman ring (without hyphen)
+    let outcome = runtime.run_turn("take shaman ring").expect("turn runs");
+    assert!(outcome.text.contains("Picked up shaman's ring."));
+    {
+        let s = runtime.export_state().unwrap();
+        assert!(s.has_item("shaman-ring"));
+    }
+
+    // 4. drop shaman ring
+    let outcome = runtime.run_turn("drop shaman ring").expect("turn runs");
+    assert!(outcome.text.contains("Placed shaman's ring on the ground."));
+
+    // 5. take ring (substring/token match)
+    let outcome = runtime.run_turn("take ring").expect("turn runs");
+    assert!(outcome.text.contains("Picked up shaman's ring."));
+    {
+        let s = runtime.export_state().unwrap();
+        assert!(s.has_item("shaman-ring"));
+    }
+
+    // 6. equip ring
+    let outcome = runtime.run_turn("equip ring").expect("turn runs");
+    assert!(outcome.text.contains("Equipped shaman's ring."));
+
+    // 7. drop ring while equipped is rejected
+    let outcome = runtime.run_turn("drop ring").expect("turn runs");
+    assert!(outcome.text.contains("Unequip it before dropping"));
+
+    // 8. take off ring (unequip via take off phrase)
+    let outcome = runtime.run_turn("take off ring").expect("turn runs");
+    assert!(outcome.text.contains("Unequipped shaman's ring."));
+
+    // 9. drop ring now succeeds
+    let outcome = runtime.run_turn("drop ring").expect("turn runs");
+    assert!(outcome.text.contains("Placed shaman's ring on the ground."));
+
+    // 10. take the shaman's ring (with article and apostrophe)
+    let outcome = runtime.run_turn("take the shaman's ring").expect("turn runs");
+    assert!(outcome.text.contains("Picked up shaman's ring."));
+    {
+        let s = runtime.export_state().unwrap();
+        assert!(s.has_item("shaman-ring"));
+        assert!(s.loose_room_items("r5c5").is_empty());
+    }
+
+    // 11. taking an anchored trace mark is denied
+    {
+        let mut s = runtime.export_state().unwrap();
+        s.add_item_to_storage(
+            "drain-sigil",
+            cinder_core::content::types::ItemStorageTarget::CurrentRoom,
+            "r5c5",
+        );
+        // Note: CinderRuntime doesn't have an import_state, so we test take on a fresh runtime with the sigil in room
+        let mut sigil_state = cinder_core::engine::state::WorldState::new(&pack);
+        sigil_state.current_room_id = "r5c5".to_string();
+        sigil_state.add_item_to_storage(
+            "drain-sigil",
+            cinder_core::content::types::ItemStorageTarget::CurrentRoom,
+            "r5c5",
+        );
+        let sigil_runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+            pack.clone(),
+            sigil_state,
+            dialogue.clone(),
+        )
+        .expect("runtime creates");
+        let sigil_outcome = sigil_runtime.run_turn("take drain-sigil").expect("turn runs");
+        assert!(sigil_outcome.text.contains("anchored to the floor"));
+    }
+}
+

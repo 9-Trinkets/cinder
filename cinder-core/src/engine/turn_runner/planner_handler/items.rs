@@ -7,7 +7,7 @@ use crate::engine::turn_runner::types::PlannedTurn;
 /// loose items lying in the current room (matching by id or label) and moves
 /// the first match to the player's inventory. Emits an `ActionRejected` when
 /// nothing in the room matches.
-pub(super) fn plan_take_command(
+pub(crate) fn plan_take_command(
     content: &ContentPack,
     planner_state: &WorldState,
     current_room_id: &str,
@@ -30,49 +30,44 @@ pub(super) fn plan_take_command(
         });
         return false;
     }
-    let target_lower = trimmed.to_ascii_lowercase();
-    let mut matched = None;
-    let mut trace_label = None;
-    for (item_id, _count) in &loose {
-        let Some(item) = content.item(item_id) else {
-            continue;
-        };
-        let named = item.id.eq_ignore_ascii_case(&target_lower)
-            || item.label.eq_ignore_ascii_case(&target_lower);
-        if !named {
-            continue;
-        }
-        if item.is_takeable() {
-            matched = Some(item_id);
-        } else {
-            trace_label = Some(item.label.as_str());
-        }
-        break;
-    }
-    if let Some(label) = trace_label {
+
+    let candidates = matching_items(content, trimmed);
+    let in_room = candidates
+        .into_iter()
+        .filter(|item| loose.iter().any(|(id, _)| id == &item.id))
+        .collect::<Vec<_>>();
+
+    if in_room.is_empty() {
         planned.events.push(WorldEvent::ActionRejected {
             message: content
-                .render_message("item.takedenied", &[("label", label)])
+                .render_message("item.take_not_here", &[])
                 .unwrap_or_default(),
         });
         return false;
     }
-    match matched {
-        Some(item_id) => {
-            planned.events.push(WorldEvent::PlayerTookItem {
-                item_id: item_id.clone(),
-            });
-            true
-        }
-        None => {
-            planned.events.push(WorldEvent::ActionRejected {
-                message: content
-                    .render_message("item.take_not_here", &[])
-                    .unwrap_or_default(),
-            });
-            false
-        }
+
+    let chosen = in_room
+        .iter()
+        .find(|item| {
+            item.id.eq_ignore_ascii_case(trimmed) || item.label.eq_ignore_ascii_case(trimmed)
+        })
+        .copied()
+        .or_else(|| in_room.iter().find(|item| item.is_takeable()).copied())
+        .unwrap_or(in_room[0]);
+
+    if !chosen.is_takeable() {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content
+                .render_message("item.takedenied", &[("label", &chosen.label)])
+                .unwrap_or_default(),
+        });
+        return false;
     }
+
+    planned.events.push(WorldEvent::PlayerTookItem {
+        item_id: chosen.id.clone(),
+    });
+    true
 }
 
 /// Plans a generic `drop <item>` command. Resolves the bare target against the
@@ -80,7 +75,7 @@ pub(super) fn plan_take_command(
 /// the inventory into the current room. Equipped items must be unequipped
 /// first and are never droppable. Emits an `ActionRejected` when the item is
 /// missing or currently equipped.
-pub(super) fn plan_drop_command(
+pub(crate) fn plan_drop_command(
     content: &ContentPack,
     planner_state: &WorldState,
     target: &str,
@@ -102,57 +97,60 @@ pub(super) fn plan_drop_command(
         return false;
     }
 
-    let target_lower = trimmed.to_ascii_lowercase();
-    let item_matches = |(item_id, label): (&str, &str)| {
-        item_id.eq_ignore_ascii_case(&target_lower) || label.eq_ignore_ascii_case(&target_lower)
-    };
-    let target_is_equipped = planner_state.equipment.values().any(|equipped_id| {
-        content
-            .item(equipped_id)
-            .is_some_and(|item| item_matches((equipped_id.as_str(), item.label.as_str())))
+    let candidates = matching_items(content, trimmed);
+    let target_is_equipped = candidates.iter().any(|item| {
+        planner_state
+            .equipment
+            .values()
+            .any(|equipped_id| equipped_id == &item.id)
     });
-    if target_is_equipped {
+
+    let in_inventory = candidates
+        .into_iter()
+        .filter(|item| planner_state.player_inventory.contains_key(&item.id))
+        .collect::<Vec<_>>();
+
+    if in_inventory.is_empty() {
+        if target_is_equipped {
+            planned.events.push(WorldEvent::ActionRejected {
+                message: content
+                    .render_message("item.drop_equipped", &[])
+                    .unwrap_or_default(),
+            });
+            return false;
+        }
         planned.events.push(WorldEvent::ActionRejected {
             message: content
-                .render_message("item.drop_equipped", &[])
+                .render_message("item.drop_not_have", &[])
                 .unwrap_or_default(),
         });
         return false;
     }
-    let matched = planner_state
-        .player_inventory
+
+    let chosen = in_inventory
         .iter()
-        .find_map(|(item_id, _)| {
-            content.item(item_id).and_then(|item| {
-                if !item.is_takeable() {
-                    return None;
-                }
-                if item_matches((item_id.as_str(), item.label.as_str())) {
-                    Some((item_id.clone(), item.label.clone()))
-                } else {
-                    None
-                }
-            })
+        .find(|item| {
+            item.id.eq_ignore_ascii_case(trimmed) || item.label.eq_ignore_ascii_case(trimmed)
+        })
+        .copied()
+        .unwrap_or(in_inventory[0]);
+
+    if !chosen.is_takeable() {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content
+                .render_message("item.takedenied", &[("label", &chosen.label)])
+                .unwrap_or_default(),
         });
-    match matched {
-        Some((item_id, _label)) => {
-            planned
-                .events
-                .push(WorldEvent::PlayerDroppedItem { item_id });
-            true
-        }
-        None => {
-            planned.events.push(WorldEvent::ActionRejected {
-                message: content
-                    .render_message("item.drop_not_have", &[])
-                    .unwrap_or_default(),
-            });
-            false
-        }
+        return false;
     }
+
+    planned.events.push(WorldEvent::PlayerDroppedItem {
+        item_id: chosen.id.clone(),
+    });
+    true
 }
 
-pub(super) fn plan_equip_command(
+pub(crate) fn plan_equip_command(
     content: &ContentPack,
     planner_state: &WorldState,
     target: &str,
@@ -203,7 +201,7 @@ pub(super) fn plan_equip_command(
     false
 }
 
-pub(super) fn plan_unequip_command(
+pub(crate) fn plan_unequip_command(
     content: &ContentPack,
     planner_state: &WorldState,
     target: &str,

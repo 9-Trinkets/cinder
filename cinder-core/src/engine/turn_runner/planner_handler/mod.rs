@@ -3,7 +3,7 @@
 //! planners (items, party orders, unknown-menu fallbacks) live beside this
 //! file.
 
-mod items;
+pub(crate) mod items;
 mod menus;
 mod party;
 #[cfg(test)]

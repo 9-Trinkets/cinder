@@ -1,6 +1,8 @@
 mod items;
 
-use crate::content::types::{ActionDefinition, ActorDefinition, ContentPack, PartyOrderKind};
+use crate::content::types::{
+    ActionDefinition, ActorDefinition, CommandEffect, ContentPack, PartyOrderKind,
+};
 use crate::engine::state::{WorldState, current_cast_member_actor_id, display_actor_name};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -79,6 +81,41 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
 
     if !content.actions.is_empty() {
         if let Some((action, matched_phrase)) = best_player_action_match(content, trimmed, &lower) {
+            if (action.id == "take" || action.has_effect(CommandEffect::PickUpItem))
+                && action.item_id.is_empty()
+            {
+                if let Some(remainder) = matched_phrase.remainder.as_deref() {
+                    if let Some(target) = remainder.strip_prefix("off ") {
+                        return PlayerCommand::Unequip {
+                            target: target.trim().to_string(),
+                        };
+                    }
+                }
+                return PlayerCommand::Take {
+                    target: matched_phrase.remainder.unwrap_or_default(),
+                };
+            }
+            if (action.id == "drop" || action.has_effect(CommandEffect::DropItem))
+                && action.item_id.is_empty()
+            {
+                return PlayerCommand::Drop {
+                    target: matched_phrase.remainder.unwrap_or_default(),
+                };
+            }
+            if (action.id == "equip" || action.has_effect(CommandEffect::EquipItem))
+                && action.item_id.is_empty()
+            {
+                return PlayerCommand::Equip {
+                    target: matched_phrase.remainder.unwrap_or_default(),
+                };
+            }
+            if (action.id == "unequip" || action.has_effect(CommandEffect::UnequipItem))
+                && action.item_id.is_empty()
+            {
+                return PlayerCommand::Unequip {
+                    target: matched_phrase.remainder.unwrap_or_default(),
+                };
+            }
             return PlayerCommand::Authored {
                 command_id: action.id.clone(),
                 input: matched_phrase.remainder,
@@ -87,6 +124,34 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
         // Fallback: match by action ID directly (used by web UI overflow actions)
         for action in &content.actions {
             if action.player_enabled && action.id.to_ascii_lowercase() == lower {
+                if (action.id == "take" || action.has_effect(CommandEffect::PickUpItem))
+                    && action.item_id.is_empty()
+                {
+                    return PlayerCommand::Take {
+                        target: String::new(),
+                    };
+                }
+                if (action.id == "drop" || action.has_effect(CommandEffect::DropItem))
+                    && action.item_id.is_empty()
+                {
+                    return PlayerCommand::Drop {
+                        target: String::new(),
+                    };
+                }
+                if (action.id == "equip" || action.has_effect(CommandEffect::EquipItem))
+                    && action.item_id.is_empty()
+                {
+                    return PlayerCommand::Equip {
+                        target: String::new(),
+                    };
+                }
+                if (action.id == "unequip" || action.has_effect(CommandEffect::UnequipItem))
+                    && action.item_id.is_empty()
+                {
+                    return PlayerCommand::Unequip {
+                        target: String::new(),
+                    };
+                }
                 return PlayerCommand::Authored {
                     command_id: action.id.clone(),
                     input: None,
