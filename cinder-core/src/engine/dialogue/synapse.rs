@@ -431,7 +431,10 @@ Make the options feel distinct from each other and grounded in the recent conver
                     Ok(trimmed)
                 }
             }
-            Err(_) => Ok(request.fallback_text.clone()),
+            Err(e) => {
+                eprintln!("[cinder] generate_handler_descent_commentary failed: {e}");
+                Ok(request.fallback_text.clone())
+            }
         }
     }
 }
