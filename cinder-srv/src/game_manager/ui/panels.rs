@@ -382,6 +382,23 @@ pub(super) fn build_panel_options(
                         selected: false,
                     })
                     .collect(),
+                PanelDataSource::FollowActors => runtime
+                    .panel_options(&PanelDataSource::FollowActors)
+                    .map_err(|error| error.to_string())?
+                    .into_iter()
+                    .map(|opt| PanelOptionData {
+                        id: opt.id.clone(),
+                        title: opt.title.clone(),
+                        subtitle: if opt.menu_text.is_empty() {
+                            None
+                        } else {
+                            Some(opt.menu_text)
+                        },
+                        command: Some(opt.command.clone()),
+                        disabled: false,
+                        selected: false,
+                    })
+                    .collect(),
             };
             panel_options.insert(panel_name.clone(), options);
         }

@@ -11,8 +11,8 @@ mod response;
 mod ui;
 
 pub use self::actions::{
-    continue_play, create_play, follow_actor, run_command, run_realtime_tick,
-    run_realtime_tick_with_status, set_locale, switch_room,
+    continue_play, create_play, run_command, run_realtime_tick,
+    run_realtime_tick_with_status, set_locale,
 };
 pub use self::response::{consume_projector_sequence, CommandResponse};
 pub use self::ui::UiSnapshot;

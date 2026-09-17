@@ -118,6 +118,22 @@ pub(super) fn plan_unknown_command(
         });
         return false;
     }
+    let raw = raw_input.trim();
+    if let Some(exit) = content.resolve_exit_for(
+        &planner_state.current_room_id,
+        raw,
+        |key| crate::engine::turn_policies::story_var_is_truthy(planner_state, key),
+    ) {
+        planned.events.push(WorldEvent::PlayerMoved {
+            from_room_id: planner_state.current_room_id.clone(),
+            to_room_id: exit.room_id.clone(),
+        });
+        planned.events.push(WorldEvent::CurrentRoomObserved {
+            room_id: exit.room_id.clone(),
+            mode: crate::engine::events::ObservationMode::Summary,
+        });
+        return true;
+    }
     planned.events.push(WorldEvent::UnknownInput {
         raw_input: raw_input.to_string(),
     });

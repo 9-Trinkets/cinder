@@ -163,8 +163,8 @@ export interface ActionBarAction {
 export interface PanelConfigData {
   title: string
   prompt: string
-  data_source: 'actors_in_room' | 'exits' | 'features' | 'craftable_items'
-  on_select: 'execute_command' | 'prefill_input' | 'switch_room' | 'follow_actor'
+  data_source: 'actors_in_room' | 'exits' | 'features' | 'craftable_items' | 'loose_room_items' | 'inventory_items' | 'follow_actors'
+  on_select: 'execute_command' | 'prefill_input'
 }
 
 export interface PanelOptionData {
@@ -410,20 +410,6 @@ export interface UiSnapshot {
 
 export function fetchPlayUi(token: string, playId: string) {
   return reqAuth<UiSnapshot>(`/games/${playId}/ui`, token)
-}
-
-export function switchRoom(token: string, playId: string, roomId: string) {
-  return reqAuth<CommandResponse>(`/games/${playId}/room`, token, {
-    method: 'POST',
-    body: JSON.stringify({ room_id: roomId }),
-  })
-}
-
-export function followActor(token: string, playId: string, actorId: string | null) {
-  return reqAuth<CommandResponse>(`/games/${playId}/follow`, token, {
-    method: 'POST',
-    body: JSON.stringify({ actor_id: actorId }),
-  })
 }
 
 export function setLocale(token: string, playId: string, locale: string) {

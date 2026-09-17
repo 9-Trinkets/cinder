@@ -219,12 +219,14 @@ export function usePlay() {
 
   function doSwitchRoom(roomId: string) {
     if (!token || !id) return Promise.resolve()
-    return runPanelCommand((t, i) => api.switchRoom(t, i, roomId))
+    setShowMenu(false)
+    return execCommand(`go ${roomId}`)
   }
 
   function doFollowActor(actorId: string | null) {
     if (!token || !id) return Promise.resolve()
-    return runPanelCommand((t, i) => api.followActor(t, i, actorId))
+    setShowMenu(false)
+    return execCommand(actorId ? `follow ${actorId}` : 'unfollow')
   }
 
   function doChangeLocale(locale: string) {
@@ -260,12 +262,6 @@ export function usePlay() {
         setInput(`@${option.title} `)
         setAtSuggestions(null)
         focusInputToEnd()
-        break
-      case 'switch_room':
-        void doSwitchRoom(option.id)
-        break
-      case 'follow_actor':
-        void doFollowActor(option.id === 'none' ? null : option.id)
         break
     }
   }

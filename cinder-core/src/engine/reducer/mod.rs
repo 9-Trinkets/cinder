@@ -20,8 +20,8 @@ use self::handlers::{
     handle_feature_observed, handle_help_shown, handle_hostile_strike, handle_item_acquired,
     handle_item_consumed, handle_item_observed, handle_menu_choice_made, handle_menu_opened,
     handle_menu_selection_toggled, handle_narrative_line, handle_pair_stat_adjusted,
-    handle_party_order_assigned, handle_player_dropped_item, handle_player_moved,
-    handle_player_took_item, handle_turn_started, handle_unknown_input,
+    handle_party_order_assigned, handle_player_dropped_item, handle_player_followed_actor,
+    handle_player_moved, handle_player_took_item, handle_turn_started, handle_unknown_input,
 };
 
 pub(crate) use self::handlers::handler_attributed_line;
@@ -203,6 +203,9 @@ pub fn apply_events(
             }
             WorldEvent::PlayerMoved { to_room_id, .. } => {
                 handle_player_moved(state, content, to_room_id, &mut lines);
+            }
+            WorldEvent::PlayerFollowedActor { actor_id } => {
+                handle_player_followed_actor(state, content, actor_id.as_deref(), &mut lines);
             }
             WorldEvent::MenuOpened { menu_id } => {
                 handle_menu_opened(state, content, menu_id, &mut lines);

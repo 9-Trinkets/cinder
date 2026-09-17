@@ -95,6 +95,9 @@ pub enum WorldEvent {
         from_room_id: String,
         to_room_id: String,
     },
+    PlayerFollowedActor {
+        actor_id: Option<String>,
+    },
     MenuOpened {
         menu_id: String,
     },

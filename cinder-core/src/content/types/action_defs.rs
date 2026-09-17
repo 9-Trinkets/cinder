@@ -90,6 +90,8 @@ pub enum PanelDataSource {
     /// The player's droppable inventory items (not currently equipped), each
     /// dropped via the generic `drop <item>` command.
     InventoryItems,
+    /// Actors the player can follow or stop following.
+    FollowActors,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
@@ -99,8 +101,6 @@ pub enum PanelSelectAction {
     #[default]
     ExecuteCommand,
     PrefillInput,
-    SwitchRoom,
-    FollowActor,
 }
 
 fn default_true() -> bool {

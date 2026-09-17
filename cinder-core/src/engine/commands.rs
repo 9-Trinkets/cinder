@@ -57,6 +57,9 @@ pub(crate) enum PlayerCommand {
         actor_reference: String,
         order: PartyOrderKind,
     },
+    Follow {
+        target: Option<String>,
+    },
     Help,
     Quit,
     Unknown,
@@ -77,6 +80,18 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
         "help" | "h" | "?" => return PlayerCommand::Help,
         "quit" | "exit" => return PlayerCommand::Quit,
         _ => {}
+    }
+
+    if lower.starts_with("switch-room:") {
+        let room_id = trimmed["switch-room:".len()..].trim();
+        return PlayerCommand::Authored {
+            command_id: "move".to_string(),
+            input: Some(room_id.to_string()),
+        };
+    }
+
+    if let Some(cmd) = parse_follow_command(trimmed) {
+        return cmd;
     }
 
     if !content.actions.is_empty() {
@@ -197,6 +212,37 @@ fn party_order_phrase(trimmed: &str) -> Option<(String, PartyOrderKind)> {
     }
     let actor_reference = actor_reference.trim();
     (!actor_reference.is_empty()).then(|| (actor_reference.to_string(), order))
+}
+
+fn parse_follow_command(trimmed: &str) -> Option<PlayerCommand> {
+    let lower = trimmed.to_ascii_lowercase();
+    if lower == "unfollow" || lower == "stop following" {
+        return Some(PlayerCommand::Follow { target: None });
+    }
+    if let Some(rest) = lower.strip_prefix("follow:") {
+        let rest_trimmed = rest.trim();
+        if rest_trimmed.is_empty() || rest_trimmed == "none" || rest_trimmed == "nobody" {
+            return Some(PlayerCommand::Follow { target: None });
+        }
+        let target = trimmed["follow:".len()..].trim();
+        return Some(PlayerCommand::Follow {
+            target: Some(target.to_string()),
+        });
+    }
+    if let Some(rest) = lower.strip_prefix("follow ") {
+        let rest_trimmed = rest.trim();
+        if rest_trimmed.is_empty() || rest_trimmed == "none" || rest_trimmed == "nobody" {
+            return Some(PlayerCommand::Follow { target: None });
+        }
+        let target = trimmed["follow ".len()..].trim();
+        return Some(PlayerCommand::Follow {
+            target: Some(target.to_string()),
+        });
+    }
+    if lower == "follow" {
+        return Some(PlayerCommand::Follow { target: None });
+    }
+    None
 }
 
 pub(crate) fn player_command_help_text(content: &ContentPack) -> String {

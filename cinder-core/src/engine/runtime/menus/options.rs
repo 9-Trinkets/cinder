@@ -42,6 +42,7 @@ impl CinderRuntime {
                 .collect(),
             PanelDataSource::InventoryItems => self.inventory_panel_options(&state),
             PanelDataSource::CraftableItems => Vec::new(),
+            PanelDataSource::FollowActors => self.follow_actor_options()?,
         };
         Ok(options)
     }
@@ -111,14 +112,17 @@ impl CinderRuntime {
             .filter(move |room| exit_ids.contains(&room.id));
         let mut options = rooms_iter
             .map(|room| {
-                let exit_label = current_room.exits.iter().find(|e| e.room_id == room.id);
-                let title = exit_label
+                let exit_def = current_room.exits.iter().find(|e| e.room_id == room.id);
+                let exit_label = exit_def
+                    .map(|e| e.label.as_str())
+                    .unwrap_or(&room.id);
+                let title = exit_def
                     .and_then(|e| e.menu_label.clone())
                     .unwrap_or_else(|| room.title.clone());
                 PanelOption {
                     id: room.id.clone(),
                     title: title.clone(),
-                    command: room.id.clone(),
+                    command: format!("go {exit_label}"),
                     menu_text: title,
                 }
             })
@@ -271,7 +275,7 @@ impl CinderRuntime {
         let mut options = vec![PanelOption {
             id: "none".to_string(),
             title: nobody_label.clone(),
-            command: "none".to_string(),
+            command: "unfollow".to_string(),
             menu_text: nobody_label,
         }];
         options.extend(
@@ -290,7 +294,7 @@ impl CinderRuntime {
                     PanelOption {
                         id: actor.id.clone(),
                         title: actor_name.clone(),
-                        command: actor.id.clone(),
+                        command: format!("follow {}", actor.id),
                         menu_text: format!("{} ({room_title})", actor_name),
                     }
                 }),

@@ -84,7 +84,10 @@ impl ContentPack {
                     || exit
                         .aliases
                         .iter()
-                        .any(|alias| alias.eq_ignore_ascii_case(&target)))
+                        .any(|alias| alias.eq_ignore_ascii_case(&target))
+                    || self
+                        .room(&exit.room_id)
+                        .is_some_and(|r| r.title.eq_ignore_ascii_case(&target)))
         })
     }
 

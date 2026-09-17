@@ -11,7 +11,7 @@ mod planner_tests;
 
 use self::items::{plan_drop_command, plan_equip_command, plan_take_command, plan_unequip_command};
 use self::menus::{plan_unknown_command, try_resolve_menu_choice};
-use self::party::plan_party_order;
+use self::party::{plan_follow_command, plan_party_order};
 use super::planning::{PlanningContext, plan_authored_command};
 use super::types::{AggregatedTurn, PlannedTurn, RouteEnvelope};
 use crate::content::types::ContentPack;
@@ -75,6 +75,13 @@ pub(super) fn build_planned_turn(
                 &aggregated.world.current_room_id,
                 &actor_reference,
                 order,
+                &mut planned,
+            ),
+            PlayerCommand::Follow { target } => plan_follow_command(
+                content,
+                planner_state,
+                &aggregated.world.current_room_id,
+                target.as_deref(),
                 &mut planned,
             ),
             PlayerCommand::Help => {

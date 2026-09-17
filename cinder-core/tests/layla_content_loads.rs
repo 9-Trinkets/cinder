@@ -315,8 +315,8 @@ fn handler_descent_commentary_via_switch_room_view() {
     )
     .expect("runtime creates");
 
-    // Calling switch_room_view directly (as the web UI does on exit selection)
-    let outcome = runtime.switch_room_view("d1c1").expect("room switches");
+    // Running 'go down' via generic command pipeline
+    let outcome = runtime.run_turn("go down").expect("turn runs");
 
     assert!(outcome.text.contains(summary));
     assert!(outcome.text.contains(intro));
@@ -463,11 +463,50 @@ fn live_test_synapse_handler_descent() {
     ];
     let runtime = cinder_core::engine::runtime::CinderRuntime::from_state(pack, state, false)
         .expect("runtime from state");
-    let outcome = runtime.switch_room_view("d1c1").expect("switch room runs");
+    let outcome = runtime.run_turn("go down").expect("turn runs");
     println!("DESCENT OUTCOME TEXT:\n{}", outcome.text);
     for (i, line) in outcome.lines.iter().enumerate() {
         println!("LINE {i} [{:?}]: {}", line.kind, line.text);
     }
+}
+
+#[test]
+fn follow_and_unfollow_commands_and_panel_options() {
+    let pack = load_named_pack("aera", Some("en")).expect("aera loads and validates");
+    let state = cinder_core::engine::state::WorldState::new(&pack);
+    let runtime = cinder_core::engine::runtime::CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+
+    // Exit options generate executable 'go <label>' commands
+    let exit_options = runtime
+        .panel_options(&cinder_core::content::types::PanelDataSource::Exits)
+        .expect("exit options build");
+    assert!(!exit_options.is_empty());
+    for opt in &exit_options {
+        assert!(opt.command.starts_with("go "), "command should be 'go <label>', got: {}", opt.command);
+    }
+
+    // Follow options generate executable 'unfollow' and 'follow <actor>' commands
+    let follow_options = runtime
+        .panel_options(&cinder_core::content::types::PanelDataSource::FollowActors)
+        .expect("follow options build");
+    assert!(!follow_options.is_empty());
+    assert_eq!(follow_options[0].command, "unfollow");
+    assert!(follow_options.iter().skip(1).all(|opt| opt.command.starts_with("follow ")));
+
+    // Test follow command execution
+    let outcome = runtime.run_turn("follow blair").expect("follow blair runs");
+    assert!(outcome.text.contains("following Blair") || outcome.text.contains("following blair"));
+    assert_eq!(runtime.followed_actor_id().unwrap(), Some("blair".to_string()));
+
+    // Test unfollow command execution
+    let outcome = runtime.run_turn("unfollow").expect("unfollow runs");
+    assert!(outcome.text.contains("stopped following"));
+    assert_eq!(runtime.followed_actor_id().unwrap(), None);
+
+    // Test follow none
+    let outcome = runtime.run_turn("follow none").expect("follow none runs");
+    assert!(outcome.text.contains("stopped following"));
+    assert_eq!(runtime.followed_actor_id().unwrap(), None);
 }
 
 

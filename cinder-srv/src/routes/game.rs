@@ -56,8 +56,6 @@ pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/api/games/{id}/tick", post(run_tick))
         .route("/api/games/{id}/ui", get(play_ui))
         .route("/api/games/{id}/transcript", get(transcript_handler))
-        .route("/api/games/{id}/room", post(switch_room_handler))
-        .route("/api/games/{id}/follow", post(follow_actor_handler))
         .route("/api/games/{id}/locale", post(set_locale_handler))
         .route("/api/games/{id}/continue", post(continue_play_handler))
         .route("/api/games/{id}", delete(delete_play_handler))
@@ -237,41 +235,6 @@ pub async fn play_ui(
         .await
         .map_err(internal)?;
     Ok(Json(snapshot))
-}
-
-#[derive(Deserialize)]
-pub struct RoomSwitchRequest {
-    pub room_id: String,
-}
-
-pub async fn switch_room_handler(
-    State(state): State<Arc<AppState>>,
-    auth: AuthPlayer,
-    Path(play_id): Path<String>,
-    Json(req): Json<RoomSwitchRequest>,
-) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
-    let outcome = game_manager::switch_room(&state.pool, &play_id, &auth.id, &req.room_id)
-        .await
-        .map_err(internal)?;
-    Ok(Json(outcome))
-}
-
-#[derive(Deserialize)]
-pub struct FollowRequest {
-    pub actor_id: Option<String>,
-}
-
-pub async fn follow_actor_handler(
-    State(state): State<Arc<AppState>>,
-    auth: AuthPlayer,
-    Path(play_id): Path<String>,
-    Json(req): Json<FollowRequest>,
-) -> Result<Json<game_manager::CommandResponse>, (StatusCode, String)> {
-    let outcome =
-        game_manager::follow_actor(&state.pool, &play_id, &auth.id, req.actor_id.as_deref())
-            .await
-            .map_err(internal)?;
-    Ok(Json(outcome))
 }
 
 #[derive(Deserialize)]

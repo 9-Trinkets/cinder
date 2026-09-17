@@ -284,7 +284,7 @@ fn action_has_available_target(
                 unlocked && !already_traced
             })
         }),
-        PanelDataSource::Exits | PanelDataSource::Features => true,
+        PanelDataSource::Exits | PanelDataSource::Features | PanelDataSource::FollowActors => true,
         PanelDataSource::LooseRoomItems => state.loose_room_items(room_id).iter().any(|(item_id, _)| {
             content.item(item_id).is_none_or(|item| item.is_takeable())
         }),

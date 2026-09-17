@@ -76,7 +76,7 @@
           "title": "Where To?",
           "prompt": "Choose a direction",
           "data_source": "exits",
-          "on_select": "switch_room"
+          "on_select": "execute_command"
         }
       },
       "npc": {
@@ -1018,10 +1018,19 @@
     },
     {
       "id": "follow",
+      "command": "FOLLOW",
       "label": "Follow",
       "group": "social",
-      "player_enabled": false,
-      "target_mode": "none",
+      "phrases": [
+        "follow",
+        "unfollow",
+        "stop following"
+      ],
+      "player_enabled": true,
+      "target_mode": "actor",
+      "outcome_mode": "event",
+      "effects": [],
+      "available": {},
       "ui": {
         "bar": true,
         "overflow": false,
@@ -1031,8 +1040,17 @@
         "panel_config": {
           "title": "Who to Follow?",
           "prompt": "Select someone to follow",
-          "data_source": "actors_in_room",
-          "on_select": "follow_actor"
+          "data_source": "follow_actors",
+          "on_select": "execute_command"
+        }
+      },
+      "player_command": {
+        "target_mode": "actor_reference",
+        "usage": "follow <actor> / unfollow",
+        "example": "follow blair",
+        "advances_time": false,
+        "input": {
+          "required": false
         }
       }
     }

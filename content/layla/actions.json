@@ -72,7 +72,7 @@
           "title": "Where To?",
           "prompt": "Choose a direction",
           "data_source": "exits",
-          "on_select": "switch_room"
+          "on_select": "execute_command"
         },
         "group": "movement",
         "sort_order": 1
