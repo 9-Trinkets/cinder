@@ -367,7 +367,7 @@ impl CinderRoleRunner {
     }
 }
 
-fn maybe_tailor_handler_descent_commentary(
+pub(crate) fn maybe_tailor_handler_descent_commentary(
     content: &ContentPack,
     dialogue: &dyn DialogueGenerator,
     state: &WorldState,

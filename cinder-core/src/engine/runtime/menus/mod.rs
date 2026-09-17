@@ -8,6 +8,8 @@ use crate::engine::reducer::apply_events;
 use crate::engine::state::{TurnOutcome, display_actor_name};
 use std::error::Error;
 
+use crate::engine::turn_runner::maybe_tailor_handler_descent_commentary;
+
 impl CinderRuntime {
     pub fn switch_room_view(&self, room_id: &str) -> Result<TurnOutcome, Box<dyn Error>> {
         let mut state = self
@@ -46,9 +48,21 @@ impl CinderRuntime {
                 mode: ObservationMode::Summary,
             },
         ));
-        let reduced = apply_events(&mut state, self.content.as_ref(), &events);
+        let mut reduced = apply_events(&mut state, self.content.as_ref(), &events);
         refresh_conversation_summaries(self.content.as_ref(), self.dialogue.as_ref(), &mut state)
             .map_err(std::io::Error::other)?;
+        maybe_tailor_handler_descent_commentary(
+            self.content.as_ref(),
+            self.dialogue.as_ref(),
+            &state,
+            &events,
+            &mut reduced.lines,
+        );
+        for line in &reduced.lines.0 {
+            if !line.text.trim().is_empty() {
+                state.transcript.push(line.text.clone());
+            }
+        }
         Ok(TurnOutcome {
             text: reduced.lines.to_text(),
             phase: reduced.phase,

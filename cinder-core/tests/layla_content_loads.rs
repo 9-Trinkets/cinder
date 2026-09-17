@@ -292,6 +292,50 @@ fn handler_descent_commentary_two_messages_summary_and_introduction() {
 }
 
 #[test]
+fn handler_descent_commentary_via_switch_room_view() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    state.current_room_id = "r5c5".to_string();
+    state.story_vars.set_unchecked("shaman_defeated", "true");
+
+    let summary = "Floor one cleared. Nice work.";
+    let intro = "Floor two ahead. Watch the mushrooms.";
+
+    let dialogue = std::sync::Arc::new(
+        cinder_core::engine::dialogue::ScriptedDialogueGenerator::new()
+            .with_descent_commentary_lines(
+                "d1c1",
+                vec![summary.to_string(), intro.to_string()],
+            ),
+    );
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack,
+        state,
+        dialogue,
+    )
+    .expect("runtime creates");
+
+    // Calling switch_room_view directly (as the web UI does on exit selection)
+    let outcome = runtime.switch_room_view("d1c1").expect("room switches");
+
+    assert!(outcome.text.contains(summary));
+    assert!(outcome.text.contains(intro));
+    assert!(!outcome.text.contains("Floor two. A glowing wood under a cave"));
+
+    let channel_lines: Vec<_> = outcome
+        .lines
+        .iter()
+        .filter(|l| l.kind == cinder_core::engine::narrative::NarrativeLineKind::Channel)
+        .collect();
+
+    assert!(channel_lines.len() >= 2);
+    assert!(channel_lines[0].text.starts_with("Handler:"));
+    assert!(channel_lines[0].text.contains(summary));
+    assert!(channel_lines[1].text.starts_with("Handler:"));
+    assert!(channel_lines[1].text.contains(intro));
+}
+
+#[test]
 fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
@@ -419,7 +463,7 @@ fn live_test_synapse_handler_descent() {
     ];
     let runtime = cinder_core::engine::runtime::CinderRuntime::from_state(pack, state, false)
         .expect("runtime from state");
-    let outcome = runtime.run_turn("go down").expect("turn runs");
+    let outcome = runtime.switch_room_view("d1c1").expect("switch room runs");
     println!("DESCENT OUTCOME TEXT:\n{}", outcome.text);
     for (i, line) in outcome.lines.iter().enumerate() {
         println!("LINE {i} [{:?}]: {}", line.kind, line.text);
