@@ -175,7 +175,9 @@
       ]
     },
     "attackable": true,
-    "attack_interval_minutes": 3,
+    "attack_interval_minutes": 1,
+    "initial_hostile": true,
+    "xp_drop": 25,
     "drops": {
       "shaman-ring": {
         "count": 1,
