@@ -118,7 +118,7 @@ pub trait DialogueGenerator: Send + Sync {
     fn generate_handler_descent_commentary(
         &self,
         request: &HandlerDescentCommentaryRequest,
-    ) -> Result<String, String> {
-        Ok(request.fallback_text.clone())
+    ) -> Result<Vec<String>, String> {
+        Ok(vec![request.fallback_text.clone()])
     }
 }

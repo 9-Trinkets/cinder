@@ -246,6 +246,52 @@ fn handler_descent_floor_3_tailored_commentary() {
 }
 
 #[test]
+fn handler_descent_commentary_two_messages_summary_and_introduction() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    state.current_room_id = "r5c5".to_string();
+    state.story_vars.set_unchecked("shaman_defeated", "true");
+
+    let summary = "Floor one cleared. You dismantled that shaman faster than HR revokes badge access after two missed standups.";
+    let intro = "Welcome to the luminescent moss district. Try not to inhale the spores; hazard pay hasn't cleared finance yet.";
+
+    let dialogue = std::sync::Arc::new(
+        cinder_core::engine::dialogue::ScriptedDialogueGenerator::new()
+            .with_descent_commentary_lines(
+                "d1c1",
+                vec![summary.to_string(), intro.to_string()],
+            ),
+    );
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack,
+        state,
+        dialogue,
+    )
+    .expect("runtime creates");
+
+    let outcome = runtime.run_turn("go down").expect("turn runs");
+
+    // Both messages appear in the overall text
+    assert!(outcome.text.contains(summary));
+    assert!(outcome.text.contains(intro));
+    assert!(!outcome.text.contains("Floor two. A glowing wood under a cave"));
+
+    // Both messages are emitted as distinct Channel lines
+    let channel_lines: Vec<_> = outcome
+        .lines
+        .iter()
+        .filter(|l| l.kind == cinder_core::engine::narrative::NarrativeLineKind::Channel)
+        .collect();
+
+    // At least the first two channel lines are the descent commentary (summary and intro)
+    assert!(channel_lines.len() >= 2);
+    assert!(channel_lines[0].text.starts_with("Handler:"));
+    assert!(channel_lines[0].text.contains(summary));
+    assert!(channel_lines[1].text.starts_with("Handler:"));
+    assert!(channel_lines[1].text.contains(intro));
+}
+
+#[test]
 fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = cinder_core::engine::state::WorldState::new(&pack);

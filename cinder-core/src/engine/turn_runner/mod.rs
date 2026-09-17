@@ -401,7 +401,7 @@ fn maybe_tailor_handler_descent_commentary(
 
     let attributed_fallback = handler_attributed_line(content, &fallback_raw);
 
-    let Some(matching_line) = lines.0.iter_mut().find(|line| {
+    let Some(matching_index) = lines.0.iter().position(|line| {
         line.kind == NarrativeLineKind::Channel
             && (line.text == fallback_raw
                 || attributed_fallback.as_deref() == Some(line.text.as_str()))
@@ -435,12 +435,27 @@ fn maybe_tailor_handler_descent_commentary(
         fallback_text: fallback_raw.clone(),
     };
 
-    if let Ok(commentary) = dialogue.generate_handler_descent_commentary(&request) {
-        let trimmed = commentary.trim().trim_matches('"').trim();
-        if !trimmed.is_empty() && trimmed != fallback_raw.trim() {
-            let attributed = handler_attributed_line(content, trimmed)
-                .unwrap_or_else(|| trimmed.to_string());
-            matching_line.text = attributed;
+    if let Ok(commentary_lines) = dialogue.generate_handler_descent_commentary(&request) {
+        let valid_lines: Vec<String> = commentary_lines
+            .into_iter()
+            .map(|l| l.trim().trim_matches('"').trim().to_string())
+            .filter(|l| !l.is_empty())
+            .collect();
+        if !valid_lines.is_empty()
+            && !(valid_lines.len() == 1 && valid_lines[0] == fallback_raw.trim())
+        {
+            let attributed_first = handler_attributed_line(content, &valid_lines[0])
+                .unwrap_or_else(|| valid_lines[0].clone());
+            lines.0[matching_index].text = attributed_first;
+
+            for (offset, extra_line) in valid_lines.iter().skip(1).enumerate() {
+                let attributed_extra = handler_attributed_line(content, extra_line)
+                    .unwrap_or_else(|| extra_line.clone());
+                lines.0.insert(
+                    matching_index + 1 + offset,
+                    crate::engine::narrative::NarrativeLine::channel(attributed_extra),
+                );
+            }
         }
     }
 }

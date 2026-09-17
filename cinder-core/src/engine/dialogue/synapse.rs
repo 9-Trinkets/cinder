@@ -414,28 +414,75 @@ Make the options feel distinct from each other and grounded in the recent conver
     fn generate_handler_descent_commentary(
         &self,
         request: &HandlerDescentCommentaryRequest,
-    ) -> Result<String, String> {
+    ) -> Result<Vec<String>, String> {
         let prompt = build_handler_descent_commentary_prompt(request);
         let system_prompt = handler_descent_commentary_system_prompt(request).to_string();
         match self.run_text_role_with_timeout(
             HANDLER_DESCENT_COMMENTARY_ROLE,
             prompt,
             system_prompt,
-            Duration::from_secs(5),
+            Duration::from_secs(8),
         ) {
-            Ok(line) => {
-                let trimmed = line.trim().trim_matches('"').trim().to_string();
-                if trimmed.is_empty() {
-                    Ok(request.fallback_text.clone())
+            Ok(response) => {
+                let messages = parse_descent_commentary_response(&response);
+                if messages.is_empty() {
+                    Ok(vec![request.fallback_text.clone()])
                 } else {
-                    Ok(trimmed)
+                    Ok(messages)
                 }
             }
             Err(e) => {
                 eprintln!("[cinder] generate_handler_descent_commentary failed: {e}");
-                Ok(request.fallback_text.clone())
+                Ok(vec![request.fallback_text.clone()])
             }
         }
+    }
+}
+
+#[derive(serde::Deserialize)]
+struct DescentCommentaryJson {
+    #[serde(default)]
+    summary: String,
+    #[serde(default)]
+    introduction: String,
+}
+
+fn parse_descent_commentary_response(raw: &str) -> Vec<String> {
+    let trimmed = raw.trim();
+    let json_str = if let Some(stripped) = trimmed.strip_prefix("```json") {
+        stripped.strip_suffix("```").unwrap_or(stripped).trim()
+    } else if let Some(stripped) = trimmed.strip_prefix("```") {
+        stripped.strip_suffix("```").unwrap_or(stripped).trim()
+    } else {
+        trimmed
+    };
+
+    if let Ok(parsed) = serde_json::from_str::<DescentCommentaryJson>(json_str) {
+        let mut messages = Vec::new();
+        let summary = parsed.summary.trim().trim_matches('"').trim();
+        if !summary.is_empty() {
+            messages.push(summary.to_string());
+        }
+        let intro = parsed.introduction.trim().trim_matches('"').trim();
+        if !intro.is_empty() {
+            messages.push(intro.to_string());
+        }
+        if !messages.is_empty() {
+            return messages;
+        }
+    }
+
+    let parts: Vec<String> = trimmed
+        .split("\n\n")
+        .map(|p| p.trim().trim_matches('"').trim().to_string())
+        .filter(|p| !p.is_empty())
+        .collect();
+    if !parts.is_empty() {
+        parts
+    } else if !trimmed.is_empty() {
+        vec![trimmed.to_string()]
+    } else {
+        Vec::new()
     }
 }
 
@@ -481,3 +528,53 @@ fn format_role_execution_error(error: Box<RoleExecutionError>) -> String {
         error.message, rejection_lines
     )
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parse_descent_commentary_valid_json() {
+        let raw = r#"{
+            "summary": "You barely survived the goblin shamans and took their ring.",
+            "introduction": "Welcome to floor two. Watch your step around the glowing mushrooms."
+        }"#;
+        let messages = parse_descent_commentary_response(raw);
+        assert_eq!(messages.len(), 2);
+        assert_eq!(
+            messages[0],
+            "You barely survived the goblin shamans and took their ring."
+        );
+        assert_eq!(
+            messages[1],
+            "Welcome to floor two. Watch your step around the glowing mushrooms."
+        );
+    }
+
+    #[test]
+    fn parse_descent_commentary_json_in_markdown_block() {
+        let raw = "```json\n{\n  \"summary\": \"Floor one cleared.\",\n  \"introduction\": \"Floor two begins.\"\n}\n```";
+        let messages = parse_descent_commentary_response(raw);
+        assert_eq!(messages.len(), 2);
+        assert_eq!(messages[0], "Floor one cleared.");
+        assert_eq!(messages[1], "Floor two begins.");
+    }
+
+    #[test]
+    fn parse_descent_commentary_plaintext_split_fallback() {
+        let raw = "You survived the mines somehow.\n\nNow step into the swamp.";
+        let messages = parse_descent_commentary_response(raw);
+        assert_eq!(messages.len(), 2);
+        assert_eq!(messages[0], "You survived the mines somehow.");
+        assert_eq!(messages[1], "Now step into the swamp.");
+    }
+
+    #[test]
+    fn parse_descent_commentary_single_line_fallback() {
+        let raw = "Just a single snarky sentence.";
+        let messages = parse_descent_commentary_response(raw);
+        assert_eq!(messages.len(), 1);
+        assert_eq!(messages[0], "Just a single snarky sentence.");
+    }
+}
+
