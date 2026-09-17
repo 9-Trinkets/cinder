@@ -136,4 +136,6 @@ pub struct SystemTextDefinition {
     pub dynamic_menu_system_prompt: String,
     #[serde(default)]
     pub hostility_planner_system_prompt: String,
+    #[serde(default)]
+    pub handler_descent_commentary_system_prompt: String,
 }

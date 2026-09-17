@@ -144,6 +144,28 @@ impl CinderRuntime {
         )
     }
 
+    pub fn with_dialogue_generator(
+        content: ContentPack,
+        state: WorldState,
+        dialogue: Arc<dyn DialogueGenerator>,
+    ) -> Result<Self, Box<dyn Error>> {
+        let workflow_id = if content.settings.workflow_id.is_empty() {
+            "cinder_turn".to_string()
+        } else {
+            content.settings.workflow_id.clone()
+        };
+        let workflow = load_workflow(&workflow_path_for_id(&workflow_id))?;
+        Self::new_with_dialogue_generator_and_workflows(
+            content,
+            state,
+            false,
+            dialogue,
+            workflow,
+            load_workflow(&cinder_npc_tick_workflow_path())?,
+            crate::project_dir().join(".cinder-state"),
+        )
+    }
+
     pub fn export_state(&self) -> Result<WorldState, Box<dyn Error>> {
         self.state
             .lock()

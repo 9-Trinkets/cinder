@@ -48,3 +48,199 @@ fn elf_chess_mobs_declarations_resolve() {
     assert!(matches!(king.drops["drain-scroll"], DropSpec::Always(1)));
     assert!(matches!(king.drops["leaf-cloak"], DropSpec::Chance(_)));
 }
+
+#[test]
+fn goblin_shaman_is_initially_hostile_and_attacks_on_sight() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let shaman = pack.actor("goblin-shaman").expect("goblin-shaman exists");
+    assert!(shaman.initial_hostile);
+    assert!(shaman.attackable);
+    assert_eq!(shaman.attack_interval_minutes, Some(1));
+
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    assert_eq!(
+        state.relationship("goblin-shaman").stance,
+        cinder_core::engine::state::ActorStance::Hostile
+    );
+
+    // Layla in r5c5 sees hostile shaman
+    state.current_room_id = "r5c5".to_string();
+    assert_eq!(state.stance("goblin-shaman"), cinder_core::engine::state::ActorStance::Hostile);
+}
+
+#[test]
+fn goblin_shaman_defeat_narrates_world_hint_lines() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    assert!(pack.messages.contains_key("shaman.defeat"));
+    let defeat_msg = pack.render_message("shaman.defeat", &[]).unwrap();
+    assert!(defeat_msg.contains("dead do not stay here"));
+    assert!(defeat_msg.contains("relief") || defeat_msg.contains("void") || defeat_msg.contains("Cold at last"));
+
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    state.current_room_id = "r5c5".to_string();
+
+    // Reduce shaman hp to 1, then Layla attacks to defeat it
+    state
+        .actor_stats
+        .entry("goblin-shaman".to_string())
+        .or_default()
+        .insert("hp".to_string(), 1);
+
+    let output = cinder_core::engine::reducer::apply_events(
+        &mut state,
+        &pack,
+        &[cinder_core::engine::events::TimestampedWorldEvent::now(
+            cinder_core::engine::events::WorldEvent::ActorCommandUsed {
+                actor_id: "player".to_string(),
+                actor_name: "Layla".to_string(),
+                room_id: "r5c5".to_string(),
+                command_id: "attack".to_string(),
+                target_room_id: None,
+                target_actor_id: Some("goblin-shaman".to_string()),
+                target_actor_name: Some("goblin shaman".to_string()),
+                context_label: None,
+                feature_id: None,
+                consumable_id: None,
+                freeform_text: None,
+            },
+        )],
+    );
+
+    assert_eq!(state.story_vars.get("shaman_defeated"), Some("true"));
+    // Verify shaman-ring dropped into room
+    assert!(state.loose_room_items("r5c5").iter().any(|(item, _)| item == "shaman-ring"));
+    // Verify narration lines include shaman.defeat, shaman.reveal, and shaman.memory
+    let texts: Vec<&str> = output.lines.0.iter().map(|line| line.text.as_str()).collect();
+    assert!(texts.iter().any(|t| t.contains("dead do not stay here")));
+    assert!(texts.iter().any(|t| t.contains("rough stair descends")));
+    assert!(texts.iter().any(|t| t.contains("Go board")));
+}
+
+#[test]
+fn elf_king_defeat_narrates_dungeon_master_myth() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let king_msg = pack.render_message("king.defeated", &[]).unwrap();
+
+    // Must refer to the master as "the demon king", "the ruler of the night", "the dark lord", or "the night"
+    assert!(king_msg.contains("the demon king"));
+    assert!(king_msg.contains("the ruler of the night"));
+    assert!(king_msg.contains("the dark lord"));
+    assert!(king_msg.contains("the night"));
+    // Never refer to the master by other names like "dungeon master"
+    assert!(!king_msg.to_lowercase().contains("dungeon master"));
+
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    state.current_room_id = "d8c5".to_string();
+    state
+        .actor_stats
+        .entry("elf-king-5".to_string())
+        .or_default()
+        .insert("hp".to_string(), 1);
+
+    let output = cinder_core::engine::reducer::apply_events(
+        &mut state,
+        &pack,
+        &[cinder_core::engine::events::TimestampedWorldEvent::now(
+            cinder_core::engine::events::WorldEvent::ActorCommandUsed {
+                actor_id: "player".to_string(),
+                actor_name: "Layla".to_string(),
+                room_id: "d8c5".to_string(),
+                command_id: "attack".to_string(),
+                target_room_id: None,
+                target_actor_id: Some("elf-king-5".to_string()),
+                target_actor_name: Some("elf king".to_string()),
+                context_label: None,
+                feature_id: None,
+                consumable_id: None,
+                freeform_text: None,
+            },
+        )],
+    );
+
+    assert_eq!(state.story_vars.get("elf_king_defeated"), Some("true"));
+    // Drops drain-scroll into room
+    assert!(state.loose_room_items("d8c5").iter().any(|(item, _)| item == "drain-scroll"));
+    // Other elves stand down to neutral
+    assert_eq!(
+        state.relationship("elf-pawn-1").stance,
+        cinder_core::engine::state::ActorStance::Neutral
+    );
+    // King defeat narrative present
+    let texts: Vec<&str> = output.lines.0.iter().map(|line| line.text.as_str()).collect();
+    assert!(texts.iter().any(|t| t.contains("demon king") && t.contains("ruler of the night")));
+}
+
+#[test]
+fn handler_descent_commentary_falls_back_when_no_llm() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    state.current_room_id = "r5c5".to_string();
+    state.story_vars.set_unchecked("shaman_defeated", "true");
+
+    let dialogue = std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack,
+        state,
+        dialogue,
+    )
+    .expect("runtime creates");
+
+    let outcome = runtime.run_turn("go down").expect("turn runs");
+    assert!(outcome.text.contains("Floor two. A glowing wood under a cave"));
+}
+
+#[test]
+fn handler_descent_commentary_tailored_when_llm_responds() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    state.current_room_id = "r5c5".to_string();
+    state.story_vars.set_unchecked("shaman_defeated", "true");
+
+    let dialogue = std::sync::Arc::new(
+        cinder_core::engine::dialogue::ScriptedDialogueGenerator::new().with_descent_commentary(
+            "d1c1",
+            "Well, you survived the mines without getting turned into soup. Welcome to the damp mushroom patch.",
+        ),
+    );
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack,
+        state,
+        dialogue,
+    )
+    .expect("runtime creates");
+    runtime
+        .set_transcript(vec![
+            "Layla attacked the goblin shaman.".to_string(),
+            "The shaman fell into the dust.".to_string(),
+        ])
+        .expect("set transcript");
+
+    let outcome = runtime.run_turn("go down").expect("turn runs");
+    assert!(outcome.text.contains("Well, you survived the mines without getting turned into soup"));
+    assert!(!outcome.text.contains("Floor two. A glowing wood under a cave"));
+}
+
+#[test]
+fn handler_descent_floor_3_tailored_commentary() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    state.current_room_id = "d8c5".to_string();
+    state.story_vars.set_unchecked("elf_king_defeated", "true");
+
+    let dialogue = std::sync::Arc::new(
+        cinder_core::engine::dialogue::ScriptedDialogueGenerator::new().with_descent_commentary(
+            "oan",
+            "You actually toppled the elf king. Try not to break whatever is left down on the board.",
+        ),
+    );
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack,
+        state,
+        dialogue,
+    )
+    .expect("runtime creates");
+
+    let outcome = runtime.run_turn("go down").expect("turn runs");
+    assert!(outcome.text.contains("You actually toppled the elf king. Try not to break whatever is left down on the board."));
+    assert!(!outcome.text.contains("Floor three. The actual board"));
+}

@@ -6,7 +6,7 @@ use super::{
     ActorTurnActionRequest, ActorTurnAffordanceOption, ActorTurnAffordanceTarget,
     ActorTurnCommandInvocation, ActorTurnSpeakCandidate, ChapterRelationshipSummaryRequest,
     ChapterScriptSummaryRequest, ConversationMemorySummaryRequest, DialogueRequest,
-    DirectSpeechIntentRequest, MenuIntentRequest,
+    DirectSpeechIntentRequest, HandlerDescentCommentaryRequest, MenuIntentRequest,
 };
 use crate::content::types::{ActionDefinition, CommandInputMode, SystemTextDefinition};
 
@@ -374,6 +374,23 @@ pub(crate) fn direct_speech_intent_system_prompt(request: &DirectSpeechIntentReq
         .system_text
         .direct_speech_intent_system_prompt
         .as_str()
+}
+
+pub(crate) fn handler_descent_commentary_system_prompt(
+    request: &HandlerDescentCommentaryRequest,
+) -> &str {
+    if !request
+        .system_text
+        .handler_descent_commentary_system_prompt
+        .is_empty()
+    {
+        request
+            .system_text
+            .handler_descent_commentary_system_prompt
+            .as_str()
+    } else {
+        "You are the Handler on the remote comms channel watching Layla descend to the next dungeon floor. Speak as a dry, workplace-weary coworker who needles Layla with deadpan irony and dark humor. Mock the situation, the caves, or the company bureaucracy, never her competence. Give one apt jab about what she just went through or what she's stepping into, then stop. Keep it strictly to 1 or 2 short sentences. Do not use quotation marks, speaker labels, or stats/numbers."
+    }
 }
 
 pub(crate) fn sanitize_statement(statement: &str) -> String {

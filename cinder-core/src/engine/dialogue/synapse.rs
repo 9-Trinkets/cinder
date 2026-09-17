@@ -12,11 +12,12 @@ use super::parsing::{
 };
 use super::prompts::{
     actor_turn_decider_system_prompt, build_chapter_relationship_summary_prompt,
-    build_chapter_script_summary_prompt, build_stage_assignment_prompt,
-    chapter_relationship_summarizer_system_prompt, chapter_script_summarizer_system_prompt,
-    conversation_memory_summarizer_system_prompt, dialogue_system_prompt,
-    direct_speech_intent_system_prompt, hostility_planner_system_prompt, menu_intent_system_prompt,
-    sanitize_statement,
+    build_chapter_script_summary_prompt, build_handler_descent_commentary_prompt,
+    build_stage_assignment_prompt, chapter_relationship_summarizer_system_prompt,
+    chapter_script_summarizer_system_prompt, conversation_memory_summarizer_system_prompt,
+    dialogue_system_prompt, direct_speech_intent_system_prompt,
+    handler_descent_commentary_system_prompt, hostility_planner_system_prompt,
+    menu_intent_system_prompt, sanitize_statement,
 };
 use super::types::*;
 use super::DialogueGenerator;
@@ -31,6 +32,7 @@ const CHAPTER_RELATIONSHIP_SUMMARIZER_ROLE: &str = "chapter_relationship_summari
 const DIRECT_SPEECH_ATTRACTION_INTENT_ROLE: &str = "direct_speech_intent";
 const PERSPECTIVE_REVIEW_ROLE: &str = "perspective_review";
 const STAGE_ASSIGNMENT_ROLE: &str = "stage_assignment";
+const HANDLER_DESCENT_COMMENTARY_ROLE: &str = "handler_descent_commentary";
 const CONVERSATION_MEMORY_SUMMARY_TIMEOUT: Duration = Duration::from_secs(10);
 const VALIDATED_ROLE_MAX_ATTEMPTS: usize = 4;
 
@@ -407,6 +409,30 @@ Make the options feel distinct from each other and grounded in the recent conver
         )?;
         serde_json::from_str::<Vec<DynamicMenuOptionOutput>>(&response)
             .map_err(|e| format!("failed to parse dynamic menu options: {e}"))
+    }
+
+    fn generate_handler_descent_commentary(
+        &self,
+        request: &HandlerDescentCommentaryRequest,
+    ) -> Result<String, String> {
+        let prompt = build_handler_descent_commentary_prompt(request);
+        let system_prompt = handler_descent_commentary_system_prompt(request).to_string();
+        match self.run_text_role_with_timeout(
+            HANDLER_DESCENT_COMMENTARY_ROLE,
+            prompt,
+            system_prompt,
+            Duration::from_secs(5),
+        ) {
+            Ok(line) => {
+                let trimmed = line.trim().trim_matches('"').trim().to_string();
+                if trimmed.is_empty() {
+                    Ok(request.fallback_text.clone())
+                } else {
+                    Ok(trimmed)
+                }
+            }
+            Err(_) => Ok(request.fallback_text.clone()),
+        }
     }
 }
 

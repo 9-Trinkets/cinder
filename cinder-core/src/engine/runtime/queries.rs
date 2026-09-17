@@ -144,12 +144,24 @@ impl CinderRuntime {
         ))
     }
 
+    pub fn set_transcript(&self, lines: Vec<String>) -> Result<(), Box<dyn Error>> {
+        let mut state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for transcript")?;
+        state.transcript = lines;
+        Ok(())
+    }
+
     pub fn push_transcript_line(&self, line: &str) -> Result<(), Box<dyn Error>> {
         let mut state = self
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for transcript")?;
         state.last_transcript_line = Some(line.to_string());
+        if state.transcript.last().map(String::as_str) != Some(line) {
+            state.transcript.push(line.to_string());
+        }
         Ok(())
     }
 

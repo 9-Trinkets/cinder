@@ -12,15 +12,16 @@ use self::types::{
 use crate::content::types::ContentPack;
 use crate::engine::commands::parse_command;
 use crate::engine::conversation_memory::refresh_conversation_summaries;
-use crate::engine::dialogue::DialogueGenerator;
+use crate::engine::dialogue::{DialogueGenerator, HandlerDescentCommentaryRequest};
 use crate::engine::dialogue_grounding::build_grounded_dialogue_request;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
 use crate::engine::menus::{PendingMenuDialogue, menu_to_offer_for_pending_dialogue};
 use crate::engine::messaging::ChannelMessage;
+use crate::engine::narrative::{NarrativeLineKind, NarrativeLines};
 use crate::engine::neuron::{
     LocalWorkflowRunner, WorkflowDefinition, WorkflowRoleConfig, WorkflowTraceContext, run_workflow,
 };
-use crate::engine::reducer::{ReducerOutput, apply_events};
+use crate::engine::reducer::{ReducerOutput, apply_events, handler_attributed_line};
 use crate::engine::roles::RoleHandler;
 use crate::engine::state::{TurnOutcome, WorldSnapshot, WorldState};
 use std::error::Error;
@@ -285,8 +286,20 @@ impl CinderRoleRunner {
             .state
             .lock()
             .map_err(|_| "failed to lock reducer state".to_string())?;
-        let reduced = apply_events(&mut state, self.content.as_ref(), &logged_events);
+        let mut reduced = apply_events(&mut state, self.content.as_ref(), &logged_events);
         refresh_conversation_summaries(self.content.as_ref(), self.dialogue.as_ref(), &mut state)?;
+        maybe_tailor_handler_descent_commentary(
+            self.content.as_ref(),
+            self.dialogue.as_ref(),
+            &state,
+            &logged_events,
+            &mut reduced.lines,
+        );
+        for line in &reduced.lines.0 {
+            if !line.text.trim().is_empty() {
+                state.transcript.push(line.text.clone());
+            }
+        }
         Ok(RouteEnvelope {
             next: self.next_non_complete_role(role_name)?,
             message: serde_json::to_string(&reduced).map_err(|error| error.to_string())?,
@@ -353,3 +366,82 @@ impl CinderRoleRunner {
         tracer.emit(role_name, topic, payload)
     }
 }
+
+fn maybe_tailor_handler_descent_commentary(
+    content: &ContentPack,
+    dialogue: &dyn DialogueGenerator,
+    state: &WorldState,
+    logged_events: &[TimestampedWorldEvent],
+    lines: &mut NarrativeLines,
+) {
+    let Some(to_room_id) = logged_events.iter().find_map(|event| match &event.event {
+        WorldEvent::PlayerMoved { to_room_id, .. } => Some(to_room_id.as_str()),
+        WorldEvent::ActorMoved {
+            actor_id,
+            to_room_id,
+            ..
+        } if content.is_player_actor(actor_id) => Some(to_room_id.as_str()),
+        _ => None,
+    }) else {
+        return;
+    };
+
+    let fallback_key = match to_room_id {
+        "d1c1" => "handler.descend.deep_wood",
+        "oan" => "handler.descend.the_board",
+        _ => return,
+    };
+
+    let Some(fallback_raw) = content.render_message(fallback_key, &[]) else {
+        return;
+    };
+    if fallback_raw.trim().is_empty() {
+        return;
+    }
+
+    let attributed_fallback = handler_attributed_line(content, &fallback_raw);
+
+    let Some(matching_line) = lines.0.iter_mut().find(|line| {
+        line.kind == NarrativeLineKind::Channel
+            && (line.text == fallback_raw
+                || attributed_fallback.as_deref() == Some(line.text.as_str()))
+    }) else {
+        return;
+    };
+
+    let floor_name = content
+        .room(to_room_id)
+        .map(|r| r.title.clone())
+        .unwrap_or_else(|| to_room_id.to_string());
+
+    let recent_transcript = state
+        .transcript
+        .iter()
+        .filter(|line| !line.trim().is_empty())
+        .rev()
+        .take(30)
+        .cloned()
+        .collect::<Vec<_>>()
+        .into_iter()
+        .rev()
+        .collect();
+
+    let request = HandlerDescentCommentaryRequest {
+        locale: content.locale.clone(),
+        system_text: content.system_text.clone(),
+        floor_name,
+        destination_room_id: to_room_id.to_string(),
+        recent_transcript,
+        fallback_text: fallback_raw.clone(),
+    };
+
+    if let Ok(commentary) = dialogue.generate_handler_descent_commentary(&request) {
+        let trimmed = commentary.trim().trim_matches('"').trim();
+        if !trimmed.is_empty() && trimmed != fallback_raw.trim() {
+            let attributed = handler_attributed_line(content, trimmed)
+                .unwrap_or_else(|| trimmed.to_string());
+            matching_line.text = attributed;
+        }
+    }
+}
+

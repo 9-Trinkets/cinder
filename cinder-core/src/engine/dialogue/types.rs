@@ -84,6 +84,16 @@ pub struct ChapterRelationshipSummaryRequest {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct HandlerDescentCommentaryRequest {
+    pub locale: String,
+    pub system_text: SystemTextDefinition,
+    pub floor_name: String,
+    pub destination_room_id: String,
+    pub recent_transcript: Vec<String>,
+    pub fallback_text: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DirectSpeechIntentRequest {
     pub locale: String,
     pub system_text: SystemTextDefinition,

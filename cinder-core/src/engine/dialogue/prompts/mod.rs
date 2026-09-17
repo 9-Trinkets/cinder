@@ -2,7 +2,7 @@ use super::{
     ActorTurnActionRequest, ActorTurnAffordanceOption, ActorTurnAffordanceTarget,
     ActorTurnCommandInvocation, ActorTurnSpeakCandidate, ChapterRelationshipSummaryRequest,
     ChapterScriptSummaryRequest, ConversationMemorySummaryRequest, DialogueRequest,
-    DirectSpeechIntentRequest, MenuIntentRequest, StageAssignmentRequest,
+    DirectSpeechIntentRequest, HandlerDescentCommentaryRequest, MenuIntentRequest, StageAssignmentRequest,
 };
 use crate::content::types::SpeechIntentLabel;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine};
@@ -194,6 +194,23 @@ pub(crate) fn build_chapter_relationship_summary_prompt(
     )
 }
 
+pub(crate) fn build_handler_descent_commentary_prompt(
+    request: &HandlerDescentCommentaryRequest,
+) -> String {
+    let transcript = if request.recent_transcript.is_empty() {
+        "(No recent transcript lines available.)".to_string()
+    } else {
+        request.recent_transcript.join("\n")
+    };
+    format!(
+        "Destination Floor: {}\n\nRecent Floor Transcript:\n{}\n\nFallback Line:\n{}\n\nTask:\nDeliver 1 to 2 sentences of dry, sarcastic handler commentary over comms reacting to her crawl across this floor as she steps onto {}. Return only the plain comms line, no quotation marks or speaker prefix.",
+        request.floor_name,
+        transcript,
+        request.fallback_text,
+        request.floor_name,
+    )
+}
+
 pub(crate) fn build_direct_speech_intent_prompt(
     request: &DirectSpeechIntentRequest,
     intents: &[SpeechIntentLabel],
@@ -310,8 +327,8 @@ mod hostility;
 pub(crate) use actor_turn::{
     actor_turn_decider_system_prompt, chapter_relationship_summarizer_system_prompt,
     chapter_script_summarizer_system_prompt, conversation_memory_summarizer_system_prompt,
-    dialogue_system_prompt, direct_speech_intent_system_prompt, menu_intent_system_prompt,
-    sanitize_statement,
+    dialogue_system_prompt, direct_speech_intent_system_prompt,
+    handler_descent_commentary_system_prompt, menu_intent_system_prompt, sanitize_statement,
 };
 pub(crate) use actor_turn::{build_actor_turn_action_prompt, build_actor_turn_affordance_option};
 pub(crate) use hostility::{build_hostility_plan_prompt, hostility_planner_system_prompt};

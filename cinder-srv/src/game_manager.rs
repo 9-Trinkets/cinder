@@ -61,6 +61,7 @@ where
                 })?;
 
                 let runtime = build_runtime_impl(content, &state_json)?;
+                let _ = runtime.set_transcript(transcript_lines.clone());
 
                 let (result, transcript_entries) = f(&runtime, &pack_id, &transcript_lines)?;
 

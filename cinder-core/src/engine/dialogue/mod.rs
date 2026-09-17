@@ -1,15 +1,13 @@
 mod parsing;
 mod prompts;
 mod synapse;
-#[cfg(test)]
-mod scripted;
+pub mod scripted;
 pub mod types;
 
 pub use types::*;
 
 pub use self::synapse::{SynapseChapterSummaryGenerator, SynapseDialogueGenerator};
 
-#[cfg(test)]
 pub use scripted::ScriptedDialogueGenerator;
 
 use crate::content::types::SpeechIntentLabel;
@@ -116,4 +114,11 @@ pub trait DialogueGenerator: Send + Sync {
         &self,
         request: &StageAssignmentRequest,
     ) -> Result<StageAssignment, String>;
+
+    fn generate_handler_descent_commentary(
+        &self,
+        request: &HandlerDescentCommentaryRequest,
+    ) -> Result<String, String> {
+        Ok(request.fallback_text.clone())
+    }
 }

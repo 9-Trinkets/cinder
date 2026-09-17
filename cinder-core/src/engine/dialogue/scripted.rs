@@ -18,6 +18,7 @@ pub struct ScriptedDialogueGenerator {
     attraction_intents: BTreeMap<String, DirectSpeechIntentDecision>,
     perspective_reviews: BTreeMap<String, PerspectiveReview>,
     stage_assignments: BTreeMap<String, StageAssignment>,
+    descent_commentaries: BTreeMap<String, String>,
     requests: std::sync::Arc<std::sync::Mutex<Vec<DialogueRequest>>>,
 }
 
@@ -87,6 +88,12 @@ impl ScriptedDialogueGenerator {
     pub fn with_stage_assignment(mut self, stage_id: &str, assignment: StageAssignment) -> Self {
         self.stage_assignments
             .insert(stage_id.to_string(), assignment);
+        self
+    }
+
+    pub fn with_descent_commentary(mut self, room_id: &str, commentary: &str) -> Self {
+        self.descent_commentaries
+            .insert(room_id.to_string(), commentary.to_string());
         self
     }
 
@@ -216,5 +223,16 @@ impl DialogueGenerator for ScriptedDialogueGenerator {
                     request.stage_id
                 )
             })
+    }
+
+    fn generate_handler_descent_commentary(
+        &self,
+        request: &super::types::HandlerDescentCommentaryRequest,
+    ) -> Result<String, String> {
+        if let Some(reply) = self.descent_commentaries.get(&request.destination_room_id) {
+            Ok(reply.clone())
+        } else {
+            Ok(request.fallback_text.clone())
+        }
     }
 }

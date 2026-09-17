@@ -24,6 +24,7 @@ use self::handlers::{
     handle_player_took_item, handle_turn_started, handle_unknown_input,
 };
 
+pub(crate) use self::handlers::handler_attributed_line;
 pub(crate) use self::observation::render_actor_speech_line;
 
 use crate::content::types::ContentPack;
