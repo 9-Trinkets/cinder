@@ -395,6 +395,11 @@
               "path": "to_room_id",
               "operator": "equal",
               "value": "d1c1"
+            },
+            {
+              "path": "first_visit",
+              "operator": "equal",
+              "value": true
             }
           ],
           "payload_template": {
@@ -408,6 +413,11 @@
               "path": "to_room_id",
               "operator": "equal",
               "value": "oan"
+            },
+            {
+              "path": "first_visit",
+              "operator": "equal",
+              "value": true
             }
           ],
           "payload_template": {

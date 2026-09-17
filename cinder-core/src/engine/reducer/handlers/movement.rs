@@ -61,6 +61,8 @@ pub(crate) fn handle_player_moved(
         content,
         &format!("room_left:{from_room_id}"),
     ));
+    let first_visit =
+        !state.actor_has_visited_room(&content.settings.combat.player_actor_id, to_room_id);
     state.current_room_id = to_room_id.to_string();
     state.mark_actor_room_visited(&content.settings.combat.player_actor_id, to_room_id);
     lines.extend_narration(advance_objective_for_signal(
@@ -76,6 +78,7 @@ pub(crate) fn handle_player_moved(
         json!({
             "from_room_id": from_room_id,
             "to_room_id": to_room_id,
+            "first_visit": first_visit,
         }),
         lines,
     )
@@ -320,7 +323,8 @@ mod tests {
                     "rules": [
                         {
                             "conditions": [
-                                { "path": "to_room_id", "operator": "equal", "value": "d1c1" }
+                                { "path": "to_room_id", "operator": "equal", "value": "d1c1" },
+                                { "path": "first_visit", "operator": "equal", "value": true }
                             ],
                             "payload_template": {
                                 "kind": "narrate_message",
@@ -337,6 +341,15 @@ mod tests {
         handle_player_moved(&mut state, &content, "d1c1", &mut lines);
 
         assert!(lines
+            .0
+            .iter()
+            .any(|line| line.kind == NarrativeLineKind::Channel
+                && line.text.contains("Deeper")));
+
+        // Second visit to the same room should NOT trigger the hook
+        let mut second_lines = NarrativeLines::default();
+        handle_player_moved(&mut state, &content, "d1c1", &mut second_lines);
+        assert!(!second_lines
             .0
             .iter()
             .any(|line| line.kind == NarrativeLineKind::Channel

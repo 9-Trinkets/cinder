@@ -42,7 +42,7 @@ impl CinderRuntime {
                 .collect(),
             PanelDataSource::InventoryItems => self.inventory_panel_options(&state),
             PanelDataSource::CraftableItems => Vec::new(),
-            PanelDataSource::FollowActors => self.follow_actor_options()?,
+            PanelDataSource::FollowActors => self.follow_actor_panel_options(&state),
         };
         Ok(options)
     }
@@ -264,13 +264,7 @@ impl CinderRuntime {
         Ok(options)
     }
 
-    /// Builds the follow-actor option list: a "nobody" sentinel plus every
-    /// non-player actor (annotated with its current room).
-    pub fn follow_actor_options(&self) -> Result<Vec<PanelOption>, Box<dyn Error>> {
-        let state = self
-            .state
-            .lock()
-            .map_err(|_| "failed to lock runtime state for follow options")?;
+    fn follow_actor_panel_options(&self, state: &WorldState) -> Vec<PanelOption> {
         let nobody_label = self.content.ui_text.follow_nobody_option.clone();
         let mut options = vec![PanelOption {
             id: "none".to_string(),
@@ -290,7 +284,7 @@ impl CinderRuntime {
                         .room(room_id)
                         .map(|room| room.title.clone())
                         .unwrap_or_else(|| room_id.to_string());
-                    let actor_name = display_actor_name(&state, actor);
+                    let actor_name = display_actor_name(state, actor);
                     PanelOption {
                         id: actor.id.clone(),
                         title: actor_name.clone(),
@@ -299,7 +293,17 @@ impl CinderRuntime {
                     }
                 }),
         );
-        Ok(options)
+        options
+    }
+
+    /// Builds the follow-actor option list: a "nobody" sentinel plus every
+    /// non-player actor (annotated with its current room).
+    pub fn follow_actor_options(&self) -> Result<Vec<PanelOption>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for follow options")?;
+        Ok(self.follow_actor_panel_options(&state))
     }
 }
 

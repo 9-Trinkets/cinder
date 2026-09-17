@@ -187,6 +187,11 @@ fn handler_descent_commentary_falls_back_when_no_llm() {
 
     let outcome = runtime.run_turn("go down").expect("turn runs");
     assert!(outcome.text.contains("Floor two. A glowing wood under a cave"));
+
+    // Climbing up and descending again does NOT repeat the fallback commentary
+    let _ = runtime.run_turn("go up").expect("turn runs");
+    let outcome2 = runtime.run_turn("go down").expect("turn runs");
+    assert!(!outcome2.text.contains("Floor two. A glowing wood under a cave"));
 }
 
 #[test]
@@ -336,6 +341,64 @@ fn handler_descent_commentary_via_switch_room_view() {
 }
 
 #[test]
+fn handler_descent_commentary_only_plays_on_first_descent() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    state.current_room_id = "r5c5".to_string();
+    state.story_vars.set_unchecked("shaman_defeated", "true");
+    state.scripted_sequences.clear();
+
+    let summary = "Floor one cleared. Nice work.";
+    let intro = "Floor two ahead. Watch the mushrooms.";
+
+    let dialogue = std::sync::Arc::new(
+        cinder_core::engine::dialogue::ScriptedDialogueGenerator::new()
+            .with_descent_commentary_lines(
+                "d1c1",
+                vec![summary.to_string(), intro.to_string()],
+            ),
+    );
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack,
+        state,
+        dialogue,
+    )
+    .expect("runtime creates");
+
+    // 1. First descent: 'go down'
+    let outcome1 = runtime.run_turn("go down").expect("first descent turn runs");
+    assert!(outcome1.text.contains(summary));
+    assert!(outcome1.text.contains(intro));
+    let channel_lines1: Vec<_> = outcome1
+        .lines
+        .iter()
+        .filter(|l| l.kind == cinder_core::engine::narrative::NarrativeLineKind::Channel)
+        .collect();
+    assert!(channel_lines1.iter().any(|l| l.text.contains(summary)));
+    assert!(channel_lines1.iter().any(|l| l.text.contains(intro)));
+
+    // 2. Climb back up: 'go up'
+    let outcome_up = runtime.run_turn("go up").expect("climb up turn runs");
+    assert!(!outcome_up.text.contains(summary));
+    assert!(!outcome_up.text.contains(intro));
+
+    // 3. Second descent: 'go down' again
+    let outcome2 = runtime.run_turn("go down").expect("second descent turn runs");
+    // Neither tailored commentary nor fallback line should appear
+    assert!(!outcome2.text.contains(summary));
+    assert!(!outcome2.text.contains(intro));
+    assert!(!outcome2.text.contains("Floor two. A glowing wood under a cave"));
+    let channel_lines2: Vec<_> = outcome2
+        .lines
+        .iter()
+        .filter(|l| l.kind == cinder_core::engine::narrative::NarrativeLineKind::Channel)
+        .collect();
+    assert!(channel_lines2.is_empty(), "expected no channel lines on second descent, got: {:?}", channel_lines2);
+    // Normal room description should still appear
+    assert!(outcome2.text.contains("The Mushroom Grove"));
+}
+
+#[test]
 fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
@@ -474,7 +537,8 @@ fn live_test_synapse_handler_descent() {
 fn follow_and_unfollow_commands_and_panel_options() {
     let pack = load_named_pack("aera", Some("en")).expect("aera loads and validates");
     let state = cinder_core::engine::state::WorldState::new(&pack);
-    let runtime = cinder_core::engine::runtime::CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+    let dialogue = std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue).expect("runtime creates");
 
     // Exit options generate executable 'go <label>' commands
     let exit_options = runtime
@@ -494,9 +558,9 @@ fn follow_and_unfollow_commands_and_panel_options() {
     assert!(follow_options.iter().skip(1).all(|opt| opt.command.starts_with("follow ")));
 
     // Test follow command execution
-    let outcome = runtime.run_turn("follow blair").expect("follow blair runs");
-    assert!(outcome.text.contains("following Blair") || outcome.text.contains("following blair"));
-    assert_eq!(runtime.followed_actor_id().unwrap(), Some("blair".to_string()));
+    let outcome = runtime.run_turn("follow ren").expect("follow ren runs");
+    assert!(outcome.text.contains("following Ren") || outcome.text.contains("following ren"));
+    assert_eq!(runtime.followed_actor_id().unwrap(), Some("ren".to_string()));
 
     // Test unfollow command execution
     let outcome = runtime.run_turn("unfollow").expect("unfollow runs");
