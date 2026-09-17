@@ -405,3 +405,25 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
     }
 }
 
+#[test]
+#[ignore]
+fn live_test_synapse_handler_descent() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    state.current_room_id = "r5c5".to_string();
+    state.story_vars.set_unchecked("shaman_defeated", "true");
+    state.transcript = vec![
+        "Layla struck the goblin shaman with iron chisel.".to_string(),
+        "The goblin shaman fell into dust.".to_string(),
+        "Layla picked up shaman's ring.".to_string(),
+    ];
+    let runtime = cinder_core::engine::runtime::CinderRuntime::from_state(pack, state, false)
+        .expect("runtime from state");
+    let outcome = runtime.run_turn("go down").expect("turn runs");
+    println!("DESCENT OUTCOME TEXT:\n{}", outcome.text);
+    for (i, line) in outcome.lines.iter().enumerate() {
+        println!("LINE {i} [{:?}]: {}", line.kind, line.text);
+    }
+}
+
+
