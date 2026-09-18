@@ -72,7 +72,7 @@ pub(super) fn seeded_actor_equipment(
 ) -> BTreeMap<String, BTreeMap<String, String>> {
     let mut equipment = BTreeMap::new();
     for actor in &content.actors {
-        if !actor.initial_equipment.is_empty() {
+        if actor.id != content.settings.combat.player_actor_id && !actor.initial_equipment.is_empty() {
             equipment.insert(actor.id.clone(), actor.initial_equipment.clone());
         }
     }
@@ -84,7 +84,7 @@ pub(super) fn seeded_actor_inventories(
 ) -> BTreeMap<String, std::collections::HashMap<String, u32>> {
     let mut inventories = BTreeMap::new();
     for actor in &content.actors {
-        if !actor.initial_inventory.is_empty() {
+        if actor.id != content.settings.combat.player_actor_id && !actor.initial_inventory.is_empty() {
             inventories.insert(
                 actor.id.clone(),
                 actor.initial_inventory.clone().into_iter().collect(),

@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use std::collections::BTreeMap;
 use std::collections::BTreeSet;
 
 use super::{
@@ -159,11 +158,6 @@ pub struct ContentSettingsDefinition {
     /// `surround.refused` message.
     #[serde(default, alias = "charm_rule")]
     pub surround_rule: SurroundRule,
-    /// Items the player starts with, item id → count. Seed a finite resource
-    /// (e.g. a pack's dropped markers) here so it can be dropped into rooms and
-    /// picked back up.
-    #[serde(default)]
-    pub starting_items: BTreeMap<String, u32>,
     /// Fixed equipment slot list (e.g. "weapon", "armor", "trinket"). Each
     /// slot holds at most one equipped item; equippable items name one of
     /// these slots and their bonuses feed effective stat reads.
@@ -228,7 +222,6 @@ impl Default for ContentSettingsDefinition {
             combat: CombatSettingsDefinition::default(),
             party: PartyPolicyDefinition::default(),
             surround_rule: SurroundRule::None,
-            starting_items: BTreeMap::new(),
             equipment_slots: BTreeSet::new(),
             theme: ThemeDefinition::default(),
         }

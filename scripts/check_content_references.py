@@ -225,6 +225,10 @@ def lint_actors(lint: Linter, doc: PackDoc) -> None:
         for member in actor.get("act_cast") or []:
             if isinstance(member, dict) and member.get("actor_id"):
                 lint.require("actors", member["actor_id"], f"actor '{actor_id}' act_cast actor_id")
+        for item_id in (actor.get("initial_inventory") or {}).keys():
+            lint.require("items", item_id, f"actor '{actor_id}' initial_inventory")
+        for slot, item_id in (actor.get("initial_equipment") or {}).items():
+            lint.require("items", item_id, f"actor '{actor_id}' initial_equipment")
 
 
 def lint_settings(lint: Linter, doc: PackDoc) -> None:
@@ -259,8 +263,8 @@ def lint_settings(lint: Linter, doc: PackDoc) -> None:
             if not any(p != player for p in channel.get("participants") or []):
                 lint.warn(f"feedback_channel_id '{feedback}' needs a non-player speaker in participants")
 
-    for item_id in (settings.get("starting_items") or {}).keys():
-        lint.require("items", item_id, "settings.starting_items")
+    if "starting_items" in settings:
+        lint.warn(f"{doc.relative('settings.json')}: starting_items is deprecated; define initial_inventory on actors instead")
     for actor_id in (settings.get("party", {}).get("initial_orders") or {}).keys():
         lint.require("actors", actor_id, "settings.party.initial_orders")
     player = settings.get("combat", {}).get("player_actor_id") or ""

@@ -162,7 +162,7 @@ hunt-goblins (or looting their camps) yields their gear:
 
 Starting inventory is **empty** in intent: Layla wakes with nothing but what she
 finds. *Decision:* the **magic-chalk is a deliberate starting item** —
-`starting_items = { magic-chalk: 1 }` — and stays on her for the whole floor.
+authored via `initial_inventory = { magic-chalk: 1 }` on the player actor — and stays on her for the whole floor.
 No loose-on-the-floor pickup, no `requires_equipped_item` gate on `trace`: the
 chalk is simply on her and the handler teaches the sigil procedure at game
 start through the scripted opening comms exchange rather than a disembodied

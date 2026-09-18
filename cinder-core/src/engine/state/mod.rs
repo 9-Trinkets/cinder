@@ -279,11 +279,9 @@ impl WorldState {
             transcript: Vec::new(),
             last_transcript_line: None,
             player_inventory: content
-                .settings
-                .starting_items
-                .clone()
-                .into_iter()
-                .collect(),
+                .actor(&content.settings.combat.player_actor_id)
+                .map(|actor| actor.initial_inventory.clone().into_iter().collect())
+                .unwrap_or_default(),
             room_item_stock: BTreeMap::new(),
             room_item_charges: BTreeMap::new(),
             act_series: None,
@@ -316,7 +314,10 @@ impl WorldState {
             party_orders: BTreeMap::new(),
             party_reaction_ready_at: BTreeMap::new(),
             next_hostile_strike_at: BTreeMap::new(),
-            equipment: BTreeMap::new(),
+            equipment: content
+                .actor(&content.settings.combat.player_actor_id)
+                .map(|actor| actor.initial_equipment.clone())
+                .unwrap_or_default(),
             actor_inventories: seeded_actor_inventories(content),
             actor_equipment: seeded_actor_equipment(content),
             actor_xp: BTreeMap::new(),

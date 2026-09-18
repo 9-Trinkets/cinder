@@ -278,7 +278,7 @@ All guidelines for prose style, the 3-tier voice hierarchy (Sleek HUD vs. Handle
 | Actor prose / `inspect_text` | `content/layla/locales/en/actors.json` |
 | Key story narration | `content/layla/locales/en/messages.json` (e.g. `shaman.reveal`, `shaman.memory`, `king.defeated`, `elemental.release`, `item.scroll_read.learned`, `item.spawn_scroll_read.learned`) |
 | Items + sigil lore | `content/layla/items.json` |
-| Sizes / meshes / `starting_items` | `content/layla/settings.json` |
+| Theme / meshes / audio | `content/layla/settings.json` |
 | Level-up curve | `content/layla/levels.json` |
 | Floor-1 design & feature-surface plan | `docs/layla/floor1_plan.md` |
 | Beat / shaman / king / elemental triggers | `content/layla/hooks.json` |

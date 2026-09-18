@@ -573,4 +573,15 @@ fn follow_and_unfollow_commands_and_panel_options() {
     assert_eq!(runtime.followed_actor_id().unwrap(), None);
 }
 
+#[test]
+fn player_starting_inventory_seeds_from_actor_definition() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let player = pack.actor("player").expect("player actor exists");
+    assert_eq!(player.initial_inventory.get("magic-chalk"), Some(&1));
+
+    let state = cinder_core::engine::state::WorldState::new(&pack);
+    assert_eq!(state.player_inventory.get("magic-chalk"), Some(&1));
+}
+
+
 

@@ -17,6 +17,9 @@
     "inspect_text": "Yourself.",
     "attackable": false,
     "tags": [],
+    "initial_inventory": {
+      "magic-chalk": 1
+    },
     "prompt_context": {
       "character_notes": [
         "Layla is curious, careful, and quietly intense. She reads the world like a rule system and asks questions until a thing makes sense.",

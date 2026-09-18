@@ -67,9 +67,6 @@
     "font_prose": "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
     "font_mono": "ui-monospace, 'SFMono-Regular', 'SF Mono', Menlo, Consolas, monospace"
   },
-  "starting_items": {
-    "magic-chalk": 1
-  },
   "equipment_slots": [
     "weapon",
     "off-hand",
