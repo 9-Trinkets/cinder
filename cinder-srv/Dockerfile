@@ -4,6 +4,7 @@ WORKDIR /app
 COPY Cargo.toml Cargo.lock ./
 COPY cinder-core ./cinder-core
 COPY cinder-srv ./cinder-srv
+COPY cinder-tools ./cinder-tools
 
 RUN cargo build --release -p cinder-srv
 
