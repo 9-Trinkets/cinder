@@ -11,11 +11,15 @@ const orderLabel = (order: string) => {
 export default function StatusPanel({
   uiSnapshot,
   onTakeItem,
+  onTakeFromMember,
+  onGiveToMember,
   onOpenPanel,
   hideLocation = false,
 }: {
   uiSnapshot: api.UiSnapshot
   onTakeItem?: (itemId: string) => void
+  onTakeFromMember?: (memberId: string, itemId: string) => void
+  onGiveToMember?: (memberId: string, itemLabel: string) => void
   onOpenPanel?: (panel: string) => void
   hideLocation?: boolean
 }) {
@@ -96,11 +100,11 @@ export default function StatusPanel({
         <Section title="Party" defaultOpen>
           <ul className="space-y-2">
             {uiSnapshot.party.map(member => (
-              <li key={member.id}>
+              <li key={member.id} className="rounded-lg border border-subtle bg-surface/40 p-2.5 transition duration-200">
                 <button
                   type="button"
                   onClick={() => onOpenPanel?.(member.order_panel)}
-                  className="group w-full rounded-lg border border-subtle bg-surface/40 px-2.5 py-2 text-left transition duration-200 hover:border-pine/50 hover:bg-overlay cursor-pointer"
+                  className="group w-full text-left transition duration-200 hover:text-pine cursor-pointer"
                 >
                   <span className="flex items-start justify-between gap-2">
                     <span className="min-w-0">
@@ -122,6 +126,50 @@ export default function StatusPanel({
                     <span className="text-[10px] tabular-nums text-muted">{member.hp}/{member.hp_max}</span>
                   </span>
                 </button>
+
+                {member.equipped_items && member.equipped_items.length > 0 && (
+                  <div className="mt-2 pt-2 border-t border-subtle/50 text-[11px]">
+                    <div className="text-[10px] uppercase tracking-wider text-muted font-mono mb-1">Equipped</div>
+                    <ul className="space-y-1 pl-1">
+                      {member.equipped_items.map((item, i) => (
+                        <li key={i} className="text-text flex items-center justify-between gap-1">
+                          <span className="truncate"><span className="text-muted">{item.slot}:</span> {item.label}</span>
+                          {onTakeFromMember && item.id && (
+                            <button
+                              type="button"
+                              onClick={() => onTakeFromMember(member.id, item.id!)}
+                              className="text-[10px] text-muted hover:text-pine px-1 py-0.5 rounded border border-subtle hover:border-pine cursor-pointer shrink-0"
+                            >
+                              Take
+                            </button>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {member.inventory && member.inventory.length > 0 && (
+                  <div className="mt-2 pt-1.5 border-t border-subtle/50 text-[11px]">
+                    <div className="text-[10px] uppercase tracking-wider text-muted font-mono mb-1">Carrying</div>
+                    <ul className="space-y-1 pl-1">
+                      {member.inventory.map((item, i) => (
+                        <li key={i} className="text-text flex items-center justify-between gap-1">
+                          <span className="truncate">• {item.label}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}</span>
+                          {onTakeFromMember && item.id && (
+                            <button
+                              type="button"
+                              onClick={() => onTakeFromMember(member.id, item.id!)}
+                              className="text-[10px] text-muted hover:text-pine px-1 py-0.5 rounded border border-subtle hover:border-pine cursor-pointer shrink-0"
+                            >
+                              Take
+                            </button>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </li>
             ))}
           </ul>
@@ -142,10 +190,34 @@ export default function StatusPanel({
 
       {uiSnapshot.inventory.length > 0 && (
         <Section title="Inventory">
-          <ul className="space-y-0.5">
+          <ul className="space-y-1">
             {uiSnapshot.inventory.map((item, i) => (
-              <li key={i} className="text-text text-xs">
-                • {item.label}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
+              <li key={i} className="text-text text-xs flex items-center justify-between gap-1">
+                <span className="truncate">• {item.label}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}</span>
+                {onGiveToMember && uiSnapshot.party.length === 1 && (
+                  <button
+                    type="button"
+                    onClick={() => onGiveToMember(uiSnapshot.party[0].id, item.label)}
+                    className="text-[10px] text-muted hover:text-pine px-1 py-0.5 rounded border border-subtle hover:border-pine cursor-pointer shrink-0"
+                  >
+                    Give
+                  </button>
+                )}
+                {onGiveToMember && uiSnapshot.party.length > 1 && (
+                  <div className="flex gap-1 shrink-0">
+                    {uiSnapshot.party.map(m => (
+                      <button
+                        key={m.id}
+                        type="button"
+                        onClick={() => onGiveToMember(m.id, item.label)}
+                        title={`Give to ${m.label}`}
+                        className="text-[10px] text-muted hover:text-pine px-1 py-0.5 rounded border border-subtle hover:border-pine cursor-pointer"
+                      >
+                        Give {m.label.split(' ')[0]}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </li>
             ))}
           </ul>

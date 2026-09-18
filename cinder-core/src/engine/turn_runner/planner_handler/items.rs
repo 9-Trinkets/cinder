@@ -231,7 +231,7 @@ pub(crate) fn plan_unequip_command(
     true
 }
 
-fn matching_items<'a>(
+pub(crate) fn matching_items<'a>(
     content: &'a ContentPack,
     target: &str,
 ) -> Vec<&'a crate::content::types::ItemDefinition> {

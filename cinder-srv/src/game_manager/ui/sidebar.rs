@@ -88,6 +88,21 @@ pub(super) fn build_party_members(
                 .actor_stat_maximum(content, &actor_id, health_stat)
                 .max(1) as u32;
             let order = state.party_order(content, &actor_id).unwrap_or_default();
+            let equipped_items =
+                build_equipped_items_from_map(&state.actor_equipment(&actor_id), content);
+            let mut inventory = state
+                .actor_inventory(&actor_id)
+                .into_iter()
+                .map(|(id, count)| {
+                    let label = content.item_label(&id).to_string();
+                    InventoryItem {
+                        label,
+                        count,
+                        id: Some(id),
+                    }
+                })
+                .collect::<Vec<_>>();
+            inventory.sort_by(|a, b| a.label.cmp(&b.label));
             PartyMember {
                 id: actor_id.clone(),
                 label,
@@ -96,6 +111,8 @@ pub(super) fn build_party_members(
                 hp_max,
                 order,
                 order_panel: format!("party-order:{actor_id}"),
+                inventory,
+                equipped_items,
             }
         })
         .collect::<Vec<_>>();
@@ -157,7 +174,10 @@ fn living_follower_ids(state: &WorldState, content: &ContentPack) -> Vec<String>
         .collect()
 }
 
-pub(super) fn build_equipped_items(state: &WorldState, content: &ContentPack) -> Vec<EquippedItem> {
+pub(super) fn build_equipped_items_from_map(
+    equipment: &std::collections::BTreeMap<String, String>,
+    content: &ContentPack,
+) -> Vec<EquippedItem> {
     // A multi-slot item (e.g. a two-hand weapon) is listed once, with its
     // slots joined in the pack's declared order.
     let declared = &content.settings.equipment_slots;
@@ -168,7 +188,7 @@ pub(super) fn build_equipped_items(state: &WorldState, content: &ContentPack) ->
             .unwrap_or(usize::MAX)
     };
     let mut slot_by_item: std::collections::BTreeMap<&str, Vec<&str>> = std::collections::BTreeMap::new();
-    for (slot, item_id) in &state.equipment {
+    for (slot, item_id) in equipment {
         slot_by_item.entry(item_id).or_default().push(slot);
     }
     let mut items: Vec<EquippedItem> = slot_by_item
@@ -179,6 +199,7 @@ pub(super) fn build_equipped_items(state: &WorldState, content: &ContentPack) ->
             EquippedItem {
                 slot: slots.join("+"),
                 label,
+                id: Some(item_id.to_string()),
             }
         })
         .collect();
@@ -190,6 +211,10 @@ pub(super) fn build_equipped_items(state: &WorldState, content: &ContentPack) ->
             .unwrap_or(usize::MAX)
     });
     items
+}
+
+pub(super) fn build_equipped_items(state: &WorldState, content: &ContentPack) -> Vec<EquippedItem> {
+    build_equipped_items_from_map(&state.equipment, content)
 }
 
 pub(super) fn build_inventory(
@@ -294,6 +319,8 @@ mod tests {
             hp_max: 8,
             order: "guard".to_string(),
             order_panel: "party-order:dark-golem-2".to_string(),
+            inventory: Vec::new(),
+            equipped_items: Vec::new(),
         }];
 
         let panels = build_party_order_panels(&content, &members);
@@ -333,5 +360,49 @@ mod tests {
         let items = build_current_room_items(&content, &state, &room_id);
         assert_eq!(items.len(), 1);
         assert_eq!(items[0].id.as_deref(), Some("scroll"));
+    }
+
+    #[test]
+    fn build_party_members_includes_inventory_and_equipment() {
+        let mut content = minimal_test_pack();
+        content.settings.equipment_slots = std::collections::BTreeSet::from(["weapon".to_string(), "ring".to_string()]);
+        content.items.extend([
+            cinder_core::content::types::ItemDefinition {
+                id: "iron-sword".to_string(),
+                label: "iron sword".to_string(),
+                equip_slots: vec!["weapon".to_string()],
+                ..Default::default()
+            },
+            cinder_core::content::types::ItemDefinition {
+                id: "herb".to_string(),
+                label: "green herb".to_string(),
+                ..Default::default()
+            },
+        ]);
+        let mut state = WorldState::new(&content);
+        let follower_id = "companion-1";
+        state.set_follows_player(follower_id, true);
+        state.actor_add_item(follower_id, "herb");
+        state.actor_add_item(follower_id, "herb");
+        if let Some(equip) = state.actor_equipment.get_mut(follower_id) {
+            equip.insert("weapon".to_string(), "iron-sword".to_string());
+        } else {
+            state.actor_equipment.insert(
+                follower_id.to_string(),
+                std::collections::BTreeMap::from([("weapon".to_string(), "iron-sword".to_string())]),
+            );
+        }
+
+        let runtime = CinderRuntime::new(content.clone(), false).unwrap();
+        let members = build_party_members(&runtime, &state, &content);
+        let companion = members.into_iter().find(|m| m.id == follower_id).unwrap();
+        assert_eq!(companion.inventory.len(), 1);
+        assert_eq!(companion.inventory[0].label, "green herb");
+        assert_eq!(companion.inventory[0].count, 2);
+        assert_eq!(companion.inventory[0].id.as_deref(), Some("herb"));
+        assert_eq!(companion.equipped_items.len(), 1);
+        assert_eq!(companion.equipped_items[0].slot, "weapon");
+        assert_eq!(companion.equipped_items[0].label, "iron sword");
+        assert_eq!(companion.equipped_items[0].id.as_deref(), Some("iron-sword"));
     }
 }

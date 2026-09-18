@@ -58,6 +58,12 @@ pub struct ActorDefinition {
     /// defeated by the player's attack, item id → drop spec.
     #[serde(default)]
     pub drops: BTreeMap<String, DropSpec>,
+    /// Equipment slots filled when this actor spawns (slot id → item id).
+    #[serde(default)]
+    pub initial_equipment: BTreeMap<String, String>,
+    /// Loose items in this actor's inventory when it spawns (item id → count).
+    #[serde(default)]
+    pub initial_inventory: BTreeMap<String, u32>,
     /// XP awarded to the whole party when this actor is defeated.
     #[serde(default)]
     pub xp_drop: u32,

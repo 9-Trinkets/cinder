@@ -4,12 +4,16 @@ import StatusPanel from './StatusPanel'
 interface FolioPanelProps {
   uiSnapshot: api.UiSnapshot
   onTakeItem: (itemId: string) => void
+  onTakeFromMember?: (memberId: string, itemId: string) => void
+  onGiveToMember?: (memberId: string, itemLabel: string) => void
   onOpenPanel: (panel: string) => void
 }
 
 export default function FolioPanel({
   uiSnapshot,
   onTakeItem,
+  onTakeFromMember,
+  onGiveToMember,
   onOpenPanel,
 }: FolioPanelProps) {
   return (
@@ -35,6 +39,8 @@ export default function FolioPanel({
       <StatusPanel
         uiSnapshot={uiSnapshot}
         onTakeItem={onTakeItem}
+        onTakeFromMember={onTakeFromMember}
+        onGiveToMember={onGiveToMember}
         onOpenPanel={onOpenPanel}
         hideLocation
       />

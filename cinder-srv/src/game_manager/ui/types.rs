@@ -29,6 +29,8 @@ pub struct InventoryItem {
 pub struct EquippedItem {
     pub slot: String,
     pub label: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
 }
 
 /// One living follower and its current combat directive.
@@ -41,6 +43,8 @@ pub struct PartyMember {
     pub hp_max: u32,
     pub order: String,
     pub order_panel: String,
+    pub inventory: Vec<InventoryItem>,
+    pub equipped_items: Vec<EquippedItem>,
 }
 
 /// A single stat value shown on the player's status.

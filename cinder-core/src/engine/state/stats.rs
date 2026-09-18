@@ -67,12 +67,28 @@ impl WorldState {
 
     /// Sum of stat bonuses granted by the player's equipped items. Equipment
     /// is player-scoped; other actors always get zero. A multi-slot item (e.g.
+    /// Sum of stat bonuses granted by items equipped across any slots. If an
+    /// item occupies multiple slots (e.g. both `weapon` and `off-hand` for
     /// a two-hand weapon) pays its bonus once no matter how many slots it
     /// occupies.
     pub fn equipped_stat_bonus(&self, content: &ContentPack, stat_key: &str) -> i32 {
+        self.actor_equipped_stat_bonus(content, &content.settings.combat.player_actor_id, stat_key)
+    }
+
+    /// Sum of stat bonuses granted by items equipped by a specific actor.
+    pub fn actor_equipped_stat_bonus(
+        &self,
+        content: &ContentPack,
+        actor_id: &str,
+        stat_key: &str,
+    ) -> i32 {
+        let eq = if actor_id == content.settings.combat.player_actor_id {
+            &self.equipment
+        } else {
+            self.actor_equipment(actor_id)
+        };
         let mut seen = std::collections::BTreeSet::new();
-        self.equipment
-            .values()
+        eq.values()
             .filter(|item_id| seen.insert(item_id.as_str()))
             .filter_map(|item_id| content.item(item_id))
             .filter_map(|item| item.stat_bonuses.get(stat_key))
@@ -93,60 +109,72 @@ impl WorldState {
     /// clamps the base to the stat's declared min/max; equipment can push the
     /// effective value past those bounds by design.
     /// Full (undamaged) value for a stat: the actor's seeded value plus the
-/// growth granted by every level already reached. Damage only drives the
-/// stored stat below this, so it is the natural "max" to display alongside
-/// the current value.
-pub fn actor_stat_maximum(&self, content: &ContentPack, actor_id: &str, stat_key: &str) -> i32 {
-    let definition = self.actor_stat_defs.get(stat_key).cloned();
-    let initial = self
-        .initial_actor_stats
-        .get(actor_id)
-        .and_then(|stats| stats.get(stat_key))
-        .copied()
-        .unwrap_or_else(|| definition.as_ref().map(|stat| stat.default).unwrap_or(0));
-    let level = self.actor_level.get(actor_id).copied().unwrap_or(1).max(1);
-    let growth = (1..level)
-        .filter_map(|prior_level| content.level_definition(actor_id, prior_level))
-        .filter_map(|definition| definition.stat_changes.get(stat_key))
-        .copied()
-        .sum::<i32>();
-    let full = initial.saturating_add(growth);
-    definition
-        .map(|definition| definition.clamp(full))
-        .unwrap_or(full)
-}
-
-/// Full stat value the player can display: the natural maximum plus the
-/// equipped bonuses the current value itself also carries.
-pub fn effective_actor_stat_maximum(
-    &self,
-    content: &ContentPack,
-    actor_id: &str,
-    stat_key: &str,
-) -> i32 {
-    let mut value = self.actor_stat_maximum(content, actor_id, stat_key);
-    if actor_id == content.settings.combat.player_actor_id {
-        value += self.equipped_stat_bonus(content, stat_key);
+    /// growth granted by every level already reached. Damage only drives the
+    /// stored stat below this, so it is the natural "max" to display alongside
+    /// the current value.
+    pub fn actor_stat_maximum(&self, content: &ContentPack, actor_id: &str, stat_key: &str) -> i32 {
+        let definition = self.actor_stat_defs.get(stat_key).cloned();
+        let initial = self
+            .initial_actor_stats
+            .get(actor_id)
+            .and_then(|stats| stats.get(stat_key))
+            .copied()
+            .unwrap_or_else(|| definition.as_ref().map(|stat| stat.default).unwrap_or(0));
+        let level = self.actor_level.get(actor_id).copied().unwrap_or(1).max(1);
+        let growth = (1..level)
+            .filter_map(|prior_level| content.level_definition(actor_id, prior_level))
+            .filter_map(|definition| definition.stat_changes.get(stat_key))
+            .copied()
+            .sum::<i32>();
+        let full = initial.saturating_add(growth);
+        definition
+            .map(|definition| definition.clamp(full))
+            .unwrap_or(full)
     }
-    value
-}
 
-pub fn effective_actor_stat(
+    /// Full stat value the player can display: the natural maximum plus the
+    /// equipped bonuses the current value itself also carries.
+    pub fn effective_actor_stat_maximum(
+        &self,
+        content: &ContentPack,
+        actor_id: &str,
+        stat_key: &str,
+    ) -> i32 {
+        let mut value = self.actor_stat_maximum(content, actor_id, stat_key);
+        value += self.actor_equipped_stat_bonus(content, actor_id, stat_key);
+        value
+    }
+
+    pub fn effective_actor_stat(
         &self,
         content: &ContentPack,
         actor_id: &str,
         stat_key: &str,
     ) -> i32 {
         let mut value = self.actor_stat(actor_id, stat_key);
-        if actor_id == content.settings.combat.player_actor_id {
-            value += self.equipped_stat_bonus(content, stat_key);
-        }
+        value += self.actor_equipped_stat_bonus(content, actor_id, stat_key);
         value
     }
 
     /// Item id equipped in `slot_id`, if any.
     pub fn equipped_item(&self, slot_id: &str) -> Option<&str> {
         self.equipment.get(slot_id).map(String::as_str)
+    }
+
+    /// Equipment for any actor (for non-player actors, reads `actor_equipment`).
+    pub fn actor_equipment(&self, actor_id: &str) -> &BTreeMap<String, String> {
+        static EMPTY: std::sync::LazyLock<BTreeMap<String, String>> =
+            std::sync::LazyLock::new(BTreeMap::new);
+        self.actor_equipment.get(actor_id).unwrap_or(&EMPTY)
+    }
+
+    /// Item id equipped in `slot_id` for `actor_id`, if any.
+    pub fn actor_equipped_item<'a>(&'a self, actor_id: &str, slot_id: &str) -> Option<&'a str> {
+        if actor_id == "player" {
+            self.equipped_item(slot_id)
+        } else {
+            self.actor_equipment(actor_id).get(slot_id).map(String::as_str)
+        }
     }
 
     /// Whether `item` currently occupies every slot it requires (i.e. it is
@@ -158,6 +186,25 @@ pub fn effective_actor_stat(
             && slots
                 .iter()
                 .all(|slot| self.equipment.get(slot).map(String::as_str) == Some(item.id.as_str()))
+    }
+
+    /// Whether `item` is equipped by `actor_id`.
+    pub fn actor_item_is_equipped(
+        &self,
+        content: &ContentPack,
+        actor_id: &str,
+        item: &ItemDefinition,
+    ) -> bool {
+        if actor_id == content.settings.combat.player_actor_id {
+            self.item_is_equipped(item)
+        } else {
+            let slots = item.occupied_slots();
+            let eq = self.actor_equipment(actor_id);
+            !slots.is_empty()
+                && slots
+                    .iter()
+                    .all(|slot| eq.get(slot).map(String::as_str) == Some(item.id.as_str()))
+        }
     }
 
     pub fn pair_stats_snapshot(

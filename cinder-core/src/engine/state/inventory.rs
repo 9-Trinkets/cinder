@@ -31,6 +31,54 @@ impl WorldState {
         has
     }
 
+    pub fn actor_has_item(&self, actor_id: &str, item_id: &str) -> bool {
+        self.actor_item_count(actor_id, item_id) > 0
+    }
+
+    pub fn actor_item_count(&self, actor_id: &str, item_id: &str) -> u32 {
+        self.actor_inventories
+            .get(actor_id)
+            .and_then(|inv| inv.get(item_id))
+            .copied()
+            .unwrap_or(0)
+    }
+
+    pub fn actor_inventory(&self, actor_id: &str) -> Vec<(String, u32)> {
+        if let Some(inv) = self.actor_inventories.get(actor_id) {
+            let mut items: Vec<(String, u32)> =
+                inv.iter().map(|(id, count)| (id.clone(), *count)).collect();
+            items.sort_by(|a, b| a.0.cmp(&b.0));
+            items
+        } else {
+            Vec::new()
+        }
+    }
+
+    pub fn actor_add_item(&mut self, actor_id: &str, item_id: &str) {
+        *self
+            .actor_inventories
+            .entry(actor_id.to_string())
+            .or_default()
+            .entry(item_id.to_string())
+            .or_insert(0) += 1;
+    }
+
+    pub fn actor_remove_item(&mut self, actor_id: &str, item_id: &str) -> bool {
+        let mut has = false;
+        if let Some(inv) = self.actor_inventories.get_mut(actor_id) {
+            if let Some(count) = inv.get_mut(item_id)
+                && *count > 0
+            {
+                *count -= 1;
+                has = true;
+            }
+            if let Some(0) = inv.get(item_id) {
+                inv.remove(item_id);
+            }
+        }
+        has
+    }
+
     pub fn has_item_in_storage(
         &self,
         item_id: &str,

@@ -1,9 +1,34 @@
 use super::PlayerCommand;
 
 pub(super) fn parse_item_command(trimmed: &str) -> Option<PlayerCommand> {
-    // Equipment must precede take so `take off X` is not interpreted as an
+    let lower = trimmed.to_ascii_lowercase();
+
+    // 1. Give to party member: `give <item> to <member>` or `hand <item> to <member>`
+    for prefix in &["give ", "hand "] {
+        if let Some(rest) = lower.strip_prefix(prefix) {
+            let actual_rest = trimmed[prefix.len()..].trim();
+            if actual_rest.is_empty() {
+                continue;
+            }
+            if let Some(idx) = rest.find(" to ") {
+                let item_target = actual_rest[..idx].trim().to_string();
+                let actor_reference = actual_rest[idx + 4..].trim().to_string();
+                return Some(PlayerCommand::GiveToPartyMember {
+                    item_target,
+                    actor_reference,
+                });
+            } else {
+                return Some(PlayerCommand::GiveToPartyMember {
+                    item_target: actual_rest.to_string(),
+                    actor_reference: String::new(),
+                });
+            }
+        }
+    }
+
+    // 2. Equipment must precede take so `take off X` is not interpreted as an
     // item named `off X`.
-    phrase_target(
+    if let Some(target) = phrase_target(
         trimmed,
         &[
             "equip ",
@@ -17,30 +42,53 @@ pub(super) fn parse_item_command(trimmed: &str) -> Option<PlayerCommand> {
             "grip ",
             "arm with ",
         ],
-    )
-        .map(|target| PlayerCommand::Equip { target })
-        .or_else(|| {
-            phrase_target(
-                trimmed,
-                &[
-                    "unequip ",
-                    "take off ",
-                    "stow ",
-                    "remove ",
-                    "sheathe ",
-                    "put away ",
-                    "set down ",
-                ],
-            )
-            .map(|target| PlayerCommand::Unequip { target })
-        })
-        .or_else(|| {
-            phrase_target(trimmed, &["take ", "pick up ", "get ", "pickup "])
-                .map(|target| PlayerCommand::Take { target })
-        })
-        .or_else(|| {
-            phrase_target(trimmed, &["drop "]).map(|target| PlayerCommand::Drop { target })
-        })
+    ) {
+        return Some(PlayerCommand::Equip { target });
+    }
+
+    if let Some(target) = phrase_target(
+        trimmed,
+        &[
+            "unequip ",
+            "take off ",
+            "stow ",
+            "remove ",
+            "sheathe ",
+            "put away ",
+            "set down ",
+        ],
+    ) {
+        return Some(PlayerCommand::Unequip { target });
+    }
+
+    // 3. Take from member: `take <item> from <member>`
+    for prefix in &["take ", "pick up ", "get ", "pickup "] {
+        if let Some(rest) = lower.strip_prefix(prefix) {
+            let actual_rest = trimmed[prefix.len()..].trim();
+            if let Some(idx) = rest.find(" from ") {
+                let item_target = actual_rest[..idx].trim().to_string();
+                let actor_reference = actual_rest[idx + 6..].trim().to_string();
+                if !item_target.is_empty() && !actor_reference.is_empty() {
+                    return Some(PlayerCommand::TakeFromPartyMember {
+                        item_target,
+                        actor_reference,
+                    });
+                }
+            }
+        }
+    }
+
+    // 4. Take from room
+    if let Some(target) = phrase_target(trimmed, &["take ", "pick up ", "get ", "pickup "]) {
+        return Some(PlayerCommand::Take { target });
+    }
+
+    // 5. Drop
+    if let Some(target) = phrase_target(trimmed, &["drop "]) {
+        return Some(PlayerCommand::Drop { target });
+    }
+
+    None
 }
 
 fn phrase_target(trimmed: &str, prefixes: &[&str]) -> Option<String> {
@@ -119,8 +167,32 @@ mod tests {
 
     #[test]
     fn bare_item_verbs_do_not_resolve() {
-        for input in ["take", "drop", "equip", "unequip"] {
+        for input in ["take", "drop", "equip", "unequip", "give", "hand"] {
             assert!(parse_item_command(input).is_none());
         }
+    }
+
+    #[test]
+    fn party_item_transfer_phrases_resolve() {
+        assert!(matches!(
+            parse_item_command("give iron sword to blair"),
+            Some(PlayerCommand::GiveToPartyMember { item_target, actor_reference })
+                if item_target == "iron sword" && actor_reference == "blair"
+        ));
+        assert!(matches!(
+            parse_item_command("hand healing potion to dark golem"),
+            Some(PlayerCommand::GiveToPartyMember { item_target, actor_reference })
+                if item_target == "healing potion" && actor_reference == "dark golem"
+        ));
+        assert!(matches!(
+            parse_item_command("take iron sword from blair"),
+            Some(PlayerCommand::TakeFromPartyMember { item_target, actor_reference })
+                if item_target == "iron sword" && actor_reference == "blair"
+        ));
+        assert!(matches!(
+            parse_item_command("get shield from companion-1"),
+            Some(PlayerCommand::TakeFromPartyMember { item_target, actor_reference })
+                if item_target == "shield" && actor_reference == "companion-1"
+        ));
     }
 }

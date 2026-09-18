@@ -228,6 +228,7 @@ export interface InventoryItem {
 export interface EquippedItem {
   slot: string
   label: string
+  id?: string
 }
 
 export interface PartyMember {
@@ -238,6 +239,8 @@ export interface PartyMember {
   hp_max: number
   order: string
   order_panel: string
+  inventory?: InventoryItem[]
+  equipped_items?: EquippedItem[]
 }
 
 export interface StatValue {

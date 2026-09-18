@@ -57,6 +57,14 @@ pub(crate) enum PlayerCommand {
         actor_reference: String,
         order: PartyOrderKind,
     },
+    GiveToPartyMember {
+        item_target: String,
+        actor_reference: String,
+    },
+    TakeFromPartyMember {
+        item_target: String,
+        actor_reference: String,
+    },
     Follow {
         target: Option<String>,
     },
@@ -104,6 +112,17 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
                         return PlayerCommand::Unequip {
                             target: target.trim().to_string(),
                         };
+                    }
+                    let lower_remainder = remainder.to_ascii_lowercase();
+                    if let Some(idx) = lower_remainder.find(" from ") {
+                        let item_target = remainder[..idx].trim().to_string();
+                        let actor_reference = remainder[idx + 6..].trim().to_string();
+                        if !item_target.is_empty() && !actor_reference.is_empty() {
+                            return PlayerCommand::TakeFromPartyMember {
+                                item_target,
+                                actor_reference,
+                            };
+                        }
                     }
                 }
                 return PlayerCommand::Take {

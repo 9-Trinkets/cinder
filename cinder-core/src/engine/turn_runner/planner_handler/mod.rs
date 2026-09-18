@@ -11,7 +11,9 @@ mod planner_tests;
 
 use self::items::{plan_drop_command, plan_equip_command, plan_take_command, plan_unequip_command};
 use self::menus::{plan_unknown_command, try_resolve_menu_choice};
-use self::party::{plan_follow_command, plan_party_order};
+use self::party::{
+    plan_follow_command, plan_give_to_party_member, plan_party_order, plan_take_from_party_member,
+};
 use super::planning::{PlanningContext, plan_authored_command};
 use super::types::{AggregatedTurn, PlannedTurn, RouteEnvelope};
 use crate::content::types::ContentPack;
@@ -75,6 +77,28 @@ pub(super) fn build_planned_turn(
                 &aggregated.world.current_room_id,
                 &actor_reference,
                 order,
+                &mut planned,
+            ),
+            PlayerCommand::GiveToPartyMember {
+                item_target,
+                actor_reference,
+            } => plan_give_to_party_member(
+                content,
+                planner_state,
+                &aggregated.world.current_room_id,
+                &item_target,
+                &actor_reference,
+                &mut planned,
+            ),
+            PlayerCommand::TakeFromPartyMember {
+                item_target,
+                actor_reference,
+            } => plan_take_from_party_member(
+                content,
+                planner_state,
+                &aggregated.world.current_room_id,
+                &item_target,
+                &actor_reference,
                 &mut planned,
             ),
             PlayerCommand::Follow { target } => plan_follow_command(

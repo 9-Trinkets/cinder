@@ -333,3 +333,67 @@ fn item_transfers_accepted_when_declared_in_pack() {
         WorldEvent::ActionRejected { .. }
     )));
 }
+
+#[test]
+fn give_to_party_member_plans_event_when_valid() {
+    let mut content = minimal_test_pack();
+    content.items.push(ItemDefinition {
+        id: "iron-chisel".to_string(),
+        label: "iron chisel".to_string(),
+        ..ItemDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut content);
+
+    let mut state = WorldState::new(&content);
+    state.set_stance("blair", ActorStance::Allied);
+    state.add_item("iron-chisel");
+
+    let (planned, advances_time) = plan_command(
+        &content,
+        &state,
+        "give iron chisel to blair",
+        PlayerCommand::GiveToPartyMember {
+            item_target: "iron chisel".to_string(),
+            actor_reference: "blair".to_string(),
+        },
+    );
+
+    assert!(advances_time);
+    assert!(planned.events.iter().any(|event| matches!(
+        event,
+        WorldEvent::PlayerGaveItemToPartyMember { actor_id, item_id }
+            if actor_id == "blair" && item_id == "iron-chisel"
+    )));
+}
+
+#[test]
+fn take_from_party_member_plans_event_when_held() {
+    let mut content = minimal_test_pack();
+    content.items.push(ItemDefinition {
+        id: "iron-chisel".to_string(),
+        label: "iron chisel".to_string(),
+        ..ItemDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut content);
+
+    let mut state = WorldState::new(&content);
+    state.set_stance("blair", ActorStance::Allied);
+    state.actor_add_item("blair", "iron-chisel");
+
+    let (planned, advances_time) = plan_command(
+        &content,
+        &state,
+        "take iron chisel from blair",
+        PlayerCommand::TakeFromPartyMember {
+            item_target: "iron chisel".to_string(),
+            actor_reference: "blair".to_string(),
+        },
+    );
+
+    assert!(advances_time);
+    assert!(planned.events.iter().any(|event| matches!(
+        event,
+        WorldEvent::PlayerTookItemFromPartyMember { actor_id, item_id }
+            if actor_id == "blair" && item_id == "iron-chisel"
+    )));
+}

@@ -142,6 +142,14 @@ pub enum WorldEvent {
     PlayerUnequippedItem {
         item_id: String,
     },
+    PlayerGaveItemToPartyMember {
+        actor_id: String,
+        item_id: String,
+    },
+    PlayerTookItemFromPartyMember {
+        actor_id: String,
+        item_id: String,
+    },
     ItemAcquired {
         item_id: String,
         storage: ItemStorageTarget,

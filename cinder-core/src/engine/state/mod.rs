@@ -106,6 +106,12 @@ pub struct WorldState {
     /// `settings.equipment_slots` keys. Bonuses feed effective stat reads.
     #[serde(default)]
     pub equipment: BTreeMap<String, String>,
+    /// Per-actor inventory (non-player actors), actor id → item id → count.
+    #[serde(default)]
+    pub actor_inventories: BTreeMap<String, HashMap<String, u32>>,
+    /// Per-actor equipment (non-player actors), actor id → slot id → item id.
+    #[serde(default)]
+    pub actor_equipment: BTreeMap<String, BTreeMap<String, String>>,
     /// Per-actor experience toward their next level. Absent entries are 0.
     /// When a mob is defeated its full XP drop is awarded to every party
     /// member (the player and every follower), so each advances on their own
@@ -311,6 +317,8 @@ impl WorldState {
             party_reaction_ready_at: BTreeMap::new(),
             next_hostile_strike_at: BTreeMap::new(),
             equipment: BTreeMap::new(),
+            actor_inventories: seeded_actor_inventories(content),
+            actor_equipment: seeded_actor_equipment(content),
             actor_xp: BTreeMap::new(),
             actor_level: seeded_actor_levels(content),
             scripted_sequences,
@@ -355,7 +363,8 @@ pub struct WorldSnapshot {
 
 mod seeding;
 use seeding::{
-    seeded_actor_levels, seeded_actor_stats, seeded_feature_consumable_stock, seeded_pair_stats,
+    seeded_actor_equipment, seeded_actor_inventories, seeded_actor_levels, seeded_actor_stats,
+    seeded_feature_consumable_stock, seeded_pair_stats,
 };
 mod act_cast;
 pub use act_cast::{

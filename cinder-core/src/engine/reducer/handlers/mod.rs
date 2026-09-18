@@ -48,5 +48,8 @@ pub(super) use observation::{
     handle_actor_observed_feature, handle_actor_observed_room, handle_current_room_observed,
     handle_feature_observed,
 };
-pub(super) use party::{handle_party_order_assigned, handle_player_followed_actor};
+pub(super) use party::{
+    handle_party_order_assigned, handle_player_followed_actor,
+    handle_player_gave_item_to_party_member, handle_player_took_item_from_party_member,
+};
 pub(super) use speech::handle_channel_message;
