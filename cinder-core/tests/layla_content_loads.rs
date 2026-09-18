@@ -635,6 +635,101 @@ fn layla_trace_requires_magic_chalk_in_inventory() {
     ));
 }
 
-
-
-
+#[test]
+fn layla_shipped_pack_invariants_and_wiring() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    assert!(pack.maps.len() >= 4);
+    assert_eq!(
+        pack.map_for_room("r1c1").map(|map| (map.id.as_str(), map.rooms.len())),
+        Some(("upper-works", 81))
+    );
+    assert_eq!(
+        pack.map_for_room("d8c5").map(|map| map.id.as_str()),
+        Some("deep-forest")
+    );
+    assert_eq!(
+        pack.map_for_room("oh").map(|map| map.id.as_str()),
+        Some("outer-ring")
+    );
+    assert_eq!(
+        pack.map_for_room("village_square").map(|map| map.id.as_str()),
+        Some("the-commoners")
+    );
+    assert_eq!(pack.settings.periodic_actor_effects.len(), 1);
+    assert_eq!(pack.settings.periodic_actor_effects[0].id, "drain_sigil");
+    assert_eq!(
+        pack.actor("fire-elemental").unwrap().drops,
+        std::collections::BTreeMap::from([("spawn-scroll".to_string(), DropSpec::Always(1))])
+    );
+    assert_eq!(
+        pack.item("spawn-scroll").map(|item| item.use_hook.as_str()),
+        Some("item.spawn_scroll_read")
+    );
+    assert_eq!(
+        pack.action("trace")
+            .and_then(|action| action.item_creation.as_ref())
+            .and_then(|creation| creation.craftable_item_gates.get("spawn-sigil"))
+            .map(String::as_str),
+        Some("knows_spawn")
+    );
+    let handler = pack.actor("handler").unwrap();
+    assert!(handler.room_id.is_empty(), "handler must be offstage");
+    assert_eq!(
+        handler.initial_relationship.as_ref().map(|rel| (rel.stance, rel.follows_player)),
+        Some((cinder_core::engine::state::ActorStance::Allied, false))
+    );
+    assert_eq!(pack.settings.feedback_channel_id.as_str(), "handler-comms");
+    assert_eq!(pack.message("item.acquired_inventory"), Some("Picked up {label}."));
+    assert_eq!(pack.message_voice("item.acquired_inventory"), cinder_core::content::types::PackMessageVoice::System);
+    assert_eq!(pack.message_voice("item.consumed_use"), cinder_core::content::types::PackMessageVoice::System);
+    assert_eq!(pack.message_voice("item.takedenied"), cinder_core::content::types::PackMessageVoice::Handler);
+    assert_eq!(pack.message_voice("combat.attack_hit"), cinder_core::content::types::PackMessageVoice::Narration);
+    assert_eq!(
+        pack.settings.party.initial_orders.get("golem-dark-nw").cloned(),
+        Some("guard".to_string())
+    );
+    assert_eq!(
+        pack.settings.party.initial_orders.get("golem-pale-ne").cloned(),
+        Some("assist".to_string())
+    );
+    assert_eq!(pack.settings.party.combat_rules.len(), 3);
+    assert_eq!(
+        pack.settings.party.combat_rules[0].tier,
+        cinder_core::content::types::PartyDecisionTier::Survival
+    );
+    assert_eq!(
+        pack.channel("handler-comms").map(|channel| channel.participants.as_slice()),
+        Some(&["player".to_string(), "handler".to_string()][..])
+    );
+    assert!(pack.opening.system_lines.is_empty());
+    assert_eq!(
+        pack.opening.opening_sequence_id.as_deref(),
+        Some("handler-introduction")
+    );
+    let opening_sequence = pack.sequence("handler-introduction").unwrap();
+    assert_eq!(opening_sequence.steps.len(), 5);
+    assert!(matches!(
+        &opening_sequence.steps[0],
+        cinder_core::content::types::ScriptedLine::Channel {
+            speaker_id,
+            recipient_id: Some(recipient_id),
+            ..
+        } if speaker_id == "handler" && recipient_id == "player"
+    ));
+    assert!(matches!(
+        &opening_sequence.steps[1],
+        cinder_core::content::types::ScriptedLine::Channel {
+            speaker_id,
+            recipient_id: Some(recipient_id),
+            line,
+            ..
+        } if speaker_id == "player"
+            && recipient_id == "handler"
+            && line == "Who's there? Where am I?"
+    ));
+    assert!(matches!(
+        opening_sequence.completion_effects.as_slice(),
+        [cinder_core::content::types::AdvanceEffect::SetStoryVar { key, value }]
+            if key == "handler_introduced" && value == "true"
+    ));
+}

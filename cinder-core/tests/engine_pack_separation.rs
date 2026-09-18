@@ -1,14 +1,14 @@
 //! Guard: the engine must stay free of pack-specific identity.
 //!
-//! Cinder's architecture rule is that `cinder-core/src/engine` implements
-//! mechanisms only - geography, actors, and prose belong entirely to content
-//! packs. This test fails if any engine source reintroduces pack identifiers
-//! or player-facing narration.
+//! Cinder's architecture rule is that `cinder-core/src` implements
+//! mechanisms and generic loaders only - geography, actors, and prose belong
+//! entirely to content packs. This test fails if any source under `src/`
+//! reintroduces pack identifiers or player-facing narration.
 
 use std::fs;
 use std::path::{Path, PathBuf};
 
-const ENGINE_DIR: &str = "src/engine";
+const ENGINE_DIR: &str = "src";
 
 fn forbidden_matches(path: &Path, source: &str) -> Vec<String> {
     let mut violations = Vec::new();
