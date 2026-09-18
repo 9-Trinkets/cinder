@@ -263,8 +263,6 @@ def lint_settings(lint: Linter, doc: PackDoc) -> None:
             if not any(p != player for p in channel.get("participants") or []):
                 lint.warn(f"feedback_channel_id '{feedback}' needs a non-player speaker in participants")
 
-    if "starting_items" in settings:
-        lint.warn(f"{doc.relative('settings.json')}: starting_items is deprecated; define initial_inventory on actors instead")
     for actor_id in (settings.get("party", {}).get("initial_orders") or {}).keys():
         lint.require("actors", actor_id, "settings.party.initial_orders")
     player = settings.get("combat", {}).get("player_actor_id") or ""
