@@ -10,8 +10,8 @@ use super::zone::{Direction, Zone};
 #[derive(Debug, Clone)]
 #[allow(dead_code)]
 pub struct RoomDraft {
-    pub x: usize,
-    pub y: usize,
+    pub x: f64,
+    pub y: f64,
     pub id: String,
     pub title: String,
     pub summary: String,
@@ -25,7 +25,8 @@ pub struct FloorBuilder {
     pub width: usize,
     pub height: usize,
     pub zones: Vec<Zone>,
-    pub rooms: BTreeMap<(usize, usize), RoomDraft>,
+    pub grid: BTreeMap<(usize, usize), String>,
+    pub rooms: Vec<RoomDraft>,
     pub exits: HashMap<String, Vec<RoomExitDefinition>>,
 }
 
@@ -37,7 +38,8 @@ impl FloorBuilder {
             width,
             height,
             zones: Vec::new(),
-            rooms: BTreeMap::new(),
+            grid: BTreeMap::new(),
+            rooms: Vec::new(),
             exits: HashMap::new(),
         }
     }
@@ -49,8 +51,8 @@ impl FloorBuilder {
     #[allow(clippy::too_many_arguments)]
     pub fn add_room(
         &mut self,
-        x: usize,
-        y: usize,
+        x: f64,
+        y: f64,
         id: impl Into<String>,
         title: impl Into<String>,
         summary: impl Into<String>,
@@ -69,18 +71,19 @@ impl FloorBuilder {
             inspect_text: feature_inspect.into(),
         };
 
-        self.rooms.insert(
-            (x, y),
-            RoomDraft {
-                x,
-                y,
-                id: id_str.clone(),
-                title: title.into(),
-                summary: summary.into(),
-                inspect_text: inspect_text.into(),
-                features: vec![feature],
-            },
-        );
+        if x >= 0.0 && y >= 0.0 && x.fract() == 0.0 && y.fract() == 0.0 {
+            self.grid.insert((x as usize, y as usize), id_str.clone());
+        }
+
+        self.rooms.push(RoomDraft {
+            x,
+            y,
+            id: id_str.clone(),
+            title: title.into(),
+            summary: summary.into(),
+            inspect_text: inspect_text.into(),
+            features: vec![feature],
+        });
         self.exits.entry(id_str).or_default();
     }
 
@@ -129,34 +132,35 @@ impl FloorBuilder {
     }
 
     pub fn wire_internal_zones(&mut self, exclude_pairs: &[(usize, usize, usize, usize)]) {
-        let coords: Vec<(usize, usize)> = self.rooms.keys().copied().collect();
+        let coords: Vec<(usize, usize)> = self.grid.keys().copied().collect();
         for &(x, y) in &coords {
             let Some(zone) = self.zone_for(x, y) else { continue };
             let zone_name = zone.name.clone();
-            let from_id = self.rooms[&(x, y)].id.clone();
+            let from_id = self.grid[&(x, y)].clone();
 
             // East neighbor
             if x + 1 < self.width
-                && let Some(target) = self.rooms.get(&(x + 1, y))
+                && let Some(to_id) = self.grid.get(&(x + 1, y))
                     && let Some(target_zone) = self.zone_for(x + 1, y)
                         && target_zone.name == zone_name && !exclude_pairs.contains(&(x, y, x + 1, y)) {
-                            let to_id = target.id.clone();
-                            self.connect_bidirectional(&from_id, &to_id, Direction::East);
+                            let to_id_clone = to_id.clone();
+                            self.connect_bidirectional(&from_id, &to_id_clone, Direction::East);
                         }
 
             // South neighbor
             if y + 1 < self.height
-                && let Some(target) = self.rooms.get(&(x, y + 1))
+                && let Some(to_id) = self.grid.get(&(x, y + 1))
                     && let Some(target_zone) = self.zone_for(x, y + 1)
                         && target_zone.name == zone_name && !exclude_pairs.contains(&(x, y, x, y + 1)) {
-                            let to_id = target.id.clone();
-                            self.connect_bidirectional(&from_id, &to_id, Direction::South);
+                            let to_id_clone = to_id.clone();
+                            self.connect_bidirectional(&from_id, &to_id_clone, Direction::South);
                         }
         }
     }
 
+    #[allow(dead_code)]
     pub fn connect_adjacent_zones(&mut self, zone_a_name: &str, zone_b_name: &str, dir: Direction) {
-        let coords: Vec<(usize, usize)> = self.rooms.keys().copied().collect();
+        let coords: Vec<(usize, usize)> = self.grid.keys().copied().collect();
         for &(x, y) in &coords {
             let Some(za) = self.zone_for(x, y) else { continue };
             if za.name != zone_a_name { continue; }
@@ -169,11 +173,11 @@ impl FloorBuilder {
                 _ => continue,
             };
 
-            if let Some(target) = self.rooms.get(&(nx, ny))
+            if let Some(target_id) = self.grid.get(&(nx, ny))
                 && let Some(zb) = self.zone_for(nx, ny)
                     && zb.name == zone_b_name {
-                        let from_id = self.rooms[&(x, y)].id.clone();
-                        let to_id = target.id.clone();
+                        let from_id = self.grid[&(x, y)].clone();
+                        let to_id = target_id.clone();
                         self.connect_bidirectional(&from_id, &to_id, dir);
                     }
         }
@@ -183,12 +187,12 @@ impl FloorBuilder {
         let mut built_rooms = Vec::with_capacity(self.rooms.len());
         let mut map_rooms = Vec::with_capacity(self.rooms.len());
 
-        for ((x, y), draft) in self.rooms {
+        for draft in self.rooms {
             let exits = self.exits.remove(&draft.id).unwrap_or_default();
             map_rooms.push(MapRoomDefinition {
                 room_id: draft.id.clone(),
-                x: x as f64,
-                y: y as f64,
+                x: draft.x,
+                y: draft.y,
             });
             built_rooms.push(RoomDefinition {
                 id: draft.id,
