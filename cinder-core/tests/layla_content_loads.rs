@@ -583,5 +583,51 @@ fn player_starting_inventory_seeds_from_actor_definition() {
     assert_eq!(state.player_inventory.get("magic-chalk"), Some(&1));
 }
 
+#[test]
+fn layla_trace_requires_magic_chalk_in_inventory() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let trace = pack.action("trace").expect("trace action exists");
+    assert_eq!(trace.available.requires_item.as_deref(), Some("magic-chalk"));
+
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    assert_eq!(state.player_inventory.get("magic-chalk"), Some(&1));
+    assert!(cinder_core::engine::turn_policies::action_is_available(
+        &pack,
+        &state,
+        trace,
+        &state.current_room_id
+    ));
+
+    // Remove magic-chalk from Layla's inventory (simulating giving it to an ally)
+    state.remove_item("magic-chalk");
+    assert_eq!(state.player_inventory.get("magic-chalk"), None);
+    assert!(!cinder_core::engine::turn_policies::action_is_available(
+        &pack,
+        &state,
+        trace,
+        &state.current_room_id
+    ));
+
+    // Running trace turn without chalk returns ActionRejected with missing item message
+    let runtime = cinder_core::engine::runtime::CinderRuntime::from_state(
+        pack.clone(),
+        state.clone(),
+        false,
+    )
+    .expect("runtime from state");
+    let outcome = runtime.run_turn("trace charm-sigil").expect("turn runs");
+    assert!(outcome.text.contains("magic chalk"));
+
+    // Giving chalk back restores trace availability
+    state.add_item("magic-chalk");
+    assert!(cinder_core::engine::turn_policies::action_is_available(
+        &pack,
+        &state,
+        trace,
+        &state.current_room_id
+    ));
+}
+
+
 
 

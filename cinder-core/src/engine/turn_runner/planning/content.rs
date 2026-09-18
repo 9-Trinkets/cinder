@@ -167,7 +167,22 @@ pub(super) fn plan_content_command(
         return false;
     }
 
-    // Check item requirement (consumes_item, consumes_any, or requires_any)
+    // Check item requirement (requires_item, consumes_item, consumes_any, or requires_any)
+    if let Some(item_id) = &action.available.requires_item {
+        if !context.planner_state.has_item_in_storage(
+            item_id,
+            to_item_storage(action.available.requires_item_storage.clone()),
+            context.current_room_id,
+        ) {
+            let label = content.item_label(item_id);
+            planned.events.push(WorldEvent::ActionRejected {
+                message: content
+                    .render_message("error.missing_item", &[("label", label)])
+                    .unwrap_or_default(),
+            });
+            return false;
+        }
+    }
     if let Some(item_id) = &action.available.consumes_item {
         if !context.planner_state.has_item_in_storage(
             item_id,
@@ -216,11 +231,23 @@ pub(super) fn plan_content_command(
                 .has_item_in_storage(id, storage, context.current_room_id)
         });
         if !has_any {
-            planned.events.push(WorldEvent::ActionRejected {
-                message: content
+            let message = if action.available.consumes_any.is_empty() {
+                if let Some(first_req) = action.available.requires_any.first() {
+                    let label = content.item_label(first_req);
+                    content
+                        .render_message("error.missing_item", &[("label", label)])
+                        .unwrap_or_default()
+                } else {
+                    content
+                        .render_message("error.nothing_to_consume", &[])
+                        .unwrap_or_default()
+                }
+            } else {
+                content
                     .render_message("error.nothing_to_consume", &[])
-                    .unwrap_or_default(),
-            });
+                    .unwrap_or_default()
+            };
+            planned.events.push(WorldEvent::ActionRejected { message });
             return false;
         }
         if !action.available.consumes_any.is_empty()

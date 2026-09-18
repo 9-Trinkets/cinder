@@ -239,7 +239,9 @@
         },
         "storage": "current_room"
       },
-      "available": {},
+      "available": {
+        "requires_item": "magic-chalk"
+      },
       "ui": {
         "bar": true,
         "overflow": false,

@@ -317,3 +317,29 @@ fn requires_actor_in_room_flag_is_removed() {
     assert!(pack.action("attack").is_some());
     assert!(pack.action("speak").is_some());
 }
+
+#[test]
+fn action_requiring_item_hides_when_item_not_in_inventory() {
+    let mut pack = target_pack();
+    let trace = pack
+        .actions
+        .iter_mut()
+        .find(|a| a.id == "trace")
+        .unwrap();
+    trace.available.requires_item = Some("magic-chalk".to_string());
+    rebuild_test_pack_indexes(&mut pack);
+    let trace = pack.action("trace").unwrap();
+    let mut state = live_in_lounge(&pack);
+
+    // Player doesn't have magic-chalk -> action is hidden.
+    assert!(!action_is_available(&pack, &state, trace, &state.current_room_id));
+
+    // Player acquires magic-chalk -> action is available.
+    state.add_item("magic-chalk");
+    assert!(action_is_available(&pack, &state, trace, &state.current_room_id));
+
+    // Player loses magic-chalk (e.g. given away or dropped) -> action is hidden again.
+    state.remove_item("magic-chalk");
+    assert!(!action_is_available(&pack, &state, trace, &state.current_room_id));
+}
+

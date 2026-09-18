@@ -201,6 +201,15 @@ pub(super) fn apply_actor_command_realization_effects(
     command: &ActionDefinition,
     context: &ActorCommandContext<'_>,
 ) -> bool {
+    if let Some(item_id) = &command.available.requires_item {
+        let storage = match command.available.requires_item_storage {
+            ActionItemStorageTarget::PlayerInventory => ItemStorageTarget::PlayerInventory,
+            ActionItemStorageTarget::CurrentRoom => ItemStorageTarget::CurrentRoom,
+        };
+        if !state.has_item_in_storage(item_id, storage, context.room_id) {
+            return false;
+        }
+    }
     for effect in &command.effects {
         match effect {
             CommandEffect::ObserveFeature => {

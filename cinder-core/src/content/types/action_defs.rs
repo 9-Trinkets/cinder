@@ -26,6 +26,10 @@ pub struct ActionAvailability {
     #[serde(default)]
     pub blocked_by_objective_progress: Vec<BeatObjectiveProgressRef>,
     #[serde(default)]
+    pub requires_item: Option<String>,
+    #[serde(default)]
+    pub requires_item_storage: ActionItemStorageTarget,
+    #[serde(default)]
     pub requires_any: Vec<String>,
     #[serde(default)]
     pub requires_any_storage: ActionItemStorageTarget,

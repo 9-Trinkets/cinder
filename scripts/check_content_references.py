@@ -308,6 +308,14 @@ def lint_actions(lint: Linter, doc: PackDoc) -> None:
                 objective_id = ref.get("objective_id") or ""
                 key = ref.get("key") or ""
                 lint.require_key(objective_id, key, f"action '{action_id}' available.{field}")
+        if available.get("requires_item"):
+            lint.require("items", available["requires_item"], f"action '{action_id}' available.requires_item")
+        if available.get("consumes_item"):
+            lint.require("items", available["consumes_item"], f"action '{action_id}' available.consumes_item")
+        for item_id in available.get("requires_any") or []:
+            lint.require("items", item_id, f"action '{action_id}' available.requires_any")
+        for item_id in available.get("consumes_any") or []:
+            lint.require("items", item_id, f"action '{action_id}' available.consumes_any")
 
 
 def lint_beat_objectives(lint: Linter, doc: PackDoc) -> None:
