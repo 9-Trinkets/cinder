@@ -175,20 +175,21 @@ the narrator joins the result into a `TurnOutcome`.
 
 ## Development
 
-Guide rails are enforced as a warning-only git pre-commit hook (see
-`scripts/pre-commit` and `scripts/install_hooks.sh`):
+Guide rails and developer tooling are provided by the `cinder-tools` crate and enforced as a warning-only git pre-commit hook (see `scripts/pre-commit` and `scripts/install_hooks.sh`):
 
-- `scripts/check_file_lengths.py` — flags source files over 500 lines.
-- `scripts/check_test_placement.py` — flags integration suites living under `src/`
-  instead of `tests/`.
+- `cargo run -p cinder-tools -- hygiene` — flags source files over 500 lines and integration tests misplaced under `src/`.
+- `cargo run -p cinder-tools -- lint` — validates pack references, rooms, exits, actors, drops, and hooks.
+- `cargo run -p cinder-tools -- floor build` — procedural room and dungeon zone grid builder.
+- `cargo run -p cinder-tools -- new-pack <name>` — scaffolds a new content pack.
+- `cargo run -p cinder-tools -- transcript <file>` — renders NDJSON session traces into human-readable transcripts.
 
 Before committing:
 
 ```bash
 cargo test --workspace
 cargo clippy --workspace --all-targets
-python3 scripts/check_file_lengths.py
-python3 scripts/check_test_placement.py
+cargo run -p cinder-tools -- hygiene
+cargo run -p cinder-tools -- lint
 # web UI
 cd cinder-web-ui && npx tsc -b && npm run build
 ```

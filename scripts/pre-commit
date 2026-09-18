@@ -1,22 +1,15 @@
 #!/usr/bin/env bash
 # Pre-commit hook source. Installed into .git/hooks/pre-commit by
 # scripts/install_hooks.sh with the absolute repo root baked in. Runs warning-
-# only health checks at every commit: file lengths and test organization.
+# only health checks at every commit: file lengths, test placement, and pack linting.
 # Always exits 0 so it never blocks a commit.
 set -u
 # REPO_ROOT is substituted at install time by install_hooks.sh.
 REPO_ROOT="__CINDER_REPO_ROOT__"
 
-if [ -f "$REPO_ROOT/scripts/check_file_lengths.py" ]; then
-    python3 "$REPO_ROOT/scripts/check_file_lengths.py" || true
-fi
-
-if [ -f "$REPO_ROOT/scripts/check_test_placement.py" ]; then
-    python3 "$REPO_ROOT/scripts/check_test_placement.py" || true
-fi
-
-if [ -f "$REPO_ROOT/scripts/check_content_references.py" ]; then
-    python3 "$REPO_ROOT/scripts/check_content_references.py" || true
+if [ -f "$REPO_ROOT/Cargo.toml" ]; then
+    cargo run -q -p cinder-tools --manifest-path "$REPO_ROOT/Cargo.toml" -- hygiene || true
+    cargo run -q -p cinder-tools --manifest-path "$REPO_ROOT/Cargo.toml" -- lint || true
 fi
 
 exit 0

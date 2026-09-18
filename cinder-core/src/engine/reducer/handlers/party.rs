@@ -91,8 +91,8 @@ pub(crate) fn handle_player_gave_item_to_party_member(
             state.actor_add_item(actor_id, &old_item_id);
         }
 
-        if !item.equip_hook.is_empty() {
-            if let Err(error) = crate::engine::hooks::apply_narrating_world_hook_effects(
+        if !item.equip_hook.is_empty()
+            && let Err(error) = crate::engine::hooks::apply_narrating_world_hook_effects(
                 state,
                 content,
                 &item.equip_hook,
@@ -106,7 +106,6 @@ pub(crate) fn handle_player_gave_item_to_party_member(
             ) {
                 eprintln!("[cinder] hook warning ({}): {error}", item.equip_hook);
             }
-        }
 
         let give_msg = content
             .render_message("party.give_success", &[("actor", &actor_name), ("item", item_label)])
@@ -161,13 +160,12 @@ pub(crate) fn handle_player_took_item_from_party_member(
             .render_message("party.take_success", &[("actor", &actor_name), ("item", item_label)])
             .unwrap_or_else(|| format!("You take the {item_label} from {actor_name}."));
         lines.narration(take_msg);
-    } else if state.actor_has_item(actor_id, item_id) {
-        if state.actor_remove_item(actor_id, item_id) {
+    } else if state.actor_has_item(actor_id, item_id)
+        && state.actor_remove_item(actor_id, item_id) {
             state.add_item(item_id);
             let take_msg = content
                 .render_message("party.take_success", &[("actor", &actor_name), ("item", item_label)])
                 .unwrap_or_else(|| format!("You take the {item_label} from {actor_name}."));
             lines.narration(take_msg);
         }
-    }
 }

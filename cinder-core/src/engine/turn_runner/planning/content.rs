@@ -168,8 +168,8 @@ pub(super) fn plan_content_command(
     }
 
     // Check item requirement (requires_item, consumes_item, consumes_any, or requires_any)
-    if let Some(item_id) = &action.available.requires_item {
-        if !context.planner_state.has_item_in_storage(
+    if let Some(item_id) = &action.available.requires_item
+        && !context.planner_state.has_item_in_storage(
             item_id,
             to_item_storage(action.available.requires_item_storage.clone()),
             context.current_room_id,
@@ -182,7 +182,6 @@ pub(super) fn plan_content_command(
             });
             return false;
         }
-    }
     if let Some(item_id) = &action.available.consumes_item {
         if !context.planner_state.has_item_in_storage(
             item_id,

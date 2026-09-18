@@ -280,7 +280,6 @@ where
                 act_closure,
                 game_closure,
                 ui_snapshot: Some(ui_snapshot),
-                ..Default::default()
             };
             let transcript_entries: Vec<PendingTranscriptEntry> = response
                 .text

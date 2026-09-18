@@ -89,7 +89,7 @@ pub(super) fn build_party_members(
                 .max(1) as u32;
             let order = state.party_order(content, &actor_id).unwrap_or_default();
             let equipped_items =
-                build_equipped_items_from_map(&state.actor_equipment(&actor_id), content);
+                build_equipped_items_from_map(state.actor_equipment(&actor_id), content);
             let mut inventory = state
                 .actor_inventory(&actor_id)
                 .into_iter()

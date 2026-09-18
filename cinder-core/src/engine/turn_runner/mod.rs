@@ -441,8 +441,8 @@ pub(crate) fn maybe_tailor_handler_descent_commentary(
             .map(|l| l.trim().trim_matches('"').trim().to_string())
             .filter(|l| !l.is_empty())
             .collect();
-        if !valid_lines.is_empty()
-            && !(valid_lines.len() == 1 && valid_lines[0] == fallback_raw.trim())
+        if !(valid_lines.is_empty()
+            || (valid_lines.len() == 1 && valid_lines[0] == fallback_raw.trim()))
         {
             let attributed_first = handler_attributed_line(content, &valid_lines[0])
                 .unwrap_or_else(|| valid_lines[0].clone());
