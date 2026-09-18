@@ -69,6 +69,19 @@
             {
               "path": "actor_id",
               "operator": "equal",
+              "value": "goblin-shaman"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.minimap_unlocked"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
               "value": "goblin-1"
             }
           ],

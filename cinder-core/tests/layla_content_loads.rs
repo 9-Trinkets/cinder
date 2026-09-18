@@ -72,6 +72,7 @@ fn goblin_shaman_is_initially_hostile_and_attacks_on_sight() {
 fn goblin_shaman_defeat_narrates_world_hint_lines() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     assert!(pack.messages.contains_key("shaman.defeat"));
+    assert!(pack.messages.contains_key("handler.minimap_unlocked"));
     let defeat_msg = pack.render_message("shaman.defeat", &[]).unwrap();
     assert!(defeat_msg.contains("dead do not stay here"));
     assert!(defeat_msg.contains("relief") || defeat_msg.contains("void") || defeat_msg.contains("Cold at last"));
@@ -109,11 +110,17 @@ fn goblin_shaman_defeat_narrates_world_hint_lines() {
     assert_eq!(state.story_vars.get("shaman_defeated"), Some("true"));
     // Verify shaman-ring dropped into room
     assert!(state.loose_room_items("r5c5").iter().any(|(item, _)| item == "shaman-ring"));
-    // Verify narration lines include shaman.defeat, shaman.reveal, and shaman.memory
+    // Verify narration lines include shaman.defeat, shaman.reveal, shaman.memory, and handler.minimap_unlocked
     let texts: Vec<&str> = output.lines.0.iter().map(|line| line.text.as_str()).collect();
     assert!(texts.iter().any(|t| t.contains("dead do not stay here")));
     assert!(texts.iter().any(|t| t.contains("rough stair descends")));
     assert!(texts.iter().any(|t| t.contains("Go board")));
+    assert!(texts.iter().any(|t| t.contains("minimap")));
+    assert!(output.lines.0.iter().any(|line| {
+        line.kind == cinder_core::engine::narrative::NarrativeLineKind::Channel
+            && line.text.contains("Handler:")
+            && line.text.contains("minimap")
+    }));
 }
 
 #[test]

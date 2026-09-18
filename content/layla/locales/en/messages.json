@@ -222,5 +222,9 @@
     "handler.descend.the_board": {
         "voice": "handler",
         "text": "Floor three. The actual board. Whatever the elf king left standing, I'd rather not hear it called \"the final boss\" — it's a dish of black glass holding the ring together. Mind the ember near the south store."
+    },
+    "handler.minimap_unlocked": {
+        "voice": "handler",
+        "text": "Signal's clear. Looks like taking out the shaman cleared the interference on the surveyor feed. I've patched the floor grid into your console — check your sidebar, you've got a live minimap now. Try not to walk in circles."
     }
 }
