@@ -255,7 +255,7 @@ mod shipped_pack_load_tests {
                 );
             }
             if pack == "layla" {
-                assert_eq!(loaded.maps.len(), 3);
+                assert_eq!(loaded.maps.len(), 4);
                 assert_eq!(
                     loaded
                         .map_for_room("r1c1")
@@ -269,6 +269,10 @@ mod shipped_pack_load_tests {
                 assert_eq!(
                     loaded.map_for_room("oh").map(|map| map.id.as_str()),
                     Some("outer-ring")
+                );
+                assert_eq!(
+                    loaded.map_for_room("village_square").map(|map| map.id.as_str()),
+                    Some("the-commoners")
                 );
                 assert_eq!(loaded.settings.periodic_actor_effects.len(), 1);
                 assert_eq!(loaded.settings.periodic_actor_effects[0].id, "drain_sigil");

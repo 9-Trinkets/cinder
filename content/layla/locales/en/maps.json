@@ -3,187 +3,1343 @@
     "id": "upper-works",
     "label": "The Cave",
     "rooms": [
-      { "room_id": "r1c1", "x": 0, "y": 0 },
-      { "room_id": "r1c2", "x": 1, "y": 0 },
-      { "room_id": "r1c3", "x": 2, "y": 0 },
-      { "room_id": "r1c4", "x": 3, "y": 0 },
-      { "room_id": "r1c5", "x": 4, "y": 0 },
-      { "room_id": "r1c6", "x": 5, "y": 0 },
-      { "room_id": "r1c7", "x": 6, "y": 0 },
-      { "room_id": "r1c8", "x": 7, "y": 0 },
-      { "room_id": "r1c9", "x": 8, "y": 0 },
-      { "room_id": "r2c1", "x": 0, "y": 1 },
-      { "room_id": "r2c2", "x": 1, "y": 1 },
-      { "room_id": "r2c3", "x": 2, "y": 1 },
-      { "room_id": "r2c4", "x": 3, "y": 1 },
-      { "room_id": "r2c5", "x": 4, "y": 1 },
-      { "room_id": "r2c6", "x": 5, "y": 1 },
-      { "room_id": "r2c7", "x": 6, "y": 1 },
-      { "room_id": "r2c8", "x": 7, "y": 1 },
-      { "room_id": "r2c9", "x": 8, "y": 1 },
-      { "room_id": "r3c1", "x": 0, "y": 2 },
-      { "room_id": "r3c2", "x": 1, "y": 2 },
-      { "room_id": "r3c3", "x": 2, "y": 2 },
-      { "room_id": "r3c4", "x": 3, "y": 2 },
-      { "room_id": "r3c5", "x": 4, "y": 2 },
-      { "room_id": "r3c6", "x": 5, "y": 2 },
-      { "room_id": "r3c7", "x": 6, "y": 2 },
-      { "room_id": "r3c8", "x": 7, "y": 2 },
-      { "room_id": "r3c9", "x": 8, "y": 2 },
-      { "room_id": "r4c1", "x": 0, "y": 3 },
-      { "room_id": "r4c2", "x": 1, "y": 3 },
-      { "room_id": "r4c3", "x": 2, "y": 3 },
-      { "room_id": "r4c4", "x": 3, "y": 3 },
-      { "room_id": "r4c5", "x": 4, "y": 3 },
-      { "room_id": "r4c6", "x": 5, "y": 3 },
-      { "room_id": "r4c7", "x": 6, "y": 3 },
-      { "room_id": "r4c8", "x": 7, "y": 3 },
-      { "room_id": "r4c9", "x": 8, "y": 3 },
-      { "room_id": "r5c1", "x": 0, "y": 4 },
-      { "room_id": "r5c2", "x": 1, "y": 4 },
-      { "room_id": "r5c3", "x": 2, "y": 4 },
-      { "room_id": "r5c4", "x": 3, "y": 4 },
-      { "room_id": "r5c5", "x": 4, "y": 4 },
-      { "room_id": "r5c6", "x": 5, "y": 4 },
-      { "room_id": "r5c7", "x": 6, "y": 4 },
-      { "room_id": "r5c8", "x": 7, "y": 4 },
-      { "room_id": "r5c9", "x": 8, "y": 4 },
-      { "room_id": "r6c1", "x": 0, "y": 5 },
-      { "room_id": "r6c2", "x": 1, "y": 5 },
-      { "room_id": "r6c3", "x": 2, "y": 5 },
-      { "room_id": "r6c4", "x": 3, "y": 5 },
-      { "room_id": "r6c5", "x": 4, "y": 5 },
-      { "room_id": "r6c6", "x": 5, "y": 5 },
-      { "room_id": "r6c7", "x": 6, "y": 5 },
-      { "room_id": "r6c8", "x": 7, "y": 5 },
-      { "room_id": "r6c9", "x": 8, "y": 5 },
-      { "room_id": "r7c1", "x": 0, "y": 6 },
-      { "room_id": "r7c2", "x": 1, "y": 6 },
-      { "room_id": "r7c3", "x": 2, "y": 6 },
-      { "room_id": "r7c4", "x": 3, "y": 6 },
-      { "room_id": "r7c5", "x": 4, "y": 6 },
-      { "room_id": "r7c6", "x": 5, "y": 6 },
-      { "room_id": "r7c7", "x": 6, "y": 6 },
-      { "room_id": "r7c8", "x": 7, "y": 6 },
-      { "room_id": "r7c9", "x": 8, "y": 6 },
-      { "room_id": "r8c1", "x": 0, "y": 7 },
-      { "room_id": "r8c2", "x": 1, "y": 7 },
-      { "room_id": "r8c3", "x": 2, "y": 7 },
-      { "room_id": "r8c4", "x": 3, "y": 7 },
-      { "room_id": "r8c5", "x": 4, "y": 7 },
-      { "room_id": "r8c6", "x": 5, "y": 7 },
-      { "room_id": "r8c7", "x": 6, "y": 7 },
-      { "room_id": "r8c8", "x": 7, "y": 7 },
-      { "room_id": "r8c9", "x": 8, "y": 7 },
-      { "room_id": "r9c1", "x": 0, "y": 8 },
-      { "room_id": "r9c2", "x": 1, "y": 8 },
-      { "room_id": "r9c3", "x": 2, "y": 8 },
-      { "room_id": "r9c4", "x": 3, "y": 8 },
-      { "room_id": "r9c5", "x": 4, "y": 8 },
-      { "room_id": "r9c6", "x": 5, "y": 8 },
-      { "room_id": "r9c7", "x": 6, "y": 8 },
-      { "room_id": "r9c8", "x": 7, "y": 8 },
-      { "room_id": "r9c9", "x": 8, "y": 8 }
+      {
+        "room_id": "r1c1",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "room_id": "r1c2",
+        "x": 1,
+        "y": 0
+      },
+      {
+        "room_id": "r1c3",
+        "x": 2,
+        "y": 0
+      },
+      {
+        "room_id": "r1c4",
+        "x": 3,
+        "y": 0
+      },
+      {
+        "room_id": "r1c5",
+        "x": 4,
+        "y": 0
+      },
+      {
+        "room_id": "r1c6",
+        "x": 5,
+        "y": 0
+      },
+      {
+        "room_id": "r1c7",
+        "x": 6,
+        "y": 0
+      },
+      {
+        "room_id": "r1c8",
+        "x": 7,
+        "y": 0
+      },
+      {
+        "room_id": "r1c9",
+        "x": 8,
+        "y": 0
+      },
+      {
+        "room_id": "r2c1",
+        "x": 0,
+        "y": 1
+      },
+      {
+        "room_id": "r2c2",
+        "x": 1,
+        "y": 1
+      },
+      {
+        "room_id": "r2c3",
+        "x": 2,
+        "y": 1
+      },
+      {
+        "room_id": "r2c4",
+        "x": 3,
+        "y": 1
+      },
+      {
+        "room_id": "r2c5",
+        "x": 4,
+        "y": 1
+      },
+      {
+        "room_id": "r2c6",
+        "x": 5,
+        "y": 1
+      },
+      {
+        "room_id": "r2c7",
+        "x": 6,
+        "y": 1
+      },
+      {
+        "room_id": "r2c8",
+        "x": 7,
+        "y": 1
+      },
+      {
+        "room_id": "r2c9",
+        "x": 8,
+        "y": 1
+      },
+      {
+        "room_id": "r3c1",
+        "x": 0,
+        "y": 2
+      },
+      {
+        "room_id": "r3c2",
+        "x": 1,
+        "y": 2
+      },
+      {
+        "room_id": "r3c3",
+        "x": 2,
+        "y": 2
+      },
+      {
+        "room_id": "r3c4",
+        "x": 3,
+        "y": 2
+      },
+      {
+        "room_id": "r3c5",
+        "x": 4,
+        "y": 2
+      },
+      {
+        "room_id": "r3c6",
+        "x": 5,
+        "y": 2
+      },
+      {
+        "room_id": "r3c7",
+        "x": 6,
+        "y": 2
+      },
+      {
+        "room_id": "r3c8",
+        "x": 7,
+        "y": 2
+      },
+      {
+        "room_id": "r3c9",
+        "x": 8,
+        "y": 2
+      },
+      {
+        "room_id": "r4c1",
+        "x": 0,
+        "y": 3
+      },
+      {
+        "room_id": "r4c2",
+        "x": 1,
+        "y": 3
+      },
+      {
+        "room_id": "r4c3",
+        "x": 2,
+        "y": 3
+      },
+      {
+        "room_id": "r4c4",
+        "x": 3,
+        "y": 3
+      },
+      {
+        "room_id": "r4c5",
+        "x": 4,
+        "y": 3
+      },
+      {
+        "room_id": "r4c6",
+        "x": 5,
+        "y": 3
+      },
+      {
+        "room_id": "r4c7",
+        "x": 6,
+        "y": 3
+      },
+      {
+        "room_id": "r4c8",
+        "x": 7,
+        "y": 3
+      },
+      {
+        "room_id": "r4c9",
+        "x": 8,
+        "y": 3
+      },
+      {
+        "room_id": "r5c1",
+        "x": 0,
+        "y": 4
+      },
+      {
+        "room_id": "r5c2",
+        "x": 1,
+        "y": 4
+      },
+      {
+        "room_id": "r5c3",
+        "x": 2,
+        "y": 4
+      },
+      {
+        "room_id": "r5c4",
+        "x": 3,
+        "y": 4
+      },
+      {
+        "room_id": "r5c5",
+        "x": 4,
+        "y": 4
+      },
+      {
+        "room_id": "r5c6",
+        "x": 5,
+        "y": 4
+      },
+      {
+        "room_id": "r5c7",
+        "x": 6,
+        "y": 4
+      },
+      {
+        "room_id": "r5c8",
+        "x": 7,
+        "y": 4
+      },
+      {
+        "room_id": "r5c9",
+        "x": 8,
+        "y": 4
+      },
+      {
+        "room_id": "r6c1",
+        "x": 0,
+        "y": 5
+      },
+      {
+        "room_id": "r6c2",
+        "x": 1,
+        "y": 5
+      },
+      {
+        "room_id": "r6c3",
+        "x": 2,
+        "y": 5
+      },
+      {
+        "room_id": "r6c4",
+        "x": 3,
+        "y": 5
+      },
+      {
+        "room_id": "r6c5",
+        "x": 4,
+        "y": 5
+      },
+      {
+        "room_id": "r6c6",
+        "x": 5,
+        "y": 5
+      },
+      {
+        "room_id": "r6c7",
+        "x": 6,
+        "y": 5
+      },
+      {
+        "room_id": "r6c8",
+        "x": 7,
+        "y": 5
+      },
+      {
+        "room_id": "r6c9",
+        "x": 8,
+        "y": 5
+      },
+      {
+        "room_id": "r7c1",
+        "x": 0,
+        "y": 6
+      },
+      {
+        "room_id": "r7c2",
+        "x": 1,
+        "y": 6
+      },
+      {
+        "room_id": "r7c3",
+        "x": 2,
+        "y": 6
+      },
+      {
+        "room_id": "r7c4",
+        "x": 3,
+        "y": 6
+      },
+      {
+        "room_id": "r7c5",
+        "x": 4,
+        "y": 6
+      },
+      {
+        "room_id": "r7c6",
+        "x": 5,
+        "y": 6
+      },
+      {
+        "room_id": "r7c7",
+        "x": 6,
+        "y": 6
+      },
+      {
+        "room_id": "r7c8",
+        "x": 7,
+        "y": 6
+      },
+      {
+        "room_id": "r7c9",
+        "x": 8,
+        "y": 6
+      },
+      {
+        "room_id": "r8c1",
+        "x": 0,
+        "y": 7
+      },
+      {
+        "room_id": "r8c2",
+        "x": 1,
+        "y": 7
+      },
+      {
+        "room_id": "r8c3",
+        "x": 2,
+        "y": 7
+      },
+      {
+        "room_id": "r8c4",
+        "x": 3,
+        "y": 7
+      },
+      {
+        "room_id": "r8c5",
+        "x": 4,
+        "y": 7
+      },
+      {
+        "room_id": "r8c6",
+        "x": 5,
+        "y": 7
+      },
+      {
+        "room_id": "r8c7",
+        "x": 6,
+        "y": 7
+      },
+      {
+        "room_id": "r8c8",
+        "x": 7,
+        "y": 7
+      },
+      {
+        "room_id": "r8c9",
+        "x": 8,
+        "y": 7
+      },
+      {
+        "room_id": "r9c1",
+        "x": 0,
+        "y": 8
+      },
+      {
+        "room_id": "r9c2",
+        "x": 1,
+        "y": 8
+      },
+      {
+        "room_id": "r9c3",
+        "x": 2,
+        "y": 8
+      },
+      {
+        "room_id": "r9c4",
+        "x": 3,
+        "y": 8
+      },
+      {
+        "room_id": "r9c5",
+        "x": 4,
+        "y": 8
+      },
+      {
+        "room_id": "r9c6",
+        "x": 5,
+        "y": 8
+      },
+      {
+        "room_id": "r9c7",
+        "x": 6,
+        "y": 8
+      },
+      {
+        "room_id": "r9c8",
+        "x": 7,
+        "y": 8
+      },
+      {
+        "room_id": "r9c9",
+        "x": 8,
+        "y": 8
+      }
     ],
     "reveal_conditions": [
-      { "kind": "actor_defeated", "actor_id": "goblin-shaman" }
+      {
+        "kind": "actor_defeated",
+        "actor_id": "goblin-shaman"
+      }
     ]
   },
   {
     "id": "deep-forest",
     "label": "Deep Forest",
     "rooms": [
-      { "room_id": "d1c1", "x": 0, "y": 0 },
-      { "room_id": "d1c2", "x": 1, "y": 0 },
-      { "room_id": "d1c3", "x": 2, "y": 0 },
-      { "room_id": "d1c4", "x": 3, "y": 0 },
-      { "room_id": "d1c5", "x": 4, "y": 0 },
-      { "room_id": "d1c6", "x": 5, "y": 0 },
-      { "room_id": "d1c7", "x": 6, "y": 0 },
-      { "room_id": "d1c8", "x": 7, "y": 0 },
-      { "room_id": "d2c1", "x": 0, "y": 1 },
-      { "room_id": "d2c2", "x": 1, "y": 1 },
-      { "room_id": "d2c3", "x": 2, "y": 1 },
-      { "room_id": "d2c4", "x": 3, "y": 1 },
-      { "room_id": "d2c5", "x": 4, "y": 1 },
-      { "room_id": "d2c6", "x": 5, "y": 1 },
-      { "room_id": "d2c7", "x": 6, "y": 1 },
-      { "room_id": "d2c8", "x": 7, "y": 1 },
-      { "room_id": "d3c1", "x": 0, "y": 2 },
-      { "room_id": "d3c2", "x": 1, "y": 2 },
-      { "room_id": "d3c3", "x": 2, "y": 2 },
-      { "room_id": "d3c4", "x": 3, "y": 2 },
-      { "room_id": "d3c5", "x": 4, "y": 2 },
-      { "room_id": "d3c6", "x": 5, "y": 2 },
-      { "room_id": "d3c7", "x": 6, "y": 2 },
-      { "room_id": "d3c8", "x": 7, "y": 2 },
-      { "room_id": "d4c1", "x": 0, "y": 3 },
-      { "room_id": "d4c2", "x": 1, "y": 3 },
-      { "room_id": "d4c3", "x": 2, "y": 3 },
-      { "room_id": "d4c4", "x": 3, "y": 3 },
-      { "room_id": "d4c5", "x": 4, "y": 3 },
-      { "room_id": "d4c6", "x": 5, "y": 3 },
-      { "room_id": "d4c7", "x": 6, "y": 3 },
-      { "room_id": "d4c8", "x": 7, "y": 3 },
-      { "room_id": "d5c1", "x": 0, "y": 4 },
-      { "room_id": "d5c2", "x": 1, "y": 4 },
-      { "room_id": "d5c3", "x": 2, "y": 4 },
-      { "room_id": "d5c4", "x": 3, "y": 4 },
-      { "room_id": "d5c5", "x": 4, "y": 4 },
-      { "room_id": "d5c6", "x": 5, "y": 4 },
-      { "room_id": "d5c7", "x": 6, "y": 4 },
-      { "room_id": "d5c8", "x": 7, "y": 4 },
-      { "room_id": "d6c1", "x": 0, "y": 5 },
-      { "room_id": "d6c2", "x": 1, "y": 5 },
-      { "room_id": "d6c3", "x": 2, "y": 5 },
-      { "room_id": "d6c4", "x": 3, "y": 5 },
-      { "room_id": "d6c5", "x": 4, "y": 5 },
-      { "room_id": "d6c6", "x": 5, "y": 5 },
-      { "room_id": "d6c7", "x": 6, "y": 5 },
-      { "room_id": "d6c8", "x": 7, "y": 5 },
-      { "room_id": "d7c1", "x": 0, "y": 6 },
-      { "room_id": "d7c2", "x": 1, "y": 6 },
-      { "room_id": "d7c3", "x": 2, "y": 6 },
-      { "room_id": "d7c4", "x": 3, "y": 6 },
-      { "room_id": "d7c5", "x": 4, "y": 6 },
-      { "room_id": "d7c6", "x": 5, "y": 6 },
-      { "room_id": "d7c7", "x": 6, "y": 6 },
-      { "room_id": "d7c8", "x": 7, "y": 6 },
-      { "room_id": "d8c1", "x": 0, "y": 7 },
-      { "room_id": "d8c2", "x": 1, "y": 7 },
-      { "room_id": "d8c3", "x": 2, "y": 7 },
-      { "room_id": "d8c4", "x": 3, "y": 7 },
-      { "room_id": "d8c5", "x": 4, "y": 7 },
-      { "room_id": "d8c6", "x": 5, "y": 7 },
-      { "room_id": "d8c7", "x": 6, "y": 7 },
-      { "room_id": "d8c8", "x": 7, "y": 7 }
+      {
+        "room_id": "d1c1",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "room_id": "d1c2",
+        "x": 1,
+        "y": 0
+      },
+      {
+        "room_id": "d1c3",
+        "x": 2,
+        "y": 0
+      },
+      {
+        "room_id": "d1c4",
+        "x": 3,
+        "y": 0
+      },
+      {
+        "room_id": "d1c5",
+        "x": 4,
+        "y": 0
+      },
+      {
+        "room_id": "d1c6",
+        "x": 5,
+        "y": 0
+      },
+      {
+        "room_id": "d1c7",
+        "x": 6,
+        "y": 0
+      },
+      {
+        "room_id": "d1c8",
+        "x": 7,
+        "y": 0
+      },
+      {
+        "room_id": "d2c1",
+        "x": 0,
+        "y": 1
+      },
+      {
+        "room_id": "d2c2",
+        "x": 1,
+        "y": 1
+      },
+      {
+        "room_id": "d2c3",
+        "x": 2,
+        "y": 1
+      },
+      {
+        "room_id": "d2c4",
+        "x": 3,
+        "y": 1
+      },
+      {
+        "room_id": "d2c5",
+        "x": 4,
+        "y": 1
+      },
+      {
+        "room_id": "d2c6",
+        "x": 5,
+        "y": 1
+      },
+      {
+        "room_id": "d2c7",
+        "x": 6,
+        "y": 1
+      },
+      {
+        "room_id": "d2c8",
+        "x": 7,
+        "y": 1
+      },
+      {
+        "room_id": "d3c1",
+        "x": 0,
+        "y": 2
+      },
+      {
+        "room_id": "d3c2",
+        "x": 1,
+        "y": 2
+      },
+      {
+        "room_id": "d3c3",
+        "x": 2,
+        "y": 2
+      },
+      {
+        "room_id": "d3c4",
+        "x": 3,
+        "y": 2
+      },
+      {
+        "room_id": "d3c5",
+        "x": 4,
+        "y": 2
+      },
+      {
+        "room_id": "d3c6",
+        "x": 5,
+        "y": 2
+      },
+      {
+        "room_id": "d3c7",
+        "x": 6,
+        "y": 2
+      },
+      {
+        "room_id": "d3c8",
+        "x": 7,
+        "y": 2
+      },
+      {
+        "room_id": "d4c1",
+        "x": 0,
+        "y": 3
+      },
+      {
+        "room_id": "d4c2",
+        "x": 1,
+        "y": 3
+      },
+      {
+        "room_id": "d4c3",
+        "x": 2,
+        "y": 3
+      },
+      {
+        "room_id": "d4c4",
+        "x": 3,
+        "y": 3
+      },
+      {
+        "room_id": "d4c5",
+        "x": 4,
+        "y": 3
+      },
+      {
+        "room_id": "d4c6",
+        "x": 5,
+        "y": 3
+      },
+      {
+        "room_id": "d4c7",
+        "x": 6,
+        "y": 3
+      },
+      {
+        "room_id": "d4c8",
+        "x": 7,
+        "y": 3
+      },
+      {
+        "room_id": "d5c1",
+        "x": 0,
+        "y": 4
+      },
+      {
+        "room_id": "d5c2",
+        "x": 1,
+        "y": 4
+      },
+      {
+        "room_id": "d5c3",
+        "x": 2,
+        "y": 4
+      },
+      {
+        "room_id": "d5c4",
+        "x": 3,
+        "y": 4
+      },
+      {
+        "room_id": "d5c5",
+        "x": 4,
+        "y": 4
+      },
+      {
+        "room_id": "d5c6",
+        "x": 5,
+        "y": 4
+      },
+      {
+        "room_id": "d5c7",
+        "x": 6,
+        "y": 4
+      },
+      {
+        "room_id": "d5c8",
+        "x": 7,
+        "y": 4
+      },
+      {
+        "room_id": "d6c1",
+        "x": 0,
+        "y": 5
+      },
+      {
+        "room_id": "d6c2",
+        "x": 1,
+        "y": 5
+      },
+      {
+        "room_id": "d6c3",
+        "x": 2,
+        "y": 5
+      },
+      {
+        "room_id": "d6c4",
+        "x": 3,
+        "y": 5
+      },
+      {
+        "room_id": "d6c5",
+        "x": 4,
+        "y": 5
+      },
+      {
+        "room_id": "d6c6",
+        "x": 5,
+        "y": 5
+      },
+      {
+        "room_id": "d6c7",
+        "x": 6,
+        "y": 5
+      },
+      {
+        "room_id": "d6c8",
+        "x": 7,
+        "y": 5
+      },
+      {
+        "room_id": "d7c1",
+        "x": 0,
+        "y": 6
+      },
+      {
+        "room_id": "d7c2",
+        "x": 1,
+        "y": 6
+      },
+      {
+        "room_id": "d7c3",
+        "x": 2,
+        "y": 6
+      },
+      {
+        "room_id": "d7c4",
+        "x": 3,
+        "y": 6
+      },
+      {
+        "room_id": "d7c5",
+        "x": 4,
+        "y": 6
+      },
+      {
+        "room_id": "d7c6",
+        "x": 5,
+        "y": 6
+      },
+      {
+        "room_id": "d7c7",
+        "x": 6,
+        "y": 6
+      },
+      {
+        "room_id": "d7c8",
+        "x": 7,
+        "y": 6
+      },
+      {
+        "room_id": "d8c1",
+        "x": 0,
+        "y": 7
+      },
+      {
+        "room_id": "d8c2",
+        "x": 1,
+        "y": 7
+      },
+      {
+        "room_id": "d8c3",
+        "x": 2,
+        "y": 7
+      },
+      {
+        "room_id": "d8c4",
+        "x": 3,
+        "y": 7
+      },
+      {
+        "room_id": "d8c5",
+        "x": 4,
+        "y": 7
+      },
+      {
+        "room_id": "d8c6",
+        "x": 5,
+        "y": 7
+      },
+      {
+        "room_id": "d8c7",
+        "x": 6,
+        "y": 7
+      },
+      {
+        "room_id": "d8c8",
+        "x": 7,
+        "y": 7
+      }
     ],
     "reveal_conditions": [
-      { "kind": "actor_defeated", "actor_id": "elf-king-5" }
+      {
+        "kind": "actor_defeated",
+        "actor_id": "elf-king-5"
+      }
     ]
   },
   {
     "id": "outer-ring",
     "label": "Outer Ring",
     "rooms": [
-      { "room_id": "oan", "x": 6, "y": 0 },
-      { "room_id": "o1", "x": 8.603, "y": 0.594 },
-      { "room_id": "o2", "x": 10.691, "y": 2.259 },
-      { "room_id": "o3", "x": 11.85, "y": 4.665 },
-      { "room_id": "o4", "x": 11.85, "y": 7.335 },
-      { "room_id": "o5", "x": 10.691, "y": 9.741 },
-      { "room_id": "o6", "x": 8.603, "y": 11.406 },
-      { "room_id": "oas", "x": 6, "y": 12 },
-      { "room_id": "o7", "x": 3.397, "y": 11.406 },
-      { "room_id": "o8", "x": 1.309, "y": 9.741 },
-      { "room_id": "o9", "x": 0.15, "y": 7.335 },
-      { "room_id": "o10", "x": 0.15, "y": 4.665 },
-      { "room_id": "o11", "x": 1.309, "y": 2.259 },
-      { "room_id": "o12", "x": 3.397, "y": 0.594 },
-      { "room_id": "oh", "x": 6, "y": 6 }
+      {
+        "room_id": "oan",
+        "x": 6,
+        "y": 0
+      },
+      {
+        "room_id": "o1",
+        "x": 8.603,
+        "y": 0.594
+      },
+      {
+        "room_id": "o2",
+        "x": 10.691,
+        "y": 2.259
+      },
+      {
+        "room_id": "o3",
+        "x": 11.85,
+        "y": 4.665
+      },
+      {
+        "room_id": "o4",
+        "x": 11.85,
+        "y": 7.335
+      },
+      {
+        "room_id": "o5",
+        "x": 10.691,
+        "y": 9.741
+      },
+      {
+        "room_id": "o6",
+        "x": 8.603,
+        "y": 11.406
+      },
+      {
+        "room_id": "oas",
+        "x": 6,
+        "y": 12
+      },
+      {
+        "room_id": "o7",
+        "x": 3.397,
+        "y": 11.406
+      },
+      {
+        "room_id": "o8",
+        "x": 1.309,
+        "y": 9.741
+      },
+      {
+        "room_id": "o9",
+        "x": 0.15,
+        "y": 7.335
+      },
+      {
+        "room_id": "o10",
+        "x": 0.15,
+        "y": 4.665
+      },
+      {
+        "room_id": "o11",
+        "x": 1.309,
+        "y": 2.259
+      },
+      {
+        "room_id": "o12",
+        "x": 3.397,
+        "y": 0.594
+      },
+      {
+        "room_id": "oh",
+        "x": 6,
+        "y": 6
+      }
     ],
     "reveal_conditions": [
-      { "kind": "actor_defeated", "actor_id": "fire-elemental" }
+      {
+        "kind": "actor_defeated",
+        "actor_id": "fire-elemental"
+      }
     ]
+  },
+  {
+    "id": "the-commoners",
+    "label": "The Village & Mines",
+    "rooms": [
+      {
+        "room_id": "camp_nw_tower",
+        "x": 0,
+        "y": 0
+      },
+      {
+        "room_id": "camp_west_wall",
+        "x": 0,
+        "y": 1
+      },
+      {
+        "room_id": "camp_sw_tower",
+        "x": 0,
+        "y": 2
+      },
+      {
+        "room_id": "village_nw_overlook",
+        "x": 0,
+        "y": 3
+      },
+      {
+        "room_id": "village_upper_terrace",
+        "x": 0,
+        "y": 4
+      },
+      {
+        "room_id": "elder_hut",
+        "x": 0,
+        "y": 5
+      },
+      {
+        "room_id": "village_west_cottage",
+        "x": 0,
+        "y": 6
+      },
+      {
+        "room_id": "village_southwest_lane",
+        "x": 0,
+        "y": 7
+      },
+      {
+        "room_id": "village_water_spring",
+        "x": 0,
+        "y": 8
+      },
+      {
+        "room_id": "village_sw_corner",
+        "x": 0,
+        "y": 9
+      },
+      {
+        "room_id": "camp_north_wall_w",
+        "x": 1,
+        "y": 0
+      },
+      {
+        "room_id": "camp_barracks_1",
+        "x": 1,
+        "y": 1
+      },
+      {
+        "room_id": "camp_smithy",
+        "x": 1,
+        "y": 2
+      },
+      {
+        "room_id": "village_watch_ledge",
+        "x": 1,
+        "y": 3
+      },
+      {
+        "room_id": "village_stone_steps",
+        "x": 1,
+        "y": 4
+      },
+      {
+        "room_id": "village_hall",
+        "x": 1,
+        "y": 5
+      },
+      {
+        "room_id": "baker_hut",
+        "x": 1,
+        "y": 6
+      },
+      {
+        "room_id": "village_school_room",
+        "x": 1,
+        "y": 7
+      },
+      {
+        "room_id": "village_wash_basin",
+        "x": 1,
+        "y": 8
+      },
+      {
+        "room_id": "village_memorial_stones",
+        "x": 1,
+        "y": 9
+      },
+      {
+        "room_id": "camp_patrol_post",
+        "x": 2,
+        "y": 0
+      },
+      {
+        "room_id": "camp_mess_hall",
+        "x": 2,
+        "y": 1
+      },
+      {
+        "room_id": "camp_archery_range",
+        "x": 2,
+        "y": 2
+      },
+      {
+        "room_id": "village_north_path",
+        "x": 2,
+        "y": 3
+      },
+      {
+        "room_id": "village_north_street",
+        "x": 2,
+        "y": 4
+      },
+      {
+        "room_id": "village_square",
+        "x": 2,
+        "y": 5
+      },
+      {
+        "room_id": "village_well_square",
+        "x": 2,
+        "y": 6
+      },
+      {
+        "room_id": "mushroom_beds",
+        "x": 2,
+        "y": 7
+      },
+      {
+        "room_id": "village_south_lane",
+        "x": 2,
+        "y": 8
+      },
+      {
+        "room_id": "village_south_overlook",
+        "x": 2,
+        "y": 9
+      },
+      {
+        "room_id": "camp_officers_tent",
+        "x": 3,
+        "y": 0
+      },
+      {
+        "room_id": "camp_armory",
+        "x": 3,
+        "y": 1
+      },
+      {
+        "room_id": "camp_training_yard",
+        "x": 3,
+        "y": 2
+      },
+      {
+        "room_id": "village_fort_slope",
+        "x": 3,
+        "y": 3
+      },
+      {
+        "room_id": "village_carpenters_shed",
+        "x": 3,
+        "y": 4
+      },
+      {
+        "room_id": "village_market_lane",
+        "x": 3,
+        "y": 5
+      },
+      {
+        "room_id": "village_weaver_hut",
+        "x": 3,
+        "y": 6
+      },
+      {
+        "room_id": "village_spore_drying",
+        "x": 3,
+        "y": 7
+      },
+      {
+        "room_id": "village_compost_shed",
+        "x": 3,
+        "y": 8
+      },
+      {
+        "room_id": "village_storage_caves",
+        "x": 3,
+        "y": 9
+      },
+      {
+        "room_id": "camp_gate_platform",
+        "x": 4,
+        "y": 0
+      },
+      {
+        "room_id": "command_tent",
+        "x": 4,
+        "y": 1
+      },
+      {
+        "room_id": "camp_gate",
+        "x": 4,
+        "y": 2
+      },
+      {
+        "room_id": "village_approach_road",
+        "x": 4,
+        "y": 3
+      },
+      {
+        "room_id": "village_east_fork",
+        "x": 4,
+        "y": 4
+      },
+      {
+        "room_id": "village_mine_gate",
+        "x": 4,
+        "y": 5
+      },
+      {
+        "room_id": "village_east_cottage",
+        "x": 4,
+        "y": 6
+      },
+      {
+        "room_id": "village_lower_path",
+        "x": 4,
+        "y": 7
+      },
+      {
+        "room_id": "village_root_cellar",
+        "x": 4,
+        "y": 8
+      },
+      {
+        "room_id": "village_drain_trench",
+        "x": 4,
+        "y": 9
+      },
+      {
+        "room_id": "teleport_gate",
+        "x": 5,
+        "y": 0
+      },
+      {
+        "room_id": "camp_upper_courtyard",
+        "x": 5,
+        "y": 1
+      },
+      {
+        "room_id": "camp_lower_courtyard",
+        "x": 5,
+        "y": 2
+      },
+      {
+        "room_id": "old_drain_pipe",
+        "x": 5,
+        "y": 3
+      },
+      {
+        "room_id": "mine_drainage_culvert",
+        "x": 5,
+        "y": 4
+      },
+      {
+        "room_id": "mine_entrance",
+        "x": 5,
+        "y": 5
+      },
+      {
+        "room_id": "mine_sorting_shed",
+        "x": 5,
+        "y": 6
+      },
+      {
+        "room_id": "mine_crusher_floor",
+        "x": 5,
+        "y": 7
+      },
+      {
+        "room_id": "mine_lower_rail_spur",
+        "x": 5,
+        "y": 8
+      },
+      {
+        "room_id": "mine_south_sluice",
+        "x": 5,
+        "y": 9
+      },
+      {
+        "room_id": "camp_priest_tent",
+        "x": 6,
+        "y": 0
+      },
+      {
+        "room_id": "prison_cage",
+        "x": 6,
+        "y": 1
+      },
+      {
+        "room_id": "camp_guardhouse",
+        "x": 6,
+        "y": 2
+      },
+      {
+        "room_id": "mine_pump_station",
+        "x": 6,
+        "y": 3
+      },
+      {
+        "room_id": "mine_cart_depot",
+        "x": 6,
+        "y": 4
+      },
+      {
+        "room_id": "cart_tracks",
+        "x": 6,
+        "y": 5
+      },
+      {
+        "room_id": "mine_quarry_rim",
+        "x": 6,
+        "y": 6
+      },
+      {
+        "room_id": "mine_winch_house",
+        "x": 6,
+        "y": 7
+      },
+      {
+        "room_id": "mine_tailing_dump",
+        "x": 6,
+        "y": 8
+      },
+      {
+        "room_id": "mine_deepest_cut",
+        "x": 6,
+        "y": 9
+      },
+      {
+        "room_id": "camp_north_wall_e",
+        "x": 7,
+        "y": 0
+      },
+      {
+        "room_id": "camp_barracks_2",
+        "x": 7,
+        "y": 1
+      },
+      {
+        "room_id": "camp_lumber_yard",
+        "x": 7,
+        "y": 2
+      },
+      {
+        "room_id": "mine_north_shaft",
+        "x": 7,
+        "y": 3
+      },
+      {
+        "room_id": "mine_timber_support",
+        "x": 7,
+        "y": 4
+      },
+      {
+        "room_id": "mine_main_drift",
+        "x": 7,
+        "y": 5
+      },
+      {
+        "room_id": "crystal_pit",
+        "x": 7,
+        "y": 6
+      },
+      {
+        "room_id": "mine_golem_worksite",
+        "x": 7,
+        "y": 7
+      },
+      {
+        "room_id": "mine_deep_sump",
+        "x": 7,
+        "y": 8
+      },
+      {
+        "room_id": "mine_abyssal_fault",
+        "x": 7,
+        "y": 9
+      },
+      {
+        "room_id": "camp_signal_post",
+        "x": 8,
+        "y": 0
+      },
+      {
+        "room_id": "camp_supply_store",
+        "x": 8,
+        "y": 1
+      },
+      {
+        "room_id": "camp_beast_pen",
+        "x": 8,
+        "y": 2
+      },
+      {
+        "room_id": "mine_blasting_storage",
+        "x": 8,
+        "y": 3
+      },
+      {
+        "room_id": "mine_crystal_seam_north",
+        "x": 8,
+        "y": 4
+      },
+      {
+        "room_id": "mine_chiseled_gallery",
+        "x": 8,
+        "y": 5
+      },
+      {
+        "room_id": "mine_deep_crystal_vein",
+        "x": 8,
+        "y": 6
+      },
+      {
+        "room_id": "mine_blue_crystal_pocket",
+        "x": 8,
+        "y": 7
+      },
+      {
+        "room_id": "mine_submerged_rail",
+        "x": 8,
+        "y": 8
+      },
+      {
+        "room_id": "mine_crystal_bed",
+        "x": 8,
+        "y": 9
+      },
+      {
+        "room_id": "camp_ne_tower",
+        "x": 9,
+        "y": 0
+      },
+      {
+        "room_id": "camp_east_wall",
+        "x": 9,
+        "y": 1
+      },
+      {
+        "room_id": "camp_se_tower",
+        "x": 9,
+        "y": 2
+      },
+      {
+        "room_id": "mine_northeast_drift",
+        "x": 9,
+        "y": 3
+      },
+      {
+        "room_id": "mine_east_chute",
+        "x": 9,
+        "y": 4
+      },
+      {
+        "room_id": "mine_eastern_stope",
+        "x": 9,
+        "y": 5
+      },
+      {
+        "room_id": "mine_collapsed_drift",
+        "x": 9,
+        "y": 6
+      },
+      {
+        "room_id": "mine_crystal_tailings",
+        "x": 9,
+        "y": 7
+      },
+      {
+        "room_id": "mine_seep_tunnel",
+        "x": 9,
+        "y": 8
+      },
+      {
+        "room_id": "mine_southeast_grotto",
+        "x": 9,
+        "y": 9
+      }
+    ],
+    "reveal_conditions": []
   }
 ]

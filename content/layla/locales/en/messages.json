@@ -226,5 +226,9 @@
     "handler.minimap_unlocked": {
         "voice": "handler",
         "text": "Signal's clear. Looks like taking out the shaman cleared the interference on the surveyor feed. I've patched the floor grid into your console — check your sidebar, you've got a live minimap now. Try not to walk in circles."
+    },
+    "handler.descend.the_village": {
+        "voice": "handler",
+        "text": "Floor four. Wait — my console is picking up civilian life signs. Actual people live down here? In this dump? Keep your weapons low; let's see what the locals have to say before you go swinging."
     }
 }

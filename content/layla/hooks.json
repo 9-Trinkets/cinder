@@ -437,6 +437,24 @@
             "kind": "narrate_message",
             "key": "handler.descend.the_board"
           }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "village_square"
+            },
+            {
+              "path": "first_visit",
+              "operator": "equal",
+              "value": true
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.descend.the_village"
+          }
         }
       ]
     }

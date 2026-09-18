@@ -87,7 +87,7 @@
     "id": "r1c3",
     "title": "An Outer Den",
     "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
-    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five\u2014someone here counted them.",
     "features": [
       {
         "id": "r1c3-feature",
@@ -271,7 +271,7 @@
     "id": "r1c7",
     "title": "An Outer Den",
     "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
-    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five\u2014someone here counted them.",
     "features": [
       {
         "id": "r1c7-feature",
@@ -447,7 +447,7 @@
     "id": "r2c2",
     "title": "An Outer Den",
     "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
-    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five\u2014someone here counted them.",
     "features": [
       {
         "id": "r2c2-feature",
@@ -663,7 +663,7 @@
     "id": "r2c6",
     "title": "An Outer Den",
     "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
-    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five\u2014someone here counted them.",
     "features": [
       {
         "id": "r2c6-feature",
@@ -871,7 +871,7 @@
     "id": "r3c1",
     "title": "An Outer Den",
     "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
-    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five\u2014someone here counted them.",
     "features": [
       {
         "id": "r3c1-feature",
@@ -971,7 +971,7 @@
     "id": "r3c3",
     "title": "A Guarded Crossing",
     "summary": "A golem of dark volcanic rock, lumped and broad stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
-    "inspect_text": "In the center of the room a golem of dark volcanic rock, lumped and broad stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
+    "inspect_text": "In the center of the room a golem of dark volcanic rock, lumped and broad stands still as furniture \u2014 no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
     "features": [
       {
         "id": "r3c3-feature",
@@ -983,7 +983,7 @@
           "golem",
           "chest"
         ],
-        "inspect_text": "A pale chalk ring is marked on the golem’s chest and brow, in the same pale light as the frost on the sleeping wall."
+        "inspect_text": "A pale chalk ring is marked on the golem\u2019s chest and brow, in the same pale light as the frost on the sleeping wall."
       }
     ],
     "exits": [
@@ -1079,7 +1079,7 @@
     "id": "r3c5",
     "title": "A Den",
     "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "inspect_text": "You duck \u2014 the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r3c5-feature",
@@ -1091,7 +1091,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly \u2014 the way you\u2019d tidy something you might want again."
       }
     ],
     "exits": [
@@ -1132,7 +1132,7 @@
   {
     "id": "r3c6",
     "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black \u2014 a gutting stone \u2014 and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can\u2019t see.",
     "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
@@ -1187,7 +1187,7 @@
     "id": "r3c7",
     "title": "A Guarded Crossing",
     "summary": "A golem of pale river stone, smoothed and round stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
-    "inspect_text": "In the center of the room a golem of pale river stone, smoothed and round stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
+    "inspect_text": "In the center of the room a golem of pale river stone, smoothed and round stands still as furniture \u2014 no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
     "features": [
       {
         "id": "r3c7-feature",
@@ -1199,7 +1199,7 @@
           "golem",
           "chest"
         ],
-        "inspect_text": "A pale chalk ring is marked on the golem’s chest and brow, barely glowing in the dim."
+        "inspect_text": "A pale chalk ring is marked on the golem\u2019s chest and brow, barely glowing in the dim."
       }
     ],
     "exits": [
@@ -1295,7 +1295,7 @@
     "id": "r3c9",
     "title": "An Outer Den",
     "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
-    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five\u2014someone here counted them.",
     "features": [
       {
         "id": "r3c9-feature",
@@ -1495,7 +1495,7 @@
     "id": "r4c4",
     "title": "An Inner Watch-Den",
     "summary": "A warm, cramped den littered with thick wolf-pelts and hardened clay bowls. The floor vibrates with the shaman's drumming, and chalk markings cover the bedding wall.",
-    "inspect_text": "Thick predator pelts line the floor, warm from recent bodies. The air is pungent with animal musk and hot grease. Scored into the stone behind the beds are chalk rings and tallies, identical in spacing to the marks on your own knuckles. The staff strikes stone nearby: tock… tock.",
+    "inspect_text": "Thick predator pelts line the floor, warm from recent bodies. The air is pungent with animal musk and hot grease. Scored into the stone behind the beds are chalk rings and tallies, identical in spacing to the marks on your own knuckles. The staff strikes stone nearby: tock\u2026 tock.",
     "features": [
       {
         "id": "r4c4-feature",
@@ -1549,7 +1549,7 @@
     "id": "r4c5",
     "title": "A Curing Vault",
     "summary": "Thick smoke from burning pitch-wood hangs low over racks of cured meat and bone tools. The heat is steady, and the sound of the shaman's work echoes loudly off the scorched rock.",
-    "inspect_text": "Heavy, pungent smoke curls around drying frames loaded with salted venison and strips of hide. The center stone is stained black with resin and animal grease. Through the smoke, the rhythmic thud of the staff sounds directly through the opening: TOCK… TOCK.",
+    "inspect_text": "Heavy, pungent smoke curls around drying frames loaded with salted venison and strips of hide. The center stone is stained black with resin and animal grease. Through the smoke, the rhythmic thud of the staff sounds directly through the opening: TOCK\u2026 TOCK.",
     "features": [
       {
         "id": "r4c5-feature",
@@ -1711,7 +1711,7 @@
     "id": "r4c8",
     "title": "An Outer Den",
     "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
-    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five\u2014someone here counted them.",
     "features": [
       {
         "id": "r4c8-feature",
@@ -1911,7 +1911,7 @@
     "id": "r5c3",
     "title": "A Den",
     "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "inspect_text": "You duck \u2014 the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r5c3-feature",
@@ -1923,7 +1923,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly \u2014 the way you\u2019d tidy something you might want again."
       }
     ],
     "exits": [
@@ -1965,7 +1965,7 @@
     "id": "r5c4",
     "title": "A Curing Vault",
     "summary": "Thick smoke from burning pitch-wood hangs low over racks of cured meat and bone tools. The heat is steady, and the sound of the shaman's work echoes loudly off the scorched rock.",
-    "inspect_text": "Heavy, pungent smoke curls around drying frames loaded with salted venison and strips of hide. The center stone is stained black with resin and animal grease. Through the smoke, the rhythmic thud of the staff sounds directly through the opening: TOCK… TOCK.",
+    "inspect_text": "Heavy, pungent smoke curls around drying frames loaded with salted venison and strips of hide. The center stone is stained black with resin and animal grease. Through the smoke, the rhythmic thud of the staff sounds directly through the opening: TOCK\u2026 TOCK.",
     "features": [
       {
         "id": "r5c4-feature",
@@ -2018,13 +2018,13 @@
   {
     "id": "r5c5",
     "title": "The Work-Ring",
-    "summary": "The deepest chamber on this level. A wide circle of chalk glows on the cave floor — the same pale light as your own lines — and inside it, golems stand unfinished: a shoulder, a head with no seams yet, slabs of raw rock. The air is thick with ash and hot clay.",
-    "inspect_text": "You stop at the edge of a wide chalk circle drawn on the cave floor, glowing the same pale light as the lines you draw yourself. Inside it, golems are being made: a shoulder of dark volcanic rock, a head still without seams, slabs of raw stone waiting to be given a shape. The air tastes of ash and hot clay and burned herbs. At the ring’s center the goblin shaman works, hunched and patient, one pale hand pressed flat to the stone. Tock. Tock. A staff beating slow time against the floor.",
+    "summary": "The deepest chamber on this level. A wide circle of chalk glows on the cave floor \u2014 the same pale light as your own lines \u2014 and inside it, golems stand unfinished: a shoulder, a head with no seams yet, slabs of raw rock. The air is thick with ash and hot clay.",
+    "inspect_text": "You stop at the edge of a wide chalk circle drawn on the cave floor, glowing the same pale light as the lines you draw yourself. Inside it, golems are being made: a shoulder of dark volcanic rock, a head still without seams, slabs of raw stone waiting to be given a shape. The air tastes of ash and hot clay and burned herbs. At the ring\u2019s center the goblin shaman works, hunched and patient, one pale hand pressed flat to the stone. Tock. Tock. A staff beating slow time against the floor.",
     "descriptions": [
       {
         "actor_defeated": "goblin-shaman",
         "summary": "The chalk ring lies scuffed and broken underfoot. The half-made golems stand unfinished, and there is no hand to finish them now. Only ash, and the cold smoke of an untended fire.",
-        "inspect_text": "The work-ring’s chalk is scuffed and broken under your feet. Half-made golems stand the way they were left — a shoulder, a seamless head, slabs of raw rock — and the dying fire twists one last thread of smoke at the room’s center. The air has gone still and cold."
+        "inspect_text": "The work-ring\u2019s chalk is scuffed and broken under your feet. Half-made golems stand the way they were left \u2014 a shoulder, a seamless head, slabs of raw rock \u2014 and the dying fire twists one last thread of smoke at the room\u2019s center. The air has gone still and cold."
       }
     ],
     "features": [
@@ -2145,7 +2145,7 @@
     "id": "r5c7",
     "title": "A Den",
     "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "inspect_text": "You duck \u2014 the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r5c7-feature",
@@ -2157,7 +2157,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly \u2014 the way you\u2019d tidy something you might want again."
       }
     ],
     "exits": [
@@ -2345,7 +2345,7 @@
     "id": "r6c2",
     "title": "An Outer Den",
     "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
-    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five\u2014someone here counted them.",
     "features": [
       {
         "id": "r6c2-feature",
@@ -2398,7 +2398,7 @@
   {
     "id": "r6c3",
     "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black \u2014 a gutting stone \u2014 and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can\u2019t see.",
     "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
@@ -2561,7 +2561,7 @@
     "id": "r6c6",
     "title": "An Inner Watch-Den",
     "summary": "A warm, cramped den littered with thick wolf-pelts and hardened clay bowls. The floor vibrates with the shaman's drumming, and chalk markings cover the bedding wall.",
-    "inspect_text": "Thick predator pelts line the floor, warm from recent bodies. The air is pungent with animal musk and hot grease. Scored into the stone behind the beds are chalk rings and tallies, identical in spacing to the marks on your own knuckles. The staff strikes stone nearby: tock… tock.",
+    "inspect_text": "Thick predator pelts line the floor, warm from recent bodies. The air is pungent with animal musk and hot grease. Scored into the stone behind the beds are chalk rings and tallies, identical in spacing to the marks on your own knuckles. The staff strikes stone nearby: tock\u2026 tock.",
     "features": [
       {
         "id": "r6c6-feature",
@@ -2614,7 +2614,7 @@
   {
     "id": "r6c7",
     "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black \u2014 a gutting stone \u2014 and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can\u2019t see.",
     "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
@@ -2769,7 +2769,7 @@
     "id": "r7c1",
     "title": "An Outer Den",
     "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
-    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five\u2014someone here counted them.",
     "features": [
       {
         "id": "r7c1-feature",
@@ -2869,7 +2869,7 @@
     "id": "r7c3",
     "title": "A Guarded Crossing",
     "summary": "A golem of dark volcanic rock, lumped and broad stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
-    "inspect_text": "In the center of the room a golem of dark volcanic rock, lumped and broad stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
+    "inspect_text": "In the center of the room a golem of dark volcanic rock, lumped and broad stands still as furniture \u2014 no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
     "features": [
       {
         "id": "r7c3-feature",
@@ -2881,7 +2881,7 @@
           "golem",
           "chest"
         ],
-        "inspect_text": "A pale chalk ring is marked on the golem’s chest and brow, in the same pale light as the frost on the sleeping wall."
+        "inspect_text": "A pale chalk ring is marked on the golem\u2019s chest and brow, in the same pale light as the frost on the sleeping wall."
       }
     ],
     "exits": [
@@ -2977,7 +2977,7 @@
     "id": "r7c5",
     "title": "A Den",
     "summary": "A low-ceilinged den, thick with old hides and fur. A fire has burned down to ash against one wall, and gnawed bones are stacked neatly in a corner. The air is heavy with damp fur and musk.",
-    "inspect_text": "You duck — the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
+    "inspect_text": "You duck \u2014 the ceiling is low. The floor is deep in hides and old fur where the tribe sleeps, and the room is thick with damp fur and that sour-sweet musk. A fire has burned down to ash against the far wall, and beside it a stack of gnawed bones waits, picked clean and patient.",
     "features": [
       {
         "id": "r7c5-feature",
@@ -2989,7 +2989,7 @@
           "stack",
           "corner"
         ],
-        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly — the way you’d tidy something you might want again."
+        "inspect_text": "A neat stack of long bones, gnawed clean and arranged almost carelessly \u2014 the way you\u2019d tidy something you might want again."
       }
     ],
     "exits": [
@@ -3030,7 +3030,7 @@
   {
     "id": "r7c6",
     "title": "A Hunting Ground",
-    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black — a gutting stone — and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can’t see.",
+    "summary": "Fire-scorch blackens the walls. A flat stone at the center is worn black \u2014 a gutting stone \u2014 and strips of half-dried meat hang from a wooden frame. Flies buzz somewhere you can\u2019t see.",
     "inspect_text": "The room stinks of old kill. Fire-scorch runs up the walls; a low flat stone in the middle is black and greasy with a thousand dressings; strips of meat hang from a frame, drying in the smoke. Flies buzz in a corner. Something here was living, and not long ago.",
     "features": [
       {
@@ -3085,7 +3085,7 @@
     "id": "r7c7",
     "title": "A Guarded Crossing",
     "summary": "A golem of pale river stone, smoothed and round stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
-    "inspect_text": "In the center of the room a golem of pale river stone, smoothed and round stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
+    "inspect_text": "In the center of the room a golem of pale river stone, smoothed and round stands still as furniture \u2014 no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
     "features": [
       {
         "id": "r7c7-feature",
@@ -3097,7 +3097,7 @@
           "golem",
           "chest"
         ],
-        "inspect_text": "A pale chalk ring is marked on the golem’s chest and brow, barely glowing in the dim."
+        "inspect_text": "A pale chalk ring is marked on the golem\u2019s chest and brow, barely glowing in the dim."
       }
     ],
     "exits": [
@@ -3193,7 +3193,7 @@
     "id": "r7c9",
     "title": "An Outer Den",
     "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
-    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five\u2014someone here counted them.",
     "features": [
       {
         "id": "r7c9-feature",
@@ -3393,7 +3393,7 @@
     "id": "r8c4",
     "title": "An Outer Den",
     "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
-    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five\u2014someone here counted them.",
     "features": [
       {
         "id": "r8c4-feature",
@@ -3609,7 +3609,7 @@
     "id": "r8c8",
     "title": "An Outer Den",
     "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
-    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five\u2014someone here counted them.",
     "features": [
       {
         "id": "r8c8-feature",
@@ -3793,7 +3793,7 @@
     "id": "r9c3",
     "title": "An Outer Den",
     "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
-    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five\u2014someone here counted them.",
     "features": [
       {
         "id": "r9c3-feature",
@@ -3977,7 +3977,7 @@
     "id": "r9c7",
     "title": "An Outer Den",
     "summary": "A low, drafty alcove where old pelts are piled against damp stone. The smell of cold musk and sour straw hangs in the air, and a small heap of gnawed bird-bones sits in the corner.",
-    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five—someone here counted them.",
+    "inspect_text": "You have to stoop. The ceiling drops low over a scatter of moldering hides and stiff furs. A cold seep drips slowly down the back wall, plinking into a stone puddle. In the driest corner, small rodent bones lie arranged in neat little stacks of five\u2014someone here counted them.",
     "features": [
       {
         "id": "r9c7-feature",
@@ -4107,7 +4107,7 @@
     "id": "d1c1",
     "title": "The Mushroom Grove",
     "summary": "A cavern floor is choked with pale mushrooms, all leaning toward the glowing canopy above. The air smells of wet earth and something sweet, like crushed fruit.",
-    "inspect_text": "Pale mushrooms crowd the floor, every cap leaning toward the glowing canopy above. The air holds wet earth and something sweet — crushed fruit, or a thing that ripened down here.",
+    "inspect_text": "Pale mushrooms crowd the floor, every cap leaning toward the glowing canopy above. The air holds wet earth and something sweet \u2014 crushed fruit, or a thing that ripened down here.",
     "features": [
       {
         "id": "d1c1-mushrooms",
@@ -4168,7 +4168,7 @@
     "id": "d1c2",
     "title": "A Glowing Clearing",
     "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
-    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
+    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly \u2014 steady enough to read by, wrong enough that you notice.",
     "features": [
       {
         "id": "d1c2-spores",
@@ -4226,7 +4226,7 @@
     "id": "d1c3",
     "title": "A Glowing Clearing",
     "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
-    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
+    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly \u2014 steady enough to read by, wrong enough that you notice.",
     "features": [
       {
         "id": "d1c3-spores",
@@ -4284,7 +4284,7 @@
     "id": "d1c4",
     "title": "A Glowing Clearing",
     "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
-    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
+    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly \u2014 steady enough to read by, wrong enough that you notice.",
     "features": [
       {
         "id": "d1c4-spores",
@@ -4342,7 +4342,7 @@
     "id": "d1c5",
     "title": "A Glowing Clearing",
     "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
-    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
+    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly \u2014 steady enough to read by, wrong enough that you notice.",
     "features": [
       {
         "id": "d1c5-spores",
@@ -4400,7 +4400,7 @@
     "id": "d1c6",
     "title": "A Glowing Clearing",
     "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
-    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
+    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly \u2014 steady enough to read by, wrong enough that you notice.",
     "features": [
       {
         "id": "d1c6-spores",
@@ -4458,7 +4458,7 @@
     "id": "d1c7",
     "title": "A Glowing Clearing",
     "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
-    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
+    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly \u2014 steady enough to read by, wrong enough that you notice.",
     "features": [
       {
         "id": "d1c7-spores",
@@ -4516,7 +4516,7 @@
     "id": "d1c8",
     "title": "A Glowing Clearing",
     "summary": "A wide clearing lit by drifting spores that pulse slowly, like a heartbeat. Overhead a false sky shimmers, bright enough to read by, wrong enough to notice.",
-    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly — steady enough to read by, wrong enough that you notice.",
+    "inspect_text": "Spores drift across this clearing at a slow, even pulse, lighting the ground beneath your feet. Above, a false sky shimmers faintly \u2014 steady enough to read by, wrong enough that you notice.",
     "features": [
       {
         "id": "d1c8-spores",
@@ -7825,7 +7825,7 @@
   {
     "id": "d8c5",
     "title": "The King's Grove",
-    "summary": "The forest parts into a wide, still chamber. At its heart, enthroned in roots and pale light, sits the elf king, watching the entrance — watching you.",
+    "summary": "The forest parts into a wide, still chamber. At its heart, enthroned in roots and pale light, sits the elf king, watching the entrance \u2014 watching you.",
     "inspect_text": "The trees open at last into a wide, still chamber. In a throne woven of roots and pale light sits the elf king, and he is looking at the entrance, at you, with no hurry at all.",
     "descriptions": [
       {
@@ -8136,7 +8136,7 @@
     "id": "oas",
     "title": "The South Store",
     "summary": "The ring bends south into a second dish, shallower than the first, and at its bottom a single ember smoulders.",
-    "inspect_text": "The far store of the board. One seed has been left behind — warm, steady, waiting for a hand to move it.",
+    "inspect_text": "The far store of the board. One seed has been left behind \u2014 warm, steady, waiting for a hand to move it.",
     "features": [
       {
         "id": "oas-fire-bowl",
@@ -8195,7 +8195,7 @@
     "id": "o1",
     "title": "A Basin of Cooling Embers",
     "summary": "A round chamber floored in black glass. In its center a broad depression holds one red coal that never quite dies.",
-    "inspect_text": "A round chamber floored in black glass. A single coal breathes in the depression, skirted by black glass. It does not warm the room — only the memory of warmth.",
+    "inspect_text": "A round chamber floored in black glass. A single coal breathes in the depression, skirted by black glass. It does not warm the room \u2014 only the memory of warmth.",
     "features": [
       {
         "id": "o1-basin",
@@ -8207,7 +8207,7 @@
           "glass",
           "bowl chamber"
         ],
-        "inspect_text": "A single coal breathes in the depression, skirted by black glass. It does not warm the room — only the memory of warmth."
+        "inspect_text": "A single coal breathes in the depression, skirted by black glass. It does not warm the room \u2014 only the memory of warmth."
       },
       {
         "id": "o1-cracks",
@@ -8854,7 +8854,7 @@
   {
     "id": "oh",
     "title": "The Heart-Pit",
-    "summary": "The ring's center opens into a shallow pit of black glass, and in it, on a cradle of embers, a fire burns — patient, watchful, alone.",
+    "summary": "The ring's center opens into a shallow pit of black glass, and in it, on a cradle of embers, a fire burns \u2014 patient, watchful, alone.",
     "inspect_text": "The ring's center opens into a shallow pit of black glass. In the cradle, a clot of embers holds to a deep, steady heat. Something in it watches the edge of the pit.",
     "descriptions": [
       {
@@ -8912,6 +8912,4978 @@
           "altar"
         ],
         "menu_label": "South"
+      },
+      {
+        "room_id": "village_square",
+        "label": "Down into the Cave Below",
+        "aliases": [
+          "down",
+          "d",
+          "descend",
+          "village",
+          "below"
+        ],
+        "menu_label": "Down",
+        "requires_story_var": "elemental_released"
+      }
+    ]
+  },
+  {
+    "id": "camp_nw_tower",
+    "title": "Northwest Watchtower",
+    "summary": "A tall wooden platform looking out over the dark cave ceiling. Cold drafts blow down from cracks in the stone roof.",
+    "inspect_text": "Wooden braces hold up a sturdy catwalk twenty feet above the fort floor. Crossbow bolts lie ready in open wooden bins.",
+    "features": [
+      {
+        "id": "camp_nw_tower-feature",
+        "label": "the wooden catwalk",
+        "aliases": [
+          "catwalk",
+          "tower",
+          "platform",
+          "wood"
+        ],
+        "inspect_text": "Planks of heavy pine nailed across oak beams, looking down across the fortified camp."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_north_wall_w",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_west_wall",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_west_wall",
+    "title": "West Stockade Wall",
+    "summary": "A solid line of pointed pine logs backed by dirt mounds. Soldiers patrol the packed dirt walkway below.",
+    "inspect_text": "The wall separates the soldiers from the cold, dark western caves where no one goes.",
+    "features": [
+      {
+        "id": "camp_west_wall-feature",
+        "label": "the packed dirt rampart",
+        "aliases": [
+          "rampart",
+          "dirt",
+          "walkway",
+          "mound"
+        ],
+        "inspect_text": "Firm earth packed between timber retaining walls, creating an elevated walkway."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_nw_tower",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_barracks_1",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_sw_tower",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_sw_tower",
+    "title": "Southwest Watchtower",
+    "summary": "A timber watchtower looking south toward the village roofs and north into the soldiers' yard.",
+    "inspect_text": "A spiral ladder leads up to the watch platform. A brass horn hangs ready to call the garrison to arms.",
+    "features": [
+      {
+        "id": "camp_sw_tower-feature",
+        "label": "the brass horn",
+        "aliases": [
+          "horn",
+          "brass horn",
+          "trumpet",
+          "alarm"
+        ],
+        "inspect_text": "A curved brass war horn used to signal shift changes and sound the alarm."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_west_wall",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_smithy",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "village_nw_overlook",
+    "title": "High Stone Overlook",
+    "summary": "A rocky ledge high above the village roofs. You can see the pale yellow lantern lights of town below.",
+    "inspect_text": "The cave wall curves sharply here. Cool water drips into a small mossy pool from cracks in the ceiling.",
+    "features": [
+      {
+        "id": "village_nw_overlook-feature",
+        "label": "the mossy drip pool",
+        "aliases": [
+          "pool",
+          "water",
+          "moss",
+          "drip"
+        ],
+        "inspect_text": "A clear stone basin filled with cold runoff water, edged with pale green lichen."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_watch_ledge",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_upper_terrace",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_upper_terrace",
+    "title": "Upper Residential Terrace",
+    "summary": "A quiet stone terrace where several elder families have their homes. Low stone walls border the walkway.",
+    "inspect_text": "Flowerpots made of hollowed river rocks hold pale subterranean flowers that open in the dark.",
+    "features": [
+      {
+        "id": "village_upper_terrace-feature",
+        "label": "the stone flowerpots",
+        "aliases": [
+          "pots",
+          "flowerpots",
+          "flowers",
+          "plants"
+        ],
+        "inspect_text": "Rough stone cups growing small white cave blossoms that smell faintly like vanilla."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_nw_overlook",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_stone_steps",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "elder_hut",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "elder_hut",
+    "title": "The Elder's Hut",
+    "summary": "A small, tidy stone hut lined with shelves of old village records. A stone hearth burns low in the corner.",
+    "inspect_text": "Elder Valen sits at a low pine table, looking at an official scroll sealed with red temple wax. His hands tremble slightly, and he looks exhausted and guilty.",
+    "features": [
+      {
+        "id": "elder_hut-feature",
+        "label": "the elder's table",
+        "aliases": [
+          "table",
+          "hearth",
+          "scroll",
+          "papers",
+          "desk"
+        ],
+        "inspect_text": "A heavy pine table covered in rosters of villagers. A temple document with a broken wax seal lies open in the center."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_upper_terrace",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_hall",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_west_cottage",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_west_cottage",
+    "title": "Miner Cottage Row West",
+    "summary": "A row of neat stone cottages built right into hollows in the cavern wall. Small wooden fences enclose little yards.",
+    "inspect_text": "Lines of washed clothes hang between stone pillars. An old woman sits on a bench mending a wool jacket.",
+    "features": [
+      {
+        "id": "village_west_cottage-feature",
+        "label": "the clothesline",
+        "aliases": [
+          "clothesline",
+          "laundry",
+          "clothes",
+          "rope"
+        ],
+        "inspect_text": "Hemp rope strung between stone pins, holding drying wool work shirts and denim trousers."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "elder_hut",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "baker_hut",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_southwest_lane",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_southwest_lane",
+    "title": "Quiet Cul-de-sac",
+    "summary": "A quiet dead-end alley between steep stone walls. Solitary stone benches offer a place to think.",
+    "inspect_text": "A faint draft of warm air rises from fissures in the stone. Small bats roost high in the ceiling cracks.",
+    "features": [
+      {
+        "id": "village_southwest_lane-feature",
+        "label": "the stone bench",
+        "aliases": [
+          "bench",
+          "stone",
+          "seat",
+          "fissure"
+        ],
+        "inspect_text": "A slab of slate resting on two granite blocks, worn smooth by generations of quiet resting."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_west_cottage",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_school_room",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_water_spring",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_water_spring",
+    "title": "Clean Water Spring",
+    "summary": "A natural freshwater spring bubbling up through a fracture in white limestone rock.",
+    "inspect_text": "The water is crystal clear and ice cold. Moss and pale green water-cress grow around the pool's stone lip.",
+    "features": [
+      {
+        "id": "village_water_spring-feature",
+        "label": "the bubbling spring",
+        "aliases": [
+          "spring",
+          "water",
+          "pool",
+          "limestone"
+        ],
+        "inspect_text": "A natural spring pouring dozens of gallons of pure water every minute into a natural stone basin."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_southwest_lane",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_wash_basin",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_sw_corner",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_sw_corner",
+    "title": "South Cliff Basin",
+    "summary": "The southwestern-most corner of the cavern. The rock wall drops into an old natural chasm below.",
+    "inspect_text": "A sturdy timber railing prevents anyone from slipping over the edge. Cool air drafts upward from unseen depths.",
+    "features": [
+      {
+        "id": "village_sw_corner-feature",
+        "label": "the cliff edge railing",
+        "aliases": [
+          "railing",
+          "fence",
+          "cliff",
+          "chasm"
+        ],
+        "inspect_text": "Double timber rails bolted into iron eyelets anchored deep into the cliff bedrock."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_water_spring",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_memorial_stones",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "camp_north_wall_w",
+    "title": "West Rampart Walk",
+    "summary": "A high walkway behind sharpened log palisades. Sentry shields hang against the wooden rail.",
+    "inspect_text": "Torches set in iron hoops light the perimeter wall. Soldiers can patrol along this plank floor to spot trouble from afar.",
+    "features": [
+      {
+        "id": "camp_north_wall_w-feature",
+        "label": "the sharpened palisade logs",
+        "aliases": [
+          "palisade",
+          "logs",
+          "wall",
+          "spikes"
+        ],
+        "inspect_text": "Thick tree trunks stripped of bark and carved to sharp points, lashed tight with thick hemp ropes."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_nw_tower",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_patrol_post",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_barracks_1",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_barracks_1",
+    "title": "West Soldier Barracks",
+    "summary": "A long wooden building lined with double-deck bunk beds and straw mattresses. Off-duty soldiers sleep or play cards.",
+    "inspect_text": "Wool blankets are piled on the beds. The room smells of stale sweat, leather wax, and pipe smoke.",
+    "features": [
+      {
+        "id": "camp_barracks_1-feature",
+        "label": "the row of bunks",
+        "aliases": [
+          "bunks",
+          "beds",
+          "mattresses",
+          "straw"
+        ],
+        "inspect_text": "Simple pine bunk beds with rough wool blankets folded at the foot of each mattress."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_north_wall_w",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_west_wall",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_mess_hall",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_smithy",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_smithy",
+    "title": "Camp Smithy",
+    "summary": "A smoky open-air workshop with a roaring stone furnace and a heavy iron anvil.",
+    "inspect_text": "The camp blacksmith pounds out glowing iron shoes for mules and straightens damaged spear tips. Sparks shower over the dirt floor.",
+    "features": [
+      {
+        "id": "camp_smithy-feature",
+        "label": "the heavy iron anvil",
+        "aliases": [
+          "anvil",
+          "forge",
+          "hammer",
+          "iron"
+        ],
+        "inspect_text": "A massive black anvil ringed with hammer marks, anchored firmly to a thick oak stump."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_barracks_1",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_sw_tower",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_archery_range",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "village_watch_ledge",
+    "title": "North Cave Ledge",
+    "summary": "A narrow stone path winding along the north cave wall. Stone handrails have been carved into the living rock.",
+    "inspect_text": "Looking down, you can see smoke rising from village hearths. The air smells of wood ash and clean stone.",
+    "features": [
+      {
+        "id": "village_watch_ledge-feature",
+        "label": "the carved handrail",
+        "aliases": [
+          "handrail",
+          "stone",
+          "rail",
+          "ledge"
+        ],
+        "inspect_text": "Smooth rock carved by decades of miners' hands walking along the upper path."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_nw_overlook",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_north_path",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_stone_steps",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_stone_steps",
+    "title": "Carved Stone Steps",
+    "summary": "Broad stone stairs cut straight into the natural bedrock, linking the upper terrace to the streets below.",
+    "inspect_text": "The center of each step is worn smooth and concave from thousands of boots climbing up and down.",
+    "features": [
+      {
+        "id": "village_stone_steps-feature",
+        "label": "the worn steps",
+        "aliases": [
+          "steps",
+          "stairs",
+          "bedrock",
+          "stone"
+        ],
+        "inspect_text": "Heavy stone steps smoothed down by generations of miners walking home from long shifts."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_watch_ledge",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_upper_terrace",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_north_street",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_hall",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_hall",
+    "title": "The Village Hall",
+    "summary": "A large wooden hall built against the natural rock wall. Long benches and tables fill the room, where miners eat soup together after long shifts.",
+    "inspect_text": "The air smells of mushroom soup, wood smoke, and damp wool. An iron soup kettle hangs over a central fire pit. Villagers sit in small groups, whispering angrily about Kip's arrest.",
+    "features": [
+      {
+        "id": "village_hall-feature",
+        "label": "the central fire pit",
+        "aliases": [
+          "fire",
+          "hearth",
+          "kettle",
+          "pit",
+          "soup"
+        ],
+        "inspect_text": "A wide stone circle filled with glowing embers. A giant black iron kettle bubbles with hot mushroom and bean broth."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_stone_steps",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "elder_hut",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_square",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "baker_hut",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "baker_hut",
+    "title": "Bess's Bakery",
+    "summary": "A warm, inviting stone cottage with a domed brick oven built into the rock wall. Fresh mushroom bread cools on pine shelves.",
+    "inspect_text": "Bess the baker stands by the counter with flour on her apron. Her eyes are red from crying about Kip. The smell of sweet yeast and toasted grain fills the room.",
+    "features": [
+      {
+        "id": "baker_hut-feature",
+        "label": "the domed brick oven",
+        "aliases": [
+          "oven",
+          "brick",
+          "hearth",
+          "counter",
+          "shelves"
+        ],
+        "inspect_text": "A large rounded oven with glowing embers inside, baking loaves of dark, hearty cave bread."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_hall",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_west_cottage",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_well_square",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_school_room",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_school_room",
+    "title": "Village School Room",
+    "summary": "A simple wooden room with rows of low desks and slate boards where village children learn to read and calculate.",
+    "inspect_text": "Chalk sticks and slate erasers sit in wooden trays. A painted chart on the wall shows different types of rocks and crystals.",
+    "features": [
+      {
+        "id": "village_school_room-feature",
+        "label": "the mineral wall chart",
+        "aliases": [
+          "chart",
+          "board",
+          "slate",
+          "desks"
+        ],
+        "inspect_text": "A linen poster showing drawings of iron ore, granite, quartz, and glowing mana crystals."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "baker_hut",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_southwest_lane",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mushroom_beds",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_wash_basin",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_wash_basin",
+    "title": "Communal Wash Basin",
+    "summary": "A long stone trough fed by the spring runoff where villagers wash work shirts, blankets, and iron pots.",
+    "inspect_text": "Wooden washboards and bars of brown tallow soap sit on the stone ledge. The water flows clean toward the south drain.",
+    "features": [
+      {
+        "id": "village_wash_basin-feature",
+        "label": "the stone wash trough",
+        "aliases": [
+          "trough",
+          "basin",
+          "washboard",
+          "soap"
+        ],
+        "inspect_text": "A thirty-foot stone channel cut with grooves where laundry is scrubbed clean."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_school_room",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_water_spring",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_south_lane",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_memorial_stones",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_memorial_stones",
+    "title": "Miner Memorial Stones",
+    "summary": "A quiet alcove where dozens of small slate stones have been set into the cave wall.",
+    "inspect_text": "Each stone is carved with the name of a miner who died in cave-ins or gas leaks over the past sixty years. Small tallow candles burn in front of many stones.",
+    "features": [
+      {
+        "id": "village_memorial_stones-feature",
+        "label": "the carved memorial stones",
+        "aliases": [
+          "stones",
+          "memorial",
+          "names",
+          "candles"
+        ],
+        "inspect_text": "Dozens of small slate tablets etched with names, dates, and pickaxe emblems to honor fallen workers."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_wash_basin",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_sw_corner",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_south_overlook",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "camp_patrol_post",
+    "title": "North Patrol Post",
+    "summary": "A sheltered alcove on the north wall where sentries rest between patrol shifts.",
+    "inspect_text": "A small charcoal brazier keeps the guard post warm. Scratched game boards are cut into the bench where off-duty soldiers play dice.",
+    "features": [
+      {
+        "id": "camp_patrol_post-feature",
+        "label": "the charcoal brazier",
+        "aliases": [
+          "brazier",
+          "charcoal",
+          "heater",
+          "fire"
+        ],
+        "inspect_text": "An iron dish glowing with red coals that keep off the chill of the north cavern."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_north_wall_w",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_officers_tent",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_mess_hall",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_mess_hall",
+    "title": "Camp Mess Hall",
+    "summary": "Long trestle tables and benches fill this wooden hall. Iron pots bubble over an open hearth.",
+    "inspect_text": "Soldiers eat hot mutton stew and fresh bread here. The room smells of roasted grease, garlic, and spilled beer.",
+    "features": [
+      {
+        "id": "camp_mess_hall-feature",
+        "label": "the big stew pot",
+        "aliases": [
+          "pot",
+          "stew",
+          "hearth",
+          "kettle"
+        ],
+        "inspect_text": "A three-legged iron cauldron bubbling with potatoes, salt meat, and root vegetables."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_patrol_post",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_barracks_1",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_armory",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_archery_range",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_archery_range",
+    "title": "Archery Practice Yard",
+    "summary": "Straw target dummies stuffed with dried grass stand against a tall mound of dirt.",
+    "inspect_text": "Dozens of splintered crossbow bolts stick out from the wooden targets. Guards practice their aim here every morning.",
+    "features": [
+      {
+        "id": "camp_archery_range-feature",
+        "label": "the straw targets",
+        "aliases": [
+          "targets",
+          "dummies",
+          "straw",
+          "bolts"
+        ],
+        "inspect_text": "Human-shaped targets woven from tough mountain straw, pocked with crossbow holes."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_mess_hall",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_smithy",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_training_yard",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "village_north_path",
+    "title": "North Cliff Path",
+    "summary": "A broad gravel path sloping downward toward the village streets. Small lanterns hang from iron spikes in the rock.",
+    "inspect_text": "The path is well-traveled, swept clear of loose stones so walking miners will not twist their ankles.",
+    "features": [
+      {
+        "id": "village_north_path-feature",
+        "label": "the iron spike lanterns",
+        "aliases": [
+          "lanterns",
+          "spikes",
+          "lights",
+          "lantern"
+        ],
+        "inspect_text": "Small tin lanterns burning tallow candles, casting warm circles of light on the gravel."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_watch_ledge",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_fort_slope",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_north_street",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_north_street",
+    "title": "North Village Street",
+    "summary": "A cobblestone lane lined with modest stone huts. Pale curtains hang in the windows of miner homes.",
+    "inspect_text": "You can hear people talking quietly inside. The smell of boiling cabbage and baked bread fills the air.",
+    "features": [
+      {
+        "id": "village_north_street-feature",
+        "label": "the cobblestone paving",
+        "aliases": [
+          "cobblestones",
+          "street",
+          "stones",
+          "paving"
+        ],
+        "inspect_text": "Rounded river stones set into clay to make a clean, dry street through the town."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_north_path",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_stone_steps",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_carpenters_shed",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_square",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_square",
+    "title": "The Village Square",
+    "summary": "A broad open square at the center of the underground village. A stone well sits in the middle, and an iron fire bowl provides warm yellow light.",
+    "inspect_text": "Stone cottages crowd against the cavern walls. To the west is the village dining hall and elder's home. To the east, cart tracks lead toward the mana mines. To the north, a gated road leads to the soldier camp.",
+    "features": [
+      {
+        "id": "village_square-feature",
+        "label": "the iron fire bowl",
+        "aliases": [
+          "fire bowl",
+          "bowl",
+          "fire",
+          "well",
+          "flames"
+        ],
+        "inspect_text": "A massive iron cauldron on three stone legs, filled with slow-burning peat that warms the center of town."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_north_street",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_hall",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_market_lane",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_well_square",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "oh",
+        "label": "Up to the Heart-Pit",
+        "aliases": [
+          "up",
+          "u",
+          "pit",
+          "stairs",
+          "heart"
+        ],
+        "menu_label": "Up"
+      }
+    ]
+  },
+  {
+    "id": "village_well_square",
+    "title": "The Village Well",
+    "summary": "A small plaza centered on a circular stone well that taps into an underground mountain stream.",
+    "inspect_text": "A wooden crank and copper bucket let villagers haul up fresh, icy water. Women gather here to fill clay jugs.",
+    "features": [
+      {
+        "id": "village_well_square-feature",
+        "label": "the circular stone well",
+        "aliases": [
+          "well",
+          "crank",
+          "bucket",
+          "water"
+        ],
+        "inspect_text": "Deep stone masonry reaching down to cold, sweet subterranean water forty feet below."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_square",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "baker_hut",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_weaver_hut",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mushroom_beds",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mushroom_beds",
+    "title": "The Stepped Mushroom Beds",
+    "summary": "Stepped garden terraces cut into the cavern floor where villagers grow food in the dark. Thousands of thick mushrooms sprout from damp mulch beds.",
+    "inspect_text": "A gentle mist falls from pipes in the ceiling. The garden smells of rich black soil and damp earth. Soft blue glow-caps provide just enough light to see rows of edible brown and gold fungi.",
+    "features": [
+      {
+        "id": "mushroom_beds-feature",
+        "label": "the glowing mushroom terraces",
+        "aliases": [
+          "terrace",
+          "garden",
+          "mushrooms",
+          "beds",
+          "fungus"
+        ],
+        "inspect_text": "Raised rock beds filled with dark compost and decaying timber, covered in clusters of plump edible mushrooms."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_well_square",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_school_room",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_spore_drying",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_south_lane",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_south_lane",
+    "title": "South Mushroom Lane",
+    "summary": "A quiet walkway bordering the southern edge of the mushroom gardens. Small stone sheds hold mulch and tools.",
+    "inspect_text": "The smell of rich black soil is strongest here. Earthworms crawl in the compost beds along the wall.",
+    "features": [
+      {
+        "id": "village_south_lane-feature",
+        "label": "the tool storage shed",
+        "aliases": [
+          "shed",
+          "tools",
+          "rakes",
+          "shovels"
+        ],
+        "inspect_text": "A low shed holding wooden rakes, iron trowels, and watering pots for tending the fungus beds."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mushroom_beds",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_wash_basin",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_compost_shed",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_south_overlook",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_south_overlook",
+    "title": "South Cave Ledge",
+    "summary": "A high natural shelf offering a view of the southern cavern wall where natural mineral streaks sparkle like stars.",
+    "inspect_text": "Faint trickles of water trace glistening lines down the black stone face. The space is quiet and peaceful.",
+    "features": [
+      {
+        "id": "village_south_overlook-feature",
+        "label": "the glistening mineral streaks",
+        "aliases": [
+          "minerals",
+          "wall",
+          "streaks",
+          "quartz"
+        ],
+        "inspect_text": "Bands of natural quartz and calcite embedded in the dark limestone that catch the candle glow."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_south_lane",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_memorial_stones",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_storage_caves",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "camp_officers_tent",
+    "title": "Officer's Bunk",
+    "summary": "A neat canvas tent with a cot and small footlocker for the camp lieutenants.",
+    "inspect_text": "Polished leather boots and a spare helmet sit on a wooden stool. A ledger tracks daily guard duty rotations.",
+    "features": [
+      {
+        "id": "camp_officers_tent-feature",
+        "label": "the officer's footlocker",
+        "aliases": [
+          "footlocker",
+          "locker",
+          "chest",
+          "cot"
+        ],
+        "inspect_text": "A brass-hinged wooden box holding clean wool socks, a guard roster, and a short iron knife."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_patrol_post",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_gate_platform",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_armory",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_armory",
+    "title": "Guard Armory",
+    "summary": "Racks of polished iron spears, shields painted red, and rows of heavy crossbows line the stone walls.",
+    "inspect_text": "Armored suits stand on wooden mannequins. Iron weapon trunks line the floor, each secured with stout brass locks.",
+    "features": [
+      {
+        "id": "camp_armory-feature",
+        "label": "the weapon racks",
+        "aliases": [
+          "racks",
+          "spears",
+          "shields",
+          "crossbows"
+        ],
+        "inspect_text": "Solid ash wood racks holding sharp iron spears and heavy military crossbows."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_officers_tent",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_mess_hall",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "command_tent",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_training_yard",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_training_yard",
+    "title": "Drill Ground",
+    "summary": "A wide patch of packed sand where soldiers spar with wooden practice swords and shields.",
+    "inspect_text": "Deep footprints and scuff marks cover the arena. Racks of dulled wooden swords lean against the arena fence.",
+    "features": [
+      {
+        "id": "camp_training_yard-feature",
+        "label": "the wooden practice swords",
+        "aliases": [
+          "swords",
+          "practice",
+          "wood",
+          "weapons"
+        ],
+        "inspect_text": "Heavy ash wood clubs shaped like short swords, weighted with lead inserts."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_armory",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_archery_range",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_gate",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "village_fort_slope",
+    "title": "Guard Camp Slope",
+    "summary": "A steep rocky slope leading up toward the dark timber walls of the soldiers' fort.",
+    "inspect_text": "Warning signs carved on wooden boards remind commoners not to approach the palisade without permission.",
+    "features": [
+      {
+        "id": "village_fort_slope-feature",
+        "label": "the wooden warning sign",
+        "aliases": [
+          "sign",
+          "warning",
+          "board",
+          "post"
+        ],
+        "inspect_text": "A weather-beaten board painted with a red shield and the words: 'HALT - SOLDIERS ONLY'."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_north_path",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_approach_road",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_carpenters_shed",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_carpenters_shed",
+    "title": "Miner Tool Shed",
+    "summary": "An open wooden shed filled with replacement pick handles, shovel blades, and wooden wheelbarrows.",
+    "inspect_text": "Sawdust covers the dirt floor. An old carpenter works on repairing a split wooden wheelbarrow.",
+    "features": [
+      {
+        "id": "village_carpenters_shed-feature",
+        "label": "the rack of pick handles",
+        "aliases": [
+          "handles",
+          "picks",
+          "tools",
+          "wood"
+        ],
+        "inspect_text": "Smooth hickory handles shaved and oiled, ready to be fitted to iron pickaxe heads."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_fort_slope",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_north_street",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_east_fork",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_market_lane",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_market_lane",
+    "title": "Lantern Lane",
+    "summary": "A bustling lane where village traders spread cloth blankets to barter woven blankets, clay bowls, and salt.",
+    "inspect_text": "Paper lanterns hang on strings across the street. Children run between the stalls playing tag.",
+    "features": [
+      {
+        "id": "village_market_lane-feature",
+        "label": "the market trade blankets",
+        "aliases": [
+          "blankets",
+          "stalls",
+          "goods",
+          "pots"
+        ],
+        "inspect_text": "Woven wool blankets laid out with handmade clay mugs, dried mushrooms, and carved wooden toys."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_carpenters_shed",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_square",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_mine_gate",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_weaver_hut",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_weaver_hut",
+    "title": "Weaver's Workshop",
+    "summary": "A wide cottage where large wooden looms clack rhythmically. Baskets of spun mushroom fiber and sheep wool crowd the floor.",
+    "inspect_text": "A weaver uses a wooden shuttle to thread dark blue yarn through a hanging frame. Tough work coats hang ready for sale.",
+    "features": [
+      {
+        "id": "village_weaver_hut-feature",
+        "label": "the timber loom",
+        "aliases": [
+          "loom",
+          "threads",
+          "frame",
+          "shuttle"
+        ],
+        "inspect_text": "A sturdy oak weaving frame strung with hundreds of tough gray cords made of cave fungus fiber."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_market_lane",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_well_square",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_east_cottage",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_spore_drying",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_spore_drying",
+    "title": "Spore Drying Shed",
+    "summary": "A warm timber shed with open lattice walls where mushroom spores and caps are dried on linen screens.",
+    "inspect_text": "The air is warm and smells rich like roasted nuts. Wooden trays are stacked from floor to ceiling.",
+    "features": [
+      {
+        "id": "village_spore_drying-feature",
+        "label": "the drying screens",
+        "aliases": [
+          "screens",
+          "trays",
+          "spores",
+          "mushrooms"
+        ],
+        "inspect_text": "Square wooden frames covered with stretched cheesecloth, holding thousands of tiny drying spore clusters."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_weaver_hut",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mushroom_beds",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_lower_path",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_compost_shed",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_compost_shed",
+    "title": "Garden Compost Shed",
+    "summary": "A large stone bin holding decaying wood chips, straw, and spent mushroom compost.",
+    "inspect_text": "The compost generates natural heat, warming the southern corner of the village. The soil is dark and crumbly.",
+    "features": [
+      {
+        "id": "village_compost_shed-feature",
+        "label": "the steaming compost bin",
+        "aliases": [
+          "compost",
+          "bin",
+          "soil",
+          "chips"
+        ],
+        "inspect_text": "A deep stone enclosure where decaying plant matter turns into rich soil for the crops."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_spore_drying",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_south_lane",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_root_cellar",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_storage_caves",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_storage_caves",
+    "title": "Deep Village Storehouse",
+    "summary": "A deep natural chamber used to store spare building stone, rolls of canvas, and wooden barrel staves.",
+    "inspect_text": "Cobwebs hang from the ceiling in thick sheets. The room is quiet and undisturbed.",
+    "features": [
+      {
+        "id": "village_storage_caves-feature",
+        "label": "the stacks of building stone",
+        "aliases": [
+          "stone",
+          "blocks",
+          "canvas",
+          "crates"
+        ],
+        "inspect_text": "Squarish blocks of limestone cut from the quarry, stacked ready for chimney and wall repairs."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_compost_shed",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_south_overlook",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "village_drain_trench",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "camp_gate_platform",
+    "title": "Teleport Platform Approach",
+    "summary": "A wide stone ramp leading up to the great magic archway. White runes carved along the curb pulse with pale light.",
+    "inspect_text": "Heavy flagstones lead directly toward the teleportation gate. The air smells sharp like lightning before a summer storm.",
+    "features": [
+      {
+        "id": "camp_gate_platform-feature",
+        "label": "the carved stone ramp",
+        "aliases": [
+          "ramp",
+          "stones",
+          "path",
+          "curb"
+        ],
+        "inspect_text": "Smooth gray stones edged with glowing runes that brighten as you get closer to the gate."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_officers_tent",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "teleport_gate",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "command_tent",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "command_tent",
+    "title": "The Guard Command Tent",
+    "summary": "A large military tent inside the camp stockade. An iron desk holds maps of the caves, and a heavy iron chest sits chained to the center tent pole.",
+    "inspect_text": "Red cloth banners hang from the tent frame. The room smells of lamp oil, roasted meat, and wet wool. In the corner, a loose floorboard covers the old drainage pipe. Chained to the center pole is a padlocked iron chest.",
+    "features": [
+      {
+        "id": "command_tent-feature",
+        "label": "the chained iron chest",
+        "aliases": [
+          "chest",
+          "iron chest",
+          "box",
+          "trunk"
+        ],
+        "inspect_text": "A heavy iron lockbox wrapped in chains. A keyhole on the front is shaped like a double circle. The Teleportation Scroll is locked inside."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_gate_platform",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_armory",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_upper_courtyard",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_gate",
+        "label": "South to the Camp Gate",
+        "aliases": [
+          "south",
+          "s",
+          "gate"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "old_drain_pipe",
+        "label": "Down into the Drain Pipe",
+        "aliases": [
+          "down",
+          "d",
+          "pipe",
+          "hatch"
+        ],
+        "menu_label": "Down"
+      },
+      {
+        "room_id": "prison_cage",
+        "label": "East to the Prison Cage",
+        "aliases": [
+          "east",
+          "e",
+          "cage",
+          "prison"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "teleport_gate",
+        "label": "North to the Teleport Gate",
+        "aliases": [
+          "north",
+          "n",
+          "gate",
+          "teleport"
+        ],
+        "menu_label": "North"
+      }
+    ]
+  },
+  {
+    "id": "camp_gate",
+    "title": "The Guard Camp Gate",
+    "summary": "A high wooden wall made of sharpened logs blocks the canyon road. Two guard towers look down over a heavy wooden gate barred with iron.",
+    "inspect_text": "Bright torches burn in iron baskets on the wooden catwalks. Armored soldiers pace the wall with loaded crossbows. The gate is firmly locked, and the guards shout down to warn everyone away.",
+    "features": [
+      {
+        "id": "camp_gate-feature",
+        "label": "the heavy barred gate",
+        "aliases": [
+          "gate",
+          "barred gate",
+          "wooden gate",
+          "doors",
+          "spikes"
+        ],
+        "inspect_text": "Thick wooden doors reinforced with black iron plates. A heavy iron bar holds them shut from the inside."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_training_yard",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_lower_courtyard",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_approach_road",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "command_tent",
+        "label": "Through the Gate into Camp",
+        "aliases": [
+          "north",
+          "n",
+          "camp",
+          "gate",
+          "inside"
+        ],
+        "menu_label": "North",
+        "requires_story_var": "camp_gate_open"
+      }
+    ]
+  },
+  {
+    "id": "village_approach_road",
+    "title": "Camp Approach Road",
+    "summary": "A wide dirt road running north toward the heavy gates of the Guard Camp.",
+    "inspect_text": "Wheel ruts from supply wagons cut deep into the ground. Torchlight from the guard towers flickers overhead.",
+    "features": [
+      {
+        "id": "village_approach_road-feature",
+        "label": "the deep wagon ruts",
+        "aliases": [
+          "ruts",
+          "road",
+          "wheel ruts",
+          "tracks"
+        ],
+        "inspect_text": "Hardened clay grooves worn by heavy wagons carrying iron, food, and mining gear to the soldiers."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_gate",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_fort_slope",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "old_drain_pipe",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_east_fork",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_east_fork",
+    "title": "East Village Fork",
+    "summary": "A three-way fork in the cobblestone road. Signs point west to the square and east toward the mines.",
+    "inspect_text": "Miners with dusty faces and iron buckets pass by, returning from their ten-hour digging shifts.",
+    "features": [
+      {
+        "id": "village_east_fork-feature",
+        "label": "the wooden direction signs",
+        "aliases": [
+          "signs",
+          "post",
+          "pointer",
+          "fork"
+        ],
+        "inspect_text": "A painted post pointing west toward 'Town Square' and east toward 'Mana Quarry'."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_approach_road",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_carpenters_shed",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_drainage_culvert",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_mine_gate",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_mine_gate",
+    "title": "Mine Crossing Road",
+    "summary": "A wide stone-paved road connecting the village directly to the mine works. Heavy wooden carts rumble past.",
+    "inspect_text": "The air begins to smell of stone dust and sharp static electricity. A wooden arch marks the entrance to the mining zone.",
+    "features": [
+      {
+        "id": "village_mine_gate-feature",
+        "label": "the timber entrance arch",
+        "aliases": [
+          "arch",
+          "timber",
+          "posts",
+          "sign"
+        ],
+        "inspect_text": "A stout archway made of squared mine timbers, carved with the crossed pickaxe badge of the diggers."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_east_fork",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_market_lane",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_entrance",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_east_cottage",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_east_cottage",
+    "title": "Miner Cottage Row East",
+    "summary": "Stone houses built along the eastern cliff. Children play with smooth crystal pebbles on the doorsteps.",
+    "inspect_text": "The ground here is tinged slightly violet from dust carried on the boots of returning family members.",
+    "features": [
+      {
+        "id": "village_east_cottage-feature",
+        "label": "the crystal pebbles",
+        "aliases": [
+          "pebbles",
+          "stones",
+          "crystals",
+          "toys"
+        ],
+        "inspect_text": "Small round stones with faint purple veins, gathered by children from the quarry wash."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_mine_gate",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_weaver_hut",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_sorting_shed",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_lower_path",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_lower_path",
+    "title": "Low Path to Lower Mines",
+    "summary": "A sloped dirt track running down toward the lower crushers and tailings piles.",
+    "inspect_text": "Miners wearing thick leather aprons carry baskets of raw rock up toward the processing sheds.",
+    "features": [
+      {
+        "id": "village_lower_path-feature",
+        "label": "the sloped dirt track",
+        "aliases": [
+          "path",
+          "track",
+          "slope",
+          "road"
+        ],
+        "inspect_text": "A wide ramp packed hard by boots and wheelbarrows, dusted with fine white rock powder."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_east_cottage",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_spore_drying",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_crusher_floor",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_root_cellar",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_root_cellar",
+    "title": "Village Root Cellar",
+    "summary": "A cool, dry cave room lined with wooden bins holding stored turnips, pickled mushrooms, and dried roots.",
+    "inspect_text": "The village keeps its winter emergency food here. The air smells of earth, vinegar, and dry straw.",
+    "features": [
+      {
+        "id": "village_root_cellar-feature",
+        "label": "the food storage bins",
+        "aliases": [
+          "bins",
+          "cellar",
+          "turnips",
+          "roots"
+        ],
+        "inspect_text": "Deep slatted pine bins filled with sweet yellow turnips and dried fungus cakes."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_lower_path",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_compost_shed",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_lower_rail_spur",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "village_drain_trench",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "village_drain_trench",
+    "title": "Southern Runoff Trench",
+    "summary": "A stone trench cut into the floor to funnel runoff water out of the village toward the lower mine sluices.",
+    "inspect_text": "Water rushes steadily down the channel, carrying loose dirt and fine sand toward the quarry drainage.",
+    "features": [
+      {
+        "id": "village_drain_trench-feature",
+        "label": "the stone runoff trench",
+        "aliases": [
+          "trench",
+          "channel",
+          "water",
+          "drain"
+        ],
+        "inspect_text": "A two-foot-wide gutter paved with smooth river pebbles, directing village wastewater away from living areas."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_root_cellar",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "village_storage_caves",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_south_sluice",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "teleport_gate",
+    "title": "The Teleportation Gate",
+    "summary": "A huge circular stone archway built against the back cave wall. Carved white runes glow with bright light and emit a deep electrical hum.",
+    "inspect_text": "This is the only way up to Floor 5. The white stone ring stands twenty feet high, crackling with raw magical energy. A stone pedestal in front of the gate has a circular slot for a teleportation spell.",
+    "features": [
+      {
+        "id": "teleport_gate-feature",
+        "label": "the glowing stone archway",
+        "aliases": [
+          "gate",
+          "archway",
+          "stone ring",
+          "arch",
+          "runes",
+          "portal"
+        ],
+        "inspect_text": "A massive ring of carved white marble. Ribbons of pale light swirl inside the opening, humming with power."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_gate_platform",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_priest_tent",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_upper_courtyard",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "command_tent",
+        "label": "South to the Command Tent",
+        "aliases": [
+          "south",
+          "s",
+          "tent",
+          "command"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_upper_courtyard",
+    "title": "Upper Camp Courtyard",
+    "summary": "An open gravel yard between the command tent and the prison cage. Torches flicker in iron wall brackets.",
+    "inspect_text": "Patrols cross here frequently as they rotate between watch posts. The ground is packed hard by hundreds of iron-shod boots.",
+    "features": [
+      {
+        "id": "camp_upper_courtyard-feature",
+        "label": "the iron wall torches",
+        "aliases": [
+          "torches",
+          "brackets",
+          "flames",
+          "iron"
+        ],
+        "inspect_text": "Heavy iron sconces holding pitch-soaked torches that cast dancing yellow shadows across the gravel."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "teleport_gate",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "command_tent",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "prison_cage",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_lower_courtyard",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_lower_courtyard",
+    "title": "Lower Camp Courtyard",
+    "summary": "The inner yard just behind the main gate. Wagons are unloaded here and inspection lines are formed.",
+    "inspect_text": "Wheel ruts groove the dirt. Guards check passes and inspect crates brought in from the village.",
+    "features": [
+      {
+        "id": "camp_lower_courtyard-feature",
+        "label": "the wagon wheel ruts",
+        "aliases": [
+          "ruts",
+          "ground",
+          "dirt",
+          "tracks"
+        ],
+        "inspect_text": "Deep wagon ruts pressed into the clay floor, dried hard by the warm cave air."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_upper_courtyard",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_gate",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_guardhouse",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "old_drain_pipe",
+    "title": "The Old Drain Pipe",
+    "summary": "A narrow, low tunnel lined with cracked clay tiles. Cold water trickles over your boots, running north under the stone foundations of the guard camp.",
+    "inspect_text": "You have to crouch low to move through the pipe. Slimy green moss covers the damp clay walls. Up ahead, faint light and the sound of soldiers' voices leak through a loose wooden floor hatch.",
+    "features": [
+      {
+        "id": "old_drain_pipe-feature",
+        "label": "the wooden floor hatch",
+        "aliases": [
+          "hatch",
+          "ceiling",
+          "opening",
+          "trapdoor",
+          "boards"
+        ],
+        "inspect_text": "Square wooden planks in the ceiling above. You can smell lamp oil and hear heavy boots pacing back and forth above you."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_approach_road",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_pump_station",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_drainage_culvert",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "command_tent",
+        "label": "Climb through Hatch into Guard Camp",
+        "aliases": [
+          "north",
+          "n",
+          "hatch",
+          "climb",
+          "camp",
+          "tent",
+          "up",
+          "u"
+        ],
+        "menu_label": "Climb Up"
+      },
+      {
+        "room_id": "cart_tracks",
+        "label": "Up to the Cart Tracks",
+        "aliases": [
+          "tracks",
+          "rails",
+          "cart"
+        ],
+        "menu_label": "Cart Tracks"
+      }
+    ]
+  },
+  {
+    "id": "mine_drainage_culvert",
+    "title": "Flooded Culvert",
+    "summary": "A knee-deep water channel running between the village runoff and the mine drainage. Water splashes over slippery flagstones.",
+    "inspect_text": "A rusty iron grate in the north wall leads into the old drain pipe. The air is cool and smells of mineral salts.",
+    "features": [
+      {
+        "id": "mine_drainage_culvert-feature",
+        "label": "the rusty iron grate",
+        "aliases": [
+          "grate",
+          "bars",
+          "culvert",
+          "drain"
+        ],
+        "inspect_text": "An iron grate whose lower bars have rotted through from years of mineral-rich water, leaving room to slip through."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_east_fork",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "old_drain_pipe",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_cart_depot",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_entrance",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_entrance",
+    "title": "The Mine Entrance",
+    "summary": "A wide archway cut into the rock wall where the village road meets the excavation tunnels. Sturdy timber beams frame the tunnel mouth.",
+    "inspect_text": "The air is cool, dry, and smells of pulverized stone and static electricity. Iron tracks disappear into the darkness ahead, and glowing purple crystal seams trace veins across the ceiling.",
+    "features": [
+      {
+        "id": "mine_entrance-feature",
+        "label": "the timber entrance frame",
+        "aliases": [
+          "beams",
+          "frame",
+          "arch",
+          "timbers",
+          "entrance"
+        ],
+        "inspect_text": "Massive square oak beams braced with iron plates to keep the tunnel mouth from collapsing."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_mine_gate",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_drainage_culvert",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "cart_tracks",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_sorting_shed",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_sorting_shed",
+    "title": "Ore Sorting Shed",
+    "summary": "A long open-sided shed where miners use hand hammers to break rock away from raw mana crystals.",
+    "inspect_text": "Chipped crystal shards fill wooden sorting tubs labeled by purity. The room glows with mixed hues of sapphire and amethyst.",
+    "features": [
+      {
+        "id": "mine_sorting_shed-feature",
+        "label": "the sorting tubs",
+        "aliases": [
+          "tubs",
+          "boxes",
+          "crystals",
+          "shards"
+        ],
+        "inspect_text": "Wooden crates filled with graded crystal chunks: dull purple for village lamps, bright blue for high-level spells."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_east_cottage",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_entrance",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_quarry_rim",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_crusher_floor",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_crusher_floor",
+    "title": "Stone Crusher Floor",
+    "summary": "Two massive iron stampers driven by overhead water ropes rise and drop onto stone slabs, crushing ore into gravel.",
+    "inspect_text": "The pounding rhythm shakes the stone under your boots: *CRUNCH... CRUNCH*. Fine dust covers everything in a gray blanket.",
+    "features": [
+      {
+        "id": "mine_crusher_floor-feature",
+        "label": "the iron ore stampers",
+        "aliases": [
+          "stampers",
+          "crusher",
+          "pestles",
+          "iron"
+        ],
+        "inspect_text": "Hundreds of pounds of cast iron rising and slamming down to break stone away from stubborn crystal nuggets."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_lower_path",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_sorting_shed",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_winch_house",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_lower_rail_spur",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_lower_rail_spur",
+    "title": "Lower Rail Spur",
+    "summary": "A quiet spur track leading into the lower storage tunnels. Old carts with missing wheels sit on the sidelines.",
+    "inspect_text": "Grease cans and oily rags litter an upturned barrel. A track hand works on tightening loose rail spikes.",
+    "features": [
+      {
+        "id": "mine_lower_rail_spur-feature",
+        "label": "the loose rail switch",
+        "aliases": [
+          "switch",
+          "spur",
+          "tracks",
+          "rails"
+        ],
+        "inspect_text": "A hand-forged iron lever that shifts the rail tracks between the main drift and the repair yard."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_root_cellar",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_crusher_floor",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_tailing_dump",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_south_sluice",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_south_sluice",
+    "title": "Runoff Sluice",
+    "summary": "A wide wooden flume that carries wastewater from both the village and the mine crushers toward the south chasm.",
+    "inspect_text": "The water rushes fast and loud over smooth timber boards. Thick safety ropes are strung along the sides.",
+    "features": [
+      {
+        "id": "mine_south_sluice-feature",
+        "label": "the rushing water flume",
+        "aliases": [
+          "flume",
+          "sluice",
+          "water",
+          "trough"
+        ],
+        "inspect_text": "A stout wooden trough carrying three feet of swiftly flowing water south into the abyss."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "village_drain_trench",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_lower_rail_spur",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_deepest_cut",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "camp_priest_tent",
+    "title": "Priest's Pavilion",
+    "summary": "A white silk pavilion decorated with silver eye symbols. Incense burns in bronze censers, smelling of dry flowers and wax.",
+    "inspect_text": "Priest Malas stays here while waiting to claim the village offering. Velvet pillows rest on a wool rug, surrounded by quiet candle stands.",
+    "features": [
+      {
+        "id": "camp_priest_tent-feature",
+        "label": "the silver eye banner",
+        "aliases": [
+          "banner",
+          "symbol",
+          "eye",
+          "censer"
+        ],
+        "inspect_text": "A silver flag embroidered with the unblinking eye of the temple priests, watching over the camp."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "teleport_gate",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_north_wall_e",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "prison_cage",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "prison_cage",
+    "title": "The Prison Cage",
+    "summary": "A courtyard behind high wooden walls. An iron cage hangs from heavy chains over a dry stone pit, guarded by torchlight.",
+    "inspect_text": "The cage is made of thick square iron bars. Inside, an eleven-year-old boy in dusty work clothes sits on the cold floor, glaring fiercely through the bars. Two guards stand nearby, keeping watch.",
+    "features": [
+      {
+        "id": "prison_cage-feature",
+        "label": "the hanging iron cage",
+        "aliases": [
+          "cage",
+          "iron cage",
+          "bars",
+          "prison"
+        ],
+        "inspect_text": "A heavy iron cage suspended ten feet off the ground over a rocky pit. The door is locked with a heavy steel padlock."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_priest_tent",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_upper_courtyard",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_barracks_2",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_guardhouse",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "command_tent",
+        "label": "West to the Command Tent",
+        "aliases": [
+          "west",
+          "w",
+          "tent",
+          "command"
+        ],
+        "menu_label": "West"
+      }
+    ]
+  },
+  {
+    "id": "camp_guardhouse",
+    "title": "Sentry Guardhouse",
+    "summary": "A low stone building where gate guards stay on duty. A desk holds the village passbook and iron keys.",
+    "inspect_text": "A small iron gate opens into a holding cell where rowdy miners spend the night before being kicked back out.",
+    "features": [
+      {
+        "id": "camp_guardhouse-feature",
+        "label": "the gate passbook",
+        "aliases": [
+          "passbook",
+          "book",
+          "desk",
+          "ledger"
+        ],
+        "inspect_text": "A thick leather book recording every cart of ore and visitor entering the camp."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "prison_cage",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_lower_courtyard",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_lumber_yard",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "mine_pump_station",
+    "title": "Mine Drainage Pump",
+    "summary": "A clanking mechanical pump powered by an iron water wheel. Wooden pistons pump sludge out of the low tunnels.",
+    "inspect_text": "The noise is deafening: *thump-clank... thump-clank*. Wet sludge splashes into a flume that empties into the drainage network.",
+    "features": [
+      {
+        "id": "mine_pump_station-feature",
+        "label": "the wooden pump pistons",
+        "aliases": [
+          "pump",
+          "pistons",
+          "wheel",
+          "engine"
+        ],
+        "inspect_text": "Heavy oak beams linked to an iron crank, rising and falling with rhythmic mechanical force."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "old_drain_pipe",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_north_shaft",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_cart_depot",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_cart_depot",
+    "title": "Mine Cart Staging Depot",
+    "summary": "A wide junction where multiple iron rail lines merge into a turntable. Empty wooden ore carts wait in neat rows.",
+    "inspect_text": "Grease pots and iron levers sit by the track switch. A blackboard lists the daily cart quotas for each mining crew.",
+    "features": [
+      {
+        "id": "mine_cart_depot-feature",
+        "label": "the iron rail turntable",
+        "aliases": [
+          "turntable",
+          "tracks",
+          "switch",
+          "rails"
+        ],
+        "inspect_text": "A revolving steel disc set into the floor that allows heavy carts to turn and change tracks easily."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_pump_station",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_drainage_culvert",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_timber_support",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "cart_tracks",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "cart_tracks",
+    "title": "The Cart Tracks",
+    "summary": "A double line of iron rails runs down the center of this broad tunnel. Empty wooden ore carts sit on side spurs waiting to be loaded.",
+    "inspect_text": "Lanterns hang from ceiling timbers every twenty paces. Miners shout to each other over the clinking of iron picks and the rumble of iron cart wheels.",
+    "features": [
+      {
+        "id": "cart_tracks-feature",
+        "label": "the wooden ore cart",
+        "aliases": [
+          "cart",
+          "ore cart",
+          "wagon",
+          "rails",
+          "tracks"
+        ],
+        "inspect_text": "A four-wheeled wagon built from thick oak planks and bound in iron bands. A hand brake lever sits near the front axle."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_cart_depot",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_entrance",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_main_drift",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_quarry_rim",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      },
+      {
+        "room_id": "old_drain_pipe",
+        "label": "Down into the Drain Pipe",
+        "aliases": [
+          "down",
+          "d",
+          "drain",
+          "pipe",
+          "grate"
+        ],
+        "menu_label": "Down"
+      }
+    ]
+  },
+  {
+    "id": "mine_quarry_rim",
+    "title": "Quarry Pit Rim",
+    "summary": "The upper edge of the great excavation pit. A heavy timber guardrail prevents workers from falling into the deep quarry below.",
+    "inspect_text": "Looking down, you can see dozens of miners working by torchlight thirty feet beneath you. Winch ropes hang over the rim.",
+    "features": [
+      {
+        "id": "mine_quarry_rim-feature",
+        "label": "the pit guardrail",
+        "aliases": [
+          "guardrail",
+          "rail",
+          "rim",
+          "edge"
+        ],
+        "inspect_text": "Heavy oak rails secured to iron posts anchored in the rock, guarding the edge of the pit."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "cart_tracks",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_sorting_shed",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "crystal_pit",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_winch_house",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_winch_house",
+    "title": "Pit Winch Station",
+    "summary": "A heavy wooden winch frame wound with thick hemp ropes. Iron hooks raise and lower ore buckets into the quarry pit.",
+    "inspect_text": "Two strong miners turn the iron hand cranks. A leather brake shoe squeals as a loaded bucket reaches the top.",
+    "features": [
+      {
+        "id": "mine_winch_house-feature",
+        "label": "the heavy hemp winch",
+        "aliases": [
+          "winch",
+          "ropes",
+          "cranks",
+          "drum"
+        ],
+        "inspect_text": "A giant oak drum wrapped in two-inch hemp rope, capable of lifting half a ton of crystal ore."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_quarry_rim",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_crusher_floor",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_golem_worksite",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_tailing_dump",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_tailing_dump",
+    "title": "Rock Tailing Dump",
+    "summary": "A natural ravine where miners dump barren rock that contains no mana crystals.",
+    "inspect_text": "Dust rises in plumes as a wheelbarrow of gravel is tipped over the wooden lip into the dark gap.",
+    "features": [
+      {
+        "id": "mine_tailing_dump-feature",
+        "label": "the dumping chute",
+        "aliases": [
+          "chute",
+          "ravine",
+          "edge",
+          "dump"
+        ],
+        "inspect_text": "A slanted plank chute worn slick by millions of falling stones pouring into the chasm."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_winch_house",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_lower_rail_spur",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_deep_sump",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_deepest_cut",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_deepest_cut",
+    "title": "The Deepest Cut",
+    "summary": "The deepest active excavation trench in the quarry. Huge stepped rock benches descend forty feet below the main floor.",
+    "inspect_text": "The crystals here are darker and more concentrated, glowing deep royal indigo. The air is warm and heavy with power.",
+    "features": [
+      {
+        "id": "mine_deepest_cut-feature",
+        "label": "the royal indigo crystals",
+        "aliases": [
+          "crystals",
+          "indigo",
+          "vein",
+          "trench"
+        ],
+        "inspect_text": "Dense, dark crystal clusters that pulse with immense raw energy, stored deep in the earth."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_tailing_dump",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_south_sluice",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_abyssal_fault",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "camp_north_wall_e",
+    "title": "East Rampart Walk",
+    "summary": "An elevated wooden walk along the eastern ramparts. Below, you can see the top of the crystal mine pits.",
+    "inspect_text": "Guards patrol here day and night to ensure no miners try to sneak out with stolen mana crystals.",
+    "features": [
+      {
+        "id": "camp_north_wall_e-feature",
+        "label": "the guard lookout ledge",
+        "aliases": [
+          "lookout",
+          "ledge",
+          "rail",
+          "planks"
+        ],
+        "inspect_text": "A high wooden railing where soldiers lean and watch the eastern mine tunnels below."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_priest_tent",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_signal_post",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_barracks_2",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_barracks_2",
+    "title": "East Soldier Barracks",
+    "summary": "A second sleeping hall for the eastern garrison. Racks of dry boots sit near a warm iron stove.",
+    "inspect_text": "Footlockers are shoved under bunks. Shield coats and red cloaks hang from wooden pegs along the timber wall.",
+    "features": [
+      {
+        "id": "camp_barracks_2-feature",
+        "label": "the iron heating stove",
+        "aliases": [
+          "stove",
+          "heater",
+          "pipes",
+          "fire"
+        ],
+        "inspect_text": "A pot-bellied cast-iron stove that vents smoke up through a tin pipe into the high cavern ceiling."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_north_wall_e",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "prison_cage",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_supply_store",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_lumber_yard",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_lumber_yard",
+    "title": "Palisade Timber Yard",
+    "summary": "Stacks of fresh pine logs and cedar poles used to repair the fort walls and mine shoring.",
+    "inspect_text": "The air smells of pine resin and saw chips. Two-man crosscut saws hang on wooden pegs under a tarp.",
+    "features": [
+      {
+        "id": "camp_lumber_yard-feature",
+        "label": "the stack of pine logs",
+        "aliases": [
+          "logs",
+          "timber",
+          "wood",
+          "pile"
+        ],
+        "inspect_text": "Straight pine trunks seasoned and debarked, ready to replace rotten palisade sections."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_barracks_2",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_guardhouse",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_beast_pen",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "mine_north_shaft",
+    "title": "North Ventilation Shaft",
+    "summary": "A high vertical chimney cut into the rock ceiling. Fresh, cold air rushes down from upper levels, cooling the humid quarry.",
+    "inspect_text": "A canvas wind-sail hangs suspended on iron ropes, catching air and directing it into the deeper tunnels.",
+    "features": [
+      {
+        "id": "mine_north_shaft-feature",
+        "label": "the canvas wind-sail",
+        "aliases": [
+          "wind-sail",
+          "sail",
+          "shaft",
+          "chimney"
+        ],
+        "inspect_text": "Heavy sailcloth stretched over an iron hoop, channeling a steady stream of crisp surface air downward."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_pump_station",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_blasting_storage",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_timber_support",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_timber_support",
+    "title": "Heavy Timber Support Hall",
+    "summary": "Massive oak archways support the cracked cavern ceiling here. The timbers creak softly under the weight of the stone above.",
+    "inspect_text": "Wedges of cedar are hammered into every joint. Miners pass through this corridor quickly, keeping their eyes on the ceiling.",
+    "features": [
+      {
+        "id": "mine_timber_support-feature",
+        "label": "the creaking oak timbers",
+        "aliases": [
+          "timbers",
+          "arch",
+          "beams",
+          "wood"
+        ],
+        "inspect_text": "Foot-thick square oak beams bolted together with iron bands, holding back thousands of tons of fractured stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_north_shaft",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_cart_depot",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_crystal_seam_north",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_main_drift",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_main_drift",
+    "title": "Main Haulage Tunnel",
+    "summary": "The busiest tunnel in the quarry. Two lines of tracks allow loaded carts to roll west while empty carts return east.",
+    "inspect_text": "Miners push heavy carts with their shoulders down, their faces coated in blue-gray stone powder. The air hums with crystal energy.",
+    "features": [
+      {
+        "id": "mine_main_drift-feature",
+        "label": "the iron cart rails",
+        "aliases": [
+          "rails",
+          "tracks",
+          "ties",
+          "iron"
+        ],
+        "inspect_text": "Twin steel bars spiked to wooden ties, polished bright and shiny by hundreds of rolling cart wheels."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_timber_support",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "cart_tracks",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_chiseled_gallery",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "crystal_pit",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "crystal_pit",
+    "title": "The Crystal Pit",
+    "summary": "A huge natural cave with a deep pit in the middle. Giant clusters of glowing purple and blue mana crystals stick out from the rock walls like jagged glass.",
+    "inspect_text": "The air crackles with magic that makes your skin tingle. Bright purple light reflects off wet stone walls. Down in the pit, miners use hand chisels to crack free glowing chunks of crystal.",
+    "features": [
+      {
+        "id": "crystal_pit-feature",
+        "label": "the glowing mana crystals",
+        "aliases": [
+          "crystals",
+          "crystal",
+          "mana crystals",
+          "veins",
+          "purple crystals"
+        ],
+        "inspect_text": "Thick spikes of purple crystal that pulse with cold inner light. They store pure magic and power the machines of the upper floors."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_main_drift",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_quarry_rim",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_deep_crystal_vein",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_golem_worksite",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_golem_worksite",
+    "title": "Golem Excavation Floor",
+    "summary": "A deep stone chamber where an old, moss-dusted stone golem works silently, lifting rocks three times heavier than a human could move.",
+    "inspect_text": "Orin the golem stands patient and still between lifting boulders. His stone eyes are dim and foggy, waiting for someone with enough wisdom to wake his mind.",
+    "features": [
+      {
+        "id": "mine_golem_worksite-feature",
+        "label": "the silent stone golem",
+        "aliases": [
+          "golem",
+          "orin",
+          "statue",
+          "stone"
+        ],
+        "inspect_text": "A massive humanoid carved from gray granite, banded with iron rings. He works without complaining, his mind clouded by age."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "crystal_pit",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_winch_house",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_blue_crystal_pocket",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_deep_sump",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_deep_sump",
+    "title": "Deep Mine Sump",
+    "summary": "The lowest point of the quarry pit. Water collects here in a black pool before being pumped back to the surface.",
+    "inspect_text": "A wooden raft floats in the center with an intake pipe. The water is cold and clear, reflecting the violet glow of the walls above.",
+    "features": [
+      {
+        "id": "mine_deep_sump-feature",
+        "label": "the floating pump raft",
+        "aliases": [
+          "raft",
+          "pool",
+          "sump",
+          "pipe"
+        ],
+        "inspect_text": "A buoyant platform made of sealed barrels and planks holding the suction mouth of the drainage pump."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_golem_worksite",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_tailing_dump",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_submerged_rail",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_abyssal_fault",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_abyssal_fault",
+    "title": "Abyssal Rock Fault",
+    "summary": "A massive natural fissure where the cave floor splits into a bottomless chasm. Wind howls up from the deep earth.",
+    "inspect_text": "A rope bridge crosses the narrowest gap, connecting to the southern crystal pockets. The drop below is pitch black.",
+    "features": [
+      {
+        "id": "mine_abyssal_fault-feature",
+        "label": "the abyss rope bridge",
+        "aliases": [
+          "bridge",
+          "ropes",
+          "fissure",
+          "chasm"
+        ],
+        "inspect_text": "A swaying bridge of braided rope and split pine planks spanning the dizzying dark crevasse."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_deep_sump",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_deepest_cut",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_crystal_bed",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "camp_signal_post",
+    "title": "Signal Fire Platform",
+    "summary": "A stone platform built on the highest rock pillar. A stack of dry pitch-soaked logs waits ready for a beacon fire.",
+    "inspect_text": "If miners riot or beasts break in, this fire signals the guards on the upper floors. An iron gong hangs beside the wood pile.",
+    "features": [
+      {
+        "id": "camp_signal_post-feature",
+        "label": "the signal gong",
+        "aliases": [
+          "gong",
+          "iron gong",
+          "bell",
+          "hammer"
+        ],
+        "inspect_text": "A heavy bronze disc struck with an iron hammer to sound camp-wide alarms."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_north_wall_e",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_ne_tower",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_supply_store",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_supply_store",
+    "title": "Camp Supply Store",
+    "summary": "A large tent packed with sacks of grain, barrels of salted fish, coils of rope, and spare iron nails.",
+    "inspect_text": "Supplies for a three-month siege are stored here under guard. The air smells of salt, dried apples, and canvas.",
+    "features": [
+      {
+        "id": "camp_supply_store-feature",
+        "label": "the grain sacks and barrels",
+        "aliases": [
+          "sacks",
+          "barrels",
+          "grain",
+          "supplies"
+        ],
+        "inspect_text": "Burlap sacks stamped with the royal crest, stacked neatly five high on wooden pallets."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_signal_post",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_barracks_2",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_east_wall",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "camp_beast_pen",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_beast_pen",
+    "title": "Pack-Beast Stable",
+    "summary": "A fenced corral with hay mangers where thick-furred cave mules rest after hauling heavy wagons.",
+    "inspect_text": "The mules chew silently on dry hay. The yard smells of sweet grass, manure, and leather harness oil.",
+    "features": [
+      {
+        "id": "camp_beast_pen-feature",
+        "label": "the wooden hay mangers",
+        "aliases": [
+          "mangers",
+          "hay",
+          "stable",
+          "trough"
+        ],
+        "inspect_text": "Long wooden troughs filled with dried prairie hay brought down from the surface."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_supply_store",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_lumber_yard",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_se_tower",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "mine_blasting_storage",
+    "title": "Blasting Powder Store",
+    "summary": "A heavily reinforced vault behind thick oak doors. Red barrels of mineral blasting powder sit on dry wooden racks.",
+    "inspect_text": "Warning symbols of a bursting rock are painted on the doors. A brass lock keeps unauthorized workers out.",
+    "features": [
+      {
+        "id": "mine_blasting_storage-feature",
+        "label": "the powder barrels",
+        "aliases": [
+          "barrels",
+          "powder",
+          "kegs",
+          "explosives"
+        ],
+        "inspect_text": "Stout oak kegs sealed with black pitch, holding fine volcanic sulfur powder for breaking hard rock."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_north_shaft",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_northeast_drift",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_crystal_seam_north",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_crystal_seam_north",
+    "title": "Bright Violet Vein",
+    "summary": "A stunning wall of solid violet mana crystals exposed by recent excavation. The crystals glow with steady cold light.",
+    "inspect_text": "The light is bright enough to read by without a candle. You can feel a faint vibration in your teeth as magic pulses through the rock.",
+    "features": [
+      {
+        "id": "mine_crystal_seam_north-feature",
+        "label": "the solid violet crystal vein",
+        "aliases": [
+          "vein",
+          "crystals",
+          "light",
+          "violet"
+        ],
+        "inspect_text": "A continuous ribbon of pure purple crystal three feet wide, pulsing with natural magical electricity."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_blasting_storage",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_timber_support",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_east_chute",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_chiseled_gallery",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_chiseled_gallery",
+    "title": "Chiseled Stone Gallery",
+    "summary": "A high vaulted gallery where stone masons have chiseled away the surrounding slate to expose giant crystal pillars.",
+    "inspect_text": "Pillars of translucent blue and violet crystal stand ten feet tall, glowing like frozen icebergs in the gloom.",
+    "features": [
+      {
+        "id": "mine_chiseled_gallery-feature",
+        "label": "the glowing crystal pillars",
+        "aliases": [
+          "pillars",
+          "crystals",
+          "icebergs",
+          "columns"
+        ],
+        "inspect_text": "Spectacular natural columns of pure mana crystal that illuminate the entire chamber with azure light."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_crystal_seam_north",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_main_drift",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_eastern_stope",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_deep_crystal_vein",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_deep_crystal_vein",
+    "title": "Deep Mana Crystal Seam",
+    "summary": "A massive deposit of blue and purple crystals cutting through dark granite. The rock seems to hum like a living creature.",
+    "inspect_text": "Whenever a chisel strikes the wall, rings of soft light ripple through the crystal clusters. The magic here is thick and potent.",
+    "features": [
+      {
+        "id": "mine_deep_crystal_vein-feature",
+        "label": "the humming crystal cluster",
+        "aliases": [
+          "cluster",
+          "crystals",
+          "vein",
+          "seam"
+        ],
+        "inspect_text": "A dense cluster of blue crystals that vibrates with a faint, pleasant musical note when tapped."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_chiseled_gallery",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "crystal_pit",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_collapsed_drift",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_blue_crystal_pocket",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_blue_crystal_pocket",
+    "title": "Blue Crystal Pocket",
+    "summary": "A hollow geode chamber inside the rock wall. The entire interior is lined with sparkling cobalt-blue crystals.",
+    "inspect_text": "The air is cool and smells clean like mountain snow. Stepping inside feels like walking into an underground sky full of blue stars.",
+    "features": [
+      {
+        "id": "mine_blue_crystal_pocket-feature",
+        "label": "the cobalt crystal geode",
+        "aliases": [
+          "geode",
+          "crystals",
+          "cobalt",
+          "hollow"
+        ],
+        "inspect_text": "A natural spherical pocket lined with thousands of deep blue crystal points that catch and bend the light."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_deep_crystal_vein",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_golem_worksite",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_crystal_tailings",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_submerged_rail",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_submerged_rail",
+    "title": "Submerged Rail Drift",
+    "summary": "An old mine tunnel where groundwater has risen six inches above the iron tracks, creating a flooded hallway.",
+    "inspect_text": "Your boots splash through cold, crystal-clear water. Abandoned iron picks rest against the wet stone wall.",
+    "features": [
+      {
+        "id": "mine_submerged_rail-feature",
+        "label": "the flooded rail tracks",
+        "aliases": [
+          "water",
+          "tracks",
+          "rails",
+          "flood"
+        ],
+        "inspect_text": "Iron rails running under clear water, rippling with violet reflections from crystals on the ceiling."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_blue_crystal_pocket",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_deep_sump",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_seep_tunnel",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      },
+      {
+        "room_id": "mine_crystal_bed",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_crystal_bed",
+    "title": "Geode Floor",
+    "summary": "A flat stone room where the floor itself is made of solid, polished crystal. Walking here feels like standing on frozen violet glass.",
+    "inspect_text": "Your boots make high ringing sounds against the hard crystal floor. Faint geometric patterns crisscross beneath the surface.",
+    "features": [
+      {
+        "id": "mine_crystal_bed-feature",
+        "label": "the crystalline floor",
+        "aliases": [
+          "floor",
+          "crystal",
+          "glass",
+          "bed"
+        ],
+        "inspect_text": "A naturally polished sheet of solid quartz and mana crystal, perfectly flat and glowing with internal light."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_submerged_rail",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_abyssal_fault",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_southeast_grotto",
+        "label": "East",
+        "aliases": [
+          "e"
+        ],
+        "menu_label": "East"
+      }
+    ]
+  },
+  {
+    "id": "camp_ne_tower",
+    "title": "Northeast Watchtower",
+    "summary": "A sturdy timber tower looking down into the eastern mine chasms and cart rails.",
+    "inspect_text": "From up here, the whole mine looks like a web of blue and purple lights. Crossbow quivers hang from every corner post.",
+    "features": [
+      {
+        "id": "camp_ne_tower-feature",
+        "label": "the corner tower posts",
+        "aliases": [
+          "posts",
+          "tower",
+          "beams",
+          "timbers"
+        ],
+        "inspect_text": "Heavy pine pillars notched and pegged together to withstand cave tremors."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_signal_post",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_east_wall",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_east_wall",
+    "title": "East Stockade Wall",
+    "summary": "A high timber wall overlooking the rocky eastern ravine. Heavy support beams brace the log palisade.",
+    "inspect_text": "The cliff drops steeply on the other side. A small sentry booth keeps the rain of condensation off the guard on watch.",
+    "features": [
+      {
+        "id": "camp_east_wall-feature",
+        "label": "the sentry shelter",
+        "aliases": [
+          "shelter",
+          "booth",
+          "shack",
+          "post"
+        ],
+        "inspect_text": "A tiny timber shack with a sloped shingle roof where a guard stands out of the damp."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_ne_tower",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_supply_store",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "camp_se_tower",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "camp_se_tower",
+    "title": "Southeast Watchtower",
+    "summary": "A tall wooden tower guarding the corner where the camp wall meets the eastern mine boundary.",
+    "inspect_text": "A large iron alarm bell hangs from the timber crossbeam, overlooking the entire lower valley.",
+    "features": [
+      {
+        "id": "camp_se_tower-feature",
+        "label": "the iron alarm bell",
+        "aliases": [
+          "bell",
+          "alarm bell",
+          "clapper",
+          "rope"
+        ],
+        "inspect_text": "A big iron bell cast with warning runes, ready to ring if trouble breaks out in the mines."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "camp_east_wall",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "camp_beast_pen",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      }
+    ]
+  },
+  {
+    "id": "mine_northeast_drift",
+    "title": "High Crystal Drift",
+    "summary": "A narrow exploration drift following a thin seam of sparkling amethyst crystals.",
+    "inspect_text": "Chisel marks cover every inch of the wall. Tiny purple sparks jump between crystal needles when you brush against them.",
+    "features": [
+      {
+        "id": "mine_northeast_drift-feature",
+        "label": "the needle crystal seam",
+        "aliases": [
+          "crystals",
+          "seam",
+          "needles",
+          "amethyst"
+        ],
+        "inspect_text": "Thin, razor-sharp needles of violet crystal clustering along a narrow fault line in the stone."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_blasting_storage",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_east_chute",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_east_chute",
+    "title": "Ore Loading Chute",
+    "summary": "A sloped wooden chute built against a cliff face. Workers above tip wheelbarrows of raw crystal ore down into waiting carts below.",
+    "inspect_text": "Rock chunks clatter down the wooden slide with a sound like thunder. A thick cloud of white stone dust hangs in the air.",
+    "features": [
+      {
+        "id": "mine_east_chute-feature",
+        "label": "the wooden ore chute",
+        "aliases": [
+          "chute",
+          "slide",
+          "timber",
+          "trough"
+        ],
+        "inspect_text": "A long slide lined with sheet iron so rock chunks slide smoothly down into the haulage carts."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_northeast_drift",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_crystal_seam_north",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_eastern_stope",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_eastern_stope",
+    "title": "East Crystal Stope",
+    "summary": "A stepped excavation room cutting upward into the eastern rock wall. Scaffolding ladders climb twenty feet to working faces.",
+    "inspect_text": "Miners on the ladders chip away at crystal clusters with small copper chisels, catching the falling shards in canvas aprons.",
+    "features": [
+      {
+        "id": "mine_eastern_stope-feature",
+        "label": "the timber scaffolding",
+        "aliases": [
+          "scaffolding",
+          "ladders",
+          "frames",
+          "timbers"
+        ],
+        "inspect_text": "Multi-level wooden frames lashed with rawhide, allowing miners to reach high veins safely."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_east_chute",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_chiseled_gallery",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_collapsed_drift",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_collapsed_drift",
+    "title": "Shored-Up Drift",
+    "summary": "A tunnel that partially collapsed during a tremor months ago, now reinforced with double rows of timber props.",
+    "inspect_text": "Loose rubble has been cleared to the sides. Warning marks chalked on the ceiling warn diggers to keep vibration low.",
+    "features": [
+      {
+        "id": "mine_collapsed_drift-feature",
+        "label": "the chalk warning marks",
+        "aliases": [
+          "chalk",
+          "marks",
+          "symbols",
+          "warning"
+        ],
+        "inspect_text": "White chalk circles indicating fractured ceiling rock that could drop if hit with heavy hammers."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_eastern_stope",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_deep_crystal_vein",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_crystal_tailings",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_crystal_tailings",
+    "title": "Crushed Rock Tailings",
+    "summary": "A sloping hill of crushed white quartz and discarded stone tailings dumped from the processing rooms above.",
+    "inspect_text": "Small pieces of low-grade crystal still glint in the rubble pile. The gravel crunches loudly underfoot.",
+    "features": [
+      {
+        "id": "mine_crystal_tailings-feature",
+        "label": "the pile of crushed tailings",
+        "aliases": [
+          "tailings",
+          "gravel",
+          "rubble",
+          "pile"
+        ],
+        "inspect_text": "Pounds of shattered quartz gravel left over after the valuable mana crystals have been picked clean."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_collapsed_drift",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_blue_crystal_pocket",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_seep_tunnel",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_seep_tunnel",
+    "title": "Crystal Seep Tunnel",
+    "summary": "A narrow, winding tunnel where water seeps through crystal-encrusted cracks in the ceiling.",
+    "inspect_text": "Mineral water drips continuously: *plip... plip... plip*. Delicate crystal stalactites hang down like icy fingers.",
+    "features": [
+      {
+        "id": "mine_seep_tunnel-feature",
+        "label": "the crystal stalactites",
+        "aliases": [
+          "stalactites",
+          "needles",
+          "icicles",
+          "stone"
+        ],
+        "inspect_text": "Hanging points of pure purple crystal formed over centuries by mineral-rich water dripping from the roof."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_crystal_tailings",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_submerged_rail",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
+      },
+      {
+        "room_id": "mine_southeast_grotto",
+        "label": "South",
+        "aliases": [
+          "s"
+        ],
+        "menu_label": "South"
+      }
+    ]
+  },
+  {
+    "id": "mine_southeast_grotto",
+    "title": "Quiet Crystal Grotto",
+    "summary": "A peaceful hidden chamber far from the noise of pickaxes and ore carts. Giant sapphire-blue crystals form a natural circle.",
+    "inspect_text": "A calm pool of water in the center reflects the gentle blue light. Miners come here on their breaks to rest and breathe easy.",
+    "features": [
+      {
+        "id": "mine_southeast_grotto-feature",
+        "label": "the circular crystal ring",
+        "aliases": [
+          "circle",
+          "crystals",
+          "ring",
+          "pool"
+        ],
+        "inspect_text": "A natural ring of blue crystal spires standing like silent guardians around a still reflective pool."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mine_seep_tunnel",
+        "label": "North",
+        "aliases": [
+          "n"
+        ],
+        "menu_label": "North"
+      },
+      {
+        "room_id": "mine_crystal_bed",
+        "label": "West",
+        "aliases": [
+          "w"
+        ],
+        "menu_label": "West"
       }
     ]
   }
