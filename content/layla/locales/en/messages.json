@@ -230,5 +230,8 @@
     "handler.descend.the_village": {
         "voice": "handler",
         "text": "Floor four. Wait — my console is picking up civilian life signs. Actual people live down here? In this dump? Keep your weapons low; let's see what the locals have to say before you go swinging."
-    }
+    },
+    "malik.defeat": "Captain Malik falls to one knee, steam hissing wildly from his cracked brass cuirass. He drops his saber with a clatter, panting heavily. 'Rebellious rat...' he snarls, before collapsing unconscious. Behind him, the heavy hydraulic deadbolts on the bulkhead gate unlock with a concussive hiss.",
+    "priest_harun.defeat": "Priest Harun's incense censer drops and shatters into burning embers. His scarlet robes scorch as his litany breaks apart. 'The celestial fire... cannot be quenched...' he gasps before collapsing onto the iron grating.",
+    "item.teleport_scroll_read.learned": "You unroll the brass-leaf scroll and study the sharp, intersecting triangles etched in its surface. A pulse of pale geometric light flares into your eyes — you have learned the Teleportation Sigil."
 }

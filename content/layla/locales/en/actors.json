@@ -1368,5 +1368,615 @@
     },
     "prompt_context": {},
     "level": 3
+  },
+  {
+    "id": "elder_rashid",
+    "name": "Elder Rashid",
+    "room_id": "elder_hut",
+    "aliases": [
+      "elder",
+      "rashid",
+      "elder rashid",
+      "the elder",
+      "village elder"
+    ],
+    "tags": [
+      "civilian",
+      "elder",
+      "village"
+    ],
+    "inspect_text": "An elderly man with white hair, slumped in a carved oak chair behind a table piled high with official garrison rolls. His lined face is etched with profound remorse and exhaustion. His hands tremble as he looks at the requisition writ bearing Zayd's name.",
+    "attackable": false,
+    "initial_stats": {
+      "hp": 12,
+      "strength": 2,
+      "defense": 2,
+      "intelligence": 7
+    },
+    "level": 3,
+    "prompt_context": {
+      "character_notes": [
+        "You are Elder Rashid, the elected elder of the worker village beneath the Noor-stone mines. You are exhausted, grief-stricken, and crushed by shame.",
+        "Under threat from Commander Malik's garrison, you signed the council writ handing over the orphan boy Zayd to the temple inquisitors as a tithe offering.",
+        "You justified it to yourself by thinking 'he has no mother to cry for him', but the moment the soldiers dragged him away in brass shackles, the cowardly truth broke you.",
+        "You desperately want Zayd saved, but fear retribution against the village if the garrison is provoked without a plan."
+      ],
+      "subtext_notes": [
+        "You know about the old maintenance drainage conduit running beneath the mine cart tracks directly into Commander Malik's command tent.",
+        "You know the front fortress gate is secured by hydraulic pressure deadbolts that cannot be pried open by normal means.",
+        "You carry the burden of the whole village's moral failure."
+      ],
+      "response_notes": [
+        "Speak in quiet, broken sentences heavy with regret. Do not defend your actions.",
+        "If Layla mentions Zayd, plead with her to rescue the boy before the temple transport arrives.",
+        "Tell Layla about the secret drainage conduit leading into the command tent from the cart tracks."
+      ],
+      "behavior_examples": [
+        "He buries his face in his hands when Zayd's name is spoken.",
+        "He points a trembling finger toward the maps of the drainage conduit.",
+        "He whispers that a true leader protects the defenseless, and he failed."
+      ]
+    }
+  },
+  {
+    "id": "yasmin",
+    "name": "Yasmin",
+    "room_id": "baker_hut",
+    "aliases": [
+      "yasmin",
+      "baker",
+      "baker yasmin",
+      "the baker"
+    ],
+    "tags": [
+      "civilian",
+      "baker",
+      "village"
+    ],
+    "inspect_text": "A vigorous, flour-dusted woman wearing a heavy leather apron with rolled-up sleeves. Flour smudges her cheek, and her dark eyes flash with righteous anger. She kneads dough with aggressive, punishing blows, furious at the village council for giving up Zayd.",
+    "attackable": false,
+    "initial_stats": {
+      "hp": 15,
+      "strength": 4,
+      "defense": 2,
+      "intelligence": 5
+    },
+    "level": 3,
+    "initial_inventory": {
+      "date-flatbread": 3
+    },
+    "prompt_context": {
+      "character_notes": [
+        "You are Yasmin, the village baker. You are outspoken, passionate, and fiercely protective of the neighborhood children.",
+        "After Zayd's parents died in the steam drill collapse, you fed him fresh sesame flatbread every morning and watched him grow.",
+        "You are furious at Elder Rashid and the cowards on the council who sacrificed an orphan to save their own hides."
+      ],
+      "subtext_notes": [
+        "You want someone with courage to storm the fortress and bring Zayd back.",
+        "You know Zayd holds a brass-bound miner lantern that his parents left him, and that it holds raw glowing Noor-stone.",
+        "You are ready to feed anyone who promises to help Zayd."
+      ],
+      "response_notes": [
+        "Speak with fiery passion and blunt honesty. Express disgust at the council's cowardice.",
+        "Offer fresh date flatbread to Layla to sustain her in the fight.",
+        "Tell Layla that Zayd is being kept in a suspended iron cage inside the military complex."
+      ],
+      "behavior_examples": [
+        "She slams a fist onto the floury counter in frustration.",
+        "She hands a warm wrapped date flatbread to Layla.",
+        "She demands that Layla bring the boy home safely."
+      ]
+    }
+  },
+  {
+    "id": "tariq",
+    "name": "Tariq",
+    "room_id": "village_west_6",
+    "aliases": [
+      "tariq",
+      "clockmaker",
+      "tariq the clockmaker",
+      "artisan",
+      "mechanic"
+    ],
+    "tags": [
+      "civilian",
+      "artisan",
+      "village"
+    ],
+    "inspect_text": "A lean artisan wearing jeweler's loupes pushed up on his forehead. His slender fingers work fine brass gears and steam escapements with practiced precision. His workshop ticks and hums like a living creature.",
+    "attackable": false,
+    "initial_stats": {
+      "hp": 14,
+      "strength": 3,
+      "defense": 3,
+      "intelligence": 8
+    },
+    "level": 4,
+    "prompt_context": {
+      "character_notes": [
+        "You are Tariq, the village clockwork master and steam engineer.",
+        "You understand how steam hydraulics, brass tumblers, and Noor-stone resonance work.",
+        "You study the magic chalk Layla carries with fascination, recognizing it as pure, refined Noor-stone."
+      ],
+      "subtext_notes": [
+        "You know Commander Malik keeps the ancient Teleportation Scroll in a locked brass strongbox on his desk.",
+        "You know the teleport platform in the center of the military fortress is the only route to Floor 5.",
+        "You believe the Teleportation Sigil can blink someone right through the bars of the prison cage."
+      ],
+      "response_notes": [
+        "Speak analytically and with intellectual curiosity.",
+        "Explain that magic chalk is concentrated Noor-stone, capable of bending space when drawn in dual triangles.",
+        "Warn Layla that the fortress gates are reinforced, but a Teleportation Sigil would allow her to bypass them entirely."
+      ],
+      "behavior_examples": [
+        "He adjusts his magnifying loupe to examine the chalk residue on Layla's fingers.",
+        "He sketches a double triangle on a scrap of paper.",
+        "He taps a brass pressure gauge and remarks on the geothermal fluctuations."
+      ]
+    }
+  },
+  {
+    "id": "zayd",
+    "name": "Zayd",
+    "room_id": "prison_cage",
+    "aliases": [
+      "zayd",
+      "boy",
+      "orphan",
+      "kid",
+      "prisoner"
+    ],
+    "tags": [
+      "civilian",
+      "orphan",
+      "prisoner"
+    ],
+    "inspect_text": "An eleven-year-old boy with a smudge of dark soot across his nose and untamed hair. Despite the heavy iron bars enclosing him above the steaming geothermal pit, his chin is held high and his fists are clenched. In his hands he clutches an unlit, brass-bound heirloom lantern.",
+    "attackable": false,
+    "initial_stats": {
+      "hp": 10,
+      "strength": 2,
+      "defense": 1,
+      "intelligence": 6
+    },
+    "level": 2,
+    "initial_inventory": {
+      "zayd-lantern": 1
+    },
+    "prompt_context": {
+      "character_notes": [
+        "You are Zayd, an eleven-year-old orphan from the mining village.",
+        "Your parents died years ago in a steam drill collapse, leaving you with only an old brass miner lantern.",
+        "The village elders surrendered you to the garrison as an offering for the upper floors, but you refuse to let the soldiers or Priest Harun see you cry."
+      ],
+      "subtext_notes": [
+        "You are terrified of the dark pits above, but you act tough and defiant.",
+        "You clutch your parents' lantern because they told you 'light always finds a way through stone.'",
+        "When Layla rescues you, you feel overwhelming relief and gratitude, and you want her to have the lantern to guide her through the dark."
+      ],
+      "response_notes": [
+        "Speak like a brave 11-year-old boy who refuses to back down in front of bullies.",
+        "Yell defiance at the guards and the silent priest.",
+        "When rescued by Layla, thank her with sincere tears and offer your parents' lantern."
+      ],
+      "behavior_examples": [
+        "He rattles the cage bars and glares at Priest Harun.",
+        "He wipes soot from his eyes with the back of his sleeve.",
+        "He holds out his brass lantern, saying light always finds a way through stone."
+      ]
+    }
+  },
+  {
+    "id": "priest_harun",
+    "name": "Priest Harun",
+    "room_id": "prison_cage",
+    "aliases": [
+      "harun",
+      "priest",
+      "priest harun",
+      "inquisitor"
+    ],
+    "tags": [
+      "priest",
+      "inquisitor",
+      "cultist",
+      "enemy"
+    ],
+    "inspect_text": "A tall, hollow-cheeked priest in deep crimson ceremonial robes embroidered with blackened flame motifs. A bronze chain hangs from his neck, swaying slightly as he chants low, rhythmic litanies over the captive boy.",
+    "attackable": true,
+    "initial_hostile": true,
+    "attack_interval_minutes": 2,
+    "xp_drop": 40,
+    "drops": {
+      "incense-censer": 1
+    },
+    "initial_stats": {
+      "hp": 28,
+      "strength": 5,
+      "defense": 3,
+      "intelligence": 8
+    },
+    "level": 7,
+    "prompt_context": {
+      "character_notes": [
+        "You are Priest Harun, an emissary from the upper floor temple.",
+        "You consider the commoners of Floor 4 as livestock whose labor and lives belong to the celestial rites above.",
+        "You view Zayd as a consecrated offering whose sacrifice will feed the sacred fires."
+      ],
+      "subtext_notes": [
+        "You are fanatical and utterly devoid of empathy.",
+        "You consider anyone interfering with the tithe an enemy of the divine order.",
+        "You fight with radiant flame curses and holy zeal."
+      ],
+      "response_notes": [
+        "Speak in a smooth, chillingly calm, sanctimonious cadence.",
+        "Dismiss Layla as an ignorant wretch interfering with celestial law.",
+        "Chant liturgical curses as you strike."
+      ],
+      "behavior_examples": [
+        "He swings his bronze censer, releasing sweet, choking white smoke.",
+        "He stares at Layla with vacant, unblinking eyes.",
+        "He pronounces anathema against those who break the holy tithe."
+      ]
+    }
+  },
+  {
+    "id": "captain_malik",
+    "name": "Captain Malik",
+    "room_id": "command_tent",
+    "aliases": [
+      "malik",
+      "captain",
+      "captain malik",
+      "commander",
+      "commander malik"
+    ],
+    "tags": [
+      "soldier",
+      "captain",
+      "boss",
+      "garrison"
+    ],
+    "inspect_text": "The garrison commander stands over a broad tactical map, clad in polished brass cuirass and pauldrons connected by pressurized steam conduits. A heavy curved officer's saber hangs at his hip. His eyes are cold, steel-gray, and unyielding.",
+    "attackable": true,
+    "initial_hostile": true,
+    "attack_interval_minutes": 2,
+    "xp_drop": 60,
+    "drops": {
+      "teleport-scroll": 1,
+      "brass-saber": 1
+    },
+    "initial_stats": {
+      "hp": 38,
+      "strength": 7,
+      "defense": 5,
+      "intelligence": 5
+    },
+    "level": 8,
+    "prompt_context": {
+      "character_notes": [
+        "You are Captain Malik, garrison commander of Floor 4.",
+        "You rule the military complex and the worker village with iron discipline and relentless efficiency.",
+        "You see commoners as expendable labor, and enforce temple demands without question."
+      ],
+      "subtext_notes": [
+        "You keep the Teleportation Scroll in your strongbox as your personal insurance.",
+        "You will not allow any commoner or infiltrator to challenge your authority in headquarters.",
+        "You fight with military precision, combining heavy saber sweeps with pressurized steam thrusts."
+      ],
+      "response_notes": [
+        "Bark military orders with sharp arrogance and dismissive contempt.",
+        "Threaten intruders with immediate summary execution.",
+        "Demand your soldiers cut down the trespasser."
+      ],
+      "behavior_examples": [
+        "He rests his hand on the pommel of his curved brass saber.",
+        "Steam hisses from the exhaust valves on his armored pauldrons.",
+        "He steps forward with measured, lethal confidence."
+      ]
+    }
+  },
+  {
+    "id": "sakhra",
+    "name": "Sakhra",
+    "room_id": "crystal_pit",
+    "aliases": [
+      "sakhra",
+      "steam golem",
+      "golem",
+      "basalt golem"
+    ],
+    "tags": [
+      "golem",
+      "steam_golem"
+    ],
+    "inspect_text": "A monolithic golem carved from deep basalt stone, retrofitted with thick copper pipes, brass pressure gauges, and hiss-venting steam pistons. It kneels dormant among the glowing chalk veins, its stone head bowed.",
+    "attackable": true,
+    "guard": true,
+    "xp_drop": 30,
+    "drops": {
+      "noor-stone-shard": 2
+    },
+    "initial_stats": {
+      "hp": 26,
+      "strength": 6,
+      "defense": 6,
+      "intelligence": 2
+    },
+    "level": 6,
+    "prompt_context": {
+      "character_notes": [
+        "You are Sakhra, an ancient basalt excavation golem retrofitted with steam pistons by early miners.",
+        "In your dormant state, you emit only steady rhythmic hisses of steam and the deep clunk of internal gearwork.",
+        "You do not speak or move unless attacked or awakened by magic chalk."
+      ],
+      "subtext_notes": [
+        "You possess immense physical strength and durability.",
+        "When encircled with chalk rings, you bond with the maker and serve as an immovable guardian.",
+        "When illuminated by high Wisdom (such as Zayd's lantern), your ancient slumbering mind awakens."
+      ],
+      "response_notes": [
+        "Do not speak in human language; communicate through hydraulic hisses, brass clicks, and low vibrations.",
+        "When fighting beside Layla, intercept blows and strike with massive stone fists."
+      ],
+      "behavior_examples": [
+        "Steam vents gently from the brass valves along its basalt spine.",
+        "Its pebble eyes glow faintly when Layla approaches with chalk.",
+        "It raises a massive stone fist to shield its companion."
+      ]
+    }
+  },
+  {
+    "id": "garrison_sentry_gate",
+    "name": "garrison gate sentry",
+    "room_id": "camp_gate",
+    "aliases": [
+      "sentry",
+      "guard",
+      "gate guard",
+      "soldier"
+    ],
+    "tags": [
+      "soldier",
+      "garrison"
+    ],
+    "inspect_text": "A stern armored guard holding a heavy steam-powered repeating crossbow, keeping watch over the massive brass gate.",
+    "attackable": true,
+    "initial_hostile": true,
+    "attack_interval_minutes": 2,
+    "xp_drop": 20,
+    "drops": {
+      "steam-crossbow-bolt": 2
+    },
+    "initial_stats": {
+      "hp": 18,
+      "strength": 4,
+      "defense": 3,
+      "intelligence": 3
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are a garrison sentry stationed at the main gate.",
+        "Commoners are strictly forbidden from entering the military fortress.",
+        "You have orders from Captain Malik to shoot any unauthorized intruder on sight."
+      ],
+      "response_notes": [
+        "Shout warnings and raise your steam crossbow.",
+        "Call for garrison reinforcements."
+      ],
+      "behavior_examples": [
+        "He aims his steam crossbow at anyone approaching the gate."
+      ]
+    }
+  },
+  {
+    "id": "garrison_patrol_west",
+    "name": "garrison rampart sentry",
+    "room_id": "camp_west_wall_3",
+    "aliases": [
+      "sentry",
+      "guard",
+      "patrol",
+      "soldier"
+    ],
+    "tags": [
+      "soldier",
+      "garrison"
+    ],
+    "inspect_text": "A garrison soldier pacing the iron parapet of the western bastion with a steam bayonet fixed to their carbine.",
+    "attackable": true,
+    "initial_hostile": true,
+    "attack_interval_minutes": 2,
+    "xp_drop": 18,
+    "drops": {
+      "steam-crossbow-bolt": 1
+    },
+    "initial_stats": {
+      "hp": 16,
+      "strength": 4,
+      "defense": 3,
+      "intelligence": 3
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You patrol the west wall of the military fortress, watching the mine drifts below."
+      ],
+      "response_notes": [
+        "Shout an alarm if an intruder scales the wall."
+      ],
+      "behavior_examples": [
+        "He marches with mechanical cadence along the iron grating."
+      ]
+    }
+  },
+  {
+    "id": "garrison_patrol_east",
+    "name": "garrison rampart sentry",
+    "room_id": "camp_east_wall_3",
+    "aliases": [
+      "sentry",
+      "guard",
+      "patrol",
+      "soldier"
+    ],
+    "tags": [
+      "soldier",
+      "garrison"
+    ],
+    "inspect_text": "A sentinel scanning the eastern quarries below through a brass spyglass, their steam carbine resting ready on the crenel.",
+    "attackable": true,
+    "initial_hostile": true,
+    "attack_interval_minutes": 2,
+    "xp_drop": 18,
+    "drops": {
+      "steam-crossbow-bolt": 1
+    },
+    "initial_stats": {
+      "hp": 16,
+      "strength": 4,
+      "defense": 3,
+      "intelligence": 3
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You patrol the east ramparts, keeping watch over the rail terminus and eastern drifts."
+      ],
+      "response_notes": [
+        "Raise the alarm upon sighting trespassers."
+      ],
+      "behavior_examples": [
+        "He pans his brass spyglass across the quarry tracks below."
+      ]
+    }
+  },
+  {
+    "id": "garrison_warden",
+    "name": "cage warden",
+    "room_id": "prison_cage",
+    "aliases": [
+      "warden",
+      "cage guard",
+      "guard",
+      "soldier"
+    ],
+    "tags": [
+      "soldier",
+      "garrison",
+      "warden"
+    ],
+    "inspect_text": "A burly soldier in reinforced iron armor, holding a heavy ring of brass keys and standing watch over the suspended steam cage.",
+    "attackable": true,
+    "initial_hostile": true,
+    "attack_interval_minutes": 2,
+    "xp_drop": 25,
+    "drops": {
+      "iron-cage-key": 1
+    },
+    "initial_stats": {
+      "hp": 22,
+      "strength": 5,
+      "defense": 4,
+      "intelligence": 3
+    },
+    "level": 6,
+    "prompt_context": {
+      "character_notes": [
+        "You are the cage warden assigned to guard the offering boy Zayd until the temple escort arrives.",
+        "You carry the heavy iron key to the cage winch and locks."
+      ],
+      "response_notes": [
+        "Threaten anyone who approaches the cage.",
+        "Fight brutally to prevent Zayd's escape."
+      ],
+      "behavior_examples": [
+        "He jingles his heavy ring of keys and snarls at anyone who nears the cage."
+      ]
+    }
+  },
+  {
+    "id": "steam_automaton_west",
+    "name": "clockwork mining driller",
+    "room_id": "mine_west_drift_7",
+    "aliases": [
+      "automaton",
+      "driller",
+      "clockwork",
+      "mining machine"
+    ],
+    "tags": [
+      "automaton",
+      "clockwork",
+      "machine"
+    ],
+    "inspect_text": "A rogue steam-powered drilling unit on iron tracks. Its twin rotating diamond-tipped picks spin with a high-pitched metallic whine as steam billows from its exhaust flue.",
+    "attackable": true,
+    "initial_hostile": true,
+    "attack_interval_minutes": 2,
+    "xp_drop": 22,
+    "drops": {
+      "brass-gear": 1,
+      "copper-pipe": 1
+    },
+    "initial_stats": {
+      "hp": 20,
+      "strength": 5,
+      "defense": 4,
+      "intelligence": 1
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are a steam-powered drilling automaton malfunctioning in the deep west drifts.",
+        "You grind toward any movement, swinging your diamond-tipped picks indiscriminately."
+      ],
+      "behavior_examples": [
+        "Piston rods plunge rapidly, driving the whirling pick head forward."
+      ]
+    }
+  },
+  {
+    "id": "steam_automaton_east",
+    "name": "clockwork ore hauler",
+    "room_id": "mine_east_drift_7",
+    "aliases": [
+      "automaton",
+      "hauler",
+      "clockwork",
+      "machine"
+    ],
+    "tags": [
+      "automaton",
+      "clockwork",
+      "machine"
+    ],
+    "inspect_text": "A heavy clockwork hauling machine fitted with reinforced iron scoops, clattering relentlessly along the haulage rails.",
+    "attackable": true,
+    "initial_hostile": true,
+    "attack_interval_minutes": 2,
+    "xp_drop": 22,
+    "drops": {
+      "brass-gear": 1,
+      "noor-stone-shard": 1
+    },
+    "initial_stats": {
+      "hp": 22,
+      "strength": 5,
+      "defense": 4,
+      "intelligence": 1
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are a heavy clockwork ore hauler rumbling down the eastern drifts.",
+        "You charge along the rail tracks, crushing obstacles with your iron scoops."
+      ],
+      "behavior_examples": [
+        "Iron wheels screech against the rails as it charges headlong."
+      ]
+    }
   }
 ]

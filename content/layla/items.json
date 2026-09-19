@@ -193,5 +193,95 @@
       "defense": 1
     },
     "description": "A small round shield of pressed leaves, light in the off hand. It catches blows that are meant for the heart."
+  },
+  {
+    "id": "teleport-scroll",
+    "label": "teleport scroll",
+    "kind": "misc",
+    "use_hook": "item.teleport_scroll_read",
+    "description": "A heavy brass-leaf scroll etched with fine geometric circuits. Reading the dual intersecting triangles teaches the Teleportation Sigil."
+  },
+  {
+    "id": "teleport-sigil",
+    "label": "teleport sigil",
+    "kind": "misc",
+    "description": "A double triangle drawn in pale magic chalk. Tracing it before locked gates, portcullises, or barred apertures blinks you instantly to the other side.",
+    "look_description": "A sharp double triangle of chalk pulses with pale light, vibrating with phase resonance.",
+    "trace_mark": true
+  },
+  {
+    "id": "zayd-lantern",
+    "label": "Zayd's heirloom lantern",
+    "kind": "trinket",
+    "equip_slots": [
+      "ring",
+      "off-hand"
+    ],
+    "stat_bonuses": {
+      "intelligence": 3
+    },
+    "description": "A compact brass-bound lantern holding a warm shard of glowing Noor-stone. Left to Zayd by his miner parents before the cave-in. Its steady light cuts through the subterranean dark."
+  },
+  {
+    "id": "iron-cage-key",
+    "label": "iron cage key",
+    "kind": "misc",
+    "description": "A heavy brass-and-iron key carried by the cage warden, cut to turn the tumblers of the suspended steam prison cage."
+  },
+  {
+    "id": "brass-saber",
+    "label": "brass officer saber",
+    "kind": "weapon",
+    "equip_slots": [
+      "weapon"
+    ],
+    "stat_bonuses": {
+      "strength": 3
+    },
+    "description": "A finely balanced curved cavalry saber issued to garrison commanders, with a steam-assisted counterweight in the hilt."
+  },
+  {
+    "id": "incense-censer",
+    "label": "bronze incense censer",
+    "kind": "trinket",
+    "equip_slots": [
+      "ring",
+      "off-hand"
+    ],
+    "stat_bonuses": {
+      "intelligence": 2
+    },
+    "description": "A heavy bronze sphere suspended by fine chains, smelling of sacred resin and cold ash."
+  },
+  {
+    "id": "date-flatbread",
+    "label": "date flatbread",
+    "kind": "potion",
+    "use_hook": "item.salve_used",
+    "description": "A thick, fragrant sesame flatbread stuffed with sweet dates, baked fresh in Yasmin's steam-heated oven. Restores strength and warmth."
+  },
+  {
+    "id": "steam-crossbow-bolt",
+    "label": "steam crossbow bolt",
+    "kind": "misc",
+    "description": "A fluted steel bolt designed for high-pressure garrison repeating crossbows."
+  },
+  {
+    "id": "brass-gear",
+    "label": "brass gear",
+    "kind": "misc",
+    "description": "A heavy, precisely machined toothed cog salvaged from a steam-powered automaton."
+  },
+  {
+    "id": "copper-pipe",
+    "label": "copper pipe fitting",
+    "kind": "misc",
+    "description": "A durable section of high-pressure copper steam pipe with threaded brass couplings."
+  },
+  {
+    "id": "noor-stone-shard",
+    "label": "Noor-stone shard",
+    "kind": "misc",
+    "description": "A jagged fragment of raw, pale Noor-stone mineral, softly vibrating with geothermal heat and arcane resonance."
   }
 ]

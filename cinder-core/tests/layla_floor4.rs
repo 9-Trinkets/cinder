@@ -176,3 +176,51 @@ fn floor4_descent_triggers_handler_village_commentary() {
         "Descent line must only play on first visit"
     );
 }
+
+#[test]
+fn floor4_actors_and_interactions_validate() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+
+    // Check civilians exist and are placed properly
+    let rashid = pack.actor("elder_rashid").expect("elder_rashid exists");
+    assert_eq!(rashid.room_id, "elder_hut");
+    assert!(!rashid.attackable);
+
+    let yasmin = pack.actor("yasmin").expect("yasmin exists");
+    assert_eq!(yasmin.room_id, "baker_hut");
+    assert!(!yasmin.attackable);
+
+    let tariq = pack.actor("tariq").expect("tariq exists");
+    assert_eq!(tariq.room_id, "village_west_6");
+    assert!(!tariq.attackable);
+
+    let zayd = pack.actor("zayd").expect("zayd exists");
+    assert_eq!(zayd.room_id, "prison_cage");
+    assert!(!zayd.attackable);
+
+    // Check bosses and sentries exist
+    let malik = pack.actor("captain_malik").expect("captain_malik exists");
+    assert_eq!(malik.room_id, "command_tent");
+    assert!(malik.attackable);
+    assert!(malik.initial_hostile);
+    assert!(malik.drops.contains_key("teleport-scroll"));
+
+    let harun = pack.actor("priest_harun").expect("priest_harun exists");
+    assert_eq!(harun.room_id, "prison_cage");
+    assert!(harun.attackable);
+    assert!(harun.initial_hostile);
+
+    let sakhra = pack.actor("sakhra").expect("sakhra exists");
+    assert_eq!(sakhra.room_id, "crystal_pit");
+    assert!(sakhra.attackable);
+    assert!(sakhra.guard);
+
+    let gate_sentry = pack.actor("garrison_sentry_gate").expect("garrison_sentry_gate exists");
+    assert_eq!(gate_sentry.room_id, "camp_gate");
+    assert!(gate_sentry.attackable);
+
+    let warden = pack.actor("garrison_warden").expect("garrison_warden exists");
+    assert_eq!(warden.room_id, "prison_cage");
+    assert!(warden.drops.contains_key("iron-cage-key"));
+}
+

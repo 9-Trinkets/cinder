@@ -223,6 +223,74 @@
               "conversion.fire"
             ]
           }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "captain_malik"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "malik_defeated",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "captain_malik"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "camp_gate_open",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "captain_malik"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "malik.defeat"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "priest_harun"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "harun_defeated",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "priest_harun"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "priest_harun.defeat"
+          }
         }
       ]
     }
@@ -382,6 +450,30 @@
           {
             "kind": "narrate_message",
             "key": "item.spawn_scroll_read.learned"
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
+  "item.teleport_scroll_read": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "set_story_var",
+            "key": "knows_teleport",
+            "value": "true"
+          },
+          {
+            "kind": "narrate_message",
+            "key": "item.teleport_scroll_read.learned"
           }
         ]
       }
