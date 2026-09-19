@@ -124,6 +124,8 @@ pub(super) fn build_action_bar_items(
     };
 
     // 2. Give items: to party members
+    // Step 1: list droppable items. If 1 companion exists, auto-gives to them.
+    // If multiple companions exist, UI prompts for recipient in step 2.
     let give_panel_options = if party.is_empty() {
         vec![]
     } else {
@@ -132,31 +134,20 @@ pub(super) fn build_action_bar_items(
             vec![]
         } else {
             let mut options = Vec::new();
-            if party.len() == 1 {
-                let member = &party[0];
-                for item_id in &droppable {
-                    options.push(PanelOptionData {
-                        id: format!("{item_id}:{}", member.id),
-                        title: title_case(content.item_label(item_id)),
-                        subtitle: None,
-                        command: Some(format!("give {item_id} to {}", member.id)),
-                        disabled: false,
-                        selected: false,
-                    });
-                }
-            } else {
-                for item_id in &droppable {
-                    for member in party {
-                        options.push(PanelOptionData {
-                            id: format!("{item_id}:{}", member.id),
-                            title: title_case(content.item_label(item_id)),
-                            subtitle: Some(format!("To {}", member.label)),
-                            command: Some(format!("give {item_id} to {}", member.id)),
-                            disabled: false,
-                            selected: false,
-                        });
-                    }
-                }
+            for item_id in &droppable {
+                let command = if party.len() == 1 {
+                    Some(format!("give {item_id} to {}", party[0].id))
+                } else {
+                    None
+                };
+                options.push(PanelOptionData {
+                    id: item_id.clone(),
+                    title: title_case(content.item_label(item_id)),
+                    subtitle: None,
+                    command,
+                    disabled: false,
+                    selected: false,
+                });
             }
 
             if !options.is_empty() {
@@ -168,7 +159,7 @@ pub(super) fn build_action_bar_items(
                 } else {
                     (
                         "Give to Companion".to_string(),
-                        "Choose an item and recipient".to_string(),
+                        "Choose an item to give".to_string(),
                     )
                 };
                 action_bar_actions.push(ActionBarAction {

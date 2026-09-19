@@ -228,9 +228,27 @@ fn give_surfaces_on_bar_when_party_and_droppable_items_exist() {
     // Case 3: Party exists but no items in inventory -> No give
     let empty_state = WorldState::new(&content);
     let (bar_no_items, _, give_opts_no_items) =
-        build_action_bar_items(&content, &empty_state, &[party_member]);
+        build_action_bar_items(&content, &empty_state, &[party_member.clone()]);
     assert!(!bar_no_items.iter().any(|a| a.id == "give"));
     assert!(give_opts_no_items.is_empty());
+
+    // Case 4: Multiple party members -> item list does NOT multiply combinatorially
+    let bess = PartyMember {
+        id: "bess".to_string(),
+        label: "Bess".to_string(),
+        order: String::new(),
+        level: 1,
+        hp: 12,
+        hp_max: 12,
+        order_panel: "order:bess".to_string(),
+        equipped_items: vec![],
+        inventory: vec![],
+    };
+    let (_, _, multi_opts) =
+        build_action_bar_items(&content, &state, &[party_member, bess]);
+    assert_eq!(multi_opts.len(), 1);
+    assert_eq!(multi_opts[0].id, "potion");
+    assert_eq!(multi_opts[0].command, None);
 }
 
 #[test]
