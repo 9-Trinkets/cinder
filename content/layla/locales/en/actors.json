@@ -83,7 +83,7 @@
       ]
     },
     "attackable": true,
-    "attack_interval_minutes": 4,
+    "attack_interval_minutes": 2,
     "drops": {},
     "tags": [
       "golem"
@@ -128,7 +128,7 @@
       ]
     },
     "attackable": true,
-    "attack_interval_minutes": 4,
+    "attack_interval_minutes": 2,
     "drops": {},
     "tags": [
       "golem"
@@ -178,7 +178,7 @@
       ]
     },
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 25,
     "drops": {
@@ -232,7 +232,7 @@
       ]
     },
     "attackable": true,
-    "attack_interval_minutes": 4,
+    "attack_interval_minutes": 2,
     "drops": {},
     "tags": [
       "golem"
@@ -277,7 +277,7 @@
       ]
     },
     "attackable": true,
-    "attack_interval_minutes": 4,
+    "attack_interval_minutes": 2,
     "drops": {},
     "tags": [
       "golem"
@@ -322,7 +322,7 @@
       ]
     },
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 8,
     "drops": {
@@ -371,7 +371,7 @@
       ]
     },
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 8,
     "drops": {
@@ -420,7 +420,7 @@
       ]
     },
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "drops": {
@@ -469,7 +469,7 @@
       ]
     },
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "drops": {
@@ -493,7 +493,7 @@
     ],
     "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -534,7 +534,7 @@
     ],
     "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -575,7 +575,7 @@
     ],
     "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -616,7 +616,7 @@
     ],
     "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -657,7 +657,7 @@
     ],
     "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -698,7 +698,7 @@
     ],
     "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -739,7 +739,7 @@
     ],
     "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -780,7 +780,7 @@
     ],
     "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -821,7 +821,7 @@
     ],
     "inspect_text": "A broad-shouldered elf sentinel armored in heavy plates of lacquered bark and compressed leaf. They stand like a living redoubt, unyielding and direct.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 40,
     "initial_stats": {
@@ -862,7 +862,7 @@
     ],
     "inspect_text": "An agile elf warrior bearing a crest of dark curved bark. They balance on the balls of their feet, ready to spring sideways or leap past obstacles in an instant.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 25,
     "initial_stats": {
@@ -903,7 +903,7 @@
     ],
     "inspect_text": "An austere elf holding a tall crooked bough that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 25,
     "initial_stats": {
@@ -944,7 +944,7 @@
     ],
     "inspect_text": "A formidable elf commander whose braided leaf ring hums with quiet power. Her movements are fluid, swift, and completely without hesitation.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 60,
     "initial_stats": {
@@ -974,7 +974,7 @@
     ],
     "inspect_text": "The sovereign of the underground forest, draped in a mantle of dark root-stitched leaves. He sits upon a throne grown from living wood, watching you approach with neither malice nor fear.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 0,
     "drops": {
@@ -1005,7 +1005,7 @@
     ],
     "inspect_text": "An austere elf holding a tall crooked bough that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 25,
     "initial_stats": {
@@ -1046,7 +1046,7 @@
     ],
     "inspect_text": "An agile elf warrior bearing a crest of dark curved bark. They balance on the balls of their feet, ready to spring sideways or leap past obstacles in an instant.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 25,
     "initial_stats": {
@@ -1087,7 +1087,7 @@
     ],
     "inspect_text": "A broad-shouldered elf sentinel armored in heavy plates of lacquered bark and compressed leaf. They stand like a living redoubt, unyielding and direct.",
     "attackable": true,
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 40,
     "initial_stats": {
@@ -1168,7 +1168,7 @@
     "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
     "attackable": true,
     "attack_kind": "fire",
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -1197,7 +1197,7 @@
     "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
     "attackable": true,
     "attack_kind": "fire",
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -1226,7 +1226,7 @@
     "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
     "attackable": true,
     "attack_kind": "fire",
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -1299,7 +1299,7 @@
     "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
     "attackable": true,
     "attack_kind": "fire",
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -1328,7 +1328,7 @@
     "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
     "attackable": true,
     "attack_kind": "fire",
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
@@ -1357,7 +1357,7 @@
     "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
     "attackable": true,
     "attack_kind": "fire",
-    "attack_interval_minutes": 1,
+    "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {

@@ -2,7 +2,7 @@ use cinder_core::content::types::ContentPack;
 use cinder_core::engine::state::WorldState;
 use std::collections::BTreeSet;
 
-use super::PanelOptionData;
+use super::{PanelOptionData, title_case};
 
 /// Builds one bounded equipment picker from held and equipped items.
 pub(crate) fn build_equipment_panel_options(
@@ -18,7 +18,7 @@ pub(crate) fn build_equipment_panel_options(
         };
         options.push(PanelOptionData {
             id: format!("unequip:{item_id}"),
-            title: item.label.clone(),
+            title: title_case(&item.label),
             subtitle: Some(format!("Unequip: {}", item.occupied_slots().join(" + "))),
             command: Some(format!("unequip {item_id}")),
             disabled: false,
@@ -50,7 +50,7 @@ pub(crate) fn build_equipment_panel_options(
         };
         options.push(PanelOptionData {
             id: format!("equip:{item_id}"),
-            title: item.label.clone(),
+            title: title_case(&item.label),
             subtitle: Some(format!(
                 "Equip: {}{replacement}",
                 item.occupied_slots().join(" + ")

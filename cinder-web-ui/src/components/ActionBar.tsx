@@ -1,5 +1,6 @@
 import { memo } from 'react'
 import * as api from '../api'
+import { titleize } from '../utils/text'
 
 export function getActionMeta(actionId: string, label: string): { borderClass: string; textClass: string; bgClass: string } {
   const id = actionId.toLowerCase()
@@ -60,6 +61,7 @@ export const ActionBar = memo(function ActionBar({
         {actions.map((action, idx) => {
           const meta = getActionMeta(action.id, action.label)
           const shortcutNum = idx < 9 ? idx + 1 : undefined
+          const label = titleize(action.label)
           return (
             <button
               key={action.id}
@@ -68,7 +70,7 @@ export const ActionBar = memo(function ActionBar({
               title={`Shortcut: ${shortcutNum ? `${shortcutNum} (or Alt+${shortcutNum})` : 'Action'}`}
               className={`px-2.5 py-1 rounded-md border text-xs sm:text-sm font-medium flex items-center gap-1 transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer ${meta.borderClass} ${meta.bgClass} ${meta.textClass}`}
             >
-              <span>{action.label}</span>
+              <span>{label}</span>
               {shortcutNum && (
                 <span className="hidden sm:inline-block font-mono text-[10px] opacity-40 ml-0.5 select-none">
                   {shortcutNum}
@@ -81,15 +83,16 @@ export const ActionBar = memo(function ActionBar({
         {takeableRoomItems.map((item, idx) => {
           const baseCount = actions.length
           const shortcutNum = baseCount + idx < 9 ? baseCount + idx + 1 : undefined
+          const label = titleize(item.label)
           return (
             <button
               key={`room-item-${item.id ?? item.label}-${idx}`}
               onClick={() => onTakeItem(item)}
               disabled={busy || gameOver}
-              title={`Take ${item.label}${shortcutNum ? ` (Shortcut: ${shortcutNum})` : ''}`}
+              title={`Take ${label}${shortcutNum ? ` (Shortcut: ${shortcutNum})` : ''}`}
               className="px-2.5 py-1 rounded-md border border-gold/40 hover:border-gold bg-gold/10 hover:bg-gold/20 text-gold text-xs sm:text-sm font-medium flex items-center gap-1 transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer"
             >
-              <span>Take {item.label}{item.count > 1 ? ` (${item.count})` : ''}</span>
+              <span>Take {label}{item.count > 1 ? ` (${item.count})` : ''}</span>
               {shortcutNum && (
                 <span className="hidden sm:inline-block font-mono text-[10px] opacity-40 ml-0.5 select-none">
                   {shortcutNum}

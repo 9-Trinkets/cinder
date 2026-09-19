@@ -160,7 +160,11 @@ pub(super) fn build_ui_snapshot(
         } else {
             None
         },
-        levels_revealed: content.levels_revealed_for_room(&current_room_id),
+        levels_revealed: content.levels_revealed_for_room(&current_room_id)
+            || state
+                .actor_known_room_ids
+                .values()
+                .any(|rooms| rooms.iter().any(|r| content.levels_revealed_for_room(r))),
         current_room_items: build_current_room_items(content, &state, &current_room_id),
         equipped_items: build_equipped_items(&state, content),
         inventory: build_inventory(runtime, content),

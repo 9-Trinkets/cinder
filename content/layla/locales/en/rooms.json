@@ -8114,7 +8114,12 @@
         "room_id": "oh",
         "label": "To the Heart",
         "aliases": [
-          "heart"
+          "heart",
+          "the heart",
+          "heart-pit",
+          "the heart-pit",
+          "to the heart",
+          "pit"
         ],
         "menu_label": "To the Heart"
       },
@@ -8185,7 +8190,12 @@
         "room_id": "oh",
         "label": "To the Heart",
         "aliases": [
-          "heart"
+          "heart",
+          "the heart",
+          "heart-pit",
+          "the heart-pit",
+          "to the heart",
+          "pit"
         ],
         "menu_label": "To the Heart"
       }

@@ -2,6 +2,7 @@ import * as api from '../api'
 import Minimap from './Minimap'
 import Section from './Section'
 import RelationshipChart from './RelationshipChart'
+import { titleize } from '../utils/text'
 
 const orderLabel = (order: string) => {
   const known: Record<string, string> = { guard: 'Guarding', assist: 'Assisting' }
@@ -193,29 +194,37 @@ export default function StatusPanel({
           <ul className="space-y-1">
             {uiSnapshot.inventory.map((item, i) => (
               <li key={i} className="text-text text-xs flex items-center justify-between gap-1">
-                <span className="truncate">• {item.label}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}</span>
+                <span className="truncate">• {titleize(item.label)}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}</span>
                 {onGiveToMember && uiSnapshot.party.length === 1 && (
                   <button
                     type="button"
                     onClick={() => onGiveToMember(uiSnapshot.party[0].id, item.label)}
-                    className="text-[10px] text-muted hover:text-pine px-1 py-0.5 rounded border border-subtle hover:border-pine cursor-pointer shrink-0"
+                    className="text-[10px] text-muted hover:text-pine px-1.5 py-0.5 rounded border border-subtle hover:border-pine cursor-pointer shrink-0"
                   >
                     Give
                   </button>
                 )}
                 {onGiveToMember && uiSnapshot.party.length > 1 && (
-                  <div className="flex gap-1 shrink-0">
-                    {uiSnapshot.party.map(m => (
-                      <button
-                        key={m.id}
-                        type="button"
-                        onClick={() => onGiveToMember(m.id, item.label)}
-                        title={`Give to ${m.label}`}
-                        className="text-[10px] text-muted hover:text-pine px-1 py-0.5 rounded border border-subtle hover:border-pine cursor-pointer"
-                      >
-                        Give {m.label.split(' ')[0]}
-                      </button>
-                    ))}
+                  <div className="shrink-0">
+                    <select
+                      defaultValue=""
+                      onChange={(e) => {
+                        const memberId = e.target.value
+                        if (memberId) {
+                          onGiveToMember(memberId, item.label)
+                          e.target.value = ''
+                        }
+                      }}
+                      title="Give item to party member"
+                      className="text-[10px] text-muted bg-surface hover:text-pine px-1 py-0.5 rounded border border-subtle hover:border-pine cursor-pointer max-w-[95px]"
+                    >
+                      <option value="" disabled>Give to...</option>
+                      {uiSnapshot.party.map(m => (
+                        <option key={m.id} value={m.id} className="bg-surface text-text">
+                          {m.label}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 )}
               </li>
@@ -236,13 +245,13 @@ export default function StatusPanel({
                       onClick={() => onTakeItem(item.id!)}
                       className="hover:opacity-80 cursor-pointer text-left"
                     >
-                      Take {item.label}
+                      Take {titleize(item.label)}
                       {item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
                     </button>
                   )
                   : (
                     <span>
-                      • {item.label}
+                      • {titleize(item.label)}
                       {item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
                     </span>
                   )}

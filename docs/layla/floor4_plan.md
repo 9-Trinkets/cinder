@@ -1,6 +1,6 @@
-# Floor 4 — The Commoners (The Village, The Mine, and The Guard Camp)
+# Floor 4 — The Commoners (The Mine, The Village, and The Military Complex)
 
-Living design plan for **level 4** of Layla. This floor covers the villagers' homes, the crystal mine, and the military camp that guards the teleportation gate. 
+Living design plan for **Level 4** of Layla. This floor covers the Noor-stone mines, the steampunk worker village, and the fortified military complex guarding the teleportation gate.
 
 All text for players must use **simple sentences and everyday words for teenagers**. Avoid unusual, archaic, or fancy words (use "offering" instead of "tithe", "gate" instead of "portal", "platform" instead of "dais", "furnace" instead of "crucible").
 
@@ -8,142 +8,134 @@ All text for players must use **simple sentences and everyday words for teenager
 
 ## 1. Story and Setting
 
-After the fire rooms on Floor 3, Layla steps out of the old border traps and into an underground kingdom. 
+After the fire rooms on Floor 3, Layla steps out of the ancient border traps and into a noisy, steam-filled underground civilization.
 
-This is not an empty dungeon. People live here.
+This is not an abandoned ruin. Thousands of commoners live and work here under the watchful eye of an armored garrison.
 
-Floor 4 is where **The Commoners** live and work:
-- **The Work:** They mine **mana crystals**. These glowing purple and blue stones power the whole underground kingdom. The nobles on Floor 5 and the priests on Floor 6 need these crystals to keep their machines running and cast their spells.
-- **The Problem:** People cannot just walk from floor to floor. There are no stairs. The only way up is a **magic teleportation gate**, and it sits behind the walls of a heavily guarded military camp. The commoners are never allowed through, unless the guards pick them as an **offering** for the priests.
-- **The Zones:** Floor 4 has three simple areas:
-  1. **The Village:** Where the miners and their families live.
-  2. **The Mana Mine:** Where they dig out the glowing crystals.
-  3. **The Guard Camp:** A stone fort that holds the teleportation gate, the stolen teleport scroll, and a locked prison cage.
+- **The Setting — Steampunk Underworld:** 
+  The caverns are crisscrossed by thick copper and iron pipes, hissing steam valves, rattling ore carts, and brass pressure gauges. High-pressure steam engines power the heavy mining equipment and heat the underground town.
+- **The Mineral — Noor-Stone:**
+  The miners excavate **Noor-stone**, a soft, glowing mineral found in deep geothermal veins.
+  - *The Magic Chalk Connection:* When pulverized, purified, and pressed, Noor-stone is the exact raw material used to craft the magic chalk Layla holds in her hand.
+  - *The Industrial Power:* In its raw rock form, Noor-stone vibrates with heat and arcane resonance, superheating boilers to power the steam machinery on Floor 4 and the spellcraft on the floors above.
+- **The Problem — The Barred Gate:**
+  There are no stairs leading up. The only way forward is a massive **teleportation gate** powered by steam boilers and Noor-stone conduits. It sits inside a fortified military complex in the center of the floor. Commoners are forbidden from entering—unless the guards select them as a living **offering** for the temple priests above.
 
 ---
 
-## 2. The 3 Zones
+## 2. Floor Layout: 3 Concentric Triangles
+
+The entire floor is structured in three concentric triangles, with security and control tightening the closer you get to the center:
 
 ```
-                     +-----------------------------------+
-                     |       ZONE 3: THE GUARD CAMP      |
-                     |  (Stone walls, guard towers,      |
-                     |   prison cage, teleport gate)     |
-                     |  [Main Quest: Get Teleport Scroll]|
-                     +-----------------+-----------------+
-                                       ^
-                    Guarded gate /     | \ Secret drain pipe
-                                       |
-+--------------------------------------+-----------------------------------+
-|          ZONE 1: THE VILLAGE         |        ZONE 2: THE MANA MINE      |
-|  (Small stone homes, dining hall,    |  (Deep open pits, mine cart rails,|
-|   mushroom gardens, quiet streets)   |   glowing crystal caves)          |
-|  [Side Quest: Rescue the boy Kip]    |  [Mine hazards, sneak paths]      |
-+--------------------------------------+-----------------------------------+
+                  /\
+                 /  \
+                /    \            OUTER TRIANGLE: THE NOOR-STONE MINES
+               /  /\  \           (Steam drills, open pits, ore carts, heavy dust)
+              /  /  \  \
+             /  / /\ \  \         MIDDLE TRIANGLE: THE VILLAGE
+            /  / /  \ \  \        (Brass pipe homes, bakeries, steam-mushroom beds)
+           /  / / /\ \ \  \
+          /  / / /  \ \ \  \      INNER TRIANGLE: MILITARY COMPLEX
+         /  / / /GATE\ \ \  \     (Bastions, prison cage, steam teleport gate)
+        /  / / /______\ \ \  \
+       /  / /____________\ \  \
+      /  /__________________\  \
+     /__________________________\
 ```
 
-### Zone 1: The Village (Living Quarters)
-A small, crowded underground town built against the rock walls. Simple stone huts sit next to mushroom gardens and a clean water spring.
-- **What You Sense:**
-  - *Smell:* Wood smoke, mushroom soup, damp earth, old candles.
-  - *Sound:* Quiet murmurs from tired workers, wooden bowls clattering at dinner, soft crying behind closed doors.
-  - *Look:* Warm yellow candlelight against dark cave walls.
-  - *Main Rooms:*
-    - `village_square`: The town center with a stone well and a big iron fire bowl.
-    - `village_hall`: A wooden hall where miners eat together and talk about their work.
-    - `mushroom_beds`: Stepped gardens where the village grows food mushrooms in the dark.
-    - `elder_hut`: The home of Valen, the tired village elder who had to choose Kip.
+### Outer Triangle: The Noor-Stone Mines (Heavy Industry)
+The outermost ring is a massive, echoing network of open quarries and mine shafts wrapping around the entire floor.
+- **Look & Feel:** Fine white stone dust coats every surface. Steam drills pound against rock walls (*thump... thump... hiss*). Red boiler lights glow through dense steam clouds. Bright, pale veins of raw Noor-stone glow softly inside deep crevices.
+- **Key Locations:**
+  - `mine_apex_pit`: The northern tip. An immense open quarry where steam-powered mechanical picks break off raw Noor-stone boulders.
+  - `steam_sorting_plant`: The southwest corner. Chutes, shaking screens, and steam conveyors sort Noor-stone chunks by grade.
+  - `cart_rail_terminus`: The southeast corner. Iron tracks where steam rail engines pull heavy ore wagons.
+  - `drainage_flue`: An old, rusted steam-drain conduit running beneath the mine floor directly into the middle village ring.
 
-### Zone 2: The Mana Mine
-A huge, noisy cavern where workers cut glowing crystals from the stone walls.
-- **What You Sense:**
-  - *Smell:* Dust, stone powder, cold damp air, and sharp static electricity from broken crystals.
-  - *Sound:* Pickaxes hitting rock (*clink... clink*), heavy ore carts rolling on iron rails, shouts of miners calling out rockfalls.
-  - *Look:* Bright violet and blue crystals glowing in the dark rock like cold fire.
-  - *Main Rooms:*
-    - `mine_entrance`: Big wooden beams holding up the stone ceiling, with carts full of raw rock.
-    - `crystal_pit`: A deep hole in the floor where the richest purple crystals grow.
-    - `cart_tracks`: A rail track where miners push heavy wooden carts.
-    - `old_drain_pipe`: An abandoned drainage tunnel under the mine that leads right under the guard camp walls.
+### Middle Triangle: The Worker Village (Living Quarters)
+The middle ring is where the miners, artisans, and their families live. Homes are built from rough stone blocks retrofitted with exposed brass steam heating pipes and glowing Noor-stone lanterns.
+- **Look & Feel:** Warm yellow lantern light cuts through the mist. The smell of fresh flatbread, mushroom broth, and machine oil. Children running between laundry lines; tired workers resting on wooden benches.
+- **Key Locations:**
+  - `boiler_square`: The central town plaza built around a huge brass geothermal manifold that distributes steam across town.
+  - `communal_hall`: A large tavern where miners eat, argue, and share rumors about the guards.
+  - `farida_bakery`: The busiest bakery in town, filled with the aroma of sesame flatbread and spiced tea.
+  - `elder_residence`: The home of Elder Tariq, the village leader who signed the order surrendering Zayd.
+  - `mushroom_steambeds`: Tiered planting beds heated by low-pressure steam pipes to grow food in the dark.
 
-### Zone 3: The Guard Camp
-A dark stone fort built by the Floor 5 soldiers. It cuts off the rest of the floor and guards the exit.
-- **What You Sense:**
-  - *Smell:* Lamp oil, hot iron from the smithy, roasted meat, smoke.
-  - *Sound:* Heavy boots marching on stone, soldiers laughing, the deep electrical hum of the teleport gate.
-  - *Look:* High iron fences, bright guard torches, and a big stone ring glowing with white light on the back wall.
-  - *Main Rooms:*
-    - `camp_gate`: Heavy wooden gates with iron spikes, guarded by armored soldiers with crossbows.
-    - `command_tent`: The head officer's tent. Inside is an iron chest holding the **Teleportation Scroll**.
-    - `prison_cage`: An iron cage hanging over a dry pit. This is where they lock up people chosen as an offering for the priests.
-    - `teleport_gate`: A massive stone circle carved with runes that glows bright white. This is the way up to Floor 5.
+### Inner Triangle: The Military Complex (The Fortress)
+The fortified center of the floor, enclosed behind high iron fences, steam-powered security gates, and searchlight towers. Commoners caught here are locked up or shot on sight.
+- **Look & Feel:** Polished iron plating, barbed wire, clean steam vents, and the hum of high-voltage mana dynamos. Armed soldiers patrol the ramparts carrying steam crossbows.
+- **Key Locations:**
+  - `fortress_gate`: The main checkpoint with hydraulic gates, guard dogs, and sentry barricades.
+  - `command_bastion`: Commander Malik's headquarters. Inside is a brass combination safe holding the **Teleportation Scroll**.
+  - `steam_prison_cage`: A reinforced iron cage suspended by chains over a geothermal vent. This is where young Zayd is held.
+  - `teleport_platform`: A massive circular brass platform ringed with steam valves and Noor-stone conduits that leads to Floor 5.
 
 ---
 
 ## 3. The Quests
 
-### Main Quest: "Take the Teleport Scroll"
-- **Goal:** Sneak or fight your way into the Guard Camp, take the **Teleportation Scroll**, and learn the **Teleportation Sigil**.
-- **Why You Need It:** The soldiers will not open the gate for anyone from the village. You cannot climb the walls. Learning the teleportation sigil gives you the power to blink through locked bars, slip past the guards, and use the teleport gate.
-- **How You Do It:**
-  1. Talk to miners in the village to learn that the guard captain keeps an old magic scroll locked in his tent.
-  2. Crawl through the old drain pipe in the mine to bypass the front gate and pop up inside the camp.
-  3. Find the captain's chest, grab the scroll, and read it.
+### Main Quest: "The Teleportation Scroll"
+- **Goal:** Infiltrate the Inner Military Complex, break into Commander Malik's safe, take the **Teleportation Scroll**, and learn the **Teleportation Sigil**.
+- **Why You Need It:** The fortress gates are locked by hydraulic deadbolts that cannot be pried open. The Teleportation Sigil lets Layla blink through solid iron bars, slip past sentries, and activate the teleport platform.
+- **How to Complete It:**
+  1. Gather intel in the village from Farida and the miners about the fortress layout and Malik's habits.
+  2. Use the `drainage_flue` from the mine or create a diversion with the steam pressure valves in `boiler_square`.
+  3. Crack the commander's safe, take the scroll, and read it.
 - **The Sigil:**
-  - Layla draws a double ring with crossing lines in magic chalk.
-  - Standing in front of iron bars or a locked gate, the sigil blinks you straight to the other side.
+  - Layla draws a double triangle with intersecting lines in magic chalk.
+  - Tracing it while standing before a barred gate or obstacle blinks the party instantly to the other side.
 
 ---
 
-### Side Quest: "Save Kip"
-- **The Boy (Kip, age 11):**
-  - Kip's parents died in a mine accident when he was small. He had no family left, so the whole village took turns feeding him, fixing his clothes, and keeping an eye on him.
-  - Because he did not have parents to keep him in line, Kip was wild and rowdy. He skipped chores, ran on top of the mine carts, and threw pebbles at the guards. But he also had a huge heart. He carried heavy water buckets for old folks and shared his bread with stray dogs. Everybody in the village loved him like their own kid.
-- **The Conflict:**
-  - The temple priests ordered the village to hand over one young worker as an **offering** for the Demon King.
-  - The village leaders panicked. Every family wanted to protect their own children. In the end, they made a terrible, cowardly choice: they gave up Kip. They told themselves, *"He gets into trouble anyway, and he has no parents to cry for him."*
-  - The moment the soldiers dragged Kip away in chains, the village fell apart with guilt. Nobody can look each other in the eye.
-- **Starting the Quest:**
-  - You hear the villagers arguing the moment you walk into town:
-    - *A baker crying:* "We baked bread for that boy for six years! Then the guards showed up, and we just looked down at our boots. How could we do that to our own boy?"
-    - *An elder shouting:* "What were we supposed to do? Give them two kids instead? He was always headed for trouble!"
-    - *A young miner:* "He was our kid! Every single house raised him, and every single house let them take him!"
-- **Rescuing Kip:**
-  - Kip is locked in the iron cage inside the Guard Camp, waiting for the priest wagon to take him away.
-  - Once you learn the **Teleportation Sigil** from the main quest, you can step up to the cage and blink Kip right out through the bars. (Or, you can roll an explosive crystal cart into the camp wall to make the guards run away, then pick the lock.)
-- **The Reward:**
-  - Kip gets taken back to the village and hidden safely in the mushroom caves.
-  - The village unites again, and they thank you with supplies and tips.
-  - Kip hugs you and gives you his lucky charm: **Kip's Lucky Crystal** (+5 Wisdom accessory).
+### Side Quest: "Save the Boy Zayd"
+- **The Orphan (Zayd, age 11):**
+  - Zayd lost both parents in a steam drill collapse years ago. With no family left, the entire village took turns looking after him: Farida gave him bread, the miners taught him the machinery, and the elders looked the other way when he played pranks.
+  - He was wild, loud, and constantly climbed on steam pipes and threw pebbles at the soldiers. But he had a loyal heart, always carrying heavy coal buckets for the elderly and tending to injured stray animals.
+- **The Tragedy:**
+  - Temple priests sent an order demanding one youth as an **offering** for the rituals above.
+  - Paralyzed with fear for their own children, the village council made a cowardly decision: they gave up Zayd, rationalizing that *"he has no mother to cry for him."*
+  - The moment Malik's soldiers dragged Zayd away in brass shackles, heavy guilt crushed the village. Nobody can look at one another without shame.
+- **Rescuing Zayd:**
+  - Zayd is locked in the suspended `steam_prison_cage`, awaiting the priest's transport wagon.
+  - Once Layla masters the **Teleportation Sigil**, she can blink inside the cage, grab Zayd, and blink both of them out before guards can sound the alarm.
+  - Alternatively, Layla can sabotage a nearby steam valve to blind the guards with a cloud of hot vapor and pick the cage lock.
+- **The Reward & The Family Heirloom:**
+  - Zayd is escorted back to the village and hidden safely in the steam mushroom caves.
+  - The villagers are overjoyed and deeply indebted to Layla, providing healing salves, chalk refills, and local maps.
+  - Zayd holds out his most cherished possession—a small, brass-bound miner's lantern fueled by a glowing piece of raw Noor-stone, the only thing his parents left behind before the cave-in:
+    > *"My mom and dad gave me this before the rocks fell. They said light always finds a way through stone. Take it... wherever you're going in the deep dark, I hope their light guides your way."*
+  - Layla receives **Zayd's Lantern** (+5 Wisdom accessory).
 
 ---
 
-## 4. Characters
+## 4. Characters (Arabian Names)
 
-| Name | Place | Who They Are | How They Talk |
+| Name | Role | Location | Personality & Voice |
 |---|---|---|---|
-| **Elder Valen** | Village | The village leader. He signed the paper that gave Kip away. | Tired, sad, speaks in short, heavy sentences. Desperately wants to fix his mistake. |
-| **Bess, the Baker** | Village | A town baker who fed Kip every morning. | Warm, tearful, angry at the village leaders. |
-| **Kip** | Guard Camp Cage | The 11-year-old orphan boy. | Tough, dirty face, defiant. Even locked in a cage, he yells at the guards. |
-| **Captain Ronald** | Guard Camp | The arrogant boss of the soldiers. | Smug, loud, talks down to the miners like they are dirt. |
-| **Priest Malas** | Guard Camp | A quiet temple priest waiting to take Kip away. | Creepy, calm, talks in a soft whisper about "holy duty." |
-| **Orin (Stone Golem)**| Mana Mine | A tired stone golem working in the deep rocks. | Silent until you give him a Wisdom boost, then wakes up as an old master builder. |
+| **Elder Tariq** | Village Elder | Elder's Residence | Exhausted, burdened by grief and guilt. Speaks in quiet, regretful sentences. Desperate to undo his betrayal of Zayd. |
+| **Farida** | Town Baker | Farida's Bakery | Passionate, outspoken, and furious at the elders. She baked for Zayd every morning and demands someone save him. |
+| **Zayd** | Orphan Boy (Age 11) | Steam Prison Cage | Scrappy, soot-stained, and defiant. Even trapped in an iron cage, he glares at the guards and clutches the memory of his parents. |
+| **Commander Malik** | Garrison Captain | Command Bastion | Cold, proud, and precise. Wears brass officer armor and views the miners as replaceable labor. |
+| **Inquisitor Bashir** | Temple Emissary | Command Bastion | Eerie, soft-spoken priest from the upper floors. Talks smoothly about "sacred duty" while waiting to take Zayd away. |
+| **Sakhra** | Heavy Steam Golem | The Noor-Stone Mines | A massive basalt golem retrofitted with brass steam pistons. Sluggish until awakened with Wisdom, becoming an expert tunnel builder. |
 
 ---
 
 ## 5. Party Wisdom & Awakening
 
-- Followers you charm start out quiet and slow (Wisdom 3 to 5).
-- If you give a follower **Kip's Lucky Crystal** or a clear-mind potion, their Wisdom goes up to 10 or higher.
-- When their Wisdom hits 10, they **wake up**:
-  - They remember their real name and their real past.
-  - They can talk to you and give you advice about the dungeon.
-  - The priests can no longer control or scare them.
+- Follower golems and charmed creatures start with low Wisdom (3 to 5).
+- Equipping **Zayd's Lantern** shines its warm, steady Noor-stone light into a follower's mind, raising their Wisdom to 10+.
+- Reaching Wisdom 10 triggers an **Awakening**:
+  - The follower breaks free from mindless stone slumber and speaks in clear prose.
+  - They provide hints about steam pipe puzzles, hidden bypasses, and enemy attack patterns.
+  - They become immune to the fear and charm spells used by temple inquisitors.
 
 ---
 
-## 6. Sentry and Scout Orders
+## 6. Party Orders in the Steam Caverns
 
-With a bigger party, you can give your team two new jobs:
-- **`guard` / `sentry`:** Tell a follower to stand at a doorway and hold it. They stop roaming guards from walking in on you.
-- **`scout`:** Send a fast follower down a dark tunnel. They run ahead, look around, and come back to tell you what enemies and treasures are waiting.
+With multi-member parties, players can assign specialized tactical roles:
+- **`guard` / `sentry`:** A follower anchors at a doorway or steam valve, preventing roaming soldier patrols from flanking the party.
+- **`scout`:** A nimble follower slips ahead through steam clouds or narrow pipe tunnels to reveal room hazards and enemy numbers without triggering combat.

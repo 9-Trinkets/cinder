@@ -1,6 +1,7 @@
 import { memo } from 'react'
 import * as api from '../api'
 import { groupLookOptions, groupOverflowActions } from '../utils/grouping'
+import { titleize } from '../utils/text'
 import type { QuickPanel } from '../hooks/playUtils'
 
 const QuickActionPanel = memo(function QuickActionPanel({
@@ -70,7 +71,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
                         disabled={busy}
                         className="block w-full text-left px-3 py-2 rounded-xl hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
                       >
-                        {opt.title}
+                        {titleize(opt.title)}
                       </button>
                     ))}
                   </div>
@@ -94,7 +95,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
                       className="block w-full text-left px-3 py-2 rounded-xl hover:bg-overlay border border-subtle disabled:opacity-50 cursor-pointer"
                       title={action.usage}
                     >
-                      <span className="font-medium">{action.label}</span>
+                      <span className="font-medium">{titleize(action.label)}</span>
                       {action.usage && <span className="text-muted text-xs ml-2">— {action.usage}</span>}
                     </button>
                   ))}
@@ -123,7 +124,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
                 >
                   <span className="flex items-center justify-between gap-3">
                     <span>
-                      <span className="block font-medium">{opt.title}</span>
+                      <span className="block font-medium">{titleize(opt.title)}</span>
                       {opt.subtitle && <span className="block text-muted text-xs mt-0.5">{opt.subtitle}</span>}
                     </span>
                     {opt.selected && <span className="text-gold text-sm" aria-label="Current order">✓</span>}

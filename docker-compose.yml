@@ -26,6 +26,9 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      - ./content:/app/content
+      - ./config:/app/config
     environment:
       CINDER_DATABASE_URL: postgres://${POSTGRES_USER:-cinder}:${POSTGRES_PASSWORD:-cinder}@postgres:5432/${POSTGRES_DB:-cinder}
       CINDER_JWT_SECRET: ${CINDER_JWT_SECRET:-local-dev-jwt-secret}

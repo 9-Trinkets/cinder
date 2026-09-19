@@ -7,7 +7,7 @@
     "Sigil Magic",
     "Party Tactics"
   ],
-  "npc_tick_interval_ms": 2000,
+  "npc_tick_interval_ms": 6000,
   "tick_minutes_per_turn": 1,
   "default_language": "en",
   "autonomous_actor_dialogue": false,
@@ -44,7 +44,7 @@
   ],
   "feedback_channel_id": "handler-comms",
   "show_act_closure": false,
-  "vitals_sidebar_story_var": "first_mob_defeated",
+  "vitals_sidebar_story_var": "",
   "minimap_requires_story_var": "shaman_defeated",
   "level_reveal_room_prefix": "d",
   "theme": {

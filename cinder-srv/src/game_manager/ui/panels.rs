@@ -98,7 +98,7 @@ pub(super) fn build_drop_panel_options(
         .into_iter()
         .map(|item_id| PanelOptionData {
             id: item_id.clone(),
-            title: content.item_label(&item_id).to_string(),
+            title: title_case(content.item_label(&item_id)),
             subtitle: None,
             command: Some(format!("drop {item_id}")),
             disabled: false,
@@ -455,7 +455,7 @@ fn craftable_item_panel_options(
                             cinder_core::content::types::ItemStorageTarget::CurrentRoom,
                             &state.current_room_id,
                         );
-                    let title = content.item_label(item_id).to_string();
+                    let title = title_case(content.item_label(item_id));
                     PanelOptionData {
                         id: item_id.clone(),
                         title,
@@ -483,12 +483,35 @@ pub(super) fn panel_config_data(pc: &PanelConfig) -> PanelConfigData {
 fn loose_item_option(content: &ContentPack, item_id: &str) -> PanelOptionData {
     PanelOptionData {
         id: item_id.to_string(),
-        title: content.item_label(item_id).to_string(),
+        title: title_case(content.item_label(item_id)),
         subtitle: None,
         command: Some(format!("take {item_id}")),
         disabled: false,
         selected: false,
     }
+}
+
+pub(crate) fn title_case(s: &str) -> String {
+    let mut result = String::with_capacity(s.len());
+    let mut capitalize_next = true;
+    for c in s.chars() {
+        if c.is_alphanumeric() {
+            if capitalize_next {
+                for uc in c.to_uppercase() {
+                    result.push(uc);
+                }
+                capitalize_next = false;
+            } else {
+                result.push(c);
+            }
+        } else {
+            result.push(c);
+            if c != '\'' {
+                capitalize_next = true;
+            }
+        }
+    }
+    result
 }
 
 #[cfg(test)]

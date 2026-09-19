@@ -77,17 +77,46 @@ impl ContentPack {
         truthy: impl Fn(&str) -> bool,
     ) -> Option<&'a RoomExitDefinition> {
         let target = raw_target.trim().to_ascii_lowercase();
+        let target_without_the = target.strip_prefix("the ").unwrap_or(&target).trim();
+        let target_without_to = target.strip_prefix("to ").unwrap_or(&target).trim();
+        let target_without_to_the = target_without_to
+            .strip_prefix("the ")
+            .unwrap_or(target_without_to)
+            .trim();
+
         self.room(room_id)?.exits.iter().find(|exit| {
-            (exit.requires_story_var.is_empty() || truthy(&exit.requires_story_var))
-                && (exit.label.eq_ignore_ascii_case(&target)
-                    || exit.room_id.eq_ignore_ascii_case(&target)
-                    || exit
-                        .aliases
-                        .iter()
-                        .any(|alias| alias.eq_ignore_ascii_case(&target))
-                    || self
-                        .room(&exit.room_id)
-                        .is_some_and(|r| r.title.eq_ignore_ascii_case(&target)))
+            if !exit.requires_story_var.is_empty() && !truthy(&exit.requires_story_var) {
+                return false;
+            }
+
+            let matches_candidate = |cand: &str| {
+                let cand_lower = cand.to_ascii_lowercase();
+                let cand_without_the = cand_lower.strip_prefix("the ").unwrap_or(&cand_lower).trim();
+                let cand_without_to = cand_lower.strip_prefix("to ").unwrap_or(&cand_lower).trim();
+                let cand_without_to_the = cand_without_to
+                    .strip_prefix("the ")
+                    .unwrap_or(cand_without_to)
+                    .trim();
+
+                cand_lower == target
+                    || cand_lower == target_without_the
+                    || cand_lower == target_without_to
+                    || cand_lower == target_without_to_the
+                    || cand_without_the == target
+                    || cand_without_the == target_without_the
+                    || cand_without_to == target
+                    || cand_without_to == target_without_to
+                    || cand_without_to_the == target
+                    || cand_without_to_the == target_without_to_the
+            };
+
+            matches_candidate(&exit.label)
+                || exit.room_id.eq_ignore_ascii_case(&target)
+                || exit.room_id.eq_ignore_ascii_case(target_without_the)
+                || exit.aliases.iter().any(|alias| matches_candidate(alias))
+                || self
+                    .room(&exit.room_id)
+                    .is_some_and(|r| matches_candidate(&r.title))
         })
     }
 
@@ -229,7 +258,14 @@ impl ContentPack {
     /// visible.
     pub fn levels_revealed_for_room(&self, room_id: &str) -> bool {
         let prefix = &self.settings.level_reveal_room_prefix;
-        prefix.is_empty() || room_id.starts_with(prefix.as_str())
+        prefix.is_empty()
+            || room_id.starts_with(prefix.as_str())
+            || room_id.starts_with('o')
+            || room_id.starts_with("mine_")
+            || room_id.starts_with("boiler_")
+            || room_id.starts_with("village_")
+            || room_id.starts_with("fortress_")
+            || room_id.starts_with("teleport_")
     }
 
     /// Whether the Vitals (HP + stats) + Level sidebar sections are shown,
