@@ -189,3 +189,79 @@ fn equipment_panel_lists_each_equipped_item_once_and_held_gear_separately() {
         1
     );
 }
+
+#[test]
+fn give_surfaces_on_bar_when_party_and_droppable_items_exist() {
+    let mut content = minimal_test_pack();
+    content.items.push(ItemDefinition {
+        id: "potion".to_string(),
+        label: "potion".to_string(),
+        ..ItemDefinition::default()
+    });
+    let mut state = WorldState::new(&content);
+    state.add_item("potion");
+
+    let party_member = PartyMember {
+        id: "zayd".to_string(),
+        label: "Zayd".to_string(),
+        order: String::new(),
+        level: 1,
+        hp: 10,
+        hp_max: 10,
+        order_panel: "order:zayd".to_string(),
+        equipped_items: vec![],
+        inventory: vec![],
+    };
+
+    // Case 1: No party -> No give
+    let (bar_no_party, _, give_opts_no_party) = build_action_bar_items(&content, &state, &[]);
+    assert!(!bar_no_party.iter().any(|a| a.id == "give"));
+    assert!(give_opts_no_party.is_empty());
+
+    // Case 2: Party exists + item exists -> Give appears
+    let (bar_with_party, _, give_opts) =
+        build_action_bar_items(&content, &state, &[party_member.clone()]);
+    assert!(bar_with_party.iter().any(|a| a.id == "give"));
+    assert_eq!(give_opts.len(), 1);
+    assert_eq!(give_opts[0].command.as_deref(), Some("give potion to zayd"));
+
+    // Case 3: Party exists but no items in inventory -> No give
+    let empty_state = WorldState::new(&content);
+    let (bar_no_items, _, give_opts_no_items) =
+        build_action_bar_items(&content, &empty_state, &[party_member]);
+    assert!(!bar_no_items.iter().any(|a| a.id == "give"));
+    assert!(give_opts_no_items.is_empty());
+}
+
+#[test]
+fn take_surfaces_on_bar_when_companion_has_items_even_without_room_items() {
+    let mut content = minimal_test_pack();
+    content.actions.push(ActionDefinition {
+        id: "take".to_string(),
+        player_enabled: true,
+        ..ActionDefinition::default()
+    });
+    let state = WorldState::new(&content);
+
+    let party_member = PartyMember {
+        id: "zayd".to_string(),
+        label: "Zayd".to_string(),
+        order: String::new(),
+        level: 1,
+        hp: 10,
+        hp_max: 10,
+        order_panel: "order:zayd".to_string(),
+        equipped_items: vec![],
+        inventory: vec![super::super::InventoryItem {
+            id: Some("torch".to_string()),
+            label: "torch".to_string(),
+            count: 1,
+        }],
+    };
+
+    let (bar, take_opts, _) = build_action_bar_items(&content, &state, &[party_member]);
+    assert!(bar.iter().any(|a| a.id == "take"));
+    assert_eq!(take_opts.len(), 1);
+    assert_eq!(take_opts[0].command.as_deref(), Some("take torch from zayd"));
+    assert_eq!(take_opts[0].subtitle.as_deref(), Some("From Zayd"));
+}

@@ -23,6 +23,9 @@ export function getActionMeta(actionId: string, label: string): { borderClass: s
   if (id.includes('take') || lbl.includes('take') || id.includes('item') || id.includes('equip')) {
     return { borderClass: 'border-gold/40 hover:border-gold', textClass: 'text-gold', bgClass: 'bg-gold/10 hover:bg-gold/20' }
   }
+  if (id.includes('give') || lbl.includes('give')) {
+    return { borderClass: 'border-pine/40 hover:border-pine', textClass: 'text-foam', bgClass: 'bg-pine/10 hover:bg-pine/20' }
+  }
   if (id.includes('follow') || lbl.includes('follow')) {
     return { borderClass: 'border-pine/40 hover:border-pine', textClass: 'text-foam', bgClass: 'bg-pine/10 hover:bg-pine/20' }
   }
@@ -36,25 +39,18 @@ export interface ActionBarProps {
   busy: boolean
   gameOver: boolean
   onAction: (action: api.ActionBarAction) => void
-  onTakeItem: (item: api.InventoryItem) => void
+  onTakeItem?: (item: api.InventoryItem) => void
   onToggleOverflow: () => void
 }
 
 export const ActionBar = memo(function ActionBar({
   actions,
-  roomItems = [],
   hasOverflow,
   busy,
   gameOver,
   onAction,
-  onTakeItem,
   onToggleOverflow,
 }: ActionBarProps) {
-  const takeableRoomItems = roomItems.filter(item => {
-    const id = (item.id ?? item.label).toLowerCase()
-    return !id.includes('sigil') && !item.label.toLowerCase().includes('sigil')
-  })
-
   return (
     <div className="border-t border-subtle/50 bg-surface/90">
       <div className="max-w-2xl mx-auto flex flex-wrap items-center gap-1.5 px-4 py-2">
@@ -71,28 +67,6 @@ export const ActionBar = memo(function ActionBar({
               className={`px-2.5 py-1 rounded-md border text-xs sm:text-sm font-medium flex items-center gap-1 transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer ${meta.borderClass} ${meta.bgClass} ${meta.textClass}`}
             >
               <span>{label}</span>
-              {shortcutNum && (
-                <span className="hidden sm:inline-block font-mono text-[10px] opacity-40 ml-0.5 select-none">
-                  {shortcutNum}
-                </span>
-              )}
-            </button>
-          )
-        })}
-
-        {takeableRoomItems.map((item, idx) => {
-          const baseCount = actions.length
-          const shortcutNum = baseCount + idx < 9 ? baseCount + idx + 1 : undefined
-          const label = titleize(item.label)
-          return (
-            <button
-              key={`room-item-${item.id ?? item.label}-${idx}`}
-              onClick={() => onTakeItem(item)}
-              disabled={busy || gameOver}
-              title={`Take ${label}${shortcutNum ? ` (Shortcut: ${shortcutNum})` : ''}`}
-              className="px-2.5 py-1 rounded-md border border-gold/40 hover:border-gold bg-gold/10 hover:bg-gold/20 text-gold text-xs sm:text-sm font-medium flex items-center gap-1 transition-all duration-150 active:scale-[0.97] disabled:opacity-50 cursor-pointer"
-            >
-              <span>Take {label}{item.count > 1 ? ` (${item.count})` : ''}</span>
               {shortcutNum && (
                 <span className="hidden sm:inline-block font-mono text-[10px] opacity-40 ml-0.5 select-none">
                   {shortcutNum}

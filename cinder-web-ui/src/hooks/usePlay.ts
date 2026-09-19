@@ -51,6 +51,7 @@ export function usePlay() {
   const inputRef = useRef<HTMLInputElement>(null)
   const autoScrollRef = useRef(true)
   const scrollBehaviorRef = useRef<ScrollBehavior>('auto')
+  const lastProgrammaticScrollRef = useRef(0)
   const refreshInFlightRef = useRef(false)
   const refreshQueuedRef = useRef(false)
   const lastInteractionAtRef = useRef(0)
@@ -298,6 +299,7 @@ export function usePlay() {
   }
 
   const handleTranscriptScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
+    if (Date.now() - lastProgrammaticScrollRef.current < 600) return
     const el = e.currentTarget
     const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight
     autoScrollRef.current = distanceFromBottom < 80
@@ -313,8 +315,37 @@ export function usePlay() {
 
   useEffect(() => {
     if (!autoScrollRef.current) return
-    bottomRef.current?.scrollIntoView({ behavior: scrollBehaviorRef.current })
+    const behavior = scrollBehaviorRef.current
+    lastProgrammaticScrollRef.current = Date.now()
+
+    const doScroll = () => {
+      if (behavior === 'smooth') {
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+      } else if (transcriptRef.current) {
+        transcriptRef.current.scrollTop = transcriptRef.current.scrollHeight
+      } else {
+        bottomRef.current?.scrollIntoView()
+      }
+    }
+
+    doScroll()
     scrollBehaviorRef.current = 'auto'
+
+    const rafId = requestAnimationFrame(() => {
+      if (autoScrollRef.current) {
+        doScroll()
+      }
+    })
+    const timer = setTimeout(() => {
+      if (autoScrollRef.current) {
+        doScroll()
+      }
+    }, 120)
+
+    return () => {
+      cancelAnimationFrame(rafId)
+      clearTimeout(timer)
+    }
   }, [lines, busyLabel])
 
   useEffect(() => {

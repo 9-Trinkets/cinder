@@ -15,7 +15,7 @@ use super::response;
 
 use self::minimap::build_minimap;
 use self::panels::{
-    build_action_bar_and_take, build_active_menu, build_drop_panel_options,
+    build_action_bar_items, build_active_menu, build_drop_panel_options,
     build_equipment_panel_options, build_interactable_labels, build_look_options,
     build_overflow_actions, build_panel_options, build_talk_options,
 };
@@ -76,8 +76,10 @@ pub(super) fn build_ui_snapshot(
         .and_then(|id| runtime.actor_display_name(&id).ok().flatten());
 
     let state = runtime.export_state().map_err(|e| e.to_string())?;
+    let party = build_party_members(runtime, &state, content);
 
-    let (action_bar_actions, take_panel_options) = build_action_bar_and_take(content, &state);
+    let (action_bar_actions, take_panel_options, give_panel_options) =
+        build_action_bar_items(content, &state, &party);
     let drop_panel_options = build_drop_panel_options(content, &state);
     let equipment_panel_options = build_equipment_panel_options(content, &state);
     let look_options = build_look_options(runtime)?;
@@ -97,12 +99,12 @@ pub(super) fn build_ui_snapshot(
         &drop_panel_options,
         &equipment_panel_options,
     )?;
-    let party = build_party_members(runtime, &state, content);
     let mut panel_options = build_panel_options(
         runtime,
         content,
         &state,
         take_panel_options,
+        give_panel_options,
         drop_panel_options,
         equipment_panel_options,
     )?;

@@ -131,19 +131,10 @@ export default function StatusPanel({
                 {member.equipped_items && member.equipped_items.length > 0 && (
                   <div className="mt-2 pt-2 border-t border-subtle/50 text-[11px]">
                     <div className="text-[10px] uppercase tracking-wider text-muted font-mono mb-1">Equipped</div>
-                    <ul className="space-y-1 pl-1">
+                    <ul className="space-y-0.5 pl-1">
                       {member.equipped_items.map((item, i) => (
-                        <li key={i} className="text-text flex items-center justify-between gap-1">
-                          <span className="truncate"><span className="text-muted">{item.slot}:</span> {item.label}</span>
-                          {onTakeFromMember && item.id && (
-                            <button
-                              type="button"
-                              onClick={() => onTakeFromMember(member.id, item.id!)}
-                              className="text-[10px] text-muted hover:text-pine px-1 py-0.5 rounded border border-subtle hover:border-pine cursor-pointer shrink-0"
-                            >
-                              Take
-                            </button>
-                          )}
+                        <li key={i} className="text-text">
+                          <span className="text-muted">{item.slot}:</span> {titleize(item.label)}
                         </li>
                       ))}
                     </ul>
@@ -153,19 +144,10 @@ export default function StatusPanel({
                 {member.inventory && member.inventory.length > 0 && (
                   <div className="mt-2 pt-1.5 border-t border-subtle/50 text-[11px]">
                     <div className="text-[10px] uppercase tracking-wider text-muted font-mono mb-1">Carrying</div>
-                    <ul className="space-y-1 pl-1">
+                    <ul className="space-y-0.5 pl-1">
                       {member.inventory.map((item, i) => (
-                        <li key={i} className="text-text flex items-center justify-between gap-1">
-                          <span className="truncate">• {item.label}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}</span>
-                          {onTakeFromMember && item.id && (
-                            <button
-                              type="button"
-                              onClick={() => onTakeFromMember(member.id, item.id!)}
-                              className="text-[10px] text-muted hover:text-pine px-1 py-0.5 rounded border border-subtle hover:border-pine cursor-pointer shrink-0"
-                            >
-                              Take
-                            </button>
-                          )}
+                        <li key={i} className="text-text">
+                          • {titleize(item.label)}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
                         </li>
                       ))}
                     </ul>
@@ -191,42 +173,10 @@ export default function StatusPanel({
 
       {uiSnapshot.inventory.length > 0 && (
         <Section title="Inventory">
-          <ul className="space-y-1">
+          <ul className="space-y-0.5">
             {uiSnapshot.inventory.map((item, i) => (
-              <li key={i} className="text-text text-xs flex items-center justify-between gap-1">
-                <span className="truncate">• {titleize(item.label)}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}</span>
-                {onGiveToMember && uiSnapshot.party.length === 1 && (
-                  <button
-                    type="button"
-                    onClick={() => onGiveToMember(uiSnapshot.party[0].id, item.label)}
-                    className="text-[10px] text-muted hover:text-pine px-1.5 py-0.5 rounded border border-subtle hover:border-pine cursor-pointer shrink-0"
-                  >
-                    Give
-                  </button>
-                )}
-                {onGiveToMember && uiSnapshot.party.length > 1 && (
-                  <div className="shrink-0">
-                    <select
-                      defaultValue=""
-                      onChange={(e) => {
-                        const memberId = e.target.value
-                        if (memberId) {
-                          onGiveToMember(memberId, item.label)
-                          e.target.value = ''
-                        }
-                      }}
-                      title="Give item to party member"
-                      className="text-[10px] text-muted bg-surface hover:text-pine px-1 py-0.5 rounded border border-subtle hover:border-pine cursor-pointer max-w-[95px]"
-                    >
-                      <option value="" disabled>Give to...</option>
-                      {uiSnapshot.party.map(m => (
-                        <option key={m.id} value={m.id} className="bg-surface text-text">
-                          {m.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                )}
+              <li key={i} className="text-text text-xs">
+                • {titleize(item.label)}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
               </li>
             ))}
           </ul>

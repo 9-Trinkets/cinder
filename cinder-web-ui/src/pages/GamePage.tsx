@@ -81,11 +81,11 @@ export default function GamePage() {
     const panel = action.panel as string | undefined
     if (panel) {
       const options = uiSnapshot?.panel_options?.[panel] ?? []
-      if (options.length === 1) {
+      if (options.length === 1 && action.id !== 'give') {
         handleSelectPanelOption(panel, options[0])
         return
       }
-      if (options.length > 1) {
+      if (options.length >= 1) {
         setQuickPanel(current => current === panel ? null : panel)
         return
       }
@@ -371,8 +371,6 @@ export default function GamePage() {
             <FolioPanel
               uiSnapshot={uiSnapshot}
               onTakeItem={itemId => void execCommand(`take ${itemId}`)}
-              onTakeFromMember={(memberId, itemId) => void execCommand(`take ${itemId} from ${memberId}`)}
-              onGiveToMember={(memberId, itemLabel) => void execCommand(`give ${itemLabel} to ${memberId}`)}
               onOpenPanel={setQuickPanel}
             />
           </aside>
@@ -398,8 +396,6 @@ export default function GamePage() {
           <FolioPanel
             uiSnapshot={uiSnapshot}
             onTakeItem={itemId => void execCommand(`take ${itemId}`)}
-            onTakeFromMember={(memberId, itemId) => void execCommand(`take ${itemId} from ${memberId}`)}
-            onGiveToMember={(memberId, itemLabel) => void execCommand(`give ${itemLabel} to ${memberId}`)}
             onOpenPanel={panel => { setShowFolio(false); setQuickPanel(panel) }}
           />
         </Modal>

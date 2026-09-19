@@ -10,27 +10,29 @@ use std::collections::BTreeMap;
 
 use super::{
     ActionBarAction, ActiveMenuData, LookOptionData, MenuOptionData, OverflowAction,
-    PanelConfigData, PanelOptionData, droppable_inventory_items,
+    PanelConfigData, PanelOptionData, PartyMember, droppable_inventory_items,
 };
 pub(super) use equipment::build_equipment_panel_options;
 
-/// Builds the action bar, and also computes the option rows for the generic
-/// `take <item>` picker that is only surfaced when a loose item lies in the
-/// current room. Because the take button is appended to the bar itself, both
-/// are produced together.
-pub(super) fn build_action_bar_and_take(
+/// Builds the action bar actions along with options for the dynamic
+/// `take` and `give` panels.
+///
+/// - `take`: Surfaces when loose room items or companion items exist.
+/// - `give`: Surfaces when companions are present and the player has inventory items.
+pub(super) fn build_action_bar_items(
     content: &ContentPack,
     state: &WorldState,
-) -> (Vec<ActionBarAction>, Vec<PanelOptionData>) {
+    party: &[PartyMember],
+) -> (Vec<ActionBarAction>, Vec<PanelOptionData>, Vec<PanelOptionData>) {
     let mut action_bar_actions: Vec<ActionBarAction> = if !content.actions.is_empty() {
         content
             .actions
             .iter()
             .filter(|a| {
-                // Bar visibility is governed by `ui.bar` + availability, not
-                // `player_enabled`: bar-only affordances (e.g. Aera's follow)
-                // keep `player_enabled: false` so the typed command doesn't
-                // resolve, while their bar button dispatches through a panel.
+                // 'take' and 'give' are dynamically placed when applicable
+                if a.id == "take" || a.id == "give" {
+                    return false;
+                }
                 a.ui.bar && action_is_available(content, state, a, &state.current_room_id)
             })
             .map(|a| ActionBarAction {
@@ -44,38 +46,157 @@ pub(super) fn build_action_bar_and_take(
         vec![]
     };
 
-    // The generic `take <item>` command surfaces as a single action-bar button
-    // whenever a loose item lies in the current room. It reuses the same panel
-    // model as authored content actions: the button opens a picker listing each
-    // item (auto-selecting when only one is present), dispatching `take <id>`.
-    let take_panel_options: Vec<PanelOptionData> = if !content.player_can_take_items() {
+    // 1. Take items: from ground and/or companion packs/equipment
+    let take_panel_options = if !content.player_can_take_items() {
         vec![]
     } else {
         let loose = takeable_loose_items(content, state);
-        if loose.is_empty() {
+        let has_companion_items = party
+            .iter()
+            .any(|m| !m.inventory.is_empty() || !m.equipped_items.is_empty());
+
+        let mut options = Vec::new();
+        // Ground items
+        for (item_id, _) in &loose {
+            let title = title_case(content.item_label(item_id));
+            let subtitle = if has_companion_items {
+                Some("On the ground".to_string())
+            } else {
+                None
+            };
+            options.push(PanelOptionData {
+                id: format!("ground:{item_id}"),
+                title,
+                subtitle,
+                command: Some(format!("take {item_id}")),
+                disabled: false,
+                selected: false,
+            });
+        }
+        // Companion items
+        for member in party {
+            for item in &member.inventory {
+                let item_ref = item.id.as_deref().unwrap_or(&item.label);
+                options.push(PanelOptionData {
+                    id: format!("member_inv:{}:{item_ref}", member.id),
+                    title: title_case(&item.label),
+                    subtitle: Some(format!("From {}", member.label)),
+                    command: Some(format!("take {item_ref} from {}", member.id)),
+                    disabled: false,
+                    selected: false,
+                });
+            }
+            for item in &member.equipped_items {
+                let item_ref = item.id.as_deref().unwrap_or(&item.label);
+                options.push(PanelOptionData {
+                    id: format!("member_equip:{}:{item_ref}", member.id),
+                    title: title_case(&item.label),
+                    subtitle: Some(format!("From {} ({})", member.label, item.slot)),
+                    command: Some(format!("take {item_ref} from {}", member.id)),
+                    disabled: false,
+                    selected: false,
+                });
+            }
+        }
+
+        if !options.is_empty() {
+            action_bar_actions.push(ActionBarAction {
+                id: "take".to_string(),
+                label: content.ui_text.take_label.clone(),
+                panel: Some("take".to_string()),
+                panel_config: Some(PanelConfigData {
+                    title: if loose.is_empty() {
+                        "Take from Companion".to_string()
+                    } else {
+                        content.ui_text.room_items_sidebar_label.clone()
+                    },
+                    prompt: if has_companion_items && !loose.is_empty() {
+                        "Choose an item to take from the room or companions".to_string()
+                    } else {
+                        String::new()
+                    },
+                    data_source: PanelDataSource::LooseRoomItems,
+                    on_select: PanelSelectAction::ExecuteCommand,
+                }),
+            });
+        }
+        options
+    };
+
+    // 2. Give items: to party members
+    let give_panel_options = if party.is_empty() {
+        vec![]
+    } else {
+        let droppable = droppable_inventory_items(state);
+        if droppable.is_empty() {
             vec![]
         } else {
-            if !action_bar_actions.iter().any(|a| a.id == "take") {
+            let mut options = Vec::new();
+            if party.len() == 1 {
+                let member = &party[0];
+                for item_id in &droppable {
+                    options.push(PanelOptionData {
+                        id: format!("{item_id}:{}", member.id),
+                        title: title_case(content.item_label(item_id)),
+                        subtitle: None,
+                        command: Some(format!("give {item_id} to {}", member.id)),
+                        disabled: false,
+                        selected: false,
+                    });
+                }
+            } else {
+                for item_id in &droppable {
+                    for member in party {
+                        options.push(PanelOptionData {
+                            id: format!("{item_id}:{}", member.id),
+                            title: title_case(content.item_label(item_id)),
+                            subtitle: Some(format!("To {}", member.label)),
+                            command: Some(format!("give {item_id} to {}", member.id)),
+                            disabled: false,
+                            selected: false,
+                        });
+                    }
+                }
+            }
+
+            if !options.is_empty() {
+                let (give_title, give_prompt) = if party.len() == 1 {
+                    (
+                        format!("Give to {}", party[0].label),
+                        "Choose an item to give".to_string(),
+                    )
+                } else {
+                    (
+                        "Give to Companion".to_string(),
+                        "Choose an item and recipient".to_string(),
+                    )
+                };
                 action_bar_actions.push(ActionBarAction {
-                    id: "take".to_string(),
-                    label: content.ui_text.take_label.clone(),
-                    panel: Some("take".to_string()),
+                    id: "give".to_string(),
+                    label: "Give".to_string(),
+                    panel: Some("give".to_string()),
                     panel_config: Some(PanelConfigData {
-                        title: content.ui_text.room_items_sidebar_label.clone(),
-                        prompt: String::new(),
-                        data_source: PanelDataSource::LooseRoomItems,
+                        title: give_title,
+                        prompt: give_prompt,
+                        data_source: PanelDataSource::InventoryItems,
                         on_select: PanelSelectAction::ExecuteCommand,
                     }),
                 });
             }
-            loose
-                .into_iter()
-                .map(|(item_id, _count)| loose_item_option(content, &item_id))
-                .collect()
+            options
         }
     };
 
-    (action_bar_actions, take_panel_options)
+    (action_bar_actions, take_panel_options, give_panel_options)
+}
+
+#[cfg(test)]
+pub(super) fn build_action_bar_and_take(
+    content: &ContentPack,
+    state: &WorldState,
+) -> (Vec<ActionBarAction>, Vec<PanelOptionData>) {
+    let (actions, take, _) = build_action_bar_items(content, state, &[]);
+    (actions, take)
 }
 
 fn takeable_loose_items(content: &ContentPack, state: &WorldState) -> Vec<(String, u32)> {
@@ -280,11 +401,15 @@ pub(super) fn build_panel_options(
     content: &ContentPack,
     state: &WorldState,
     take_panel_options: Vec<PanelOptionData>,
+    give_panel_options: Vec<PanelOptionData>,
     drop_panel_options: Vec<PanelOptionData>,
     equipment_panel_options: Vec<PanelOptionData>,
 ) -> Result<BTreeMap<String, Vec<PanelOptionData>>, String> {
     let mut panel_options: BTreeMap<String, Vec<PanelOptionData>> = BTreeMap::new();
     for action in &content.actions {
+        if action.id == "take" || action.id == "give" {
+            continue;
+        }
         if let (Some(panel_name), Some(panel_config)) = (&action.ui.panel, &action.ui.panel_config)
         {
             let phrase = action
@@ -404,6 +529,7 @@ pub(super) fn build_panel_options(
         }
     }
     panel_options.insert("take".to_string(), take_panel_options);
+    panel_options.insert("give".to_string(), give_panel_options);
     panel_options.insert("drop".to_string(), drop_panel_options);
     panel_options.insert("equipment".to_string(), equipment_panel_options);
     Ok(panel_options)
@@ -480,16 +606,6 @@ pub(super) fn panel_config_data(pc: &PanelConfig) -> PanelConfigData {
     }
 }
 
-fn loose_item_option(content: &ContentPack, item_id: &str) -> PanelOptionData {
-    PanelOptionData {
-        id: item_id.to_string(),
-        title: title_case(content.item_label(item_id)),
-        subtitle: None,
-        command: Some(format!("take {item_id}")),
-        disabled: false,
-        selected: false,
-    }
-}
 
 pub(crate) fn title_case(s: &str) -> String {
     let mut result = String::with_capacity(s.len());
