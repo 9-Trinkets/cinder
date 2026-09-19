@@ -134,13 +134,32 @@ fn party_order_resolves_an_allied_member_by_stable_id_without_advancing_time() {
     let mut state = WorldState::new(&content);
     state.set_stance("blair", ActorStance::Allied);
 
-    let (planned, advances_time) = plan_order(&content, &state, "blair", "assist".to_string());
+    let (planned, advances_time) = plan_order(&content, &state, "blair", "follow".to_string());
 
     assert!(!advances_time);
     assert!(planned.events.iter().any(|event| matches!(
         event,
         WorldEvent::PartyOrderAssigned { actor_id, order }
-            if actor_id == "blair" && order == "assist"
+            if actor_id == "blair" && order == "follow"
+    )));
+}
+
+#[test]
+fn party_order_resolves_an_allied_member_in_another_room() {
+    let content = minimal_test_pack();
+    let mut state = WorldState::new(&content);
+    state.set_stance("blair", ActorStance::Allied);
+    state
+        .actor_room_overrides
+        .insert("blair".to_string(), "other-room".to_string());
+
+    let (planned, advances_time) = plan_order(&content, &state, "blair", "guard".to_string());
+
+    assert!(!advances_time);
+    assert!(planned.events.iter().any(|event| matches!(
+        event,
+        WorldEvent::PartyOrderAssigned { actor_id, order }
+            if actor_id == "blair" && order == "guard"
     )));
 }
 

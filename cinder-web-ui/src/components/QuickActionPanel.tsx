@@ -140,7 +140,7 @@ const QuickActionPanel = memo(function QuickActionPanel({
 
           {panel === 'give' && isGiveStep2 && (
             <div className="grid gap-2 sm:grid-cols-2">
-              {uiSnapshot.party.map(member => (
+              {uiSnapshot.party.filter(member => member.in_room !== false).map(member => (
                 <button
                   key={member.id}
                   onClick={() => {

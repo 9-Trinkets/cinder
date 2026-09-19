@@ -49,7 +49,8 @@ When players perform routine inventory and combat management ten or twenty times
 | Unequip Gear | `UNEQUIPPED: {item}.` | `Unequipped {item}.` |
 | Item Expended | `ITEM EXPENDED: {label}.` | `Used {label}.` |
 | Assign Guard Order | `ORDER UPDATED: {actor} assigned to GUARD.` | `{actor} assigned to guard.` |
-| Assign Assist Order | `ORDER UPDATED: {actor} assigned to ASSIST.` | `{actor} assigned to assist.` |
+| Assign Follow Order | `ORDER UPDATED: {actor} assigned to FOLLOW.` | `{actor} assigned to follow.` |
+| Assign Patrol Order | `ORDER UPDATED: {actor} assigned to PATROL.` | `{actor} assigned to patrol.` |
 
 ---
 

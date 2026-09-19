@@ -285,7 +285,7 @@ impl MovementStrategyResolver for DefaultMovementStrategyResolver {
                         Some(Box::new(RandomAdjacentStrategy::new(1)))
                     }
                 }
-                "follow" | "assist" => None,
+                "follow" => None,
                 _ => None,
             };
         }

@@ -41,18 +41,51 @@ pub(super) fn find_party_member<'a>(
     Ok(actor)
 }
 
+pub(super) fn find_any_party_member<'a>(
+    content: &'a ContentPack,
+    planner_state: &WorldState,
+    actor_reference: &str,
+) -> Result<&'a ActorDefinition, &'static str> {
+    let reference = actor_reference.trim();
+    if reference.is_empty() {
+        return Err("party.order_member_unavailable");
+    }
+    let mut matches = content
+        .onstage_actors()
+        .filter(|actor| {
+            planner_state.stance(&actor.id) == ActorStance::Allied
+                && !planner_state
+                    .actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
+        })
+        .filter(|actor| {
+            actor.id.eq_ignore_ascii_case(reference)
+                || actor.name.eq_ignore_ascii_case(reference)
+                || actor
+                    .aliases
+                    .iter()
+                    .any(|alias| alias.eq_ignore_ascii_case(reference))
+        });
+    let Some(actor) = matches.next() else {
+        return Err("party.order_member_unavailable");
+    };
+    if matches.next().is_some() {
+        return Err("party.order_member_ambiguous");
+    }
+    Ok(actor)
+}
+
 /// Plans an `order <actor> <order>` command against an allied onstage member in
-/// the current room. Rejects when the member is unavailable or the reference is
-/// ambiguous.
+/// the party (even if in a different room). Rejects when the member is unavailable or
+/// the reference is ambiguous.
 pub(super) fn plan_party_order(
     content: &ContentPack,
     planner_state: &WorldState,
-    current_room_id: &str,
+    _current_room_id: &str,
     actor_reference: &str,
     order: PartyOrderKind,
     planned: &mut PlannedTurn,
 ) -> bool {
-    let actor = match find_party_member(content, planner_state, current_room_id, actor_reference) {
+    let actor = match find_any_party_member(content, planner_state, actor_reference) {
         Ok(actor) => actor,
         Err(err_key) => {
             planned.events.push(WorldEvent::ActionRejected {

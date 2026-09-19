@@ -12,12 +12,27 @@ pub(crate) fn handle_party_order_assigned(
     order: PartyOrderKind,
     lines: &mut NarrativeLines,
 ) {
-    let key = format!("party.order_{order}_assigned");
-    if let Err(error) = state.assign_party_order(content, actor_id, order) {
+    let was_in_room = state.actor_is_in_room(content, actor_id, &state.current_room_id);
+    if let Err(error) = state.assign_party_order(content, actor_id, order.clone()) {
         eprintln!("[cinder] party order error: {error}");
         return;
     }
     let actor = actor_display_name(content, actor_id);
+    let player_room = state.current_room_id.clone();
+    let key = if !was_in_room && (order == "guard" || order == "follow") {
+        state.mark_actor_room_visited(actor_id, &player_room);
+        state
+            .actor_room_overrides
+            .insert(actor_id.to_string(), player_room);
+        let recall_key = format!("party.order_{order}_recalled");
+        if content.message(&recall_key).is_some() {
+            recall_key
+        } else {
+            format!("party.order_{order}_assigned")
+        }
+    } else {
+        format!("party.order_{order}_assigned")
+    };
     push_message(lines, content, &key, &[("actor", actor.as_str())]);
 }
 

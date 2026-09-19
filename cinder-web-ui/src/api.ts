@@ -241,6 +241,7 @@ export interface PartyMember {
   order_panel: string
   inventory?: InventoryItem[]
   equipped_items?: EquippedItem[]
+  in_room?: boolean
 }
 
 export interface StatValue {

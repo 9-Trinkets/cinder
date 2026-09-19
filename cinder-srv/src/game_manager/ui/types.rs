@@ -45,6 +45,7 @@ pub struct PartyMember {
     pub order_panel: String,
     pub inventory: Vec<InventoryItem>,
     pub equipped_items: Vec<EquippedItem>,
+    pub in_room: bool,
 }
 
 /// A single stat value shown on the player's status.

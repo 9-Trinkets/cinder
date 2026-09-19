@@ -57,9 +57,6 @@ fn validate_party_member(
     if state.stance(actor_id) != ActorStance::Allied {
         return Err(format!("actor '{actor_id}' is not allied"));
     }
-    if !state.actor_is_in_room(content, actor_id, &state.current_room_id) {
-        return Err(format!("actor '{actor_id}' is not in the current room"));
-    }
     if state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id) {
         return Err(format!("actor '{actor_id}' is defeated"));
     }
@@ -91,17 +88,17 @@ mod tests {
         );
 
         state
-            .assign_party_order(&content, "blair", "assist".to_string())
+            .assign_party_order(&content, "blair", "follow".to_string())
             .unwrap();
         assert_eq!(
             state.party_order(&content, "blair"),
-            Some("assist".to_string())
+            Some("follow".to_string())
         );
         assert!(state.follows_player("blair"));
     }
 
     #[test]
-    fn orders_require_a_living_allied_member_in_the_current_room() {
+    fn orders_require_a_living_allied_member_and_allow_distant_members() {
         let (content, mut state) = allied_state();
         let error = state
             .assign_party_order(&content, "casey", "guard".to_string())
@@ -111,10 +108,9 @@ mod tests {
         state
             .actor_room_overrides
             .insert("blair".to_string(), "kitchen".to_string());
-        let error = state
-            .assign_party_order(&content, "blair", "assist".to_string())
-            .unwrap_err();
-        assert!(error.contains("not in the current room"), "{error}");
+        assert!(state
+            .assign_party_order(&content, "blair", "follow".to_string())
+            .is_ok());
     }
 
     #[test]

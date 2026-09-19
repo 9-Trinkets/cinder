@@ -28,13 +28,17 @@
         "voice": "system",
         "text": "{actor} assigned to guard."
     },
-    "party.order_assist_assigned": {
+    "party.order_guard_recalled": {
         "voice": "system",
-        "text": "{actor} assigned to assist."
+        "text": "{actor} returns to your side and takes up guard position."
     },
     "party.order_follow_assigned": {
         "voice": "system",
         "text": "{actor} assigned to follow."
+    },
+    "party.order_follow_recalled": {
+        "voice": "system",
+        "text": "{actor} returns to your side and falls in."
     },
     "party.order_patrol_assigned": {
         "voice": "system",
@@ -50,8 +54,6 @@
     },
     "party.directive.guard.title": "Guard",
     "party.directive.guard.subtitle": "Intercept attacks against Layla.",
-    "party.directive.assist.title": "Assist",
-    "party.directive.assist.subtitle": "Counterattack enemies that strike the party.",
     "party.directive.follow.title": "Follow",
     "party.directive.follow.subtitle": "Stay close to Layla and travel with the party.",
     "party.directive.patrol.title": "Patrol",

@@ -46,12 +46,14 @@ pub(super) fn build_action_bar_items(
         vec![]
     };
 
+    let present_party: Vec<&PartyMember> = party.iter().filter(|m| m.in_room).collect();
+
     // 1. Take items: from ground and/or companion packs/equipment
     let take_panel_options = if !content.player_can_take_items() {
         vec![]
     } else {
         let loose = takeable_loose_items(content, state);
-        let has_companion_items = party
+        let has_companion_items = present_party
             .iter()
             .any(|m| !m.inventory.is_empty() || !m.equipped_items.is_empty());
 
@@ -74,7 +76,7 @@ pub(super) fn build_action_bar_items(
             });
         }
         // Companion items
-        for member in party {
+        for member in &present_party {
             for item in &member.inventory {
                 let item_ref = item.id.as_deref().unwrap_or(&item.label);
                 options.push(PanelOptionData {
@@ -105,7 +107,7 @@ pub(super) fn build_action_bar_items(
     // 2. Give items: to party members
     // Step 1: list droppable items. If 1 companion exists, auto-gives to them.
     // If multiple companions exist, UI prompts for recipient in step 2.
-    let give_panel_options = if party.is_empty() {
+    let give_panel_options = if present_party.is_empty() {
         vec![]
     } else {
         let droppable = droppable_inventory_items(state);
@@ -114,8 +116,8 @@ pub(super) fn build_action_bar_items(
         } else {
             let mut options = Vec::new();
             for item_id in &droppable {
-                let command = if party.len() == 1 {
-                    Some(format!("give {item_id} to {}", party[0].id))
+                let command = if present_party.len() == 1 {
+                    Some(format!("give {item_id} to {}", present_party[0].id))
                 } else {
                     None
                 };

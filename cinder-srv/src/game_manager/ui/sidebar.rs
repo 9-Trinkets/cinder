@@ -103,6 +103,7 @@ pub(super) fn build_party_members(
                 })
                 .collect::<Vec<_>>();
             inventory.sort_by(|a, b| a.label.cmp(&b.label));
+            let in_room = state.actor_is_in_room(content, &actor_id, &state.current_room_id);
             PartyMember {
                 id: actor_id.clone(),
                 label,
@@ -113,6 +114,7 @@ pub(super) fn build_party_members(
                 order_panel: format!("party-order:{actor_id}"),
                 inventory,
                 equipped_items,
+                in_room,
             }
         })
         .collect::<Vec<_>>();
@@ -319,7 +321,7 @@ mod tests {
     fn party_order_panels_mark_the_current_order_and_use_actor_ids() {
         let mut content = minimal_test_pack();
         content.settings.party.initial_orders = std::collections::BTreeMap::from([
-            ("guide-a".to_string(), "assist".to_string()),
+            ("guide-a".to_string(), "follow".to_string()),
             ("guide-b".to_string(), "guard".to_string()),
         ]);
         let members = vec![PartyMember {
@@ -332,15 +334,16 @@ mod tests {
             order_panel: "party-order:dark-golem-2".to_string(),
             inventory: Vec::new(),
             equipped_items: Vec::new(),
+            in_room: true,
         }];
 
         let panels = build_party_order_panels(&content, &members);
         let options = &panels["party-order:dark-golem-2"];
 
-        assert_eq!(options[0].id, "assist");
+        assert_eq!(options[0].id, "follow");
         assert_eq!(
             options[0].command.as_deref(),
-            Some("order dark-golem-2 assist")
+            Some("order dark-golem-2 follow")
         );
         assert_eq!(options[1].id, "guard");
         assert!(options[1].selected);

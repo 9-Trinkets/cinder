@@ -5,7 +5,7 @@ import RelationshipChart from './RelationshipChart'
 import { titleize } from '../utils/text'
 
 const orderLabel = (order: string) => {
-  const known: Record<string, string> = { guard: 'Guarding', assist: 'Assisting' }
+  const known: Record<string, string> = { guard: 'Guarding', follow: 'Following', patrol: 'Patrolling' }
   return known[order] ?? `Order: ${order}`
 }
 

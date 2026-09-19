@@ -216,6 +216,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
         order_panel: "order:zayd".to_string(),
         equipped_items: vec![],
         inventory: vec![],
+        in_room: true,
     };
 
     let runtime = CinderRuntime::new(content.clone(), false).unwrap();
@@ -295,6 +296,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
         order_panel: "order:bess".to_string(),
         equipped_items: vec![],
         inventory: vec![],
+        in_room: true,
     };
     let (_, _, multi_opts) =
         build_action_bar_items(&content, &state, &[party_member, bess]);
@@ -327,6 +329,7 @@ fn take_surfaces_in_overflow_items_group_when_companion_has_items_even_without_r
             label: "torch".to_string(),
             count: 1,
         }],
+        in_room: true,
     };
 
     let (bar, take_opts, _) = build_action_bar_items(&content, &state, &[party_member]);
@@ -387,6 +390,7 @@ fn items_section_orders_take_give_drop() {
             label: "torch".to_string(),
             count: 1,
         }],
+        in_room: true,
     };
 
     let (bar, take_opts, give_opts) =
@@ -417,4 +421,45 @@ fn items_section_orders_take_give_drop() {
 
     assert!(take_idx < give_idx);
     assert!(give_idx < drop_idx);
+}
+
+#[test]
+fn take_and_give_exclude_party_members_not_in_current_room() {
+    let mut content = minimal_test_pack();
+    content.actions.push(ActionDefinition {
+        id: "take".to_string(),
+        player_enabled: true,
+        ..ActionDefinition::default()
+    });
+    content.items.push(ItemDefinition {
+        id: "potion".to_string(),
+        label: "potion".to_string(),
+        ..ItemDefinition::default()
+    });
+    let mut state = WorldState::new(&content);
+    state.add_item("potion");
+
+    let distant_member = PartyMember {
+        id: "zayd".to_string(),
+        label: "Zayd".to_string(),
+        order: "patrol".to_string(),
+        level: 1,
+        hp: 10,
+        hp_max: 10,
+        order_panel: "order:zayd".to_string(),
+        equipped_items: vec![],
+        inventory: vec![super::super::InventoryItem {
+            id: Some("torch".to_string()),
+            label: "torch".to_string(),
+            count: 1,
+        }],
+        in_room: false,
+    };
+
+    let (_, take_opts, give_opts) =
+        build_action_bar_items(&content, &state, &[distant_member]);
+
+    // Distant member is not in the room: cannot take their torch, cannot give them potion
+    assert!(take_opts.is_empty());
+    assert!(give_opts.is_empty());
 }
