@@ -180,7 +180,7 @@ fn equipment_panel_lists_each_equipped_item_once_and_held_gear_separately() {
 
     let runtime = CinderRuntime::new(content.clone(), false).unwrap();
     let overflow =
-        build_overflow_actions(&runtime, &content, &state, &[], &[], &[], &options).unwrap();
+        build_overflow_actions(&runtime, &content, &state, &[], &[], &[], &[], &options).unwrap();
     assert_eq!(
         overflow
             .iter()
@@ -230,6 +230,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
         &content,
         &state,
         &[],
+        &[],
         &give_opts_no_party,
         &drop_opts,
         &[],
@@ -248,6 +249,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
         &runtime,
         &content,
         &state,
+        &[],
         &[],
         &give_opts,
         &drop_opts,
@@ -273,6 +275,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
         &runtime,
         &content,
         &empty_state,
+        &[],
         &[],
         &give_opts_no_items,
         &empty_drop_opts,
@@ -301,7 +304,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
 }
 
 #[test]
-fn take_surfaces_on_bar_when_companion_has_items_even_without_room_items() {
+fn take_surfaces_in_overflow_items_group_when_companion_has_items_even_without_room_items() {
     let mut content = minimal_test_pack();
     content.actions.push(ActionDefinition {
         id: "take".to_string(),
@@ -327,8 +330,91 @@ fn take_surfaces_on_bar_when_companion_has_items_even_without_room_items() {
     };
 
     let (bar, take_opts, _) = build_action_bar_items(&content, &state, &[party_member]);
-    assert!(bar.iter().any(|a| a.id == "take"));
+    assert!(!bar.iter().any(|a| a.id == "take"));
     assert_eq!(take_opts.len(), 1);
     assert_eq!(take_opts[0].command.as_deref(), Some("take torch from zayd"));
     assert_eq!(take_opts[0].subtitle.as_deref(), Some("From Zayd"));
+
+    let runtime = CinderRuntime::new(content.clone(), false).unwrap();
+    let overflow = build_overflow_actions(
+        &runtime,
+        &content,
+        &state,
+        &[],
+        &take_opts,
+        &[],
+        &[],
+        &[],
+    )
+    .unwrap();
+    let take_action = overflow.iter().find(|a| a.id == "take");
+    assert!(take_action.is_some());
+    assert_eq!(take_action.unwrap().group, "items");
+}
+
+#[test]
+fn items_section_orders_take_give_drop() {
+    let mut content = minimal_test_pack();
+    content.actions.push(ActionDefinition {
+        id: "take".to_string(),
+        player_enabled: true,
+        ..ActionDefinition::default()
+    });
+    content.actions.push(ActionDefinition {
+        id: "drop".to_string(),
+        player_enabled: true,
+        ..ActionDefinition::default()
+    });
+    content.items.push(ItemDefinition {
+        id: "potion".to_string(),
+        label: "potion".to_string(),
+        ..ItemDefinition::default()
+    });
+    let mut state = WorldState::new(&content);
+    state.add_item("potion");
+
+    let party_member = PartyMember {
+        id: "zayd".to_string(),
+        label: "Zayd".to_string(),
+        order: String::new(),
+        level: 1,
+        hp: 10,
+        hp_max: 10,
+        order_panel: "order:zayd".to_string(),
+        equipped_items: vec![],
+        inventory: vec![super::super::InventoryItem {
+            id: Some("torch".to_string()),
+            label: "torch".to_string(),
+            count: 1,
+        }],
+    };
+
+    let (bar, take_opts, give_opts) =
+        build_action_bar_items(&content, &state, &[party_member]);
+    assert!(!bar.iter().any(|a| a.id == "take" || a.id == "give"));
+
+    let drop_opts = build_drop_panel_options(&content, &state);
+    let runtime = CinderRuntime::new(content.clone(), false).unwrap();
+    let overflow = build_overflow_actions(
+        &runtime,
+        &content,
+        &state,
+        &[],
+        &take_opts,
+        &give_opts,
+        &drop_opts,
+        &[],
+    )
+    .unwrap();
+
+    let take_idx = overflow.iter().position(|a| a.id == "take").unwrap();
+    let give_idx = overflow.iter().position(|a| a.id == "give").unwrap();
+    let drop_idx = overflow.iter().position(|a| a.id == "drop").unwrap();
+
+    assert_eq!(overflow[take_idx].group, "items");
+    assert_eq!(overflow[give_idx].group, "items");
+    assert_eq!(overflow[drop_idx].group, "items");
+
+    assert!(take_idx < give_idx);
+    assert!(give_idx < drop_idx);
 }

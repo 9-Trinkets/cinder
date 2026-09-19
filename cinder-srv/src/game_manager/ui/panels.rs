@@ -24,7 +24,7 @@ pub(super) fn build_action_bar_items(
     state: &WorldState,
     party: &[PartyMember],
 ) -> (Vec<ActionBarAction>, Vec<PanelOptionData>, Vec<PanelOptionData>) {
-    let mut action_bar_actions: Vec<ActionBarAction> = if !content.actions.is_empty() {
+    let action_bar_actions: Vec<ActionBarAction> = if !content.actions.is_empty() {
         content
             .actions
             .iter()
@@ -99,27 +99,6 @@ pub(super) fn build_action_bar_items(
             }
         }
 
-        if !options.is_empty() {
-            action_bar_actions.push(ActionBarAction {
-                id: "take".to_string(),
-                label: content.ui_text.take_label.clone(),
-                panel: Some("take".to_string()),
-                panel_config: Some(PanelConfigData {
-                    title: if loose.is_empty() {
-                        "Take from Companion".to_string()
-                    } else {
-                        content.ui_text.room_items_sidebar_label.clone()
-                    },
-                    prompt: if has_companion_items && !loose.is_empty() {
-                        "Choose an item to take from the room or companions".to_string()
-                    } else {
-                        String::new()
-                    },
-                    data_source: PanelDataSource::LooseRoomItems,
-                    on_select: PanelSelectAction::ExecuteCommand,
-                }),
-            });
-        }
         options
     };
 
@@ -283,6 +262,7 @@ pub(super) fn build_overflow_actions(
     content: &ContentPack,
     state: &WorldState,
     bar_ids: &[&str],
+    take_panel_options: &[PanelOptionData],
     give_panel_options: &[PanelOptionData],
     drop_panel_options: &[PanelOptionData],
     equipment_panel_options: &[PanelOptionData],
@@ -303,6 +283,9 @@ pub(super) fn build_overflow_actions(
             if (a.id == "speak" || a.id == "talk") && has_talk {
                 return false;
             }
+            if a.id == "take" && take_panel_options.is_empty() {
+                return false;
+            }
             if a.id == "drop" && drop_panel_options.is_empty() {
                 return false;
             }
@@ -318,7 +301,7 @@ pub(super) fn build_overflow_actions(
                 .as_ref()
                 .map(|player_command| player_command.usage.clone())
                 .unwrap_or_default();
-            let group = if (a.id == "drop" || a.id == "give") && a.ui.group.is_empty() {
+            let group = if (a.id == "take" || a.id == "drop" || a.id == "give") && a.ui.group.is_empty() {
                 "items".to_string()
             } else {
                 a.ui.group.clone()
@@ -336,6 +319,29 @@ pub(super) fn build_overflow_actions(
 
     if let Ok(active_stages) = runtime.active_stage_ids() {
         super::append_stage_menu_overflow_actions(&mut overflow_actions, content, &active_stages);
+    }
+
+    // Surface the generic `take <item>` overflow action in the "items" group
+    // directly above give and drop when there are takeable items.
+    if !take_panel_options.is_empty() && !overflow_actions.iter().any(|a| a.id == "take") {
+        let take_action = OverflowAction {
+            id: "take".to_string(),
+            label: content.ui_text.take_label.clone(),
+            group: "items".to_string(),
+            usage: "take <item>".to_string(),
+            panel: "take".to_string(),
+            panel_config: Some(PanelConfigData {
+                title: content.ui_text.take_label.clone(),
+                prompt: String::new(),
+                data_source: PanelDataSource::LooseRoomItems,
+                on_select: PanelSelectAction::ExecuteCommand,
+            }),
+        };
+        if let Some(pos) = overflow_actions.iter().position(|a| a.id == "give" || a.id == "drop") {
+            overflow_actions.insert(pos, take_action);
+        } else {
+            overflow_actions.push(take_action);
+        }
     }
 
     // Surface the generic `give <item> to <companion>` overflow action in the "items" group
