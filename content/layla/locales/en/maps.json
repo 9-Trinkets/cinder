@@ -5,408 +5,408 @@
     "rooms": [
       {
         "room_id": "r1c1",
-        "x": 0,
-        "y": 0
+        "x": 0.0,
+        "y": 0.0
       },
       {
         "room_id": "r1c2",
-        "x": 1,
-        "y": 0
+        "x": 1.0,
+        "y": 0.0
       },
       {
         "room_id": "r1c3",
-        "x": 2,
-        "y": 0
+        "x": 2.0,
+        "y": 0.0
       },
       {
         "room_id": "r1c4",
-        "x": 3,
-        "y": 0
+        "x": 3.0,
+        "y": 0.0
       },
       {
         "room_id": "r1c5",
-        "x": 4,
-        "y": 0
+        "x": 4.0,
+        "y": 0.0
       },
       {
         "room_id": "r1c6",
-        "x": 5,
-        "y": 0
+        "x": 5.0,
+        "y": 0.0
       },
       {
         "room_id": "r1c7",
-        "x": 6,
-        "y": 0
+        "x": 6.0,
+        "y": 0.0
       },
       {
         "room_id": "r1c8",
-        "x": 7,
-        "y": 0
+        "x": 7.0,
+        "y": 0.0
       },
       {
         "room_id": "r1c9",
-        "x": 8,
-        "y": 0
+        "x": 8.0,
+        "y": 0.0
       },
       {
         "room_id": "r2c1",
-        "x": 0,
-        "y": 1
+        "x": 0.0,
+        "y": 1.0
       },
       {
         "room_id": "r2c2",
-        "x": 1,
-        "y": 1
+        "x": 1.0,
+        "y": 1.0
       },
       {
         "room_id": "r2c3",
-        "x": 2,
-        "y": 1
+        "x": 2.0,
+        "y": 1.0
       },
       {
         "room_id": "r2c4",
-        "x": 3,
-        "y": 1
+        "x": 3.0,
+        "y": 1.0
       },
       {
         "room_id": "r2c5",
-        "x": 4,
-        "y": 1
+        "x": 4.0,
+        "y": 1.0
       },
       {
         "room_id": "r2c6",
-        "x": 5,
-        "y": 1
+        "x": 5.0,
+        "y": 1.0
       },
       {
         "room_id": "r2c7",
-        "x": 6,
-        "y": 1
+        "x": 6.0,
+        "y": 1.0
       },
       {
         "room_id": "r2c8",
-        "x": 7,
-        "y": 1
+        "x": 7.0,
+        "y": 1.0
       },
       {
         "room_id": "r2c9",
-        "x": 8,
-        "y": 1
+        "x": 8.0,
+        "y": 1.0
       },
       {
         "room_id": "r3c1",
-        "x": 0,
-        "y": 2
+        "x": 0.0,
+        "y": 2.0
       },
       {
         "room_id": "r3c2",
-        "x": 1,
-        "y": 2
+        "x": 1.0,
+        "y": 2.0
       },
       {
         "room_id": "r3c3",
-        "x": 2,
-        "y": 2
+        "x": 2.0,
+        "y": 2.0
       },
       {
         "room_id": "r3c4",
-        "x": 3,
-        "y": 2
+        "x": 3.0,
+        "y": 2.0
       },
       {
         "room_id": "r3c5",
-        "x": 4,
-        "y": 2
+        "x": 4.0,
+        "y": 2.0
       },
       {
         "room_id": "r3c6",
-        "x": 5,
-        "y": 2
+        "x": 5.0,
+        "y": 2.0
       },
       {
         "room_id": "r3c7",
-        "x": 6,
-        "y": 2
+        "x": 6.0,
+        "y": 2.0
       },
       {
         "room_id": "r3c8",
-        "x": 7,
-        "y": 2
+        "x": 7.0,
+        "y": 2.0
       },
       {
         "room_id": "r3c9",
-        "x": 8,
-        "y": 2
+        "x": 8.0,
+        "y": 2.0
       },
       {
         "room_id": "r4c1",
-        "x": 0,
-        "y": 3
+        "x": 0.0,
+        "y": 3.0
       },
       {
         "room_id": "r4c2",
-        "x": 1,
-        "y": 3
+        "x": 1.0,
+        "y": 3.0
       },
       {
         "room_id": "r4c3",
-        "x": 2,
-        "y": 3
+        "x": 2.0,
+        "y": 3.0
       },
       {
         "room_id": "r4c4",
-        "x": 3,
-        "y": 3
+        "x": 3.0,
+        "y": 3.0
       },
       {
         "room_id": "r4c5",
-        "x": 4,
-        "y": 3
+        "x": 4.0,
+        "y": 3.0
       },
       {
         "room_id": "r4c6",
-        "x": 5,
-        "y": 3
+        "x": 5.0,
+        "y": 3.0
       },
       {
         "room_id": "r4c7",
-        "x": 6,
-        "y": 3
+        "x": 6.0,
+        "y": 3.0
       },
       {
         "room_id": "r4c8",
-        "x": 7,
-        "y": 3
+        "x": 7.0,
+        "y": 3.0
       },
       {
         "room_id": "r4c9",
-        "x": 8,
-        "y": 3
+        "x": 8.0,
+        "y": 3.0
       },
       {
         "room_id": "r5c1",
-        "x": 0,
-        "y": 4
+        "x": 0.0,
+        "y": 4.0
       },
       {
         "room_id": "r5c2",
-        "x": 1,
-        "y": 4
+        "x": 1.0,
+        "y": 4.0
       },
       {
         "room_id": "r5c3",
-        "x": 2,
-        "y": 4
+        "x": 2.0,
+        "y": 4.0
       },
       {
         "room_id": "r5c4",
-        "x": 3,
-        "y": 4
+        "x": 3.0,
+        "y": 4.0
       },
       {
         "room_id": "r5c5",
-        "x": 4,
-        "y": 4
+        "x": 4.0,
+        "y": 4.0
       },
       {
         "room_id": "r5c6",
-        "x": 5,
-        "y": 4
+        "x": 5.0,
+        "y": 4.0
       },
       {
         "room_id": "r5c7",
-        "x": 6,
-        "y": 4
+        "x": 6.0,
+        "y": 4.0
       },
       {
         "room_id": "r5c8",
-        "x": 7,
-        "y": 4
+        "x": 7.0,
+        "y": 4.0
       },
       {
         "room_id": "r5c9",
-        "x": 8,
-        "y": 4
+        "x": 8.0,
+        "y": 4.0
       },
       {
         "room_id": "r6c1",
-        "x": 0,
-        "y": 5
+        "x": 0.0,
+        "y": 5.0
       },
       {
         "room_id": "r6c2",
-        "x": 1,
-        "y": 5
+        "x": 1.0,
+        "y": 5.0
       },
       {
         "room_id": "r6c3",
-        "x": 2,
-        "y": 5
+        "x": 2.0,
+        "y": 5.0
       },
       {
         "room_id": "r6c4",
-        "x": 3,
-        "y": 5
+        "x": 3.0,
+        "y": 5.0
       },
       {
         "room_id": "r6c5",
-        "x": 4,
-        "y": 5
+        "x": 4.0,
+        "y": 5.0
       },
       {
         "room_id": "r6c6",
-        "x": 5,
-        "y": 5
+        "x": 5.0,
+        "y": 5.0
       },
       {
         "room_id": "r6c7",
-        "x": 6,
-        "y": 5
+        "x": 6.0,
+        "y": 5.0
       },
       {
         "room_id": "r6c8",
-        "x": 7,
-        "y": 5
+        "x": 7.0,
+        "y": 5.0
       },
       {
         "room_id": "r6c9",
-        "x": 8,
-        "y": 5
+        "x": 8.0,
+        "y": 5.0
       },
       {
         "room_id": "r7c1",
-        "x": 0,
-        "y": 6
+        "x": 0.0,
+        "y": 6.0
       },
       {
         "room_id": "r7c2",
-        "x": 1,
-        "y": 6
+        "x": 1.0,
+        "y": 6.0
       },
       {
         "room_id": "r7c3",
-        "x": 2,
-        "y": 6
+        "x": 2.0,
+        "y": 6.0
       },
       {
         "room_id": "r7c4",
-        "x": 3,
-        "y": 6
+        "x": 3.0,
+        "y": 6.0
       },
       {
         "room_id": "r7c5",
-        "x": 4,
-        "y": 6
+        "x": 4.0,
+        "y": 6.0
       },
       {
         "room_id": "r7c6",
-        "x": 5,
-        "y": 6
+        "x": 5.0,
+        "y": 6.0
       },
       {
         "room_id": "r7c7",
-        "x": 6,
-        "y": 6
+        "x": 6.0,
+        "y": 6.0
       },
       {
         "room_id": "r7c8",
-        "x": 7,
-        "y": 6
+        "x": 7.0,
+        "y": 6.0
       },
       {
         "room_id": "r7c9",
-        "x": 8,
-        "y": 6
+        "x": 8.0,
+        "y": 6.0
       },
       {
         "room_id": "r8c1",
-        "x": 0,
-        "y": 7
+        "x": 0.0,
+        "y": 7.0
       },
       {
         "room_id": "r8c2",
-        "x": 1,
-        "y": 7
+        "x": 1.0,
+        "y": 7.0
       },
       {
         "room_id": "r8c3",
-        "x": 2,
-        "y": 7
+        "x": 2.0,
+        "y": 7.0
       },
       {
         "room_id": "r8c4",
-        "x": 3,
-        "y": 7
+        "x": 3.0,
+        "y": 7.0
       },
       {
         "room_id": "r8c5",
-        "x": 4,
-        "y": 7
+        "x": 4.0,
+        "y": 7.0
       },
       {
         "room_id": "r8c6",
-        "x": 5,
-        "y": 7
+        "x": 5.0,
+        "y": 7.0
       },
       {
         "room_id": "r8c7",
-        "x": 6,
-        "y": 7
+        "x": 6.0,
+        "y": 7.0
       },
       {
         "room_id": "r8c8",
-        "x": 7,
-        "y": 7
+        "x": 7.0,
+        "y": 7.0
       },
       {
         "room_id": "r8c9",
-        "x": 8,
-        "y": 7
+        "x": 8.0,
+        "y": 7.0
       },
       {
         "room_id": "r9c1",
-        "x": 0,
-        "y": 8
+        "x": 0.0,
+        "y": 8.0
       },
       {
         "room_id": "r9c2",
-        "x": 1,
-        "y": 8
+        "x": 1.0,
+        "y": 8.0
       },
       {
         "room_id": "r9c3",
-        "x": 2,
-        "y": 8
+        "x": 2.0,
+        "y": 8.0
       },
       {
         "room_id": "r9c4",
-        "x": 3,
-        "y": 8
+        "x": 3.0,
+        "y": 8.0
       },
       {
         "room_id": "r9c5",
-        "x": 4,
-        "y": 8
+        "x": 4.0,
+        "y": 8.0
       },
       {
         "room_id": "r9c6",
-        "x": 5,
-        "y": 8
+        "x": 5.0,
+        "y": 8.0
       },
       {
         "room_id": "r9c7",
-        "x": 6,
-        "y": 8
+        "x": 6.0,
+        "y": 8.0
       },
       {
         "room_id": "r9c8",
-        "x": 7,
-        "y": 8
+        "x": 7.0,
+        "y": 8.0
       },
       {
         "room_id": "r9c9",
-        "x": 8,
-        "y": 8
+        "x": 8.0,
+        "y": 8.0
       }
     ],
     "reveal_conditions": [
@@ -422,323 +422,323 @@
     "rooms": [
       {
         "room_id": "d1c1",
-        "x": 0,
-        "y": 0
+        "x": 0.0,
+        "y": 0.0
       },
       {
         "room_id": "d1c2",
-        "x": 1,
-        "y": 0
+        "x": 1.0,
+        "y": 0.0
       },
       {
         "room_id": "d1c3",
-        "x": 2,
-        "y": 0
+        "x": 2.0,
+        "y": 0.0
       },
       {
         "room_id": "d1c4",
-        "x": 3,
-        "y": 0
+        "x": 3.0,
+        "y": 0.0
       },
       {
         "room_id": "d1c5",
-        "x": 4,
-        "y": 0
+        "x": 4.0,
+        "y": 0.0
       },
       {
         "room_id": "d1c6",
-        "x": 5,
-        "y": 0
+        "x": 5.0,
+        "y": 0.0
       },
       {
         "room_id": "d1c7",
-        "x": 6,
-        "y": 0
+        "x": 6.0,
+        "y": 0.0
       },
       {
         "room_id": "d1c8",
-        "x": 7,
-        "y": 0
+        "x": 7.0,
+        "y": 0.0
       },
       {
         "room_id": "d2c1",
-        "x": 0,
-        "y": 1
+        "x": 0.0,
+        "y": 1.0
       },
       {
         "room_id": "d2c2",
-        "x": 1,
-        "y": 1
+        "x": 1.0,
+        "y": 1.0
       },
       {
         "room_id": "d2c3",
-        "x": 2,
-        "y": 1
+        "x": 2.0,
+        "y": 1.0
       },
       {
         "room_id": "d2c4",
-        "x": 3,
-        "y": 1
+        "x": 3.0,
+        "y": 1.0
       },
       {
         "room_id": "d2c5",
-        "x": 4,
-        "y": 1
+        "x": 4.0,
+        "y": 1.0
       },
       {
         "room_id": "d2c6",
-        "x": 5,
-        "y": 1
+        "x": 5.0,
+        "y": 1.0
       },
       {
         "room_id": "d2c7",
-        "x": 6,
-        "y": 1
+        "x": 6.0,
+        "y": 1.0
       },
       {
         "room_id": "d2c8",
-        "x": 7,
-        "y": 1
+        "x": 7.0,
+        "y": 1.0
       },
       {
         "room_id": "d3c1",
-        "x": 0,
-        "y": 2
+        "x": 0.0,
+        "y": 2.0
       },
       {
         "room_id": "d3c2",
-        "x": 1,
-        "y": 2
+        "x": 1.0,
+        "y": 2.0
       },
       {
         "room_id": "d3c3",
-        "x": 2,
-        "y": 2
+        "x": 2.0,
+        "y": 2.0
       },
       {
         "room_id": "d3c4",
-        "x": 3,
-        "y": 2
+        "x": 3.0,
+        "y": 2.0
       },
       {
         "room_id": "d3c5",
-        "x": 4,
-        "y": 2
+        "x": 4.0,
+        "y": 2.0
       },
       {
         "room_id": "d3c6",
-        "x": 5,
-        "y": 2
+        "x": 5.0,
+        "y": 2.0
       },
       {
         "room_id": "d3c7",
-        "x": 6,
-        "y": 2
+        "x": 6.0,
+        "y": 2.0
       },
       {
         "room_id": "d3c8",
-        "x": 7,
-        "y": 2
+        "x": 7.0,
+        "y": 2.0
       },
       {
         "room_id": "d4c1",
-        "x": 0,
-        "y": 3
+        "x": 0.0,
+        "y": 3.0
       },
       {
         "room_id": "d4c2",
-        "x": 1,
-        "y": 3
+        "x": 1.0,
+        "y": 3.0
       },
       {
         "room_id": "d4c3",
-        "x": 2,
-        "y": 3
+        "x": 2.0,
+        "y": 3.0
       },
       {
         "room_id": "d4c4",
-        "x": 3,
-        "y": 3
+        "x": 3.0,
+        "y": 3.0
       },
       {
         "room_id": "d4c5",
-        "x": 4,
-        "y": 3
+        "x": 4.0,
+        "y": 3.0
       },
       {
         "room_id": "d4c6",
-        "x": 5,
-        "y": 3
+        "x": 5.0,
+        "y": 3.0
       },
       {
         "room_id": "d4c7",
-        "x": 6,
-        "y": 3
+        "x": 6.0,
+        "y": 3.0
       },
       {
         "room_id": "d4c8",
-        "x": 7,
-        "y": 3
+        "x": 7.0,
+        "y": 3.0
       },
       {
         "room_id": "d5c1",
-        "x": 0,
-        "y": 4
+        "x": 0.0,
+        "y": 4.0
       },
       {
         "room_id": "d5c2",
-        "x": 1,
-        "y": 4
+        "x": 1.0,
+        "y": 4.0
       },
       {
         "room_id": "d5c3",
-        "x": 2,
-        "y": 4
+        "x": 2.0,
+        "y": 4.0
       },
       {
         "room_id": "d5c4",
-        "x": 3,
-        "y": 4
+        "x": 3.0,
+        "y": 4.0
       },
       {
         "room_id": "d5c5",
-        "x": 4,
-        "y": 4
+        "x": 4.0,
+        "y": 4.0
       },
       {
         "room_id": "d5c6",
-        "x": 5,
-        "y": 4
+        "x": 5.0,
+        "y": 4.0
       },
       {
         "room_id": "d5c7",
-        "x": 6,
-        "y": 4
+        "x": 6.0,
+        "y": 4.0
       },
       {
         "room_id": "d5c8",
-        "x": 7,
-        "y": 4
+        "x": 7.0,
+        "y": 4.0
       },
       {
         "room_id": "d6c1",
-        "x": 0,
-        "y": 5
+        "x": 0.0,
+        "y": 5.0
       },
       {
         "room_id": "d6c2",
-        "x": 1,
-        "y": 5
+        "x": 1.0,
+        "y": 5.0
       },
       {
         "room_id": "d6c3",
-        "x": 2,
-        "y": 5
+        "x": 2.0,
+        "y": 5.0
       },
       {
         "room_id": "d6c4",
-        "x": 3,
-        "y": 5
+        "x": 3.0,
+        "y": 5.0
       },
       {
         "room_id": "d6c5",
-        "x": 4,
-        "y": 5
+        "x": 4.0,
+        "y": 5.0
       },
       {
         "room_id": "d6c6",
-        "x": 5,
-        "y": 5
+        "x": 5.0,
+        "y": 5.0
       },
       {
         "room_id": "d6c7",
-        "x": 6,
-        "y": 5
+        "x": 6.0,
+        "y": 5.0
       },
       {
         "room_id": "d6c8",
-        "x": 7,
-        "y": 5
+        "x": 7.0,
+        "y": 5.0
       },
       {
         "room_id": "d7c1",
-        "x": 0,
-        "y": 6
+        "x": 0.0,
+        "y": 6.0
       },
       {
         "room_id": "d7c2",
-        "x": 1,
-        "y": 6
+        "x": 1.0,
+        "y": 6.0
       },
       {
         "room_id": "d7c3",
-        "x": 2,
-        "y": 6
+        "x": 2.0,
+        "y": 6.0
       },
       {
         "room_id": "d7c4",
-        "x": 3,
-        "y": 6
+        "x": 3.0,
+        "y": 6.0
       },
       {
         "room_id": "d7c5",
-        "x": 4,
-        "y": 6
+        "x": 4.0,
+        "y": 6.0
       },
       {
         "room_id": "d7c6",
-        "x": 5,
-        "y": 6
+        "x": 5.0,
+        "y": 6.0
       },
       {
         "room_id": "d7c7",
-        "x": 6,
-        "y": 6
+        "x": 6.0,
+        "y": 6.0
       },
       {
         "room_id": "d7c8",
-        "x": 7,
-        "y": 6
+        "x": 7.0,
+        "y": 6.0
       },
       {
         "room_id": "d8c1",
-        "x": 0,
-        "y": 7
+        "x": 0.0,
+        "y": 7.0
       },
       {
         "room_id": "d8c2",
-        "x": 1,
-        "y": 7
+        "x": 1.0,
+        "y": 7.0
       },
       {
         "room_id": "d8c3",
-        "x": 2,
-        "y": 7
+        "x": 2.0,
+        "y": 7.0
       },
       {
         "room_id": "d8c4",
-        "x": 3,
-        "y": 7
+        "x": 3.0,
+        "y": 7.0
       },
       {
         "room_id": "d8c5",
-        "x": 4,
-        "y": 7
+        "x": 4.0,
+        "y": 7.0
       },
       {
         "room_id": "d8c6",
-        "x": 5,
-        "y": 7
+        "x": 5.0,
+        "y": 7.0
       },
       {
         "room_id": "d8c7",
-        "x": 6,
-        "y": 7
+        "x": 6.0,
+        "y": 7.0
       },
       {
         "room_id": "d8c8",
-        "x": 7,
-        "y": 7
+        "x": 7.0,
+        "y": 7.0
       }
     ],
     "reveal_conditions": [
@@ -754,8 +754,8 @@
     "rooms": [
       {
         "room_id": "oan",
-        "x": 6,
-        "y": 0
+        "x": 6.0,
+        "y": 0.0
       },
       {
         "room_id": "o1",
@@ -789,8 +789,8 @@
       },
       {
         "room_id": "oas",
-        "x": 6,
-        "y": 12
+        "x": 6.0,
+        "y": 12.0
       },
       {
         "room_id": "o7",
@@ -824,8 +824,8 @@
       },
       {
         "room_id": "oh",
-        "x": 6,
-        "y": 6
+        "x": 6.0,
+        "y": 6.0
       }
     ],
     "reveal_conditions": [
@@ -840,504 +840,504 @@
     "label": "The Village & Mines",
     "rooms": [
       {
-        "room_id": "camp_nw_tower",
-        "x": 0,
-        "y": 0
+        "room_id": "mine_north_apex",
+        "x": 15.0,
+        "y": 0.0
       },
       {
-        "room_id": "camp_west_wall",
-        "x": 0,
-        "y": 1
+        "room_id": "mine_sw_corner",
+        "x": 0.0,
+        "y": 26.0
       },
       {
-        "room_id": "camp_sw_tower",
-        "x": 0,
-        "y": 2
+        "room_id": "mine_se_corner",
+        "x": 30.0,
+        "y": 26.0
       },
       {
-        "room_id": "village_nw_overlook",
-        "x": 0,
-        "y": 3
+        "room_id": "mine_west_drift_1",
+        "x": 1.07,
+        "y": 24.14
       },
       {
-        "room_id": "village_upper_terrace",
-        "x": 0,
-        "y": 4
+        "room_id": "mine_west_drift_2",
+        "x": 2.14,
+        "y": 22.29
       },
       {
-        "room_id": "elder_hut",
-        "x": 0,
-        "y": 5
+        "room_id": "mine_west_drift_3",
+        "x": 3.21,
+        "y": 20.43
       },
       {
-        "room_id": "village_west_cottage",
-        "x": 0,
-        "y": 6
+        "room_id": "mine_west_drift_4",
+        "x": 4.29,
+        "y": 18.57
       },
       {
-        "room_id": "village_southwest_lane",
-        "x": 0,
-        "y": 7
+        "room_id": "mine_west_drift_5",
+        "x": 5.36,
+        "y": 16.71
       },
       {
-        "room_id": "village_water_spring",
-        "x": 0,
-        "y": 8
+        "room_id": "mine_west_drift_6",
+        "x": 6.43,
+        "y": 14.86
       },
       {
-        "room_id": "village_sw_corner",
-        "x": 0,
-        "y": 9
+        "room_id": "mine_west_drift_7",
+        "x": 7.5,
+        "y": 13.0
       },
       {
-        "room_id": "camp_north_wall_w",
-        "x": 1,
-        "y": 0
+        "room_id": "mine_west_drift_8",
+        "x": 8.57,
+        "y": 11.14
       },
       {
-        "room_id": "camp_barracks_1",
-        "x": 1,
-        "y": 1
+        "room_id": "mine_west_drift_9",
+        "x": 9.64,
+        "y": 9.29
       },
       {
-        "room_id": "camp_smithy",
-        "x": 1,
-        "y": 2
+        "room_id": "mine_west_drift_10",
+        "x": 10.71,
+        "y": 7.43
       },
       {
-        "room_id": "village_watch_ledge",
-        "x": 1,
-        "y": 3
+        "room_id": "mine_west_drift_11",
+        "x": 11.79,
+        "y": 5.57
       },
       {
-        "room_id": "village_stone_steps",
-        "x": 1,
-        "y": 4
+        "room_id": "mine_west_drift_12",
+        "x": 12.86,
+        "y": 3.71
       },
       {
-        "room_id": "village_hall",
-        "x": 1,
-        "y": 5
+        "room_id": "mine_west_drift_13",
+        "x": 13.93,
+        "y": 1.86
       },
       {
-        "room_id": "baker_hut",
-        "x": 1,
-        "y": 6
+        "room_id": "mine_east_drift_1",
+        "x": 16.07,
+        "y": 1.86
       },
       {
-        "room_id": "village_school_room",
-        "x": 1,
-        "y": 7
+        "room_id": "mine_east_drift_2",
+        "x": 17.14,
+        "y": 3.71
       },
       {
-        "room_id": "village_wash_basin",
-        "x": 1,
-        "y": 8
+        "room_id": "mine_east_drift_3",
+        "x": 18.21,
+        "y": 5.57
       },
       {
-        "room_id": "village_memorial_stones",
-        "x": 1,
-        "y": 9
+        "room_id": "mine_east_drift_4",
+        "x": 19.29,
+        "y": 7.43
       },
       {
-        "room_id": "camp_patrol_post",
-        "x": 2,
-        "y": 0
+        "room_id": "mine_east_drift_5",
+        "x": 20.36,
+        "y": 9.29
       },
       {
-        "room_id": "camp_mess_hall",
-        "x": 2,
-        "y": 1
+        "room_id": "mine_east_drift_6",
+        "x": 21.43,
+        "y": 11.14
       },
       {
-        "room_id": "camp_archery_range",
-        "x": 2,
-        "y": 2
+        "room_id": "mine_east_drift_7",
+        "x": 22.5,
+        "y": 13.0
       },
       {
-        "room_id": "village_north_path",
-        "x": 2,
-        "y": 3
+        "room_id": "mine_east_drift_8",
+        "x": 23.57,
+        "y": 14.86
       },
       {
-        "room_id": "village_north_street",
-        "x": 2,
-        "y": 4
+        "room_id": "mine_east_drift_9",
+        "x": 24.64,
+        "y": 16.71
       },
       {
-        "room_id": "village_square",
-        "x": 2,
-        "y": 5
+        "room_id": "mine_east_drift_10",
+        "x": 25.71,
+        "y": 18.57
       },
       {
-        "room_id": "village_well_square",
-        "x": 2,
-        "y": 6
+        "room_id": "mine_east_drift_11",
+        "x": 26.79,
+        "y": 20.43
       },
       {
-        "room_id": "mushroom_beds",
-        "x": 2,
-        "y": 7
+        "room_id": "mine_east_drift_12",
+        "x": 27.86,
+        "y": 22.29
       },
       {
-        "room_id": "village_south_lane",
-        "x": 2,
-        "y": 8
+        "room_id": "mine_east_drift_13",
+        "x": 28.93,
+        "y": 24.14
       },
       {
-        "room_id": "village_south_overlook",
-        "x": 2,
-        "y": 9
+        "room_id": "mine_south_1",
+        "x": 27.86,
+        "y": 26.0
       },
       {
-        "room_id": "camp_officers_tent",
-        "x": 3,
-        "y": 0
+        "room_id": "mine_south_2",
+        "x": 25.71,
+        "y": 26.0
       },
       {
-        "room_id": "camp_armory",
-        "x": 3,
-        "y": 1
+        "room_id": "mine_south_3",
+        "x": 23.57,
+        "y": 26.0
       },
       {
-        "room_id": "camp_training_yard",
-        "x": 3,
-        "y": 2
+        "room_id": "mine_south_4",
+        "x": 21.43,
+        "y": 26.0
       },
       {
-        "room_id": "village_fort_slope",
-        "x": 3,
-        "y": 3
+        "room_id": "mine_south_5",
+        "x": 19.29,
+        "y": 26.0
       },
       {
-        "room_id": "village_carpenters_shed",
-        "x": 3,
-        "y": 4
+        "room_id": "mine_south_6",
+        "x": 17.14,
+        "y": 26.0
       },
       {
-        "room_id": "village_market_lane",
-        "x": 3,
-        "y": 5
+        "room_id": "mine_south_7",
+        "x": 15.0,
+        "y": 26.0
       },
       {
-        "room_id": "village_weaver_hut",
-        "x": 3,
-        "y": 6
+        "room_id": "mine_south_8",
+        "x": 12.86,
+        "y": 26.0
       },
       {
-        "room_id": "village_spore_drying",
-        "x": 3,
-        "y": 7
+        "room_id": "mine_south_9",
+        "x": 10.71,
+        "y": 26.0
       },
       {
-        "room_id": "village_compost_shed",
-        "x": 3,
-        "y": 8
+        "room_id": "mine_south_10",
+        "x": 8.57,
+        "y": 26.0
       },
       {
-        "room_id": "village_storage_caves",
-        "x": 3,
-        "y": 9
+        "room_id": "mine_south_11",
+        "x": 6.43,
+        "y": 26.0
       },
       {
-        "room_id": "camp_gate_platform",
-        "x": 4,
-        "y": 0
+        "room_id": "mine_south_12",
+        "x": 4.29,
+        "y": 26.0
       },
       {
-        "room_id": "command_tent",
-        "x": 4,
-        "y": 1
-      },
-      {
-        "room_id": "camp_gate",
-        "x": 4,
-        "y": 2
-      },
-      {
-        "room_id": "village_approach_road",
-        "x": 4,
-        "y": 3
-      },
-      {
-        "room_id": "village_east_fork",
-        "x": 4,
-        "y": 4
-      },
-      {
-        "room_id": "village_mine_gate",
-        "x": 4,
-        "y": 5
-      },
-      {
-        "room_id": "village_east_cottage",
-        "x": 4,
-        "y": 6
-      },
-      {
-        "room_id": "village_lower_path",
-        "x": 4,
-        "y": 7
-      },
-      {
-        "room_id": "village_root_cellar",
-        "x": 4,
-        "y": 8
-      },
-      {
-        "room_id": "village_drain_trench",
-        "x": 4,
-        "y": 9
-      },
-      {
-        "room_id": "teleport_gate",
-        "x": 5,
-        "y": 0
-      },
-      {
-        "room_id": "camp_upper_courtyard",
-        "x": 5,
-        "y": 1
-      },
-      {
-        "room_id": "camp_lower_courtyard",
-        "x": 5,
-        "y": 2
-      },
-      {
-        "room_id": "old_drain_pipe",
-        "x": 5,
-        "y": 3
-      },
-      {
-        "room_id": "mine_drainage_culvert",
-        "x": 5,
-        "y": 4
-      },
-      {
-        "room_id": "mine_entrance",
-        "x": 5,
-        "y": 5
-      },
-      {
-        "room_id": "mine_sorting_shed",
-        "x": 5,
-        "y": 6
-      },
-      {
-        "room_id": "mine_crusher_floor",
-        "x": 5,
-        "y": 7
-      },
-      {
-        "room_id": "mine_lower_rail_spur",
-        "x": 5,
-        "y": 8
-      },
-      {
-        "room_id": "mine_south_sluice",
-        "x": 5,
-        "y": 9
-      },
-      {
-        "room_id": "camp_priest_tent",
-        "x": 6,
-        "y": 0
-      },
-      {
-        "room_id": "prison_cage",
-        "x": 6,
-        "y": 1
-      },
-      {
-        "room_id": "camp_guardhouse",
-        "x": 6,
-        "y": 2
-      },
-      {
-        "room_id": "mine_pump_station",
-        "x": 6,
-        "y": 3
-      },
-      {
-        "room_id": "mine_cart_depot",
-        "x": 6,
-        "y": 4
-      },
-      {
-        "room_id": "cart_tracks",
-        "x": 6,
-        "y": 5
-      },
-      {
-        "room_id": "mine_quarry_rim",
-        "x": 6,
-        "y": 6
-      },
-      {
-        "room_id": "mine_winch_house",
-        "x": 6,
-        "y": 7
-      },
-      {
-        "room_id": "mine_tailing_dump",
-        "x": 6,
-        "y": 8
-      },
-      {
-        "room_id": "mine_deepest_cut",
-        "x": 6,
-        "y": 9
-      },
-      {
-        "room_id": "camp_north_wall_e",
-        "x": 7,
-        "y": 0
-      },
-      {
-        "room_id": "camp_barracks_2",
-        "x": 7,
-        "y": 1
-      },
-      {
-        "room_id": "camp_lumber_yard",
-        "x": 7,
-        "y": 2
-      },
-      {
-        "room_id": "mine_north_shaft",
-        "x": 7,
-        "y": 3
-      },
-      {
-        "room_id": "mine_timber_support",
-        "x": 7,
-        "y": 4
-      },
-      {
-        "room_id": "mine_main_drift",
-        "x": 7,
-        "y": 5
+        "room_id": "mine_south_13",
+        "x": 2.14,
+        "y": 26.0
       },
       {
         "room_id": "crystal_pit",
-        "x": 7,
-        "y": 6
+        "x": 15.0,
+        "y": 23.5
       },
       {
-        "room_id": "mine_golem_worksite",
-        "x": 7,
-        "y": 7
+        "room_id": "cart_tracks",
+        "x": 21.0,
+        "y": 15.0
       },
       {
-        "room_id": "mine_deep_sump",
-        "x": 7,
-        "y": 8
+        "room_id": "old_drain_pipe",
+        "x": 15.0,
+        "y": 3.5
       },
       {
-        "room_id": "mine_abyssal_fault",
-        "x": 7,
-        "y": 9
+        "room_id": "village_north_gate",
+        "x": 15.0,
+        "y": 5.5
       },
       {
-        "room_id": "camp_signal_post",
-        "x": 8,
-        "y": 0
+        "room_id": "village_sw_corner",
+        "x": 6.0,
+        "y": 21.0
       },
       {
-        "room_id": "camp_supply_store",
-        "x": 8,
-        "y": 1
+        "room_id": "village_se_corner",
+        "x": 24.0,
+        "y": 21.0
       },
       {
-        "room_id": "camp_beast_pen",
-        "x": 8,
-        "y": 2
+        "room_id": "village_west_1",
+        "x": 6.9,
+        "y": 19.45
       },
       {
-        "room_id": "mine_blasting_storage",
-        "x": 8,
-        "y": 3
+        "room_id": "village_west_2",
+        "x": 7.8,
+        "y": 17.9
       },
       {
-        "room_id": "mine_crystal_seam_north",
-        "x": 8,
-        "y": 4
+        "room_id": "village_west_3",
+        "x": 8.7,
+        "y": 16.35
       },
       {
-        "room_id": "mine_chiseled_gallery",
-        "x": 8,
-        "y": 5
+        "room_id": "village_west_4",
+        "x": 9.6,
+        "y": 14.8
       },
       {
-        "room_id": "mine_deep_crystal_vein",
-        "x": 8,
-        "y": 6
+        "room_id": "village_west_5",
+        "x": 10.5,
+        "y": 13.25
       },
       {
-        "room_id": "mine_blue_crystal_pocket",
-        "x": 8,
-        "y": 7
+        "room_id": "village_west_6",
+        "x": 11.4,
+        "y": 11.7
       },
       {
-        "room_id": "mine_submerged_rail",
-        "x": 8,
-        "y": 8
+        "room_id": "village_west_7",
+        "x": 12.3,
+        "y": 10.15
       },
       {
-        "room_id": "mine_crystal_bed",
-        "x": 8,
-        "y": 9
+        "room_id": "village_west_8",
+        "x": 13.2,
+        "y": 8.6
       },
       {
-        "room_id": "camp_ne_tower",
-        "x": 9,
-        "y": 0
+        "room_id": "village_west_9",
+        "x": 14.1,
+        "y": 7.05
       },
       {
-        "room_id": "camp_east_wall",
-        "x": 9,
-        "y": 1
+        "room_id": "village_east_1",
+        "x": 15.9,
+        "y": 7.05
       },
       {
-        "room_id": "camp_se_tower",
-        "x": 9,
-        "y": 2
+        "room_id": "village_east_2",
+        "x": 16.8,
+        "y": 8.6
       },
       {
-        "room_id": "mine_northeast_drift",
-        "x": 9,
-        "y": 3
+        "room_id": "village_east_3",
+        "x": 17.7,
+        "y": 10.15
       },
       {
-        "room_id": "mine_east_chute",
-        "x": 9,
-        "y": 4
+        "room_id": "village_east_4",
+        "x": 18.6,
+        "y": 11.7
       },
       {
-        "room_id": "mine_eastern_stope",
-        "x": 9,
-        "y": 5
+        "room_id": "village_east_5",
+        "x": 19.5,
+        "y": 13.25
       },
       {
-        "room_id": "mine_collapsed_drift",
-        "x": 9,
-        "y": 6
+        "room_id": "village_east_6",
+        "x": 20.4,
+        "y": 14.8
       },
       {
-        "room_id": "mine_crystal_tailings",
-        "x": 9,
-        "y": 7
+        "room_id": "village_east_7",
+        "x": 21.3,
+        "y": 16.35
       },
       {
-        "room_id": "mine_seep_tunnel",
-        "x": 9,
-        "y": 8
+        "room_id": "village_east_8",
+        "x": 22.2,
+        "y": 17.9
       },
       {
-        "room_id": "mine_southeast_grotto",
-        "x": 9,
-        "y": 9
+        "room_id": "village_east_9",
+        "x": 23.1,
+        "y": 19.45
+      },
+      {
+        "room_id": "village_south_1",
+        "x": 22.2,
+        "y": 21.0
+      },
+      {
+        "room_id": "village_south_2",
+        "x": 20.4,
+        "y": 21.0
+      },
+      {
+        "room_id": "village_south_3",
+        "x": 18.6,
+        "y": 21.0
+      },
+      {
+        "room_id": "village_south_4",
+        "x": 16.8,
+        "y": 21.0
+      },
+      {
+        "room_id": "village_south_5",
+        "x": 15.0,
+        "y": 21.0
+      },
+      {
+        "room_id": "village_south_6",
+        "x": 13.2,
+        "y": 21.0
+      },
+      {
+        "room_id": "village_south_7",
+        "x": 11.4,
+        "y": 21.0
+      },
+      {
+        "room_id": "village_south_8",
+        "x": 9.6,
+        "y": 21.0
+      },
+      {
+        "room_id": "village_south_9",
+        "x": 7.8,
+        "y": 21.0
+      },
+      {
+        "room_id": "village_square",
+        "x": 15.0,
+        "y": 16.0
+      },
+      {
+        "room_id": "elder_hut",
+        "x": 13.0,
+        "y": 17.0
+      },
+      {
+        "room_id": "baker_hut",
+        "x": 17.0,
+        "y": 17.0
+      },
+      {
+        "room_id": "camp_north_apex",
+        "x": 15.0,
+        "y": 8.0
+      },
+      {
+        "room_id": "camp_sw_bastion",
+        "x": 10.0,
+        "y": 16.66
+      },
+      {
+        "room_id": "camp_se_bastion",
+        "x": 20.0,
+        "y": 16.66
+      },
+      {
+        "room_id": "camp_west_wall_1",
+        "x": 10.83,
+        "y": 15.22
+      },
+      {
+        "room_id": "camp_west_wall_2",
+        "x": 11.67,
+        "y": 13.77
+      },
+      {
+        "room_id": "camp_west_wall_3",
+        "x": 12.5,
+        "y": 12.33
+      },
+      {
+        "room_id": "camp_west_wall_4",
+        "x": 13.33,
+        "y": 10.89
+      },
+      {
+        "room_id": "camp_west_wall_5",
+        "x": 14.17,
+        "y": 9.44
+      },
+      {
+        "room_id": "camp_east_wall_1",
+        "x": 15.83,
+        "y": 9.44
+      },
+      {
+        "room_id": "camp_east_wall_2",
+        "x": 16.67,
+        "y": 10.89
+      },
+      {
+        "room_id": "camp_east_wall_3",
+        "x": 17.5,
+        "y": 12.33
+      },
+      {
+        "room_id": "camp_east_wall_4",
+        "x": 18.33,
+        "y": 13.77
+      },
+      {
+        "room_id": "camp_east_wall_5",
+        "x": 19.17,
+        "y": 15.22
+      },
+      {
+        "room_id": "camp_south_wall_1",
+        "x": 18.33,
+        "y": 16.66
+      },
+      {
+        "room_id": "camp_south_wall_2",
+        "x": 16.67,
+        "y": 16.66
+      },
+      {
+        "room_id": "camp_gate",
+        "x": 15.0,
+        "y": 16.66
+      },
+      {
+        "room_id": "camp_south_wall_3",
+        "x": 13.33,
+        "y": 16.66
+      },
+      {
+        "room_id": "camp_south_wall_4",
+        "x": 11.67,
+        "y": 16.66
+      },
+      {
+        "room_id": "command_tent",
+        "x": 15.0,
+        "y": 14.5
+      },
+      {
+        "room_id": "prison_cage",
+        "x": 17.5,
+        "y": 14.0
+      },
+      {
+        "room_id": "calcinator_core",
+        "x": 12.5,
+        "y": 14.0
+      },
+      {
+        "room_id": "teleport_gate",
+        "x": 15.0,
+        "y": 11.5
       }
     ],
     "reveal_conditions": []

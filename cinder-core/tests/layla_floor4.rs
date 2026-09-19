@@ -5,16 +5,17 @@ use cinder_core::engine::state::WorldState;
 
 const EXPECTED_FLOOR4_ROOMS: &[&str] = &[
     "village_square",
-    "village_hall",
+    "village_north_gate",
     "elder_hut",
-    "mushroom_beds",
-    "mine_entrance",
+    "baker_hut",
+    "mine_north_apex",
     "cart_tracks",
     "crystal_pit",
     "old_drain_pipe",
     "camp_gate",
     "command_tent",
     "prison_cage",
+    "calcinator_core",
     "teleport_gate",
 ];
 
