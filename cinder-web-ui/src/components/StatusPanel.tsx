@@ -253,11 +253,43 @@ export default function StatusPanel({
         </Section>
       )}
 
-      <Section title="What now?" defaultOpen>
-        <p className="text-text text-xs leading-relaxed">
-          {uiSnapshot.objective_message || 'No current objective.'}
-        </p>
-      </Section>
+      {uiSnapshot.objectives && uiSnapshot.objectives.some(o => o.quest_title || o.quest_kind) ? (
+        <Section title="Quests" defaultOpen>
+          <div className="space-y-2.5">
+            {uiSnapshot.objectives.map((obj, idx) => {
+              const isMain = obj.quest_kind?.toLowerCase() === 'main'
+              return (
+                <div key={obj.stage_id || idx} className="rounded-lg bg-overlay/60 p-2.5 border border-subtle">
+                  <div className="flex items-center justify-between gap-2 mb-1">
+                    <span className="font-semibold text-text text-xs">
+                      {obj.quest_title || (isMain ? 'Main Quest' : 'Side Quest')}
+                    </span>
+                    {obj.quest_kind && (
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded font-semibold uppercase tracking-wider ${
+                        isMain
+                          ? 'bg-gold/15 text-gold border border-gold/30'
+                          : 'bg-iris/15 text-iris border border-iris/30'
+                      }`}>
+                        {obj.quest_kind}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-text font-medium text-xs mb-0.5">{obj.summary}</p>
+                  {obj.message && obj.message !== obj.summary && (
+                    <p className="text-muted text-[11px] leading-relaxed">{obj.message}</p>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </Section>
+      ) : (
+        <Section title="What now?" defaultOpen>
+          <p className="text-text text-xs leading-relaxed">
+            {uiSnapshot.objective_message || 'No current objective.'}
+          </p>
+        </Section>
+      )}
 
       {uiSnapshot.show_relationship_sidebar && uiSnapshot.relationship_pairs.length > 0 && (
         <RelationshipChart pairs={uiSnapshot.relationship_pairs} />

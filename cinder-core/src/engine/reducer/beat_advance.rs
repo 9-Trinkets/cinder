@@ -42,6 +42,7 @@ pub(super) fn advance_objective_for_signal(
             continue;
         }
         state.stages_completed += 1;
+        state.completed_stage_ids.insert(current_stage_id.clone());
         if current_stage.next_stage_ids.is_empty() {
             continue;
         }

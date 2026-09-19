@@ -50,6 +50,8 @@ pub struct WorldState {
     pub actor_room_overrides: BTreeMap<String, String>,
     #[serde(default)]
     pub stages_completed: usize,
+    #[serde(default)]
+    pub completed_stage_ids: BTreeSet<String>,
     pub feature_consumable_stock: BTreeMap<String, u32>,
     pub followed_actor_id: Option<String>,
     pub active_menu_id: Option<String>,
@@ -255,6 +257,7 @@ impl WorldState {
             active_objective_stage_ids: content.beats.initial_stage_ids.clone(),
             actor_room_overrides: BTreeMap::new(),
             stages_completed: 0,
+            completed_stage_ids: BTreeSet::new(),
             feature_consumable_stock: seeded_feature_consumable_stock(content),
             followed_actor_id: None,
             active_menu_id: None,

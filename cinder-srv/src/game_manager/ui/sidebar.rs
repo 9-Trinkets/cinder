@@ -308,7 +308,7 @@ mod tests {
 
     #[test]
     fn allied_actors_not_following_player_are_included_in_living_followers() {
-        let mut content = minimal_test_pack();
+        let content = minimal_test_pack();
         let ally_id = content.actors[0].id.clone();
         let mut state = WorldState::new(&content);
         state.set_stance(&ally_id, ActorStance::Allied);

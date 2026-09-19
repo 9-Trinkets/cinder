@@ -11,8 +11,15 @@ pub struct LocaleItem {
 
 #[derive(Clone, Serialize)]
 pub struct ObjectiveItem {
+    pub stage_id: String,
     pub summary: String,
     pub message: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub quest_id: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub quest_title: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub quest_kind: Option<String>,
 }
 
 #[derive(Clone, Serialize)]

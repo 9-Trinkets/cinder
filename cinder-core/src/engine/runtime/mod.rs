@@ -9,10 +9,23 @@ use crate::engine::state::{
 };
 use crate::engine::turn_runner;
 use crate::engine::workflows::{cinder_npc_tick_workflow_path, workflow_path_for_id};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::path::PathBuf;
 use std::sync::{Arc, Mutex};
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ObjectiveSummary {
+    pub stage_id: String,
+    pub summary: String,
+    pub message: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub quest_id: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub quest_title: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub quest_kind: Option<String>,
+}
 
 pub struct CinderRuntime {
     content: Arc<ContentPack>,

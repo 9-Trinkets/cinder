@@ -195,6 +195,12 @@ pub struct BeatsDefinition {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct BeatDefinition {
     pub id: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub quest_id: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub quest_title: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub quest_kind: Option<String>,
     #[serde(default)]
     pub summary: String,
     #[serde(default)]

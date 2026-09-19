@@ -84,6 +84,7 @@ fn command_used_signal_can_advance_stage_after_objective_completion_and_clears_p
         state.active_objective_stage_ids,
         vec!["share-dinner".to_string()]
     );
+    assert!(state.completed_stage_ids.contains("dinner-prep"));
     assert_eq!(
         state
             .story_vars

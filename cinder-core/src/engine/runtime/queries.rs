@@ -1,4 +1,4 @@
-use super::CinderRuntime;
+use super::{CinderRuntime, ObjectiveSummary};
 use crate::content::types::{
     ActionDefinition, ContentPack, ItemStorageTarget, OpeningMovieDefinition,
 };
@@ -181,7 +181,7 @@ impl CinderRuntime {
         )
     }
 
-    pub fn current_objective_summaries(&self) -> Result<Vec<(String, String)>, Box<dyn Error>> {
+    pub fn current_objective_summaries(&self) -> Result<Vec<ObjectiveSummary>, Box<dyn Error>> {
         let state = self
             .state
             .lock()
@@ -198,11 +198,30 @@ impl CinderRuntime {
                     .map(|stage| {
                         let summary = render_story_text(&stage.summary, &state);
                         let message = render_story_text(&stage.update_message, &state);
-                        (summary, message)
+                        let quest_title = stage
+                            .quest_title
+                            .as_ref()
+                            .map(|title| render_story_text(title, &state));
+                        ObjectiveSummary {
+                            stage_id: stage.id.clone(),
+                            summary,
+                            message,
+                            quest_id: stage.quest_id.clone(),
+                            quest_title,
+                            quest_kind: stage.quest_kind.clone(),
+                        }
                     })
             })
-            .filter(|(summary, _)| !summary.is_empty())
+            .filter(|o| !o.summary.is_empty())
             .collect())
+    }
+
+    pub fn completed_stage_ids(&self) -> Result<Vec<String>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for completed stages")?;
+        Ok(state.completed_stage_ids.iter().cloned().collect())
     }
 
     pub fn current_objective_progress(&self) -> Result<(usize, usize), Box<dyn Error>> {
@@ -313,3 +332,57 @@ impl CinderRuntime {
             .collect())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::content::types::BeatDefinition;
+    use crate::engine::test_fixtures::minimal_test_pack;
+
+    #[test]
+    fn current_objective_summaries_includes_quest_metadata() {
+        let mut content = minimal_test_pack();
+        content.beats.initial_stage_ids = vec!["mq_1".to_string(), "sq_1".to_string()];
+        content.beats.stages = vec![
+            BeatDefinition {
+                id: "mq_1".to_string(),
+                quest_id: Some("teleport_scroll".to_string()),
+                quest_title: Some("The Teleportation Scroll".to_string()),
+                quest_kind: Some("main".to_string()),
+                summary: "Find Commander Malik's safe".to_string(),
+                update_message: "Infiltrate the bastion and find the safe.".to_string(),
+                ..BeatDefinition::default()
+            },
+            BeatDefinition {
+                id: "sq_1".to_string(),
+                quest_id: Some("save_zayd".to_string()),
+                quest_title: Some("Save the Boy Zayd".to_string()),
+                quest_kind: Some("side".to_string()),
+                summary: "Locate the steam prison cage".to_string(),
+                update_message: "Search for Zayd in the military complex.".to_string(),
+                ..BeatDefinition::default()
+            },
+        ];
+
+        let runtime = CinderRuntime::new(content, false).unwrap();
+        let objectives = runtime.current_objective_summaries().unwrap();
+
+        assert_eq!(objectives.len(), 2);
+        assert_eq!(objectives[0].quest_id.as_deref(), Some("teleport_scroll"));
+        assert_eq!(
+            objectives[0].quest_title.as_deref(),
+            Some("The Teleportation Scroll")
+        );
+        assert_eq!(objectives[0].quest_kind.as_deref(), Some("main"));
+        assert_eq!(objectives[0].summary, "Find Commander Malik's safe");
+
+        assert_eq!(objectives[1].quest_id.as_deref(), Some("save_zayd"));
+        assert_eq!(
+            objectives[1].quest_title.as_deref(),
+            Some("Save the Boy Zayd")
+        );
+        assert_eq!(objectives[1].quest_kind.as_deref(), Some("side"));
+        assert_eq!(objectives[1].summary, "Locate the steam prison cage");
+    }
+}
+

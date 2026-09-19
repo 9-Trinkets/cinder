@@ -143,8 +143,12 @@ export interface LocaleItem {
 }
 
 export interface ObjectiveItem {
+  stage_id?: string
   summary: string
   message: string
+  quest_id?: string
+  quest_title?: string
+  quest_kind?: 'main' | 'side' | string
 }
 
 export interface MenuOptionItem {

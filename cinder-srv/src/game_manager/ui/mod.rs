@@ -41,7 +41,14 @@ pub(super) fn build_ui_snapshot(
         .current_objective_summaries()
         .map_err(|error| error.to_string())?
         .into_iter()
-        .map(|(summary, message)| ObjectiveItem { summary, message })
+        .map(|item| ObjectiveItem {
+            stage_id: item.stage_id,
+            summary: item.summary,
+            message: item.message,
+            quest_id: item.quest_id,
+            quest_title: item.quest_title,
+            quest_kind: item.quest_kind,
+        })
         .collect();
     let (progress_completed, progress_total) = runtime
         .current_objective_progress()
@@ -50,8 +57,16 @@ pub(super) fn build_ui_snapshot(
         .current_secret_progress()
         .map_err(|error| error.to_string())?;
     let objective_message = objectives
-        .first()
-        .map(|objective| objective.message.clone())
+        .iter()
+        .find(|o| o.quest_kind.as_deref() == Some("main"))
+        .or_else(|| objectives.first())
+        .map(|objective| {
+            if !objective.message.is_empty() {
+                objective.message.clone()
+            } else {
+                objective.summary.clone()
+            }
+        })
         .unwrap_or_default();
     let locales = loader::available_locales(&loader::pack_dir(pack_id))
         .map_err(|error| error.to_string())?
