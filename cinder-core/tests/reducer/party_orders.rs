@@ -79,8 +79,72 @@ fn assigning_guard_overrides_assist_with_system_feedback() {
         state.party_order(&pack, ACTOR_B_ID),
         Some("guard".to_string())
     );
-    assert!(state.follows_player(ACTOR_B_ID));
+    assert!(!state.follows_player(ACTOR_B_ID));
     assert!(output.lines.iter().any(|line| {
         line.kind == NarrativeLineKind::System && line.text == "Blair will guard you."
+    }));
+}
+
+#[test]
+fn assigning_follow_sets_follower_to_follow_player() {
+    let mut pack = party_order_pack();
+    pack.messages.insert(
+        "party.order_follow_assigned".to_string(),
+        PackMessage::Voiced {
+            voice: PackMessageVoice::System,
+            text: "{actor} will follow you.".to_string(),
+        },
+    );
+    let mut state = allied_party_state(&pack);
+    state.set_follows_player(ACTOR_A_ID, false);
+
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::PartyOrderAssigned {
+            actor_id: ACTOR_A_ID.to_string(),
+            order: "follow".to_string(),
+        })],
+    );
+
+    assert_eq!(
+        state.party_order(&pack, ACTOR_A_ID),
+        Some("follow".to_string())
+    );
+    assert!(state.follows_player(ACTOR_A_ID));
+    assert!(output.lines.iter().any(|line| {
+        line.kind == NarrativeLineKind::System && line.text == "Alex will follow you."
+    }));
+}
+
+#[test]
+fn assigning_patrol_detaches_follower_from_following_player() {
+    let mut pack = party_order_pack();
+    pack.messages.insert(
+        "party.order_patrol_assigned".to_string(),
+        PackMessage::Voiced {
+            voice: PackMessageVoice::System,
+            text: "{actor} will patrol the area.".to_string(),
+        },
+    );
+    let mut state = allied_party_state(&pack);
+    state.set_follows_player(ACTOR_A_ID, true);
+
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::PartyOrderAssigned {
+            actor_id: ACTOR_A_ID.to_string(),
+            order: "patrol".to_string(),
+        })],
+    );
+
+    assert_eq!(
+        state.party_order(&pack, ACTOR_A_ID),
+        Some("patrol".to_string())
+    );
+    assert!(!state.follows_player(ACTOR_A_ID));
+    assert!(output.lines.iter().any(|line| {
+        line.kind == NarrativeLineKind::System && line.text == "Alex will patrol the area."
     }));
 }

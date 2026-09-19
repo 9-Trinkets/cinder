@@ -32,6 +32,14 @@
         "voice": "system",
         "text": "{actor} assigned to assist."
     },
+    "party.order_follow_assigned": {
+        "voice": "system",
+        "text": "{actor} assigned to follow."
+    },
+    "party.order_patrol_assigned": {
+        "voice": "system",
+        "text": "{actor} assigned to patrol."
+    },
     "party.order_member_unavailable": {
         "voice": "handler",
         "text": "I don't show that party member near you right now. Check who's with you."
@@ -44,6 +52,10 @@
     "party.directive.guard.subtitle": "Intercept attacks against Layla.",
     "party.directive.assist.title": "Assist",
     "party.directive.assist.subtitle": "Counterattack enemies that strike the party.",
+    "party.directive.follow.title": "Follow",
+    "party.directive.follow.subtitle": "Stay close to Layla and travel with the party.",
+    "party.directive.patrol.title": "Patrol",
+    "party.directive.patrol.subtitle": "Roam independently and engage nearby threats.",
     "surround.refused": {
         "voice": "system",
         "text": "The ring does not hold."

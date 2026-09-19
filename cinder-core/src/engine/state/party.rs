@@ -18,8 +18,12 @@ impl WorldState {
     ) -> Result<(), String> {
         let actor_id = remap_story_actor_id(self, actor_id).to_string();
         validate_party_member(content, self, &actor_id)?;
+        let follows = !matches!(
+            order.to_ascii_lowercase().as_str(),
+            "guard" | "patrol" | "sentry" | "hold"
+        );
         self.party_orders.insert(actor_id.clone(), order);
-        self.set_follows_player(&actor_id, true);
+        self.set_follows_player(&actor_id, follows);
         Ok(())
     }
 

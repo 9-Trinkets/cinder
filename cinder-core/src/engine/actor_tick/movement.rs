@@ -21,13 +21,16 @@ pub(crate) fn plan_wander_moves(content: &ContentPack, state: &WorldState) -> Ve
         if content.is_player_actor(&actor.id) {
             continue;
         }
-        let Some(wander) = resolve_wander(content, &actor.id) else {
+        let Some(wander) = resolve_wander(content, state, &actor.id) else {
             continue;
         };
         if wander.cadence_ticks == 0 {
             continue;
         }
-        if state.stance(&actor.id) != ActorStance::Hostile {
+        let is_hostile = state.stance(&actor.id) == ActorStance::Hostile;
+        let is_autonomous_ally = state.stance(&actor.id) == ActorStance::Allied
+            && !state.follows_player(&actor.id);
+        if !is_hostile && !is_autonomous_ally {
             continue;
         }
         if state.actor_stat(&actor.id, &content.settings.combat.health_stat_id) <= 0 {
@@ -65,7 +68,41 @@ pub(crate) fn plan_wander_moves(content: &ContentPack, state: &WorldState) -> Ve
     events
 }
 
-fn resolve_wander(content: &ContentPack, actor_id: &str) -> Option<WanderDefinition> {
+fn resolve_wander(
+    content: &ContentPack,
+    state: &WorldState,
+    actor_id: &str,
+) -> Option<WanderDefinition> {
+    if let Some(order) = state.party_order(content, actor_id) {
+        match order.to_ascii_lowercase().as_str() {
+            "guard" | "sentry" | "hold" => {
+                return Some(WanderDefinition {
+                    mode: WanderMode::Stay,
+                    cadence_ticks: 0,
+                    ..Default::default()
+                });
+            }
+            "patrol" => {
+                if let Some(authored) = content
+                    .movement
+                    .actors
+                    .get(actor_id)
+                    .and_then(|rules| rules.wander.clone())
+                {
+                    return Some(authored);
+                }
+                return Some(WanderDefinition {
+                    mode: WanderMode::RandomAdjacent,
+                    cadence_ticks: 1,
+                    ..Default::default()
+                });
+            }
+            "follow" | "assist" => {
+                return None;
+            }
+            _ => {}
+        }
+    }
     content
         .movement
         .actors
@@ -275,5 +312,78 @@ mod tests {
         let state = WorldState::new(&content);
         let dest = wander_destination(&content, &state, &content.actors[0], "lounge", &wander);
         assert_eq!(dest.as_deref(), Some("kitchen"));
+    }
+
+    #[test]
+    fn patrolling_allied_member_wanders_via_movement_engine() {
+        let mut content = minimal_test_pack();
+        let ally_id = content.actors[0].id.clone();
+        content.actors[0].room_id = "lounge".to_string();
+
+        let mut state = WorldState::new(&content);
+        state.current_room_id = "kitchen".to_string();
+        state.set_stance(&ally_id, ActorStance::Allied);
+        state.set_follows_player(&ally_id, false);
+        state.party_orders.insert(ally_id.clone(), "patrol".to_string());
+        state
+            .actor_stats
+            .entry(ally_id.clone())
+            .or_default()
+            .insert("hp".to_string(), 10);
+
+        let events = plan_wander_moves(&content, &state);
+        assert!(events.iter().any(|event| matches!(
+            event,
+            WorldEvent::ActorMoved { actor_id, from_room_id, .. }
+                if actor_id == &ally_id && from_room_id == "lounge"
+        )));
+    }
+
+    #[test]
+    fn guarding_allied_member_stays_put() {
+        let mut content = minimal_test_pack();
+        let ally_id = content.actors[0].id.clone();
+        content.actors[0].room_id = "lounge".to_string();
+
+        let mut state = WorldState::new(&content);
+        state.current_room_id = "kitchen".to_string();
+        state.set_stance(&ally_id, ActorStance::Allied);
+        state.set_follows_player(&ally_id, false);
+        state.party_orders.insert(ally_id.clone(), "guard".to_string());
+        state
+            .actor_stats
+            .entry(ally_id.clone())
+            .or_default()
+            .insert("hp".to_string(), 10);
+
+        let events = plan_wander_moves(&content, &state);
+        assert!(!events.iter().any(|event| matches!(
+            event,
+            WorldEvent::ActorMoved { actor_id, .. } if actor_id == &ally_id
+        )));
+    }
+
+    #[test]
+    fn following_allied_member_does_not_wander_independently() {
+        let mut content = minimal_test_pack();
+        let ally_id = content.actors[0].id.clone();
+        content.actors[0].room_id = "lounge".to_string();
+
+        let mut state = WorldState::new(&content);
+        state.current_room_id = "kitchen".to_string();
+        state.set_stance(&ally_id, ActorStance::Allied);
+        state.set_follows_player(&ally_id, true);
+        state.party_orders.insert(ally_id.clone(), "follow".to_string());
+        state
+            .actor_stats
+            .entry(ally_id.clone())
+            .or_default()
+            .insert("hp".to_string(), 10);
+
+        let events = plan_wander_moves(&content, &state);
+        assert!(!events.iter().any(|event| matches!(
+            event,
+            WorldEvent::ActorMoved { actor_id, .. } if actor_id == &ally_id
+        )));
     }
 }

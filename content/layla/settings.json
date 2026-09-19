@@ -92,8 +92,8 @@
     "initial_orders": {
       "golem-dark-nw": "guard",
       "golem-dark-sw": "guard",
-      "golem-pale-ne": "assist",
-      "golem-pale-se": "assist"
+      "golem-pale-ne": "follow",
+      "golem-pale-se": "follow"
     },
     "combat_rules": [
       {
@@ -156,7 +156,8 @@
           {
             "condition": "order_is",
             "orders": [
-              "assist"
+              "follow",
+              "patrol"
             ]
           }
         ],

@@ -690,7 +690,7 @@ fn layla_shipped_pack_invariants_and_wiring() {
     );
     assert_eq!(
         pack.settings.party.initial_orders.get("golem-pale-ne").cloned(),
-        Some("assist".to_string())
+        Some("follow".to_string())
     );
     assert_eq!(pack.settings.party.combat_rules.len(), 3);
     assert_eq!(

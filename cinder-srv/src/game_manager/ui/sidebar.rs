@@ -1,6 +1,6 @@
 use cinder_core::content::types::ContentPack;
 use cinder_core::engine::runtime::CinderRuntime;
-use cinder_core::engine::state::WorldState;
+use cinder_core::engine::state::{ActorStance, WorldState};
 
 use super::{EquippedItem, InventoryItem, PanelOptionData, PartyMember, PlayerStatus, StatValue};
 use std::collections::BTreeMap;
@@ -165,7 +165,7 @@ fn living_follower_ids(state: &WorldState, content: &ContentPack) -> Vec<String>
         .relationships
         .iter()
         .filter(|(actor_id, relationship)| {
-            relationship.follows_player
+            (relationship.follows_player || relationship.stance == ActorStance::Allied)
                 && actor_id.as_str() != content.settings.combat.player_actor_id
                 && !content.actor_is_offstage(actor_id)
                 && !state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id)
@@ -302,6 +302,17 @@ mod tests {
             .unwrap();
 
         assert_eq!(living_follower_ids(&state, &content), vec![living_id]);
+    }
+
+    #[test]
+    fn allied_actors_not_following_player_are_included_in_living_followers() {
+        let mut content = minimal_test_pack();
+        let ally_id = content.actors[0].id.clone();
+        let mut state = WorldState::new(&content);
+        state.set_stance(&ally_id, ActorStance::Allied);
+        state.set_follows_player(&ally_id, false);
+
+        assert_eq!(living_follower_ids(&state, &content), vec![ally_id]);
     }
 
     #[test]
