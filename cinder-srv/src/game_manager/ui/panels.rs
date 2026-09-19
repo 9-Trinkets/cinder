@@ -150,30 +150,6 @@ pub(super) fn build_action_bar_items(
                 });
             }
 
-            if !options.is_empty() {
-                let (give_title, give_prompt) = if party.len() == 1 {
-                    (
-                        format!("Give to {}", party[0].label),
-                        "Choose an item to give".to_string(),
-                    )
-                } else {
-                    (
-                        "Give to Companion".to_string(),
-                        "Choose an item to give".to_string(),
-                    )
-                };
-                action_bar_actions.push(ActionBarAction {
-                    id: "give".to_string(),
-                    label: "Give".to_string(),
-                    panel: Some("give".to_string()),
-                    panel_config: Some(PanelConfigData {
-                        title: give_title,
-                        prompt: give_prompt,
-                        data_source: PanelDataSource::InventoryItems,
-                        on_select: PanelSelectAction::ExecuteCommand,
-                    }),
-                });
-            }
             options
         }
     };
@@ -307,6 +283,7 @@ pub(super) fn build_overflow_actions(
     content: &ContentPack,
     state: &WorldState,
     bar_ids: &[&str],
+    give_panel_options: &[PanelOptionData],
     drop_panel_options: &[PanelOptionData],
     equipment_panel_options: &[PanelOptionData],
 ) -> Result<Vec<OverflowAction>, String> {
@@ -326,6 +303,12 @@ pub(super) fn build_overflow_actions(
             if (a.id == "speak" || a.id == "talk") && has_talk {
                 return false;
             }
+            if a.id == "drop" && drop_panel_options.is_empty() {
+                return false;
+            }
+            if a.id == "give" && give_panel_options.is_empty() {
+                return false;
+            }
             action_is_available(content, state, a, &current_room_id)
         })
         .map(|a| {
@@ -335,10 +318,15 @@ pub(super) fn build_overflow_actions(
                 .as_ref()
                 .map(|player_command| player_command.usage.clone())
                 .unwrap_or_default();
+            let group = if (a.id == "drop" || a.id == "give") && a.ui.group.is_empty() {
+                "items".to_string()
+            } else {
+                a.ui.group.clone()
+            };
             OverflowAction {
                 id: a.id.clone(),
                 label,
-                group: a.ui.group.clone(),
+                group,
                 usage,
                 panel: a.ui.panel.clone().unwrap_or_default(),
                 panel_config: a.ui.panel_config.as_ref().map(panel_config_data),
@@ -350,6 +338,29 @@ pub(super) fn build_overflow_actions(
         super::append_stage_menu_overflow_actions(&mut overflow_actions, content, &active_stages);
     }
 
+    // Surface the generic `give <item> to <companion>` overflow action in the "items" group
+    // directly above drop when the player holds something droppable and has companions.
+    if !give_panel_options.is_empty() && !overflow_actions.iter().any(|a| a.id == "give") {
+        let give_action = OverflowAction {
+            id: "give".to_string(),
+            label: "Give".to_string(),
+            group: "items".to_string(),
+            usage: "give <item> to <companion>".to_string(),
+            panel: "give".to_string(),
+            panel_config: Some(PanelConfigData {
+                title: "Give to Companion".to_string(),
+                prompt: "Choose an item to give".to_string(),
+                data_source: PanelDataSource::InventoryItems,
+                on_select: PanelSelectAction::ExecuteCommand,
+            }),
+        };
+        if let Some(drop_pos) = overflow_actions.iter().position(|a| a.id == "drop") {
+            overflow_actions.insert(drop_pos, give_action);
+        } else {
+            overflow_actions.push(give_action);
+        }
+    }
+
     // Surface the generic `drop <item>` overflow action when the player holds
     // something droppable. Structure mirrors authored panel actions so moving
     // it to the main bar later is a placement-only change.
@@ -357,7 +368,7 @@ pub(super) fn build_overflow_actions(
         overflow_actions.push(OverflowAction {
             id: "drop".to_string(),
             label: content.ui_text.drop_label.clone(),
-            group: String::new(),
+            group: "items".to_string(),
             usage: "drop <item>".to_string(),
             panel: "drop".to_string(),
             panel_config: Some(PanelConfigData {

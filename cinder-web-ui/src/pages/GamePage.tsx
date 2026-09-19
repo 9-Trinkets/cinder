@@ -261,11 +261,11 @@ export default function GamePage() {
                 const panel = (action as unknown as Record<string, unknown>).panel as string | undefined
                 if (panel) {
                   const options = uiSnapshot?.panel_options?.[panel] ?? []
-                  if (options.length === 1) {
+                  if (options.length === 1 && action.id !== 'give') {
                     handleSelectPanelOption(panel, options[0])
                     return
                   }
-                  if (options.length > 1) {
+                  if (options.length >= 1) {
                     setQuickPanel(panel)
                     return
                   }

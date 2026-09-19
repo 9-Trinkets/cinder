@@ -96,6 +96,7 @@ pub(super) fn build_ui_snapshot(
         content,
         &state,
         &bar_ids,
+        &give_panel_options,
         &drop_panel_options,
         &equipment_panel_options,
     )?;

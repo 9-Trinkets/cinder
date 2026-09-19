@@ -180,7 +180,7 @@ fn equipment_panel_lists_each_equipped_item_once_and_held_gear_separately() {
 
     let runtime = CinderRuntime::new(content.clone(), false).unwrap();
     let overflow =
-        build_overflow_actions(&runtime, &content, &state, &[], &[], &options).unwrap();
+        build_overflow_actions(&runtime, &content, &state, &[], &[], &[], &options).unwrap();
     assert_eq!(
         overflow
             .iter()
@@ -191,8 +191,13 @@ fn equipment_panel_lists_each_equipped_item_once_and_held_gear_separately() {
 }
 
 #[test]
-fn give_surfaces_on_bar_when_party_and_droppable_items_exist() {
+fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
     let mut content = minimal_test_pack();
+    content.actions.push(ActionDefinition {
+        id: "drop".to_string(),
+        player_enabled: true,
+        ..ActionDefinition::default()
+    });
     content.items.push(ItemDefinition {
         id: "potion".to_string(),
         label: "potion".to_string(),
@@ -213,17 +218,49 @@ fn give_surfaces_on_bar_when_party_and_droppable_items_exist() {
         inventory: vec![],
     };
 
+    let runtime = CinderRuntime::new(content.clone(), false).unwrap();
+    let drop_opts = build_drop_panel_options(&content, &state);
+
     // Case 1: No party -> No give
     let (bar_no_party, _, give_opts_no_party) = build_action_bar_items(&content, &state, &[]);
     assert!(!bar_no_party.iter().any(|a| a.id == "give"));
     assert!(give_opts_no_party.is_empty());
+    let overflow_no_party = build_overflow_actions(
+        &runtime,
+        &content,
+        &state,
+        &[],
+        &give_opts_no_party,
+        &drop_opts,
+        &[],
+    )
+    .unwrap();
+    assert!(!overflow_no_party.iter().any(|a| a.id == "give"));
 
-    // Case 2: Party exists + item exists -> Give appears
+    // Case 2: Party exists + item exists -> Give appears in overflow directly above drop
     let (bar_with_party, _, give_opts) =
         build_action_bar_items(&content, &state, &[party_member.clone()]);
-    assert!(bar_with_party.iter().any(|a| a.id == "give"));
+    assert!(!bar_with_party.iter().any(|a| a.id == "give"));
     assert_eq!(give_opts.len(), 1);
     assert_eq!(give_opts[0].command.as_deref(), Some("give potion to zayd"));
+
+    let overflow_with_party = build_overflow_actions(
+        &runtime,
+        &content,
+        &state,
+        &[],
+        &give_opts,
+        &drop_opts,
+        &[],
+    )
+    .unwrap();
+    let give_idx = overflow_with_party.iter().position(|a| a.id == "give");
+    let drop_idx = overflow_with_party.iter().position(|a| a.id == "drop");
+    assert!(give_idx.is_some());
+    assert!(drop_idx.is_some());
+    assert_eq!(overflow_with_party[give_idx.unwrap()].group, "items");
+    assert_eq!(overflow_with_party[drop_idx.unwrap()].group, "items");
+    assert_eq!(give_idx.unwrap() + 1, drop_idx.unwrap());
 
     // Case 3: Party exists but no items in inventory -> No give
     let empty_state = WorldState::new(&content);
@@ -231,6 +268,18 @@ fn give_surfaces_on_bar_when_party_and_droppable_items_exist() {
         build_action_bar_items(&content, &empty_state, &[party_member.clone()]);
     assert!(!bar_no_items.iter().any(|a| a.id == "give"));
     assert!(give_opts_no_items.is_empty());
+    let empty_drop_opts = build_drop_panel_options(&content, &empty_state);
+    let overflow_no_items = build_overflow_actions(
+        &runtime,
+        &content,
+        &empty_state,
+        &[],
+        &give_opts_no_items,
+        &empty_drop_opts,
+        &[],
+    )
+    .unwrap();
+    assert!(!overflow_no_items.iter().any(|a| a.id == "give"));
 
     // Case 4: Multiple party members -> item list does NOT multiply combinatorially
     let bess = PartyMember {
