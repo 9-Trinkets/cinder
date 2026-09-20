@@ -22,7 +22,7 @@ use self::handlers::{
     handle_menu_opened, handle_menu_selection_toggled, handle_narrative_line,
     handle_pair_stat_adjusted, handle_party_order_assigned, handle_player_dropped_item,
     handle_player_followed_actor, handle_player_moved, handle_player_took_item,
-    handle_turn_started, handle_unknown_input,
+    handle_player_used_item, handle_turn_started, handle_unknown_input,
 };
 
 pub(crate) use self::handlers::handler_attributed_line;
@@ -254,6 +254,9 @@ pub fn apply_events(
             }
             WorldEvent::PlayerUnequippedItem { item_id } => {
                 equipment::apply_unequip(state, content, item_id, &mut lines);
+            }
+            WorldEvent::PlayerUsedItem { item_id } => {
+                handle_player_used_item(state, content, item_id, &mut lines);
             }
             WorldEvent::ItemTransferred {
                 item_id,

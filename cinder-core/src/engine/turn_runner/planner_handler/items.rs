@@ -231,6 +231,55 @@ pub(crate) fn plan_unequip_command(
     true
 }
 
+pub(crate) fn plan_use_command(
+    content: &ContentPack,
+    planner_state: &WorldState,
+    target: &str,
+    planned: &mut PlannedTurn,
+) -> bool {
+    let target = target.trim();
+    if target.is_empty() {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: "What do you want to use?".to_string(),
+        });
+        return false;
+    }
+    let candidates = matching_items(content, target);
+    let held = candidates
+        .iter()
+        .copied()
+        .filter(|item| planner_state.has_item(&item.id))
+        .collect::<Vec<_>>();
+    if held.len() > 1 {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: format!("Which item do you mean by '{target}'?"),
+        });
+        return false;
+    }
+    if let Some(item) = held.first().copied() {
+        if item.use_hook.is_empty() {
+            planned.events.push(WorldEvent::ActionRejected {
+                message: format!("You cannot use the {}.", item.label),
+            });
+            return false;
+        }
+        planned.events.push(WorldEvent::PlayerUsedItem {
+            item_id: item.id.clone(),
+        });
+        return true;
+    }
+    if let Some(item) = candidates.first() {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: format!("You are not carrying the {}.", item.label),
+        });
+    } else {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: format!("You don't have '{target}'."),
+        });
+    }
+    false
+}
+
 pub(crate) fn matching_items<'a>(
     content: &'a ContentPack,
     target: &str,
@@ -239,7 +288,12 @@ pub(crate) fn matching_items<'a>(
         .items
         .iter()
         .filter(|item| {
-            item.id.eq_ignore_ascii_case(target) || item.label.eq_ignore_ascii_case(target)
+            item.id.eq_ignore_ascii_case(target)
+                || item.label.eq_ignore_ascii_case(target)
+                || item
+                    .aliases
+                    .iter()
+                    .any(|alias| alias.eq_ignore_ascii_case(target))
         })
         .collect::<Vec<_>>();
     if !exact.is_empty() {
@@ -255,6 +309,9 @@ pub(crate) fn matching_items<'a>(
         .filter(|item| {
             let mut item_tokens = reference_tokens(&item.id);
             item_tokens.extend(reference_tokens(&item.label));
+            for alias in &item.aliases {
+                item_tokens.extend(reference_tokens(alias));
+            }
             target_tokens
                 .iter()
                 .all(|target_token| item_tokens.contains(target_token))

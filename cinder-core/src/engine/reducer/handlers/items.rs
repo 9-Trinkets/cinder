@@ -103,6 +103,61 @@ pub(crate) fn handle_player_dropped_item(
     }
 }
 
+/// Consumes an item from player inventory in response to generic `use` / `eat` command,
+/// fires its use_hook, narrating the effect and emitting signals.
+pub(crate) fn handle_player_used_item(
+    state: &mut WorldState,
+    content: &ContentPack,
+    item_id: &str,
+    lines: &mut NarrativeLines,
+) {
+    let Some(item) = content.item(item_id) else {
+        return;
+    };
+    if item.use_hook.is_empty() || !state.remove_item(item_id) {
+        return;
+    }
+    let player_id = content.settings.combat.player_actor_id.clone();
+    if let Err(error) = crate::engine::hooks::apply_narrating_world_hook_effects(
+        state,
+        content,
+        &item.use_hook,
+        serde_json::json!({
+            "actor_id": player_id,
+            "actor_name": super::super::command_effects::actor_display_name(content, &player_id),
+            "item_id": item.id,
+            "item_label": item.label,
+        }),
+        lines,
+    ) {
+        eprintln!("[cinder] hook warning ({}): {error}", item.use_hook);
+    }
+    let specific_key = format!("item.{item_id}.used");
+    let line = if content.message(&specific_key).is_some() {
+        content.render_message(&specific_key, &[("item", item.label.as_str())])
+    } else {
+        content.render_message("item.used", &[("item", item.label.as_str())])
+    };
+    if let Some(line) = line {
+        lines.narration(line);
+    }
+    lines.extend_narration(advance_objective_for_signal(
+        state,
+        content,
+        &format!("item_used:{item_id}"),
+    ));
+    lines.extend_narration(advance_objective_for_signal(
+        state,
+        content,
+        &format!("item_consumed:{item_id}"),
+    ));
+    lines.extend_narration(advance_objective_for_signal(
+        state,
+        content,
+        "item_consumed",
+    ));
+}
+
 /// `item.<id>.<generic key>` to override the message; an empty override
 /// suppresses the line entirely. Returns the rendered text together with the
 /// voice of whichever key (specific or generic) supplies it.

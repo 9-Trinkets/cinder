@@ -11,6 +11,7 @@ use std::collections::BTreeMap;
 use super::{
     ActionBarAction, ActiveMenuData, LookOptionData, MenuOptionData, OverflowAction,
     PanelConfigData, PanelOptionData, PartyMember, droppable_inventory_items,
+    usable_inventory_items,
 };
 pub(super) use equipment::build_equipment_panel_options;
 
@@ -176,6 +177,24 @@ pub(super) fn build_drop_panel_options(
         .collect()
 }
 
+/// Option rows for the generic `use <item>` overflow action.
+pub(super) fn build_use_panel_options(
+    content: &ContentPack,
+    state: &WorldState,
+) -> Vec<PanelOptionData> {
+    usable_inventory_items(content, state)
+        .into_iter()
+        .map(|item_id| PanelOptionData {
+            id: item_id.clone(),
+            title: title_case(content.item_label(&item_id)),
+            subtitle: None,
+            command: Some(format!("use {item_id}")),
+            disabled: false,
+            selected: false,
+        })
+        .collect()
+}
+
 pub(super) fn build_look_options(runtime: &CinderRuntime) -> Result<Vec<LookOptionData>, String> {
     Ok(runtime
         .room_interactable_options()
@@ -265,6 +284,7 @@ pub(super) fn build_overflow_actions(
     state: &WorldState,
     bar_ids: &[&str],
     take_panel_options: &[PanelOptionData],
+    use_panel_options: &[PanelOptionData],
     give_panel_options: &[PanelOptionData],
     drop_panel_options: &[PanelOptionData],
     equipment_panel_options: &[PanelOptionData],
@@ -288,6 +308,9 @@ pub(super) fn build_overflow_actions(
             if a.id == "take" && take_panel_options.is_empty() {
                 return false;
             }
+            if a.id == "use" && use_panel_options.is_empty() {
+                return false;
+            }
             if a.id == "drop" && drop_panel_options.is_empty() {
                 return false;
             }
@@ -303,7 +326,7 @@ pub(super) fn build_overflow_actions(
                 .as_ref()
                 .map(|player_command| player_command.usage.clone())
                 .unwrap_or_default();
-            let group = if (a.id == "take" || a.id == "drop" || a.id == "give") && a.ui.group.is_empty() {
+            let group = if (a.id == "take" || a.id == "use" || a.id == "drop" || a.id == "give") && a.ui.group.is_empty() {
                 "items".to_string()
             } else {
                 a.ui.group.clone()
@@ -343,6 +366,29 @@ pub(super) fn build_overflow_actions(
             overflow_actions.insert(pos, take_action);
         } else {
             overflow_actions.push(take_action);
+        }
+    }
+
+    // Surface the generic `use <item>` overflow action in the "items" group
+    // directly above give and drop when there are usable items.
+    if !use_panel_options.is_empty() && !overflow_actions.iter().any(|a| a.id == "use") {
+        let use_action = OverflowAction {
+            id: "use".to_string(),
+            label: content.ui_text.use_label.clone(),
+            group: "items".to_string(),
+            usage: "use <item>".to_string(),
+            panel: "use".to_string(),
+            panel_config: Some(PanelConfigData {
+                title: content.ui_text.use_label.clone(),
+                prompt: String::new(),
+                data_source: PanelDataSource::InventoryItems,
+                on_select: PanelSelectAction::ExecuteCommand,
+            }),
+        };
+        if let Some(pos) = overflow_actions.iter().position(|a| a.id == "give" || a.id == "drop") {
+            overflow_actions.insert(pos, use_action);
+        } else {
+            overflow_actions.push(use_action);
         }
     }
 
@@ -411,13 +457,14 @@ pub(super) fn build_panel_options(
     content: &ContentPack,
     state: &WorldState,
     take_panel_options: Vec<PanelOptionData>,
+    use_panel_options: Vec<PanelOptionData>,
     give_panel_options: Vec<PanelOptionData>,
     drop_panel_options: Vec<PanelOptionData>,
     equipment_panel_options: Vec<PanelOptionData>,
 ) -> Result<BTreeMap<String, Vec<PanelOptionData>>, String> {
     let mut panel_options: BTreeMap<String, Vec<PanelOptionData>> = BTreeMap::new();
     for action in &content.actions {
-        if action.id == "take" || action.id == "give" {
+        if action.id == "take" || action.id == "give" || action.id == "use" {
             continue;
         }
         if let (Some(panel_name), Some(panel_config)) = (&action.ui.panel, &action.ui.panel_config)
@@ -539,6 +586,7 @@ pub(super) fn build_panel_options(
         }
     }
     panel_options.insert("take".to_string(), take_panel_options);
+    panel_options.insert("use".to_string(), use_panel_options);
     panel_options.insert("give".to_string(), give_panel_options);
     panel_options.insert("drop".to_string(), drop_panel_options);
     panel_options.insert("equipment".to_string(), equipment_panel_options);

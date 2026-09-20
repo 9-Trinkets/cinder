@@ -254,6 +254,10 @@
   {
     "id": "date-flatbread",
     "label": "date flatbread",
+    "aliases": [
+      "bread",
+      "flatbread"
+    ],
     "kind": "potion",
     "use_hook": "item.salve_used",
     "description": "A thick, fragrant sesame flatbread stuffed with sweet dates, baked fresh in Yasmin's steam-heated oven. Restores strength and warmth."

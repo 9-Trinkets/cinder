@@ -99,6 +99,7 @@ pub(super) fn build_party_members(
                         label,
                         count,
                         id: Some(id),
+                        usable: false,
                     }
                 })
                 .collect::<Vec<_>>();
@@ -229,10 +230,12 @@ pub(super) fn build_inventory(
         .into_iter()
         .map(|(id, count)| {
             let label = content.item_label(&id).to_string();
+            let usable = content.item(&id).is_some_and(|item| !item.use_hook.is_empty());
             InventoryItem {
                 label,
                 count,
-                id: None,
+                id: Some(id),
+                usable,
             }
         })
         .collect::<Vec<_>>();
@@ -255,6 +258,7 @@ pub(super) fn build_current_room_items(
                 label,
                 count,
                 id: Some(item_id.clone()),
+                usable: false,
             }
         })
         .collect()

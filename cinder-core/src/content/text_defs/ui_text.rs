@@ -144,6 +144,9 @@ pub struct UiTextDefinition {
     /// Verb label for the generic `take <item>` action-bar button/panel.
     #[serde(default = "default_take_label")]
     pub take_label: String,
+    /// Verb label for the generic `use <item>` action/panel.
+    #[serde(default = "default_use_label")]
+    pub use_label: String,
     /// Verb label for the generic `drop <item>` action/panel.
     #[serde(default = "default_drop_label")]
     pub drop_label: String,
@@ -444,6 +447,10 @@ pub(super) fn default_trace_mark_present_label() -> String {
 
 pub(super) fn default_take_label() -> String {
     "Take".to_string()
+}
+
+pub(super) fn default_use_label() -> String {
+    "Use".to_string()
 }
 
 pub(super) fn default_drop_label() -> String {

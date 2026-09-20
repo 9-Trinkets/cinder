@@ -12,6 +12,7 @@ const orderLabel = (order: string) => {
 export default function StatusPanel({
   uiSnapshot,
   onTakeItem,
+  onUseItem,
   onTakeFromMember,
   onGiveToMember,
   onOpenPanel,
@@ -19,6 +20,7 @@ export default function StatusPanel({
 }: {
   uiSnapshot: api.UiSnapshot
   onTakeItem?: (itemId: string) => void
+  onUseItem?: (itemId: string) => void
   onTakeFromMember?: (memberId: string, itemId: string) => void
   onGiveToMember?: (memberId: string, itemLabel: string) => void
   onOpenPanel?: (panel: string) => void
@@ -176,7 +178,22 @@ export default function StatusPanel({
           <ul className="space-y-0.5">
             {uiSnapshot.inventory.map((item, i) => (
               <li key={i} className="text-text text-xs">
-                • {titleize(item.label)}{item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
+                {item.usable && onUseItem && item.id ? (
+                  <button
+                    type="button"
+                    onClick={() => onUseItem(item.id!)}
+                    className="hover:opacity-80 cursor-pointer text-left inline-flex items-center gap-1"
+                    title={`Use ${titleize(item.label)}`}
+                  >
+                    <span>Use {titleize(item.label)}</span>
+                    {item.count > 1 ? <span className="text-muted ml-0.5">×{item.count}</span> : null}
+                  </button>
+                ) : (
+                  <span>
+                    • {titleize(item.label)}
+                    {item.count > 1 ? <span className="text-muted ml-1">×{item.count}</span> : null}
+                  </span>
+                )}
               </li>
             ))}
           </ul>

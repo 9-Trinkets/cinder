@@ -53,6 +53,10 @@ pub(crate) enum PlayerCommand {
     Unequip {
         target: String,
     },
+    /// A generic `use <item>` / `eat <item>` / `drink <item>` / `consume <item>` command.
+    Use {
+        target: String,
+    },
     PartyOrder {
         actor_reference: String,
         order: PartyOrderKind,
@@ -172,6 +176,13 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
                     target: matched_phrase.remainder.unwrap_or_default(),
                 };
             }
+            if (action.id == "use" || action.has_effect(CommandEffect::UseItem))
+                && action.item_id.is_empty()
+            {
+                return PlayerCommand::Use {
+                    target: matched_phrase.remainder.unwrap_or_default(),
+                };
+            }
             return PlayerCommand::Authored {
                 command_id: action.id.clone(),
                 input: matched_phrase.remainder,
@@ -211,6 +222,13 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
                     && action.item_id.is_empty()
                 {
                     return PlayerCommand::Unequip {
+                        target: String::new(),
+                    };
+                }
+                if (action.id == "use" || action.has_effect(CommandEffect::UseItem))
+                    && action.item_id.is_empty()
+                {
+                    return PlayerCommand::Use {
                         target: String::new(),
                     };
                 }

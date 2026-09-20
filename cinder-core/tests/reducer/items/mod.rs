@@ -1,6 +1,7 @@
 //! Item reducer tests grouped by driver: inventory/room transfers and
 //! action-driven item creation (cook, capture, trace).
 
+mod consumption;
 mod creation;
 mod transfer;
 

@@ -88,6 +88,22 @@ pub(super) fn parse_item_command(trimmed: &str) -> Option<PlayerCommand> {
         return Some(PlayerCommand::Drop { target });
     }
 
+    // 6. Use / Consume: `use <item>`, `eat <item>`, `drink <item>`, `consume <item>`, etc.
+    if let Some(target) = phrase_target(
+        trimmed,
+        &[
+            "use ",
+            "eat ",
+            "drink ",
+            "consume ",
+            "quaff ",
+            "apply ",
+            "read ",
+        ],
+    ) {
+        return Some(PlayerCommand::Use { target });
+    }
+
     None
 }
 
@@ -167,9 +183,37 @@ mod tests {
 
     #[test]
     fn bare_item_verbs_do_not_resolve() {
-        for input in ["take", "drop", "equip", "unequip", "give", "hand"] {
+        for input in ["take", "drop", "equip", "unequip", "give", "hand", "use", "eat", "drink", "consume"] {
             assert!(parse_item_command(input).is_none());
         }
+    }
+
+    #[test]
+    fn use_and_consume_phrases_resolve() {
+        assert!(matches!(
+            parse_item_command("use date flatbread"),
+            Some(PlayerCommand::Use { target }) if target == "date flatbread"
+        ));
+        assert!(matches!(
+            parse_item_command("eat date flatbread"),
+            Some(PlayerCommand::Use { target }) if target == "date flatbread"
+        ));
+        assert!(matches!(
+            parse_item_command("eat bread"),
+            Some(PlayerCommand::Use { target }) if target == "bread"
+        ));
+        assert!(matches!(
+            parse_item_command("drink healing potion"),
+            Some(PlayerCommand::Use { target }) if target == "healing potion"
+        ));
+        assert!(matches!(
+            parse_item_command("consume flatbread"),
+            Some(PlayerCommand::Use { target }) if target == "flatbread"
+        ));
+        assert!(matches!(
+            parse_item_command("read spawn scroll"),
+            Some(PlayerCommand::Use { target }) if target == "spawn scroll"
+        ));
     }
 
     #[test]

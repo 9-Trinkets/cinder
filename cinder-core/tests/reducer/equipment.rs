@@ -24,12 +24,8 @@ fn equipping_an_item_with_equip_hook_converts_surviving_tagged_actors() {
             description: "A warm stone heart.".to_string(),
             kind: cinder_core::content::types::ItemKind::Trinket,
             equip_slots: vec!["trinket".to_string()],
-            stat_bonuses: BTreeMap::new(),
-            use_hook: String::new(),
             equip_hook: "item.core_equipped".to_string(),
-            look_description: String::new(),
-            trace_mark: false,
-            consumed_on_surround_conversion: false,
+            ..cinder_core::content::types::ItemDefinition::default()
         });
     pack.messages.insert(
         "conversion.core".to_string(),
@@ -139,12 +135,8 @@ fn converting_tagged_actors_to_neutral_stance_clears_the_ally_label() {
             description: "The dead king's crown.".to_string(),
             kind: cinder_core::content::types::ItemKind::Trinket,
             equip_slots: vec!["trinket".to_string()],
-            stat_bonuses: BTreeMap::new(),
-            use_hook: String::new(),
             equip_hook: "item.crown_equipped".to_string(),
-            look_description: String::new(),
-            trace_mark: false,
-            consumed_on_surround_conversion: false,
+            ..cinder_core::content::types::ItemDefinition::default()
         });
     pack.hooks.insert(
         "item.crown_equipped".to_string(),

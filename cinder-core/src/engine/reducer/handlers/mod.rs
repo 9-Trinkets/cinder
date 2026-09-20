@@ -32,6 +32,7 @@ pub(super) use feedback::{
     handle_action_rejected, handle_help_shown, handle_narrative_line, handle_unknown_input,
 };
 pub(crate) use feedback::{handler_attributed_line, push_message, push_rendered_message};
+pub(crate) use items::handle_player_used_item;
 pub(super) use items::{
     handle_item_acquired, handle_item_consumed, handle_item_observed, handle_player_dropped_item,
     handle_player_took_item,

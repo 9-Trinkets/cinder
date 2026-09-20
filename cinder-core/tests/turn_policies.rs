@@ -18,12 +18,7 @@ fn equipment_pack() -> ContentPack {
         description: "A chisel.".to_string(),
         kind: ItemKind::Weapon,
         equip_slots: vec!["weapon".to_string()],
-        stat_bonuses: std::collections::BTreeMap::new(),
-        use_hook: String::new(),
-        equip_hook: String::new(),
-        look_description: String::new(),
-        trace_mark: false,
-        consumed_on_surround_conversion: false,
+        ..ItemDefinition::default()
     });
     pack.actions.push(ActionDefinition {
         id: "equip".to_string(),

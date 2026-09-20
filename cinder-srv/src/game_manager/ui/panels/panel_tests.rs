@@ -180,7 +180,7 @@ fn equipment_panel_lists_each_equipped_item_once_and_held_gear_separately() {
 
     let runtime = CinderRuntime::new(content.clone(), false).unwrap();
     let overflow =
-        build_overflow_actions(&runtime, &content, &state, &[], &[], &[], &[], &options).unwrap();
+        build_overflow_actions(&runtime, &content, &state, &[], &[], &[], &[], &[], &options).unwrap();
     assert_eq!(
         overflow
             .iter()
@@ -232,6 +232,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
         &state,
         &[],
         &[],
+        &[],
         &give_opts_no_party,
         &drop_opts,
         &[],
@@ -250,6 +251,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
         &runtime,
         &content,
         &state,
+        &[],
         &[],
         &[],
         &give_opts,
@@ -276,6 +278,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
         &runtime,
         &content,
         &empty_state,
+        &[],
         &[],
         &[],
         &give_opts_no_items,
@@ -328,6 +331,7 @@ fn take_surfaces_in_overflow_items_group_when_companion_has_items_even_without_r
             id: Some("torch".to_string()),
             label: "torch".to_string(),
             count: 1,
+            usable: false,
         }],
         in_room: true,
     };
@@ -345,6 +349,7 @@ fn take_surfaces_in_overflow_items_group_when_companion_has_items_even_without_r
         &state,
         &[],
         &take_opts,
+        &[],
         &[],
         &[],
         &[],
@@ -389,6 +394,7 @@ fn items_section_orders_take_give_drop() {
             id: Some("torch".to_string()),
             label: "torch".to_string(),
             count: 1,
+            usable: false,
         }],
         in_room: true,
     };
@@ -397,6 +403,14 @@ fn items_section_orders_take_give_drop() {
         build_action_bar_items(&content, &state, &[party_member]);
     assert!(!bar.iter().any(|a| a.id == "take" || a.id == "give"));
 
+    let use_opts = vec![PanelOptionData {
+        id: "potion".to_string(),
+        title: "Potion".to_string(),
+        subtitle: None,
+        command: Some("use potion".to_string()),
+        disabled: false,
+        selected: false,
+    }];
     let drop_opts = build_drop_panel_options(&content, &state);
     let runtime = CinderRuntime::new(content.clone(), false).unwrap();
     let overflow = build_overflow_actions(
@@ -405,6 +419,7 @@ fn items_section_orders_take_give_drop() {
         &state,
         &[],
         &take_opts,
+        &use_opts,
         &give_opts,
         &drop_opts,
         &[],
@@ -412,14 +427,17 @@ fn items_section_orders_take_give_drop() {
     .unwrap();
 
     let take_idx = overflow.iter().position(|a| a.id == "take").unwrap();
+    let use_idx = overflow.iter().position(|a| a.id == "use").unwrap();
     let give_idx = overflow.iter().position(|a| a.id == "give").unwrap();
     let drop_idx = overflow.iter().position(|a| a.id == "drop").unwrap();
 
     assert_eq!(overflow[take_idx].group, "items");
+    assert_eq!(overflow[use_idx].group, "items");
     assert_eq!(overflow[give_idx].group, "items");
     assert_eq!(overflow[drop_idx].group, "items");
 
-    assert!(take_idx < give_idx);
+    assert!(take_idx < use_idx);
+    assert!(use_idx < give_idx);
     assert!(give_idx < drop_idx);
 }
 
@@ -452,6 +470,7 @@ fn take_and_give_exclude_party_members_not_in_current_room() {
             id: Some("torch".to_string()),
             label: "torch".to_string(),
             count: 1,
+            usable: false,
         }],
         in_room: false,
     };

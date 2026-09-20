@@ -7,7 +7,7 @@ pub mod types;
 pub use types::*;
 
 use cinder_core::content::loader;
-use cinder_core::content::types::PanelDataSource;
+use cinder_core::content::types::{ContentPack, PanelDataSource};
 use cinder_core::engine::runtime::{CinderRuntime, PanelOption};
 use cinder_core::engine::state::{GamePhase, WorldState};
 
@@ -17,7 +17,7 @@ use self::minimap::build_minimap;
 use self::panels::{
     build_action_bar_items, build_active_menu, build_drop_panel_options,
     build_equipment_panel_options, build_interactable_labels, build_look_options,
-    build_overflow_actions, build_panel_options, build_talk_options,
+    build_overflow_actions, build_panel_options, build_talk_options, build_use_panel_options,
 };
 use self::room::{build_room_consumables, crafted_consumable_labels};
 use self::sidebar::{
@@ -95,6 +95,7 @@ pub(super) fn build_ui_snapshot(
 
     let (action_bar_actions, take_panel_options, give_panel_options) =
         build_action_bar_items(content, &state, &party);
+    let use_panel_options = build_use_panel_options(content, &state);
     let drop_panel_options = build_drop_panel_options(content, &state);
     let equipment_panel_options = build_equipment_panel_options(content, &state);
     let look_options = build_look_options(runtime)?;
@@ -112,6 +113,7 @@ pub(super) fn build_ui_snapshot(
         &state,
         &bar_ids,
         &take_panel_options,
+        &use_panel_options,
         &give_panel_options,
         &drop_panel_options,
         &equipment_panel_options,
@@ -121,6 +123,7 @@ pub(super) fn build_ui_snapshot(
         content,
         &state,
         take_panel_options,
+        use_panel_options,
         give_panel_options,
         drop_panel_options,
         equipment_panel_options,
@@ -228,6 +231,23 @@ fn droppable_inventory_items(state: &WorldState) -> Vec<String> {
                     .equipment
                     .values()
                     .any(|equipped| equipped.as_str() == item_id.as_str())
+        })
+        .map(|(item_id, _)| item_id.clone())
+        .collect();
+    ids.sort();
+    ids
+}
+
+/// Ids of inventory items the player can currently use (held and has use_hook).
+fn usable_inventory_items(content: &ContentPack, state: &WorldState) -> Vec<String> {
+    let mut ids: Vec<String> = state
+        .player_inventory
+        .iter()
+        .filter(|(item_id, count)| {
+            **count > 0
+                && content
+                    .item(item_id)
+                    .is_some_and(|item| !item.use_hook.is_empty())
         })
         .map(|(item_id, _)| item_id.clone())
         .collect();

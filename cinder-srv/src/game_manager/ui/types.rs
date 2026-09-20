@@ -22,13 +22,18 @@ pub struct ObjectiveItem {
     pub quest_kind: Option<String>,
 }
 
+fn is_false(b: &bool) -> bool {
+    !*b
+}
+
 #[derive(Clone, Serialize)]
 pub struct InventoryItem {
     pub label: String,
     pub count: u32,
-    /// Present for loose room items so the UI can dispatch a generic
-    /// `take <id>` command.
+    /// Present for items so the UI can dispatch generic commands (take, use).
     pub id: Option<String>,
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub usable: bool,
 }
 
 /// An item worn in one of the player's equipment slots.

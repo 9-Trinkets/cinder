@@ -143,30 +143,7 @@ pub(super) fn apply_use_item(
     command: &ActionDefinition,
     lines: &mut NarrativeLines,
 ) {
-    let Some(item) = content.item(&command.item_id) else {
-        return;
-    };
-    if item.use_hook.is_empty() || !state.remove_item(&command.item_id) {
-        return;
-    }
-    let player_id = content.settings.combat.player_actor_id.clone();
-    if let Err(error) = apply_narrating_world_hook_effects(
-        state,
-        content,
-        &item.use_hook,
-        json!({
-            "actor_id": player_id,
-            "actor_name": actor_display_name(content, &player_id),
-            "item_id": item.id,
-            "item_label": item.label,
-        }),
-        lines,
-    ) {
-        eprintln!("[cinder] hook warning ({}): {error}", item.use_hook);
-    }
-    if let Some(line) = content.render_message("item.used", &[("item", item.label.as_str())]) {
-        lines.narration(line);
-    }
+    super::handlers::handle_player_used_item(state, content, &command.item_id, lines);
 }
 
 fn render_equipment_message(

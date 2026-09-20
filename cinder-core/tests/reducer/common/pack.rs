@@ -326,11 +326,7 @@ pub fn equipment_test_pack() -> ContentPack {
             kind: cinder_core::content::types::ItemKind::Weapon,
             equip_slots: vec!["weapon".to_string()],
             stat_bonuses: BTreeMap::from([("confidence".to_string(), 2)]),
-            use_hook: String::new(),
-            equip_hook: String::new(),
-            look_description: String::new(),
-            trace_mark: false,
-            consumed_on_surround_conversion: false,
+            ..cinder_core::content::types::ItemDefinition::default()
         });
     pack.items
         .push(cinder_core::content::types::ItemDefinition {
@@ -340,11 +336,7 @@ pub fn equipment_test_pack() -> ContentPack {
             kind: cinder_core::content::types::ItemKind::Weapon,
             equip_slots: vec!["weapon".to_string()],
             stat_bonuses: BTreeMap::from([("confidence".to_string(), 4)]),
-            use_hook: String::new(),
-            equip_hook: String::new(),
-            look_description: String::new(),
-            trace_mark: false,
-            consumed_on_surround_conversion: false,
+            ..cinder_core::content::types::ItemDefinition::default()
         });
     pack.items
         .push(cinder_core::content::types::ItemDefinition {
@@ -352,13 +344,8 @@ pub fn equipment_test_pack() -> ContentPack {
             label: "herb salve".to_string(),
             description: "A fragrant paste.".to_string(),
             kind: cinder_core::content::types::ItemKind::Potion,
-            equip_slots: Vec::new(),
-            stat_bonuses: BTreeMap::new(),
             use_hook: "item.salve_used".to_string(),
-            equip_hook: String::new(),
-            look_description: String::new(),
-            trace_mark: false,
-            consumed_on_surround_conversion: false,
+            ..cinder_core::content::types::ItemDefinition::default()
         });
     pack.hooks.insert(
         "item.salve_used".to_string(),

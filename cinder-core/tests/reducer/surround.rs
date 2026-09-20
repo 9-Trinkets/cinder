@@ -65,11 +65,7 @@ fn surround_test_pack_with_refusal(refusal: Option<&str>) -> ContentPack {
         kind: ItemKind::Trinket,
         equip_slots: vec!["ring".to_string()],
         stat_bonuses: BTreeMap::from([("intelligence".to_string(), 4)]),
-        use_hook: String::new(),
-        equip_hook: String::new(),
-        look_description: String::new(),
-        trace_mark: false,
-        consumed_on_surround_conversion: false,
+        ..ItemDefinition::default()
     });
     pack.actions.push(ActionDefinition {
         id: "equip-ring".to_string(),

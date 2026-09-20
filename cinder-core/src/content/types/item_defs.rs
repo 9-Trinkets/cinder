@@ -19,6 +19,8 @@ pub enum ItemKind {
 pub struct ItemDefinition {
     pub id: String,
     pub label: String,
+    #[serde(default)]
+    pub aliases: Vec<String>,
     pub description: String,
     #[serde(default)]
     pub kind: ItemKind,

@@ -72,6 +72,7 @@ impl Default for super::ui_text::UiTextDefinition {
             minimap_charted_label: default_minimap_charted_label(),
             trace_mark_present_label: default_trace_mark_present_label(),
             take_label: default_take_label(),
+            use_label: default_use_label(),
             drop_label: default_drop_label(),
             act_closure: ActClosureDefinition::default(),
             game_closure: ActClosureDefinition::default(),

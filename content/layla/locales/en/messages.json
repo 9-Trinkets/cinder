@@ -68,6 +68,7 @@
     "follow.party_follows": "The {actors} fall in beside you.",
     "follow.large_party_follows": "Your party follows close behind.",
     "item.used": "Warmth spreads from the {item}. You feel mended.",
+    "item.date-flatbread.used": "You break the warm date flatbread and eat. Sweet dates and roasted sesame fill you with warmth.",
     "item.charm-sigil.acquired_room": "",
     "conversion.ring": "The {actor} lowers its head and falls in behind you. You watch for a moment, then turn to go.",
     "shaman.defeat": "The shaman sinks back against the cold stone, its staff clattering loose across the floor. A dry, rattling breath escapes its chest — not of pain, but of profound, exhausted relief. 'Cold at last,' it rasps, its milky eye staring into the dark ceiling. 'The void drinks clean... But do not flatter yourself, stranger. The dead do not stay here. The hand that drew these caverns will wipe the slate and set the pieces back upon their squares. When the board resets, we will wake again... and so will you.'",
