@@ -380,8 +380,8 @@ fn give_to_party_member_plans_event_when_valid() {
     assert!(advances_time);
     assert!(planned.events.iter().any(|event| matches!(
         event,
-        WorldEvent::PlayerGaveItemToPartyMember { actor_id, item_id }
-            if actor_id == "blair" && item_id == "iron-chisel"
+        WorldEvent::ItemTransferred { to_actor_id, item_id, .. }
+            if to_actor_id == "blair" && item_id == "iron-chisel"
     )));
 }
 
@@ -412,7 +412,7 @@ fn take_from_party_member_plans_event_when_held() {
     assert!(advances_time);
     assert!(planned.events.iter().any(|event| matches!(
         event,
-        WorldEvent::PlayerTookItemFromPartyMember { actor_id, item_id }
-            if actor_id == "blair" && item_id == "iron-chisel"
+        WorldEvent::ItemTransferred { from_actor_id, item_id, .. }
+            if from_actor_id == "blair" && item_id == "iron-chisel"
     )));
 }

@@ -71,9 +71,11 @@ fn give_item_adds_to_follower_inventory_when_not_equippable() {
     let output = apply_events(
         &mut state,
         &pack,
-        &[TimestampedWorldEvent::now(WorldEvent::PlayerGaveItemToPartyMember {
-            actor_id: ACTOR_A_ID.to_string(),
+        &[TimestampedWorldEvent::now(WorldEvent::ItemTransferred {
             item_id: "herb".to_string(),
+            from_actor_id: "player".to_string(),
+            to_actor_id: ACTOR_A_ID.to_string(),
+            initiator_actor_id: Some("player".to_string()),
         })],
     );
 
@@ -93,9 +95,11 @@ fn give_item_auto_equips_and_grants_stat_bonus() {
     let output = apply_events(
         &mut state,
         &pack,
-        &[TimestampedWorldEvent::now(WorldEvent::PlayerGaveItemToPartyMember {
-            actor_id: ACTOR_A_ID.to_string(),
+        &[TimestampedWorldEvent::now(WorldEvent::ItemTransferred {
             item_id: "iron-sword".to_string(),
+            from_actor_id: "player".to_string(),
+            to_actor_id: ACTOR_A_ID.to_string(),
+            initiator_actor_id: Some("player".to_string()),
         })],
     );
 
@@ -126,9 +130,11 @@ fn give_item_replaces_existing_gear_and_returns_old_item_to_follower_inventory()
     apply_events(
         &mut state,
         &pack,
-        &[TimestampedWorldEvent::now(WorldEvent::PlayerGaveItemToPartyMember {
-            actor_id: ACTOR_A_ID.to_string(),
+        &[TimestampedWorldEvent::now(WorldEvent::ItemTransferred {
             item_id: "iron-sword".to_string(),
+            from_actor_id: "player".to_string(),
+            to_actor_id: ACTOR_A_ID.to_string(),
+            initiator_actor_id: Some("player".to_string()),
         })],
     );
 
@@ -155,9 +161,11 @@ fn give_two_handed_weapon_replaces_both_weapon_and_offhand() {
     apply_events(
         &mut state,
         &pack,
-        &[TimestampedWorldEvent::now(WorldEvent::PlayerGaveItemToPartyMember {
-            actor_id: ACTOR_A_ID.to_string(),
+        &[TimestampedWorldEvent::now(WorldEvent::ItemTransferred {
             item_id: "greatbow".to_string(),
+            from_actor_id: "player".to_string(),
+            to_actor_id: ACTOR_A_ID.to_string(),
+            initiator_actor_id: Some("player".to_string()),
         })],
     );
 
@@ -182,9 +190,11 @@ fn take_item_from_follower_inventory() {
     let output = apply_events(
         &mut state,
         &pack,
-        &[TimestampedWorldEvent::now(WorldEvent::PlayerTookItemFromPartyMember {
-            actor_id: ACTOR_A_ID.to_string(),
+        &[TimestampedWorldEvent::now(WorldEvent::ItemTransferred {
             item_id: "herb".to_string(),
+            from_actor_id: ACTOR_A_ID.to_string(),
+            to_actor_id: "player".to_string(),
+            initiator_actor_id: Some("player".to_string()),
         })],
     );
 
@@ -207,9 +217,11 @@ fn take_item_from_follower_equipment_unequips_and_returns_to_player() {
     let output = apply_events(
         &mut state,
         &pack,
-        &[TimestampedWorldEvent::now(WorldEvent::PlayerTookItemFromPartyMember {
-            actor_id: ACTOR_A_ID.to_string(),
+        &[TimestampedWorldEvent::now(WorldEvent::ItemTransferred {
             item_id: "iron-sword".to_string(),
+            from_actor_id: ACTOR_A_ID.to_string(),
+            to_actor_id: "player".to_string(),
+            initiator_actor_id: Some("player".to_string()),
         })],
     );
 
@@ -220,6 +232,51 @@ fn take_item_from_follower_equipment_unequips_and_returns_to_player() {
         base_str - 3
     );
     assert!(output.lines.iter().any(|l| l.text.contains("You take the iron sword from Alex.")));
+}
+
+#[test]
+fn npc_gives_item_to_player_via_item_transferred() {
+    let pack = party_item_pack();
+    let mut state = party_state_with_follower(&pack);
+    state.actor_add_item(ACTOR_A_ID, "herb");
+
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::ItemTransferred {
+            item_id: "herb".to_string(),
+            from_actor_id: ACTOR_A_ID.to_string(),
+            to_actor_id: "player".to_string(),
+            initiator_actor_id: Some(ACTOR_A_ID.to_string()),
+        })],
+    );
+
+    assert_eq!(state.actor_item_count(ACTOR_A_ID, "herb"), 0);
+    assert!(state.has_item("herb"));
+    assert!(output.lines.iter().any(|l| l.text.contains("Alex gives you the healing herb.")));
+}
+
+#[test]
+fn npc_gives_item_to_another_npc_via_item_transferred() {
+    let pack = party_item_pack();
+    let mut state = party_state_with_follower(&pack);
+    state.actor_add_item(ACTOR_A_ID, "iron-sword");
+
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::ItemTransferred {
+            item_id: "iron-sword".to_string(),
+            from_actor_id: ACTOR_A_ID.to_string(),
+            to_actor_id: ACTOR_B_ID.to_string(),
+            initiator_actor_id: Some(ACTOR_A_ID.to_string()),
+        })],
+    );
+
+    assert_eq!(state.actor_item_count(ACTOR_A_ID, "iron-sword"), 0);
+    assert_eq!(state.actor_equipped_item(ACTOR_B_ID, "weapon"), Some("iron-sword"));
+    assert!(output.lines.iter().any(|l| l.text.contains("Alex gives the iron sword to Blair.")));
+    assert!(output.lines.iter().any(|l| l.text.contains("Blair equips the iron sword.")));
 }
 
 #[test]
@@ -250,3 +307,65 @@ fn runtime_give_command_with_authored_action_gives_item_to_companion() {
     assert_eq!(s.actor_item_count("golem-dark-nw", "brass-gear"), 1);
     assert!(!s.has_item("brass-gear"));
 }
+
+#[test]
+fn npc_dialogue_gifts_item_to_player_during_conversation() {
+    let pack = cinder_core::content::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "village_east_2".to_string();
+
+    assert_eq!(state.actor_item_count("yasmin", "date-flatbread"), 3);
+    assert!(!state.has_item("date-flatbread"));
+
+    let dialogue = std::sync::Arc::new(
+        cinder_core::engine::dialogue::ScriptedDialogueGenerator::new().with_reply(
+            "yasmin",
+            "Here, take this flatbread with roasted dates; you'll need it. [GIVE: date-flatbread]",
+        ),
+    );
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue.clone())
+            .expect("runtime creates");
+
+    let outcome = runtime
+        .run_turn("talk to yasmin")
+        .expect("turn runs without panic");
+
+    // 1. Spoken line has the [GIVE: ...] tag stripped
+    assert!(
+        outcome.text.contains("Here, take this flatbread with roasted dates; you'll need it."),
+        "outcome text was: {}",
+        outcome.text
+    );
+    assert!(
+        !outcome.text.contains("[GIVE"),
+        "outcome text still contained GIVE tag: {}",
+        outcome.text
+    );
+
+    // 2. Transfer narration is included
+    assert!(
+        outcome.text.contains("Yasmin gives you the date flatbread."),
+        "outcome text missing transfer message: {}",
+        outcome.text
+    );
+
+    // 3. State is updated: item removed from Yasmin, added to player
+    let s = runtime.export_state().unwrap();
+    assert_eq!(s.actor_item_count("yasmin", "date-flatbread"), 2);
+    assert!(s.has_item("date-flatbread"));
+    assert_eq!(s.item_count("date-flatbread"), 1);
+
+    // 4. Grounded dialogue request contained the carrying prompt
+    let requests = dialogue.request_log().lock().unwrap().clone();
+    let yasmin_req = requests.iter().find(|r| r.actor_id == "yasmin").expect("dialogue requested for yasmin");
+    assert!(
+        yasmin_req
+            .response_notes
+            .iter()
+            .any(|n| n.contains("You are carrying:") && n.contains("date-flatbread") && n.contains("[GIVE: <item_id>]")),
+        "response notes did not contain carry instruction: {:?}",
+        yasmin_req.response_notes
+    );
+}
+

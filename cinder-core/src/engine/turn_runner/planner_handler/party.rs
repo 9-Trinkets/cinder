@@ -206,9 +206,12 @@ pub(super) fn plan_give_to_party_member(
         return false;
     }
 
-    planned.events.push(WorldEvent::PlayerGaveItemToPartyMember {
-        actor_id: actor.id.clone(),
+    let player_id = content.settings.combat.player_actor_id.clone();
+    planned.events.push(WorldEvent::ItemTransferred {
         item_id: chosen.id.clone(),
+        from_actor_id: player_id.clone(),
+        to_actor_id: actor.id.clone(),
+        initiator_actor_id: Some(player_id),
     });
     true
 }
@@ -290,9 +293,12 @@ pub(super) fn plan_take_from_party_member(
         .copied()
         .unwrap_or(carrying[0]);
 
-    planned.events.push(WorldEvent::PlayerTookItemFromPartyMember {
-        actor_id: actor.id.clone(),
+    let player_id = content.settings.combat.player_actor_id.clone();
+    planned.events.push(WorldEvent::ItemTransferred {
         item_id: chosen.id.clone(),
+        from_actor_id: actor.id.clone(),
+        to_actor_id: player_id.clone(),
+        initiator_actor_id: Some(player_id),
     });
     true
 }

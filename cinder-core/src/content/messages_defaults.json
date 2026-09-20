@@ -17,6 +17,7 @@
   "party.order_member_ambiguous": "That party member name is ambiguous.",
   "party.give_success": "You give the {item} to {actor}.",
   "party.give_auto_equipped": "{actor} equips the {item}.",
+  "party.npc_give_player": "{actor} gives you the {item}.",
   "party.give_member_unavailable": "That party member is not available here.",
   "party.give_not_have": "You don't have that to give.",
   "party.give_equipped": "Unequip the {item} before giving it.",

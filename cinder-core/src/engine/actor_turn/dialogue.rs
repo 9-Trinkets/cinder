@@ -4,7 +4,7 @@ use crate::content::types::{ActorDefinition, ContentPack};
 use crate::engine::dialogue::{DialogueGenerator, DialogueRequest, DirectSpeechIntentRequest};
 use crate::engine::dialogue_grounding::{
     build_grounded_dialogue_request_for_exchange, build_grounded_dialogue_request_for_room,
-    latest_other_person_message,
+    extract_gift_tags, latest_other_person_message, resolve_gift_item_id,
 };
 use crate::engine::events::{WorldEvent, apply_speech_intent_effects};
 use crate::engine::messaging::ChannelMessage;
@@ -93,6 +93,7 @@ pub(crate) fn actor_to_actor_dialogue(
         other_person_message.clone(),
     )?;
     let text = generate_traced(dialogue, &request, emit_trace)?;
+    let (clean_text, gift_tags) = extract_gift_tags(&text);
     let attraction_request = DirectSpeechIntentRequest {
         locale: request.locale.clone(),
         system_text: request.system_text.clone(),
@@ -105,7 +106,7 @@ pub(crate) fn actor_to_actor_dialogue(
         recent_memory: request.recent_memory.clone(),
         other_person_message: request.other_person_message.clone(),
         target_person_message: request.other_person_message.clone(),
-        spoken_line: text,
+        spoken_line: clean_text.clone(),
     };
     let intents = &content.speech_intents.intents;
     let attraction_prompt =
@@ -149,11 +150,31 @@ pub(crate) fn actor_to_actor_dialogue(
         message: ChannelMessage::targeted(
             (&actor.id, &actor.name),
             (&target.actor_id, &target.actor_name),
-            &attraction_request.spoken_line,
+            &clean_text,
             current_room_id,
             other_person_message.as_deref(),
         ),
     }];
+    for raw_item_id in gift_tags {
+        if let Some(item_id) = resolve_gift_item_id(content, &raw_item_id) {
+            events.push(WorldEvent::ItemTransferred {
+                item_id: item_id.clone(),
+                from_actor_id: actor_id.clone(),
+                to_actor_id: other_person_id.clone(),
+                initiator_actor_id: Some(actor_id.clone()),
+            });
+            emit_trace(
+                "actor_turn",
+                "action.gift",
+                serde_json::json!({
+                    "actor_id": actor_id.clone(),
+                    "recipient_id": other_person_id.clone(),
+                    "item_id": item_id,
+                }),
+            )
+            .map_err(|error| -> Box<dyn Error> { Box::new(std::io::Error::other(error)) })?;
+        }
+    }
     events.extend(apply_speech_intent_effects(
         content,
         &decision,

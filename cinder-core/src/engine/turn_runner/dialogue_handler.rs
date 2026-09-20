@@ -50,6 +50,8 @@ pub(super) fn handle_actor_dialogue(
                     "backend": trace_backend.clone(),
                 }),
             )?;
+            let (clean_text, gift_tags) =
+                crate::engine::dialogue_grounding::extract_gift_tags(&text);
             let attraction_request = DirectSpeechIntentRequest {
                 locale: request.locale.clone(),
                 system_text: request.system_text.clone(),
@@ -62,17 +64,39 @@ pub(super) fn handle_actor_dialogue(
                 recent_memory: request.recent_memory.clone(),
                 other_person_message: request.other_person_message.clone(),
                 target_person_message: request.other_person_message.clone(),
-                spoken_line: text,
+                spoken_line: clean_text.clone(),
             };
             planned.events.push(WorldEvent::ChannelMessage {
                 message: ChannelMessage::targeted(
                     (&request.actor_id, &request.actor_name),
                     (&request.other_person_id, &request.other_person_name),
-                    &attraction_request.spoken_line,
+                    &clean_text,
                     &request.current_room_id,
                     request.other_person_message.as_deref(),
                 ),
             });
+            for raw_item_id in gift_tags {
+                if let Some(item_id) =
+                    crate::engine::dialogue_grounding::resolve_gift_item_id(content, &raw_item_id)
+                {
+                    planned.events.push(WorldEvent::ItemTransferred {
+                        item_id: item_id.clone(),
+                        from_actor_id: request.actor_id.clone(),
+                        to_actor_id: request.other_person_id.clone(),
+                        initiator_actor_id: Some(request.actor_id.clone()),
+                    });
+                    emit_trace(
+                        "actor_dialogue",
+                        "action.gift",
+                        serde_json::json!({
+                            "role": role_name,
+                            "actor_id": request.actor_id.clone(),
+                            "recipient_id": request.other_person_id.clone(),
+                            "item_id": item_id,
+                        }),
+                    )?;
+                }
+            }
             let attraction_prompt =
                 dialogue.build_direct_speech_intent_prompt(&attraction_request, intents);
             let attraction_backend = dialogue.trace_metadata("direct_speech_intent");

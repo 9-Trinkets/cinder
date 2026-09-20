@@ -142,13 +142,13 @@ pub enum WorldEvent {
     PlayerUnequippedItem {
         item_id: String,
     },
-    PlayerGaveItemToPartyMember {
-        actor_id: String,
+    /// An item was transferred from one actor to another (player-to-NPC, NPC-to-player, or NPC-to-NPC).
+    ItemTransferred {
         item_id: String,
-    },
-    PlayerTookItemFromPartyMember {
-        actor_id: String,
-        item_id: String,
+        from_actor_id: String,
+        to_actor_id: String,
+        #[serde(default)]
+        initiator_actor_id: Option<String>,
     },
     ItemAcquired {
         item_id: String,

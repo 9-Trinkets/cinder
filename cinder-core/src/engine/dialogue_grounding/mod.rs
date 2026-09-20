@@ -69,6 +69,31 @@ pub(crate) fn build_grounded_dialogue_request_for_exchange(
         &content.system_text.prompt_address_other_person_note,
         &[("other_person_name", other_person_name)],
     ));
+    let actor_items: Vec<(String, u32)> = state
+        .actor_inventory(actor_id)
+        .into_iter()
+        .filter(|(_, count)| *count > 0)
+        .collect();
+    if !actor_items.is_empty() {
+        let items_str = actor_items
+            .iter()
+            .map(|(item_id, count)| {
+                let label = content
+                    .item(item_id)
+                    .map(|i| i.label.as_str())
+                    .unwrap_or(item_id.as_str());
+                if *count > 1 {
+                    format!("{label} (id: '{item_id}', qty: {count})")
+                } else {
+                    format!("{label} (id: '{item_id}')")
+                }
+            })
+            .collect::<Vec<_>>()
+            .join(", ");
+        response_notes.push(format!(
+            "You are carrying: {items_str}. If you choose to give an item to {other_person_name} as part of your response, append '[GIVE: <item_id>]' (e.g. '[GIVE: date-flatbread]') to your speech. Only give items you are currently carrying."
+        ));
+    }
     let mut subtext_notes = prompt_context.subtext_notes.clone();
     if other_person_id == viewer_participant_id(content) {
         subtext_notes.extend(content.opening.prompt_context.subtext_notes.clone());
@@ -406,3 +431,149 @@ fn natural_join(items: &[&str]) -> String {
         }
     }
 }
+
+pub(crate) fn extract_gift_tags(raw: &str) -> (String, Vec<String>) {
+    let mut gifts = Vec::new();
+    let mut clean = String::with_capacity(raw.len());
+    let mut cursor = 0;
+
+    while let Some(start_offset) = raw[cursor..].find('[') {
+        let open_idx = cursor + start_offset;
+        clean.push_str(&raw[cursor..open_idx]);
+
+        if let Some(close_offset) = raw[open_idx..].find(']') {
+            let close_idx = open_idx + close_offset;
+            let bracketed = raw[open_idx + 1..close_idx].trim();
+            if bracketed.len() >= 5 && bracketed[..5].eq_ignore_ascii_case("give:") {
+                let item_id = bracketed[5..].trim().trim_matches(|c| c == '\'' || c == '\"');
+                if !item_id.is_empty() {
+                    gifts.push(item_id.to_string());
+                }
+                cursor = close_idx + 1;
+            } else {
+                clean.push('[');
+                cursor = open_idx + 1;
+            }
+        } else {
+            clean.push_str(&raw[open_idx..]);
+            cursor = raw.len();
+            break;
+        }
+    }
+    clean.push_str(&raw[cursor..]);
+
+    let mut normalized = String::with_capacity(clean.len());
+    let mut last_was_space = false;
+    for c in clean.chars() {
+        if c.is_whitespace() {
+            if !last_was_space && !normalized.is_empty() {
+                normalized.push(' ');
+                last_was_space = true;
+            }
+        } else {
+            if last_was_space
+                && (c == '.' || c == ',' || c == '!' || c == '?' || c == ';' || c == ':')
+                && normalized.ends_with(' ')
+            {
+                normalized.pop();
+            }
+            normalized.push(c);
+            last_was_space = false;
+        }
+    }
+    if normalized.ends_with(' ') {
+        normalized.pop();
+    }
+
+    let final_text = if normalized.is_empty() && !gifts.is_empty() {
+        "Here, take this.".to_string()
+    } else {
+        normalized
+    };
+
+    (final_text, gifts)
+}
+
+pub(crate) fn resolve_gift_item_id(content: &ContentPack, raw_id: &str) -> Option<String> {
+    let raw = raw_id.trim();
+    if let Some(item) = content.item(raw) {
+        return Some(item.id.clone());
+    }
+    let with_dashes = raw.replace(' ', "-");
+    let with_spaces = raw.replace('-', " ");
+    content
+        .items
+        .iter()
+        .find(|item| {
+            item.id.eq_ignore_ascii_case(raw)
+                || item.id.eq_ignore_ascii_case(&with_dashes)
+                || item.label.eq_ignore_ascii_case(raw)
+                || item.label.eq_ignore_ascii_case(&with_spaces)
+        })
+        .map(|item| item.id.clone())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn extracts_gift_tag_at_end_of_speech() {
+        let raw = "Here, take this flatbread with roasted dates; you'll need it. [GIVE: date-flatbread]";
+        let (clean, gifts) = extract_gift_tags(raw);
+        assert_eq!(
+            clean,
+            "Here, take this flatbread with roasted dates; you'll need it."
+        );
+        assert_eq!(gifts, vec!["date-flatbread"]);
+    }
+
+    #[test]
+    fn extracts_gift_tag_at_start_of_speech() {
+        let raw = "[GIVE: date-flatbread] Here, take this.";
+        let (clean, gifts) = extract_gift_tags(raw);
+        assert_eq!(clean, "Here, take this.");
+        assert_eq!(gifts, vec!["date-flatbread"]);
+    }
+
+    #[test]
+    fn extracts_gift_tag_in_middle_with_proper_spacing() {
+        let raw = "Take this [GIVE: date-flatbread], friend.";
+        let (clean, gifts) = extract_gift_tags(raw);
+        assert_eq!(clean, "Take this, friend.");
+        assert_eq!(gifts, vec!["date-flatbread"]);
+    }
+
+    #[test]
+    fn extracts_multiple_gift_tags_and_strips_quotes() {
+        let raw = "Take both! [GIVE: 'date-flatbread'] [give: \"copper-pipe\"]";
+        let (clean, gifts) = extract_gift_tags(raw);
+        assert_eq!(clean, "Take both!");
+        assert_eq!(gifts, vec!["date-flatbread", "copper-pipe"]);
+    }
+
+    #[test]
+    fn preserves_non_gift_brackets() {
+        let raw = "[smiles warmly] Take this! [GIVE: date-flatbread]";
+        let (clean, gifts) = extract_gift_tags(raw);
+        assert_eq!(clean, "[smiles warmly] Take this!");
+        assert_eq!(gifts, vec!["date-flatbread"]);
+    }
+
+    #[test]
+    fn provides_fallback_for_empty_speech_with_gift() {
+        let raw = "[GIVE: date-flatbread]";
+        let (clean, gifts) = extract_gift_tags(raw);
+        assert_eq!(clean, "Here, take this.");
+        assert_eq!(gifts, vec!["date-flatbread"]);
+    }
+
+    #[test]
+    fn leaves_plain_dialogue_untouched() {
+        let raw = "I have nothing for you, wanderer.";
+        let (clean, gifts) = extract_gift_tags(raw);
+        assert_eq!(clean, "I have nothing for you, wanderer.");
+        assert!(gifts.is_empty());
+    }
+}
+
