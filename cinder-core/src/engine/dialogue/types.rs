@@ -92,6 +92,10 @@ pub struct HandlerDescentCommentaryRequest {
     pub completed_floor_name: String,
     pub recent_transcript: Vec<String>,
     pub fallback_text: String,
+    #[serde(default)]
+    pub previous_floor_summaries: Vec<String>,
+    #[serde(default)]
+    pub party_members: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

@@ -202,10 +202,23 @@ pub(crate) fn build_handler_descent_commentary_prompt(
     } else {
         request.recent_transcript.join("\n")
     };
+    let previous_summaries = if request.previous_floor_summaries.is_empty() {
+        "(None - this is the first floor descent.)".to_string()
+    } else {
+        request.previous_floor_summaries.join("\n")
+    };
+    let party = if request.party_members.is_empty() {
+        "(None)".to_string()
+    } else {
+        request.party_members.join(", ")
+    };
     format!(
-        "Floor Just Completed: {}\nDestination Floor: {}\n\nRecent Floor Transcript:\n{}\n\nFallback Line:\n{}\n\nTask:\nGenerate 2 distinct comms messages from the Handler as Layla descends from {} into {}:\n1. \"summary\": 2 to 3 sentences of dry, superior handler commentary summarizing what Layla actually achieved, fought, or survived on {} (the floor she just finished), based on the transcript.\n2. \"introduction\": 2 to 3 sentences introducing the next floor ({}) without giving away any spoilers, secrets, or puzzle solutions.\n\nRespond ONLY with a valid JSON object matching this schema:\n{{\n  \"summary\": \"...\",\n  \"introduction\": \"...\"\n}}\nDo not include markdown codeblocks, quotation marks around the JSON, or speaker prefixes like 'Handler:'.",
+        "Floor Just Completed: {}\nDestination Floor: {}\nParty at Descent: {}\n\nPrevious Floor Milestones (already achieved and previously commented on - DO NOT repeat commentary for these):\n{}\n\nRecent Transcript for Completed Floor ({}):\n{}\n\nFallback Line:\n{}\n\nTask:\nGenerate 2 distinct comms messages from the Handler as Layla descends from {} into {}:\n1. \"summary\": 2 to 3 sentences of dry, superior handler commentary summarizing what Layla actually achieved, fought, or survived on {} (the floor she just finished), based strictly on the transcript for this completed floor. Do not repeat commentary or achievements from previous floors.\n2. \"introduction\": 2 to 3 sentences introducing the next floor ({}) without giving away any spoilers, secrets, or puzzle solutions.\n\nRespond ONLY with a valid JSON object matching this schema:\n{{\n  \"summary\": \"...\",\n  \"introduction\": \"...\"\n}}\nDo not include markdown codeblocks, quotation marks around the JSON, or speaker prefixes like 'Handler:'.",
         request.completed_floor_name,
         request.floor_name,
+        party,
+        previous_summaries,
+        request.completed_floor_name,
         transcript,
         request.fallback_text,
         request.completed_floor_name,

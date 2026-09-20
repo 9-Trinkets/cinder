@@ -2,9 +2,9 @@ use super::DialogueGenerator;
 use super::types::{
     ActorTurnActionDecision, ActorTurnActionRequest, ConversationMemorySummaryRequest,
     DialogueRequest, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
-    DynamicMenuOptionOutput, DynamicMenuRequest, HostilityPlanDecision, HostilityPlanRequest,
-    MenuIntentDecision, MenuIntentRequest, PerspectiveReview, PerspectiveReviewRequest,
-    StageAssignment, StageAssignmentRequest,
+    DynamicMenuOptionOutput, DynamicMenuRequest, HandlerDescentCommentaryRequest, HostilityPlanDecision,
+    HostilityPlanRequest, MenuIntentDecision, MenuIntentRequest, PerspectiveReview,
+    PerspectiveReviewRequest, StageAssignment, StageAssignmentRequest,
 };
 use crate::content::types::SpeechIntentLabel;
 use std::collections::BTreeMap;
@@ -20,6 +20,7 @@ pub struct ScriptedDialogueGenerator {
     stage_assignments: BTreeMap<String, StageAssignment>,
     descent_commentaries: BTreeMap<String, Vec<String>>,
     requests: std::sync::Arc<std::sync::Mutex<Vec<DialogueRequest>>>,
+    descent_requests: std::sync::Arc<std::sync::Mutex<Vec<HandlerDescentCommentaryRequest>>>,
 }
 
 impl ScriptedDialogueGenerator {
@@ -105,6 +106,13 @@ impl ScriptedDialogueGenerator {
 
     pub fn request_log(&self) -> std::sync::Arc<std::sync::Mutex<Vec<DialogueRequest>>> {
         self.requests.clone()
+    }
+
+    pub fn captured_descent_requests(&self) -> Vec<HandlerDescentCommentaryRequest> {
+        self.descent_requests
+            .lock()
+            .map(|r| r.clone())
+            .unwrap_or_default()
     }
 }
 
@@ -235,6 +243,9 @@ impl DialogueGenerator for ScriptedDialogueGenerator {
         &self,
         request: &super::types::HandlerDescentCommentaryRequest,
     ) -> Result<Vec<String>, String> {
+        if let Ok(mut reqs) = self.descent_requests.lock() {
+            reqs.push(request.clone());
+        }
         if let Some(reply) = self.descent_commentaries.get(&request.destination_room_id) {
             Ok(reply.clone())
         } else {

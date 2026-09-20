@@ -128,6 +128,22 @@ pub struct WorldState {
     /// opening sequence starts running.
     #[serde(default)]
     pub scripted_sequences: BTreeMap<String, ScriptedSequencePlayhead>,
+    /// Summaries of completed floors / acts upon descent, keyed by floor / act id.
+    #[serde(default)]
+    pub floor_summaries: BTreeMap<String, FloorDescentSummary>,
+}
+
+/// Summary milestone recorded upon descending from a floor / act.
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct FloorDescentSummary {
+    pub floor_id: String,
+    pub floor_name: String,
+    pub completed_turn: u32,
+    pub summary_text: String,
+    #[serde(default)]
+    pub party_at_descent: Vec<String>,
+    #[serde(default)]
+    pub transcript_line_count: usize,
 }
 
 #[derive(Deserialize)]
@@ -326,6 +342,7 @@ impl WorldState {
             actor_xp: BTreeMap::new(),
             actor_level: seeded_actor_levels(content),
             scripted_sequences,
+            floor_summaries: BTreeMap::new(),
         }
     }
 

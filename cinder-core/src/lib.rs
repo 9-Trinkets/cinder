@@ -13,4 +13,4 @@ pub use engine::runtime::{
     ActClosure, ActClosureSection, ActiveMenuInfo, CinderRuntime, FinalChapterSummary,
     PanelOption,
 };
-pub use engine::state::{TurnOutcome, WorldState};
+pub use engine::state::{FloorDescentSummary, TurnOutcome, WorldState};

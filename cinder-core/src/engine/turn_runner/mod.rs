@@ -23,7 +23,7 @@ use crate::engine::neuron::{
 };
 use crate::engine::reducer::{ReducerOutput, apply_events, handler_attributed_line};
 use crate::engine::roles::RoleHandler;
-use crate::engine::state::{TurnOutcome, WorldSnapshot, WorldState};
+use crate::engine::state::{FloorDescentSummary, TurnOutcome, WorldSnapshot, WorldState};
 use std::error::Error;
 use std::path::Path;
 use std::sync::{Arc, Mutex};
@@ -291,7 +291,7 @@ impl CinderRoleRunner {
         maybe_tailor_handler_descent_commentary(
             self.content.as_ref(),
             self.dialogue.as_ref(),
-            &state,
+            &mut state,
             &logged_events,
             &mut reduced.lines,
         );
@@ -370,7 +370,7 @@ impl CinderRoleRunner {
 pub(crate) fn maybe_tailor_handler_descent_commentary(
     content: &ContentPack,
     dialogue: &dyn DialogueGenerator,
-    state: &WorldState,
+    state: &mut WorldState,
     logged_events: &[TimestampedWorldEvent],
     lines: &mut NarrativeLines,
 ) {
@@ -416,20 +416,32 @@ pub(crate) fn maybe_tailor_handler_descent_commentary(
         return;
     };
 
+    let completed_floor_map = content.map_for_room(from_room_id);
+    let completed_floor_id = completed_floor_map
+        .map(|m| m.id.clone())
+        .unwrap_or_else(|| from_room_id.to_string());
+
     let floor_name = content
         .map_for_room(to_room_id)
         .map(|m| m.label.clone())
         .or_else(|| content.room(to_room_id).map(|r| r.title.clone()))
         .unwrap_or_else(|| to_room_id.to_string());
 
-    let completed_floor_name = content
-        .map_for_room(from_room_id)
+    let completed_floor_name = completed_floor_map
         .map(|m| m.label.clone())
         .or_else(|| content.room(from_room_id).map(|r| r.title.clone()))
         .unwrap_or_else(|| from_room_id.to_string());
 
-    let recent_transcript = state
-        .transcript
+    // Cutoff from previous floor descents to isolate this floor's transcript slice
+    let last_cutoff = state
+        .floor_summaries
+        .values()
+        .map(|summary| summary.transcript_line_count)
+        .max()
+        .unwrap_or(0);
+
+    let transcript_start = last_cutoff.min(state.transcript.len());
+    let recent_transcript = state.transcript[transcript_start..]
         .iter()
         .filter(|line| !line.trim().is_empty())
         .rev()
@@ -440,16 +452,41 @@ pub(crate) fn maybe_tailor_handler_descent_commentary(
         .rev()
         .collect();
 
+    // Summaries from previous floors (chronologically)
+    let mut prev_summaries_vec: Vec<_> = state.floor_summaries.values().cloned().collect();
+    prev_summaries_vec.sort_by_key(|s| s.completed_turn);
+    let previous_floor_summaries = prev_summaries_vec
+        .into_iter()
+        .map(|s| format!("- {} (Turn {}): {}", s.floor_name, s.completed_turn, s.summary_text))
+        .collect();
+
+    // Party members following player at descent
+    let mut party_members = vec!["Layla".to_string()];
+    for (actor_id, rel) in &state.relationships {
+        if rel.follows_player {
+            let name = content
+                .actor(actor_id)
+                .map(|a| a.name.clone())
+                .unwrap_or_else(|| actor_id.clone());
+            if !party_members.contains(&name) {
+                party_members.push(name);
+            }
+        }
+    }
+
     let request = HandlerDescentCommentaryRequest {
         locale: content.locale.clone(),
         system_text: content.system_text.clone(),
         floor_name,
         destination_room_id: to_room_id.to_string(),
-        completed_floor_name,
+        completed_floor_name: completed_floor_name.clone(),
         recent_transcript,
         fallback_text: fallback_raw.clone(),
+        previous_floor_summaries,
+        party_members: party_members.clone(),
     };
 
+    let mut commentary_summary = None;
     if let Ok(commentary_lines) = dialogue.generate_handler_descent_commentary(&request) {
         let valid_lines: Vec<String> = commentary_lines
             .into_iter()
@@ -459,6 +496,7 @@ pub(crate) fn maybe_tailor_handler_descent_commentary(
         if !(valid_lines.is_empty()
             || (valid_lines.len() == 1 && valid_lines[0] == fallback_raw.trim()))
         {
+            commentary_summary = Some(valid_lines[0].clone());
             let attributed_first = handler_attributed_line(content, &valid_lines[0])
                 .unwrap_or_else(|| valid_lines[0].clone());
             lines.0[matching_index].text = attributed_first;
@@ -472,6 +510,25 @@ pub(crate) fn maybe_tailor_handler_descent_commentary(
                 );
             }
         }
+    }
+
+    // Record the completed floor's summary milestone if not already present
+    if !state.floor_summaries.contains_key(&completed_floor_id) {
+        let summary_prose = commentary_summary.unwrap_or_else(|| fallback_raw.clone());
+        let current_turn_lines_count = lines.0.iter().filter(|l| !l.text.trim().is_empty()).count();
+        let transcript_cutoff = state.transcript.len() + current_turn_lines_count;
+
+        state.floor_summaries.insert(
+            completed_floor_id.clone(),
+            FloorDescentSummary {
+                floor_id: completed_floor_id,
+                floor_name: completed_floor_name,
+                completed_turn: state.turn_number,
+                summary_text: summary_prose,
+                party_at_descent: party_members,
+                transcript_line_count: transcript_cutoff,
+            },
+        );
     }
 }
 

@@ -424,3 +424,115 @@ fn floor4_large_state_tick_runs_without_soft_error() {
     );
 }
 
+#[test]
+fn multi_floor_descent_isolates_transcripts_and_builds_summaries() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+
+    let dialogue = std::sync::Arc::new(
+        cinder_core::engine::dialogue::ScriptedDialogueGenerator::new()
+            .with_descent_commentary_lines(
+                "d1c1",
+                vec![
+                    "Layla conquered The Cave.".to_string(),
+                    "Prepare for Deep Forest.".to_string(),
+                ],
+            )
+            .with_descent_commentary_lines(
+                "oan",
+                vec![
+                    "Layla conquered Deep Forest.".to_string(),
+                    "Prepare for Outer Ring.".to_string(),
+                ],
+            ),
+    );
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "r5c5".to_string();
+    state.story_vars.set_unchecked("shaman_defeated", "true");
+
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack.clone(),
+        state,
+        dialogue.clone(),
+    )
+    .expect("runtime creates");
+
+    // Floor 1 lines
+    let _ = runtime.push_transcript_line("Layla drew a chalk circle on the limestone cave floor.");
+    let _ = runtime.push_transcript_line("Layla tamed a goblin in the cave.");
+
+    // Descent 1: Floor 1 -> Floor 2 (d1c1)
+    let outcome1 = runtime.run_turn("down").expect("descend to floor 2");
+    assert_eq!(runtime.current_room_id().unwrap(), "d1c1");
+    assert!(outcome1.text.contains("Layla conquered The Cave"));
+
+    // Check request 1
+    {
+        let reqs = dialogue.captured_descent_requests();
+        assert_eq!(reqs.len(), 1);
+        assert_eq!(reqs[0].completed_floor_name, "The Cave");
+        assert_eq!(reqs[0].floor_name, "Deep Forest");
+        assert!(reqs[0].previous_floor_summaries.is_empty());
+        assert!(reqs[0].recent_transcript.iter().any(|l| l.contains("chalk circle")));
+    }
+
+    let state1 = runtime.export_state().unwrap();
+    assert!(state1.floor_summaries.contains_key("upper-works"));
+    let f1_summary = &state1.floor_summaries["upper-works"];
+    assert_eq!(f1_summary.floor_name, "The Cave");
+    assert_eq!(f1_summary.summary_text, "Layla conquered The Cave.");
+
+    // Floor 2: Move to d8c5 (exit to Floor 3)
+    let mut state_floor2 = runtime.export_state().unwrap();
+    state_floor2.current_room_id = "d8c5".to_string();
+    state_floor2.story_vars.set_unchecked("elf_king_defeated", "true");
+
+    let runtime2 = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack.clone(),
+        state_floor2,
+        dialogue.clone(),
+    )
+    .expect("runtime creates");
+
+    // Generate Floor 2-specific lines
+    let _ = runtime2.push_transcript_line("Layla navigated bioluminescent mushrooms and mossy boughs.");
+    let _ = runtime2.push_transcript_line("Layla struck down the Corrupted Treant.");
+
+    // Descent 2: Floor 2 -> Floor 3 (oan)
+    let outcome2 = runtime2.run_turn("down").expect("descend to floor 3");
+    assert_eq!(runtime2.current_room_id().unwrap(), "oan");
+    assert!(outcome2.text.contains("Layla conquered Deep Forest"));
+
+    // Check request 2
+    {
+        let reqs = dialogue.captured_descent_requests();
+        assert_eq!(reqs.len(), 2);
+        let req2 = &reqs[1];
+        assert_eq!(req2.completed_floor_name, "Deep Forest");
+        assert_eq!(req2.floor_name, "Outer Ring");
+
+        // Previous floor milestones MUST contain Floor 1 summary
+        assert_eq!(req2.previous_floor_summaries.len(), 1);
+        assert!(req2.previous_floor_summaries[0].contains("The Cave"));
+        assert!(req2.previous_floor_summaries[0].contains("Layla conquered The Cave."));
+
+        // Recent transcript MUST contain Floor 2 events and MUST NOT contain Floor 1 events!
+        assert!(req2.recent_transcript.iter().any(|l| l.contains("bioluminescent mushrooms")));
+        assert!(req2.recent_transcript.iter().any(|l| l.contains("Corrupted Treant")));
+        assert!(
+            !req2.recent_transcript.iter().any(|l| l.contains("chalk circle")),
+            "Floor 2 transcript slice must NOT contain Floor 1 chalk circle!"
+        );
+        assert!(
+            !req2.recent_transcript.iter().any(|l| l.contains("tamed a goblin")),
+            "Floor 2 transcript slice must NOT contain Floor 1 goblin!"
+        );
+    }
+
+    let state2 = runtime2.export_state().unwrap();
+    assert!(state2.floor_summaries.contains_key("upper-works"));
+    assert!(state2.floor_summaries.contains_key("deep-forest"));
+    let f2_summary = &state2.floor_summaries["deep-forest"];
+    assert_eq!(f2_summary.floor_name, "Deep Forest");
+    assert_eq!(f2_summary.summary_text, "Layla conquered Deep Forest.");
+}
+

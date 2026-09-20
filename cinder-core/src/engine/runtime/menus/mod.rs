@@ -54,7 +54,7 @@ impl CinderRuntime {
         maybe_tailor_handler_descent_commentary(
             self.content.as_ref(),
             self.dialogue.as_ref(),
-            &state,
+            &mut state,
             &events,
             &mut reduced.lines,
         );

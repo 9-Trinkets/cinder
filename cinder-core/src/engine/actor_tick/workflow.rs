@@ -129,8 +129,7 @@ pub(crate) fn run_actor_tick(
 ) -> Result<ActorTickExecution, ActorTickError> {
     let scope_room_ids = tick_scope_room_ids(content.as_ref(), state);
     let remaining_actor_ids = select_tick_actors(content.as_ref(), state, &scope_room_ids);
-    let input = ActorTickWorkflowState {
-        state: state.clone(),
+    let input = ActorTickWorkflowEnvelope {
         remaining_actor_ids,
         current_actor_id: None,
         emitted_events: Vec::new(),
@@ -138,6 +137,7 @@ pub(crate) fn run_actor_tick(
         hostility_stage: HostilityStageEnvelope::Idle,
     };
     let trace_records = Arc::new(Mutex::new(Vec::new()));
+    let sim_state = Arc::new(Mutex::new(state.clone()));
     let output = run_workflow(
         tick_workflow,
         &serde_json::to_string(&input).map_err(|error| ActorTickError {
@@ -149,6 +149,7 @@ pub(crate) fn run_actor_tick(
         ActorTickRoleRunner {
             content,
             dialogue,
+            state: sim_state,
             trace_records: Arc::clone(&trace_records),
         },
     );
@@ -181,6 +182,7 @@ pub(crate) fn run_actor_tick(
 pub(super) struct ActorTickRoleRunner {
     pub(super) content: Arc<ContentPack>,
     pub(super) dialogue: Arc<dyn DialogueGenerator>,
+    pub(super) state: Arc<Mutex<WorldState>>,
     trace_records: Arc<Mutex<Vec<ActorTraceRecord>>>,
 }
 
@@ -222,24 +224,31 @@ impl LocalWorkflowRunner for ActorTickRoleRunner {
 impl ActorTickRoleRunner {
     fn handle_tick_orchestrator(&self, prompt: &str) -> Result<String, String> {
         let inbound = extract_inbound_message(prompt)?;
-        let mut workflow_state: ActorTickWorkflowState =
+        let mut envelope: ActorTickWorkflowEnvelope =
             serde_json::from_str(&inbound).map_err(|error| error.to_string())?;
-        workflow_state.current_actor_id = None;
-        if workflow_state.state.phase != GamePhase::Active {
-            return complete_tick_workflow(&workflow_state.emitted_events);
+        envelope.current_actor_id = None;
+        let phase = {
+            let state = self
+                .state
+                .lock()
+                .map_err(|_| "failed to lock state for tick orchestrator".to_string())?;
+            state.phase.clone()
+        };
+        if phase != GamePhase::Active {
+            return complete_tick_workflow(&envelope.emitted_events);
         }
-        match workflow_state.hostility_stage {
+        match envelope.hostility_stage {
             HostilityStageEnvelope::Idle => {
-                route_tick_workflow("world_hostility_decide", &workflow_state)
+                route_tick_workflow("world_hostility_decide", &envelope)
             }
             HostilityStageEnvelope::Applied => {
-                if let Some(actor_id) = workflow_state.remaining_actor_ids.first().cloned() {
-                    workflow_state.remaining_actor_ids.remove(0);
-                    workflow_state.current_actor_id = Some(actor_id);
-                    workflow_state.actor_turn_stage = ActorTurnStageEnvelope::Idle;
-                    return route_tick_workflow("npc_actor_turn_build_actions", &workflow_state);
+                if let Some(actor_id) = envelope.remaining_actor_ids.first().cloned() {
+                    envelope.remaining_actor_ids.remove(0);
+                    envelope.current_actor_id = Some(actor_id);
+                    envelope.actor_turn_stage = ActorTurnStageEnvelope::Idle;
+                    return route_tick_workflow("npc_actor_turn_build_actions", &envelope);
                 }
-                complete_tick_workflow(&workflow_state.emitted_events)
+                complete_tick_workflow(&envelope.emitted_events)
             }
             HostilityStageEnvelope::Decided { .. } => {
                 Err("npc tick orchestrator received undecided hostility stage envelope".to_string())
@@ -284,8 +293,7 @@ impl ActorTickRoleRunner {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub(super) struct ActorTickWorkflowState {
-    pub(super) state: WorldState,
+pub(super) struct ActorTickWorkflowEnvelope {
     pub(super) remaining_actor_ids: Vec<String>,
     pub(super) current_actor_id: Option<String>,
     pub(super) emitted_events: Vec<WorldEvent>,
@@ -309,11 +317,11 @@ struct RouteEnvelope {
 
 pub(super) fn route_tick_workflow(
     next: &str,
-    state: &ActorTickWorkflowState,
+    envelope: &ActorTickWorkflowEnvelope,
 ) -> Result<String, String> {
     serde_json::to_string(&RouteEnvelope {
         next: next.to_string(),
-        message: serde_json::to_string(state).map_err(|error| error.to_string())?,
+        message: serde_json::to_string(envelope).map_err(|error| error.to_string())?,
     })
     .map_err(|error| error.to_string())
 }
