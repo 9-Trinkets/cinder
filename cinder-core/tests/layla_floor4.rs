@@ -259,3 +259,106 @@ fn floor4_mineral_and_chalk_lore_integrity() {
         }
     }
 }
+
+#[test]
+fn floor4_quests_panel_hidden_before_floor4_and_revealed_on_floor4() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+
+    // Floors 1-3 rooms should NOT reveal quests
+    assert!(!pack.quests_revealed_for_room("deep_forest_start"));
+    assert!(!pack.quests_revealed_for_room("deep_forest_2"));
+    assert!(!pack.quests_revealed_for_room("cave_start"));
+    assert!(!pack.quests_revealed_for_room("oh"));
+
+    // Floor 4 rooms MUST reveal quests
+    assert!(pack.quests_revealed_for_room("village_square"));
+    assert!(pack.quests_revealed_for_room("village_south_1"));
+    assert!(pack.quests_revealed_for_room("village_north_gate"));
+    assert!(pack.quests_revealed_for_room("village_west_2"));
+}
+
+#[test]
+fn floor4_quests_activation_via_speech() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "village_square".to_string();
+
+    let scripted_dialogue = cinder_core::engine::dialogue::ScriptedDialogueGenerator::new()
+        .with_reply(
+            "elder_rashid",
+            "Please, Layla... we offered the boy Zayd as a sacrifice to the garrison. You must rescue him before the temple transport arrives!",
+        )
+        .with_reply(
+            "tariq",
+            "Commander Malik keeps the Teleportation Scroll locked in his brass safe. It is the only way to reach Floor 5.",
+        );
+
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack.clone(),
+        state,
+        std::sync::Arc::new(scripted_dialogue),
+    )
+    .expect("runtime creates");
+
+    // Initially on Floor 4, no quests are yet visible in summaries
+    let initial_objectives = runtime.current_objective_summaries().unwrap();
+    assert!(
+        initial_objectives.is_empty(),
+        "Quests should be latent until NPC tells Layla"
+    );
+
+    // 1. Move to Elder Rashid's room (village_south_1) and talk
+    let _ = runtime.run_turn("east").expect("move to elder");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_south_1");
+
+    let outcome = runtime.run_turn("talk to rashid").expect("talk to rashid");
+    assert!(outcome.text.contains("Zayd"));
+
+    // Now Side Quest "Save the Boy Zayd" should be active!
+    let objectives_after_rashid = runtime.current_objective_summaries().unwrap();
+    assert_eq!(objectives_after_rashid.len(), 1);
+    assert_eq!(
+        objectives_after_rashid[0].quest_id.as_deref(),
+        Some("save_zayd")
+    );
+    assert_eq!(
+        objectives_after_rashid[0].quest_title.as_deref(),
+        Some("Save the Boy Zayd")
+    );
+    assert_eq!(
+        objectives_after_rashid[0].quest_kind.as_deref(),
+        Some("side")
+    );
+
+    // 2. Move along to Tariq's workshop (village_west_2):
+    // village_south_1 -> west -> village_square -> west -> village_sw_corner -> northeast -> village_west_1 -> northeast -> village_west_2
+    let _ = runtime.run_turn("west").expect("to square");
+    let _ = runtime.run_turn("west").expect("to sw");
+    let _ = runtime.run_turn("northeast").expect("to west_1");
+    let _ = runtime.run_turn("northeast").expect("to west_2");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_west_2");
+
+    let outcome = runtime.run_turn("talk to tariq").expect("talk to tariq");
+    assert!(outcome.text.contains("Teleportation Scroll"));
+
+    // Now BOTH Main Quest and Side Quest should be active!
+    let objectives_after_tariq = runtime.current_objective_summaries().unwrap();
+    assert_eq!(objectives_after_tariq.len(), 2);
+
+    let main_quest = objectives_after_tariq
+        .iter()
+        .find(|o| o.quest_kind.as_deref() == Some("main"))
+        .expect("main quest must be active");
+    assert_eq!(main_quest.quest_id.as_deref(), Some("teleport_scroll"));
+    assert_eq!(
+        main_quest.quest_title.as_deref(),
+        Some("The Teleportation Scroll")
+    );
+
+    let side_quest = objectives_after_tariq
+        .iter()
+        .find(|o| o.quest_kind.as_deref() == Some("side"))
+        .expect("side quest must still be active");
+    assert_eq!(side_quest.quest_id.as_deref(), Some("save_zayd"));
+}
+

@@ -366,6 +366,7 @@ export interface UiSnapshot {
   player: PlayerStatus
   minimap: MinimapData | null
   levels_revealed: boolean
+  quests_revealed?: boolean
   current_room_items: InventoryItem[]
   room_consumables: RoomConsumableGroup[]
   crafted_consumable_labels: string[]

@@ -1,3 +1,4 @@
+use crate::engine::reducer::beat_advance::advance_objective_for_signal;
 use crate::engine::reducer::command_effects::trigger_surrounded_hooks;
 use crate::content::types::{ContentPack, ItemStorageTarget, PackMessageVoice};
 use crate::engine::narrative::NarrativeLines;
@@ -28,6 +29,16 @@ pub(crate) fn handle_item_acquired(
             {
                 push_rendered_message(lines, content, line, voice);
             }
+            lines.extend_narration(advance_objective_for_signal(
+                state,
+                content,
+                &format!("item_acquired:{item_id}"),
+            ));
+            lines.extend_narration(advance_objective_for_signal(
+                state,
+                content,
+                "item_acquired",
+            ));
         }
         ItemStorageTarget::CurrentRoom => {
             if let Some((line, voice)) =
@@ -58,6 +69,16 @@ pub(crate) fn handle_player_took_item(
     if state.remove_item_from_storage(item_id, ItemStorageTarget::CurrentRoom, &room_id) {
         state.add_item(item_id);
         push_message(lines, content, "item.taken", &[("label", label)]);
+        lines.extend_narration(advance_objective_for_signal(
+            state,
+            content,
+            &format!("item_acquired:{item_id}"),
+        ));
+        lines.extend_narration(advance_objective_for_signal(
+            state,
+            content,
+            "item_acquired",
+        ));
     }
 }
 

@@ -250,6 +250,8 @@ pub struct UiSnapshot {
     /// `level_reveal_room_prefix`: false until the player has travelled to a
     /// room on that board. Level info stays hidden to reward descent.
     pub levels_revealed: bool,
+    /// Whether quests/objectives are revealed yet in the sidebar.
+    pub quests_revealed: bool,
     /// Loose items lying in the current room (dropped there).
     pub current_room_items: Vec<InventoryItem>,
     pub room_consumables: Vec<RoomConsumableGroup>,

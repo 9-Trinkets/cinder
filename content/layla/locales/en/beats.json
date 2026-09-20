@@ -1,0 +1,126 @@
+{
+  "initial_stage_ids": [
+    "mq_hear_gate",
+    "sq_hear_sacrifice"
+  ],
+  "stages": [
+    {
+      "id": "mq_hear_gate",
+      "summary": "",
+      "beat_note": "Layla has arrived at the mining village on Floor 4, but hasn't yet learned how to pass beyond the sealed fortress gate or descend to Floor 5.",
+      "advance_signals": [
+        "spoken_to:tariq",
+        "spoken_to:garrison_sentry_gate",
+        "spoken_to:garrison_guard",
+        "speech_topic:teleport_scroll",
+        "speech_topic:next_floor"
+      ],
+      "next_stage_ids": [
+        "mq_find_scroll"
+      ]
+    },
+    {
+      "id": "mq_find_scroll",
+      "quest_id": "teleport_scroll",
+      "quest_title": "The Teleportation Scroll",
+      "quest_kind": "main",
+      "summary": "Recover the Teleportation Scroll from Commander Malik's safe.",
+      "beat_note": "Layla learned that the military fortress gate is locked, but Commander Malik holds an ancient Teleportation Scroll in his safe. She needs to infiltrate the fortress and retrieve it.",
+      "update_message": "Find Commander Malik's safe inside the military fortress and retrieve the Teleportation Scroll.",
+      "advance_signals": [
+        "item_acquired:teleport-scroll",
+        "knows_teleport",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.knows_teleport",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "mq_use_teleport_platform"
+      ]
+    },
+    {
+      "id": "mq_use_teleport_platform",
+      "quest_id": "teleport_scroll",
+      "quest_title": "The Teleportation Scroll",
+      "quest_kind": "main",
+      "summary": "Activate the teleport platform to descend to Floor 5.",
+      "beat_note": "Having acquired the knowledge of the Teleportation Sigil, Layla can now reach the teleport platform in the heart of the fortress and descend.",
+      "update_message": "Use the Teleportation Sigil at the teleport platform to descend to Floor 5.",
+      "advance_signals": [
+        "room_entered:floor5_start",
+        "descend_floor_5"
+      ],
+      "next_stage_ids": []
+    },
+    {
+      "id": "sq_hear_sacrifice",
+      "summary": "",
+      "beat_note": "Layla hasn't yet heard the dark truth about the village council surrendering the orphan boy Zayd as a sacrifice to the garrison.",
+      "advance_signals": [
+        "spoken_to:elder_rashid",
+        "spoken_to:yasmin",
+        "speech_topic:save_zayd",
+        "speech_topic:sacrifice"
+      ],
+      "next_stage_ids": [
+        "sq_save_zayd"
+      ]
+    },
+    {
+      "id": "sq_save_zayd",
+      "quest_id": "save_zayd",
+      "quest_title": "Save the Boy Zayd",
+      "quest_kind": "side",
+      "summary": "Rescue the orphan boy Zayd from the military complex.",
+      "beat_note": "Elder Rashid and Yasmin revealed that the village council offered Zayd as a tithe sacrifice. Layla needs to find the boy and rescue him from his iron cage.",
+      "update_message": "Search the military complex for the orphan boy Zayd and rescue him from the garrison.",
+      "advance_signals": [
+        "spoken_to:zayd",
+        "zayd_freed",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.zayd_rescued",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "sq_return_zayd"
+      ]
+    },
+    {
+      "id": "sq_return_zayd",
+      "quest_id": "save_zayd",
+      "quest_title": "Save the Boy Zayd",
+      "quest_kind": "side",
+      "summary": "Escort Zayd back to safety in the village.",
+      "beat_note": "Zayd is rescued from his cage. Escort him back to the safety of the worker village.",
+      "update_message": "Escort Zayd back to the village safely.",
+      "advance_signals": [
+        "zayd_safe",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.zayd_safe",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": []
+    }
+  ]
+}

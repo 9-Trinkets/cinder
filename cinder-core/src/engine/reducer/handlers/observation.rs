@@ -1,3 +1,4 @@
+use crate::engine::reducer::beat_advance::advance_objective_for_signal;
 use crate::engine::reducer::observation::{
     render_feature_consumables_line, render_room_observation, render_story_text,
 };
@@ -37,6 +38,16 @@ pub(crate) fn handle_feature_observed(
     } else {
         lines.narration(content.presentation.error_text.room_missing.clone());
     }
+    lines.extend_narration(advance_objective_for_signal(
+        state,
+        content,
+        &format!("feature_observed:{room_id}:{feature_id}"),
+    ));
+    lines.extend_narration(advance_objective_for_signal(
+        state,
+        content,
+        &format!("feature_observed:{feature_id}"),
+    ));
 }
 
 pub(crate) fn handle_actor_observed(
@@ -50,6 +61,11 @@ pub(crate) fn handle_actor_observed(
     } else {
         lines.narration(content.presentation.error_text.actor_unknown.clone());
     }
+    lines.extend_narration(advance_objective_for_signal(
+        state,
+        content,
+        &format!("actor_observed:{actor_id}"),
+    ));
 }
 
 pub(crate) fn handle_actor_observed_room(

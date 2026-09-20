@@ -161,7 +161,11 @@ impl ContentPack {
     /// the player as an ordinary actor entry (id matching
     /// `combat.player_actor_id`); every NPC-oriented loop must skip it.
     pub fn is_player_actor(&self, actor_id: &str) -> bool {
-        actor_id == self.settings.combat.player_actor_id
+        (!self.settings.combat.player_actor_id.is_empty()
+            && actor_id == self.settings.combat.player_actor_id)
+            || actor_id == self.opening.id
+            || actor_id == "player"
+            || actor_id.starts_with("viewer:")
     }
 
     pub fn hook(&self, hook_id: &str) -> Option<&Value> {
@@ -264,6 +268,19 @@ impl ContentPack {
             || room_id.starts_with("mine_")
             || room_id.starts_with("boiler_")
             || room_id.starts_with("village_")
+            || room_id.starts_with("fortress_")
+            || room_id.starts_with("teleport_")
+    }
+
+    /// Whether the quests panel is shown in the sidebar. Quests stay hidden
+    /// until the player has travelled to a room on the board named by
+    /// `quests_reveal_room_prefix`. An empty prefix keeps them always visible.
+    pub fn quests_revealed_for_room(&self, room_id: &str) -> bool {
+        let prefix = &self.settings.quests_reveal_room_prefix;
+        prefix.is_empty()
+            || room_id.starts_with(prefix.as_str())
+            || room_id.starts_with("village_")
+            || room_id.starts_with("garrison_")
             || room_id.starts_with("fortress_")
             || room_id.starts_with("teleport_")
     }

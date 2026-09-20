@@ -253,41 +253,57 @@ export default function StatusPanel({
         </Section>
       )}
 
-      {uiSnapshot.objectives && uiSnapshot.objectives.some(o => o.quest_title || o.quest_kind) ? (
+      {uiSnapshot.quests_revealed !== false && (
         <Section title="Quests" defaultOpen>
-          <div className="space-y-2.5">
-            {uiSnapshot.objectives.map((obj, idx) => {
-              const isMain = obj.quest_kind?.toLowerCase() === 'main'
-              return (
-                <div key={obj.stage_id || idx} className="rounded-lg bg-overlay/60 p-2.5 border border-subtle">
-                  <div className="flex items-center justify-between gap-2 mb-1">
-                    <span className="font-semibold text-text text-xs">
-                      {obj.quest_title || (isMain ? 'Main Quest' : 'Side Quest')}
-                    </span>
-                    {obj.quest_kind && (
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded font-semibold uppercase tracking-wider ${
-                        isMain
-                          ? 'bg-gold/15 text-gold border border-gold/30'
-                          : 'bg-iris/15 text-iris border border-iris/30'
-                      }`}>
-                        {obj.quest_kind}
-                      </span>
+          {uiSnapshot.objectives && uiSnapshot.objectives.length > 0 ? (
+            <div className="space-y-2.5">
+              {uiSnapshot.objectives.map((obj, idx) => {
+                const isMain = obj.quest_kind?.toLowerCase() === 'main'
+                const isSide = obj.quest_kind?.toLowerCase() === 'side'
+                const hasQuestCard = Boolean(obj.quest_title || obj.quest_kind)
+
+                if (hasQuestCard) {
+                  return (
+                    <div key={obj.stage_id || idx} className="rounded-lg bg-overlay/60 p-2.5 border border-subtle">
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <span className="font-semibold text-text text-xs">
+                          {obj.quest_title || (isMain ? 'Main Quest' : 'Side Quest')}
+                        </span>
+                        {obj.quest_kind && (
+                          <span className={`text-[10px] px-1.5 py-0.5 rounded font-semibold uppercase tracking-wider ${
+                            isMain
+                              ? 'bg-gold/15 text-gold border border-gold/30'
+                              : isSide
+                              ? 'bg-iris/15 text-iris border border-iris/30'
+                              : 'bg-pine/15 text-pine border border-pine/30'
+                          }`}>
+                            {obj.quest_kind}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-text font-medium text-xs mb-0.5">{obj.summary}</p>
+                      {obj.message && obj.message !== obj.summary && (
+                        <p className="text-muted text-[11px] leading-relaxed">{obj.message}</p>
+                      )}
+                    </div>
+                  )
+                }
+
+                return (
+                  <div key={obj.stage_id || idx} className="rounded-lg bg-overlay/40 p-2 border border-subtle/60">
+                    <p className="text-text text-xs leading-relaxed">{obj.summary}</p>
+                    {obj.message && obj.message !== obj.summary && (
+                      <p className="text-muted text-[11px] leading-relaxed mt-0.5">{obj.message}</p>
                     )}
                   </div>
-                  <p className="text-text font-medium text-xs mb-0.5">{obj.summary}</p>
-                  {obj.message && obj.message !== obj.summary && (
-                    <p className="text-muted text-[11px] leading-relaxed">{obj.message}</p>
-                  )}
-                </div>
-              )
-            })}
-          </div>
-        </Section>
-      ) : (
-        <Section title="What now?" defaultOpen>
-          <p className="text-text text-xs leading-relaxed">
-            {uiSnapshot.objective_message || 'No current objective.'}
-          </p>
+                )
+              })}
+            </div>
+          ) : (
+            <p className="text-text text-xs leading-relaxed">
+              {uiSnapshot.objective_message || 'No active quests.'}
+            </p>
+          )}
         </Section>
       )}
 

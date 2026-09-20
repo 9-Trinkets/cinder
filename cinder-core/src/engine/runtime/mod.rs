@@ -196,6 +196,13 @@ impl CinderRuntime {
         trace_dir: PathBuf,
     ) -> Result<Self, Box<dyn Error>> {
         let mut state = state;
+        for initial_id in &content.beats.initial_stage_ids {
+            if !state.active_objective_stage_ids.contains(initial_id)
+                && !state.completed_stage_ids.contains(initial_id)
+            {
+                state.active_objective_stage_ids.push(initial_id.clone());
+            }
+        }
         initialize_act_state(&content, &mut state);
         Ok(Self {
             state: Arc::new(Mutex::new(state)),

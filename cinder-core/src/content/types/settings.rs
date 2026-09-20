@@ -130,6 +130,11 @@ pub struct ContentSettingsDefinition {
     /// hierarchy (e.g. a chess board) when the player descends.
     #[serde(default)]
     pub level_reveal_room_prefix: String,
+    /// Room-id prefix that reveals the quests panel in the sidebar once the
+    /// player has travelled to a room on that board. Empty means quests are
+    /// always visible.
+    #[serde(default)]
+    pub quests_reveal_room_prefix: String,
     /// `behavior.json` defines eligible hostile strikes. `rules` applies them
     /// directly; `llm` asks a validated planner to choose a subset.
     #[serde(default)]
@@ -215,6 +220,7 @@ impl Default for ContentSettingsDefinition {
             vitals_sidebar_story_var: String::default(),
             minimap_requires_story_var: String::default(),
             level_reveal_room_prefix: String::default(),
+            quests_reveal_room_prefix: String::default(),
             autonomous_hostility_mode: AutonomousHostilityMode::Rules,
             periodic_actor_effects: Vec::new(),
             channels: Vec::new(),

@@ -47,6 +47,7 @@
   "vitals_sidebar_story_var": "",
   "minimap_requires_story_var": "shaman_defeated",
   "level_reveal_room_prefix": "d",
+  "quests_reveal_room_prefix": "village_",
   "theme": {
     "base": "#101218",
     "surface": "#181c26",

@@ -1,3 +1,4 @@
+use crate::engine::reducer::beat_advance::advance_objective_for_signal;
 use crate::engine::reducer::observation::render_actor_speech_line;
 use crate::engine::reducer::tick::advance_house_progress_objectives;
 use crate::content::types::ContentPack;
@@ -135,6 +136,85 @@ fn handle_targeted_message(
             lines.narration(line);
         }
     }
+
+    if content.is_player_actor(recipient_id) {
+        lines.extend_narration(advance_objective_for_signal(
+            state,
+            content,
+            &format!("spoken_to:{actor_id}"),
+        ));
+        lines.extend_narration(advance_objective_for_signal(
+            state,
+            content,
+            &format!("speech_from:{actor_id}"),
+        ));
+    } else if content.is_player_actor(actor_id) {
+        lines.extend_narration(advance_objective_for_signal(
+            state,
+            content,
+            &format!("spoken_to:{recipient_id}"),
+        ));
+        lines.extend_narration(advance_objective_for_signal(
+            state,
+            content,
+            &format!("speech_to:{recipient_id}"),
+        ));
+    }
+
+    let involves_player =
+        content.is_player_actor(recipient_id) || content.is_player_actor(actor_id);
+    if involves_player {
+        let text_lower = message.text.to_lowercase();
+        let reply_lower = message.in_reply_to.as_deref().unwrap_or("").to_lowercase();
+
+        let mentions_descent = text_lower.contains("teleport")
+            || text_lower.contains("scroll")
+            || text_lower.contains("floor 5")
+            || text_lower.contains("next floor")
+            || text_lower.contains("platform")
+            || text_lower.contains("fortress")
+            || text_lower.contains("conduit")
+            || text_lower.contains("strongbox")
+            || reply_lower.contains("teleport")
+            || reply_lower.contains("scroll")
+            || reply_lower.contains("floor 5")
+            || reply_lower.contains("next floor")
+            || reply_lower.contains("descend")
+            || reply_lower.contains("gate");
+        if mentions_descent {
+            lines.extend_narration(advance_objective_for_signal(
+                state,
+                content,
+                "speech_topic:teleport_scroll",
+            ));
+            lines.extend_narration(advance_objective_for_signal(
+                state,
+                content,
+                "speech_topic:next_floor",
+            ));
+        }
+
+        let mentions_sacrifice = text_lower.contains("zayd")
+            || text_lower.contains("sacrifice")
+            || text_lower.contains("offering")
+            || text_lower.contains("tithe")
+            || reply_lower.contains("zayd")
+            || reply_lower.contains("sacrifice")
+            || reply_lower.contains("offering")
+            || reply_lower.contains("boy");
+        if mentions_sacrifice {
+            lines.extend_narration(advance_objective_for_signal(
+                state,
+                content,
+                "speech_topic:save_zayd",
+            ));
+            lines.extend_narration(advance_objective_for_signal(
+                state,
+                content,
+                "speech_topic:sacrifice",
+            ));
+        }
+    }
 }
 
 fn handle_broadcast_message(
@@ -186,6 +266,11 @@ fn handle_broadcast_message(
             lines.narration(line);
         }
     }
+    lines.extend_narration(advance_objective_for_signal(
+        state,
+        content,
+        &format!("speech_broadcast:{actor_id}"),
+    ));
 }
 
 /// Whether the player can hear a message: direct comms always, local speech
