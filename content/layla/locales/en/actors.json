@@ -1385,7 +1385,7 @@
       "elder",
       "village"
     ],
-    "inspect_text": "An elderly man with white hair, slumped in a carved oak chair behind a table piled high with official garrison rolls. His lined face is etched with profound remorse and exhaustion. His hands tremble as he looks at the requisition writ bearing Zayd's name.",
+    "inspect_text": "An elderly man with white hair, slumped in a carved oak chair behind a table piled high with official garrison rolls. His lined face is etched with profound remorse and exhaustion, his trembling hands clutching a stamped parchment.",
     "attackable": false,
     "initial_stats": {
       "hp": 12,
@@ -1433,7 +1433,7 @@
       "baker",
       "village"
     ],
-    "inspect_text": "A vigorous, flour-dusted woman wearing a heavy leather apron with rolled-up sleeves. Flour smudges her cheek, and her dark eyes flash with righteous anger. She kneads dough with aggressive, punishing blows, furious at the village council for giving up Zayd.",
+    "inspect_text": "A vigorous, flour-dusted woman wearing a heavy leather apron with rolled-up sleeves. Flour smudges her cheek, and her dark eyes flash with righteous anger. She kneads dough with aggressive, punishing blows, muttering bitterly under her breath.",
     "attackable": false,
     "initial_stats": {
       "hp": 15,
@@ -1532,7 +1532,7 @@
       "orphan",
       "prisoner"
     ],
-    "inspect_text": "An eleven-year-old boy with a smudge of dark soot across his nose and untamed hair. Despite the heavy iron bars enclosing him above the steaming geothermal pit, his chin is held high and his fists are clenched. In his hands he clutches an unlit, brass-bound heirloom lantern.",
+    "inspect_text": "An eleven-year-old boy with a smudge of dark soot across his nose and untamed hair. His chin is held high and his small fists are clenched with stubborn defiance. In his hands he clutches an unlit, brass-bound heirloom lantern.",
     "attackable": false,
     "initial_stats": {
       "hp": 10,
@@ -1583,7 +1583,7 @@
       "cultist",
       "enemy"
     ],
-    "inspect_text": "A tall, hollow-cheeked priest in deep crimson ceremonial robes embroidered with blackened flame motifs. A bronze chain hangs from his neck, swaying slightly as he chants low, rhythmic litanies over the captive boy.",
+    "inspect_text": "A tall, hollow-cheeked priest in deep crimson ceremonial robes embroidered with blackened flame motifs. A bronze chain hangs from his neck, swaying slightly as he intones low, rhythmic litanies of flame and offering.",
     "attackable": true,
     "initial_hostile": true,
     "attack_interval_minutes": 2,

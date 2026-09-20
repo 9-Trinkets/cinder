@@ -10523,7 +10523,7 @@
     "id": "village_south_1",
     "title": "Elder Rashid's Quarters",
     "summary": "A modest stone building lined with bookshelves, maps of the cavern system, and brass surveying instruments.",
-    "inspect_text": "Elder Rashid sits here at a heavy oak desk, head in his hands, surrounded by official military decrees and the requisition roll for Zayd.",
+    "inspect_text": "Elder Rashid sits here at a heavy oak desk, head in his hands, surrounded by official military decrees and stamped requisition rolls.",
     "allow_rest": false,
     "features": [
       {
@@ -10538,7 +10538,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A parchment document bearing Captain Malik's iron seal, demanding one youth as an offering."
+        "inspect_text": "A parchment document bearing Captain Malik's iron seal, demanding a village youth as a tithe offering."
       }
     ],
     "exits": [
@@ -10614,7 +10614,7 @@
     "id": "village_east_2",
     "title": "Yasmin's Bakery",
     "summary": "A warm, flour-dusted bakery smelling wonderfully of fresh flatbread, sesame, and roasted dates.",
-    "inspect_text": "A huge brick oven heated by copper steam coils dominates the back. Yasmin stands by the counter, tearful and furious over Zayd's capture.",
+    "inspect_text": "A huge brick oven heated by copper steam coils dominates the back wall, radiating dry heat and the comforting aroma of baked sesame flatbread. Trays of cooling loaves line the flour-dusted timber counters.",
     "allow_rest": false,
     "features": [
       {
