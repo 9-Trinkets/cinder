@@ -89,6 +89,7 @@ pub struct HandlerDescentCommentaryRequest {
     pub system_text: SystemTextDefinition,
     pub floor_name: String,
     pub destination_room_id: String,
+    pub completed_floor_name: String,
     pub recent_transcript: Vec<String>,
     pub fallback_text: String,
 }

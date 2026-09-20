@@ -203,11 +203,14 @@ pub(crate) fn build_handler_descent_commentary_prompt(
         request.recent_transcript.join("\n")
     };
     format!(
-        "Destination Floor: {}\n\nRecent Floor Transcript:\n{}\n\nFallback Line:\n{}\n\nTask:\nGenerate 2 distinct comms messages from the Handler as Layla descends to {}:\n1. \"summary\": 2 to 3 sentences of dry, sarcastic handler commentary summarizing what Layla actually did or survived on the floor she just finished, based on the transcript.\n2. \"introduction\": 2 to 3 sentences quickly introducing the next floor ({}) without giving away any spoilers, secrets, or puzzle solutions.\n\nRespond ONLY with a valid JSON object matching this schema:\n{{\n  \"summary\": \"...\",\n  \"introduction\": \"...\"\n}}\nDo not include markdown codeblocks, quotation marks around the JSON, or speaker prefixes like 'Handler:'.",
+        "Floor Just Completed: {}\nDestination Floor: {}\n\nRecent Floor Transcript:\n{}\n\nFallback Line:\n{}\n\nTask:\nGenerate 2 distinct comms messages from the Handler as Layla descends from {} into {}:\n1. \"summary\": 2 to 3 sentences of dry, superior handler commentary summarizing what Layla actually achieved, fought, or survived on {} (the floor she just finished), based on the transcript.\n2. \"introduction\": 2 to 3 sentences introducing the next floor ({}) without giving away any spoilers, secrets, or puzzle solutions.\n\nRespond ONLY with a valid JSON object matching this schema:\n{{\n  \"summary\": \"...\",\n  \"introduction\": \"...\"\n}}\nDo not include markdown codeblocks, quotation marks around the JSON, or speaker prefixes like 'Handler:'.",
+        request.completed_floor_name,
         request.floor_name,
         transcript,
         request.fallback_text,
+        request.completed_floor_name,
         request.floor_name,
+        request.completed_floor_name,
         request.floor_name,
     )
 }

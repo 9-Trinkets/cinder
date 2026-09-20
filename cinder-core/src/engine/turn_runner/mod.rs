@@ -374,13 +374,19 @@ pub(crate) fn maybe_tailor_handler_descent_commentary(
     logged_events: &[TimestampedWorldEvent],
     lines: &mut NarrativeLines,
 ) {
-    let Some(to_room_id) = logged_events.iter().find_map(|event| match &event.event {
-        WorldEvent::PlayerMoved { to_room_id, .. } => Some(to_room_id.as_str()),
+    let Some((from_room_id, to_room_id)) = logged_events.iter().find_map(|event| match &event.event {
+        WorldEvent::PlayerMoved {
+            from_room_id,
+            to_room_id,
+        } => Some((from_room_id.as_str(), to_room_id.as_str())),
         WorldEvent::ActorMoved {
             actor_id,
+            from_room_id,
             to_room_id,
             ..
-        } if content.is_player_actor(actor_id) => Some(to_room_id.as_str()),
+        } if content.is_player_actor(actor_id) => {
+            Some((from_room_id.as_str(), to_room_id.as_str()))
+        }
         _ => None,
     }) else {
         return;
@@ -389,6 +395,7 @@ pub(crate) fn maybe_tailor_handler_descent_commentary(
     let fallback_key = match to_room_id {
         "d1c1" => "handler.descend.deep_wood",
         "oan" => "handler.descend.the_board",
+        "village_square" => "handler.descend.the_village",
         _ => return,
     };
 
@@ -410,16 +417,23 @@ pub(crate) fn maybe_tailor_handler_descent_commentary(
     };
 
     let floor_name = content
-        .room(to_room_id)
-        .map(|r| r.title.clone())
+        .map_for_room(to_room_id)
+        .map(|m| m.label.clone())
+        .or_else(|| content.room(to_room_id).map(|r| r.title.clone()))
         .unwrap_or_else(|| to_room_id.to_string());
+
+    let completed_floor_name = content
+        .map_for_room(from_room_id)
+        .map(|m| m.label.clone())
+        .or_else(|| content.room(from_room_id).map(|r| r.title.clone()))
+        .unwrap_or_else(|| from_room_id.to_string());
 
     let recent_transcript = state
         .transcript
         .iter()
         .filter(|line| !line.trim().is_empty())
         .rev()
-        .take(30)
+        .take(50)
         .cloned()
         .collect::<Vec<_>>()
         .into_iter()
@@ -431,6 +445,7 @@ pub(crate) fn maybe_tailor_handler_descent_commentary(
         system_text: content.system_text.clone(),
         floor_name,
         destination_room_id: to_room_id.to_string(),
+        completed_floor_name,
         recent_transcript,
         fallback_text: fallback_raw.clone(),
     };
