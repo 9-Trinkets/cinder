@@ -354,7 +354,7 @@
       "seam",
       "light"
     ],
-    "feature_inspect": "A natural shelf where the chalk crystals exhibit high purity and pale luminescent luminescence."
+    "feature_inspect": "A natural shelf where the pale mineral exhibits high purity and a faint luminescent glow."
   },
   {
     "x": 22.5,
@@ -601,16 +601,17 @@
     "y": 26.0,
     "id": "mine_south_9",
     "title": "Geode Cavern",
-    "summary": "The mine tunnel cuts directly through a hollow pocket lined with giant calcite and chalk crystals up to eight feet long.",
+    "summary": "The mine tunnel cuts directly through a hollow pocket lined with giant calcite crystals up to eight feet long.",
     "inspect_text": "The crystals chime with a faint resonant vibration when the distant steam engines stroke.",
-    "feature_label": "towering chalk crystals",
+    "feature_label": "towering calcite crystals",
     "feature_aliases": [
+      "crystals",
       "crystal",
       "geode",
       "spar",
       "calcite"
     ],
-    "feature_inspect": "Prismatic hexagonal pillars of luminous chalk growing in interlocking clusters."
+    "feature_inspect": "Prismatic hexagonal pillars of translucent calcite growing in interlocking clusters."
   },
   {
     "x": 8.57,

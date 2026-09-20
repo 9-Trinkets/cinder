@@ -10305,9 +10305,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -10317,9 +10315,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -10365,9 +10361,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -10413,9 +10407,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -10460,9 +10452,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -10472,9 +10462,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -10509,9 +10497,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -10521,9 +10507,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -10559,9 +10543,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -10571,9 +10553,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -10609,9 +10589,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -10621,9 +10599,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -10658,9 +10634,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -10670,9 +10644,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -10707,9 +10679,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -10719,9 +10689,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -10756,9 +10724,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -10768,9 +10734,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -10815,9 +10779,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -10827,9 +10789,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -10864,9 +10824,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -10876,9 +10834,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -10913,9 +10869,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -10925,9 +10879,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -10962,9 +10914,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -10974,9 +10924,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -11011,9 +10959,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -11023,9 +10969,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -11060,9 +11004,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -11072,9 +11014,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -11109,9 +11049,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -11121,9 +11059,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -11158,9 +11094,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -11170,9 +11104,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -11207,9 +11139,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -11219,9 +11149,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -11256,9 +11184,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -11268,9 +11194,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -11305,9 +11229,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -11317,9 +11239,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -11345,7 +11265,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A natural shelf where the chalk crystals exhibit high purity and pale luminescent luminescence."
+        "inspect_text": "A natural shelf where the pale mineral exhibits high purity and a faint luminescent glow."
       }
     ],
     "exits": [
@@ -11354,9 +11274,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -11366,9 +11284,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -11403,9 +11319,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -11415,9 +11329,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -11472,9 +11384,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -11484,9 +11394,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -11521,9 +11429,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -11533,9 +11439,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -11570,9 +11474,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -11582,9 +11484,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -11619,9 +11519,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -11631,9 +11529,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -11668,9 +11564,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -11680,9 +11574,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -11717,9 +11609,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -11729,9 +11619,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -12122,14 +12010,15 @@
   {
     "id": "mine_south_9",
     "title": "Geode Cavern",
-    "summary": "The mine tunnel cuts directly through a hollow pocket lined with giant calcite and chalk crystals up to eight feet long.",
+    "summary": "The mine tunnel cuts directly through a hollow pocket lined with giant calcite crystals up to eight feet long.",
     "inspect_text": "The crystals chime with a faint resonant vibration when the distant steam engines stroke.",
     "allow_rest": false,
     "features": [
       {
         "id": "mine_south_9-feature",
-        "label": "towering chalk crystals",
+        "label": "towering calcite crystals",
         "aliases": [
+          "crystals",
           "crystal",
           "geode",
           "spar",
@@ -12137,7 +12026,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "Prismatic hexagonal pillars of luminous chalk growing in interlocking clusters."
+        "inspect_text": "Prismatic hexagonal pillars of translucent calcite growing in interlocking clusters."
       }
     ],
     "exits": [
@@ -12504,9 +12393,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -12516,9 +12403,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -12545,12 +12430,16 @@
       },
       {
         "room_id": "camp_gate",
-        "label": "North",
+        "label": "To the Brass Bulkhead Gate",
         "aliases": [
-          "n",
-          "north"
+          "gate",
+          "bulkhead",
+          "garrison",
+          "camp",
+          "doors",
+          "ahead"
         ],
-        "menu_label": "North",
+        "menu_label": "Gate",
         "requires_story_var": ""
       }
     ],
@@ -12583,9 +12472,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -12630,9 +12517,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -12677,9 +12562,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -12689,9 +12572,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -12726,9 +12607,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -12738,9 +12617,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -12775,9 +12652,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -12787,9 +12662,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -12824,9 +12697,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -12836,9 +12707,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -12873,9 +12742,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -12885,9 +12752,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -12932,9 +12797,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -12944,9 +12807,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -12981,9 +12842,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -12993,9 +12852,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -13030,9 +12887,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -13042,9 +12897,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -13079,9 +12932,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -13091,9 +12942,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -13128,9 +12977,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -13140,9 +12987,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -13177,9 +13022,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -13189,9 +13032,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -13226,9 +13067,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -13238,9 +13077,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -13275,9 +13112,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -13287,9 +13122,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -13324,9 +13157,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -13336,9 +13167,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -13383,9 +13212,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -13395,9 +13222,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -13432,9 +13257,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -13444,9 +13267,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -13481,9 +13302,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -13493,9 +13312,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -13530,9 +13347,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -13542,9 +13357,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -14153,9 +13966,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -14165,9 +13976,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -14202,9 +14011,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -14249,9 +14056,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -14296,9 +14101,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -14308,9 +14111,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -14345,9 +14146,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -14357,9 +14156,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -14394,9 +14191,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -14406,9 +14201,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -14443,9 +14236,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -14455,9 +14246,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -14492,9 +14281,7 @@
         "label": "Southwest",
         "aliases": [
           "southwest",
-          "sw",
-          "south",
-          "s"
+          "sw"
         ],
         "menu_label": "Southwest",
         "requires_story_var": ""
@@ -14504,9 +14291,7 @@
         "label": "Northeast",
         "aliases": [
           "northeast",
-          "ne",
-          "north",
-          "n"
+          "ne"
         ],
         "menu_label": "Northeast",
         "requires_story_var": ""
@@ -14541,9 +14326,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -14553,9 +14336,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -14590,9 +14371,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -14602,9 +14381,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -14639,9 +14416,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -14651,9 +14426,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -14688,9 +14461,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -14700,9 +14471,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -14737,9 +14506,7 @@
         "label": "Northwest",
         "aliases": [
           "northwest",
-          "nw",
-          "north",
-          "n"
+          "nw"
         ],
         "menu_label": "Northwest",
         "requires_story_var": ""
@@ -14749,9 +14516,7 @@
         "label": "Southeast",
         "aliases": [
           "southeast",
-          "se",
-          "south",
-          "s"
+          "se"
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
@@ -14894,10 +14659,12 @@
       },
       {
         "room_id": "village_north_gate",
-        "label": "South",
+        "label": "South to Approach Plaza",
         "aliases": [
+          "south",
           "s",
-          "south"
+          "plaza",
+          "village"
         ],
         "menu_label": "South",
         "requires_story_var": ""

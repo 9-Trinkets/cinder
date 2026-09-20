@@ -165,10 +165,10 @@ pub fn build_floor4() -> FloorBuilder {
         );
     }
 
-    let ne = &["northeast", "ne", "north", "n"];
-    let sw = &["southwest", "sw", "south", "s"];
-    let se = &["southeast", "se", "south", "s"];
-    let nw = &["northwest", "nw", "north", "n"];
+    let ne = &["northeast", "ne"];
+    let sw = &["southwest", "sw"];
+    let se = &["southeast", "se"];
+    let nw = &["northwest", "nw"];
     let w = &["west", "w"];
     let e = &["east", "e"];
 
@@ -282,7 +282,22 @@ pub fn build_floor4() -> FloorBuilder {
     connect_segment(&mut builder, &camp_bottom, "West", w, "East", e);
 
     // Village <-> Camp Gates
-    builder.connect_bidirectional("village_north_gate", "camp_gate", Direction::North);
+    builder.add_exit(
+        "village_north_gate",
+        "camp_gate",
+        "To the Brass Bulkhead Gate",
+        vec!["gate".into(), "bulkhead".into(), "garrison".into(), "camp".into(), "doors".into(), "ahead".into()],
+        Some("Gate".into()),
+        "",
+    );
+    builder.add_exit(
+        "camp_gate",
+        "village_north_gate",
+        "South to Approach Plaza",
+        vec!["south".into(), "s".into(), "plaza".into(), "village".into()],
+        Some("South".into()),
+        "",
+    );
     builder.add_exit(
         "camp_gate",
         "command_tent",

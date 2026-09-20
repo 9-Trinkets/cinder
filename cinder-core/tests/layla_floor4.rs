@@ -224,3 +224,74 @@ fn floor4_actors_and_interactions_validate() {
     assert!(warden.drops.contains_key("iron-cage-key"));
 }
 
+#[test]
+fn floor4_cardinal_and_diagonal_navigation_resolves_cleanly() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+
+    // mine_north_apex exit resolution
+    let apex = pack.room("mine_north_apex").expect("mine_north_apex exists");
+    for exit in &apex.exits {
+        if exit.room_id == "mine_west_drift_13" {
+            assert!(exit.aliases.iter().any(|a| a == "southwest" || a == "sw"));
+            assert!(!exit.aliases.iter().any(|a| a == "south" || a == "s"));
+        }
+        if exit.room_id == "mine_east_drift_1" {
+            assert!(exit.aliases.iter().any(|a| a == "southeast" || a == "se"));
+            assert!(!exit.aliases.iter().any(|a| a == "south" || a == "s"));
+        }
+        if exit.room_id == "village_north_gate" {
+            assert!(exit.aliases.iter().any(|a| a == "south" || a == "s"));
+        }
+    }
+
+    // village_north_gate exit resolution
+    let vng = pack.room("village_north_gate").expect("village_north_gate exists");
+    for exit in &vng.exits {
+        if exit.room_id == "village_west_9" {
+            assert!(exit.aliases.iter().any(|a| a == "southwest" || a == "sw"));
+            assert!(!exit.aliases.iter().any(|a| a == "south" || a == "s"));
+        }
+        if exit.room_id == "village_east_1" {
+            assert!(exit.aliases.iter().any(|a| a == "southeast" || a == "se"));
+            assert!(!exit.aliases.iter().any(|a| a == "south" || a == "s"));
+        }
+        if exit.room_id == "village_square" {
+            assert!(exit.aliases.iter().any(|a| a == "south" || a == "s"));
+        }
+        if exit.room_id == "mine_north_apex" {
+            assert!(exit.aliases.iter().any(|a| a == "north" || a == "n"));
+        }
+        if exit.room_id == "camp_gate" {
+            assert!(exit.aliases.iter().any(|a| a == "gate" || a == "bulkhead"));
+            assert!(!exit.aliases.iter().any(|a| a == "north" || a == "n"));
+        }
+    }
+
+    // Verify runtime movement from mine_north_apex
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "mine_north_apex".to_string();
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack.clone(), state, dialogue)
+            .expect("runtime creates");
+
+    let _outcome = runtime.run_turn("south").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_north_gate");
+
+    let _outcome2 = runtime.run_turn("south").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_square");
+}
+
+#[test]
+fn floor4_mineral_and_chalk_lore_integrity() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let geode = pack.room("mine_south_9").expect("mine_south_9 exists");
+    assert_eq!(geode.features[0].label, "towering calcite crystals");
+    assert!(!geode.summary.to_lowercase().contains("chalk crystals"));
+    assert!(!geode.features[0].inspect_text.to_lowercase().contains("chalk"));
+
+    let drift6 = pack.room("mine_east_drift_6").expect("mine_east_drift_6 exists");
+    assert!(!drift6.features[0].inspect_text.to_lowercase().contains("chalk crystals"));
+}
+
