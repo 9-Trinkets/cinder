@@ -221,3 +221,32 @@ fn take_item_from_follower_equipment_unequips_and_returns_to_player() {
     );
     assert!(output.lines.iter().any(|l| l.text.contains("You take the iron sword from Alex.")));
 }
+
+#[test]
+fn runtime_give_command_with_authored_action_gives_item_to_companion() {
+    let pack = cinder_core::content::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "r01c01".to_string();
+    state.add_item("brass-gear");
+    state.set_stance("golem-dark-nw", ActorStance::Allied);
+    state.set_follows_player("golem-dark-nw", true);
+    state.actor_room_overrides.insert("golem-dark-nw".to_string(), "r01c01".to_string());
+
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue)
+            .expect("runtime creates");
+
+    let outcome = runtime
+        .run_turn("give Brass Gear to Dark Golem")
+        .expect("turn runs without panic");
+    assert!(
+        outcome.text.contains("dark golem") || outcome.text.contains("Dark Golem"),
+        "outcome was: {}",
+        outcome.text
+    );
+    let s = runtime.export_state().unwrap();
+    assert_eq!(s.actor_item_count("golem-dark-nw", "brass-gear"), 1);
+    assert!(!s.has_item("brass-gear"));
+}

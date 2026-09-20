@@ -22,12 +22,13 @@ fn content_event_for_command(
     action: &ActionDefinition,
     payload: BTreeMap<String, String>,
 ) -> WorldEvent {
-    let content_event = action
+    let event_id = action
         .content_event
         .as_ref()
-        .unwrap_or_else(|| panic!("action '{}' should define a content_event", action.id));
+        .map(|ce| ce.id.clone())
+        .unwrap_or_else(|| action.id.clone());
     WorldEvent::ContentEvent {
-        event_id: content_event.id.clone(),
+        event_id,
         payload,
     }
 }
@@ -321,9 +322,11 @@ pub(super) fn plan_content_command(
     }
 
     // Content event (narrative) first, then item events
-    planned
-        .events
-        .push(content_event_for_command(action, payload));
+    if action.content_event.is_some() {
+        planned
+            .events
+            .push(content_event_for_command(action, payload));
+    }
     if !action.sets_objective_progress.is_empty() || !action.clears_objective_progress.is_empty() {
         planned
             .events

@@ -1,745 +1,55 @@
 [
   {
     "x": 15.0,
-    "y": 0.0,
-    "id": "mine_north_apex",
-    "title": "High Exhaust Flue",
-    "summary": "A soaring stone cavern at the northern peak of the mine. Giant iron chimney flues channel hot boiler exhaust into the dark above.",
-    "inspect_text": "Riveted iron chimneys hiss with venting steam. The rock here is dry and hot, crusted with deposits of white chalk dust blown up from the deep stamp mills.",
-    "feature_label": "the central exhaust flue",
-    "feature_aliases": [
-      "flue",
-      "chimney",
-      "exhaust",
-      "pipe",
-      "iron"
-    ],
-    "feature_inspect": "Thick iron plates bolted together with heavy rivets. It vibrates with the steady pulse of boilers operating far below."
-  },
-  {
-    "x": 0.0,
-    "y": 26.0,
-    "id": "mine_sw_corner",
-    "title": "Deep Drainage Sump",
-    "summary": "The southwestern terminus of the lower drifts. Warm, mineral-rich mine water pools in a wide stone basin beneath clanking pump rods.",
-    "inspect_text": "Steam-driven reciprocating pumps draw chalky water out of the sump through perforated copper pipes. White sediment coats every timber support.",
-    "feature_label": "the steam sump pump",
-    "feature_aliases": [
-      "pump",
-      "sump",
-      "piston",
-      "rods",
-      "engine"
-    ],
-    "feature_inspect": "A vertical walking-beam engine powered by overhead steam lines, driving pump buckets deep into the flooded sump."
-  },
-  {
-    "x": 30.0,
-    "y": 26.0,
-    "id": "mine_se_corner",
-    "title": "Eastern Tailing Dump",
-    "summary": "The southeastern corner of the workings opens into an immense cavern filled with mounds of crushed grey rock and glittering chalk fragments.",
-    "inspect_text": "Wooden catwalks overhang vast tailing mounds left by the ore mills. Narrow-gauge tracks end here at iron dump bumpers.",
-    "feature_label": "the tailing chute",
-    "feature_aliases": [
-      "chute",
-      "dump",
-      "rail",
-      "bumper",
-      "tailings"
-    ],
-    "feature_inspect": "Heavy sheet iron stained with mineral wash, used to slide crushed gangue rock down into the lower abyss."
-  },
-  {
-    "x": 1.07,
-    "y": 24.14,
-    "id": "mine_west_drift_1",
-    "title": "Lower Sluice Drift",
-    "summary": "A low-ceilinged drift where muddy runoff flows along wooden sluice boxes lined with coarse canvas.",
-    "inspect_text": "The canvas riffles catch heavy particles of raw chalk and quartz. Overhead steam pipes keep the water from freezing.",
-    "feature_label": "wooden sluice box",
-    "feature_aliases": [
-      "sluice",
-      "box",
-      "canvas",
-      "trough"
-    ],
-    "feature_inspect": "Rough-sawn planks slick with fine white chalk slime."
-  },
-  {
-    "x": 2.14,
-    "y": 22.29,
-    "id": "mine_west_drift_2",
-    "title": "Steam Drill Station",
-    "summary": "The air is thick with chalk dust. A heavy rotary drill mounted on an iron screw-column bites into a pale rock seam.",
-    "inspect_text": "Flexible canvas-braided steam hoses snake across the floor to power the chattering pneumatic chisel. Ear-splitting echoes linger.",
-    "feature_label": "the columnar steam drill",
-    "feature_aliases": [
-      "drill",
-      "machine",
-      "column",
-      "tool"
-    ],
-    "feature_inspect": "A brass-sleeved piston assembly with hardened steel drill bits."
-  },
-  {
-    "x": 3.21,
-    "y": 20.43,
-    "id": "mine_west_drift_3",
-    "title": "Rotary Cutting Chamber",
-    "summary": "Massive circular cutting heads with hardened teeth have gouged semicircular channels into the solid limestone.",
-    "inspect_text": "Steam conduits hiss overhead. Deep cuts in the stone expose bright veins of luminescent chalk that glow with a faint pale violet light.",
-    "feature_label": "exposed chalk vein",
-    "feature_aliases": [
-      "vein",
-      "chalk",
-      "stone",
-      "light",
-      "seam"
-    ],
-    "feature_inspect": "The stone is cool and softly luminous, brittle to the touch and powdery."
-  },
-  {
-    "x": 4.29,
-    "y": 18.57,
-    "id": "mine_west_drift_4",
-    "title": "West Timber Shoring",
-    "summary": "Heavy square-cut pine timbers brace a fragile ceiling where the strata have sheared into jagged tiers.",
-    "inspect_text": "Iron wedges and screw jacks reinforce the joints. White chalk dust clings to the rough bark like winter frost.",
-    "feature_label": "heavy timber jack",
-    "feature_aliases": [
-      "timber",
-      "jack",
-      "brace",
-      "shoring",
-      "wood"
-    ],
-    "feature_inspect": "Thick square balks of timber held under tons of mountain weight by iron turnbuckles."
-  },
-  {
-    "x": 5.36,
-    "y": 16.71,
-    "id": "mine_west_drift_5",
-    "title": "Pneumatic Pipe Junction",
-    "summary": "A hub of copper and iron pipelines bolted to the wall. Manometers click and flutter behind round glass bezels.",
-    "inspect_text": "High-pressure steam and compressed air lines divide here, branching north toward the flue and east toward the village.",
-    "feature_label": "brass valve manifold",
-    "feature_aliases": [
-      "valve",
-      "manifold",
-      "pipes",
-      "gauge"
-    ],
-    "feature_inspect": "Heavy brass turncocks with worn wooden handles, regulating pressure to the drills."
-  },
-  {
-    "x": 6.43,
-    "y": 14.86,
-    "id": "mine_west_drift_6",
-    "title": "Raw Chalk Face",
-    "summary": "A broad mining face where pickaxes and wedges have laid bare a pure bank of brilliant white chalk.",
-    "inspect_text": "The chalk is chalky and brittle, but when touched with iron it hums with faint resonance. Broken fragments litter the track.",
-    "feature_label": "the white chalk face",
-    "feature_aliases": [
-      "face",
-      "chalk",
-      "wall",
-      "bank"
-    ],
-    "feature_inspect": "A sheer wall of pure white chalk. Fine dust rises in small clouds at every step."
-  },
-  {
-    "x": 7.5,
-    "y": 13.0,
-    "id": "mine_west_drift_7",
-    "title": "Ore Incline Station",
-    "summary": "A busy transfer depot where steep cable rails lead up toward the village western terrace.",
-    "inspect_text": "Empty wooden ore wagons wait on side spurs while loaded tubs are hitched to moving steel haulage ropes.",
-    "feature_label": "cable haulage drum",
-    "feature_aliases": [
-      "drum",
-      "cable",
-      "winch",
-      "rope"
-    ],
-    "feature_inspect": "A grooved iron drum wound with grease-stained steel cable, turned by an enclosed steam turbine."
-  },
-  {
-    "x": 8.57,
-    "y": 11.14,
-    "id": "mine_west_drift_8",
-    "title": "High-Pressure Steam Vent",
-    "summary": "A deafening hiss echoes through this narrow passage where an expansion joint on the main steam main vents excess pressure.",
-    "inspect_text": "Clouds of damp white mist obscure the ceiling, condensation dripping down the walls in steady rivulets.",
-    "feature_label": "the pressure relief valve",
-    "feature_aliases": [
-      "valve",
-      "vent",
-      "steam",
-      "joint"
-    ],
-    "feature_inspect": "A heavy brass spring-loaded relief valve releasing bursts of scalding white vapor."
-  },
-  {
-    "x": 9.64,
-    "y": 9.29,
-    "id": "mine_west_drift_9",
-    "title": "Powder Magazine Drift",
-    "summary": "A dry, reinforced dead-end passage barricaded by double sheet-iron doors marked with warning stencils.",
-    "inspect_text": "Sealed copper canisters of blasting powder and fuses sit on raised wooden pallets, kept strictly dry away from steam drips.",
-    "feature_label": "iron powder chest",
-    "feature_aliases": [
-      "chest",
-      "powder",
-      "canister",
-      "explosives"
-    ],
-    "feature_inspect": "A heavy lead-lined iron box secured with a massive brass padlock."
-  },
-  {
-    "x": 10.71,
-    "y": 7.43,
-    "id": "mine_west_drift_10",
-    "title": "Upper Chalk Gallery",
-    "summary": "An elevated drift carved through a high shelf of mineralized chalk. The air is cooler here, smelling of dry dust.",
-    "inspect_text": "Old hand-chiseled niches hold smoking grease lamps that cast flickering yellow light across glittering white walls.",
-    "feature_label": "chiseled lamp niche",
-    "feature_aliases": [
-      "niche",
-      "lamp",
-      "wall",
-      "chalk"
-    ],
-    "feature_inspect": "A hollow carved into the chalk wall holding a tin lamp with a sputtering wick."
-  },
-  {
-    "x": 11.79,
-    "y": 5.57,
-    "id": "mine_west_drift_11",
-    "title": "Ventilation Shaft Head",
-    "summary": "A wide vertical shaft drops into dark depths below, covered by an iron grating that vibrates with rising air currents.",
-    "inspect_text": "A steam-driven squirrel-cage fan draws foul air up from the lower workings and exhausts it toward the northern chimney.",
-    "feature_label": "the draft fan",
-    "feature_aliases": [
-      "fan",
-      "grate",
-      "shaft",
-      "draft"
-    ],
-    "feature_inspect": "A twelve-foot iron fan wheel spinning within a riveted shroud."
-  },
-  {
-    "x": 12.86,
-    "y": 3.71,
-    "id": "mine_west_drift_12",
-    "title": "High Boiler Platform",
-    "summary": "An iron gantry perched on stone ledges holds a secondary Scotch marine boiler wrapped in asbestos lagging.",
-    "inspect_text": "Gauges show nominal boiler pressure. The furnace door glows cherry red through draft louvers, radiating intense heat.",
-    "feature_label": "the secondary boiler",
-    "feature_aliases": [
-      "boiler",
-      "furnace",
-      "gauge",
-      "iron"
-    ],
-    "feature_inspect": "A horizontal cylindrical boiler with brass fittings and copper water-level tubes."
-  },
-  {
-    "x": 13.93,
-    "y": 1.86,
-    "id": "mine_west_drift_13",
-    "title": "Chimney Catwalk",
-    "summary": "A narrow steel mesh catwalk running along the rocky crags just below the apex exhaust flue.",
-    "inspect_text": "Far below, the lights of the outer mine drift twinkle through rising plumes of warm steam and drifting white chalk specks.",
-    "feature_label": "steel catwalk railing",
-    "feature_aliases": [
-      "railing",
-      "catwalk",
-      "mesh",
-      "walkway"
-    ],
-    "feature_inspect": "Sturdy tubular steel railing bolted directly into the cavern wall."
-  },
-  {
-    "x": 16.07,
-    "y": 1.86,
-    "id": "mine_east_drift_1",
-    "title": "Flue Service Platform",
-    "summary": "An iron staging platform overlooking the eastern bank of the main ventilation chimneys.",
-    "inspect_text": "Maintenance tools, spare gaskets, and spanners hang on shadow boards beside grease-stained overalls.",
-    "feature_label": "tool shadow board",
-    "feature_aliases": [
-      "board",
-      "tools",
-      "wrenches",
-      "spanners"
-    ],
-    "feature_inspect": "Rows of heavy forged wrenches and brass oil cans ready for chimney maintenance."
-  },
-  {
-    "x": 17.14,
-    "y": 3.71,
-    "id": "mine_east_drift_2",
-    "title": "Condenser Station",
-    "summary": "A maze of copper coil radiators where spent steam is cooled back into water for boiler feed tanks.",
-    "inspect_text": "Trickling water splashes inside sheet-metal shrouds, keeping the air cool and humid.",
-    "feature_label": "copper condenser coils",
-    "feature_aliases": [
-      "coils",
-      "radiator",
-      "copper",
-      "tubes"
-    ],
-    "feature_inspect": "Long loops of ribbed copper pipe glistening with bead-like droplets of distilled water."
-  },
-  {
-    "x": 18.21,
-    "y": 5.57,
-    "id": "mine_east_drift_3",
-    "title": "Steam Whistle Tower",
-    "summary": "A raised stone outcrop supporting a three-chime brass steam whistle connected to shift-timer clockwork.",
-    "inspect_text": "When triggered, its booming note echoes across all three concentric rings of the floor to signal shift changes.",
-    "feature_label": "the shift whistle",
-    "feature_aliases": [
-      "whistle",
-      "brass",
-      "chime",
-      "clockwork"
-    ],
-    "feature_inspect": "Three stepped brass bells linked by lever linkage to a heavy spring valve."
-  },
-  {
-    "x": 19.29,
-    "y": 7.43,
-    "id": "mine_east_drift_4",
-    "title": "Upper Haulage Drift",
-    "summary": "A wide, timbered passage with double iron track lines running downhill along the eastern slope.",
-    "inspect_text": "Iron carts with flanged wheels roll by with a rhythmic metallic clatter, pushed by grease-coated conveyor cables.",
-    "feature_label": "double rail tracks",
-    "feature_aliases": [
-      "track",
-      "rails",
-      "rails",
-      "line"
-    ],
-    "feature_inspect": "Stout iron rails spiked to oak cross-ties, polished smooth by countless ore wagons."
-  },
-  {
-    "x": 20.36,
-    "y": 9.29,
-    "id": "mine_east_drift_5",
-    "title": "Winch Cable Hall",
-    "summary": "A cavernous vault dominated by a massive twin-cylinder steam winding engine mounted on granite footings.",
-    "inspect_text": "Heavy steel ropes sing with tension as they pull loaded ore rakes up from the eastern stope.",
-    "feature_label": "twin-cylinder winch",
-    "feature_aliases": [
-      "winch",
-      "engine",
-      "cylinder",
-      "cable"
-    ],
-    "feature_inspect": "Cast-iron engine bed supporting counter-weighted flywheels and gleaming brass piston rods."
-  },
-  {
-    "x": 21.43,
-    "y": 11.14,
-    "id": "mine_east_drift_6",
-    "title": "Bright Chalk Seam",
-    "summary": "The mining drift cuts through an exceptionally pure seam of chalk that shines with distinct inner light.",
-    "inspect_text": "Miners' picks have left rhythmic cross-hatchings on the wall. Small powdery heaps of chalk crumble underfoot.",
-    "feature_label": "glowing chalk ledge",
-    "feature_aliases": [
-      "chalk",
-      "ledge",
-      "seam",
-      "light"
-    ],
-    "feature_inspect": "A natural shelf where the pale mineral exhibits high purity and a faint luminescent glow."
-  },
-  {
-    "x": 22.5,
-    "y": 13.0,
-    "id": "mine_east_drift_7",
-    "title": "East Rail Staging",
-    "summary": "A bustling transit junction where eastern mining lines link with the approach to the village residential quarter.",
-    "inspect_text": "Carts are shunted between sidings by burly workers with iron coupling bars. Lanterns glow red and green.",
-    "feature_label": "switch-track lever",
-    "feature_aliases": [
-      "lever",
-      "switch",
-      "track",
-      "shunt"
-    ],
-    "feature_inspect": "A counter-weighted ground throw lever used to align the iron rail frogs."
-  },
-  {
-    "x": 23.57,
-    "y": 14.86,
-    "id": "mine_east_drift_8",
-    "title": "Compressed Air Main",
-    "summary": "A long straight drift carrying a twenty-inch riveted steel pneumatic main wrapped in tarred burlap.",
-    "inspect_text": "The pipe thrums continuously with the pulse of surface-air compressors, supplying air to the deep stope drills.",
-    "feature_label": "the main air conduit",
-    "feature_aliases": [
-      "pipe",
-      "conduit",
-      "main",
-      "pneumatic"
-    ],
-    "feature_inspect": "A huge riveted cylinder with expansion joints and brass pressure inspection ports."
-  },
-  {
-    "x": 24.64,
-    "y": 16.71,
-    "id": "mine_east_drift_9",
-    "title": "Shored-Up Fault Drift",
-    "summary": "A fractured section of cavern where a natural tectonic fault has been buttressed by thick iron I-beams.",
-    "inspect_text": "Water seeps through hairline fissures, tasting faintly of sulfur and chalk minerals.",
-    "feature_label": "iron buttress arch",
-    "feature_aliases": [
-      "buttress",
-      "arch",
-      "beam",
-      "iron"
-    ],
-    "feature_inspect": "Heavy rolled steel arches bolted to stone footers to arrest rock settlement."
-  },
-  {
-    "x": 25.71,
-    "y": 18.57,
-    "id": "mine_east_drift_10",
-    "title": "Piston Pumping Floor",
-    "summary": "Two horizontal steam pumps work in opposing tandem, their brass crossheads gliding along polished guide bars.",
-    "inspect_text": "They suck water from the eastern drainage ditches and force it up to the central condensator tanks.",
-    "feature_label": "horizontal steam pump",
-    "feature_aliases": [
-      "pump",
-      "engine",
-      "piston",
-      "crosshead"
-    ],
-    "feature_inspect": "A gleaming machine smelling of hot cylinder oil and clean steam."
-  },
-  {
-    "x": 26.79,
-    "y": 20.43,
-    "id": "mine_east_drift_11",
-    "title": "Crushed Rock Chute",
-    "summary": "A dusty loading bay where overhead bins discharge gravel and crushed chalk directly into hopper cars.",
-    "inspect_text": "Operated by long wooden levers that open slide gates at the bottom of the timber funnels.",
-    "feature_label": "hopper discharge gate",
-    "feature_aliases": [
-      "gate",
-      "hopper",
-      "chute",
-      "lever"
-    ],
-    "feature_inspect": "A sliding steel gate operated by a counter-balanced hand lever."
-  },
-  {
-    "x": 27.86,
-    "y": 22.29,
-    "id": "mine_east_drift_12",
-    "title": "Heavy Rail Yard",
-    "summary": "A sprawling yard with four parallel tracks lined with heavy steel-sided hopper cars awaiting assembly into trains.",
-    "inspect_text": "Brake wagons and flatcars loaded with fresh timbers stand ready for the night shift.",
-    "feature_label": "brakeman's caboose cart",
-    "feature_aliases": [
-      "cart",
-      "caboose",
-      "wagon",
-      "train"
-    ],
-    "feature_inspect": "A sturdy wooden wagon fitted with a hand-screw brake wheel and a red oil lantern."
-  },
-  {
-    "x": 28.93,
-    "y": 24.14,
-    "id": "mine_east_drift_13",
-    "title": "Slag Runoff Drift",
-    "summary": "The tunnel runs along a channel of dark vitrified slag from old smelting trials, cooled into glassy black ridges.",
-    "inspect_text": "Chalk dust covers the black glassy stone like powdered sugar, crunched beneath heavy boots.",
-    "feature_label": "vitrified slag ridge",
-    "feature_aliases": [
-      "slag",
-      "glass",
-      "ridge",
-      "rock"
-    ],
-    "feature_inspect": "Smooth, rippled black stone fused by ancient high heat before modern steam methods took over."
-  },
-  {
-    "x": 27.86,
-    "y": 26.0,
-    "id": "mine_south_1",
-    "title": "East Sump Drift",
-    "summary": "A damp, cool passage draining seepage from the eastern tailing heaps toward the southern fault.",
-    "inspect_text": "The floor is covered with duckboard walkways floating above six inches of milky, chalk-clouded water.",
-    "feature_label": "floating duckboards",
-    "feature_aliases": [
-      "duckboards",
-      "walkway",
-      "planks",
-      "wood"
-    ],
-    "feature_inspect": "Thick pine planks nailed together, sloshing gently as you tread on them."
-  },
-  {
-    "x": 25.71,
-    "y": 26.0,
-    "id": "mine_south_2",
-    "title": "Hydraulic Lift Basin",
-    "summary": "A high-ceilinged cavern housing a water-hydraulic cargo platform used to hoist heavy equipment from lower cuts.",
-    "inspect_text": "A massive brass-sleeved hydraulic ram glides into a vertical cylinder, driven by high-pressure accumulator tanks.",
-    "feature_label": "hydraulic ram cylinder",
-    "feature_aliases": [
-      "ram",
-      "cylinder",
-      "lift",
-      "hydraulic"
-    ],
-    "feature_inspect": "A mirror-polished bronze ram standing thirty feet high within iron guide rails."
-  },
-  {
-    "x": 23.57,
-    "y": 26.0,
-    "id": "mine_south_3",
-    "title": "Deepest Chalk Stope",
-    "summary": "The deepest working level of the chalk mine. The walls are pure blinding white, carved in stepped tiers.",
-    "inspect_text": "Miners' chisels have squared the blocks with precision. The air is cool, still, and charged with static tingling.",
-    "feature_label": "stepped chalk bench",
-    "feature_aliases": [
-      "bench",
-      "chalk",
-      "step",
-      "tier"
-    ],
-    "feature_inspect": "Evenly cut tiers of chalk stone, glowing with an inner luminescence."
-  },
-  {
-    "x": 21.43,
-    "y": 26.0,
-    "id": "mine_south_4",
-    "title": "Abyssal Rock Fault",
-    "summary": "A yawning natural chasm cuts across the floor, bridged by heavy timber stringers and steel guard ropes.",
-    "inspect_text": "Cool air currents rise from bottomless darkness below, carrying the faint sound of underground waterfalls.",
-    "feature_label": "the timber bridge",
-    "feature_aliases": [
-      "bridge",
-      "timber",
-      "ropes",
-      "chasm"
-    ],
-    "feature_inspect": "Heavy square balks bolted together with iron tie-rods, spanning the black gulf."
-  },
-  {
-    "x": 19.29,
-    "y": 26.0,
-    "id": "mine_south_5",
-    "title": "Submerged Rail Drift",
-    "summary": "An abandoned rail line where iron tracks plunge under murky, chalk-white water.",
-    "inspect_text": "Rusting wagons sit submerged to their axles, abandoned during a sudden underground water breakthrough.",
-    "feature_label": "submerged ore car",
-    "feature_aliases": [
-      "car",
-      "wagon",
-      "water",
-      "rails"
-    ],
-    "feature_inspect": "A wrought-iron cart sitting silently underwater, coated in lime and chalk scale."
-  },
-  {
-    "x": 17.14,
-    "y": 26.0,
-    "id": "mine_south_6",
-    "title": "South Drainage Sluice",
-    "summary": "A wide masonry aqueduct carrying runoff water out of the mine, linking directly to the village drainage system.",
-    "inspect_text": "Iron sluice gates with handwheel screws control the volume of water diverted into the communal cisterns.",
-    "feature_label": "sluice handwheel screw",
-    "feature_aliases": [
-      "handwheel",
-      "screw",
-      "gate",
-      "sluice"
-    ],
-    "feature_inspect": "A massive bronze wheel operating a geared rack and pinion on the sluice gate."
-  },
-  {
-    "x": 15.0,
-    "y": 26.0,
-    "id": "mine_south_7",
-    "title": "The Deepest Cut",
-    "summary": "The lowest point in the entire southern excavation. The ceiling vanishes into black shadows overhead.",
-    "inspect_text": "Here the miners struck the Great Chalk Seam\u2014a solid stratum of stone so luminous that miners work without lanterns.",
-    "feature_label": "the Great Chalk Seam",
-    "feature_aliases": [
-      "seam",
-      "chalk",
-      "wall",
-      "stratum"
-    ],
-    "feature_inspect": "A monument of pure glowing stone. Looking at it gives a quiet sense of vast, unbroken peace."
-  },
-  {
-    "x": 12.86,
-    "y": 26.0,
-    "id": "mine_south_8",
-    "title": "Sluice Control Basin",
-    "summary": "A deep circular settling basin where milky mine runoff drops its heavy chalk sediment before release.",
-    "inspect_text": "Workers scrape the settled white paste into drying tubs to be baked into chalk blocks for the town.",
-    "feature_label": "settling basin weir",
-    "feature_aliases": [
-      "weir",
-      "basin",
-      "trough",
-      "sediment"
-    ],
-    "feature_inspect": "A stone weir with overflow notches that keep the chalk silt contained."
-  },
-  {
-    "x": 10.71,
-    "y": 26.0,
-    "id": "mine_south_9",
-    "title": "Geode Cavern",
-    "summary": "The mine tunnel cuts directly through a hollow pocket lined with giant calcite crystals up to eight feet long.",
-    "inspect_text": "The crystals chime with a faint resonant vibration when the distant steam engines stroke.",
-    "feature_label": "towering calcite crystals",
-    "feature_aliases": [
-      "crystals",
-      "crystal",
-      "geode",
-      "spar",
-      "calcite"
-    ],
-    "feature_inspect": "Prismatic hexagonal pillars of translucent calcite growing in interlocking clusters."
-  },
-  {
-    "x": 8.57,
-    "y": 26.0,
-    "id": "mine_south_10",
-    "title": "Runoff Sluice Gallery",
-    "summary": "A long vaulted corridor echoing with the rush of clean water flowing along stone channels.",
-    "inspect_text": "Copper pipes run parallel to the water flume, feeding steam power to drainage pumps further west.",
-    "feature_label": "masonry flume wall",
-    "feature_aliases": [
-      "flume",
-      "wall",
-      "channel",
-      "aqueduct"
-    ],
-    "feature_inspect": "Dressed stone blocks pointed with hydraulic mortar that resists water erosion."
-  },
-  {
-    "x": 6.43,
-    "y": 26.0,
-    "id": "mine_south_11",
-    "title": "Rock Tailing Dump West",
-    "summary": "A secondary tailing dump where waste shale and quartz are stacked against cavern buttresses.",
-    "inspect_text": "Old hand-barrows and broken shovel handles lie discarded among the grey rubble heaps.",
-    "feature_label": "broken hand-barrow",
-    "feature_aliases": [
-      "barrow",
-      "rubble",
-      "shovel",
-      "waste"
-    ],
-    "feature_inspect": "A splintered wooden cart with an iron hoop wheel, abandoned when a weld snapped."
-  },
-  {
-    "x": 4.29,
-    "y": 26.0,
-    "id": "mine_south_12",
-    "title": "Lower Rail Spur",
-    "summary": "A quiet siding where miners leave their heavy coats and tin lunch pails on iron pegboards.",
-    "inspect_text": "A small coke-fired brazier provides warmth for tired workers taking their brief ten-minute rest break.",
-    "feature_label": "warm coke brazier",
-    "feature_aliases": [
-      "brazier",
-      "coke",
-      "fire",
-      "coals"
-    ],
-    "feature_inspect": "A perforated iron drum glowing with cherry-red coals, radiating welcome dry heat."
-  },
-  {
-    "x": 2.14,
-    "y": 26.0,
-    "id": "mine_south_13",
-    "title": "Sump Pump Station West",
-    "summary": "The western auxiliary pumping vault, filled with the rhythmic thud-chunk of a Cornish beam pump.",
-    "inspect_text": "A heavy wooden balance bob rocks up and down, lifting eighty gallons of water with every single stroke.",
-    "feature_label": "Cornish beam pump",
-    "feature_aliases": [
-      "pump",
-      "engine",
-      "bob",
-      "beam"
-    ],
-    "feature_inspect": "A towering oak beam bound in wrought iron, rocking on massive trunnion bearings."
-  },
-  {
-    "x": 15.0,
-    "y": 23.5,
-    "id": "crystal_pit",
-    "title": "The Chalk Excavation Pit",
-    "summary": "A massive open excavation pit where the richest chalk beds are mined in wide concentric steps.",
-    "inspect_text": "Scores of workers once swung picks here under steam-lamp glare. The pit floor glows with soft, perpetual phosphorescence.",
-    "feature_label": "the central quarry floor",
-    "feature_aliases": [
-      "pit",
-      "quarry",
-      "floor",
-      "chalk"
-    ],
-    "feature_inspect": "Smooth white floor scarred by chisel marks, giving off a gentle, unwavering pale glow."
-  },
-  {
-    "x": 21.0,
-    "y": 15.0,
-    "id": "cart_tracks",
-    "title": "The Main Haulage Tracks",
-    "summary": "A major railway junction where the eastern drifts converge. Overhead steam lines feed the electric arc lamps illuminating the switchyard.",
-    "inspect_text": "Iron wagons roll constantly toward the tipples. Beneath a cast-iron drainage grating, a deep storm pipe gurgles with fast-running water.",
-    "feature_label": "cast-iron drain grate",
-    "feature_aliases": [
-      "grate",
-      "drain",
-      "pipe",
-      "grating"
-    ],
-    "feature_inspect": "A heavy circular iron grating set into the floor. Peering through reveals a hollow conduit heading north under the military walls."
-  },
-  {
-    "x": 15.0,
-    "y": 3.5,
-    "id": "old_drain_pipe",
-    "title": "The Old Drainage Conduit",
-    "summary": "A forgotten brick-and-iron storm drainage pipe running deep underneath the garrison foundations. Water sloshes to your ankles.",
-    "inspect_text": "The air is damp and metallic. Farther in, an iron service ladder climbs up toward a round access hatch directly beneath the command tent.",
-    "feature_label": "the iron climb ladder",
-    "feature_aliases": [
-      "ladder",
-      "hatch",
-      "rungs",
-      "pipe"
-    ],
-    "feature_inspect": "Rusty iron rungs anchored into the brick wall, ascending toward an overhead trapdoor."
-  },
-  {
-    "x": 15.0,
     "y": 5.5,
     "id": "village_north_gate",
     "title": "North Approach Plaza",
-    "summary": "A broad paved plaza at the northern apex of the village. Ahead, the massive iron-and-brass bulkhead of the military complex looms over the road.",
-    "inspect_text": "Steam pipes run along high stone pylons to heat the open plaza. Armed guards look down from the garrison catwalks with ready crossbows.",
-    "feature_label": "the approach road paving",
+    "summary": "A broad paved plaza at the northern apex of the village. Ahead, the massive iron-and-brass bulkhead of the military fortress looms over the road, sealed shut. Two heavily-armed garrison guards stand sentry before the reinforced gates.",
+    "inspect_text": "Steam pipes run along high stone pylons to heat the open plaza. Two stern garrison sentries stand watch before the sealed brass bulkhead with ready steam crossbows, permitting no one to pass.",
+    "feature_label": "the massive brass bulkhead",
     "feature_aliases": [
-      "plaza",
-      "paving",
-      "road",
-      "pylons"
+      "bulkhead",
+      "gate",
+      "doors",
+      "fortress",
+      "iron",
+      "brass"
     ],
-    "feature_inspect": "Smooth-worn granite cobbles flanked by copper gas-flambeaux."
+    "feature_inspect": "A towering bulkhead of banded iron and riveted brass, bolted firmly from within. There is no exterior handle, and the sentries ensure nobody approaches."
+  },
+  {
+    "x": 12.0,
+    "y": 11.0,
+    "id": "village_west_2",
+    "title": "Clockmaker's Terrace",
+    "summary": "A stone terrace lined with workbenches and brass fittings. The air clicks and hums with miniature clockwork gears and steam escapements.",
+    "inspect_text": "Tariq's open-air clockwork studio overlooks the terraced village. Glass cabinets house brass calipers, gear trains, and intricate timing mechanisms.",
+    "feature_label": "the clockwork workbench",
+    "feature_aliases": [
+      "workbench",
+      "bench",
+      "gears",
+      "clockwork",
+      "tools"
+    ],
+    "feature_inspect": "A sturdy wooden workbench covered in jeweler's loupes, brass cogwheels, fine tweezers, and sketches of intricate escapements."
+  },
+  {
+    "x": 9.0,
+    "y": 16.0,
+    "id": "village_west_1",
+    "title": "Wash Basin Terrace",
+    "summary": "A communal stone terrace lined with laundry tubs fed by warm condensed-water pipes from the central boiler.",
+    "inspect_text": "Lines of heavy canvas work-shirts and overalls hang drying in warm air rising from floor grates. Clear, warm water drains into low limestone gutters.",
+    "feature_label": "communal washing trough",
+    "feature_aliases": [
+      "trough",
+      "tub",
+      "basin",
+      "laundry",
+      "wash"
+    ],
+    "feature_inspect": "A long zinc-lined stone trough filled with warm steaming water, scrubbed clean by generations of miners' families."
   },
   {
     "x": 6.0,
@@ -758,12 +68,45 @@
     "feature_inspect": "A natural moss-edged hollow in limestone overflowing with cold, clear drinking water."
   },
   {
+    "x": 12.0,
+    "y": 21.0,
+    "id": "village_south_2",
+    "title": "South Weavers' Lane",
+    "summary": "A quiet residential lane flanked by low limestone dwellings with colorful woven carpets hung over doorframes.",
+    "inspect_text": "Children's wooden toys sit on stone doorsteps. The smell of cedar shavings and mint tea drifts from open windows.",
+    "feature_label": "woven threshold carpets",
+    "feature_aliases": [
+      "carpet",
+      "carpets",
+      "rug",
+      "doorway",
+      "lane"
+    ],
+    "feature_inspect": "Thick dyed wool carpets woven in geometric lozenge patterns that protect homes from cavern drafts."
+  },
+  {
+    "x": 18.0,
+    "y": 21.0,
+    "id": "village_south_1",
+    "title": "Lantern Makers' Alley",
+    "summary": "A stone alley where copper sheets and mica panes are fitted into the protective lanterns used throughout the underground.",
+    "inspect_text": "Scores of unlit oil and luminescent lanterns hang from drying racks above the cobblestones.",
+    "feature_label": "the lantern rack",
+    "feature_aliases": [
+      "rack",
+      "lantern",
+      "lanterns",
+      "frames"
+    ],
+    "feature_inspect": "A timber framework laden with heavy brass frames and faceted mica lenses designed to withstand coal dust and damp."
+  },
+  {
     "x": 24.0,
     "y": 21.0,
     "id": "village_se_corner",
     "title": "South Overlook Terrace",
-    "summary": "A high stone parapet at the southeastern tip of the village, looking down into the bustling eastern mining drifts.",
-    "inspect_text": "A low stone wall keeps children safe from the drop. Lanterns flicker along the railing, overlooking the mine carts below.",
+    "summary": "A high stone parapet at the southeastern tip of the village, looking down into the deep subterranean abyss.",
+    "inspect_text": "A low stone wall keeps children safe from the drop. Lanterns flicker along the railing, casting long shadows into the cavern vastness.",
     "feature_label": "parapet overlook wall",
     "feature_aliases": [
       "wall",
@@ -771,447 +114,48 @@
       "railing",
       "balcony"
     ],
-    "feature_inspect": "Solid limestone blocks cut with drainage scuppers, polished smooth by leaning elbows."
+    "feature_inspect": "Solid limestone blocks cut with drainage scuppers, polished smooth by generations of leaning villagers."
   },
   {
-    "x": 6.9,
-    "y": 19.45,
-    "id": "village_west_1",
-    "title": "Wash Basin Terrace",
-    "summary": "A communal stone terrace lined with laundry tubs fed by warm condensed-water pipes from the central boiler.",
-    "inspect_text": "Lines of heavy canvas work-shirts and overalls hang drying in warm air rising from floor grates.",
-    "feature_label": "communal washing trough",
-    "feature_aliases": [
-      "trough",
-      "tub",
-      "basin",
-      "laundry"
-    ],
-    "feature_inspect": "A long zinc-lined stone trough filled with warm steaming water."
-  },
-  {
-    "x": 7.8,
-    "y": 17.9,
-    "id": "village_west_2",
-    "title": "Steam Pipe Alley",
-    "summary": "A narrow residential passage shadowed by thick overhead pipes wrapped in tarred canvas.",
-    "inspect_text": "The pipes creak and tick with steam expansion. Front doors of stone cottages open directly into the warm lane.",
-    "feature_label": "insulated steam main",
-    "feature_aliases": [
-      "pipe",
-      "main",
-      "canvas",
-      "lagging"
-    ],
-    "feature_inspect": "A ten-inch pipe fitted with brass bleed-valves venting gentle puffs of vapor."
-  },
-  {
-    "x": 8.7,
-    "y": 16.35,
-    "id": "village_west_3",
-    "title": "Radiator Row",
-    "summary": "A row of two-story miner cottages, their front walls fitted with heavy cast-iron radiators that heat the entire street.",
-    "inspect_text": "Children sit on the warm radiator benches to play pebble-games, laughing in the gentle glow of gas lamps.",
-    "feature_label": "cast-iron street radiator",
-    "feature_aliases": [
-      "radiator",
-      "bench",
-      "heater",
-      "iron"
-    ],
-    "feature_inspect": "An ornate fluted radiator radiating steady, dry heat into the lane."
-  },
-  {
-    "x": 9.6,
-    "y": 14.8,
-    "id": "village_west_4",
-    "title": "Maryam's Apothecary",
-    "summary": "A fragrant, orderly stone shop smelling intensely of eucalyptus, dried mint, and camphor balm.",
-    "inspect_text": "Maryam works here behind rows of glass tincture bottles, compounding soothing lung-syrups for miners suffering from chalk dust.",
-    "feature_label": "apothecary mortar and pestle",
-    "feature_aliases": [
-      "mortar",
-      "pestle",
-      "bottles",
-      "herbs"
-    ],
-    "feature_inspect": "A heavy granite mortar filled with freshly crushed eucalyptus leaves and honey."
-  },
-  {
-    "x": 10.5,
-    "y": 13.25,
-    "id": "village_west_5",
-    "title": "West Tool Shed",
-    "summary": "A communal repair shed where miners sharpen drill steels and pickaxes on steam-turned emery wheels.",
-    "inspect_text": "Showers of bright orange sparks illuminate the ceiling whenever a worker presses an edge against the spinning stone.",
-    "feature_label": "steam-driven grinding wheel",
-    "feature_aliases": [
-      "wheel",
-      "grinder",
-      "sparks",
-      "emery"
-    ],
-    "feature_inspect": "A thick circular grindstone spinning smoothly via an overhead leather drive-belt."
-  },
-  {
-    "x": 11.4,
-    "y": 11.7,
-    "id": "village_west_6",
-    "title": "Tariq's Clockwork Workshop",
-    "summary": "A shop crammed with brass gears, clockwork escapements, aneroid manometers, and dissected steam valves.",
-    "inspect_text": "Tariq sits at his high bench with magnifying loupes, delicate tweezers, and miniature soldering torches.",
-    "feature_label": "watchmaker's bench",
-    "feature_aliases": [
-      "bench",
-      "gears",
-      "clockwork",
-      "tools"
-    ],
-    "feature_inspect": "A bench covered in tiny brass cogwheels, balance springs, and pressure diaphragms."
-  },
-  {
-    "x": 12.3,
-    "y": 10.15,
-    "id": "village_west_7",
-    "title": "Gaslamp Lane",
-    "summary": "A quiet, curving street lit by polished brass gas lamps mounted on wrought-iron wall brackets.",
-    "inspect_text": "The gas flames burn with a calm, emerald-tinted white light, fueled by purified mine gas.",
-    "feature_label": "wrought-iron gas bracket",
-    "feature_aliases": [
-      "lamp",
-      "bracket",
-      "lantern",
-      "gas"
-    ],
-    "feature_inspect": "A finely scrolled bracket holding a glass lamp housing a bright incandescent mantle."
-  },
-  {
-    "x": 13.2,
-    "y": 8.6,
-    "id": "village_west_8",
-    "title": "Upper Residential Terrace",
-    "summary": "A row of well-kept miner homes built into natural rock alcoves. Potted cave-ferns line the stone stair steps.",
-    "inspect_text": "Quiet murmurs and the clinking of spoons against tin bowls drift from open windows.",
-    "feature_label": "stone threshold",
-    "feature_aliases": [
-      "door",
-      "threshold",
-      "cottage",
-      "ferns"
-    ],
-    "feature_inspect": "A clean scrubbed threshold flanked by potted white-cap ferns."
-  },
-  {
-    "x": 14.1,
-    "y": 7.05,
-    "id": "village_west_9",
-    "title": "North Cliff Path",
-    "summary": "A rising stone path chiseled into the cavern wall, offering a sweeping view across the entire village rooftops.",
-    "inspect_text": "Iron railings guard the edge. The warm breeze carries the smell of fresh bread and coal smoke.",
-    "feature_label": "chiseled safety rail",
-    "feature_aliases": [
-      "rail",
-      "path",
-      "cliff",
-      "iron"
-    ],
-    "feature_inspect": "Solid iron stanchions supporting a taut steel safety cable."
-  },
-  {
-    "x": 15.9,
-    "y": 7.05,
-    "id": "village_east_1",
-    "title": "North Guard Slope",
-    "summary": "A steep cobblestone ramp descending from the northern gate toward the eastern village artisan quarter.",
-    "inspect_text": "Armed military sentries pace the wall above, keeping a watchful eye on every civilian who passes below.",
-    "feature_label": "cobblestone ramp",
-    "feature_aliases": [
-      "ramp",
-      "cobbles",
-      "slope",
-      "road"
-    ],
-    "feature_inspect": "Heavy granite sets laid in fish-scale pattern to provide traction for loaded handcarts."
-  },
-  {
-    "x": 16.8,
-    "y": 8.6,
+    "x": 21.0,
+    "y": 16.0,
     "id": "village_east_2",
-    "title": "Iron Stair Landing",
-    "summary": "A junction where several iron spiral staircases link the upper cliff terraces with the lower artisan lanes.",
-    "inspect_text": "Cast-iron treads ring like muffled bells underfoot as workers run up and down between shifts.",
-    "feature_label": "spiral stair column",
+    "title": "Terrace of the Dried Herbs",
+    "summary": "A warm stone walkway fragrant with the pungent scent of subterranean mosses and drying cave rosemary.",
+    "inspect_text": "Bundles of sage and medicinal fungi hang from overhead copper steam lines to cure in the steady heat.",
+    "feature_label": "drying herb bundles",
     "feature_aliases": [
-      "stairs",
-      "column",
-      "iron",
-      "steps"
+      "herbs",
+      "bundles",
+      "moss",
+      "plants"
     ],
-    "feature_inspect": "A central fluted cast-iron column supporting open-mesh spiral treads."
+    "feature_inspect": "Neatly bundled sprigs of dark cavern rosemary and cured amber lichen prized for soothing burns."
   },
   {
-    "x": 17.7,
-    "y": 10.15,
-    "id": "village_east_3",
-    "title": "East Tenement Row",
-    "summary": "Multi-story timber-and-stone tenements housing several dozen miner families. Washing lines crisscross overhead.",
-    "inspect_text": "Small children peer from high balcony railings while neighbors converse across the narrow gap between eaves.",
-    "feature_label": "timber balcony railing",
+    "x": 18.0,
+    "y": 11.0,
+    "id": "village_east_1",
+    "title": "North Terrace Gardens",
+    "summary": "Tiered planter boxes cut from the cavern floor, glowing with phosphorescent green and blue lichen.",
+    "inspect_text": "Carefully tended moisture trays nurture edible mushrooms and small sweet subterranean root vegetables.",
+    "feature_label": "phosphorescent planter boxes",
     "feature_aliases": [
-      "balcony",
-      "railing",
-      "tenement",
-      "timber"
+      "planter",
+      "boxes",
+      "lichen",
+      "mushrooms",
+      "garden"
     ],
-    "feature_inspect": "Sturdy pine rail polished by generations of leaning forearms."
-  },
-  {
-    "x": 18.6,
-    "y": 11.7,
-    "id": "village_east_4",
-    "title": "Weaver's Workshop",
-    "summary": "A spacious workshop resounding with the rhythmic clack-thud of steam-powered fly-shuttle looms.",
-    "inspect_text": "Spinning wheels and looms produce heavy duck canvas, filter veils for chalk dust, and durable denim trousers.",
-    "feature_label": "steam-powered loom",
-    "feature_aliases": [
-      "loom",
-      "weaver",
-      "cloth",
-      "canvas"
-    ],
-    "feature_inspect": "A cast-iron loom frame with flying shuttles dancing across tight cotton warp threads."
-  },
-  {
-    "x": 19.5,
-    "y": 13.25,
-    "id": "village_east_5",
-    "title": "East Pipe Junction",
-    "summary": "A wide street intersection dominated by a freestanding iron gantry supporting district heating mains.",
-    "inspect_text": "Valve wheels and steam traps hiss rhythmically as condensate is discharged into road gutters.",
-    "feature_label": "overhead pipe gantry",
-    "feature_aliases": [
-      "gantry",
-      "pipes",
-      "overhead",
-      "iron"
-    ],
-    "feature_inspect": "Lattice-girder steel arch spanning the street carrying three parallel lagged pipes."
-  },
-  {
-    "x": 20.4,
-    "y": 14.8,
-    "id": "village_east_6",
-    "title": "Miner Cottage Row East",
-    "summary": "A tranquil cul-de-sac of whitewashed stone cottages with brass doorknobs and polished windowpanes.",
-    "inspect_text": "Small brass nameplates beside front doors commemorate miner families who have lived here for generations.",
-    "feature_label": "polished brass nameplate",
-    "feature_aliases": [
-      "nameplate",
-      "door",
-      "brass",
-      "cottage"
-    ],
-    "feature_inspect": "Engraved with family crests and decades of unbroken mining service."
-  },
-  {
-    "x": 21.3,
-    "y": 16.35,
-    "id": "village_east_7",
-    "title": "Lantern Lane",
-    "summary": "A cheerful market street where vendors set up trestle tables selling tin mugs, leather boots, and dried mushrooms.",
-    "inspect_text": "Overhead festoon lanterns cast warm orange circles onto the wet cobblestones.",
-    "feature_label": "vendor trestle table",
-    "feature_aliases": [
-      "table",
-      "market",
-      "wares",
-      "lane"
-    ],
-    "feature_inspect": "Heavy wooden trestles displaying hand-stitched leather boots and tin mess kits."
-  },
-  {
-    "x": 22.2,
-    "y": 17.9,
-    "id": "village_east_8",
-    "title": "Boiler Exhaust Lane",
-    "summary": "A narrow alley flanked by the brick blast-walls of a district steam-boosting station.",
-    "inspect_text": "The air is warm and dry, smelling faintly of clean mineral water and coal smoke.",
-    "feature_label": "brick booster wall",
-    "feature_aliases": [
-      "wall",
-      "brick",
-      "booster",
-      "station"
-    ],
-    "feature_inspect": "Solid red engineering brick tied together with heavy star-pattern iron wall washers."
-  },
-  {
-    "x": 23.1,
-    "y": 19.45,
-    "id": "village_east_9",
-    "title": "East Cliff Terrace",
-    "summary": "A scenic promenade overlooking the lower rail staging yards of the mine, lined with benches.",
-    "inspect_text": "Off-duty miners sit here with clay pipes, watching the distant shunting of ore trains below.",
-    "feature_label": "timber bench",
-    "feature_aliases": [
-      "bench",
-      "promenade",
-      "overlook",
-      "seat"
-    ],
-    "feature_inspect": "A curved oak bench bolted to the parapet, worn smooth by generations of workers."
-  },
-  {
-    "x": 22.2,
-    "y": 21.0,
-    "id": "village_south_1",
-    "title": "Memorial Wall",
-    "summary": "A somber stretch of cavern wall faced with polished slate tablets listing the names of miners lost in cave-ins.",
-    "inspect_text": "Small oil lamps burn in carved recesses beneath the names. Fresh cavern ferns have been placed at the base.",
-    "feature_label": "slate memorial tablet",
-    "feature_aliases": [
-      "tablet",
-      "slate",
-      "names",
-      "memorial"
-    ],
-    "feature_inspect": "Dozens of names etched in gold leaf, commemorating those who fell in the lower drifts."
-  },
-  {
-    "x": 20.4,
-    "y": 21.0,
-    "id": "village_south_2",
-    "title": "South Mushroom Lane",
-    "summary": "A cool, quiet street running parallel to the agricultural mushroom caverns. The smell of damp loam is strong.",
-    "inspect_text": "Wagons loaded with wooden compost flats rumble by, driven by quiet garden workers.",
-    "feature_label": "compost wagon",
-    "feature_aliases": [
-      "wagon",
-      "cart",
-      "compost",
-      "loam"
-    ],
-    "feature_inspect": "A low-slung wooden wagon piled high with steaming, enriched cave loam."
-  },
-  {
-    "x": 18.6,
-    "y": 21.0,
-    "id": "village_south_3",
-    "title": "Spore Drying Shed",
-    "summary": "A ventilated wooden building where mature mushroom spores are dried on fine brass mesh racks.",
-    "inspect_text": "Warm air is piped beneath the drying tables to dehydrate the harvest for winter storage.",
-    "feature_label": "brass spore drying rack",
-    "feature_aliases": [
-      "rack",
-      "spores",
-      "mesh",
-      "drying"
-    ],
-    "feature_inspect": "Tier upon tier of fine wire mesh dusted with velvety purple mushroom spores."
-  },
-  {
-    "x": 16.8,
-    "y": 21.0,
-    "id": "village_south_4",
-    "title": "Stepped Mushroom Beds",
-    "summary": "A vast vaulted chamber lined with terraced wooden beds blooming with thousands of white and blue edible caps.",
-    "inspect_text": "Fine water misting nozzles spray the beds every ten minutes, powered by the village water line.",
-    "feature_label": "misting nozzle assembly",
-    "feature_aliases": [
-      "nozzle",
-      "sprayer",
-      "mist",
-      "mushrooms"
-    ],
-    "feature_inspect": "Brass spray heads atomizing water into a cool, refreshing fog."
-  },
-  {
-    "x": 15.0,
-    "y": 21.0,
-    "id": "village_south_5",
-    "title": "Southern Runoff Trench",
-    "summary": "A deep, masonry-lined drainage channel dividing the agricultural zone from the residential terraces.",
-    "inspect_text": "Iron footbridges cross the water at regular intervals, connecting lanes on either side.",
-    "feature_label": "arched iron footbridge",
-    "feature_aliases": [
-      "bridge",
-      "trench",
-      "channel",
-      "arch"
-    ],
-    "feature_inspect": "Graceful cast-iron arch with safety handrails spanning the rushing channel."
-  },
-  {
-    "x": 13.2,
-    "y": 21.0,
-    "id": "village_south_6",
-    "title": "Root Cellar Vault",
-    "summary": "A cool stone vault dug deep into living rock, used to store dried provisions, smoked fish, and root crops.",
-    "inspect_text": "Heavy timber bins stand filled with pickled vegetables and wheel upon wheel of aged cave-cheese.",
-    "feature_label": "oak storage bin",
-    "feature_aliases": [
-      "bin",
-      "cellar",
-      "provisions",
-      "cheese"
-    ],
-    "feature_inspect": "Massive iron-strapped oak chest filled with wax-sealed root provisions."
-  },
-  {
-    "x": 11.4,
-    "y": 21.0,
-    "id": "village_south_7",
-    "title": "Communal Steam Baths",
-    "summary": "A pillared bathhouse with three stepped pools of hot, mineral-rich water fed directly by condensed steam lines.",
-    "inspect_text": "Miners soak their aching joints here after hard ten-hour shifts, scrubbing off white chalk dust with pumice.",
-    "feature_label": "hot mineral pool",
-    "feature_aliases": [
-      "pool",
-      "bath",
-      "water",
-      "steam"
-    ],
-    "feature_inspect": "Clear turquoise water steaming gently at a soothing temperature."
-  },
-  {
-    "x": 9.6,
-    "y": 21.0,
-    "id": "village_south_8",
-    "title": "Condenser Cistern",
-    "summary": "A massive cylindrical copper storage tank holding ten thousand gallons of purified drinking water.",
-    "inspect_text": "A glass sight-tube shows the water level, while copper faucets allow villagers to draw water freely.",
-    "feature_label": "copper water faucet",
-    "feature_aliases": [
-      "faucet",
-      "tap",
-      "cistern",
-      "tank"
-    ],
-    "feature_inspect": "A gleaming brass turn-handle faucet dripping into a carved stone basin."
-  },
-  {
-    "x": 7.8,
-    "y": 21.0,
-    "id": "village_south_9",
-    "title": "Spring Intake Chamber",
-    "summary": "A masonry vault surrounding the purest underground spring, fitted with charcoal and sand filtration beds.",
-    "inspect_text": "The water runs crystal clear over white quartz pebbles before entering the village mains.",
-    "feature_label": "sand filtration bed",
-    "feature_aliases": [
-      "filter",
-      "sand",
-      "pebbles",
-      "intake"
-    ],
-    "feature_inspect": "Layers of graded quartz sand and activated charcoal filtering every drop."
+    "feature_inspect": "Carved limestone planters filled with rich compost and glowing moss providing soft blue illumination."
   },
   {
     "x": 15.0,
     "y": 16.0,
     "id": "village_square",
     "title": "The Village Square",
-    "summary": "The beating heart of the village. A broad circular plaza paved in concentric stone rings, surrounded by gas lamps.",
-    "inspect_text": "At the center, broad spiral stone stairs lead UP to the Floor 3 Heart-Pit ('oh'). A large iron hearth warms the crowd.",
+    "summary": "The beating heart of the village. A broad circular plaza paved in concentric stone rings, surrounded by warm gas lamps.",
+    "inspect_text": "At the center, broad spiral stone stairs lead UP to the Floor 3 Heart-Pit ('oh'). A large iron hearth warms the gathering villagers.",
     "feature_label": "the central stone stairs",
     "feature_aliases": [
       "stairs",
@@ -1223,7 +167,7 @@
   },
   {
     "x": 13.0,
-    "y": 17.0,
+    "y": 16.0,
     "id": "elder_hut",
     "title": "Elder Rashid's Quarters",
     "summary": "A modest stone house lined with bookshelves, maps of the cavern system, and brass surveying instruments.",
@@ -1240,7 +184,7 @@
   },
   {
     "x": 17.0,
-    "y": 17.0,
+    "y": 16.0,
     "id": "baker_hut",
     "title": "Yasmin's Bakery",
     "summary": "A warm, flour-dusted bakery smelling wonderfully of fresh flatbread, sesame, and roasted dates.",
@@ -1253,362 +197,5 @@
       "counter"
     ],
     "feature_inspect": "A massive domed brick hearth with steam pipes wrapping its base, baking scores of flatbreads."
-  },
-  {
-    "x": 15.0,
-    "y": 8.0,
-    "id": "camp_north_apex",
-    "title": "High Signal Tower",
-    "summary": "The highest bastion of the military complex. An iron tower overlooking both the garrison courtyard and the outer village.",
-    "inspect_text": "A massive parabolic mirror and carbon-arc signal lamp stand ready to flash coded flashes across the underground kingdom.",
-    "feature_label": "carbon-arc signal lamp",
-    "feature_aliases": [
-      "lamp",
-      "mirror",
-      "signal",
-      "tower"
-    ],
-    "feature_inspect": "A heavy brass projector with geared elevation cranks and a silvered glass reflector."
-  },
-  {
-    "x": 10.0,
-    "y": 16.66,
-    "id": "camp_sw_bastion",
-    "title": "Southwest Steam Bastion",
-    "summary": "A fortified corner tower bristling with high-pressure steam cannons mounted on swivel carriages.",
-    "inspect_text": "Heavy iron plating protects the gunners. Compressed steam hoses feed directly from the central boilers.",
-    "feature_label": "swivel steam cannon",
-    "feature_aliases": [
-      "cannon",
-      "gun",
-      "swivel",
-      "bastion"
-    ],
-    "feature_inspect": "A heavy brass-jacketed barrel fitted with a quick-action ball valve and pressure reservoir."
-  },
-  {
-    "x": 20.0,
-    "y": 16.66,
-    "id": "camp_se_bastion",
-    "title": "Southeast Steam Bastion",
-    "summary": "The twin corner bastion, commanding clear fields of fire across the eastern village approach road.",
-    "inspect_text": "Ammo lockers hold racks of solid steel bolts designed to be fired in rapid bursts by steam pressure.",
-    "feature_label": "rack of steam bolts",
-    "feature_aliases": [
-      "rack",
-      "bolts",
-      "ammunition",
-      "lockers"
-    ],
-    "feature_inspect": "Heavy pointed steel projectiles arranged in brass feeding clips."
-  },
-  {
-    "x": 10.83,
-    "y": 15.22,
-    "id": "camp_west_wall_1",
-    "title": "West Rampart Walk",
-    "summary": "A stone-and-iron battlewalk atop the western curtain wall, guarded by pacing soldiers in polished breastplates.",
-    "inspect_text": "Braziers of coke burn in iron baskets, cutting through the cavern chill.",
-    "feature_label": "iron rampart brazier",
-    "feature_aliases": [
-      "brazier",
-      "fire",
-      "rampart",
-      "wall"
-    ],
-    "feature_inspect": "A stout iron basket glowing hot with burning anthracite coal."
-  },
-  {
-    "x": 11.67,
-    "y": 13.77,
-    "id": "camp_west_wall_2",
-    "title": "Guard Armory",
-    "summary": "A secure chamber lined with racks of crossbows, halberds, and reinforced brass shields.",
-    "inspect_text": "An armorer's anvil stands in the corner, ringed by hammers and tongs for field repairs.",
-    "feature_label": "crossbow rack",
-    "feature_aliases": [
-      "rack",
-      "crossbow",
-      "weapons",
-      "armory"
-    ],
-    "feature_inspect": "Neatly slotted wall racks holding military heavy crossbows with steel prods."
-  },
-  {
-    "x": 12.5,
-    "y": 12.33,
-    "id": "camp_west_wall_3",
-    "title": "West Soldier Barracks",
-    "summary": "A tidy room of double-tiered iron bunkbeds and footlockers for the garrison's watchmen.",
-    "inspect_text": "Uniforms hang neatly on wall pegs. The floor is scrubbed stone, smelling of floor wax and gun oil.",
-    "feature_label": "soldier footlocker",
-    "feature_aliases": [
-      "footlocker",
-      "bunk",
-      "bed",
-      "chest"
-    ],
-    "feature_inspect": "An iron-bound wooden chest stenciled with the company regimental insignia."
-  },
-  {
-    "x": 13.33,
-    "y": 10.89,
-    "id": "camp_west_wall_4",
-    "title": "Sentry Post West",
-    "summary": "An enclosed observation cupola with narrow glass slit-windows looking out over the village roofs.",
-    "inspect_text": "A brass speaking-tube connects directly to the officer's command desk.",
-    "feature_label": "brass speaking-tube",
-    "feature_aliases": [
-      "tube",
-      "intercom",
-      "brass",
-      "mouthpiece"
-    ],
-    "feature_inspect": "A polished brass trumpet mouthpiece with an attached whistle stopper."
-  },
-  {
-    "x": 14.17,
-    "y": 9.44,
-    "id": "camp_west_wall_5",
-    "title": "Northwest Rampart Walk",
-    "summary": "The upper rampart near the apex, where the wall joins the natural rock roof of the cavern.",
-    "inspect_text": "Steam conduits run along the parapet walk to prevent ice accumulation from upper drafts.",
-    "feature_label": "parapet steam line",
-    "feature_aliases": [
-      "line",
-      "pipe",
-      "parapet",
-      "walk"
-    ],
-    "feature_inspect": "A small copper tracer pipe wrapped in insulation alongside the stone battlement."
-  },
-  {
-    "x": 15.83,
-    "y": 9.44,
-    "id": "camp_east_wall_1",
-    "title": "Northeast Rampart Walk",
-    "summary": "The eastern high battlewalk overlooking the deep mine approach drifts.",
-    "inspect_text": "Guards patrol with mechanical clockwork chronometers strapped to their belts to log their rounds.",
-    "feature_label": "guard log chronometer",
-    "feature_aliases": [
-      "clock",
-      "chronometer",
-      "post",
-      "log"
-    ],
-    "feature_inspect": "A brass case clock with a rotating paper dial punched by patrol keys."
-  },
-  {
-    "x": 16.67,
-    "y": 10.89,
-    "id": "camp_east_wall_2",
-    "title": "Officer's Quarters",
-    "summary": "A comfortable room with wool rugs, mahogany lockers, and decanters of imported brandy.",
-    "inspect_text": "Framed maps of the three concentric triangles hang on the wall, showing mine output projections.",
-    "feature_label": "framed mine map",
-    "feature_aliases": [
-      "map",
-      "frame",
-      "desk",
-      "chart"
-    ],
-    "feature_inspect": "A detailed topographical map showing chalk vein thickness and daily quota targets."
-  },
-  {
-    "x": 17.5,
-    "y": 12.33,
-    "id": "camp_east_wall_3",
-    "title": "East Soldier Barracks",
-    "summary": "A second dormitory for off-duty soldiers, filled with the snores of tired sentries.",
-    "inspect_text": "Boot scrapers and umbrella stands sit beside the door; wool blankets cover every bunk.",
-    "feature_label": "tiered iron bunk",
-    "feature_aliases": [
-      "bunk",
-      "bed",
-      "blanket",
-      "dormitory"
-    ],
-    "feature_inspect": "A sturdy angle-iron bed frame fitted with a straw paillasse and wool blanket."
-  },
-  {
-    "x": 18.33,
-    "y": 13.77,
-    "id": "camp_east_wall_4",
-    "title": "Sentry Post East",
-    "summary": "An elevated watch-station monitoring the eastern rail approaches and tailing dumps.",
-    "inspect_text": "A trip-wire alarm bell hangs overhead, linked to sensors along the outer perimeter wall.",
-    "feature_label": "trip-wire alarm bell",
-    "feature_aliases": [
-      "bell",
-      "alarm",
-      "wire",
-      "sentry"
-    ],
-    "feature_inspect": "A bronze bell with an electric clapper wired to external trip-cords."
-  },
-  {
-    "x": 19.17,
-    "y": 15.22,
-    "id": "camp_east_wall_5",
-    "title": "East Rampart Walk",
-    "summary": "The lower eastern parapet leading down toward the southeast bastion.",
-    "inspect_text": "Stacked boxes of quick-lime and chalk-resistant grease sit covered beneath waterproof canvas tarps.",
-    "feature_label": "tarpaulin supply stack",
-    "feature_aliases": [
-      "tarp",
-      "supplies",
-      "boxes",
-      "crates"
-    ],
-    "feature_inspect": "Heavy waxed canvas lashed tight over military provisions."
-  },
-  {
-    "x": 18.33,
-    "y": 16.66,
-    "id": "camp_south_wall_1",
-    "title": "Timber Stockade East",
-    "summary": "Heavy vertical iron-sheathed logs form the outer palisade wall facing the village approach.",
-    "inspect_text": "Crossbow slits cut at chest height provide defensive cover for defenders inside.",
-    "feature_label": "iron-sheathed log",
-    "feature_aliases": [
-      "palisade",
-      "stockade",
-      "wall",
-      "timber"
-    ],
-    "feature_inspect": "Solid pine trunk clad in quarter-inch boiler plate."
-  },
-  {
-    "x": 16.67,
-    "y": 16.66,
-    "id": "camp_south_wall_2",
-    "title": "Drill Grounds",
-    "summary": "A cleared courtyard of packed earth where soldiers drill with halberds and practice formations.",
-    "inspect_text": "Wooden training dummies with notched cuirasses stand along the wall.",
-    "feature_label": "wooden training dummy",
-    "feature_aliases": [
-      "dummy",
-      "target",
-      "post",
-      "drill"
-    ],
-    "feature_inspect": "A heavily scarred pine post fitted with straw arms and iron helmet."
-  },
-  {
-    "x": 15.0,
-    "y": 16.66,
-    "id": "camp_gate",
-    "title": "The Brass Bulkhead Gate",
-    "summary": "The monumental front portal of the garrison. Two towering doors of solid brass, three feet thick, seal the complex.",
-    "inspect_text": "Operated by massive hydraulic pistons and gear-wheels. The gate requires official clearance to open.",
-    "feature_label": "the massive brass gate",
-    "feature_aliases": [
-      "gate",
-      "bulkhead",
-      "doors",
-      "brass",
-      "portal"
-    ],
-    "feature_inspect": "Gleaming brass doors stamped with company serial numbers, locked with four hydraulic deadbolts."
-  },
-  {
-    "x": 13.33,
-    "y": 16.66,
-    "id": "camp_south_wall_3",
-    "title": "Guard Mess Hall",
-    "summary": "A large dining hall with long wooden trestle tables smelling of roast mutton, cabbage, and stale ale.",
-    "inspect_text": "Tin plates and pewter tankards sit drying on dish racks beside a large cast-iron cookstove.",
-    "feature_label": "cast-iron cookstove",
-    "feature_aliases": [
-      "stove",
-      "hearth",
-      "kettle",
-      "mess"
-    ],
-    "feature_inspect": "A six-burner range with two baking ovens, radiating heat day and night."
-  },
-  {
-    "x": 11.67,
-    "y": 16.66,
-    "id": "camp_south_wall_4",
-    "title": "Steam Smithy",
-    "summary": "A roaring workshop equipped with a steam trip-hammer, two open forges, and quench tubs.",
-    "inspect_text": "The blacksmith hammers glowing iron bars into replacement piston rods and prison bars.",
-    "feature_label": "steam trip-hammer",
-    "feature_aliases": [
-      "hammer",
-      "anvil",
-      "forge",
-      "smithy"
-    ],
-    "feature_inspect": "A half-ton iron hammerhead driven rapidly up and down by an overhead steam cylinder."
-  },
-  {
-    "x": 15.0,
-    "y": 14.5,
-    "id": "command_tent",
-    "title": "Captain Malik's Headquarters",
-    "summary": "A grand tent of reinforced sailcloth erected within the inner courtyard, furnished with campaign tables and brass chests.",
-    "inspect_text": "Captain Malik directs the garrison from here. In a locked brass strongbox on his desk lies the ancient **Teleportation Scroll**.",
-    "feature_label": "Malik's brass strongbox",
-    "feature_aliases": [
-      "strongbox",
-      "chest",
-      "scroll",
-      "box",
-      "desk"
-    ],
-    "feature_inspect": "A heavy iron-banded chest secured with a complex tumbler lock. Inside lies the Teleportation Scroll."
-  },
-  {
-    "x": 17.5,
-    "y": 14.0,
-    "id": "prison_cage",
-    "title": "The Iron Prison Cage",
-    "summary": "A suspended iron cage hanging over a dry stone pit in the shadow of the central Calcinator.",
-    "inspect_text": "Inside sits **Zayd (age 11)**, dirty-faced and furious, gripping the iron bars and yelling at his captors. Nearby stands the silent, robed **Priest Harun**.",
-    "feature_label": "the suspended prison cage",
-    "feature_aliases": [
-      "cage",
-      "bars",
-      "zayd",
-      "prison",
-      "pit"
-    ],
-    "feature_inspect": "Heavy vertical iron bars riveted to a solid hoop frame. Zayd is trapped inside, waiting for the gate."
-  },
-  {
-    "x": 12.5,
-    "y": 14.0,
-    "id": "calcinator_core",
-    "title": "The Great Chalk Calcinator",
-    "summary": "The beating industrial heart of the floor: an enormous spherical brass boiler twenty feet in diameter, wrapped in steam pipes.",
-    "inspect_text": "Crushed chalk ore is fed into top hoppers and super-heated by high-pressure steam, vaporizing it into glowing white aether-vapor that feeds the teleport gate.",
-    "feature_label": "the spherical calcinator",
-    "feature_aliases": [
-      "calcinator",
-      "boiler",
-      "sphere",
-      "machine",
-      "pipes"
-    ],
-    "feature_inspect": "A titanic brass pressure vessel vibrating with deafening power, venting luminescent steam through copper conduits."
-  },
-  {
-    "x": 15.0,
-    "y": 11.5,
-    "id": "teleport_gate",
-    "title": "The Teleportation Gate",
-    "summary": "A colossal archway of polished basalt and brass, wrapped in thick copper cables that pulse with blinding white light.",
-    "inspect_text": "The arch frames an unstable, swirling white vortex powered by vaporized chalk from the Calcinator. This is the gateway to **Floor 5**.",
-    "feature_label": "the swirling teleportation vortex",
-    "feature_aliases": [
-      "gate",
-      "vortex",
-      "portal",
-      "arch",
-      "light"
-    ],
-    "feature_inspect": "A roaring oval of pure luminous white energy, tearing through space down toward Floor 5."
   }
 ]

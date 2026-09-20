@@ -111,3 +111,92 @@ fn a_policy_with_no_ready_defender_falls_back_to_player_damage() {
     assert!(state.actor_stat(ACTOR_A_ID, "stamina") < player_before);
     assert_eq!(state.actor_stat(ACTOR_B_ID, "stamina"), defender_before);
 }
+
+#[test]
+fn follower_intercepts_strike_when_player_health_is_low() {
+    let mut pack = reducer_test_pack();
+    pack.settings.combat.player_actor_id = ACTOR_A_ID.to_string();
+    pack.settings.combat.health_stat_id = "stamina".to_string();
+    pack.settings.combat.attack_stat_id = "confidence".to_string();
+    pack.settings.combat.defense_stat_id = "hunger".to_string();
+    pack.settings.party = PartyPolicyDefinition {
+        initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), "follow".to_string())]),
+        combat_rules: vec![
+            PartyCombatDecisionRule {
+                id: "guard-order".to_string(),
+                tier: PartyDecisionTier::Order,
+                window: PartyReactionWindow::BeforeHostileDamage,
+                action: PartyReactionAction::Intercept,
+                conditions: vec![PartyDecisionCondition::OrderIs {
+                    orders: vec!["guard".to_string()],
+                }],
+                target: PartyTargetSelection::Player,
+                candidate_priority: vec![],
+                support_effect: None,
+                cooldown: PartyReactionCooldown::ActorCombatInterval,
+                message: "combat.guard_intercepts".to_string(),
+            },
+            PartyCombatDecisionRule {
+                id: "follow-protect-player".to_string(),
+                tier: PartyDecisionTier::Order,
+                window: PartyReactionWindow::BeforeHostileDamage,
+                action: PartyReactionAction::Intercept,
+                conditions: vec![
+                    PartyDecisionCondition::OrderIs {
+                        orders: vec!["follow".to_string()],
+                    },
+                    PartyDecisionCondition::PlayerHealthAtMostPercent { percent: 50 },
+                ],
+                target: PartyTargetSelection::Player,
+                candidate_priority: vec![],
+                support_effect: None,
+                cooldown: PartyReactionCooldown::ActorCombatInterval,
+                message: "combat.guard_intercepts".to_string(),
+            },
+        ],
+    };
+    pack.messages.insert(
+        "combat.guard_intercepts".to_string(),
+        PackMessage::Narration("{guard} steps in front of {actor} taking {damage} damage.".to_string()),
+    );
+
+    let mut state = WorldState::new(&pack);
+    state.actor_room_overrides.insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
+    state.set_stance(ACTOR_B_ID, ActorStance::Allied);
+    state.set_stance(ACTOR_C_ID, ActorStance::Hostile);
+
+    state.initial_actor_stats.entry(ACTOR_A_ID.to_string()).or_default().insert("stamina".to_string(), 10);
+    state.actor_stats.entry(ACTOR_A_ID.to_string()).or_default().insert("stamina".to_string(), 10);
+
+    // 1. With player at full health (stamina 10/10 = 100%), follower does NOT intercept
+    let player_before = state.actor_stat(ACTOR_A_ID, "stamina");
+    let defender_before = state.actor_stat(ACTOR_B_ID, "stamina");
+
+    apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::HostileStrike {
+            actor_id: ACTOR_C_ID.to_string(),
+        })],
+    );
+
+    assert!(state.actor_stat(ACTOR_A_ID, "stamina") < player_before);
+    assert_eq!(state.actor_stat(ACTOR_B_ID, "stamina"), defender_before);
+
+    // 2. Reduce player stamina to 4 (4/10 = 40% <= 50%) and advance time past attack interval
+    state.current_time_minutes += 10;
+    state.actor_stats.entry(ACTOR_A_ID.to_string()).or_default().insert("stamina".to_string(), 4);
+    let player_low = state.actor_stat(ACTOR_A_ID, "stamina");
+
+    apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::HostileStrike {
+            actor_id: ACTOR_C_ID.to_string(),
+        })],
+    );
+
+    // Follower intercepted the blow: player stamina untouched, defender took damage!
+    assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), player_low);
+    assert!(state.actor_stat(ACTOR_B_ID, "stamina") < defender_before);
+}

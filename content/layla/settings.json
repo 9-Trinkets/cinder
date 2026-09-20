@@ -148,6 +148,44 @@
         "message": "combat.guard_intercepts"
       },
       {
+        "id": "follow-protect-player",
+        "tier": "order",
+        "window": "before_hostile_damage",
+        "action": "intercept",
+        "conditions": [
+          {
+            "condition": "order_is",
+            "orders": [
+              "follow"
+            ]
+          },
+          {
+            "condition": "player_health_at_most_percent",
+            "percent": 50
+          },
+          {
+            "condition": "actor_health_at_least_percent",
+            "percent": 25
+          }
+        ],
+        "target": "player",
+        "candidate_priority": [
+          {
+            "priority": "highest_health_percent"
+          },
+          {
+            "priority": "highest_defense"
+          },
+          {
+            "priority": "content_order"
+          }
+        ],
+        "cooldown": {
+          "mode": "actor_combat_interval"
+        },
+        "message": "combat.guard_intercepts"
+      },
+      {
         "id": "assist-order",
         "tier": "order",
         "window": "after_hostile_damage",

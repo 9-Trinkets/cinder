@@ -1471,7 +1471,7 @@
   {
     "id": "tariq",
     "name": "Tariq",
-    "room_id": "village_west_6",
+    "room_id": "village_west_2",
     "aliases": [
       "tariq",
       "clockmaker",
@@ -1519,7 +1519,7 @@
   {
     "id": "zayd",
     "name": "Zayd",
-    "room_id": "prison_cage",
+    "room_id": "",
     "aliases": [
       "zayd",
       "boy",
@@ -1570,7 +1570,7 @@
   {
     "id": "priest_harun",
     "name": "Priest Harun",
-    "room_id": "prison_cage",
+    "room_id": "",
     "aliases": [
       "harun",
       "priest",
@@ -1624,7 +1624,7 @@
   {
     "id": "captain_malik",
     "name": "Captain Malik",
-    "room_id": "command_tent",
+    "room_id": "",
     "aliases": [
       "malik",
       "captain",
@@ -1680,7 +1680,7 @@
   {
     "id": "sakhra",
     "name": "Sakhra",
-    "room_id": "crystal_pit",
+    "room_id": "",
     "aliases": [
       "sakhra",
       "steam golem",
@@ -1729,21 +1729,22 @@
   },
   {
     "id": "garrison_sentry_gate",
-    "name": "garrison gate sentry",
-    "room_id": "camp_gate",
+    "name": "garrison sentry",
+    "room_id": "village_north_gate",
     "aliases": [
       "sentry",
       "guard",
       "gate guard",
-      "soldier"
+      "soldier",
+      "garrison sentry"
     ],
     "tags": [
       "soldier",
       "garrison"
     ],
-    "inspect_text": "A stern armored guard holding a heavy steam-powered repeating crossbow, keeping watch over the massive brass gate.",
+    "inspect_text": "A stern armored guard holding a heavy steam-powered repeating crossbow, keeping watch before the massive iron-and-brass bulkhead of the fortress.",
     "attackable": true,
-    "initial_hostile": true,
+    "initial_hostile": false,
     "attack_interval_minutes": 2,
     "xp_drop": 20,
     "drops": {
@@ -1758,23 +1759,67 @@
     "level": 5,
     "prompt_context": {
       "character_notes": [
-        "You are a garrison sentry stationed at the main gate.",
-        "Commoners are strictly forbidden from entering the military fortress.",
-        "You have orders from Captain Malik to shoot any unauthorized intruder on sight."
+        "You are a garrison sentry stationed before the massive brass bulkhead of the fortress.",
+        "Commoners are strictly forbidden from approaching or entering the military fortress.",
+        "You have orders from Captain Malik that the gates remain sealed until the tithe shipment departs."
       ],
       "response_notes": [
-        "Shout warnings and raise your steam crossbow.",
-        "Call for garrison reinforcements."
+        "Order the civilian to turn back.",
+        "State firmly that the fortress is sealed on lockdown by Captain Malik's command."
       ],
       "behavior_examples": [
-        "He aims his steam crossbow at anyone approaching the gate."
+        "He keeps his steam crossbow pointed at the ground but his grip is firm and ready.",
+        "He tells Layla that the fortress gates are locked tight."
+      ]
+    }
+  },
+  {
+    "id": "garrison_guard",
+    "name": "garrison guard",
+    "room_id": "village_north_gate",
+    "aliases": [
+      "guard",
+      "soldier",
+      "garrison guard",
+      "sentry"
+    ],
+    "tags": [
+      "soldier",
+      "garrison"
+    ],
+    "inspect_text": "A towering garrison guard in heavy iron plating, leaning on a tall halberd and watching the plaza with cold indifference.",
+    "attackable": true,
+    "initial_hostile": false,
+    "attack_interval_minutes": 2,
+    "xp_drop": 20,
+    "drops": {
+      "steam-crossbow-bolt": 1
+    },
+    "initial_stats": {
+      "hp": 20,
+      "strength": 5,
+      "defense": 4,
+      "intelligence": 3
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You stand guard alongside the gate sentry before the massive fortress bulkhead.",
+        "You have zero tolerance for commoners loitering near the military gate."
+      ],
+      "response_notes": [
+        "Tell Layla to move along and return to the village.",
+        "State that no one passes these gates without written authorization from Commander Malik."
+      ],
+      "behavior_examples": [
+        "He shifts his heavy halberd with a dull clank on the stone paving."
       ]
     }
   },
   {
     "id": "garrison_patrol_west",
     "name": "garrison rampart sentry",
-    "room_id": "camp_west_wall_3",
+    "room_id": "",
     "aliases": [
       "sentry",
       "guard",
@@ -1815,7 +1860,7 @@
   {
     "id": "garrison_patrol_east",
     "name": "garrison rampart sentry",
-    "room_id": "camp_east_wall_3",
+    "room_id": "",
     "aliases": [
       "sentry",
       "guard",
@@ -1856,7 +1901,7 @@
   {
     "id": "garrison_warden",
     "name": "cage warden",
-    "room_id": "prison_cage",
+    "room_id": "",
     "aliases": [
       "warden",
       "cage guard",
@@ -1900,7 +1945,7 @@
   {
     "id": "steam_automaton_west",
     "name": "clockwork mining driller",
-    "room_id": "mine_west_drift_7",
+    "room_id": "",
     "aliases": [
       "automaton",
       "driller",
@@ -1941,7 +1986,7 @@
   {
     "id": "steam_automaton_east",
     "name": "clockwork ore hauler",
-    "room_id": "mine_east_drift_7",
+    "room_id": "",
     "aliases": [
       "automaton",
       "hauler",

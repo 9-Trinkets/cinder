@@ -146,7 +146,7 @@ fn connect_segment(
 }
 
 pub fn build_floor4() -> FloorBuilder {
-    let mut builder = FloorBuilder::new("the-commoners", "The Village & Mines", 31, 27);
+    let mut builder = FloorBuilder::new("the-commoners", "The Worker Village", 25, 23);
 
     const RAW_ROOMS: &str = include_str!("../../data/floor4_rooms.json");
     let entries: Vec<Floor4RoomEntry> = serde_json::from_str(RAW_ROOMS).expect("valid floor4 room data");
@@ -172,70 +172,24 @@ pub fn build_floor4() -> FloorBuilder {
     let w = &["west", "w"];
     let e = &["east", "e"];
 
-    // 1. Outer Triangle: The Steam Mines
-    let mine_left = [
-        "mine_sw_corner",
-        "mine_west_drift_1", "mine_west_drift_2", "mine_west_drift_3", "mine_west_drift_4",
-        "mine_west_drift_5", "mine_west_drift_6", "mine_west_drift_7", "mine_west_drift_8",
-        "mine_west_drift_9", "mine_west_drift_10", "mine_west_drift_11", "mine_west_drift_12",
-        "mine_west_drift_13", "mine_north_apex",
-    ];
-    let mine_right = [
-        "mine_north_apex",
-        "mine_east_drift_1", "mine_east_drift_2", "mine_east_drift_3", "mine_east_drift_4",
-        "mine_east_drift_5", "mine_east_drift_6", "mine_east_drift_7", "mine_east_drift_8",
-        "mine_east_drift_9", "mine_east_drift_10", "mine_east_drift_11", "mine_east_drift_12",
-        "mine_east_drift_13", "mine_se_corner",
-    ];
-    let mine_bottom = [
-        "mine_se_corner",
-        "mine_south_1", "mine_south_2", "mine_south_3", "mine_south_4",
-        "mine_south_5", "mine_south_6", "mine_south_7", "mine_south_8",
-        "mine_south_9", "mine_south_10", "mine_south_11", "mine_south_12",
-        "mine_south_13", "mine_sw_corner",
-    ];
-    connect_segment(&mut builder, &mine_left, "Northeast", ne, "Southwest", sw);
-    connect_segment(&mut builder, &mine_right, "Southeast", se, "Northwest", nw);
-    connect_segment(&mut builder, &mine_bottom, "West", w, "East", e);
-
-    // Mine Hubs
-    builder.connect_bidirectional("mine_south_7", "crystal_pit", Direction::North);
-    builder.connect_bidirectional("mine_east_drift_7", "cart_tracks", Direction::West);
-    builder.add_exit(
-        "cart_tracks",
-        "old_drain_pipe",
-        "Down into Drain Conduit",
-        vec!["down".into(), "d".into(), "pipe".into(), "drain".into(), "grate".into()],
-        Some("Down".into()),
-        "",
-    );
-    builder.add_exit(
-        "old_drain_pipe",
-        "cart_tracks",
-        "Up to Cart Tracks",
-        vec!["up".into(), "u".into(), "tracks".into(), "rails".into()],
-        Some("Up".into()),
-        "",
-    );
-
-    // 2. Middle Triangle: The Village
+    // Village Triangle (4x4x4 perimeter = 9 rooms + 3 interior = 12 rooms)
     let village_left = [
         "village_sw_corner",
-        "village_west_1", "village_west_2", "village_west_3", "village_west_4",
-        "village_west_5", "village_west_6", "village_west_7", "village_west_8",
-        "village_west_9", "village_north_gate",
+        "village_west_1",
+        "village_west_2",
+        "village_north_gate",
     ];
     let village_right = [
         "village_north_gate",
-        "village_east_1", "village_east_2", "village_east_3", "village_east_4",
-        "village_east_5", "village_east_6", "village_east_7", "village_east_8",
-        "village_east_9", "village_se_corner",
+        "village_east_1",
+        "village_east_2",
+        "village_se_corner",
     ];
     let village_bottom = [
         "village_se_corner",
-        "village_south_1", "village_south_2", "village_south_3", "village_south_4",
-        "village_south_5", "village_south_6", "village_south_7", "village_south_8",
-        "village_south_9", "village_sw_corner",
+        "village_south_1",
+        "village_south_2",
+        "village_sw_corner",
     ];
     connect_segment(&mut builder, &village_left, "Northeast", ne, "Southwest", sw);
     connect_segment(&mut builder, &village_right, "Southeast", se, "Northwest", nw);
@@ -243,7 +197,7 @@ pub fn build_floor4() -> FloorBuilder {
 
     // Village Hubs
     builder.connect_bidirectional("village_square", "village_north_gate", Direction::North);
-    builder.connect_bidirectional("village_square", "village_south_5", Direction::South);
+    builder.connect_bidirectional("village_square", "village_south_1", Direction::South);
     builder.connect_bidirectional("village_square", "elder_hut", Direction::West);
     builder.connect_bidirectional("village_square", "baker_hut", Direction::East);
     builder.add_exit(
@@ -254,89 +208,6 @@ pub fn build_floor4() -> FloorBuilder {
         Some("Up".into()),
         "",
     );
-
-    // Radial Mine <-> Village Links
-    builder.connect_bidirectional("mine_north_apex", "village_north_gate", Direction::South);
-    builder.connect_bidirectional("mine_west_drift_7", "village_west_5", Direction::East);
-    builder.connect_bidirectional("mine_east_drift_7", "village_east_5", Direction::West);
-    builder.connect_bidirectional("mine_south_6", "village_south_5", Direction::North);
-
-    // 3. Inner Triangle: The Military Complex
-    let camp_left = [
-        "camp_sw_bastion",
-        "camp_west_wall_1", "camp_west_wall_2", "camp_west_wall_3",
-        "camp_west_wall_4", "camp_west_wall_5", "camp_north_apex",
-    ];
-    let camp_right = [
-        "camp_north_apex",
-        "camp_east_wall_1", "camp_east_wall_2", "camp_east_wall_3",
-        "camp_east_wall_4", "camp_east_wall_5", "camp_se_bastion",
-    ];
-    let camp_bottom = [
-        "camp_se_bastion",
-        "camp_south_wall_1", "camp_south_wall_2", "camp_gate",
-        "camp_south_wall_3", "camp_south_wall_4", "camp_sw_bastion",
-    ];
-    connect_segment(&mut builder, &camp_left, "Northeast", ne, "Southwest", sw);
-    connect_segment(&mut builder, &camp_right, "Southeast", se, "Northwest", nw);
-    connect_segment(&mut builder, &camp_bottom, "West", w, "East", e);
-
-    // Village <-> Camp Gates
-    builder.add_exit(
-        "village_north_gate",
-        "camp_gate",
-        "To the Brass Bulkhead Gate",
-        vec!["gate".into(), "bulkhead".into(), "garrison".into(), "camp".into(), "doors".into(), "ahead".into()],
-        Some("Gate".into()),
-        "",
-    );
-    builder.add_exit(
-        "camp_gate",
-        "village_north_gate",
-        "South to Approach Plaza",
-        vec!["south".into(), "s".into(), "plaza".into(), "village".into()],
-        Some("South".into()),
-        "",
-    );
-    builder.add_exit(
-        "camp_gate",
-        "command_tent",
-        "Through the Brass Bulkhead Gate",
-        vec!["north".into(), "n".into(), "gate".into(), "bulkhead".into(), "inside".into()],
-        Some("North".into()),
-        "camp_gate_open",
-    );
-    builder.add_exit(
-        "command_tent",
-        "camp_gate",
-        "South to the Bulkhead Gate",
-        vec!["south".into(), "s".into(), "gate".into()],
-        Some("South".into()),
-        "",
-    );
-
-    // Drain infiltration into Command Tent
-    builder.add_exit(
-        "old_drain_pipe",
-        "command_tent",
-        "Climb through Hatch into Headquarters",
-        vec!["up".into(), "u".into(), "climb".into(), "hatch".into(), "tent".into()],
-        Some("Climb Up".into()),
-        "",
-    );
-    builder.add_exit(
-        "command_tent",
-        "old_drain_pipe",
-        "Down into Drainage Conduit",
-        vec!["down".into(), "d".into(), "pipe".into(), "hatch".into(), "drain".into()],
-        Some("Down".into()),
-        "",
-    );
-
-    // Command Tent to Inner Chambers
-    builder.connect_bidirectional("command_tent", "prison_cage", Direction::East);
-    builder.connect_bidirectional("command_tent", "calcinator_core", Direction::West);
-    builder.connect_bidirectional("command_tent", "teleport_gate", Direction::North);
 
     builder
 }

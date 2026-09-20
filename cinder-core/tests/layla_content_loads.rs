@@ -692,7 +692,7 @@ fn layla_shipped_pack_invariants_and_wiring() {
         pack.settings.party.initial_orders.get("golem-pale-ne").cloned(),
         Some("follow".to_string())
     );
-    assert_eq!(pack.settings.party.combat_rules.len(), 3);
+    assert_eq!(pack.settings.party.combat_rules.len(), 4);
     assert_eq!(
         pack.settings.party.combat_rules[0].tier,
         cinder_core::content::types::PartyDecisionTier::Survival

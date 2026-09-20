@@ -1,4 +1,4 @@
-//! Integration tests for Floor 4 (The Commoners: Village, Mine, Guard Camp).
+//! Integration tests for Floor 4 (The Commoners: 12-Room Village Triangle).
 
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::engine::state::WorldState;
@@ -8,21 +8,21 @@ const EXPECTED_FLOOR4_ROOMS: &[&str] = &[
     "village_north_gate",
     "elder_hut",
     "baker_hut",
-    "mine_north_apex",
-    "cart_tracks",
-    "crystal_pit",
-    "old_drain_pipe",
-    "camp_gate",
-    "command_tent",
-    "prison_cage",
-    "calcinator_core",
-    "teleport_gate",
+    "village_sw_corner",
+    "village_se_corner",
+    "village_west_1",
+    "village_west_2",
+    "village_east_1",
+    "village_east_2",
+    "village_south_1",
+    "village_south_2",
 ];
 
 #[test]
 fn floor4_rooms_and_features_load_and_validate() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
 
+    assert_eq!(EXPECTED_FLOOR4_ROOMS.len(), 12);
     for room_id in EXPECTED_FLOOR4_ROOMS {
         let room = pack
             .room(room_id)
@@ -73,30 +73,19 @@ fn floor4_navigation_and_gates_resolve() {
         "village_square connects up to oh"
     );
 
-    // Secret infiltration: old_drain_pipe connects to command_tent
-    let drain_pipe = pack.room("old_drain_pipe").expect("old_drain_pipe exists");
+    // Village square connects to hub rooms
+    assert!(village_square.exits.iter().any(|e| e.room_id == "village_north_gate"));
+    assert!(village_square.exits.iter().any(|e| e.room_id == "village_south_1"));
+    assert!(village_square.exits.iter().any(|e| e.room_id == "elder_hut"));
+    assert!(village_square.exits.iter().any(|e| e.room_id == "baker_hut"));
+
+    // Fortress apex is locked: no entrance to actual fortress
+    let north_gate = pack.room("village_north_gate").expect("village_north_gate exists");
     assert!(
-        drain_pipe.exits.iter().any(|e| e.room_id == "command_tent"),
-        "drain pipe must connect into command_tent"
+        !north_gate.exits.iter().any(|e| e.room_id == "camp_gate" || e.room_id == "command_tent"),
+        "fortress entrance must be inaccessible for now"
     );
-
-    // Front gate: camp_gate connects to command_tent with camp_gate_open gate
-    let camp_gate = pack.room("camp_gate").expect("camp_gate exists");
-    let gate_exit = camp_gate
-        .exits
-        .iter()
-        .find(|e| e.room_id == "command_tent")
-        .expect("camp_gate connects to command_tent");
-    assert_eq!(
-        gate_exit.requires_story_var.as_str(),
-        "camp_gate_open"
-    );
-
-    // Guard camp connections
-    let command_tent = pack.room("command_tent").expect("command_tent exists");
-    assert!(command_tent.exits.iter().any(|e| e.room_id == "prison_cage"));
-    assert!(command_tent.exits.iter().any(|e| e.room_id == "teleport_gate"));
-    assert!(command_tent.exits.iter().any(|e| e.room_id == "old_drain_pipe"));
+    assert!(north_gate.summary.contains("bulkhead"));
 }
 
 #[test]
@@ -108,23 +97,8 @@ fn floor4_map_layout_registered() {
         .find(|m| m.id == "the-commoners")
         .expect("the-commoners map exists");
 
-    assert_eq!(map.label, "The Village & Mines");
-    assert_eq!(map.rooms.len(), 100, "Floor 4 map must have 100 rooms");
-
-    // Floor 4 must be strictly larger than any previous floor (Floor 1 had 81 rooms)
-    let max_previous_size = pack
-        .maps
-        .iter()
-        .filter(|m| m.id != "the-commoners")
-        .map(|m| m.rooms.len())
-        .max()
-        .unwrap_or(0);
-    assert!(
-        map.rooms.len() > max_previous_size,
-        "Floor 4 room count ({}) must exceed previous floors ({})",
-        map.rooms.len(),
-        max_previous_size
-    );
+    assert_eq!(map.label, "The Worker Village");
+    assert_eq!(map.rooms.len(), 12, "Floor 4 map must have exactly 12 rooms");
 
     for room_id in EXPECTED_FLOOR4_ROOMS {
         assert!(
@@ -191,63 +165,36 @@ fn floor4_actors_and_interactions_validate() {
     assert!(!yasmin.attackable);
 
     let tariq = pack.actor("tariq").expect("tariq exists");
-    assert_eq!(tariq.room_id, "village_west_6");
+    assert_eq!(tariq.room_id, "village_west_2");
     assert!(!tariq.attackable);
 
-    let zayd = pack.actor("zayd").expect("zayd exists");
-    assert_eq!(zayd.room_id, "prison_cage");
-    assert!(!zayd.attackable);
+    // Two sentries standing at the northern tip
+    let sentries: Vec<_> = pack
+        .actors
+        .iter()
+        .filter(|a| a.room_id == "village_north_gate")
+        .collect();
+    assert_eq!(sentries.len(), 2, "There must be two sentries at village_north_gate");
+    for sentry in &sentries {
+        assert!(sentry.attackable);
+        assert!(!sentry.initial_hostile, "Sentries should not attack on sight");
+    }
 
-    // Check bosses and sentries exist
-    let malik = pack.actor("captain_malik").expect("captain_malik exists");
-    assert_eq!(malik.room_id, "command_tent");
-    assert!(malik.attackable);
-    assert!(malik.initial_hostile);
-    assert!(malik.drops.contains_key("teleport-scroll"));
-
-    let harun = pack.actor("priest_harun").expect("priest_harun exists");
-    assert_eq!(harun.room_id, "prison_cage");
-    assert!(harun.attackable);
-    assert!(harun.initial_hostile);
-
-    let sakhra = pack.actor("sakhra").expect("sakhra exists");
-    assert_eq!(sakhra.room_id, "crystal_pit");
-    assert!(sakhra.attackable);
-    assert!(sakhra.guard);
-
-    let gate_sentry = pack.actor("garrison_sentry_gate").expect("garrison_sentry_gate exists");
-    assert_eq!(gate_sentry.room_id, "camp_gate");
-    assert!(gate_sentry.attackable);
-
-    let warden = pack.actor("garrison_warden").expect("garrison_warden exists");
-    assert_eq!(warden.room_id, "prison_cage");
-    assert!(warden.drops.contains_key("iron-cage-key"));
+    // Deferred actors are offstage
+    for deferred_id in &["zayd", "captain_malik", "priest_harun", "sakhra", "garrison_warden"] {
+        let actor = pack.actor(deferred_id).expect("deferred actor still defined");
+        assert!(actor.room_id.is_empty(), "actor {deferred_id} should be offstage");
+    }
 }
 
 #[test]
 fn floor4_cardinal_and_diagonal_navigation_resolves_cleanly() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
 
-    // mine_north_apex exit resolution
-    let apex = pack.room("mine_north_apex").expect("mine_north_apex exists");
-    for exit in &apex.exits {
-        if exit.room_id == "mine_west_drift_13" {
-            assert!(exit.aliases.iter().any(|a| a == "southwest" || a == "sw"));
-            assert!(!exit.aliases.iter().any(|a| a == "south" || a == "s"));
-        }
-        if exit.room_id == "mine_east_drift_1" {
-            assert!(exit.aliases.iter().any(|a| a == "southeast" || a == "se"));
-            assert!(!exit.aliases.iter().any(|a| a == "south" || a == "s"));
-        }
-        if exit.room_id == "village_north_gate" {
-            assert!(exit.aliases.iter().any(|a| a == "south" || a == "s"));
-        }
-    }
-
     // village_north_gate exit resolution
     let vng = pack.room("village_north_gate").expect("village_north_gate exists");
     for exit in &vng.exits {
-        if exit.room_id == "village_west_9" {
+        if exit.room_id == "village_west_2" {
             assert!(exit.aliases.iter().any(|a| a == "southwest" || a == "sw"));
             assert!(!exit.aliases.iter().any(|a| a == "south" || a == "s"));
         }
@@ -258,40 +205,48 @@ fn floor4_cardinal_and_diagonal_navigation_resolves_cleanly() {
         if exit.room_id == "village_square" {
             assert!(exit.aliases.iter().any(|a| a == "south" || a == "s"));
         }
-        if exit.room_id == "mine_north_apex" {
-            assert!(exit.aliases.iter().any(|a| a == "north" || a == "n"));
-        }
-        if exit.room_id == "camp_gate" {
-            assert!(exit.aliases.iter().any(|a| a == "gate" || a == "bulkhead"));
-            assert!(!exit.aliases.iter().any(|a| a == "north" || a == "n"));
-        }
     }
 
-    // Verify runtime movement from mine_north_apex
+    // Verify runtime movement within the village
     let mut state = WorldState::new(&pack);
-    state.current_room_id = "mine_north_apex".to_string();
+    state.current_room_id = "village_square".to_string();
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
     let runtime =
         cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack.clone(), state, dialogue)
             .expect("runtime creates");
 
-    let _outcome = runtime.run_turn("south").expect("turn runs");
+    // North to north gate
+    let _ = runtime.run_turn("north").expect("turn runs");
     assert_eq!(runtime.current_room_id().unwrap(), "village_north_gate");
 
-    let _outcome2 = runtime.run_turn("south").expect("turn runs");
+    // South back to square
+    let _ = runtime.run_turn("south").expect("turn runs");
     assert_eq!(runtime.current_room_id().unwrap(), "village_square");
+
+    // West to elder hut
+    let _ = runtime.run_turn("west").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "elder_hut");
+
+    // East back to square
+    let _ = runtime.run_turn("east").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_square");
+
+    // East to baker hut
+    let _ = runtime.run_turn("east").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "baker_hut");
 }
 
 #[test]
 fn floor4_mineral_and_chalk_lore_integrity() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
-    let geode = pack.room("mine_south_9").expect("mine_south_9 exists");
-    assert_eq!(geode.features[0].label, "towering calcite crystals");
-    assert!(!geode.summary.to_lowercase().contains("chalk crystals"));
-    assert!(!geode.features[0].inspect_text.to_lowercase().contains("chalk"));
-
-    let drift6 = pack.room("mine_east_drift_6").expect("mine_east_drift_6 exists");
-    assert!(!drift6.features[0].inspect_text.to_lowercase().contains("chalk crystals"));
+    for room_id in EXPECTED_FLOOR4_ROOMS {
+        let room = pack.room(room_id).expect("room exists");
+        assert!(!room.summary.to_lowercase().contains("chalk crystals"));
+        assert!(!room.inspect_text.to_lowercase().contains("chalk crystals"));
+        for f in &room.features {
+            assert!(!f.label.to_lowercase().contains("chalk crystals"));
+            assert!(!f.inspect_text.to_lowercase().contains("chalk crystals"));
+        }
+    }
 }
-

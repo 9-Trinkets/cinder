@@ -129,6 +129,28 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
                     target: matched_phrase.remainder.unwrap_or_default(),
                 };
             }
+            if action.id == "give" {
+                if let Some(remainder) = matched_phrase.remainder.as_deref() {
+                    let lower_remainder = remainder.to_ascii_lowercase();
+                    if let Some(idx) = lower_remainder.find(" to ") {
+                        let item_target = remainder[..idx].trim().to_string();
+                        let actor_reference = remainder[idx + 4..].trim().to_string();
+                        return PlayerCommand::GiveToPartyMember {
+                            item_target,
+                            actor_reference,
+                        };
+                    } else {
+                        return PlayerCommand::GiveToPartyMember {
+                            item_target: remainder.trim().to_string(),
+                            actor_reference: String::new(),
+                        };
+                    }
+                }
+                return PlayerCommand::GiveToPartyMember {
+                    item_target: String::new(),
+                    actor_reference: String::new(),
+                };
+            }
             if (action.id == "drop" || action.has_effect(CommandEffect::DropItem))
                 && action.item_id.is_empty()
             {
@@ -163,6 +185,12 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
                 {
                     return PlayerCommand::Take {
                         target: String::new(),
+                    };
+                }
+                if action.id == "give" {
+                    return PlayerCommand::GiveToPartyMember {
+                        item_target: String::new(),
+                        actor_reference: String::new(),
                     };
                 }
                 if (action.id == "drop" || action.has_effect(CommandEffect::DropItem))
