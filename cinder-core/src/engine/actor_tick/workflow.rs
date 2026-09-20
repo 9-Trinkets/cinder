@@ -344,6 +344,11 @@ pub(super) fn extract_inbound_message(prompt: &str) -> Result<String, String> {
         .find("\n\nROUTING_PROTOCOL:")
         .ok_or_else(|| "missing ROUTING_PROTOCOL block".to_string())?;
     let inbound = &rest[..end];
+    if inbound.contains("[...truncated]") {
+        return Err(
+            "inbound message was truncated by synapse workflow max_message_chars limit".to_string(),
+        );
+    }
     if json_encoded {
         let sanitized: String = inbound.chars().filter(|c| !c.is_control()).collect();
         serde_json::from_str(&sanitized).map_err(|error| error.to_string())

@@ -5,7 +5,7 @@ default_workflow = "cinder_turn"
 entry_role = "turn_dispatch"
 routing_mode = "event_driven"
 max_hops = 24
-max_message_chars = 32000
+max_message_chars = 1000000
 graph = """
 turn_dispatch -> command_parser
 command_parser -> turn_merge

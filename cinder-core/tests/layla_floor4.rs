@@ -362,3 +362,65 @@ fn floor4_quests_activation_via_speech() {
     assert_eq!(side_quest.quest_id.as_deref(), Some("save_zayd"));
 }
 
+#[test]
+fn floor4_tick_runs_without_soft_error() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "village_square".to_string();
+    state.turn_number = 10;
+
+    let scripted_dialogue = cinder_core::engine::dialogue::ScriptedDialogueGenerator::new();
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack.clone(),
+        state,
+        std::sync::Arc::new(scripted_dialogue),
+    )
+    .expect("runtime creates");
+
+    let outcome = runtime.run_tick().expect("tick should succeed");
+    println!("Tick outcome text: {}", outcome.text);
+    assert!(
+        !outcome.text.contains("goes still, listening to the dark"),
+        "Tick should not produce soft error: got '{}'",
+        outcome.text
+    );
+}
+
+#[test]
+fn floor4_large_state_tick_runs_without_soft_error() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "village_square".to_string();
+    state.turn_number = 50;
+
+    // Simulate accumulated state from playing floors 1 to 4:
+    // 30+ observation notes, actor memories, quest stages, etc.
+    let mut notes = Vec::new();
+    for i in 0..100 {
+        notes.push(format!(
+            "Observed event note #{i}: Layla and companions explored the steampunk corridor and listened to steam vents echoing in the distance."
+        ));
+    }
+    state.actor_recent_observation_notes.insert("layla".to_string(), notes);
+    let serialized_len = serde_json::to_string(&state).unwrap().len();
+    assert!(
+        serialized_len > 25000,
+        "Simulated state should exceed 25,000 characters to test workflow message size limit: got {serialized_len}"
+    );
+
+    let scripted_dialogue = cinder_core::engine::dialogue::ScriptedDialogueGenerator::new();
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack.clone(),
+        state,
+        std::sync::Arc::new(scripted_dialogue),
+    )
+    .expect("runtime creates");
+
+    let outcome = runtime.run_tick().expect("tick should succeed");
+    assert!(
+        !outcome.text.contains("goes still, listening to the dark"),
+        "Tick should not produce soft error on large state: got '{}'",
+        outcome.text
+    );
+}
+
