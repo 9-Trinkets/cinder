@@ -186,6 +186,9 @@ fn apply_hook_effects(
                     if content.is_player_actor(&actor.id) {
                         continue;
                     }
+                    if state.actor_current_room_id(content, &actor.id).is_empty() {
+                        continue;
+                    }
                     if !actor.tags.iter().any(|actor_tag| actor_tag.as_str() == tag) {
                         continue;
                     }

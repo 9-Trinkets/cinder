@@ -64,7 +64,10 @@ fn equipping_an_item_with_equip_hook_converts_surviving_tagged_actors() {
     let mut golem_allied = test_actor("statue-ally", "charmed statue", KITCHEN_ID);
     golem_allied.tags = vec!["golem".to_string()];
     golem_allied.initial_stats = BTreeMap::from([("stamina".to_string(), 8)]);
-    pack.actors.extend([golem_living, golem_dead, golem_allied]);
+    let mut golem_offstage = test_actor("statue-offstage", "sleeping statue", "");
+    golem_offstage.tags = vec!["golem".to_string()];
+    golem_offstage.initial_stats = BTreeMap::from([("stamina".to_string(), 8)]);
+    pack.actors.extend([golem_living, golem_dead, golem_allied, golem_offstage]);
     rebuild_test_pack_indexes(&mut pack);
 
     let mut state = WorldState::new(&pack);
@@ -91,11 +94,13 @@ fn equipping_an_item_with_equip_hook_converts_surviving_tagged_actors() {
     )
     .lines;
 
-    // Living golem converted to an ally follower; dead and already-allied skipped.
+    // Living golem converted to an ally follower; dead, already-allied, and offstage skipped.
     assert_eq!(state.stance("statue-live"), ActorStance::Allied);
     assert!(state.relationship("statue-live").follows_player);
     assert_eq!(state.stance("statue-dead"), ActorStance::Neutral);
     assert_eq!(state.stance("statue-ally"), ActorStance::Allied);
+    assert_eq!(state.stance("statue-offstage"), ActorStance::Neutral);
+    assert!(!state.relationship("statue-offstage").follows_player);
     // Already-allied actors are left untouched (not re-followed by the hook).
     assert!(!state.relationship("statue-ally").follows_player);
     assert!(
@@ -103,6 +108,12 @@ fn equipping_an_item_with_equip_hook_converts_surviving_tagged_actors() {
             .iter()
             .any(|line| line.text.contains("granite statue")),
         "got: {lines:?}"
+    );
+    assert!(
+        !lines
+            .iter()
+            .any(|line| line.text.contains("sleeping statue")),
+        "offstage actor must not produce conversion line: {lines:?}"
     );
     assert!(
         !lines.iter().any(|line| line.text.contains("dust statue")),
