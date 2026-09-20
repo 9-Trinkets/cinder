@@ -841,32 +841,32 @@
     "rooms": [
       {
         "room_id": "village_north_gate",
-        "x": 15.0,
-        "y": 5.5
+        "x": 12.0,
+        "y": 3.0
       },
       {
         "room_id": "village_west_2",
-        "x": 12.0,
-        "y": 11.0
+        "x": 8.0,
+        "y": 9.0
       },
       {
         "room_id": "village_west_1",
-        "x": 9.0,
-        "y": 16.0
+        "x": 4.0,
+        "y": 15.0
       },
       {
         "room_id": "village_sw_corner",
-        "x": 6.0,
+        "x": 0.0,
         "y": 21.0
       },
       {
-        "room_id": "village_south_2",
-        "x": 12.0,
+        "room_id": "village_square",
+        "x": 8.0,
         "y": 21.0
       },
       {
         "room_id": "village_south_1",
-        "x": 18.0,
+        "x": 16.0,
         "y": 21.0
       },
       {
@@ -876,28 +876,13 @@
       },
       {
         "room_id": "village_east_2",
-        "x": 21.0,
-        "y": 16.0
+        "x": 20.0,
+        "y": 15.0
       },
       {
         "room_id": "village_east_1",
-        "x": 18.0,
-        "y": 11.0
-      },
-      {
-        "room_id": "village_square",
-        "x": 15.0,
-        "y": 16.0
-      },
-      {
-        "room_id": "elder_hut",
-        "x": 13.0,
-        "y": 16.0
-      },
-      {
-        "room_id": "baker_hut",
-        "x": 17.0,
-        "y": 16.0
+        "x": 16.0,
+        "y": 9.0
       }
     ],
     "reveal_conditions": []

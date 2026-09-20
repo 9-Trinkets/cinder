@@ -1,4 +1,4 @@
-//! Integration tests for Floor 4 (The Commoners: 12-Room Village Triangle).
+//! Integration tests for Floor 4 (The Commoners: 9-Room Village Triangle).
 
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::engine::state::WorldState;
@@ -6,8 +6,6 @@ use cinder_core::engine::state::WorldState;
 const EXPECTED_FLOOR4_ROOMS: &[&str] = &[
     "village_square",
     "village_north_gate",
-    "elder_hut",
-    "baker_hut",
     "village_sw_corner",
     "village_se_corner",
     "village_west_1",
@@ -15,14 +13,13 @@ const EXPECTED_FLOOR4_ROOMS: &[&str] = &[
     "village_east_1",
     "village_east_2",
     "village_south_1",
-    "village_south_2",
 ];
 
 #[test]
 fn floor4_rooms_and_features_load_and_validate() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
 
-    assert_eq!(EXPECTED_FLOOR4_ROOMS.len(), 12);
+    assert_eq!(EXPECTED_FLOOR4_ROOMS.len(), 9);
     for room_id in EXPECTED_FLOOR4_ROOMS {
         let room = pack
             .room(room_id)
@@ -73,11 +70,9 @@ fn floor4_navigation_and_gates_resolve() {
         "village_square connects up to oh"
     );
 
-    // Village square connects to hub rooms
-    assert!(village_square.exits.iter().any(|e| e.room_id == "village_north_gate"));
+    // Village square connects along southern baseline of the triangle loop
+    assert!(village_square.exits.iter().any(|e| e.room_id == "village_sw_corner"));
     assert!(village_square.exits.iter().any(|e| e.room_id == "village_south_1"));
-    assert!(village_square.exits.iter().any(|e| e.room_id == "elder_hut"));
-    assert!(village_square.exits.iter().any(|e| e.room_id == "baker_hut"));
 
     // Fortress apex is locked: no entrance to actual fortress
     let north_gate = pack.room("village_north_gate").expect("village_north_gate exists");
@@ -98,7 +93,7 @@ fn floor4_map_layout_registered() {
         .expect("the-commoners map exists");
 
     assert_eq!(map.label, "The Worker Village");
-    assert_eq!(map.rooms.len(), 12, "Floor 4 map must have exactly 12 rooms");
+    assert_eq!(map.rooms.len(), 9, "Floor 4 map must have exactly 9 rooms");
 
     for room_id in EXPECTED_FLOOR4_ROOMS {
         assert!(
@@ -157,11 +152,11 @@ fn floor4_actors_and_interactions_validate() {
 
     // Check civilians exist and are placed properly
     let rashid = pack.actor("elder_rashid").expect("elder_rashid exists");
-    assert_eq!(rashid.room_id, "elder_hut");
+    assert_eq!(rashid.room_id, "village_south_1");
     assert!(!rashid.attackable);
 
     let yasmin = pack.actor("yasmin").expect("yasmin exists");
-    assert_eq!(yasmin.room_id, "baker_hut");
+    assert_eq!(yasmin.room_id, "village_east_2");
     assert!(!yasmin.attackable);
 
     let tariq = pack.actor("tariq").expect("tariq exists");
@@ -202,12 +197,9 @@ fn floor4_cardinal_and_diagonal_navigation_resolves_cleanly() {
             assert!(exit.aliases.iter().any(|a| a == "southeast" || a == "se"));
             assert!(!exit.aliases.iter().any(|a| a == "south" || a == "s"));
         }
-        if exit.room_id == "village_square" {
-            assert!(exit.aliases.iter().any(|a| a == "south" || a == "s"));
-        }
     }
 
-    // Verify runtime movement within the village
+    // Verify runtime movement full perimeter walk around the 9-room triangle
     let mut state = WorldState::new(&pack);
     state.current_room_id = "village_square".to_string();
     let dialogue =
@@ -216,25 +208,42 @@ fn floor4_cardinal_and_diagonal_navigation_resolves_cleanly() {
         cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack.clone(), state, dialogue)
             .expect("runtime creates");
 
-    // North to north gate
-    let _ = runtime.run_turn("north").expect("turn runs");
+    // Walk clockwise around the 9-room loop:
+    // 1. village_square -> west -> village_sw_corner
+    let _ = runtime.run_turn("west").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_sw_corner");
+
+    // 2. village_sw_corner -> northeast -> village_west_1
+    let _ = runtime.run_turn("northeast").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_west_1");
+
+    // 3. village_west_1 -> northeast -> village_west_2 (Tariq)
+    let _ = runtime.run_turn("northeast").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_west_2");
+
+    // 4. village_west_2 -> northeast -> village_north_gate (North Apex)
+    let _ = runtime.run_turn("northeast").expect("turn runs");
     assert_eq!(runtime.current_room_id().unwrap(), "village_north_gate");
 
-    // South back to square
-    let _ = runtime.run_turn("south").expect("turn runs");
-    assert_eq!(runtime.current_room_id().unwrap(), "village_square");
+    // 5. village_north_gate -> southeast -> village_east_1
+    let _ = runtime.run_turn("southeast").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_east_1");
 
-    // West to elder hut
+    // 6. village_east_1 -> southeast -> village_east_2 (Yasmin)
+    let _ = runtime.run_turn("southeast").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_east_2");
+
+    // 7. village_east_2 -> southeast -> village_se_corner
+    let _ = runtime.run_turn("southeast").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_se_corner");
+
+    // 8. village_se_corner -> west -> village_south_1 (Elder Rashid)
     let _ = runtime.run_turn("west").expect("turn runs");
-    assert_eq!(runtime.current_room_id().unwrap(), "elder_hut");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_south_1");
 
-    // East back to square
-    let _ = runtime.run_turn("east").expect("turn runs");
+    // 9. village_south_1 -> west -> village_square (Loop completed)
+    let _ = runtime.run_turn("west").expect("turn runs");
     assert_eq!(runtime.current_room_id().unwrap(), "village_square");
-
-    // East to baker hut
-    let _ = runtime.run_turn("east").expect("turn runs");
-    assert_eq!(runtime.current_room_id().unwrap(), "baker_hut");
 }
 
 #[test]

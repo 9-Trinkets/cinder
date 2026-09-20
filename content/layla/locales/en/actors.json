@@ -1372,7 +1372,7 @@
   {
     "id": "elder_rashid",
     "name": "Elder Rashid",
-    "room_id": "elder_hut",
+    "room_id": "village_south_1",
     "aliases": [
       "elder",
       "rashid",
@@ -1421,7 +1421,7 @@
   {
     "id": "yasmin",
     "name": "Yasmin",
-    "room_id": "baker_hut",
+    "room_id": "village_east_2",
     "aliases": [
       "yasmin",
       "baker",

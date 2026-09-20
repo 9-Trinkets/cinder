@@ -1,5 +1,5 @@
 use super::floor::FloorBuilder;
-use super::zone::{Direction, Zone};
+use super::zone::Zone;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
@@ -172,34 +172,34 @@ pub fn build_floor4() -> FloorBuilder {
     let w = &["west", "w"];
     let e = &["east", "e"];
 
-    // Village Triangle (4x4x4 perimeter = 9 rooms + 3 interior = 12 rooms)
+    // Pure Triangle Perimeter Loop (4 rooms on each of the 3 sides, sharing 3 corners = 9 rooms total)
+    // Side 1 (West Edge): SW Corner -> Wash Basin -> Clockmaker Tariq -> North Apex
     let village_left = [
         "village_sw_corner",
         "village_west_1",
         "village_west_2",
         "village_north_gate",
     ];
+    // Side 2 (East Edge): North Apex -> Gardens -> Yasmin's Bakery -> SE Corner
     let village_right = [
         "village_north_gate",
         "village_east_1",
         "village_east_2",
         "village_se_corner",
     ];
+    // Side 3 (South Edge): SE Corner -> Elder Rashid -> Village Square -> SW Corner
     let village_bottom = [
         "village_se_corner",
         "village_south_1",
-        "village_south_2",
+        "village_square",
         "village_sw_corner",
     ];
+
     connect_segment(&mut builder, &village_left, "Northeast", ne, "Southwest", sw);
     connect_segment(&mut builder, &village_right, "Southeast", se, "Northwest", nw);
     connect_segment(&mut builder, &village_bottom, "West", w, "East", e);
 
-    // Village Hubs
-    builder.connect_bidirectional("village_square", "village_north_gate", Direction::North);
-    builder.connect_bidirectional("village_square", "village_south_1", Direction::South);
-    builder.connect_bidirectional("village_square", "elder_hut", Direction::West);
-    builder.connect_bidirectional("village_square", "baker_hut", Direction::East);
+    // Central stairs at Village Square lead UP to Floor 3 Heart-Pit (oh)
     builder.add_exit(
         "village_square",
         "oh",

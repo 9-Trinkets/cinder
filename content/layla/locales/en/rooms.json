@@ -10320,25 +10320,15 @@
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
-      },
-      {
-        "room_id": "village_square",
-        "label": "South",
-        "aliases": [
-          "s",
-          "south"
-        ],
-        "menu_label": "South",
-        "requires_story_var": ""
       }
     ],
     "descriptions": []
   },
   {
     "id": "village_west_2",
-    "title": "Clockmaker's Terrace",
-    "summary": "A stone terrace lined with workbenches and brass fittings. The air clicks and hums with miniature clockwork gears and steam escapements.",
-    "inspect_text": "Tariq's open-air clockwork studio overlooks the terraced village. Glass cabinets house brass calipers, gear trains, and intricate timing mechanisms.",
+    "title": "Clockmaker's Workshop",
+    "summary": "A stone terrace and open workshop lined with brass fittings. The air clicks and hums with miniature clockwork gears and steam escapements.",
+    "inspect_text": "Tariq's clockwork workshop overlooks the cavern descent. Glass cabinets house brass calipers, gear trains, and intricate timing mechanisms.",
     "allow_rest": false,
     "features": [
       {
@@ -10459,7 +10449,7 @@
         "requires_story_var": ""
       },
       {
-        "room_id": "village_south_2",
+        "room_id": "village_square",
         "label": "East",
         "aliases": [
           "east",
@@ -10472,25 +10462,24 @@
     "descriptions": []
   },
   {
-    "id": "village_south_2",
-    "title": "South Weavers' Lane",
-    "summary": "A quiet residential lane flanked by low limestone dwellings with colorful woven carpets hung over doorframes.",
-    "inspect_text": "Children's wooden toys sit on stone doorsteps. The smell of cedar shavings and mint tea drifts from open windows.",
+    "id": "village_square",
+    "title": "The Village Square",
+    "summary": "The beating heart of the village. A broad circular plaza paved in concentric stone rings, illuminated by warm gas lamps.",
+    "inspect_text": "At the center, broad spiral stone stairs lead UP to the Floor 3 Heart-Pit ('oh'). A large iron hearth warms the gathering villagers.",
     "allow_rest": false,
     "features": [
       {
-        "id": "village_south_2-feature",
-        "label": "woven threshold carpets",
+        "id": "village_square-feature",
+        "label": "the central stone stairs",
         "aliases": [
-          "carpet",
-          "carpets",
-          "rug",
-          "doorway",
-          "lane"
+          "stairs",
+          "hearth",
+          "plaza",
+          "square"
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "Thick dyed wool carpets woven in geometric lozenge patterns that protect homes from cavern drafts."
+        "inspect_text": "Solid granite stairs ascending into the dark ceiling toward Floor 3."
       }
     ],
     "exits": [
@@ -10513,29 +10502,43 @@
         ],
         "menu_label": "West",
         "requires_story_var": ""
+      },
+      {
+        "room_id": "oh",
+        "label": "Up to the Heart-Pit",
+        "aliases": [
+          "up",
+          "u",
+          "pit",
+          "stairs",
+          "heart"
+        ],
+        "menu_label": "Up",
+        "requires_story_var": ""
       }
     ],
     "descriptions": []
   },
   {
     "id": "village_south_1",
-    "title": "Lantern Makers' Alley",
-    "summary": "A stone alley where copper sheets and mica panes are fitted into the protective lanterns used throughout the underground.",
-    "inspect_text": "Scores of unlit oil and luminescent lanterns hang from drying racks above the cobblestones.",
+    "title": "Elder Rashid's Quarters",
+    "summary": "A modest stone building lined with bookshelves, maps of the cavern system, and brass surveying instruments.",
+    "inspect_text": "Elder Rashid sits here at a heavy oak desk, head in his hands, surrounded by official military decrees and the requisition roll for Zayd.",
     "allow_rest": false,
     "features": [
       {
         "id": "village_south_1-feature",
-        "label": "the lantern rack",
+        "label": "the requisition roll",
         "aliases": [
-          "rack",
-          "lantern",
-          "lanterns",
-          "frames"
+          "roll",
+          "desk",
+          "paper",
+          "decree",
+          "writ"
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A timber framework laden with heavy brass frames and faceted mica lenses designed to withstand coal dust and damp."
+        "inspect_text": "A parchment document bearing Captain Malik's iron seal, demanding one youth as an offering."
       }
     ],
     "exits": [
@@ -10550,23 +10553,13 @@
         "requires_story_var": ""
       },
       {
-        "room_id": "village_south_2",
+        "room_id": "village_square",
         "label": "West",
         "aliases": [
           "west",
           "w"
         ],
         "menu_label": "West",
-        "requires_story_var": ""
-      },
-      {
-        "room_id": "village_square",
-        "label": "North",
-        "aliases": [
-          "n",
-          "north"
-        ],
-        "menu_label": "North",
         "requires_story_var": ""
       }
     ],
@@ -10619,23 +10612,23 @@
   },
   {
     "id": "village_east_2",
-    "title": "Terrace of the Dried Herbs",
-    "summary": "A warm stone walkway fragrant with the pungent scent of subterranean mosses and drying cave rosemary.",
-    "inspect_text": "Bundles of sage and medicinal fungi hang from overhead copper steam lines to cure in the steady heat.",
+    "title": "Yasmin's Bakery",
+    "summary": "A warm, flour-dusted bakery smelling wonderfully of fresh flatbread, sesame, and roasted dates.",
+    "inspect_text": "A huge brick oven heated by copper steam coils dominates the back. Yasmin stands by the counter, tearful and furious over Zayd's capture.",
     "allow_rest": false,
     "features": [
       {
         "id": "village_east_2-feature",
-        "label": "drying herb bundles",
+        "label": "the steam-heated oven",
         "aliases": [
-          "herbs",
-          "bundles",
-          "moss",
-          "plants"
+          "oven",
+          "brick",
+          "bread",
+          "counter"
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "Neatly bundled sprigs of dark cavern rosemary and cured amber lichen prized for soothing burns."
+        "inspect_text": "A massive domed brick hearth with steam pipes wrapping its base, baking scores of flatbreads."
       }
     ],
     "exits": [
@@ -10703,155 +10696,6 @@
           "se"
         ],
         "menu_label": "Southeast",
-        "requires_story_var": ""
-      }
-    ],
-    "descriptions": []
-  },
-  {
-    "id": "village_square",
-    "title": "The Village Square",
-    "summary": "The beating heart of the village. A broad circular plaza paved in concentric stone rings, surrounded by warm gas lamps.",
-    "inspect_text": "At the center, broad spiral stone stairs lead UP to the Floor 3 Heart-Pit ('oh'). A large iron hearth warms the gathering villagers.",
-    "allow_rest": false,
-    "features": [
-      {
-        "id": "village_square-feature",
-        "label": "the central stone stairs",
-        "aliases": [
-          "stairs",
-          "hearth",
-          "plaza",
-          "square"
-        ],
-        "allow_rest": false,
-        "consumables": [],
-        "inspect_text": "Solid granite stairs ascending into the dark ceiling toward Floor 3."
-      }
-    ],
-    "exits": [
-      {
-        "room_id": "village_north_gate",
-        "label": "North",
-        "aliases": [
-          "n",
-          "north"
-        ],
-        "menu_label": "North",
-        "requires_story_var": ""
-      },
-      {
-        "room_id": "village_south_1",
-        "label": "South",
-        "aliases": [
-          "s",
-          "south"
-        ],
-        "menu_label": "South",
-        "requires_story_var": ""
-      },
-      {
-        "room_id": "elder_hut",
-        "label": "West",
-        "aliases": [
-          "w",
-          "west"
-        ],
-        "menu_label": "West",
-        "requires_story_var": ""
-      },
-      {
-        "room_id": "baker_hut",
-        "label": "East",
-        "aliases": [
-          "e",
-          "east"
-        ],
-        "menu_label": "East",
-        "requires_story_var": ""
-      },
-      {
-        "room_id": "oh",
-        "label": "Up to the Heart-Pit",
-        "aliases": [
-          "up",
-          "u",
-          "pit",
-          "stairs",
-          "heart"
-        ],
-        "menu_label": "Up",
-        "requires_story_var": ""
-      }
-    ],
-    "descriptions": []
-  },
-  {
-    "id": "elder_hut",
-    "title": "Elder Rashid's Quarters",
-    "summary": "A modest stone house lined with bookshelves, maps of the cavern system, and brass surveying instruments.",
-    "inspect_text": "Elder Rashid sits here at a heavy oak desk, head in his hands, surrounded by official military decrees and the requisition roll for Zayd.",
-    "allow_rest": false,
-    "features": [
-      {
-        "id": "elder_hut-feature",
-        "label": "the requisition roll",
-        "aliases": [
-          "roll",
-          "desk",
-          "paper",
-          "decree",
-          "writ"
-        ],
-        "allow_rest": false,
-        "consumables": [],
-        "inspect_text": "A parchment document bearing Captain Malik's iron seal, demanding one youth as an offering."
-      }
-    ],
-    "exits": [
-      {
-        "room_id": "village_square",
-        "label": "East",
-        "aliases": [
-          "e",
-          "east"
-        ],
-        "menu_label": "East",
-        "requires_story_var": ""
-      }
-    ],
-    "descriptions": []
-  },
-  {
-    "id": "baker_hut",
-    "title": "Yasmin's Bakery",
-    "summary": "A warm, flour-dusted bakery smelling wonderfully of fresh flatbread, sesame, and roasted dates.",
-    "inspect_text": "A huge brick oven heated by copper steam coils dominates the back. Yasmin stands by the counter, tearful and furious over Zayd's capture.",
-    "allow_rest": false,
-    "features": [
-      {
-        "id": "baker_hut-feature",
-        "label": "the steam-heated oven",
-        "aliases": [
-          "oven",
-          "brick",
-          "bread",
-          "counter"
-        ],
-        "allow_rest": false,
-        "consumables": [],
-        "inspect_text": "A massive domed brick hearth with steam pipes wrapping its base, baking scores of flatbreads."
-      }
-    ],
-    "exits": [
-      {
-        "room_id": "village_square",
-        "label": "West",
-        "aliases": [
-          "w",
-          "west"
-        ],
-        "menu_label": "West",
         "requires_story_var": ""
       }
     ],

@@ -1,7 +1,7 @@
 [
   {
-    "x": 15.0,
-    "y": 5.5,
+    "x": 12.0,
+    "y": 3.0,
     "id": "village_north_gate",
     "title": "North Approach Plaza",
     "summary": "A broad paved plaza at the northern apex of the village. Ahead, the massive iron-and-brass bulkhead of the military fortress looms over the road, sealed shut. Two heavily-armed garrison guards stand sentry before the reinforced gates.",
@@ -18,12 +18,12 @@
     "feature_inspect": "A towering bulkhead of banded iron and riveted brass, bolted firmly from within. There is no exterior handle, and the sentries ensure nobody approaches."
   },
   {
-    "x": 12.0,
-    "y": 11.0,
+    "x": 8.0,
+    "y": 9.0,
     "id": "village_west_2",
-    "title": "Clockmaker's Terrace",
-    "summary": "A stone terrace lined with workbenches and brass fittings. The air clicks and hums with miniature clockwork gears and steam escapements.",
-    "inspect_text": "Tariq's open-air clockwork studio overlooks the terraced village. Glass cabinets house brass calipers, gear trains, and intricate timing mechanisms.",
+    "title": "Clockmaker's Workshop",
+    "summary": "A stone terrace and open workshop lined with brass fittings. The air clicks and hums with miniature clockwork gears and steam escapements.",
+    "inspect_text": "Tariq's clockwork workshop overlooks the cavern descent. Glass cabinets house brass calipers, gear trains, and intricate timing mechanisms.",
     "feature_label": "the clockwork workbench",
     "feature_aliases": [
       "workbench",
@@ -35,8 +35,8 @@
     "feature_inspect": "A sturdy wooden workbench covered in jeweler's loupes, brass cogwheels, fine tweezers, and sketches of intricate escapements."
   },
   {
-    "x": 9.0,
-    "y": 16.0,
+    "x": 4.0,
+    "y": 15.0,
     "id": "village_west_1",
     "title": "Wash Basin Terrace",
     "summary": "A communal stone terrace lined with laundry tubs fed by warm condensed-water pipes from the central boiler.",
@@ -52,7 +52,7 @@
     "feature_inspect": "A long zinc-lined stone trough filled with warm steaming water, scrubbed clean by generations of miners' families."
   },
   {
-    "x": 6.0,
+    "x": 0.0,
     "y": 21.0,
     "id": "village_sw_corner",
     "title": "Water Spring Terrace",
@@ -68,37 +68,37 @@
     "feature_inspect": "A natural moss-edged hollow in limestone overflowing with cold, clear drinking water."
   },
   {
-    "x": 12.0,
+    "x": 8.0,
     "y": 21.0,
-    "id": "village_south_2",
-    "title": "South Weavers' Lane",
-    "summary": "A quiet residential lane flanked by low limestone dwellings with colorful woven carpets hung over doorframes.",
-    "inspect_text": "Children's wooden toys sit on stone doorsteps. The smell of cedar shavings and mint tea drifts from open windows.",
-    "feature_label": "woven threshold carpets",
+    "id": "village_square",
+    "title": "The Village Square",
+    "summary": "The beating heart of the village. A broad circular plaza paved in concentric stone rings, illuminated by warm gas lamps.",
+    "inspect_text": "At the center, broad spiral stone stairs lead UP to the Floor 3 Heart-Pit ('oh'). A large iron hearth warms the gathering villagers.",
+    "feature_label": "the central stone stairs",
     "feature_aliases": [
-      "carpet",
-      "carpets",
-      "rug",
-      "doorway",
-      "lane"
+      "stairs",
+      "hearth",
+      "plaza",
+      "square"
     ],
-    "feature_inspect": "Thick dyed wool carpets woven in geometric lozenge patterns that protect homes from cavern drafts."
+    "feature_inspect": "Solid granite stairs ascending into the dark ceiling toward Floor 3."
   },
   {
-    "x": 18.0,
+    "x": 16.0,
     "y": 21.0,
     "id": "village_south_1",
-    "title": "Lantern Makers' Alley",
-    "summary": "A stone alley where copper sheets and mica panes are fitted into the protective lanterns used throughout the underground.",
-    "inspect_text": "Scores of unlit oil and luminescent lanterns hang from drying racks above the cobblestones.",
-    "feature_label": "the lantern rack",
+    "title": "Elder Rashid's Quarters",
+    "summary": "A modest stone building lined with bookshelves, maps of the cavern system, and brass surveying instruments.",
+    "inspect_text": "Elder Rashid sits here at a heavy oak desk, head in his hands, surrounded by official military decrees and the requisition roll for Zayd.",
+    "feature_label": "the requisition roll",
     "feature_aliases": [
-      "rack",
-      "lantern",
-      "lanterns",
-      "frames"
+      "roll",
+      "desk",
+      "paper",
+      "decree",
+      "writ"
     ],
-    "feature_inspect": "A timber framework laden with heavy brass frames and faceted mica lenses designed to withstand coal dust and damp."
+    "feature_inspect": "A parchment document bearing Captain Malik's iron seal, demanding one youth as an offering."
   },
   {
     "x": 24.0,
@@ -117,24 +117,24 @@
     "feature_inspect": "Solid limestone blocks cut with drainage scuppers, polished smooth by generations of leaning villagers."
   },
   {
-    "x": 21.0,
-    "y": 16.0,
+    "x": 20.0,
+    "y": 15.0,
     "id": "village_east_2",
-    "title": "Terrace of the Dried Herbs",
-    "summary": "A warm stone walkway fragrant with the pungent scent of subterranean mosses and drying cave rosemary.",
-    "inspect_text": "Bundles of sage and medicinal fungi hang from overhead copper steam lines to cure in the steady heat.",
-    "feature_label": "drying herb bundles",
+    "title": "Yasmin's Bakery",
+    "summary": "A warm, flour-dusted bakery smelling wonderfully of fresh flatbread, sesame, and roasted dates.",
+    "inspect_text": "A huge brick oven heated by copper steam coils dominates the back. Yasmin stands by the counter, tearful and furious over Zayd's capture.",
+    "feature_label": "the steam-heated oven",
     "feature_aliases": [
-      "herbs",
-      "bundles",
-      "moss",
-      "plants"
+      "oven",
+      "brick",
+      "bread",
+      "counter"
     ],
-    "feature_inspect": "Neatly bundled sprigs of dark cavern rosemary and cured amber lichen prized for soothing burns."
+    "feature_inspect": "A massive domed brick hearth with steam pipes wrapping its base, baking scores of flatbreads."
   },
   {
-    "x": 18.0,
-    "y": 11.0,
+    "x": 16.0,
+    "y": 9.0,
     "id": "village_east_1",
     "title": "North Terrace Gardens",
     "summary": "Tiered planter boxes cut from the cavern floor, glowing with phosphorescent green and blue lichen.",
@@ -148,54 +148,5 @@
       "garden"
     ],
     "feature_inspect": "Carved limestone planters filled with rich compost and glowing moss providing soft blue illumination."
-  },
-  {
-    "x": 15.0,
-    "y": 16.0,
-    "id": "village_square",
-    "title": "The Village Square",
-    "summary": "The beating heart of the village. A broad circular plaza paved in concentric stone rings, surrounded by warm gas lamps.",
-    "inspect_text": "At the center, broad spiral stone stairs lead UP to the Floor 3 Heart-Pit ('oh'). A large iron hearth warms the gathering villagers.",
-    "feature_label": "the central stone stairs",
-    "feature_aliases": [
-      "stairs",
-      "hearth",
-      "plaza",
-      "square"
-    ],
-    "feature_inspect": "Solid granite stairs ascending into the dark ceiling toward Floor 3."
-  },
-  {
-    "x": 13.0,
-    "y": 16.0,
-    "id": "elder_hut",
-    "title": "Elder Rashid's Quarters",
-    "summary": "A modest stone house lined with bookshelves, maps of the cavern system, and brass surveying instruments.",
-    "inspect_text": "Elder Rashid sits here at a heavy oak desk, head in his hands, surrounded by official military decrees and the requisition roll for Zayd.",
-    "feature_label": "the requisition roll",
-    "feature_aliases": [
-      "roll",
-      "desk",
-      "paper",
-      "decree",
-      "writ"
-    ],
-    "feature_inspect": "A parchment document bearing Captain Malik's iron seal, demanding one youth as an offering."
-  },
-  {
-    "x": 17.0,
-    "y": 16.0,
-    "id": "baker_hut",
-    "title": "Yasmin's Bakery",
-    "summary": "A warm, flour-dusted bakery smelling wonderfully of fresh flatbread, sesame, and roasted dates.",
-    "inspect_text": "A huge brick oven heated by copper steam coils dominates the back. Yasmin stands by the counter, tearful and furious over Zayd's capture.",
-    "feature_label": "the steam-heated oven",
-    "feature_aliases": [
-      "oven",
-      "brick",
-      "bread",
-      "counter"
-    ],
-    "feature_inspect": "A massive domed brick hearth with steam pipes wrapping its base, baking scores of flatbreads."
   }
 ]
