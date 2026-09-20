@@ -133,14 +133,15 @@ pub(super) fn render_room_observation(
         if loose.is_empty() {
             String::new()
         } else {
-            // Items with a `look_description` read as part of the room; the
-            // rest are listed generically as loose items on the ground.
+            // Non-takeable items (such as chalk sigils / trace marks) with a
+            // `look_description` read as part of the room; all takeable items
+            // (loot) and undescribed items are listed as loose items on the ground.
             let described = loose
                 .iter()
                 .filter_map(|(id, _)| {
                     content
                         .item(id)
-                        .filter(|item| !item.look_description.is_empty())
+                        .filter(|item| !item.is_takeable() && !item.look_description.is_empty())
                         .map(|item| item.look_description.clone())
                 })
                 .collect::<Vec<_>>();
@@ -149,7 +150,7 @@ pub(super) fn render_room_observation(
                 .filter(|(id, _)| {
                     content
                         .item(id)
-                        .is_none_or(|item| item.look_description.is_empty())
+                        .is_none_or(|item| item.is_takeable() || item.look_description.is_empty())
                 })
                 .map(|(id, count)| {
                     let label = content.item_label(id);

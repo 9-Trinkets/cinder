@@ -126,6 +126,12 @@ pub fn lint_pack(pack_dir: &Path, locale: &str) -> LintReport {
                 item.id, item.use_hook
             ));
         }
+        if !item.look_description.is_empty() && item.is_takeable() {
+            report.warnings.push(format!(
+                "[{pack_name}] item '{}' is takeable but defines look_description; look_description is reserved for non-takeable room marks (trace marks)",
+                item.id
+            ));
+        }
     }
 
     // 5. Action creation gates

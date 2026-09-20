@@ -139,6 +139,70 @@ fn room_observation_lists_loose_items_on_the_ground() {
 }
 
 #[test]
+fn room_observation_distinguishes_trace_marks_from_takeable_loose_items() {
+    let mut pack = reducer_test_pack();
+    pack.presentation.presentation_text.room_observation =
+        "{room_title} {body} {items} {people}".to_string();
+    pack.presentation.presentation_text.loose_items = "On the ground: {items}.".to_string();
+    pack.presentation.presentation_text.people = "Here: {people}.".to_string();
+    pack.items.push(ItemDefinition {
+        id: "chalk-mark".to_string(),
+        label: "chalk mark".to_string(),
+        description: "A mark.".to_string(),
+        look_description: "A pale spiral glows on the flagstones.".to_string(),
+        trace_mark: true,
+        ..ItemDefinition::default()
+    });
+    pack.items.push(ItemDefinition {
+        id: "ember-scroll".to_string(),
+        label: "ember scroll".to_string(),
+        description: "A warm scroll.".to_string(),
+        look_description: "Amber strokes circle an ember.".to_string(),
+        trace_mark: false,
+        ..ItemDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    state.add_item_to_storage("chalk-mark", ItemStorageTarget::CurrentRoom, LOUNGE_ID);
+    state.add_item_to_storage("ember-scroll", ItemStorageTarget::CurrentRoom, LOUNGE_ID);
+
+    let text = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(
+            WorldEvent::CurrentRoomObserved {
+                room_id: LOUNGE_ID.to_string(),
+                mode: ObservationMode::Summary,
+            },
+        )],
+    )
+    .lines
+    .to_text();
+
+    // Trace mark with look_description reads as room prose and is not listed in "On the ground".
+    assert!(
+        text.contains("A pale spiral glows on the flagstones."),
+        "expected trace mark prose, got: {text}"
+    );
+    assert!(
+        !text.contains("chalk mark"),
+        "trace mark should not appear as loot label, got: {text}"
+    );
+
+    // Takeable item is listed in "On the ground" and not added as room prose.
+    assert!(
+        text.contains("On the ground: ember scroll."),
+        "expected takeable item in loose items list, got: {text}"
+    );
+    assert!(
+        !text.contains("Amber strokes circle an ember."),
+        "takeable item should not be in prose, got: {text}"
+    );
+}
+
+#[test]
 fn level_reveal_follows_the_declared_room_prefix() {
     let mut pack = minimal_test_pack();
     assert!(

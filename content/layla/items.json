@@ -27,16 +27,14 @@
     "label": "worn scroll",
     "kind": "misc",
     "use_hook": "item.scroll_read",
-    "description": "A dry scroll of old bark, faintly warm, showing an intricate spiral in charcoal. Reading it presses the words for drawing a draining sigil into your head.",
-    "look_description": "A spiral of charcoal spirals on the bark — a diagram for sapping the strength of whatever stands within."
+    "description": "A dry scroll of old bark, faintly warm. A spiral of charcoal spirals on the bark — a diagram for sapping the strength of whatever stands within. Reading it presses the words for drawing a draining sigil into your head."
   },
   {
     "id": "spawn-scroll",
     "label": "ember scroll",
     "kind": "misc",
     "use_hook": "item.spawn_scroll_read",
-    "description": "A sheet of fire-cured bark marked with a round amber sigil. Reading it reveals the lines that call a creature into being.",
-    "look_description": "Amber strokes circle a tiny ember at the scroll's center — a diagram for a spawning sigil."
+    "description": "A sheet of fire-cured bark marked with a round amber sigil. Amber strokes circle a tiny ember at the scroll's center — a diagram for a spawning sigil. Reading it reveals the lines that call a creature into being."
   },
   {
     "id": "chisel-axe",
