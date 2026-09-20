@@ -1729,7 +1729,7 @@
   },
   {
     "id": "garrison_sentry_gate",
-    "name": "garrison sentry",
+    "name": "Garrison Sentry",
     "room_id": "village_north_gate",
     "aliases": [
       "sentry",
@@ -1775,7 +1775,7 @@
   },
   {
     "id": "garrison_guard",
-    "name": "garrison guard",
+    "name": "Garrison Guard",
     "room_id": "village_north_gate",
     "aliases": [
       "guard",
@@ -1818,7 +1818,7 @@
   },
   {
     "id": "garrison_patrol_west",
-    "name": "garrison rampart sentry",
+    "name": "Garrison Rampart Sentry",
     "room_id": "",
     "aliases": [
       "sentry",
@@ -1859,7 +1859,7 @@
   },
   {
     "id": "garrison_patrol_east",
-    "name": "garrison rampart sentry",
+    "name": "Garrison Rampart Sentry",
     "room_id": "",
     "aliases": [
       "sentry",
@@ -1900,7 +1900,7 @@
   },
   {
     "id": "garrison_warden",
-    "name": "cage warden",
+    "name": "Cage Warden",
     "room_id": "",
     "aliases": [
       "warden",
@@ -1944,7 +1944,7 @@
   },
   {
     "id": "steam_automaton_west",
-    "name": "clockwork mining driller",
+    "name": "Clockwork Mining Driller",
     "room_id": "",
     "aliases": [
       "automaton",
@@ -1985,7 +1985,7 @@
   },
   {
     "id": "steam_automaton_east",
-    "name": "clockwork ore hauler",
+    "name": "Clockwork Ore Hauler",
     "room_id": "",
     "aliases": [
       "automaton",
