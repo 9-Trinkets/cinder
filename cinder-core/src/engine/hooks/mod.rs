@@ -182,20 +182,22 @@ fn apply_hook_effects(
                 messages,
             } => {
                 let health_stat_id = &content.settings.combat.health_stat_id;
-                for actor in &content.actors {
-                    if content.is_player_actor(&actor.id) {
+                let tagged_actors: Vec<(String, String)> = state
+                    .actors(content)
+                    .filter(|actor| actor.tags.iter().any(|actor_tag| actor_tag.as_str() == tag))
+                    .map(|actor| (actor.id.clone(), actor.name.clone()))
+                    .collect();
+                for (actor_id, actor_name) in tagged_actors {
+                    if content.is_player_actor(&actor_id) {
                         continue;
                     }
-                    if state.actor_current_room_id(content, &actor.id).is_empty() {
+                    if state.actor_current_room_id(content, &actor_id).is_empty() {
                         continue;
                     }
-                    if !actor.tags.iter().any(|actor_tag| actor_tag.as_str() == tag) {
+                    if state.actor_is_defeated(&actor_id, health_stat_id) {
                         continue;
                     }
-                    if state.actor_is_defeated(&actor.id, health_stat_id) {
-                        continue;
-                    }
-                    let mut relationship = state.relationship(&actor.id);
+                    let mut relationship = state.relationship(&actor_id);
                     if !from_stances.is_empty() && !from_stances.contains(&relationship.stance) {
                         continue;
                     }
@@ -204,14 +206,14 @@ fn apply_hook_effects(
                     }
                     relationship.stance = stance;
                     relationship.follows_player = follows_player;
-                    state.set_relationship(&actor.id, relationship);
+                    state.set_relationship(&actor_id, relationship);
                     if stance == ActorStance::Allied {
-                        state.initialize_party_order(content, &actor.id);
+                        state.initialize_party_order(content, &actor_id);
                     }
                     if let Some(lines) = lines.as_deref_mut() {
                         for key in &messages {
                             if let Some(line) =
-                                content.render_message(key, &[("actor", actor.name.as_str())])
+                                content.render_message(key, &[("actor", actor_name.as_str())])
                             {
                                 lines.narration(line);
                             }
@@ -233,18 +235,19 @@ fn apply_hook_effects(
             }
             WorldHookEffect::DefeatActorsByTag { tag } => {
                 let health_stat_id = &content.settings.combat.health_stat_id;
-                for actor in &content.actors {
-                    if content.is_player_actor(&actor.id) {
-                        continue;
-                    }
-                    if actor.tags.iter().any(|actor_tag| actor_tag.as_str() == tag) {
-                        // A large negative delta clamps to the stat's min (0).
-                        state
-                            .adjust_actor_stat(content, &actor.id, health_stat_id, i32::MIN / 2)
-                            .unwrap_or_else(|error| {
-                                eprintln!("[cinder] defeat stat error: {error}")
-                            });
-                    }
+                let tagged_actor_ids: Vec<String> = state
+                    .actors(content)
+                    .filter(|actor| {
+                        !content.is_player_actor(&actor.id)
+                            && actor.tags.iter().any(|actor_tag| actor_tag.as_str() == tag)
+                    })
+                    .map(|actor| actor.id.clone())
+                    .collect();
+                for actor_id in tagged_actor_ids {
+                    // A large negative delta clamps to the stat's min (0).
+                    state
+                        .adjust_actor_stat(content, &actor_id, health_stat_id, i32::MIN / 2)
+                        .unwrap_or_else(|error| eprintln!("[cinder] defeat stat error: {error}"));
                 }
             }
             WorldHookEffect::SpawnActor {

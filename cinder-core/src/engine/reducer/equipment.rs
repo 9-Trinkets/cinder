@@ -30,7 +30,7 @@ pub(super) fn apply_equip(
     {
         return;
     }
-    render_item_equipment_text(content, item, "equipped", lines);
+    render_item_equipment_text(state, content, item, "equipped", lines);
     if !state.remove_item(item_id) {
         return;
     }
@@ -68,7 +68,7 @@ pub(super) fn apply_equip(
             &item.equip_hook,
             json!({
                 "actor_id": player_id,
-                "actor_name": actor_display_name(content, &player_id),
+                "actor_name": actor_display_name(state, content, &player_id),
                 "item_id": item.id,
                 "item_label": item.label,
             }),
@@ -99,7 +99,7 @@ pub(super) fn apply_unequip(
     if !state.item_is_equipped(item) {
         return;
     }
-    render_item_equipment_text(content, item, "unequipped", lines);
+    render_item_equipment_text(state, content, item, "unequipped", lines);
     for slot in item.occupied_slots() {
         state.equipment.remove(slot);
     }
@@ -115,17 +115,18 @@ pub(super) fn apply_unequip(
 }
 
 fn render_item_equipment_text(
+    game_state: &WorldState,
     content: &ContentPack,
     item: &ItemDefinition,
-    state: &str,
+    phase: &str,
     lines: &mut NarrativeLines,
 ) {
-    let key = format!("equipment.{}.{}", item.id, state);
+    let key = format!("equipment.{}.{}", item.id, phase);
     let Some(template) = content.message(&key) else {
         return;
     };
     let actor_id = &content.settings.combat.player_actor_id;
-    let actor_name = actor_display_name(content, actor_id);
+    let actor_name = actor_display_name(game_state, content, actor_id);
     lines.narration(content.render_template(
         template,
         &[

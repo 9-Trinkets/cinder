@@ -18,7 +18,7 @@ pub(crate) fn handle_party_order_assigned(
         eprintln!("[cinder] party order error: {error}");
         return;
     }
-    let actor = actor_display_name(content, actor_id);
+    let actor = actor_display_name(state, content, actor_id);
     let player_room = state.current_room_id.clone();
     let key = if !was_in_room && (order == "guard" || order == "follow") {
         state.mark_actor_room_visited(actor_id, &player_room);
@@ -143,7 +143,7 @@ pub(crate) fn handle_item_transferred(
                 state.actor_add_item(to_actor_id, &old_item_id);
             }
 
-            let to_name = actor_display_name(content, to_actor_id);
+            let to_name = actor_display_name(state, content, to_actor_id);
             if !item.equip_hook.is_empty()
                 && let Err(error) = crate::engine::hooks::apply_narrating_world_hook_effects(
                     state,
@@ -166,7 +166,7 @@ pub(crate) fn handle_item_transferred(
 
     // 3. Narration
     if content.is_player_actor(from_actor_id) {
-        let to_name = actor_display_name(content, to_actor_id);
+        let to_name = actor_display_name(state, content, to_actor_id);
         let give_msg = content
             .render_message("party.give_success", &[("actor", &to_name), ("item", item_label)])
             .unwrap_or_else(|| format!("You give the {item_label} to {to_name}."));
@@ -182,7 +182,7 @@ pub(crate) fn handle_item_transferred(
         let is_player_take = initiator_actor_id
             .map(|id| content.is_player_actor(id))
             .unwrap_or(false);
-        let from_name = actor_display_name(content, from_actor_id);
+        let from_name = actor_display_name(state, content, from_actor_id);
 
         if is_player_take {
             let take_msg = content
@@ -196,8 +196,8 @@ pub(crate) fn handle_item_transferred(
             lines.narration(gift_msg);
         }
     } else {
-        let from_name = actor_display_name(content, from_actor_id);
-        let to_name = actor_display_name(content, to_actor_id);
+        let from_name = actor_display_name(state, content, from_actor_id);
+        let to_name = actor_display_name(state, content, to_actor_id);
         lines.narration(format!("{from_name} gives the {item_label} to {to_name}."));
         if auto_equipped {
             lines.narration(format!("{to_name} equips the {item_label}."));

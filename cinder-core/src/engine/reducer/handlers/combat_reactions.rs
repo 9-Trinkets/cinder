@@ -112,7 +112,7 @@ pub(super) fn resolve_post_damage_reactions(
             }
             PartyReactionAction::Support => resolve_support(state, content, attacker_id, &decision),
             PartyReactionAction::Hold => Some(PartyReactionOutcome::Hold {
-                actor: actor_display_name(content, &decision.actor_id),
+                actor: actor_display_name(state, content, &decision.actor_id),
                 message: decision.message.clone(),
             }),
             PartyReactionAction::Intercept => None,
@@ -160,8 +160,8 @@ fn resolve_counterattack(
         .map(|actor| actor.attack_kind())
         .unwrap_or("physical");
     let damage = resisted_damage(content, &target_id, attack_kind, raw_damage);
-    let actor_name = actor_display_name(content, &decision.actor_id);
-    let target_name = actor_display_name(content, &target_id);
+    let actor_name = actor_display_name(state, content, &decision.actor_id);
+    let target_name = actor_display_name(state, content, &target_id);
     if raw_damage > 0 && damage == 0 {
         let remaining = state.actor_stat(&target_id, &combat.health_stat_id);
         Some(PartyReactionOutcome::Counterattack {
@@ -218,9 +218,9 @@ fn resolve_support(
         .adjust_actor_stat(content, &target_id, stat, *delta)
         .unwrap_or_else(|error| eprintln!("[cinder] party support stat error: {error}"));
     let remaining = state.actor_stat(&target_id, stat);
-    let target_name = actor_display_name(content, &target_id);
+    let target_name = actor_display_name(state, content, &target_id);
     Some(PartyReactionOutcome::Support {
-        actor: actor_display_name(content, &decision.actor_id),
+        actor: actor_display_name(state, content, &decision.actor_id),
         target_id,
         target: target_name,
         amount: remaining.saturating_sub(before).abs(),

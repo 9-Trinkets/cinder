@@ -33,19 +33,20 @@ fn content_event_for_command(
     }
 }
 
-fn first_actor_in_room<'a>(
-    content: &'a ContentPack,
-    context: &PlanningContext<'_>,
-) -> Option<&'a crate::content::types::ActorDefinition> {
-    content.actors.iter().find(|actor| {
-        !context
-            .planner_state
-            .actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
-            && context
+fn first_actor_in_room(content: &ContentPack, context: &PlanningContext<'_>) -> Option<(String, String)> {
+    context
+        .planner_state
+        .actors(content)
+        .find(|actor| {
+            !context
                 .planner_state
-                .actor_room_id(&actor.id, &actor.room_id)
-                == context.current_room_id
-    })
+                .actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
+                && context
+                    .planner_state
+                    .actor_room_id(&actor.id, &actor.room_id)
+                    == context.current_room_id
+        })
+        .map(|actor| (actor.id.clone(), actor.name.clone()))
 }
 
 fn resolved_created_item_id(
@@ -353,9 +354,9 @@ pub(super) fn plan_content_command(
                 Some("You".to_string()),
             ),
             ActionItemConsumerTarget::FirstActorInRoom => {
-                let recipient =
+                let (recipient_id, recipient_name) =
                     first_actor_in_room(content, context).expect("actor should be in room");
-                (Some(recipient.id.clone()), Some(recipient.name.clone()))
+                (Some(recipient_id), Some(recipient_name))
             }
         };
         planned.events.push(WorldEvent::ItemConsumed {
@@ -381,9 +382,9 @@ pub(super) fn plan_content_command(
                 Some("You".to_string()),
             ),
             ActionItemConsumerTarget::FirstActorInRoom => {
-                let recipient =
+                let (recipient_id, recipient_name) =
                     first_actor_in_room(content, context).expect("actor should be in room");
-                (Some(recipient.id.clone()), Some(recipient.name.clone()))
+                (Some(recipient_id), Some(recipient_name))
             }
         };
         planned.events.push(WorldEvent::ItemConsumed {

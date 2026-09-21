@@ -19,9 +19,23 @@ pub(super) fn plan_observe_target(
     context: &PlanningContext<'_>,
     planned: &mut PlannedTurn,
 ) -> bool {
-    if let Some(actor) = content.resolve_actor(target).or_else(|| {
-        content.actors.iter().find(|actor| {
-            display_actor_name(context.planner_state, actor).eq_ignore_ascii_case(target)
+    // Prefer a spawned instance actually in this room over the static
+    // template of the same name (e.g. "fire sprite" should resolve to the
+    // summoned instance standing here, not its offstage content template).
+    let local_match = context.planner_state.actors(content).find(|actor| {
+        context
+            .planner_state
+            .actor_room_id(&actor.id, &actor.room_id)
+            == context.current_room_id
+            && (actor.id.eq_ignore_ascii_case(target)
+                || display_actor_name(context.planner_state, actor).eq_ignore_ascii_case(target)
+                || actor.aliases.iter().any(|alias| alias.eq_ignore_ascii_case(target)))
+    });
+    if let Some(actor) = local_match.or_else(|| {
+        content.resolve_actor(target).or_else(|| {
+            content.actors.iter().find(|actor| {
+                display_actor_name(context.planner_state, actor).eq_ignore_ascii_case(target)
+            })
         })
     }) {
         let actor_name = display_actor_name(context.planner_state, actor);

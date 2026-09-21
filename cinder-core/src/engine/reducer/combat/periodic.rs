@@ -47,7 +47,7 @@ pub(in crate::engine::reducer) fn handle_periodic_actor_effect_applied(
         return;
     }
     let remaining = state.actor_stat(actor_id, health_stat_id);
-    let actor_name = actor_display_name(content, actor_id);
+    let actor_name = actor_display_name(state, content, actor_id);
     if let Some(line) = content.render_message(
         &definition.message,
         &[

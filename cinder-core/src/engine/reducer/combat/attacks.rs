@@ -23,7 +23,7 @@ pub(in crate::engine::reducer) fn apply_attack_target(
     if state.stance(target_actor_id) == ActorStance::Allied {
         return;
     }
-    let target_name = actor_display_name(content, target_actor_id);
+    let target_name = actor_display_name(state, content, target_actor_id);
     // `actor.attacked` fires for this pack only when the player themselves
     // issues the attack action (follower damage boosts and periodic effects
     // never reach this point). Packs use it to record run-rule flags, e.g. a
@@ -106,7 +106,7 @@ pub(in crate::engine::reducer) fn apply_attack_target(
             }
             let actor_names = allied_participants
                 .iter()
-                .map(|actor_id| actor_display_name(content, actor_id))
+                .map(|actor_id| actor_display_name(state, content, actor_id))
                 .collect::<Vec<_>>();
             let group_key =
                 if count >= 4 && content.messages.contains_key("combat.party_joins_attack") {

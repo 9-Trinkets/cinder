@@ -262,7 +262,7 @@ fn action_has_available_target(
     match panel_config.data_source {
         PanelDataSource::ActorsInRoom => {
             let is_attack = action.has_effect(CommandEffect::AttackTarget);
-            content.actors.iter().any(|actor| {
+            state.actors(content).any(|actor| {
                 if content.is_player_actor(&actor.id)
                     || !state.actor_is_in_room(content, &actor.id, room_id)
                     || state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)

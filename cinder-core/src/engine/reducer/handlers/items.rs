@@ -140,7 +140,7 @@ pub(crate) fn handle_player_used_item(
         &item.use_hook,
         serde_json::json!({
             "actor_id": player_id,
-            "actor_name": super::super::command_effects::actor_display_name(content, &player_id),
+            "actor_name": super::super::command_effects::actor_display_name(state, content, &player_id),
             "item_id": item.id,
             "item_label": item.label,
         }),
