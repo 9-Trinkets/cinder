@@ -217,8 +217,6 @@ pub struct UiSnapshot {
     pub locale_options: Vec<LocaleItem>,
     pub objectives: Vec<ObjectiveItem>,
     pub objective_message: String,
-    pub progress_completed: usize,
-    pub progress_total: usize,
     pub secrets_found: usize,
     pub secrets_total: usize,
     pub rooms: Vec<MenuOptionData>,

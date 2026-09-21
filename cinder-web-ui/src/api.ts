@@ -345,8 +345,6 @@ export interface UiSnapshot {
   locale_options: LocaleItem[]
   objectives: ObjectiveItem[]
   objective_message: string
-  progress_completed: number
-  progress_total: number
   secrets_found: number
   secrets_total: number
   rooms: MenuOptionItem[]

@@ -266,21 +266,6 @@ export default function StatusPanel({
         </Section>
       )}
 
-      {uiSnapshot.progress_total > 0 && (
-        <Section title="Progress">
-          <div className="h-1.5 w-full bg-overlay rounded-full overflow-hidden">
-            <div
-              role="progressbar"
-              aria-valuenow={uiSnapshot.progress_completed}
-              aria-valuemin={0}
-              aria-valuemax={uiSnapshot.progress_total}
-              className="h-full bg-pine rounded-full transition-all duration-500"
-              style={{ width: `${(uiSnapshot.progress_completed / uiSnapshot.progress_total) * 100}%` }}
-            />
-          </div>
-        </Section>
-      )}
-
       {uiSnapshot.secrets_total > 0 && (
         <Section title="Secrets Found">
           <p className="text-text font-medium">{uiSnapshot.secrets_found} / {uiSnapshot.secrets_total}</p>

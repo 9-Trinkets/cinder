@@ -223,16 +223,6 @@ impl CinderRuntime {
         Ok(state.completed_stage_ids.iter().cloned().collect())
     }
 
-    pub fn current_objective_progress(&self) -> Result<(usize, usize), Box<dyn Error>> {
-        let state = self
-            .state
-            .lock()
-            .map_err(|_| "failed to lock runtime state for progress")?;
-        let completed = state.stages_completed;
-        let total = self.content.beats.stages.len();
-        Ok((completed, total))
-    }
-
     pub fn current_secret_progress(&self) -> Result<(usize, usize), Box<dyn Error>> {
         let state = self
             .state

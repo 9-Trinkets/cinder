@@ -50,9 +50,6 @@ pub(super) fn build_ui_snapshot(
             quest_kind: item.quest_kind,
         })
         .collect();
-    let (progress_completed, progress_total) = runtime
-        .current_objective_progress()
-        .map_err(|error| error.to_string())?;
     let (secrets_found, secrets_total) = runtime
         .current_secret_progress()
         .map_err(|error| error.to_string())?;
@@ -144,8 +141,6 @@ pub(super) fn build_ui_snapshot(
         locale_options: locales,
         objectives,
         objective_message,
-        progress_completed,
-        progress_total,
         secrets_found,
         secrets_total,
         rooms: menu_option_data(
