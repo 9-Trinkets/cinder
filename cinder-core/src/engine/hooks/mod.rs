@@ -247,6 +247,142 @@ fn apply_hook_effects(
                     }
                 }
             }
+            WorldHookEffect::SpawnActor {
+                template_id,
+                room_id,
+                stance,
+                follows_player,
+                messages,
+                scale_with_actor_id,
+                scale_stat,
+                max_active_instances,
+                max_instances_messages,
+            } => {
+                let Some(template) = state.actor(content, &template_id).cloned() else {
+                    eprintln!("[cinder] spawn actor: template '{template_id}' not found");
+                    continue;
+                };
+                if let Some(max) = max_active_instances {
+                    let active_count = state.active_spawned_actor_count(content, &template_id);
+                    if active_count >= max {
+                        if let Some(lines) = lines.as_deref_mut() {
+                            let max_str = max.to_string();
+                            for key in &max_instances_messages {
+                                if let Some(line) = content.render_message(
+                                    key,
+                                    &[
+                                        ("actor", template.name.as_str()),
+                                        ("template_id", template_id.as_str()),
+                                        ("max", max_str.as_str()),
+                                    ],
+                                ) {
+                                    push_rendered_message(lines, content, line, content.message_voice(key));
+                                }
+                            }
+                        }
+                        continue;
+                    }
+                }
+                let target_room_id = room_id
+                    .filter(|r| !r.is_empty())
+                    .unwrap_or_else(|| state.current_room_id.clone());
+                state.spawn_counter += 1;
+                let instance_id = format!("{template_id}-{}", state.spawn_counter);
+                let mut instance = template;
+                instance.id = instance_id.clone();
+                instance.room_id = target_room_id.clone();
+
+                let health_stat_id = if content.settings.combat.health_stat_id.is_empty() {
+                    "hp"
+                } else {
+                    &content.settings.combat.health_stat_id
+                };
+
+                let (scaled_hp, scaled_str, scaled_intel, scaler_val) =
+                    if let Some(scaler_id) = scale_with_actor_id {
+                        let stat_name = scale_stat.as_deref().unwrap_or("intelligence");
+                        let scaler = state.effective_actor_stat(content, &scaler_id, stat_name);
+                        let base_hp = instance
+                            .initial_stats
+                            .get(health_stat_id)
+                            .copied()
+                            .unwrap_or(4);
+                        let base_str = instance.initial_stats.get("strength").copied().unwrap_or(2);
+                        let base_intel = instance
+                            .initial_stats
+                            .get("intelligence")
+                            .copied()
+                            .unwrap_or(2);
+                        let hp = (base_hp + scaler).max(1);
+                        let str_val = (base_str + scaler / 3).max(1);
+                        let intel_val = (base_intel + scaler / 2).max(1);
+                        instance.initial_stats.insert(health_stat_id.to_string(), hp);
+                        instance
+                            .initial_stats
+                            .insert("strength".to_string(), str_val);
+                        instance
+                            .initial_stats
+                            .insert("intelligence".to_string(), intel_val);
+                        (hp, str_val, intel_val, scaler)
+                    } else {
+                        let hp = instance
+                            .initial_stats
+                            .get(health_stat_id)
+                            .copied()
+                            .unwrap_or(4);
+                        let str_val = instance.initial_stats.get("strength").copied().unwrap_or(2);
+                        let intel_val = instance
+                            .initial_stats
+                            .get("intelligence")
+                            .copied()
+                            .unwrap_or(2);
+                        (hp, str_val, intel_val, 0)
+                    };
+
+                let actor_name = instance.name.clone();
+                state
+                    .actor_stats
+                    .insert(instance_id.clone(), instance.initial_stats.clone());
+                state
+                    .initial_actor_stats
+                    .insert(instance_id.clone(), instance.initial_stats.clone());
+                state
+                    .actor_room_overrides
+                    .insert(instance_id.clone(), target_room_id.clone());
+                state.mark_actor_room_visited(&instance_id, &target_room_id);
+                state.spawned_actors.insert(instance_id.clone(), instance);
+
+                let stance = stance.unwrap_or(ActorStance::Allied);
+                let relationship =
+                    crate::engine::state::ActorRelationship { stance, follows_player };
+                state.set_relationship(&instance_id, relationship);
+                if stance == ActorStance::Allied {
+                    state.initialize_party_order(content, &instance_id);
+                }
+
+                if let Some(lines) = lines.as_deref_mut() {
+                    let hp_str = scaled_hp.to_string();
+                    let str_str = scaled_str.to_string();
+                    let intel_str = scaled_intel.to_string();
+                    let scaler_val_str = scaler_val.to_string();
+                    for key in &messages {
+                        if let Some(line) = content.render_message(
+                            key,
+                            &[
+                                ("actor", actor_name.as_str()),
+                                ("instance_id", instance_id.as_str()),
+                                ("room_id", target_room_id.as_str()),
+                                ("hp", hp_str.as_str()),
+                                ("strength", str_str.as_str()),
+                                ("intelligence", intel_str.as_str()),
+                                ("intel", scaler_val_str.as_str()),
+                            ],
+                        ) {
+                            push_rendered_message(lines, content, line, content.message_voice(key));
+                        }
+                    }
+                }
+            }
         }
     }
     Ok(())
@@ -306,6 +442,27 @@ enum WorldHookEffect {
         key: String,
         #[serde(default)]
         vars: Vec<(String, String)>,
+    },
+    /// Instantiates a new runtime actor from an authored template.
+    /// Supports intelligence-based stat scaling, party recruitment, and room placement.
+    SpawnActor {
+        template_id: String,
+        #[serde(default)]
+        room_id: Option<String>,
+        #[serde(default)]
+        stance: Option<ActorStance>,
+        #[serde(default)]
+        follows_player: bool,
+        #[serde(default)]
+        messages: Vec<String>,
+        #[serde(default)]
+        scale_with_actor_id: Option<String>,
+        #[serde(default)]
+        scale_stat: Option<String>,
+        #[serde(default)]
+        max_active_instances: Option<usize>,
+        #[serde(default)]
+        max_instances_messages: Vec<String>,
     },
 }
 

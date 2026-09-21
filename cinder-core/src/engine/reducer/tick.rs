@@ -31,7 +31,8 @@ pub(super) fn advance_actor_stats_on_tick(
     if stepped_stats.is_empty() {
         return;
     }
-    for actor in &content.actors {
+    let actor_ids: Vec<String> = state.actors(content).map(|actor| actor.id.clone()).collect();
+    for actor_id in &actor_ids {
         for (stat_key, steps) in &stepped_stats {
             for _ in 0..*steps {
                 apply_world_hook_effects(
@@ -39,7 +40,7 @@ pub(super) fn advance_actor_stats_on_tick(
                     content,
                     hook_ids::ACTOR_TIME_ADVANCED,
                     json!({
-                        "actor_id": &actor.id,
+                        "actor_id": actor_id,
                         "previous_time_minutes": previous_time_minutes,
                         "current_time_minutes": current_time_minutes,
                         "stat": stat_key,
@@ -96,10 +97,14 @@ pub(super) fn advance_house_progress_objectives(
 }
 
 pub(super) fn increment_shared_room_safety(state: &mut WorldState, content: &ContentPack) {
-    for actor in content.onstage_actors() {
-        let room_id = state.actor_room_id(&actor.id, &actor.room_id).to_string();
-        for other in content.actors.iter().filter(|other| other.id > actor.id) {
-            let other_room_id = state.actor_room_id(&other.id, &other.room_id).to_string();
+    let onstage_ids: Vec<(String, String)> = state
+        .onstage_actors(content)
+        .map(|actor| (actor.id.clone(), actor.room_id.clone()))
+        .collect();
+    for (actor_id, actor_home_room_id) in &onstage_ids {
+        let room_id = state.actor_room_id(actor_id, actor_home_room_id).to_string();
+        for (other_id, other_home_room_id) in onstage_ids.iter().filter(|(other_id, _)| other_id > actor_id) {
+            let other_room_id = state.actor_room_id(other_id, other_home_room_id).to_string();
             if room_id == other_room_id {
                 apply_world_hook_effects(
                     state,
@@ -107,8 +112,8 @@ pub(super) fn increment_shared_room_safety(state: &mut WorldState, content: &Con
                     hook_ids::SHARED_ROOM_TICK,
                     json!({
                         "event_kind": "shared_room_tick",
-                        "participant_a_id": actor.id,
-                        "participant_b_id": other.id,
+                        "participant_a_id": actor_id,
+                        "participant_b_id": other_id,
                     }),
                 )
                 .unwrap_or_else(|error| {
@@ -123,7 +128,7 @@ pub(super) fn increment_shared_room_safety(state: &mut WorldState, content: &Con
                 hook_ids::SHARED_ROOM_TICK,
                 json!({
                     "event_kind": "shared_room_tick",
-                    "participant_a_id": actor.id,
+                    "participant_a_id": actor_id,
                     "participant_b_id": viewer_participant_id(content),
                 }),
             )
@@ -199,13 +204,15 @@ pub(super) fn record_room_action_memory(
     room_id: &str,
     text: &str,
 ) {
-    for other_actor in actors_in_room(content, state, room_id) {
-        if other_actor.id == actor_id {
-            continue;
-        }
+    let other_actor_ids: Vec<String> = actors_in_room(content, state, room_id)
+        .into_iter()
+        .filter(|other_actor| other_actor.id != actor_id)
+        .map(|other_actor| other_actor.id.clone())
+        .collect();
+    for other_actor_id in other_actor_ids {
         state.push_conversation_line(
             actor_id,
-            &other_actor.id,
+            &other_actor_id,
             ConversationMemoryLine {
                 turn_number: state.turn_number,
                 event_sequence: 0,

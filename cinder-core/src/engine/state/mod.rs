@@ -1,7 +1,7 @@
 use rand::Rng;
 
 use crate::content::types::{
-    ContentPack, OpeningMenuOptionDefinition, RoomDefinition, StatDefinition,
+    ActorDefinition, ContentPack, OpeningMenuOptionDefinition, RoomDefinition, StatDefinition,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet, HashMap};
@@ -131,6 +131,12 @@ pub struct WorldState {
     /// Summaries of completed floors / acts upon descent, keyed by floor / act id.
     #[serde(default)]
     pub floor_summaries: BTreeMap<String, FloorDescentSummary>,
+    /// Counter for dynamically spawned actors to ensure unique instance IDs.
+    #[serde(default)]
+    pub spawn_counter: u32,
+    /// Dynamically spawned actors instantiated at runtime from templates.
+    #[serde(default)]
+    pub spawned_actors: BTreeMap<String, ActorDefinition>,
 }
 
 /// Summary milestone recorded upon descending from a floor / act.
@@ -343,11 +349,61 @@ impl WorldState {
             actor_level: seeded_actor_levels(content),
             scripted_sequences,
             floor_summaries: BTreeMap::new(),
+            spawn_counter: 0,
+            spawned_actors: BTreeMap::new(),
         }
     }
 
     pub fn current_room<'a>(&self, content: &'a ContentPack) -> Option<&'a RoomDefinition> {
         content.room(&self.current_room_id)
+    }
+
+    /// Looks up an actor definition by id, checking runtime spawned actors first
+    /// and falling back to static pack actors.
+    pub fn actor<'a>(
+        &'a self,
+        content: &'a ContentPack,
+        actor_id: &str,
+    ) -> Option<&'a ActorDefinition> {
+        self.spawned_actors
+            .get(actor_id)
+            .or_else(|| content.actor(actor_id))
+    }
+
+    /// Looks up an actor's display name, checking runtime spawned actors first.
+    pub fn actor_display_name<'a>(
+        &'a self,
+        content: &'a ContentPack,
+        actor_id: &str,
+    ) -> Option<&'a str> {
+        self.actor(content, actor_id).map(|actor| actor.name.as_str())
+    }
+
+    /// Whether the actor is offstage, checking runtime spawned actors and room overrides first.
+    pub fn actor_is_offstage(&self, content: &ContentPack, actor_id: &str) -> bool {
+        if self.actor_room_overrides.get(actor_id).is_some_and(|r| !r.trim().is_empty()) {
+            return false;
+        }
+        self.actor(content, actor_id)
+            .is_some_and(|actor| actor.is_offstage())
+    }
+
+    /// Iterates all onstage actors across static content and runtime spawned actors.
+    pub fn onstage_actors<'a>(
+        &'a self,
+        content: &'a ContentPack,
+    ) -> impl Iterator<Item = &'a ActorDefinition> {
+        content
+            .onstage_actors()
+            .chain(self.spawned_actors.values().filter(|actor| !actor.is_offstage()))
+    }
+
+    /// Iterates all actors across static content and runtime spawned actors.
+    pub fn actors<'a>(
+        &'a self,
+        content: &'a ContentPack,
+    ) -> impl Iterator<Item = &'a ActorDefinition> {
+        content.actors.iter().chain(self.spawned_actors.values())
     }
 }
 

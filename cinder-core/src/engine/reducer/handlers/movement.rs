@@ -4,7 +4,7 @@ use crate::engine::hooks::apply_narrating_world_hook_effects;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
 use crate::engine::reducer::command_effects::{
-    ActorMoveTransitionContext, actor_display_name, apply_actor_move_transition,
+    ActorMoveTransitionContext, apply_actor_move_transition,
 };
 use crate::engine::reducer::summaries::summarize_actor_names;
 use crate::engine::reducer::tick::advance_house_progress_objectives;
@@ -106,7 +106,7 @@ pub(crate) fn sync_followers_to_room(
         }
         // Offstage followers (e.g. a remote handler) are not physically drawn
         // into the player's room by party membership.
-        if content.actor_is_offstage(&follower_id) {
+        if state.actor_is_offstage(content, &follower_id) {
             continue;
         }
 
@@ -118,7 +118,12 @@ pub(crate) fn sync_followers_to_room(
             state
                 .actor_room_overrides
                 .insert(follower_id.clone(), to_room_id.to_string());
-            moved_actor_names.push(actor_display_name(content, &follower_id));
+            moved_actor_names.push(
+                state
+                    .actor_display_name(content, &follower_id)
+                    .unwrap_or(&follower_id)
+                    .to_string(),
+            );
         }
     }
     let count = moved_actor_names.len();

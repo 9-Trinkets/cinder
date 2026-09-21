@@ -17,7 +17,7 @@ pub(super) use super::combat::{
     actor_display_name, award_defeat_xp, defeat_actor, defeat_player_if_dead, spawn_defeat_drops,
 };
 pub(super) use super::movement::{ActorMoveTransitionContext, apply_actor_move_transition};
-pub(super) use super::surround::trigger_surrounded_hooks;
+pub(super) use super::surround::{trigger_placement_hooks, trigger_surrounded_hooks};
 
 pub(super) fn apply_new_command_effects(
     state: &mut WorldState,

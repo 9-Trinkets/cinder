@@ -65,6 +65,26 @@ pub struct ItemDefinition {
     /// one-shot behavior.
     #[serde(default, skip_serializing_if = "is_false")]
     pub consumed_on_surround_conversion: bool,
+    /// Hook fired when this item is placed in a room (e.g. via `trace` or `drop`).
+    #[serde(default)]
+    pub placement_hook: String,
+    /// Whether executing `placement_hook` with this item spends it: the item is
+    /// removed from the room where it was just placed. Gives spawn sigils their
+    /// one-shot behavior.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub consumed_on_placement: bool,
+    /// MP cost required to trace or cast this item.
+    #[serde(default, skip_serializing_if = "is_zero_u32")]
+    pub mp_cost: u32,
+    /// Maximum active spawned instances allowed for this item.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub max_active_instances: Option<usize>,
+    /// Actor template id tracked for max active instances.
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    pub spawn_template_id: String,
+    /// Message key rendered when max active instances is reached.
+    #[serde(default, skip_serializing_if = "String::is_empty")]
+    pub max_instances_message: String,
 }
 
 impl ItemDefinition {
@@ -100,6 +120,10 @@ where
 
 fn is_false(value: &bool) -> bool {
     !*value
+}
+
+fn is_zero_u32(value: &u32) -> bool {
+    *value == 0
 }
 
 #[cfg(test)]

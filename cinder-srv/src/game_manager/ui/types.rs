@@ -72,6 +72,10 @@ pub struct StatValue {
 pub struct PlayerStatus {
     pub hp: u32,
     pub hp_max: u32,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub mp: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub mp_max: Option<u32>,
     pub stats: Vec<StatValue>,
     /// The player's (per-actor) level.
     pub level: u32,

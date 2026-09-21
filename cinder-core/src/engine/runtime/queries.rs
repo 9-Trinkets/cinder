@@ -24,9 +24,8 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for actor display name")?;
-        Ok(self
-            .content
-            .actor(actor_id)
+        Ok(state
+            .actor(&self.content, actor_id)
             .map(|actor| display_actor_name(&state, actor)))
     }
 

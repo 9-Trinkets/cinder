@@ -12,7 +12,8 @@
     "description": "A closed ring of chalk traced around a vacant space on the floor. When an enemy is encircled on every side by such rings, the circle closes and pulls it to your side. The ring flares once and is spent.",
     "look_description": "A closed ring of pale chalk glows faintly on the floor, waiting to be completed around something.",
     "trace_mark": true,
-    "consumed_on_surround_conversion": true
+    "consumed_on_surround_conversion": true,
+    "mp_cost": 1
   },
   {
     "id": "drain-sigil",
@@ -20,7 +21,8 @@
     "kind": "misc",
     "description": "A spiral chalk mark that drinks the energy from whatever stands on it. Each pass of the spiral drinks a little more, then the mark fades. It holds five drainings before it is spent.",
     "look_description": "A tight spiral of chalk that seems to drink the light from the floor, leaving the stone cold and grey.",
-    "trace_mark": true
+    "trace_mark": true,
+    "mp_cost": 2
   },
   {
     "id": "drain-scroll",
@@ -74,7 +76,12 @@
     "kind": "misc",
     "description": "A round sigil drawn in living amber, warm in the hand. It holds the raw names of creatures that can be summoned to this board. What answers the call, and how strong it stands, depends on the strength of the patron who traces it.",
     "look_description": "A disc of warm amber chalk, its spiral glowing faintly. It hums against the floor like a buried coal.",
-    "trace_mark": true
+    "trace_mark": true,
+    "mp_cost": 5,
+    "max_active_instances": 2,
+    "spawn_template_id": "summoned-fire-sprite",
+    "placement_hook": "item.spawn_sigil_placed",
+    "consumed_on_placement": true
   },
   {
     "id": "leaf-spear",
@@ -205,7 +212,8 @@
     "kind": "misc",
     "description": "A double triangle drawn in pale magic chalk. Tracing it before locked gates, portcullises, or barred apertures blinks you instantly to the other side.",
     "look_description": "A sharp double triangle of chalk pulses with pale light, vibrating with phase resonance.",
-    "trace_mark": true
+    "trace_mark": true,
+    "mp_cost": 4
   },
   {
     "id": "zayd-lantern",

@@ -248,5 +248,8 @@
     },
     "malik.defeat": "Captain Malik falls to one knee, steam hissing wildly from his cracked brass cuirass. He drops his saber with a clatter, panting heavily. 'Rebellious rat...' he snarls, before collapsing unconscious. Behind him, the heavy hydraulic deadbolts on the bulkhead gate unlock with a concussive hiss.",
     "priest_harun.defeat": "Priest Harun's incense censer drops and shatters into burning embers. His scarlet robes scorch as his litany breaks apart. 'The celestial fire... cannot be quenched...' he gasps before collapsing onto the iron grating.",
-    "item.teleport_scroll_read.learned": "You unroll the brass-leaf scroll and study the sharp, intersecting triangles etched in its surface. A pulse of pale geometric light flares into your eyes — you have learned the Teleportation Sigil."
+    "item.teleport_scroll_read.learned": "You unroll the brass-leaf scroll and study the sharp, intersecting triangles etched in its surface. A pulse of pale geometric light flares into your eyes — you have learned the Teleportation Sigil.",
+    "sigil.spawned": "The amber sigil erupts in golden sparks! A {actor} manifests from the swirling fire and falls into rank behind you. (HP: {hp}, STR: {strength}, INT: {intelligence})",
+    "sigil.spawn_limit": "The air crackles with spent heat, but no flame takes hold. You cannot sustain more than {max} summoned sprites at once.",
+    "magic.insufficient_mp": "You do not have enough magic to trace the {item}. (Requires {mp_cost} MP, you have {mp} MP)"
 }

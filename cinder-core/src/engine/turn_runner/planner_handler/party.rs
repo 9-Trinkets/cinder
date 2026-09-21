@@ -8,7 +8,7 @@ use crate::content::types::ActorDefinition;
 
 pub(super) fn find_party_member<'a>(
     content: &'a ContentPack,
-    planner_state: &WorldState,
+    planner_state: &'a WorldState,
     current_room_id: &str,
     actor_reference: &str,
 ) -> Result<&'a ActorDefinition, &'static str> {
@@ -16,8 +16,8 @@ pub(super) fn find_party_member<'a>(
     if reference.is_empty() {
         return Err("party.order_member_unavailable");
     }
-    let mut matches = content
-        .onstage_actors()
+    let mut matches = planner_state
+        .onstage_actors(content)
         .filter(|actor| {
             planner_state.stance(&actor.id) == ActorStance::Allied
                 && planner_state.actor_is_in_room(content, &actor.id, current_room_id)
@@ -43,15 +43,15 @@ pub(super) fn find_party_member<'a>(
 
 pub(super) fn find_any_party_member<'a>(
     content: &'a ContentPack,
-    planner_state: &WorldState,
+    planner_state: &'a WorldState,
     actor_reference: &str,
 ) -> Result<&'a ActorDefinition, &'static str> {
     let reference = actor_reference.trim();
     if reference.is_empty() {
         return Err("party.order_member_unavailable");
     }
-    let mut matches = content
-        .onstage_actors()
+    let mut matches = planner_state
+        .onstage_actors(content)
         .filter(|actor| {
             planner_state.stance(&actor.id) == ActorStance::Allied
                 && !planner_state
@@ -322,9 +322,8 @@ pub(super) fn plan_follow_command(
         planned.events.push(WorldEvent::PlayerFollowedActor { actor_id: None });
         return false;
     }
-    let matched_actor = content
-        .actors
-        .iter()
+    let matched_actor = planner_state
+        .actors(content)
         .filter(|actor| !content.is_player_actor(&actor.id))
         .find(|actor| {
             actor.id.eq_ignore_ascii_case(target)

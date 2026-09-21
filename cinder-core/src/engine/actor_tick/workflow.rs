@@ -26,8 +26,8 @@ pub(crate) fn peek_conversational_speaker(
         return None;
     }
 
-    let candidate_actors: Vec<_> = content
-        .onstage_actors()
+    let candidate_actors: Vec<_> = state
+        .onstage_actors(content)
         .filter(|actor| {
             !content.is_player_actor(&actor.id)
                 && room_is_in_tick_scope(
@@ -89,8 +89,8 @@ pub(crate) fn select_tick_actors(
     state: &WorldState,
     scope_room_ids: &Option<BTreeSet<String>>,
 ) -> Vec<String> {
-    let candidate_actors: Vec<_> = content
-        .onstage_actors()
+    let candidate_actors: Vec<_> = state
+        .onstage_actors(content)
         .filter(|actor| {
             !content.is_player_actor(&actor.id)
                 && room_is_in_tick_scope(

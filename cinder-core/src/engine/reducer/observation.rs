@@ -5,12 +5,11 @@ use crate::engine::state::{WorldState, display_actor_name};
 
 pub(super) fn actors_in_room<'a>(
     content: &'a ContentPack,
-    state: &WorldState,
+    state: &'a WorldState,
     room_id: &str,
 ) -> Vec<&'a ActorDefinition> {
-    content
-        .actors
-        .iter()
+    state
+        .onstage_actors(content)
         .filter(|actor| {
             !content.is_player_actor(&actor.id)
                 && !state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)

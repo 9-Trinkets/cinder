@@ -231,11 +231,13 @@
         "craftable_items": [
           "charm-sigil",
           "drain-sigil",
-          "spawn-sigil"
+          "spawn-sigil",
+          "teleport-sigil"
         ],
         "craftable_item_gates": {
           "drain-sigil": "knows_drain",
-          "spawn-sigil": "knows_spawn"
+          "spawn-sigil": "knows_spawn",
+          "teleport-sigil": "knows_teleport"
         },
         "storage": "current_room"
       },

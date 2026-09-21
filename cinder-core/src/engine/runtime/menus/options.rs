@@ -70,7 +70,7 @@ impl CinderRuntime {
         state: &'a WorldState,
     ) -> impl Iterator<Item = (&'a crate::content::types::ActorDefinition, &'a str)> {
         let current_room_id = &state.current_room_id;
-        self.content.actors.iter().filter_map(move |actor| {
+        state.actors(&self.content).filter_map(move |actor| {
             if self.content.is_player_actor(&actor.id) {
                 return None;
             }

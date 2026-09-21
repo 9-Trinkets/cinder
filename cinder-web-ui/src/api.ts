@@ -257,6 +257,8 @@ export interface StatValue {
 export interface PlayerStatus {
   hp: number
   hp_max: number
+  mp?: number
+  mp_max?: number
   stats: StatValue[]
   level: number
   xp: number

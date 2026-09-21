@@ -322,8 +322,8 @@ pub(crate) fn plan_wander_moves_with_dependencies(
     }
     let scope_room_ids = tick_scope_room_ids(content, state);
 
-    content
-        .onstage_actors()
+    state
+        .onstage_actors(content)
         .filter(|actor| eligibility.is_eligible(content, state, actor, &scope_room_ids))
         .filter_map(|actor| {
             let strategy = resolver.resolve(content, state, &actor.id)?;

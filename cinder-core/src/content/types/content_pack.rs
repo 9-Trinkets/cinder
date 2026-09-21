@@ -121,7 +121,18 @@ impl ContentPack {
     }
 
     pub fn actor(&self, actor_id: &str) -> Option<&ActorDefinition> {
-        self.actor_index.get(actor_id).map(|&i| &self.actors[i])
+        self.actor_index
+            .get(actor_id)
+            .map(|&i| &self.actors[i])
+            .or_else(|| {
+                actor_id.rsplit_once('-').and_then(|(prefix, suffix)| {
+                    suffix
+                        .parse::<u32>()
+                        .ok()
+                        .and_then(|_| self.actor_index.get(prefix))
+                        .map(|&i| &self.actors[i])
+                })
+            })
     }
 
     /// Whether `actor_id` is authored without a home room and is therefore

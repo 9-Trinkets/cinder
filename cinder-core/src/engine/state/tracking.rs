@@ -19,8 +19,7 @@ impl WorldState {
         if let Some(room_id) = self.actor_room_overrides.get(actor_id) {
             return room_id;
         }
-        content
-            .actor(actor_id)
+        self.actor(content, actor_id)
             .map(|actor| actor.room_id.as_str())
             .unwrap_or_default()
     }
@@ -35,7 +34,7 @@ impl WorldState {
         actor_id: &str,
         room_id: &str,
     ) -> bool {
-        let Some(actor) = content.actor(actor_id) else {
+        let Some(actor) = self.actor(content, actor_id) else {
             return false;
         };
         if actor.is_offstage() {
@@ -112,5 +111,20 @@ impl WorldState {
             .entry(actor_id.to_string())
             .or_default()
             .insert(room_id.to_string());
+    }
+
+    /// Counts onstage, undefeated actors that match `template_id` or were spawned from it.
+    pub fn active_spawned_actor_count(&self, content: &ContentPack, template_id: &str) -> usize {
+        let health_stat_id = if content.settings.combat.health_stat_id.is_empty() {
+            "hp"
+        } else {
+            &content.settings.combat.health_stat_id
+        };
+        self.onstage_actors(content)
+            .filter(|actor| {
+                (actor.id == template_id || actor.id.starts_with(&format!("{template_id}-")))
+                    && !self.actor_is_defeated(&actor.id, health_stat_id)
+            })
+            .count()
     }
 }

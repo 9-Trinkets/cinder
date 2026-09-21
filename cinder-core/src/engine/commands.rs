@@ -329,7 +329,7 @@ pub(crate) fn resolve_actor_reference_input(
 ) -> Option<ResolvedActorReferenceInput> {
     match_actor_reference(
         state,
-        content.actors.iter().filter(|actor| {
+        state.onstage_actors(content).filter(|actor| {
             !content.is_player_actor(&actor.id)
                 && !state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
                 && state.actor_is_in_room(content, &actor.id, current_room_id)
@@ -346,7 +346,7 @@ pub(crate) fn resolve_actor_reference_input(
     .or_else(|| {
         match_actor_reference(
             state,
-            content.actors.iter().filter(|actor| {
+            state.actors(content).filter(|actor| {
                 !content.is_player_actor(&actor.id)
                     && !state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
             }),

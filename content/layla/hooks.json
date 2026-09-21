@@ -550,5 +550,61 @@
         }
       ]
     }
+  },
+  "item.spawn_sigil_placed": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "spawn_actor",
+            "template_id": "summoned-fire-sprite",
+            "stance": "allied",
+            "follows_player": true,
+            "scale_with_actor_id": "player",
+            "scale_stat": "intelligence",
+            "max_active_instances": 2,
+            "max_instances_messages": [
+              "sigil.spawn_limit"
+            ],
+            "messages": [
+              "sigil.spawned"
+            ]
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
+  "actor.time_advanced": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            { "path": "stat", "operator": "equal", "value": "mp" }
+          ],
+          "payload_template": {
+            "kind": "adjust_actor_stat",
+            "actor_id": "$input.actor_id",
+            "stat": "mp",
+            "delta": 1
+          }
+        }
+      ]
+    }
   }
 }

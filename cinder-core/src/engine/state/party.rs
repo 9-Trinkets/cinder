@@ -43,8 +43,8 @@ fn validate_party_member(
     state: &WorldState,
     actor_id: &str,
 ) -> Result<(), String> {
-    let actor = content
-        .actor(actor_id)
+    let actor = state
+        .actor(content, actor_id)
         .ok_or_else(|| format!("unknown party actor '{actor_id}'"))?;
     if content.is_player_actor(actor_id) {
         return Err("the player cannot receive a party order".to_string());

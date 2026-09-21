@@ -61,6 +61,23 @@ export default function StatusPanel({
                 }}
               />
             </div>
+            {player.mp !== undefined && player.mp_max !== undefined && (
+              <>
+                <div className="flex items-baseline justify-between text-xs mt-1.5">
+                  <span className="text-text">MP</span>
+                  <span className="text-muted">{player.mp}/{player.mp_max}</span>
+                </div>
+                <div className="h-1.5 w-full rounded-full bg-overlay overflow-hidden">
+                  <div
+                    className="h-full rounded-full transition-all duration-300"
+                    style={{
+                      width: `${player.mp_max > 0 ? (player.mp / player.mp_max) * 100 : 0}%`,
+                      backgroundColor: 'var(--color-iris)',
+                    }}
+                  />
+                </div>
+              </>
+            )}
             {player.stats.length > 0 && (
               <ul className="space-y-0.5">
                 {player.stats.map(stat => (

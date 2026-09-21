@@ -307,11 +307,11 @@ impl WorldState {
             .ok_or_else(|| format!("unknown actor stat '{stat_key}'"))?
             .clone();
         let adjusted = self.actor_stat(&actor_id, stat_key) + delta;
-        let clamped = if stat_key == content.settings.combat.health_stat_id {
-            // The health pool is a resource that can be depleted below its
+        let clamped = if stat_key == content.settings.combat.health_stat_id || stat_key == "mp" {
+            // The health and mana pools are resources that can be depleted below their
             // natural maximum (seed + level growth) but never refilled above
             // it. Clamping positive deltas against the declared content max
-            // lets a heal overshoot the value displayed as max, so cap it at
+            // lets a heal or regen overshoot the value displayed as max, so cap it at
             // the actor's natural maximum instead.
             adjusted
                 .clamp(definition.min.unwrap_or(i32::MIN), self.actor_stat_maximum(content, &actor_id, stat_key))

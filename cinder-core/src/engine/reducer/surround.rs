@@ -5,7 +5,6 @@ use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{ActorStance, WorldState};
 use serde_json::json;
 
-use super::combat::actor_display_name;
 use super::handlers::push_message;
 
 /// Whether the pack's surround gate lets an encircled actor convert. With no
@@ -45,18 +44,22 @@ pub(super) fn trigger_surrounded_hooks(
     lines: &mut NarrativeLines,
 ) {
     let player_id = &content.settings.combat.player_actor_id;
-    for actor in content.onstage_actors() {
-        if actor.id == *player_id {
+    let onstage_actors: Vec<(String, String)> = state
+        .onstage_actors(content)
+        .map(|actor| (actor.id.clone(), actor.room_id.clone()))
+        .collect();
+    for (actor_id, actor_home_room_id) in &onstage_actors {
+        if actor_id == player_id {
             continue;
         }
-        let relationship = state.relationship(&actor.id);
+        let relationship = state.relationship(actor_id);
         if relationship.stance == ActorStance::Allied || relationship.follows_player {
             continue;
         }
-        if state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id) {
+        if state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id) {
             continue;
         }
-        let room_id = state.actor_room_id(&actor.id, &actor.room_id).to_string();
+        let room_id = state.actor_room_id(actor_id, actor_home_room_id).to_string();
         let neighbors = content.adjacent_room_ids(&room_id);
         if neighbors.is_empty() {
             continue;
@@ -67,7 +70,7 @@ pub(super) fn trigger_surrounded_hooks(
         {
             continue;
         }
-        if !surround_rule_passes(state, content, &actor.id) {
+        if !surround_rule_passes(state, content, actor_id) {
             push_message(lines, content, "surround.refused", &[]);
             // A refused conversion spends the ring: the encircling items fade
             // from this target's neighbors, so the ring must be rebuilt before
@@ -77,13 +80,16 @@ pub(super) fn trigger_surrounded_hooks(
             }
             continue;
         }
-        let actor_name = actor_display_name(content, &actor.id);
+        let actor_name = state
+            .actor_display_name(content, actor_id)
+            .unwrap_or(actor_id.as_str())
+            .to_string();
         apply_narrating_world_hook_effects(
             state,
             content,
             hook_ids::ACTOR_SURROUNDED,
             json!({
-                "actor_id": actor.id,
+                "actor_id": actor_id,
                 "actor_name": actor_name,
                 "room_id": room_id,
                 "item_id": item_id,
@@ -91,18 +97,18 @@ pub(super) fn trigger_surrounded_hooks(
             lines,
         )
         .unwrap_or_else(|error| eprintln!("[cinder] hook warning (actor.surrounded): {error}"));
-        let relationship = state.relationship(&actor.id);
+        let relationship = state.relationship(actor_id);
         let converted = relationship.stance == ActorStance::Allied || relationship.follows_player;
         if converted {
             // The closed ring draws the convert into the room the ring was
             // drawn in, so a charmed mob joins the party immediately instead
             // of staying in the room where it was encircled.
             let party_room_id = state.current_room_id.clone();
-            if state.actor_room_id(&actor.id, &actor.room_id) != party_room_id {
-                state.mark_actor_room_visited(&actor.id, &party_room_id);
+            if state.actor_room_id(actor_id, actor_home_room_id) != party_room_id {
+                state.mark_actor_room_visited(actor_id, &party_room_id);
                 state
                     .actor_room_overrides
-                    .insert(actor.id.clone(), party_room_id);
+                    .insert(actor_id.clone(), party_room_id);
             }
             if content
                 .item(item_id)
@@ -114,5 +120,42 @@ pub(super) fn trigger_surrounded_hooks(
                 break;
             }
         }
+    }
+}
+
+/// Fires the content-authored placement hook when an item is placed in a room
+/// (e.g. via `trace` or `drop`), and consumes it if `consumed_on_placement` is true.
+pub(super) fn trigger_placement_hooks(
+    state: &mut WorldState,
+    content: &ContentPack,
+    item_id: &str,
+    placer_actor_id: &str,
+    room_id: &str,
+    lines: &mut NarrativeLines,
+) {
+    let Some(item) = content.item(item_id) else {
+        return;
+    };
+    if !item.placement_hook.is_empty() {
+        let input = json!({
+            "item_id": item_id,
+            "actor_id": placer_actor_id,
+            "room_id": room_id,
+        });
+        if let Err(error) = apply_narrating_world_hook_effects(
+            state,
+            content,
+            &item.placement_hook,
+            input,
+            lines,
+        ) {
+            eprintln!(
+                "[cinder] hook warning (placement_hook: {}): {error}",
+                item.placement_hook
+            );
+        }
+    }
+    if item.consumed_on_placement {
+        state.remove_items_from_room(room_id, item_id);
     }
 }

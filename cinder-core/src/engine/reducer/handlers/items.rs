@@ -1,5 +1,5 @@
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
-use crate::engine::reducer::command_effects::trigger_surrounded_hooks;
+use crate::engine::reducer::command_effects::{trigger_placement_hooks, trigger_surrounded_hooks};
 use crate::content::types::{ContentPack, ItemStorageTarget, PackMessageVoice};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::WorldState;
@@ -46,8 +46,16 @@ pub(crate) fn handle_item_acquired(
             {
                 push_rendered_message(lines, content, line, voice);
             }
-            // An item appearing in a room can complete a surround.
+            // An item appearing in a room can complete a surround or trigger placement.
             trigger_surrounded_hooks(state, content, item_id, &room_id, lines);
+            trigger_placement_hooks(
+                state,
+                content,
+                item_id,
+                &content.settings.combat.player_actor_id,
+                &room_id,
+                lines,
+            );
         }
     }
 }
@@ -100,6 +108,14 @@ pub(crate) fn handle_player_dropped_item(
         state.add_item_to_storage(item_id, ItemStorageTarget::CurrentRoom, &room_id);
         push_message(lines, content, "item.dropped", &[("label", label)]);
         trigger_surrounded_hooks(state, content, item_id, &room_id, lines);
+        trigger_placement_hooks(
+            state,
+            content,
+            item_id,
+            &content.settings.combat.player_actor_id,
+            &room_id,
+            lines,
+        );
     }
 }
 

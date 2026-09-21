@@ -29,11 +29,20 @@ pub(super) fn build_player_status(state: &WorldState, content: &ContentPack) -> 
     let hp_max = state
         .effective_actor_stat_maximum(content, player_id, health_stat)
         .max(0) as u32;
+    let has_mp = content.stats.actor.contains_key("mp");
+    let (mp, mp_max) = if has_mp {
+        (
+            Some(state.effective_actor_stat(content, player_id, "mp").max(0) as u32),
+            Some(state.effective_actor_stat_maximum(content, player_id, "mp").max(0) as u32),
+        )
+    } else {
+        (None, None)
+    };
     let mut stats = content
         .stats
         .actor
         .iter()
-        .filter(|(stat_id, _)| *stat_id != health_stat)
+        .filter(|(stat_id, _)| *stat_id != health_stat && (stat_id.as_str() != "mp" || !has_mp))
         .map(|(stat_id, _)| StatValue {
             id: stat_id.clone(),
             value: state.effective_actor_stat(content, player_id, stat_id),
@@ -44,6 +53,8 @@ pub(super) fn build_player_status(state: &WorldState, content: &ContentPack) -> 
     PlayerStatus {
         hp,
         hp_max,
+        mp,
+        mp_max,
         stats,
         level,
         xp,
@@ -170,7 +181,7 @@ fn living_follower_ids(state: &WorldState, content: &ContentPack) -> Vec<String>
         .filter(|(actor_id, relationship)| {
             (relationship.follows_player || relationship.stance == ActorStance::Allied)
                 && actor_id.as_str() != content.settings.combat.player_actor_id
-                && !content.actor_is_offstage(actor_id)
+                && !state.actor_is_offstage(content, actor_id)
                 && !state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id)
         })
         .map(|(actor_id, _)| actor_id.clone())

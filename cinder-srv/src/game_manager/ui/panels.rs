@@ -633,20 +633,44 @@ fn craftable_item_panel_options(
                     unlocked()
                 })
                 .map(|item_id| {
-                    let already_traced = content.item(item_id).is_some_and(|item| item.trace_mark)
+                    let item = content.item(item_id);
+                    let already_traced = item.is_some_and(|i| i.trace_mark)
                         && state.has_item_in_storage(
                             item_id,
                             cinder_core::content::types::ItemStorageTarget::CurrentRoom,
                             &state.current_room_id,
                         );
+                    let player_id = &content.settings.combat.player_actor_id;
+                    let player_mp = state.actor_stat_u32(player_id, "mp");
+                    let mp_cost = item.map(|i| i.mp_cost).unwrap_or(0);
+                    let at_instance_limit = item.is_some_and(|i| {
+                        i.max_active_instances.is_some_and(|max| {
+                            !i.spawn_template_id.is_empty()
+                                && state.active_spawned_actor_count(content, &i.spawn_template_id) >= max
+                        })
+                    });
+                    let insufficient_mp = mp_cost > player_mp;
+                    let disabled = already_traced || at_instance_limit || insufficient_mp;
+
+                    let subtitle = if already_traced {
+                        Some(content.ui_text.trace_mark_present_label.clone())
+                    } else if at_instance_limit {
+                        Some("Max summons active".to_string())
+                    } else if insufficient_mp {
+                        Some(format!("{mp_cost} MP (have {player_mp})"))
+                    } else if mp_cost > 0 {
+                        Some(format!("{mp_cost} MP"))
+                    } else {
+                        None
+                    };
+
                     let title = title_case(content.item_label(item_id));
                     PanelOptionData {
                         id: item_id.clone(),
                         title,
-                        subtitle: already_traced
-                            .then(|| content.ui_text.trace_mark_present_label.clone()),
-                        command: (!already_traced).then(|| format!("{} {}", phrase, item_id)),
-                        disabled: already_traced,
+                        subtitle,
+                        command: (!disabled).then(|| format!("{} {}", phrase, item_id)),
+                        disabled,
                         selected: false,
                     }
                 })

@@ -5,6 +5,7 @@
     "room_id": "r1c1",
     "initial_stats": {
       "hp": 10,
+      "mp": 10,
       "strength": 3,
       "defense": 1,
       "intelligence": 5
@@ -2023,5 +2024,35 @@
         "Iron wheels screech against the rails as it charges headlong."
       ]
     }
+  },
+  {
+    "id": "summoned-fire-sprite",
+    "name": "fire sprite",
+    "room_id": "",
+    "aliases": [
+      "sprite",
+      "fire sprite",
+      "wisp",
+      "spark",
+      "summoned sprite"
+    ],
+    "tags": [
+      "sprite",
+      "fire",
+      "summoned"
+    ],
+    "inspect_text": "A small twist of conjured living flame hovering obediently beside you, crackling softly with banked embers.",
+    "attackable": true,
+    "attack_kind": "fire",
+    "attack_interval_minutes": 2,
+    "initial_hostile": false,
+    "initial_stats": {
+      "hp": 4,
+      "strength": 2,
+      "defense": 1,
+      "intelligence": 2
+    },
+    "level": 3,
+    "prompt_context": {}
   }
 ]

@@ -27,8 +27,8 @@ pub(crate) fn select_defensive_reaction(
                 && rule.window == PartyReactionWindow::BeforeHostileDamage
                 && rule.action == PartyReactionAction::Intercept
         }) {
-            let mut candidates = content
-                .onstage_actors()
+            let mut candidates = state
+                .onstage_actors(content)
                 .enumerate()
                 .filter(|(_, actor)| {
                     actor.id != content.settings.combat.player_actor_id
@@ -70,8 +70,8 @@ pub(crate) fn select_post_damage_reactions(
     content: &ContentPack,
     state: &WorldState,
 ) -> Vec<PartyReactionDecision> {
-    content
-        .onstage_actors()
+    state
+        .onstage_actors(content)
         .filter(|actor| actor_is_reaction_eligible(content, state, &actor.id))
         .filter_map(|actor| {
             PartyDecisionTier::EVALUATION_ORDER
@@ -197,8 +197,8 @@ fn lowest_health_ally(content: &ContentPack, state: &WorldState) -> Option<Strin
     let player_id = content.settings.combat.player_actor_id.as_str();
     std::iter::once(player_id)
         .chain(
-            content
-                .onstage_actors()
+            state
+                .onstage_actors(content)
                 .map(|actor| actor.id.as_str())
                 .filter(|actor_id| *actor_id != player_id)
                 .filter(|actor_id| state.stance(actor_id) == ActorStance::Allied),
