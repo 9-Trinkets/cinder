@@ -217,7 +217,7 @@
   },
   {
     "id": "zayd-lantern",
-    "label": "Zayd's heirloom lantern",
+    "label": "battered miner's lantern",
     "kind": "trinket",
     "equip_slots": [
       "ring",
@@ -226,7 +226,7 @@
     "stat_bonuses": {
       "wisdom": 6
     },
-    "description": "A compact brass-bound lantern holding a warm shard of glowing Noor-stone. Zayd's miner parents gave it to him and told him light always finds a way through stone. Its steady light cuts through the subterranean dark — and remembers the dark it came from."
+    "description": "A dented miner's lantern of heavy brass, fitted with low-pressure vent clips. A small shard of uncut Noor-stone hums quietly behind the smudged glass. The casing stays faintly warm to the touch, and the initial 'J' is scratched into the base plate beneath layers of old machine grease."
   },
   {
     "id": "iron-cage-key",

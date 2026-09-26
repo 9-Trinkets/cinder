@@ -779,9 +779,25 @@ fn floor4_zayd_rescue_and_village_escort() {
         "Unlock description missing in: {unlock_text}"
     );
     assert!(
-        unlock_text.contains("Let the tithe ship. That's the job"),
+        !unlock_text.to_lowercase().contains("lantern"),
+        "Cage unlock narrative should NOT mention lantern prior to rescue: {unlock_text}"
+    );
+    assert!(
+        unlock_text.contains("Zayd: You came back for me!"),
+        "Zayd spoken dialogue line missing or misformatted in: {unlock_text}"
+    );
+    assert!(
+        unlock_text.contains("Handler: Layla. That offering was cleared on the manifest. Let the tithe ship. That's the job."),
         "Handler tithe warning missing in: {unlock_text}"
     );
+
+    // Verify channel line kind for handler comms
+    let channel_line = unlock_outcome
+        .lines
+        .iter()
+        .find(|l| l.kind == cinder_core::engine::narrative::NarrativeLineKind::Channel)
+        .expect("Handler warning must be delivered as NarrativeLineKind::Channel");
+    assert!(channel_line.text.contains("Handler:"));
 
     // Verify Zayd is now allied and follows player
     let state_after_unlock = runtime.export_state().unwrap();
@@ -850,9 +866,12 @@ fn floor4_zayd_rescue_and_village_escort() {
 
     // Verify safe arrival narrative
     assert!(
-        return_text.contains("Yasmin rushes forward")
-            || return_text.contains("light always finds a way through stone"),
+        return_text.contains("Yasmin rushes forward"),
         "Return safe narrative missing in: {return_text}"
+    );
+    assert!(
+        return_text.contains("Zayd: Here. It was my dad's... from the lower drift"),
+        "Zayd lantern speech missing or misformatted in: {return_text}"
     );
 
     // Verify lantern received

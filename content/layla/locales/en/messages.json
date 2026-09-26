@@ -252,5 +252,11 @@
     "sigil.spawned": "The amber sigil erupts in golden sparks! A {actor} manifests from the swirling fire and falls into rank behind you. (HP: {hp}, STR: {strength}, INT: {intelligence})",
     "sigil.spawn_limit": "The air crackles with spent heat, but no flame takes hold. You cannot sustain more than {max} summoned sprites at once.",
     "magic.insufficient_mp": "You do not have enough magic to trace the {item}. (Requires {mp_cost} MP, you have {mp} MP)",
-    "zayd.return_safe": "Yasmin rushes forward with tears streaming down her face, gathering Zayd into a tight, trembling embrace. Other villagers emerge from stone doorways, murmuring in stunned relief. Zayd turns back to you, stepping forward to press his brass miner's lantern into your hands: 'My mom and dad gave me this before the rocks fell. They said light always finds a way through stone. Take it... wherever you're going in the deep dark, I hope their light guides your way.'"
+    "zayd.freed_speech": "You came back for me!",
+    "handler.zayd_freed_warning": {
+        "voice": "handler",
+        "text": "Layla. That offering was cleared on the manifest. Let the tithe ship. That's the job."
+    },
+    "zayd.return_safe": "Yasmin rushes forward with tears streaming down her face, gathering Zayd into a tight, trembling embrace. Other villagers emerge from stone doorways, murmuring in stunned relief. Zayd pulls away gently and steps toward you, fishing a dented brass lamp from under his coat.",
+    "zayd.lantern_speech": "Here. It was my dad's... from the lower drift. The glass never really goes cold, even near the frost vents. Take it with you... you'll need the light down there more than me."
 }

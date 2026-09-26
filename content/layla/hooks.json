@@ -615,8 +615,8 @@
             }
           ],
           "payload_template": {
-            "kind": "acquire_item",
-            "item_id": "zayd-lantern"
+            "kind": "narrate_message",
+            "key": "zayd.return_safe"
           }
         },
         {
@@ -637,8 +637,31 @@
             }
           ],
           "payload_template": {
-            "kind": "narrate_message",
-            "key": "zayd.return_safe"
+            "kind": "actor_speech",
+            "actor_id": "zayd",
+            "key": "zayd.lantern_speech"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "village_square"
+            },
+            {
+              "path": "story_vars.zayd_rescued",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.zayd_safe",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "acquire_item",
+            "item_id": "zayd-lantern"
           }
         }
       ]
@@ -738,6 +761,15 @@
             "actor_id": "zayd",
             "follows_player": true,
             "messages": []
+          },
+          {
+            "kind": "actor_speech",
+            "actor_id": "zayd",
+            "key": "zayd.freed_speech"
+          },
+          {
+            "kind": "narrate_message",
+            "key": "handler.zayd_freed_warning"
           }
         ]
       }

@@ -560,7 +560,7 @@
       "outcome_mode": "event",
       "content_event": {
         "id": "layla.zayd_freed",
-        "event_text": "You slide the heavy iron key into the massive padlock on the suspended cage. With a sharp click, the tumblers turn and the barred gate swings open. Zayd scrambles out onto the iron gantry, tears cutting through the soot on his cheeks. He clutches his brass lantern tight to his chest and looks up at you with fierce eyes: 'You came back for me!' The handler's voice crackles over your radio, cold and flat: 'Layla. That offering was cleared on the manifest. Let the tithe ship. That's the job.'",
+        "event_text": "You slide the heavy iron key into the massive padlock on the suspended cage. With a sharp click, the tumblers turn and the barred gate swings open. Zayd scrambles out onto the iron gantry, tears cutting through the soot on his cheeks, and looks up at you with fierce eyes.",
         "hook_id": "zayd.freed",
         "signals": [
           "zayd_freed"

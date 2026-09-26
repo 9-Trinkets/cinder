@@ -3,7 +3,9 @@ use crate::engine::hook_ids;
 use crate::engine::narrative::{NarrativeLines, PendingCommentaryUpgrade};
 use crate::engine::neuron::evaluate_symbolic_value;
 use crate::engine::reducer::handlers::push_rendered_message;
-use crate::engine::state::{ActorStance, WorldState};
+use crate::engine::state::{
+    ActorStance, ConversationMemoryKind, ConversationMemoryLine, WorldState,
+};
 use serde::de::DeserializeOwned;
 use serde::{Deserialize, Deserializer};
 use serde_json::{Value, json};
@@ -240,9 +242,17 @@ fn apply_hook_effects(
                 if let Some(lines) = lines.as_deref_mut() {
                     let label = content.item_label(&item_id);
                     let line = content
-                        .render_message("item.acquired_inventory", &[("item", label)])
+                        .render_message(
+                            "item.acquired_inventory",
+                            &[("label", label), ("item", label)],
+                        )
                         .unwrap_or_else(|| format!("You received the {label}."));
-                    lines.narration(line);
+                    push_rendered_message(
+                        lines,
+                        content,
+                        line,
+                        content.message_voice("item.acquired_inventory"),
+                    );
                     lines.extend_narration(
                         crate::engine::reducer::beat_advance::advance_objective_for_signal(
                             state,
@@ -450,6 +460,61 @@ fn apply_hook_effects(
                     }
                 }
             }
+            WorldHookEffect::ActorSpeech {
+                actor_id,
+                target_id,
+                text,
+                key,
+                vars,
+            } => {
+                let spoken_text = if let Some(key) = key {
+                    let replacements: Vec<(&str, &str)> =
+                        vars.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
+                    content.render_message(&key, &replacements).unwrap_or_default()
+                } else if let Some(text) = text {
+                    text
+                } else {
+                    String::new()
+                };
+                if !spoken_text.is_empty() {
+                    let actor_name = content
+                        .actor(&actor_id)
+                        .map(|actor| actor.name.as_str())
+                        .unwrap_or(&actor_id);
+                    let target_name = target_id
+                        .as_deref()
+                        .and_then(|target| content.actor(target).map(|actor| actor.name.as_str()));
+                    let speech_line = crate::engine::reducer::render_actor_speech_line(
+                        content,
+                        actor_name,
+                        target_name,
+                        &spoken_text,
+                    );
+                    if let Some(lines) = lines.as_deref_mut() {
+                        lines.narration(speech_line);
+                    }
+                    let target_recipient_id = target_id
+                        .as_deref()
+                        .unwrap_or(&content.settings.combat.player_actor_id);
+                    let target_recipient_name = content
+                        .actor(target_recipient_id)
+                        .map(|actor| actor.name.as_str())
+                        .unwrap_or(target_recipient_id);
+                    state.push_conversation_line(
+                        &actor_id,
+                        target_recipient_id,
+                        ConversationMemoryLine {
+                            turn_number: state.turn_number,
+                            event_sequence: 0,
+                            speaker_id: actor_id.clone(),
+                            speaker_name: actor_name.to_string(),
+                            kind: ConversationMemoryKind::Speech,
+                            target_label: Some(target_recipient_name.to_string()),
+                            text: spoken_text,
+                        },
+                    );
+                }
+            }
         }
     }
     Ok(())
@@ -540,6 +605,19 @@ enum WorldHookEffect {
         max_active_instances: Option<usize>,
         #[serde(default)]
         max_instances_messages: Vec<String>,
+    },
+    /// In-room character speech rendered in dialogue style (`{speaker}: {text}`)
+    /// and tracked in state's conversation memory.
+    ActorSpeech {
+        actor_id: String,
+        #[serde(default)]
+        target_id: Option<String>,
+        #[serde(default)]
+        text: Option<String>,
+        #[serde(default)]
+        key: Option<String>,
+        #[serde(default)]
+        vars: Vec<(String, String)>,
     },
 }
 
