@@ -208,6 +208,13 @@ With multi-member parties, players can assign specialized tactical roles:
 - **Middle Triangle (Worker Village):** 9-room perimeter loop (`village_*`) with the three named villagers (`elder_rashid`, `yasmin`, `tariq`), two sentries at `village_north_gate`, and `sakhra`.
 - **Inner Triangle (Military Complex):** 7-room concentric fortress loop (`fortress_gate`, `west_iron_walkway`, `steam_prison_cage`, `south_steam_gantry`, `command_bastion`, `east_sentry_walk`, and central `teleport_platform`).
 - **Actors Placed:** `zayd` and `garrison_warden` in `steam_prison_cage`; `captain_malik` and `priest_harun` in `command_bastion`.
+- **Fortress Entry Diversion (Clockmaker Route):**
+  - Massive brass bulkhead exit at `village_north_gate` is gated behind story var `fortress_gate_open`.
+  - Added overpressure valve feature (`village_west_1-valve`) to `village_west_1` (Wash Basin Terrace).
+  - Authored player command `turn_steam_valve` (`TURN_VALVE`), restricted to `village_west_1`.
+  - Hook `valve.diverted` triggers on valve turning, setting `fortress_gate_open = "true"` and releasing the hydraulic lock pins to unlock the northern bulkhead.
+  - Updated Tariq's prompt context in `actors.json` with knowledge and dialogue clues pointing Layla to the wash terrace valve.
+  - Verified via full end-to-end integration test `floor4_diversion_opens_fortress_gate`.
 - Quest stage skeleton in `beats.json` (`mq_*`, `sq_*`) and hooks (`malik_defeated`, `priest_harun.defeat`, `item.teleport_scroll_read`).
 - **WIS stat implemented** (`stats.json`), **Zayd's Lantern → +6 WIS** (`items.json`), actor wisdom authored (golems low, elves higher, queen highest, Sakhra ~5), and **Sakhra recast as the village guardian golem** (excavation backstory removed; high-WIS awakening language stays).
 

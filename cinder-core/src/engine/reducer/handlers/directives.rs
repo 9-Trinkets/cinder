@@ -6,7 +6,7 @@ use crate::engine::reducer::beat_advance::advance_objective_for_signal;
 use crate::engine::reducer::observation::render_story_text;
 use crate::content::types::ContentPack;
 use crate::engine::events::WorldEvent;
-use crate::engine::hooks::apply_world_hook_effects;
+use crate::engine::hooks::apply_narrating_world_hook_effects;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::WorldState;
 use serde_json::{Value, json};
@@ -53,7 +53,7 @@ pub(crate) fn apply_content_event(
             input.insert(key.clone(), json!(value));
         }
         input.insert("actor_stats".to_string(), json!(state.actor_stats));
-        apply_world_hook_effects(state, content, &event.hook_id, Value::Object(input))
+        apply_narrating_world_hook_effects(state, content, &event.hook_id, Value::Object(input), lines)
             .unwrap_or_else(|error| eprintln!("[cinder] hook warning (content_event): {error}"));
     }
     for signal in &event.signals {

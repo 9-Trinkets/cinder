@@ -40,7 +40,7 @@
     "id": "village_west_1",
     "title": "Wash Basin Terrace",
     "summary": "A communal stone terrace lined with laundry tubs fed by warm condensed-water pipes from the central boiler.",
-    "inspect_text": "Lines of heavy canvas work-shirts and overalls hang drying in warm air rising from floor grates. Clear, warm water drains into low limestone gutters.",
+    "inspect_text": "Lines of heavy canvas work-shirts and overalls hang drying in warm air rising from floor grates. Clear, warm water drains into low limestone gutters. A heavy iron pressure valve is mounted beside the main steam riser.",
     "feature_label": "communal washing trough",
     "feature_aliases": [
       "trough",

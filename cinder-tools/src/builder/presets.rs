@@ -165,6 +165,21 @@ pub fn build_floor4() -> FloorBuilder {
         );
     }
 
+    builder.add_feature(
+        "village_west_1",
+        "village_west_1-valve",
+        "the steam pressure valve",
+        vec![
+            "valve".into(),
+            "steam valve".into(),
+            "pressure valve".into(),
+            "wheel".into(),
+            "steam pipe".into(),
+            "overpressure valve".into(),
+        ],
+        "A heavy cast-iron wheel mounted to a high-pressure brass junction. It vents steam directly from the central boiler lines into an exhaust flue. Turning it would release line pressure with a deafening roar.",
+    );
+
     let ne = &["northeast", "ne"];
     let sw = &["southwest", "sw"];
     let se = &["southeast", "se"];
@@ -230,7 +245,7 @@ pub fn build_floor4() -> FloorBuilder {
         "South through the Bulkhead",
         vec!["south".into(), "s".into(), "bulkhead".into(), "gate".into(), "in".into()],
         Some("South".into()),
-        "",
+        "fortress_gate_open",
     );
     builder.add_exit(
         "fortress_gate",

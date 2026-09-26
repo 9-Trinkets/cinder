@@ -81,11 +81,16 @@ fn floor4_navigation_and_gates_resolve() {
     assert!(village_square.exits.iter().any(|e| e.room_id == "village_sw_corner"));
     assert!(village_square.exits.iter().any(|e| e.room_id == "village_south_1"));
 
-    // Fortress apex connects through bulkhead
+    // Fortress apex connects through bulkhead behind fortress_gate_open story var
     let north_gate = pack.room("village_north_gate").expect("village_north_gate exists");
-    assert!(
-        north_gate.exits.iter().any(|e| e.room_id == "fortress_gate"),
-        "village_north_gate must connect to fortress_gate"
+    let to_fortress = north_gate
+        .exits
+        .iter()
+        .find(|e| e.room_id == "fortress_gate")
+        .expect("village_north_gate must connect to fortress_gate");
+    assert_eq!(
+        to_fortress.requires_story_var.as_str(),
+        "fortress_gate_open"
     );
     assert!(north_gate.summary.contains("bulkhead"));
 }
@@ -205,6 +210,7 @@ fn floor4_fortress_loop_and_platform_navigation_resolves() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "fortress_gate".to_string();
+    state.story_vars.set_unchecked("fortress_gate_open", "true");
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
     let runtime =
@@ -251,6 +257,100 @@ fn floor4_fortress_loop_and_platform_navigation_resolves() {
     // Step south back through the bulkhead into fortress_gate
     let _ = runtime.run_turn("south").expect("turn runs");
     assert_eq!(runtime.current_room_id().unwrap(), "fortress_gate");
+}
+
+#[test]
+fn floor4_diversion_opens_fortress_gate() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+
+    // Check Wash Basin Terrace has both features
+    let wash_basin = pack.room("village_west_1").expect("village_west_1 exists");
+    assert!(
+        wash_basin.features.iter().any(|f| f.id == "village_west_1-valve"),
+        "village_west_1 must have valve feature"
+    );
+    let valve_feature = wash_basin
+        .features
+        .iter()
+        .find(|f| f.id == "village_west_1-valve")
+        .unwrap();
+    assert!(valve_feature.aliases.contains(&"valve".to_string()));
+    assert!(valve_feature.aliases.contains(&"wheel".to_string()));
+
+    // Check Tariq prompt context contains the diversion clue
+    let tariq = pack.actor("tariq").expect("tariq exists");
+    assert!(
+        tariq.prompt_context.subtext_notes.iter().any(|note| note.contains("overpressure valve")),
+        "Tariq subtext should mention overpressure valve"
+    );
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "village_north_gate".to_string();
+
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue)
+            .expect("runtime creates");
+
+    // 1. Bulkhead is initially locked
+    let _ = runtime.run_turn("south").expect("turn runs");
+    assert_eq!(
+        runtime.current_room_id().unwrap(),
+        "village_north_gate",
+        "Should not pass through locked bulkhead"
+    );
+
+    // 2. Turning valve in the wrong room fails
+    let fail_turn = runtime.run_turn("turn valve").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_north_gate");
+    assert!(
+        fail_turn.text().contains("Wash Basin Terrace"),
+        "Should indicate action can only be done at Wash Basin Terrace: {}",
+        fail_turn.text()
+    );
+
+    // 3. Navigate down the west edge: North Gate -> Clockmaker (village_west_2) -> Wash Basin (village_west_1)
+    let _ = runtime.run_turn("southwest").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_west_2");
+
+    let _ = runtime.run_turn("southwest").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_west_1");
+
+    // 4. Turn the valve at Wash Basin Terrace
+    let valve_outcome = runtime.run_turn("turn valve").expect("turn runs");
+    assert!(
+        valve_outcome.text().contains("valve screeches open") || valve_outcome.text().contains("blast of steam"),
+        "Outcome should describe steam blast: {}",
+        valve_outcome.text()
+    );
+    assert!(
+        valve_outcome.text().contains("bulkhead unlocks") || valve_outcome.text().contains("lock-pins clunk free"),
+        "Outcome should describe bulkhead unlocking: {}",
+        valve_outcome.text()
+    );
+
+    // Verify story variable is set
+    let exported = runtime.export_state().unwrap();
+    assert_eq!(
+        exported.story_vars.get("fortress_gate_open"),
+        Some("true")
+    );
+
+    // 5. Navigate back to North Gate: village_west_1 -> northeast -> village_west_2 -> northeast -> village_north_gate
+    let _ = runtime.run_turn("northeast").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_west_2");
+    let _ = runtime.run_turn("northeast").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_north_gate");
+
+    // 6. Bulkhead is now unlocked! Enter the fortress
+    let enter_fortress = runtime.run_turn("south").expect("turn runs");
+    assert_eq!(
+        runtime.current_room_id().unwrap(),
+        "fortress_gate",
+        "Should enter fortress_gate after diversion: {}",
+        enter_fortress.text()
+    );
 }
 
 #[test]

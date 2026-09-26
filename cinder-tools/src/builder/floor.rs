@@ -87,6 +87,26 @@ impl FloorBuilder {
         self.exits.entry(id_str).or_default();
     }
 
+    pub fn add_feature(
+        &mut self,
+        room_id: &str,
+        feature_id: impl Into<String>,
+        feature_label: impl Into<String>,
+        feature_aliases: Vec<String>,
+        feature_inspect: impl Into<String>,
+    ) {
+        if let Some(room) = self.rooms.iter_mut().find(|r| r.id == room_id) {
+            room.features.push(RoomFeatureDefinition {
+                id: feature_id.into(),
+                label: feature_label.into(),
+                aliases: feature_aliases,
+                allow_rest: false,
+                consumables: Vec::new(),
+                inspect_text: feature_inspect.into(),
+            });
+        }
+    }
+
     pub fn add_exit(
         &mut self,
         from_id: &str,

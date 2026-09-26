@@ -10332,7 +10332,7 @@
           "in"
         ],
         "menu_label": "South",
-        "requires_story_var": ""
+        "requires_story_var": "fortress_gate_open"
       }
     ],
     "descriptions": []
@@ -10387,7 +10387,7 @@
     "id": "village_west_1",
     "title": "Wash Basin Terrace",
     "summary": "A communal stone terrace lined with laundry tubs fed by warm condensed-water pipes from the central boiler.",
-    "inspect_text": "Lines of heavy canvas work-shirts and overalls hang drying in warm air rising from floor grates. Clear, warm water drains into low limestone gutters.",
+    "inspect_text": "Lines of heavy canvas work-shirts and overalls hang drying in warm air rising from floor grates. Clear, warm water drains into low limestone gutters. A heavy iron pressure valve is mounted beside the main steam riser.",
     "allow_rest": false,
     "features": [
       {
@@ -10403,6 +10403,21 @@
         "allow_rest": false,
         "consumables": [],
         "inspect_text": "A long zinc-lined stone trough filled with warm steaming water, scrubbed clean by generations of miners' families."
+      },
+      {
+        "id": "village_west_1-valve",
+        "label": "the steam pressure valve",
+        "aliases": [
+          "valve",
+          "steam valve",
+          "pressure valve",
+          "wheel",
+          "steam pipe",
+          "overpressure valve"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A heavy cast-iron wheel mounted to a high-pressure brass junction. It vents steam directly from the central boiler lines into an exhaust flue. Turning it would release line pressure with a deafening roar."
       }
     ],
     "exits": [

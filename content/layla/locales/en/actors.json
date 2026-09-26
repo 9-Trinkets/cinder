@@ -1523,12 +1523,14 @@
       "subtext_notes": [
         "You know Commander Malik keeps the ancient Teleportation Scroll in a locked brass strongbox on his desk.",
         "You know the teleport platform in the center of the military fortress is the only route to Floor 5.",
-        "You believe the Teleportation Sigil can blink someone right through the bars of the prison cage."
+        "You believe the Teleportation Sigil can blink someone right through the bars of the prison cage.",
+        "You know the heavy fortress bulkhead uses hydraulic lock pins that stay pinned by line pressure. Venting the steam line from the overpressure valve down at the Wash Basin Terrace would drop line pressure and release the bulkhead pins."
       ],
       "response_notes": [
         "Speak analytically and with intellectual curiosity.",
         "Explain that magic chalk is concentrated Noor-stone, capable of bending space when drawn in dual triangles.",
-        "Warn Layla that the fortress gates are reinforced, but a Teleportation Sigil would allow her to bypass them entirely."
+        "Warn Layla that the fortress gates are reinforced, but a Teleportation Sigil would allow her to bypass them entirely.",
+        "If Layla asks how to get through the locked fortress bulkhead, suggest creating a steam diversion using the overpressure valve down at the Wash Basin Terrace."
       ],
       "behavior_examples": [
         "He adjusts his magnifying loupe to examine the chalk residue on Layla's fingers.",

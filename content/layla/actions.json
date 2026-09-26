@@ -485,6 +485,56 @@
           "required": true
         }
       }
+    },
+    {
+      "id": "turn_steam_valve",
+      "command": "TURN_VALVE",
+      "label": "Turn Valve",
+      "group": "interaction",
+      "phrases": [
+        "turn valve",
+        "turn steam valve",
+        "turn the valve",
+        "turn the steam valve",
+        "open valve",
+        "open the valve",
+        "open steam valve",
+        "open the steam valve",
+        "vent steam",
+        "release steam",
+        "turn wheel",
+        "turn the wheel",
+        "turn overpressure valve",
+        "sabotage valve"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "content_event": {
+        "id": "layla.valve_turned",
+        "event_text": "You grab the heavy iron wheel and pull with all your strength. The valve screeches open with a blast of steam. White vapor roars out of the wash flue and climbs to the cavern roof. Down the line toward the fortress, hydraulic lock-pins clunk free and the heavy brass bulkhead unlocks.",
+        "hook_id": "valve.diverted",
+        "signals": []
+      },
+      "available": {
+        "allowed_rooms": [
+          "village_west_1"
+        ]
+      },
+      "ui": {
+        "bar": false,
+        "overflow": false,
+        "group": "interact",
+        "sort_order": 50
+      },
+      "player_command": {
+        "usage": "turn valve",
+        "example": "turn valve",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
     }
   ]
 }
