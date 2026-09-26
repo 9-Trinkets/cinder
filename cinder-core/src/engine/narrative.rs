@@ -28,6 +28,25 @@ pub enum NarrativeLineKind {
 pub struct NarrativeLine {
     pub kind: NarrativeLineKind,
     pub text: String,
+    /// Declared by a pack through the `narrate_message` hook effect's optional
+    /// `generate_commentary` flag. Marks the line for a post-reduce upgrade:
+    /// the fallback text is replaced with generated commentary drawn from a
+    /// pack-authored prompt template. Never serialized: it is a transient
+    /// in-process signal between the reducer and the turn runner.
+    #[serde(default, skip_serializing)]
+    pub pending_commentary_upgrade: Option<PendingCommentaryUpgrade>,
+}
+
+/// Context a flagged `narrate_message` line carries into the transition
+/// commentary upgrade pass. Rooms come from the hook input (movement events),
+/// so the engine never hardcodes which areas the pack considers milestones.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PendingCommentaryUpgrade {
+    pub from_room_id: String,
+    pub to_room_id: String,
+    /// The rendered pack message that becomes the fallback when generation is
+    /// unavailable or the pack's template asks for it.
+    pub fallback_text: String,
 }
 
 impl NarrativeLine {
@@ -35,6 +54,7 @@ impl NarrativeLine {
         Self {
             kind: NarrativeLineKind::Narration,
             text: text.into(),
+            pending_commentary_upgrade: None,
         }
     }
 
@@ -42,6 +62,7 @@ impl NarrativeLine {
         Self {
             kind: NarrativeLineKind::Heading,
             text: text.into(),
+            pending_commentary_upgrade: None,
         }
     }
 
@@ -49,6 +70,7 @@ impl NarrativeLine {
         Self {
             kind: NarrativeLineKind::Player,
             text: text.into(),
+            pending_commentary_upgrade: None,
         }
     }
 
@@ -56,6 +78,7 @@ impl NarrativeLine {
         Self {
             kind: NarrativeLineKind::Error,
             text: text.into(),
+            pending_commentary_upgrade: None,
         }
     }
 
@@ -63,6 +86,7 @@ impl NarrativeLine {
         Self {
             kind: NarrativeLineKind::System,
             text: text.into(),
+            pending_commentary_upgrade: None,
         }
     }
 
@@ -70,6 +94,7 @@ impl NarrativeLine {
         Self {
             kind: NarrativeLineKind::Channel,
             text: text.into(),
+            pending_commentary_upgrade: None,
         }
     }
 }

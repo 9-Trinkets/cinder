@@ -1,6 +1,6 @@
 use crate::content::types::ContentPack;
 use crate::engine::hook_ids;
-use crate::engine::narrative::NarrativeLines;
+use crate::engine::narrative::{NarrativeLines, PendingCommentaryUpgrade};
 use crate::engine::neuron::evaluate_symbolic_value;
 use crate::engine::reducer::handlers::push_rendered_message;
 use crate::engine::state::{ActorStance, WorldState};
@@ -138,7 +138,7 @@ fn apply_hook_effects(
     input: Value,
     mut lines: Option<&mut NarrativeLines>,
 ) -> Result<(), String> {
-    let effects = evaluate_hook_effects::<WorldHookEffect>(content, hook_id, input)?;
+    let effects = evaluate_hook_effects::<WorldHookEffect>(content, hook_id, input.clone())?;
     for effect in effects {
         match effect {
             WorldHookEffect::AdjustPairStat {
@@ -224,12 +224,41 @@ fn apply_hook_effects(
             WorldHookEffect::SetStoryVar { key, value } => {
                 state.story_vars.set_unchecked(key.as_str(), value.as_str());
             }
-            WorldHookEffect::NarrateMessage { key, vars } => {
+            WorldHookEffect::NarrateMessage {
+                key,
+                vars,
+                generate_commentary,
+            } => {
                 if let Some(lines) = lines.as_deref_mut() {
                     let replacements: Vec<(&str, &str)> =
                         vars.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
                     if let Some(line) = content.render_message(&key, &replacements) {
-                        push_rendered_message(lines, content, line, content.message_voice(&key));
+                        push_rendered_message(lines, content, line.clone(), content.message_voice(&key));
+                        if generate_commentary {
+                            // Flag the pushed line for the post-reduce upgrade
+                            // pass. Rooms come from the hook input (movement
+                            // events), never from engine-side hardcoding.
+                            let from_room_id = input
+                                .get("from_room_id")
+                                .and_then(Value::as_str)
+                                .map(str::to_string);
+                            let to_room_id = input
+                                .get("to_room_id")
+                                .and_then(Value::as_str)
+                                .map(str::to_string);
+                            if let (Some(from_room_id), Some(to_room_id)) =
+                                (from_room_id, to_room_id)
+                            {
+                                if let Some(last) = lines.0.last_mut() {
+                                    last.pending_commentary_upgrade =
+                                        Some(PendingCommentaryUpgrade {
+                                            from_room_id,
+                                            to_room_id,
+                                            fallback_text: line,
+                                        });
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -445,6 +474,14 @@ enum WorldHookEffect {
         key: String,
         #[serde(default)]
         vars: Vec<(String, String)>,
+        /// When true, the rendered line is flagged for a post-reduce upgrade:
+        /// the fallback text is replaced with generated commentary built from a
+        /// pack-authored prompt template (see `transition_commentary_prompt_template`).
+        /// The flag only activates when the hook input carries `from_room_id`
+        /// and `to_room_id` (e.g. movement hooks), which the upgrade pass uses
+        /// to name the completed and destination areas.
+        #[serde(default)]
+        generate_commentary: bool,
     },
     /// Instantiates a new runtime actor from an authored template.
     /// Supports intelligence-based stat scaling, party recruitment, and room placement.
