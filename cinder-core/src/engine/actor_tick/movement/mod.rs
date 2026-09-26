@@ -1,15 +1,23 @@
+pub(crate) mod pathfinding;
+pub(crate) mod strategies;
+
 use super::{room_is_in_tick_scope, tick_scope_room_ids};
-use crate::content::types::{
-    ActorDefinition, ActorMovementRulesDefinition, ContentPack, WanderDefinition, WanderMode,
-};
-use crate::engine::actor_turn::movement::required_movement_target_room_id;
+use crate::content::types::{ActorDefinition, ContentPack, WanderDefinition, WanderMode};
 use crate::engine::behavior::should_hold;
 use crate::engine::events::WorldEvent;
 use crate::engine::state::{ActorStance, GamePhase, WorldState};
-use rand::Rng;
-use std::collections::{BTreeSet, VecDeque};
+use std::collections::BTreeSet;
 use std::error::Error;
 use std::sync::Arc;
+
+use crate::content::types::ActorMovementRulesDefinition;
+use crate::engine::actor_turn::movement::required_movement_target_room_id;
+
+pub(crate) use pathfinding::next_room_toward;
+pub(crate) use strategies::{
+    ExitLabelStrategy, RandomAdjacentStrategy, StayStrategy, ToDestinationStrategy,
+    TowardPlayerStrategy,
+};
 
 /// Strategy defining movement destination selection and cadence for an actor.
 pub(crate) trait MovementStrategy: Send + Sync {
@@ -24,168 +32,6 @@ pub(crate) trait MovementStrategy: Send + Sync {
         actor: &ActorDefinition,
         current_room_id: &str,
     ) -> Option<String>;
-}
-
-/// Stationary strategy for guarding, sentry, or hold orders.
-#[derive(Debug, Clone, Copy, Default)]
-pub(crate) struct StayStrategy;
-
-impl MovementStrategy for StayStrategy {
-    fn cadence_ticks(&self) -> u32 {
-        0
-    }
-
-    fn plan_destination(
-        &self,
-        _content: &ContentPack,
-        _state: &WorldState,
-        _actor: &ActorDefinition,
-        _current_room_id: &str,
-    ) -> Option<String> {
-        None
-    }
-}
-
-/// Randomly chooses an adjacent reachable room.
-#[derive(Debug, Clone, Copy)]
-pub(crate) struct RandomAdjacentStrategy {
-    pub cadence: u32,
-}
-
-impl RandomAdjacentStrategy {
-    pub(crate) fn new(cadence: u32) -> Self {
-        Self { cadence }
-    }
-}
-
-impl MovementStrategy for RandomAdjacentStrategy {
-    fn cadence_ticks(&self) -> u32 {
-        self.cadence
-    }
-
-    fn plan_destination(
-        &self,
-        content: &ContentPack,
-        _state: &WorldState,
-        _actor: &ActorDefinition,
-        current_room_id: &str,
-    ) -> Option<String> {
-        let neighbors = content.adjacent_room_ids(current_room_id);
-        if neighbors.is_empty() {
-            return None;
-        }
-        let index = rand::thread_rng().gen_range(0..neighbors.len());
-        Some(neighbors[index].clone())
-    }
-}
-
-/// Pathfinds toward the player's current room.
-#[derive(Debug, Clone, Copy)]
-pub(crate) struct TowardPlayerStrategy {
-    pub cadence: u32,
-}
-
-impl TowardPlayerStrategy {
-    pub(crate) fn new(cadence: u32) -> Self {
-        Self { cadence }
-    }
-}
-
-impl MovementStrategy for TowardPlayerStrategy {
-    fn cadence_ticks(&self) -> u32 {
-        self.cadence
-    }
-
-    fn plan_destination(
-        &self,
-        content: &ContentPack,
-        state: &WorldState,
-        _actor: &ActorDefinition,
-        current_room_id: &str,
-    ) -> Option<String> {
-        next_room_toward(content, current_room_id, &state.current_room_id)
-    }
-}
-
-/// Pathfinds toward a designated destination room.
-#[derive(Debug, Clone)]
-pub(crate) struct ToDestinationStrategy {
-    pub cadence: u32,
-    pub destination_room_id: String,
-}
-
-impl ToDestinationStrategy {
-    pub(crate) fn new(cadence: u32, destination_room_id: String) -> Self {
-        Self {
-            cadence,
-            destination_room_id,
-        }
-    }
-}
-
-impl MovementStrategy for ToDestinationStrategy {
-    fn cadence_ticks(&self) -> u32 {
-        self.cadence
-    }
-
-    fn plan_destination(
-        &self,
-        content: &ContentPack,
-        _state: &WorldState,
-        actor: &ActorDefinition,
-        current_room_id: &str,
-    ) -> Option<String> {
-        let destination = if self.destination_room_id.is_empty() {
-            &actor.room_id
-        } else {
-            &self.destination_room_id
-        };
-        next_room_toward(content, current_room_id, destination)
-    }
-}
-
-/// Follows a named exit label or alias from the current room.
-#[derive(Debug, Clone)]
-pub(crate) struct ExitLabelStrategy {
-    pub cadence: u32,
-    pub exit_label: String,
-}
-
-impl ExitLabelStrategy {
-    pub(crate) fn new(cadence: u32, exit_label: String) -> Self {
-        Self {
-            cadence,
-            exit_label,
-        }
-    }
-}
-
-impl MovementStrategy for ExitLabelStrategy {
-    fn cadence_ticks(&self) -> u32 {
-        self.cadence
-    }
-
-    fn plan_destination(
-        &self,
-        content: &ContentPack,
-        _state: &WorldState,
-        _actor: &ActorDefinition,
-        current_room_id: &str,
-    ) -> Option<String> {
-        let room = content.room(current_room_id)?;
-        let target_exit = room.exits.iter().find(|exit| {
-            exit.label.eq_ignore_ascii_case(&self.exit_label)
-                || exit
-                    .aliases
-                    .iter()
-                    .any(|alias| alias.eq_ignore_ascii_case(&self.exit_label))
-        })?;
-        if content.room_is_reachable(&target_exit.room_id) {
-            Some(target_exit.room_id.clone())
-        } else {
-            None
-        }
-    }
 }
 
 /// Creates a concrete `MovementStrategy` from a content `WanderDefinition`.
@@ -384,37 +230,6 @@ pub(crate) fn decide_movement(
             }]
         })
         .unwrap_or_default())
-}
-
-fn next_room_toward(
-    content: &ContentPack,
-    current_room_id: &str,
-    target_room_id: &str,
-) -> Option<String> {
-    if current_room_id.is_empty() || target_room_id.is_empty() || current_room_id == target_room_id
-    {
-        return None;
-    }
-    let mut queue = VecDeque::from([(current_room_id.to_string(), None::<String>)]);
-    let mut visited = BTreeSet::from([current_room_id.to_string()]);
-
-    while let Some((room_id, first_step)) = queue.pop_front() {
-        let room = content.room(&room_id)?;
-        for exit in &room.exits {
-            let is_target = exit.room_id == target_room_id;
-            if (!is_target && !content.room_is_reachable(&exit.room_id))
-                || !visited.insert(exit.room_id.clone())
-            {
-                continue;
-            }
-            let candidate_first_step = first_step.clone().unwrap_or_else(|| exit.room_id.clone());
-            if is_target {
-                return Some(candidate_first_step);
-            }
-            queue.push_back((exit.room_id.clone(), Some(candidate_first_step)));
-        }
-    }
-    None
 }
 
 #[cfg(test)]
