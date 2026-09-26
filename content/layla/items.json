@@ -224,9 +224,9 @@
       "off-hand"
     ],
     "stat_bonuses": {
-      "intelligence": 3
+      "wisdom": 6
     },
-    "description": "A compact brass-bound lantern holding a warm shard of glowing Noor-stone. Left to Zayd by his miner parents before the cave-in. Its steady light cuts through the subterranean dark."
+    "description": "A compact brass-bound lantern holding a warm shard of glowing Noor-stone. Zayd's miner parents gave it to him and told him light always finds a way through stone. Its steady light cuts through the subterranean dark — and remembers the dark it came from."
   },
   {
     "id": "iron-cage-key",

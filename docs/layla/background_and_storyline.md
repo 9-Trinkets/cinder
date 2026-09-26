@@ -127,7 +127,8 @@ recalled skill:
 - **Teleport sigil** (`teleport-sigil`) — a double ring intersected by cross-directional
   axes that displaces matter instantly to a linked anchor or across short spatial
   barriers. *As a master power: instantaneous movement and breach of fortified sectors.*
-  Learned on Floor 4 from an ancient surveyor's codex or crystal matrix.
+  Learned on Floor 4 from the **teleport scroll** lifted out of Commander Malik's safe
+  (`item.teleport_scroll_read`).
 
 ### Level 1 — The Goblin Cave (Go)
 The floor-by-floor design for level 1 — cast and power economy (goblins, golems,
@@ -137,9 +138,10 @@ level carries.
 
 Level 1 is a **Go grid** that reads as a living **goblin cave**. A rare tribe of
 **goblins** hunts the floor beneath a **goblin shaman**, who made the **golems**
-from the stone. The golems are silent constructs — pieces that can be drawn into
-step with Layla by encircling rings; the goblins are conscious and hostile, and
-the weakest enemies on the floor. Their hunting is what justifies the weapons
+*from the stone* — and "living stone" is literal: the golems are the earliest
+converts, villagers taken by the priests and bricked into the cave's guard rooms
+(see Level 4 below). The goblins are conscious and hostile,
+and the weakest enemies on the floor. Their hunting is what justifies the weapons
 and healing found in the cave. (Details: `docs/layla/floor1_plan.md`.)
 
 The floor ends at the **goblin shaman** — strongest thing on it, and the only
@@ -164,13 +166,20 @@ The floor-by-floor design for level 2 — cast, chess metaphor, the leaf equipme
 Below the board, in the descent rooms, lies an underground forest populated by a
 **full chess army of elves**: pawns, rooks, knights, bishops, a queen, and a
 **king**. (Chess — another language Layla speaks from an older life.) They are
-armed, hostile, and free-willed. Their king carries the **worn scroll** that
+armed and hostile, and the most *nearly-woken* converts in the dungeon: villagers
+reprogrammed into ranked pieces, carrying far more **Wisdom** than the golems
+(7–9 vs 3). That high wisdom is why they keep flashes of will — why the army
+"refuses to be bound" and why, at the end, it can choose to stand down. The
+**queen** in particular is the closest to waking of any piece on the board: she
+is Zayd's mother (see Level 4), a convert who never fully stopped searching for
+the son she cannot name. Their king carries the **worn scroll** that
 teaches the drain sigil.
 
 Defeating the **elf king** (hook `king.defeated`) does not bind the others by a
 ring — they simply *choose* to lower their weapons and let Layla pass. The
 contrast with the golems is deliberate: the shaman's ring *binds* golems to her
-will; the elves *decline to be bound*. This is the game's freedom theme showing
+will; the elves *decline to be bound*. Read as conversions, this is the wisdom
+stat leaking through the wipe. This is the game's freedom theme showing
 its first full face — and a warning about what rings do to a mind.
 
 ### Level 3 — The Fire-Rooms (Mancala / the Old Fire / the Elemental)
@@ -205,10 +214,15 @@ Below the fire moat of Floor 3, the dungeon stops being abstract game boards and
 - Floors 4, 5, and 6 are the **kingdom inside**, divided into three social classes:
 
 #### Level 4 — The Commoners (Miners, Farmers, and Laborers)
-The working foundation of the kingdom. Simple stone villages, mushroom farms, and deep **Mana Crystal Mines**:
-- **Mana Crystal Economy:** Miners dig out glowing mana crystals that power the kingdom's lights, tools, and spells on the upper floors.
+The working foundation of the kingdom. Simple stone villages, mushroom farms, and deep **Noor-stone Mines**:
+- **Noor-stone Economy:** Miners dig out glowing **Noor-stone** — the raw form of the magic-chalk mineral — that powers the kingdom's lights, tools, and spells on the upper floors.
 - **Guarded Teleportation Gates:** There are no open stairs between floors. People can only travel through **Teleportation Gates** inside heavily guarded military camps. Commoners are barred from the gates unless soldiers take them away as a **sacrifice or offering** for the temple.
-- **The Teleportation Sigil:** In the mines, Layla finds an ancient magic pattern and learns the **Teleportation Sigil** (`teleport-sigil`). This lets her blink past locked bars and sneak into guarded camps to solve quests.
+- **The Teleportation Sigil:** In the mine complex, Layla lifts the **teleport scroll** from Commander Malik's safe and learns the **Teleportation Sigil** (`teleport-sigil`). This lets her blink past locked bars and sneak into guarded camps to solve quests.
+
+**The truth of the offering (settled canon).** The "sacrifice" taken up the stairs is not a ritual — it is the **reprogramming itself**. The temple's conversion works wipe a person's memory and reshape the body into a dungeon piece: the goblin shaman's golems, the elf army's ranks, and the village's "disappeared" were all the same source. Zayd's parents, who the village believes died in a "steam drill collapse," are among the finished pieces:
+- **Sakhra** — the village's guardian golem — is **Zayd's father**, bricked in stone and fitted with steam pistons. He has guarded the village, and his own son, since Zayd could walk. Only the lantern he gave his boy can wake him: **he wakes by light**.
+- **`elf-queen-4`** — the elf chess queen on Floor 2 — is **Zayd's mother**, the piece nearest waking of any in the dungeon. She wanders the ranks searching for a son she cannot name; **she wakes by voice** (Zayd's).
+- Freeing Zayd (side quest "Save the Boy Zayd") and raising either parent's Wisdom to 10+ ("awakening") is the floor's secret quest, **"Return the Light."** The queen **may be destroyed by chance** (she is a booked boss fight) — that is a sanctioned easter egg, and the parent thread resolves as long as *either* parent wakes.
 
 #### Level 5 — The Nobility (Knights, Lords, and Military Elites)
 The ruling class. Stone castles, grand halls, and guard garrisons carved into high cliffs. The nobles command the army and make the laws. They are proud, paranoid, and terrified of peasant revolts from below and temple inquisitors from above.
@@ -227,13 +241,14 @@ Floors 4, 5, and 6 introduce an active **Quest System** (one Main Quest and side
 - **The Core Test:** Every choice tests whether Layla will rule as a tyrant (becoming the next Dungeon Master) or help the kingdom's people unite and break free.
 
 ### The Hidden Stat: Wisdom (WIS) & The "Awakening" Mechanic
-In this kingdom, people and monsters have been brainwashed into fixed roles (Peasant, Knight, Priest, Golem, Pawn). To break this spell, Layla uses a hidden stat: **Wisdom (WIS)**:
+In this kingdom, people and monsters have been brainwashed into fixed roles (Peasant, Knight, Priest, Golem, Pawn). To break this spell, Layla uses a hidden stat: **Wisdom (WIS)** — now implemented for real in `content/layla/stats.json` (seed default 3, range 0–10, surfaced in the vitals/inspect UI):
 - **Default Followers:** When Layla charms a creature, it follows her quietly and obeys basic orders without speaking.
-- **Boosting the Mind:** Layla can give followers Wisdom gear (crystal amulets, leaf jewelry, clear-mind potions) to raise their WIS stat.
+- **Boosting the Mind:** Layla can give followers Wisdom gear (crystal amulets, leaf jewelry, clear-mind potions, and above all **Zayd's Lantern**, +6 WIS) to raise their WIS stat.
 - **The Awakening:** When a follower's Wisdom reaches 10 or higher:
   - They break free from their mind-wiped role and remember who they are.
-  - Their generic name changes back to their real name (e.g. `quarry-golem` $\rightarrow$ `Orin, the Builder`).
+  - Their generic name changes back to their real name (e.g. `golem-dark-nw` → *Orin*, `sakhra` → *Jamil*, `elf-queen-4` → Zayd's mother).
   - Full speech (`speak`) unlocks: they remember their past life, talk about kingdom secrets, and fight as loyal, free allies.
+- Per-piece awakening storylines (who each surviving golem/elf was, and what they say on waking) are recorded in **`docs/layla/floor4_plan.md` § 5**.
 
 ### The Planned Endgame (canon intent)
 - **Primary ending — become the dungeon master.** Layla defeats the current **demon king / dungeon master**. This completes her corporate reprogramming: she takes the throne and runs the dungeon against human adventurers.
@@ -243,8 +258,8 @@ In this kingdom, people and monsters have been brainwashed into fixed roles (Pea
 
 - **Act 2 Core Canon (Settled Pillars):**
   1. *Population:* Pure human population kept amnesiac in fixed social classes.
-  2. *Connection to Floors 1–3:* The outer monsters were human villagers and prisoners taken by the priests as **sacrifices and offerings**, then wiped of memory and changed into dungeon guards.
-  3. *Resource Economy:* **Mana Crystals** mined by villagers on Floor 4, powering the kingdom's machines, teleportation gates, and temple rituals.
+  2. *Connection to Floors 1–3:* The outer monsters were human villagers and prisoners taken by the priests as **sacrifices and offerings**, then wiped of memory and changed into dungeon guards (the "reprogramming"/conversion — see Level 4; Zayd's parents are the named examples).
+  3. *Resource Economy:* **Noor-stone** mined by villagers on Floor 4 — the raw mineral behind magic chalk — powering the kingdom's machines, teleportation gates, and temple rituals.
   4. *Inter-Floor Travel:* Heavily guarded **Teleportation Gates** in military camps, watched by noble guards and temple priests. Layla's **Teleportation Sigil** lets her bypass these barriers to solve key quests.
 - **Remaining Narrative Open Threads:**
 - **Who was the "voice that taught her capture is just surrounding"?** A

@@ -24,6 +24,15 @@ its **shaman made the golems**. The cave is theirs: dens, bone piles, hot
 fires, hunting grounds — and at the very center, the shaman's work-ring where
 the golems were shaped.
 
+> **Canon note (conversion).** "Made the golems" must be read through the
+> kingdom's truth (see `docs/layla/floor4_plan.md`): the shaman shapes servants
+> from **living stone** — villagers taken as offerings and bricked into golems.
+> The ring marks are the maker's stamp *and* the leftover of the wipe. Layla's
+> unaccountable calm beside them, and her gentleness with their heavy feet
+> (`docs/layla/narration_guide.md` § 5), are her instinct recognizing a fellow
+> convert. Each guard golem's real pre-stone name lives in the Floor 4 awakening
+> table (`golem-dark-nw` → *Orin*, etc.).
+
 She is not a prisoner here. She is a stranger in someone's home, and she has to
 learn the rules of the floor to earn her way down.
 
@@ -101,7 +110,10 @@ Older, larger, quieter. The floor's maker.
   through its teeth.
 - **Role.** Made the golems. Its stamp is on every one of them — the same
   chalk-ring marks, the same hand in the shaping. It cannot be converted; only
-  defeated. It drops the **shaman's ring**.
+  defeated. It drops the **shaman's ring**. *(The deepest reading: the shaman is
+  the conversion's floor-side face — it *rings* converts into pieces, the way
+  the priests' works do on Floor 4. It itself is beyond waking — either its
+  conversion took deepest, or it was never a person at all.)*
 - **The thread to Layla.** The shaman makes rings and shapes servants from
   living stone. Layla traces rings and draws servants into step. Same mark,
   same craft, same boarded life — the sigil she learns is the shaman's trade.
@@ -110,6 +122,9 @@ Older, larger, quieter. The floor's maker.
 ### Golems (×4 — the shaman's constructs)
 
 Crude, patient, made. Still, silent, and no longer elegant "architecture."
+**Canon:** these are converts — people bricked in stone (see the Premise note).
+The material detail below is *what the conversion leaves behind*; it should never
+be written as if there was never a person in there.
 
 - **Body / material.** Rough-cut stone — dark volcanic rock and pale river
   stone — lumped together like a child's snowman twice grown. Broad slabs for

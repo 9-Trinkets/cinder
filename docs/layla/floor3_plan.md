@@ -151,8 +151,8 @@ Layla enters Floor 3 with her surviving golems from Floor 1, leveled through Flo
 
 The defeat of the Fire Elemental resolves the third phase of Layla's internal arc:
 
-1. **Floor 1 (Golems):** Stone pieces shaped by a master, bound to service by chalk rings and the shaman's bone ring (**Subjugation**).
-2. **Floor 2 (Elves):** Free minds who decline binding, lowering their weapons by conscious choice when their sovereign falls (**Choice**).
+1. **Floor 1 (Golems):** Converts bricked in stone, bound to service by chalk rings and the shaman's bone ring (**Subjugation**).
+2. **Floor 2 (Elves):** Pieces standing closest to **waking** — converts whose high wisdom refuses the ring, lowering their weapons by what amounts to the first intentional act of their post-wipe lives when their sovereign falls (**Choice**).
 3. **Floor 3 (The Elemental):** A manifestation of the board's ancient fire held captive in a closed cycle of sowing and burning. It is not destroyed; it is **freed**:
    > *"The fire elemental does not fall — it lets go. Its fire unknots, loosens, and the spiral in its chest unwinds like a long-held breath. It is released back to the elemental realm, and the board is suddenly, quietly cool."*
 4. **The Echo in Layla:** Layla sees that every floor was designed to teach her how to bind and dominate (Dungeon Master training) — yet at every stage, the true victory has come from understanding the game's rules and choosing to let things go free.

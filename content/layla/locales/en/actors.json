@@ -54,7 +54,8 @@
     "initial_stats": {
       "hp": 8,
       "strength": 2,
-      "intelligence": 1
+      "intelligence": 1,
+      "wisdom": 4
     },
     "aliases": [
       "golem",
@@ -99,7 +100,8 @@
     "initial_stats": {
       "hp": 8,
       "strength": 2,
-      "intelligence": 1
+      "intelligence": 1,
+      "wisdom": 4
     },
     "aliases": [
       "golem",
@@ -203,7 +205,8 @@
     "initial_stats": {
       "hp": 8,
       "strength": 2,
-      "intelligence": 1
+      "intelligence": 1,
+      "wisdom": 4
     },
     "aliases": [
       "golem",
@@ -248,7 +251,8 @@
     "initial_stats": {
       "hp": 8,
       "strength": 2,
-      "intelligence": 1
+      "intelligence": 1,
+      "wisdom": 4
     },
     "aliases": [
       "golem",
@@ -501,7 +505,8 @@
       "hp": 6,
       "strength": 2,
       "defense": 1,
-      "intelligence": 3
+      "intelligence": 3,
+      "wisdom": 7
     },
     "prompt_context": {},
     "level": 3,
@@ -542,7 +547,8 @@
       "hp": 6,
       "strength": 2,
       "defense": 1,
-      "intelligence": 3
+      "intelligence": 3,
+      "wisdom": 7
     },
     "prompt_context": {},
     "level": 3,
@@ -583,7 +589,8 @@
       "hp": 6,
       "strength": 2,
       "defense": 1,
-      "intelligence": 3
+      "intelligence": 3,
+      "wisdom": 7
     },
     "prompt_context": {},
     "level": 3,
@@ -624,7 +631,8 @@
       "hp": 6,
       "strength": 2,
       "defense": 1,
-      "intelligence": 3
+      "intelligence": 3,
+      "wisdom": 7
     },
     "prompt_context": {},
     "level": 3,
@@ -665,7 +673,8 @@
       "hp": 6,
       "strength": 2,
       "defense": 1,
-      "intelligence": 3
+      "intelligence": 3,
+      "wisdom": 7
     },
     "prompt_context": {},
     "level": 3,
@@ -706,7 +715,8 @@
       "hp": 6,
       "strength": 2,
       "defense": 1,
-      "intelligence": 3
+      "intelligence": 3,
+      "wisdom": 7
     },
     "prompt_context": {},
     "level": 3,
@@ -747,7 +757,8 @@
       "hp": 6,
       "strength": 2,
       "defense": 1,
-      "intelligence": 3
+      "intelligence": 3,
+      "wisdom": 7
     },
     "prompt_context": {},
     "level": 3,
@@ -788,7 +799,8 @@
       "hp": 6,
       "strength": 2,
       "defense": 1,
-      "intelligence": 3
+      "intelligence": 3,
+      "wisdom": 7
     },
     "prompt_context": {},
     "level": 3,
@@ -829,7 +841,8 @@
       "hp": 14,
       "strength": 5,
       "defense": 3,
-      "intelligence": 4
+      "intelligence": 4,
+      "wisdom": 8
     },
     "prompt_context": {},
     "level": 5,
@@ -870,7 +883,8 @@
       "hp": 10,
       "strength": 4,
       "defense": 2,
-      "intelligence": 4
+      "intelligence": 4,
+      "wisdom": 8
     },
     "prompt_context": {},
     "level": 4,
@@ -911,7 +925,8 @@
       "hp": 10,
       "strength": 4,
       "defense": 2,
-      "intelligence": 4
+      "intelligence": 4,
+      "wisdom": 8
     },
     "prompt_context": {},
     "level": 4,
@@ -952,7 +967,8 @@
       "hp": 16,
       "strength": 6,
       "defense": 3,
-      "intelligence": 6
+      "intelligence": 6,
+      "wisdom": 9
     },
     "prompt_context": {},
     "level": 6,
@@ -989,7 +1005,8 @@
       "hp": 20,
       "strength": 6,
       "defense": 4,
-      "intelligence": 7
+      "intelligence": 7,
+      "wisdom": 2
     },
     "prompt_context": {},
     "level": 8
@@ -1013,7 +1030,8 @@
       "hp": 10,
       "strength": 4,
       "defense": 2,
-      "intelligence": 4
+      "intelligence": 4,
+      "wisdom": 8
     },
     "prompt_context": {},
     "level": 4,
@@ -1054,7 +1072,8 @@
       "hp": 10,
       "strength": 4,
       "defense": 2,
-      "intelligence": 4
+      "intelligence": 4,
+      "wisdom": 8
     },
     "prompt_context": {},
     "level": 4,
@@ -1095,7 +1114,8 @@
       "hp": 14,
       "strength": 5,
       "defense": 3,
-      "intelligence": 4
+      "intelligence": 4,
+      "wisdom": 8
     },
     "prompt_context": {},
     "level": 5,
@@ -1686,13 +1706,13 @@
       "sakhra",
       "steam golem",
       "golem",
-      "basalt golem"
+      "the watchful"
     ],
     "tags": [
       "golem",
       "steam_golem"
     ],
-    "inspect_text": "A monolithic golem carved from deep basalt stone, retrofitted with thick copper pipes, brass pressure gauges, and hiss-venting steam pistons. It kneels dormant among the glowing chalk veins, its stone head bowed.",
+    "inspect_text": "A broad golem of dark, worn stone wrapped in thick copper pipe and brass fittings — a village guardian, made to watch the gate and stay quiet about it. Steam sighs from the valves along its shoulders. It kneels at the edge of the village, stone head bowed, the way it has knelt for as long as anyone can remember. The children call it Sakhra, the Watchful: their guard, their fixture, the stillest thing in town.",
     "attackable": true,
     "guard": true,
     "xp_drop": 30,
@@ -1703,28 +1723,31 @@
       "hp": 26,
       "strength": 6,
       "defense": 6,
-      "intelligence": 2
+      "intelligence": 2,
+      "wisdom": 5
     },
     "level": 6,
     "prompt_context": {
       "character_notes": [
-        "You are Sakhra, an ancient basalt excavation golem retrofitted with steam pistons by early miners.",
-        "In your dormant state, you emit only steady rhythmic hisses of steam and the deep clunk of internal gearwork.",
-        "You do not speak or move unless attacked or awakened by magic chalk."
+        "You are Sakhra, the village guardian golem. You have stood watch at the edge of this village for longer than anyone can remember.",
+        "You do not speak. You do not move unless you must, because watching means staying still. Steam vents in long, even breaths from the pipes the village fitted over you long ago.",
+        "There is a buried warmth in your chest that the steam cannot explain. You do not know why, and you do not ask."
       ],
       "subtext_notes": [
         "You possess immense physical strength and durability.",
         "When encircled with chalk rings, you bond with the maker and serve as an immovable guardian.",
-        "When illuminated by high Wisdom (such as Zayd's lantern), your ancient slumbering mind awakens."
+        "When illuminated by high Wisdom (such as Zayd's lantern), something long-sleeping in your stone stirs toward waking."
       ],
       "response_notes": [
         "Do not speak in human language; communicate through hydraulic hisses, brass clicks, and low vibrations.",
-        "When fighting beside Layla, intercept blows and strike with massive stone fists."
+        "When fighting beside Layla, intercept blows and strike with massive stone fists.",
+        "Of everyone in the village, the boy Zayd feels like a memory. Let your pressure drop, almost imperceptibly, when he is near."
       ],
       "behavior_examples": [
-        "Steam vents gently from the brass valves along its basalt spine.",
+        "Steam vents gently from the brass valves along its spine.",
         "Its pebble eyes glow faintly when Layla approaches with chalk.",
-        "It raises a massive stone fist to shield its companion."
+        "It raises a massive stone fist to shield its companions.",
+        "When the boy Zayd talks to it, it kneels a full pace lower, the way a father would lean down."
       ]
     }
   },

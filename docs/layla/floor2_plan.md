@@ -16,7 +16,7 @@ The board language shifts sharply from **Go** to **Chess**:
 - **Go (Floor 1)** was about space, territory, encircling silent stones, and making breathing room.
 - **Chess (Floor 2)** is about **ranked armies**, **geometric movement**, and **commanding combat**. The objective is no longer enclosing territory, but navigating an advancing military hierarchy to face and defeat their **King**.
 
-The forest is held by an **Elf Army** of 16 conscious, disciplined soldiers. They are not mindless constructs like the shaman's golems, nor scavengers like the goblins. They are organized, watchful, and free-willed.
+The forest is held by an **Elf Army** of 16 soldiers. They carry themselves as conscious, disciplined, free-willed troops — not scavengers like the goblins. Their power budget and behavior are authored as if they were elite warriors. Beneath that surface sits the canonical truth (see `docs/layla/floor4_plan.md`): the army is a **ranked conversion**. These elves are villagers from the kingdom below who were taken as offerings and reshaped into pieces — but their reprogramming sits closest to the surface of anything in the dungeon. Their **Wisdom is high (7–9)** by design, and it leaks. The "free will" the floor showcases *is* that wisdom straining the wipe — which is exactly why they resist binding and why, after their king falls, they can genuinely choose to stand down.
 
 ---
 
@@ -113,7 +113,7 @@ They wear armor fashioned from hardened forest materials: layered broad leaves c
    - The engine's surround rule (`settings.surround_rule`) tests `intelligence`:
      $$\text{player\_int} + \text{player\_level} \ge \text{target\_int} + 2 \times \text{target\_level}$$
    - An Elf Pawn requires $3 + 2(3) = 9$. A Knight/Bishop requires $4 + 2(4) = 12$. The King requires $7 + 2(8) = 23$.
-   - This mathematical reality prevents early-level trivialization via chalk encirclement, reinforcing the fiction: *elves are free minds who resist magical binding*.
+   - This mathematical reality prevents early-level trivialization via chalk encirclement, reinforcing the fiction: *elves carry enough wisdom to refuse the ring*. Cast from the conversion canon, that refusal is a half-memory surfacing — the signature of a piece standing close to **awakening** (WIS 10). The highest wisdom sits on the queen (`elf-queen-4`, WIS 9 — this floor's most-woken piece; see Floor 4 for who she was before the wipe).
 
 ---
 
@@ -155,9 +155,11 @@ The elves forge their equipment from the living materials of their subterranean 
 
 The climax of Floor 2 provides the first major philosophical turning point in Layla's journey:
 
-1. **The Contrast:** On Floor 1, the goblin shaman used chalk rings to bind inanimate stone into mindless golems. Layla used the same magic to claim the golems as her own thralls. The shaman's ring literally commands obedience.
+1. **The Contrast:** On Floor 1, the goblin shaman used chalk rings to bind converts into mindless golems. Layla used the same magic to claim the golems as her own thralls. The shaman's ring literally commands obedience — and the ring works *because the conversion already hollowed the mind to a depth the chalk can reach*.
 2. **The Elves' Choice:** When the Elf King is struck down, **no ring binds the survivors**. The engine hook changes their stance to `neutral`, but `follows_player` remains `false`. In prose (`king.defeated`):
    > *"The elf king falls. The forest holds its breath. Then, one by one, the other elves lower their weapons and step back. No ring binds them — they simply choose to let you pass. You feel their eyes on you a long moment, and you lower your own blade."*
+
+   **Canon reading:** they were conversions all along, and their surrender is the **wisdom stat leaking through the wipe** — the closest the chess pieces get to awakening unaided. Whether that becomes a full awakening (WIS 10, name restored, speech unlocked) is a Floor 4 decision, keyed off Zayd's Lantern. The crown piece, `elf-queen-4`, is Zayd's mother — the nearest to waking — and she is a boss fight who **may be destroyed by chance**; the narrative must not soft-lock on her surviving (see `docs/layla/floor4_plan.md`).
 3. **The Warning:** Layla begins to glimpse that power in this place is fundamentally about choice: whether she will become an instrument of binding (the corporate Dungeon Master), or someone capable of recognizing and granting freedom.
 
 ---
