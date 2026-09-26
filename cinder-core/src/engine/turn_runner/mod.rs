@@ -94,9 +94,6 @@ impl LocalWorkflowRunner for CinderRoleRunner {
             RoleHandler::ActorDialogue => self.handle_actor_dialogue(role_name, &inbound),
             RoleHandler::Reducer => self.handle_turn_reducer(role_name, &inbound),
             RoleHandler::Narrator => self.handle_turn_narrator(&inbound),
-            RoleHandler::Aggregation => {
-                return Err("turn_merge should be handled by Synapse aggregation".to_string());
-            }
         }
         .map_err(|error| format!("role {role_name}: {error}"))?;
         serde_json::to_string(&route).map_err(|error| error.to_string())
