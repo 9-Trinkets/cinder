@@ -66,7 +66,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let play = fetch_play(&pool, &args).await?;
     let transcript = fetch_transcript(&pool, &play.play_id, args.transcript_limit).await?;
-    let state: WorldState = serde_json::from_str(&play.state_json)?;
+    let state: WorldState = WorldState::from_saved_json(&play.state_json)?;
 
     print_summary(&play, &state, &transcript);
     Ok(())

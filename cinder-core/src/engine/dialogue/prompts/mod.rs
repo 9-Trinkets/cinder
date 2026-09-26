@@ -2,7 +2,8 @@ use super::{
     ActorTurnActionRequest, ActorTurnAffordanceOption, ActorTurnAffordanceTarget,
     ActorTurnCommandInvocation, ActorTurnSpeakCandidate, ChapterRelationshipSummaryRequest,
     ChapterScriptSummaryRequest, ConversationMemorySummaryRequest, DialogueRequest,
-    DirectSpeechIntentRequest, HandlerDescentCommentaryRequest, MenuIntentRequest, StageAssignmentRequest,
+    DirectSpeechIntentRequest, MenuIntentRequest, StageAssignmentRequest,
+    TransitionCommentaryRequest,
 };
 use crate::content::types::SpeechIntentLabel;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine};
@@ -194,37 +195,39 @@ pub(crate) fn build_chapter_relationship_summary_prompt(
     )
 }
 
-pub(crate) fn build_handler_descent_commentary_prompt(
-    request: &HandlerDescentCommentaryRequest,
+pub(crate) fn build_transition_commentary_prompt(
+    request: &TransitionCommentaryRequest,
 ) -> String {
-    let transcript = if request.recent_transcript.is_empty() {
-        "(No recent transcript lines available.)".to_string()
-    } else {
-        request.recent_transcript.join("\n")
-    };
-    let previous_summaries = if request.previous_floor_summaries.is_empty() {
-        "(None - this is the first floor descent.)".to_string()
-    } else {
-        request.previous_floor_summaries.join("\n")
-    };
+    let text = &request.system_text;
+    let template = &text.transition_commentary_prompt_template;
+    let transcript = format_bullets(
+        &request.recent_transcript,
+        &text.transition_commentary_empty_transcript,
+    );
     let party = if request.party_members.is_empty() {
         "(None)".to_string()
     } else {
         request.party_members.join(", ")
     };
-    format!(
-        "Floor Just Completed: {}\nDestination Floor: {}\nParty at Descent: {}\n\nPrevious Floor Milestones (already achieved and previously commented on - DO NOT repeat commentary for these):\n{}\n\nRecent Transcript for Completed Floor ({}):\n{}\n\nFallback Line:\n{}\n\nTask:\nGenerate 2 distinct comms messages from the Handler as Layla descends from {} into {}:\n1. \"summary\": 2 to 3 sentences of dry, superior handler commentary summarizing what Layla actually achieved, fought, or survived on {} (the floor she just finished), based strictly on the transcript for this completed floor. Do not repeat commentary or achievements from previous floors.\n2. \"introduction\": 2 to 3 sentences introducing the next floor ({}) without giving away any spoilers, secrets, or puzzle solutions.\n\nRespond ONLY with a valid JSON object matching this schema:\n{{\n  \"summary\": \"...\",\n  \"introduction\": \"...\"\n}}\nDo not include markdown codeblocks, quotation marks around the JSON, or speaker prefixes like 'Handler:'.",
-        request.completed_floor_name,
-        request.floor_name,
-        party,
-        previous_summaries,
-        request.completed_floor_name,
-        transcript,
-        request.fallback_text,
-        request.completed_floor_name,
-        request.floor_name,
-        request.completed_floor_name,
-        request.floor_name,
+    render_prompt_template(
+        template,
+        &[
+            ("completed_area_name", request.completed_area_name.as_str()),
+            (
+                "destination_area_name",
+                request.destination_area_name.as_str(),
+            ),
+            ("party_members", &party),
+            (
+                "previous_area_summaries",
+                &format_bullets(
+                    &request.previous_area_summaries,
+                    &text.transition_commentary_no_previous,
+                ),
+            ),
+            ("completed_area_transcript", &transcript),
+            ("fallback_text", request.fallback_text.as_str()),
+        ],
     )
 }
 
@@ -345,7 +348,7 @@ pub(crate) use actor_turn::{
     actor_turn_decider_system_prompt, chapter_relationship_summarizer_system_prompt,
     chapter_script_summarizer_system_prompt, conversation_memory_summarizer_system_prompt,
     dialogue_system_prompt, direct_speech_intent_system_prompt,
-    handler_descent_commentary_system_prompt, menu_intent_system_prompt, sanitize_statement,
+    transition_commentary_system_prompt, menu_intent_system_prompt, sanitize_statement,
 };
 pub(crate) use actor_turn::{build_actor_turn_action_prompt, build_actor_turn_affordance_option};
 pub(crate) use hostility::{build_hostility_plan_prompt, hostility_planner_system_prompt};

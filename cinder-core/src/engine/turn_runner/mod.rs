@@ -12,18 +12,18 @@ use self::types::{
 use crate::content::types::ContentPack;
 use crate::engine::commands::parse_command;
 use crate::engine::conversation_memory::refresh_conversation_summaries;
-use crate::engine::dialogue::{DialogueGenerator, HandlerDescentCommentaryRequest};
+use crate::engine::dialogue::{DialogueGenerator, TransitionCommentaryRequest};
 use crate::engine::dialogue_grounding::build_grounded_dialogue_request;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
 use crate::engine::menus::{PendingMenuDialogue, menu_to_offer_for_pending_dialogue};
 use crate::engine::messaging::ChannelMessage;
-use crate::engine::narrative::{NarrativeLineKind, NarrativeLines};
+use crate::engine::narrative::{NarrativeLines, PendingCommentaryUpgrade};
 use crate::engine::neuron::{
     LocalWorkflowRunner, WorkflowDefinition, WorkflowRoleConfig, WorkflowTraceContext, run_workflow,
 };
 use crate::engine::reducer::{ReducerOutput, apply_events, handler_attributed_line};
 use crate::engine::roles::RoleHandler;
-use crate::engine::state::{FloorDescentSummary, TurnOutcome, WorldSnapshot, WorldState};
+use crate::engine::state::{TransitionSummary, TurnOutcome, WorldSnapshot, WorldState};
 use std::error::Error;
 use std::path::Path;
 use std::sync::{Arc, Mutex};
@@ -285,11 +285,10 @@ impl CinderRoleRunner {
             .map_err(|_| "failed to lock reducer state".to_string())?;
         let mut reduced = apply_events(&mut state, self.content.as_ref(), &logged_events);
         refresh_conversation_summaries(self.content.as_ref(), self.dialogue.as_ref(), &mut state)?;
-        maybe_tailor_handler_descent_commentary(
+        run_pending_commentary_upgrades(
             self.content.as_ref(),
             self.dialogue.as_ref(),
             &mut state,
-            &logged_events,
             &mut reduced.lines,
         );
         for line in &reduced.lines.0 {
@@ -364,168 +363,161 @@ impl CinderRoleRunner {
     }
 }
 
-pub(crate) fn maybe_tailor_handler_descent_commentary(
+pub(crate) fn run_pending_commentary_upgrades(
     content: &ContentPack,
     dialogue: &dyn DialogueGenerator,
     state: &mut WorldState,
-    logged_events: &[TimestampedWorldEvent],
     lines: &mut NarrativeLines,
 ) {
-    let Some((from_room_id, to_room_id)) = logged_events.iter().find_map(|event| match &event.event {
-        WorldEvent::PlayerMoved {
-            from_room_id,
-            to_room_id,
-        } => Some((from_room_id.as_str(), to_room_id.as_str())),
-        WorldEvent::ActorMoved {
-            actor_id,
-            from_room_id,
-            to_room_id,
-            ..
-        } if content.is_player_actor(actor_id) => {
-            Some((from_room_id.as_str(), to_room_id.as_str()))
-        }
-        _ => None,
-    }) else {
-        return;
-    };
-
-    let fallback_key = match to_room_id {
-        "d1c1" => "handler.descend.deep_wood",
-        "oan" => "handler.descend.the_board",
-        "village_square" => "handler.descend.the_village",
-        _ => return,
-    };
-
-    let Some(fallback_raw) = content.render_message(fallback_key, &[]) else {
-        return;
-    };
-    if fallback_raw.trim().is_empty() {
+    let flagged: Vec<(usize, PendingCommentaryUpgrade)> = lines
+        .0
+        .iter()
+        .enumerate()
+        .filter_map(|(index, line)| {
+            line.pending_commentary_upgrade
+                .clone()
+                .map(|marker| (index, marker))
+        })
+        .collect();
+    if flagged.is_empty() {
         return;
     }
 
-    let attributed_fallback = handler_attributed_line(content, &fallback_raw);
-
-    let Some(matching_index) = lines.0.iter().position(|line| {
-        line.kind == NarrativeLineKind::Channel
-            && (line.text == fallback_raw
-                || attributed_fallback.as_deref() == Some(line.text.as_str()))
-    }) else {
-        return;
-    };
-
-    let completed_floor_map = content.map_for_room(from_room_id);
-    let completed_floor_id = completed_floor_map
-        .map(|m| m.id.clone())
-        .unwrap_or_else(|| from_room_id.to_string());
-
-    let floor_name = content
-        .map_for_room(to_room_id)
-        .map(|m| m.label.clone())
-        .or_else(|| content.room(to_room_id).map(|r| r.title.clone()))
-        .unwrap_or_else(|| to_room_id.to_string());
-
-    let completed_floor_name = completed_floor_map
-        .map(|m| m.label.clone())
-        .or_else(|| content.room(from_room_id).map(|r| r.title.clone()))
-        .unwrap_or_else(|| from_room_id.to_string());
-
-    // Cutoff from previous floor descents to isolate this floor's transcript slice
+    // Cutoff from prior transitions to isolate the completed area's transcript slice
     let last_cutoff = state
-        .floor_summaries
+        .transition_summaries
         .values()
         .map(|summary| summary.transcript_line_count)
         .max()
         .unwrap_or(0);
 
-    let transcript_start = last_cutoff.min(state.transcript.len());
-    let recent_transcript = state.transcript[transcript_start..]
-        .iter()
-        .filter(|line| !line.trim().is_empty())
-        .rev()
-        .take(50)
-        .cloned()
-        .collect::<Vec<_>>()
-        .into_iter()
-        .rev()
-        .collect();
+    let mut shift = 0usize;
+    for (base_index, marker) in flagged {
+        let index = base_index + shift;
+        let from_room_id = &marker.from_room_id;
+        let to_room_id = &marker.to_room_id;
+        let fallback_text = &marker.fallback_text;
 
-    // Summaries from previous floors (chronologically)
-    let mut prev_summaries_vec: Vec<_> = state.floor_summaries.values().cloned().collect();
-    prev_summaries_vec.sort_by_key(|s| s.completed_turn);
-    let previous_floor_summaries = prev_summaries_vec
-        .into_iter()
-        .map(|s| format!("- {} (Turn {}): {}", s.floor_name, s.completed_turn, s.summary_text))
-        .collect();
+        let completed_area_map = content.map_for_room(from_room_id);
+        let completed_area_name = completed_area_map
+            .map(|m| m.label.clone())
+            .or_else(|| content.room(from_room_id).map(|r| r.title.clone()))
+            .unwrap_or_else(|| from_room_id.clone());
+        let completed_area_id = completed_area_map
+            .map(|m| m.id.clone())
+            .unwrap_or_else(|| from_room_id.clone());
 
-    // Party members following player at descent
-    let mut party_members = vec!["Layla".to_string()];
-    for (actor_id, rel) in &state.relationships {
-        if rel.follows_player {
-            let name = content
-                .actor(actor_id)
-                .map(|a| a.name.clone())
-                .unwrap_or_else(|| actor_id.clone());
-            if !party_members.contains(&name) {
-                party_members.push(name);
-            }
-        }
-    }
+        let destination_area_name = content
+            .map_for_room(to_room_id)
+            .map(|m| m.label.clone())
+            .or_else(|| content.room(to_room_id).map(|r| r.title.clone()))
+            .unwrap_or_else(|| to_room_id.clone());
 
-    let request = HandlerDescentCommentaryRequest {
-        locale: content.locale.clone(),
-        system_text: content.system_text.clone(),
-        floor_name,
-        destination_room_id: to_room_id.to_string(),
-        completed_floor_name: completed_floor_name.clone(),
-        recent_transcript,
-        fallback_text: fallback_raw.clone(),
-        previous_floor_summaries,
-        party_members: party_members.clone(),
-    };
-
-    let mut commentary_summary = None;
-    if let Ok(commentary_lines) = dialogue.generate_handler_descent_commentary(&request) {
-        let valid_lines: Vec<String> = commentary_lines
+        let transcript_start = last_cutoff.min(state.transcript.len());
+        let recent_transcript = state.transcript[transcript_start..]
+            .iter()
+            .filter(|line| !line.trim().is_empty())
+            .rev()
+            .take(50)
+            .cloned()
+            .collect::<Vec<_>>()
             .into_iter()
-            .map(|l| l.trim().trim_matches('"').trim().to_string())
-            .filter(|l| !l.is_empty())
+            .rev()
             .collect();
-        if !(valid_lines.is_empty()
-            || (valid_lines.len() == 1 && valid_lines[0] == fallback_raw.trim()))
-        {
-            commentary_summary = Some(valid_lines[0].clone());
-            let attributed_first = handler_attributed_line(content, &valid_lines[0])
-                .unwrap_or_else(|| valid_lines[0].clone());
-            lines.0[matching_index].text = attributed_first;
 
-            for (offset, extra_line) in valid_lines.iter().skip(1).enumerate() {
-                let attributed_extra = handler_attributed_line(content, extra_line)
-                    .unwrap_or_else(|| extra_line.clone());
-                lines.0.insert(
-                    matching_index + 1 + offset,
-                    crate::engine::narrative::NarrativeLine::channel(attributed_extra),
-                );
+        // Summaries from previous transitions (chronologically)
+        let mut prev_summaries_vec: Vec<_> = state.transition_summaries.values().cloned().collect();
+        prev_summaries_vec.sort_by_key(|s| s.completed_turn);
+        let previous_area_summaries = prev_summaries_vec
+            .into_iter()
+            .map(|s| {
+                format!(
+                    "- {} (Turn {}): {}",
+                    s.area_name, s.completed_turn, s.summary_text
+                )
+            })
+            .collect();
+
+        // Party following the player at the transition
+        let mut party_members = Vec::new();
+        let player_id = &content.settings.combat.player_actor_id;
+        if !player_id.is_empty() {
+            if let Some(player) = content.actor(player_id) {
+                party_members.push(player.name.clone());
             }
         }
-    }
+        for (actor_id, rel) in &state.relationships {
+            if rel.follows_player {
+                let name = content
+                    .actor(actor_id)
+                    .map(|a| a.name.clone())
+                    .unwrap_or_else(|| actor_id.clone());
+                if !party_members.contains(&name) {
+                    party_members.push(name);
+                }
+            }
+        }
 
-    // Record the completed floor's summary milestone if not already present
-    if !state.floor_summaries.contains_key(&completed_floor_id) {
-        let summary_prose = commentary_summary.unwrap_or_else(|| fallback_raw.clone());
-        let current_turn_lines_count = lines.0.iter().filter(|l| !l.text.trim().is_empty()).count();
-        let transcript_cutoff = state.transcript.len() + current_turn_lines_count;
+        let request = TransitionCommentaryRequest {
+            locale: content.locale.clone(),
+            system_text: content.system_text.clone(),
+            destination_area_name,
+            destination_room_id: to_room_id.clone(),
+            completed_area_name: completed_area_name.clone(),
+            recent_transcript,
+            fallback_text: fallback_text.clone(),
+            previous_area_summaries,
+            party_members: party_members.clone(),
+        };
 
-        state.floor_summaries.insert(
-            completed_floor_id.clone(),
-            FloorDescentSummary {
-                floor_id: completed_floor_id,
-                floor_name: completed_floor_name,
-                completed_turn: state.turn_number,
-                summary_text: summary_prose,
-                party_at_descent: party_members,
-                transcript_line_count: transcript_cutoff,
-            },
-        );
+        let mut commentary_summary = None;
+        if let Ok(commentary_lines) = dialogue.generate_transition_commentary(&request) {
+            let valid_lines: Vec<String> = commentary_lines
+                .into_iter()
+                .map(|l| l.trim().trim_matches('"').trim().to_string())
+                .filter(|l| !l.is_empty())
+                .collect();
+            if !(valid_lines.is_empty()
+                || (valid_lines.len() == 1 && valid_lines[0] == fallback_text.trim()))
+            {
+                commentary_summary = Some(valid_lines[0].clone());
+                let attributed_first = handler_attributed_line(content, &valid_lines[0])
+                    .unwrap_or_else(|| valid_lines[0].clone());
+                lines.0[index].text = attributed_first;
+
+                let mut insert_at = index + 1;
+                for extra_line in valid_lines.iter().skip(1) {
+                    let attributed_extra = handler_attributed_line(content, extra_line)
+                        .unwrap_or_else(|| extra_line.clone());
+                    lines.0.insert(
+                        insert_at,
+                        crate::engine::narrative::NarrativeLine::channel(attributed_extra),
+                    );
+                    insert_at += 1;
+                }
+                shift += valid_lines.len().saturating_sub(1);
+            }
+        }
+
+        // Record the completed area's transition milestone if not already present
+        if !state.transition_summaries.contains_key(&completed_area_id) {
+            let summary_prose = commentary_summary.unwrap_or_else(|| fallback_text.clone());
+            let current_turn_lines_count =
+                lines.0.iter().filter(|l| !l.text.trim().is_empty()).count();
+            let transcript_cutoff = state.transcript.len() + current_turn_lines_count;
+
+            state.transition_summaries.insert(
+                completed_area_id.clone(),
+                TransitionSummary {
+                    area_id: completed_area_id,
+                    area_name: completed_area_name,
+                    completed_turn: state.turn_number,
+                    summary_text: summary_prose,
+                    party_at_transition: party_members,
+                    transcript_line_count: transcript_cutoff,
+                },
+            );
+        }
     }
 }
 

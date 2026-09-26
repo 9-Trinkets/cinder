@@ -136,6 +136,23 @@ pub struct SystemTextDefinition {
     pub dynamic_menu_system_prompt: String,
     #[serde(default)]
     pub hostility_planner_system_prompt: String,
+    /// Prompt template rendered (with `{completed_area_name}`,
+    /// `{destination_area_name}`, `{party_members}`, `{previous_area_summaries}`,
+    /// `{completed_area_transcript}`, `{fallback_text}`) to generate area
+    /// transition commentary. Packs author this; the engine only fills in the
+    /// variables and routes the result through the transition commentary role.
     #[serde(default)]
-    pub handler_descent_commentary_system_prompt: String,
+    pub transition_commentary_prompt_template: String,
+    /// Placeholder the engine substitutes when a completed area had no recent
+    /// transcript lines.
+    #[serde(default)]
+    pub transition_commentary_empty_transcript: String,
+    /// Placeholder for "no previous area milestones" in the transition
+    /// commentary template.
+    #[serde(default)]
+    pub transition_commentary_no_previous: String,
+    /// Pack-authored system prompt for the transition commentary role. The
+    /// pack owns the persona and the output contract entirely.
+    #[serde(default)]
+    pub transition_commentary_system_prompt: String,
 }

@@ -2,9 +2,10 @@ use super::DialogueGenerator;
 use super::types::{
     ActorTurnActionDecision, ActorTurnActionRequest, ConversationMemorySummaryRequest,
     DialogueRequest, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
-    DynamicMenuOptionOutput, DynamicMenuRequest, HandlerDescentCommentaryRequest, HostilityPlanDecision,
-    HostilityPlanRequest, MenuIntentDecision, MenuIntentRequest, PerspectiveReview,
-    PerspectiveReviewRequest, StageAssignment, StageAssignmentRequest,
+    DynamicMenuOptionOutput, DynamicMenuRequest, HostilityPlanDecision,
+    HostilityPlanRequest, MenuIntentDecision, MenuIntentRequest,
+    PerspectiveReview, PerspectiveReviewRequest, StageAssignment,
+    StageAssignmentRequest, TransitionCommentaryRequest,
 };
 use crate::content::types::SpeechIntentLabel;
 use std::collections::BTreeMap;
@@ -18,9 +19,9 @@ pub struct ScriptedDialogueGenerator {
     attraction_intents: BTreeMap<String, DirectSpeechIntentDecision>,
     perspective_reviews: BTreeMap<String, PerspectiveReview>,
     stage_assignments: BTreeMap<String, StageAssignment>,
-    descent_commentaries: BTreeMap<String, Vec<String>>,
+    transition_commentaries: BTreeMap<String, Vec<String>>,
     requests: std::sync::Arc<std::sync::Mutex<Vec<DialogueRequest>>>,
-    descent_requests: std::sync::Arc<std::sync::Mutex<Vec<HandlerDescentCommentaryRequest>>>,
+    transition_requests: std::sync::Arc<std::sync::Mutex<Vec<TransitionCommentaryRequest>>>,
 }
 
 impl ScriptedDialogueGenerator {
@@ -92,14 +93,18 @@ impl ScriptedDialogueGenerator {
         self
     }
 
-    pub fn with_descent_commentary(mut self, room_id: &str, commentary: &str) -> Self {
-        self.descent_commentaries
+    pub fn with_transition_commentary(mut self, room_id: &str, commentary: &str) -> Self {
+        self.transition_commentaries
             .insert(room_id.to_string(), vec![commentary.to_string()]);
         self
     }
 
-    pub fn with_descent_commentary_lines(mut self, room_id: &str, lines: Vec<String>) -> Self {
-        self.descent_commentaries
+    pub fn with_transition_commentary_lines(
+        mut self,
+        room_id: &str,
+        lines: Vec<String>,
+    ) -> Self {
+        self.transition_commentaries
             .insert(room_id.to_string(), lines);
         self
     }
@@ -108,8 +113,8 @@ impl ScriptedDialogueGenerator {
         self.requests.clone()
     }
 
-    pub fn captured_descent_requests(&self) -> Vec<HandlerDescentCommentaryRequest> {
-        self.descent_requests
+    pub fn captured_transition_requests(&self) -> Vec<TransitionCommentaryRequest> {
+        self.transition_requests
             .lock()
             .map(|r| r.clone())
             .unwrap_or_default()
@@ -239,14 +244,14 @@ impl DialogueGenerator for ScriptedDialogueGenerator {
             })
     }
 
-    fn generate_handler_descent_commentary(
+    fn generate_transition_commentary(
         &self,
-        request: &super::types::HandlerDescentCommentaryRequest,
+        request: &super::types::TransitionCommentaryRequest,
     ) -> Result<Vec<String>, String> {
-        if let Ok(mut reqs) = self.descent_requests.lock() {
+        if let Ok(mut reqs) = self.transition_requests.lock() {
             reqs.push(request.clone());
         }
-        if let Some(reply) = self.descent_commentaries.get(&request.destination_room_id) {
+        if let Some(reply) = self.transition_commentaries.get(&request.destination_room_id) {
             Ok(reply.clone())
         } else {
             Ok(vec![request.fallback_text.clone()])

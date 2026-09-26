@@ -430,14 +430,14 @@ fn multi_floor_descent_isolates_transcripts_and_builds_summaries() {
 
     let dialogue = std::sync::Arc::new(
         cinder_core::engine::dialogue::ScriptedDialogueGenerator::new()
-            .with_descent_commentary_lines(
+            .with_transition_commentary_lines(
                 "d1c1",
                 vec![
                     "Layla conquered The Cave.".to_string(),
                     "Prepare for Deep Forest.".to_string(),
                 ],
             )
-            .with_descent_commentary_lines(
+            .with_transition_commentary_lines(
                 "oan",
                 vec![
                     "Layla conquered Deep Forest.".to_string(),
@@ -467,18 +467,18 @@ fn multi_floor_descent_isolates_transcripts_and_builds_summaries() {
 
     // Check request 1
     {
-        let reqs = dialogue.captured_descent_requests();
+        let reqs = dialogue.captured_transition_requests();
         assert_eq!(reqs.len(), 1);
-        assert_eq!(reqs[0].completed_floor_name, "The Cave");
-        assert_eq!(reqs[0].floor_name, "Deep Forest");
-        assert!(reqs[0].previous_floor_summaries.is_empty());
+        assert_eq!(reqs[0].completed_area_name, "The Cave");
+        assert_eq!(reqs[0].destination_area_name, "Deep Forest");
+        assert!(reqs[0].previous_area_summaries.is_empty());
         assert!(reqs[0].recent_transcript.iter().any(|l| l.contains("chalk circle")));
     }
 
     let state1 = runtime.export_state().unwrap();
-    assert!(state1.floor_summaries.contains_key("upper-works"));
-    let f1_summary = &state1.floor_summaries["upper-works"];
-    assert_eq!(f1_summary.floor_name, "The Cave");
+    assert!(state1.transition_summaries.contains_key("upper-works"));
+    let f1_summary = &state1.transition_summaries["upper-works"];
+    assert_eq!(f1_summary.area_name, "The Cave");
     assert_eq!(f1_summary.summary_text, "Layla conquered The Cave.");
 
     // Floor 2: Move to d8c5 (exit to Floor 3)
@@ -504,16 +504,16 @@ fn multi_floor_descent_isolates_transcripts_and_builds_summaries() {
 
     // Check request 2
     {
-        let reqs = dialogue.captured_descent_requests();
+        let reqs = dialogue.captured_transition_requests();
         assert_eq!(reqs.len(), 2);
         let req2 = &reqs[1];
-        assert_eq!(req2.completed_floor_name, "Deep Forest");
-        assert_eq!(req2.floor_name, "Outer Ring");
+        assert_eq!(req2.completed_area_name, "Deep Forest");
+        assert_eq!(req2.destination_area_name, "Outer Ring");
 
         // Previous floor milestones MUST contain Floor 1 summary
-        assert_eq!(req2.previous_floor_summaries.len(), 1);
-        assert!(req2.previous_floor_summaries[0].contains("The Cave"));
-        assert!(req2.previous_floor_summaries[0].contains("Layla conquered The Cave."));
+        assert_eq!(req2.previous_area_summaries.len(), 1);
+        assert!(req2.previous_area_summaries[0].contains("The Cave"));
+        assert!(req2.previous_area_summaries[0].contains("Layla conquered The Cave."));
 
         // Recent transcript MUST contain Floor 2 events and MUST NOT contain Floor 1 events!
         assert!(req2.recent_transcript.iter().any(|l| l.contains("bioluminescent mushrooms")));
@@ -529,10 +529,10 @@ fn multi_floor_descent_isolates_transcripts_and_builds_summaries() {
     }
 
     let state2 = runtime2.export_state().unwrap();
-    assert!(state2.floor_summaries.contains_key("upper-works"));
-    assert!(state2.floor_summaries.contains_key("deep-forest"));
-    let f2_summary = &state2.floor_summaries["deep-forest"];
-    assert_eq!(f2_summary.floor_name, "Deep Forest");
+    assert!(state2.transition_summaries.contains_key("upper-works"));
+    assert!(state2.transition_summaries.contains_key("deep-forest"));
+    let f2_summary = &state2.transition_summaries["deep-forest"];
+    assert_eq!(f2_summary.area_name, "Deep Forest");
     assert_eq!(f2_summary.summary_text, "Layla conquered Deep Forest.");
 }
 

@@ -120,7 +120,7 @@ pub(super) fn transcript_lines_from_state_json(state_json: &str) -> Result<Vec<S
     if state_json.is_empty() || state_json == "{}" {
         return Ok(Vec::new());
     }
-    let state: WorldState = serde_json::from_str(state_json)
+    let state = WorldState::from_saved_json(state_json)
         .map_err(|e| format!("failed to deserialize state: {e}"))?;
     Ok(state.transcript)
 }

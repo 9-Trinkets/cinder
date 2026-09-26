@@ -83,17 +83,21 @@ pub struct ChapterRelationshipSummaryRequest {
     pub pair_stat_lines: Vec<String>,
 }
 
+/// Request for the transition-commentary upgrade: generate commentary for the
+/// player moving from a completed area into a destination area, in the pack's
+/// voice. Triggered by a pack-declared `narrate_message` hook effect carrying
+/// `generate_commentary`.
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct HandlerDescentCommentaryRequest {
+pub struct TransitionCommentaryRequest {
     pub locale: String,
     pub system_text: SystemTextDefinition,
-    pub floor_name: String,
+    pub destination_area_name: String,
     pub destination_room_id: String,
-    pub completed_floor_name: String,
+    pub completed_area_name: String,
     pub recent_transcript: Vec<String>,
     pub fallback_text: String,
     #[serde(default)]
-    pub previous_floor_summaries: Vec<String>,
+    pub previous_area_summaries: Vec<String>,
     #[serde(default)]
     pub party_members: Vec<String>,
 }

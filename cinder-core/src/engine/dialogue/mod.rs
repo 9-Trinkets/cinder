@@ -115,9 +115,9 @@ pub trait DialogueGenerator: Send + Sync {
         request: &StageAssignmentRequest,
     ) -> Result<StageAssignment, String>;
 
-    fn generate_handler_descent_commentary(
+    fn generate_transition_commentary(
         &self,
-        request: &HandlerDescentCommentaryRequest,
+        request: &TransitionCommentaryRequest,
     ) -> Result<Vec<String>, String> {
         Ok(vec![request.fallback_text.clone()])
     }

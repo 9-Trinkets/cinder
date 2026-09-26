@@ -509,7 +509,8 @@
           ],
           "payload_template": {
             "kind": "narrate_message",
-            "key": "handler.descend.deep_wood"
+            "key": "handler.descend.deep_wood",
+            "generate_commentary": true
           }
         },
         {
@@ -527,7 +528,8 @@
           ],
           "payload_template": {
             "kind": "narrate_message",
-            "key": "handler.descend.the_board"
+            "key": "handler.descend.the_board",
+            "generate_commentary": true
           }
         },
         {
@@ -545,7 +547,8 @@
           ],
           "payload_template": {
             "kind": "narrate_message",
-            "key": "handler.descend.the_village"
+            "key": "handler.descend.the_village",
+            "generate_commentary": true
           }
         }
       ]

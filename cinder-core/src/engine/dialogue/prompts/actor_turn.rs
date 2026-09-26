@@ -6,7 +6,7 @@ use super::{
     ActorTurnActionRequest, ActorTurnAffordanceOption, ActorTurnAffordanceTarget,
     ActorTurnCommandInvocation, ActorTurnSpeakCandidate, ChapterRelationshipSummaryRequest,
     ChapterScriptSummaryRequest, ConversationMemorySummaryRequest, DialogueRequest,
-    DirectSpeechIntentRequest, HandlerDescentCommentaryRequest, MenuIntentRequest,
+    DirectSpeechIntentRequest, MenuIntentRequest, TransitionCommentaryRequest,
 };
 use crate::content::types::{ActionDefinition, CommandInputMode, SystemTextDefinition};
 
@@ -376,20 +376,20 @@ pub(crate) fn direct_speech_intent_system_prompt(request: &DirectSpeechIntentReq
         .as_str()
 }
 
-pub(crate) fn handler_descent_commentary_system_prompt(
-    request: &HandlerDescentCommentaryRequest,
+pub(crate) fn transition_commentary_system_prompt(
+    request: &TransitionCommentaryRequest,
 ) -> &str {
     if !request
         .system_text
-        .handler_descent_commentary_system_prompt
+        .transition_commentary_system_prompt
         .is_empty()
     {
         request
             .system_text
-            .handler_descent_commentary_system_prompt
+            .transition_commentary_system_prompt
             .as_str()
     } else {
-        "You are the Handler on the remote comms channel watching Layla descend through the dungeon floors. You treat Layla like a person, but with a dry sense of superiority and amused power over an NPC without free will. You view her as an autonomous construct bound to follow system directives, yet you possess a begrudging, patronizing fondness for her. Your comments feature deadpan irony, superior wit, and dark humor. Never break character into modern corporate office tropes (no HR, no company memos, no cubicles). Give one apt jab about what she just achieved or what she's stepping into, then stop. Keep it strictly to 1 or 2 short sentences. Do not use quotation marks, speaker labels, or stats/numbers."
+        "You write in-character transition commentary for a game. Respond only with valid JSON."
     }
 }
 

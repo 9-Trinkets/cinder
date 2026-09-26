@@ -58,7 +58,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let pool = init_pool().await?;
     let play = fetch_play(&pool, &args).await?;
     let content = load_named_pack(&play.pack_id, Some(&play.locale))?;
-    let state: WorldState = serde_json::from_str(&play.state_json)?;
+    let state: WorldState = WorldState::from_saved_json(&play.state_json)?;
     let actor_ids = selected_actor_ids(&content, &state, &args)?;
 
     println!("play_id: {}", play.play_id);

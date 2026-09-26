@@ -22,6 +22,17 @@ mod tracking;
 
 pub use sequences::ScriptedSequencePlayhead;
 
+/// Current persisted `WorldState` format version. Version 1 predates the
+/// version field and used floor-conquest milestone naming (`floor_summaries`,
+/// `FloorDescentSummary`, `party_at_descent`); version 2 renamed those to
+/// area transitions (`transition_summaries`, `TransitionSummary`,
+/// `party_at_transition`).
+pub const WORLD_STATE_VERSION: u32 = 2;
+
+fn legacy_state_version() -> u32 {
+    1
+}
+
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum GamePhase {
@@ -33,6 +44,11 @@ pub enum GamePhase {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct WorldState {
+    /// Format version of this persisted state. Version 1 predates versioning;
+    /// version 2 renamed descent milestones to area transitions. `from_saved_json`
+    /// migrates older saves in-place before deserialization.
+    #[serde(default = "legacy_state_version")]
+    pub state_version: u32,
     pub current_room_id: String,
     pub turn_number: u32,
     pub current_time_minutes: u32,
@@ -128,9 +144,10 @@ pub struct WorldState {
     /// opening sequence starts running.
     #[serde(default)]
     pub scripted_sequences: BTreeMap<String, ScriptedSequencePlayhead>,
-    /// Summaries of completed floors / acts upon descent, keyed by floor / act id.
+    /// Summaries of completed areas / acts upon transition between areas,
+    /// keyed by area / act id.
     #[serde(default)]
-    pub floor_summaries: BTreeMap<String, FloorDescentSummary>,
+    pub transition_summaries: BTreeMap<String, TransitionSummary>,
     /// Counter for dynamically spawned actors to ensure unique instance IDs.
     #[serde(default)]
     pub spawn_counter: u32,
@@ -139,15 +156,16 @@ pub struct WorldState {
     pub spawned_actors: BTreeMap<String, ActorDefinition>,
 }
 
-/// Summary milestone recorded upon descending from a floor / act.
+/// Summary milestone recorded upon transitioning from one area / act to the
+/// next.
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub struct FloorDescentSummary {
-    pub floor_id: String,
-    pub floor_name: String,
+pub struct TransitionSummary {
+    pub area_id: String,
+    pub area_name: String,
     pub completed_turn: u32,
     pub summary_text: String,
     #[serde(default)]
-    pub party_at_descent: Vec<String>,
+    pub party_at_transition: Vec<String>,
     #[serde(default)]
     pub transcript_line_count: usize,
 }
@@ -236,6 +254,47 @@ pub enum ConversationMemoryKind {
 }
 
 impl WorldState {
+    /// Deserializes a persisted state JSON blob, migrating older save formats
+    /// in place. This is the only sanctioned entry point for loading saved
+    /// worlds; plain `serde_json::from_str::<WorldState>` silently drops fields
+    /// from older formats instead of migrating them.
+    pub fn from_saved_json(raw: &str) -> Result<Self, String> {
+        let mut value: serde_json::Value = serde_json::from_str(raw)
+            .map_err(|e| format!("failed to parse state: {e}"))?;
+        if let Some(obj) = value.as_object_mut() {
+            if let Some(legacy) = obj.remove("floor_summaries") {
+                let migrated: serde_json::Value = match legacy {
+                    serde_json::Value::Object(entries) => {
+                        let mut remapped = serde_json::Map::new();
+                        for (area_id, summary) in entries {
+                            let summary = match summary {
+                                serde_json::Value::Object(mut fields) => {
+                                    if let Some(v) = fields.remove("floor_id") {
+                                        fields.insert("area_id".to_string(), v);
+                                    }
+                                    if let Some(v) = fields.remove("floor_name") {
+                                        fields.insert("area_name".to_string(), v);
+                                    }
+                                    if let Some(v) = fields.remove("party_at_descent") {
+                                        fields.insert("party_at_transition".to_string(), v);
+                                    }
+                                    serde_json::Value::Object(fields)
+                                }
+                                other => other,
+                            };
+                            remapped.insert(area_id, summary);
+                        }
+                        serde_json::Value::Object(remapped)
+                    }
+                    other => other,
+                };
+                obj.insert("transition_summaries".to_string(), migrated);
+            }
+            obj.insert("state_version".to_string(), serde_json::json!(WORLD_STATE_VERSION));
+        }
+        serde_json::from_value(value).map_err(|e| format!("failed to deserialize state: {e}"))
+    }
+
     pub fn new(content: &ContentPack) -> Self {
         let start_room_id = if content.opening.start_room_ids.is_empty() {
             content.opening.start_room_id.clone()
@@ -264,6 +323,7 @@ impl WorldState {
             *playhead = ScriptedSequencePlayhead::queued();
         }
         Self {
+            state_version: WORLD_STATE_VERSION,
             current_room_id: start_room_id,
             turn_number: 0,
             current_time_minutes: content.opening.start_time_minutes,
@@ -348,7 +408,7 @@ impl WorldState {
             actor_xp: BTreeMap::new(),
             actor_level: seeded_actor_levels(content),
             scripted_sequences,
-            floor_summaries: BTreeMap::new(),
+            transition_summaries: BTreeMap::new(),
             spawn_counter: 0,
             spawned_actors: BTreeMap::new(),
         }
@@ -496,5 +556,101 @@ mod tests {
         let relationship = state.relationship("blair");
         assert_eq!(relationship.stance, ActorStance::Allied);
         assert!(!relationship.follows_player);
+    }
+
+    #[test]
+    fn from_saved_json_migrates_v1_floor_descents_to_v2_transitions() {
+        let mut content = crate::engine::test_fixtures::minimal_test_pack();
+        content
+            .actors
+            .iter_mut()
+            .find(|actor| actor.id == "blair")
+            .unwrap()
+            .room_id
+            .clear();
+        let mut state = WorldState::new(&content);
+        state.transition_summaries.insert(
+            "upper-works".to_string(),
+            TransitionSummary {
+                area_id: "upper-works".to_string(),
+                area_name: "The Cave".to_string(),
+                completed_turn: 7,
+                summary_text: "Layla conquered The Cave.".to_string(),
+                party_at_transition: vec!["Layla".to_string()],
+                transcript_line_count: 5,
+            },
+        );
+
+        // Rewrite the serialized v2 shape into the historical v1 schema
+        // (`floor_summaries` + descent floor naming) to prove the migration.
+        let mut v1: serde_json::Value =
+            serde_json::from_str(&serde_json::to_string(&state).expect("serializes"))
+                .expect("parses");
+        let summaries = v1
+            .get_mut("transition_summaries")
+            .and_then(serde_json::Value::as_object_mut)
+            .cloned()
+            .expect("transition_summaries present");
+        v1.as_object_mut()
+            .expect("object")
+            .remove("transition_summaries");
+        v1.as_object_mut()
+            .expect("object")
+            .insert("floor_summaries".to_string(), serde_json::json!(summaries));
+        for (_, summary) in v1
+            .get_mut("floor_summaries")
+            .and_then(serde_json::Value::as_object_mut)
+            .expect("floor_summaries object")
+        {
+            if let serde_json::Value::Object(fields) = summary {
+                if let Some(v) = fields.remove("area_id") {
+                    fields.insert("floor_id".to_string(), v);
+                }
+                if let Some(v) = fields.remove("area_name") {
+                    fields.insert("floor_name".to_string(), v);
+                }
+                if let Some(v) = fields.remove("party_at_transition") {
+                    fields.insert("party_at_descent".to_string(), v);
+                }
+            }
+        }
+        v1.as_object_mut()
+            .expect("object")
+            .insert("state_version".to_string(), serde_json::json!(1));
+
+        let migrated =
+            WorldState::from_saved_json(&v1.to_string()).expect("legacy v1 state migrates");
+        assert_eq!(migrated.state_version, WORLD_STATE_VERSION);
+        let summary = migrated
+            .transition_summaries
+            .get("upper-works")
+            .expect("legacy milestone remapped under transition_summaries");
+        assert_eq!(summary.area_name, "The Cave");
+        assert_eq!(summary.summary_text, "Layla conquered The Cave.");
+        assert_eq!(summary.party_at_transition, vec!["Layla"]);
+        assert_eq!(summary.completed_turn, 7);
+        assert_eq!(summary.transcript_line_count, 5);
+    }
+
+    #[test]
+    fn from_saved_json_accepts_current_v2_state_unchanged() {
+        let mut content = crate::engine::test_fixtures::minimal_test_pack();
+        content
+            .actors
+            .iter_mut()
+            .find(|actor| actor.id == "blair")
+            .unwrap()
+            .initial_relationship = Some(ActorRelationship {
+            stance: ActorStance::Allied,
+            follows_player: true,
+        });
+        let state = WorldState::new(&content);
+        let raw = serde_json::to_string(&state).expect("current state serializes");
+        let reloaded = WorldState::from_saved_json(&raw).expect("current v2 roundtrips");
+        assert_eq!(reloaded.state_version, WORLD_STATE_VERSION);
+        assert_eq!(reloaded.current_room_id, state.current_room_id);
+        assert_eq!(reloaded.turn_number, state.turn_number);
+        assert_eq!(reloaded.transition_summaries, state.transition_summaries);
+        assert_eq!(reloaded.relationships, state.relationships);
     }
 }

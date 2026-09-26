@@ -198,6 +198,7 @@ pub async fn get_transcript(
             |(role, text)| cinder_core::engine::narrative::NarrativeLine {
                 kind: narrative_kind(&role),
                 text,
+                pending_commentary_upgrade: None,
             },
         )
         .collect())
@@ -210,7 +211,7 @@ fn build_runtime_impl(
     if state_json.is_empty() || state_json == "{}" {
         CinderRuntime::new(content, false).map_err(|e| format!("failed to create runtime: {e}"))
     } else {
-        let mut state: WorldState = serde_json::from_str(state_json)
+        let mut state = WorldState::from_saved_json(state_json)
             .map_err(|e| format!("failed to deserialize state: {e}"))?;
         let current_room_id = state.current_room_id.clone();
         state.mark_actor_room_visited(&content.settings.combat.player_actor_id, &current_room_id);

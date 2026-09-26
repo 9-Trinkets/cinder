@@ -178,7 +178,7 @@ fn elf_king_defeat_narrates_dungeon_master_myth() {
 }
 
 #[test]
-fn handler_descent_commentary_falls_back_when_no_llm() {
+fn transition_commentary_falls_back_when_no_llm() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     state.current_room_id = "r5c5".to_string();
@@ -202,14 +202,14 @@ fn handler_descent_commentary_falls_back_when_no_llm() {
 }
 
 #[test]
-fn handler_descent_commentary_tailored_when_llm_responds() {
+fn transition_commentary_tailored_when_llm_responds() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     state.current_room_id = "r5c5".to_string();
     state.story_vars.set_unchecked("shaman_defeated", "true");
 
     let dialogue = std::sync::Arc::new(
-        cinder_core::engine::dialogue::ScriptedDialogueGenerator::new().with_descent_commentary(
+        cinder_core::engine::dialogue::ScriptedDialogueGenerator::new().with_transition_commentary(
             "d1c1",
             "Well, you survived the mines without getting turned into soup. Welcome to the damp mushroom patch.",
         ),
@@ -233,14 +233,14 @@ fn handler_descent_commentary_tailored_when_llm_responds() {
 }
 
 #[test]
-fn handler_descent_floor_3_tailored_commentary() {
+fn transition_commentary_floor_3_tailored() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     state.current_room_id = "d8c5".to_string();
     state.story_vars.set_unchecked("elf_king_defeated", "true");
 
     let dialogue = std::sync::Arc::new(
-        cinder_core::engine::dialogue::ScriptedDialogueGenerator::new().with_descent_commentary(
+        cinder_core::engine::dialogue::ScriptedDialogueGenerator::new().with_transition_commentary(
             "oan",
             "You actually toppled the elf king. Try not to break whatever is left down on the board.",
         ),
@@ -258,7 +258,7 @@ fn handler_descent_floor_3_tailored_commentary() {
 }
 
 #[test]
-fn handler_descent_commentary_two_messages_summary_and_introduction() {
+fn transition_commentary_two_messages_summary_and_introduction() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     state.current_room_id = "r5c5".to_string();
@@ -269,7 +269,7 @@ fn handler_descent_commentary_two_messages_summary_and_introduction() {
 
     let dialogue = std::sync::Arc::new(
         cinder_core::engine::dialogue::ScriptedDialogueGenerator::new()
-            .with_descent_commentary_lines(
+            .with_transition_commentary_lines(
                 "d1c1",
                 vec![summary.to_string(), intro.to_string()],
             ),
@@ -304,7 +304,7 @@ fn handler_descent_commentary_two_messages_summary_and_introduction() {
 }
 
 #[test]
-fn handler_descent_commentary_via_switch_room_view() {
+fn transition_commentary_via_switch_room_view() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     state.current_room_id = "r5c5".to_string();
@@ -315,7 +315,7 @@ fn handler_descent_commentary_via_switch_room_view() {
 
     let dialogue = std::sync::Arc::new(
         cinder_core::engine::dialogue::ScriptedDialogueGenerator::new()
-            .with_descent_commentary_lines(
+            .with_transition_commentary_lines(
                 "d1c1",
                 vec![summary.to_string(), intro.to_string()],
             ),
@@ -348,7 +348,7 @@ fn handler_descent_commentary_via_switch_room_view() {
 }
 
 #[test]
-fn handler_descent_commentary_only_plays_on_first_descent() {
+fn transition_commentary_only_plays_on_first_descent() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     state.current_room_id = "r5c5".to_string();
@@ -360,7 +360,7 @@ fn handler_descent_commentary_only_plays_on_first_descent() {
 
     let dialogue = std::sync::Arc::new(
         cinder_core::engine::dialogue::ScriptedDialogueGenerator::new()
-            .with_descent_commentary_lines(
+            .with_transition_commentary_lines(
                 "d1c1",
                 vec![summary.to_string(), intro.to_string()],
             ),
@@ -521,7 +521,7 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
 
 #[test]
 #[ignore]
-fn live_test_synapse_handler_descent() {
+fn live_test_synapse_transition_commentary() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     state.current_room_id = "r5c5".to_string();

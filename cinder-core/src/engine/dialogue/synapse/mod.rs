@@ -1,8 +1,8 @@
-pub(crate) mod descent;
 pub(crate) mod errors;
+pub(crate) mod transition;
 
-use self::descent::parse_descent_commentary_response;
 use self::errors::format_role_execution_error;
+use self::transition::parse_transition_commentary_response;
 use crate::content::types::SpeechIntentLabel;
 use crate::engine::neuron::{
     NeuronRoleService, RoleExecutionError, RoleExecutionResponse, RoleMetadata, WorkflowDefinition,
@@ -17,12 +17,13 @@ use super::parsing::{
 };
 use super::prompts::{
     actor_turn_decider_system_prompt, build_chapter_relationship_summary_prompt,
-    build_chapter_script_summary_prompt, build_handler_descent_commentary_prompt,
-    build_stage_assignment_prompt, chapter_relationship_summarizer_system_prompt,
+    build_chapter_script_summary_prompt, build_stage_assignment_prompt,
+    build_transition_commentary_prompt,
+    chapter_relationship_summarizer_system_prompt,
     chapter_script_summarizer_system_prompt, conversation_memory_summarizer_system_prompt,
     dialogue_system_prompt, direct_speech_intent_system_prompt,
-    handler_descent_commentary_system_prompt, hostility_planner_system_prompt,
-    menu_intent_system_prompt, sanitize_statement,
+    hostility_planner_system_prompt, menu_intent_system_prompt, sanitize_statement,
+    transition_commentary_system_prompt,
 };
 use super::types::*;
 use super::DialogueGenerator;
@@ -37,7 +38,7 @@ const CHAPTER_RELATIONSHIP_SUMMARIZER_ROLE: &str = "chapter_relationship_summari
 const DIRECT_SPEECH_ATTRACTION_INTENT_ROLE: &str = "direct_speech_intent";
 const PERSPECTIVE_REVIEW_ROLE: &str = "perspective_review";
 const STAGE_ASSIGNMENT_ROLE: &str = "stage_assignment";
-const HANDLER_DESCENT_COMMENTARY_ROLE: &str = "handler_descent_commentary";
+const HANDLER_TRANSITION_COMMENTARY_ROLE: &str = "handler_transition_commentary";
 const CONVERSATION_MEMORY_SUMMARY_TIMEOUT: Duration = Duration::from_secs(10);
 const VALIDATED_ROLE_MAX_ATTEMPTS: usize = 4;
 
@@ -416,20 +417,20 @@ Make the options feel distinct from each other and grounded in the recent conver
             .map_err(|e| format!("failed to parse dynamic menu options: {e}"))
     }
 
-    fn generate_handler_descent_commentary(
+    fn generate_transition_commentary(
         &self,
-        request: &HandlerDescentCommentaryRequest,
+        request: &TransitionCommentaryRequest,
     ) -> Result<Vec<String>, String> {
-        let prompt = build_handler_descent_commentary_prompt(request);
-        let system_prompt = handler_descent_commentary_system_prompt(request).to_string();
+        let prompt = build_transition_commentary_prompt(request);
+        let system_prompt = transition_commentary_system_prompt(request).to_string();
         match self.run_text_role_with_timeout(
-            HANDLER_DESCENT_COMMENTARY_ROLE,
+            HANDLER_TRANSITION_COMMENTARY_ROLE,
             prompt,
             system_prompt,
             Duration::from_secs(8),
         ) {
             Ok(response) => {
-                let messages = parse_descent_commentary_response(&response);
+                let messages = parse_transition_commentary_response(&response);
                 if messages.is_empty() {
                     Ok(vec![request.fallback_text.clone()])
                 } else {
@@ -437,7 +438,7 @@ Make the options feel distinct from each other and grounded in the recent conver
                 }
             }
             Err(e) => {
-                eprintln!("[cinder] generate_handler_descent_commentary failed: {e}");
+                eprintln!("[cinder] generate_transition_commentary failed: {e}");
                 Ok(vec![request.fallback_text.clone()])
             }
         }
@@ -446,15 +447,15 @@ Make the options feel distinct from each other and grounded in the recent conver
 
 #[cfg(test)]
 mod tests {
-    use super::descent::parse_descent_commentary_response;
+    use super::transition::parse_transition_commentary_response;
 
     #[test]
-    fn parse_descent_commentary_valid_json() {
+    fn parse_transition_commentary_valid_json_object() {
         let raw = r#"{
             "summary": "You barely survived the goblin shamans and took their ring.",
-            "introduction": "Welcome to floor two. Watch your step around the glowing mushrooms."
+            "introduction": "Welcome to the deep wood. Watch your step around the glowing mushrooms."
         }"#;
-        let messages = parse_descent_commentary_response(raw);
+        let messages = parse_transition_commentary_response(raw);
         assert_eq!(messages.len(), 2);
         assert_eq!(
             messages[0],
@@ -462,32 +463,50 @@ mod tests {
         );
         assert_eq!(
             messages[1],
-            "Welcome to floor two. Watch your step around the glowing mushrooms."
+            "Welcome to the deep wood. Watch your step around the glowing mushrooms."
         );
     }
 
     #[test]
-    fn parse_descent_commentary_json_in_markdown_block() {
-        let raw = "```json\n{\n  \"summary\": \"Floor one cleared.\",\n  \"introduction\": \"Floor two begins.\"\n}\n```";
-        let messages = parse_descent_commentary_response(raw);
+    fn parse_transition_commentary_accepts_arbitrary_shaped_json() {
+        let raw = r#"{ "setup": "The board. The actual board.", "payoff": "Mind the ember." }"#;
+        let messages = parse_transition_commentary_response(raw);
         assert_eq!(messages.len(), 2);
-        assert_eq!(messages[0], "Floor one cleared.");
-        assert_eq!(messages[1], "Floor two begins.");
+        assert_eq!(messages[0], "Mind the ember.");
+        assert_eq!(messages[1], "The board. The actual board.");
     }
 
     #[test]
-    fn parse_descent_commentary_plaintext_split_fallback() {
+    fn parse_transition_commentary_accepts_json_array() {
+        let raw = r#"["Line one.", "Line two."]"#;
+        let messages = parse_transition_commentary_response(raw);
+        assert_eq!(messages.len(), 2);
+        assert_eq!(messages[0], "Line one.");
+        assert_eq!(messages[1], "Line two.");
+    }
+
+    #[test]
+    fn parse_transition_commentary_json_in_markdown_block() {
+        let raw = "```json\n{\n  \"summary\": \"Surface cleared.\",\n  \"introduction\": \"The depth begins.\"\n}\n```";
+        let messages = parse_transition_commentary_response(raw);
+        assert_eq!(messages.len(), 2);
+        assert_eq!(messages[0], "Surface cleared.");
+        assert_eq!(messages[1], "The depth begins.");
+    }
+
+    #[test]
+    fn parse_transition_commentary_plaintext_split_fallback() {
         let raw = "You survived the mines somehow.\n\nNow step into the swamp.";
-        let messages = parse_descent_commentary_response(raw);
+        let messages = parse_transition_commentary_response(raw);
         assert_eq!(messages.len(), 2);
         assert_eq!(messages[0], "You survived the mines somehow.");
         assert_eq!(messages[1], "Now step into the swamp.");
     }
 
     #[test]
-    fn parse_descent_commentary_single_line_fallback() {
+    fn parse_transition_commentary_single_line_fallback() {
         let raw = "Just a single snarky sentence.";
-        let messages = parse_descent_commentary_response(raw);
+        let messages = parse_transition_commentary_response(raw);
         assert_eq!(messages.len(), 1);
         assert_eq!(messages[0], "Just a single snarky sentence.");
     }
