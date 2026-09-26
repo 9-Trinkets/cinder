@@ -169,6 +169,33 @@
             }
           ],
           "payload_template": {
+            "kind": "actor_speech",
+            "actor_id": "elf-king-5",
+            "key": "king.speech"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "elf-king-5"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "king.aftermath"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "elf-king-5"
+            }
+          ],
+          "payload_template": {
             "kind": "set_stance_by_tag",
             "tag": "elf",
             "stance": "neutral",

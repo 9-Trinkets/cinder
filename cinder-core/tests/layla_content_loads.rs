@@ -148,15 +148,15 @@ fn goblin_shaman_defeat_via_runtime_turn() {
 #[test]
 fn elf_king_defeat_narrates_dungeon_master_myth() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
-    let king_msg = pack.render_message("king.defeated", &[]).unwrap();
+    let king_speech = pack.render_message("king.speech", &[]).unwrap();
 
     // Must refer to the master as "the demon king", "the ruler of the night", "the dark lord", or "the night"
-    assert!(king_msg.contains("the demon king"));
-    assert!(king_msg.contains("the ruler of the night"));
-    assert!(king_msg.contains("the dark lord"));
-    assert!(king_msg.contains("the night"));
+    assert!(king_speech.contains("the demon king"));
+    assert!(king_speech.contains("the ruler of the night"));
+    assert!(king_speech.contains("the dark lord"));
+    assert!(king_speech.contains("the night"));
     // Never refer to the master by other names like "dungeon master"
-    assert!(!king_msg.to_lowercase().contains("dungeon master"));
+    assert!(!king_speech.to_lowercase().contains("dungeon master"));
 
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     state.current_room_id = "d8c5".to_string();
@@ -197,6 +197,43 @@ fn elf_king_defeat_narrates_dungeon_master_myth() {
     // King defeat narrative present
     let texts: Vec<&str> = output.lines.0.iter().map(|line| line.text.as_str()).collect();
     assert!(texts.iter().any(|t| t.contains("demon king") && t.contains("ruler of the night")));
+    // Spoken speech line is attributed with character name
+    assert!(texts.iter().any(|t| t.starts_with("elf king:") && t.contains("demon king")));
+    // Intro prose and aftermath prose are present
+    assert!(texts.iter().any(|t| t.contains("The elf king sinks to one knee")));
+    assert!(texts.iter().any(|t| t.contains("He bows his head. The forest holds its breath.")));
+}
+
+#[test]
+fn leaf_paste_used_via_generic_item_use() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+
+    // Must not be exposed as a standalone action in actions.json
+    assert!(pack.action("use_leaf-paste").is_none());
+
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    state.add_item("leaf-paste");
+    state
+        .actor_stats
+        .entry("player".to_string())
+        .or_default()
+        .insert("hp".to_string(), 5);
+
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue)
+            .expect("runtime creates");
+
+    let outcome = runtime.run_turn("use leaf paste").expect("turn runs");
+
+    let end_state = runtime.export_state().unwrap();
+    let player_hp = end_state.actor_stat("player", "hp");
+    assert_eq!(player_hp, 9); // healed 4 hp
+    assert!(!end_state.has_item("leaf-paste"));
+
+    let text = outcome.text();
+    assert!(text.contains("You press the leaf paste into your wounds. It goes warm and green, and the hurt eases."));
 }
 
 #[test]
@@ -655,6 +692,72 @@ fn layla_trace_requires_magic_chalk_in_inventory() {
         trace,
         &state.current_room_id
     ));
+}
+
+#[test]
+fn trace_deducts_mp_and_recovers_over_time() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let state = cinder_core::engine::state::WorldState::new(&pack);
+
+    let initial_mp = state.actor_stat("player", "mp");
+    assert_eq!(initial_mp, 10);
+
+    let runtime = cinder_core::engine::runtime::CinderRuntime::from_state(
+        pack.clone(),
+        state,
+        false,
+    )
+    .expect("runtime from state");
+
+    // Tracing charm-sigil costs 1 MP (10 -> 9 MP)
+    let outcome = runtime.run_turn("trace charm-sigil").expect("turn runs");
+    assert!(!outcome.text().contains("not enough magic"), "outcome: {}", outcome.text());
+
+    let state_after = runtime.export_state().unwrap();
+    let mp_after = state_after.actor_stat("player", "mp");
+    assert_eq!(mp_after, 9, "Charm sigil costs 1 MP");
+
+    // Tracing drain-sigil (after unlocking) costs 2 MP (9 -> 7 MP)
+    let mut state_with_drain = state_after;
+    state_with_drain.story_vars.set_unchecked("knows_drain", "true");
+    let runtime2 = cinder_core::engine::runtime::CinderRuntime::from_state(
+        pack.clone(),
+        state_with_drain,
+        false,
+    )
+    .expect("runtime2");
+
+    let outcome2 = runtime2.run_turn("trace drain-sigil").expect("turn runs");
+    assert!(!outcome2.text().contains("not enough magic"), "outcome: {}", outcome2.text());
+
+    let state2 = runtime2.export_state().unwrap();
+    // Turn 2 advanced world time 1 -> 2 minutes, crossing the 2-minute interval (+1 MP: 9 -> 10),
+    // and then spent 2 MP on drain sigil (10 - 2 = 8 MP).
+    assert_eq!(state2.actor_stat("player", "mp"), 8, "Drain sigil costs 2 MP, with +1 MP regen at minute 2");
+
+    // MP regenerates over time on 2-minute tick intervals (+1 MP every 2 minutes)
+    // Moving around advances time by 1 minute each step
+    let _ = runtime2.run_turn("south").expect("move south"); // minute 2 -> 3 (no interval crossed)
+    let s_t1 = runtime2.export_state().unwrap();
+    assert_eq!(s_t1.actor_stat("player", "mp"), 8);
+
+    let _ = runtime2.run_turn("north").expect("move north"); // minute 3 -> 4 (interval crossed -> +1 MP)
+    let s_t2 = runtime2.export_state().unwrap();
+    assert_eq!(s_t2.actor_stat("player", "mp"), 9, "MP recovered 1 point at minute 4");
+
+    // Insufficient MP check (fresh room without existing marks)
+    let mut state_low_mp = cinder_core::engine::state::WorldState::new(&pack);
+    state_low_mp.actor_stats.entry("player".to_string()).or_default().insert("mp".to_string(), 0);
+    let runtime3 = cinder_core::engine::runtime::CinderRuntime::from_state(
+        pack.clone(),
+        state_low_mp,
+        false,
+    )
+    .expect("runtime3");
+    let outcome3 = runtime3.run_turn("trace charm-sigil").expect("turn runs");
+    assert!(outcome3.text().contains("You do not have enough magic"), "got: {}", outcome3.text());
+    let s_t3 = runtime3.export_state().unwrap();
+    assert_eq!(s_t3.actor_stat("player", "mp"), 0, "MP remains 0 on rejection");
 }
 
 #[test]

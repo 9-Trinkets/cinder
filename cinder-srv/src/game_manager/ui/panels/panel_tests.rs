@@ -482,3 +482,16 @@ fn take_and_give_exclude_party_members_not_in_current_room() {
     assert!(take_opts.is_empty());
     assert!(give_opts.is_empty());
 }
+
+#[test]
+fn use_panel_surfaces_leaf_paste_under_items() {
+    let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.add_item("leaf-paste");
+
+    let use_opts = build_use_panel_options(&pack, &state);
+    assert_eq!(use_opts.len(), 1);
+    assert_eq!(use_opts[0].id, "leaf-paste");
+    assert_eq!(use_opts[0].title, "Leaf Paste");
+    assert_eq!(use_opts[0].command.as_deref(), Some("use leaf-paste"));
+}

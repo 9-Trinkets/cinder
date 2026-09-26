@@ -339,41 +339,6 @@
       }
     },
     {
-      "id": "use_leaf-paste",
-      "command": "USE LEAF PASTE",
-      "label": "Use Leaf Paste",
-      "group": "gear",
-      "phrases": [
-        "use leaf paste",
-        "apply leaf paste",
-        "eat leaf paste",
-        "heal"
-      ],
-      "player_enabled": true,
-      "target_mode": "none",
-      "outcome_mode": "event",
-      "effects": [
-        "use_item"
-      ],
-      "item_id": "leaf-paste",
-      "event_text": "{actor_name} presses the leaf paste into her wounds. It goes warm and green, and the hurt eases.",
-      "available": {},
-      "ui": {
-        "bar": false,
-        "overflow": true,
-        "group": "gear",
-        "sort_order": 227
-      },
-      "player_command": {
-        "usage": "use leaf paste",
-        "example": "use leaf paste",
-        "advances_time": true,
-        "input": {
-          "required": false
-        }
-      }
-    },
-    {
       "id": "take",
       "command": "TAKE",
       "label": "Take",

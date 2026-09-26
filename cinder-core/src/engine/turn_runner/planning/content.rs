@@ -76,6 +76,7 @@ fn resolved_created_item_id(
     if !item_creation.craftable_items.is_empty() {
         if let Some(input_val) = input.map(str::trim).filter(|s| !s.is_empty()) {
             let input_lower = input_val.to_ascii_lowercase();
+            let normalized = input_lower.replace(' ', "");
             if let Some(matched) = item_creation.craftable_items.iter().find(|craftable_id| {
                 craftable_id.eq_ignore_ascii_case(input_val) && craftable_unlocked(craftable_id)
             }) {
@@ -83,13 +84,19 @@ fn resolved_created_item_id(
             }
             if let Some(matched) = item_creation.craftable_items.iter().find(|craftable_id| {
                 craftable_unlocked(craftable_id)
-                    && content.item(craftable_id).is_some_and(|craftable_item| {
-                        craftable_item.label.to_ascii_lowercase().replace(' ', "")
-                            == input_lower.replace(' ', "")
-                    })
+                    && (craftable_id.to_ascii_lowercase().starts_with(&normalized)
+                        || content.item(craftable_id).is_some_and(|craftable_item| {
+                            craftable_item.label.to_ascii_lowercase().starts_with(&normalized)
+                                || craftable_item
+                                    .label
+                                    .to_ascii_lowercase()
+                                    .split_whitespace()
+                                    .any(|w| w == input_lower)
+                        }))
             }) {
                 return Some(matched.clone());
             }
+            return None;
         }
         return item_creation
             .craftable_items
@@ -302,6 +309,69 @@ pub(super) fn plan_content_command(
         });
         return false;
     }
+    if let Some(ref item_id) = created_item_id {
+        if let Some(item) = content.item(item_id) {
+            if let Some(max) = item.max_active_instances {
+                if !item.spawn_template_id.is_empty() {
+                    let active = context
+                        .planner_state
+                        .active_spawned_actor_count(content, &item.spawn_template_id);
+                    if active >= max {
+                        let template_name = content
+                            .actor(&item.spawn_template_id)
+                            .map(|a| a.name.as_str())
+                            .unwrap_or(&item.spawn_template_id);
+                        let msg_key = if !item.max_instances_message.is_empty() {
+                            &item.max_instances_message
+                        } else {
+                            "sigil.spawn_limit"
+                        };
+                        let max_str = max.to_string();
+                        let message = content
+                            .render_message(
+                                msg_key,
+                                &[
+                                    ("actor", template_name),
+                                    ("max", max_str.as_str()),
+                                ],
+                            )
+                            .unwrap_or_else(|| {
+                                format!("You cannot sustain more than {} active summons.", max)
+                            });
+                        planned.events.push(WorldEvent::ActionRejected { message });
+                        return false;
+                    }
+                }
+            }
+            if item.mp_cost > 0 {
+                let current_mp = context
+                    .planner_state
+                    .actor_stat_u32(&content.settings.combat.player_actor_id, "mp");
+                if current_mp < item.mp_cost {
+                    let cost_str = item.mp_cost.to_string();
+                    let current_str = current_mp.to_string();
+                    let message = content
+                        .render_message(
+                            "magic.insufficient_mp",
+                            &[
+                                ("actor", content.opening.title.as_str()),
+                                ("item", content.item_label(item_id)),
+                                ("mp_cost", cost_str.as_str()),
+                                ("mp", current_str.as_str()),
+                            ],
+                        )
+                        .unwrap_or_else(|| {
+                            format!(
+                                "You do not have enough magic to trace that (needs {} MP, have {}).",
+                                item.mp_cost, current_mp
+                            )
+                        });
+                    planned.events.push(WorldEvent::ActionRejected { message });
+                    return false;
+                }
+            }
+        }
+    }
     let mut payload = BTreeMap::new();
     if let Some(input_metadata) = &metadata.input {
         let value = input.unwrap_or_default().trim();
@@ -337,6 +407,15 @@ pub(super) fn plan_content_command(
     }
 
     if let Some(item_id) = created_item_id {
+        if let Some(item) = content.item(&item_id) {
+            if item.mp_cost > 0 {
+                planned.events.push(WorldEvent::ActorStatAdjusted {
+                    actor_id: content.settings.combat.player_actor_id.clone(),
+                    stat: "mp".to_string(),
+                    delta: -(item.mp_cost as i32),
+                });
+            }
+        }
         planned.events.push(WorldEvent::ItemAcquired {
             item_id,
             storage: action
