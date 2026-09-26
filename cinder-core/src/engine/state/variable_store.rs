@@ -167,6 +167,10 @@ impl VariableStore {
         &self.values
     }
 
+    pub fn to_map(&self) -> &BTreeMap<String, String> {
+        &self.values
+    }
+
     pub fn values_mut(&mut self) -> &mut BTreeMap<String, String> {
         &mut self.values
     }

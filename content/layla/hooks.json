@@ -550,6 +550,96 @@
             "key": "handler.descend.the_village",
             "generate_commentary": true
           }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "village_square"
+            },
+            {
+              "path": "story_vars.zayd_rescued",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.zayd_safe",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "zayd_safe",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "village_square"
+            },
+            {
+              "path": "story_vars.zayd_rescued",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.zayd_safe",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "convert_actor_to_ally",
+            "actor_id": "zayd",
+            "follows_player": false
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "village_square"
+            },
+            {
+              "path": "story_vars.zayd_rescued",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.zayd_safe",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "acquire_item",
+            "item_id": "zayd-lantern"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "village_square"
+            },
+            {
+              "path": "story_vars.zayd_rescued",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.zayd_safe",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "zayd.return_safe"
+          }
         }
       ]
     }
@@ -622,6 +712,32 @@
             "kind": "set_story_var",
             "key": "fortress_gate_open",
             "value": "true"
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
+  "zayd.freed": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "set_story_var",
+            "key": "zayd_rescued",
+            "value": "true"
+          },
+          {
+            "kind": "convert_actor_to_ally",
+            "actor_id": "zayd",
+            "follows_player": true,
+            "messages": []
           }
         ]
       }

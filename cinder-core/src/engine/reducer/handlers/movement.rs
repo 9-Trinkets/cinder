@@ -79,6 +79,7 @@ pub(crate) fn handle_player_moved(
             "from_room_id": from_room_id,
             "to_room_id": to_room_id,
             "first_visit": first_visit,
+            "story_vars": state.story_vars.to_map(),
         }),
         lines,
     )

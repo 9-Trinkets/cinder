@@ -535,6 +535,57 @@
           "required": false
         }
       }
+    },
+    {
+      "id": "unlock_cage",
+      "command": "UNLOCK_CAGE",
+      "label": "Unlock Cage",
+      "group": "interaction",
+      "phrases": [
+        "unlock cage",
+        "unlock the cage",
+        "open cage",
+        "open the cage",
+        "use key",
+        "use the key",
+        "use cage key",
+        "use iron cage key",
+        "free zayd",
+        "free the boy",
+        "free boy",
+        "unlock zayd"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "content_event": {
+        "id": "layla.zayd_freed",
+        "event_text": "You slide the heavy iron key into the massive padlock on the suspended cage. With a sharp click, the tumblers turn and the barred gate swings open. Zayd scrambles out onto the iron gantry, tears cutting through the soot on his cheeks. He clutches his brass lantern tight to his chest and looks up at you with fierce eyes: 'You came back for me!' The handler's voice crackles over your radio, cold and flat: 'Layla. That offering was cleared on the manifest. Let the tithe ship. That's the job.'",
+        "hook_id": "zayd.freed",
+        "signals": [
+          "zayd_freed"
+        ]
+      },
+      "available": {
+        "allowed_rooms": [
+          "steam_prison_cage"
+        ],
+        "requires_item": "iron-cage-key"
+      },
+      "ui": {
+        "bar": false,
+        "overflow": false,
+        "group": "interact",
+        "sort_order": 51
+      },
+      "player_command": {
+        "usage": "unlock cage",
+        "example": "unlock cage",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
     }
   ]
 }

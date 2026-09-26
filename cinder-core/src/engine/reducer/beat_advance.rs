@@ -2,7 +2,7 @@ use crate::content::types::{AdvanceCondition, AdvanceEffect, ContentPack};
 use crate::engine::state::{GamePhase, VariableStore, WorldState};
 use crate::engine::turn_policies::clear_inactive_objective_state;
 
-pub(super) fn advance_objective_for_signal(
+pub(crate) fn advance_objective_for_signal(
     state: &mut WorldState,
     content: &ContentPack,
     signal: &str,

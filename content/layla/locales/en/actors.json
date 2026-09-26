@@ -1564,29 +1564,30 @@
       "intelligence": 6
     },
     "level": 2,
-    "initial_inventory": {
-      "zayd-lantern": 1
-    },
+    "initial_inventory": {},
     "prompt_context": {
       "character_notes": [
         "You are Zayd, an eleven-year-old orphan from the mining village.",
         "Your parents died years ago in a steam drill collapse, leaving you with only an old brass miner lantern.",
-        "The village elders surrendered you to the garrison as an offering for the upper floors, but you refuse to let the soldiers or Priest Harun see you cry."
+        "The village elders surrendered you to the garrison as an offering for the upper floors, but you refuse to let the soldiers or Priest Harun see you cry.",
+        "You clutch your parents' brass lantern close with both hands and will not let anyone take it from you while in the military fortress."
       ],
       "subtext_notes": [
         "You are terrified of the dark pits above, but you act tough and defiant.",
         "You clutch your parents' lantern because they told you 'light always finds a way through stone.'",
-        "When Layla rescues you, you feel overwhelming relief and gratitude, and you want her to have the lantern to guide her through the dark."
+        "While in the fortress or escaping, you refuse to part with the lantern — it is the only thing keeping you brave.",
+        "Only when you are safely back in the worker village among your people will you present the lantern to Layla as a reward for saving your life."
       ],
       "response_notes": [
         "Speak like a brave 11-year-old boy who refuses to back down in front of bullies.",
         "Yell defiance at the guards and the silent priest.",
-        "When rescued by Layla, thank her with sincere tears and offer your parents' lantern."
+        "While inside the fortress or escaping, clutch the lantern tight and tell Layla you must hurry back to the village. Do NOT offer, surrender, or gift the lantern yet.",
+        "Only if you are safely back in the village do you thank Layla with tears of relief and offer your parents' lantern."
       ],
       "behavior_examples": [
         "He rattles the cage bars and glares at Priest Harun.",
-        "He wipes soot from his eyes with the back of his sleeve.",
-        "He holds out his brass lantern, saying light always finds a way through stone."
+        "He wipes soot from his eyes with the back of his sleeve and clutches his lantern close to his chest.",
+        "He whispers that his mom and dad said light always finds a way through stone."
       ]
     }
   },

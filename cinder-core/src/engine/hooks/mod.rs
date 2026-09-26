@@ -223,6 +223,41 @@ fn apply_hook_effects(
             }
             WorldHookEffect::SetStoryVar { key, value } => {
                 state.story_vars.set_unchecked(key.as_str(), value.as_str());
+                if let Some(lines) = lines.as_deref_mut() {
+                    lines.extend_narration(
+                        crate::engine::reducer::beat_advance::advance_objective_for_signal(
+                            state,
+                            content,
+                            key.as_str(),
+                        ),
+                    );
+                }
+            }
+            WorldHookEffect::AcquireItem { item_id } => {
+                let player_id = content.settings.combat.player_actor_id.clone();
+                state.add_item(&item_id);
+                state.actor_add_item(&player_id, &item_id);
+                if let Some(lines) = lines.as_deref_mut() {
+                    let label = content.item_label(&item_id);
+                    let line = content
+                        .render_message("item.acquired_inventory", &[("item", label)])
+                        .unwrap_or_else(|| format!("You received the {label}."));
+                    lines.narration(line);
+                    lines.extend_narration(
+                        crate::engine::reducer::beat_advance::advance_objective_for_signal(
+                            state,
+                            content,
+                            &format!("item_acquired:{item_id}"),
+                        ),
+                    );
+                    lines.extend_narration(
+                        crate::engine::reducer::beat_advance::advance_objective_for_signal(
+                            state,
+                            content,
+                            "item_acquired",
+                        ),
+                    );
+                }
             }
             WorldHookEffect::NarrateMessage {
                 key,
@@ -463,6 +498,8 @@ enum WorldHookEffect {
     },
     /// Sets a story variable (e.g. a flag marking a boss as defeated).
     SetStoryVar { key: String, value: String },
+    /// Adds an item directly to the player's inventory and announces acquisition.
+    AcquireItem { item_id: String },
     /// Defeats every living actor carrying `tag` (e.g. an army crumbling when
     /// its commander falls).
     DefeatActorsByTag { tag: String },

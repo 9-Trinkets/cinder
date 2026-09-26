@@ -1,5 +1,5 @@
 mod actor_commands;
-mod beat_advance;
+pub(crate) mod beat_advance;
 mod combat;
 mod command_effects;
 mod equipment;

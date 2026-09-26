@@ -215,11 +215,15 @@ With multi-member parties, players can assign specialized tactical roles:
   - Hook `valve.diverted` triggers on valve turning, setting `fortress_gate_open = "true"` and releasing the hydraulic lock pins to unlock the northern bulkhead.
   - Updated Tariq's prompt context in `actors.json` with knowledge and dialogue clues pointing Layla to the wash terrace valve.
   - Verified via full end-to-end integration test `floor4_diversion_opens_fortress_gate`.
-- Quest stage skeleton in `beats.json` (`mq_*`, `sq_*`) and hooks (`malik_defeated`, `priest_harun.defeat`, `item.teleport_scroll_read`).
-- **WIS stat implemented** (`stats.json`), **Zayd's Lantern → +6 WIS** (`items.json`), actor wisdom authored (golems low, elves higher, queen highest, Sakhra ~5), and **Sakhra recast as the village guardian golem** (excavation backstory removed; high-WIS awakening language stays).
+- **Zayd Rescue, Escort, and Quest Reward Lantern (Side Quest `save_zayd`):**
+  - Cleared `zayd`'s initial inventory to prevent premature gifting via dialogue grounding. Zayd's prompt context instructs him to clutch his parents' lantern close and only grant it once safe in the village.
+  - Authored player command `unlock_cage` (`UNLOCK_CAGE`, requires `iron-cage-key` at `steam_prison_cage`).
+  - Hook `zayd.freed` sets `zayd_rescued = "true"`, converts Zayd to an ally with `follows_player = true`, and emits the Handler's warning (*"Let the tithe ship. That's the job"*).
+  - Escorting Zayd back to `village_square` triggers safe arrival hook in `player.moved` (gated on `zayd_safe` `not_exists`): sets `zayd_safe = "true"`, converts Zayd back to static village ally (`follows_player = false`), awards `zayd-lantern` to Layla's inventory, narrates the reunion with Yasmin, and completes side quest `sq_return_zayd`.
+  - Added `WorldHookEffect::AcquireItem` engine effect to cinder-core and wired `SetStoryVar` to emit beat advancement signals.
+  - Verified via full end-to-end integration test `floor4_zayd_rescue_and_village_escort`.
 
 **To build (next passes):**
 1. Rooms + features for Outer Triangle `mine_*` and `drainage_flue` (the stealth infiltration route);
-2. `beat_objectives.json` quest progress (currently empty);
-3. Zayd-safety hooks (`zayd_freed`, `zayd_safe`) and the handler's "let the tithe ship" friction line;
-4. Awakening runtime: WIS ≥ 10 name change + speech unlock (engine/UI follow-up; stat is real today, the threshold behavior comes with the content above).
+2. `beat_objectives.json` quest progress;
+3. Awakening runtime: WIS ≥ 10 name change + speech unlock (engine/UI follow-up; stat is real today, the threshold behavior comes with the content above).

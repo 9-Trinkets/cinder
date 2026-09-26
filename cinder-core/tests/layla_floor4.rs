@@ -707,3 +707,178 @@ fn multi_floor_descent_isolates_transcripts_and_builds_summaries() {
     assert_eq!(f2_summary.summary_text, "Layla conquered Deep Forest.");
 }
 
+#[test]
+fn floor4_zayd_rescue_and_village_escort() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+
+    // 1. Initial state checks: Zayd must NOT carry lantern in inventory
+    let zayd = pack.actor("zayd").expect("zayd exists");
+    assert!(
+        !zayd.initial_inventory.contains_key("zayd-lantern"),
+        "Zayd must not carry zayd-lantern in initial inventory"
+    );
+    assert!(
+        !state.actor_has_item("player", "zayd-lantern"),
+        "Player must not start with zayd-lantern"
+    );
+
+    // Start in village_south_1 to talk to Elder Rashid and activate sq_save_zayd
+    state.current_room_id = "village_south_1".to_string();
+
+    let scripted_dialogue = cinder_core::engine::dialogue::ScriptedDialogueGenerator::new()
+        .with_reply(
+            "elder_rashid",
+            "Please, Layla... we offered the boy Zayd as a sacrifice to the garrison. You must rescue him from the suspended steam cage!",
+        );
+    let dialogue = std::sync::Arc::new(scripted_dialogue);
+
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack.clone(),
+        state,
+        dialogue.clone(),
+    )
+    .expect("runtime creates");
+
+    // Talk to Elder Rashid -> triggers sq_save_zayd
+    let talk_outcome = runtime.run_turn("talk to rashid").expect("talk to rashid");
+    assert!(talk_outcome.text().contains("Zayd"));
+
+    let objectives = runtime.current_objective_summaries().unwrap();
+    let save_zayd_quest = objectives
+        .iter()
+        .find(|o| o.quest_id.as_deref() == Some("save_zayd"))
+        .expect("save_zayd quest active");
+    assert_eq!(save_zayd_quest.stage_id, "sq_save_zayd");
+
+    // 2. Open fortress bulkhead gate and grant player the cage key
+    let mut state = runtime.export_state().unwrap();
+    state.story_vars.set_unchecked("fortress_gate_open", "true");
+    state.add_item("iron-cage-key");
+    state.actor_add_item("player", "iron-cage-key");
+    state.current_room_id = "steam_prison_cage".to_string();
+
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack.clone(),
+        state,
+        dialogue.clone(),
+    )
+    .expect("runtime creates");
+
+    // Before unlock: Zayd is in the cage, does not follow, does not have lantern
+    let state_before = runtime.export_state().unwrap();
+    assert!(!state_before.relationship("zayd").follows_player);
+    assert!(!state_before.actor_has_item("player", "zayd-lantern"));
+    assert!(!state_before.actor_has_item("zayd", "zayd-lantern"));
+
+    // 3. Unlock cage
+    let unlock_outcome = runtime.run_turn("unlock cage").expect("unlock cage");
+    let unlock_text = unlock_outcome.text();
+    assert!(
+        unlock_text.contains("slide the heavy iron key") || unlock_text.contains("tumblers turn"),
+        "Unlock description missing in: {unlock_text}"
+    );
+    assert!(
+        unlock_text.contains("Let the tithe ship. That's the job"),
+        "Handler tithe warning missing in: {unlock_text}"
+    );
+
+    // Verify Zayd is now allied and follows player
+    let state_after_unlock = runtime.export_state().unwrap();
+    assert_eq!(
+        state_after_unlock.story_vars.get("zayd_rescued"),
+        Some("true")
+    );
+    assert!(
+        state_after_unlock.relationship("zayd").follows_player,
+        "Zayd must now follow the player"
+    );
+    assert_eq!(
+        state_after_unlock.stance("zayd"),
+        cinder_core::engine::state::ActorStance::Allied
+    );
+    assert!(
+        !state_after_unlock.actor_has_item("player", "zayd-lantern"),
+        "Player must not receive lantern prematurely while in cage room"
+    );
+
+    // Verify quest advanced to escort stage sq_return_zayd
+    let objectives_escort = runtime.current_objective_summaries().unwrap();
+    let escort_quest = objectives_escort
+        .iter()
+        .find(|o| o.quest_id.as_deref() == Some("save_zayd"))
+        .expect("escort quest active");
+    assert_eq!(escort_quest.stage_id, "sq_return_zayd");
+
+    // 4. Escort Zayd back through the fortress and village loop
+    // steam_prison_cage -> ne -> west_iron_walkway -> ne -> fortress_gate -> north -> village_north_gate -> sw -> village_west_2 -> sw -> village_west_1 -> sw -> village_sw_corner
+    let _ = runtime.run_turn("northeast").expect("to west_iron_walkway");
+    assert_eq!(runtime.current_room_id().unwrap(), "west_iron_walkway");
+    let s = runtime.export_state().unwrap();
+    assert_eq!(s.actor_current_room_id(&pack, "zayd"), "west_iron_walkway");
+
+    let _ = runtime.run_turn("northeast").expect("to fortress_gate");
+    assert_eq!(runtime.current_room_id().unwrap(), "fortress_gate");
+    let s = runtime.export_state().unwrap();
+    assert_eq!(s.actor_current_room_id(&pack, "zayd"), "fortress_gate");
+
+    let _ = runtime.run_turn("north").expect("to village_north_gate");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_north_gate");
+    let s = runtime.export_state().unwrap();
+    assert_eq!(s.actor_current_room_id(&pack, "zayd"), "village_north_gate");
+
+    let _ = runtime.run_turn("southwest").expect("to village_west_2");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_west_2");
+    let s = runtime.export_state().unwrap();
+    assert_eq!(s.actor_current_room_id(&pack, "zayd"), "village_west_2");
+
+    let _ = runtime.run_turn("southwest").expect("to village_west_1");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_west_1");
+
+    let _ = runtime.run_turn("southwest").expect("to village_sw_corner");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_sw_corner");
+
+    // Still does not have lantern right before entering village square
+    let s_before_square = runtime.export_state().unwrap();
+    assert!(!s_before_square.actor_has_item("player", "zayd-lantern"));
+    assert!(s_before_square.relationship("zayd").follows_player);
+
+    // 5. Enter village_square -> triggers safe arrival hook
+    let return_outcome = runtime.run_turn("east").expect("enter village_square");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_square");
+    let return_text = return_outcome.text();
+
+    // Verify safe arrival narrative
+    assert!(
+        return_text.contains("Yasmin rushes forward")
+            || return_text.contains("light always finds a way through stone"),
+        "Return safe narrative missing in: {return_text}"
+    );
+
+    // Verify lantern received
+    assert!(
+        return_text.contains("lantern") || return_text.contains("zayd-lantern"),
+        "Item acquisition announcement missing in: {return_text}"
+    );
+
+    let final_state = runtime.export_state().unwrap();
+    assert_eq!(final_state.story_vars.get("zayd_safe"), Some("true"));
+    assert!(
+        !final_state.relationship("zayd").follows_player,
+        "Zayd must stop following once safe in the village"
+    );
+    assert!(
+        final_state.actor_has_item("player", "zayd-lantern")
+            || final_state.has_item("zayd-lantern"),
+        "Player must now possess zayd-lantern"
+    );
+
+    // Verify quest completion
+    let final_objectives = runtime.current_objective_summaries().unwrap();
+    assert!(
+        !final_objectives.iter().any(|o| o.quest_id.as_deref() == Some("save_zayd")),
+        "save_zayd quest must be completed upon safe return"
+    );
+}
+
+
