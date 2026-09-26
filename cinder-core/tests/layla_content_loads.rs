@@ -708,7 +708,7 @@ fn layla_shipped_pack_invariants_and_wiring() {
     assert_eq!(pack.message_voice("combat.attack_hit"), cinder_core::content::types::PackMessageVoice::Narration);
     assert_eq!(
         pack.settings.party.initial_orders.get("golem-dark-nw").cloned(),
-        Some("guard".to_string())
+        Some("follow".to_string())
     );
     assert_eq!(
         pack.settings.party.initial_orders.get("golem-pale-ne").cloned(),

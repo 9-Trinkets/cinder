@@ -100,6 +100,7 @@ pub(super) fn trigger_surrounded_hooks(
         let relationship = state.relationship(actor_id);
         let converted = relationship.stance == ActorStance::Allied || relationship.follows_player;
         if converted {
+            state.initialize_party_order(content, actor_id);
             // The closed ring draws the convert into the room the ring was
             // drawn in, so a charmed mob joins the party immediately instead
             // of staying in the room where it was encircled.

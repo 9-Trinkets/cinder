@@ -8,6 +8,13 @@ impl WorldState {
             .get(actor_id)
             .cloned()
             .or_else(|| content.settings.party.initial_orders.get(actor_id).cloned())
+            .or_else(|| {
+                if self.stance(actor_id) == ActorStance::Allied && !content.is_player_actor(actor_id) {
+                    Some("follow".to_string())
+                } else {
+                    None
+                }
+            })
     }
 
     pub fn assign_party_order(
@@ -32,9 +39,21 @@ impl WorldState {
         if self.party_orders.contains_key(&actor_id) {
             return;
         }
-        if let Some(order) = content.settings.party.initial_orders.get(&actor_id) {
-            self.party_orders.insert(actor_id, order.clone());
+        let order = content
+            .settings
+            .party
+            .initial_orders
+            .get(&actor_id)
+            .cloned()
+            .unwrap_or_else(|| "follow".to_string());
+        if !matches!(
+            order.to_ascii_lowercase().as_str(),
+            "guard" | "patrol" | "sentry" | "hold"
+        ) && self.stance(&actor_id) == ActorStance::Allied
+        {
+            self.set_follows_player(&actor_id, true);
         }
+        self.party_orders.insert(actor_id, order);
     }
 }
 
@@ -123,5 +142,26 @@ mod tests {
             restored.party_order(&content, "blair"),
             Some("guard".to_string())
         );
+    }
+
+    #[test]
+    fn unauthored_allied_mobs_default_to_follow_order() {
+        let content = minimal_test_pack();
+        let mut state = WorldState::new(&content);
+        state.set_stance("blair", ActorStance::Allied);
+
+        // party_order queries on uninitialized allied mob default to follow
+        assert_eq!(
+            state.party_order(&content, "blair"),
+            Some("follow".to_string())
+        );
+
+        // initialize_party_order seeds follow into state
+        state.initialize_party_order(&content, "blair");
+        assert_eq!(
+            state.party_orders.get("blair"),
+            Some(&"follow".to_string())
+        );
+        assert!(state.follows_player("blair"));
     }
 }
