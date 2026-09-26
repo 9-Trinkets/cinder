@@ -47,20 +47,13 @@ fn bar_shows_actions_that_are_bar_only_even_when_not_typed_command() {
 }
 
 #[test]
-fn overflow_label_prefers_the_authored_action_label() {
+fn overflow_label_uses_the_authored_action_label() {
     let action = ActionDefinition {
         id: "use_salve".to_string(),
         label: "Use Moss Poultice".to_string(),
         ..ActionDefinition::default()
     };
     assert_eq!(overflow_action_title(&action), "Use Moss Poultice");
-
-    let legacy = ActionDefinition {
-        id: "use_salve".to_string(),
-        label: String::new(),
-        ..ActionDefinition::default()
-    };
-    assert_eq!(overflow_action_title(&legacy), "Use Salve");
 }
 
 #[test]

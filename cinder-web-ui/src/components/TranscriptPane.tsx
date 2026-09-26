@@ -23,32 +23,11 @@ function groupTranscriptLines(lines: Line[]): TranscriptItem[] {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
 
-    // 1. Single combined line: "== Room Name ==\n\nDescription..."
-    const combinedMatch = line.text.match(/^==\s*([^=\n]+?)\s*==\s*\n+([\s\S]+)$/)
-    if (combinedMatch) {
-      items.push({
-        type: 'room_card',
-        key: line.key,
-        title: combinedMatch[1].trim(),
-        body: combinedMatch[2].trim(),
-      })
-      continue
-    }
-
-    // 2. Heading line: "== Room Name =="
-    const isHeading = line.kind === 'heading' || /^==\s*[^=\n]+?\s*==$/.test(line.text.trim())
-    if (isHeading) {
+    if (line.kind === 'heading') {
       const cleanTitle = line.text.replace(/^==\s*|\s*==$/g, '').trim()
       const nextLine = lines[i + 1]
 
-      // Check if following line is the room description
-      const nextIsNarration =
-        nextLine &&
-        (nextLine.kind === 'narration' || nextLine.kind === undefined) &&
-        !/^==\s*[^=\n]+?\s*==$/.test(nextLine.text.trim()) &&
-        !nextLine.text.match(/^([A-Z][a-zA-Z0-9_\s]{1,24}):\s*(["“].*|[A-Za-z].*)$/s)
-
-      if (nextIsNarration) {
+      if (nextLine && nextLine.kind === 'narration') {
         items.push({
           type: 'room_card',
           key: line.key,
@@ -59,7 +38,6 @@ function groupTranscriptLines(lines: Line[]): TranscriptItem[] {
         continue
       }
 
-      // Standalone heading
       items.push({
         type: 'room_card',
         key: line.key,

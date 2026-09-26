@@ -7,24 +7,9 @@ use cinder_core::engine::turn_policies::action_is_available;
 use super::super::PanelOptionData;
 
 /// Display title for an overflow action button: the authored `label` (e.g.
-/// "Use Moss Poultice") when present, otherwise a title-cased form of the
-/// action id as a fallback for legacy actions without a label.
+/// "Use Moss Poultice").
 pub(crate) fn overflow_action_title(action: &ActionDefinition) -> String {
-    if !action.label.is_empty() {
-        return action.label.clone();
-    }
-    action
-        .id
-        .split('_')
-        .map(|word| {
-            let mut chars = word.chars();
-            chars
-                .next()
-                .map(|first: char| first.to_uppercase().to_string() + chars.as_str())
-                .unwrap_or_default()
-        })
-        .collect::<Vec<_>>()
-        .join(" ")
+    action.label.clone()
 }
 
 pub(crate) fn build_overflow_actions(

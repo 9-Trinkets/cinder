@@ -75,7 +75,6 @@ export function login(username: string, password: string) {
 
 export interface PlayInfo {
   play_id: string
-  session_id?: string
   pack_id: string
   created_at: string
   updated_at: string

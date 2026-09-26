@@ -108,7 +108,7 @@ export function usePlay() {
   }
 
   function appendLines(
-    items: Array<{ text: string; kind?: api.LineKind }>,
+    items: Array<{ text: string; kind: api.LineKind }>,
     behavior: ScrollBehavior = 'auto',
   ) {
     if (items.length === 0) return
@@ -241,7 +241,7 @@ export function usePlay() {
 
   function closeMovie() {
     if (movie && movie.narrative_lines.length > 0) {
-      appendLines(movie.narrative_lines.map(text => ({ text })), 'auto')
+      appendLines(movie.narrative_lines.map(text => ({ text, kind: 'narration' })), 'auto')
     }
     setMovie(null)
     setMovieFrame(0)
@@ -386,7 +386,7 @@ export function usePlay() {
         if (playState?.intro_text) {
           setLines([
             ...titleEntries,
-            { text: playState.intro_text, key: nextKey.current++ },
+            { text: playState.intro_text, kind: 'narration', key: nextKey.current++ },
           ])
         }
         return true

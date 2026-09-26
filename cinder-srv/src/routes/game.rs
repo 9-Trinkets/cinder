@@ -22,8 +22,6 @@ fn internal<E: ToString>(e: E) -> (StatusCode, String) {
 #[derive(Serialize)]
 pub struct PlayInfo {
     pub play_id: String,
-    #[serde(rename = "session_id")]
-    pub session_id: String,
     pub pack_id: String,
     pub created_at: String,
     pub updated_at: String,
@@ -37,16 +35,10 @@ pub struct PlayInfo {
     pub current_room_name: String,
 }
 
-#[allow(dead_code)]
-pub type SessionInfo = PlayInfo;
-
 #[derive(Deserialize)]
 pub struct CreatePlayRequest {
     pub pack_id: String,
 }
-
-#[allow(dead_code)]
-pub type CreateSessionRequest = CreatePlayRequest;
 
 pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
     let auth_routes = Router::new()
@@ -82,7 +74,6 @@ pub async fn create_play(
             .map_err(internal)?;
 
     Ok(Json(PlayInfo {
-        session_id: play_id.clone(),
         play_id,
         pack_id: req.pack_id,
         created_at: now_unix_secs(),
@@ -171,7 +162,6 @@ pub async fn list_plays(
                         })
                         .unwrap_or_default();
                     PlayInfo {
-                        session_id: id.clone(),
                         play_id: id,
                         pack_id,
                         created_at: created_at.to_string(),

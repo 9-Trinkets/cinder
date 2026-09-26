@@ -116,41 +116,6 @@ pub(super) async fn insert_transcript_entries(
     Ok(())
 }
 
-pub(super) fn transcript_lines_from_state_json(state_json: &str) -> Result<Vec<String>, String> {
-    if state_json.is_empty() || state_json == "{}" {
-        return Ok(Vec::new());
-    }
-    let state = WorldState::from_saved_json(state_json)
-        .map_err(|e| format!("failed to deserialize state: {e}"))?;
-    Ok(state.transcript)
-}
-
-pub(super) async fn replace_transcript_entries_with_lines(
-    tx: &mut Transaction<'_, Postgres>,
-    play_id: &Uuid,
-    lines: &[String],
-) -> Result<(), String> {
-    sqlx::query("DELETE FROM transcript_entries WHERE play_id = $1")
-        .bind(play_id)
-        .execute(&mut **tx)
-        .await
-        .map_err(|e| format!("transcript delete error: {e}"))?;
-
-    for line in lines {
-        sqlx::query(
-            "INSERT INTO transcript_entries (play_id, turn_number, role, text) VALUES ($1, $2, $3, $4)",
-        )
-        .bind(play_id)
-        .bind(0_i32)
-        .bind("narrative")
-        .bind(line)
-        .execute(&mut **tx)
-        .await
-        .map_err(|e| format!("transcript insert error: {e}"))?;
-    }
-    Ok(())
-}
-
 pub(super) fn parse_uuid(value: &str, field: &str) -> Result<Uuid, String> {
     Uuid::parse_str(value).map_err(|e| format!("invalid {field}: {e}"))
 }

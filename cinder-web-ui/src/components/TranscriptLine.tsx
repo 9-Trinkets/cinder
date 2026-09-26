@@ -6,7 +6,7 @@ export type { LineKind }
 export interface Line {
   text: string
   key: number
-  kind?: LineKind
+  kind: LineKind
 }
 
 type SegmentKind = 'plain' | 'match' | 'crafted' | 'interactable'

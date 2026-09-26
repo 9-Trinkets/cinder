@@ -7,23 +7,6 @@ use crate::engine::state::{ActorStance, GamePhase, WorldState};
 
 use super::combat_reactions::resolve_post_damage_reactions;
 
-fn legacy_guard_in_room(
-    state: &WorldState,
-    content: &ContentPack,
-    room_id: &str,
-) -> Option<String> {
-    content
-        .actors
-        .iter()
-        .filter(|actor| actor.guard && state.relationship(&actor.id).follows_player)
-        .filter(|actor| {
-            state.actor_is_in_room(content, &actor.id, room_id)
-                && !state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
-        })
-        .map(|actor| actor.id.clone())
-        .next()
-}
-
 pub(crate) fn handle_hostile_strike(
     state: &mut WorldState,
     content: &ContentPack,
@@ -58,16 +41,7 @@ pub(crate) fn handle_hostile_strike(
     let defensive_reaction = select_defensive_reaction(content, state);
     let guard_id = defensive_reaction
         .as_ref()
-        .map(|decision| decision.actor_id.clone())
-        .or_else(|| {
-            content
-                .settings
-                .party
-                .combat_rules
-                .is_empty()
-                .then(|| legacy_guard_in_room(state, content, state.current_room_id.as_str()))
-                .flatten()
-        });
+        .map(|decision| decision.actor_id.clone());
     if let Some(guard_id) = guard_id {
         let guard_defense = state
             .effective_actor_stat(content, &guard_id, &combat.defense_stat_id)

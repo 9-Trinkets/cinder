@@ -27,13 +27,8 @@ pub struct ItemDefinition {
     /// Equipment slots this item occupies when equipped (e.g. `["weapon"]`).
     /// One-handed items list a single slot; two-hand weapons list both hands
     /// (e.g. `["weapon", "off-hand"]`). Every slot must be declared in
-    /// `settings.equipment_slots`; an empty list means not equippable. The
-    /// legacy singular `equip_slot` key is still accepted.
-    #[serde(
-        default,
-        alias = "equip_slot",
-        deserialize_with = "deserialize_equip_slots"
-    )]
+    /// `settings.equipment_slots`; an empty list means not equippable.
+    #[serde(default)]
     pub equip_slots: Vec<String>,
     /// Stat id → bonus applied while this item is equipped. Keys must
     /// reference stats declared by the pack.
@@ -102,21 +97,6 @@ impl ItemDefinition {
     }
 }
 
-fn deserialize_equip_slots<'de, D>(deserializer: D) -> Result<Vec<String>, D::Error>
-where
-    D: serde::Deserializer<'de>,
-{
-    #[derive(Deserialize)]
-    #[serde(untagged)]
-    enum OneOrMany {
-        One(String),
-        Many(Vec<String>),
-    }
-    Ok(match OneOrMany::deserialize(deserializer)? {
-        OneOrMany::One(slot) => vec![slot],
-        OneOrMany::Many(slots) => slots,
-    })
-}
 
 fn is_false(value: &bool) -> bool {
     !*value
@@ -130,13 +110,6 @@ fn is_zero_u32(value: &u32) -> bool {
 mod tests {
     use super::ItemDefinition;
 
-    #[test]
-    fn legacy_singular_equip_slot_key_still_deserializes() {
-        let item: ItemDefinition =
-            serde_json::from_str(r#"{"id":"x","label":"x","description":"","equip_slot":"weapon"}"#)
-                .unwrap();
-        assert_eq!(item.equip_slots, vec!["weapon".to_string()]);
-    }
 
     #[test]
     fn two_hand_weapons_use_the_list_form() {

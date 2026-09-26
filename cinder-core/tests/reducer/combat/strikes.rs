@@ -1,6 +1,10 @@
 use super::super::common::*;
 use super::transcript;
-use cinder_core::content::types::{CombatSettingsDefinition, PackMessage, StatDefinition};
+use cinder_core::content::types::{
+    CombatSettingsDefinition, PackMessage, PartyCandidatePriority, PartyCombatDecisionRule,
+    PartyDecisionCondition, PartyDecisionTier, PartyPolicyDefinition, PartyReactionAction,
+    PartyReactionCooldown, PartyReactionWindow, PartyTargetSelection, StatDefinition,
+};
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::reducer::apply_events;
 use cinder_core::engine::state::{ActorStance, GamePhase, WorldState};
@@ -163,10 +167,26 @@ fn hostile_strike_intercepted_by_guard_takes_at_least_minimum_damage() {
     salamander.initial_stats = BTreeMap::from([("confidence".to_string(), 3)]);
     salamander.attack_kind = "fire".to_string();
     pack.actors.push(salamander);
+    pack.settings.party = PartyPolicyDefinition {
+        initial_orders: BTreeMap::from([("bodyguard".to_string(), "guard".to_string())]),
+        combat_rules: vec![PartyCombatDecisionRule {
+            id: "defender-intercepts".to_string(),
+            tier: PartyDecisionTier::Order,
+            window: PartyReactionWindow::BeforeHostileDamage,
+            action: PartyReactionAction::Intercept,
+            conditions: vec![PartyDecisionCondition::OrderIs {
+                orders: vec!["guard".to_string()],
+            }],
+            target: PartyTargetSelection::Player,
+            candidate_priority: vec![PartyCandidatePriority::HighestDefense],
+            support_effect: None,
+            cooldown: PartyReactionCooldown::FixedMinutes { minutes: 5 },
+            message: "combat.guard_intercepts".to_string(),
+        }],
+    };
     // The guard soaks the entire blow against its own defense: defense 3 would
     // theoretically zero it out, but the minimum-damage floor still applies.
     let mut guard = test_actor("bodyguard", "golem bodyguard", LOUNGE_ID);
-    guard.guard = true;
     guard.initial_stats = BTreeMap::from([
         ("stamina".to_string(), 10),
         ("hunger".to_string(), 3),

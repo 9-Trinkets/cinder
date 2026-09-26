@@ -19,8 +19,7 @@ pub use self::ui::UiSnapshot;
 
 use db::{
     fetch_transcript_lines, insert_transcript_entries, load_play_row, load_play_row_unlocked,
-    narrative_kind, parse_uuid, replace_transcript_entries_with_lines,
-    transcript_lines_from_state_json, PendingTranscriptEntry, MAX_PLAY_WRITE_RETRIES,
+    narrative_kind, parse_uuid, PendingTranscriptEntry, MAX_PLAY_WRITE_RETRIES,
 };
 
 async fn with_runtime<F, R>(
@@ -41,14 +40,7 @@ where
     for _attempt in 0..MAX_PLAY_WRITE_RETRIES {
         let (pack_id, locale, state_json) =
             load_play_row_unlocked(pool, play_id, player_id).await?;
-        let transcript_lines = {
-            let rows = fetch_transcript_lines(pool, play_id, player_id).await?;
-            if rows.is_empty() {
-                transcript_lines_from_state_json(&state_json)?
-            } else {
-                rows
-            }
-        };
+        let transcript_lines = fetch_transcript_lines(pool, play_id, player_id).await?;
 
         let f = Arc::clone(&f);
         let base_pack_id = pack_id.clone();
@@ -132,11 +124,6 @@ pub async fn get_play_ui(
     let player_id = parse_uuid(player_id, "player id")?;
     let (pack_id, locale, state_json) = load_play_row_unlocked(pool, &play_id, &player_id).await?;
     let transcript_lines = fetch_transcript_lines(pool, &play_id, &player_id).await?;
-    let transcript_lines = if transcript_lines.is_empty() {
-        transcript_lines_from_state_json(&state_json)?
-    } else {
-        transcript_lines
-    };
 
     let snapshot = tokio::task::spawn_blocking(move || {
         let content = loader::load_named_pack(&pack_id, Some(&locale))
@@ -157,11 +144,6 @@ pub async fn get_transcript(
 ) -> Result<Vec<cinder_core::engine::narrative::NarrativeLine>, String> {
     let play_id = parse_uuid(play_id, "play id")?;
     let player_id = parse_uuid(player_id, "player id")?;
-    let mut tx = pool
-        .begin()
-        .await
-        .map_err(|e| format!("db begin error: {e}"))?;
-    let (_, _, state_json) = load_play_row(&mut tx, &play_id, &player_id, false).await?;
     let rows: Vec<(String, String)> = sqlx::query_as(
         "SELECT te.role, te.text
          FROM transcript_entries te
@@ -171,27 +153,10 @@ pub async fn get_transcript(
     )
     .bind(play_id)
     .bind(player_id)
-    .fetch_all(&mut *tx)
+    .fetch_all(pool)
     .await
     .map_err(|e| format!("transcript query error: {e}"))?;
 
-    if rows.is_empty() {
-        let lines = transcript_lines_from_state_json(&state_json)?;
-        if !lines.is_empty() {
-            replace_transcript_entries_with_lines(&mut tx, &play_id, &lines).await?;
-        }
-        tx.commit()
-            .await
-            .map_err(|e| format!("db commit error: {e}"))?;
-        return Ok(lines
-            .into_iter()
-            .map(cinder_core::engine::narrative::NarrativeLine::narration)
-            .collect());
-    }
-
-    tx.rollback()
-        .await
-        .map_err(|e| format!("db rollback error: {e}"))?;
     Ok(rows
         .into_iter()
         .map(

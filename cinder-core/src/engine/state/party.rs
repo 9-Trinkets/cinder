@@ -124,37 +124,4 @@ mod tests {
             Some("guard".to_string())
         );
     }
-
-    #[test]
-    fn legacy_order_objects_restore_as_directives() {
-        let (content, state) = allied_state();
-        let mut value = serde_json::to_value(&state).unwrap();
-        value["party_orders"] = serde_json::json!({
-            "blair": {
-                "kind": "assist",
-                "target": { "kind": "none" },
-                "status": "active",
-                "issued_at_minutes": 0,
-                "updated_at_minutes": 0
-            },
-            "casey": {
-                "kind": "follow",
-                "target": { "kind": "none" },
-                "status": "active",
-                "issued_at_minutes": 0,
-                "updated_at_minutes": 0
-            }
-        });
-
-        let restored: WorldState = serde_json::from_value(value).unwrap();
-
-        assert_eq!(
-            restored.party_order(&content, "blair"),
-            Some("assist".to_string())
-        );
-        assert_eq!(
-            restored.party_orders.get("casey"),
-            Some(&"follow".to_string())
-        );
-    }
 }

@@ -161,7 +161,7 @@ pub struct ContentSettingsDefinition {
     /// Whether encircling an actor converts it at all, and under what numeric
     /// gate (see [`SurroundRule`]). Refused conversions narrate the pack's
     /// `surround.refused` message.
-    #[serde(default, alias = "charm_rule")]
+    #[serde(default)]
     pub surround_rule: SurroundRule,
     /// Fixed equipment slot list (e.g. "weapon", "armor", "trinket"). Each
     /// slot holds at most one equipped item; equippable items name one of
