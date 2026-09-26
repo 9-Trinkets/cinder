@@ -10320,6 +10320,19 @@
         ],
         "menu_label": "Southeast",
         "requires_story_var": ""
+      },
+      {
+        "room_id": "fortress_gate",
+        "label": "South through the Bulkhead",
+        "aliases": [
+          "south",
+          "s",
+          "bulkhead",
+          "gate",
+          "in"
+        ],
+        "menu_label": "South",
+        "requires_story_var": ""
       }
     ],
     "descriptions": []
@@ -10523,7 +10536,7 @@
     "id": "village_south_1",
     "title": "Elder Rashid's Quarters",
     "summary": "A modest stone building lined with bookshelves, maps of the cavern system, and brass surveying instruments.",
-    "inspect_text": "Elder Rashid sits here at a heavy oak desk, head in his hands, surrounded by official military decrees and stamped requisition rolls.",
+    "inspect_text": "Elder Rashid sits here at a heavy oak desk, head in his hands, surrounded by official military decrees and the requisition roll for Zayd.",
     "allow_rest": false,
     "features": [
       {
@@ -10538,7 +10551,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A parchment document bearing Captain Malik's iron seal, demanding a village youth as a tithe offering."
+        "inspect_text": "A parchment document bearing Captain Malik's iron seal, demanding one youth as an offering."
       }
     ],
     "exits": [
@@ -10614,7 +10627,7 @@
     "id": "village_east_2",
     "title": "Yasmin's Bakery",
     "summary": "A warm, flour-dusted bakery smelling wonderfully of fresh flatbread, sesame, and roasted dates.",
-    "inspect_text": "A huge brick oven heated by copper steam coils dominates the back wall, radiating dry heat and the comforting aroma of baked sesame flatbread. Trays of cooling loaves line the flour-dusted timber counters.",
+    "inspect_text": "A huge brick oven heated by copper steam coils dominates the back. Yasmin stands by the counter, tearful and furious over Zayd's capture.",
     "allow_rest": false,
     "features": [
       {
@@ -10696,6 +10709,371 @@
           "se"
         ],
         "menu_label": "Southeast",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "fortress_gate",
+    "title": "Fortress Checkpoint",
+    "summary": "The main entry checkpoint just inside the massive brass bulkhead. High iron barricades, coiled wire, and sentry platforms overlook the passage. Red emergency lamps cast long shadows across the steel floor.",
+    "inspect_text": "A fortified staging area designed to control movement between the village and the military fortress. Steam conduits hiss against the reinforced stone ceiling. A heavy hydraulic lever mounted to the wall controls the locking pins on the outer bulkhead.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "fortress_gate-feature",
+        "label": "the hydraulic gate lever",
+        "aliases": [
+          "lever",
+          "bulkhead",
+          "pins",
+          "controls",
+          "switch"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A heavy brass lever set into an iron console. Pulling it cycles the steam rams that lock and unlock the outer bulkhead."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "west_iron_walkway",
+        "label": "Southwest",
+        "aliases": [
+          "southwest",
+          "sw"
+        ],
+        "menu_label": "Southwest",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "east_sentry_walk",
+        "label": "Southeast",
+        "aliases": [
+          "southeast",
+          "se"
+        ],
+        "menu_label": "Southeast",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "village_north_gate",
+        "label": "North to North Approach Plaza",
+        "aliases": [
+          "north",
+          "n",
+          "out",
+          "plaza",
+          "village"
+        ],
+        "menu_label": "North",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "teleport_platform",
+        "label": "South to Teleportation Platform",
+        "aliases": [
+          "courtyard",
+          "platform",
+          "teleport"
+        ],
+        "menu_label": "Courtyard",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "west_iron_walkway",
+    "title": "West Iron Walkway",
+    "summary": "A narrow, damp iron catwalk bolted to the dark cavern wall. Hissing copper steam pipes run overhead, dripping hot water into the shadowy drop below. The metal mesh floor trembles underfoot.",
+    "inspect_text": "Cold air mixes with warm steam rising from deep rock cracks below. The walkway provides a direct route along the western flank of the military complex toward the detention wing.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "west_iron_walkway-feature",
+        "label": "overhead steam pipes",
+        "aliases": [
+          "pipes",
+          "steam",
+          "catwalk",
+          "mesh",
+          "walkway"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Thick copper and iron pipes clamped to the cavern rock with heavy steel brackets. Steam wheezes rhythmically through sealed joints."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "fortress_gate",
+        "label": "Northeast",
+        "aliases": [
+          "northeast",
+          "ne"
+        ],
+        "menu_label": "Northeast",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "steam_prison_cage",
+        "label": "Southwest",
+        "aliases": [
+          "southwest",
+          "sw"
+        ],
+        "menu_label": "Southwest",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "steam_prison_cage",
+    "title": "Suspended Steam Cage",
+    "summary": "A reinforced iron cage hanging from heavy ceiling chains over a hissing geothermal fissure. An iron walkway rings the pit, guarded by a locked winch console.",
+    "inspect_text": "The iron bars are black with soot and hot to the touch from the thermal draft below. Heavy steel cables run from the cage roof to a mechanical winch bolted into the granite floor.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "steam_prison_cage-feature",
+        "label": "the suspended iron cage",
+        "aliases": [
+          "cage",
+          "chains",
+          "bars",
+          "winch",
+          "lock",
+          "padlock"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A sturdy iron-barred cage suspended ten feet out over the steam pit. A heavy brass padlock secures the cage gate, cut to fit the warden's iron key."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "west_iron_walkway",
+        "label": "Northeast",
+        "aliases": [
+          "northeast",
+          "ne"
+        ],
+        "menu_label": "Northeast",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "south_steam_gantry",
+        "label": "East",
+        "aliases": [
+          "east",
+          "e"
+        ],
+        "menu_label": "East",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "south_steam_gantry",
+    "title": "South Steam Gantry",
+    "summary": "A low, sweltering maintenance corridor threading between massive steam boiler pipes and humming power dynamos. Dense white vapor billows from floor grates.",
+    "inspect_text": "The heat is intense and smells of hot machine oil and warm stone. Pressure gauges vibrate in the brass housings lining the wall, regulating the power flow to the central platform.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "south_steam_gantry-feature",
+        "label": "brass pressure gauges",
+        "aliases": [
+          "gauges",
+          "manifold",
+          "boiler",
+          "dynamos",
+          "valves"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A bank of round glass-faced gauges with vibrating needles. They monitor steam pressure flowing between the southern boilers and the central courtyard."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "steam_prison_cage",
+        "label": "West",
+        "aliases": [
+          "west",
+          "w"
+        ],
+        "menu_label": "West",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "command_bastion",
+        "label": "East",
+        "aliases": [
+          "east",
+          "e"
+        ],
+        "menu_label": "East",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "teleport_platform",
+        "label": "North to Teleportation Platform",
+        "aliases": [
+          "north",
+          "n",
+          "courtyard",
+          "platform",
+          "teleport"
+        ],
+        "menu_label": "North",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "command_bastion",
+    "title": "Commander's Bastion",
+    "summary": "The fortified headquarters of Captain Malik. A large brass tactical table dominates the center of the room, surrounded by maps of the Noor-stone veins. An iron combination safe is embedded in the stone wall.",
+    "inspect_text": "Neat weapon racks and polished armor stands line the walls. Red silk military banners hang between steam vents. A heavy steel safe with dual combination tumblers stands bolted into the granite.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "command_bastion-feature",
+        "label": "the commander's iron safe",
+        "aliases": [
+          "safe",
+          "strongbox",
+          "desk",
+          "table",
+          "map",
+          "combination"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A heavy iron safe with brass combination dials and reinforced hinges. Commander Malik keeps his most valuable military orders and the Teleportation Scroll locked inside."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "south_steam_gantry",
+        "label": "West",
+        "aliases": [
+          "west",
+          "w"
+        ],
+        "menu_label": "West",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "east_sentry_walk",
+        "label": "Northwest",
+        "aliases": [
+          "northwest",
+          "nw"
+        ],
+        "menu_label": "Northwest",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "east_sentry_walk",
+    "title": "East Sentry Rampart",
+    "summary": "A wide, steel-plated rampart running along the eastern face of the fortress. Brass searchlight housings sit mounted on iron tripods, aimed into the open central courtyard.",
+    "inspect_text": "Spent crossbow bolts and discarded ration tins lie near the guard benches. The vantage point offers a clear view through the security grilles into the glowing platform in the center courtyard.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "east_sentry_walk-feature",
+        "label": "brass searchlight mount",
+        "aliases": [
+          "searchlight",
+          "light",
+          "rampart",
+          "tripod",
+          "grille"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A directional brass searchlight powered by a small Noor-stone battery. Its reflector lens is angled downward toward the courtyard below."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "command_bastion",
+        "label": "Southeast",
+        "aliases": [
+          "southeast",
+          "se"
+        ],
+        "menu_label": "Southeast",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "fortress_gate",
+        "label": "Northwest",
+        "aliases": [
+          "northwest",
+          "nw"
+        ],
+        "menu_label": "Northwest",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "teleport_platform",
+    "title": "Teleportation Platform",
+    "summary": "A sunken circular courtyard of dark basalt. At its center rises a massive circular brass platform etched with geometric circuits, pulsing with pale turquoise light from deep Noor-stone conduits.",
+    "inspect_text": "Thick copper energy lines converge on the central brass ring. Steam releases in rhythmic pulses from surrounding relief valves. Tracing the Teleportation Sigil here will activate the descent gate to Floor 5.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "teleport_platform-feature",
+        "label": "the circular brass teleport platform",
+        "aliases": [
+          "platform",
+          "teleport",
+          "conduits",
+          "circle",
+          "gate",
+          "circuits"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "An ancient brass disc inscribed with intersecting double triangles. The central circle hums with arcane and geothermal power, waiting for the matching chalk sigil."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "fortress_gate",
+        "label": "North to Fortress Checkpoint",
+        "aliases": [
+          "north",
+          "n",
+          "gate",
+          "checkpoint"
+        ],
+        "menu_label": "North",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "south_steam_gantry",
+        "label": "South to South Steam Gantry",
+        "aliases": [
+          "south",
+          "s",
+          "gantry"
+        ],
+        "menu_label": "South",
         "requires_story_var": ""
       }
     ],

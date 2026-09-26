@@ -13,13 +13,20 @@ const EXPECTED_FLOOR4_ROOMS: &[&str] = &[
     "village_east_1",
     "village_east_2",
     "village_south_1",
+    "fortress_gate",
+    "west_iron_walkway",
+    "steam_prison_cage",
+    "south_steam_gantry",
+    "command_bastion",
+    "east_sentry_walk",
+    "teleport_platform",
 ];
 
 #[test]
 fn floor4_rooms_and_features_load_and_validate() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
 
-    assert_eq!(EXPECTED_FLOOR4_ROOMS.len(), 9);
+    assert_eq!(EXPECTED_FLOOR4_ROOMS.len(), 16);
     for room_id in EXPECTED_FLOOR4_ROOMS {
         let room = pack
             .room(room_id)
@@ -74,11 +81,11 @@ fn floor4_navigation_and_gates_resolve() {
     assert!(village_square.exits.iter().any(|e| e.room_id == "village_sw_corner"));
     assert!(village_square.exits.iter().any(|e| e.room_id == "village_south_1"));
 
-    // Fortress apex is locked: no entrance to actual fortress
+    // Fortress apex connects through bulkhead
     let north_gate = pack.room("village_north_gate").expect("village_north_gate exists");
     assert!(
-        !north_gate.exits.iter().any(|e| e.room_id == "camp_gate" || e.room_id == "command_tent"),
-        "fortress entrance must be inaccessible for now"
+        north_gate.exits.iter().any(|e| e.room_id == "fortress_gate"),
+        "village_north_gate must connect to fortress_gate"
     );
     assert!(north_gate.summary.contains("bulkhead"));
 }
@@ -93,7 +100,7 @@ fn floor4_map_layout_registered() {
         .expect("the-commoners map exists");
 
     assert_eq!(map.label, "The Worker Village");
-    assert_eq!(map.rooms.len(), 9, "Floor 4 map must have exactly 9 rooms");
+    assert_eq!(map.rooms.len(), 16, "Floor 4 map must have exactly 16 rooms");
 
     for room_id in EXPECTED_FLOOR4_ROOMS {
         assert!(
@@ -175,11 +182,75 @@ fn floor4_actors_and_interactions_validate() {
         assert!(!sentry.initial_hostile, "Sentries should not attack on sight");
     }
 
-    // Deferred actors are offstage
-    for deferred_id in &["zayd", "captain_malik", "priest_harun", "sakhra", "garrison_warden"] {
-        let actor = pack.actor(deferred_id).expect("deferred actor still defined");
-        assert!(actor.room_id.is_empty(), "actor {deferred_id} should be offstage");
-    }
+    // Placed fortress actors
+    let zayd = pack.actor("zayd").expect("zayd exists");
+    assert_eq!(zayd.room_id, "steam_prison_cage");
+
+    let warden = pack.actor("garrison_warden").expect("warden exists");
+    assert_eq!(warden.room_id, "steam_prison_cage");
+
+    let malik = pack.actor("captain_malik").expect("malik exists");
+    assert_eq!(malik.room_id, "command_bastion");
+
+    let harun = pack.actor("priest_harun").expect("harun exists");
+    assert_eq!(harun.room_id, "command_bastion");
+
+    // Sakhra remains offstage until awakening storyline
+    let sakhra = pack.actor("sakhra").expect("sakhra exists");
+    assert!(sakhra.room_id.is_empty(), "sakhra should be offstage initially");
+}
+
+#[test]
+fn floor4_fortress_loop_and_platform_navigation_resolves() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "fortress_gate".to_string();
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue)
+            .expect("runtime creates");
+
+    // Walk fortress perimeter loop:
+    // 1. fortress_gate -> southwest -> west_iron_walkway
+    let _ = runtime.run_turn("southwest").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "west_iron_walkway");
+
+    // 2. west_iron_walkway -> southwest -> steam_prison_cage (Zayd)
+    let _ = runtime.run_turn("southwest").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "steam_prison_cage");
+
+    // 3. steam_prison_cage -> east -> south_steam_gantry
+    let _ = runtime.run_turn("east").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "south_steam_gantry");
+
+    // 4. south_steam_gantry -> east -> command_bastion (Malik)
+    let _ = runtime.run_turn("east").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "command_bastion");
+
+    // 5. command_bastion -> northwest -> east_sentry_walk
+    let _ = runtime.run_turn("northwest").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "east_sentry_walk");
+
+    // 6. east_sentry_walk -> northwest -> fortress_gate (Loop completed)
+    let _ = runtime.run_turn("northwest").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "fortress_gate");
+
+    // Enter central teleport platform from fortress_gate
+    let _ = runtime.run_turn("courtyard").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "teleport_platform");
+
+    // Return to fortress_gate
+    let _ = runtime.run_turn("north").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "fortress_gate");
+
+    // Step north out through the bulkhead back to the village
+    let _ = runtime.run_turn("north").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_north_gate");
+
+    // Step south back through the bulkhead into fortress_gate
+    let _ = runtime.run_turn("south").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "fortress_gate");
 }
 
 #[test]

@@ -1540,7 +1540,7 @@
   {
     "id": "zayd",
     "name": "Zayd",
-    "room_id": "",
+    "room_id": "steam_prison_cage",
     "aliases": [
       "zayd",
       "boy",
@@ -1591,7 +1591,7 @@
   {
     "id": "priest_harun",
     "name": "Priest Harun",
-    "room_id": "",
+    "room_id": "command_bastion",
     "aliases": [
       "harun",
       "priest",
@@ -1645,7 +1645,7 @@
   {
     "id": "captain_malik",
     "name": "Captain Malik",
-    "room_id": "",
+    "room_id": "command_bastion",
     "aliases": [
       "malik",
       "captain",
@@ -1714,7 +1714,6 @@
     ],
     "inspect_text": "A broad golem of dark, worn stone wrapped in thick copper pipe and brass fittings — a village guardian, made to watch the gate and stay quiet about it. Steam sighs from the valves along its shoulders. It kneels at the edge of the village, stone head bowed, the way it has knelt for as long as anyone can remember. The children call it Sakhra, the Watchful: their guard, their fixture, the stillest thing in town.",
     "attackable": true,
-    "guard": true,
     "xp_drop": 30,
     "drops": {
       "noor-stone-shard": 2
@@ -1925,7 +1924,7 @@
   {
     "id": "garrison_warden",
     "name": "Cage Warden",
-    "room_id": "",
+    "room_id": "steam_prison_cage",
     "aliases": [
       "warden",
       "cage guard",

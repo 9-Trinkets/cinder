@@ -199,6 +199,82 @@ pub fn build_floor4() -> FloorBuilder {
     connect_segment(&mut builder, &village_right, "Southeast", se, "Northwest", nw);
     connect_segment(&mut builder, &village_bottom, "West", w, "East", e);
 
+    // Fortress Perimeter Loop (3 sides, sharing 3 corners = 6 rooms)
+    // Side 1 (West Edge): Fortress Gate -> West Catwalk -> Prison Cage
+    let fortress_left = [
+        "fortress_gate",
+        "west_iron_walkway",
+        "steam_prison_cage",
+    ];
+    // Side 2 (South Edge): Prison Cage -> South Gantry -> Command Bastion
+    let fortress_bottom = [
+        "steam_prison_cage",
+        "south_steam_gantry",
+        "command_bastion",
+    ];
+    // Side 3 (East Edge): Command Bastion -> East Rampart -> Fortress Gate
+    let fortress_right = [
+        "command_bastion",
+        "east_sentry_walk",
+        "fortress_gate",
+    ];
+
+    connect_segment(&mut builder, &fortress_left, "Southwest", sw, "Northeast", ne);
+    connect_segment(&mut builder, &fortress_bottom, "East", e, "West", w);
+    connect_segment(&mut builder, &fortress_right, "Northwest", nw, "Southeast", se);
+
+    // Bulkhead connection between Village and Fortress
+    builder.add_exit(
+        "village_north_gate",
+        "fortress_gate",
+        "South through the Bulkhead",
+        vec!["south".into(), "s".into(), "bulkhead".into(), "gate".into(), "in".into()],
+        Some("South".into()),
+        "",
+    );
+    builder.add_exit(
+        "fortress_gate",
+        "village_north_gate",
+        "North to North Approach Plaza",
+        vec!["north".into(), "n".into(), "out".into(), "plaza".into(), "village".into()],
+        Some("North".into()),
+        "",
+    );
+
+    // Central Teleport Platform access from Fortress Gate and South Gantry
+    builder.add_exit(
+        "fortress_gate",
+        "teleport_platform",
+        "South to Teleportation Platform",
+        vec!["courtyard".into(), "platform".into(), "teleport".into()],
+        Some("Courtyard".into()),
+        "",
+    );
+    builder.add_exit(
+        "teleport_platform",
+        "fortress_gate",
+        "North to Fortress Checkpoint",
+        vec!["north".into(), "n".into(), "gate".into(), "checkpoint".into()],
+        Some("North".into()),
+        "",
+    );
+    builder.add_exit(
+        "south_steam_gantry",
+        "teleport_platform",
+        "North to Teleportation Platform",
+        vec!["north".into(), "n".into(), "courtyard".into(), "platform".into(), "teleport".into()],
+        Some("North".into()),
+        "",
+    );
+    builder.add_exit(
+        "teleport_platform",
+        "south_steam_gantry",
+        "South to South Steam Gantry",
+        vec!["south".into(), "s".into(), "gantry".into()],
+        Some("South".into()),
+        "",
+    );
+
     // Central stairs at Village Square lead UP to Floor 3 Heart-Pit (oh)
     builder.add_exit(
         "village_square",

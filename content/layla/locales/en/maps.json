@@ -883,6 +883,41 @@
         "room_id": "village_east_1",
         "x": 16.0,
         "y": 9.0
+      },
+      {
+        "room_id": "fortress_gate",
+        "x": 12.0,
+        "y": 7.0
+      },
+      {
+        "room_id": "west_iron_walkway",
+        "x": 9.0,
+        "y": 12.0
+      },
+      {
+        "room_id": "steam_prison_cage",
+        "x": 6.0,
+        "y": 17.0
+      },
+      {
+        "room_id": "south_steam_gantry",
+        "x": 12.0,
+        "y": 17.0
+      },
+      {
+        "room_id": "command_bastion",
+        "x": 18.0,
+        "y": 17.0
+      },
+      {
+        "room_id": "east_sentry_walk",
+        "x": 15.0,
+        "y": 12.0
+      },
+      {
+        "room_id": "teleport_platform",
+        "x": 12.0,
+        "y": 14.0
       }
     ],
     "reveal_conditions": []

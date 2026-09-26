@@ -205,13 +205,14 @@ With multi-member parties, players can assign specialized tactical roles:
 ## 7. Implementation Status & Next Steps
 
 **Built in content:**
-- Village rooms `village_*` with the three named villagers (`elder_rashid`, `yasmin`, `tariq`), `zayd`, `priest_harun`, `captain_malik`, garrison actors, and `sakhra`.
+- **Middle Triangle (Worker Village):** 9-room perimeter loop (`village_*`) with the three named villagers (`elder_rashid`, `yasmin`, `tariq`), two sentries at `village_north_gate`, and `sakhra`.
+- **Inner Triangle (Military Complex):** 7-room concentric fortress loop (`fortress_gate`, `west_iron_walkway`, `steam_prison_cage`, `south_steam_gantry`, `command_bastion`, `east_sentry_walk`, and central `teleport_platform`).
+- **Actors Placed:** `zayd` and `garrison_warden` in `steam_prison_cage`; `captain_malik` and `priest_harun` in `command_bastion`.
 - Quest stage skeleton in `beats.json` (`mq_*`, `sq_*`) and hooks (`malik_defeated`, `priest_harun.defeat`, `item.teleport_scroll_read`).
 - **WIS stat implemented** (`stats.json`), **Zayd's Lantern → +6 WIS** (`items.json`), actor wisdom authored (golems low, elves higher, queen highest, Sakhra ~5), and **Sakhra recast as the village guardian golem** (excavation backstory removed; high-WIS awakening language stays).
 
 **To build (next passes):**
-1. Place `zayd` in `steam_prison_cage` (or a placeholder cage room) and the named villagers in their keyed rooms.
-2. Rooms + features for `mine_*`, `fortress_gate`, `command_bastion`, `steam_prison_cage`, `teleport_platform`;
-3. `beat_objectives.json` quest progress (currently empty);
-4. Zayd-safety hooks (`zayd_freed`, `zayd_safe`) and the handler's "let the tithe ship" friction line;
-5. Awakening runtime: WIS ≥ 10 name change + speech unlock (engine/UI follow-up; stat is real today, the threshold behavior comes with the content above).
+1. Rooms + features for Outer Triangle `mine_*` and `drainage_flue` (the stealth infiltration route);
+2. `beat_objectives.json` quest progress (currently empty);
+3. Zayd-safety hooks (`zayd_freed`, `zayd_safe`) and the handler's "let the tithe ship" friction line;
+4. Awakening runtime: WIS ≥ 10 name change + speech unlock (engine/UI follow-up; stat is real today, the threshold behavior comes with the content above).
