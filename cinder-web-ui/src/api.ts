@@ -115,7 +115,6 @@ export interface NarrativeLine {
 }
 
 export interface CommandResponse {
-  text: string
   lines: NarrativeLine[]
   game_over: boolean
   movie: MovieData | null

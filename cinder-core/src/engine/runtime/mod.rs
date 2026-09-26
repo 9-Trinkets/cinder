@@ -229,18 +229,17 @@ impl CinderRuntime {
             &self.trace_dir,
             raw_input,
         )?;
-        let outcome = self.apply_stage_assignments(outcome)?;
-        let outcome = match outcome.phase {
+        let mut outcome = self.apply_stage_assignments(outcome)?;
+        match outcome.phase {
             GamePhase::ActEnded | GamePhase::GameEnded => {
                 let ended_text = &self.content.presentation.presentation_text.act_ended;
-                let text = if outcome.text.is_empty() {
-                    ended_text.clone()
-                } else {
-                    format!("{}\n\n{}", outcome.text, ended_text)
-                };
-                TurnOutcome { text, ..outcome }
+                if !ended_text.is_empty() {
+                    outcome
+                        .lines
+                        .push(crate::engine::narrative::NarrativeLine::narration(ended_text.clone()));
+                }
             }
-            GamePhase::Active => outcome,
+            GamePhase::Active => {}
         };
         Ok(outcome)
     }

@@ -113,7 +113,6 @@ pub async fn run_command(
             {
                 let ui_snapshot = build_ui_snapshot(runtime, pack_id, transcript_lines)?;
                 let response = CommandResponse {
-                    text: String::new(),
                     game_over: true,
                     game_closure: ui_snapshot.game_closure.clone(),
                     ui_snapshot: Some(ui_snapshot),
@@ -125,11 +124,9 @@ pub async fn run_command(
                 .run_turn(&input_owned)
                 .map_err(|e| format!("turn error: {e}"))?;
 
-            let turn_text = outcome.text.clone();
             // Typed narrative lines for the player's turn. Ticks and act
-            // rollover append extra prose to `text` that we also surface.
+            // rollover append extra lines to `narrative` that we also surface.
             let mut narrative = outcome.lines.clone();
-            let mut extra_text: Vec<String> = Vec::new();
 
             let menu_active = runtime
                 .export_state()
@@ -139,10 +136,7 @@ pub async fn run_command(
             if outcome.phase == GamePhase::Active && !menu_active {
                 match runtime.run_tick() {
                     Ok(tick) => {
-                        if !tick.text.is_empty() {
-                            outcome.text = format!("{}\n\n{}", outcome.text, tick.text);
-                            extra_text.push(tick.text);
-                        }
+                        narrative.extend(tick.lines);
                         if tick.phase != GamePhase::Active {
                             outcome.phase = tick.phase;
                         }
@@ -170,25 +164,24 @@ pub async fn run_command(
                     .map_err(|e| format!("act rollover error: {e}"))?
                     && !intro_text.is_empty()
                 {
-                    outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
-                    extra_text.push(intro_text);
+                    narrative.push(cinder_core::engine::narrative::NarrativeLine::narration(
+                        intro_text,
+                    ));
                 }
                 outcome.phase = GamePhase::Active;
             }
 
-            let _ = runtime.push_transcript_line(&turn_text);
+            for line in &outcome.lines {
+                if !line.text.trim().is_empty() {
+                    let _ = runtime.push_transcript_line(&line.text);
+                }
+            }
 
             let movie = consume_projector_sequence(runtime);
             let ui_snapshot = build_ui_snapshot(runtime, pack_id, transcript_lines)?;
 
             let is_game_over = outcome.phase != GamePhase::Active;
-            for extra in extra_text {
-                narrative.push(cinder_core::engine::narrative::NarrativeLine::narration(
-                    extra,
-                ));
-            }
             let response = CommandResponse {
-                text: outcome.text,
                 lines: narrative.clone(),
                 game_over: is_game_over,
                 movie,
@@ -265,7 +258,9 @@ where
                     .map_err(|e| format!("act rollover error: {e}"))?
                     && !intro_text.is_empty()
                 {
-                    outcome.text = format!("{}\n\n{}", outcome.text, intro_text);
+                    outcome.lines.push(
+                        cinder_core::engine::narrative::NarrativeLine::narration(intro_text),
+                    );
                 }
                 outcome.phase = GamePhase::Active;
             }
@@ -273,7 +268,6 @@ where
             let ui_snapshot = build_ui_snapshot(runtime, pack_id, transcript_lines)?;
             let is_game_over = outcome.phase != GamePhase::Active;
             let response = CommandResponse {
-                text: outcome.text.clone(),
                 lines: outcome.lines.clone(),
                 game_over: is_game_over,
                 movie,
@@ -282,13 +276,12 @@ where
                 ui_snapshot: Some(ui_snapshot),
             };
             let transcript_entries: Vec<PendingTranscriptEntry> = response
-                .text
-                .split("\n\n")
-                .map(str::trim)
-                .filter(|line| !line.is_empty())
+                .lines
+                .iter()
+                .filter(|line| !line.text.trim().is_empty())
                 .map(|line| PendingTranscriptEntry {
-                    role: "narrative".to_string(),
-                    text: line.to_string(),
+                    role: narrative_role(&line.kind).to_string(),
+                    text: line.text.trim().to_string(),
                 })
                 .collect();
             Ok((response, transcript_entries))
@@ -374,7 +367,9 @@ pub async fn set_locale(
             .map_err(|e| format!("db commit error: {e}"))?;
 
         return Ok(CommandResponse {
-            text: changed_text,
+            lines: vec![cinder_core::engine::narrative::NarrativeLine::system(
+                changed_text,
+            )],
             game_over: is_game_over,
             act_closure: ui_snapshot.act_closure.clone(),
             game_closure: ui_snapshot.game_closure.clone(),
@@ -396,6 +391,6 @@ pub async fn continue_play(
     with_runtime(pool, &play_id, &player_id, move |runtime, pack_id, lines| {
         runtime.continue_after_act().map_err(|e| format!("play continuation error: {e}"))?;
         let ui_snapshot = build_ui_snapshot(runtime, pack_id, lines)?;
-        Ok((CommandResponse::new(String::new(), false, Some(ui_snapshot)), Vec::new()))
+        Ok((CommandResponse::new(Vec::new(), false, Some(ui_snapshot)), Vec::new()))
     }).await
 }

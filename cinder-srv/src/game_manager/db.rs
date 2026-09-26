@@ -154,3 +154,25 @@ pub(super) async fn replace_transcript_entries_with_lines(
 pub(super) fn parse_uuid(value: &str, field: &str) -> Result<Uuid, String> {
     Uuid::parse_str(value).map_err(|e| format!("invalid {field}: {e}"))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use cinder_core::engine::narrative::NarrativeLineKind;
+
+    #[test]
+    fn test_narrative_role_roundtrip() {
+        let kinds = [
+            NarrativeLineKind::Player,
+            NarrativeLineKind::Heading,
+            NarrativeLineKind::Error,
+            NarrativeLineKind::Narration,
+            NarrativeLineKind::System,
+            NarrativeLineKind::Channel,
+        ];
+        for kind in kinds {
+            let role = narrative_role(&kind);
+            assert_eq!(narrative_kind(role), kind);
+        }
+    }
+}

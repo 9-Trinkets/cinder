@@ -131,17 +131,17 @@ fn floor4_descent_triggers_handler_village_commentary() {
 
     let outcome = runtime.run_turn("go down").expect("turn runs");
     assert!(
-        outcome.text.contains("civilian life signs") || outcome.text.contains("people live down here"),
+        outcome.text().contains("civilian life signs") || outcome.text().contains("people live down here"),
         "Handler commentary should remark on civilians: {}",
-        outcome.text
+        outcome.text()
     );
-    assert!(outcome.text.contains("Handler:"));
+    assert!(outcome.text().contains("Handler:"));
 
     // Second movement into the village does not replay the descent line
     let _ = runtime.run_turn("go up").expect("turn runs");
     let outcome2 = runtime.run_turn("go down").expect("turn runs");
     assert!(
-        !outcome2.text.contains("civilian life signs"),
+        !outcome2.text().contains("civilian life signs"),
         "Descent line must only play on first visit"
     );
 }
@@ -312,7 +312,7 @@ fn floor4_quests_activation_via_speech() {
     assert_eq!(runtime.current_room_id().unwrap(), "village_south_1");
 
     let outcome = runtime.run_turn("talk to rashid").expect("talk to rashid");
-    assert!(outcome.text.contains("Zayd"));
+    assert!(outcome.text().contains("Zayd"));
 
     // Now Side Quest "Save the Boy Zayd" should be active!
     let objectives_after_rashid = runtime.current_objective_summaries().unwrap();
@@ -339,7 +339,7 @@ fn floor4_quests_activation_via_speech() {
     assert_eq!(runtime.current_room_id().unwrap(), "village_west_2");
 
     let outcome = runtime.run_turn("talk to tariq").expect("talk to tariq");
-    assert!(outcome.text.contains("Teleportation Scroll"));
+    assert!(outcome.text().contains("Teleportation Scroll"));
 
     // Now BOTH Main Quest and Side Quest should be active!
     let objectives_after_tariq = runtime.current_objective_summaries().unwrap();
@@ -378,11 +378,11 @@ fn floor4_tick_runs_without_soft_error() {
     .expect("runtime creates");
 
     let outcome = runtime.run_tick().expect("tick should succeed");
-    println!("Tick outcome text: {}", outcome.text);
+    println!("Tick outcome text: {}", outcome.text());
     assert!(
-        !outcome.text.contains("goes still, listening to the dark"),
+        !outcome.text().contains("goes still, listening to the dark"),
         "Tick should not produce soft error: got '{}'",
-        outcome.text
+        outcome.text()
     );
 }
 
@@ -418,9 +418,9 @@ fn floor4_large_state_tick_runs_without_soft_error() {
 
     let outcome = runtime.run_tick().expect("tick should succeed");
     assert!(
-        !outcome.text.contains("goes still, listening to the dark"),
+        !outcome.text().contains("goes still, listening to the dark"),
         "Tick should not produce soft error on large state: got '{}'",
-        outcome.text
+        outcome.text()
     );
 }
 
@@ -463,7 +463,7 @@ fn multi_floor_descent_isolates_transcripts_and_builds_summaries() {
     // Descent 1: Floor 1 -> Floor 2 (d1c1)
     let outcome1 = runtime.run_turn("down").expect("descend to floor 2");
     assert_eq!(runtime.current_room_id().unwrap(), "d1c1");
-    assert!(outcome1.text.contains("Layla conquered The Cave"));
+    assert!(outcome1.text().contains("Layla conquered The Cave"));
 
     // Check request 1
     {
@@ -500,7 +500,7 @@ fn multi_floor_descent_isolates_transcripts_and_builds_summaries() {
     // Descent 2: Floor 2 -> Floor 3 (oan)
     let outcome2 = runtime2.run_turn("down").expect("descend to floor 3");
     assert_eq!(runtime2.current_room_id().unwrap(), "oan");
-    assert!(outcome2.text.contains("Layla conquered Deep Forest"));
+    assert!(outcome2.text().contains("Layla conquered Deep Forest"));
 
     // Check request 2
     {

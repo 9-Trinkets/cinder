@@ -124,6 +124,28 @@ fn goblin_shaman_defeat_narrates_world_hint_lines() {
 }
 
 #[test]
+fn goblin_shaman_defeat_via_runtime_turn() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    state.current_room_id = "r5c5".to_string();
+    state
+        .actor_stats
+        .entry("goblin-shaman".to_string())
+        .or_default()
+        .insert("hp".to_string(), 1);
+
+    let runtime = cinder_core::engine::runtime::CinderRuntime::from_state(pack, state, false)
+        .expect("runtime creates");
+    let outcome = runtime.run_turn("attack goblin shaman").expect("turn runs");
+    println!("OUTCOME LINES: {:#?}", outcome.lines);
+    assert!(outcome.lines.iter().any(|line| {
+        line.kind == cinder_core::engine::narrative::NarrativeLineKind::Channel
+            && line.text.contains("Handler:")
+            && line.text.contains("minimap")
+    }));
+}
+
+#[test]
 fn elf_king_defeat_narrates_dungeon_master_myth() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let king_msg = pack.render_message("king.defeated", &[]).unwrap();
@@ -193,12 +215,12 @@ fn transition_commentary_falls_back_when_no_llm() {
     .expect("runtime creates");
 
     let outcome = runtime.run_turn("go down").expect("turn runs");
-    assert!(outcome.text.contains("Floor two. A glowing wood under a cave"));
+    assert!(outcome.text().contains("Floor two. A glowing wood under a cave"));
 
     // Climbing up and descending again does NOT repeat the fallback commentary
     let _ = runtime.run_turn("go up").expect("turn runs");
     let outcome2 = runtime.run_turn("go down").expect("turn runs");
-    assert!(!outcome2.text.contains("Floor two. A glowing wood under a cave"));
+    assert!(!outcome2.text().contains("Floor two. A glowing wood under a cave"));
 }
 
 #[test]
@@ -228,8 +250,8 @@ fn transition_commentary_tailored_when_llm_responds() {
         .expect("set transcript");
 
     let outcome = runtime.run_turn("go down").expect("turn runs");
-    assert!(outcome.text.contains("Well, you survived the mines without getting turned into soup"));
-    assert!(!outcome.text.contains("Floor two. A glowing wood under a cave"));
+    assert!(outcome.text().contains("Well, you survived the mines without getting turned into soup"));
+    assert!(!outcome.text().contains("Floor two. A glowing wood under a cave"));
 }
 
 #[test]
@@ -253,8 +275,8 @@ fn transition_commentary_floor_3_tailored() {
     .expect("runtime creates");
 
     let outcome = runtime.run_turn("go down").expect("turn runs");
-    assert!(outcome.text.contains("You actually toppled the elf king. Try not to break whatever is left down on the board."));
-    assert!(!outcome.text.contains("Floor three. The actual board"));
+    assert!(outcome.text().contains("You actually toppled the elf king. Try not to break whatever is left down on the board."));
+    assert!(!outcome.text().contains("Floor three. The actual board"));
 }
 
 #[test]
@@ -284,9 +306,9 @@ fn transition_commentary_two_messages_summary_and_introduction() {
     let outcome = runtime.run_turn("go down").expect("turn runs");
 
     // Both messages appear in the overall text
-    assert!(outcome.text.contains(summary));
-    assert!(outcome.text.contains(intro));
-    assert!(!outcome.text.contains("Floor two. A glowing wood under a cave"));
+    assert!(outcome.text().contains(summary));
+    assert!(outcome.text().contains(intro));
+    assert!(!outcome.text().contains("Floor two. A glowing wood under a cave"));
 
     // Both messages are emitted as distinct Channel lines
     let channel_lines: Vec<_> = outcome
@@ -330,9 +352,9 @@ fn transition_commentary_via_switch_room_view() {
     // Running 'go down' via generic command pipeline
     let outcome = runtime.run_turn("go down").expect("turn runs");
 
-    assert!(outcome.text.contains(summary));
-    assert!(outcome.text.contains(intro));
-    assert!(!outcome.text.contains("Floor two. A glowing wood under a cave"));
+    assert!(outcome.text().contains(summary));
+    assert!(outcome.text().contains(intro));
+    assert!(!outcome.text().contains("Floor two. A glowing wood under a cave"));
 
     let channel_lines: Vec<_> = outcome
         .lines
@@ -374,8 +396,8 @@ fn transition_commentary_only_plays_on_first_descent() {
 
     // 1. First descent: 'go down'
     let outcome1 = runtime.run_turn("go down").expect("first descent turn runs");
-    assert!(outcome1.text.contains(summary));
-    assert!(outcome1.text.contains(intro));
+    assert!(outcome1.text().contains(summary));
+    assert!(outcome1.text().contains(intro));
     let channel_lines1: Vec<_> = outcome1
         .lines
         .iter()
@@ -386,15 +408,15 @@ fn transition_commentary_only_plays_on_first_descent() {
 
     // 2. Climb back up: 'go up'
     let outcome_up = runtime.run_turn("go up").expect("climb up turn runs");
-    assert!(!outcome_up.text.contains(summary));
-    assert!(!outcome_up.text.contains(intro));
+    assert!(!outcome_up.text().contains(summary));
+    assert!(!outcome_up.text().contains(intro));
 
     // 3. Second descent: 'go down' again
     let outcome2 = runtime.run_turn("go down").expect("second descent turn runs");
     // Neither tailored commentary nor fallback line should appear
-    assert!(!outcome2.text.contains(summary));
-    assert!(!outcome2.text.contains(intro));
-    assert!(!outcome2.text.contains("Floor two. A glowing wood under a cave"));
+    assert!(!outcome2.text().contains(summary));
+    assert!(!outcome2.text().contains(intro));
+    assert!(!outcome2.text().contains("Floor two. A glowing wood under a cave"));
     let channel_lines2: Vec<_> = outcome2
         .lines
         .iter()
@@ -402,7 +424,7 @@ fn transition_commentary_only_plays_on_first_descent() {
         .collect();
     assert!(channel_lines2.is_empty(), "expected no channel lines on second descent, got: {:?}", channel_lines2);
     // Normal room description should still appear
-    assert!(outcome2.text.contains("The Mushroom Grove"));
+    assert!(outcome2.text().contains("The Mushroom Grove"));
 }
 
 #[test]
@@ -428,7 +450,7 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
 
     // 1. take shaman-ring (exact id)
     let outcome = runtime.run_turn("take shaman-ring").expect("turn runs");
-    assert!(outcome.text.contains("Picked up shaman's ring."));
+    assert!(outcome.text().contains("Picked up shaman's ring."));
     {
         let s = runtime.export_state().unwrap();
         assert!(s.has_item("shaman-ring"));
@@ -437,7 +459,7 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
 
     // 2. drop shaman-ring (exact id)
     let outcome = runtime.run_turn("drop shaman-ring").expect("turn runs");
-    assert!(outcome.text.contains("Placed shaman's ring on the ground."));
+    assert!(outcome.text().contains("Placed shaman's ring on the ground."));
     {
         let s = runtime.export_state().unwrap();
         assert!(!s.has_item("shaman-ring"));
@@ -449,7 +471,7 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
 
     // 3. take shaman ring (without hyphen)
     let outcome = runtime.run_turn("take shaman ring").expect("turn runs");
-    assert!(outcome.text.contains("Picked up shaman's ring."));
+    assert!(outcome.text().contains("Picked up shaman's ring."));
     {
         let s = runtime.export_state().unwrap();
         assert!(s.has_item("shaman-ring"));
@@ -457,11 +479,11 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
 
     // 4. drop shaman ring
     let outcome = runtime.run_turn("drop shaman ring").expect("turn runs");
-    assert!(outcome.text.contains("Placed shaman's ring on the ground."));
+    assert!(outcome.text().contains("Placed shaman's ring on the ground."));
 
     // 5. take ring (substring/token match)
     let outcome = runtime.run_turn("take ring").expect("turn runs");
-    assert!(outcome.text.contains("Picked up shaman's ring."));
+    assert!(outcome.text().contains("Picked up shaman's ring."));
     {
         let s = runtime.export_state().unwrap();
         assert!(s.has_item("shaman-ring"));
@@ -469,23 +491,23 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
 
     // 6. equip ring
     let outcome = runtime.run_turn("equip ring").expect("turn runs");
-    assert!(outcome.text.contains("Equipped shaman's ring."));
+    assert!(outcome.text().contains("Equipped shaman's ring."));
 
     // 7. drop ring while equipped is rejected
     let outcome = runtime.run_turn("drop ring").expect("turn runs");
-    assert!(outcome.text.contains("Unequip it before dropping"));
+    assert!(outcome.text().contains("Unequip it before dropping"));
 
     // 8. take off ring (unequip via take off phrase)
     let outcome = runtime.run_turn("take off ring").expect("turn runs");
-    assert!(outcome.text.contains("Unequipped shaman's ring."));
+    assert!(outcome.text().contains("Unequipped shaman's ring."));
 
     // 9. drop ring now succeeds
     let outcome = runtime.run_turn("drop ring").expect("turn runs");
-    assert!(outcome.text.contains("Placed shaman's ring on the ground."));
+    assert!(outcome.text().contains("Placed shaman's ring on the ground."));
 
     // 10. take the shaman's ring (with article and apostrophe)
     let outcome = runtime.run_turn("take the shaman's ring").expect("turn runs");
-    assert!(outcome.text.contains("Picked up shaman's ring."));
+    assert!(outcome.text().contains("Picked up shaman's ring."));
     {
         let s = runtime.export_state().unwrap();
         assert!(s.has_item("shaman-ring"));
@@ -515,7 +537,7 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
         )
         .expect("runtime creates");
         let sigil_outcome = sigil_runtime.run_turn("take drain-sigil").expect("turn runs");
-        assert!(sigil_outcome.text.contains("anchored to the floor"));
+        assert!(sigil_outcome.text().contains("anchored to the floor"));
     }
 }
 
@@ -534,7 +556,7 @@ fn live_test_synapse_transition_commentary() {
     let runtime = cinder_core::engine::runtime::CinderRuntime::from_state(pack, state, false)
         .expect("runtime from state");
     let outcome = runtime.run_turn("go down").expect("turn runs");
-    println!("DESCENT OUTCOME TEXT:\n{}", outcome.text);
+    println!("DESCENT OUTCOME TEXT:\n{}", outcome.text());
     for (i, line) in outcome.lines.iter().enumerate() {
         println!("LINE {i} [{:?}]: {}", line.kind, line.text);
     }
@@ -566,17 +588,17 @@ fn follow_and_unfollow_commands_and_panel_options() {
 
     // Test follow command execution
     let outcome = runtime.run_turn("follow ren").expect("follow ren runs");
-    assert!(outcome.text.contains("following Ren") || outcome.text.contains("following ren"));
+    assert!(outcome.text().contains("following Ren") || outcome.text().contains("following ren"));
     assert_eq!(runtime.followed_actor_id().unwrap(), Some("ren".to_string()));
 
     // Test unfollow command execution
     let outcome = runtime.run_turn("unfollow").expect("unfollow runs");
-    assert!(outcome.text.contains("stopped following"));
+    assert!(outcome.text().contains("stopped following"));
     assert_eq!(runtime.followed_actor_id().unwrap(), None);
 
     // Test follow none
     let outcome = runtime.run_turn("follow none").expect("follow none runs");
-    assert!(outcome.text.contains("stopped following"));
+    assert!(outcome.text().contains("stopped following"));
     assert_eq!(runtime.followed_actor_id().unwrap(), None);
 }
 
@@ -623,7 +645,7 @@ fn layla_trace_requires_magic_chalk_in_inventory() {
     )
     .expect("runtime from state");
     let outcome = runtime.run_turn("trace charm-sigil").expect("turn runs");
-    assert!(outcome.text.contains("magic chalk"));
+    assert!(outcome.text().contains("magic chalk"));
 
     // Giving chalk back restores trace availability
     state.add_item("magic-chalk");

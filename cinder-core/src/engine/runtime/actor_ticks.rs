@@ -28,54 +28,49 @@ impl CinderRuntime {
             // must not tick until the player has taken their first action,
             // protecting the opening narrative from wandering threats.
             return Ok(TurnOutcome {
-                text: String::new(),
                 phase: phase_at_entry,
                 lines: Vec::new(),
             });
         }
         let outcome = match self.run_actor_turns() {
-            Ok((text, phase, lines)) => TurnOutcome {
-                text,
+            Ok((phase, lines)) => TurnOutcome {
                 phase,
                 lines,
             },
             Err(error) => {
                 if let Some(actor_tick_error) = error.downcast_ref::<ActorTickError>() {
                     eprintln!("[cinder] actor tick error: {}", actor_tick_error.message);
+                    let text = self.actor_tick_soft_error_text(actor_tick_error);
+                    let lines = if text.is_empty() {
+                        Vec::new()
+                    } else {
+                        vec![crate::engine::narrative::NarrativeLine::narration(text)]
+                    };
                     TurnOutcome {
-                        text: self.actor_tick_soft_error_text(actor_tick_error),
                         phase: GamePhase::Active,
-                        lines: Vec::new(),
+                        lines,
                     }
                 } else {
                     return Err(error);
                 }
             }
         };
-        let outcome = self.apply_stage_assignments(outcome)?;
-        let outcome = match outcome.phase {
-            GamePhase::ActEnded => {
+        let mut outcome = self.apply_stage_assignments(outcome)?;
+        match outcome.phase {
+            GamePhase::ActEnded | GamePhase::GameEnded => {
                 let ended_text = &self.content.presentation.presentation_text.act_ended;
-                let text = if outcome.text.is_empty() {
-                    ended_text.clone()
-                } else {
-                    format!("{}\n\n{}", outcome.text, ended_text)
-                };
-                TurnOutcome { text, ..outcome }
+                if !ended_text.is_empty() {
+                    outcome
+                        .lines
+                        .push(crate::engine::narrative::NarrativeLine::narration(ended_text.clone()));
+                }
             }
-            GamePhase::GameEnded => {
-                let ended_text = &self.content.presentation.presentation_text.act_ended;
-                let text = if outcome.text.is_empty() {
-                    ended_text.clone()
-                } else {
-                    format!("{}\n\n{}", outcome.text, ended_text)
-                };
-                TurnOutcome { text, ..outcome }
-            }
-            GamePhase::Active => outcome,
+            GamePhase::Active => {}
         };
-        if !outcome.text.is_empty() {
-            self.push_transcript_line(&outcome.text).ok();
+        for line in &outcome.lines {
+            if !line.text.trim().is_empty() {
+                self.push_transcript_line(&line.text).ok();
+            }
         }
         Ok(outcome)
     }
@@ -139,7 +134,7 @@ impl CinderRuntime {
 
     fn run_actor_turns(
         &self,
-    ) -> Result<(String, GamePhase, Vec<crate::engine::narrative::NarrativeLine>), Box<dyn Error>> {
+    ) -> Result<(GamePhase, Vec<crate::engine::narrative::NarrativeLine>), Box<dyn Error>> {
         let mut lines = NarrativeLines::default();
         let tracer = WorkflowTraceContext::new(self.trace_events, &self.trace_dir)?;
         tracer
@@ -160,7 +155,7 @@ impl CinderRuntime {
                 .map_err(|_| "failed to lock runtime state to start npc tick")?;
             if state.phase != GamePhase::Active {
                 let phase = state.phase.clone();
-                return Ok((String::new(), phase, Vec::new()));
+                return Ok((phase, Vec::new()));
             }
             let tick_start = [TimestampedWorldEvent::now(WorldEvent::TurnStarted {
                 turn_number: state.turn_number + 1,
@@ -183,7 +178,7 @@ impl CinderRuntime {
                 .map_err(|_| "failed to lock runtime state for npc turns")?;
             if state.phase != GamePhase::Active {
                 let phase = state.phase.clone();
-                return Ok((lines.to_text(), phase, lines.0));
+                return Ok((phase, lines.0));
             }
             state.clone()
         };
@@ -235,7 +230,7 @@ impl CinderRuntime {
             .map_err(|_| "failed to lock runtime state to apply npc events")?;
         if state.phase != GamePhase::Active {
             let phase = state.phase.clone();
-            return Ok((lines.to_text(), phase, lines.0));
+            return Ok((phase, lines.0));
         }
         let mut logged_events = tick
             .events
@@ -291,6 +286,6 @@ impl CinderRuntime {
                 }),
             )
             .map_err(std::io::Error::other)?;
-        Ok((lines.to_text(), phase, lines.0))
+        Ok((phase, lines.0))
     }
 }

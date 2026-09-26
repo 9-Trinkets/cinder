@@ -25,16 +25,7 @@ export function findPanelConfig(
 export function extractResponseLines(
   res: api.CommandResponse,
 ): Array<{ text: string; kind?: api.LineKind }> {
-  const typed = (res.lines ?? []).filter(l => l.text.trim())
-  if (typed.length > 0) {
-    return typed.map(l => ({ text: l.text, kind: l.kind }))
-  }
-  if (res.text) {
-    const chunks = res.text
-      .split(/\n\n+/)
-      .map(chunk => chunk.trim())
-      .filter(Boolean)
-    return chunks.length ? chunks.map(text => ({ text })) : [{ text: res.text }]
-  }
-  return []
+  return (res.lines ?? [])
+    .filter(l => l.text.trim())
+    .map(l => ({ text: l.text, kind: l.kind }))
 }

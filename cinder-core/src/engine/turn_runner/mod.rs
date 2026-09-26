@@ -308,7 +308,6 @@ impl CinderRoleRunner {
         Ok(RouteEnvelope {
             next: self.workflow.complete_target.clone(),
             message: serde_json::to_string(&TurnOutcome {
-                text: reduced.lines.to_text(),
                 phase: reduced.phase,
                 lines: reduced.lines.0,
             })

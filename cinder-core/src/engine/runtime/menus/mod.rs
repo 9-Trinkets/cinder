@@ -63,7 +63,6 @@ impl CinderRuntime {
             }
         }
         Ok(TurnOutcome {
-            text: reduced.lines.to_text(),
             phase: reduced.phase,
             lines: reduced.lines.0,
         })
@@ -129,7 +128,6 @@ impl CinderRuntime {
         lines.narration(feedback_line);
         lines.extend(reduced.lines.0);
         Ok(TurnOutcome {
-            text: lines.to_text(),
             phase: reduced.phase,
             lines: lines.0,
         })

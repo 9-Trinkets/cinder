@@ -30,16 +30,11 @@ impl CinderRuntime {
         if summary.is_empty() {
             return Ok(outcome);
         }
-        let text = if outcome.text.is_empty() {
-            summary
-        } else {
-            format!("{}\n\n{}", outcome.text, summary)
-        };
-        Ok(TurnOutcome {
-            text,
-            phase: outcome.phase,
-            lines: outcome.lines,
-        })
+        let mut outcome = outcome;
+        outcome
+            .lines
+            .push(crate::engine::narrative::NarrativeLine::narration(summary));
+        Ok(outcome)
     }
 
     fn stage_assignment_request(
@@ -422,7 +417,6 @@ mod tests {
 
         let first = runtime
             .apply_stage_assignments(TurnOutcome {
-                text: String::new(),
                 phase: GamePhase::Active,
                 lines: Vec::new(),
             })
@@ -433,12 +427,11 @@ mod tests {
 
         let second = runtime
             .apply_stage_assignments(TurnOutcome {
-                text: String::new(),
                 phase: GamePhase::Active,
                 lines: Vec::new(),
             })
             .expect("reapply assignment");
-        assert!(second.text.is_empty());
+        assert!(second.lines.is_empty());
     }
 
     #[test]
@@ -454,7 +447,6 @@ mod tests {
 
         runtime
             .apply_stage_assignments(TurnOutcome {
-                text: String::new(),
                 phase: GamePhase::Active,
                 lines: Vec::new(),
             })

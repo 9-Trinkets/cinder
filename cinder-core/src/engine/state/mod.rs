@@ -483,13 +483,26 @@ fn room_item_key(room_id: &str, item_id: &str) -> String {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct TurnOutcome {
-    pub text: String,
     pub phase: GamePhase,
-    /// The narrative lines that produced `text`, each tagged with how it
-    /// should be styled. Present so the server/client never have to parse
-    /// styling hints out of the prose.
+    /// The narrative lines produced by the turn, each tagged with how it
+    /// should be styled. This is the single source of truth for narrative output.
     #[serde(default)]
     pub lines: Vec<crate::engine::narrative::NarrativeLine>,
+}
+
+impl TurnOutcome {
+    pub fn new(phase: GamePhase, lines: Vec<crate::engine::narrative::NarrativeLine>) -> Self {
+        Self { phase, lines }
+    }
+
+    /// Convenience accessor joining the line texts with double newlines.
+    pub fn text(&self) -> String {
+        self.lines
+            .iter()
+            .map(|line| line.text.as_str())
+            .collect::<Vec<_>>()
+            .join("\n\n")
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

@@ -84,7 +84,7 @@ fn player_can_eat_and_use_flatbread_in_layla_pack() {
 
     // 1. "eat date flatbread"
     let outcome = runtime.run_turn("eat date flatbread").expect("turn runs");
-    assert!(outcome.text.contains("You break the warm date flatbread and eat"));
+    assert!(outcome.text().contains("You break the warm date flatbread and eat"));
     {
         let s = runtime.export_state().unwrap();
         assert_eq!(s.item_count("date-flatbread"), 1);
@@ -93,7 +93,7 @@ fn player_can_eat_and_use_flatbread_in_layla_pack() {
 
     // 2. "use date-flatbread"
     let outcome2 = runtime.run_turn("use date-flatbread").expect("turn runs");
-    assert!(outcome2.text.contains("You break the warm date flatbread and eat"));
+    assert!(outcome2.text().contains("You break the warm date flatbread and eat"));
     {
         let s = runtime.export_state().unwrap();
         assert_eq!(s.item_count("date-flatbread"), 0);
@@ -109,7 +109,7 @@ fn player_can_consume_with_short_name_eat_bread() {
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
 
     let outcome = runtime.run_turn("eat bread").expect("turn runs");
-    assert!(outcome.text.contains("You break the warm date flatbread and eat"));
+    assert!(outcome.text().contains("You break the warm date flatbread and eat"));
     {
         let s = runtime.export_state().unwrap();
         assert_eq!(s.item_count("date-flatbread"), 0);
@@ -126,9 +126,9 @@ fn rejects_using_unheld_or_non_usable_item() {
 
     // 1. Not carried
     let outcome1 = runtime.run_turn("eat date flatbread").expect("turn runs");
-    assert!(outcome1.text.contains("not carrying") || outcome1.text.contains("don't have"));
+    assert!(outcome1.text().contains("not carrying") || outcome1.text().contains("don't have"));
 
     // 2. Carried but has no use_hook
     let outcome2 = runtime.run_turn("use brass-gear").expect("turn runs");
-    assert!(outcome2.text.contains("cannot use"));
+    assert!(outcome2.text().contains("cannot use"));
 }

@@ -89,7 +89,7 @@ pub(super) fn activity_split_assignment() -> StageAssignment {
 pub(super) fn assert_dinner_prep_assignment(outcome: &TurnOutcome, state: &WorldState) {
     assert!(
         outcome
-            .text
+            .text()
             .contains("Alex starts pulling the house toward the Kitchen for dinner prep.")
     );
     assert_eq!(state.story_vars.get("alex_assigned_room"), Some("kitchen"));

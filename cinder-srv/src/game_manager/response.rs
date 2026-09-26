@@ -18,8 +18,7 @@ pub struct MovieData {
 
 #[derive(Clone, Serialize, Default)]
 pub struct CommandResponse {
-    pub text: String,
-    /// The narrative lines behind `text`, each tagged with its styling kind.
+    /// The narrative lines produced by the command or tick, each tagged with its styling kind.
     #[serde(default)]
     pub lines: Vec<cinder_core::engine::narrative::NarrativeLine>,
     pub game_over: bool,
@@ -30,9 +29,9 @@ pub struct CommandResponse {
 }
 
 impl CommandResponse {
-    pub fn new(text: String, game_over: bool, ui_snapshot: Option<UiSnapshot>) -> Self {
+    pub fn new(lines: Vec<cinder_core::engine::narrative::NarrativeLine>, game_over: bool, ui_snapshot: Option<UiSnapshot>) -> Self {
         CommandResponse {
-            text,
+            lines,
             game_over,
             ui_snapshot,
             ..Default::default()

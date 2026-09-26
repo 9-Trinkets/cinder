@@ -299,9 +299,9 @@ fn runtime_give_command_with_authored_action_gives_item_to_companion() {
         .run_turn("give Brass Gear to Dark Golem")
         .expect("turn runs without panic");
     assert!(
-        outcome.text.contains("dark golem") || outcome.text.contains("Dark Golem"),
+        outcome.text().contains("dark golem") || outcome.text().contains("Dark Golem"),
         "outcome was: {}",
-        outcome.text
+        outcome.text()
     );
     let s = runtime.export_state().unwrap();
     assert_eq!(s.actor_item_count("golem-dark-nw", "brass-gear"), 1);
@@ -333,21 +333,21 @@ fn npc_dialogue_gifts_item_to_player_during_conversation() {
 
     // 1. Spoken line has the [GIVE: ...] tag stripped
     assert!(
-        outcome.text.contains("Here, take this flatbread with roasted dates; you'll need it."),
+        outcome.text().contains("Here, take this flatbread with roasted dates; you'll need it."),
         "outcome text was: {}",
-        outcome.text
+        outcome.text()
     );
     assert!(
-        !outcome.text.contains("[GIVE"),
+        !outcome.text().contains("[GIVE"),
         "outcome text still contained GIVE tag: {}",
-        outcome.text
+        outcome.text()
     );
 
     // 2. Transfer narration is included
     assert!(
-        outcome.text.contains("Yasmin gives you the date flatbread."),
+        outcome.text().contains("Yasmin gives you the date flatbread."),
         "outcome text missing transfer message: {}",
-        outcome.text
+        outcome.text()
     );
 
     // 3. State is updated: item removed from Yasmin, added to player

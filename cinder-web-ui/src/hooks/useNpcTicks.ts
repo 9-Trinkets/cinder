@@ -40,7 +40,7 @@ export function useNpcTicks(params: {
         }
         onTickStatusRef.current?.(false)
         const res: api.CommandResponse = data
-        if (res.text || res.movie || res.game_over || res.act_closure || res.game_closure) {
+        if ((res.lines && res.lines.length > 0) || res.movie || res.game_over || res.act_closure || res.game_closure) {
           onTickRef.current(res)
         }
       } catch {
