@@ -31,7 +31,10 @@ pub(super) fn advance_actor_stats_on_tick(
     if stepped_stats.is_empty() {
         return;
     }
-    let actor_ids: Vec<String> = state.actors(content).map(|actor| actor.id.clone()).collect();
+    let actor_ids: Vec<String> = state
+        .actors(content)
+        .map(|actor| actor.id.clone())
+        .collect();
     for actor_id in &actor_ids {
         for (stat_key, steps) in &stepped_stats {
             for _ in 0..*steps {
@@ -102,9 +105,16 @@ pub(super) fn increment_shared_room_safety(state: &mut WorldState, content: &Con
         .map(|actor| (actor.id.clone(), actor.room_id.clone()))
         .collect();
     for (actor_id, actor_home_room_id) in &onstage_ids {
-        let room_id = state.actor_room_id(actor_id, actor_home_room_id).to_string();
-        for (other_id, other_home_room_id) in onstage_ids.iter().filter(|(other_id, _)| other_id > actor_id) {
-            let other_room_id = state.actor_room_id(other_id, other_home_room_id).to_string();
+        let room_id = state
+            .actor_room_id(actor_id, actor_home_room_id)
+            .to_string();
+        for (other_id, other_home_room_id) in onstage_ids
+            .iter()
+            .filter(|(other_id, _)| other_id > actor_id)
+        {
+            let other_room_id = state
+                .actor_room_id(other_id, other_home_room_id)
+                .to_string();
             if room_id == other_room_id {
                 apply_world_hook_effects(
                     state,

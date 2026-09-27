@@ -25,7 +25,12 @@ pub fn build_floor1() -> FloorBuilder {
             "A small room of fitted stone blocks. The floor is laid in a grid, lines crossing at every intersection.",
             "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times.",
             "a grid scored into the floor",
-            vec!["grid".into(), "floor".into(), "line".into(), "intersection".into()],
+            vec![
+                "grid".into(),
+                "floor".into(),
+                "line".into(),
+                "intersection".into(),
+            ],
             "Thin lines cross the floor at right angles, forming a pattern of squares. The intersections are marked with small depressions, worn smooth by something placed and removed many times.",
         ),
         (
@@ -33,7 +38,12 @@ pub fn build_floor1() -> FloorBuilder {
             "A corridor paved in stone flags, each one cut to the same size. The joints between them form straight lines.",
             "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone.",
             "the fitted flagstones",
-            vec!["flagstone".into(), "flag".into(), "floor".into(), "joint".into()],
+            vec![
+                "flagstone".into(),
+                "flag".into(),
+                "floor".into(),
+                "joint".into(),
+            ],
             "Each flag is cut to fit precisely against its neighbors. The joints form lines that cross at right angles, a grid drawn in stone.",
         ),
         (
@@ -74,7 +84,12 @@ pub fn build_floor1() -> FloorBuilder {
                     "The pillars here are pale, almost white. A golem of pale marble stands among them, motionless. It does not look at you.",
                     "The pillars here are pale, almost white. A golem of pale marble stands among them, motionless. It does not look at you.",
                     "pale stone pillars",
-                    vec!["pillar".into(), "pale".into(), "stone".into(), "marble".into()],
+                    vec![
+                        "pillar".into(),
+                        "pale".into(),
+                        "stone".into(),
+                        "marble".into(),
+                    ],
                     "The pillars are arranged in a pattern that feels deliberate. They mark positions on the floor like pieces on a board.",
                 ),
                 (5, 5) => (
@@ -82,7 +97,12 @@ pub fn build_floor1() -> FloorBuilder {
                     "The room is open and the floor is laid in a precise grid. Lines cross at every intersection. At the center stands a golem of pale stone, taller than the rest, perfectly still. It does not move. It does not need to.",
                     "The room is open and the floor is laid in a precise grid. Lines cross at every intersection. At the center stands a golem of pale stone, taller than the rest, perfectly still. It does not move. It does not need to.",
                     "a deep central grid",
-                    vec!["grid".into(), "center".into(), "line".into(), "intersection".into()],
+                    vec![
+                        "grid".into(),
+                        "center".into(),
+                        "line".into(),
+                        "intersection".into(),
+                    ],
                     "Lines cross the floor at precise intervals, forming a grid of squares. The intersections are worn smooth. This is the center of everything.",
                 ),
                 (7, 3) => (
@@ -107,7 +127,9 @@ pub fn build_floor1() -> FloorBuilder {
                 }
             };
 
-            builder.add_room(x as f64, y as f64, id, title, summary, inspect, flabel, faliases, finspect);
+            builder.add_room(
+                x as f64, y as f64, id, title, summary, inspect, flabel, faliases, finspect,
+            );
         }
     }
 
@@ -149,7 +171,8 @@ pub fn build_floor4() -> FloorBuilder {
     let mut builder = FloorBuilder::new("the-commoners", "The Worker Village", 25, 23);
 
     const RAW_ROOMS: &str = include_str!("../../data/floor4_rooms.json");
-    let entries: Vec<Floor4RoomEntry> = serde_json::from_str(RAW_ROOMS).expect("valid floor4 room data");
+    let entries: Vec<Floor4RoomEntry> =
+        serde_json::from_str(RAW_ROOMS).expect("valid floor4 room data");
 
     for entry in entries {
         builder.add_room(
@@ -210,40 +233,62 @@ pub fn build_floor4() -> FloorBuilder {
         "village_sw_corner",
     ];
 
-    connect_segment(&mut builder, &village_left, "Northeast", ne, "Southwest", sw);
-    connect_segment(&mut builder, &village_right, "Southeast", se, "Northwest", nw);
+    connect_segment(
+        &mut builder,
+        &village_left,
+        "Northeast",
+        ne,
+        "Southwest",
+        sw,
+    );
+    connect_segment(
+        &mut builder,
+        &village_right,
+        "Southeast",
+        se,
+        "Northwest",
+        nw,
+    );
     connect_segment(&mut builder, &village_bottom, "West", w, "East", e);
 
     // Fortress Perimeter Loop (3 sides, sharing 3 corners = 6 rooms)
     // Side 1 (West Edge): Fortress Gate -> West Catwalk -> Prison Cage
-    let fortress_left = [
-        "fortress_gate",
-        "west_iron_walkway",
-        "steam_prison_cage",
-    ];
+    let fortress_left = ["fortress_gate", "west_iron_walkway", "steam_prison_cage"];
     // Side 2 (South Edge): Prison Cage -> South Gantry -> Command Bastion
-    let fortress_bottom = [
-        "steam_prison_cage",
-        "south_steam_gantry",
-        "command_bastion",
-    ];
+    let fortress_bottom = ["steam_prison_cage", "south_steam_gantry", "command_bastion"];
     // Side 3 (East Edge): Command Bastion -> East Rampart -> Fortress Gate
-    let fortress_right = [
-        "command_bastion",
-        "east_sentry_walk",
-        "fortress_gate",
-    ];
+    let fortress_right = ["command_bastion", "east_sentry_walk", "fortress_gate"];
 
-    connect_segment(&mut builder, &fortress_left, "Southwest", sw, "Northeast", ne);
+    connect_segment(
+        &mut builder,
+        &fortress_left,
+        "Southwest",
+        sw,
+        "Northeast",
+        ne,
+    );
     connect_segment(&mut builder, &fortress_bottom, "East", e, "West", w);
-    connect_segment(&mut builder, &fortress_right, "Northwest", nw, "Southeast", se);
+    connect_segment(
+        &mut builder,
+        &fortress_right,
+        "Northwest",
+        nw,
+        "Southeast",
+        se,
+    );
 
     // Bulkhead connection between Village and Fortress
     builder.add_exit(
         "village_north_gate",
         "fortress_gate",
         "South through the Bulkhead",
-        vec!["south".into(), "s".into(), "bulkhead".into(), "gate".into(), "in".into()],
+        vec![
+            "south".into(),
+            "s".into(),
+            "bulkhead".into(),
+            "gate".into(),
+            "in".into(),
+        ],
         Some("South".into()),
         "fortress_gate_open",
     );
@@ -251,7 +296,13 @@ pub fn build_floor4() -> FloorBuilder {
         "fortress_gate",
         "village_north_gate",
         "North to North Approach Plaza",
-        vec!["north".into(), "n".into(), "out".into(), "plaza".into(), "village".into()],
+        vec![
+            "north".into(),
+            "n".into(),
+            "out".into(),
+            "plaza".into(),
+            "village".into(),
+        ],
         Some("North".into()),
         "",
     );
@@ -269,7 +320,12 @@ pub fn build_floor4() -> FloorBuilder {
         "teleport_platform",
         "fortress_gate",
         "North to Fortress Checkpoint",
-        vec!["north".into(), "n".into(), "gate".into(), "checkpoint".into()],
+        vec![
+            "north".into(),
+            "n".into(),
+            "gate".into(),
+            "checkpoint".into(),
+        ],
         Some("North".into()),
         "",
     );
@@ -277,7 +333,13 @@ pub fn build_floor4() -> FloorBuilder {
         "south_steam_gantry",
         "teleport_platform",
         "North to Teleportation Platform",
-        vec!["north".into(), "n".into(), "courtyard".into(), "platform".into(), "teleport".into()],
+        vec![
+            "north".into(),
+            "n".into(),
+            "courtyard".into(),
+            "platform".into(),
+            "teleport".into(),
+        ],
         Some("North".into()),
         "",
     );
@@ -295,7 +357,13 @@ pub fn build_floor4() -> FloorBuilder {
         "village_square",
         "oh",
         "Up to the Heart-Pit",
-        vec!["up".into(), "u".into(), "pit".into(), "stairs".into(), "heart".into()],
+        vec![
+            "up".into(),
+            "u".into(),
+            "pit".into(),
+            "stairs".into(),
+            "heart".into(),
+        ],
         Some("Up".into()),
         "",
     );

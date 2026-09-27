@@ -1,9 +1,9 @@
 use super::common::*;
 use cinder_core::content::types::{
-    ActionDefinition, AdvanceCondition, AdvanceSignal, BeatDefinition, BeatsDefinition,
-    CommandEffect, BeatObjectiveCompletionDefinition, BeatObjectiveDefinition,
-    BeatObjectiveGuidanceDefinition, BeatObjectiveProgressDefinition, BeatObjectiveProgressKeyDefinition,
-    BeatObjectiveProgressRef, BeatObjectivesDefinition,
+    ActionDefinition, AdvanceCondition, AdvanceSignal, BeatDefinition,
+    BeatObjectiveCompletionDefinition, BeatObjectiveDefinition, BeatObjectiveGuidanceDefinition,
+    BeatObjectiveProgressDefinition, BeatObjectiveProgressKeyDefinition, BeatObjectiveProgressRef,
+    BeatObjectivesDefinition, BeatsDefinition, CommandEffect,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::reducer::apply_events;

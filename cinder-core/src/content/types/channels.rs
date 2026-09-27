@@ -43,10 +43,7 @@ pub enum ChannelAvailability {
     /// Usable only while a story var holds an expected value. Declared as
     /// `"availability": { "story_var_gate": { "story_var": ...,
     /// "expected": ... } }`.
-    StoryVarGate {
-        story_var: String,
-        expected: String,
-    },
+    StoryVarGate { story_var: String, expected: String },
 }
 
 /// An actor messaging channel declared by a pack in `settings.json`.

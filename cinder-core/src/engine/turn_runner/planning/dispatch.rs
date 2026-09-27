@@ -1,15 +1,15 @@
+use super::super::types::PlannedTurn;
+use super::PlanningContext;
 use super::content::plan_content_command;
 use super::dialogue::plan_dialogue_command;
 use super::observe::{plan_observe_room, plan_observe_target};
 use super::targeted::plan_targeted_state_command;
 use super::targetless::plan_targetless_command;
 use super::teleport::plan_teleport_command;
-use super::super::types::PlannedTurn;
-use super::PlanningContext;
+use crate::content::types::{ActionDefinition, CommandEffect, CommandOutcomeMode, ContentPack};
 use crate::engine::turn_runner::planner_handler::items::{
     plan_drop_command, plan_equip_command, plan_take_command, plan_unequip_command,
 };
-use crate::content::types::{ActionDefinition, CommandEffect, CommandOutcomeMode, ContentPack};
 
 fn plan_command_effects(
     content: &ContentPack,
@@ -37,7 +37,13 @@ fn plan_command_effects(
         plan_targeted_state_command(content, action, input, context, planned)
     } else if action.has_effect(CommandEffect::PickUpItem) && action.item_id.is_empty() {
         let target = input.unwrap_or_default().trim();
-        plan_take_command(content, context.planner_state, context.current_room_id, target, planned)
+        plan_take_command(
+            content,
+            context.planner_state,
+            context.current_room_id,
+            target,
+            planned,
+        )
     } else if action.has_effect(CommandEffect::DropItem) && action.item_id.is_empty() {
         let target = input.unwrap_or_default().trim();
         plan_drop_command(content, context.planner_state, target, planned)

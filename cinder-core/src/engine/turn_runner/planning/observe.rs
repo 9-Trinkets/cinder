@@ -29,7 +29,10 @@ pub(super) fn plan_observe_target(
             == context.current_room_id
             && (actor.id.eq_ignore_ascii_case(target)
                 || display_actor_name(context.planner_state, actor).eq_ignore_ascii_case(target)
-                || actor.aliases.iter().any(|alias| alias.eq_ignore_ascii_case(target)))
+                || actor
+                    .aliases
+                    .iter()
+                    .any(|alias| alias.eq_ignore_ascii_case(target)))
     });
     if let Some(actor) = local_match.or_else(|| {
         content.resolve_actor(target).or_else(|| {

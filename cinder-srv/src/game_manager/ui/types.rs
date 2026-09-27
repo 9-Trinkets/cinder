@@ -159,6 +159,17 @@ pub struct PanelOptionData {
     pub selected: bool,
 }
 
+/// The per-panel option sets built for one UI snapshot, grouped so that the
+/// overflow builder and the panel-options builder share a single value.
+#[derive(Default)]
+pub struct PanelOptionGroups {
+    pub take: Vec<PanelOptionData>,
+    pub use_item: Vec<PanelOptionData>,
+    pub give: Vec<PanelOptionData>,
+    pub drop: Vec<PanelOptionData>,
+    pub equipment: Vec<PanelOptionData>,
+}
+
 #[derive(Clone, Serialize)]
 pub struct OverflowAction {
     pub id: String,

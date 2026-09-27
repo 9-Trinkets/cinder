@@ -92,13 +92,7 @@ pub(super) fn parse_item_command(trimmed: &str) -> Option<PlayerCommand> {
     if let Some(target) = phrase_target(
         trimmed,
         &[
-            "use ",
-            "eat ",
-            "drink ",
-            "consume ",
-            "quaff ",
-            "apply ",
-            "read ",
+            "use ", "eat ", "drink ", "consume ", "quaff ", "apply ", "read ",
         ],
     ) {
         return Some(PlayerCommand::Use { target });
@@ -183,7 +177,9 @@ mod tests {
 
     #[test]
     fn bare_item_verbs_do_not_resolve() {
-        for input in ["take", "drop", "equip", "unequip", "give", "hand", "use", "eat", "drink", "consume"] {
+        for input in [
+            "take", "drop", "equip", "unequip", "give", "hand", "use", "eat", "drink", "consume",
+        ] {
             assert!(parse_item_command(input).is_none());
         }
     }

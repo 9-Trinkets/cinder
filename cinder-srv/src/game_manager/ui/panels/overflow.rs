@@ -1,10 +1,13 @@
+use super::super::{
+    OverflowAction, PanelConfigData, PanelOptionGroups, append_stage_menu_overflow_actions,
+};
 use super::panel_config_data;
-use super::super::{OverflowAction, PanelConfigData, append_stage_menu_overflow_actions};
-use cinder_core::content::types::{ActionDefinition, ContentPack, PanelDataSource, PanelSelectAction};
+use cinder_core::content::types::{
+    ActionDefinition, ContentPack, PanelDataSource, PanelSelectAction,
+};
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 use cinder_core::engine::turn_policies::action_is_available;
-use super::super::PanelOptionData;
 
 /// Display title for an overflow action button: the authored `label` (e.g.
 /// "Use Moss Poultice").
@@ -17,11 +20,7 @@ pub(crate) fn build_overflow_actions(
     content: &ContentPack,
     state: &WorldState,
     bar_ids: &[&str],
-    take_panel_options: &[PanelOptionData],
-    use_panel_options: &[PanelOptionData],
-    give_panel_options: &[PanelOptionData],
-    drop_panel_options: &[PanelOptionData],
-    equipment_panel_options: &[PanelOptionData],
+    panels: &PanelOptionGroups,
 ) -> Result<Vec<OverflowAction>, String> {
     let has_talk = bar_ids.contains(&"speak") || bar_ids.contains(&"talk");
     let modal_covered: Vec<&str> = vec!["inspect_feature", "inspect_actor"];
@@ -39,16 +38,16 @@ pub(crate) fn build_overflow_actions(
             if (a.id == "speak" || a.id == "talk") && has_talk {
                 return false;
             }
-            if a.id == "take" && take_panel_options.is_empty() {
+            if a.id == "take" && panels.take.is_empty() {
                 return false;
             }
-            if a.id == "use" && use_panel_options.is_empty() {
+            if a.id == "use" && panels.use_item.is_empty() {
                 return false;
             }
-            if a.id == "drop" && drop_panel_options.is_empty() {
+            if a.id == "drop" && panels.drop.is_empty() {
                 return false;
             }
-            if a.id == "give" && give_panel_options.is_empty() {
+            if a.id == "give" && panels.give.is_empty() {
                 return false;
             }
             action_is_available(content, state, a, &current_room_id)
@@ -60,7 +59,9 @@ pub(crate) fn build_overflow_actions(
                 .as_ref()
                 .map(|player_command| player_command.usage.clone())
                 .unwrap_or_default();
-            let group = if (a.id == "take" || a.id == "use" || a.id == "drop" || a.id == "give") && a.ui.group.is_empty() {
+            let group = if (a.id == "take" || a.id == "use" || a.id == "drop" || a.id == "give")
+                && a.ui.group.is_empty()
+            {
                 "items".to_string()
             } else {
                 a.ui.group.clone()
@@ -82,7 +83,7 @@ pub(crate) fn build_overflow_actions(
 
     // Surface the generic `take <item>` overflow action in the "items" group
     // directly above give and drop when there are takeable items.
-    if !take_panel_options.is_empty() && !overflow_actions.iter().any(|a| a.id == "take") {
+    if !panels.take.is_empty() && !overflow_actions.iter().any(|a| a.id == "take") {
         let take_action = OverflowAction {
             id: "take".to_string(),
             label: content.ui_text.take_label.clone(),
@@ -96,7 +97,10 @@ pub(crate) fn build_overflow_actions(
                 on_select: PanelSelectAction::ExecuteCommand,
             }),
         };
-        if let Some(pos) = overflow_actions.iter().position(|a| a.id == "give" || a.id == "drop") {
+        if let Some(pos) = overflow_actions
+            .iter()
+            .position(|a| a.id == "give" || a.id == "drop")
+        {
             overflow_actions.insert(pos, take_action);
         } else {
             overflow_actions.push(take_action);
@@ -105,7 +109,7 @@ pub(crate) fn build_overflow_actions(
 
     // Surface the generic `use <item>` overflow action in the "items" group
     // directly above give and drop when there are usable items.
-    if !use_panel_options.is_empty() && !overflow_actions.iter().any(|a| a.id == "use") {
+    if !panels.use_item.is_empty() && !overflow_actions.iter().any(|a| a.id == "use") {
         let use_action = OverflowAction {
             id: "use".to_string(),
             label: content.ui_text.use_label.clone(),
@@ -119,7 +123,10 @@ pub(crate) fn build_overflow_actions(
                 on_select: PanelSelectAction::ExecuteCommand,
             }),
         };
-        if let Some(pos) = overflow_actions.iter().position(|a| a.id == "give" || a.id == "drop") {
+        if let Some(pos) = overflow_actions
+            .iter()
+            .position(|a| a.id == "give" || a.id == "drop")
+        {
             overflow_actions.insert(pos, use_action);
         } else {
             overflow_actions.push(use_action);
@@ -128,7 +135,7 @@ pub(crate) fn build_overflow_actions(
 
     // Surface the generic `give <item> to <companion>` overflow action in the "items" group
     // directly above drop when the player holds something droppable and has companions.
-    if !give_panel_options.is_empty() && !overflow_actions.iter().any(|a| a.id == "give") {
+    if !panels.give.is_empty() && !overflow_actions.iter().any(|a| a.id == "give") {
         let give_action = OverflowAction {
             id: "give".to_string(),
             label: "Give".to_string(),
@@ -152,7 +159,7 @@ pub(crate) fn build_overflow_actions(
     // Surface the generic `drop <item>` overflow action when the player holds
     // something droppable. Structure mirrors authored panel actions so moving
     // it to the main bar later is a placement-only change.
-    if !drop_panel_options.is_empty() && !overflow_actions.iter().any(|a| a.id == "drop") {
+    if !panels.drop.is_empty() && !overflow_actions.iter().any(|a| a.id == "drop") {
         overflow_actions.push(OverflowAction {
             id: "drop".to_string(),
             label: content.ui_text.drop_label.clone(),
@@ -167,7 +174,7 @@ pub(crate) fn build_overflow_actions(
             }),
         });
     }
-    if !equipment_panel_options.is_empty() {
+    if !panels.equipment.is_empty() {
         overflow_actions.push(OverflowAction {
             id: "equipment".to_string(),
             label: "Equipment".to_string(),

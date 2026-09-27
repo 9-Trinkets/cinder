@@ -236,7 +236,9 @@ impl CinderRuntime {
                 if !ended_text.is_empty() {
                     outcome
                         .lines
-                        .push(crate::engine::narrative::NarrativeLine::narration(ended_text.clone()));
+                        .push(crate::engine::narrative::NarrativeLine::narration(
+                            ended_text.clone(),
+                        ));
                 }
             }
             GamePhase::Active => {}

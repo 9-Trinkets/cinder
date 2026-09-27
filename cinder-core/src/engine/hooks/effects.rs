@@ -34,16 +34,7 @@ pub(crate) enum WorldHookEffect {
         messages: Vec<String>,
     },
     /// Sets the stance of matching living actors carrying `tag`.
-    SetStanceByTag {
-        tag: String,
-        stance: ActorStance,
-        #[serde(default)]
-        from_stances: Vec<ActorStance>,
-        #[serde(default)]
-        follows_player: bool,
-        #[serde(default)]
-        messages: Vec<String>,
-    },
+    SetStanceByTag(SetStanceByTagEffect),
     /// Sets a story variable (e.g. a flag marking a boss as defeated).
     SetStoryVar { key: String, value: String },
     /// Adds an item directly to the player's inventory and announces acquisition.
@@ -79,17 +70,34 @@ pub(crate) enum WorldHookEffect {
         max_instances_messages: Vec<String>,
     },
     /// In-room character speech rendered in dialogue style and tracked in conversation memory.
-    ActorSpeech {
-        actor_id: String,
-        #[serde(default)]
-        target_id: Option<String>,
-        #[serde(default)]
-        text: Option<String>,
-        #[serde(default)]
-        key: Option<String>,
-        #[serde(default)]
-        vars: Vec<(String, String)>,
-    },
+    ActorSpeech(ActorSpeechEffect),
+}
+
+/// Payload for [`WorldHookEffect::SetStanceByTag`].
+#[derive(Debug, Deserialize)]
+pub(crate) struct SetStanceByTagEffect {
+    pub tag: String,
+    pub stance: ActorStance,
+    #[serde(default)]
+    pub from_stances: Vec<ActorStance>,
+    #[serde(default)]
+    pub follows_player: bool,
+    #[serde(default)]
+    pub messages: Vec<String>,
+}
+
+/// Payload for [`WorldHookEffect::ActorSpeech`].
+#[derive(Debug, Deserialize)]
+pub(crate) struct ActorSpeechEffect {
+    pub actor_id: String,
+    #[serde(default)]
+    pub target_id: Option<String>,
+    #[serde(default)]
+    pub text: Option<String>,
+    #[serde(default)]
+    pub key: Option<String>,
+    #[serde(default)]
+    pub vars: Vec<(String, String)>,
 }
 
 impl WorldHookEffect {
@@ -101,17 +109,37 @@ impl WorldHookEffect {
         mut lines: Option<&mut NarrativeLines>,
     ) -> Result<(), String> {
         match self {
-            WorldHookEffect::AdjustPairStat { participant_a_id, participant_b_id, stat, delta } => {
+            WorldHookEffect::AdjustPairStat {
+                participant_a_id,
+                participant_b_id,
+                stat,
+                delta,
+            } => {
                 state.adjust_pair_stat(participant_a_id, participant_b_id, stat, *delta)?;
             }
-            WorldHookEffect::AdjustActorStat { actor_id, stat, delta } => {
+            WorldHookEffect::AdjustActorStat {
+                actor_id,
+                stat,
+                delta,
+            } => {
                 state.adjust_actor_stat(content, actor_id, stat, *delta)?;
             }
-            WorldHookEffect::ConvertActorToAlly { actor_id, follows_player, messages } => {
-                self.apply_convert_actor_to_ally(state, content, actor_id, *follows_player, messages, lines.as_deref_mut());
+            WorldHookEffect::ConvertActorToAlly {
+                actor_id,
+                follows_player,
+                messages,
+            } => {
+                self.apply_convert_actor_to_ally(
+                    state,
+                    content,
+                    actor_id,
+                    *follows_player,
+                    messages,
+                    lines.as_deref_mut(),
+                );
             }
-            WorldHookEffect::SetStanceByTag { tag, stance, from_stances, follows_player, messages } => {
-                self.apply_set_stance_by_tag(state, content, tag, *stance, from_stances, *follows_player, messages, lines.as_deref_mut());
+            WorldHookEffect::SetStanceByTag(effect) => {
+                self.apply_set_stance_by_tag(state, content, effect, lines.as_deref_mut());
             }
             WorldHookEffect::SetStoryVar { key, value } => {
                 self.apply_set_story_var(state, content, key, value, lines.as_deref_mut());
@@ -119,8 +147,19 @@ impl WorldHookEffect {
             WorldHookEffect::AcquireItem { item_id } => {
                 self.apply_acquire_item(state, content, item_id, lines.as_deref_mut());
             }
-            WorldHookEffect::NarrateMessage { key, vars, generate_commentary } => {
-                self.apply_narrate_message(content, input, key, vars, *generate_commentary, lines.as_deref_mut());
+            WorldHookEffect::NarrateMessage {
+                key,
+                vars,
+                generate_commentary,
+            } => {
+                self.apply_narrate_message(
+                    content,
+                    input,
+                    key,
+                    vars,
+                    *generate_commentary,
+                    lines.as_deref_mut(),
+                );
             }
             WorldHookEffect::DefeatActorsByTag { tag } => {
                 state.defeat_actors_by_tag(content, tag);
@@ -128,8 +167,8 @@ impl WorldHookEffect {
             WorldHookEffect::SpawnActor { .. } => {
                 self.apply_spawn_actor(state, content, lines.as_deref_mut());
             }
-            WorldHookEffect::ActorSpeech { actor_id, target_id, text, key, vars } => {
-                self.apply_actor_speech(state, content, actor_id, target_id.as_deref(), text.as_deref(), key.as_deref(), vars, lines.as_deref_mut());
+            WorldHookEffect::ActorSpeech(effect) => {
+                self.apply_actor_speech(state, content, effect, lines);
             }
         }
         Ok(())
@@ -162,20 +201,18 @@ impl WorldHookEffect {
         &self,
         state: &mut WorldState,
         content: &ContentPack,
-        tag: &str,
-        stance: ActorStance,
-        from_stances: &[ActorStance],
-        follows_player: bool,
-        messages: &[String],
+        effect: &SetStanceByTagEffect,
         lines: Option<&mut NarrativeLines>,
     ) {
-        let changed = state.set_actor_stance_by_tag(
-            content,
+        let SetStanceByTagEffect {
             tag,
             stance,
             from_stances,
             follows_player,
-        );
+            messages,
+        } = effect;
+        let changed =
+            state.set_actor_stance_by_tag(content, tag, *stance, from_stances, *follows_player);
         if let Some(lines) = lines {
             for (_actor_id, actor_name) in changed {
                 for key in messages {
@@ -201,9 +238,7 @@ impl WorldHookEffect {
         if let Some(lines) = lines {
             lines.extend_narration(
                 crate::engine::reducer::beat_advance::advance_objective_for_signal(
-                    state,
-                    content,
-                    key,
+                    state, content, key,
                 ),
             );
         }
@@ -275,14 +310,14 @@ impl WorldHookEffect {
                 .get("to_room_id")
                 .and_then(Value::as_str)
                 .map(str::to_string);
-            if let (Some(from_room_id), Some(to_room_id)) = (from_room_id, to_room_id) {
-                if let Some(last) = lines.0.last_mut() {
-                    last.pending_commentary_upgrade = Some(PendingCommentaryUpgrade {
-                        from_room_id,
-                        to_room_id,
-                        fallback_text: line,
-                    });
-                }
+            if let (Some(from_room_id), Some(to_room_id)) = (from_room_id, to_room_id)
+                && let Some(last) = lines.0.last_mut()
+            {
+                last.pending_commentary_upgrade = Some(PendingCommentaryUpgrade {
+                    from_room_id,
+                    to_room_id,
+                    fallback_text: line,
+                });
             }
         }
     }
@@ -368,18 +403,23 @@ impl WorldHookEffect {
         &self,
         state: &mut WorldState,
         content: &ContentPack,
-        actor_id: &str,
-        target_id: Option<&str>,
-        text: Option<&str>,
-        key: Option<&str>,
-        vars: &[(String, String)],
+        effect: &ActorSpeechEffect,
         lines: Option<&mut NarrativeLines>,
     ) {
-        let spoken_text = if let Some(key) = key {
+        let ActorSpeechEffect {
+            actor_id,
+            target_id,
+            text,
+            key,
+            vars,
+        } = effect;
+        let spoken_text = if let Some(key) = key.as_deref() {
             let replacements: Vec<(&str, &str)> =
                 vars.iter().map(|(k, v)| (k.as_str(), v.as_str())).collect();
-            content.render_message(key, &replacements).unwrap_or_default()
-        } else if let Some(text) = text {
+            content
+                .render_message(key, &replacements)
+                .unwrap_or_default()
+        } else if let Some(text) = text.as_deref() {
             text.to_string()
         } else {
             String::new()
@@ -388,12 +428,13 @@ impl WorldHookEffect {
             return;
         }
 
+        let target_id = target_id.as_deref();
         let actor_name = content
             .actor(actor_id)
             .map(|actor| actor.name.as_str())
             .unwrap_or(actor_id);
-        let target_name = target_id
-            .and_then(|target| content.actor(target).map(|actor| actor.name.as_str()));
+        let target_name =
+            target_id.and_then(|target| content.actor(target).map(|actor| actor.name.as_str()));
         let speech_line = crate::engine::reducer::render_actor_speech_line(
             content,
             actor_name,
@@ -403,8 +444,7 @@ impl WorldHookEffect {
         if let Some(lines) = lines {
             lines.narration(speech_line);
         }
-        let target_recipient_id = target_id
-            .unwrap_or(&content.settings.combat.player_actor_id);
+        let target_recipient_id = target_id.unwrap_or(&content.settings.combat.player_actor_id);
         let target_recipient_name = content
             .actor(target_recipient_id)
             .map(|actor| actor.name.as_str())

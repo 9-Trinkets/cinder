@@ -71,7 +71,11 @@ fn drive_defeat(pack: &ContentPack, drops: BTreeMap<String, DropSpec>) -> Vec<(S
     push_droppable_item(&mut pack, "leaf-blade");
     push_droppable_item(&mut pack, "bark-bracer");
     add_attackable_target(&mut pack, "golem", &["golem"], 1);
-    let golem = pack.actors.iter_mut().find(|actor| actor.id == "golem").unwrap();
+    let golem = pack
+        .actors
+        .iter_mut()
+        .find(|actor| actor.id == "golem")
+        .unwrap();
     golem.drops = drops;
     let mut state = fresh_state(&pack);
     drive_attack_on(&mut state, &pack, "golem");
@@ -82,7 +86,11 @@ fn drive_defeat(pack: &ContentPack, drops: BTreeMap<String, DropSpec>) -> Vec<(S
 fn unconditional_drop_scatters_into_the_room() {
     let mut pack = attack_action_pack();
     add_attackable_target(&mut pack, "golem", &["golem"], 1);
-    let golem = pack.actors.iter_mut().find(|actor| actor.id == "golem").unwrap();
+    let golem = pack
+        .actors
+        .iter_mut()
+        .find(|actor| actor.id == "golem")
+        .unwrap();
     golem.drops = BTreeMap::from([("herb-salve".to_string(), DropSpec::Always(2))]);
 
     let mut state = fresh_state(&pack);
@@ -99,7 +107,11 @@ fn unconditional_drop_scatters_into_the_room() {
 fn conditional_drop_is_forfeited_when_its_story_var_is_truthy() {
     let mut pack = attack_action_pack();
     add_attackable_target(&mut pack, "golem", &["golem"], 1);
-    let golem = pack.actors.iter_mut().find(|actor| actor.id == "golem").unwrap();
+    let golem = pack
+        .actors
+        .iter_mut()
+        .find(|actor| actor.id == "golem")
+        .unwrap();
     golem.drops = BTreeMap::from([(
         "herb-salve".to_string(),
         DropSpec::Conditional(cinder_core::content::types::DropConditionSpec {
@@ -109,9 +121,7 @@ fn conditional_drop_is_forfeited_when_its_story_var_is_truthy() {
     )]);
 
     let mut state = fresh_state(&pack);
-    state
-        .story_vars
-        .set_unchecked(CLEAN_RUN_FLAG, "true");
+    state.story_vars.set_unchecked(CLEAN_RUN_FLAG, "true");
     drive_attack_on(&mut state, &pack, "golem");
 
     assert!(state.actor_is_defeated("golem", "stamina"));
@@ -122,7 +132,11 @@ fn conditional_drop_is_forfeited_when_its_story_var_is_truthy() {
 fn conditional_drop_spawns_when_its_story_var_is_absent() {
     let mut pack = attack_action_pack();
     add_attackable_target(&mut pack, "golem", &["golem"], 1);
-    let golem = pack.actors.iter_mut().find(|actor| actor.id == "golem").unwrap();
+    let golem = pack
+        .actors
+        .iter_mut()
+        .find(|actor| actor.id == "golem")
+        .unwrap();
     golem.drops = BTreeMap::from([(
         "herb-salve".to_string(),
         DropSpec::Conditional(cinder_core::content::types::DropConditionSpec {
@@ -187,7 +201,10 @@ fn player_attack_records_the_flag_for_floor_mobs_but_not_the_boss() {
     let mut state = fresh_state(&pack);
     assert!(!state.story_vars.has(CLEAN_RUN_FLAG));
     drive_attack_on(&mut state, &pack, "goblin-1");
-    assert!(state.story_vars.has(CLEAN_RUN_FLAG), "attacking a goblin forks the flag");
+    assert!(
+        state.story_vars.has(CLEAN_RUN_FLAG),
+        "attacking a goblin forks the flag"
+    );
 
     let mut boss_state = fresh_state(&pack);
     drive_attack_on(&mut boss_state, &pack, "goblin-shaman");
@@ -293,10 +310,7 @@ fn weighted_pool_rolls_multiple_times_and_accumulates_counts() {
 #[test]
 fn mixed_specs_collapse_the_same_item_into_one_scatter_count() {
     let drops = BTreeMap::from([
-        (
-            "leaf-blade".to_string(),
-            DropSpec::Always(1),
-        ),
+        ("leaf-blade".to_string(), DropSpec::Always(1)),
         (
             "pawn-kit".to_string(),
             DropSpec::Weighted(DropPoolSpec {

@@ -29,7 +29,11 @@ pub struct CommandResponse {
 }
 
 impl CommandResponse {
-    pub fn new(lines: Vec<cinder_core::engine::narrative::NarrativeLine>, game_over: bool, ui_snapshot: Option<UiSnapshot>) -> Self {
+    pub fn new(
+        lines: Vec<cinder_core::engine::narrative::NarrativeLine>,
+        game_over: bool,
+        ui_snapshot: Option<UiSnapshot>,
+    ) -> Self {
         CommandResponse {
             lines,
             game_over,

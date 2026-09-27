@@ -60,12 +60,12 @@ pub use world_defs::{
     BeatObjectiveConditionalGuidanceDefinition, BeatObjectiveDefinition,
     BeatObjectiveGuidanceDefinition, BeatObjectiveProgressDefinition,
     BeatObjectiveProgressKeyDefinition, BeatObjectivesDefinition, BehaviorActorDefinition,
-    BehaviorDefinition, ConsumableDefinition, ConsumableKind, DropChanceSpec,
-    DropConditionSpec, DropPoolEntry, DropPoolSpec, DropSpec,
-    ErrorTextDefinition, MovementConfigDefinition, MovementDefaultsDefinition,
-    MovementTargetBehavior, PresentationDefinition, PresentationTextDefinition, RoomDefinition,
-    RoomDescriptionOverride, RoomExitDefinition, RoomFeatureDefinition, SpeechConfigDefinition,
-    StatDefinition, StatsDefinition, WanderDefinition, WanderMode,
+    BehaviorDefinition, ConsumableDefinition, ConsumableKind, DropChanceSpec, DropConditionSpec,
+    DropPoolEntry, DropPoolSpec, DropSpec, ErrorTextDefinition, MovementConfigDefinition,
+    MovementDefaultsDefinition, MovementTargetBehavior, PresentationDefinition,
+    PresentationTextDefinition, RoomDefinition, RoomDescriptionOverride, RoomExitDefinition,
+    RoomFeatureDefinition, SpeechConfigDefinition, StatDefinition, StatsDefinition,
+    WanderDefinition, WanderMode,
 };
 
 mod command_defs;

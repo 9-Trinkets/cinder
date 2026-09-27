@@ -1,5 +1,5 @@
+use super::super::{PanelOptionData, PanelOptionGroups};
 use super::title_case;
-use super::super::PanelOptionData;
 use cinder_core::content::types::{
     ActionDefinition, CommandEffect, ContentPack, ItemStorageTarget, PanelDataSource,
 };
@@ -11,12 +11,15 @@ pub(crate) fn build_panel_options(
     runtime: &CinderRuntime,
     content: &ContentPack,
     state: &WorldState,
-    take_panel_options: Vec<PanelOptionData>,
-    use_panel_options: Vec<PanelOptionData>,
-    give_panel_options: Vec<PanelOptionData>,
-    drop_panel_options: Vec<PanelOptionData>,
-    equipment_panel_options: Vec<PanelOptionData>,
+    panels: PanelOptionGroups,
 ) -> Result<BTreeMap<String, Vec<PanelOptionData>>, String> {
+    let PanelOptionGroups {
+        take: take_panel_options,
+        use_item: use_panel_options,
+        give: give_panel_options,
+        drop: drop_panel_options,
+        equipment: equipment_panel_options,
+    } = panels;
     let mut panel_options: BTreeMap<String, Vec<PanelOptionData>> = BTreeMap::new();
     for action in &content.actions {
         if action.id == "take" || action.id == "give" || action.id == "use" {
@@ -201,7 +204,8 @@ pub(crate) fn craftable_item_panel_options(
                     let at_instance_limit = item.is_some_and(|i| {
                         i.max_active_instances.is_some_and(|max| {
                             !i.spawn_template_id.is_empty()
-                                && state.active_spawned_actor_count(content, &i.spawn_template_id) >= max
+                                && state.active_spawned_actor_count(content, &i.spawn_template_id)
+                                    >= max
                         })
                     });
                     let insufficient_mp = mp_cost > player_mp;

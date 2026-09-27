@@ -82,36 +82,67 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     match cli.command {
         Commands::Floor { cmd } => match cmd {
-            FloorCommands::Build { preset, pack_dir, locale, export } => {
-                match preset.as_str() {
-                    "floor1" => {
-                        let builder = builder::presets::build_floor1();
-                        if export {
-                            let (floor_count, total) = builder.export_to_pack(&pack_dir, &locale, |id| !id.starts_with('r'))?;
-                            println!("Exported Floor 1 ({} rooms) to {}. Total rooms: {}", floor_count, pack_dir.display(), total);
-                        } else {
-                            let (rooms, map) = builder.build();
-                            println!("Built Floor 1: {} rooms, map '{}' ({} rooms)", rooms.len(), map.label, map.rooms.len());
-                        }
-                    }
-                    "floor4" => {
-                        let builder = builder::presets::build_floor4();
-                        if export {
-                            let (floor_count, total) = builder.export_to_pack(&pack_dir, &locale, |id| {
-                                id.starts_with('r') || id.starts_with('d') || (id.starts_with('o') && id != "old_drain_pipe")
-                            })?;
-                            println!("Exported Floor 4 ({} rooms) to {}. Total rooms: {}", floor_count, pack_dir.display(), total);
-                        } else {
-                            let (rooms, map) = builder.build();
-                            println!("Built Floor 4: {} rooms, map '{}' ({} rooms)", rooms.len(), map.label, map.rooms.len());
-                        }
-                    }
-                    other => {
-                        eprintln!("Unknown preset: '{}'. Available presets: floor1, floor4", other);
-                        std::process::exit(1);
+            FloorCommands::Build {
+                preset,
+                pack_dir,
+                locale,
+                export,
+            } => match preset.as_str() {
+                "floor1" => {
+                    let builder = builder::presets::build_floor1();
+                    if export {
+                        let (floor_count, total) =
+                            builder
+                                .export_to_pack(&pack_dir, &locale, |id| !id.starts_with('r'))?;
+                        println!(
+                            "Exported Floor 1 ({} rooms) to {}. Total rooms: {}",
+                            floor_count,
+                            pack_dir.display(),
+                            total
+                        );
+                    } else {
+                        let (rooms, map) = builder.build();
+                        println!(
+                            "Built Floor 1: {} rooms, map '{}' ({} rooms)",
+                            rooms.len(),
+                            map.label,
+                            map.rooms.len()
+                        );
                     }
                 }
-            }
+                "floor4" => {
+                    let builder = builder::presets::build_floor4();
+                    if export {
+                        let (floor_count, total) =
+                            builder.export_to_pack(&pack_dir, &locale, |id| {
+                                id.starts_with('r')
+                                    || id.starts_with('d')
+                                    || (id.starts_with('o') && id != "old_drain_pipe")
+                            })?;
+                        println!(
+                            "Exported Floor 4 ({} rooms) to {}. Total rooms: {}",
+                            floor_count,
+                            pack_dir.display(),
+                            total
+                        );
+                    } else {
+                        let (rooms, map) = builder.build();
+                        println!(
+                            "Built Floor 4: {} rooms, map '{}' ({} rooms)",
+                            rooms.len(),
+                            map.label,
+                            map.rooms.len()
+                        );
+                    }
+                }
+                other => {
+                    eprintln!(
+                        "Unknown preset: '{}'. Available presets: floor1, floor4",
+                        other
+                    );
+                    std::process::exit(1);
+                }
+            },
         },
         Commands::Lint { pack, content_dir } => {
             let packs_to_check: Vec<String> = if let Some(p) = pack {
@@ -122,9 +153,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     for entry in entries.flatten() {
                         if entry.path().is_dir()
                             && let Some(name) = entry.file_name().to_str()
-                                && !name.starts_with('.') {
-                                    found.push(name.to_string());
-                                }
+                            && !name.starts_with('.')
+                        {
+                            found.push(name.to_string());
+                        }
                     }
                 }
                 found.sort();
@@ -150,14 +182,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 }
             }
 
-            println!("\nTotal errors: {}, warnings: {}", total_errors, total_warnings);
+            println!(
+                "\nTotal errors: {}, warnings: {}",
+                total_errors, total_warnings
+            );
             if total_errors > 0 {
                 std::process::exit(1);
             }
         }
         Commands::NewPack { name, content_dir } => {
             scaffold::scaffold_pack(&content_dir, &name)?;
-            println!("Scaffolded new content pack at {}/{}", content_dir.display(), name);
+            println!(
+                "Scaffolded new content pack at {}/{}",
+                content_dir.display(),
+                name
+            );
         }
         Commands::Transcript { target, raw } => {
             let path = if let Some(t) = target {
@@ -188,7 +227,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let root = Path::new(".");
             let length_warnings = hygiene::check_file_lengths(root, limit);
             for w in &length_warnings {
-                println!("warning: {} has {} lines, exceeding the {}-line soft limit", w.path.display(), w.lines, limit);
+                println!(
+                    "warning: {} has {} lines, exceeding the {}-line soft limit",
+                    w.path.display(),
+                    w.lines,
+                    limit
+                );
             }
 
             let complexity_warnings = hygiene::check_complexity(root, complexity);
@@ -206,7 +250,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             let test_warnings = hygiene::check_test_placement(root);
             for tw in &test_warnings {
-                println!("warning: [{}] is an integration test suite under src/; move it to tests/", tw.display());
+                println!(
+                    "warning: [{}] is an integration test suite under src/; move it to tests/",
+                    tw.display()
+                );
             }
 
             println!(

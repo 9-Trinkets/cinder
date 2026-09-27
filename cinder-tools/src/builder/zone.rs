@@ -53,7 +53,13 @@ pub struct Zone {
 }
 
 impl Zone {
-    pub fn new(name: impl Into<String>, min_x: usize, max_x: usize, min_y: usize, max_y: usize) -> Self {
+    pub fn new(
+        name: impl Into<String>,
+        min_x: usize,
+        max_x: usize,
+        min_y: usize,
+        max_y: usize,
+    ) -> Self {
         Self {
             name: name.into(),
             min_x,

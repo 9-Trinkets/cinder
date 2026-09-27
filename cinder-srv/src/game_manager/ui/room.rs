@@ -27,19 +27,13 @@ pub(super) fn build_room_consumables(
                 .iter_mut()
                 .find(|g| g.feature_label == c.feature.label)
             {
-                group.items.push(room_consumable(
-                    &crafted_consumable_ids,
-                    c,
-                    remaining,
-                ));
+                group
+                    .items
+                    .push(room_consumable(&crafted_consumable_ids, c, remaining));
             } else {
                 groups.push(RoomConsumableGroup {
                     feature_label: c.feature.label.clone(),
-                    items: vec![room_consumable(
-                        &crafted_consumable_ids,
-                        c,
-                        remaining,
-                    )],
+                    items: vec![room_consumable(&crafted_consumable_ids, c, remaining)],
                 });
             }
             groups

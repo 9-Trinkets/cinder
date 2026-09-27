@@ -33,7 +33,11 @@ pub(super) fn build_player_status(state: &WorldState, content: &ContentPack) -> 
     let (mp, mp_max) = if has_mp {
         (
             Some(state.effective_actor_stat(content, player_id, "mp").max(0) as u32),
-            Some(state.effective_actor_stat_maximum(content, player_id, "mp").max(0) as u32),
+            Some(
+                state
+                    .effective_actor_stat_maximum(content, player_id, "mp")
+                    .max(0) as u32,
+            ),
         )
     } else {
         (None, None)
@@ -201,7 +205,8 @@ pub(super) fn build_equipped_items_from_map(
             .position(|declared_slot| declared_slot == slot)
             .unwrap_or(usize::MAX)
     };
-    let mut slot_by_item: std::collections::BTreeMap<&str, Vec<&str>> = std::collections::BTreeMap::new();
+    let mut slot_by_item: std::collections::BTreeMap<&str, Vec<&str>> =
+        std::collections::BTreeMap::new();
     for (slot, item_id) in equipment {
         slot_by_item.entry(item_id).or_default().push(slot);
     }
@@ -241,7 +246,9 @@ pub(super) fn build_inventory(
         .into_iter()
         .map(|(id, count)| {
             let label = content.item_label(&id).to_string();
-            let usable = content.item(&id).is_some_and(|item| !item.use_hook.is_empty());
+            let usable = content
+                .item(&id)
+                .is_some_and(|item| !item.use_hook.is_empty());
             InventoryItem {
                 label,
                 count,
@@ -292,13 +299,20 @@ mod tests {
         }];
         let mut state = WorldState::new(&content);
         state.actor_level.insert("blair".to_string(), 2);
-        state.adjust_actor_stat(&content, "blair", "stamina", 4).unwrap();
-        state.adjust_actor_stat(&content, "blair", "stamina", -2).unwrap();
+        state
+            .adjust_actor_stat(&content, "blair", "stamina", 4)
+            .unwrap();
+        state
+            .adjust_actor_stat(&content, "blair", "stamina", -2)
+            .unwrap();
         state.set_follows_player("blair", true);
         let runtime = CinderRuntime::new(content.clone(), false).unwrap();
 
         let members = build_party_members(&runtime, &state, &content);
-        let blair = members.into_iter().find(|member| member.id == "blair").unwrap();
+        let blair = members
+            .into_iter()
+            .find(|member| member.id == "blair")
+            .unwrap();
 
         assert_eq!(blair.level, 2);
         assert_eq!(blair.hp, 8);
@@ -383,8 +397,16 @@ mod tests {
         ]);
         let mut state = WorldState::new(&content);
         let room_id = state.current_room_id.clone();
-        state.add_item_to_storage("sigil", cinder_core::content::types::ItemStorageTarget::CurrentRoom, &room_id);
-        state.add_item_to_storage("scroll", cinder_core::content::types::ItemStorageTarget::CurrentRoom, &room_id);
+        state.add_item_to_storage(
+            "sigil",
+            cinder_core::content::types::ItemStorageTarget::CurrentRoom,
+            &room_id,
+        );
+        state.add_item_to_storage(
+            "scroll",
+            cinder_core::content::types::ItemStorageTarget::CurrentRoom,
+            &room_id,
+        );
 
         let items = build_current_room_items(&content, &state, &room_id);
         assert_eq!(items.len(), 1);
@@ -394,7 +416,8 @@ mod tests {
     #[test]
     fn build_party_members_includes_inventory_and_equipment() {
         let mut content = minimal_test_pack();
-        content.settings.equipment_slots = std::collections::BTreeSet::from(["weapon".to_string(), "ring".to_string()]);
+        content.settings.equipment_slots =
+            std::collections::BTreeSet::from(["weapon".to_string(), "ring".to_string()]);
         content.items.extend([
             cinder_core::content::types::ItemDefinition {
                 id: "iron-sword".to_string(),
@@ -418,7 +441,10 @@ mod tests {
         } else {
             state.actor_equipment.insert(
                 follower_id.to_string(),
-                std::collections::BTreeMap::from([("weapon".to_string(), "iron-sword".to_string())]),
+                std::collections::BTreeMap::from([(
+                    "weapon".to_string(),
+                    "iron-sword".to_string(),
+                )]),
             );
         }
 
@@ -432,6 +458,9 @@ mod tests {
         assert_eq!(companion.equipped_items.len(), 1);
         assert_eq!(companion.equipped_items[0].slot, "weapon");
         assert_eq!(companion.equipped_items[0].label, "iron sword");
-        assert_eq!(companion.equipped_items[0].id.as_deref(), Some("iron-sword"));
+        assert_eq!(
+            companion.equipped_items[0].id.as_deref(),
+            Some("iron-sword")
+        );
     }
 }

@@ -31,7 +31,9 @@ pub(crate) fn actor_objective_guidance_notes(
 ) -> Vec<String> {
     active_objectives(content, state)
         .filter(|objective| objective_applies_to_actor(content, state, objective, actor_id))
-        .flat_map(|objective| objective_guidance_notes_for_actor(content, state, objective, actor_id))
+        .flat_map(|objective| {
+            objective_guidance_notes_for_actor(content, state, objective, actor_id)
+        })
         .collect()
 }
 
@@ -166,14 +168,18 @@ fn active_objectives<'a>(
     content: &'a ContentPack,
     state: &WorldState,
 ) -> impl Iterator<Item = &'a BeatObjectiveDefinition> {
-    content.beat_objectives.objectives.iter().filter(|objective| {
-        objective_stage_ids(objective).into_iter().any(|stage_id| {
-            state
-                .active_objective_stage_ids
-                .iter()
-                .any(|active| active == stage_id)
+    content
+        .beat_objectives
+        .objectives
+        .iter()
+        .filter(|objective| {
+            objective_stage_ids(objective).into_iter().any(|stage_id| {
+                state
+                    .active_objective_stage_ids
+                    .iter()
+                    .any(|active| active == stage_id)
+            })
         })
-    })
 }
 
 fn objective_applies_to_actor(
@@ -218,14 +224,19 @@ fn objective_applies_to_actor(
 }
 
 pub(crate) fn clear_inactive_objective_state(content: &ContentPack, state: &mut WorldState) {
-    for objective in content.beat_objectives.objectives.iter().filter(|objective| {
-        !objective_stage_ids(objective).into_iter().any(|stage_id| {
-            state
-                .active_objective_stage_ids
-                .iter()
-                .any(|active| active == stage_id)
+    for objective in content
+        .beat_objectives
+        .objectives
+        .iter()
+        .filter(|objective| {
+            !objective_stage_ids(objective).into_iter().any(|stage_id| {
+                state
+                    .active_objective_stage_ids
+                    .iter()
+                    .any(|active| active == stage_id)
+            })
         })
-    }) {
+    {
         for actor in &content.actors {
             state
                 .story_vars
@@ -236,7 +247,10 @@ pub(crate) fn clear_inactive_objective_state(content: &ContentPack, state: &mut 
             state
                 .story_vars
                 .values_mut()
-                .remove(&objective_progress_story_var_key(&objective.id, &progress.key));
+                .remove(&objective_progress_story_var_key(
+                    &objective.id,
+                    &progress.key,
+                ));
         }
     }
 }
@@ -245,7 +259,11 @@ fn objective_stage_ids(objective: &BeatObjectiveDefinition) -> Vec<&str> {
     objective.stage_ids.iter().map(String::as_str).collect()
 }
 
-fn actor_is_complete(state: &WorldState, objective: &BeatObjectiveDefinition, actor_id: &str) -> bool {
+fn actor_is_complete(
+    state: &WorldState,
+    objective: &BeatObjectiveDefinition,
+    actor_id: &str,
+) -> bool {
     state
         .story_vars
         .get(&objective_actor_complete_key(&objective.id, actor_id))
@@ -332,7 +350,10 @@ fn conditional_guidance_matches(
             .all(|progress| !objective_progress_is_met(content, state, progress))
 }
 
-fn speech_trigger_matches(trigger: BeatObjectiveCompletionTrigger, event: ObjectiveSpeechEvent) -> bool {
+fn speech_trigger_matches(
+    trigger: BeatObjectiveCompletionTrigger,
+    event: ObjectiveSpeechEvent,
+) -> bool {
     matches!(
         (trigger, event),
         (

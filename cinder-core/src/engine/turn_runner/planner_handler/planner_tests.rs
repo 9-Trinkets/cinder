@@ -332,10 +332,12 @@ fn item_transfers_accepted_when_declared_in_pack() {
     );
     assert!(!take_advances);
     // Not UnknownInput; item not found in room emits ActionRejected
-    assert!(take_planned.events.iter().any(|event| matches!(
-        event,
-        WorldEvent::ActionRejected { .. }
-    )));
+    assert!(
+        take_planned
+            .events
+            .iter()
+            .any(|event| matches!(event, WorldEvent::ActionRejected { .. }))
+    );
 
     let (drop_planned, drop_advances) = plan_command(
         &content,
@@ -347,10 +349,12 @@ fn item_transfers_accepted_when_declared_in_pack() {
     );
     assert!(!drop_advances);
     // Not UnknownInput; item not held in inventory emits ActionRejected
-    assert!(drop_planned.events.iter().any(|event| matches!(
-        event,
-        WorldEvent::ActionRejected { .. }
-    )));
+    assert!(
+        drop_planned
+            .events
+            .iter()
+            .any(|event| matches!(event, WorldEvent::ActionRejected { .. }))
+    );
 }
 
 #[test]

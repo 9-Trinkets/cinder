@@ -38,7 +38,10 @@ impl WorldState {
         config: SpawnActorConfig<'_>,
     ) -> SpawnActorOutcome {
         let Some(template) = self.actor(content, config.template_id).cloned() else {
-            eprintln!("[cinder] spawn actor: template '{}' not found", config.template_id);
+            eprintln!(
+                "[cinder] spawn actor: template '{}' not found",
+                config.template_id
+            );
             return SpawnActorOutcome::TemplateNotFound;
         };
 
@@ -74,27 +77,52 @@ impl WorldState {
             if let Some(scaler_id) = config.scale_with_actor_id {
                 let stat_name = config.scale_stat.unwrap_or("intelligence");
                 let scaler = self.effective_actor_stat(content, scaler_id, stat_name);
-                let base_hp = instance.initial_stats.get(health_stat_id).copied().unwrap_or(4);
+                let base_hp = instance
+                    .initial_stats
+                    .get(health_stat_id)
+                    .copied()
+                    .unwrap_or(4);
                 let base_str = instance.initial_stats.get("strength").copied().unwrap_or(2);
-                let base_intel = instance.initial_stats.get("intelligence").copied().unwrap_or(2);
+                let base_intel = instance
+                    .initial_stats
+                    .get("intelligence")
+                    .copied()
+                    .unwrap_or(2);
                 let hp = (base_hp + scaler).max(1);
                 let str_val = (base_str + scaler / 3).max(1);
                 let intel_val = (base_intel + scaler / 2).max(1);
-                instance.initial_stats.insert(health_stat_id.to_string(), hp);
-                instance.initial_stats.insert("strength".to_string(), str_val);
-                instance.initial_stats.insert("intelligence".to_string(), intel_val);
+                instance
+                    .initial_stats
+                    .insert(health_stat_id.to_string(), hp);
+                instance
+                    .initial_stats
+                    .insert("strength".to_string(), str_val);
+                instance
+                    .initial_stats
+                    .insert("intelligence".to_string(), intel_val);
                 (hp, str_val, intel_val, scaler)
             } else {
-                let hp = instance.initial_stats.get(health_stat_id).copied().unwrap_or(4);
+                let hp = instance
+                    .initial_stats
+                    .get(health_stat_id)
+                    .copied()
+                    .unwrap_or(4);
                 let str_val = instance.initial_stats.get("strength").copied().unwrap_or(2);
-                let intel_val = instance.initial_stats.get("intelligence").copied().unwrap_or(2);
+                let intel_val = instance
+                    .initial_stats
+                    .get("intelligence")
+                    .copied()
+                    .unwrap_or(2);
                 (hp, str_val, intel_val, 0)
             };
 
         let actor_name = instance.name.clone();
-        self.actor_stats.insert(instance_id.clone(), instance.initial_stats.clone());
-        self.initial_actor_stats.insert(instance_id.clone(), instance.initial_stats.clone());
-        self.actor_room_overrides.insert(instance_id.clone(), target_room_id.clone());
+        self.actor_stats
+            .insert(instance_id.clone(), instance.initial_stats.clone());
+        self.initial_actor_stats
+            .insert(instance_id.clone(), instance.initial_stats.clone());
+        self.actor_room_overrides
+            .insert(instance_id.clone(), target_room_id.clone());
         self.mark_actor_room_visited(&instance_id, &target_room_id);
         self.spawned_actors.insert(instance_id.clone(), instance);
 

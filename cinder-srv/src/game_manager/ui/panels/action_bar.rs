@@ -1,5 +1,5 @@
-use super::{panel_config_data, title_case};
 use super::super::{ActionBarAction, PanelOptionData, PartyMember, droppable_inventory_items};
+use super::{panel_config_data, title_case};
 use cinder_core::content::types::ContentPack;
 use cinder_core::engine::state::WorldState;
 use cinder_core::engine::turn_policies::action_is_available;
@@ -13,7 +13,11 @@ pub(crate) fn build_action_bar_items(
     content: &ContentPack,
     state: &WorldState,
     party: &[PartyMember],
-) -> (Vec<ActionBarAction>, Vec<PanelOptionData>, Vec<PanelOptionData>) {
+) -> (
+    Vec<ActionBarAction>,
+    Vec<PanelOptionData>,
+    Vec<PanelOptionData>,
+) {
     let action_bar_actions: Vec<ActionBarAction> = if !content.actions.is_empty() {
         content
             .actions
@@ -137,7 +141,10 @@ pub(crate) fn build_action_bar_and_take(
     (actions, take)
 }
 
-pub(crate) fn takeable_loose_items(content: &ContentPack, state: &WorldState) -> Vec<(String, u32)> {
+pub(crate) fn takeable_loose_items(
+    content: &ContentPack,
+    state: &WorldState,
+) -> Vec<(String, u32)> {
     state
         .loose_room_items(&state.current_room_id)
         .into_iter()

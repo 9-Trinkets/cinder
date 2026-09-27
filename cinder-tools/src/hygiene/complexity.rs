@@ -1,13 +1,21 @@
+use quote::ToTokens;
 use std::fs;
 use std::path::{Path, PathBuf};
-use quote::ToTokens;
 use syn::visit::{self, Visit};
 use syn::{
-    BinOp, Expr, ExprBinary, ExprForLoop, ExprIf, ExprLoop, ExprMatch, ExprWhile, File,
-    ImplItemFn, Item, ItemFn, ItemImpl, ItemMod, TraitItemFn,
+    BinOp, Expr, ExprBinary, ExprForLoop, ExprIf, ExprLoop, ExprMatch, ExprWhile, File, ImplItemFn,
+    Item, ItemFn, ItemImpl, ItemMod, TraitItemFn,
 };
 
-const SKIP_DIRS: &[&str] = &["target", "node_modules", ".git", "dist", "build", ".vercel", "data"];
+const SKIP_DIRS: &[&str] = &[
+    "target",
+    "node_modules",
+    ".git",
+    "dist",
+    "build",
+    ".vercel",
+    "data",
+];
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ComplexityWarning {
@@ -21,7 +29,11 @@ pub struct ComplexityWarning {
 pub fn check_complexity(root: &Path, threshold: usize) -> Vec<ComplexityWarning> {
     let mut warnings = Vec::new();
     scan_dir(root, root, threshold, &mut warnings);
-    warnings.sort_by(|a, b| b.complexity.cmp(&a.complexity).then_with(|| a.path.cmp(&b.path)));
+    warnings.sort_by(|a, b| {
+        b.complexity
+            .cmp(&a.complexity)
+            .then_with(|| a.path.cmp(&b.path))
+    });
     warnings
 }
 
@@ -41,19 +53,15 @@ fn scan_dir(root: &Path, current: &Path, threshold: usize, out: &mut Vec<Complex
         } else if path.extension().is_some_and(|ext| ext == "rs") {
             let rel = path.strip_prefix(root).unwrap_or(&path).to_path_buf();
             if let Ok(content) = fs::read_to_string(&path)
-                && let Ok(file) = syn::parse_file(&content) {
-                    analyze_file(&file, &rel, threshold, out);
-                }
+                && let Ok(file) = syn::parse_file(&content)
+            {
+                analyze_file(&file, &rel, threshold, out);
+            }
         }
     }
 }
 
-pub fn analyze_file(
-    file: &File,
-    path: &Path,
-    threshold: usize,
-    out: &mut Vec<ComplexityWarning>,
-) {
+pub fn analyze_file(file: &File, path: &Path, threshold: usize, out: &mut Vec<ComplexityWarning>) {
     let mut scanner = FileScanner {
         path,
         threshold,

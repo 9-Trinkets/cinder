@@ -6,7 +6,9 @@ mod periodic;
 mod strikes;
 
 use super::common::*;
-use cinder_core::content::types::{ActionDefinition, CommandEffect, CommandTargetMode, ContentPack};
+use cinder_core::content::types::{
+    ActionDefinition, CommandEffect, CommandTargetMode, ContentPack,
+};
 use cinder_core::engine::narrative::NarrativeLine;
 
 /// Pushes the canonical "attack" action the command-driven tests use.
@@ -22,7 +24,10 @@ fn attack_action(pack: &mut ContentPack) {
 }
 
 /// Binds the attack command to the player actor in the lounge.
-fn attack_input(target_actor_id: Option<&'static str>, target_actor_name: Option<&'static str>) -> ActorCommandInput<'static> {
+fn attack_input(
+    target_actor_id: Option<&'static str>,
+    target_actor_name: Option<&'static str>,
+) -> ActorCommandInput<'static> {
     ActorCommandInput {
         actor_id: ACTOR_A_ID,
         actor_name: ACTOR_A_NAME,

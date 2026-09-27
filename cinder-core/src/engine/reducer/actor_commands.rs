@@ -13,8 +13,8 @@ use serde_json::json;
 
 use super::beat_advance::advance_objective_for_signal;
 use super::command_effects::apply_new_command_effects;
-use super::surround::{trigger_placement_hooks, trigger_surrounded_hooks};
 use super::movement::{ActorMoveTransitionContext, apply_actor_move_transition};
+use super::surround::{trigger_placement_hooks, trigger_surrounded_hooks};
 use super::tick::record_room_action_memory;
 
 pub(super) struct ActorCommandContext<'a> {
@@ -63,63 +63,60 @@ pub(super) fn handle_actor_command_used(
     }) {
         return None;
     }
-    if let Some(ref item_id) = created_item_id {
-        if let Some(item) = content.item(item_id) {
-            if let Some(max) = item.max_active_instances {
-                if !item.spawn_template_id.is_empty() {
-                    let active = state.active_spawned_actor_count(content, &item.spawn_template_id);
-                    if active >= max {
-                        let template_name = content
-                            .actor(&item.spawn_template_id)
-                            .map(|a| a.name.as_str())
-                            .unwrap_or(&item.spawn_template_id);
-                        let msg_key = if !item.max_instances_message.is_empty() {
-                            &item.max_instances_message
-                        } else {
-                            "sigil.spawn_limit"
-                        };
-                        let max_str = max.to_string();
-                        if let Some(line) = content.render_message(
-                            msg_key,
-                            &[
-                                ("actor", template_name),
-                                ("max", max_str.as_str()),
-                            ],
-                        ) {
-                            lines.narration(line);
-                        } else {
-                            lines.narration(format!(
-                                "You cannot sustain more than {} active summons.",
-                                max
-                            ));
-                        }
-                        return Some(lines);
-                    }
+    if let Some(ref item_id) = created_item_id
+        && let Some(item) = content.item(item_id)
+    {
+        if let Some(max) = item.max_active_instances
+            && !item.spawn_template_id.is_empty()
+        {
+            let active = state.active_spawned_actor_count(content, &item.spawn_template_id);
+            if active >= max {
+                let template_name = content
+                    .actor(&item.spawn_template_id)
+                    .map(|a| a.name.as_str())
+                    .unwrap_or(&item.spawn_template_id);
+                let msg_key = if !item.max_instances_message.is_empty() {
+                    &item.max_instances_message
+                } else {
+                    "sigil.spawn_limit"
+                };
+                let max_str = max.to_string();
+                if let Some(line) = content.render_message(
+                    msg_key,
+                    &[("actor", template_name), ("max", max_str.as_str())],
+                ) {
+                    lines.narration(line);
+                } else {
+                    lines.narration(format!(
+                        "You cannot sustain more than {} active summons.",
+                        max
+                    ));
                 }
+                return Some(lines);
             }
-            if item.mp_cost > 0 {
-                let current_mp = state.actor_stat_u32(command_context.actor_id, "mp");
-                if current_mp < item.mp_cost {
-                    let cost_str = item.mp_cost.to_string();
-                    let current_str = current_mp.to_string();
-                    if let Some(line) = content.render_message(
-                        "magic.insufficient_mp",
-                        &[
-                            ("actor", command_context.actor_name),
-                            ("item", content.item_label(item_id)),
-                            ("mp_cost", cost_str.as_str()),
-                            ("mp", current_str.as_str()),
-                        ],
-                    ) {
-                        lines.narration(line);
-                    } else {
-                        lines.narration(format!(
-                            "You do not have enough magic to trace that (needs {} MP, have {}).",
-                            item.mp_cost, current_mp
-                        ));
-                    }
-                    return Some(lines);
+        }
+        if item.mp_cost > 0 {
+            let current_mp = state.actor_stat_u32(command_context.actor_id, "mp");
+            if current_mp < item.mp_cost {
+                let cost_str = item.mp_cost.to_string();
+                let current_str = current_mp.to_string();
+                if let Some(line) = content.render_message(
+                    "magic.insufficient_mp",
+                    &[
+                        ("actor", command_context.actor_name),
+                        ("item", content.item_label(item_id)),
+                        ("mp_cost", cost_str.as_str()),
+                        ("mp", current_str.as_str()),
+                    ],
+                ) {
+                    lines.narration(line);
+                } else {
+                    lines.narration(format!(
+                        "You do not have enough magic to trace that (needs {} MP, have {}).",
+                        item.mp_cost, current_mp
+                    ));
                 }
+                return Some(lines);
             }
         }
     }
@@ -152,17 +149,17 @@ pub(super) fn handle_actor_command_used(
                 ActionItemStorageTarget::CurrentRoom => ItemStorageTarget::CurrentRoom,
             })
             .unwrap_or_default();
-        if let Some(item) = content.item(&item_id) {
-            if item.mp_cost > 0 {
-                state
-                    .adjust_actor_stat(
-                        content,
-                        command_context.actor_id,
-                        "mp",
-                        -(item.mp_cost as i32),
-                    )
-                    .unwrap_or_else(|e| eprintln!("[cinder] mp deduct error: {e}"));
-            }
+        if let Some(item) = content.item(&item_id)
+            && item.mp_cost > 0
+        {
+            state
+                .adjust_actor_stat(
+                    content,
+                    command_context.actor_id,
+                    "mp",
+                    -(item.mp_cost as i32),
+                )
+                .unwrap_or_else(|e| eprintln!("[cinder] mp deduct error: {e}"));
         }
         state.add_item_to_storage(&item_id, storage, command_context.room_id);
         if storage == ItemStorageTarget::CurrentRoom {
@@ -368,9 +365,10 @@ pub(super) fn apply_actor_command_realization_effects(
                 };
                 if !item.is_equippable()
                     || !state.has_item(&command.item_id)
-                    || !item.occupied_slots().iter().all(|slot| {
-                        content.settings.equipment_slots.contains(slot)
-                    })
+                    || !item
+                        .occupied_slots()
+                        .iter()
+                        .all(|slot| content.settings.equipment_slots.contains(slot))
                     || state.item_is_equipped(item)
                 {
                     return false;
@@ -575,4 +573,3 @@ fn handle_teleport_sigil_placement(
         ));
     }
 }
-

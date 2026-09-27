@@ -1,11 +1,11 @@
-use crate::engine::reducer::beat_advance::advance_objective_for_signal;
-use crate::engine::reducer::observation::render_actor_speech_line;
-use crate::engine::reducer::tick::advance_house_progress_objectives;
 use crate::content::types::ContentPack;
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::messaging::{ChannelAudience, ChannelKind, ChannelMessage};
 use crate::engine::narrative::NarrativeLines;
+use crate::engine::reducer::beat_advance::advance_objective_for_signal;
+use crate::engine::reducer::observation::render_actor_speech_line;
+use crate::engine::reducer::tick::advance_house_progress_objectives;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
 use crate::engine::turn_policies::{
     ObjectiveSpeechEvent, mark_actor_objective_progress_for_speech_event,
@@ -124,12 +124,8 @@ fn handle_targeted_message(
         state.turn_number,
     );
     if message_hearable(state, message) {
-        let line = render_actor_speech_line(
-            content,
-            actor_name,
-            Some(recipient_name),
-            &message.text,
-        );
+        let line =
+            render_actor_speech_line(content, actor_name, Some(recipient_name), &message.text);
         if message.delivery.kind == ChannelKind::Direct {
             lines.channel(line);
         } else {

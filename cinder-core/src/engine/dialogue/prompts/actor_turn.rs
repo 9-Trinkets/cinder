@@ -376,9 +376,7 @@ pub(crate) fn direct_speech_intent_system_prompt(request: &DirectSpeechIntentReq
         .as_str()
 }
 
-pub(crate) fn transition_commentary_system_prompt(
-    request: &TransitionCommentaryRequest,
-) -> &str {
+pub(crate) fn transition_commentary_system_prompt(request: &TransitionCommentaryRequest) -> &str {
     if !request
         .system_text
         .transition_commentary_system_prompt

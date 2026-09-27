@@ -101,7 +101,10 @@ pub(crate) fn select_tick_actors(
         .collect();
 
     if !content.settings.autonomous_actor_dialogue || candidate_actors.len() <= 1 {
-        return candidate_actors.into_iter().map(|actor| actor.id.clone()).collect();
+        return candidate_actors
+            .into_iter()
+            .map(|actor| actor.id.clone())
+            .collect();
     }
 
     let mut mandatory_movers = Vec::new();
@@ -374,7 +377,10 @@ mod tests {
     fn select_tick_actors_returns_all_when_not_autonomous() {
         let content = minimal_test_pack();
         let state = WorldState::new(&content);
-        let scope = Some(BTreeSet::from(["lounge".to_string(), "kitchen".to_string()]));
+        let scope = Some(BTreeSet::from([
+            "lounge".to_string(),
+            "kitchen".to_string(),
+        ]));
         let selected = select_tick_actors(&content, &state, &scope);
         assert_eq!(selected.len(), 2);
     }
@@ -419,10 +425,15 @@ mod tests {
         let scope = Some(BTreeSet::from(["lounge".to_string()]));
 
         state.turn_number = 0;
-        assert_eq!(peek_conversational_speaker(&content, &state, &scope), Some(a0.clone()));
+        assert_eq!(
+            peek_conversational_speaker(&content, &state, &scope),
+            Some(a0.clone())
+        );
 
         state.turn_number = 1;
-        assert_eq!(peek_conversational_speaker(&content, &state, &scope), Some(a1.clone()));
+        assert_eq!(
+            peek_conversational_speaker(&content, &state, &scope),
+            Some(a1.clone())
+        );
     }
 }
-

@@ -195,9 +195,7 @@ pub(crate) fn build_chapter_relationship_summary_prompt(
     )
 }
 
-pub(crate) fn build_transition_commentary_prompt(
-    request: &TransitionCommentaryRequest,
-) -> String {
+pub(crate) fn build_transition_commentary_prompt(request: &TransitionCommentaryRequest) -> String {
     let text = &request.system_text;
     let template = &text.transition_commentary_prompt_template;
     let transcript = format_bullets(
@@ -347,8 +345,8 @@ mod hostility;
 pub(crate) use actor_turn::{
     actor_turn_decider_system_prompt, chapter_relationship_summarizer_system_prompt,
     chapter_script_summarizer_system_prompt, conversation_memory_summarizer_system_prompt,
-    dialogue_system_prompt, direct_speech_intent_system_prompt,
-    transition_commentary_system_prompt, menu_intent_system_prompt, sanitize_statement,
+    dialogue_system_prompt, direct_speech_intent_system_prompt, menu_intent_system_prompt,
+    sanitize_statement, transition_commentary_system_prompt,
 };
 pub(crate) use actor_turn::{build_actor_turn_action_prompt, build_actor_turn_affordance_option};
 pub(crate) use hostility::{build_hostility_plan_prompt, hostility_planner_system_prompt};

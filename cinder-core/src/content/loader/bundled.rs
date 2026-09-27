@@ -1,4 +1,6 @@
-use crate::content::loader::fs::{localized_file_path, read_optional_path, read_required_path, LocalizedPaths};
+use crate::content::loader::fs::{
+    LocalizedPaths, localized_file_path, read_optional_path, read_required_path,
+};
 use crate::content::types::{PackMessage, SystemTextDefinition};
 use serde_json::Value;
 use std::collections::BTreeMap;
@@ -32,7 +34,9 @@ pub fn read_messages(
 /// defaulted fields fall back to the bundled values unless the pack overrides
 /// them. This keeps the engine's prompt/label defaults in a JSON file rather
 /// than hardcoded in Rust.
-pub fn read_system_text(paths: &LocalizedPaths<'_>) -> Result<SystemTextDefinition, Box<dyn Error>> {
+pub fn read_system_text(
+    paths: &LocalizedPaths<'_>,
+) -> Result<SystemTextDefinition, Box<dyn Error>> {
     let defaults: Value = serde_json::from_str(include_str!("../system_defaults.json"))
         .expect("invalid bundled system_defaults.json");
     let mut merged = defaults

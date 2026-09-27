@@ -1,8 +1,8 @@
 use super::common::*;
 use cinder_core::content::types::{
     PackMessage, PartyCandidatePriority, PartyCombatDecisionRule, PartyDecisionCondition,
-    PartyDecisionTier, PartyPolicyDefinition, PartyReactionAction,
-    PartyReactionCooldown, PartyReactionWindow, PartyTargetSelection,
+    PartyDecisionTier, PartyPolicyDefinition, PartyReactionAction, PartyReactionCooldown,
+    PartyReactionWindow, PartyTargetSelection,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::reducer::apply_events;
@@ -157,16 +157,28 @@ fn follower_intercepts_strike_when_player_health_is_low() {
     };
     pack.messages.insert(
         "combat.guard_intercepts".to_string(),
-        PackMessage::Narration("{guard} steps in front of {actor} taking {damage} damage.".to_string()),
+        PackMessage::Narration(
+            "{guard} steps in front of {actor} taking {damage} damage.".to_string(),
+        ),
     );
 
     let mut state = WorldState::new(&pack);
-    state.actor_room_overrides.insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
+    state
+        .actor_room_overrides
+        .insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
     state.set_stance(ACTOR_B_ID, ActorStance::Allied);
     state.set_stance(ACTOR_C_ID, ActorStance::Hostile);
 
-    state.initial_actor_stats.entry(ACTOR_A_ID.to_string()).or_default().insert("stamina".to_string(), 10);
-    state.actor_stats.entry(ACTOR_A_ID.to_string()).or_default().insert("stamina".to_string(), 10);
+    state
+        .initial_actor_stats
+        .entry(ACTOR_A_ID.to_string())
+        .or_default()
+        .insert("stamina".to_string(), 10);
+    state
+        .actor_stats
+        .entry(ACTOR_A_ID.to_string())
+        .or_default()
+        .insert("stamina".to_string(), 10);
 
     // 1. With player at full health (stamina 10/10 = 100%), follower does NOT intercept
     let player_before = state.actor_stat(ACTOR_A_ID, "stamina");
@@ -185,7 +197,11 @@ fn follower_intercepts_strike_when_player_health_is_low() {
 
     // 2. Reduce player stamina to 4 (4/10 = 40% <= 50%) and advance time past attack interval
     state.current_time_minutes += 10;
-    state.actor_stats.entry(ACTOR_A_ID.to_string()).or_default().insert("stamina".to_string(), 4);
+    state
+        .actor_stats
+        .entry(ACTOR_A_ID.to_string())
+        .or_default()
+        .insert("stamina".to_string(), 4);
     let player_low = state.actor_stat(ACTOR_A_ID, "stamina");
 
     apply_events(

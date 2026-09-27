@@ -20,11 +20,15 @@ fn test_read_scroll_learns_teleport_and_handler_explains() {
 
     let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
 
-    let outcome = runtime.run_turn("use teleport scroll").expect("read scroll");
+    let outcome = runtime
+        .run_turn("use teleport scroll")
+        .expect("read scroll");
     let text = outcome.text();
 
     assert!(text.contains("learned the Teleportation Sigil"));
-    assert!(text.contains("links your chalk to anchor points") || text.contains("Good. That sigil"));
+    assert!(
+        text.contains("links your chalk to anchor points") || text.contains("Good. That sigil")
+    );
 
     let state = runtime.export_state().expect("export state");
     assert_eq!(state.story_vars.get("knows_teleport"), Some("true"));
@@ -57,7 +61,10 @@ fn test_chalk_anchors_fifo_eviction_and_mp_cost() {
     let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
 
     // Anchor 1: village_square
-    let mp_before_1 = runtime.export_state().unwrap().actor_stat_u32("player", "mp");
+    let mp_before_1 = runtime
+        .export_state()
+        .unwrap()
+        .actor_stat_u32("player", "mp");
     let out1 = runtime.run_turn("trace teleport sigil").expect("trace 1");
     assert!(out1.text().contains("anchoring this room") || out1.text().contains("draw"));
     let s1 = runtime.export_state().unwrap();
@@ -66,15 +73,24 @@ fn test_chalk_anchors_fifo_eviction_and_mp_cost() {
 
     // Anchor 2: village_sw_corner
     runtime.run_turn("go west").expect("go west");
-    let mp_before_2 = runtime.export_state().unwrap().actor_stat_u32("player", "mp");
+    let mp_before_2 = runtime
+        .export_state()
+        .unwrap()
+        .actor_stat_u32("player", "mp");
     runtime.run_turn("trace teleport sigil").expect("trace 2");
     let s2 = runtime.export_state().unwrap();
-    assert_eq!(s2.chalk_anchors, vec!["village_square", "village_sw_corner"]);
+    assert_eq!(
+        s2.chalk_anchors,
+        vec!["village_square", "village_sw_corner"]
+    );
     assert_eq!(s2.actor_stat_u32("player", "mp"), mp_before_2 - 4);
 
     // Anchor 3: village_west_1
     runtime.run_turn("go northeast").expect("go ne");
-    let mp_before_3 = runtime.export_state().unwrap().actor_stat_u32("player", "mp");
+    let mp_before_3 = runtime
+        .export_state()
+        .unwrap()
+        .actor_stat_u32("player", "mp");
     runtime.run_turn("trace teleport sigil").expect("trace 3");
     let s3 = runtime.export_state().unwrap();
     assert_eq!(
@@ -85,7 +101,10 @@ fn test_chalk_anchors_fifo_eviction_and_mp_cost() {
 
     // Anchor 4: village_west_2 (exceeds max 3, evicts oldest: village_square)
     runtime.run_turn("go northeast").expect("go ne");
-    let mp_before_4 = runtime.export_state().unwrap().actor_stat_u32("player", "mp");
+    let mp_before_4 = runtime
+        .export_state()
+        .unwrap()
+        .actor_stat_u32("player", "mp");
     let out4 = runtime.run_turn("trace teleport sigil").expect("trace 4");
     assert!(out4.text().contains("fades away as you draw a new one"));
     assert!(out4.text().contains("Village Square"));
@@ -125,15 +144,24 @@ fn test_chalk_anchor_single_use_consumption() {
     let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
 
     // Place chalk anchor in village_square
-    runtime.run_turn("trace teleport sigil").expect("trace sigil");
-    assert!(runtime.export_state().unwrap().has_chalk_anchor("village_square"));
+    runtime
+        .run_turn("trace teleport sigil")
+        .expect("trace sigil");
+    assert!(
+        runtime
+            .export_state()
+            .unwrap()
+            .has_chalk_anchor("village_square")
+    );
 
     // Walk to village_sw_corner
     runtime.run_turn("go west").expect("go west");
     assert_eq!(runtime.current_room_id().unwrap(), "village_sw_corner");
 
     // Teleport back to village_square
-    let tp_out = runtime.run_turn("teleport village_square").expect("teleport");
+    let tp_out = runtime
+        .run_turn("teleport village_square")
+        .expect("teleport");
     assert!(tp_out.text().contains("Bright light flares from the chalk"));
     assert_eq!(runtime.current_room_id().unwrap(), "village_square");
 
@@ -182,8 +210,13 @@ fn test_platform_discovery_activation_and_floor5_gate() {
     );
 
     // Trace teleport sigil on the platform -> activates it
-    let activate_out = runtime.run_turn("trace teleport sigil").expect("trace platform");
-    assert!(activate_out.text().contains("platform roars to life") || activate_out.text().contains("conduits"));
+    let activate_out = runtime
+        .run_turn("trace teleport sigil")
+        .expect("trace platform");
+    assert!(
+        activate_out.text().contains("platform roars to life")
+            || activate_out.text().contains("conduits")
+    );
 
     let s2 = runtime.export_state().unwrap();
     assert_eq!(s2.story_vars.get("platform_activated"), Some("true"));
@@ -205,14 +238,18 @@ fn test_permanent_anchor_fast_travel_infinite_uses() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
     state.story_vars.set_unchecked("knows_teleport", "true");
-    state.story_vars.set_unchecked("anchor_floor4_platform", "true");
+    state
+        .story_vars
+        .set_unchecked("anchor_floor4_platform", "true");
     state.story_vars.set_unchecked("anchor_floor5_gate", "true");
     state.current_room_id = "village_square".to_string();
 
     let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
 
     // Teleport to Floor 4 platform
-    let out1 = runtime.run_turn("teleport teleport_platform").expect("teleport 1");
+    let out1 = runtime
+        .run_turn("teleport teleport_platform")
+        .expect("teleport 1");
     assert!(out1.text().contains("brass platform glows with blue light"));
     assert_eq!(runtime.current_room_id().unwrap(), "teleport_platform");
 
@@ -221,11 +258,15 @@ fn test_permanent_anchor_fast_travel_infinite_uses() {
     assert_eq!(s1.story_vars.get("anchor_floor4_platform"), Some("true"));
 
     // Teleport to Floor 5 platform
-    let _out2 = runtime.run_turn("teleport floor5_start").expect("teleport 2");
+    let _out2 = runtime
+        .run_turn("teleport floor5_start")
+        .expect("teleport 2");
     assert_eq!(runtime.current_room_id().unwrap(), "floor5_start");
 
     // Teleport back to Floor 4 platform
-    runtime.run_turn("teleport teleport_platform").expect("teleport 3");
+    runtime
+        .run_turn("teleport teleport_platform")
+        .expect("teleport 3");
     assert_eq!(runtime.current_room_id().unwrap(), "teleport_platform");
 }
 
@@ -234,16 +275,22 @@ fn test_teleport_rejections() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
     state.story_vars.set_unchecked("knows_teleport", "true");
-    state.story_vars.set_unchecked("anchor_floor4_platform", "true");
+    state
+        .story_vars
+        .set_unchecked("anchor_floor4_platform", "true");
     state.current_room_id = "teleport_platform".to_string();
 
     let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
 
     // Already standing at anchor
-    let rej1 = runtime.run_turn("teleport teleport_platform").expect("teleport self");
+    let rej1 = runtime
+        .run_turn("teleport teleport_platform")
+        .expect("teleport self");
     assert!(rej1.text().contains("already standing at this anchor"));
 
     // Unknown anchor
-    let rej2 = runtime.run_turn("teleport nonexistent_dungeon").expect("teleport unknown");
+    let rej2 = runtime
+        .run_turn("teleport nonexistent_dungeon")
+        .expect("teleport unknown");
     assert!(rej2.text().contains("Unknown anchor"));
 }

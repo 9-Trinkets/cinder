@@ -135,7 +135,11 @@ fn player_drop_moves_inventory_item_to_current_room() {
 #[test]
 fn player_take_is_denied_for_trace_mark_items() {
     let mut pack = reducer_test_pack();
-    pack.items = vec![trace_item("chalk-sigil", "chalk sigil", "A chalk mark drawn on the floor.")];
+    pack.items = vec![trace_item(
+        "chalk-sigil",
+        "chalk sigil",
+        "A chalk mark drawn on the floor.",
+    )];
     rebuild_test_pack_indexes(&mut pack);
     let mut state = WorldState::new(&pack);
     state.current_room_id = KITCHEN_ID.to_string();
@@ -148,11 +152,7 @@ fn player_take_is_denied_for_trace_mark_items() {
             storage: ItemStorageTarget::CurrentRoom,
         })],
     );
-    assert!(state.has_item_in_storage(
-        "chalk-sigil",
-        ItemStorageTarget::CurrentRoom,
-        KITCHEN_ID
-    ));
+    assert!(state.has_item_in_storage("chalk-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
 
     let output = apply_events(
         &mut state,
@@ -166,7 +166,10 @@ fn player_take_is_denied_for_trace_mark_items() {
         state.has_item_in_storage("chalk-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID),
         "trace mark must stay anchored in the room"
     );
-    assert!(!state.has_item("chalk-sigil"), "trace mark cannot enter inventory");
+    assert!(
+        !state.has_item("chalk-sigil"),
+        "trace mark cannot enter inventory"
+    );
     assert!(
         output
             .lines
@@ -179,7 +182,11 @@ fn player_take_is_denied_for_trace_mark_items() {
 #[test]
 fn player_drop_is_denied_for_trace_mark_items() {
     let mut pack = reducer_test_pack();
-    pack.items = vec![trace_item("chalk-sigil", "chalk sigil", "A chalk mark drawn on the floor.")];
+    pack.items = vec![trace_item(
+        "chalk-sigil",
+        "chalk sigil",
+        "A chalk mark drawn on the floor.",
+    )];
     rebuild_test_pack_indexes(&mut pack);
     let mut state = WorldState::new(&pack);
     state.current_room_id = KITCHEN_ID.to_string();
@@ -193,7 +200,10 @@ fn player_drop_is_denied_for_trace_mark_items() {
         })],
     );
 
-    assert!(state.has_item("chalk-sigil"), "trace mark should not be droppable");
+    assert!(
+        state.has_item("chalk-sigil"),
+        "trace mark should not be droppable"
+    );
     assert!(state.loose_room_items(KITCHEN_ID).is_empty());
     assert!(
         output
@@ -230,7 +240,12 @@ fn drop_and_pick_up_item_move_it_between_inventory_and_room() {
     state.current_room_id = LOUNGE_ID.to_string();
     state.add_item("stone-marker");
 
-    drive_actor_command(&mut state, &pack, "drop-marker", plain_command(LOUNGE_ID, None));
+    drive_actor_command(
+        &mut state,
+        &pack,
+        "drop-marker",
+        plain_command(LOUNGE_ID, None),
+    );
 
     assert!(!state.has_item("stone-marker"));
     assert_eq!(
@@ -238,7 +253,12 @@ fn drop_and_pick_up_item_move_it_between_inventory_and_room() {
         vec![("stone-marker".to_string(), 1)]
     );
 
-    drive_actor_command(&mut state, &pack, "pick-up-marker", plain_command(LOUNGE_ID, None));
+    drive_actor_command(
+        &mut state,
+        &pack,
+        "pick-up-marker",
+        plain_command(LOUNGE_ID, None),
+    );
 
     assert!(state.has_item("stone-marker"));
     assert!(state.loose_room_items(LOUNGE_ID).is_empty());

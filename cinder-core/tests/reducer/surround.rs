@@ -101,7 +101,9 @@ fn surround_test_pack_with_refusal(refusal: Option<&str>) -> ContentPack {
 
 fn add_surround_target(pack: &mut ContentPack, id: &str, intelligence: i32, level: u32) {
     let mut target = test_actor(id, id, LOUNGE_ID);
-    target.initial_stats.insert("intelligence".to_string(), intelligence);
+    target
+        .initial_stats
+        .insert("intelligence".to_string(), intelligence);
     target.level = level;
     pack.actors.push(target);
     rebuild_test_pack_indexes(pack);
@@ -301,10 +303,7 @@ fn resistance_rule_converts_a_weak_target_at_start() {
         output.lines
     );
     assert!(
-        !output
-            .lines
-            .iter()
-            .any(|line| line.text.contains(REFUSAL)),
+        !output.lines.iter().any(|line| line.text.contains(REFUSAL)),
         "a level-1 int-1 target must convert without a refusal, got {:?}",
         output.lines
     );
@@ -322,10 +321,7 @@ fn resistance_rule_refuses_a_strong_target_at_start() {
 
     assert_ne!(state.stance("elf-pawn"), ActorStance::Allied);
     assert!(
-        output
-            .lines
-            .iter()
-            .any(|line| line.text.contains(REFUSAL)),
+        output.lines.iter().any(|line| line.text.contains(REFUSAL)),
         "expected a cold refusal line, got {:?}",
         output.lines
     );
@@ -352,10 +348,7 @@ fn resistant_target_is_not_convertible_without_a_hard_gate() {
 
     assert_ne!(state.stance("goblin-shaman"), ActorStance::Allied);
     assert!(
-        output
-            .lines
-            .iter()
-            .any(|line| line.text.contains(REFUSAL)),
+        output.lines.iter().any(|line| line.text.contains(REFUSAL)),
         "expected a cold refusal line, got {:?}",
         output.lines
     );
@@ -390,7 +383,11 @@ fn player_level_three_plus_int_grants_unlock_previously_strong_targets() {
         .iter()
         .filter(|line| line.text.contains(REFUSAL))
         .count();
-    assert_eq!(refused, 1, "exactly the knight is refused, got {:?}", output.lines);
+    assert_eq!(
+        refused, 1,
+        "exactly the knight is refused, got {:?}",
+        output.lines
+    );
 }
 
 #[test]
@@ -410,10 +407,7 @@ fn equipping_a_focus_ring_widens_resistance_range() {
     let refused = trace_marker(&mut state, &pack);
     assert_ne!(state.stance("elf-pawn"), ActorStance::Allied);
     assert!(
-        refused
-            .lines
-            .iter()
-            .any(|line| line.text.contains(REFUSAL)),
+        refused.lines.iter().any(|line| line.text.contains(REFUSAL)),
         "expected refusal before the ring, got {:?}",
         refused.lines
     );
@@ -439,8 +433,7 @@ fn equipping_a_focus_ring_widens_resistance_range() {
     // The refused conversion spent the kitchen marker, so the pawn is
     // un-encircled; draw again across the ring to attempt the conversion.
     let _ = equipped;
-    state
-        .add_item_to_storage("marker", ItemStorageTarget::CurrentRoom, LOUNGE_ID);
+    state.add_item_to_storage("marker", ItemStorageTarget::CurrentRoom, LOUNGE_ID);
     let converted = trace_marker(&mut state, &pack);
 
     assert_eq!(state.stance("elf-pawn"), ActorStance::Allied);

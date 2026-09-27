@@ -10,7 +10,6 @@ pub use content::types::{
 };
 pub use engine::dialogue::PerspectiveReview;
 pub use engine::runtime::{
-    ActClosure, ActClosureSection, ActiveMenuInfo, CinderRuntime, FinalChapterSummary,
-    PanelOption,
+    ActClosure, ActClosureSection, ActiveMenuInfo, CinderRuntime, FinalChapterSummary, PanelOption,
 };
 pub use engine::state::{TransitionSummary, TurnOutcome, WorldState};

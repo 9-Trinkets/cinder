@@ -11,7 +11,11 @@ pub(super) use attacks::apply_attack_target;
 pub(super) use defeat::{award_defeat_xp, defeat_actor, defeat_player_if_dead, spawn_defeat_drops};
 pub(super) use periodic::handle_periodic_actor_effect_applied;
 
-pub(super) fn actor_display_name(state: &WorldState, content: &ContentPack, actor_id: &str) -> String {
+pub(super) fn actor_display_name(
+    state: &WorldState,
+    content: &ContentPack,
+    actor_id: &str,
+) -> String {
     state
         .actor_display_name(content, actor_id)
         .map(|name| name.to_string())

@@ -11,8 +11,8 @@ pub use variable_store::{
     VariableDeclaration, VariableError, VariableScope, VariableStore, VariableType,
 };
 
-mod clock;
 mod anchors;
+mod clock;
 mod conversation;
 mod inventory;
 mod party;
@@ -174,7 +174,6 @@ pub struct TransitionSummary {
     #[serde(default)]
     pub transcript_line_count: usize,
 }
-
 
 /// Discrete stance of an actor toward the player. Mutual exclusion is inherent:
 /// a stance is a single value, not independent flags.
@@ -380,12 +379,17 @@ impl WorldState {
         content: &'a ContentPack,
         actor_id: &str,
     ) -> Option<&'a str> {
-        self.actor(content, actor_id).map(|actor| actor.name.as_str())
+        self.actor(content, actor_id)
+            .map(|actor| actor.name.as_str())
     }
 
     /// Whether the actor is offstage, checking runtime spawned actors and room overrides first.
     pub fn actor_is_offstage(&self, content: &ContentPack, actor_id: &str) -> bool {
-        if self.actor_room_overrides.get(actor_id).is_some_and(|r| !r.trim().is_empty()) {
+        if self
+            .actor_room_overrides
+            .get(actor_id)
+            .is_some_and(|r| !r.trim().is_empty())
+        {
             return false;
         }
         self.actor(content, actor_id)
@@ -397,9 +401,11 @@ impl WorldState {
         &'a self,
         content: &'a ContentPack,
     ) -> impl Iterator<Item = &'a ActorDefinition> {
-        content
-            .onstage_actors()
-            .chain(self.spawned_actors.values().filter(|actor| !actor.is_offstage()))
+        content.onstage_actors().chain(
+            self.spawned_actors
+                .values()
+                .filter(|actor| !actor.is_offstage()),
+        )
     }
 
     /// Iterates all actors across static content and runtime spawned actors.
@@ -514,8 +520,6 @@ mod tests {
         assert_eq!(relationship.stance, ActorStance::Allied);
         assert!(!relationship.follows_player);
     }
-
-
 
     #[test]
     fn from_saved_json_accepts_current_v2_state_unchanged() {

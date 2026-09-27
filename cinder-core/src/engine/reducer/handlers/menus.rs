@@ -1,8 +1,8 @@
-use crate::engine::reducer::beat_advance::advance_objective_for_signal;
-use crate::engine::reducer::observation::render_story_text;
 use crate::content::types::ContentPack;
 use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::narrative::NarrativeLines;
+use crate::engine::reducer::beat_advance::advance_objective_for_signal;
+use crate::engine::reducer::observation::render_story_text;
 use crate::engine::state::WorldState;
 use serde_json::json;
 pub(crate) fn handle_menu_opened(
@@ -102,10 +102,7 @@ pub(crate) fn handle_menu_choice_made(
                     .story_vars
                     .set_unchecked(&menu.selection_id_var_key, &joined_ids);
             }
-            lines.narration(render_story_text(
-                &menu.selection_confirmation,
-                state,
-            ));
+            lines.narration(render_story_text(&menu.selection_confirmation, state));
         } else {
             state.story_vars.set_unchecked("selection_title", title);
             if !menu.selection_var_key.is_empty() {
@@ -118,10 +115,7 @@ pub(crate) fn handle_menu_choice_made(
                     .story_vars
                     .set_unchecked(&menu.selection_id_var_key, option_id);
             }
-            lines.narration(render_story_text(
-                &menu.selection_confirmation,
-                state,
-            ));
+            lines.narration(render_story_text(&menu.selection_confirmation, state));
         }
         state.pending_menu_selections.clear();
     }

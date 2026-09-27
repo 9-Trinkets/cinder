@@ -19,18 +19,14 @@ impl ActorTickRoleRunner {
             .map_err(|_| "failed to lock state for hostility decide".to_string())?;
         // behavior.json defines the eligible strikes. The mode only chooses
         // whether rules apply all of them or an LLM selects a validated subset.
-        let eligible_events =
-            plan_rules_hostile_actions(self.content.as_ref(), &state);
+        let eligible_events = plan_rules_hostile_actions(self.content.as_ref(), &state);
         let events = if matches!(
             self.content.settings.autonomous_hostility_mode,
             AutonomousHostilityMode::Llm
         ) && !eligible_events.is_empty()
         {
-            let request = build_hostility_plan_request(
-                self.content.as_ref(),
-                &state,
-                &eligible_events,
-            );
+            let request =
+                build_hostility_plan_request(self.content.as_ref(), &state, &eligible_events);
             drop(state);
             self.emit_trace(
                 "world_hostility",
@@ -69,17 +65,16 @@ impl ActorTickRoleRunner {
         let inbound = extract_inbound_message(prompt)?;
         let mut envelope: ActorTickWorkflowEnvelope =
             serde_json::from_str(&inbound).map_err(|error| error.to_string())?;
-        let events = match std::mem::replace(
-            &mut envelope.hostility_stage,
-            HostilityStageEnvelope::Idle,
-        ) {
-            HostilityStageEnvelope::Decided { events } => events,
-            _ => {
-                return Err(
-                    "world_hostility_apply expected decided hostility stage envelope".to_string(),
-                );
-            }
-        };
+        let events =
+            match std::mem::replace(&mut envelope.hostility_stage, HostilityStageEnvelope::Idle) {
+                HostilityStageEnvelope::Decided { events } => events,
+                _ => {
+                    return Err(
+                        "world_hostility_apply expected decided hostility stage envelope"
+                            .to_string(),
+                    );
+                }
+            };
         {
             let mut state = self
                 .state

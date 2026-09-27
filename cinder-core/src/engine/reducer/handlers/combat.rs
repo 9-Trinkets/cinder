@@ -99,7 +99,12 @@ pub(crate) fn handle_hostile_strike(
             }
         } else {
             state
-                .adjust_actor_stat(content, &combat.player_actor_id, &combat.health_stat_id, -damage)
+                .adjust_actor_stat(
+                    content,
+                    &combat.player_actor_id,
+                    &combat.health_stat_id,
+                    -damage,
+                )
                 .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
             let remaining = state.effective_actor_stat(
                 content,

@@ -97,7 +97,6 @@ impl ItemDefinition {
     }
 }
 
-
 fn is_false(value: &bool) -> bool {
     !*value
 }
@@ -109,7 +108,6 @@ fn is_zero_u32(value: &u32) -> bool {
 #[cfg(test)]
 mod tests {
     use super::ItemDefinition;
-
 
     #[test]
     fn two_hand_weapons_use_the_list_form() {

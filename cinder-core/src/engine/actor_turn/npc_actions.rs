@@ -31,7 +31,11 @@ pub(crate) fn extend_with_scripted_npc_actions(
             continue;
         }
         if !action.available.allowed_rooms.is_empty()
-            && !action.available.allowed_rooms.iter().any(|r| r == current_room_id)
+            && !action
+                .available
+                .allowed_rooms
+                .iter()
+                .any(|r| r == current_room_id)
         {
             continue;
         }
@@ -79,7 +83,11 @@ pub(crate) fn extend_with_scripted_npc_actions(
                 continue;
             }
             if !action.available.allowed_rooms.is_empty()
-                && !action.available.allowed_rooms.iter().any(|r| r == current_room_id)
+                && !action
+                    .available
+                    .allowed_rooms
+                    .iter()
+                    .any(|r| r == current_room_id)
             {
                 continue;
             }
@@ -157,8 +165,8 @@ pub(crate) fn extend_with_scripted_npc_actions(
                     ));
                 }
                 CommandTargetMode::Feature => {
-                    affordance_candidates.extend(inspect_feature_cands.iter().map(
-                        |candidate| ActorAffordanceCandidate {
+                    affordance_candidates.extend(inspect_feature_cands.iter().map(|candidate| {
+                        ActorAffordanceCandidate {
                             order: action.ui.sort_order,
                             visible_by_default: npc.visible_by_default,
                             option: build_actor_turn_affordance_option(
@@ -173,8 +181,8 @@ pub(crate) fn extend_with_scripted_npc_actions(
                                     feature_label: &candidate.label,
                                 },
                             ),
-                        },
-                    ));
+                        }
+                    }));
                 }
                 CommandTargetMode::Room | CommandTargetMode::ContextLabel => {}
             }

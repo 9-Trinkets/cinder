@@ -1,7 +1,7 @@
 use super::common::*;
 use cinder_core::content::types::{
-    ActionDefinition, ActionItemCreation, ActionItemStorageTarget, CommandTargetMode,
-    CombatSettingsDefinition, ItemDefinition, ItemStorageTarget, PackMessage, PeriodicActorEffect,
+    ActionDefinition, ActionItemCreation, ActionItemStorageTarget, CombatSettingsDefinition,
+    CommandTargetMode, ItemDefinition, ItemStorageTarget, PackMessage, PeriodicActorEffect,
     PeriodicActorEffectDefinition, PeriodicActorEffectTargets, PeriodicActorEffectTrigger,
     StatDefinition,
 };
@@ -63,20 +63,12 @@ fn drain_sigil_has_fixed_activations_and_fades_when_spent() {
         apply_events(&mut state, &pack, &[drain_application("goblin")]);
     }
     assert_eq!(state.actor_stat("goblin", "stamina"), 7);
-    assert!(state.has_item_in_storage(
-        "drain-sigil",
-        ItemStorageTarget::CurrentRoom,
-        LOUNGE_ID
-    ));
+    assert!(state.has_item_in_storage("drain-sigil", ItemStorageTarget::CurrentRoom, LOUNGE_ID));
 
     // The fifth application spends the sigil and narrates its fading.
     let spent = apply_events(&mut state, &pack, &[drain_application("goblin")]);
     assert_eq!(state.actor_stat("goblin", "stamina"), 5);
-    assert!(!state.has_item_in_storage(
-        "drain-sigil",
-        ItemStorageTarget::CurrentRoom,
-        LOUNGE_ID
-    ));
+    assert!(!state.has_item_in_storage("drain-sigil", ItemStorageTarget::CurrentRoom, LOUNGE_ID));
     assert!(
         spent
             .lines
@@ -118,11 +110,7 @@ fn drain_sigil_without_a_charge_limit_never_fades() {
     for _ in 0..10 {
         apply_events(&mut state, &pack, &[drain_application("goblin")]);
     }
-    assert!(state.has_item_in_storage(
-        "drain-sigil",
-        ItemStorageTarget::CurrentRoom,
-        LOUNGE_ID
-    ));
+    assert!(state.has_item_in_storage("drain-sigil", ItemStorageTarget::CurrentRoom, LOUNGE_ID));
 }
 
 #[test]
@@ -194,11 +182,7 @@ fn charm_sigil_converts_a_single_actor_and_is_consumed() {
 
     assert_eq!(state.stance("golem-1"), ActorStance::Allied);
     assert_eq!(state.stance("golem-2"), ActorStance::Neutral);
-    assert!(!state.has_item_in_storage(
-        "charm-sigil",
-        ItemStorageTarget::CurrentRoom,
-        KITCHEN_ID
-    ));
+    assert!(!state.has_item_in_storage("charm-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
     assert!(
         output
             .lines
@@ -269,7 +253,9 @@ fn spawn_sigil_scales_with_intelligence_and_spawns_allied_follower() {
     pack.actors.push(sprite);
     pack.messages.insert(
         "sigil.spawned".to_string(),
-        PackMessage::Narration("A {actor} rises! HP {hp}, STR {strength}, INT {intelligence}.".to_string()),
+        PackMessage::Narration(
+            "A {actor} rises! HP {hp}, STR {strength}, INT {intelligence}.".to_string(),
+        ),
     );
     pack.hooks.insert(
         "item.spawn_sigil_placed".to_string(),
@@ -288,7 +274,9 @@ fn spawn_sigil_scales_with_intelligence_and_spawns_allied_follower() {
 
     let mut state = WorldState::new(&pack);
     state.current_room_id = LOUNGE_ID.to_string();
-    state.adjust_actor_stat(&pack, ACTOR_A_ID, "intelligence", 3).unwrap(); // 6 + 3 = 9 INT
+    state
+        .adjust_actor_stat(&pack, ACTOR_A_ID, "intelligence", 3)
+        .unwrap(); // 6 + 3 = 9 INT
     assert_eq!(state.actor_stat(ACTOR_A_ID, "mp"), 10);
 
     let output = drive_actor_command(
@@ -313,11 +301,7 @@ fn spawn_sigil_scales_with_intelligence_and_spawns_allied_follower() {
     assert_eq!(state.actor_stat(ACTOR_A_ID, "mp"), 5);
 
     // 2. Sigil consumed on placement
-    assert!(!state.has_item_in_storage(
-        "spawn-sigil",
-        ItemStorageTarget::CurrentRoom,
-        LOUNGE_ID
-    ));
+    assert!(!state.has_item_in_storage("spawn-sigil", ItemStorageTarget::CurrentRoom, LOUNGE_ID));
 
     // 3. Spawned actor exists with scaled stats:
     // Scaler = 9 INT
@@ -333,7 +317,11 @@ fn spawn_sigil_scales_with_intelligence_and_spawns_allied_follower() {
 
     // 4. Narration matches
     assert!(
-        output.lines.0.iter().any(|l| l.text.contains("HP 13, STR 5, INT 6")),
+        output
+            .lines
+            .0
+            .iter()
+            .any(|l| l.text.contains("HP 13, STR 5, INT 6")),
         "got: {:?}",
         output.lines.0
     );
@@ -408,46 +396,83 @@ fn spawn_sigil_enforces_limit_of_two_and_rejects_without_spending_mp() {
     state.current_room_id = LOUNGE_ID.to_string();
 
     // Spawn 1
-    let out1 = drive_actor_command(&mut state, &pack, "trace", ActorCommandInput {
-        actor_id: ACTOR_A_ID,
-        actor_name: ACTOR_A_NAME,
-        room_id: LOUNGE_ID,
-        freeform_text: Some("spawn-sigil"),
-        ..ActorCommandInput::default()
-    });
-    assert!(out1.lines.0.iter().any(|l| l.text.contains("A fire sprite rises!")));
+    let out1 = drive_actor_command(
+        &mut state,
+        &pack,
+        "trace",
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: LOUNGE_ID,
+            freeform_text: Some("spawn-sigil"),
+            ..ActorCommandInput::default()
+        },
+    );
+    assert!(
+        out1.lines
+            .0
+            .iter()
+            .any(|l| l.text.contains("A fire sprite rises!"))
+    );
     assert_eq!(state.actor_stat(ACTOR_A_ID, "mp"), 10);
-    assert_eq!(state.active_spawned_actor_count(&pack, "summoned-fire-sprite"), 1);
+    assert_eq!(
+        state.active_spawned_actor_count(&pack, "summoned-fire-sprite"),
+        1
+    );
 
     // Spawn 2
-    let out2 = drive_actor_command(&mut state, &pack, "trace", ActorCommandInput {
-        actor_id: ACTOR_A_ID,
-        actor_name: ACTOR_A_NAME,
-        room_id: LOUNGE_ID,
-        freeform_text: Some("spawn-sigil"),
-        ..ActorCommandInput::default()
-    });
-    assert!(out2.lines.0.iter().any(|l| l.text.contains("A fire sprite rises!")));
+    let out2 = drive_actor_command(
+        &mut state,
+        &pack,
+        "trace",
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: LOUNGE_ID,
+            freeform_text: Some("spawn-sigil"),
+            ..ActorCommandInput::default()
+        },
+    );
+    assert!(
+        out2.lines
+            .0
+            .iter()
+            .any(|l| l.text.contains("A fire sprite rises!"))
+    );
     assert_eq!(state.actor_stat(ACTOR_A_ID, "mp"), 5);
-    assert_eq!(state.active_spawned_actor_count(&pack, "summoned-fire-sprite"), 2);
+    assert_eq!(
+        state.active_spawned_actor_count(&pack, "summoned-fire-sprite"),
+        2
+    );
 
     // Spawn 3 -> should be rejected!
-    let out3 = drive_actor_command(&mut state, &pack, "trace", ActorCommandInput {
-        actor_id: ACTOR_A_ID,
-        actor_name: ACTOR_A_NAME,
-        room_id: LOUNGE_ID,
-        freeform_text: Some("spawn-sigil"),
-        ..ActorCommandInput::default()
-    });
+    let out3 = drive_actor_command(
+        &mut state,
+        &pack,
+        "trace",
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: LOUNGE_ID,
+            freeform_text: Some("spawn-sigil"),
+            ..ActorCommandInput::default()
+        },
+    );
     // MP NOT deducted
     assert_eq!(state.actor_stat(ACTOR_A_ID, "mp"), 5);
     // Count remains 2
-    assert_eq!(state.active_spawned_actor_count(&pack, "summoned-fire-sprite"), 2);
+    assert_eq!(
+        state.active_spawned_actor_count(&pack, "summoned-fire-sprite"),
+        2
+    );
     // Sigil not in room
     assert!(!state.has_item_in_storage("spawn-sigil", ItemStorageTarget::CurrentRoom, LOUNGE_ID));
     // Narration warns of limit
     assert!(
-        out3.lines.0.iter().any(|l| l.text.contains("Limit of 2 sprites reached")),
+        out3.lines
+            .0
+            .iter()
+            .any(|l| l.text.contains("Limit of 2 sprites reached")),
         "got: {:?}",
         out3.lines.0
     );
@@ -489,25 +514,36 @@ fn tracing_sigil_rejects_when_mp_is_insufficient() {
     });
     pack.messages.insert(
         "magic.insufficient_mp".to_string(),
-        PackMessage::Narration("Not enough MP to trace {item}: need {mp_cost}, have {mp}.".to_string()),
+        PackMessage::Narration(
+            "Not enough MP to trace {item}: need {mp_cost}, have {mp}.".to_string(),
+        ),
     );
     rebuild_test_pack_indexes(&mut pack);
 
     let mut state = WorldState::new(&pack);
     state.current_room_id = LOUNGE_ID.to_string();
 
-    let output = drive_actor_command(&mut state, &pack, "trace", ActorCommandInput {
-        actor_id: ACTOR_A_ID,
-        actor_name: ACTOR_A_NAME,
-        room_id: LOUNGE_ID,
-        freeform_text: Some("spawn-sigil"),
-        ..ActorCommandInput::default()
-    });
+    let output = drive_actor_command(
+        &mut state,
+        &pack,
+        "trace",
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: LOUNGE_ID,
+            freeform_text: Some("spawn-sigil"),
+            ..ActorCommandInput::default()
+        },
+    );
 
     assert_eq!(state.actor_stat(ACTOR_A_ID, "mp"), 3);
     assert!(!state.has_item_in_storage("spawn-sigil", ItemStorageTarget::CurrentRoom, LOUNGE_ID));
     assert!(
-        output.lines.0.iter().any(|l| l.text.contains("need 5, have 3")),
+        output
+            .lines
+            .0
+            .iter()
+            .any(|l| l.text.contains("need 5, have 3")),
         "got: {:?}",
         output.lines.0
     );
@@ -542,52 +578,74 @@ fn mp_regenerates_on_tick_interval_and_clamps_at_max() {
 
     let mut state = WorldState::new(&pack);
     state.current_time_minutes = 0;
-    state.adjust_actor_stat(&pack, ACTOR_A_ID, "mp", -3).unwrap(); // 10 - 3 = 7 MP
+    state
+        .adjust_actor_stat(&pack, ACTOR_A_ID, "mp", -3)
+        .unwrap(); // 10 - 3 = 7 MP
     assert_eq!(state.actor_stat(ACTOR_A_ID, "mp"), 7);
 
     // Turn 1 (0 -> 1 min): no 2-minute interval crossed
-    apply_events(&mut state, &pack, &[TimestampedWorldEvent::now(WorldEvent::TurnStarted {
-        turn_number: 1,
-        raw_input: "tick".to_string(),
-        advances_time: true,
-    })]);
+    apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::TurnStarted {
+            turn_number: 1,
+            raw_input: "tick".to_string(),
+            advances_time: true,
+        })],
+    );
     assert_eq!(state.actor_stat(ACTOR_A_ID, "mp"), 7);
 
     // Turn 2 (1 -> 2 min): 2-minute interval crossed! +1 MP -> 8 MP
-    apply_events(&mut state, &pack, &[TimestampedWorldEvent::now(WorldEvent::TurnStarted {
-        turn_number: 2,
-        raw_input: "tick".to_string(),
-        advances_time: true,
-    })]);
+    apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::TurnStarted {
+            turn_number: 2,
+            raw_input: "tick".to_string(),
+            advances_time: true,
+        })],
+    );
     assert_eq!(state.actor_stat(ACTOR_A_ID, "mp"), 8);
 
     // Turns 3 and 4 (2 -> 4 min): another 2-minute interval crossed -> +1 MP -> 9 MP
     for t in 3..=4 {
-        apply_events(&mut state, &pack, &[TimestampedWorldEvent::now(WorldEvent::TurnStarted {
-            turn_number: t,
-            raw_input: "tick".to_string(),
-            advances_time: true,
-        })]);
+        apply_events(
+            &mut state,
+            &pack,
+            &[TimestampedWorldEvent::now(WorldEvent::TurnStarted {
+                turn_number: t,
+                raw_input: "tick".to_string(),
+                advances_time: true,
+            })],
+        );
     }
     assert_eq!(state.actor_stat(ACTOR_A_ID, "mp"), 9);
 
     // Turns 5 and 6 (4 -> 6 min): +1 MP -> 10 MP (reaches natural maximum)
     for t in 5..=6 {
-        apply_events(&mut state, &pack, &[TimestampedWorldEvent::now(WorldEvent::TurnStarted {
-            turn_number: t,
-            raw_input: "tick".to_string(),
-            advances_time: true,
-        })]);
+        apply_events(
+            &mut state,
+            &pack,
+            &[TimestampedWorldEvent::now(WorldEvent::TurnStarted {
+                turn_number: t,
+                raw_input: "tick".to_string(),
+                advances_time: true,
+            })],
+        );
     }
     assert_eq!(state.actor_stat(ACTOR_A_ID, "mp"), 10);
 
     // Turns 7 through 12 (6 -> 12 min): should clamp at 10 MP!
     for t in 7..=12 {
-        apply_events(&mut state, &pack, &[TimestampedWorldEvent::now(WorldEvent::TurnStarted {
-            turn_number: t,
-            raw_input: "tick".to_string(),
-            advances_time: true,
-        })]);
+        apply_events(
+            &mut state,
+            &pack,
+            &[TimestampedWorldEvent::now(WorldEvent::TurnStarted {
+                turn_number: t,
+                raw_input: "tick".to_string(),
+                advances_time: true,
+            })],
+        );
     }
     assert_eq!(state.actor_stat(ACTOR_A_ID, "mp"), 10);
 }

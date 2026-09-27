@@ -63,7 +63,12 @@ fn player_used_item_event_consumes_item_and_runs_hook() {
 
     assert_eq!(state.item_count("healing-potion"), 0);
     assert_eq!(state.actor_stat(player_id, "stamina"), 10);
-    assert!(outcome.lines.iter().any(|line| line.text.contains("healing potion")));
+    assert!(
+        outcome
+            .lines
+            .iter()
+            .any(|line| line.text.contains("healing potion"))
+    );
 }
 
 #[test]
@@ -84,7 +89,11 @@ fn player_can_eat_and_use_flatbread_in_layla_pack() {
 
     // 1. "eat date flatbread"
     let outcome = runtime.run_turn("eat date flatbread").expect("turn runs");
-    assert!(outcome.text().contains("You break the warm date flatbread and eat"));
+    assert!(
+        outcome
+            .text()
+            .contains("You break the warm date flatbread and eat")
+    );
     {
         let s = runtime.export_state().unwrap();
         assert_eq!(s.item_count("date-flatbread"), 1);
@@ -93,7 +102,11 @@ fn player_can_eat_and_use_flatbread_in_layla_pack() {
 
     // 2. "use date-flatbread"
     let outcome2 = runtime.run_turn("use date-flatbread").expect("turn runs");
-    assert!(outcome2.text().contains("You break the warm date flatbread and eat"));
+    assert!(
+        outcome2
+            .text()
+            .contains("You break the warm date flatbread and eat")
+    );
     {
         let s = runtime.export_state().unwrap();
         assert_eq!(s.item_count("date-flatbread"), 0);
@@ -109,7 +122,11 @@ fn player_can_consume_with_short_name_eat_bread() {
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
 
     let outcome = runtime.run_turn("eat bread").expect("turn runs");
-    assert!(outcome.text().contains("You break the warm date flatbread and eat"));
+    assert!(
+        outcome
+            .text()
+            .contains("You break the warm date flatbread and eat")
+    );
     {
         let s = runtime.export_state().unwrap();
         assert_eq!(s.item_count("date-flatbread"), 0);

@@ -26,7 +26,9 @@ fn multiple_holds_are_narrated_once() {
     add_second_ally(&mut pack);
     let mut state = combat_state(&pack);
     state.set_stance(SECOND_ALLY_ID, ActorStance::Allied);
-    state.adjust_actor_stat(&pack, ACTOR_B_ID, "stamina", -8).unwrap();
+    state
+        .adjust_actor_stat(&pack, ACTOR_B_ID, "stamina", -8)
+        .unwrap();
     state
         .adjust_actor_stat(&pack, SECOND_ALLY_ID, "stamina", -8)
         .unwrap();

@@ -79,7 +79,10 @@ pub(in crate::engine::reducer) fn handle_periodic_actor_effect_applied(
                 let item_label = content.item_label(&definition.trigger.room_item);
                 if let Some(line) = content.render_message(
                     deplete_key,
-                    &[("item", item_label), ("item_id", &definition.trigger.room_item)],
+                    &[
+                        ("item", item_label),
+                        ("item_id", &definition.trigger.room_item),
+                    ],
                 ) {
                     lines.narration(line);
                 }

@@ -114,9 +114,7 @@ impl CinderRuntime {
         let mut options = rooms_iter
             .map(|room| {
                 let exit_def = current_room.exits.iter().find(|e| e.room_id == room.id);
-                let exit_label = exit_def
-                    .map(|e| e.label.as_str())
-                    .unwrap_or(&room.id);
+                let exit_label = exit_def.map(|e| e.label.as_str()).unwrap_or(&room.id);
                 let title = exit_def
                     .and_then(|e| e.menu_label.clone())
                     .unwrap_or_else(|| room.title.clone());

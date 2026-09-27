@@ -28,12 +28,7 @@ impl WorldState {
     /// The single presence predicate: resolves the actor's current room and
     /// returns `false` for offstage actors, so no caller relies on the
     /// sentinel empty room id "never matching" a real room.
-    pub fn actor_is_in_room(
-        &self,
-        content: &ContentPack,
-        actor_id: &str,
-        room_id: &str,
-    ) -> bool {
+    pub fn actor_is_in_room(&self, content: &ContentPack, actor_id: &str, room_id: &str) -> bool {
         let Some(actor) = self.actor(content, actor_id) else {
             return false;
         };

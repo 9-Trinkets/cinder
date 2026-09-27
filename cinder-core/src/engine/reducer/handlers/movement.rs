@@ -297,8 +297,7 @@ mod tests {
         let mut content = minimal_test_pack();
         content.settings.combat.player_actor_id = "player".to_string();
         content.settings.feedback_channel_id = "handler-comms".to_string();
-        content.presentation.presentation_text.actor_speech =
-            "{actor_name}: {text}".to_string();
+        content.presentation.presentation_text.actor_speech = "{actor_name}: {text}".to_string();
         content.settings.channels = vec![MessagingChannel {
             id: "handler-comms".to_string(),
             kind: ChannelKind::Direct,
@@ -307,7 +306,12 @@ mod tests {
             participants: vec!["player".to_string(), "blair".to_string()],
             label: None,
         }];
-        content.actors.iter_mut().find(|actor| actor.id == "blair").unwrap().name = "Handler".to_string();
+        content
+            .actors
+            .iter_mut()
+            .find(|actor| actor.id == "blair")
+            .unwrap()
+            .name = "Handler".to_string();
         content.messages.insert(
             "handler.descend.deep_wood".to_string(),
             PackMessage::Voiced {

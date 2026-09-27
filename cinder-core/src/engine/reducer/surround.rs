@@ -13,18 +13,12 @@ use super::handlers::push_message;
 /// target against the configured stat: `player_stat + player_level >=
 /// target_stat + 2*target_level`. The player stat is the *effective* value so
 /// equipped bonuses count.
-fn surround_rule_passes(
-    state: &WorldState,
-    content: &ContentPack,
-    target_actor_id: &str,
-) -> bool {
+fn surround_rule_passes(state: &WorldState, content: &ContentPack, target_actor_id: &str) -> bool {
     let SurroundRule::Resistance { stat } = &content.settings.surround_rule else {
         return true;
     };
     let player_id = &content.settings.combat.player_actor_id;
-    let player_stat = state
-        .effective_actor_stat(content, player_id, stat)
-        .max(0) as u32;
+    let player_stat = state.effective_actor_stat(content, player_id, stat).max(0) as u32;
     let player_level = state.actor_level(player_id);
     let target_stat = state.actor_stat(target_actor_id, stat).max(0) as u32;
     let target_level = state.actor_level(target_actor_id);
@@ -59,7 +53,9 @@ pub(super) fn trigger_surrounded_hooks(
         if state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id) {
             continue;
         }
-        let room_id = state.actor_room_id(actor_id, actor_home_room_id).to_string();
+        let room_id = state
+            .actor_room_id(actor_id, actor_home_room_id)
+            .to_string();
         let neighbors = content.adjacent_room_ids(&room_id);
         if neighbors.is_empty() {
             continue;
@@ -143,13 +139,9 @@ pub(super) fn trigger_placement_hooks(
             "actor_id": placer_actor_id,
             "room_id": room_id,
         });
-        if let Err(error) = apply_narrating_world_hook_effects(
-            state,
-            content,
-            &item.placement_hook,
-            input,
-            lines,
-        ) {
+        if let Err(error) =
+            apply_narrating_world_hook_effects(state, content, &item.placement_hook, input, lines)
+        {
             eprintln!(
                 "[cinder] hook warning (placement_hook: {}): {error}",
                 item.placement_hook

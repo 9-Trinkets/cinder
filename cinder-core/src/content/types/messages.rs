@@ -90,8 +90,8 @@ mod tests {
             .unwrap_err();
         assert!(error.is_data(), "{error}");
 
-        let error = serde_json::from_str::<PackMessage>(r#"{"text": "Legacy handler line."}"#)
-            .unwrap_err();
+        let error =
+            serde_json::from_str::<PackMessage>(r#"{"text": "Legacy handler line."}"#).unwrap_err();
         assert!(error.is_data(), "{error}");
     }
 }

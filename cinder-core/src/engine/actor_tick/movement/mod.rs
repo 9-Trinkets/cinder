@@ -77,8 +77,8 @@ impl MovementEligibilityPolicy for DefaultMovementEligibilityPolicy {
             return false;
         }
         let is_hostile = state.stance(&actor.id) == ActorStance::Hostile;
-        let is_autonomous_ally = state.stance(&actor.id) == ActorStance::Allied
-            && !state.follows_player(&actor.id);
+        let is_autonomous_ally =
+            state.stance(&actor.id) == ActorStance::Allied && !state.follows_player(&actor.id);
         if !is_hostile && !is_autonomous_ally {
             return false;
         }
@@ -141,7 +141,7 @@ impl MovementStrategyResolver for DefaultMovementStrategyResolver {
             .actors
             .get(actor_id)
             .and_then(|rules| rules.wander.as_ref())
-            .or_else(|| content.movement.defaults.wander.as_ref())
+            .or(content.movement.defaults.wander.as_ref())
             .map(strategy_from_wander)
     }
 }
@@ -338,7 +338,9 @@ mod tests {
         state.current_room_id = "kitchen".to_string();
         state.set_stance(&ally_id, ActorStance::Allied);
         state.set_follows_player(&ally_id, false);
-        state.party_orders.insert(ally_id.clone(), "patrol".to_string());
+        state
+            .party_orders
+            .insert(ally_id.clone(), "patrol".to_string());
         state
             .actor_stats
             .entry(ally_id.clone())
@@ -363,7 +365,9 @@ mod tests {
         state.current_room_id = "kitchen".to_string();
         state.set_stance(&ally_id, ActorStance::Allied);
         state.set_follows_player(&ally_id, false);
-        state.party_orders.insert(ally_id.clone(), "guard".to_string());
+        state
+            .party_orders
+            .insert(ally_id.clone(), "guard".to_string());
         state
             .actor_stats
             .entry(ally_id.clone())
@@ -387,7 +391,9 @@ mod tests {
         state.current_room_id = "kitchen".to_string();
         state.set_stance(&ally_id, ActorStance::Allied);
         state.set_follows_player(&ally_id, true);
-        state.party_orders.insert(ally_id.clone(), "follow".to_string());
+        state
+            .party_orders
+            .insert(ally_id.clone(), "follow".to_string());
         state
             .actor_stats
             .entry(ally_id.clone())

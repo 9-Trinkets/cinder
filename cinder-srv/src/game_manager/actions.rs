@@ -5,8 +5,8 @@ use sqlx::PgPool;
 use uuid::Uuid;
 
 use super::db::{
-    insert_transcript_entries, load_play_row, load_play_row_unlocked, narrative_role, parse_uuid,
-    PendingTranscriptEntry, MAX_PLAY_WRITE_RETRIES,
+    MAX_PLAY_WRITE_RETRIES, PendingTranscriptEntry, insert_transcript_entries, load_play_row,
+    load_play_row_unlocked, narrative_role, parse_uuid,
 };
 use super::response::{act_closure_data, game_closure_data};
 use super::ui::build_ui_snapshot;
@@ -258,9 +258,11 @@ where
                     .map_err(|e| format!("act rollover error: {e}"))?
                     && !intro_text.is_empty()
                 {
-                    outcome.lines.push(
-                        cinder_core::engine::narrative::NarrativeLine::narration(intro_text),
-                    );
+                    outcome
+                        .lines
+                        .push(cinder_core::engine::narrative::NarrativeLine::narration(
+                            intro_text,
+                        ));
                 }
                 outcome.phase = GamePhase::Active;
             }
@@ -388,9 +390,20 @@ pub async fn continue_play(
 ) -> Result<CommandResponse, String> {
     let play_id = parse_uuid(play_id, "play id")?;
     let player_id = parse_uuid(player_id, "player id")?;
-    with_runtime(pool, &play_id, &player_id, move |runtime, pack_id, lines| {
-        runtime.continue_after_act().map_err(|e| format!("play continuation error: {e}"))?;
-        let ui_snapshot = build_ui_snapshot(runtime, pack_id, lines)?;
-        Ok((CommandResponse::new(Vec::new(), false, Some(ui_snapshot)), Vec::new()))
-    }).await
+    with_runtime(
+        pool,
+        &play_id,
+        &player_id,
+        move |runtime, pack_id, lines| {
+            runtime
+                .continue_after_act()
+                .map_err(|e| format!("play continuation error: {e}"))?;
+            let ui_snapshot = build_ui_snapshot(runtime, pack_id, lines)?;
+            Ok((
+                CommandResponse::new(Vec::new(), false, Some(ui_snapshot)),
+                Vec::new(),
+            ))
+        },
+    )
+    .await
 }

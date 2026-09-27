@@ -18,9 +18,13 @@ fn gear_pack() -> ContentPack {
         defense_stat_id: "hunger".to_string(),
         ..cinder_core::content::types::CombatSettingsDefinition::default()
     };
-    pack.settings.equipment_slots = ["weapon".to_string(), "off-hand".to_string(), "gloves".to_string()]
-        .into_iter()
-        .collect();
+    pack.settings.equipment_slots = [
+        "weapon".to_string(),
+        "off-hand".to_string(),
+        "gloves".to_string(),
+    ]
+    .into_iter()
+    .collect();
     pack.items.push(ItemDefinition {
         id: "greatbow".to_string(),
         label: "iron-elm greatbow".to_string(),
@@ -107,7 +111,8 @@ fn drive(pack: &ContentPack, state: &mut WorldState, command_id: &str) {
 }
 
 fn equipped(pack: &ContentPack, state: &WorldState, item_id: &str) -> bool {
-    pack.item(item_id).is_some_and(|item| state.item_is_equipped(item))
+    pack.item(item_id)
+        .is_some_and(|item| state.item_is_equipped(item))
 }
 
 #[test]
@@ -118,8 +123,14 @@ fn two_hand_weapon_occupies_both_slots_and_bonus_applies_once() {
 
     drive(&pack, &mut state, "equip-greatbow");
 
-    assert_eq!(state.equipment.get("weapon").map(String::as_str), Some("greatbow"));
-    assert_eq!(state.equipment.get("off-hand").map(String::as_str), Some("greatbow"));
+    assert_eq!(
+        state.equipment.get("weapon").map(String::as_str),
+        Some("greatbow")
+    );
+    assert_eq!(
+        state.equipment.get("off-hand").map(String::as_str),
+        Some("greatbow")
+    );
     assert_eq!(state.equipped_stat_bonus(&pack, "confidence"), 4);
     assert!(!state.has_item("greatbow"));
 }
@@ -134,9 +145,15 @@ fn one_hand_equip_swaps_out_a_two_hand_and_frees_the_off_hand() {
 
     drive(&pack, &mut state, "equip-dagger");
 
-    assert_eq!(state.equipment.get("weapon").map(String::as_str), Some("dagger"));
+    assert_eq!(
+        state.equipment.get("weapon").map(String::as_str),
+        Some("dagger")
+    );
     assert!(!state.equipment.contains_key("off-hand"));
-    assert!(state.has_item("greatbow"), "the freed two-hand weapon returns to inventory");
+    assert!(
+        state.has_item("greatbow"),
+        "the freed two-hand weapon returns to inventory"
+    );
     assert!(!state.has_item("dagger"));
 }
 
@@ -149,12 +166,21 @@ fn two_hand_equip_swaps_out_a_one_hand_pair_returning_both() {
     state.add_item("loose-greave");
     drive(&pack, &mut state, "equip-dagger");
     drive(&pack, &mut state, "equip-greave");
-    assert_eq!(state.equipment.get("off-hand").map(String::as_str), Some("loose-greave"));
+    assert_eq!(
+        state.equipment.get("off-hand").map(String::as_str),
+        Some("loose-greave")
+    );
 
     drive(&pack, &mut state, "equip-greatbow");
 
-    assert_eq!(state.equipment.get("weapon").map(String::as_str), Some("greatbow"));
-    assert_eq!(state.equipment.get("off-hand").map(String::as_str), Some("greatbow"));
+    assert_eq!(
+        state.equipment.get("weapon").map(String::as_str),
+        Some("greatbow")
+    );
+    assert_eq!(
+        state.equipment.get("off-hand").map(String::as_str),
+        Some("greatbow")
+    );
     assert!(state.has_item("dagger"));
     assert!(state.has_item("loose-greave"));
     assert_eq!(state.equipped_stat_bonus(&pack, "confidence"), 4);
@@ -186,7 +212,10 @@ fn equip_is_rejected_when_a_declared_slot_vanishes_from_settings() {
     drive(&pack, &mut state, "equip-gloves");
 
     assert!(!equipped(&pack, &state, "woven-gloves"));
-    assert!(state.has_item("woven-gloves"), "rejected equip keeps the item held");
+    assert!(
+        state.has_item("woven-gloves"),
+        "rejected equip keeps the item held"
+    );
 }
 
 #[test]

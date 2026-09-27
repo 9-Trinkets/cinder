@@ -159,8 +159,12 @@ impl CinderRoleRunner {
             .lock()
             .map_err(|_| "failed to lock planner state".to_string())?;
         let turn_number = aggregated.world.turn_number + 1;
-        let (planned, _) =
-            build_planned_turn(self.content.as_ref(), aggregated, &planner_state, turn_number);
+        let (planned, _) = build_planned_turn(
+            self.content.as_ref(),
+            aggregated,
+            &planner_state,
+            turn_number,
+        );
         resolve_next_role(
             &planned,
             || self.next_role_from(role_name, "menu_intent_clarifier"),
@@ -440,10 +444,10 @@ pub(crate) fn run_pending_commentary_upgrades(
         // Party following the player at the transition
         let mut party_members = Vec::new();
         let player_id = &content.settings.combat.player_actor_id;
-        if !player_id.is_empty() {
-            if let Some(player) = content.actor(player_id) {
-                party_members.push(player.name.clone());
-            }
+        if !player_id.is_empty()
+            && let Some(player) = content.actor(player_id)
+        {
+            party_members.push(player.name.clone());
         }
         for (actor_id, rel) in &state.relationships {
             if rel.follows_player {
@@ -519,4 +523,3 @@ pub(crate) fn run_pending_commentary_upgrades(
         }
     }
 }
-

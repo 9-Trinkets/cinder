@@ -65,10 +65,7 @@ fn floor4_navigation_and_gates_resolve() {
         .iter()
         .find(|e| e.room_id == "village_square")
         .expect("oh has exit to village_square");
-    assert_eq!(
-        to_village.requires_story_var.as_str(),
-        "elemental_released"
-    );
+    assert_eq!(to_village.requires_story_var.as_str(), "elemental_released");
 
     // Village square connects back to oh
     let village_square = pack.room("village_square").expect("village_square exists");
@@ -78,11 +75,23 @@ fn floor4_navigation_and_gates_resolve() {
     );
 
     // Village square connects along southern baseline of the triangle loop
-    assert!(village_square.exits.iter().any(|e| e.room_id == "village_sw_corner"));
-    assert!(village_square.exits.iter().any(|e| e.room_id == "village_south_1"));
+    assert!(
+        village_square
+            .exits
+            .iter()
+            .any(|e| e.room_id == "village_sw_corner")
+    );
+    assert!(
+        village_square
+            .exits
+            .iter()
+            .any(|e| e.room_id == "village_south_1")
+    );
 
     // Fortress apex connects through bulkhead behind fortress_gate_open story var
-    let north_gate = pack.room("village_north_gate").expect("village_north_gate exists");
+    let north_gate = pack
+        .room("village_north_gate")
+        .expect("village_north_gate exists");
     let to_fortress = north_gate
         .exits
         .iter()
@@ -105,7 +114,11 @@ fn floor4_map_layout_registered() {
         .expect("the-commoners map exists");
 
     assert_eq!(map.label, "The Worker Village");
-    assert_eq!(map.rooms.len(), 16, "Floor 4 map must have exactly 16 rooms");
+    assert_eq!(
+        map.rooms.len(),
+        16,
+        "Floor 4 map must have exactly 16 rooms"
+    );
 
     for room_id in EXPECTED_FLOOR4_ROOMS {
         assert!(
@@ -143,7 +156,8 @@ fn floor4_descent_triggers_handler_village_commentary() {
 
     let outcome = runtime.run_turn("go down").expect("turn runs");
     assert!(
-        outcome.text().contains("civilian life signs") || outcome.text().contains("people live down here"),
+        outcome.text().contains("civilian life signs")
+            || outcome.text().contains("people live down here"),
         "Handler commentary should remark on civilians: {}",
         outcome.text()
     );
@@ -181,10 +195,17 @@ fn floor4_actors_and_interactions_validate() {
         .iter()
         .filter(|a| a.room_id == "village_north_gate")
         .collect();
-    assert_eq!(sentries.len(), 2, "There must be two sentries at village_north_gate");
+    assert_eq!(
+        sentries.len(),
+        2,
+        "There must be two sentries at village_north_gate"
+    );
     for sentry in &sentries {
         assert!(sentry.attackable);
-        assert!(!sentry.initial_hostile, "Sentries should not attack on sight");
+        assert!(
+            !sentry.initial_hostile,
+            "Sentries should not attack on sight"
+        );
     }
 
     // Placed fortress actors
@@ -202,7 +223,10 @@ fn floor4_actors_and_interactions_validate() {
 
     // Sakhra remains offstage until awakening storyline
     let sakhra = pack.actor("sakhra").expect("sakhra exists");
-    assert!(sakhra.room_id.is_empty(), "sakhra should be offstage initially");
+    assert!(
+        sakhra.room_id.is_empty(),
+        "sakhra should be offstage initially"
+    );
 }
 
 #[test]
@@ -267,7 +291,10 @@ fn floor4_diversion_opens_fortress_gate() {
     // Check Wash Basin Terrace has both features
     let wash_basin = pack.room("village_west_1").expect("village_west_1 exists");
     assert!(
-        wash_basin.features.iter().any(|f| f.id == "village_west_1-valve"),
+        wash_basin
+            .features
+            .iter()
+            .any(|f| f.id == "village_west_1-valve"),
         "village_west_1 must have valve feature"
     );
     let valve_feature = wash_basin
@@ -281,7 +308,11 @@ fn floor4_diversion_opens_fortress_gate() {
     // Check Tariq prompt context contains the diversion clue
     let tariq = pack.actor("tariq").expect("tariq exists");
     assert!(
-        tariq.prompt_context.subtext_notes.iter().any(|note| note.contains("overpressure valve")),
+        tariq
+            .prompt_context
+            .subtext_notes
+            .iter()
+            .any(|note| note.contains("overpressure valve")),
         "Tariq subtext should mention overpressure valve"
     );
 
@@ -321,22 +352,21 @@ fn floor4_diversion_opens_fortress_gate() {
     // 4. Turn the valve at Wash Basin Terrace
     let valve_outcome = runtime.run_turn("turn valve").expect("turn runs");
     assert!(
-        valve_outcome.text().contains("valve screeches open") || valve_outcome.text().contains("blast of steam"),
+        valve_outcome.text().contains("valve screeches open")
+            || valve_outcome.text().contains("blast of steam"),
         "Outcome should describe steam blast: {}",
         valve_outcome.text()
     );
     assert!(
-        valve_outcome.text().contains("bulkhead unlocks") || valve_outcome.text().contains("lock-pins clunk free"),
+        valve_outcome.text().contains("bulkhead unlocks")
+            || valve_outcome.text().contains("lock-pins clunk free"),
         "Outcome should describe bulkhead unlocking: {}",
         valve_outcome.text()
     );
 
     // Verify story variable is set
     let exported = runtime.export_state().unwrap();
-    assert_eq!(
-        exported.story_vars.get("fortress_gate_open"),
-        Some("true")
-    );
+    assert_eq!(exported.story_vars.get("fortress_gate_open"), Some("true"));
 
     // 5. Navigate back to North Gate: village_west_1 -> northeast -> village_west_2 -> northeast -> village_north_gate
     let _ = runtime.run_turn("northeast").expect("turn runs");
@@ -359,7 +389,9 @@ fn floor4_cardinal_and_diagonal_navigation_resolves_cleanly() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
 
     // village_north_gate exit resolution
-    let vng = pack.room("village_north_gate").expect("village_north_gate exists");
+    let vng = pack
+        .room("village_north_gate")
+        .expect("village_north_gate exists");
     for exit in &vng.exits {
         if exit.room_id == "village_west_2" {
             assert!(exit.aliases.iter().any(|a| a == "southwest" || a == "sw"));
@@ -376,9 +408,12 @@ fn floor4_cardinal_and_diagonal_navigation_resolves_cleanly() {
     state.current_room_id = "village_square".to_string();
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
-    let runtime =
-        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack.clone(), state, dialogue)
-            .expect("runtime creates");
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack.clone(),
+        state,
+        dialogue,
+    )
+    .expect("runtime creates");
 
     // Walk clockwise around the 9-room loop:
     // 1. village_square -> west -> village_sw_corner
@@ -573,7 +608,9 @@ fn floor4_large_state_tick_runs_without_soft_error() {
             "Observed event note #{i}: Layla and companions explored the steampunk corridor and listened to steam vents echoing in the distance."
         ));
     }
-    state.actor_recent_observation_notes.insert("layla".to_string(), notes);
+    state
+        .actor_recent_observation_notes
+        .insert("layla".to_string(), notes);
     let serialized_len = serde_json::to_string(&state).unwrap().len();
     assert!(
         serialized_len > 25000,
@@ -644,7 +681,12 @@ fn multi_floor_descent_isolates_transcripts_and_builds_summaries() {
         assert_eq!(reqs[0].completed_area_name, "The Cave");
         assert_eq!(reqs[0].destination_area_name, "Deep Forest");
         assert!(reqs[0].previous_area_summaries.is_empty());
-        assert!(reqs[0].recent_transcript.iter().any(|l| l.contains("chalk circle")));
+        assert!(
+            reqs[0]
+                .recent_transcript
+                .iter()
+                .any(|l| l.contains("chalk circle"))
+        );
     }
 
     let state1 = runtime.export_state().unwrap();
@@ -656,7 +698,9 @@ fn multi_floor_descent_isolates_transcripts_and_builds_summaries() {
     // Floor 2: Move to d8c5 (exit to Floor 3)
     let mut state_floor2 = runtime.export_state().unwrap();
     state_floor2.current_room_id = "d8c5".to_string();
-    state_floor2.story_vars.set_unchecked("elf_king_defeated", "true");
+    state_floor2
+        .story_vars
+        .set_unchecked("elf_king_defeated", "true");
 
     let runtime2 = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
         pack.clone(),
@@ -666,7 +710,8 @@ fn multi_floor_descent_isolates_transcripts_and_builds_summaries() {
     .expect("runtime creates");
 
     // Generate Floor 2-specific lines
-    let _ = runtime2.push_transcript_line("Layla navigated bioluminescent mushrooms and mossy boughs.");
+    let _ =
+        runtime2.push_transcript_line("Layla navigated bioluminescent mushrooms and mossy boughs.");
     let _ = runtime2.push_transcript_line("Layla struck down the Corrupted Treant.");
 
     // Descent 2: Floor 2 -> Floor 3 (oan)
@@ -688,14 +733,28 @@ fn multi_floor_descent_isolates_transcripts_and_builds_summaries() {
         assert!(req2.previous_area_summaries[0].contains("Layla conquered The Cave."));
 
         // Recent transcript MUST contain Floor 2 events and MUST NOT contain Floor 1 events!
-        assert!(req2.recent_transcript.iter().any(|l| l.contains("bioluminescent mushrooms")));
-        assert!(req2.recent_transcript.iter().any(|l| l.contains("Corrupted Treant")));
         assert!(
-            !req2.recent_transcript.iter().any(|l| l.contains("chalk circle")),
+            req2.recent_transcript
+                .iter()
+                .any(|l| l.contains("bioluminescent mushrooms"))
+        );
+        assert!(
+            req2.recent_transcript
+                .iter()
+                .any(|l| l.contains("Corrupted Treant"))
+        );
+        assert!(
+            !req2
+                .recent_transcript
+                .iter()
+                .any(|l| l.contains("chalk circle")),
             "Floor 2 transcript slice must NOT contain Floor 1 chalk circle!"
         );
         assert!(
-            !req2.recent_transcript.iter().any(|l| l.contains("tamed a goblin")),
+            !req2
+                .recent_transcript
+                .iter()
+                .any(|l| l.contains("tamed a goblin")),
             "Floor 2 transcript slice must NOT contain Floor 1 goblin!"
         );
     }
@@ -896,9 +955,9 @@ fn floor4_zayd_rescue_and_village_escort() {
     // Verify quest completion
     let final_objectives = runtime.current_objective_summaries().unwrap();
     assert!(
-        !final_objectives.iter().any(|o| o.quest_id.as_deref() == Some("save_zayd")),
+        !final_objectives
+            .iter()
+            .any(|o| o.quest_id.as_deref() == Some("save_zayd")),
         "save_zayd quest must be completed upon safe return"
     );
 }
-
-

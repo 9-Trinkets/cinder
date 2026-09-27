@@ -245,15 +245,8 @@ mod shipped_pack_load_tests {
                 loaded.behavior.defaults.hold.is_some(),
                 "{pack}: hold default absent"
             );
-            assert!(
-                !loaded.rooms.is_empty(),
-                "{pack}: rooms absent"
-            );
-            assert!(
-                !loaded.actors.is_empty(),
-                "{pack}: actors absent"
-            );
+            assert!(!loaded.rooms.is_empty(), "{pack}: rooms absent");
+            assert!(!loaded.actors.is_empty(), "{pack}: actors absent");
         }
     }
 }
-

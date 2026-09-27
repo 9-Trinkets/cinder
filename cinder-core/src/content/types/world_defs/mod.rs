@@ -3,8 +3,8 @@
 //! stat metadata.
 
 mod actor_defs;
-mod behavior;
 mod beat_objectives;
+mod behavior;
 mod drops;
 mod movement;
 mod presentation;
@@ -13,7 +13,6 @@ mod speech;
 mod stats;
 
 pub use actor_defs::{ActorDefinition, ActorPromptContext};
-pub use behavior::{BehaviorActorDefinition, BehaviorDefinition};
 pub use beat_objectives::{
     BeatObjectiveAffordancePriorityDefinition, BeatObjectiveAffordanceTarget,
     BeatObjectiveCompletionDefinition, BeatObjectiveCompletionTrigger,
@@ -21,12 +20,16 @@ pub use beat_objectives::{
     BeatObjectiveGuidanceDefinition, BeatObjectiveProgressDefinition,
     BeatObjectiveProgressKeyDefinition, BeatObjectivesDefinition,
 };
+pub use behavior::{BehaviorActorDefinition, BehaviorDefinition};
 pub use drops::{DropChanceSpec, DropConditionSpec, DropPoolEntry, DropPoolSpec, DropSpec};
 pub use movement::{
     ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition, MovementConfigDefinition,
     MovementDefaultsDefinition, MovementTargetBehavior, WanderDefinition, WanderMode,
 };
 pub use presentation::{ErrorTextDefinition, PresentationDefinition, PresentationTextDefinition};
-pub use rooms::{ConsumableDefinition, ConsumableKind, RoomDefinition, RoomDescriptionOverride, RoomExitDefinition, RoomFeatureDefinition};
+pub use rooms::{
+    ConsumableDefinition, ConsumableKind, RoomDefinition, RoomDescriptionOverride,
+    RoomExitDefinition, RoomFeatureDefinition,
+};
 pub use speech::SpeechConfigDefinition;
 pub use stats::{StatDefinition, StatsDefinition};

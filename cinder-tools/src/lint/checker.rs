@@ -17,12 +17,17 @@ impl LintReport {
 
 pub fn lint_pack(pack_dir: &Path, locale: &str) -> LintReport {
     let mut report = LintReport::default();
-    let pack_name = pack_dir.file_name().and_then(|n| n.to_str()).unwrap_or("unknown");
+    let pack_name = pack_dir
+        .file_name()
+        .and_then(|n| n.to_str())
+        .unwrap_or("unknown");
 
     let pack = match load_pack_from_dir_with_locale(pack_dir, Some(locale)) {
         Ok(p) => p,
         Err(err) => {
-            report.errors.push(format!("[{pack_name}] pack failed to load: {err}"));
+            report
+                .errors
+                .push(format!("[{pack_name}] pack failed to load: {err}"));
             return report;
         }
     };
@@ -50,25 +55,35 @@ pub fn lint_pack(pack_dir: &Path, locale: &str) -> LintReport {
                 _ => None,
             };
             if let Some(back_label) = opp_label
-                && let Some(target_room) = pack.room(&exit.room_id) {
-                    let has_back = target_room.exits.iter().any(|e| e.room_id == room.id && e.label == back_label);
-                    if !has_back && exit.requires_story_var.is_empty() {
-                        // Non-gated cardinal exit should ideally be bidirectional
-                        report.warnings.push(format!(
+                && let Some(target_room) = pack.room(&exit.room_id)
+            {
+                let has_back = target_room
+                    .exits
+                    .iter()
+                    .any(|e| e.room_id == room.id && e.label == back_label);
+                if !has_back && exit.requires_story_var.is_empty() {
+                    // Non-gated cardinal exit should ideally be bidirectional
+                    report.warnings.push(format!(
                             "[{pack_name}] one-way cardinal exit: '{}' -> '{}' ({}) lacks reciprocal '{}' in target",
                             room.id, exit.room_id, exit.label, back_label
                         ));
-                    }
                 }
+            }
         }
 
         // Features
         for feature in &room.features {
             if feature.label.trim().is_empty() {
-                report.warnings.push(format!("[{pack_name}] room '{}' feature '{}' has empty label", room.id, feature.id));
+                report.warnings.push(format!(
+                    "[{pack_name}] room '{}' feature '{}' has empty label",
+                    room.id, feature.id
+                ));
             }
             if feature.inspect_text.trim().is_empty() {
-                report.warnings.push(format!("[{pack_name}] room '{}' feature '{}' has empty inspect text", room.id, feature.id));
+                report.warnings.push(format!(
+                    "[{pack_name}] room '{}' feature '{}' has empty inspect text",
+                    room.id, feature.id
+                ));
             }
         }
     }

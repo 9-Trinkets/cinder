@@ -1,4 +1,3 @@
-use cinder_core::engine::state::WorldState;
 use sqlx::{PgPool, Postgres, Transaction};
 use uuid::Uuid;
 
@@ -15,7 +14,9 @@ pub(super) struct PendingTranscriptEntry {
 /// DB `role` value for a narrative line kind. "player" lines carry the echoed
 /// command; everything else uses the kind's snake_case name so reloaded
 /// history can recover the styling.
-pub(super) fn narrative_role(kind: &cinder_core::engine::narrative::NarrativeLineKind) -> &'static str {
+pub(super) fn narrative_role(
+    kind: &cinder_core::engine::narrative::NarrativeLineKind,
+) -> &'static str {
     match kind {
         cinder_core::engine::narrative::NarrativeLineKind::Player => "player",
         cinder_core::engine::narrative::NarrativeLineKind::Heading => "heading",

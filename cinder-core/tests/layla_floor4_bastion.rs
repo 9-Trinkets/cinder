@@ -18,8 +18,8 @@ fn floor4_bastion_entry_narrative_and_doors_lock_in() {
     state.story_vars.set_unchecked("fortress_gate_open", "true");
 
     let dialogue = Arc::new(ScriptedDialogueGenerator::new());
-    let runtime = CinderRuntime::with_dialogue_generator(pack, state, dialogue)
-        .expect("runtime creates");
+    let runtime =
+        CinderRuntime::with_dialogue_generator(pack, state, dialogue).expect("runtime creates");
 
     // 1. Move east into command_bastion
     let entry_outcome = runtime.run_turn("east").expect("enter command_bastion");
@@ -33,7 +33,9 @@ fn floor4_bastion_entry_narrative_and_doors_lock_in() {
         "Bastion entry scene text missing in: {entry_text}"
     );
     assert!(
-        entry_text.contains("Priest Harun (to Captain Malik): The transport cart sits idle on the gantry, Malik"),
+        entry_text.contains(
+            "Priest Harun (to Captain Malik): The transport cart sits idle on the gantry, Malik"
+        ),
         "Priest Harun speech missing or misformatted in: {entry_text}"
     );
     assert!(
@@ -41,7 +43,9 @@ fn floor4_bastion_entry_narrative_and_doors_lock_in() {
         "Captain Malik reply speech missing or misformatted in: {entry_text}"
     );
     assert!(
-        entry_text.contains("massive iron security blast doors drop from the vaulted ceiling with a deafening SLAM"),
+        entry_text.contains(
+            "massive iron security blast doors drop from the vaulted ceiling with a deafening SLAM"
+        ),
         "Doors slam narration missing in: {entry_text}"
     );
     assert!(
@@ -94,7 +98,9 @@ fn floor4_bastion_malik_defeat_safe_unlock_and_teleport_scroll() {
 
     // 2. Defeat Malik: loot key and malik_defeated set
     let mut defeated_state = runtime.export_state().unwrap();
-    defeated_state.story_vars.set_unchecked("malik_defeated", "true");
+    defeated_state
+        .story_vars
+        .set_unchecked("malik_defeated", "true");
     defeated_state.add_item("commander-safe-key");
     defeated_state.actor_add_item("player", "commander-safe-key");
     defeated_state
@@ -118,11 +124,14 @@ fn floor4_bastion_malik_defeat_safe_unlock_and_teleport_scroll() {
     assert_eq!(runtime2.current_room_id().unwrap(), "command_bastion");
 
     // 3. Unlock safe
-    let unlock_outcome = runtime2.run_turn("unlock safe").expect("unlock safe command");
+    let unlock_outcome = runtime2
+        .run_turn("unlock safe")
+        .expect("unlock safe command");
     let unlock_text = unlock_outcome.text();
 
     assert!(
-        unlock_text.contains("You insert Commander Malik's heavy brass key into the safe's dual tumblers"),
+        unlock_text
+            .contains("You insert Commander Malik's heavy brass key into the safe's dual tumblers"),
         "Unlock safe event text missing in: {unlock_text}"
     );
 
@@ -153,7 +162,9 @@ fn floor4_bastion_malik_defeat_safe_unlock_and_teleport_scroll() {
     );
 
     // 4. Read teleport scroll
-    let read_outcome = runtime2.run_turn("read teleport scroll").expect("read scroll");
+    let read_outcome = runtime2
+        .run_turn("read teleport scroll")
+        .expect("read scroll");
     let read_text = read_outcome.text();
     assert!(
         read_text.contains("learned the Teleportation Sigil")

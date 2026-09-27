@@ -63,7 +63,8 @@ fn equipping_an_item_with_equip_hook_converts_surviving_tagged_actors() {
     let mut golem_offstage = test_actor("statue-offstage", "sleeping statue", "");
     golem_offstage.tags = vec!["golem".to_string()];
     golem_offstage.initial_stats = BTreeMap::from([("stamina".to_string(), 8)]);
-    pack.actors.extend([golem_living, golem_dead, golem_allied, golem_offstage]);
+    pack.actors
+        .extend([golem_living, golem_dead, golem_allied, golem_offstage]);
     rebuild_test_pack_indexes(&mut pack);
 
     let mut state = WorldState::new(&pack);

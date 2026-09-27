@@ -15,7 +15,7 @@ pub(crate) use availability::{
     command_availability_issue, command_unavailable_message, story_var_is_truthy,
 };
 pub(crate) use objectives::{
-    actor_objective_guidance_notes, apply_actor_turn_policies,
+    ObjectiveSpeechEvent, actor_objective_guidance_notes, apply_actor_turn_policies,
     apply_command_objective_progress_effects, clear_inactive_objective_state,
-    mark_actor_objective_progress_for_speech_event, ObjectiveSpeechEvent,
+    mark_actor_objective_progress_for_speech_event,
 };

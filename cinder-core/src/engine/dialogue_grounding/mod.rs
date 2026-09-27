@@ -445,7 +445,9 @@ pub(crate) fn extract_gift_tags(raw: &str) -> (String, Vec<String>) {
             let close_idx = open_idx + close_offset;
             let bracketed = raw[open_idx + 1..close_idx].trim();
             if bracketed.len() >= 5 && bracketed[..5].eq_ignore_ascii_case("give:") {
-                let item_id = bracketed[5..].trim().trim_matches(|c| c == '\'' || c == '\"');
+                let item_id = bracketed[5..]
+                    .trim()
+                    .trim_matches(|c| c == '\'' || c == '\"');
                 if !item_id.is_empty() {
                     gifts.push(item_id.to_string());
                 }
@@ -519,7 +521,8 @@ mod tests {
 
     #[test]
     fn extracts_gift_tag_at_end_of_speech() {
-        let raw = "Here, take this flatbread with roasted dates; you'll need it. [GIVE: date-flatbread]";
+        let raw =
+            "Here, take this flatbread with roasted dates; you'll need it. [GIVE: date-flatbread]";
         let (clean, gifts) = extract_gift_tags(raw);
         assert_eq!(
             clean,
@@ -576,4 +579,3 @@ mod tests {
         assert!(gifts.is_empty());
     }
 }
-

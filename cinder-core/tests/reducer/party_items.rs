@@ -81,7 +81,12 @@ fn give_item_adds_to_follower_inventory_when_not_equippable() {
 
     assert!(!state.has_item("herb"));
     assert_eq!(state.actor_item_count(ACTOR_A_ID, "herb"), 1);
-    assert!(output.lines.iter().any(|l| l.text.contains("You give the healing herb to Alex.")));
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|l| l.text.contains("You give the healing herb to Alex."))
+    );
 }
 
 #[test]
@@ -113,8 +118,18 @@ fn give_item_auto_equips_and_grants_stat_bonus() {
         state.effective_actor_stat(&pack, ACTOR_A_ID, "strength"),
         base_str + 3
     );
-    assert!(output.lines.iter().any(|l| l.text.contains("You give the iron sword to Alex.")));
-    assert!(output.lines.iter().any(|l| l.text.contains("Alex equips the iron sword.")));
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|l| l.text.contains("You give the iron sword to Alex."))
+    );
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|l| l.text.contains("Alex equips the iron sword."))
+    );
 }
 
 #[test]
@@ -200,7 +215,12 @@ fn take_item_from_follower_inventory() {
 
     assert_eq!(state.actor_item_count(ACTOR_A_ID, "herb"), 0);
     assert!(state.has_item("herb"));
-    assert!(output.lines.iter().any(|l| l.text.contains("You take the healing herb from Alex.")));
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|l| l.text.contains("You take the healing herb from Alex."))
+    );
 }
 
 #[test]
@@ -231,7 +251,12 @@ fn take_item_from_follower_equipment_unequips_and_returns_to_player() {
         state.effective_actor_stat(&pack, ACTOR_A_ID, "strength"),
         base_str - 3
     );
-    assert!(output.lines.iter().any(|l| l.text.contains("You take the iron sword from Alex.")));
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|l| l.text.contains("You take the iron sword from Alex."))
+    );
 }
 
 #[test]
@@ -253,7 +278,12 @@ fn npc_gives_item_to_player_via_item_transferred() {
 
     assert_eq!(state.actor_item_count(ACTOR_A_ID, "herb"), 0);
     assert!(state.has_item("herb"));
-    assert!(output.lines.iter().any(|l| l.text.contains("Alex gives you the healing herb.")));
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|l| l.text.contains("Alex gives you the healing herb."))
+    );
 }
 
 #[test]
@@ -274,20 +304,36 @@ fn npc_gives_item_to_another_npc_via_item_transferred() {
     );
 
     assert_eq!(state.actor_item_count(ACTOR_A_ID, "iron-sword"), 0);
-    assert_eq!(state.actor_equipped_item(ACTOR_B_ID, "weapon"), Some("iron-sword"));
-    assert!(output.lines.iter().any(|l| l.text.contains("Alex gives the iron sword to Blair.")));
-    assert!(output.lines.iter().any(|l| l.text.contains("Blair equips the iron sword.")));
+    assert_eq!(
+        state.actor_equipped_item(ACTOR_B_ID, "weapon"),
+        Some("iron-sword")
+    );
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|l| l.text.contains("Alex gives the iron sword to Blair."))
+    );
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|l| l.text.contains("Blair equips the iron sword."))
+    );
 }
 
 #[test]
 fn runtime_give_command_with_authored_action_gives_item_to_companion() {
-    let pack = cinder_core::content::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+    let pack =
+        cinder_core::content::loader::load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "r01c01".to_string();
     state.add_item("brass-gear");
     state.set_stance("golem-dark-nw", ActorStance::Allied);
     state.set_follows_player("golem-dark-nw", true);
-    state.actor_room_overrides.insert("golem-dark-nw".to_string(), "r01c01".to_string());
+    state
+        .actor_room_overrides
+        .insert("golem-dark-nw".to_string(), "r01c01".to_string());
 
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
@@ -310,7 +356,8 @@ fn runtime_give_command_with_authored_action_gives_item_to_companion() {
 
 #[test]
 fn npc_dialogue_gifts_item_to_player_during_conversation() {
-    let pack = cinder_core::content::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+    let pack =
+        cinder_core::content::loader::load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "village_east_2".to_string();
 
@@ -323,9 +370,12 @@ fn npc_dialogue_gifts_item_to_player_during_conversation() {
             "Here, take this flatbread with roasted dates; you'll need it. [GIVE: date-flatbread]",
         ),
     );
-    let runtime =
-        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue.clone())
-            .expect("runtime creates");
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack,
+        state,
+        dialogue.clone(),
+    )
+    .expect("runtime creates");
 
     let outcome = runtime
         .run_turn("talk to yasmin")
@@ -333,7 +383,9 @@ fn npc_dialogue_gifts_item_to_player_during_conversation() {
 
     // 1. Spoken line has the [GIVE: ...] tag stripped
     assert!(
-        outcome.text().contains("Here, take this flatbread with roasted dates; you'll need it."),
+        outcome
+            .text()
+            .contains("Here, take this flatbread with roasted dates; you'll need it."),
         "outcome text was: {}",
         outcome.text()
     );
@@ -345,7 +397,9 @@ fn npc_dialogue_gifts_item_to_player_during_conversation() {
 
     // 2. Transfer narration is included
     assert!(
-        outcome.text().contains("Yasmin gives you the date flatbread."),
+        outcome
+            .text()
+            .contains("Yasmin gives you the date flatbread."),
         "outcome text missing transfer message: {}",
         outcome.text()
     );
@@ -358,14 +412,18 @@ fn npc_dialogue_gifts_item_to_player_during_conversation() {
 
     // 4. Grounded dialogue request contained the carrying prompt
     let requests = dialogue.request_log().lock().unwrap().clone();
-    let yasmin_req = requests.iter().find(|r| r.actor_id == "yasmin").expect("dialogue requested for yasmin");
+    let yasmin_req = requests
+        .iter()
+        .find(|r| r.actor_id == "yasmin")
+        .expect("dialogue requested for yasmin");
     assert!(
         yasmin_req
             .response_notes
             .iter()
-            .any(|n| n.contains("You are carrying:") && n.contains("date-flatbread") && n.contains("[GIVE: <item_id>]")),
+            .any(|n| n.contains("You are carrying:")
+                && n.contains("date-flatbread")
+                && n.contains("[GIVE: <item_id>]")),
         "response notes did not contain carry instruction: {:?}",
         yasmin_req.response_notes
     );
 }
-

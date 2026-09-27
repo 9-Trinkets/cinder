@@ -65,7 +65,10 @@ fn goblin_shaman_is_initially_hostile_and_attacks_on_sight() {
 
     // Layla in r5c5 sees hostile shaman
     state.current_room_id = "r5c5".to_string();
-    assert_eq!(state.stance("goblin-shaman"), cinder_core::engine::state::ActorStance::Hostile);
+    assert_eq!(
+        state.stance("goblin-shaman"),
+        cinder_core::engine::state::ActorStance::Hostile
+    );
 }
 
 #[test]
@@ -75,7 +78,11 @@ fn goblin_shaman_defeat_narrates_world_hint_lines() {
     assert!(pack.messages.contains_key("handler.minimap_unlocked"));
     let defeat_msg = pack.render_message("shaman.defeat", &[]).unwrap();
     assert!(defeat_msg.contains("dead do not stay here"));
-    assert!(defeat_msg.contains("relief") || defeat_msg.contains("void") || defeat_msg.contains("Cold at last"));
+    assert!(
+        defeat_msg.contains("relief")
+            || defeat_msg.contains("void")
+            || defeat_msg.contains("Cold at last")
+    );
 
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     state.current_room_id = "r5c5".to_string();
@@ -109,9 +116,19 @@ fn goblin_shaman_defeat_narrates_world_hint_lines() {
 
     assert_eq!(state.story_vars.get("shaman_defeated"), Some("true"));
     // Verify shaman-ring dropped into room
-    assert!(state.loose_room_items("r5c5").iter().any(|(item, _)| item == "shaman-ring"));
+    assert!(
+        state
+            .loose_room_items("r5c5")
+            .iter()
+            .any(|(item, _)| item == "shaman-ring")
+    );
     // Verify narration lines include shaman.defeat, shaman.reveal, shaman.memory, and handler.minimap_unlocked
-    let texts: Vec<&str> = output.lines.0.iter().map(|line| line.text.as_str()).collect();
+    let texts: Vec<&str> = output
+        .lines
+        .0
+        .iter()
+        .map(|line| line.text.as_str())
+        .collect();
     assert!(texts.iter().any(|t| t.contains("dead do not stay here")));
     assert!(texts.iter().any(|t| t.contains("rough stair descends")));
     assert!(texts.iter().any(|t| t.contains("Go board")));
@@ -188,20 +205,46 @@ fn elf_king_defeat_narrates_dungeon_master_myth() {
 
     assert_eq!(state.story_vars.get("elf_king_defeated"), Some("true"));
     // Drops drain-scroll into room
-    assert!(state.loose_room_items("d8c5").iter().any(|(item, _)| item == "drain-scroll"));
+    assert!(
+        state
+            .loose_room_items("d8c5")
+            .iter()
+            .any(|(item, _)| item == "drain-scroll")
+    );
     // Other elves stand down to neutral
     assert_eq!(
         state.relationship("elf-pawn-1").stance,
         cinder_core::engine::state::ActorStance::Neutral
     );
     // King defeat narrative present
-    let texts: Vec<&str> = output.lines.0.iter().map(|line| line.text.as_str()).collect();
-    assert!(texts.iter().any(|t| t.contains("demon king") && t.contains("ruler of the night")));
+    let texts: Vec<&str> = output
+        .lines
+        .0
+        .iter()
+        .map(|line| line.text.as_str())
+        .collect();
+    assert!(
+        texts
+            .iter()
+            .any(|t| t.contains("demon king") && t.contains("ruler of the night"))
+    );
     // Spoken speech line is attributed with character name
-    assert!(texts.iter().any(|t| t.starts_with("elf king:") && t.contains("demon king")));
+    assert!(
+        texts
+            .iter()
+            .any(|t| t.starts_with("elf king:") && t.contains("demon king"))
+    );
     // Intro prose and aftermath prose are present
-    assert!(texts.iter().any(|t| t.contains("The elf king sinks to one knee")));
-    assert!(texts.iter().any(|t| t.contains("He bows his head. The forest holds its breath.")));
+    assert!(
+        texts
+            .iter()
+            .any(|t| t.contains("The elf king sinks to one knee"))
+    );
+    assert!(
+        texts
+            .iter()
+            .any(|t| t.contains("He bows his head. The forest holds its breath."))
+    );
 }
 
 #[test]
@@ -233,7 +276,9 @@ fn leaf_paste_used_via_generic_item_use() {
     assert!(!end_state.has_item("leaf-paste"));
 
     let text = outcome.text();
-    assert!(text.contains("You press the leaf paste into your wounds. It goes warm and green, and the hurt eases."));
+    assert!(text.contains(
+        "You press the leaf paste into your wounds. It goes warm and green, and the hurt eases."
+    ));
 }
 
 #[test]
@@ -243,21 +288,27 @@ fn transition_commentary_falls_back_when_no_llm() {
     state.current_room_id = "r5c5".to_string();
     state.story_vars.set_unchecked("shaman_defeated", "true");
 
-    let dialogue = std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
-    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
-        pack,
-        state,
-        dialogue,
-    )
-    .expect("runtime creates");
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue)
+            .expect("runtime creates");
 
     let outcome = runtime.run_turn("go down").expect("turn runs");
-    assert!(outcome.text().contains("Floor two. A glowing wood under a cave"));
+    assert!(
+        outcome
+            .text()
+            .contains("Floor two. A glowing wood under a cave")
+    );
 
     // Climbing up and descending again does NOT repeat the fallback commentary
     let _ = runtime.run_turn("go up").expect("turn runs");
     let outcome2 = runtime.run_turn("go down").expect("turn runs");
-    assert!(!outcome2.text().contains("Floor two. A glowing wood under a cave"));
+    assert!(
+        !outcome2
+            .text()
+            .contains("Floor two. A glowing wood under a cave")
+    );
 }
 
 #[test]
@@ -273,12 +324,9 @@ fn transition_commentary_tailored_when_llm_responds() {
             "Well, you survived the mines without getting turned into soup. Welcome to the damp mushroom patch.",
         ),
     );
-    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
-        pack,
-        state,
-        dialogue,
-    )
-    .expect("runtime creates");
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue)
+            .expect("runtime creates");
     runtime
         .set_transcript(vec![
             "Layla attacked the goblin shaman.".to_string(),
@@ -287,8 +335,16 @@ fn transition_commentary_tailored_when_llm_responds() {
         .expect("set transcript");
 
     let outcome = runtime.run_turn("go down").expect("turn runs");
-    assert!(outcome.text().contains("Well, you survived the mines without getting turned into soup"));
-    assert!(!outcome.text().contains("Floor two. A glowing wood under a cave"));
+    assert!(
+        outcome
+            .text()
+            .contains("Well, you survived the mines without getting turned into soup")
+    );
+    assert!(
+        !outcome
+            .text()
+            .contains("Floor two. A glowing wood under a cave")
+    );
 }
 
 #[test]
@@ -304,15 +360,14 @@ fn transition_commentary_floor_3_tailored() {
             "You actually toppled the elf king. Try not to break whatever is left down on the board.",
         ),
     );
-    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
-        pack,
-        state,
-        dialogue,
-    )
-    .expect("runtime creates");
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue)
+            .expect("runtime creates");
 
     let outcome = runtime.run_turn("go down").expect("turn runs");
-    assert!(outcome.text().contains("You actually toppled the elf king. Try not to break whatever is left down on the board."));
+    assert!(outcome.text().contains(
+        "You actually toppled the elf king. Try not to break whatever is left down on the board."
+    ));
     assert!(!outcome.text().contains("Floor three. The actual board"));
 }
 
@@ -328,24 +383,22 @@ fn transition_commentary_two_messages_summary_and_introduction() {
 
     let dialogue = std::sync::Arc::new(
         cinder_core::engine::dialogue::ScriptedDialogueGenerator::new()
-            .with_transition_commentary_lines(
-                "d1c1",
-                vec![summary.to_string(), intro.to_string()],
-            ),
+            .with_transition_commentary_lines("d1c1", vec![summary.to_string(), intro.to_string()]),
     );
-    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
-        pack,
-        state,
-        dialogue,
-    )
-    .expect("runtime creates");
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue)
+            .expect("runtime creates");
 
     let outcome = runtime.run_turn("go down").expect("turn runs");
 
     // Both messages appear in the overall text
     assert!(outcome.text().contains(summary));
     assert!(outcome.text().contains(intro));
-    assert!(!outcome.text().contains("Floor two. A glowing wood under a cave"));
+    assert!(
+        !outcome
+            .text()
+            .contains("Floor two. A glowing wood under a cave")
+    );
 
     // Both messages are emitted as distinct Channel lines
     let channel_lines: Vec<_> = outcome
@@ -374,24 +427,22 @@ fn transition_commentary_via_switch_room_view() {
 
     let dialogue = std::sync::Arc::new(
         cinder_core::engine::dialogue::ScriptedDialogueGenerator::new()
-            .with_transition_commentary_lines(
-                "d1c1",
-                vec![summary.to_string(), intro.to_string()],
-            ),
+            .with_transition_commentary_lines("d1c1", vec![summary.to_string(), intro.to_string()]),
     );
-    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
-        pack,
-        state,
-        dialogue,
-    )
-    .expect("runtime creates");
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue)
+            .expect("runtime creates");
 
     // Running 'go down' via generic command pipeline
     let outcome = runtime.run_turn("go down").expect("turn runs");
 
     assert!(outcome.text().contains(summary));
     assert!(outcome.text().contains(intro));
-    assert!(!outcome.text().contains("Floor two. A glowing wood under a cave"));
+    assert!(
+        !outcome
+            .text()
+            .contains("Floor two. A glowing wood under a cave")
+    );
 
     let channel_lines: Vec<_> = outcome
         .lines
@@ -419,20 +470,16 @@ fn transition_commentary_only_plays_on_first_descent() {
 
     let dialogue = std::sync::Arc::new(
         cinder_core::engine::dialogue::ScriptedDialogueGenerator::new()
-            .with_transition_commentary_lines(
-                "d1c1",
-                vec![summary.to_string(), intro.to_string()],
-            ),
+            .with_transition_commentary_lines("d1c1", vec![summary.to_string(), intro.to_string()]),
     );
-    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
-        pack,
-        state,
-        dialogue,
-    )
-    .expect("runtime creates");
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue)
+            .expect("runtime creates");
 
     // 1. First descent: 'go down'
-    let outcome1 = runtime.run_turn("go down").expect("first descent turn runs");
+    let outcome1 = runtime
+        .run_turn("go down")
+        .expect("first descent turn runs");
     assert!(outcome1.text().contains(summary));
     assert!(outcome1.text().contains(intro));
     let channel_lines1: Vec<_> = outcome1
@@ -449,17 +496,27 @@ fn transition_commentary_only_plays_on_first_descent() {
     assert!(!outcome_up.text().contains(intro));
 
     // 3. Second descent: 'go down' again
-    let outcome2 = runtime.run_turn("go down").expect("second descent turn runs");
+    let outcome2 = runtime
+        .run_turn("go down")
+        .expect("second descent turn runs");
     // Neither tailored commentary nor fallback line should appear
     assert!(!outcome2.text().contains(summary));
     assert!(!outcome2.text().contains(intro));
-    assert!(!outcome2.text().contains("Floor two. A glowing wood under a cave"));
+    assert!(
+        !outcome2
+            .text()
+            .contains("Floor two. A glowing wood under a cave")
+    );
     let channel_lines2: Vec<_> = outcome2
         .lines
         .iter()
         .filter(|l| l.kind == cinder_core::engine::narrative::NarrativeLineKind::Channel)
         .collect();
-    assert!(channel_lines2.is_empty(), "expected no channel lines on second descent, got: {:?}", channel_lines2);
+    assert!(
+        channel_lines2.is_empty(),
+        "expected no channel lines on second descent, got: {:?}",
+        channel_lines2
+    );
     // Normal room description should still appear
     assert!(outcome2.text().contains("The Mushroom Grove"));
 }
@@ -475,9 +532,8 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
         "r5c5",
     );
 
-    let dialogue = std::sync::Arc::new(
-        cinder_core::engine::dialogue::ScriptedDialogueGenerator::new(),
-    );
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
     let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
         pack.clone(),
         state,
@@ -496,7 +552,11 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
 
     // 2. drop shaman-ring (exact id)
     let outcome = runtime.run_turn("drop shaman-ring").expect("turn runs");
-    assert!(outcome.text().contains("Placed shaman's ring on the ground."));
+    assert!(
+        outcome
+            .text()
+            .contains("Placed shaman's ring on the ground.")
+    );
     {
         let s = runtime.export_state().unwrap();
         assert!(!s.has_item("shaman-ring"));
@@ -516,7 +576,11 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
 
     // 4. drop shaman ring
     let outcome = runtime.run_turn("drop shaman ring").expect("turn runs");
-    assert!(outcome.text().contains("Placed shaman's ring on the ground."));
+    assert!(
+        outcome
+            .text()
+            .contains("Placed shaman's ring on the ground.")
+    );
 
     // 5. take ring (substring/token match)
     let outcome = runtime.run_turn("take ring").expect("turn runs");
@@ -540,10 +604,16 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
 
     // 9. drop ring now succeeds
     let outcome = runtime.run_turn("drop ring").expect("turn runs");
-    assert!(outcome.text().contains("Placed shaman's ring on the ground."));
+    assert!(
+        outcome
+            .text()
+            .contains("Placed shaman's ring on the ground.")
+    );
 
     // 10. take the shaman's ring (with article and apostrophe)
-    let outcome = runtime.run_turn("take the shaman's ring").expect("turn runs");
+    let outcome = runtime
+        .run_turn("take the shaman's ring")
+        .expect("turn runs");
     assert!(outcome.text().contains("Picked up shaman's ring."));
     {
         let s = runtime.export_state().unwrap();
@@ -573,7 +643,9 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
             dialogue.clone(),
         )
         .expect("runtime creates");
-        let sigil_outcome = sigil_runtime.run_turn("take drain-sigil").expect("turn runs");
+        let sigil_outcome = sigil_runtime
+            .run_turn("take drain-sigil")
+            .expect("turn runs");
         assert!(sigil_outcome.text().contains("anchored to the floor"));
     }
 }
@@ -603,8 +675,11 @@ fn live_test_synapse_transition_commentary() {
 fn follow_and_unfollow_commands_and_panel_options() {
     let pack = load_named_pack("aera", Some("en")).expect("aera loads and validates");
     let state = cinder_core::engine::state::WorldState::new(&pack);
-    let dialogue = std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
-    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue).expect("runtime creates");
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue)
+            .expect("runtime creates");
 
     // Exit options generate executable 'go <label>' commands
     let exit_options = runtime
@@ -612,7 +687,11 @@ fn follow_and_unfollow_commands_and_panel_options() {
         .expect("exit options build");
     assert!(!exit_options.is_empty());
     for opt in &exit_options {
-        assert!(opt.command.starts_with("go "), "command should be 'go <label>', got: {}", opt.command);
+        assert!(
+            opt.command.starts_with("go "),
+            "command should be 'go <label>', got: {}",
+            opt.command
+        );
     }
 
     // Follow options generate executable 'unfollow' and 'follow <actor>' commands
@@ -621,12 +700,20 @@ fn follow_and_unfollow_commands_and_panel_options() {
         .expect("follow options build");
     assert!(!follow_options.is_empty());
     assert_eq!(follow_options[0].command, "unfollow");
-    assert!(follow_options.iter().skip(1).all(|opt| opt.command.starts_with("follow ")));
+    assert!(
+        follow_options
+            .iter()
+            .skip(1)
+            .all(|opt| opt.command.starts_with("follow "))
+    );
 
     // Test follow command execution
     let outcome = runtime.run_turn("follow ren").expect("follow ren runs");
     assert!(outcome.text().contains("following Ren") || outcome.text().contains("following ren"));
-    assert_eq!(runtime.followed_actor_id().unwrap(), Some("ren".to_string()));
+    assert_eq!(
+        runtime.followed_actor_id().unwrap(),
+        Some("ren".to_string())
+    );
 
     // Test unfollow command execution
     let outcome = runtime.run_turn("unfollow").expect("unfollow runs");
@@ -653,7 +740,10 @@ fn player_starting_inventory_seeds_from_actor_definition() {
 fn layla_trace_requires_magic_chalk_in_inventory() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let trace = pack.action("trace").expect("trace action exists");
-    assert_eq!(trace.available.requires_item.as_deref(), Some("magic-chalk"));
+    assert_eq!(
+        trace.available.requires_item.as_deref(),
+        Some("magic-chalk")
+    );
 
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     assert_eq!(state.player_inventory.get("magic-chalk"), Some(&1));
@@ -675,12 +765,9 @@ fn layla_trace_requires_magic_chalk_in_inventory() {
     ));
 
     // Running trace turn without chalk returns ActionRejected with missing item message
-    let runtime = cinder_core::engine::runtime::CinderRuntime::from_state(
-        pack.clone(),
-        state.clone(),
-        false,
-    )
-    .expect("runtime from state");
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::from_state(pack.clone(), state.clone(), false)
+            .expect("runtime from state");
     let outcome = runtime.run_turn("trace charm-sigil").expect("turn runs");
     assert!(outcome.text().contains("magic chalk"));
 
@@ -702,16 +789,17 @@ fn trace_deducts_mp_and_recovers_over_time() {
     let initial_mp = state.actor_stat("player", "mp");
     assert_eq!(initial_mp, 10);
 
-    let runtime = cinder_core::engine::runtime::CinderRuntime::from_state(
-        pack.clone(),
-        state,
-        false,
-    )
-    .expect("runtime from state");
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::from_state(pack.clone(), state, false)
+            .expect("runtime from state");
 
     // Tracing charm-sigil costs 1 MP (10 -> 9 MP)
     let outcome = runtime.run_turn("trace charm-sigil").expect("turn runs");
-    assert!(!outcome.text().contains("not enough magic"), "outcome: {}", outcome.text());
+    assert!(
+        !outcome.text().contains("not enough magic"),
+        "outcome: {}",
+        outcome.text()
+    );
 
     let state_after = runtime.export_state().unwrap();
     let mp_after = state_after.actor_stat("player", "mp");
@@ -719,7 +807,9 @@ fn trace_deducts_mp_and_recovers_over_time() {
 
     // Tracing drain-sigil (after unlocking) costs 2 MP (9 -> 7 MP)
     let mut state_with_drain = state_after;
-    state_with_drain.story_vars.set_unchecked("knows_drain", "true");
+    state_with_drain
+        .story_vars
+        .set_unchecked("knows_drain", "true");
     let runtime2 = cinder_core::engine::runtime::CinderRuntime::from_state(
         pack.clone(),
         state_with_drain,
@@ -728,12 +818,20 @@ fn trace_deducts_mp_and_recovers_over_time() {
     .expect("runtime2");
 
     let outcome2 = runtime2.run_turn("trace drain-sigil").expect("turn runs");
-    assert!(!outcome2.text().contains("not enough magic"), "outcome: {}", outcome2.text());
+    assert!(
+        !outcome2.text().contains("not enough magic"),
+        "outcome: {}",
+        outcome2.text()
+    );
 
     let state2 = runtime2.export_state().unwrap();
     // Turn 2 advanced world time 1 -> 2 minutes, crossing the 2-minute interval (+1 MP: 9 -> 10),
     // and then spent 2 MP on drain sigil (10 - 2 = 8 MP).
-    assert_eq!(state2.actor_stat("player", "mp"), 8, "Drain sigil costs 2 MP, with +1 MP regen at minute 2");
+    assert_eq!(
+        state2.actor_stat("player", "mp"),
+        8,
+        "Drain sigil costs 2 MP, with +1 MP regen at minute 2"
+    );
 
     // MP regenerates over time on 2-minute tick intervals (+1 MP every 2 minutes)
     // Moving around advances time by 1 minute each step
@@ -743,21 +841,34 @@ fn trace_deducts_mp_and_recovers_over_time() {
 
     let _ = runtime2.run_turn("north").expect("move north"); // minute 3 -> 4 (interval crossed -> +1 MP)
     let s_t2 = runtime2.export_state().unwrap();
-    assert_eq!(s_t2.actor_stat("player", "mp"), 9, "MP recovered 1 point at minute 4");
+    assert_eq!(
+        s_t2.actor_stat("player", "mp"),
+        9,
+        "MP recovered 1 point at minute 4"
+    );
 
     // Insufficient MP check (fresh room without existing marks)
     let mut state_low_mp = cinder_core::engine::state::WorldState::new(&pack);
-    state_low_mp.actor_stats.entry("player".to_string()).or_default().insert("mp".to_string(), 0);
-    let runtime3 = cinder_core::engine::runtime::CinderRuntime::from_state(
-        pack.clone(),
-        state_low_mp,
-        false,
-    )
-    .expect("runtime3");
+    state_low_mp
+        .actor_stats
+        .entry("player".to_string())
+        .or_default()
+        .insert("mp".to_string(), 0);
+    let runtime3 =
+        cinder_core::engine::runtime::CinderRuntime::from_state(pack.clone(), state_low_mp, false)
+            .expect("runtime3");
     let outcome3 = runtime3.run_turn("trace charm-sigil").expect("turn runs");
-    assert!(outcome3.text().contains("You do not have enough magic"), "got: {}", outcome3.text());
+    assert!(
+        outcome3.text().contains("You do not have enough magic"),
+        "got: {}",
+        outcome3.text()
+    );
     let s_t3 = runtime3.export_state().unwrap();
-    assert_eq!(s_t3.actor_stat("player", "mp"), 0, "MP remains 0 on rejection");
+    assert_eq!(
+        s_t3.actor_stat("player", "mp"),
+        0,
+        "MP remains 0 on rejection"
+    );
 }
 
 #[test]
@@ -765,7 +876,8 @@ fn layla_shipped_pack_invariants_and_wiring() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     assert!(pack.maps.len() >= 4);
     assert_eq!(
-        pack.map_for_room("r1c1").map(|map| (map.id.as_str(), map.rooms.len())),
+        pack.map_for_room("r1c1")
+            .map(|map| (map.id.as_str(), map.rooms.len())),
         Some(("upper-works", 81))
     );
     assert_eq!(
@@ -777,7 +889,8 @@ fn layla_shipped_pack_invariants_and_wiring() {
         Some("outer-ring")
     );
     assert_eq!(
-        pack.map_for_room("village_square").map(|map| map.id.as_str()),
+        pack.map_for_room("village_square")
+            .map(|map| map.id.as_str()),
         Some("the-commoners")
     );
     assert_eq!(pack.settings.periodic_actor_effects.len(), 1);
@@ -800,21 +913,47 @@ fn layla_shipped_pack_invariants_and_wiring() {
     let handler = pack.actor("handler").unwrap();
     assert!(handler.room_id.is_empty(), "handler must be offstage");
     assert_eq!(
-        handler.initial_relationship.as_ref().map(|rel| (rel.stance, rel.follows_player)),
+        handler
+            .initial_relationship
+            .as_ref()
+            .map(|rel| (rel.stance, rel.follows_player)),
         Some((cinder_core::engine::state::ActorStance::Allied, false))
     );
     assert_eq!(pack.settings.feedback_channel_id.as_str(), "handler-comms");
-    assert_eq!(pack.message("item.acquired_inventory"), Some("Picked up {label}."));
-    assert_eq!(pack.message_voice("item.acquired_inventory"), cinder_core::content::types::PackMessageVoice::System);
-    assert_eq!(pack.message_voice("item.consumed_use"), cinder_core::content::types::PackMessageVoice::System);
-    assert_eq!(pack.message_voice("item.takedenied"), cinder_core::content::types::PackMessageVoice::Handler);
-    assert_eq!(pack.message_voice("combat.attack_hit"), cinder_core::content::types::PackMessageVoice::Narration);
     assert_eq!(
-        pack.settings.party.initial_orders.get("golem-dark-nw").cloned(),
+        pack.message("item.acquired_inventory"),
+        Some("Picked up {label}.")
+    );
+    assert_eq!(
+        pack.message_voice("item.acquired_inventory"),
+        cinder_core::content::types::PackMessageVoice::System
+    );
+    assert_eq!(
+        pack.message_voice("item.consumed_use"),
+        cinder_core::content::types::PackMessageVoice::System
+    );
+    assert_eq!(
+        pack.message_voice("item.takedenied"),
+        cinder_core::content::types::PackMessageVoice::Handler
+    );
+    assert_eq!(
+        pack.message_voice("combat.attack_hit"),
+        cinder_core::content::types::PackMessageVoice::Narration
+    );
+    assert_eq!(
+        pack.settings
+            .party
+            .initial_orders
+            .get("golem-dark-nw")
+            .cloned(),
         Some("follow".to_string())
     );
     assert_eq!(
-        pack.settings.party.initial_orders.get("golem-pale-ne").cloned(),
+        pack.settings
+            .party
+            .initial_orders
+            .get("golem-pale-ne")
+            .cloned(),
         Some("follow".to_string())
     );
     assert_eq!(pack.settings.party.combat_rules.len(), 4);
@@ -823,7 +962,8 @@ fn layla_shipped_pack_invariants_and_wiring() {
         cinder_core::content::types::PartyDecisionTier::Survival
     );
     assert_eq!(
-        pack.channel("handler-comms").map(|channel| channel.participants.as_slice()),
+        pack.channel("handler-comms")
+            .map(|channel| channel.participants.as_slice()),
         Some(&["player".to_string(), "handler".to_string()][..])
     );
     assert!(pack.opening.system_lines.is_empty());

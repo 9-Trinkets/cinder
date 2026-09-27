@@ -27,13 +27,13 @@ fn content_event_for_command(
         .as_ref()
         .map(|ce| ce.id.clone())
         .unwrap_or_else(|| action.id.clone());
-    WorldEvent::ContentEvent {
-        event_id,
-        payload,
-    }
+    WorldEvent::ContentEvent { event_id, payload }
 }
 
-fn first_actor_in_room(content: &ContentPack, context: &PlanningContext<'_>) -> Option<(String, String)> {
+fn first_actor_in_room(
+    content: &ContentPack,
+    context: &PlanningContext<'_>,
+) -> Option<(String, String)> {
     context
         .planner_state
         .actors(content)
@@ -53,14 +53,16 @@ fn craftable_matches_input(content: &ContentPack, craftable_id: &str, input_val:
     if craftable_id.eq_ignore_ascii_case(input_val) {
         return true;
     }
-    if let Some(item) = content.item(craftable_id) {
-        if item.label.eq_ignore_ascii_case(input_val) {
-            return true;
-        }
+    if let Some(item) = content.item(craftable_id)
+        && item.label.eq_ignore_ascii_case(input_val)
+    {
+        return true;
     }
     let input_lower = input_val.to_ascii_lowercase();
     let normalized = input_lower.replace(' ', "");
-    if craftable_id.replace('-', "").eq_ignore_ascii_case(&normalized)
+    if craftable_id
+        .replace('-', "")
+        .eq_ignore_ascii_case(&normalized)
         || craftable_id.to_ascii_lowercase().starts_with(&normalized)
     {
         return true;
@@ -200,15 +202,16 @@ pub(super) fn plan_content_command(
             item_id,
             to_item_storage(action.available.requires_item_storage.clone()),
             context.current_room_id,
-        ) {
-            let label = content.item_label(item_id);
-            planned.events.push(WorldEvent::ActionRejected {
-                message: content
-                    .render_message("error.missing_item", &[("label", label)])
-                    .unwrap_or_default(),
-            });
-            return false;
-        }
+        )
+    {
+        let label = content.item_label(item_id);
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content
+                .render_message("error.missing_item", &[("label", label)])
+                .unwrap_or_default(),
+        });
+        return false;
+    }
     if let Some(item_id) = &action.available.consumes_item {
         if !context.planner_state.has_item_in_storage(
             item_id,
@@ -327,66 +330,63 @@ pub(super) fn plan_content_command(
         });
         return false;
     }
-    if let Some(ref item_id) = created_item_id {
-        if let Some(item) = content.item(item_id) {
-            if let Some(max) = item.max_active_instances {
-                if !item.spawn_template_id.is_empty() {
-                    let active = context
-                        .planner_state
-                        .active_spawned_actor_count(content, &item.spawn_template_id);
-                    if active >= max {
-                        let template_name = content
-                            .actor(&item.spawn_template_id)
-                            .map(|a| a.name.as_str())
-                            .unwrap_or(&item.spawn_template_id);
-                        let msg_key = if !item.max_instances_message.is_empty() {
-                            &item.max_instances_message
-                        } else {
-                            "sigil.spawn_limit"
-                        };
-                        let max_str = max.to_string();
-                        let message = content
-                            .render_message(
-                                msg_key,
-                                &[
-                                    ("actor", template_name),
-                                    ("max", max_str.as_str()),
-                                ],
-                            )
-                            .unwrap_or_else(|| {
-                                format!("You cannot sustain more than {} active summons.", max)
-                            });
-                        planned.events.push(WorldEvent::ActionRejected { message });
-                        return false;
-                    }
-                }
+    if let Some(ref item_id) = created_item_id
+        && let Some(item) = content.item(item_id)
+    {
+        if let Some(max) = item.max_active_instances
+            && !item.spawn_template_id.is_empty()
+        {
+            let active = context
+                .planner_state
+                .active_spawned_actor_count(content, &item.spawn_template_id);
+            if active >= max {
+                let template_name = content
+                    .actor(&item.spawn_template_id)
+                    .map(|a| a.name.as_str())
+                    .unwrap_or(&item.spawn_template_id);
+                let msg_key = if !item.max_instances_message.is_empty() {
+                    &item.max_instances_message
+                } else {
+                    "sigil.spawn_limit"
+                };
+                let max_str = max.to_string();
+                let message = content
+                    .render_message(
+                        msg_key,
+                        &[("actor", template_name), ("max", max_str.as_str())],
+                    )
+                    .unwrap_or_else(|| {
+                        format!("You cannot sustain more than {} active summons.", max)
+                    });
+                planned.events.push(WorldEvent::ActionRejected { message });
+                return false;
             }
-            if item.mp_cost > 0 {
-                let current_mp = context
-                    .planner_state
-                    .actor_stat_u32(&content.settings.combat.player_actor_id, "mp");
-                if current_mp < item.mp_cost {
-                    let cost_str = item.mp_cost.to_string();
-                    let current_str = current_mp.to_string();
-                    let message = content
-                        .render_message(
-                            "magic.insufficient_mp",
-                            &[
-                                ("actor", content.opening.title.as_str()),
-                                ("item", content.item_label(item_id)),
-                                ("mp_cost", cost_str.as_str()),
-                                ("mp", current_str.as_str()),
-                            ],
+        }
+        if item.mp_cost > 0 {
+            let current_mp = context
+                .planner_state
+                .actor_stat_u32(&content.settings.combat.player_actor_id, "mp");
+            if current_mp < item.mp_cost {
+                let cost_str = item.mp_cost.to_string();
+                let current_str = current_mp.to_string();
+                let message = content
+                    .render_message(
+                        "magic.insufficient_mp",
+                        &[
+                            ("actor", content.opening.title.as_str()),
+                            ("item", content.item_label(item_id)),
+                            ("mp_cost", cost_str.as_str()),
+                            ("mp", current_str.as_str()),
+                        ],
+                    )
+                    .unwrap_or_else(|| {
+                        format!(
+                            "You do not have enough magic to trace that (needs {} MP, have {}).",
+                            item.mp_cost, current_mp
                         )
-                        .unwrap_or_else(|| {
-                            format!(
-                                "You do not have enough magic to trace that (needs {} MP, have {}).",
-                                item.mp_cost, current_mp
-                            )
-                        });
-                    planned.events.push(WorldEvent::ActionRejected { message });
-                    return false;
-                }
+                    });
+                planned.events.push(WorldEvent::ActionRejected { message });
+                return false;
             }
         }
     }
@@ -425,14 +425,14 @@ pub(super) fn plan_content_command(
     }
 
     if let Some(item_id) = created_item_id {
-        if let Some(item) = content.item(&item_id) {
-            if item.mp_cost > 0 {
-                planned.events.push(WorldEvent::ActorStatAdjusted {
-                    actor_id: content.settings.combat.player_actor_id.clone(),
-                    stat: "mp".to_string(),
-                    delta: -(item.mp_cost as i32),
-                });
-            }
+        if let Some(item) = content.item(&item_id)
+            && item.mp_cost > 0
+        {
+            planned.events.push(WorldEvent::ActorStatAdjusted {
+                actor_id: content.settings.combat.player_actor_id.clone(),
+                stat: "mp".to_string(),
+                delta: -(item.mp_cost as i32),
+            });
         }
         planned.events.push(WorldEvent::ItemAcquired {
             item_id,

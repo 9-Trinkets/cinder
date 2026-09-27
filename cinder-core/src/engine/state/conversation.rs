@@ -123,7 +123,10 @@ impl WorldState {
             .retain(|_, pending| pending.turn_number + 1 >= turn_number);
     }
 
-    pub(crate) fn conversation_key(first_participant_id: &str, second_participant_id: &str) -> String {
+    pub(crate) fn conversation_key(
+        first_participant_id: &str,
+        second_participant_id: &str,
+    ) -> String {
         if first_participant_id <= second_participant_id {
             format!("{first_participant_id}::{second_participant_id}")
         } else {

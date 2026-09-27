@@ -1,4 +1,4 @@
-use super::{items, PlayerCommand};
+use super::{PlayerCommand, items};
 use crate::content::types::{ActionDefinition, ActionVerbKind, ContentPack, PartyOrderKind};
 
 pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCommand {
@@ -59,7 +59,11 @@ fn parse_action_command(
     }
 
     if let Some((action, matched_phrase)) = best_player_action_match(content, trimmed, lower) {
-        return Some(action.verb_kind().resolve_command(&action.id, matched_phrase.remainder.as_deref()));
+        return Some(
+            action
+                .verb_kind()
+                .resolve_command(&action.id, matched_phrase.remainder.as_deref()),
+        );
     }
 
     // Fallback: match by action ID directly (used by web UI overflow actions)
@@ -71,7 +75,11 @@ fn parse_action_command(
 }
 
 impl ActionVerbKind {
-    pub(crate) fn resolve_command(&self, action_id: &str, remainder: Option<&str>) -> PlayerCommand {
+    pub(crate) fn resolve_command(
+        &self,
+        action_id: &str,
+        remainder: Option<&str>,
+    ) -> PlayerCommand {
         match self {
             ActionVerbKind::Take => VerbGrammar::parse_take(remainder),
             ActionVerbKind::Give => VerbGrammar::parse_give(remainder),
@@ -289,7 +297,11 @@ mod tests {
     fn test_pack_with_actions() -> ContentPack {
         let mut pack = minimal_test_pack();
         pack.actions = vec![
-            test_action("take", &["take", "pick up"], Some(CommandEffect::PickUpItem)),
+            test_action(
+                "take",
+                &["take", "pick up"],
+                Some(CommandEffect::PickUpItem),
+            ),
             test_action("give", &["give"], None),
             test_action("drop", &["drop"], Some(CommandEffect::DropItem)),
             test_action("equip", &["equip"], Some(CommandEffect::EquipItem)),

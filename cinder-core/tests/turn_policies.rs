@@ -52,16 +52,36 @@ fn equip_and_unequip_are_mutually_exclusive_in_the_bar() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = "lounge".to_string();
     state.add_item("chisel");
-    assert!(action_is_available(&pack, &state, equip, &state.current_room_id));
-    assert!(!action_is_available(&pack, &state, unequip, &state.current_room_id));
+    assert!(action_is_available(
+        &pack,
+        &state,
+        equip,
+        &state.current_room_id
+    ));
+    assert!(!action_is_available(
+        &pack,
+        &state,
+        unequip,
+        &state.current_room_id
+    ));
 
     // After equipping, only unequip is available.
     state.remove_item("chisel");
     state
         .equipment
         .insert("weapon".to_string(), "chisel".to_string());
-    assert!(!action_is_available(&pack, &state, equip, &state.current_room_id));
-    assert!(action_is_available(&pack, &state, unequip, &state.current_room_id));
+    assert!(!action_is_available(
+        &pack,
+        &state,
+        equip,
+        &state.current_room_id
+    ));
+    assert!(action_is_available(
+        &pack,
+        &state,
+        unequip,
+        &state.current_room_id
+    ));
 }
 
 /// A pack with one target-selection action per panel data source: `attack`
@@ -195,32 +215,87 @@ fn attack_hides_with_no_attackable_target() {
 
     // A living neutral actor is a valid target.
     let state = live_in_lounge(&pack);
-    assert!(action_is_available(&pack, &state, attack, &state.current_room_id));
+    assert!(action_is_available(
+        &pack,
+        &state,
+        attack,
+        &state.current_room_id
+    ));
 
     // Only a defeated actor present -> hidden.
     let mut state = live_in_lounge(&pack);
-    defeat(&pack, &mut state, "casey", &pack.settings.combat.health_stat_id);
-    defeat(&pack, &mut state, "blair", &pack.settings.combat.health_stat_id);
-    assert!(!action_is_available(&pack, &state, attack, &state.current_room_id));
+    defeat(
+        &pack,
+        &mut state,
+        "casey",
+        &pack.settings.combat.health_stat_id,
+    );
+    defeat(
+        &pack,
+        &mut state,
+        "blair",
+        &pack.settings.combat.health_stat_id,
+    );
+    assert!(!action_is_available(
+        &pack,
+        &state,
+        attack,
+        &state.current_room_id
+    ));
 
     // Only an ally present -> hidden.
     let mut state = live_in_lounge(&pack);
     state.set_stance("blair", ActorStance::Allied);
-    defeat(&pack, &mut state, "casey", &pack.settings.combat.health_stat_id);
-    assert!(!action_is_available(&pack, &state, attack, &state.current_room_id));
+    defeat(
+        &pack,
+        &mut state,
+        "casey",
+        &pack.settings.combat.health_stat_id,
+    );
+    assert!(!action_is_available(
+        &pack,
+        &state,
+        attack,
+        &state.current_room_id
+    ));
 
     // Only a follower (not Allied stance) present -> hidden.
     let mut state = live_in_lounge(&pack);
     state.set_follows_player("blair", true);
-    defeat(&pack, &mut state, "casey", &pack.settings.combat.health_stat_id);
-    assert!(!action_is_available(&pack, &state, attack, &state.current_room_id));
+    defeat(
+        &pack,
+        &mut state,
+        "casey",
+        &pack.settings.combat.health_stat_id,
+    );
+    assert!(!action_is_available(
+        &pack,
+        &state,
+        attack,
+        &state.current_room_id
+    ));
 
     // Only the player's own actor present -> hidden.
     let mut state = live_in_lounge(&pack);
-    defeat(&pack, &mut state, "blair", &pack.settings.combat.health_stat_id);
-    defeat(&pack, &mut state, "casey", &pack.settings.combat.health_stat_id);
+    defeat(
+        &pack,
+        &mut state,
+        "blair",
+        &pack.settings.combat.health_stat_id,
+    );
+    defeat(
+        &pack,
+        &mut state,
+        "casey",
+        &pack.settings.combat.health_stat_id,
+    );
     state.story_vars.set_unchecked("x", "y");
-    assert!(!action_is_available(&pack, &state, attack, &state.current_room_id));
+    assert!(!action_is_available(
+        &pack,
+        &state,
+        attack,
+        &state.current_room_id
+    ));
 }
 
 #[test]
@@ -229,8 +304,18 @@ fn speak_accepts_allies_as_talk_targets() {
     let speak = pack.action("speak").unwrap();
     let mut state = live_in_lounge(&pack);
     state.set_stance("casey", ActorStance::Allied);
-    defeat(&pack, &mut state, "blair", &pack.settings.combat.health_stat_id);
-    assert!(action_is_available(&pack, &state, speak, &state.current_room_id));
+    defeat(
+        &pack,
+        &mut state,
+        "blair",
+        &pack.settings.combat.health_stat_id,
+    );
+    assert!(action_is_available(
+        &pack,
+        &state,
+        speak,
+        &state.current_room_id
+    ));
 }
 
 #[test]
@@ -238,9 +323,24 @@ fn speak_hides_with_no_living_actor() {
     let pack = target_pack();
     let speak = pack.action("speak").unwrap();
     let mut state = live_in_lounge(&pack);
-    defeat(&pack, &mut state, "blair", &pack.settings.combat.health_stat_id);
-    defeat(&pack, &mut state, "casey", &pack.settings.combat.health_stat_id);
-    assert!(!action_is_available(&pack, &state, speak, &state.current_room_id));
+    defeat(
+        &pack,
+        &mut state,
+        "blair",
+        &pack.settings.combat.health_stat_id,
+    );
+    defeat(
+        &pack,
+        &mut state,
+        "casey",
+        &pack.settings.combat.health_stat_id,
+    );
+    assert!(!action_is_available(
+        &pack,
+        &state,
+        speak,
+        &state.current_room_id
+    ));
 }
 
 #[test]
@@ -250,32 +350,48 @@ fn trace_hides_when_no_craftable_unlocked() {
     let mut state = live_in_lounge(&pack);
     state.story_vars.set_unchecked("knows_drain", "false");
     // charm-sigil has no gate -> always unlocked -> trace stays visible.
-    assert!(action_is_available(&pack, &state, trace, &state.current_room_id));
+    assert!(action_is_available(
+        &pack,
+        &state,
+        trace,
+        &state.current_room_id
+    ));
     let room_id = state.current_room_id.clone();
     state.add_item_to_storage(
         "charm-sigil",
         cinder_core::content::types::ItemStorageTarget::CurrentRoom,
         &room_id,
     );
-    assert!(!action_is_available(&pack, &state, trace, &state.current_room_id));
+    assert!(!action_is_available(
+        &pack,
+        &state,
+        trace,
+        &state.current_room_id
+    ));
 
     // Unlocking a different mark makes trace available again in the same room.
     state.story_vars.set_unchecked("knows_drain", "true");
-    assert!(action_is_available(&pack, &state, trace, &state.current_room_id));
+    assert!(action_is_available(
+        &pack,
+        &state,
+        trace,
+        &state.current_room_id
+    ));
     state.add_item_to_storage(
         "drain-sigil",
         cinder_core::content::types::ItemStorageTarget::CurrentRoom,
         &room_id,
     );
-    assert!(!action_is_available(&pack, &state, trace, &state.current_room_id));
+    assert!(!action_is_available(
+        &pack,
+        &state,
+        trace,
+        &state.current_room_id
+    ));
 
     // Gate every craftable behind a falsy story var.
     let mut pack = target_pack();
-    let trace = pack
-        .actions
-        .iter_mut()
-        .find(|a| a.id == "trace")
-        .unwrap();
+    let trace = pack.actions.iter_mut().find(|a| a.id == "trace").unwrap();
     if let Some(ic) = &mut trace.item_creation {
         ic.craftable_item_gates
             .insert("charm-sigil".to_string(), "locked".to_string());
@@ -283,12 +399,22 @@ fn trace_hides_when_no_craftable_unlocked() {
     rebuild_test_pack_indexes(&mut pack);
     let trace = pack.action("trace").unwrap();
     let state = live_in_lounge(&pack);
-    assert!(!action_is_available(&pack, &state, trace, &state.current_room_id));
+    assert!(!action_is_available(
+        &pack,
+        &state,
+        trace,
+        &state.current_room_id
+    ));
 
     // Unlock one -> available again.
     let mut state = state;
     state.story_vars.set_unchecked("locked", "true");
-    assert!(action_is_available(&pack, &state, trace, &state.current_room_id));
+    assert!(action_is_available(
+        &pack,
+        &state,
+        trace,
+        &state.current_room_id
+    ));
 }
 
 #[test]
@@ -299,8 +425,18 @@ fn informational_panels_are_never_hidden_for_emptiness() {
     let state = live_in_lounge(&pack);
     // The lounge has no features and only kitchen as an exit, but look/move
     // are informational and must remain available.
-    assert!(action_is_available(&pack, &state, look, &state.current_room_id));
-    assert!(action_is_available(&pack, &state, move_, &state.current_room_id));
+    assert!(action_is_available(
+        &pack,
+        &state,
+        look,
+        &state.current_room_id
+    ));
+    assert!(action_is_available(
+        &pack,
+        &state,
+        move_,
+        &state.current_room_id
+    ));
     assert!(action_is_available(&pack, &state, move_, "kitchen"));
 }
 
@@ -316,25 +452,35 @@ fn requires_actor_in_room_flag_is_removed() {
 #[test]
 fn action_requiring_item_hides_when_item_not_in_inventory() {
     let mut pack = target_pack();
-    let trace = pack
-        .actions
-        .iter_mut()
-        .find(|a| a.id == "trace")
-        .unwrap();
+    let trace = pack.actions.iter_mut().find(|a| a.id == "trace").unwrap();
     trace.available.requires_item = Some("magic-chalk".to_string());
     rebuild_test_pack_indexes(&mut pack);
     let trace = pack.action("trace").unwrap();
     let mut state = live_in_lounge(&pack);
 
     // Player doesn't have magic-chalk -> action is hidden.
-    assert!(!action_is_available(&pack, &state, trace, &state.current_room_id));
+    assert!(!action_is_available(
+        &pack,
+        &state,
+        trace,
+        &state.current_room_id
+    ));
 
     // Player acquires magic-chalk -> action is available.
     state.add_item("magic-chalk");
-    assert!(action_is_available(&pack, &state, trace, &state.current_room_id));
+    assert!(action_is_available(
+        &pack,
+        &state,
+        trace,
+        &state.current_room_id
+    ));
 
     // Player loses magic-chalk (e.g. given away or dropped) -> action is hidden again.
     state.remove_item("magic-chalk");
-    assert!(!action_is_available(&pack, &state, trace, &state.current_room_id));
+    assert!(!action_is_available(
+        &pack,
+        &state,
+        trace,
+        &state.current_room_id
+    ));
 }
-

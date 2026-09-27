@@ -1,7 +1,7 @@
-use crate::engine::reducer::beat_advance::advance_objective_for_signal;
-use crate::engine::reducer::command_effects::{trigger_placement_hooks, trigger_surrounded_hooks};
 use crate::content::types::{ContentPack, ItemStorageTarget, PackMessageVoice};
 use crate::engine::narrative::NarrativeLines;
+use crate::engine::reducer::beat_advance::advance_objective_for_signal;
+use crate::engine::reducer::command_effects::{trigger_placement_hooks, trigger_surrounded_hooks};
 use crate::engine::state::WorldState;
 
 use super::feedback::{push_message, push_rendered_message};
@@ -46,21 +46,22 @@ pub(crate) fn handle_item_acquired(
             {
                 push_rendered_message(lines, content, line, voice);
             }
-            if item_id == "teleport-sigil" && room_id != "teleport_platform" {
-                if let Some(evicted_room) = state.add_chalk_anchor(&room_id) {
-                    state.remove_item_from_storage(
-                        "teleport-sigil",
-                        ItemStorageTarget::CurrentRoom,
-                        &evicted_room,
-                    );
-                    let evicted_title = content
-                        .room(&evicted_room)
-                        .map(|r| r.title.as_str())
-                        .unwrap_or(&evicted_room);
-                    lines.narration(format!(
-                        "The chalk anchor in {evicted_title} fades away as you draw a new one."
-                    ));
-                }
+            if item_id == "teleport-sigil"
+                && room_id != "teleport_platform"
+                && let Some(evicted_room) = state.add_chalk_anchor(&room_id)
+            {
+                state.remove_item_from_storage(
+                    "teleport-sigil",
+                    ItemStorageTarget::CurrentRoom,
+                    &evicted_room,
+                );
+                let evicted_title = content
+                    .room(&evicted_room)
+                    .map(|r| r.title.as_str())
+                    .unwrap_or(&evicted_room);
+                lines.narration(format!(
+                    "The chalk anchor in {evicted_title} fades away as you draw a new one."
+                ));
             }
             // An item appearing in a room can complete a surround or trigger placement.
             trigger_surrounded_hooks(state, content, item_id, &room_id, lines);
@@ -93,7 +94,10 @@ pub(crate) fn handle_player_took_item(
 ) {
     let room_id = state.current_room_id.clone();
     let label = content.item_label(item_id);
-    if content.item(item_id).is_some_and(|item| !item.is_takeable()) {
+    if content
+        .item(item_id)
+        .is_some_and(|item| !item.is_takeable())
+    {
         push_message(lines, content, "item.takedenied", &[("label", label)]);
         return;
     }
@@ -123,7 +127,10 @@ pub(crate) fn handle_player_dropped_item(
 ) {
     let room_id = state.current_room_id.clone();
     let label = content.item_label(item_id);
-    if content.item(item_id).is_some_and(|item| !item.is_takeable()) {
+    if content
+        .item(item_id)
+        .is_some_and(|item| !item.is_takeable())
+    {
         push_message(lines, content, "item.takedenied", &[("label", label)]);
         return;
     }

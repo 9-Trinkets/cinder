@@ -7,11 +7,11 @@ pub(crate) mod shared;
 
 pub(crate) use super::PanelOptionData;
 
+#[cfg(test)]
+pub(super) use action_bar::build_action_bar_and_take;
 pub(super) use action_bar::{
     build_action_bar_items, build_drop_panel_options, build_use_panel_options,
 };
-#[cfg(test)]
-pub(super) use action_bar::build_action_bar_and_take;
 pub(super) use equipment::build_equipment_panel_options;
 pub(super) use options::build_panel_options;
 pub(super) use overflow::build_overflow_actions;

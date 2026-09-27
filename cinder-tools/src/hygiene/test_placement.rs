@@ -36,10 +36,9 @@ fn scan_src_dir(root: &Path, current: &Path, out: &mut Vec<PathBuf>) {
             } else if !SKIP_PATH_PARTS.contains(&name) {
                 scan_src_dir(root, &path, out);
             }
-        } else if path.is_file()
-            && name == "tests.rs" {
-                let rel = path.strip_prefix(root).unwrap_or(&path).to_path_buf();
-                out.push(rel);
-            }
+        } else if path.is_file() && name == "tests.rs" {
+            let rel = path.strip_prefix(root).unwrap_or(&path).to_path_buf();
+            out.push(rel);
+        }
     }
 }

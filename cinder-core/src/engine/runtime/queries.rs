@@ -374,4 +374,3 @@ mod tests {
         assert_eq!(objectives[1].summary, "Locate the steam prison cage");
     }
 }
-

@@ -33,10 +33,7 @@ impl CinderRuntime {
             });
         }
         let outcome = match self.run_actor_turns() {
-            Ok((phase, lines)) => TurnOutcome {
-                phase,
-                lines,
-            },
+            Ok((phase, lines)) => TurnOutcome { phase, lines },
             Err(error) => {
                 if let Some(actor_tick_error) = error.downcast_ref::<ActorTickError>() {
                     eprintln!("[cinder] actor tick error: {}", actor_tick_error.message);
@@ -62,7 +59,9 @@ impl CinderRuntime {
                 if !ended_text.is_empty() {
                     outcome
                         .lines
-                        .push(crate::engine::narrative::NarrativeLine::narration(ended_text.clone()));
+                        .push(crate::engine::narrative::NarrativeLine::narration(
+                            ended_text.clone(),
+                        ));
                 }
             }
             GamePhase::Active => {}
@@ -92,10 +91,8 @@ impl CinderRuntime {
         let mut peek_state = state.clone();
         peek_state.turn_number += 1;
 
-        let scope_room_ids = crate::engine::actor_tick::tick_scope_room_ids(
-            self.content.as_ref(),
-            &peek_state,
-        );
+        let scope_room_ids =
+            crate::engine::actor_tick::tick_scope_room_ids(self.content.as_ref(), &peek_state);
         let speaker_id = crate::engine::actor_tick::peek_conversational_speaker(
             self.content.as_ref(),
             &peek_state,

@@ -349,4 +349,3 @@ fn handle_chalk_anchor_consumed(state: &mut WorldState, room_id: &str) {
         room_id,
     );
 }
-

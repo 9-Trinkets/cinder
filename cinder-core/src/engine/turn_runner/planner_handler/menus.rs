@@ -1,10 +1,10 @@
-use crate::engine::turn_runner::types::PlannedTurn;
 use crate::content::types::ContentPack;
 use crate::engine::events::WorldEvent;
 use crate::engine::menus::{
     build_menu_choice_events, resolve_menu_choice, resolve_menu_choice_in_options,
 };
 use crate::engine::state::{WorldState, render_dynamic_story_text};
+use crate::engine::turn_runner::types::PlannedTurn;
 
 /// Resolves a raw input line against an open menu (or an objective stage's
 /// menu). Handles multi-select "done"/"toggle:" words and option resolution,
@@ -25,7 +25,10 @@ pub(super) fn try_resolve_menu_choice(
             {
                 return Some((
                     vec![WorldEvent::ActionRejected {
-                        message: render_dynamic_story_text(&menu.invalid_choice_text, planner_state),
+                        message: render_dynamic_story_text(
+                            &menu.invalid_choice_text,
+                            planner_state,
+                        ),
                     }],
                     false,
                 ));
@@ -119,11 +122,9 @@ pub(super) fn plan_unknown_command(
         return false;
     }
     let raw = raw_input.trim();
-    if let Some(exit) = content.resolve_exit_for(
-        &planner_state.current_room_id,
-        raw,
-        |key| crate::engine::turn_policies::story_var_is_truthy(planner_state, key),
-    ) {
+    if let Some(exit) = content.resolve_exit_for(&planner_state.current_room_id, raw, |key| {
+        crate::engine::turn_policies::story_var_is_truthy(planner_state, key)
+    }) {
         planned.events.push(WorldEvent::PlayerMoved {
             from_room_id: planner_state.current_room_id.clone(),
             to_room_id: exit.room_id.clone(),

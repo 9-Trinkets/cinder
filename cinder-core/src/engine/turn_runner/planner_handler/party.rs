@@ -1,7 +1,7 @@
-use crate::engine::turn_runner::types::PlannedTurn;
 use crate::content::types::{ContentPack, PartyOrderKind};
 use crate::engine::events::WorldEvent;
 use crate::engine::state::{ActorStance, WorldState};
+use crate::engine::turn_runner::types::PlannedTurn;
 
 use super::items::matching_items;
 use crate::content::types::ActorDefinition;
@@ -315,11 +315,15 @@ pub(super) fn plan_follow_command(
     planned: &mut PlannedTurn,
 ) -> bool {
     let Some(target) = target.map(str::trim).filter(|s| !s.is_empty()) else {
-        planned.events.push(WorldEvent::PlayerFollowedActor { actor_id: None });
+        planned
+            .events
+            .push(WorldEvent::PlayerFollowedActor { actor_id: None });
         return false;
     };
     if target.eq_ignore_ascii_case("none") || target.eq_ignore_ascii_case("nobody") {
-        planned.events.push(WorldEvent::PlayerFollowedActor { actor_id: None });
+        planned
+            .events
+            .push(WorldEvent::PlayerFollowedActor { actor_id: None });
         return false;
     }
     let matched_actor = planner_state

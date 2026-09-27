@@ -27,55 +27,47 @@ impl ActorTickRoleRunner {
             .map_err(|_| "failed to lock state for actor turn build actions".to_string())?;
         if !self.content.settings.autonomous_actor_dialogue {
             let events =
-                run_actor_turn(self.content.clone(), &state, &actor, &rules)
-                    .map_err(|error| {
-                        let current_room_id = state
-                            .actor_room_id(&actor.id, &actor.room_id);
-                        let _ = self.emit_trace(
-                            "npc_actor_turn",
-                            "workflow.error",
-                            serde_json::json!({
-                                "actor_id": actor.id,
-                                "actor_name": actor.name,
-                                "current_room_id": current_room_id,
-                                "message": error.to_string(),
-                            }),
-                        );
-                        error.to_string()
-                    })?;
+                run_actor_turn(self.content.clone(), &state, &actor, &rules).map_err(|error| {
+                    let current_room_id = state.actor_room_id(&actor.id, &actor.room_id);
+                    let _ = self.emit_trace(
+                        "npc_actor_turn",
+                        "workflow.error",
+                        serde_json::json!({
+                            "actor_id": actor.id,
+                            "actor_name": actor.name,
+                            "current_room_id": current_room_id,
+                            "message": error.to_string(),
+                        }),
+                    );
+                    error.to_string()
+                })?;
             drop(state);
             envelope.actor_turn_stage = ActorTurnStageEnvelope::Realized { actor_id, events };
             return route_tick_workflow("npc_actor_turn_apply", &envelope);
         }
-        let current_room_id = state
-            .actor_room_id(&actor.id, &actor.room_id)
-            .to_string();
-        if required_movement_target_room_id(&state, &rules, &current_room_id)
-            .is_some()
-        {
+        let current_room_id = state.actor_room_id(&actor.id, &actor.room_id).to_string();
+        if required_movement_target_room_id(&state, &rules, &current_room_id).is_some() {
             let events =
-                run_actor_turn(self.content.clone(), &state, &actor, &rules)
-                    .map_err(|error| {
-                        let _ = self.emit_trace(
-                            "npc_actor_turn",
-                            "workflow.error",
-                            serde_json::json!({
-                                "actor_id": actor.id,
-                                "actor_name": actor.name,
-                                "current_room_id": current_room_id,
-                                "message": error.to_string(),
-                            }),
-                        );
-                        error.to_string()
-                    })?;
+                run_actor_turn(self.content.clone(), &state, &actor, &rules).map_err(|error| {
+                    let _ = self.emit_trace(
+                        "npc_actor_turn",
+                        "workflow.error",
+                        serde_json::json!({
+                            "actor_id": actor.id,
+                            "actor_name": actor.name,
+                            "current_room_id": current_room_id,
+                            "message": error.to_string(),
+                        }),
+                    );
+                    error.to_string()
+                })?;
             drop(state);
             envelope.actor_turn_stage = ActorTurnStageEnvelope::Realized { actor_id, events };
             return route_tick_workflow("npc_actor_turn_apply", &envelope);
         }
-        let _ = build_actor_turn(self.content.clone(), &state, &actor, &rules)
-            .map_err(|error| {
-                let current_room_id = state
-                    .actor_room_id(&actor.id, &actor.room_id);
+        let _ =
+            build_actor_turn(self.content.clone(), &state, &actor, &rules).map_err(|error| {
+                let current_room_id = state.actor_room_id(&actor.id, &actor.room_id);
                 let _ = self.emit_trace(
                     "npc_actor_turn",
                     "workflow.error",
@@ -100,18 +92,16 @@ impl ActorTickRoleRunner {
         let actor_id = envelope.current_actor_id.clone().ok_or_else(|| {
             "npc_actor_turn_decide_action is missing current_actor_id".to_string()
         })?;
-        let stage_actor_id = match std::mem::replace(
-            &mut envelope.actor_turn_stage,
-            ActorTurnStageEnvelope::Idle,
-        ) {
-            ActorTurnStageEnvelope::Built { actor_id } => actor_id,
-            _ => {
-                return Err(
-                    "npc_actor_turn_decide_action expected built actor turn stage envelope"
-                        .to_string(),
-                );
-            }
-        };
+        let stage_actor_id =
+            match std::mem::replace(&mut envelope.actor_turn_stage, ActorTurnStageEnvelope::Idle) {
+                ActorTurnStageEnvelope::Built { actor_id } => actor_id,
+                _ => {
+                    return Err(
+                        "npc_actor_turn_decide_action expected built actor turn stage envelope"
+                            .to_string(),
+                    );
+                }
+            };
         if stage_actor_id != actor_id {
             return Err(format!(
                 "npc_actor_turn_decide_action stage actor mismatch '{stage_actor_id}' != '{actor_id}'"
@@ -158,18 +148,16 @@ impl ActorTickRoleRunner {
         let actor_id = envelope.current_actor_id.clone().ok_or_else(|| {
             "npc_actor_turn_write_dialogue is missing current_actor_id".to_string()
         })?;
-        let (stage_actor_id, decision) = match std::mem::replace(
-            &mut envelope.actor_turn_stage,
-            ActorTurnStageEnvelope::Idle,
-        ) {
-            ActorTurnStageEnvelope::Decided { actor_id, decision } => (actor_id, decision),
-            _ => {
-                return Err(
-                    "npc_actor_turn_write_dialogue expected decided actor turn stage envelope"
-                        .to_string(),
-                );
-            }
-        };
+        let (stage_actor_id, decision) =
+            match std::mem::replace(&mut envelope.actor_turn_stage, ActorTurnStageEnvelope::Idle) {
+                ActorTurnStageEnvelope::Decided { actor_id, decision } => (actor_id, decision),
+                _ => {
+                    return Err(
+                        "npc_actor_turn_write_dialogue expected decided actor turn stage envelope"
+                            .to_string(),
+                    );
+                }
+            };
         if stage_actor_id != actor_id {
             return Err(format!(
                 "npc_actor_turn_write_dialogue stage actor mismatch '{stage_actor_id}' != '{actor_id}'"
@@ -200,8 +188,7 @@ impl ActorTickRoleRunner {
             &mut emit_trace,
         )
         .map_err(|error| {
-            let current_room_id = state
-                .actor_room_id(&actor.id, &actor.room_id);
+            let current_room_id = state.actor_room_id(&actor.id, &actor.room_id);
             let _ = emit_trace(
                 "npc_actor_turn",
                 "workflow.error",
@@ -227,17 +214,16 @@ impl ActorTickRoleRunner {
             .current_actor_id
             .clone()
             .ok_or_else(|| "npc_actor_turn_apply is missing current_actor_id".to_string())?;
-        let (stage_actor_id, events) = match std::mem::replace(
-            &mut envelope.actor_turn_stage,
-            ActorTurnStageEnvelope::Idle,
-        ) {
-            ActorTurnStageEnvelope::Realized { actor_id, events } => (actor_id, events),
-            _ => {
-                return Err(
-                    "npc_actor_turn_apply expected realized actor turn stage envelope".to_string(),
-                );
-            }
-        };
+        let (stage_actor_id, events) =
+            match std::mem::replace(&mut envelope.actor_turn_stage, ActorTurnStageEnvelope::Idle) {
+                ActorTurnStageEnvelope::Realized { actor_id, events } => (actor_id, events),
+                _ => {
+                    return Err(
+                        "npc_actor_turn_apply expected realized actor turn stage envelope"
+                            .to_string(),
+                    );
+                }
+            };
         if stage_actor_id != actor_id {
             return Err(format!(
                 "npc_actor_turn_apply stage actor mismatch '{stage_actor_id}' != '{actor_id}'"

@@ -136,8 +136,12 @@ fn ordering_distant_follower_to_guard_recalls_them_to_player_room() {
     let pack = party_order_pack();
     let mut state = allied_party_state(&pack);
     // Put Blair in another room and give patrol order
-    state.actor_room_overrides.insert(ACTOR_B_ID.to_string(), "distant-room".to_string());
-    state.party_orders.insert(ACTOR_B_ID.to_string(), "patrol".to_string());
+    state
+        .actor_room_overrides
+        .insert(ACTOR_B_ID.to_string(), "distant-room".to_string());
+    state
+        .party_orders
+        .insert(ACTOR_B_ID.to_string(), "patrol".to_string());
     state.set_follows_player(ACTOR_B_ID, false);
 
     assert_ne!(
@@ -174,8 +178,12 @@ fn ordering_distant_follower_to_guard_recalls_them_to_player_room() {
 fn ordering_distant_follower_to_follow_recalls_them_to_player_room() {
     let pack = party_order_pack();
     let mut state = allied_party_state(&pack);
-    state.actor_room_overrides.insert(ACTOR_B_ID.to_string(), "distant-room".to_string());
-    state.party_orders.insert(ACTOR_B_ID.to_string(), "patrol".to_string());
+    state
+        .actor_room_overrides
+        .insert(ACTOR_B_ID.to_string(), "distant-room".to_string());
+    state
+        .party_orders
+        .insert(ACTOR_B_ID.to_string(), "patrol".to_string());
     state.set_follows_player(ACTOR_B_ID, false);
 
     let output = apply_events(
@@ -206,8 +214,12 @@ fn ordering_distant_follower_to_follow_recalls_them_to_player_room() {
 fn ordering_distant_follower_to_patrol_does_not_recall_them() {
     let pack = party_order_pack();
     let mut state = allied_party_state(&pack);
-    state.actor_room_overrides.insert(ACTOR_B_ID.to_string(), "distant-room".to_string());
-    state.party_orders.insert(ACTOR_B_ID.to_string(), "guard".to_string());
+    state
+        .actor_room_overrides
+        .insert(ACTOR_B_ID.to_string(), "distant-room".to_string());
+    state
+        .party_orders
+        .insert(ACTOR_B_ID.to_string(), "guard".to_string());
     state.set_follows_player(ACTOR_B_ID, false);
 
     let output = apply_events(

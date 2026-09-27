@@ -25,7 +25,6 @@ use self::sidebar::{
     build_player_status,
 };
 
-
 pub(super) fn build_ui_snapshot(
     runtime: &CinderRuntime,
     pack_id: &str,
@@ -92,9 +91,13 @@ pub(super) fn build_ui_snapshot(
 
     let (action_bar_actions, take_panel_options, give_panel_options) =
         build_action_bar_items(content, &state, &party);
-    let use_panel_options = build_use_panel_options(content, &state);
-    let drop_panel_options = build_drop_panel_options(content, &state);
-    let equipment_panel_options = build_equipment_panel_options(content, &state);
+    let panels = PanelOptionGroups {
+        take: take_panel_options,
+        use_item: build_use_panel_options(content, &state),
+        give: give_panel_options,
+        drop: build_drop_panel_options(content, &state),
+        equipment: build_equipment_panel_options(content, &state),
+    };
     let look_options = build_look_options(runtime)?;
     let talk_options = build_talk_options(runtime)?;
     let active_menu = build_active_menu(runtime)?;
@@ -104,27 +107,8 @@ pub(super) fn build_ui_snapshot(
         .iter()
         .map(|action| action.id.as_str())
         .collect();
-    let overflow_actions = build_overflow_actions(
-        runtime,
-        content,
-        &state,
-        &bar_ids,
-        &take_panel_options,
-        &use_panel_options,
-        &give_panel_options,
-        &drop_panel_options,
-        &equipment_panel_options,
-    )?;
-    let mut panel_options = build_panel_options(
-        runtime,
-        content,
-        &state,
-        take_panel_options,
-        use_panel_options,
-        give_panel_options,
-        drop_panel_options,
-        equipment_panel_options,
-    )?;
+    let overflow_actions = build_overflow_actions(runtime, content, &state, &bar_ids, &panels)?;
+    let mut panel_options = build_panel_options(runtime, content, &state, panels)?;
     panel_options.extend(sidebar::build_party_order_panels(content, &party));
 
     Ok(UiSnapshot {

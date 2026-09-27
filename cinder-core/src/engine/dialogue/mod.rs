@@ -1,7 +1,7 @@
 mod parsing;
 mod prompts;
-mod synapse;
 pub mod scripted;
+mod synapse;
 pub mod types;
 
 pub use types::*;
@@ -12,13 +12,13 @@ pub use scripted::ScriptedDialogueGenerator;
 
 use crate::content::types::SpeechIntentLabel;
 
+pub(crate) use self::prompts::build_actor_turn_affordance_option;
 use self::prompts::{
     actor_turn_decider_system_prompt, build_actor_turn_action_prompt,
     build_conversation_memory_summary_prompt, build_direct_speech_intent_prompt,
     build_hostility_plan_prompt, build_menu_intent_prompt, build_scene_brief_dialogue_prompt,
     dialogue_system_prompt,
 };
-pub(crate) use self::prompts::build_actor_turn_affordance_option;
 
 pub fn render_scene_dialogue_prompt(request: &DialogueRequest) -> String {
     build_scene_brief_dialogue_prompt(request)

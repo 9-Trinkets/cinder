@@ -6,8 +6,8 @@ use crate::engine::hook_ids;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::neuron::evaluate_symbolic_value;
 use crate::engine::state::WorldState;
-use serde::de::DeserializeOwned;
 use serde::Deserialize;
+use serde::de::DeserializeOwned;
 use serde_json::{Value, json};
 const ROOM_CANDIDATE_SCORE_HOOK: &str = "npc.room_candidate_score";
 

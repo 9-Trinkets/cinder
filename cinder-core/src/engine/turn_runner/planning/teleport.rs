@@ -5,7 +5,7 @@ use crate::engine::state::WorldState;
 use crate::engine::turn_runner::PlannedTurn;
 
 fn resolve_permanent_anchor(state: &WorldState, target: &str) -> Option<&'static str> {
-    let perm_floor4 = state.story_vars.get("anchor_floor4_platform") == Some(&"true".to_string());
+    let perm_floor4 = state.story_vars.get("anchor_floor4_platform") == Some("true");
     if perm_floor4
         && matches!(
             target,
@@ -15,7 +15,7 @@ fn resolve_permanent_anchor(state: &WorldState, target: &str) -> Option<&'static
         return Some("teleport_platform");
     }
 
-    let perm_floor5 = state.story_vars.get("anchor_floor5_gate") == Some(&"true".to_string());
+    let perm_floor5 = state.story_vars.get("anchor_floor5_gate") == Some("true");
     if perm_floor5
         && matches!(
             target,
@@ -52,6 +52,19 @@ fn resolve_chalk_anchor<'a>(
     })
 }
 
+/// Resolves a teleport target to its destination room id plus whether that
+/// destination is a permanent platform rather than a temporary chalk anchor.
+fn resolve_teleport_anchor<'a>(
+    content: &'a ContentPack,
+    state: &'a WorldState,
+    target: &str,
+) -> Option<(&'a str, bool)> {
+    if let Some(room_id) = resolve_permanent_anchor(state, target) {
+        return Some((room_id, true));
+    }
+    resolve_chalk_anchor(content, state, target).map(|room_id| (room_id, false))
+}
+
 pub(super) fn plan_teleport_command(
     content: &ContentPack,
     action: &ActionDefinition,
@@ -60,7 +73,7 @@ pub(super) fn plan_teleport_command(
     planned: &mut PlannedTurn,
 ) -> bool {
     let state = context.planner_state;
-    if state.story_vars.get("knows_teleport") != Some(&"true".to_string()) {
+    if state.story_vars.get("knows_teleport") != Some("true") {
         planned.events.push(WorldEvent::ActionRejected {
             message: "You have not learned how to teleport yet.".to_string(),
         });
@@ -76,26 +89,23 @@ pub(super) fn plan_teleport_command(
 
     let Some(raw_target) = input.map(str::trim).filter(|s| !s.is_empty()) else {
         planned.events.push(WorldEvent::ActionRejected {
-            message: "Specify an anchor to teleport to. (e.g. teleport teleport_platform)".to_string(),
+            message: "Specify an anchor to teleport to. (e.g. teleport teleport_platform)"
+                .to_string(),
         });
         return false;
     };
 
     let target_lower = raw_target.to_ascii_lowercase();
 
-    let (dest_room_id, is_permanent) =
-        if let Some(room_id) = resolve_permanent_anchor(state, &target_lower) {
-            (room_id, true)
-        } else if let Some(room_id) = resolve_chalk_anchor(content, state, &target_lower) {
-            (room_id, false)
-        } else {
-            planned.events.push(WorldEvent::ActionRejected {
-                message: format!(
-                    "Unknown anchor '{raw_target}'. Open your Teleport panel to view available anchors."
-                ),
-            });
-            return false;
-        };
+    let Some(anchor) = resolve_teleport_anchor(content, state, &target_lower) else {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: format!(
+                "Unknown anchor '{raw_target}'. Open your Teleport panel to view available anchors."
+            ),
+        });
+        return false;
+    };
+    let (dest_room_id, is_permanent) = anchor;
 
     if dest_room_id == context.current_room_id {
         planned.events.push(WorldEvent::ActionRejected {

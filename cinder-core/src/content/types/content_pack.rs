@@ -91,7 +91,10 @@ impl ContentPack {
 
             let matches_candidate = |cand: &str| {
                 let cand_lower = cand.to_ascii_lowercase();
-                let cand_without_the = cand_lower.strip_prefix("the ").unwrap_or(&cand_lower).trim();
+                let cand_without_the = cand_lower
+                    .strip_prefix("the ")
+                    .unwrap_or(&cand_lower)
+                    .trim();
                 let cand_without_to = cand_lower.strip_prefix("to ").unwrap_or(&cand_lower).trim();
                 let cand_without_to_the = cand_without_to
                     .strip_prefix("the ")
@@ -202,7 +205,8 @@ impl ContentPack {
     }
 
     pub fn player_action_enabled(&self, action_id: &str) -> bool {
-        self.action(action_id).is_some_and(|action| action.player_enabled)
+        self.action(action_id)
+            .is_some_and(|action| action.player_enabled)
     }
 
     /// Whether player item transfers (taking items) are declaratively enabled

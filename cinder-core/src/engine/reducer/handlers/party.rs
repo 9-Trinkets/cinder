@@ -121,7 +121,10 @@ pub(crate) fn handle_item_transferred(
 
         if is_equippable {
             auto_equipped = true;
-            let actor_equipment = state.actor_equipment.entry(to_actor_id.to_string()).or_default();
+            let actor_equipment = state
+                .actor_equipment
+                .entry(to_actor_id.to_string())
+                .or_default();
             let replaced: std::collections::BTreeSet<String> = item
                 .occupied_slots()
                 .iter()
@@ -156,9 +159,10 @@ pub(crate) fn handle_item_transferred(
                         "item_label": item.label,
                     }),
                     lines,
-                ) {
-                    eprintln!("[cinder] hook warning ({}): {error}", item.equip_hook);
-                }
+                )
+            {
+                eprintln!("[cinder] hook warning ({}): {error}", item.equip_hook);
+            }
         } else {
             state.actor_add_item(to_actor_id, item_id);
         }
@@ -168,13 +172,19 @@ pub(crate) fn handle_item_transferred(
     if content.is_player_actor(from_actor_id) {
         let to_name = actor_display_name(state, content, to_actor_id);
         let give_msg = content
-            .render_message("party.give_success", &[("actor", &to_name), ("item", item_label)])
+            .render_message(
+                "party.give_success",
+                &[("actor", &to_name), ("item", item_label)],
+            )
             .unwrap_or_else(|| format!("You give the {item_label} to {to_name}."));
         lines.narration(give_msg);
 
         if auto_equipped {
             let equip_msg = content
-                .render_message("party.give_auto_equipped", &[("actor", &to_name), ("item", item_label)])
+                .render_message(
+                    "party.give_auto_equipped",
+                    &[("actor", &to_name), ("item", item_label)],
+                )
                 .unwrap_or_else(|| format!("{to_name} equips the {item_label}."));
             lines.narration(equip_msg);
         }
@@ -186,12 +196,18 @@ pub(crate) fn handle_item_transferred(
 
         if is_player_take {
             let take_msg = content
-                .render_message("party.take_success", &[("actor", &from_name), ("item", item_label)])
+                .render_message(
+                    "party.take_success",
+                    &[("actor", &from_name), ("item", item_label)],
+                )
                 .unwrap_or_else(|| format!("You take the {item_label} from {from_name}."));
             lines.narration(take_msg);
         } else {
             let gift_msg = content
-                .render_message("party.npc_give_player", &[("actor", &from_name), ("item", item_label)])
+                .render_message(
+                    "party.npc_give_player",
+                    &[("actor", &from_name), ("item", item_label)],
+                )
                 .unwrap_or_else(|| format!("{from_name} gives you the {item_label}."));
             lines.narration(gift_msg);
         }

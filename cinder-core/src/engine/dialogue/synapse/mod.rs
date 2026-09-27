@@ -11,6 +11,7 @@ use serde_json::json;
 use std::sync::mpsc;
 use std::time::Duration;
 
+use super::DialogueGenerator;
 use super::parsing::{
     ActorTurnActionParseContext, parse_actor_turn_action, parse_direct_speech_intent_label,
     parse_hostility_plan, parse_menu_intent_label,
@@ -18,15 +19,12 @@ use super::parsing::{
 use super::prompts::{
     actor_turn_decider_system_prompt, build_chapter_relationship_summary_prompt,
     build_chapter_script_summary_prompt, build_stage_assignment_prompt,
-    build_transition_commentary_prompt,
-    chapter_relationship_summarizer_system_prompt,
+    build_transition_commentary_prompt, chapter_relationship_summarizer_system_prompt,
     chapter_script_summarizer_system_prompt, conversation_memory_summarizer_system_prompt,
-    dialogue_system_prompt, direct_speech_intent_system_prompt,
-    hostility_planner_system_prompt, menu_intent_system_prompt, sanitize_statement,
-    transition_commentary_system_prompt,
+    dialogue_system_prompt, direct_speech_intent_system_prompt, hostility_planner_system_prompt,
+    menu_intent_system_prompt, sanitize_statement, transition_commentary_system_prompt,
 };
 use super::types::*;
-use super::DialogueGenerator;
 
 const ACTOR_DIALOGUE_ROLE: &str = "actor_dialogue";
 const MENU_INTENT_CLARIFIER_ROLE: &str = "menu_intent_clarifier";
@@ -511,4 +509,3 @@ mod tests {
         assert_eq!(messages[0], "Just a single snarky sentence.");
     }
 }
-

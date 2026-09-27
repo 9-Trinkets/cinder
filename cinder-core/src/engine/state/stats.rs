@@ -173,7 +173,9 @@ impl WorldState {
         if actor_id == "player" {
             self.equipped_item(slot_id)
         } else {
-            self.actor_equipment(actor_id).get(slot_id).map(String::as_str)
+            self.actor_equipment(actor_id)
+                .get(slot_id)
+                .map(String::as_str)
         }
     }
 
@@ -313,8 +315,10 @@ impl WorldState {
             // it. Clamping positive deltas against the declared content max
             // lets a heal or regen overshoot the value displayed as max, so cap it at
             // the actor's natural maximum instead.
-            adjusted
-                .clamp(definition.min.unwrap_or(i32::MIN), self.actor_stat_maximum(content, &actor_id, stat_key))
+            adjusted.clamp(
+                definition.min.unwrap_or(i32::MIN),
+                self.actor_stat_maximum(content, &actor_id, stat_key),
+            )
         } else {
             definition.clamp(adjusted)
         };

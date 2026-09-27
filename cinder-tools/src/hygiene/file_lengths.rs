@@ -3,7 +3,15 @@ use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
 
 const SOURCE_EXTS: &[&str] = &[".rs", ".ts", ".tsx", ".js", ".jsx", ".go", ".py"];
-const SKIP_DIRS: &[&str] = &["target", "node_modules", ".git", "dist", "build", ".vercel", "data"];
+const SKIP_DIRS: &[&str] = &[
+    "target",
+    "node_modules",
+    ".git",
+    "dist",
+    "build",
+    ".vercel",
+    "data",
+];
 
 pub struct FileLengthWarning {
     pub path: PathBuf,
@@ -33,13 +41,14 @@ fn scan_dir(root: &Path, current: &Path, limit: usize, out: &mut Vec<FileLengthW
         } else if let Some(ext) = path.extension().and_then(|e| e.to_str()) {
             let dotted = format!(".{ext}");
             if SOURCE_EXTS.contains(&dotted.as_str())
-                && let Ok(file) = fs::File::open(&path) {
-                    let lines = BufReader::new(file).lines().count();
-                    if lines > limit {
-                        let rel = path.strip_prefix(root).unwrap_or(&path).to_path_buf();
-                        out.push(FileLengthWarning { path: rel, lines });
-                    }
+                && let Ok(file) = fs::File::open(&path)
+            {
+                let lines = BufReader::new(file).lines().count();
+                if lines > limit {
+                    let rel = path.strip_prefix(root).unwrap_or(&path).to_path_buf();
+                    out.push(FileLengthWarning { path: rel, lines });
                 }
+            }
         }
     }
 }

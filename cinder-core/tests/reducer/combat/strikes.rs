@@ -105,7 +105,9 @@ fn hostile_strike_respects_defender_resistance() {
     };
     pack.messages.insert(
         "combat.hostile_strike".to_string(),
-        PackMessage::Narration("{actor} strikes you for {damage} ({remaining} remaining).".to_string()),
+        PackMessage::Narration(
+            "{actor} strikes you for {damage} ({remaining} remaining).".to_string(),
+        ),
     );
     pack.messages.insert(
         "combat.no_effect".to_string(),
@@ -187,10 +189,7 @@ fn hostile_strike_intercepted_by_guard_takes_at_least_minimum_damage() {
     // The guard soaks the entire blow against its own defense: defense 3 would
     // theoretically zero it out, but the minimum-damage floor still applies.
     let mut guard = test_actor("bodyguard", "golem bodyguard", LOUNGE_ID);
-    guard.initial_stats = BTreeMap::from([
-        ("stamina".to_string(), 10),
-        ("hunger".to_string(), 3),
-    ]);
+    guard.initial_stats = BTreeMap::from([("stamina".to_string(), 10), ("hunger".to_string(), 3)]);
     pack.actors.push(guard);
     rebuild_test_pack_indexes(&mut pack);
 

@@ -2,10 +2,9 @@ use super::DialogueGenerator;
 use super::types::{
     ActorTurnActionDecision, ActorTurnActionRequest, ConversationMemorySummaryRequest,
     DialogueRequest, DirectSpeechIntentDecision, DirectSpeechIntentRequest,
-    DynamicMenuOptionOutput, DynamicMenuRequest, HostilityPlanDecision,
-    HostilityPlanRequest, MenuIntentDecision, MenuIntentRequest,
-    PerspectiveReview, PerspectiveReviewRequest, StageAssignment,
-    StageAssignmentRequest, TransitionCommentaryRequest,
+    DynamicMenuOptionOutput, DynamicMenuRequest, HostilityPlanDecision, HostilityPlanRequest,
+    MenuIntentDecision, MenuIntentRequest, PerspectiveReview, PerspectiveReviewRequest,
+    StageAssignment, StageAssignmentRequest, TransitionCommentaryRequest,
 };
 use crate::content::types::SpeechIntentLabel;
 use std::collections::BTreeMap;
@@ -99,11 +98,7 @@ impl ScriptedDialogueGenerator {
         self
     }
 
-    pub fn with_transition_commentary_lines(
-        mut self,
-        room_id: &str,
-        lines: Vec<String>,
-    ) -> Self {
+    pub fn with_transition_commentary_lines(mut self, room_id: &str, lines: Vec<String>) -> Self {
         self.transition_commentaries
             .insert(room_id.to_string(), lines);
         self
@@ -251,7 +246,10 @@ impl DialogueGenerator for ScriptedDialogueGenerator {
         if let Ok(mut reqs) = self.transition_requests.lock() {
             reqs.push(request.clone());
         }
-        if let Some(reply) = self.transition_commentaries.get(&request.destination_room_id) {
+        if let Some(reply) = self
+            .transition_commentaries
+            .get(&request.destination_room_id)
+        {
             Ok(reply.clone())
         } else {
             Ok(vec![request.fallback_text.clone()])

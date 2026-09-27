@@ -1,7 +1,9 @@
-use super::*;
+use super::super::PanelOptionGroups;
+use super::super::PartyMember;
 use super::action_bar::takeable_loose_items;
 use super::options::craftable_item_panel_options;
 use super::overflow::overflow_action_title;
+use super::*;
 use cinder_core::content::types::{
     ActionAvailability, ActionDefinition, ActionItemCreation, ActionUi, ItemDefinition,
     ItemStorageTarget,
@@ -10,7 +12,6 @@ use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 use cinder_core::engine::test_fixtures::{minimal_test_pack, rebuild_test_pack_indexes};
 use std::collections::BTreeMap;
-use super::super::PartyMember;
 
 #[test]
 fn bar_shows_actions_that_are_bar_only_even_when_not_typed_command() {
@@ -179,8 +180,17 @@ fn equipment_panel_lists_each_equipped_item_once_and_held_gear_separately() {
     );
 
     let runtime = CinderRuntime::new(content.clone(), false).unwrap();
-    let overflow =
-        build_overflow_actions(&runtime, &content, &state, &[], &[], &[], &[], &[], &options).unwrap();
+    let overflow = build_overflow_actions(
+        &runtime,
+        &content,
+        &state,
+        &[],
+        &PanelOptionGroups {
+            equipment: options,
+            ..Default::default()
+        },
+    )
+    .unwrap();
     assert_eq!(
         overflow
             .iter()
@@ -231,18 +241,18 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
         &content,
         &state,
         &[],
-        &[],
-        &[],
-        &give_opts_no_party,
-        &drop_opts,
-        &[],
+        &PanelOptionGroups {
+            give: give_opts_no_party,
+            drop: drop_opts.clone(),
+            ..Default::default()
+        },
     )
     .unwrap();
     assert!(!overflow_no_party.iter().any(|a| a.id == "give"));
 
     // Case 2: Party exists + item exists -> Give appears in overflow directly above drop
     let (bar_with_party, _, give_opts) =
-        build_action_bar_items(&content, &state, &[party_member.clone()]);
+        build_action_bar_items(&content, &state, std::slice::from_ref(&party_member));
     assert!(!bar_with_party.iter().any(|a| a.id == "give"));
     assert_eq!(give_opts.len(), 1);
     assert_eq!(give_opts[0].command.as_deref(), Some("give potion to zayd"));
@@ -252,11 +262,11 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
         &content,
         &state,
         &[],
-        &[],
-        &[],
-        &give_opts,
-        &drop_opts,
-        &[],
+        &PanelOptionGroups {
+            give: give_opts,
+            drop: drop_opts,
+            ..Default::default()
+        },
     )
     .unwrap();
     let give_idx = overflow_with_party.iter().position(|a| a.id == "give");
@@ -270,7 +280,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
     // Case 3: Party exists but no items in inventory -> No give
     let empty_state = WorldState::new(&content);
     let (bar_no_items, _, give_opts_no_items) =
-        build_action_bar_items(&content, &empty_state, &[party_member.clone()]);
+        build_action_bar_items(&content, &empty_state, std::slice::from_ref(&party_member));
     assert!(!bar_no_items.iter().any(|a| a.id == "give"));
     assert!(give_opts_no_items.is_empty());
     let empty_drop_opts = build_drop_panel_options(&content, &empty_state);
@@ -279,11 +289,11 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
         &content,
         &empty_state,
         &[],
-        &[],
-        &[],
-        &give_opts_no_items,
-        &empty_drop_opts,
-        &[],
+        &PanelOptionGroups {
+            give: give_opts_no_items,
+            drop: empty_drop_opts,
+            ..Default::default()
+        },
     )
     .unwrap();
     assert!(!overflow_no_items.iter().any(|a| a.id == "give"));
@@ -301,8 +311,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
         inventory: vec![],
         in_room: true,
     };
-    let (_, _, multi_opts) =
-        build_action_bar_items(&content, &state, &[party_member, bess]);
+    let (_, _, multi_opts) = build_action_bar_items(&content, &state, &[party_member, bess]);
     assert_eq!(multi_opts.len(), 1);
     assert_eq!(multi_opts[0].id, "potion");
     assert_eq!(multi_opts[0].command, None);
@@ -339,7 +348,10 @@ fn take_surfaces_in_overflow_items_group_when_companion_has_items_even_without_r
     let (bar, take_opts, _) = build_action_bar_items(&content, &state, &[party_member]);
     assert!(!bar.iter().any(|a| a.id == "take"));
     assert_eq!(take_opts.len(), 1);
-    assert_eq!(take_opts[0].command.as_deref(), Some("take torch from zayd"));
+    assert_eq!(
+        take_opts[0].command.as_deref(),
+        Some("take torch from zayd")
+    );
     assert_eq!(take_opts[0].subtitle.as_deref(), Some("From Zayd"));
 
     let runtime = CinderRuntime::new(content.clone(), false).unwrap();
@@ -348,11 +360,10 @@ fn take_surfaces_in_overflow_items_group_when_companion_has_items_even_without_r
         &content,
         &state,
         &[],
-        &take_opts,
-        &[],
-        &[],
-        &[],
-        &[],
+        &PanelOptionGroups {
+            take: take_opts,
+            ..Default::default()
+        },
     )
     .unwrap();
     let take_action = overflow.iter().find(|a| a.id == "take");
@@ -399,8 +410,7 @@ fn items_section_orders_take_give_drop() {
         in_room: true,
     };
 
-    let (bar, take_opts, give_opts) =
-        build_action_bar_items(&content, &state, &[party_member]);
+    let (bar, take_opts, give_opts) = build_action_bar_items(&content, &state, &[party_member]);
     assert!(!bar.iter().any(|a| a.id == "take" || a.id == "give"));
 
     let use_opts = vec![PanelOptionData {
@@ -418,11 +428,13 @@ fn items_section_orders_take_give_drop() {
         &content,
         &state,
         &[],
-        &take_opts,
-        &use_opts,
-        &give_opts,
-        &drop_opts,
-        &[],
+        &PanelOptionGroups {
+            take: take_opts,
+            use_item: use_opts,
+            give: give_opts,
+            drop: drop_opts,
+            ..Default::default()
+        },
     )
     .unwrap();
 
@@ -475,8 +487,7 @@ fn take_and_give_exclude_party_members_not_in_current_room() {
         in_room: false,
     };
 
-    let (_, take_opts, give_opts) =
-        build_action_bar_items(&content, &state, &[distant_member]);
+    let (_, take_opts, give_opts) = build_action_bar_items(&content, &state, &[distant_member]);
 
     // Distant member is not in the room: cannot take their torch, cannot give them potion
     assert!(take_opts.is_empty());

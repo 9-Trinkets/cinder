@@ -1,10 +1,8 @@
 use super::types::{PlannedTurn, RouteEnvelope};
 use crate::content::types::ContentPack;
-use crate::engine::dialogue::{
-    DialogueGenerator, DirectSpeechIntentRequest,
-};
-use crate::engine::events::apply_speech_intent_effects;
+use crate::engine::dialogue::{DialogueGenerator, DirectSpeechIntentRequest};
 use crate::engine::events::WorldEvent;
+use crate::engine::events::apply_speech_intent_effects;
 use crate::engine::messaging::ChannelMessage;
 
 pub(super) fn handle_actor_dialogue(

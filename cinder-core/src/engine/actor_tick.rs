@@ -74,7 +74,10 @@ impl fmt::Display for ActorTickError {
 
 impl Error for ActorTickError {}
 
-pub(crate) fn tick_scope_room_ids(content: &ContentPack, state: &WorldState) -> Option<BTreeSet<String>> {
+pub(crate) fn tick_scope_room_ids(
+    content: &ContentPack,
+    state: &WorldState,
+) -> Option<BTreeSet<String>> {
     match content.settings.actor_tick_scope {
         ActorTickScope::CurrentBoard => Some(content.reachable_room_ids(&state.current_room_id)),
         ActorTickScope::AllRooms => None,

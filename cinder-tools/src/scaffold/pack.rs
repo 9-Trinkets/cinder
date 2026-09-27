@@ -31,7 +31,10 @@ pub fn scaffold_pack(content_dir: &Path, pack_name: &str) -> std::io::Result<()>
 
     fs::write(pack_path.join("actions.json"), "{\n  \"actions\": []\n}\n")?;
     fs::write(pack_path.join("beats.json"), "{\n  \"stages\": []\n}\n")?;
-    fs::write(pack_path.join("beat_objectives.json"), "{\n  \"objectives\": []\n}\n")?;
+    fs::write(
+        pack_path.join("beat_objectives.json"),
+        "{\n  \"objectives\": []\n}\n",
+    )?;
     fs::write(pack_path.join("hooks.json"), "{\n  \"rules\": {}\n}\n")?;
     fs::write(pack_path.join("items.json"), "[]\n")?;
 

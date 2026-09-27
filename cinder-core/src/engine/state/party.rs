@@ -9,7 +9,9 @@ impl WorldState {
             .cloned()
             .or_else(|| content.settings.party.initial_orders.get(actor_id).cloned())
             .or_else(|| {
-                if self.stance(actor_id) == ActorStance::Allied && !content.is_player_actor(actor_id) {
+                if self.stance(actor_id) == ActorStance::Allied
+                    && !content.is_player_actor(actor_id)
+                {
                     Some("follow".to_string())
                 } else {
                     None
@@ -127,9 +129,11 @@ mod tests {
         state
             .actor_room_overrides
             .insert("blair".to_string(), "kitchen".to_string());
-        assert!(state
-            .assign_party_order(&content, "blair", "follow".to_string())
-            .is_ok());
+        assert!(
+            state
+                .assign_party_order(&content, "blair", "follow".to_string())
+                .is_ok()
+        );
     }
 
     #[test]
@@ -158,10 +162,7 @@ mod tests {
 
         // initialize_party_order seeds follow into state
         state.initialize_party_order(&content, "blair");
-        assert_eq!(
-            state.party_orders.get("blair"),
-            Some(&"follow".to_string())
-        );
+        assert_eq!(state.party_orders.get("blair"), Some(&"follow".to_string()));
         assert!(state.follows_player("blair"));
     }
 }

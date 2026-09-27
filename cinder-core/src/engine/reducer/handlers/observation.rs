@@ -1,10 +1,10 @@
+use crate::content::types::ContentPack;
+use crate::engine::events::ObservationMode;
+use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
 use crate::engine::reducer::observation::{
     render_feature_consumables_line, render_room_observation, render_story_text,
 };
-use crate::content::types::ContentPack;
-use crate::engine::events::ObservationMode;
-use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::WorldState;
 
 pub(crate) fn handle_current_room_observed(
