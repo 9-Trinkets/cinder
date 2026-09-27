@@ -93,6 +93,8 @@ pub struct ActorDefinition {
     #[serde(default)]
     pub act_cast: Option<ActorActCast>,
     #[serde(default)]
+    pub awakening: Option<ActorAwakening>,
+    #[serde(default)]
     pub game_data: BTreeMap<String, String>,
 }
 
@@ -137,4 +139,26 @@ pub struct ActorActCast {
     pub return_blurb: String,
     #[serde(default)]
     pub metadata: BTreeMap<String, String>,
+}
+
+/// Awakening definition for a follower or piece whose true self can be
+/// awakened when their Wisdom reaches a threshold (default 10).
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ActorAwakening {
+    #[serde(default)]
+    pub name: String,
+    #[serde(default)]
+    pub who: String,
+    #[serde(default)]
+    pub fragment: String,
+    #[serde(default)]
+    pub inspect_text: Option<String>,
+    #[serde(default)]
+    pub prompt_context: Option<ActorPromptContext>,
+    #[serde(default = "default_awakening_wisdom")]
+    pub required_wisdom: i32,
+}
+
+fn default_awakening_wisdom() -> i32 {
+    10
 }

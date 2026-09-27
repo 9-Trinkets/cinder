@@ -220,6 +220,10 @@ pub(crate) fn handle_item_transferred(
         }
     }
 
+    if auto_equipped {
+        super::super::awakening::check_follower_awakening(state, content, to_actor_id, lines);
+    }
+
     // 4. Signals
     lines.extend_narration(advance_objective_for_signal(
         state,

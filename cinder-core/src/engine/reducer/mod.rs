@@ -1,4 +1,5 @@
 mod actor_commands;
+pub mod awakening;
 pub(crate) mod beat_advance;
 mod combat;
 mod command_effects;

@@ -54,8 +54,9 @@ pub use actor_tick_defs::*;
 
 mod world_defs;
 pub use world_defs::{
-    ActorDefinition, ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition,
-    ActorPromptContext, BeatObjectiveAffordancePriorityDefinition, BeatObjectiveAffordanceTarget,
+    ActorAwakening, ActorDefinition, ActorMovementRulesDefinition,
+    ActorMovementTargetRuleDefinition, ActorPromptContext,
+    BeatObjectiveAffordancePriorityDefinition, BeatObjectiveAffordanceTarget,
     BeatObjectiveCompletionDefinition, BeatObjectiveCompletionTrigger,
     BeatObjectiveConditionalGuidanceDefinition, BeatObjectiveDefinition,
     BeatObjectiveGuidanceDefinition, BeatObjectiveProgressDefinition,

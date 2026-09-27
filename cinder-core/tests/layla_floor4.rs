@@ -223,11 +223,11 @@ fn floor4_actors_and_interactions_validate() {
     let harun = pack.actor("priest_harun").expect("harun exists");
     assert_eq!(harun.room_id, "command_bastion");
 
-    // Sakhra remains offstage until awakening storyline
+    // Sakhra is placed in village_square for the awakening storyline
     let sakhra = pack.actor("sakhra").expect("sakhra exists");
-    assert!(
-        sakhra.room_id.is_empty(),
-        "sakhra should be offstage initially"
+    assert_eq!(
+        sakhra.room_id, "village_square",
+        "sakhra should be placed in village_square"
     );
 }
 

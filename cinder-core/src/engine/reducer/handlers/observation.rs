@@ -57,7 +57,15 @@ pub(crate) fn handle_actor_observed(
     lines: &mut NarrativeLines,
 ) {
     if let Some(actor) = content.actor(actor_id) {
-        lines.narration(render_story_text(&actor.inspect_text, state));
+        let inspect = if state.is_actor_awakened(actor_id)
+            && let Some(awakening) = &actor.awakening
+            && let Some(awakened_inspect) = &awakening.inspect_text
+        {
+            awakened_inspect.as_str()
+        } else {
+            actor.inspect_text.as_str()
+        };
+        lines.narration(render_story_text(inspect, state));
     } else {
         lines.narration(content.presentation.error_text.actor_unknown.clone());
     }

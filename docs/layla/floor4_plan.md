@@ -219,9 +219,16 @@ With multi-member parties, players can assign specialized tactical roles:
   - Escorting Zayd back to `village_square` triggers safe arrival hook in `player.moved` (gated on `zayd_safe` `not_exists`): sets `zayd_safe = "true"`, converts Zayd back to static village ally (`follows_player = false`), awards `zayd-lantern` to Layla's inventory, narrates the reunion with Yasmin, and completes side quest `sq_return_zayd`.
   - Added `WorldHookEffect::AcquireItem` engine effect to cinder-core and wired `SetStoryVar` to emit beat advancement signals.
   - Verified via full end-to-end integration test `floor4_zayd_rescue_and_village_escort`.
+- **Follower Awakening Mechanic (Party Wisdom & True Names):**
+  - Added `ActorAwakening` model and `awakening` property to `ActorDefinition`.
+  - Added `awakened_actors` and `actor_name_overrides` tracking to `WorldState`, dynamic name override in `actor_display_name` and `display_actor_name`, and awakened inspect text and prompt context overrides.
+  - Authored awakening definitions across surviving Floor 1-3 pieces: `sakhra` (Jamil, father of Zayd), `golem-dark-nw` (Orin), `golem-pale-ne` (Mari), `golem-dark-sw` (Ferid), `golem-pale-se` (Hana), and `elf-queen-4` (Nazira, mother of Zayd).
+  - Placed `sakhra` in `village_square` as an ally. Giving `zayd-lantern` (+6 WIS) raises his wisdom to 11 (≥ 10), triggering the Awakening: Sakhra remembers his identity as Jamil, breaking out of his mind-wipe with his waking fragment, unlocking human speech and guidance, and following Layla as a free ally.
+  - Linked `sq_return_zayd` to the new side quest beat `sq_awaken_father` ("Return the Light").
+  - Enforced hard limits: `goblin-shaman` and `elf-king-5` cannot awaken.
+  - Verified via full end-to-end integration test `cinder-core/tests/layla_floor4_awakening.rs`.
 
 **To build (next passes):**
 1. Bastion & Command encounters: Commander Malik safe interaction/defeat and Priest Harun encounter to acquire `teleport-scroll`;
 2. Central Teleport Platform activation: Tracing `teleport-sigil` on `teleport_platform` to activate the steam gate and open the exit down to Floor 5;
-3. Quest line beat objectives (`beat_objectives.json`) and progression verification;
-4. Awakening runtime: WIS ≥ 10 name change + speech unlock (engine/UI follow-up; stat is real today, the threshold behavior comes with the content above).
+3. Quest line beat objectives (`beat_objectives.json`) and progression verification.

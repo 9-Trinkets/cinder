@@ -133,6 +133,9 @@ pub fn advance_to_next_act(
 }
 
 pub fn display_actor_name(state: &WorldState, actor: &ActorDefinition) -> String {
+    if let Some(name) = state.actor_name_overrides.get(&actor.id) {
+        return name.clone();
+    }
     if is_current_cast_member_reference(state, &actor.id)
         && let Some(name) = state.story_vars.get(ACT_CAST_NAME_VAR)
     {
@@ -146,6 +149,29 @@ pub fn resolved_actor_prompt_context(
     state: &WorldState,
     actor: &ActorDefinition,
 ) -> ActorPromptContext {
+    if state.is_actor_awakened(&actor.id)
+        && let Some(awakening) = &actor.awakening
+    {
+        if let Some(prompt_context) = &awakening.prompt_context {
+            return prompt_context.clone();
+        }
+        let mut base = actor.prompt_context.clone();
+        base.character_notes.push(format!(
+            "You have awakened and remembered who you are: {}, {}.",
+            awakening.name, awakening.who
+        ));
+        if !awakening.fragment.is_empty() {
+            base.subtext_notes.push(format!(
+                "Your true memory has returned. Fragment: '{}'",
+                awakening.fragment
+            ));
+        }
+        base.response_notes.push(
+            "You can speak freely in human language. Speak with your true voice and share your memories and guidance with the party."
+                .to_string(),
+        );
+        return base;
+    }
     if !is_current_cast_member_reference(state, &actor.id) {
         return actor.prompt_context.clone();
     }

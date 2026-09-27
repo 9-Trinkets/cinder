@@ -12,7 +12,7 @@ mod rooms;
 mod speech;
 mod stats;
 
-pub use actor_defs::{ActorDefinition, ActorPromptContext};
+pub use actor_defs::{ActorAwakening, ActorDefinition, ActorPromptContext};
 pub use beat_objectives::{
     BeatObjectiveAffordancePriorityDefinition, BeatObjectiveAffordanceTarget,
     BeatObjectiveCompletionDefinition, BeatObjectiveCompletionTrigger,

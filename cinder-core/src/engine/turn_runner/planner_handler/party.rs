@@ -27,6 +27,9 @@ pub(super) fn find_party_member<'a>(
         .filter(|actor| {
             actor.id.eq_ignore_ascii_case(reference)
                 || actor.name.eq_ignore_ascii_case(reference)
+                || planner_state
+                    .actor_display_name(content, &actor.id)
+                    .is_some_and(|name| name.eq_ignore_ascii_case(reference))
                 || actor
                     .aliases
                     .iter()
@@ -60,6 +63,9 @@ pub(super) fn find_any_party_member<'a>(
         .filter(|actor| {
             actor.id.eq_ignore_ascii_case(reference)
                 || actor.name.eq_ignore_ascii_case(reference)
+                || planner_state
+                    .actor_display_name(content, &actor.id)
+                    .is_some_and(|name| name.eq_ignore_ascii_case(reference))
                 || actor
                     .aliases
                     .iter()
@@ -332,6 +338,9 @@ pub(super) fn plan_follow_command(
         .find(|actor| {
             actor.id.eq_ignore_ascii_case(target)
                 || actor.name.eq_ignore_ascii_case(target)
+                || planner_state
+                    .actor_display_name(content, &actor.id)
+                    .is_some_and(|name| name.eq_ignore_ascii_case(target))
                 || actor
                     .aliases
                     .iter()

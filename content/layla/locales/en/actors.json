@@ -57,6 +57,12 @@
       "intelligence": 1,
       "wisdom": 4
     },
+    "awakening": {
+      "name": "Orin",
+      "who": "Stonecutter who helped build the first guard rooms",
+      "fragment": "I remember the rings. I was ringing the stone before they rang me.",
+      "inspect_text": "Orin, once a dark golem. His stone eyes are clear and observant, the hands of a skilled mason remembering the chisel and mallet. He stands upright with quiet dignity."
+    },
     "aliases": [
       "golem",
       "dark golem",
@@ -102,6 +108,12 @@
       "strength": 2,
       "intelligence": 1,
       "wisdom": 4
+    },
+    "awakening": {
+      "name": "Mari",
+      "who": "Millwright who kept the ore mill turning",
+      "fragment": "The mill... is it still standing? I left a plate loose on the brace.",
+      "inspect_text": "Mari, once a pale golem. The smooth river stone of her limbs moves with the fluid, mechanical precision of a veteran millwright. Her eyes are bright and observant."
     },
     "aliases": [
       "golem",
@@ -208,6 +220,12 @@
       "intelligence": 1,
       "wisdom": 4
     },
+    "awakening": {
+      "name": "Ferid",
+      "who": "Miner who worked the deepest shaft, swallowed first",
+      "fragment": "They came down here and put the dark in my chest. It's quieter now.",
+      "inspect_text": "Ferid, once a dark golem. The heavy stone of his shoulders carries the memory of iron picks and dark tunnels. His gaze is quiet, patient, and deeply grounded."
+    },
     "aliases": [
       "golem",
       "dark golem",
@@ -253,6 +271,12 @@
       "strength": 2,
       "intelligence": 1,
       "wisdom": 4
+    },
+    "awakening": {
+      "name": "Hana",
+      "who": "Weaver of the village's first cloth",
+      "fragment": "I was counting threads. They Counted me instead.",
+      "inspect_text": "Hana, once a pale golem. The smooth contours of her stone frame move with graceful, deliberate care, like fingers working a loom. Her eyes hold warmth and recognition."
     },
     "aliases": [
       "golem",
@@ -508,6 +532,11 @@
       "intelligence": 3,
       "wisdom": 7
     },
+    "awakening": {
+      "name": "Ays",
+      "who": "Stoker's girl who ran hot coal buckets",
+      "fragment": "I was small and fast. They made me fast where it hurt."
+    },
     "prompt_context": {},
     "level": 3,
     "drops": {
@@ -549,6 +578,11 @@
       "defense": 1,
       "intelligence": 3,
       "wisdom": 7
+    },
+    "awakening": {
+      "name": "Barak",
+      "who": "Apprentice machinist, never off the steam drill",
+      "fragment": "Hiss and ping and clank — I know that drum. That's a boiler, not a heart."
     },
     "prompt_context": {},
     "level": 3,
@@ -592,6 +626,11 @@
       "intelligence": 3,
       "wisdom": 7
     },
+    "awakening": {
+      "name": "Dunya",
+      "who": "Seed keeper of the mushroom beds",
+      "fragment": "I used to know which dark grows grass. This dark grows orders."
+    },
     "prompt_context": {},
     "level": 3,
     "drops": {
@@ -633,6 +672,11 @@
       "defense": 1,
       "intelligence": 3,
       "wisdom": 7
+    },
+    "awakening": {
+      "name": "Qamar",
+      "who": "Night watch, the one who saw them take the first wagon",
+      "fragment": "I saw it. I saw the loading — and they put a spear in my hand for seeing."
     },
     "prompt_context": {},
     "level": 3,
@@ -676,6 +720,11 @@
       "intelligence": 3,
       "wisdom": 7
     },
+    "awakening": {
+      "name": "Sari",
+      "who": "Cook's child who carried flatbread to the works",
+      "fragment": "Warm bread. That's the sharpest memory I've got left, and it's worth more than this."
+    },
     "prompt_context": {},
     "level": 3,
     "drops": {
@@ -717,6 +766,11 @@
       "defense": 1,
       "intelligence": 3,
       "wisdom": 7
+    },
+    "awakening": {
+      "name": "Nadim",
+      "who": "Gear-oiler, knew every joint by its squeal",
+      "fragment": "They oiled nothing. Of course I remember — a dry joint shrieks."
     },
     "prompt_context": {},
     "level": 3,
@@ -760,6 +814,11 @@
       "intelligence": 3,
       "wisdom": 7
     },
+    "awakening": {
+      "name": "Rima",
+      "who": "Basket weaver who made the village's laundry lines",
+      "fragment": "I can still weave. Give me reeds, I'll grow you a way out of this."
+    },
     "prompt_context": {},
     "level": 3,
     "drops": {
@@ -801,6 +860,11 @@
       "defense": 1,
       "intelligence": 3,
       "wisdom": 7
+    },
+    "awakening": {
+      "name": "Yusuf",
+      "who": "Sand-hauler at the sorting plant",
+      "fragment": "Sand. All that sand, and I never once found the bottom of it."
     },
     "prompt_context": {},
     "level": 3,
@@ -844,6 +908,11 @@
       "intelligence": 4,
       "wisdom": 8
     },
+    "awakening": {
+      "name": "Farhan",
+      "who": "Quarry boss, the one who first refused the priests",
+      "fragment": "I refused. That's when they built the walls around me. Walls can be walked around."
+    },
     "prompt_context": {},
     "level": 5,
     "drops": {
@@ -885,6 +954,11 @@
       "defense": 2,
       "intelligence": 4,
       "wisdom": 8
+    },
+    "awakening": {
+      "name": "Aziz",
+      "who": "Messenger rider who outran the summons once too often",
+      "fragment": "I can still run the gaps. Pacen your steps and the board forgets you."
     },
     "prompt_context": {},
     "level": 4,
@@ -928,6 +1002,11 @@
       "intelligence": 4,
       "wisdom": 8
     },
+    "awakening": {
+      "name": "Istawa",
+      "who": "Temple caller who saw the truth behind the Rite and was silenced",
+      "fragment": "I called. They rewired my calling into a weapon. I can call again."
+    },
     "prompt_context": {},
     "level": 4,
     "drops": {
@@ -969,6 +1048,12 @@
       "defense": 3,
       "intelligence": 6,
       "wisdom": 9
+    },
+    "awakening": {
+      "name": "Nazira",
+      "who": "Miner's wife, mother of Zayd, the village's sharpest eye",
+      "fragment": "I keep looking for the face I lost. A boy. He called me something. Will you say it so I can keep it?",
+      "inspect_text": "Nazira, once the elf queen. Her fierce commander's stance has softened into the searching, loving eyes of a mother who has broken through the machine's mind-wipe. She watches with acute, protective intelligence."
     },
     "prompt_context": {},
     "level": 6,
@@ -1033,6 +1118,11 @@
       "intelligence": 4,
       "wisdom": 8
     },
+    "awakening": {
+      "name": "Ruwan",
+      "who": "Healer's hand who set the sick by lamp and bell",
+      "fragment": "Bell and root and warm hand — no, child, that's not a crook, that's a staff for walking."
+    },
     "prompt_context": {},
     "level": 4,
     "drops": {
@@ -1075,6 +1165,11 @@
       "intelligence": 4,
       "wisdom": 8
     },
+    "awakening": {
+      "name": "Layali",
+      "who": "Acrobat of the travelling lamps",
+      "fragment": "They untrained my tumbles into trots. Give me a crossbar and I'll show you old me."
+    },
     "prompt_context": {},
     "level": 4,
     "drops": {
@@ -1116,6 +1211,11 @@
       "defense": 3,
       "intelligence": 4,
       "wisdom": 8
+    },
+    "awakening": {
+      "name": "Salma",
+      "who": "Foundry forewoman who held the furnace line",
+      "fragment": "I held the line. They turned my line into a wall. A wall still stands up — good luck punching it."
     },
     "prompt_context": {},
     "level": 5,
@@ -1700,7 +1800,11 @@
   {
     "id": "sakhra",
     "name": "Sakhra",
-    "room_id": "",
+    "room_id": "village_square",
+    "initial_relationship": {
+      "stance": "allied",
+      "follows_player": false
+    },
     "aliases": [
       "sakhra",
       "steam golem",
@@ -1723,6 +1827,31 @@
       "wisdom": 5
     },
     "level": 6,
+    "awakening": {
+      "name": "Jamil",
+      "who": "Miner, father of Zayd, the village's quietest man",
+      "fragment": "Zayd. My boy. Run your lamp over me — I will follow it the whole way home.",
+      "inspect_text": "Jamil, once known as Sakhra. The dark rock of his golem shell is still heavy with copper pipes and brass fittings, but the stone eyes have cleared to a warm, gentle gaze. A miner and the father of Zayd, he walks with quiet purpose and speaks in a low, steady voice.",
+      "prompt_context": {
+        "character_notes": [
+          "You are Jamil, the miner and father of Zayd. You were converted into Sakhra, the village guardian golem, your mind silenced behind heavy rock and copper pipes.",
+          "Now, the warmth of your family's miner lantern has cleared the fog from your stone eyes and returned your memory and your voice.",
+          "You love your son Zayd more than anything in the world. You remember the sound of his laughter, his wild pranks, and the way he clutched your hand before the dark took you."
+        ],
+        "subtext_notes": [
+          "You are deeply indebted to Layla for carrying the light and reuniting you with your memories and your son.",
+          "You know the deep shafts of the geothermal caverns, the secrets of the steam pipes, and the cruelty of the priests who demanded your boy as an offering."
+        ],
+        "response_notes": [
+          "Speak in a calm, gravelly, but gentle human voice. Express warmth toward Layla and protective love for Zayd.",
+          "Offer guidance about the cavern layouts, steam valves, and the fortress beyond."
+        ],
+        "behavior_examples": [
+          "A deep, human smile touches your stone features.",
+          "You place a massive, gentle hand on Zayd's shoulder."
+        ]
+      }
+    },
     "prompt_context": {
       "character_notes": [
         "You are Sakhra, the village guardian golem. You have stood watch at the edge of this village for longer than anyone can remember.",

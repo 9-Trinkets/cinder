@@ -159,6 +159,12 @@ pub struct WorldState {
     /// Ordered from oldest to newest.
     #[serde(default)]
     pub chalk_anchors: Vec<String>,
+    /// Set of actors that have been awakened (remember their true name and identity).
+    #[serde(default)]
+    pub awakened_actors: BTreeSet<String>,
+    /// Runtime name overrides for actors (e.g. awakened names).
+    #[serde(default)]
+    pub actor_name_overrides: BTreeMap<String, String>,
 }
 
 /// Summary milestone recorded upon transitioning from one area / act to the
@@ -354,6 +360,8 @@ impl WorldState {
             spawn_counter: 0,
             spawned_actors: BTreeMap::new(),
             chalk_anchors: Vec::new(),
+            awakened_actors: BTreeSet::new(),
+            actor_name_overrides: BTreeMap::new(),
         }
     }
 
@@ -373,14 +381,31 @@ impl WorldState {
             .or_else(|| content.actor(actor_id))
     }
 
-    /// Looks up an actor's display name, checking runtime spawned actors first.
+    /// Looks up an actor's display name, checking runtime name overrides first,
+    /// then runtime spawned actors, and finally static pack actors.
     pub fn actor_display_name<'a>(
         &'a self,
         content: &'a ContentPack,
         actor_id: &str,
     ) -> Option<&'a str> {
+        if let Some(name) = self.actor_name_overrides.get(actor_id) {
+            return Some(name.as_str());
+        }
         self.actor(content, actor_id)
             .map(|actor| actor.name.as_str())
+    }
+
+    /// Whether the actor is awakened (remembers their true name and past).
+    pub fn is_actor_awakened(&self, actor_id: &str) -> bool {
+        self.awakened_actors.contains(actor_id)
+    }
+
+    /// Awakens an actor with their true name, recording story variables and name overrides.
+    pub fn set_actor_awakened(&mut self, actor_id: &str, awakened_name: &str) {
+        self.awakened_actors.insert(actor_id.to_string());
+        self.actor_name_overrides
+            .insert(actor_id.to_string(), awakened_name.to_string());
+        let _ = self.story_vars.set(&format!("awakened.{actor_id}"), "true");
     }
 
     /// Whether the actor is offstage, checking runtime spawned actors and room overrides first.
