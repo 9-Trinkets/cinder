@@ -260,7 +260,7 @@
     "sigil.spawned": "The amber sigil erupts in golden sparks! A {actor} manifests from the swirling fire and falls into rank behind you. (HP: {hp}, STR: {strength}, INT: {intelligence})",
     "sigil.spawn_limit": "The air crackles with spent heat, but no flame takes hold. You cannot sustain more than {max} summoned sprites at once.",
     "magic.insufficient_mp": "You do not have enough magic to trace the {item}. (Requires {mp_cost} MP, you have {mp} MP)",
-    "zayd.freed_speech": "You came back for me!",
+    "zayd.freed_speech": "You... you unlocked it! You're really here to save me? Please, let's get out of here before the guards come back!",
     "handler.zayd_freed_warning": {
         "voice": "handler",
         "text": "Layla. That offering was cleared on the manifest. Let the tithe ship. That's the job."

@@ -843,7 +843,7 @@ fn floor4_zayd_rescue_and_village_escort() {
         "Cage unlock narrative should NOT mention lantern prior to rescue: {unlock_text}"
     );
     assert!(
-        unlock_text.contains("Zayd: You came back for me!"),
+        unlock_text.contains("Zayd: You... you unlocked it! You're really here to save me?"),
         "Zayd spoken dialogue line missing or misformatted in: {unlock_text}"
     );
     assert!(
