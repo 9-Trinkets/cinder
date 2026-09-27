@@ -69,7 +69,7 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
   - `fortress_gate`: The main checkpoint with hydraulic gates and sentry barricades.
   - `command_bastion`: Commander Malik's headquarters and Priest Harun's station, holding the safe and the Teleportation Scroll.
   - `steam_prison_cage`: A reinforced iron cage suspended by chains over a geothermal vent where young Zayd was held.
-  - `teleport_platform`: A massive circular brass platform ringed with steam valves and arcane bronze conduits that leads to Floor 5.
+  - `teleport_platform`: A massive circular brass platform ringed with steam valves and arcane bronze conduits that leads to Floor 5. Accessible exclusively through Commander's Bastion once Commander Malik is defeated.
 
 ---
 

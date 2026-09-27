@@ -10784,19 +10784,6 @@
         ],
         "menu_label": "North",
         "requires_story_var": ""
-      },
-      {
-        "room_id": "teleport_platform",
-        "label": "South to Teleportation Platform",
-        "aliases": [
-          "south",
-          "s",
-          "courtyard",
-          "platform",
-          "teleport"
-        ],
-        "menu_label": "Courtyard",
-        "requires_story_var": ""
       }
     ],
     "descriptions": []
@@ -10936,19 +10923,6 @@
         ],
         "menu_label": "East",
         "requires_story_var": ""
-      },
-      {
-        "room_id": "teleport_platform",
-        "label": "North to Teleportation Platform",
-        "aliases": [
-          "north",
-          "n",
-          "courtyard",
-          "platform",
-          "teleport"
-        ],
-        "menu_label": "North",
-        "requires_story_var": ""
       }
     ],
     "descriptions": []
@@ -10989,12 +10963,28 @@
       },
       {
         "room_id": "east_sentry_walk",
-        "label": "Northwest",
+        "label": "North to East Sentry Rampart",
+        "aliases": [
+          "north",
+          "n",
+          "rampart",
+          "sentry"
+        ],
+        "menu_label": "North",
+        "requires_story_var": "malik_defeated"
+      },
+      {
+        "room_id": "teleport_platform",
+        "label": "Northwest to Central Teleport Platform",
         "aliases": [
           "northwest",
-          "nw"
+          "nw",
+          "platform",
+          "courtyard",
+          "teleport",
+          "gate"
         ],
-        "menu_label": "Northwest",
+        "menu_label": "Courtyard",
         "requires_story_var": "malik_defeated"
       }
     ],
@@ -11025,12 +11015,15 @@
     "exits": [
       {
         "room_id": "command_bastion",
-        "label": "Southeast",
+        "label": "South to Commander's Bastion",
         "aliases": [
+          "south",
+          "s",
           "southeast",
-          "se"
+          "se",
+          "bastion"
         ],
-        "menu_label": "Southeast",
+        "menu_label": "South",
         "requires_story_var": ""
       },
       {
@@ -11071,26 +11064,18 @@
     ],
     "exits": [
       {
-        "room_id": "fortress_gate",
-        "label": "North to Fortress Checkpoint",
+        "room_id": "command_bastion",
+        "label": "Southeast to Commander's Bastion",
         "aliases": [
-          "north",
-          "n",
-          "gate",
-          "checkpoint"
-        ],
-        "menu_label": "North",
-        "requires_story_var": ""
-      },
-      {
-        "room_id": "south_steam_gantry",
-        "label": "South to South Steam Gantry",
-        "aliases": [
+          "southeast",
+          "se",
+          "bastion",
+          "command",
+          "headquarters",
           "south",
-          "s",
-          "gantry"
+          "s"
         ],
-        "menu_label": "South",
+        "menu_label": "Commander's Bastion",
         "requires_story_var": ""
       },
       {

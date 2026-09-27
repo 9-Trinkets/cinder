@@ -186,13 +186,24 @@ fn test_platform_discovery_activation_and_floor5_gate() {
         .entry("player".to_string())
         .or_default()
         .insert("mp".to_string(), 20);
-    // Start at fortress_gate, walk to teleport_platform
-    state.current_room_id = "fortress_gate".to_string();
+    // Access to teleport_platform is exclusively from command_bastion, gated by malik_defeated
+    state.current_room_id = "command_bastion".to_string();
 
     let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
 
+    // Before defeating Malik, entering the platform is blocked
+    let barred = runtime
+        .run_turn("go northwest")
+        .expect("try enter platform");
+    assert_ne!(runtime.current_room_id().unwrap(), "teleport_platform");
+
+    // Defeating Malik unlocks the exit to the platform
+    let mut state = runtime.export_state().unwrap();
+    state.story_vars.set_unchecked("malik_defeated", "true");
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+
     // Step onto teleport_platform -> registers permanent anchors
-    runtime.run_turn("go south").expect("enter platform");
+    runtime.run_turn("go northwest").expect("enter platform");
     assert_eq!(runtime.current_room_id().unwrap(), "teleport_platform");
 
     let s1 = runtime.export_state().unwrap();

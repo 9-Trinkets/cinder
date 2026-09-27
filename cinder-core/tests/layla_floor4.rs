@@ -259,20 +259,20 @@ fn floor4_fortress_loop_and_platform_navigation_resolves() {
     let _ = runtime.run_turn("east").expect("turn runs");
     assert_eq!(runtime.current_room_id().unwrap(), "command_bastion");
 
-    // 5. command_bastion -> northwest -> east_sentry_walk
-    let _ = runtime.run_turn("northwest").expect("turn runs");
+    // Enter central teleport platform from command_bastion
+    let _ = runtime.run_turn("courtyard").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "teleport_platform");
+
+    // Return to command_bastion
+    let _ = runtime.run_turn("bastion").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "command_bastion");
+
+    // 5. command_bastion -> north -> east_sentry_walk
+    let _ = runtime.run_turn("north").expect("turn runs");
     assert_eq!(runtime.current_room_id().unwrap(), "east_sentry_walk");
 
     // 6. east_sentry_walk -> northwest -> fortress_gate (Loop completed)
     let _ = runtime.run_turn("northwest").expect("turn runs");
-    assert_eq!(runtime.current_room_id().unwrap(), "fortress_gate");
-
-    // Enter central teleport platform from fortress_gate
-    let _ = runtime.run_turn("courtyard").expect("turn runs");
-    assert_eq!(runtime.current_room_id().unwrap(), "teleport_platform");
-
-    // Return to fortress_gate
-    let _ = runtime.run_turn("north").expect("turn runs");
     assert_eq!(runtime.current_room_id().unwrap(), "fortress_gate");
 
     // Step north out through the bulkhead back to the village
