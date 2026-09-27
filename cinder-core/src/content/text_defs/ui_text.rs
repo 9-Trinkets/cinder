@@ -120,6 +120,8 @@ pub struct UiTextDefinition {
     pub look_group_things: String,
     #[serde(default = "default_look_group_people")]
     pub look_group_people: String,
+    #[serde(default = "default_look_group_party")]
+    pub look_group_party: String,
     #[serde(default = "default_perspective_review_prompt")]
     pub perspective_review_prompt: String,
     #[serde(default = "default_perspective_review_system")]
@@ -388,6 +390,10 @@ pub(super) fn default_look_group_things() -> String {
 
 pub(super) fn default_look_group_people() -> String {
     "People".to_string()
+}
+
+pub(super) fn default_look_group_party() -> String {
+    "Party Members".to_string()
 }
 
 pub(super) fn default_perspective_review_prompt() -> String {

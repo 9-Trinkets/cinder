@@ -30,6 +30,7 @@ function localizeCommandGroup(group: string, uiText: api.UiSnapshot['ui_text']):
 export function groupLookOptions(
   options: api.LookOptionData[],
   uiText: api.UiSnapshot['ui_text'],
+  party?: api.PartyMember[],
 ): [string, api.LookOptionData[]][] {
   const grouped: [string, api.LookOptionData[]][] = []
 
@@ -40,7 +41,18 @@ export function groupLookOptions(
   if (things.length > 0) grouped.push([uiText.look_group_things, things])
 
   const people = options.filter(option => option.id.startsWith('actor:'))
-  if (people.length > 0) grouped.push([uiText.look_group_people, people])
+  if (people.length > 0) {
+    const partyIds = new Set((party ?? []).map(p => `actor:${p.id}`))
+    const roomActors = people.filter(option => !partyIds.has(option.id))
+    const partyActors = people.filter(option => partyIds.has(option.id))
+
+    if (roomActors.length > 0) {
+      grouped.push([uiText.look_group_people, roomActors])
+    }
+    if (partyActors.length > 0) {
+      grouped.push([uiText.look_group_party || 'Party Members', partyActors])
+    }
+  }
 
   const seen = new Set(options.flatMap(option => {
     if (option.id === '__room__') return [option.id]

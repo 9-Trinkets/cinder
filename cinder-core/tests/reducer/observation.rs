@@ -88,6 +88,65 @@ fn room_observation_annotates_present_actors_by_stance() {
 }
 
 #[test]
+fn room_observation_separates_party_members_from_other_actors_onto_separate_line() {
+    let mut pack = reducer_test_pack();
+    pack.presentation.presentation_text.room_observation =
+        "{room_title}\n{body}{people}".to_string();
+    pack.presentation.presentation_text.people = "\n\nHere: {people}.".to_string();
+    pack.presentation.presentation_text.party = "Your party: {party}.".to_string();
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    // ACTOR_A is an ally (party member)
+    state.set_stance(ACTOR_A_ID, ActorStance::Allied);
+    // ACTOR_B is an enemy
+    state.set_stance(ACTOR_B_ID, ActorStance::Hostile);
+
+    let text = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(
+            WorldEvent::CurrentRoomObserved {
+                room_id: LOUNGE_ID.to_string(),
+                mode: ObservationMode::Summary,
+            },
+        )],
+    )
+    .lines
+    .to_text();
+
+    assert!(
+        text.contains("Here: Blair.\nYour party: Alex."),
+        "expected separate lines for occupants and party, got: {text}"
+    );
+
+    // When only party members are present, party is preceded by new paragraph without 'Here:'
+    state
+        .actor_room_overrides
+        .insert(ACTOR_B_ID.to_string(), KITCHEN_ID.to_string());
+    let party_only_text = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(
+            WorldEvent::CurrentRoomObserved {
+                room_id: LOUNGE_ID.to_string(),
+                mode: ObservationMode::Summary,
+            },
+        )],
+    )
+    .lines
+    .to_text();
+
+    assert!(
+        !party_only_text.contains("Here:"),
+        "should not contain 'Here:' when no room actors are present, got: {party_only_text}"
+    );
+    assert!(
+        party_only_text.contains("\n\nYour party: Alex."),
+        "expected party on its own paragraph, got: {party_only_text}"
+    );
+}
+
+#[test]
 fn room_observation_lists_loose_items_on_the_ground() {
     let mut pack = reducer_test_pack();
     pack.presentation.presentation_text.room_observation =

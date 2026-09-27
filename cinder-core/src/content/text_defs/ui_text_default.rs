@@ -62,6 +62,7 @@ impl Default for super::ui_text::UiTextDefinition {
             look_group_room: default_look_group_room(),
             look_group_things: default_look_group_things(),
             look_group_people: default_look_group_people(),
+            look_group_party: default_look_group_party(),
             perspective_review_prompt: default_perspective_review_prompt(),
             perspective_review_system: default_perspective_review_system(),
             book_recommender_instructions: default_book_recommender_instructions(),

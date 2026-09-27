@@ -2,6 +2,21 @@ use super::{ActorStance, WorldState, remap_story_actor_id};
 use crate::content::types::{ContentPack, PartyOrderKind};
 
 impl WorldState {
+    pub fn is_party_member(&self, content: &ContentPack, actor_id: &str) -> bool {
+        let actor_id = remap_story_actor_id(self, actor_id);
+        if content.is_player_actor(actor_id) {
+            return false;
+        }
+        if self.actor_is_offstage(content, actor_id) {
+            return false;
+        }
+        if self.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id) {
+            return false;
+        }
+        let rel = self.relationship(actor_id);
+        rel.follows_player || rel.stance == ActorStance::Allied
+    }
+
     pub fn party_order(&self, content: &ContentPack, actor_id: &str) -> Option<PartyOrderKind> {
         let actor_id = remap_story_actor_id(self, actor_id);
         self.party_orders
@@ -164,5 +179,41 @@ mod tests {
         state.initialize_party_order(&content, "blair");
         assert_eq!(state.party_orders.get("blair"), Some(&"follow".to_string()));
         assert!(state.follows_player("blair"));
+    }
+
+    #[test]
+    fn is_party_member_identifies_allies_and_followers_and_filters_ineligible() {
+        let mut content = minimal_test_pack();
+        content.settings.combat.health_stat_id = "stamina".to_string();
+        let mut state = WorldState::new(&content);
+
+        // Player is never a party member
+        assert!(!state.is_party_member(&content, "player"));
+
+        // Neutral bystander is not a party member
+        assert!(!state.is_party_member(&content, "blair"));
+
+        // Allied actor is a party member
+        state.set_stance("blair", ActorStance::Allied);
+        assert!(state.is_party_member(&content, "blair"));
+
+        // Defeated allied actor is not a party member
+        state
+            .adjust_actor_stat(
+                &content,
+                "blair",
+                &content.settings.combat.health_stat_id,
+                -100,
+            )
+            .unwrap();
+        assert!(!state.is_party_member(&content, "blair"));
+
+        // Follower actor is a party member
+        state.set_follows_player("casey", true);
+        assert!(state.is_party_member(&content, "casey"));
+
+        // Offstage follower is not a party member
+        content.actors[1].room_id.clear();
+        assert!(!state.is_party_member(&content, "casey"));
     }
 }

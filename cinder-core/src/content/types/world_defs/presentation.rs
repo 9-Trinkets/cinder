@@ -21,6 +21,9 @@ pub struct PresentationTextDefinition {
     #[serde(default)]
     pub loose_items: String,
     pub people: String,
+    /// Template for listing allied party members in the room observation.
+    #[serde(default = "default_party_presentation")]
+    pub party: String,
     pub exits: String,
     pub feature_consumables: String,
     pub actor_speech: String,
@@ -46,4 +49,8 @@ pub struct PresentationDefinition {
     pub error_text: ErrorTextDefinition,
     #[serde(default)]
     pub presentation_text: PresentationTextDefinition,
+}
+
+pub(super) fn default_party_presentation() -> String {
+    "Your party: {party}.".to_string()
 }

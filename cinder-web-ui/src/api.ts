@@ -399,6 +399,7 @@ export interface UiSnapshot {
     look_group_room: string
     look_group_things: string
     look_group_people: string
+    look_group_party?: string
     room_items_sidebar_label: string
     minimap_sidebar_label: string
     minimap_revealed_label: string
