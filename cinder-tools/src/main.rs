@@ -47,11 +47,14 @@ enum Commands {
         #[arg(long)]
         raw: bool,
     },
-    /// Check codebase hygiene (file lengths and test placement)
+    /// Check codebase hygiene (file lengths, cyclomatic complexity, and test placement)
     Hygiene {
         /// Soft line limit for non-JSON source files (default: 500)
         #[arg(long, default_value_t = 500)]
         limit: usize,
+        /// Cyclomatic complexity threshold per function (default: 15)
+        #[arg(long, default_value_t = 15)]
+        complexity: usize,
     },
 }
 
@@ -181,11 +184,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             let output = transcript::render_transcript_file(&path, raw)?;
             println!("{}", output);
         }
-        Commands::Hygiene { limit } => {
+        Commands::Hygiene { limit, complexity } => {
             let root = Path::new(".");
             let length_warnings = hygiene::check_file_lengths(root, limit);
             for w in &length_warnings {
                 println!("warning: {} has {} lines, exceeding the {}-line soft limit", w.path.display(), w.lines, limit);
+            }
+
+            let complexity_warnings = hygiene::check_complexity(root, complexity);
+            for cw in &complexity_warnings {
+                println!(
+                    "warning: {}:{} '{}' has cyclomatic complexity {}, exceeding the {} limit (max nesting: {})",
+                    cw.path.display(),
+                    cw.line,
+                    cw.fn_name,
+                    cw.complexity,
+                    complexity,
+                    cw.max_nesting
+                );
             }
 
             let test_warnings = hygiene::check_test_placement(root);
@@ -193,7 +209,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 println!("warning: [{}] is an integration test suite under src/; move it to tests/", tw.display());
             }
 
-            println!("\nFile length warnings: {}. Placement warnings: {}.", length_warnings.len(), test_warnings.len());
+            println!(
+                "\nFile length warnings: {}. Complexity warnings: {}. Placement warnings: {}.",
+                length_warnings.len(),
+                complexity_warnings.len(),
+                test_warnings.len()
+            );
         }
     }
 
