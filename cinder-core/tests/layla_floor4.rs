@@ -942,7 +942,9 @@ fn floor4_zayd_rescue_and_village_escort() {
         "Return safe narrative missing in: {return_text}"
     );
     assert!(
-        return_text.contains("Zayd: Here. It was my dad's... from the lower drift"),
+        return_text.contains(
+            "Zayd: I... I'm sorry I don't have anything valuable to give you as a reward"
+        ),
         "Zayd lantern speech missing or misformatted in: {return_text}"
     );
 
