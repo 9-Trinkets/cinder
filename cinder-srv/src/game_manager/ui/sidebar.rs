@@ -170,6 +170,7 @@ pub(super) fn build_party_order_panels(
                         command: Some(format!("order {} {}", member.id, directive)),
                         disabled: selected,
                         selected,
+                        group: None,
                     }
                 })
                 .collect();

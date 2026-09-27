@@ -157,6 +157,8 @@ pub struct PanelOptionData {
     pub disabled: bool,
     #[serde(default, skip_serializing_if = "std::ops::Not::not")]
     pub selected: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub group: Option<String>,
 }
 
 /// The per-panel option sets built for one UI snapshot, grouped so that the

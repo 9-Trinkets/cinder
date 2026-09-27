@@ -420,6 +420,7 @@ fn items_section_orders_take_give_drop() {
         command: Some("use potion".to_string()),
         disabled: false,
         selected: false,
+        group: None,
     }];
     let drop_opts = build_drop_panel_options(&content, &state);
     let runtime = CinderRuntime::new(content.clone(), false).unwrap();

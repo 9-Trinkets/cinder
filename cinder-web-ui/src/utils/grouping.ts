@@ -66,3 +66,26 @@ export function groupLookOptions(
 
   return grouped
 }
+
+export function groupTeleportOptions(
+  options: api.PanelOptionData[],
+): [string, api.PanelOptionData[]][] {
+  const permanent = options.filter(
+    opt => opt.group === 'permanent' || opt.subtitle === 'permanent' || opt.subtitle === 'Permanent Anchor',
+  )
+  const ephemeral = options.filter(
+    opt =>
+      opt.group === 'ephemeral' ||
+      opt.subtitle === 'ephemeral' ||
+      opt.subtitle === 'Temporary Anchor' ||
+      opt.subtitle === 'Ephemeral Anchor',
+  )
+  const seen = new Set([...permanent, ...ephemeral].map(o => o.id))
+  const other = options.filter(opt => !seen.has(opt.id))
+
+  const grouped: [string, api.PanelOptionData[]][] = []
+  if (permanent.length > 0) grouped.push(['Permanent', permanent])
+  if (ephemeral.length > 0) grouped.push(['Ephemeral', ephemeral])
+  if (other.length > 0) grouped.push(['Other', other])
+  return grouped
+}

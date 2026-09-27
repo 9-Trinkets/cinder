@@ -23,6 +23,7 @@ pub(crate) fn build_equipment_panel_options(
             command: Some(format!("unequip {item_id}")),
             disabled: false,
             selected: false,
+            group: None,
         });
     }
 
@@ -58,6 +59,7 @@ pub(crate) fn build_equipment_panel_options(
             command: Some(format!("equip {item_id}")),
             disabled: false,
             selected: false,
+            group: None,
         });
     }
 

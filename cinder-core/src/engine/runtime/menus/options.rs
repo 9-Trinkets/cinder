@@ -300,17 +300,17 @@ impl CinderRuntime {
         if state.story_vars.get("anchor_floor4_platform") == Some("true") {
             options.push(PanelOption {
                 id: "teleport_platform".to_string(),
-                title: "Floor 4 Platform (Permanent)".to_string(),
+                title: "Floor 4 Platform".to_string(),
                 command: "teleport teleport_platform".to_string(),
-                menu_text: "Permanent Anchor".to_string(),
+                menu_text: "permanent".to_string(),
             });
         }
         if state.story_vars.get("anchor_floor5_gate") == Some("true") {
             options.push(PanelOption {
                 id: "floor5_start".to_string(),
-                title: "Floor 5 Descent Platform (Permanent)".to_string(),
+                title: "Floor 5 Descent Platform".to_string(),
                 command: "teleport floor5_start".to_string(),
-                menu_text: "Permanent Anchor".to_string(),
+                menu_text: "permanent".to_string(),
             });
         }
         for room_id in &state.chalk_anchors {
@@ -321,9 +321,9 @@ impl CinderRuntime {
                 .unwrap_or(room_id);
             options.push(PanelOption {
                 id: room_id.clone(),
-                title: format!("Chalk Anchor: {room_title} (Single-use)"),
+                title: room_title.to_string(),
                 command: format!("teleport {room_id}"),
-                menu_text: "Temporary Anchor".to_string(),
+                menu_text: "ephemeral".to_string(),
             });
         }
         options

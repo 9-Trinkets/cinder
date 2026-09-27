@@ -59,6 +59,7 @@ pub(crate) fn build_panel_options(
                                 command: Some(format!("{} {}", phrase, actor_id)),
                                 disabled: false,
                                 selected: false,
+                                group: None,
                             }
                         })
                         .collect()
@@ -78,6 +79,7 @@ pub(crate) fn build_panel_options(
                         command: Some(opt.command.clone()),
                         disabled: false,
                         selected: false,
+                        group: None,
                     })
                     .collect(),
                 PanelDataSource::Features => runtime
@@ -91,6 +93,7 @@ pub(crate) fn build_panel_options(
                         command: Some(opt.command.clone()),
                         disabled: false,
                         selected: false,
+                        group: None,
                     })
                     .collect(),
                 PanelDataSource::CraftableItems => {
@@ -107,6 +110,7 @@ pub(crate) fn build_panel_options(
                         command: Some(opt.command.clone()),
                         disabled: false,
                         selected: false,
+                        group: None,
                     })
                     .collect(),
                 PanelDataSource::InventoryItems => runtime
@@ -120,25 +124,12 @@ pub(crate) fn build_panel_options(
                         command: Some(opt.command.clone()),
                         disabled: false,
                         selected: false,
+                        group: None,
                     })
                     .collect(),
-                PanelDataSource::FollowActors | PanelDataSource::TeleportAnchors => runtime
-                    .panel_options(&panel_config.data_source)
-                    .map_err(|error| error.to_string())?
-                    .into_iter()
-                    .map(|opt| PanelOptionData {
-                        id: opt.id.clone(),
-                        title: opt.title.clone(),
-                        subtitle: if opt.menu_text.is_empty() {
-                            None
-                        } else {
-                            Some(opt.menu_text)
-                        },
-                        command: Some(opt.command.clone()),
-                        disabled: false,
-                        selected: false,
-                    })
-                    .collect(),
+                PanelDataSource::FollowActors | PanelDataSource::TeleportAnchors => {
+                    map_actor_or_teleport_options(runtime, &panel_config.data_source)?
+                }
             };
             panel_options.insert(panel_name.clone(), options);
         }
@@ -231,9 +222,36 @@ pub(crate) fn craftable_item_panel_options(
                         command: (!disabled).then(|| format!("{} {}", phrase, item_id)),
                         disabled,
                         selected: false,
+                        group: None,
                     }
                 })
                 .collect()
         })
         .unwrap_or_default()
+}
+
+fn map_actor_or_teleport_options(
+    runtime: &CinderRuntime,
+    data_source: &PanelDataSource,
+) -> Result<Vec<PanelOptionData>, String> {
+    let is_teleport = matches!(data_source, PanelDataSource::TeleportAnchors);
+    let options = runtime
+        .panel_options(data_source)
+        .map_err(|error| error.to_string())?
+        .into_iter()
+        .map(|opt| {
+            let group = (is_teleport && !opt.menu_text.is_empty()).then(|| opt.menu_text.clone());
+            let subtitle = (!is_teleport && !opt.menu_text.is_empty()).then(|| opt.menu_text);
+            PanelOptionData {
+                id: opt.id,
+                title: opt.title,
+                subtitle,
+                command: Some(opt.command),
+                disabled: false,
+                selected: false,
+                group,
+            }
+        })
+        .collect();
+    Ok(options)
 }

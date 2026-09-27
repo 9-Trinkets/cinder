@@ -176,6 +176,7 @@ export interface PanelOptionData {
   command?: string
   disabled?: boolean
   selected?: boolean
+  group?: string
 }
 
 export interface OverflowAction {

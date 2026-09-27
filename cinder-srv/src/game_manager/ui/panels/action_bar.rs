@@ -67,6 +67,7 @@ pub(crate) fn build_action_bar_items(
                 command: Some(format!("take {item_id}")),
                 disabled: false,
                 selected: false,
+                group: None,
             });
         }
         // Companion items
@@ -80,6 +81,7 @@ pub(crate) fn build_action_bar_items(
                     command: Some(format!("take {item_ref} from {}", member.id)),
                     disabled: false,
                     selected: false,
+                    group: None,
                 });
             }
             for item in &member.equipped_items {
@@ -91,6 +93,7 @@ pub(crate) fn build_action_bar_items(
                     command: Some(format!("take {item_ref} from {}", member.id)),
                     disabled: false,
                     selected: false,
+                    group: None,
                 });
             }
         }
@@ -122,6 +125,7 @@ pub(crate) fn build_action_bar_items(
                     command,
                     disabled: false,
                     selected: false,
+                    group: None,
                 });
             }
 
@@ -169,6 +173,7 @@ pub(crate) fn build_drop_panel_options(
             command: Some(format!("drop {item_id}")),
             disabled: false,
             selected: false,
+            group: None,
         })
         .collect()
 }
@@ -187,6 +192,7 @@ pub(crate) fn build_use_panel_options(
             command: Some(format!("use {item_id}")),
             disabled: false,
             selected: false,
+            group: None,
         })
         .collect()
 }

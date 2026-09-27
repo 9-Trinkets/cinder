@@ -1,6 +1,6 @@
 import { memo, useState, useRef } from 'react'
 import * as api from '../api'
-import { groupLookOptions, groupOverflowActions } from '../utils/grouping'
+import { groupLookOptions, groupOverflowActions, groupTeleportOptions } from '../utils/grouping'
 import { titleize } from '../utils/text'
 import type { QuickPanel } from '../hooks/playUtils'
 
@@ -256,6 +256,48 @@ const QuickActionPanel = memo(function QuickActionPanel({
                         {partyActors.map(renderButton)}
                       </div>
                     </div>
+                  </div>
+                )
+              }
+            }
+
+            if (panel === 'teleport') {
+              const groups = groupTeleportOptions(genericOptions)
+              if (groups.length > 0) {
+                return (
+                  <div className="space-y-4">
+                    {groups.map(([groupName, groupOpts]) => (
+                      <div key={groupName} className="space-y-2">
+                        <p className="text-[11px] font-semibold text-muted uppercase tracking-wider px-1">
+                          {groupName}
+                        </p>
+                        <div className="grid gap-2 sm:grid-cols-2">
+                          {groupOpts.map(opt => (
+                            <button
+                              key={opt.id}
+                              onClick={() => onSelectOption(panel, opt)}
+                              disabled={busy || opt.disabled}
+                              aria-pressed={opt.selected}
+                              className={`group block w-full text-left px-3 py-2.5 rounded-xl border transition duration-200 ${
+                                opt.selected
+                                  ? 'border-gold/50 bg-gold/10 text-text cursor-default'
+                                  : 'border-subtle hover:bg-overlay hover:border-muted cursor-pointer'
+                              } disabled:cursor-not-allowed`}
+                            >
+                              <span className="flex items-center justify-between gap-3">
+                                <span>
+                                  <span className="block font-medium">{titleize(opt.title)}</span>
+                                  {opt.subtitle && opt.subtitle !== 'permanent' && opt.subtitle !== 'ephemeral' && (
+                                    <span className="block text-muted text-xs mt-0.5">{opt.subtitle}</span>
+                                  )}
+                                </span>
+                                {opt.selected && <span className="text-gold text-sm" aria-label="Current order">✓</span>}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 )
               }
