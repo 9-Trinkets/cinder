@@ -30,7 +30,7 @@ pub enum TurnAction {
     Quit,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub(crate) enum PlayerCommand {
     Authored {
         command_id: String,

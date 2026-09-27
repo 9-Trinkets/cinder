@@ -79,7 +79,7 @@ mod action_defs;
 pub use action_defs::{
     ActionAvailability, ActionContentEvent, ActionDefinition, ActionItemConsumerTarget,
     ActionItemCreation, ActionItemStorageTarget, ActionNpc, ActionPlayerCommand, ActionPlayerInput,
-    ActionUi, ActionsDefinition, PanelConfig, PanelDataSource, PanelSelectAction,
+    ActionUi, ActionVerbKind, ActionsDefinition, PanelConfig, PanelDataSource, PanelSelectAction,
 };
 
 mod content_pack;

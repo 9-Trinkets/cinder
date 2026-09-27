@@ -1,5 +1,5 @@
-use super::{PlayerCommand, items};
-use crate::content::types::{ActionDefinition, CommandEffect, ContentPack, PartyOrderKind};
+use super::{items, PlayerCommand};
+use crate::content::types::{ActionDefinition, ActionVerbKind, ContentPack, PartyOrderKind};
 
 pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCommand {
     let trimmed = raw_input.trim();
@@ -22,138 +22,8 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
         return cmd;
     }
 
-    if !content.actions.is_empty() {
-        if let Some((action, matched_phrase)) = best_player_action_match(content, trimmed, &lower) {
-            if (action.id == "take" || action.has_effect(CommandEffect::PickUpItem))
-                && action.item_id.is_empty()
-            {
-                if let Some(remainder) = matched_phrase.remainder.as_deref() {
-                    if let Some(target) = remainder.strip_prefix("off ") {
-                        return PlayerCommand::Unequip {
-                            target: target.trim().to_string(),
-                        };
-                    }
-                    let lower_remainder = remainder.to_ascii_lowercase();
-                    if let Some(idx) = lower_remainder.find(" from ") {
-                        let item_target = remainder[..idx].trim().to_string();
-                        let actor_reference = remainder[idx + 6..].trim().to_string();
-                        if !item_target.is_empty() && !actor_reference.is_empty() {
-                            return PlayerCommand::TakeFromPartyMember {
-                                item_target,
-                                actor_reference,
-                            };
-                        }
-                    }
-                }
-                return PlayerCommand::Take {
-                    target: matched_phrase.remainder.unwrap_or_default(),
-                };
-            }
-            if action.id == "give" {
-                if let Some(remainder) = matched_phrase.remainder.as_deref() {
-                    let lower_remainder = remainder.to_ascii_lowercase();
-                    if let Some(idx) = lower_remainder.find(" to ") {
-                        let item_target = remainder[..idx].trim().to_string();
-                        let actor_reference = remainder[idx + 4..].trim().to_string();
-                        return PlayerCommand::GiveToPartyMember {
-                            item_target,
-                            actor_reference,
-                        };
-                    } else {
-                        return PlayerCommand::GiveToPartyMember {
-                            item_target: remainder.trim().to_string(),
-                            actor_reference: String::new(),
-                        };
-                    }
-                }
-                return PlayerCommand::GiveToPartyMember {
-                    item_target: String::new(),
-                    actor_reference: String::new(),
-                };
-            }
-            if (action.id == "drop" || action.has_effect(CommandEffect::DropItem))
-                && action.item_id.is_empty()
-            {
-                return PlayerCommand::Drop {
-                    target: matched_phrase.remainder.unwrap_or_default(),
-                };
-            }
-            if (action.id == "equip" || action.has_effect(CommandEffect::EquipItem))
-                && action.item_id.is_empty()
-            {
-                return PlayerCommand::Equip {
-                    target: matched_phrase.remainder.unwrap_or_default(),
-                };
-            }
-            if (action.id == "unequip" || action.has_effect(CommandEffect::UnequipItem))
-                && action.item_id.is_empty()
-            {
-                return PlayerCommand::Unequip {
-                    target: matched_phrase.remainder.unwrap_or_default(),
-                };
-            }
-            if (action.id == "use" || action.has_effect(CommandEffect::UseItem))
-                && action.item_id.is_empty()
-            {
-                return PlayerCommand::Use {
-                    target: matched_phrase.remainder.unwrap_or_default(),
-                };
-            }
-            return PlayerCommand::Authored {
-                command_id: action.id.clone(),
-                input: matched_phrase.remainder,
-            };
-        }
-        // Fallback: match by action ID directly (used by web UI overflow actions)
-        for action in &content.actions {
-            if action.player_enabled && action.id.to_ascii_lowercase() == lower {
-                if (action.id == "take" || action.has_effect(CommandEffect::PickUpItem))
-                    && action.item_id.is_empty()
-                {
-                    return PlayerCommand::Take {
-                        target: String::new(),
-                    };
-                }
-                if action.id == "give" {
-                    return PlayerCommand::GiveToPartyMember {
-                        item_target: String::new(),
-                        actor_reference: String::new(),
-                    };
-                }
-                if (action.id == "drop" || action.has_effect(CommandEffect::DropItem))
-                    && action.item_id.is_empty()
-                {
-                    return PlayerCommand::Drop {
-                        target: String::new(),
-                    };
-                }
-                if (action.id == "equip" || action.has_effect(CommandEffect::EquipItem))
-                    && action.item_id.is_empty()
-                {
-                    return PlayerCommand::Equip {
-                        target: String::new(),
-                    };
-                }
-                if (action.id == "unequip" || action.has_effect(CommandEffect::UnequipItem))
-                    && action.item_id.is_empty()
-                {
-                    return PlayerCommand::Unequip {
-                        target: String::new(),
-                    };
-                }
-                if (action.id == "use" || action.has_effect(CommandEffect::UseItem))
-                    && action.item_id.is_empty()
-                {
-                    return PlayerCommand::Use {
-                        target: String::new(),
-                    };
-                }
-                return PlayerCommand::Authored {
-                    command_id: action.id.clone(),
-                    input: None,
-                };
-            }
-        }
+    if let Some(cmd) = parse_action_command(content, trimmed, &lower) {
+        return cmd;
     }
 
     // Generic item commands are checked after authored actions so packs can
@@ -168,6 +38,7 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
             return command;
         }
     }
+
     if let Some((actor_reference, order)) = party_order_phrase(trimmed) {
         return PlayerCommand::PartyOrder {
             actor_reference,
@@ -176,6 +47,111 @@ pub(crate) fn parse_command(content: &ContentPack, raw_input: &str) -> PlayerCom
     }
 
     PlayerCommand::Unknown
+}
+
+fn parse_action_command(
+    content: &ContentPack,
+    trimmed: &str,
+    lower: &str,
+) -> Option<PlayerCommand> {
+    if content.actions.is_empty() {
+        return None;
+    }
+
+    if let Some((action, matched_phrase)) = best_player_action_match(content, trimmed, lower) {
+        return Some(action.verb_kind().resolve_command(&action.id, matched_phrase.remainder.as_deref()));
+    }
+
+    // Fallback: match by action ID directly (used by web UI overflow actions)
+    content
+        .actions
+        .iter()
+        .find(|action| action.player_enabled && action.id.to_ascii_lowercase() == *lower)
+        .map(|action| action.verb_kind().resolve_command(&action.id, None))
+}
+
+impl ActionVerbKind {
+    pub(crate) fn resolve_command(&self, action_id: &str, remainder: Option<&str>) -> PlayerCommand {
+        match self {
+            ActionVerbKind::Take => VerbGrammar::parse_take(remainder),
+            ActionVerbKind::Give => VerbGrammar::parse_give(remainder),
+            ActionVerbKind::Drop => PlayerCommand::Drop {
+                target: remainder.unwrap_or_default().to_string(),
+            },
+            ActionVerbKind::Equip => PlayerCommand::Equip {
+                target: remainder.unwrap_or_default().to_string(),
+            },
+            ActionVerbKind::Unequip => PlayerCommand::Unequip {
+                target: remainder.unwrap_or_default().to_string(),
+            },
+            ActionVerbKind::Use => PlayerCommand::Use {
+                target: remainder.unwrap_or_default().to_string(),
+            },
+            ActionVerbKind::Authored => PlayerCommand::Authored {
+                command_id: action_id.to_string(),
+                input: remainder.map(str::to_string),
+            },
+        }
+    }
+}
+
+/// Natural language preposition grammar parsing for item commands.
+struct VerbGrammar;
+
+impl VerbGrammar {
+    fn parse_take(remainder: Option<&str>) -> PlayerCommand {
+        let Some(remainder) = remainder.map(str::trim).filter(|s| !s.is_empty()) else {
+            return PlayerCommand::Take {
+                target: String::new(),
+            };
+        };
+
+        if let Some(target) = remainder.strip_prefix("off ") {
+            return PlayerCommand::Unequip {
+                target: target.trim().to_string(),
+            };
+        }
+
+        let lower = remainder.to_ascii_lowercase();
+        if let Some(idx) = lower.find(" from ") {
+            let item_target = remainder[..idx].trim().to_string();
+            let actor_reference = remainder[idx + " from ".len()..].trim().to_string();
+            if !item_target.is_empty() && !actor_reference.is_empty() {
+                return PlayerCommand::TakeFromPartyMember {
+                    item_target,
+                    actor_reference,
+                };
+            }
+        }
+
+        PlayerCommand::Take {
+            target: remainder.to_string(),
+        }
+    }
+
+    fn parse_give(remainder: Option<&str>) -> PlayerCommand {
+        let Some(remainder) = remainder.map(str::trim).filter(|s| !s.is_empty()) else {
+            return PlayerCommand::GiveToPartyMember {
+                item_target: String::new(),
+                actor_reference: String::new(),
+            };
+        };
+
+        let lower = remainder.to_ascii_lowercase();
+        if let Some(idx) = lower.find(" to ") {
+            let item_target = remainder[..idx].trim().to_string();
+            let actor_reference = remainder[idx + " to ".len()..].trim().to_string();
+            PlayerCommand::GiveToPartyMember {
+                item_target,
+                actor_reference,
+            }
+        } else {
+            PlayerCommand::GiveToPartyMember {
+                item_target: remainder.to_string(),
+                actor_reference: String::new(),
+            }
+        }
+    }
 }
 
 /// A pack-defined party directive assigned to a member (`order <member>
@@ -197,33 +173,20 @@ fn party_order_phrase(trimmed: &str) -> Option<(String, PartyOrderKind)> {
 
 fn parse_follow_command(trimmed: &str) -> Option<PlayerCommand> {
     let lower = trimmed.to_ascii_lowercase();
-    if lower == "unfollow" || lower == "stop following" {
+    if lower == "unfollow" || lower == "stop following" || lower == "follow" {
         return Some(PlayerCommand::Follow { target: None });
     }
-    if let Some(rest) = lower.strip_prefix("follow:") {
-        let rest_trimmed = rest.trim();
-        if rest_trimmed.is_empty() || rest_trimmed == "none" || rest_trimmed == "nobody" {
-            return Some(PlayerCommand::Follow { target: None });
-        }
-        let target = trimmed["follow:".len()..].trim();
-        return Some(PlayerCommand::Follow {
-            target: Some(target.to_string()),
-        });
-    }
-    if let Some(rest) = lower.strip_prefix("follow ") {
-        let rest_trimmed = rest.trim();
-        if rest_trimmed.is_empty() || rest_trimmed == "none" || rest_trimmed == "nobody" {
-            return Some(PlayerCommand::Follow { target: None });
-        }
-        let target = trimmed["follow ".len()..].trim();
-        return Some(PlayerCommand::Follow {
-            target: Some(target.to_string()),
-        });
-    }
-    if lower == "follow" {
+    let rest = lower
+        .strip_prefix("follow:")
+        .or_else(|| lower.strip_prefix("follow "))?;
+    let rest_trimmed = rest.trim();
+    if rest_trimmed.is_empty() || rest_trimmed == "none" || rest_trimmed == "nobody" {
         return Some(PlayerCommand::Follow { target: None });
     }
-    None
+    let target = trimmed[(trimmed.len() - rest.len())..].trim();
+    Some(PlayerCommand::Follow {
+        target: Some(target.to_string()),
+    })
 }
 
 #[derive(Debug, Clone)]
@@ -299,10 +262,180 @@ fn best_player_action_match<'a>(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::content::types::{ActionPlayerCommand, ActionPlayerInput, CommandEffect};
     use crate::engine::test_fixtures::minimal_test_pack;
 
     fn parse(raw: &str) -> PlayerCommand {
         parse_command(&minimal_test_pack(), raw)
+    }
+
+    fn test_action(id: &str, phrases: &[&str], effect: Option<CommandEffect>) -> ActionDefinition {
+        ActionDefinition {
+            id: id.to_string(),
+            player_enabled: true,
+            phrases: phrases.iter().map(|s| s.to_string()).collect(),
+            player_command: Some(ActionPlayerCommand {
+                input: Some(ActionPlayerInput {
+                    required: false,
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }),
+            effects: effect.into_iter().collect(),
+            ..Default::default()
+        }
+    }
+
+    fn test_pack_with_actions() -> ContentPack {
+        let mut pack = minimal_test_pack();
+        pack.actions = vec![
+            test_action("take", &["take", "pick up"], Some(CommandEffect::PickUpItem)),
+            test_action("give", &["give"], None),
+            test_action("drop", &["drop"], Some(CommandEffect::DropItem)),
+            test_action("equip", &["equip"], Some(CommandEffect::EquipItem)),
+            test_action("unequip", &["unequip"], Some(CommandEffect::UnequipItem)),
+            test_action("use", &["use"], Some(CommandEffect::UseItem)),
+            test_action("dance", &["dance"], None),
+        ];
+        pack
+    }
+
+    #[test]
+    fn parses_grammar_variations_for_item_actions() {
+        let pack = test_pack_with_actions();
+
+        // Take
+        assert_eq!(
+            parse_command(&pack, "take sword"),
+            PlayerCommand::Take {
+                target: "sword".to_string(),
+            }
+        );
+        assert_eq!(
+            parse_command(&pack, "pick up key"),
+            PlayerCommand::Take {
+                target: "key".to_string(),
+            }
+        );
+        assert_eq!(
+            parse_command(&pack, "take off iron helmet"),
+            PlayerCommand::Unequip {
+                target: "iron helmet".to_string(),
+            }
+        );
+        assert_eq!(
+            parse_command(&pack, "take potion from malik"),
+            PlayerCommand::TakeFromPartyMember {
+                item_target: "potion".to_string(),
+                actor_reference: "malik".to_string(),
+            }
+        );
+
+        // Give
+        assert_eq!(
+            parse_command(&pack, "give apple to zayd"),
+            PlayerCommand::GiveToPartyMember {
+                item_target: "apple".to_string(),
+                actor_reference: "zayd".to_string(),
+            }
+        );
+        assert_eq!(
+            parse_command(&pack, "give apple"),
+            PlayerCommand::GiveToPartyMember {
+                item_target: "apple".to_string(),
+                actor_reference: String::new(),
+            }
+        );
+
+        // Drop, Equip, Unequip, Use
+        assert_eq!(
+            parse_command(&pack, "drop stone"),
+            PlayerCommand::Drop {
+                target: "stone".to_string(),
+            }
+        );
+        assert_eq!(
+            parse_command(&pack, "equip shield"),
+            PlayerCommand::Equip {
+                target: "shield".to_string(),
+            }
+        );
+        assert_eq!(
+            parse_command(&pack, "unequip boots"),
+            PlayerCommand::Unequip {
+                target: "boots".to_string(),
+            }
+        );
+        assert_eq!(
+            parse_command(&pack, "use torch"),
+            PlayerCommand::Use {
+                target: "torch".to_string(),
+            }
+        );
+
+        // Authored
+        assert_eq!(
+            parse_command(&pack, "dance wildly"),
+            PlayerCommand::Authored {
+                command_id: "dance".to_string(),
+                input: Some("wildly".to_string()),
+            }
+        );
+
+        // Direct action ID click fallback (UI overflow)
+        assert_eq!(
+            parse_command(&pack, "take"),
+            PlayerCommand::Take {
+                target: String::new(),
+            }
+        );
+        assert_eq!(
+            parse_command(&pack, "give"),
+            PlayerCommand::GiveToPartyMember {
+                item_target: String::new(),
+                actor_reference: String::new(),
+            }
+        );
+        assert_eq!(
+            parse_command(&pack, "dance"),
+            PlayerCommand::Authored {
+                command_id: "dance".to_string(),
+                input: None,
+            }
+        );
+    }
+
+    #[test]
+    fn parses_follow_commands() {
+        let pack = minimal_test_pack();
+        assert_eq!(
+            parse_command(&pack, "follow"),
+            PlayerCommand::Follow { target: None }
+        );
+        assert_eq!(
+            parse_command(&pack, "unfollow"),
+            PlayerCommand::Follow { target: None }
+        );
+        assert_eq!(
+            parse_command(&pack, "stop following"),
+            PlayerCommand::Follow { target: None }
+        );
+        assert_eq!(
+            parse_command(&pack, "follow: none"),
+            PlayerCommand::Follow { target: None }
+        );
+        assert_eq!(
+            parse_command(&pack, "follow: Harun"),
+            PlayerCommand::Follow {
+                target: Some("Harun".to_string())
+            }
+        );
+        assert_eq!(
+            parse_command(&pack, "follow Malik"),
+            PlayerCommand::Follow {
+                target: Some("Malik".to_string())
+            }
+        );
     }
 
     #[test]
@@ -330,5 +463,4 @@ mod tests {
             } if actor_reference == "blair" && order == "rally"
         ));
     }
-
 }

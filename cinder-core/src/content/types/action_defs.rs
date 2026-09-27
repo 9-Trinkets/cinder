@@ -280,6 +280,17 @@ impl From<ActionItemStorageTarget> for ItemStorageTarget {
     }
 }
 
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ActionVerbKind {
+    Take,
+    Give,
+    Drop,
+    Equip,
+    Unequip,
+    Use,
+    Authored,
+}
+
 impl ActionDefinition {
     pub fn has_effect(&self, effect: CommandEffect) -> bool {
         self.effects.contains(&effect)
@@ -287,6 +298,28 @@ impl ActionDefinition {
 
     pub fn has_any_effect(&self, effects: &[CommandEffect]) -> bool {
         effects.iter().any(|effect| self.has_effect(*effect))
+    }
+
+    pub fn verb_kind(&self) -> ActionVerbKind {
+        if self.matches_item_verb("take", CommandEffect::PickUpItem) {
+            ActionVerbKind::Take
+        } else if self.id == "give" {
+            ActionVerbKind::Give
+        } else if self.matches_item_verb("drop", CommandEffect::DropItem) {
+            ActionVerbKind::Drop
+        } else if self.matches_item_verb("equip", CommandEffect::EquipItem) {
+            ActionVerbKind::Equip
+        } else if self.matches_item_verb("unequip", CommandEffect::UnequipItem) {
+            ActionVerbKind::Unequip
+        } else if self.matches_item_verb("use", CommandEffect::UseItem) {
+            ActionVerbKind::Use
+        } else {
+            ActionVerbKind::Authored
+        }
+    }
+
+    fn matches_item_verb(&self, id: &str, effect: CommandEffect) -> bool {
+        (self.id == id || self.has_effect(effect)) && self.item_id.is_empty()
     }
 }
 

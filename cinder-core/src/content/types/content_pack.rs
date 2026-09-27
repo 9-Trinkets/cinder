@@ -210,7 +210,7 @@ impl ContentPack {
     pub fn player_can_take_items(&self) -> bool {
         self.actions
             .iter()
-            .any(|a| a.player_enabled && (a.id == "take" || a.has_effect(CommandEffect::PickUpItem)))
+            .any(|a| a.player_enabled && a.verb_kind() == ActionVerbKind::Take)
     }
 
     /// Whether player item transfers (dropping items) are declaratively enabled
@@ -218,7 +218,7 @@ impl ContentPack {
     pub fn player_can_drop_items(&self) -> bool {
         self.actions
             .iter()
-            .any(|a| a.player_enabled && (a.id == "drop" || a.has_effect(CommandEffect::DropItem)))
+            .any(|a| a.player_enabled && a.verb_kind() == ActionVerbKind::Drop)
     }
 
     pub fn action(&self, action_id: &str) -> Option<&ActionDefinition> {
