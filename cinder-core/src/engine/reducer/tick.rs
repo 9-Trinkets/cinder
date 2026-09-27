@@ -13,6 +13,7 @@ pub(super) fn advance_actor_stats_on_tick(
     content: &ContentPack,
     previous_time_minutes: u32,
     current_time_minutes: u32,
+    suppressed_actor_stats: &[(&str, &str)],
 ) {
     let stepped_stats = content
         .stats
@@ -37,6 +38,12 @@ pub(super) fn advance_actor_stats_on_tick(
         .collect();
     for actor_id in &actor_ids {
         for (stat_key, steps) in &stepped_stats {
+            if suppressed_actor_stats
+                .iter()
+                .any(|(s_actor, s_stat)| *s_actor == actor_id.as_str() && *s_stat == *stat_key)
+            {
+                continue;
+            }
             for _ in 0..*steps {
                 apply_world_hook_effects(
                     state,

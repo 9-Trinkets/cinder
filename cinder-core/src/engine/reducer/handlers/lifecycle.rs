@@ -12,6 +12,7 @@ pub(crate) fn handle_turn_started(
     turn_number: u32,
     _raw_input: &str,
     advances_time: bool,
+    suppressed_actor_stats: &[(&str, &str)],
     lines: &mut NarrativeLines,
 ) {
     state.turn_number = turn_number;
@@ -25,6 +26,7 @@ pub(crate) fn handle_turn_started(
             content,
             previous_time_minutes,
             state.current_time_minutes,
+            suppressed_actor_stats,
         );
         for signal in time_reached_signals(previous_time_minutes, state.current_time_minutes) {
             lines.extend_narration(advance_objective_for_signal(state, content, &signal));

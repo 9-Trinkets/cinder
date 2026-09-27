@@ -825,26 +825,29 @@ fn trace_deducts_mp_and_recovers_over_time() {
     );
 
     let state2 = runtime2.export_state().unwrap();
-    // Turn 2 advanced world time 1 -> 2 minutes, crossing the 2-minute interval (+1 MP: 9 -> 10),
-    // and then spent 2 MP on drain sigil (10 - 2 = 8 MP).
+    // Turn 2: drain sigil costs 2 MP (9 - 2 = 7 MP). Same-turn regen is suppressed on spellcast turns.
     assert_eq!(
         state2.actor_stat("player", "mp"),
-        8,
-        "Drain sigil costs 2 MP, with +1 MP regen at minute 2"
+        7,
+        "Drain sigil costs 2 MP (9 -> 7 MP)"
     );
 
-    // MP regenerates over time on 2-minute tick intervals (+1 MP every 2 minutes)
+    // MP regenerates over time on 5-minute tick intervals (+1 MP every 5 minutes)
     // Moving around advances time by 1 minute each step
     let _ = runtime2.run_turn("south").expect("move south"); // minute 2 -> 3 (no interval crossed)
     let s_t1 = runtime2.export_state().unwrap();
-    assert_eq!(s_t1.actor_stat("player", "mp"), 8);
+    assert_eq!(s_t1.actor_stat("player", "mp"), 7);
 
-    let _ = runtime2.run_turn("north").expect("move north"); // minute 3 -> 4 (interval crossed -> +1 MP)
+    let _ = runtime2.run_turn("north").expect("move north"); // minute 3 -> 4 (no interval crossed)
     let s_t2 = runtime2.export_state().unwrap();
+    assert_eq!(s_t2.actor_stat("player", "mp"), 7);
+
+    let _ = runtime2.run_turn("south").expect("move south"); // minute 4 -> 5 (5-min interval crossed -> +1 MP)
+    let s_t3 = runtime2.export_state().unwrap();
     assert_eq!(
-        s_t2.actor_stat("player", "mp"),
-        9,
-        "MP recovered 1 point at minute 4"
+        s_t3.actor_stat("player", "mp"),
+        8,
+        "MP recovered 1 point at minute 5"
     );
 
     // Insufficient MP check (fresh room without existing marks)

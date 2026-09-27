@@ -42,12 +42,27 @@ pub struct ReducerOutput {
     pub phase: GamePhase,
 }
 
+fn collect_suppressed_actor_stats(events: &[TimestampedWorldEvent]) -> Vec<(&str, &str)> {
+    events
+        .iter()
+        .filter_map(|e| match &e.event {
+            WorldEvent::ActorStatAdjusted {
+                actor_id,
+                stat,
+                delta,
+            } if *delta < 0 => Some((actor_id.as_str(), stat.as_str())),
+            _ => None,
+        })
+        .collect()
+}
+
 pub fn apply_events(
     state: &mut WorldState,
     content: &ContentPack,
     events: &[TimestampedWorldEvent],
 ) -> ReducerOutput {
     let mut lines = NarrativeLines::default();
+    let suppressed_actor_stats = collect_suppressed_actor_stats(events);
     // Queue-based so handlers can spawn follow-up events (e.g. relationship
     // updates triggered by command effects) that are applied in the same pass.
     let mut pending: VecDeque<TimestampedWorldEvent> = events.iter().cloned().collect();
@@ -64,6 +79,7 @@ pub fn apply_events(
                     *turn_number,
                     raw_input,
                     *advances_time,
+                    &suppressed_actor_stats,
                     &mut lines,
                 );
             }
