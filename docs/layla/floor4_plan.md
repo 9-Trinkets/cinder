@@ -98,7 +98,9 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 - **Why You Need It:** The fortress gates are locked by hydraulic deadbolts that cannot be pried open. The Teleportation Sigil lets Layla blink through solid iron bars, slip past sentries, and activate the teleport platform.
 - **How to Complete It:**
   1. Gather intel in the village from Yasmin, the miners, and Tariq (and, in one quiet thread, Sakhra) about the fortress layout and Malik's habits.
-  2. Create a diversion by releasing the steam overpressure valve in the wash basin terrace (`village_west_1`) to pop the northern gate hydraulic locks.
+  2. Enter the military complex via one of two paths:
+     - **Diversion route (puzzle):** Release the steam overpressure valve in the wash basin terrace (`village_west_1`) to pop the northern gate hydraulic locks.
+     - **Combat route:** Defeat the garrison guards stationed at `village_north_gate` (`garrison_guard`), loot the dropped `fortress-gate-key`, and manually unlock the bulkhead (`unlock gate`).
   3. Crack the commander's safe, take the scroll, and read it (`item.teleport_scroll_read` → `knows_teleport`).
 - **The Sigil:** a double triangle with intersecting lines in magic chalk. Tracing it while standing before a barred gate or obstacle blinks the party instantly to the other side.
 
@@ -205,6 +207,11 @@ With multi-member parties, players can assign specialized tactical roles:
   - Hook `valve.diverted` triggers on valve turning, setting `fortress_gate_open = "true"` and releasing the hydraulic lock pins to unlock the northern bulkhead.
   - Updated Tariq's prompt context in `actors.json` with knowledge and dialogue clues pointing Layla to the wash terrace valve.
   - Verified via full end-to-end integration test `floor4_diversion_opens_fortress_gate`.
+- **Fortress Entry Combat Route (Guard Key Drop):**
+  - Defeating the `garrison_guard` sentries at `village_north_gate` drops `fortress-gate-key`.
+  - Authored player command `unlock_fortress_gate` (`UNLOCK_GATE`), restricted to `village_north_gate`, consuming `fortress-gate-key` and blocked once `fortress_gate_open` is true.
+  - Hook `gate.unlocked` triggers on unlocking the gate, setting `fortress_gate_open = "true"`.
+  - Verified via full end-to-end integration test `floor4_alternative_gate_entry_via_guard_key`.
 - **Zayd Rescue, Escort, and Quest Reward Lantern (Side Quest `save_zayd`):**
   - Cleared `zayd`'s initial inventory to prevent premature gifting via dialogue grounding. Zayd's prompt context instructs him to clutch his parents' lantern close and only grant it once safe in the village.
   - Authored player command `unlock_cage` (`UNLOCK_CAGE`, requires `iron-cage-key` at `steam_prison_cage`).

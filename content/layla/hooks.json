@@ -1070,6 +1070,26 @@
       "rules": []
     }
   },
+  "gate.unlocked": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "set_story_var",
+            "key": "fortress_gate_open",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
   "zayd.freed": {
     "rule": "effect_table",
     "rule_config": {

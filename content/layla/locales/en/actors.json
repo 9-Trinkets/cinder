@@ -1813,6 +1813,7 @@
     "attack_interval_minutes": 2,
     "xp_drop": 20,
     "drops": {
+      "fortress-gate-key": 1,
       "steam-crossbow-bolt": 1
     },
     "initial_stats": {

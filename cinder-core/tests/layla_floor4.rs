@@ -1,6 +1,8 @@
 //! Integration tests for Floor 4 (The Commoners: 9-Room Village Triangle).
 
 use cinder_core::content::loader::load_named_pack;
+use cinder_core::content::types::{DropSpec, ItemStorageTarget};
+use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 
 const EXPECTED_FLOOR4_ROOMS: &[&str] = &[
@@ -974,4 +976,61 @@ fn floor4_zayd_rescue_and_village_escort() {
             .any(|o| o.quest_id.as_deref() == Some("save_zayd")),
         "save_zayd quest must be completed upon safe return"
     );
+}
+
+#[test]
+fn floor4_alternative_gate_entry_via_guard_key() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    assert_eq!(
+        pack.actor("garrison_guard")
+            .unwrap()
+            .drops
+            .get("fortress-gate-key"),
+        Some(&DropSpec::Always(1))
+    );
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "village_north_gate".to_string();
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+
+    // 1. Bulkhead is initially locked
+    let blocked = runtime.run_turn("go south").expect("turn runs");
+    assert_ne!(runtime.current_room_id().unwrap(), "fortress_gate");
+    assert!(
+        blocked.text().contains("cannot go")
+            || blocked.text().contains("route sheet")
+            || blocked.text().contains("can't go")
+    );
+
+    // 2. Defeat garrison_guard -> drops fortress-gate-key
+    let mut s = runtime.export_state().unwrap();
+    s.add_item_to_storage(
+        "fortress-gate-key",
+        ItemStorageTarget::CurrentRoom,
+        "village_north_gate",
+    );
+    let runtime = CinderRuntime::from_state(pack.clone(), s, false).expect("runtime creates");
+
+    // 3. Take key
+    runtime
+        .run_turn("take fortress gate key")
+        .expect("take key");
+    let s = runtime.export_state().unwrap();
+    assert!(s.has_item("fortress-gate-key"));
+
+    // 4. Unlock gate with key
+    let unlock_out = runtime.run_turn("unlock gate").expect("unlock gate");
+    assert!(
+        unlock_out
+            .text()
+            .contains("heavy brass key into the bulkhead lock")
+    );
+    let s = runtime.export_state().unwrap();
+    assert_eq!(s.story_vars.get("fortress_gate_open"), Some("true"));
+    assert!(!s.has_item("fortress-gate-key"), "key consumed");
+
+    // 5. Bulkhead is now unlocked, player can enter fortress_gate
+    runtime.run_turn("go south").expect("enter fortress");
+    assert_eq!(runtime.current_room_id().unwrap(), "fortress_gate");
 }

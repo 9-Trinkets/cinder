@@ -242,6 +242,12 @@
     "description": "A heavy brass-and-iron key carried by the cage warden, cut to turn the tumblers of the suspended steam prison cage."
   },
   {
+    "id": "fortress-gate-key",
+    "label": "fortress gate key",
+    "kind": "key",
+    "description": "A heavy brass skeleton key stamped with the fortress insignia, carried by the gate sentries to lock and unlock the northern bulkhead."
+  },
+  {
     "id": "brass-saber",
     "label": "brass officer saber",
     "kind": "weapon",

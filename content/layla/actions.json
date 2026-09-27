@@ -555,6 +555,56 @@
       }
     },
     {
+      "id": "unlock_fortress_gate",
+      "command": "UNLOCK_GATE",
+      "label": "Unlock Gate",
+      "group": "interaction",
+      "phrases": [
+        "unlock gate",
+        "unlock fortress gate",
+        "unlock the gate",
+        "unlock bulkhead",
+        "unlock the bulkhead",
+        "unlock door",
+        "use gate key",
+        "use fortress gate key",
+        "use the gate key"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "content_event": {
+        "id": "layla.fortress_gate_unlocked",
+        "event_text": "You insert the heavy brass key into the bulkhead lock and turn it with a sharp metallic clunk. The heavy hydraulic deadbolts slide back, releasing the sealed fortress gate.",
+        "hook_id": "gate.unlocked",
+        "signals": [
+          "fortress_gate_opened"
+        ]
+      },
+      "available": {
+        "allowed_rooms": [
+          "village_north_gate"
+        ],
+        "requires_item": "fortress-gate-key",
+        "consumes_item": "fortress-gate-key",
+        "blocked_by_story_var": "fortress_gate_open"
+      },
+      "ui": {
+        "bar": false,
+        "overflow": false,
+        "group": "interact",
+        "sort_order": 53
+      },
+      "player_command": {
+        "usage": "unlock gate",
+        "example": "unlock gate",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
+    },
+    {
       "id": "unlock_safe",
       "command": "UNLOCK_SAFE",
       "label": "Unlock Safe",
