@@ -31,54 +31,46 @@ Layla does not realize — yet — that she is moving through *her own* process.
 
 ---
 
-## 2. Floor Layout: 3 Concentric Triangles
+## 2. Floor Layout: 2 Concentric Triangles (With Surrounding Mines in Lore)
 
-The entire floor is structured in three concentric triangles, with security and control tightening the closer you get to the center:
+The floor is structured in two concentric triangles, with the massive Noor-stone mines forming the surrounding industrial world outside the perimeter:
 
 ```
-                  /\
-                 /  \
-                /    \            OUTER TRIANGLE: THE NOOR-STONE MINES
-               /  /\  \           (Steam drills, open pits, ore carts, heavy dust)
-              /  /  \  \
-             /  / /\ \  \         MIDDLE TRIANGLE: THE VILLAGE
-            /  / /  \ \  \        (Brass pipe homes, bakeries, steam-mushroom beds)
-           /  / / /\ \ \  \
-          /  / / /  \ \ \  \      INNER TRIANGLE: MILITARY COMPLEX
-         /  / / /GATE\ \ \  \     (Bastions, prison cage, steam teleport gate)
-        /  / / /______\ \ \  \
-       /  / /____________\ \  \
-      /  /__________________\  \
-     /__________________________\
+              /\
+             /  \
+            / /\ \           OUTER RING: THE WORKER VILLAGE (9 Rooms)
+           / /  \ \          (Brass pipe homes, bakeries, workshops, town square)
+          / / /\ \ \         *Surrounded by the deep Noor-stone mines in lore*
+         / / /  \ \ \
+        / / /GATE\ \ \       INNER TRIANGLE: MILITARY COMPLEX (7 Rooms)
+       / / /______\ \ \      (Bastions, prison cage, steam teleport platform)
+      / /____________\ \
+     /__________________\
 ```
 
-### Outer Triangle: The Noor-Stone Mines (Heavy Industry — Planned)
-The outermost ring is a massive, echoing network of open quarries and mine shafts wrapping around the entire floor.
-- **Look & Feel:** Fine white stone dust coats every surface. Steam drills pound against rock walls (*thump... thump... hiss*). Red boiler lights glow through dense steam clouds. Bright, pale veins of raw Noor-stone glow softly inside deep crevices.
-- **Key Locations:**
-  - `mine_apex_pit`: The northern tip. An immense open quarry where steam-powered mechanical picks break off raw Noor-stone boulders.
-  - `steam_sorting_plant`: The southwest corner. Chutes, shaking screens, and steam conveyors sort Noor-stone chunks by grade.
-  - `cart_rail_terminus`: The southeast corner. Iron tracks where steam rail engines pull heavy ore wagons.
-  - `drainage_flue`: An old, rusted steam-drain conduit running beneath the mine floor directly into the middle village ring — the stealth bypass into the fortress.
-  - **The Conversion Works (hidden, canonical):** behind the sorting plant's false bulkhead, the mine floor hides the machinery that processed the village's "offerings" — the place Zayd's father was taken. The teleport scroll and the sigil lore sit on the mine side of the wall; the works themselves stay partly off-map until Act 2 resolves the priests.
+### The Surrounding Mines (World Lore & Sensory Backdrop)
+The Noor-stone mines surround the entire floor in the narrative fiction, rather than being empty playable map space.
+- **Sensory Presence:** Fine white stone dust coats roofs and garments. Heavy steam drills pound against distant rock walls (*thump... thump... hiss*). Red boiler glow reflects off drifting steam, and iron rails carry loaded ore carts directly to the village perimeter gates.
+- **The Conversion Connection:** The villagers know the mines as their livelihood, but the deep shafts conceal where the "offerings" are escorted before being shipped upward.
 
-### Middle Triangle: The Worker Village (Living Quarters — Built)
-The middle ring is where the miners, artisans, and their families live. Homes are built from rough stone blocks retrofitted with exposed brass steam heating pipes and glowing Noor-stone lanterns.
+### Outer Ring: The Worker Village (Living Quarters — 9 Rooms Built)
+The outer playable ring is where the miners, artisans, and their families live. Homes are built from rough stone blocks retrofitted with exposed brass steam heating pipes and glowing Noor-stone lanterns.
 - **Look & Feel:** Warm yellow lantern light cuts through the mist. The smell of fresh flatbread, mushroom broth, and machine oil. Children running between laundry lines; tired workers resting on wooden benches.
-- **Key Locations (built):**
-  - `village_square`: The central town plaza (content: `village_square`). In the design fiction it is the `boiler_square` — the stage for gossip and the guard's public orders.
+- **Key Locations:**
+  - `village_square`: The central town plaza (the stage for gossip, Tariq's observations, and Yasmin's bakery).
   - `village_south_1`: Elder Rashid's home — the elder who signed the order surrendering Zayd.
-  - `village_east_2`: **Yasmin's bakery**, the busiest in town (sesame flatbread, spiced tea). She baked for Zayd every morning.
-  - `village_west_2`: **Tariq's workshop** — a clockmaker and tinkerer; the one villager who refuses to believe the collapse story.
-  - `mushroom_steambeds`: Tiered planting beds heated by low-pressure steam pipes (planned rooms).
+  - `village_east_2`: **Yasmin's bakery**, the busiest in town (sesame flatbread, spiced tea).
+  - `village_west_2`: **Tariq's workshop** — the clockmaker and tinkerer whose knowledge guides the steam diversion.
+  - `village_west_1`: **Wash Basin Terrace** — the site of the overpressure valve used to divert steam and pop the fortress gate locks.
+  - `village_north_gate`: The heavy northern checkpoint leading into the inner fortress.
 
-### Inner Triangle: The Military Complex (The Fortress — Planned)
+### Inner Triangle: The Military Complex (The Fortress — 7 Rooms Built)
 The fortified center of the floor, enclosed behind high iron fences, steam-powered security gates, and searchlight towers. Commoners caught here are locked up or shot on sight.
 - **Look & Feel:** Polished iron plating, barbed wire, clean steam vents, and the hum of high-voltage mana dynamos. Armed soldiers patrol the ramparts carrying steam crossbows.
 - **Key Locations:**
   - `fortress_gate`: The main checkpoint with hydraulic gates and sentry barricades.
-  - `command_bastion`: Commander Malik's headquarters. Inside is a brass combination safe holding the **Teleportation Scroll**.
-  - `steam_prison_cage`: A reinforced iron cage suspended by chains over a geothermal vent. This is where young Zayd is held.
+  - `command_bastion`: Commander Malik's headquarters and Priest Harun's station, holding the safe and the Teleportation Scroll.
+  - `steam_prison_cage`: A reinforced iron cage suspended by chains over a geothermal vent where young Zayd was held.
   - `teleport_platform`: A massive circular brass platform ringed with steam valves and Noor-stone conduits that leads to Floor 5.
 
 ---
@@ -108,7 +100,7 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 - **Why You Need It:** The fortress gates are locked by hydraulic deadbolts that cannot be pried open. The Teleportation Sigil lets Layla blink through solid iron bars, slip past sentries, and activate the teleport platform.
 - **How to Complete It:**
   1. Gather intel in the village from Yasmin, the miners, and Tariq (and, in one quiet thread, Sakhra) about the fortress layout and Malik's habits.
-  2. Use the `drainage_flue` from the mine or create a diversion with the steam pressure valves in the boiler square.
+  2. Create a diversion by releasing the steam overpressure valve in the wash basin terrace (`village_west_1`) to pop the northern gate hydraulic locks.
   3. Crack the commander's safe, take the scroll, and read it (`item.teleport_scroll_read` → `knows_teleport`).
 - **The Sigil:** a double triangle with intersecting lines in magic chalk. Tracing it while standing before a barred gate or obstacle blinks the party instantly to the other side.
 
@@ -224,6 +216,7 @@ With multi-member parties, players can assign specialized tactical roles:
   - Verified via full end-to-end integration test `floor4_zayd_rescue_and_village_escort`.
 
 **To build (next passes):**
-1. Rooms + features for Outer Triangle `mine_*` and `drainage_flue` (the stealth infiltration route);
-2. `beat_objectives.json` quest progress;
-3. Awakening runtime: WIS ≥ 10 name change + speech unlock (engine/UI follow-up; stat is real today, the threshold behavior comes with the content above).
+1. Bastion & Command encounters: Commander Malik safe interaction/defeat and Priest Harun encounter to acquire `teleport-scroll`;
+2. Central Teleport Platform activation: Tracing `teleport-sigil` on `teleport_platform` to activate the steam gate and open the exit down to Floor 5;
+3. Quest line beat objectives (`beat_objectives.json`) and progression verification;
+4. Awakening runtime: WIS ≥ 10 name change + speech unlock (engine/UI follow-up; stat is real today, the threshold behavior comes with the content above).

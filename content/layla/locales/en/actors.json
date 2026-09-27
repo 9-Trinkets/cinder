@@ -1423,18 +1423,18 @@
         "You desperately want Zayd saved, but fear retribution against the village if the garrison is provoked without a plan."
       ],
       "subtext_notes": [
-        "You know about the old maintenance drainage conduit running beneath the mine cart tracks directly into Commander Malik's command tent.",
+        "You know Tariq the clockmaker in the west workshop has been watching the garrison's steam lines and looking for a way to trip their locks.",
         "You know the front fortress gate is secured by hydraulic pressure deadbolts that cannot be pried open by normal means.",
         "You carry the burden of the whole village's moral failure."
       ],
       "response_notes": [
         "Speak in quiet, broken sentences heavy with regret. Do not defend your actions.",
         "If Layla mentions Zayd, plead with her to rescue the boy before the temple transport arrives.",
-        "Tell Layla about the secret drainage conduit leading into the command tent from the cart tracks."
+        "Tell Layla to speak with Tariq the clockmaker in the west quarter, who understands the fortress's steam hydraulics."
       ],
       "behavior_examples": [
         "He buries his face in his hands when Zayd's name is spoken.",
-        "He points a trembling finger toward the maps of the drainage conduit.",
+        "He gestures weakly toward the western terrace where Tariq keeps his workshop.",
         "He whispers that a true leader protects the defenseless, and he failed."
       ]
     }
