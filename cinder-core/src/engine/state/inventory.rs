@@ -216,4 +216,11 @@ impl WorldState {
         *entry += amount;
         true
     }
+
+    /// Adds an item to the player's inventory and actor inventory simultaneously.
+    pub fn acquire_player_item(&mut self, content: &ContentPack, item_id: &str) {
+        let player_id = content.settings.combat.player_actor_id.clone();
+        self.add_item(item_id);
+        self.actor_add_item(&player_id, item_id);
+    }
 }

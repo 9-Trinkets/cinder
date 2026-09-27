@@ -17,10 +17,12 @@ mod inventory;
 mod party;
 mod relationships;
 mod sequences;
+mod spawn;
 mod stats;
 mod tracking;
 
 pub use sequences::ScriptedSequencePlayhead;
+pub use spawn::{SpawnActorConfig, SpawnActorOutcome, SpawnedActorInfo};
 
 /// Current persisted `WorldState` format version. Version 1 predates the
 /// version field and used floor-conquest milestone naming (`floor_summaries`,

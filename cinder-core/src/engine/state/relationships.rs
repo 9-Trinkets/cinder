@@ -43,4 +43,81 @@ impl WorldState {
         relationship.follows_player = follows_player;
         self.set_relationship(actor_id, relationship);
     }
+
+    /// Sets an actor's stance and follower state, and initializes party order if Allied.
+    pub fn set_actor_stance(
+        &mut self,
+        content: &ContentPack,
+        actor_id: &str,
+        stance: ActorStance,
+        follows_player: bool,
+    ) {
+        let mut relationship = self.relationship(actor_id);
+        relationship.stance = stance;
+        relationship.follows_player = follows_player;
+        self.set_relationship(actor_id, relationship);
+        if stance == ActorStance::Allied {
+            self.initialize_party_order(content, actor_id);
+        }
+    }
+
+    /// Sets the stance of all living non-player actors carrying `tag`.
+    /// Returns the (id, name) of all actors whose stance was changed.
+    pub fn set_actor_stance_by_tag(
+        &mut self,
+        content: &ContentPack,
+        tag: &str,
+        stance: ActorStance,
+        from_stances: &[ActorStance],
+        follows_player: bool,
+    ) -> Vec<(String, String)> {
+        let health_stat_id = &content.settings.combat.health_stat_id;
+        let tagged_actors: Vec<(String, String)> = self
+            .actors(content)
+            .filter(|actor| actor.tags.iter().any(|actor_tag| actor_tag.as_str() == tag))
+            .map(|actor| (actor.id.clone(), actor.name.clone()))
+            .collect();
+
+        let mut changed = Vec::new();
+        for (actor_id, actor_name) in tagged_actors {
+            if content.is_player_actor(&actor_id) {
+                continue;
+            }
+            if self.actor_current_room_id(content, &actor_id).is_empty() {
+                continue;
+            }
+            if self.actor_is_defeated(&actor_id, health_stat_id) {
+                continue;
+            }
+            let relationship = self.relationship(&actor_id);
+            if !from_stances.is_empty() && !from_stances.contains(&relationship.stance) {
+                continue;
+            }
+            if relationship.stance == stance {
+                continue;
+            }
+            self.set_actor_stance(content, &actor_id, stance, follows_player);
+            changed.push((actor_id, actor_name));
+        }
+        changed
+    }
+
+    /// Defeats every living non-player actor carrying `tag`.
+    /// Returns the IDs of the defeated actors.
+    pub fn defeat_actors_by_tag(&mut self, content: &ContentPack, tag: &str) -> Vec<String> {
+        let health_stat_id = &content.settings.combat.health_stat_id;
+        let tagged_actor_ids: Vec<String> = self
+            .actors(content)
+            .filter(|actor| {
+                !content.is_player_actor(&actor.id)
+                    && actor.tags.iter().any(|actor_tag| actor_tag.as_str() == tag)
+            })
+            .map(|actor| actor.id.clone())
+            .collect();
+
+        for actor_id in &tagged_actor_ids {
+            let _ = self.adjust_actor_stat(content, actor_id, health_stat_id, i32::MIN / 2);
+        }
+        tagged_actor_ids
+    }
 }
