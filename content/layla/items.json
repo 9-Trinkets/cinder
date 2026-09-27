@@ -233,7 +233,7 @@
     "stat_bonuses": {
       "wisdom": 6
     },
-    "description": "A dented miner's lantern of heavy brass, fitted with low-pressure vent clips. A small shard of uncut Noor-stone hums quietly behind the smudged glass. The casing stays faintly warm to the touch, and the initial 'J' is scratched into the base plate beneath layers of old machine grease."
+    "description": "A dented miner's lantern of heavy brass, fitted with low-pressure vent clips. A warm amber filament hums quietly behind the smudged glass. The casing stays faintly warm to the touch, and the initial 'J' is scratched into the base plate beneath layers of old machine grease."
   },
   {
     "id": "iron-cage-key",
@@ -294,11 +294,5 @@
     "label": "copper pipe fitting",
     "kind": "misc",
     "description": "A durable section of high-pressure copper steam pipe with threaded brass couplings."
-  },
-  {
-    "id": "noor-stone-shard",
-    "label": "Noor-stone shard",
-    "kind": "misc",
-    "description": "A jagged fragment of raw, pale Noor-stone mineral, softly vibrating with geothermal heat and arcane resonance."
   }
 ]

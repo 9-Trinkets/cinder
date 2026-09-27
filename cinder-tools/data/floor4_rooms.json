@@ -223,7 +223,7 @@
     "y": 17.0,
     "id": "command_bastion",
     "title": "Commander's Bastion",
-    "summary": "The fortified headquarters of Captain Malik. A large brass tactical table dominates the center of the room, surrounded by maps of the Noor-stone veins. An iron combination safe is embedded in the stone wall.",
+    "summary": "The fortified headquarters of Captain Malik. A large brass tactical table dominates the center of the room, surrounded by patrol routes and subterranean maps. An iron combination safe is embedded in the stone wall.",
     "inspect_text": "Neat weapon racks and polished armor stands line the walls. Red silk military banners hang between steam vents. A heavy steel safe with dual combination tumblers stands bolted into the granite.",
     "feature_label": "the commander's iron safe",
     "feature_aliases": [
@@ -251,14 +251,14 @@
       "tripod",
       "grille"
     ],
-    "feature_inspect": "A directional brass searchlight powered by a small Noor-stone battery. Its reflector lens is angled downward toward the courtyard below."
+    "feature_inspect": "A directional brass searchlight powered by a heavy steam conduit battery. Its reflector lens is angled downward toward the courtyard below."
   },
   {
     "x": 12.0,
     "y": 14.0,
     "id": "teleport_platform",
     "title": "Teleportation Platform",
-    "summary": "A sunken circular courtyard of dark basalt. At its center rises a massive circular brass platform etched with geometric circuits, pulsing with pale turquoise light from deep Noor-stone conduits.",
+    "summary": "A sunken circular courtyard of dark basalt. At its center rises a massive circular brass platform etched with geometric circuits, pulsing with pale turquoise light from deep geothermal conduits.",
     "inspect_text": "Thick copper energy lines converge on the central brass ring. Steam releases in rhythmic pulses from surrounding relief valves. Tracing the Teleportation Sigil here will activate the descent gate to Floor 5.",
     "feature_label": "the circular brass teleport platform",
     "feature_aliases": [

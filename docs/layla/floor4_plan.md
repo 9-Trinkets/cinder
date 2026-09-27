@@ -1,6 +1,6 @@
 # Floor 4 — The Commoners (The Mine, The Village, and The Military Complex)
 
-Living design plan for **Level 4** of Layla. This floor covers the Noor-stone mines, the steampunk worker village, and the fortified military complex guarding the teleportation gate. It is the first floor with **quests** and the floor where the game's theme stops being abstract: *control vs. freedom* becomes a boy in a cage and two parents turned into dungeon pieces.
+Living design plan for **Level 4** of Layla. This floor covers the geothermal mines, the steampunk worker village, and the fortified military complex guarding the teleportation gate. It is the first floor with **quests** and the floor where the game's theme stops being abstract: *control vs. freedom* becomes a boy in a cage and two parents turned into dungeon pieces.
 
 All text for players must use **simple sentences and everyday words for teenagers**. Avoid unusual, archaic, or fancy words (use "offering" instead of "tithe", "gate" instead of "portal", "platform" instead of "dais", "furnace" instead of "crucible").
 
@@ -16,12 +16,10 @@ This is not an abandoned ruin. Thousands of commoners live and work here under t
 
 - **The Setting — Steampunk Underworld:**
   The caverns are crisscrossed by thick copper and iron pipes, hissing steam valves, rattling ore carts, and brass pressure gauges. High-pressure steam engines power the heavy mining equipment and heat the underground town.
-- **The Mineral — Noor-Stone:**
-  The miners excavate **Noor-stone**, a soft, glowing mineral found in deep geothermal veins.
-  - *The Magic Chalk Connection:* When pulverized, purified, and pressed, Noor-stone is the exact raw material used to craft the magic chalk Layla holds in her hand.
-  - *The Industrial Power:* In its raw rock form, Noor-stone vibrates with heat and arcane resonance, superheating boilers to power the steam machinery on Floor 4 and the spellcraft on the floors above.
+- **The Industry — Geothermal Steam & Mining:**
+  The miners drill into rich volcanic veins and deep geothermal shafts. High-pressure steam and boiling underground springs superheat heavy boilers, driving the pistons, dynamos, and industrial machinery across the floor.
 - **The Problem — The Barred Gate:**
-  There are no stairs leading up. The only way forward is a massive **teleportation gate** powered by steam boilers and Noor-stone conduits. It sits inside a fortified military complex in the center of the floor. Commoners are forbidden from entering — unless the guards select them as a living **offering** for the temple priests above.
+  There are no stairs leading up. The only way forward is a massive **teleportation gate** powered by high-pressure steam boilers and pneumatic conduits. It sits inside a fortified military complex in the center of the floor. Commoners are forbidden from entering — unless the guards select them as a living **offering** for the temple priests above.
 
 ### The Lie the Floor Tells
 
@@ -33,14 +31,14 @@ Layla does not realize — yet — that she is moving through *her own* process.
 
 ## 2. Floor Layout: 2 Concentric Triangles (With Surrounding Mines in Lore)
 
-The floor is structured in two concentric triangles, with the massive Noor-stone mines forming the surrounding industrial world outside the perimeter:
+The floor is structured in two concentric triangles, with the massive geothermal mines forming the surrounding industrial world outside the perimeter:
 
 ```
               /\
              /  \
             / /\ \           OUTER RING: THE WORKER VILLAGE (9 Rooms)
            / /  \ \          (Brass pipe homes, bakeries, workshops, town square)
-          / / /\ \ \         *Surrounded by the deep Noor-stone mines in lore*
+          / / /\ \ \         *Surrounded by the deep steam mines in lore*
          / / /  \ \ \
         / / /GATE\ \ \       INNER TRIANGLE: MILITARY COMPLEX (7 Rooms)
        / / /______\ \ \      (Bastions, prison cage, steam teleport platform)
@@ -49,12 +47,12 @@ The floor is structured in two concentric triangles, with the massive Noor-stone
 ```
 
 ### The Surrounding Mines (World Lore & Sensory Backdrop)
-The Noor-stone mines surround the entire floor in the narrative fiction, rather than being empty playable map space.
-- **Sensory Presence:** Fine white stone dust coats roofs and garments. Heavy steam drills pound against distant rock walls (*thump... thump... hiss*). Red boiler glow reflects off drifting steam, and iron rails carry loaded ore carts directly to the village perimeter gates.
+The deep steam mines surround the entire floor in the narrative fiction, rather than being empty playable map space.
+- **Sensory Presence:** Fine stone dust and soot coat roofs and garments. Heavy steam drills pound against distant rock walls (*thump... thump... hiss*). Red boiler glow reflects off drifting steam, and iron rails carry loaded ore carts directly to the village perimeter gates.
 - **The Conversion Connection:** The villagers know the mines as their livelihood, but the deep shafts conceal where the "offerings" are escorted before being shipped upward.
 
 ### Outer Ring: The Worker Village (Living Quarters — 9 Rooms Built)
-The outer playable ring is where the miners, artisans, and their families live. Homes are built from rough stone blocks retrofitted with exposed brass steam heating pipes and glowing Noor-stone lanterns.
+The outer playable ring is where the miners, artisans, and their families live. Homes are built from rough stone blocks retrofitted with exposed brass steam heating pipes and warm oil lanterns.
 - **Look & Feel:** Warm yellow lantern light cuts through the mist. The smell of fresh flatbread, mushroom broth, and machine oil. Children running between laundry lines; tired workers resting on wooden benches.
 - **Key Locations:**
   - `village_square`: The central town plaza (the stage for gossip, Tariq's observations, and Yasmin's bakery).
@@ -71,7 +69,7 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
   - `fortress_gate`: The main checkpoint with hydraulic gates and sentry barricades.
   - `command_bastion`: Commander Malik's headquarters and Priest Harun's station, holding the safe and the Teleportation Scroll.
   - `steam_prison_cage`: A reinforced iron cage suspended by chains over a geothermal vent where young Zayd was held.
-  - `teleport_platform`: A massive circular brass platform ringed with steam valves and Noor-stone conduits that leads to Floor 5.
+  - `teleport_platform`: A massive circular brass platform ringed with steam valves and arcane bronze conduits that leads to Floor 5.
 
 ---
 
@@ -122,7 +120,7 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 - **The Reward & The Family Heirloom:**
   - Zayd is escorted back to the village and hidden safely in the steam mushroom caves (beat stages: `sq_hear_sacrifice` → `sq_save_zayd` → `sq_return_zayd`).
   - The villagers are overjoyed and deeply indebted, providing healing salves, chalk refills, and local maps.
-  - Zayd hands Layla his most cherished possession — the brass-bound miner's lantern fueled by a glowing piece of raw Noor-stone, and the only clue to the secret his parents share:
+  - Zayd hands Layla his most cherished possession — the brass-bound miner's lantern with a warm amber filament that never goes cold, and the only clue to the secret his parents share:
     > *"My mom and dad gave me this before the rocks fell. They said light always finds a way through stone. Take it... wherever you're going in the deep dark, I hope their light guides your way."*
   - Layla receives **Zayd's Lantern** — the key item of the floor's secret.
 
@@ -135,7 +133,7 @@ The scavenged truth: with Zayd safe, the pieces fall into place — the old gole
 
 **The awakening — one light, two ways to wake:**
 
-- **The father wakes by light.** Bring the lantern to Sakhra. The Noor-stone glow is the light his son kept carrying to him — the only warmth a guardian's fog keeps. At WIS 10, the stone eyes clear and a voice comes out of the golem for the first time: his pipe hiss gives way to speech, and he says Zayd's name. He has been beside his son the whole floor, and he remembers.
+- **The father wakes by light.** Bring the lantern to Sakhra. The lantern's warm glow is the light his son kept carrying to him — the only warmth a guardian's fog keeps. At WIS 10, the stone eyes clear and a voice comes out of the golem for the first time: his pipe hiss gives way to speech, and he says Zayd's name. He has been beside his son the whole floor, and he remembers.
 - **The mother wakes by voice.** The queen is already at the edge of waking (her wisdom sits highest of any piece on the board — she is a mother who never fully stopped). The extra point of light is not a tool but a voice: Zayd's, calling her name across the ranks. The son wakes what light cannot reach. *(One lantern only, and no second lamp in this design — the family wakes by different lights, on purpose.)*
 
 - **The payoff.** The awakened parents stay with Layla as free allies — two humans who remember the flavour of bread and the weight of a child — the proof the whole game has been circling: the program can be *undone*, and she is not the only one being unmade.
@@ -147,7 +145,7 @@ The scavenged truth: with Zayd safe, the pieces fall into place — the old gole
 Wisdom (WIS) is now a **real stat** in `content/layla/stats.json` (default 3, range 0–10, seeded to every actor, surfaced generically in the vitals/sidebar and inspect UI).
 
 - **What wisdom means:** how much of their *pre-machine* self a converted piece still holds. Golems converted and bricked in stone carry the least (3–5). Elves converted into ranked pieces carry more (7–9) — the army's refusal to be bound and its final choice to stand down are *this* stat leaking through. The queen is the closest to waking of all.
-- **Raising wisdom:** Equipping **Zayd's Lantern** (+6 WIS) shines its warm, steady Noor-stone light into a follower's mind. Raisable to the 10-line.
+- **Raising wisdom:** Equipping **Zayd's Lantern** (+6 WIS) shines its warm, steady light into a follower's mind. Raisable to the 10-line.
 - **Reaching Wisdom 10 triggers an Awakening:**
   - The follower breaks free from its mind-wiped role and remembers who it was.
   - Its generic name changes to its real name; full speech unlocks.

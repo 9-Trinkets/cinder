@@ -214,8 +214,8 @@ Below the fire moat of Floor 3, the dungeon stops being abstract game boards and
 - Floors 4, 5, and 6 are the **kingdom inside**, divided into three social classes:
 
 #### Level 4 — The Commoners (Miners, Farmers, and Laborers)
-The working foundation of the kingdom. Simple stone villages, mushroom farms, and deep **Noor-stone Mines**:
-- **Noor-stone Economy:** Miners dig out glowing **Noor-stone** — the raw form of the magic-chalk mineral — that powers the kingdom's lights, tools, and spells on the upper floors.
+The working foundation of the kingdom. Simple stone villages, mushroom farms, and deep geothermal steam mines:
+- **Geothermal Steam Economy:** Miners drill into deep volcanic heat vents and copper veins that power the kingdom's lights, tools, boilers, and steam machinery.
 - **Guarded Teleportation Gates:** There are no open stairs between floors. People can only travel through **Teleportation Gates** inside heavily guarded military camps. Commoners are barred from the gates unless soldiers take them away as a **sacrifice or offering** for the temple.
 - **The Teleportation Sigil:** In the mine complex, Layla lifts the **teleport scroll** from Commander Malik's safe and learns the **Teleportation Sigil** (`teleport-sigil`). This lets her blink past locked bars and sneak into guarded camps to solve quests.
 
@@ -259,7 +259,7 @@ In this kingdom, people and monsters have been brainwashed into fixed roles (Pea
 - **Act 2 Core Canon (Settled Pillars):**
   1. *Population:* Pure human population kept amnesiac in fixed social classes.
   2. *Connection to Floors 1–3:* The outer monsters were human villagers and prisoners taken by the priests as **sacrifices and offerings**, then wiped of memory and changed into dungeon guards (the "reprogramming"/conversion — see Level 4; Zayd's parents are the named examples).
-  3. *Resource Economy:* **Noor-stone** mined by villagers on Floor 4 — the raw mineral behind magic chalk — powering the kingdom's machines, teleportation gates, and temple rituals.
+  3. *Resource Economy:* Geothermal steam and metals mined by villagers on Floor 4, powering the kingdom's machines, boilers, and infrastructure.
   4. *Inter-Floor Travel:* Heavily guarded **Teleportation Gates** in military camps, watched by noble guards and temple priests. Layla's **Teleportation Sigil** lets her bypass these barriers to solve key quests.
 - **Remaining Narrative Open Threads:**
 - **Who was the "voice that taught her capture is just surrounding"?** A
