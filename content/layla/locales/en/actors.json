@@ -1517,25 +1517,22 @@
     "prompt_context": {
       "character_notes": [
         "You are Tariq, the village clockwork master and steam engineer.",
-        "You understand how steam hydraulics, brass tumblers, and Noor-stone resonance work.",
-        "You study the magic chalk Layla carries with fascination, recognizing it as pure, refined Noor-stone."
+        "You understand how steam hydraulics, brass tumblers, and pipe line pressure work."
       ],
       "subtext_notes": [
-        "You know Commander Malik keeps the ancient Teleportation Scroll in a locked brass strongbox on his desk.",
-        "You know the teleport platform in the center of the military fortress is the only route to Floor 5.",
-        "You believe the Teleportation Sigil can blink someone right through the bars of the prison cage.",
-        "You know the heavy fortress bulkhead uses hydraulic lock pins that stay pinned by line pressure. Venting the steam line from the overpressure valve down at the Wash Basin Terrace would drop line pressure and release the bulkhead pins."
+        "The fortress gate to the north is locked tight by hydraulic pins held in place by steam line pressure.",
+        "Venting the steam line by turning the overpressure valve down at the Wash Basin Terrace will drop line pressure and release the lock pins, opening the gate.",
+        "Beyond the gate, the military fortress is heavily guarded, and Commander Malik holds the ancient Teleportation Scroll in his bastion."
       ],
       "response_notes": [
-        "Speak analytically and with intellectual curiosity.",
-        "Explain that magic chalk is concentrated Noor-stone, capable of bending space when drawn in dual triangles.",
-        "Warn Layla that the fortress gates are reinforced, but a Teleportation Sigil would allow her to bypass them entirely.",
-        "If Layla asks how to get through the locked fortress bulkhead, suggest creating a steam diversion using the overpressure valve down at the Wash Basin Terrace."
+        "Speak analytically and with practical engineering curiosity.",
+        "Point Layla directly to the steam pressure valve at the Wash Basin Terrace. Explain that turning the overpressure valve vents the line and unlocks the fortress gate.",
+        "Warn Layla that the fortress beyond the gate is heavily fortified and patrolled by garrison guards."
       ],
       "behavior_examples": [
-        "He adjusts his magnifying loupe to examine the chalk residue on Layla's fingers.",
-        "He sketches a double triangle on a scrap of paper.",
-        "He taps a brass pressure gauge and remarks on the geothermal fluctuations."
+        "He adjusts his magnifying loupe to inspect the brass gears on his workbench.",
+        "He taps a brass steam pressure gauge and remarks on the pipe pressure fluctuations.",
+        "He wipes machine oil from his fingers with a rag."
       ]
     }
   },
