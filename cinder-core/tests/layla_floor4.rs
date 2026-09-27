@@ -878,6 +878,18 @@ fn floor4_zayd_rescue_and_village_escort() {
         "Player must not receive lantern prematurely while in cage room"
     );
 
+    // Verify unlock cage is no longer available after unlocking
+    let unlock_action = pack.actions.iter().find(|a| a.id == "unlock_cage").unwrap();
+    assert!(
+        !cinder_core::engine::turn_policies::action_is_available(
+            &pack,
+            &state_after_unlock,
+            unlock_action,
+            "steam_prison_cage"
+        ),
+        "unlock cage must not be available once zayd is rescued"
+    );
+
     // Verify quest advanced to escort stage sq_return_zayd
     let objectives_escort = runtime.current_objective_summaries().unwrap();
     let escort_quest = objectives_escort

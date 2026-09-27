@@ -77,6 +77,9 @@ pub(crate) fn command_availability_issue(
     if !a.requires_story_var.is_empty() && !story_var_is_truthy(state, &a.requires_story_var) {
         return Some(CommandAvailabilityIssue::StageInactive);
     }
+    if !a.blocked_by_story_var.is_empty() && story_var_is_truthy(state, &a.blocked_by_story_var) {
+        return Some(CommandAvailabilityIssue::StageInactive);
+    }
 
     None
 }
@@ -165,6 +168,9 @@ pub fn action_is_available(
         return false;
     }
     if !a.requires_story_var.is_empty() && !story_var_is_truthy(state, &a.requires_story_var) {
+        return false;
+    }
+    if !a.blocked_by_story_var.is_empty() && story_var_is_truthy(state, &a.blocked_by_story_var) {
         return false;
     }
 

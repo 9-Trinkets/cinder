@@ -17,6 +17,10 @@ pub struct ActionAvailability {
     /// to be available, e.g. `warden_defeated`.
     #[serde(default)]
     pub requires_story_var: String,
+    /// A story variable that must NOT be set (or must be falsy) for the action
+    /// to be available, e.g. `zayd_rescued`.
+    #[serde(default)]
+    pub blocked_by_story_var: String,
     #[serde(default)]
     pub allowed_rooms: Vec<String>,
     #[serde(default)]

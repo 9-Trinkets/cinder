@@ -535,7 +535,9 @@
         "allowed_rooms": [
           "steam_prison_cage"
         ],
-        "requires_item": "iron-cage-key"
+        "requires_item": "iron-cage-key",
+        "consumes_item": "iron-cage-key",
+        "blocked_by_story_var": "zayd_rescued"
       },
       "ui": {
         "bar": false,
