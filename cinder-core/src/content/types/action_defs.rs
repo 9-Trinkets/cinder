@@ -96,6 +96,8 @@ pub enum PanelDataSource {
     InventoryItems,
     /// Actors the player can follow or stop following.
     FollowActors,
+    /// Known spatial anchors (permanent platforms and active chalk anchors).
+    TeleportAnchors,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

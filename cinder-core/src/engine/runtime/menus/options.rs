@@ -43,6 +43,7 @@ impl CinderRuntime {
             PanelDataSource::InventoryItems => self.inventory_panel_options(&state),
             PanelDataSource::CraftableItems => Vec::new(),
             PanelDataSource::FollowActors => self.follow_actor_panel_options(&state),
+            PanelDataSource::TeleportAnchors => self.teleport_anchors_panel_options(&state),
         };
         Ok(options)
     }
@@ -293,6 +294,40 @@ impl CinderRuntime {
                     }
                 }),
         );
+        options
+    }
+
+    fn teleport_anchors_panel_options(&self, state: &WorldState) -> Vec<PanelOption> {
+        let mut options = Vec::new();
+        if state.story_vars.get("anchor_floor4_platform") == Some("true") {
+            options.push(PanelOption {
+                id: "teleport_platform".to_string(),
+                title: "Floor 4 Platform (Permanent)".to_string(),
+                command: "teleport teleport_platform".to_string(),
+                menu_text: "Permanent Anchor".to_string(),
+            });
+        }
+        if state.story_vars.get("anchor_floor5_gate") == Some("true") {
+            options.push(PanelOption {
+                id: "floor5_start".to_string(),
+                title: "Floor 5 Descent Platform (Permanent)".to_string(),
+                command: "teleport floor5_start".to_string(),
+                menu_text: "Permanent Anchor".to_string(),
+            });
+        }
+        for room_id in &state.chalk_anchors {
+            let room_title = self
+                .content
+                .room(room_id)
+                .map(|r| r.title.as_str())
+                .unwrap_or(room_id);
+            options.push(PanelOption {
+                id: room_id.clone(),
+                title: format!("Chalk Anchor: {room_title} (Single-use)"),
+                command: format!("teleport {room_id}"),
+                menu_text: "Temporary Anchor".to_string(),
+            });
+        }
         options
     }
 

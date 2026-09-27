@@ -4,6 +4,7 @@ mod dispatch;
 mod observe;
 mod targeted;
 mod targetless;
+mod teleport;
 
 use crate::engine::state::WorldState;
 

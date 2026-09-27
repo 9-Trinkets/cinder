@@ -266,5 +266,11 @@
         "text": "Layla. That offering was cleared on the manifest. Let the tithe ship. That's the job."
     },
     "zayd.return_safe": "Yasmin rushes forward with tears streaming down her face, gathering Zayd into a tight, trembling embrace. Other villagers emerge from stone doorways, murmuring in stunned relief. Zayd pulls away gently and steps toward you, fishing a dented brass lamp from under his coat.",
-    "zayd.lantern_speech": "Here. It was my dad's... from the lower drift. The glass never really goes cold, even near the frost vents. Take it with you... you'll need the light down there more than me."
+    "zayd.lantern_speech": "Here. It was my dad's... from the lower drift. The glass never really goes cold, even near the frost vents. Take it with you... you'll need the light down there more than me.",
+    "handler.teleport_tutorial": {
+        "voice": "handler",
+        "text": "Good. That sigil links your chalk to anchor points. Powered platforms give you permanent anchors. In other rooms, you can trace up to three temporary chalk anchors. Use them to jump across the floor in a second, but remember: chalk anchors vanish after one teleport."
+    },
+    "sigil.chalk_anchor_placed": "You draw the double triangle on the stone. The chalk glows with a soft light, anchoring this room.",
+    "platform.activated": "As you finish tracing the double triangle, blue light flares through the brass conduits. The platform roars to life with ancient power, opening the descent to Floor 5!"
 }

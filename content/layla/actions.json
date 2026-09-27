@@ -599,6 +599,44 @@
           "required": false
         }
       }
+    },
+    {
+      "id": "teleport",
+      "command": "TELEPORT",
+      "label": "Teleport",
+      "group": "movement",
+      "phrases": [
+        "teleport",
+        "tp",
+        "teleport to"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "available": {
+        "requires_story_var": "knows_teleport"
+      },
+      "ui": {
+        "bar": true,
+        "overflow": false,
+        "panel": "teleport",
+        "panel_config": {
+          "title": "Teleport to Anchor",
+          "prompt": "Choose an anchor to teleport to:",
+          "data_source": "teleport_anchors",
+          "on_select": "execute_command"
+        },
+        "group": "movement",
+        "sort_order": 1
+      },
+      "player_command": {
+        "usage": "teleport <anchor>",
+        "example": "teleport teleport_platform",
+        "advances_time": true,
+        "input": {
+          "required": true
+        }
+      }
     }
   ]
 }

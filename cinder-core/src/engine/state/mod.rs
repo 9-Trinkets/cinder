@@ -12,6 +12,7 @@ pub use variable_store::{
 };
 
 mod clock;
+mod anchors;
 mod conversation;
 mod inventory;
 mod party;
@@ -154,6 +155,10 @@ pub struct WorldState {
     /// Dynamically spawned actors instantiated at runtime from templates.
     #[serde(default)]
     pub spawned_actors: BTreeMap<String, ActorDefinition>,
+    /// Active temporary chalk anchors placed by tracing teleport-sigil (up to 3).
+    /// Ordered from oldest to newest.
+    #[serde(default)]
+    pub chalk_anchors: Vec<String>,
 }
 
 /// Summary milestone recorded upon transitioning from one area / act to the
@@ -349,6 +354,7 @@ impl WorldState {
             transition_summaries: BTreeMap::new(),
             spawn_counter: 0,
             spawned_actors: BTreeMap::new(),
+            chalk_anchors: Vec::new(),
         }
     }
 

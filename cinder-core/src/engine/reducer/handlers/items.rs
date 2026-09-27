@@ -46,6 +46,22 @@ pub(crate) fn handle_item_acquired(
             {
                 push_rendered_message(lines, content, line, voice);
             }
+            if item_id == "teleport-sigil" && room_id != "teleport_platform" {
+                if let Some(evicted_room) = state.add_chalk_anchor(&room_id) {
+                    state.remove_item_from_storage(
+                        "teleport-sigil",
+                        ItemStorageTarget::CurrentRoom,
+                        &evicted_room,
+                    );
+                    let evicted_title = content
+                        .room(&evicted_room)
+                        .map(|r| r.title.as_str())
+                        .unwrap_or(&evicted_room);
+                    lines.narration(format!(
+                        "The chalk anchor in {evicted_title} fades away as you draw a new one."
+                    ));
+                }
+            }
             // An item appearing in a room can complete a surround or trigger placement.
             trigger_surrounded_hooks(state, content, item_id, &room_id, lines);
             trigger_placement_hooks(
@@ -56,6 +72,13 @@ pub(crate) fn handle_item_acquired(
                 &room_id,
                 lines,
             );
+            if item_id == "teleport-sigil" && room_id == "teleport_platform" {
+                state.remove_item_from_storage(
+                    "teleport-sigil",
+                    ItemStorageTarget::CurrentRoom,
+                    &room_id,
+                );
+            }
         }
     }
 }

@@ -10789,6 +10789,8 @@
         "room_id": "teleport_platform",
         "label": "South to Teleportation Platform",
         "aliases": [
+          "south",
+          "s",
           "courtyard",
           "platform",
           "teleport"
@@ -11089,6 +11091,58 @@
           "gantry"
         ],
         "menu_label": "South",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "floor5_start",
+        "label": "Descend to Floor 5",
+        "aliases": [
+          "descend",
+          "down",
+          "d",
+          "floor 5",
+          "floor5"
+        ],
+        "menu_label": "Descend to Floor 5",
+        "requires_story_var": "platform_activated"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "floor5_start",
+    "title": "Floor 5 Descent Platform",
+    "summary": "A deep subterranean vault where warm mist curls off ancient flagstones. A matching brass teleport circle hums quietly here, anchoring the transit line from Floor 4.",
+    "inspect_text": "The brass dais beneath your boots remains warm from the transit pulse. Ancient archways open into the forgotten depths of the fifth floor.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "floor5_platform-feature",
+        "label": "the descent platform",
+        "aliases": [
+          "platform",
+          "dais",
+          "teleport",
+          "conduits"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A brass transport platform anchored into the stone bedrock. It hums with stable transit energy connecting back to Floor 4."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "teleport_platform",
+        "label": "Ascend to Floor 4 Platform",
+        "aliases": [
+          "ascend",
+          "up",
+          "u",
+          "floor 4",
+          "floor4",
+          "platform"
+        ],
+        "menu_label": "Ascend to Floor 4 Platform",
         "requires_story_var": ""
       }
     ],

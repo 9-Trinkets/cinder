@@ -501,6 +501,10 @@
           {
             "kind": "narrate_message",
             "key": "item.teleport_scroll_read.learned"
+          },
+          {
+            "kind": "narrate_message",
+            "key": "handler.teleport_tutorial"
           }
         ]
       }
@@ -513,7 +517,7 @@
     "rule": "effect_table",
     "rule_config": {
       "cases_path": "rules",
-      "next_on_match": "complete",
+      "next_on_match": "next",
       "next_on_default": "complete",
       "default_payload_template": {
         "effects": []
@@ -521,6 +525,72 @@
     },
     "input_overlay": {
       "rules": [
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "teleport_platform"
+            },
+            {
+              "path": "story_vars.knows_teleport",
+              "operator": "equal",
+              "value": "true"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "anchor_floor4_platform",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "teleport_platform"
+            },
+            {
+              "path": "story_vars.knows_teleport",
+              "operator": "equal",
+              "value": "true"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "anchor_floor5_gate",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "floor5_start"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "anchor_floor4_platform",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "floor5_start"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "anchor_floor5_gate",
+            "value": "true"
+          }
+        },
         {
           "conditions": [
             {
@@ -855,6 +925,103 @@
     },
     "input_overlay": {
       "rules": []
+    }
+  },
+  "item.teleport_sigil_placed": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "sigil.chalk_anchor_placed"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "teleport_platform"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "platform_activated",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "teleport_platform"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "anchor_floor4_platform",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "teleport_platform"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "anchor_floor5_gate",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "teleport_platform"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "descend_floor_5",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "teleport_platform"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "platform.activated"
+          }
+        }
+      ]
     }
   },
   "actor.time_advanced": {

@@ -49,6 +49,38 @@ fn first_actor_in_room(content: &ContentPack, context: &PlanningContext<'_>) -> 
         .map(|actor| (actor.id.clone(), actor.name.clone()))
 }
 
+fn craftable_matches_input(content: &ContentPack, craftable_id: &str, input_val: &str) -> bool {
+    if craftable_id.eq_ignore_ascii_case(input_val) {
+        return true;
+    }
+    if let Some(item) = content.item(craftable_id) {
+        if item.label.eq_ignore_ascii_case(input_val) {
+            return true;
+        }
+    }
+    let input_lower = input_val.to_ascii_lowercase();
+    let normalized = input_lower.replace(' ', "");
+    if craftable_id.replace('-', "").eq_ignore_ascii_case(&normalized)
+        || craftable_id.to_ascii_lowercase().starts_with(&normalized)
+    {
+        return true;
+    }
+    if let Some(craftable_item) = content.item(craftable_id) {
+        let label_norm = craftable_item.label.to_ascii_lowercase().replace(' ', "");
+        if label_norm == normalized
+            || label_norm.starts_with(&normalized)
+            || craftable_item
+                .label
+                .to_ascii_lowercase()
+                .split_whitespace()
+                .any(|w| w == input_lower)
+        {
+            return true;
+        }
+    }
+    false
+}
+
 fn resolved_created_item_id(
     content: &ContentPack,
     action: &ActionDefinition,
@@ -75,28 +107,14 @@ fn resolved_created_item_id(
     };
     if !item_creation.craftable_items.is_empty() {
         if let Some(input_val) = input.map(str::trim).filter(|s| !s.is_empty()) {
-            let input_lower = input_val.to_ascii_lowercase();
-            let normalized = input_lower.replace(' ', "");
-            if let Some(matched) = item_creation.craftable_items.iter().find(|craftable_id| {
-                craftable_id.eq_ignore_ascii_case(input_val) && craftable_unlocked(craftable_id)
-            }) {
-                return Some(matched.clone());
-            }
-            if let Some(matched) = item_creation.craftable_items.iter().find(|craftable_id| {
-                craftable_unlocked(craftable_id)
-                    && (craftable_id.to_ascii_lowercase().starts_with(&normalized)
-                        || content.item(craftable_id).is_some_and(|craftable_item| {
-                            craftable_item.label.to_ascii_lowercase().starts_with(&normalized)
-                                || craftable_item
-                                    .label
-                                    .to_ascii_lowercase()
-                                    .split_whitespace()
-                                    .any(|w| w == input_lower)
-                        }))
-            }) {
-                return Some(matched.clone());
-            }
-            return None;
+            return item_creation
+                .craftable_items
+                .iter()
+                .find(|craftable_id| {
+                    craftable_unlocked(craftable_id)
+                        && craftable_matches_input(content, craftable_id, input_val)
+                })
+                .cloned();
         }
         return item_creation
             .craftable_items

@@ -3,6 +3,7 @@ use super::dialogue::plan_dialogue_command;
 use super::observe::{plan_observe_room, plan_observe_target};
 use super::targeted::plan_targeted_state_command;
 use super::targetless::plan_targetless_command;
+use super::teleport::plan_teleport_command;
 use super::super::types::PlannedTurn;
 use super::PlanningContext;
 use crate::engine::turn_runner::planner_handler::items::{
@@ -72,6 +73,9 @@ pub(crate) fn plan_authored_command(
     let action = content
         .command(command_id)
         .unwrap_or_else(|| panic!("missing command definition '{command_id}'"));
+    if action.id == "teleport" {
+        return plan_teleport_command(content, action, input, &context, planned);
+    }
     if action.outcome_mode == CommandOutcomeMode::Dialogue {
         plan_dialogue_command(content, action, input, &context, planned)
     } else if !action.effects.is_empty() {

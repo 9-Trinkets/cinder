@@ -294,6 +294,7 @@ fn action_has_available_target(
             })
         }),
         PanelDataSource::Exits | PanelDataSource::Features | PanelDataSource::FollowActors => true,
+        PanelDataSource::TeleportAnchors => state.has_any_teleport_anchor(),
         PanelDataSource::LooseRoomItems => state.loose_room_items(room_id).iter().any(|(item_id, _)| {
             content.item(item_id).is_none_or(|item| item.is_takeable())
         }),

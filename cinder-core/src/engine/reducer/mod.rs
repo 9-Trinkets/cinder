@@ -293,6 +293,9 @@ pub fn apply_events(
                     &mut lines,
                 );
             }
+            WorldEvent::ChalkAnchorConsumed { room_id } => {
+                handle_chalk_anchor_consumed(state, room_id);
+            }
             WorldEvent::ItemObserved { item_id } => {
                 handle_item_observed(state, content, item_id, &mut lines);
             }
@@ -337,3 +340,13 @@ pub fn apply_events(
         phase: state.phase.clone(),
     }
 }
+
+fn handle_chalk_anchor_consumed(state: &mut WorldState, room_id: &str) {
+    state.remove_chalk_anchor(room_id);
+    state.remove_item_from_storage(
+        "teleport-sigil",
+        crate::content::types::ItemStorageTarget::CurrentRoom,
+        room_id,
+    );
+}
+

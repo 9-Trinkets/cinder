@@ -163,6 +163,10 @@ pub enum WorldEvent {
         consumer_id: Option<String>,
         consumer_name: Option<String>,
     },
+    /// A single-use temporary chalk anchor was consumed by teleporting to it.
+    ChalkAnchorConsumed {
+        room_id: String,
+    },
     ItemObserved {
         item_id: String,
     },

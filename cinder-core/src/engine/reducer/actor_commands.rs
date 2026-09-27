@@ -166,6 +166,14 @@ pub(super) fn handle_actor_command_used(
         }
         state.add_item_to_storage(&item_id, storage, command_context.room_id);
         if storage == ItemStorageTarget::CurrentRoom {
+            if item_id == "teleport-sigil" {
+                handle_teleport_sigil_placement(
+                    state,
+                    content,
+                    command_context.room_id,
+                    &mut lines,
+                );
+            }
             trigger_surrounded_hooks(
                 state,
                 content,
@@ -181,6 +189,13 @@ pub(super) fn handle_actor_command_used(
                 command_context.room_id,
                 &mut lines,
             );
+            if item_id == "teleport-sigil" && command_context.room_id == "teleport_platform" {
+                state.remove_item_from_storage(
+                    "teleport-sigil",
+                    ItemStorageTarget::CurrentRoom,
+                    command_context.room_id,
+                );
+            }
         }
     }
     if command.has_effect(CommandEffect::MoveActor) {
@@ -535,3 +550,29 @@ pub(super) fn render_actor_command_text(
         ),
     }
 }
+
+fn handle_teleport_sigil_placement(
+    state: &mut WorldState,
+    content: &ContentPack,
+    room_id: &str,
+    lines: &mut NarrativeLines,
+) {
+    if room_id == "teleport_platform" {
+        return;
+    }
+    if let Some(evicted_room) = state.add_chalk_anchor(room_id) {
+        state.remove_item_from_storage(
+            "teleport-sigil",
+            ItemStorageTarget::CurrentRoom,
+            &evicted_room,
+        );
+        let evicted_title = content
+            .room(&evicted_room)
+            .map(|r| r.title.as_str())
+            .unwrap_or(&evicted_room);
+        lines.narration(format!(
+            "The chalk anchor in {evicted_title} fades away as you draw a new one."
+        ));
+    }
+}
+

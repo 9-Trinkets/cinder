@@ -219,7 +219,8 @@
     "description": "A double triangle drawn in pale magic chalk. Tracing it before locked gates, portcullises, or barred apertures blinks you instantly to the other side.",
     "look_description": "A sharp double triangle of chalk pulses with pale light, vibrating with phase resonance.",
     "trace_mark": true,
-    "mp_cost": 4
+    "mp_cost": 4,
+    "placement_hook": "item.teleport_sigil_placed"
   },
   {
     "id": "zayd-lantern",
