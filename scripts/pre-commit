@@ -1,13 +1,24 @@
 #!/usr/bin/env bash
 # Pre-commit hook source. Installed into .git/hooks/pre-commit by
-# scripts/install_hooks.sh with the absolute repo root baked in. Runs warning-
-# only health checks at every commit: file lengths, test placement, and pack linting.
-# Always exits 0 so it never blocks a commit.
+# scripts/install_hooks.sh with the absolute repo root baked in. Enforces
+# rustfmt, then runs warning-only health checks at every commit: file lengths,
+# test placement, and pack linting. Always exits 0 for the health checks so
+# they never block a commit.
 set -u
 # REPO_ROOT is substituted at install time by install_hooks.sh.
 REPO_ROOT="__CINDER_REPO_ROOT__"
 
 if [ -f "$REPO_ROOT/Cargo.toml" ]; then
+    # rustfmt is the one check that blocks: it has a single canonical form and
+    # a one-command fix, so a violation is always a mistake rather than a
+    # judgement call.
+    fmt_output="$(cargo fmt --all --check --manifest-path "$REPO_ROOT/Cargo.toml" 2>&1)"
+    if [ -n "$fmt_output" ]; then
+        fmt_count="$(printf '%s\n' "$fmt_output" | grep -c '^Diff in' || true)"
+        echo "pre-commit: ${fmt_count} file(s) are not rustfmt-clean." >&2
+        echo "Run 'cargo fmt --all' and stage the result." >&2
+        exit 1
+    fi
     cargo run -q -p cinder-tools --manifest-path "$REPO_ROOT/Cargo.toml" -- hygiene || true
     cargo run -q -p cinder-tools --manifest-path "$REPO_ROOT/Cargo.toml" -- lint || true
 fi
