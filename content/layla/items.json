@@ -200,6 +200,12 @@
     "description": "A small round shield of pressed leaves, light in the off hand. It catches blows that are meant for the heart."
   },
   {
+    "id": "commander-safe-key",
+    "label": "commander's safe key",
+    "kind": "key",
+    "description": "A heavy brass key with intricate dual wards, looted from Captain Malik. It unlocks the iron safe in the Commander's Bastion."
+  },
+  {
     "id": "teleport-scroll",
     "label": "teleport scroll",
     "kind": "misc",

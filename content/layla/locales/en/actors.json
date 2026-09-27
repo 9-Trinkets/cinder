@@ -1667,7 +1667,7 @@
     "attack_interval_minutes": 2,
     "xp_drop": 60,
     "drops": {
-      "teleport-scroll": 1,
+      "commander-safe-key": 1,
       "brass-saber": 1
     },
     "initial_stats": {

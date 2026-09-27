@@ -690,8 +690,141 @@
             "kind": "acquire_item",
             "item_id": "zayd-lantern"
           }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "command_bastion"
+            },
+            {
+              "path": "story_vars.bastion_scene_seen",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "bastion_scene_seen",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "command_bastion"
+            },
+            {
+              "path": "story_vars.bastion_scene_seen",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "bastion.entry_scene"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "command_bastion"
+            },
+            {
+              "path": "story_vars.bastion_scene_seen",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "actor_speech",
+            "actor_id": "priest_harun",
+            "target_id": "captain_malik",
+            "key": "harun.bastion_entry"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "command_bastion"
+            },
+            {
+              "path": "story_vars.bastion_scene_seen",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "actor_speech",
+            "actor_id": "captain_malik",
+            "target_id": "priest_harun",
+            "key": "malik.bastion_entry"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "command_bastion"
+            },
+            {
+              "path": "story_vars.bastion_scene_seen",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "bastion.doors_slam"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "command_bastion"
+            },
+            {
+              "path": "story_vars.bastion_scene_seen",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "actor_speech",
+            "actor_id": "captain_malik",
+            "target_id": "player",
+            "key": "malik.bastion_alert"
+          }
         }
       ]
+    }
+  },
+  "safe.unlocked": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "set_story_var",
+            "key": "safe_unlocked",
+            "value": "true"
+          },
+          {
+            "kind": "acquire_item",
+            "item_id": "teleport-scroll"
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
     }
   },
   "item.spawn_sigil_placed": {

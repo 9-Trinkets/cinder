@@ -211,6 +211,7 @@ fn floor4_fortress_loop_and_platform_navigation_resolves() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = "fortress_gate".to_string();
     state.story_vars.set_unchecked("fortress_gate_open", "true");
+    state.story_vars.set_unchecked("malik_defeated", "true");
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
     let runtime =

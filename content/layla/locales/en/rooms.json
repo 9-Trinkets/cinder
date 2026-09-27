@@ -10971,7 +10971,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A heavy iron safe with brass combination dials and reinforced hinges. Commander Malik keeps his most valuable military orders and the Teleportation Scroll locked inside."
+        "inspect_text": "A heavy iron safe with brass combination dials and reinforced hinges, embedded into the granite wall. It is locked tight by dual tumbler deadbolts, requiring Commander Malik's key to open."
       }
     ],
     "exits": [
@@ -10983,7 +10983,7 @@
           "w"
         ],
         "menu_label": "West",
-        "requires_story_var": ""
+        "requires_story_var": "malik_defeated"
       },
       {
         "room_id": "east_sentry_walk",
@@ -10993,7 +10993,7 @@
           "nw"
         ],
         "menu_label": "Northwest",
-        "requires_story_var": ""
+        "requires_story_var": "malik_defeated"
       }
     ],
     "descriptions": []

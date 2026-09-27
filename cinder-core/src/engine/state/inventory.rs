@@ -111,7 +111,10 @@ impl WorldState {
         current_room_id: &str,
     ) {
         match storage {
-            ItemStorageTarget::PlayerInventory => self.add_item(item_id),
+            ItemStorageTarget::PlayerInventory => {
+                self.add_item(item_id);
+                self.actor_add_item("player", item_id);
+            }
             ItemStorageTarget::CurrentRoom => {
                 *self
                     .room_item_stock
@@ -128,7 +131,11 @@ impl WorldState {
         current_room_id: &str,
     ) -> bool {
         match storage {
-            ItemStorageTarget::PlayerInventory => self.remove_item(item_id),
+            ItemStorageTarget::PlayerInventory => {
+                let removed = self.remove_item(item_id);
+                self.actor_remove_item("player", item_id);
+                removed
+            }
             ItemStorageTarget::CurrentRoom => {
                 let key = room_item_key(current_room_id, item_id);
                 let mut removed = false;

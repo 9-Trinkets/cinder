@@ -551,6 +551,54 @@
           "required": false
         }
       }
+    },
+    {
+      "id": "unlock_safe",
+      "command": "UNLOCK_SAFE",
+      "label": "Unlock Safe",
+      "group": "interaction",
+      "phrases": [
+        "unlock safe",
+        "unlock the safe",
+        "open safe",
+        "open the safe",
+        "use safe key",
+        "use the safe key",
+        "use key",
+        "use key on safe",
+        "open iron safe"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "content_event": {
+        "id": "layla.safe_unlocked",
+        "event_text": "You insert Commander Malik's heavy brass key into the safe's dual tumblers. The heavy lock bolts grind back with a satisfying mechanical clunk. Inside the steel compartment lies the ancient Teleportation Scroll!",
+        "hook_id": "safe.unlocked",
+        "signals": [
+          "safe_unlocked"
+        ]
+      },
+      "available": {
+        "allowed_rooms": [
+          "command_bastion"
+        ],
+        "consumes_item": "commander-safe-key"
+      },
+      "ui": {
+        "bar": false,
+        "overflow": false,
+        "group": "interact",
+        "sort_order": 52
+      },
+      "player_command": {
+        "usage": "unlock safe",
+        "example": "unlock safe",
+        "advances_time": true,
+        "input": {
+          "required": false
+        }
+      }
     }
   ]
 }
