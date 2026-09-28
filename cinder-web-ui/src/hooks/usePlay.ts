@@ -296,6 +296,7 @@ export function usePlay() {
       return
     }
     await execCommand(trimmed, displayInput)
+    focusInputToEnd()
   }
 
   const handleTranscriptScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {

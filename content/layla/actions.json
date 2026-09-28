@@ -118,7 +118,7 @@
       "player_command": {
         "target_mode": "actor_reference",
         "usage": "talk to <person> [message]",
-        "example": "talk to the old man what is this place",
+        "example": "talk to companion",
         "advances_time": true,
         "input": {
           "required": true
@@ -160,7 +160,7 @@
       "player_command": {
         "target_mode": "actor_reference",
         "usage": "attack <target>",
-        "example": "attack the golem",
+        "example": "attack crawler",
         "advances_time": true,
         "input": {
           "required": true

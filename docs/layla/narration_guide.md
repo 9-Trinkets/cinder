@@ -74,7 +74,7 @@ The handler speaks **only** when there is a reason to intervene:
 |---|---|
 | Immovable Feature | *"Leave the {label} where it is — the field notes say it's anchored to the floor. I'd rather not find out if they're wrong."* |
 | No Exit | *"No, sorry. The route sheet doesn't show a path to {target} from there."* |
-| Unknown Command | *"I don't have `{raw_input}` in the approved playbook. Try {available_commands}. Sorry—I know that's not very helpful."* |
+| Unknown Command | *"I don't have `{raw_input}` in the approved playbook. Try {available_commands}."* |
 | Missing Prerequisite | *"The playbook says you need the {label} before you can do that."* |
 | Target Required | *"I need a target for that. Who are you aiming at? ({actors})"* |
 | No Target in Room | *"Target what? There's no one in the room right now."* |

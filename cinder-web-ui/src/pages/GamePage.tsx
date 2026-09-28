@@ -163,6 +163,22 @@ export default function GamePage() {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [busy, gameOver, quickPanel, uiSnapshot, handleSelectPanelOption, execCommand])
 
+  useEffect(() => {
+    if (!busy && !gameOver && !quickPanel && !showMenu && !showExitConfirm && !showFolio && !movie) {
+      focusInputToEnd()
+    }
+  }, [
+    busy,
+    gameOver,
+    quickPanel,
+    showMenu,
+    showExitConfirm,
+    showFolio,
+    movie,
+    uiSnapshot?.current_room_name,
+    focusInputToEnd,
+  ])
+
   return (
     <div
       style={uiSnapshot?.theme ? themeVars(uiSnapshot.theme) : undefined}
@@ -353,7 +369,8 @@ export default function GamePage() {
                       }
                     }
                   }}
-                  disabled={busy || gameOver}
+                  disabled={gameOver}
+                  readOnly={busy}
                   autoFocus
                 />
                 <button

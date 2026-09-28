@@ -135,8 +135,83 @@ pub(super) fn plan_unknown_command(
         });
         return true;
     }
+    if try_reject_unreachable_exit(content, planner_state, raw, planned) {
+        return false;
+    }
     planned.events.push(WorldEvent::UnknownInput {
         raw_input: raw_input.to_string(),
     });
     false
+}
+
+fn try_reject_unreachable_exit(
+    content: &ContentPack,
+    planner_state: &WorldState,
+    raw: &str,
+    planned: &mut PlannedTurn,
+) -> bool {
+    if let Some(dir) = canonical_direction(raw) {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content.render_template(
+                &content.presentation.error_text.cannot_go,
+                &[("target", dir)],
+            ),
+        });
+        return true;
+    }
+    let room_has_gated_exit = content
+        .room(&planner_state.current_room_id)
+        .is_some_and(|room| {
+            room.exits.iter().any(|exit| {
+                exit.label.eq_ignore_ascii_case(raw)
+                    || exit.aliases.iter().any(|a| a.eq_ignore_ascii_case(raw))
+                    || exit.room_id.eq_ignore_ascii_case(raw)
+            })
+        });
+    if room_has_gated_exit {
+        planned.events.push(WorldEvent::ActionRejected {
+            message: content.render_template(
+                &content.presentation.error_text.cannot_go,
+                &[("target", raw)],
+            ),
+        });
+        return true;
+    }
+    false
+}
+
+fn canonical_direction(raw: &str) -> Option<&'static str> {
+    let lower = raw.trim().to_ascii_lowercase();
+    let stripped = strip_direction_prefix(&lower);
+    match stripped {
+        "north" | "n" => Some("north"),
+        "south" | "s" => Some("south"),
+        "east" | "e" => Some("east"),
+        "west" | "w" => Some("west"),
+        "northeast" | "ne" => Some("northeast"),
+        "northwest" | "nw" => Some("northwest"),
+        "southeast" | "se" => Some("southeast"),
+        "southwest" | "sw" => Some("southwest"),
+        "up" | "u" => Some("up"),
+        "down" | "d" => Some("down"),
+        "in" => Some("in"),
+        "out" => Some("out"),
+        _ => None,
+    }
+}
+
+fn strip_direction_prefix(s: &str) -> &str {
+    let s = s
+        .strip_prefix("go to ")
+        .or_else(|| s.strip_prefix("go "))
+        .or_else(|| s.strip_prefix("enter "))
+        .or_else(|| s.strip_prefix("move to "))
+        .unwrap_or(s)
+        .trim();
+    let s = s
+        .strip_prefix("the ")
+        .or_else(|| s.strip_prefix("to "))
+        .unwrap_or(s)
+        .trim();
+    s.strip_prefix("the ").unwrap_or(s).trim()
 }

@@ -93,6 +93,42 @@ fn unknown_input_without_a_menu_emits_unknown_input() {
 }
 
 #[test]
+fn directional_input_without_exit_emits_cannot_go_rejection() {
+    let mut content = minimal_test_pack();
+    content.presentation.error_text.cannot_go = "cannot go to {target}".to_string();
+    let state = WorldState::new(&content);
+
+    let (planned, advances_time) = plan_unknown(&content, &state, "south");
+
+    assert!(!advances_time);
+    assert!(
+        planned.events.iter().any(|event| matches!(
+            event,
+            WorldEvent::ActionRejected { message } if message == "cannot go to south"
+        )),
+        "expected cannot_go rejection for south, got: {:?}",
+        planned.events
+    );
+    assert!(
+        !planned
+            .events
+            .iter()
+            .any(|event| matches!(event, WorldEvent::UnknownInput { .. }))
+    );
+
+    let (planned_s, advances_time_s) = plan_unknown(&content, &state, "s");
+    assert!(!advances_time_s);
+    assert!(
+        planned_s.events.iter().any(|event| matches!(
+            event,
+            WorldEvent::ActionRejected { message } if message == "cannot go to south"
+        )),
+        "expected canonical direction south in cannot_go rejection for s, got: {:?}",
+        planned_s.events
+    );
+}
+
+#[test]
 fn unknown_input_while_a_menu_is_open_is_rejected_as_an_invalid_choice() {
     let mut content = minimal_test_pack();
     content.menus.push(OpeningMenuDefinition {

@@ -83,20 +83,41 @@ fn player_command_help_lines(content: &ContentPack) -> Vec<String> {
 
 fn player_command_examples(content: &ContentPack) -> Vec<String> {
     let mut examples = Vec::new();
+    collect_primary_examples(content, &mut examples);
+    if examples.is_empty() {
+        collect_fallback_examples(content, &mut examples);
+    }
+    examples
+}
+
+fn collect_primary_examples(content: &ContentPack, examples: &mut Vec<String>) {
+    for action in content.actions.iter() {
+        if !action.player_enabled
+            || action.phrases.is_empty()
+            || !action.ui.bar
+            || !action.available.requires_story_var.is_empty()
+        {
+            continue;
+        }
+        if let Some(metadata) = &action.player_command {
+            if !metadata.example.is_empty() && !examples.contains(&metadata.example) {
+                examples.push(metadata.example.clone());
+            }
+        }
+    }
+}
+
+fn collect_fallback_examples(content: &ContentPack, examples: &mut Vec<String>) {
     for action in content
         .actions
         .iter()
         .filter(|a| a.player_enabled && !a.phrases.is_empty())
+        .take(4)
     {
-        let Some(metadata) = &action.player_command else {
-            continue;
-        };
-        if metadata.example.is_empty() {
-            continue;
-        }
-        if !examples.contains(&metadata.example) {
-            examples.push(metadata.example.clone());
+        if let Some(metadata) = &action.player_command {
+            if !metadata.example.is_empty() && !examples.contains(&metadata.example) {
+                examples.push(metadata.example.clone());
+            }
         }
     }
-    examples
 }
