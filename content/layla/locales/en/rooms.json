@@ -1116,8 +1116,8 @@
   {
     "id": "r3c3",
     "title": "A Guarded Crossing",
-    "summary": "A golem of dark volcanic rock, lumped and broad stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
-    "inspect_text": "In the center of the room a golem of dark volcanic rock, lumped and broad stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
+    "summary": "A golem of dark volcanic rock, lumped and broad, stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
+    "inspect_text": "In the center of the room a golem of dark volcanic rock, lumped and broad, stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
     "allow_rest": false,
     "features": [
       {
@@ -1364,8 +1364,8 @@
   {
     "id": "r3c7",
     "title": "A Guarded Crossing",
-    "summary": "A golem of pale river stone, smoothed and round stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
-    "inspect_text": "In the center of the room a golem of pale river stone, smoothed and round stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
+    "summary": "A golem of pale river stone, smoothed and round, stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
+    "inspect_text": "In the center of the room a golem of pale river stone, smoothed and round, stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
     "allow_rest": false,
     "features": [
       {
@@ -3293,8 +3293,8 @@
   {
     "id": "r7c3",
     "title": "A Guarded Crossing",
-    "summary": "A golem of dark volcanic rock, lumped and broad stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
-    "inspect_text": "In the center of the room a golem of dark volcanic rock, lumped and broad stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
+    "summary": "A golem of dark volcanic rock, lumped and broad, stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
+    "inspect_text": "In the center of the room a golem of dark volcanic rock, lumped and broad, stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
     "allow_rest": false,
     "features": [
       {
@@ -3541,8 +3541,8 @@
   {
     "id": "r7c7",
     "title": "A Guarded Crossing",
-    "summary": "A golem of pale river stone, smoothed and round stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
-    "inspect_text": "In the center of the room a golem of pale river stone, smoothed and round stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
+    "summary": "A golem of pale river stone, smoothed and round, stands in the middle of the room, broad as a closed door, watching nothing. The floor around it is swept clean, and the air is the quietest on this level.",
+    "inspect_text": "In the center of the room a golem of pale river stone, smoothed and round, stands still as furniture — no mouth, eyes of flat polished pebble, a pale chalk ring circling its chest and brow. It does not react to you. The room smells of cold stone and chalk dust, and small feet have kept clear of it for a long, long time.",
     "allow_rest": false,
     "features": [
       {

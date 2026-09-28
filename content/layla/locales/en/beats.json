@@ -80,7 +80,7 @@
       "quest_title": "Save the Boy Zayd",
       "quest_kind": "side",
       "summary": "Rescue the orphan boy Zayd from the military complex.",
-      "beat_note": "Elder Rashid and Yasmin revealed that the village council offered Zayd as a tithe sacrifice. Layla needs to find the boy and rescue him from his iron cage.",
+      "beat_note": "Elder Rashid and Yasmin revealed that the village council offered Zayd up as a sacrifice. Layla needs to find the boy and rescue him from his iron cage.",
       "update_message": "Search the military complex for the orphan boy Zayd and rescue him from the garrison.",
       "advance_signals": [
         "spoken_to:zayd",

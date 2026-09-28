@@ -849,8 +849,8 @@ fn floor4_zayd_rescue_and_village_escort() {
         "Zayd spoken dialogue line missing or misformatted in: {unlock_text}"
     );
     assert!(
-        unlock_text.contains("Handler: Layla. That offering was cleared on the manifest. Let the tithe ship. That's the job."),
-        "Handler tithe warning missing in: {unlock_text}"
+        unlock_text.contains("Handler: Layla. That offering was cleared on the manifest. Let the offering ship. That's the job."),
+        "Handler offering warning missing in: {unlock_text}"
     );
 
     // Verify channel line kind for handler comms

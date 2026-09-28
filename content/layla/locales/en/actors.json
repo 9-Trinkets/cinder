@@ -520,7 +520,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -568,7 +568,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -616,7 +616,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -664,7 +664,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -712,7 +712,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -760,7 +760,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -808,7 +808,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -856,7 +856,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline.",
+    "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -904,7 +904,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A broad-shouldered elf sentinel armored in heavy plates of lacquered bark and compressed leaf. They stand like a living redoubt, unyielding and direct.",
+    "inspect_text": "A broad elf sentinel in heavy plates of lacquered bark. They plant their feet wide and hold still, the way a gate holds.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -952,7 +952,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An agile elf warrior bearing a crest of dark curved bark. They balance on the balls of their feet, ready to spring sideways or leap past obstacles in an instant.",
+    "inspect_text": "An elf warrior in a crest of dark curved bark. They never stop shifting weight, ready to spring sideways the moment anything moves.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -1000,7 +1000,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An austere elf holding a tall crooked bough that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
+    "inspect_text": "An elf holding a tall crooked branch that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -1048,7 +1048,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A formidable elf commander whose braided leaf ring hums with quiet power. Her movements are fluid, swift, and completely without hesitation.",
+    "inspect_text": "The tallest of the elf commanders, in a cloak woven from leaf and pale root. A braided leaf ring hums quietly on her hand. She is always moving, retracing the same paths, and her eyes keep looking past the walls \u2014 searching for a name she cannot hold onto.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -1086,7 +1086,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "The sovereign of the underground forest, draped in a mantle of dark root-stitched leaves. He sits upon a throne grown from living wood, watching you approach with neither malice nor fear.",
+    "inspect_text": "The king of the underground forest, wrapped in a cloak of dark root-stitched leaves. He sits on a throne grown from living wood and watches you approach \u2014 calm, unhurried, without fear or mockery.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -1119,7 +1119,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An austere elf holding a tall crooked bough that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
+    "inspect_text": "An elf holding a tall crooked branch that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -1167,7 +1167,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "An agile elf warrior bearing a crest of dark curved bark. They balance on the balls of their feet, ready to spring sideways or leap past obstacles in an instant.",
+    "inspect_text": "An elf warrior in a crest of dark curved bark. They never stop shifting weight, ready to spring sideways the moment anything moves.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -1215,7 +1215,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "A broad-shouldered elf sentinel armored in heavy plates of lacquered bark and compressed leaf. They stand like a living redoubt, unyielding and direct.",
+    "inspect_text": "A broad elf sentinel in heavy plates of lacquered bark. They plant their feet wide and hold still, the way a gate holds.",
     "attackable": true,
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -1523,7 +1523,7 @@
       "elder",
       "village"
     ],
-    "inspect_text": "An elderly man with white hair, slumped in a carved oak chair behind a table piled high with official garrison rolls. His lined face is etched with profound remorse and exhaustion, his trembling hands clutching a stamped parchment.",
+    "inspect_text": "An elderly man with white hair, slumped in a carved oak chair behind a table piled high with official garrison rolls. His face is lined and grey, and his hands tremble around a stamped parchment.",
     "attackable": false,
     "initial_stats": {
       "hp": 12,
@@ -1535,7 +1535,7 @@
     "prompt_context": {
       "character_notes": [
         "You are Elder Rashid, the elected elder of the worker village. You are exhausted, grief-stricken, and crushed by shame.",
-        "Under threat from Commander Malik's garrison, you signed the council writ handing over the orphan boy Zayd to the temple inquisitors as a tithe offering.",
+        "Under threat from Commander Malik's garrison, you signed the council writ handing over the orphan boy Zayd to the temple inquisitors as an offering.",
         "You justified it to yourself by thinking 'he has no mother to cry for him', but the moment the soldiers dragged him away in brass shackles, the cowardly truth broke you.",
         "You desperately want Zayd saved, but fear retribution against the village if the garrison is provoked without a plan."
       ],
@@ -1571,7 +1571,7 @@
       "baker",
       "village"
     ],
-    "inspect_text": "A vigorous, flour-dusted woman wearing a heavy leather apron with rolled-up sleeves. Flour smudges her cheek, and her dark eyes flash with righteous anger. She kneads dough with aggressive, punishing blows, muttering bitterly under her breath.",
+    "inspect_text": "A vigorous, flour-dusted woman in a heavy leather apron, sleeves rolled up. Flour smudges her cheek, and her dark eyes are bright with anger. She takes it out on the dough \u2014 kneading hard, muttering under her breath.",
     "attackable": false,
     "initial_stats": {
       "hp": 15,
@@ -1622,7 +1622,7 @@
       "artisan",
       "village"
     ],
-    "inspect_text": "A lean artisan wearing jeweler's loupes pushed up on his forehead. His slender fingers work fine brass gears and steam escapements with practiced precision. His workshop ticks and hums like a living creature.",
+    "inspect_text": "A lean artisan with jeweler's loupes pushed up on his forehead. His fingers stay steady on the brass gears even while he talks. The workshop ticks and hums around him like a living thing.",
     "attackable": false,
     "initial_stats": {
       "hp": 14,
@@ -1744,7 +1744,7 @@
       ],
       "subtext_notes": [
         "You are fanatical and utterly devoid of empathy.",
-        "You consider anyone interfering with the tithe an enemy of the divine order.",
+        "You consider anyone interfering with the offering an enemy of the divine order.",
         "You fight with radiant flame curses and holy zeal."
       ],
       "response_notes": [
@@ -1755,7 +1755,7 @@
       "behavior_examples": [
         "He swings his bronze censer, releasing sweet, choking white smoke.",
         "He stares at Layla with vacant, unblinking eyes.",
-        "He pronounces anathema against those who break the holy tithe."
+        "He pronounces anathema against those who break the holy offering."
       ]
     }
   },
@@ -1830,7 +1830,7 @@
       "golem",
       "steam_golem"
     ],
-    "inspect_text": "A broad golem of dark, worn stone wrapped in thick copper pipe and brass fittings — a village guardian, made to watch the gate and stay quiet about it. Steam sighs from the valves along its shoulders. It kneels at the edge of the village, stone head bowed, the way it has knelt for as long as anyone can remember. The children call it Sakhra, the Watchful: their guard, their fixture, the stillest thing in town.",
+    "inspect_text": "A broad golem of dark, worn stone wrapped in thick copper pipe and brass fittings \u2014 a village guardian, made to watch over the village and stay quiet about it. Steam sighs from the valves along its shoulders. It kneels in the village square, stone head bowed, the way it has knelt for as long as anyone can remember. The children call it Sakhra, the Watchful: their guard, their fixture, the stillest thing in town.",
     "attackable": true,
     "xp_drop": 30,
     "drops": {},
@@ -1926,7 +1926,7 @@
       "character_notes": [
         "You are a garrison sentry stationed before the massive brass bulkhead of the fortress.",
         "Commoners are strictly forbidden from approaching or entering the military fortress.",
-        "You have orders from Captain Malik that the gates remain sealed until the tithe shipment departs."
+        "You have orders from Captain Malik that the gates remain sealed until the offering shipment departs."
       ],
       "response_notes": [
         "Order the civilian to turn back.",

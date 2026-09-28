@@ -171,12 +171,10 @@ fn elf_king_defeat_narrates_dungeon_master_myth() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let king_speech = pack.render_message("king.speech", &[]).unwrap();
 
-    // Must refer to the master as "the demon king", "the ruler of the night", "the dark lord", or "the night"
-    assert!(king_speech.contains("the demon king"));
-    assert!(king_speech.contains("the ruler of the night"));
+    // Must refer to the master by the canonical in-game name, "the dark lord"
     assert!(king_speech.contains("the dark lord"));
     assert!(king_speech.contains("the night"));
-    // Never refer to the master by other names like "dungeon master"
+    // Never refer to the master by names like "dungeon master"
     assert!(!king_speech.to_lowercase().contains("dungeon master"));
 
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
@@ -227,16 +225,12 @@ fn elf_king_defeat_narrates_dungeon_master_myth() {
         .iter()
         .map(|line| line.text.as_str())
         .collect();
-    assert!(
-        texts
-            .iter()
-            .any(|t| t.contains("demon king") && t.contains("ruler of the night"))
-    );
+    assert!(texts.iter().any(|t| t.contains("the dark lord")));
     // Spoken speech line is attributed with character name
     assert!(
         texts
             .iter()
-            .any(|t| t.starts_with("elf king:") && t.contains("demon king"))
+            .any(|t| t.starts_with("elf king:") && t.contains("the dark lord"))
     );
     // Intro prose and aftermath prose are present
     assert!(

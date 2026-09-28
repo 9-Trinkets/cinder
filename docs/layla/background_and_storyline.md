@@ -33,7 +33,9 @@ meant to serve.
      and takes its place, completing her reprogramming. (The "good employee"
      ending; the one the corporation wants.)
   2. **Escape.** Layla breaks out of the dungeon and **frees herself from the
-     corporation that produces the game.** (The alternative, freedom ending.)
+     corporation that produces the game.** (The alternative, freedom ending —
+     and the intended **true** ending; *how* she gets out is still to be
+     designed when we build Floor 6 and beyond.)
 
 ---
 
@@ -227,10 +229,10 @@ The working foundation of the kingdom. Simple stone villages, mushroom farms, an
 The ruling class. Stone castles, grand halls, and guard garrisons carved into high cliffs. The nobles command the army and make the laws. They are proud, paranoid, and terrified of peasant revolts from below and temple inquisitors from above.
 
 #### Level 6 — The Clergy (The Priests and Temple Keepers)
-The temple leaders who enforce obedience. Vast underground cathedrals, libraries, and prayer vaults. The priests preach the holy will of the Demon King. They perform the **"Rite of Oblivion"** (memory-cleansing incense and rituals), teaching that remembering past lives or the surface world is a crime. They keep the people amnesiac and trapped in their jobs.
+The temple leaders who enforce obedience. Vast underground cathedrals, libraries, and prayer vaults. The priests preach the holy will of the dark lord. They perform the **"Rite of Oblivion"** (memory-cleansing incense and rituals), teaching that remembering past lives or the surface world is a crime. They keep the people amnesiac and trapped in their jobs.
 
-### Level 7 — The Royal Core: The "Demon King / Queen" (The Sovereign)
-The throne room at the very top of the kingdom. The Demon Sovereign is both the king of the realm and the current **Dungeon Master**. Confronting the Sovereign brings the final resolution to Layla's journey.
+### Level 7 — The Royal Core: The dark lord (the current Dungeon Master)
+The throne room at the very top of the kingdom. The dark lord is both the ruler of the realm and the current **Dungeon Master**. Confronting it brings the final resolution to Layla's journey.
 
 ### Factions, Choices & The Quest System
 Floors 4, 5, and 6 introduce an active **Quest System** (one Main Quest and side quests on each floor), putting Layla in the role of a **mediator and problem-solver**:
@@ -250,7 +252,7 @@ In this kingdom, people and monsters have been brainwashed into fixed roles (Pea
 - Per-piece awakening storylines (who each surviving golem/elf was, and what they say on waking) are recorded in **`docs/layla/floor4_plan.md` § 5**.
 
 ### The Planned Endgame (canon intent)
-- **Primary ending — become the dungeon master.** Layla defeats the current **demon king / dungeon master**. This completes her corporate reprogramming: she takes the throne and runs the dungeon against human adventurers.
+- **Primary ending — become the dungeon master.** Layla defeats the current **dark lord / dungeon master**. This completes her corporate reprogramming: she takes the throne and runs the dungeon against human adventurers.
 - **Alternative ending — escape.** Layla refuses the throne. She breaks out of the simulation and **frees herself from the company that made the game**, leading the awakened people of the kingdom out to the open air.
 
 ## The Unresolved Threads (deliberately open)
