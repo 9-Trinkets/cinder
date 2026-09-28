@@ -54,6 +54,16 @@ impl WorldState {
         }
     }
 
+    pub fn drain_actor_inventory(&mut self, actor_id: &str) -> Vec<(String, u32)> {
+        if let Some(inv) = self.actor_inventories.remove(actor_id) {
+            let mut items: Vec<(String, u32)> = inv.into_iter().filter(|(_, c)| *c > 0).collect();
+            items.sort_by(|a, b| a.0.cmp(&b.0));
+            items
+        } else {
+            Vec::new()
+        }
+    }
+
     pub fn actor_add_item(&mut self, actor_id: &str, item_id: &str) {
         *self
             .actor_inventories

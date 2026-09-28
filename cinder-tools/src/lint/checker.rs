@@ -109,23 +109,25 @@ pub fn lint_pack(pack_dir: &Path, locale: &str) -> LintReport {
             ));
         }
 
-        for (item_id, drop_spec) in &actor.drops {
-            match drop_spec {
-                DropSpec::Always(_) | DropSpec::Chance(_) | DropSpec::Conditional(_) => {
-                    if !item_ids.contains(item_id.as_str()) {
-                        report.warnings.push(format!(
-                            "[{pack_name}] actor '{}' drops unknown item '{}'",
-                            actor.id, item_id
-                        ));
-                    }
-                }
-                DropSpec::Weighted(pool) => {
-                    for entry in &pool.entries {
-                        if !item_ids.contains(entry.item_id.as_str()) {
+        for specs in [&actor.initial_inventory, &actor.drops] {
+            for (item_id, drop_spec) in specs {
+                match drop_spec {
+                    DropSpec::Always(_) | DropSpec::Chance(_) | DropSpec::Conditional(_) => {
+                        if !item_ids.contains(item_id.as_str()) {
                             report.warnings.push(format!(
-                                "[{pack_name}] actor '{}' weighted drop references unknown item '{}'",
-                                actor.id, entry.item_id
+                                "[{pack_name}] actor '{}' inventory/drop references unknown item '{}'",
+                                actor.id, item_id
                             ));
+                        }
+                    }
+                    DropSpec::Weighted(pool) => {
+                        for entry in &pool.entries {
+                            if !item_ids.contains(entry.item_id.as_str()) {
+                                report.warnings.push(format!(
+                                    "[{pack_name}] actor '{}' weighted spec references unknown item '{}'",
+                                    actor.id, entry.item_id
+                                ));
+                            }
                         }
                     }
                 }

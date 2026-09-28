@@ -192,7 +192,7 @@ fn test_platform_discovery_activation_and_floor5_gate() {
     let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
 
     // Before defeating Malik, entering the platform is blocked
-    let barred = runtime
+    let _barred = runtime
         .run_turn("go northwest")
         .expect("try enter platform");
     assert_ne!(runtime.current_room_id().unwrap(), "teleport_platform");

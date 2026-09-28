@@ -1,15 +1,10 @@
-use crate::content::types::{
-    ContentPack, DropSpec, ItemStorageTarget, XpDistributionMode, XpRecipientMode,
-};
+use crate::content::types::{ContentPack, ItemStorageTarget, XpDistributionMode, XpRecipientMode};
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_narrating_world_hook_effects;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::observation::render_story_text;
 use crate::engine::reducer::summaries::summarize_actor_names;
 use crate::engine::state::{ActorRelationship, GamePhase, WorldState, display_actor_name};
-use crate::engine::turn_policies::story_var_is_truthy;
-use rand::Rng;
-use rand::seq::SliceRandom;
 use serde_json::json;
 use std::collections::BTreeMap;
 
@@ -39,6 +34,7 @@ pub(in crate::engine::reducer) fn defeat_actor(
             "actor_id": actor_id,
             "actor_name": actor_name,
             "room_id": room_id,
+            "story_vars": state.story_vars.to_map(),
         }),
         lines,
     )
@@ -169,62 +165,7 @@ pub(in crate::engine::reducer) fn spawn_defeat_drops(
     room_id: &str,
     lines: &mut NarrativeLines,
 ) {
-    let Some(actor) = content.actor(actor_id) else {
-        return;
-    };
-    if actor.drops.is_empty() {
-        return;
-    }
-    let mut rng = rand::thread_rng();
-    // Item id → count resolved across specs, so a weighted pool can never
-    // scatter the same suit twice and mixed specs collapse instead of stacking.
-    let mut resolved: Vec<(String, u32)> = Vec::new();
-    for (key, spec) in &actor.drops {
-        if should_skip_depleted_drop(state, actor, actor_id, key) {
-            continue;
-        }
-        match spec {
-            DropSpec::Always(count) if *count > 0 => {
-                resolved.push((key.clone(), *count));
-            }
-            DropSpec::Conditional(conditional) => {
-                let skipped = !conditional.skip_when_story_var.is_empty()
-                    && story_var_is_truthy(state, &conditional.skip_when_story_var);
-                if !skipped && conditional.count > 0 {
-                    resolved.push((key.clone(), conditional.count));
-                }
-            }
-            DropSpec::Chance(chance) => {
-                let roll = rng.gen_range(0..100);
-                if roll < chance.chance_percent && chance.count > 0 {
-                    resolved.push((key.clone(), chance.count));
-                }
-            }
-            DropSpec::Weighted(pool) => {
-                if pool.rolls == 0 || pool.entries.is_empty() {
-                    continue;
-                }
-                for _ in 0..pool.rolls {
-                    let Ok(entry) = pool.entries.choose_weighted(&mut rng, |entry| entry.weight)
-                    else {
-                        continue;
-                    };
-                    if entry.count == 0 {
-                        continue;
-                    }
-                    if let Some((_, existing)) = resolved
-                        .iter_mut()
-                        .find(|(item_id, _)| item_id == &entry.item_id)
-                    {
-                        *existing += entry.count;
-                    } else {
-                        resolved.push((entry.item_id.clone(), entry.count));
-                    }
-                }
-            }
-            _ => {}
-        }
-    }
+    let resolved = state.drain_actor_inventory(actor_id);
     if resolved.is_empty() {
         return;
     }
@@ -232,7 +173,6 @@ pub(in crate::engine::reducer) fn spawn_defeat_drops(
     for (item_id, count) in &resolved {
         for _ in 0..*count {
             state.add_item_to_storage(item_id, ItemStorageTarget::CurrentRoom, room_id);
-            state.actor_remove_item(actor_id, item_id);
         }
         if let Some(item) = content.item(item_id) {
             dropped_labels.push(if *count > 1 {
@@ -307,15 +247,4 @@ fn distribute_xp(xp: u32, recipient_count: usize, mode: XpDistributionMode) -> V
                 .collect()
         }
     }
-}
-
-fn should_skip_depleted_drop(
-    state: &WorldState,
-    actor: &crate::content::types::ActorDefinition,
-    actor_id: &str,
-    item_id: &str,
-) -> bool {
-    let was_in_inventory = actor.initial_inventory.contains_key(item_id)
-        || state.relationship(actor_id).stance == crate::engine::state::ActorStance::Allied;
-    was_in_inventory && !state.actor_has_item(actor_id, item_id)
 }

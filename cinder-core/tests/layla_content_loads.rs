@@ -36,17 +36,26 @@ fn elf_chess_mobs_declarations_resolve() {
     assert_eq!(pack.item("leaf-paste").unwrap().use_hook, "item.salve_used");
 
     let pawn = pack.actor("elf-pawn-1").unwrap();
-    let DropSpec::Weighted(pool) = &pawn.drops["pawn-kit"] else {
+    let DropSpec::Weighted(pool) = &pawn.initial_inventory["pawn-kit"] else {
         panic!("pawn kit must parse as a weighted pool");
     };
     assert!(pack.item(&pool.entries[0].item_id).is_some());
 
     let queen = pack.actor("elf-queen-4").unwrap();
-    assert!(matches!(queen.drops["leaf-ring"], DropSpec::Chance(_)));
+    assert!(matches!(
+        queen.initial_inventory["leaf-ring"],
+        DropSpec::Chance(_)
+    ));
 
     let king = pack.actor("elf-king-5").unwrap();
-    assert!(matches!(king.drops["drain-scroll"], DropSpec::Always(1)));
-    assert!(matches!(king.drops["leaf-cloak"], DropSpec::Chance(_)));
+    assert!(matches!(
+        king.initial_inventory["drain-scroll"],
+        DropSpec::Always(1)
+    ));
+    assert!(matches!(
+        king.initial_inventory["leaf-cloak"],
+        DropSpec::Chance(_)
+    ));
 }
 
 #[test]
@@ -115,13 +124,8 @@ fn goblin_shaman_defeat_narrates_world_hint_lines() {
     );
 
     assert_eq!(state.story_vars.get("shaman_defeated"), Some("true"));
-    // Verify shaman-ring dropped into room
-    assert!(
-        state
-            .loose_room_items("r5c5")
-            .iter()
-            .any(|(item, _)| item == "shaman-ring")
-    );
+    // Verify shaman-ring acquired by player upon defeat without attacking mobs
+    assert!(state.has_item("shaman-ring"));
     // Verify narration lines include shaman.defeat, shaman.reveal, shaman.memory, and handler.minimap_unlocked
     let texts: Vec<&str> = output
         .lines
@@ -730,7 +734,10 @@ fn follow_and_unfollow_commands_and_panel_options() {
 fn player_starting_inventory_seeds_from_actor_definition() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let player = pack.actor("player").expect("player actor exists");
-    assert_eq!(player.initial_inventory.get("magic-chalk"), Some(&1));
+    assert_eq!(
+        player.initial_inventory.get("magic-chalk"),
+        Some(&DropSpec::Always(1))
+    );
 
     let state = cinder_core::engine::state::WorldState::new(&pack);
     assert_eq!(state.player_inventory.get("magic-chalk"), Some(&1));
@@ -899,7 +906,7 @@ fn layla_shipped_pack_invariants_and_wiring() {
     assert_eq!(pack.settings.periodic_actor_effects.len(), 1);
     assert_eq!(pack.settings.periodic_actor_effects[0].id, "drain_sigil");
     assert_eq!(
-        pack.actor("fire-elemental").unwrap().drops,
+        pack.actor("fire-elemental").unwrap().initial_inventory,
         std::collections::BTreeMap::from([("spawn-scroll".to_string(), DropSpec::Always(1))])
     );
     assert_eq!(

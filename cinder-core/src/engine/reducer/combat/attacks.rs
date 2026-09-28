@@ -42,6 +42,7 @@ pub(in crate::engine::reducer) fn apply_attack_target(
                 "actor_name": target_name,
                 "attacker_id": attacker_actor_id,
                 "tags": target_tags,
+                "story_vars": state.story_vars.to_map(),
             }),
         )
         .unwrap_or_else(|error| eprintln!("[cinder] hook warning (actor.attacked): {error}"));

@@ -1,7 +1,8 @@
 {
   "initial_stage_ids": [
     "mq_hear_gate",
-    "sq_hear_sacrifice"
+    "sq_hear_sacrifice",
+    "sq_clean_shaman_listen"
   ],
   "stages": [
     {
@@ -135,6 +136,50 @@
       "advance_signals": [
         "actor_awakened:sakhra",
         "actor_awakened"
+      ],
+      "next_stage_ids": []
+    },
+    {
+      "id": "sq_clean_shaman_listen",
+      "summary": "",
+      "beat_note": "Layla has not yet engaged the Goblin Shaman on Floor 1.",
+      "advance_signals": [
+        "clean_shaman_started",
+        {
+          "signal": "room_entered:r5c5",
+          "conditions": [
+            {
+              "path": "story_vars.values.layla_attacked_floor_one_mob",
+              "operator": "not_equal",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.clean_shaman_started",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "sq_defeat_clean_shaman"
+      ]
+    },
+    {
+      "id": "sq_defeat_clean_shaman",
+      "quest_id": "clean_shaman",
+      "quest_title": "Trial of the Silent Path",
+      "quest_kind": "secret",
+      "summary": "Defeat the Goblin Shaman without having harmed the goblins or golems of the cave.",
+      "beat_note": "Having navigated the labyrinth without striking down any goblins or golems, Layla challenges the Goblin Shaman.",
+      "update_message": "Defeat the Goblin Shaman to claim your reward.",
+      "advance_signals": [
+        "item_acquired:shaman-ring"
       ],
       "next_stage_ids": []
     }

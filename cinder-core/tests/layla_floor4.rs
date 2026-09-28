@@ -984,7 +984,7 @@ fn floor4_alternative_gate_entry_via_guard_key() {
     assert_eq!(
         pack.actor("garrison_guard")
             .unwrap()
-            .drops
+            .initial_inventory
             .get("fortress-gate-key"),
         Some(&DropSpec::Always(1))
     );

@@ -82,6 +82,23 @@
             {
               "path": "actor_id",
               "operator": "equal",
+              "value": "goblin-shaman"
+            },
+            {
+              "path": "story_vars.layla_attacked_floor_one_mob",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "acquire_item",
+            "item_id": "shaman-ring"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
               "value": "goblin-1"
             }
           ],
@@ -377,6 +394,24 @@
           "payload_template": {
             "kind": "set_story_var",
             "key": "layla_attacked_floor_one_mob",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "goblin-shaman"
+            },
+            {
+              "path": "story_vars.layla_attacked_floor_one_mob",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "clean_shaman_started",
             "value": "true"
           }
         }

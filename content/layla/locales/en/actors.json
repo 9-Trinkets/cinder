@@ -196,15 +196,8 @@
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 25,
-    "drops": {
-      "shaman-ring": {
-        "count": 1,
-        "skip_when_story_var": "layla_attacked_floor_one_mob"
-      }
-    },
-    "initial_inventory": {
-      "shaman-ring": 1
-    },
+    "drops": {},
+    "initial_inventory": {},
     "tags": [
       "golem",
       "goblin",
@@ -357,7 +350,8 @@
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 8,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "chisel-axe": 1
     },
     "tags": [
@@ -406,7 +400,8 @@
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 8,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "moss-poultice": 1
     },
     "tags": [
@@ -455,7 +450,8 @@
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "chisel-axe": 1
     },
     "tags": [
@@ -504,7 +500,8 @@
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "moss-poultice": 2
     },
     "tags": [
@@ -542,7 +539,8 @@
     },
     "prompt_context": {},
     "level": 3,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "pawn-kit": {
         "rolls": 1,
         "entries": [
@@ -589,7 +587,8 @@
     },
     "prompt_context": {},
     "level": 3,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "pawn-kit": {
         "rolls": 1,
         "entries": [
@@ -636,7 +635,8 @@
     },
     "prompt_context": {},
     "level": 3,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "pawn-kit": {
         "rolls": 1,
         "entries": [
@@ -683,7 +683,8 @@
     },
     "prompt_context": {},
     "level": 3,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "pawn-kit": {
         "rolls": 1,
         "entries": [
@@ -730,7 +731,8 @@
     },
     "prompt_context": {},
     "level": 3,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "pawn-kit": {
         "rolls": 1,
         "entries": [
@@ -777,7 +779,8 @@
     },
     "prompt_context": {},
     "level": 3,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "pawn-kit": {
         "rolls": 1,
         "entries": [
@@ -824,7 +827,8 @@
     },
     "prompt_context": {},
     "level": 3,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "pawn-kit": {
         "rolls": 1,
         "entries": [
@@ -871,7 +875,8 @@
     },
     "prompt_context": {},
     "level": 3,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "pawn-kit": {
         "rolls": 1,
         "entries": [
@@ -918,7 +923,8 @@
     },
     "prompt_context": {},
     "level": 5,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "rook-kit": {
         "rolls": 1,
         "entries": [
@@ -965,7 +971,8 @@
     },
     "prompt_context": {},
     "level": 4,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "knight-kit": {
         "rolls": 1,
         "entries": [
@@ -1012,7 +1019,8 @@
     },
     "prompt_context": {},
     "level": 4,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "bishop-kit": {
         "rolls": 1,
         "entries": [
@@ -1060,7 +1068,8 @@
     },
     "prompt_context": {},
     "level": 6,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "leaf-ring": {
         "count": 1,
         "chance_percent": 50
@@ -1082,15 +1091,13 @@
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 0,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "drain-scroll": 1,
       "leaf-cloak": {
         "count": 1,
         "chance_percent": 35
       }
-    },
-    "initial_inventory": {
-      "drain-scroll": 1
     },
     "initial_stats": {
       "hp": 20,
@@ -1131,7 +1138,8 @@
     },
     "prompt_context": {},
     "level": 4,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "bishop-kit": {
         "rolls": 1,
         "entries": [
@@ -1178,7 +1186,8 @@
     },
     "prompt_context": {},
     "level": 4,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "knight-kit": {
         "rolls": 1,
         "entries": [
@@ -1225,7 +1234,8 @@
     },
     "prompt_context": {},
     "level": 5,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "rook-kit": {
         "rolls": 1,
         "entries": [
@@ -1265,9 +1275,7 @@
     },
     "attack_interval_minutes": 2,
     "initial_hostile": true,
-    "drops": {
-      "spawn-scroll": 1
-    },
+    "drops": {},
     "initial_inventory": {
       "spawn-scroll": 1
     },
@@ -1717,9 +1725,7 @@
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 40,
-    "drops": {
-      "incense-censer": 1
-    },
+    "drops": {},
     "initial_inventory": {
       "incense-censer": 1
     },
@@ -1775,10 +1781,7 @@
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 60,
-    "drops": {
-      "commander-safe-key": 1,
-      "brass-saber": 1
-    },
+    "drops": {},
     "initial_inventory": {
       "commander-safe-key": 1,
       "brass-saber": 1
@@ -1912,7 +1915,8 @@
     "initial_hostile": false,
     "attack_interval_minutes": 2,
     "xp_drop": 20,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "steam-crossbow-bolt": 2
     },
     "initial_stats": {
@@ -1957,12 +1961,10 @@
     "initial_hostile": false,
     "attack_interval_minutes": 2,
     "xp_drop": 20,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "fortress-gate-key": 1,
       "steam-crossbow-bolt": 1
-    },
-    "initial_inventory": {
-      "fortress-gate-key": 1
     },
     "initial_stats": {
       "hp": 20,
@@ -2004,7 +2006,8 @@
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 18,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "steam-crossbow-bolt": 1
     },
     "initial_stats": {
@@ -2045,7 +2048,8 @@
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 18,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "steam-crossbow-bolt": 1
     },
     "initial_stats": {
@@ -2087,9 +2091,7 @@
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 25,
-    "drops": {
-      "iron-cage-key": 1
-    },
+    "drops": {},
     "initial_inventory": {
       "iron-cage-key": 1
     },
@@ -2134,7 +2136,8 @@
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 22,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "brass-gear": 1,
       "copper-pipe": 1
     },
@@ -2175,7 +2178,8 @@
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 22,
-    "drops": {
+    "drops": {},
+    "initial_inventory": {
       "brass-gear": 1
     },
     "initial_stats": {

@@ -76,7 +76,7 @@ fn drive_defeat(pack: &ContentPack, drops: BTreeMap<String, DropSpec>) -> Vec<(S
         .iter_mut()
         .find(|actor| actor.id == "golem")
         .unwrap();
-    golem.drops = drops;
+    golem.initial_inventory = drops;
     let mut state = fresh_state(&pack);
     drive_attack_on(&mut state, &pack, "golem");
     state.loose_room_items(LOUNGE_ID)
@@ -91,7 +91,7 @@ fn unconditional_drop_scatters_into_the_room() {
         .iter_mut()
         .find(|actor| actor.id == "golem")
         .unwrap();
-    golem.drops = BTreeMap::from([("herb-salve".to_string(), DropSpec::Always(2))]);
+    golem.initial_inventory = BTreeMap::from([("herb-salve".to_string(), DropSpec::Always(2))]);
 
     let mut state = fresh_state(&pack);
     drive_attack_on(&mut state, &pack, "golem");
@@ -104,7 +104,7 @@ fn unconditional_drop_scatters_into_the_room() {
 }
 
 #[test]
-fn conditional_drop_is_forfeited_when_its_story_var_is_truthy() {
+fn taken_inventory_item_does_not_scatter_on_defeat() {
     let mut pack = attack_action_pack();
     add_attackable_target(&mut pack, "golem", &["golem"], 1);
     let golem = pack
@@ -112,16 +112,11 @@ fn conditional_drop_is_forfeited_when_its_story_var_is_truthy() {
         .iter_mut()
         .find(|actor| actor.id == "golem")
         .unwrap();
-    golem.drops = BTreeMap::from([(
-        "herb-salve".to_string(),
-        DropSpec::Conditional(cinder_core::content::types::DropConditionSpec {
-            count: 2,
-            skip_when_story_var: CLEAN_RUN_FLAG.to_string(),
-        }),
-    )]);
+    golem.initial_inventory = BTreeMap::from([("herb-salve".to_string(), DropSpec::Always(2))]);
 
     let mut state = fresh_state(&pack);
-    state.story_vars.set_unchecked(CLEAN_RUN_FLAG, "true");
+    state.actor_remove_item("golem", "herb-salve");
+    state.actor_remove_item("golem", "herb-salve");
     drive_attack_on(&mut state, &pack, "golem");
 
     assert!(state.actor_is_defeated("golem", "stamina"));
@@ -129,7 +124,7 @@ fn conditional_drop_is_forfeited_when_its_story_var_is_truthy() {
 }
 
 #[test]
-fn conditional_drop_spawns_when_its_story_var_is_absent() {
+fn partially_taken_inventory_scatters_remainder_on_defeat() {
     let mut pack = attack_action_pack();
     add_attackable_target(&mut pack, "golem", &["golem"], 1);
     let golem = pack
@@ -137,21 +132,16 @@ fn conditional_drop_spawns_when_its_story_var_is_absent() {
         .iter_mut()
         .find(|actor| actor.id == "golem")
         .unwrap();
-    golem.drops = BTreeMap::from([(
-        "herb-salve".to_string(),
-        DropSpec::Conditional(cinder_core::content::types::DropConditionSpec {
-            count: 2,
-            skip_when_story_var: CLEAN_RUN_FLAG.to_string(),
-        }),
-    )]);
+    golem.initial_inventory = BTreeMap::from([("herb-salve".to_string(), DropSpec::Always(2))]);
 
     let mut state = fresh_state(&pack);
+    state.actor_remove_item("golem", "herb-salve");
     drive_attack_on(&mut state, &pack, "golem");
 
     assert!(state.actor_is_defeated("golem", "stamina"));
     assert_eq!(
         state.loose_room_items(LOUNGE_ID),
-        vec![("herb-salve".to_string(), 2)]
+        vec![("herb-salve".to_string(), 1)]
     );
 }
 

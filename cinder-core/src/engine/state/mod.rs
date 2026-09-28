@@ -313,7 +313,7 @@ impl WorldState {
             last_transcript_line: None,
             player_inventory: content
                 .actor(&content.settings.combat.player_actor_id)
-                .map(|actor| actor.initial_inventory.clone().into_iter().collect())
+                .map(|actor| seeding::resolve_inventory_specs(&actor.initial_inventory))
                 .unwrap_or_default(),
             room_item_stock: BTreeMap::new(),
             room_item_charges: BTreeMap::new(),
