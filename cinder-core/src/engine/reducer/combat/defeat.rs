@@ -180,6 +180,9 @@ pub(in crate::engine::reducer) fn spawn_defeat_drops(
     // scatter the same suit twice and mixed specs collapse instead of stacking.
     let mut resolved: Vec<(String, u32)> = Vec::new();
     for (key, spec) in &actor.drops {
+        if should_skip_depleted_drop(state, actor, actor_id, key) {
+            continue;
+        }
         match spec {
             DropSpec::Always(count) if *count > 0 => {
                 resolved.push((key.clone(), *count));
@@ -229,6 +232,7 @@ pub(in crate::engine::reducer) fn spawn_defeat_drops(
     for (item_id, count) in &resolved {
         for _ in 0..*count {
             state.add_item_to_storage(item_id, ItemStorageTarget::CurrentRoom, room_id);
+            state.actor_remove_item(actor_id, item_id);
         }
         if let Some(item) = content.item(item_id) {
             dropped_labels.push(if *count > 1 {
@@ -303,4 +307,15 @@ fn distribute_xp(xp: u32, recipient_count: usize, mode: XpDistributionMode) -> V
                 .collect()
         }
     }
+}
+
+fn should_skip_depleted_drop(
+    state: &WorldState,
+    actor: &crate::content::types::ActorDefinition,
+    actor_id: &str,
+    item_id: &str,
+) -> bool {
+    let was_in_inventory = actor.initial_inventory.contains_key(item_id)
+        || state.relationship(actor_id).stance == crate::engine::state::ActorStance::Allied;
+    was_in_inventory && !state.actor_has_item(actor_id, item_id)
 }

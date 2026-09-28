@@ -202,6 +202,9 @@
         "skip_when_story_var": "layla_attacked_floor_one_mob"
       }
     },
+    "initial_inventory": {
+      "shaman-ring": 1
+    },
     "tags": [
       "golem",
       "goblin",
@@ -1086,6 +1089,9 @@
         "chance_percent": 35
       }
     },
+    "initial_inventory": {
+      "drain-scroll": 1
+    },
     "initial_stats": {
       "hp": 20,
       "strength": 6,
@@ -1260,6 +1266,9 @@
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "drops": {
+      "spawn-scroll": 1
+    },
+    "initial_inventory": {
       "spawn-scroll": 1
     },
     "initial_stats": {
@@ -1711,6 +1720,9 @@
     "drops": {
       "incense-censer": 1
     },
+    "initial_inventory": {
+      "incense-censer": 1
+    },
     "initial_stats": {
       "hp": 28,
       "strength": 5,
@@ -1764,6 +1776,10 @@
     "attack_interval_minutes": 2,
     "xp_drop": 60,
     "drops": {
+      "commander-safe-key": 1,
+      "brass-saber": 1
+    },
+    "initial_inventory": {
       "commander-safe-key": 1,
       "brass-saber": 1
     },
@@ -1945,6 +1961,9 @@
       "fortress-gate-key": 1,
       "steam-crossbow-bolt": 1
     },
+    "initial_inventory": {
+      "fortress-gate-key": 1
+    },
     "initial_stats": {
       "hp": 20,
       "strength": 5,
@@ -2069,6 +2088,9 @@
     "attack_interval_minutes": 2,
     "xp_drop": 25,
     "drops": {
+      "iron-cage-key": 1
+    },
+    "initial_inventory": {
       "iron-cage-key": 1
     },
     "initial_stats": {

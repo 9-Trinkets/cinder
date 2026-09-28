@@ -58,6 +58,24 @@ impl WorldState {
         self.set_relationship(actor_id, relationship);
         if stance == ActorStance::Allied {
             self.initialize_party_order(content, actor_id);
+            self.seed_allied_drops_to_inventory(content, actor_id);
+        }
+    }
+
+    /// When an actor becomes allied (e.g. charmed), ensures that any drops defined on
+    /// the actor are also present in their inventory so the player can take them via party commands.
+    pub fn seed_allied_drops_to_inventory(&mut self, content: &ContentPack, actor_id: &str) {
+        let Some(actor) = content.actor(actor_id) else {
+            return;
+        };
+        for (item_id, spec) in &actor.drops {
+            let drop_count = resolve_drop_spec_count(self, content, spec);
+            let current_count = self.actor_item_count(actor_id, item_id);
+            if drop_count > current_count {
+                for _ in 0..(drop_count - current_count) {
+                    self.actor_add_item(actor_id, item_id);
+                }
+            }
         }
     }
 
@@ -119,5 +137,25 @@ impl WorldState {
             let _ = self.adjust_actor_stat(content, actor_id, health_stat_id, i32::MIN / 2);
         }
         tagged_actor_ids
+    }
+}
+
+fn resolve_drop_spec_count(
+    state: &WorldState,
+    content: &ContentPack,
+    spec: &crate::content::types::DropSpec,
+) -> u32 {
+    match spec {
+        crate::content::types::DropSpec::Always(count) => *count,
+        crate::content::types::DropSpec::Conditional(cond) => {
+            if !cond.skip_when_story_var.is_empty()
+                && content.story_var_is_truthy(state, &cond.skip_when_story_var)
+            {
+                0
+            } else {
+                cond.count
+            }
+        }
+        _ => 0,
     }
 }
