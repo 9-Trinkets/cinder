@@ -4,7 +4,7 @@ Living design plan for **Level 4** of Layla. This floor covers the geothermal mi
 
 All text for players must use **simple sentences and everyday words for teenagers**. Avoid unusual, archaic, or fancy words (use "offering" instead of "tithe", "gate" instead of "portal", "platform" instead of "dais", "furnace" instead of "crucible").
 
-> Status: **plan rewritten to canonical truth.** The village ring is built in content (rooms `village_*`, actors `elder_rashid`, `yasmin`, `tariq`, `zayd`, `priest_harun`, `captain_malik`, garrison, `sakhra`). The mines and military complex are the open implementation work. This revision settles the canonical backstory of the "offering" (the conversion), re-casts **Sakhra as Zayd's father**, and keys the **Wisdom (WIS) stat** that the pack now implements for real.
+> Status: **plan rewritten to canonical truth.** The village ring and the military complex are built in content (rooms `village_*` and the fortress loop, actors `elder_rashid`, `yasmin`, `tariq`, `zayd`, `priest_harun`, `captain_malik`, garrison, `sakhra`), including the fortress entry routes, Zayd's rescue and escort, the Malik/safe confrontation, and the teleport platform (all integration-tested). The mines remain world-lore rather than playable map space, and the quest beat objectives, mother-awakening, and expanded awakening dialogue are the open implementation work. This revision settles the canonical backstory of the "offering" (the conversion), re-casts **Sakhra as Zayd's father**, and keys the **Wisdom (WIS) stat** that the pack now implements for real.
 
 ---
 
@@ -23,7 +23,7 @@ This is not an abandoned ruin. Thousands of commoners live and work here under t
 
 ### The Lie the Floor Tells
 
-The village runs on a cover story: the chosen ones are taken to the temple as an **offering** for the rituals upstairs. The truth is worse and plainer — the offering is the **reprogramming**. Up on the temple floors, a device (later floors will build it in its final, ritual form) **wipes a person's memory and reshapes their body into a dungeon piece** that protects the machine. That is where the shaman's golems came from, where the elves of Floor 2 came from, and where the village's "disappeared" go — including Zayd's parents. Zayd's father, told he died in a "steam drill collapse," was turned into the guardian golem that has knelt at the village edge ever since. Zayd's mother was reshaped into a chess queen who now wanders the ranks on Floor 2, searching for a son she cannot name.
+The village runs on a cover story: the chosen ones are taken to the temple as an **offering** for the rituals upstairs. The truth is worse and plainer — the offering is the **reprogramming**. Up on the temple floors, a device (later floors will build it in its final, ritual form) **wipes a person's memory and reshapes their body into a dungeon piece** that protects the machine. That is where the shaman's golems came from, where the elves of Floor 2 came from, and where the village's "disappeared" go — including Zayd's parents. Zayd's father, told he died in a "steam drill collapse," was turned into the guardian golem that has kept watch in the village square ever since. Zayd's mother was reshaped into a chess queen who now wanders the ranks on Floor 2, searching for a son she cannot name.
 
 Layla does not realize — yet — that she is moving through *her own* process. She is a being being reprogrammed toward the dungeon-master role, meeting the finished product of that process everywhere she looks.
 
@@ -83,9 +83,9 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 | **Zayd** | `zayd` | Boy (age 11) | `steam_prison_cage` (to be placed) | Scrappy, soot-stained, defiant. Even caged, he glares at the guards and clutches his parents' lantern. Still talks to the guardian golem. |
 | **Commander Malik** | `captain_malik` | Garrison Captain | `command_bastion` | Cold, proud, precise. Brass officer armor. Views miners as replaceable labor; follows the priests' orders without questions. |
 | **Priest Harun** | `priest_harun` | Temple Emissary | `command_bastion` | Eerie, soft-spoken, from the upper floors. Smooth talk about "sacred duty" while he waits to take Zayd away. On defeat he narrates the truth of the offering (hook `priest_harun.defeat`). |
-| **Sakhra** | `sakhra` | Village Guardian Golem | Village edge → the party | An ordinary guardian golem the village retrofitted with steam pistons long ago — **secretly Zayd's father.** He has guarded this village, and his son, since before Zayd could walk. He does not remember that. |
+| **Sakhra** | `sakhra` | Village Guardian Golem | Village square → the party | An ordinary guardian golem the village retrofitted with steam pistons long ago — **secretly Zayd's father.** He has guarded this village, and his son, since before Zayd could walk. He does not remember that. |
 | **The Queen** | `elf-queen-4` | Wandering Convert (Floor 2) | Floor 2 ranks | **Secretly Zayd's mother.** The piece that remembers a son it cannot name; the reason the elves stand close to waking. |
-| **The Handler** | — | External System | Voice | His friction with Layla on this floor is where he turns hostile: he will order her to "let the tithe ship." Saving Zayd is her first open act against the machine. |
+| **The Handler** | — | External System | Voice | His friction with Layla on this floor is where he turns hostile: he will order her to "let the offering ship." Saving Zayd is her first open act against the machine. |
 
 > **Name reconciliation:** the earlier plan named the elder "Elder Tariq" and the baker "Farida"; content now uses `elder_rashid`, `yasmin` (baker), and `tariq` (clockmaker). This plan is authoritative under the content ids.
 
@@ -110,7 +110,7 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
   - **Temporary Chalk Anchors:** Tracing the sigil in non-platform rooms places a single-use chalk anchor. Up to 3 active chalk anchors can exist simultaneously across the floor; tracing a 4th automatically evicts the oldest anchor (FIFO). Teleporting to a chalk anchor instantly consumes it, rubbing the chalk mark away.
   - **Platform Activation:** Tracing the Teleportation Sigil on the central `teleport_platform` activates the sleeping conduits (`platform_activated = "true"`), opening the exit down to Floor 5.
 
-**Beat stages:** `mq_hear_gate` → `mq_find_scroll` → `mq_use_teleport_platform` (already authored in `beats.json`).
+**Beat stages:** `mq_hear_gate` → `mq_find_scroll` → `mq_use_teleport_platform` (planned stages; `beat_objectives.json` authoring is the next pass — see [Implementation Status & Next Steps](#7-implementation-status--next-steps)).
 
 ### Side Quest: "Save the Boy Zayd"
 - **The Boy (Zayd, age 11):**
@@ -123,7 +123,7 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 - **Rescuing Zayd:**
   - Zayd is locked in the suspended `steam_prison_cage`, awaiting the priest's transport wagon (`priest_harun`), guarded by `garrison_warden`.
   - Layla defeats or charms the warden to loot the `iron-cage-key`, then unlocks the heavy padlock on the cage (`unlock cage`).
-  - **The handler turns.** The handler's route sheet does not cover a missing offering. He orders Layla to leave the boy: *"Let the tithe ship, Layla. That's the job."* Saving Zayd is Layla's first deliberate act of rebellion against the system.
+  - **The handler turns.** The handler's route sheet does not cover a missing offering. He orders Layla to leave the boy: *"Let the offering ship, Layla. That's the job."* Saving Zayd is Layla's first deliberate act of rebellion against the system.
 - **The Reward & The Family Heirloom:**
   - Zayd is escorted back to the village square (beat stages: `sq_hear_sacrifice` → `sq_save_zayd` → `sq_return_zayd`).
   - Escorting Zayd safely home reunites him with Yasmin, turns Zayd into a permanent village ally, and completes side quest `sq_return_zayd`.
@@ -132,7 +132,7 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
   - Layla receives **Zayd's Lantern** — the key item of the floor's secret and the tool to awaken Sakhra.
 
 ### Secret Quest: "Return the Light" (Freeing Zayd's Parents)
-The scavenged truth: with Zayd safe, the pieces fall into place — the old golem at the village edge, and the wandering queen on the lower-forest ranks. The clues:
+The scavenged truth: with Zayd safe, the pieces fall into place — the old golem in the village square, and the wandering queen on the lower-forest ranks. The clues:
 
 1. **The golem (Sakhra).** Tariq finds the plaster-and-pipe joints on the guardian golem odd — that isn't how a guardian is built, that's a *person,* bricked in stone and holding steam pipes over old scars. Zayd, who played on Sakhra's knees, is the only one who never needed the clue: *"He's been here my whole life. He feels like mine."*
 2. **The queen.** On Floor 2, the queen's inspect_text reads like a worried mother's patrol — she is always moving, always looking, retracing the same file. A player with `zayd` freed can find her circling, and her description shifts to a person searching for someone whose face she can't hold onto.
@@ -220,7 +220,7 @@ With recruited party members, players can issue tactical commands to coordinate 
 - **Zayd Rescue, Escort, and Quest Reward Lantern (Side Quest `save_zayd`):**
   - Cleared `zayd`'s initial inventory to prevent premature gifting via dialogue grounding. Zayd's prompt context instructs him to clutch his parents' lantern close and only grant it once safe in the village.
   - Authored player command `unlock_cage` (`UNLOCK_CAGE`, requires `iron-cage-key` at `steam_prison_cage`).
-  - Hook `zayd.freed` sets `zayd_rescued = "true"`, converts Zayd to an ally with `follows_player = true`, and emits the Handler's warning (*"Let the tithe ship. That's the job"*).
+  - Hook `zayd.freed` sets `zayd_rescued = "true"`, converts Zayd to an ally with `follows_player = true`, and emits the Handler's warning (*"Let the offering ship. That's the job"*).
   - Escorting Zayd back to `village_square` triggers safe arrival hook in `player.moved` (gated on `zayd_safe` `not_exists`): sets `zayd_safe = "true"`, converts Zayd back to static village ally (`follows_player = false`), awards `zayd-lantern` to Layla's inventory, narrates the reunion with Yasmin, and completes side quest `sq_return_zayd`.
   - Added `WorldHookEffect::AcquireItem` engine effect to cinder-core and wired `SetStoryVar` to emit beat advancement signals.
   - Verified via full end-to-end integration test `floor4_zayd_rescue_and_village_escort`.
@@ -229,11 +229,11 @@ With recruited party members, players can issue tactical commands to coordinate 
   - Added `awakened_actors` and `actor_name_overrides` tracking to `WorldState`, dynamic name override in `actor_display_name` and `display_actor_name`, and awakened inspect text and prompt context overrides.
   - Authored awakening definitions across surviving Floor 1-3 pieces: `sakhra` (Jamil, father of Zayd), `golem-dark-nw` (Orin), `golem-pale-ne` (Mari), `golem-dark-sw` (Ferid), `golem-pale-se` (Hana), and `elf-queen-4` (Nazira, mother of Zayd).
   - Placed `sakhra` in `village_square` (starts neutral to prevent premature party following on Floor 1). Giving `zayd-lantern` (+6 WIS) raises his wisdom to 11 (≥ 10), triggering the Awakening: Sakhra remembers his identity as Jamil, breaking out of his mind-wipe with his waking fragment, unlocking human speech and guidance, and joining the party as a loyal ally.
-  - Linked `sq_return_zayd` to the new side quest beat `sq_awaken_father` ("Return the Light").
+  - Planned: `sq_return_zayd` will lead into the side quest beat `sq_awaken_father` ("Return the Light") once beat objectives are authored.
   - Enforced hard limits: `goblin-shaman` and `elf-king-5` cannot awaken.
   - Verified via full end-to-end integration tests `cinder-core/tests/layla_floor4_awakening.rs`.
 - **Command Bastion Confrontation & Commander Malik Safe (`command_bastion`):**
-  - **Narrative Scene & Lock-In:** Entering `command_bastion` triggers a dramatic cutscene (`bastion.entry_scene` / `malik.bastion_entry` / `harun.bastion_entry` / `malik.bastion_alert`) between Captain Malik and Priest Harun arguing over the delayed tithe shipment. The heavy security blast doors slam shut, setting `bastion_scene_seen = "true"` and locking exits until Malik falls.
+  - **Narrative Scene & Lock-In:** Entering `command_bastion` triggers a dramatic cutscene (`bastion.entry_scene` / `malik.bastion_entry` / `harun.bastion_entry` / `malik.bastion_alert`) between Captain Malik and Priest Harun arguing over the delayed offering shipment. The heavy security blast doors slam shut, setting `bastion_scene_seen = "true"` and locking exits until Malik falls.
   - **Malik Boss Combat & Door Unlock:** Defeating `captain_malik` sets story var `malik_defeated = "true"`, dropping `commander-safe-key` and releasing the hydraulic deadbolts on the blast doors to allow exiting.
   - **Safe Cracking (`unlock safe`):** Authored `UNLOCK_SAFE` action at `command_bastion`. Unlocking the safe consumes `commander-safe-key`, sets story var `safe_unlocked = "true"`, awards `teleport-scroll` to Layla, and advances the main quest objective `mq_find_scroll` to `mq_use_teleport_platform`.
   - **Learning Teleportation:** Reading or using the scroll (`read teleport scroll` / `use teleport scroll`) sets story var `knows_teleport = "true"`, grants the `teleport-sigil` ability, and triggers the Handler's tactical tutorial on anchor networks.

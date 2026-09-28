@@ -143,7 +143,7 @@ Layla enters Floor 3 with her surviving golems from Floor 1, leveled through Flo
 | 3 | **Execute the Trap Strategy** | Trace Drain Sigils ahead of the boss; sweep sprites | Uses `trace drain-sigil` learned from Floor 2; manages 5-charge limit against sprite interference. |
 | 4 | **Exhaust the Elemental's HP** | **The Release (`elemental.release`)** | Elemental lets go; hook `actor.defeated` on `fire-elemental` triggers `elemental.release` narration and sets `elemental_released = true`. |
 | 5 | **Sprite Pacification** | Surviving sprites become peaceful | Hook sets tag `sprite` to `stance: neutral`. The floor cools. |
-| 6 | **Loot the Ember Scroll** | **Spawn Sigil (`spawn-sigil`)** unlocked | Reading `spawn-scroll` (`item.spawn_scroll_read`) teaches the third and final dungeon-master power. |
+| 6 | **Loot the Ember Scroll** | **Spawn Sigil (`spawn-sigil`)** unlocked | Reading `spawn-scroll` (`item.spawn_scroll_read`) teaches the third dungeon-master power; the teleport sigil rounds the set out on Floor 4. |
 
 ---
 

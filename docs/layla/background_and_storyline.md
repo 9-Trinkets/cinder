@@ -111,7 +111,7 @@ fight; her mind knows nothing.
 
 ### The Chalk and the Sigils (Dungeon-Master Powers, Learned as "Memories")
 Layla's toolset is **magic chalk** that leaves pale light behind in the stone.
-She learns three kinds of marks — each one a dungeon-master power dressed as a
+She learns four kinds of marks — each one a dungeon-master power dressed as a
 recalled skill:
 
 - **Charm sigil** (`charm-sigil`) — a closed ring traced around a vacant space.
@@ -194,8 +194,7 @@ game-language: **mancala** (Go and chess are the first two). Home to:
   It drops the **ember scroll** (spawn sigil).
 
 The elemental does not wait. It **circles the ring clockwise**, dwelling a
-fixed beat in each room and staying longer in its heart, and along its way it
-**spawns fire sprites**. The waves grow without limit — leave it alone too long
+fixed beat in each room along its way, and **spawns fire sprites** as it moves. The waves grow without limit — leave it alone too long
 and the sprites outnumber Layla's party and overwhelm it. The player must learn
 the elemental's cadence (how it moves, how long it lingers), move ahead of it to
 **pre-sow drain sigils** on its path, and lean on the **party** to clean sprites
@@ -305,7 +304,7 @@ All guidelines for prose style, the 3-tier voice hierarchy (Sleek HUD vs. Handle
   surrounded by chalk rings.
 - **Drain sigil** saps 2 HP per tick from hostile living targets standing on it.
 - **L3 clock (planned):** the fire elemental laps the ring clockwise on a fixed
-  cadence, dwelling longer in the Heart-Pit, and spawns fire sprites as it goes;
+  cadence and spawns fire sprites as it goes;
   the party exists to keep the sprite waves from compounding.
 - **Guard followers** intercept damage aimed at Layla.
 - **Shaman's ring** (equip) bends surviving golems to her will — the same
