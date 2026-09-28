@@ -47,8 +47,9 @@ pub(crate) fn handle_item_acquired(
                 push_rendered_message(lines, content, line, voice);
             }
             if item_id == "teleport-sigil"
-                && room_id != "teleport_platform"
-                && let Some(evicted_room) = state.add_chalk_anchor(&room_id)
+                && !content.is_permanent_teleport_room(&room_id)
+                && let Some(evicted_room) =
+                    state.add_chalk_anchor(&room_id, content.teleports.chalk_capacity())
             {
                 state.remove_item_from_storage(
                     "teleport-sigil",

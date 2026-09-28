@@ -687,7 +687,8 @@
         "advances_time": true,
         "input": {
           "required": true
-        }
+        },
+        "kind": "teleport"
       }
     }
   ]

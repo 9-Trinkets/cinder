@@ -555,10 +555,11 @@ fn handle_teleport_sigil_placement(
     room_id: &str,
     lines: &mut NarrativeLines,
 ) {
-    if room_id == "teleport_platform" {
+    if content.is_permanent_teleport_room(room_id) {
         return;
     }
-    if let Some(evicted_room) = state.add_chalk_anchor(room_id) {
+    if let Some(evicted_room) = state.add_chalk_anchor(room_id, content.teleports.chalk_capacity())
+    {
         state.remove_item_from_storage(
             "teleport-sigil",
             ItemStorageTarget::CurrentRoom,

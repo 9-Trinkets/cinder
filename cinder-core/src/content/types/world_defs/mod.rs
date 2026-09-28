@@ -11,8 +11,12 @@ mod presentation;
 mod rooms;
 mod speech;
 mod stats;
+mod teleports;
 
-pub use actor_defs::{ActorAwakening, ActorDefinition, ActorPromptContext};
+pub use actor_defs::{
+    ActorActCast, ActorDefinition, ActorPromptContext, ActorTransformation, TransformationRename,
+    TransformationTrigger,
+};
 pub use beat_objectives::{
     BeatObjectiveAffordancePriorityDefinition, BeatObjectiveAffordanceTarget,
     BeatObjectiveCompletionDefinition, BeatObjectiveCompletionTrigger,
@@ -33,3 +37,4 @@ pub use rooms::{
 };
 pub use speech::SpeechConfigDefinition;
 pub use stats::{StatDefinition, StatsDefinition};
+pub use teleports::{TeleportAnchorDefinition, TeleportNetworkDefinition};

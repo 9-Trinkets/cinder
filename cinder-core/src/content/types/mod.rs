@@ -54,19 +54,19 @@ pub use actor_tick_defs::*;
 
 mod world_defs;
 pub use world_defs::{
-    ActorAwakening, ActorDefinition, ActorMovementRulesDefinition,
-    ActorMovementTargetRuleDefinition, ActorPromptContext,
-    BeatObjectiveAffordancePriorityDefinition, BeatObjectiveAffordanceTarget,
-    BeatObjectiveCompletionDefinition, BeatObjectiveCompletionTrigger,
-    BeatObjectiveConditionalGuidanceDefinition, BeatObjectiveDefinition,
-    BeatObjectiveGuidanceDefinition, BeatObjectiveProgressDefinition,
+    ActorActCast, ActorDefinition, ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition,
+    ActorPromptContext, ActorTransformation, BeatObjectiveAffordancePriorityDefinition,
+    BeatObjectiveAffordanceTarget, BeatObjectiveCompletionDefinition,
+    BeatObjectiveCompletionTrigger, BeatObjectiveConditionalGuidanceDefinition,
+    BeatObjectiveDefinition, BeatObjectiveGuidanceDefinition, BeatObjectiveProgressDefinition,
     BeatObjectiveProgressKeyDefinition, BeatObjectivesDefinition, BehaviorActorDefinition,
     BehaviorDefinition, ConsumableDefinition, ConsumableKind, DropChanceSpec, DropConditionSpec,
     DropPoolEntry, DropPoolSpec, DropSpec, ErrorTextDefinition, MovementConfigDefinition,
     MovementDefaultsDefinition, MovementTargetBehavior, PresentationDefinition,
     PresentationTextDefinition, RoomDefinition, RoomDescriptionOverride, RoomExitDefinition,
     RoomFeatureDefinition, SpeechConfigDefinition, StatDefinition, StatsDefinition,
-    WanderDefinition, WanderMode,
+    TeleportAnchorDefinition, TeleportNetworkDefinition, TransformationRename,
+    TransformationTrigger, WanderDefinition, WanderMode,
 };
 
 mod command_defs;

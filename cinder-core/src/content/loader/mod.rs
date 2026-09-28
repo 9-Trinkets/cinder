@@ -12,7 +12,8 @@ use crate::content::types::{
     BehaviorDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition, LevelingDefinition,
     MapDefinition, MovementConfigDefinition, OpeningDefinition, OpeningMenuDefinition,
     OpeningMovieDefinition, PresentationDefinition, RoomDefinition, SequencesDefinition,
-    SpeechConfigDefinition, SpeechIntentsConfig, StatsDefinition, UiTextDefinition,
+    SpeechConfigDefinition, SpeechIntentsConfig, StatsDefinition, TeleportNetworkDefinition,
+    UiTextDefinition,
 };
 use serde_json::Value;
 use std::collections::BTreeMap;
@@ -138,6 +139,9 @@ pub fn load_pack_from_dir_with_locale(
         read_optional_json::<BehaviorDefinition>(path, "behavior.json")?.unwrap_or_default();
     let speech =
         read_optional_json::<SpeechConfigDefinition>(path, "speech.json")?.unwrap_or_default();
+    let teleports = paths
+        .read_optional::<TeleportNetworkDefinition>("teleports.json")?
+        .unwrap_or_default();
     let beat_objectives = read_json::<BeatObjectivesDefinition>(path, "beat_objectives.json")?;
     let hooks =
         read_optional_json::<BTreeMap<String, Value>>(path, "hooks.json")?.unwrap_or_default();
@@ -177,6 +181,7 @@ pub fn load_pack_from_dir_with_locale(
         movement,
         behavior,
         speech,
+        teleports,
         beat_objectives,
         hooks,
         speech_intents,

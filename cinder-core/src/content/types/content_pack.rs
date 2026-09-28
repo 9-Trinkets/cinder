@@ -26,6 +26,8 @@ pub struct ContentPack {
     pub movement: MovementConfigDefinition,
     pub behavior: BehaviorDefinition,
     pub speech: SpeechConfigDefinition,
+    /// Pack-declared teleport network (permanent platforms, chalk capacity).
+    pub teleports: TeleportNetworkDefinition,
     pub beat_objectives: BeatObjectivesDefinition,
     pub hooks: BTreeMap<String, Value>,
     pub speech_intents: SpeechIntentsConfig,
@@ -180,6 +182,78 @@ impl ContentPack {
             || actor_id == self.opening.id
             || actor_id == "player"
             || actor_id.starts_with("viewer:")
+    }
+
+    /// Resolves a teleport target into its destination room id plus whether
+    /// that destination is a permanent platform rather than a temporary chalk
+    /// anchor. Permanent platforms are resolved first and only while their
+    /// `armed_by` story var is truthy; otherwise armed chalk anchors win.
+    pub fn resolve_teleport_target(
+        &self,
+        state: &WorldState,
+        target: &str,
+    ) -> Option<(String, bool)> {
+        let target = target.trim().to_ascii_lowercase();
+        for anchor in &self.teleports.permanent_anchors {
+            let armed = state.story_vars.get(&anchor.armed_by) == Some("true");
+            if armed
+                && (anchor.room_id.eq_ignore_ascii_case(&target)
+                    || anchor
+                        .aliases
+                        .iter()
+                        .any(|alias| alias.eq_ignore_ascii_case(&target)))
+            {
+                return Some((anchor.room_id.clone(), true));
+            }
+        }
+        state.chalk_anchors.iter().find_map(|room_id| {
+            let title_matches = self
+                .room(room_id)
+                .is_some_and(|room| room.title.eq_ignore_ascii_case(&target));
+            if room_id.eq_ignore_ascii_case(&target) || title_matches {
+                Some((room_id.clone(), false))
+            } else {
+                None
+            }
+        })
+    }
+
+    /// Whether any teleport destination is currently reachable: an armed
+    /// permanent platform or at least one chalk anchor.
+    pub fn has_any_teleport_destination(&self, state: &WorldState) -> bool {
+        !state.chalk_anchors.is_empty()
+            || self
+                .teleports
+                .permanent_anchors
+                .iter()
+                .any(|anchor| state.story_vars.get(&anchor.armed_by) == Some("true"))
+    }
+
+    /// Whether `room_id` hosts a permanent teleport platform.
+    pub fn is_permanent_teleport_room(&self, room_id: &str) -> bool {
+        self.teleports
+            .permanent_anchors
+            .iter()
+            .any(|anchor| anchor.room_id == room_id)
+    }
+
+    /// The actor's transformation stage that has been applied to them, if any.
+    /// Returns the first applied stage the actor actually declares.
+    pub fn applied_transformation<'a>(
+        &'a self,
+        state: &WorldState,
+        actor_id: &str,
+    ) -> Option<&'a ActorTransformation> {
+        let actor = self.actor(actor_id)?;
+        state
+            .transformed_stages(actor_id)
+            .iter()
+            .find_map(|stage_id| {
+                actor
+                    .transformations
+                    .iter()
+                    .find(|stage| &stage.id == stage_id)
+            })
     }
 
     pub fn hook(&self, hook_id: &str) -> Option<&Value> {

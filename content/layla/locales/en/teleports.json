@@ -1,0 +1,28 @@
+{
+  "max_chalk_anchors": 3,
+  "permanent_anchors": [
+    {
+      "room_id": "teleport_platform",
+      "armed_by": "anchor_floor4_platform",
+      "title": "Floor 4 Platform",
+      "aliases": [
+        "teleport_platform",
+        "floor4_platform",
+        "floor 4 platform",
+        "floor 4"
+      ]
+    },
+    {
+      "room_id": "floor5_start",
+      "armed_by": "anchor_floor5_gate",
+      "title": "Floor 5 Descent Platform",
+      "aliases": [
+        "floor5_start",
+        "floor5_gate",
+        "floor 5 descent platform",
+        "floor 5 platform",
+        "floor 5"
+      ]
+    }
+  ]
+}

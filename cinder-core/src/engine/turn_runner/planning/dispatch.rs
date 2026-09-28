@@ -79,7 +79,11 @@ pub(crate) fn plan_authored_command(
     let action = content
         .command(command_id)
         .unwrap_or_else(|| panic!("missing command definition '{command_id}'"));
-    if action.id == "teleport" {
+    if action
+        .player_command
+        .as_ref()
+        .is_some_and(|metadata| metadata.kind == "teleport")
+    {
         return plan_teleport_command(content, action, input, &context, planned);
     }
     if action.outcome_mode == CommandOutcomeMode::Dialogue {

@@ -1,69 +1,7 @@
 use super::PlanningContext;
 use crate::content::types::{ActionDefinition, ContentPack};
 use crate::engine::events::{ObservationMode, WorldEvent};
-use crate::engine::state::WorldState;
 use crate::engine::turn_runner::PlannedTurn;
-
-fn resolve_permanent_anchor(state: &WorldState, target: &str) -> Option<&'static str> {
-    let perm_floor4 = state.story_vars.get("anchor_floor4_platform") == Some("true");
-    if perm_floor4
-        && matches!(
-            target,
-            "floor4_platform" | "teleport_platform" | "floor 4 platform" | "floor 4"
-        )
-    {
-        return Some("teleport_platform");
-    }
-
-    let perm_floor5 = state.story_vars.get("anchor_floor5_gate") == Some("true");
-    if perm_floor5
-        && matches!(
-            target,
-            "floor5_start"
-                | "floor5_gate"
-                | "floor 5 descent platform"
-                | "floor 5 platform"
-                | "floor 5"
-        )
-    {
-        return Some("floor5_start");
-    }
-
-    None
-}
-
-fn resolve_chalk_anchor<'a>(
-    content: &'a ContentPack,
-    state: &'a WorldState,
-    target: &str,
-) -> Option<&'a str> {
-    state.chalk_anchors.iter().find_map(|room_id| {
-        if room_id.eq_ignore_ascii_case(target) {
-            return Some(room_id.as_str());
-        }
-        let title_matches = content
-            .room(room_id)
-            .is_some_and(|r| r.title.eq_ignore_ascii_case(target));
-        if title_matches {
-            Some(room_id.as_str())
-        } else {
-            None
-        }
-    })
-}
-
-/// Resolves a teleport target to its destination room id plus whether that
-/// destination is a permanent platform rather than a temporary chalk anchor.
-fn resolve_teleport_anchor<'a>(
-    content: &'a ContentPack,
-    state: &'a WorldState,
-    target: &str,
-) -> Option<(&'a str, bool)> {
-    if let Some(room_id) = resolve_permanent_anchor(state, target) {
-        return Some((room_id, true));
-    }
-    resolve_chalk_anchor(content, state, target).map(|room_id| (room_id, false))
-}
 
 pub(super) fn plan_teleport_command(
     content: &ContentPack,
@@ -80,7 +18,7 @@ pub(super) fn plan_teleport_command(
         return false;
     }
 
-    if !state.has_any_teleport_anchor() {
+    if !content.has_any_teleport_destination(state) {
         planned.events.push(WorldEvent::ActionRejected {
             message: "You do not have any active teleport anchors yet. Trace a teleport sigil in a room to create a chalk anchor, or visit a teleport platform.".to_string(),
         });
@@ -97,7 +35,7 @@ pub(super) fn plan_teleport_command(
 
     let target_lower = raw_target.to_ascii_lowercase();
 
-    let Some(anchor) = resolve_teleport_anchor(content, state, &target_lower) else {
+    let Some(anchor) = content.resolve_teleport_target(state, &target_lower) else {
         planned.events.push(WorldEvent::ActionRejected {
             message: format!(
                 "Unknown anchor '{raw_target}'. Open your Teleport panel to view available anchors."

@@ -163,6 +163,10 @@ pub struct ActionPlayerCommand {
     pub advances_time: bool,
     #[serde(default)]
     pub input: Option<ActionPlayerInput>,
+    /// Optional engine-kind tag (e.g. `"teleport"`) used to route the
+    /// command to a dedicated engine planner instead of matching by id.
+    #[serde(default)]
+    pub kind: String,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
