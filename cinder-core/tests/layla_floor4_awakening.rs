@@ -151,3 +151,23 @@ fn hard_limit_shaman_and_king_cannot_awaken() {
     assert!(!king_awakened, "elf-king cannot awaken");
     assert!(!state.is_actor_awakened("elf-king-5"));
 }
+
+#[test]
+fn sakhra_is_not_in_party_at_game_start() {
+    let pack = load_named_pack("layla", Some("en")).expect("pack loads");
+    let state = WorldState::new(&pack);
+
+    assert!(
+        !state.is_party_member(&pack, "sakhra"),
+        "sakhra should not be a party member at game start"
+    );
+    assert!(
+        !state.follows_player("sakhra"),
+        "sakhra should not follow the player at game start"
+    );
+    assert_eq!(
+        state.stance("sakhra"),
+        cinder_core::engine::state::ActorStance::Neutral,
+        "sakhra should be neutral before awakening"
+    );
+}

@@ -1,7 +1,7 @@
 use crate::content::types::ContentPack;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
-use crate::engine::state::WorldState;
+use crate::engine::state::{ActorStance, WorldState};
 
 /// Evaluates whether an actor meets the wisdom threshold to awaken.
 /// When triggered, sets the actor as awakened, assigns their true name,
@@ -38,7 +38,7 @@ pub fn check_follower_awakening(
     let fragment = awakening.fragment.clone();
 
     state.set_actor_awakened(actor_id, &woken_name);
-    state.set_follows_player(actor_id, true);
+    state.set_actor_stance(content, actor_id, ActorStance::Allied, true);
 
     lines.narration(format!(
         "The warmth of high wisdom stirs deep within {original_name}. The fog in their mind shatters."

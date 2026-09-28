@@ -94,15 +94,21 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 ## 4. The Quests
 
 ### Main Quest: "The Teleportation Scroll"
-- **Goal:** Infiltrate the Inner Military Complex, break into Commander Malik's safe, take the **Teleportation Scroll**, and learn the **Teleportation Sigil**.
-- **Why You Need It:** The fortress gates are locked by hydraulic deadbolts that cannot be pried open. The Teleportation Sigil lets Layla blink through solid iron bars, slip past sentries, and activate the teleport platform.
+- **Goal:** Infiltrate the Inner Military Complex, defeat Commander Malik, crack his iron safe for the **Teleportation Scroll**, learn the **Teleportation Sigil**, and activate the central teleport platform to descend to Floor 5.
+- **Why You Need It:** There are no stairs leading up or down from the cavern. The only path forward is the massive geothermal Teleportation Platform inside the fortified complex. Learning the Teleportation Sigil unlocks fast-travel anchors across the dungeon and powers up the descent gate to Floor 5.
 - **How to Complete It:**
-  1. Gather intel in the village from Yasmin, the miners, and Tariq (and, in one quiet thread, Sakhra) about the fortress layout and Malik's habits.
+  1. Gather intel in the village from Yasmin, Tariq, and the guards about the fortress layout and Commander Malik.
   2. Enter the military complex via one of two paths:
-     - **Diversion route (puzzle):** Release the steam overpressure valve in the wash basin terrace (`village_west_1`) to pop the northern gate hydraulic locks.
+     - **Diversion route (puzzle):** Release the steam overpressure valve in the wash basin terrace (`village_west_1`) to pop the northern gate hydraulic locks (`turn valve`).
      - **Combat route:** Defeat the garrison guards stationed at `village_north_gate` (`garrison_guard`), loot the dropped `fortress-gate-key`, and manually unlock the bulkhead (`unlock gate`).
-  3. Crack the commander's safe, take the scroll, and read it (`item.teleport_scroll_read` → `knows_teleport`).
-- **The Sigil:** a double triangle with intersecting lines in magic chalk. Tracing it while standing before a barred gate or obstacle blinks the party instantly to the other side.
+  3. Enter `command_bastion`, defeat Commander Malik (`captain_malik`) to obtain `commander-safe-key`, unlock his iron safe (`unlock safe`), take the scroll, and read it (`use teleport scroll` → `knows_teleport`).
+  4. Step onto `teleport_platform` (unlocked once Malik falls), trace the Teleportation Sigil (`trace teleport sigil`), and descend to Floor 5 (`descend`).
+
+- **The Teleportation System (Anchor Architecture):**
+  - **The Sigil (`teleport-sigil`):** A double triangle with intersecting lines drawn in magic chalk (costs 4 MP). Tracing it links the space into the floor's arcane-geothermal grid.
+  - **Permanent Platform Anchors:** Stepping onto powered transport platforms (`teleport_platform` on Floor 4, `floor5_start` on Floor 5) automatically discovers permanent anchors (`anchor_floor4_platform`, `anchor_floor5_gate`). Teleporting to permanent anchors (`teleport <anchor>`) is infinite and never consumes the anchor point.
+  - **Temporary Chalk Anchors:** Tracing the sigil in non-platform rooms places a single-use chalk anchor. Up to 3 active chalk anchors can exist simultaneously across the floor; tracing a 4th automatically evicts the oldest anchor (FIFO). Teleporting to a chalk anchor instantly consumes it, rubbing the chalk mark away.
+  - **Platform Activation:** Tracing the Teleportation Sigil on the central `teleport_platform` activates the sleeping conduits (`platform_activated = "true"`), opening the exit down to Floor 5.
 
 **Beat stages:** `mq_hear_gate` → `mq_find_scroll` → `mq_use_teleport_platform` (already authored in `beats.json`).
 
@@ -115,16 +121,15 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
   - Paralyzed with fear for their own children, the village council made a cowardly decision: they gave up Zayd, rationalizing that *"he has no mother to cry for him."*
   - The moment Malik's soldiers dragged Zayd away in brass shackles, heavy guilt crushed the village. Nobody can look at one another without shame.
 - **Rescuing Zayd:**
-  - Zayd is locked in the suspended `steam_prison_cage`, awaiting the priest's transport wagon (`priest_harun`).
-  - Once Layla masters the **Teleportation Sigil**, she can blink inside the cage, grab Zayd, and blink both of them out before guards can sound the alarm.
-  - Alternatively, Layla can sabotage a nearby steam valve to blind the guards with a cloud of hot vapor and pick the cage lock.
-  - **The handler turns.** The handler's route sheet does not cover a missing offering. He will order Layla to leave the boy: *"Let the tithe ship, Layla. That's the job."* Saving Zayd (with or against him) is Layla's first deliberate act of rebellion.
+  - Zayd is locked in the suspended `steam_prison_cage`, awaiting the priest's transport wagon (`priest_harun`), guarded by `garrison_warden`.
+  - Layla defeats or charms the warden to loot the `iron-cage-key`, then unlocks the heavy padlock on the cage (`unlock cage`).
+  - **The handler turns.** The handler's route sheet does not cover a missing offering. He orders Layla to leave the boy: *"Let the tithe ship, Layla. That's the job."* Saving Zayd is Layla's first deliberate act of rebellion against the system.
 - **The Reward & The Family Heirloom:**
-  - Zayd is escorted back to the village and hidden safely in the steam mushroom caves (beat stages: `sq_hear_sacrifice` → `sq_save_zayd` → `sq_return_zayd`).
-  - The villagers are overjoyed and deeply indebted, providing healing salves, chalk refills, and local maps.
+  - Zayd is escorted back to the village square (beat stages: `sq_hear_sacrifice` → `sq_save_zayd` → `sq_return_zayd`).
+  - Escorting Zayd safely home reunites him with Yasmin, turns Zayd into a permanent village ally, and completes side quest `sq_return_zayd`.
   - Zayd hands Layla his most cherished possession — the brass-bound miner's lantern with a warm amber filament that never goes cold, and the only clue to the secret his parents share:
     > *"My mom and dad gave me this before the rocks fell. They said light always finds a way through stone. Take it... wherever you're going in the deep dark, I hope their light guides your way."*
-  - Layla receives **Zayd's Lantern** — the key item of the floor's secret.
+  - Layla receives **Zayd's Lantern** — the key item of the floor's secret and the tool to awaken Sakhra.
 
 ### Secret Quest: "Return the Light" (Freeing Zayd's Parents)
 The scavenged truth: with Zayd safe, the pieces fall into place — the old golem at the village edge, and the wandering queen on the lower-forest ranks. The clues:
@@ -187,10 +192,10 @@ Only pieces that were **not destroyed** can wake, and only if they receive enoug
 
 ## 6. Party Orders in the Steam Caverns
 
-With multi-member parties, players can assign specialized tactical roles:
+With recruited party members, players can issue tactical commands to coordinate combat and movement:
 
-- **`guard` / `sentry`:** A follower anchors at a doorway or steam valve, preventing roaming soldier patrols from flanking the party.
-- **`scout`:** A nimble follower slips ahead through steam clouds or narrow pipe tunnels to reveal room hazards and enemy numbers without triggering combat.
+- **`follow`:** The follower accompanies Layla from room to room, supporting her in combat and attacking alongside the party.
+- **`guard`:** The follower enters a defensive interception stance (`before_hostile_damage`). When a hostile enemy strikes at Layla, a guarding follower with at least 25% health intercepts the blow to protect her, absorbing the damage based on their defense stat. If multiple followers guard, priority goes to the follower with highest health percentage, then highest defense. In terms of movement, a guarding follower holds position in their current room rather than following room-to-room movements.
 
 ---
 
@@ -223,12 +228,24 @@ With multi-member parties, players can assign specialized tactical roles:
   - Added `ActorAwakening` model and `awakening` property to `ActorDefinition`.
   - Added `awakened_actors` and `actor_name_overrides` tracking to `WorldState`, dynamic name override in `actor_display_name` and `display_actor_name`, and awakened inspect text and prompt context overrides.
   - Authored awakening definitions across surviving Floor 1-3 pieces: `sakhra` (Jamil, father of Zayd), `golem-dark-nw` (Orin), `golem-pale-ne` (Mari), `golem-dark-sw` (Ferid), `golem-pale-se` (Hana), and `elf-queen-4` (Nazira, mother of Zayd).
-  - Placed `sakhra` in `village_square` as an ally. Giving `zayd-lantern` (+6 WIS) raises his wisdom to 11 (≥ 10), triggering the Awakening: Sakhra remembers his identity as Jamil, breaking out of his mind-wipe with his waking fragment, unlocking human speech and guidance, and following Layla as a free ally.
+  - Placed `sakhra` in `village_square` (starts neutral to prevent premature party following on Floor 1). Giving `zayd-lantern` (+6 WIS) raises his wisdom to 11 (≥ 10), triggering the Awakening: Sakhra remembers his identity as Jamil, breaking out of his mind-wipe with his waking fragment, unlocking human speech and guidance, and joining the party as a loyal ally.
   - Linked `sq_return_zayd` to the new side quest beat `sq_awaken_father` ("Return the Light").
   - Enforced hard limits: `goblin-shaman` and `elf-king-5` cannot awaken.
-  - Verified via full end-to-end integration test `cinder-core/tests/layla_floor4_awakening.rs`.
+  - Verified via full end-to-end integration tests `cinder-core/tests/layla_floor4_awakening.rs`.
+- **Command Bastion Confrontation & Commander Malik Safe (`command_bastion`):**
+  - **Narrative Scene & Lock-In:** Entering `command_bastion` triggers a dramatic cutscene (`bastion.entry_scene` / `malik.bastion_entry` / `harun.bastion_entry` / `malik.bastion_alert`) between Captain Malik and Priest Harun arguing over the delayed tithe shipment. The heavy security blast doors slam shut, setting `bastion_scene_seen = "true"` and locking exits until Malik falls.
+  - **Malik Boss Combat & Door Unlock:** Defeating `captain_malik` sets story var `malik_defeated = "true"`, dropping `commander-safe-key` and releasing the hydraulic deadbolts on the blast doors to allow exiting.
+  - **Safe Cracking (`unlock safe`):** Authored `UNLOCK_SAFE` action at `command_bastion`. Unlocking the safe consumes `commander-safe-key`, sets story var `safe_unlocked = "true"`, awards `teleport-scroll` to Layla, and advances the main quest objective `mq_find_scroll` to `mq_use_teleport_platform`.
+  - **Learning Teleportation:** Reading or using the scroll (`read teleport scroll` / `use teleport scroll`) sets story var `knows_teleport = "true"`, grants the `teleport-sigil` ability, and triggers the Handler's tactical tutorial on anchor networks.
+  - Verified via full end-to-end integration test `cinder-core/tests/layla_floor4_bastion.rs`.
+- **Central Teleport Platform Activation & Floor 5 Descent (`teleport_platform`):**
+  - **Platform Access & Discovery:** Accessible exclusively through `command_bastion` once `malik_defeated` is true. Stepping onto `teleport_platform` auto-discovers and registers permanent fast-travel anchors: `anchor_floor4_platform` and `anchor_floor5_gate`.
+  - **Sigil Activation:** Tracing the sigil (`trace teleport sigil`) on the platform activates the steam conduits and arcane rings, setting story var `platform_activated = "true"`. Unlike regular rooms, tracing here activates the permanent station rather than consuming MP for a temporary chalk anchor.
+  - **Floor 5 Descent:** Once `platform_activated` is set, descending via `go floor 5` or `descend` unlocks the passage down to `floor5_start`.
+  - **Anchor Network Fast-Travel:** With `knows_teleport`, player can execute `teleport <anchor_id>` to blink instantaneously between known anchors, supporting both single-use chalk anchors (up to 3 FIFO) and reusable permanent platform anchors without consumption.
+  - Verified via full end-to-end integration test `cinder-core/tests/layla_floor4_teleport.rs`.
 
 **To build (next passes):**
-1. Bastion & Command encounters: Commander Malik safe interaction/defeat and Priest Harun encounter to acquire `teleport-scroll`;
-2. Central Teleport Platform activation: Tracing `teleport-sigil` on `teleport_platform` to activate the steam gate and open the exit down to Floor 5;
-3. Quest line beat objectives (`beat_objectives.json`) and progression verification.
+1. Quest line beat objectives (`beat_objectives.json`) and progression verification.
+2. Mother awakening mechanic (`elf-queen-4` on Floor 2 via Zayd's voice / family reunion).
+3. Awakening dialogue and lore expansion across surviving pieces.

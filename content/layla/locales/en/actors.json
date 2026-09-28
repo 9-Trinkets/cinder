@@ -1820,10 +1820,6 @@
     "id": "sakhra",
     "name": "Sakhra",
     "room_id": "village_square",
-    "initial_relationship": {
-      "stance": "allied",
-      "follows_player": false
-    },
     "aliases": [
       "sakhra",
       "steam golem",
