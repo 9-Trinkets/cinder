@@ -163,52 +163,20 @@ fn handle_targeted_message(
         let text_lower = message.text.to_lowercase();
         let reply_lower = message.in_reply_to.as_deref().unwrap_or("").to_lowercase();
 
-        let mentions_descent = text_lower.contains("teleport")
-            || text_lower.contains("scroll")
-            || text_lower.contains("floor 5")
-            || text_lower.contains("next floor")
-            || text_lower.contains("platform")
-            || text_lower.contains("fortress")
-            || text_lower.contains("conduit")
-            || text_lower.contains("strongbox")
-            || reply_lower.contains("teleport")
-            || reply_lower.contains("scroll")
-            || reply_lower.contains("floor 5")
-            || reply_lower.contains("next floor")
-            || reply_lower.contains("descend")
-            || reply_lower.contains("gate");
-        if mentions_descent {
-            lines.extend_narration(advance_objective_for_signal(
-                state,
-                content,
-                "speech_topic:teleport_scroll",
-            ));
-            lines.extend_narration(advance_objective_for_signal(
-                state,
-                content,
-                "speech_topic:next_floor",
-            ));
-        }
-
-        let mentions_sacrifice = text_lower.contains("zayd")
-            || text_lower.contains("sacrifice")
-            || text_lower.contains("offering")
-            || text_lower.contains("tithe")
-            || reply_lower.contains("zayd")
-            || reply_lower.contains("sacrifice")
-            || reply_lower.contains("offering")
-            || reply_lower.contains("boy");
-        if mentions_sacrifice {
-            lines.extend_narration(advance_objective_for_signal(
-                state,
-                content,
-                "speech_topic:save_zayd",
-            ));
-            lines.extend_narration(advance_objective_for_signal(
-                state,
-                content,
-                "speech_topic:sacrifice",
-            ));
+        for topic in &content.beats.topic_signals {
+            let mentioned = topic
+                .keywords
+                .iter()
+                .any(|keyword| text_lower.contains(keyword.as_str()))
+                || topic
+                    .reply_keywords
+                    .iter()
+                    .any(|keyword| reply_lower.contains(keyword.as_str()));
+            if mentioned {
+                for signal in &topic.signals {
+                    lines.extend_narration(advance_objective_for_signal(state, content, signal));
+                }
+            }
         }
     }
 }

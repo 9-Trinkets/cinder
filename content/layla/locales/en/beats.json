@@ -183,5 +183,49 @@
       ],
       "next_stage_ids": []
     }
+  ],
+  "topic_signals": [
+    {
+      "signals": [
+        "speech_topic:teleport_scroll",
+        "speech_topic:next_floor"
+      ],
+      "keywords": [
+        "teleport",
+        "scroll",
+        "floor 5",
+        "next floor",
+        "platform",
+        "fortress",
+        "conduit",
+        "strongbox"
+      ],
+      "reply_keywords": [
+        "teleport",
+        "scroll",
+        "floor 5",
+        "next floor",
+        "descend",
+        "gate"
+      ]
+    },
+    {
+      "signals": [
+        "speech_topic:save_zayd",
+        "speech_topic:sacrifice"
+      ],
+      "keywords": [
+        "zayd",
+        "sacrifice",
+        "offering",
+        "tithe"
+      ],
+      "reply_keywords": [
+        "zayd",
+        "sacrifice",
+        "offering",
+        "boy"
+      ]
+    }
   ]
 }

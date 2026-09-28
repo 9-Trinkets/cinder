@@ -379,6 +379,7 @@ mod tests {
                     ..BeatDefinition::default()
                 },
             ],
+            ..BeatsDefinition::default()
         };
         let mut state = WorldState::new(&pack);
         state.current_time_minutes = 9 * 60 + 12;

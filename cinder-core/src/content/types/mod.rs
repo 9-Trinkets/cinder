@@ -42,7 +42,7 @@ pub use story_defs::{
     ActCastMember, ActorRelocationDefinition, AdvanceCondition, AdvanceEffect, AdvanceSignal,
     BeatDefinition, BeatsDefinition, MenuTriggerMode, OpeningDefinition, OpeningMenuDefinition,
     OpeningMenuOptionDefinition, OpeningMovieDefinition, OpeningMovieFrameDefinition,
-    OpeningPromptContext, StageAssignmentDefinition,
+    OpeningPromptContext, SpeechTopicSignal, StageAssignmentDefinition,
 };
 
 mod theme;

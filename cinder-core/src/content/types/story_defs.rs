@@ -190,6 +190,27 @@ pub struct BeatsDefinition {
     pub initial_stage_ids: Vec<String>,
     #[serde(default)]
     pub stages: Vec<BeatDefinition>,
+    /// Topic keyword rules fired on player-involving speech. The engine only
+    /// emits the declared advance signals; which words count as a topic is
+    /// pack-authored content, not engine logic.
+    #[serde(default)]
+    pub topic_signals: Vec<SpeechTopicSignal>,
+}
+
+/// A pack-declared mapping from spoken topic keywords to beat advance signals.
+/// The engine fires every `signals` entry when any `keywords` appear in the
+/// spoken line or any `reply_keywords` appear in the line it replies to.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct SpeechTopicSignal {
+    /// Advance signals emitted when a topic matches (e.g.
+    /// `speech_topic:save_zayd`). Beats reference these in `advance_signals`.
+    pub signals: Vec<String>,
+    /// Lower-case substrings matched against the spoken line's text.
+    #[serde(default)]
+    pub keywords: Vec<String>,
+    /// Lower-case substrings matched against the line the message replies to.
+    #[serde(default)]
+    pub reply_keywords: Vec<String>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

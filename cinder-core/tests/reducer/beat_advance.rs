@@ -34,6 +34,7 @@ fn command_used_signal_can_advance_stage_after_objective_completion_and_clears_p
                 ..BeatDefinition::default()
             },
         ],
+        ..BeatsDefinition::default()
     };
     pack.beat_objectives = BeatObjectivesDefinition {
         objectives: vec![BeatObjectiveDefinition {
