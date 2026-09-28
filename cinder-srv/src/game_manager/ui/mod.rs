@@ -101,7 +101,10 @@ pub(super) fn build_ui_snapshot(
     let look_options = build_look_options(runtime)?;
     let talk_options = build_talk_options(runtime)?;
     let active_menu = build_active_menu(runtime)?;
-    let interactable_labels = build_interactable_labels(&look_options);
+    let exit_labels = runtime
+        .current_room_exit_labels()
+        .map_err(|e| e.to_string())?;
+    let interactable_labels = build_interactable_labels(&look_options, &exit_labels);
 
     let bar_ids: Vec<&str> = action_bar_actions
         .iter()

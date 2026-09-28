@@ -51,15 +51,55 @@ pub(crate) fn build_active_menu(runtime: &CinderRuntime) -> Result<Option<Active
         ))
 }
 
-/// Names the transcript can highlight as interactable: actors, features, and
-/// items present here (everything except the room itself).
-pub(crate) fn build_interactable_labels(look_options: &[LookOptionData]) -> Vec<String> {
+/// Names the transcript can highlight as interactable: actors, features,
+/// items, and exits present here (everything except the room itself).
+pub(crate) fn build_interactable_labels(
+    look_options: &[LookOptionData],
+    exit_labels: &[String],
+) -> Vec<String> {
     let mut labels: Vec<String> = look_options
         .iter()
         .filter(|option| option.id != "__room__")
         .map(|option| option.title.clone())
         .collect();
+    labels.extend(exit_labels.iter().cloned());
     labels.sort();
     labels.dedup();
     labels
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn interactable_labels_include_room_exits() {
+        let look_opts = vec![
+            LookOptionData {
+                id: "__room__".to_string(),
+                title: "Village Square".to_string(),
+                command: "look".to_string(),
+            },
+            LookOptionData {
+                id: "feature:f1".to_string(),
+                title: "steam pipes".to_string(),
+                command: "x steam pipes".to_string(),
+            },
+        ];
+        let exit_labels = vec![
+            "North Through the Store".to_string(),
+            "South Through the Store".to_string(),
+            "Down into the Cave Below".to_string(),
+        ];
+        let labels = build_interactable_labels(&look_opts, &exit_labels);
+        assert_eq!(
+            labels,
+            vec![
+                "Down into the Cave Below",
+                "North Through the Store",
+                "South Through the Store",
+                "steam pipes",
+            ]
+        );
+    }
 }

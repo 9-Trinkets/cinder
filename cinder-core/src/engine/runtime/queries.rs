@@ -223,6 +223,29 @@ impl CinderRuntime {
         Ok(state.completed_stage_ids.iter().cloned().collect())
     }
 
+    /// Visible exit labels of the current room (used for text highlighting).
+    pub fn current_room_exit_labels(&self) -> Result<Vec<String>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for exit labels")?;
+        let Some(room) = self.content.room(&state.current_room_id) else {
+            return Ok(Vec::new());
+        };
+        Ok(room
+            .exits
+            .iter()
+            .filter(|exit| {
+                exit.requires_story_var.is_empty()
+                    || crate::engine::turn_policies::story_var_is_truthy(
+                        &state,
+                        &exit.requires_story_var,
+                    )
+            })
+            .map(|exit| exit.label.clone())
+            .collect())
+    }
+
     pub fn current_secret_progress(&self) -> Result<(usize, usize), Box<dyn Error>> {
         let state = self
             .state
