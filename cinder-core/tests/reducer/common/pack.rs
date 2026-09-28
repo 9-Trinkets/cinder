@@ -260,7 +260,7 @@ pub fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
             behavior_examples: vec![],
         },
         act_cast: None,
-        awakening: None,
+        transformations: vec![],
         initial_equipment: BTreeMap::new(),
         initial_inventory: BTreeMap::new(),
         game_data: BTreeMap::new(),

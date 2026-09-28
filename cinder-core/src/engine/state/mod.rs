@@ -171,9 +171,11 @@ pub struct WorldState {
     /// Ordered from oldest to newest.
     #[serde(default)]
     pub chalk_anchors: Vec<String>,
-    /// Set of actors that have been awakened (remember their true name and identity).
+    /// Transformation stages applied per actor, in application order (e.g.
+    /// `"sakhra" -> ["awakening"]`). Awakening is simply the `"awakening"`
+    /// stage of a transformation.
     #[serde(default)]
-    pub awakened_actors: BTreeSet<String>,
+    pub transformed_stages: BTreeMap<String, Vec<String>>,
     /// Runtime name overrides for actors (e.g. awakened names).
     #[serde(default)]
     pub actor_name_overrides: BTreeMap<String, String>,
@@ -373,7 +375,7 @@ impl WorldState {
             spawn_counter: 0,
             spawned_actors: BTreeMap::new(),
             chalk_anchors: Vec::new(),
-            awakened_actors: BTreeSet::new(),
+            transformed_stages: BTreeMap::new(),
             actor_name_overrides: BTreeMap::new(),
         }
     }
@@ -408,17 +410,43 @@ impl WorldState {
             .map(|actor| actor.name.as_str())
     }
 
-    /// Whether the actor is awakened (remembers their true name and past).
+    /// Whether the actor has applied any transformation stage. This is the
+    /// legacy "is awakened" check — awakening is simply a transformation
+    /// stage with id `"awakening"`.
     pub fn is_actor_awakened(&self, actor_id: &str) -> bool {
-        self.awakened_actors.contains(actor_id)
+        self.transformed_stages
+            .get(actor_id)
+            .is_some_and(|stages| !stages.is_empty())
     }
 
-    /// Awakens an actor with their true name, recording story variables and name overrides.
-    pub fn set_actor_awakened(&mut self, actor_id: &str, awakened_name: &str) {
-        self.awakened_actors.insert(actor_id.to_string());
-        self.actor_name_overrides
-            .insert(actor_id.to_string(), awakened_name.to_string());
-        let _ = self.story_vars.set(&format!("awakened.{actor_id}"), "true");
+    /// Whether the actor has applied the given transformation stage.
+    pub fn is_actor_transformed(&self, actor_id: &str, stage_id: &str) -> bool {
+        self.transformed_stages
+            .get(actor_id)
+            .is_some_and(|stages| stages.iter().any(|stage| stage == stage_id))
+    }
+
+    /// Transformation stages applied to an actor, in application order.
+    pub fn transformed_stages(&self, actor_id: &str) -> &[String] {
+        self.transformed_stages
+            .get(actor_id)
+            .map(|stages| stages.as_slice())
+            .unwrap_or(&[])
+    }
+
+    /// Records that a transformation stage has been applied, also mirroring
+    /// it as a truthy `transformed:{actor}:{stage}` story variable.
+    pub fn set_transformation_applied(&mut self, actor_id: &str, stage_id: &str) {
+        let stages = self
+            .transformed_stages
+            .entry(actor_id.to_string())
+            .or_default();
+        if !stages.iter().any(|stage| stage == stage_id) {
+            stages.push(stage_id.to_string());
+        }
+        let _ = self
+            .story_vars
+            .set(&format!("transformed:{actor_id}:{stage_id}"), "true");
     }
 
     /// Whether the actor is offstage, checking runtime spawned actors and room overrides first.

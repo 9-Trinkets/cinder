@@ -57,11 +57,12 @@ pub(crate) fn handle_actor_observed(
     lines: &mut NarrativeLines,
 ) {
     if let Some(actor) = content.actor(actor_id) {
-        let inspect = if state.is_actor_awakened(actor_id)
-            && let Some(awakening) = &actor.awakening
-            && let Some(awakened_inspect) = &awakening.inspect_text
+        let inspect = if let Some(rename) = content
+            .applied_transformation(state, actor_id)
+            .and_then(|transformation| transformation.rename.as_ref())
+            && let Some(transformed_inspect) = &rename.inspect_text
         {
-            awakened_inspect.as_str()
+            transformed_inspect.as_str()
         } else {
             actor.inspect_text.as_str()
         };

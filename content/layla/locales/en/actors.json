@@ -57,12 +57,28 @@
       "intelligence": 1,
       "wisdom": 4
     },
-    "awakening": {
-      "name": "Orin",
-      "who": "Stonecutter who helped build the first guard rooms",
-      "fragment": "I remember the rings. I was ringing the stone before they rang me.",
-      "inspect_text": "Orin, once a dark golem. His stone eyes are clear and observant, the hands of a skilled mason remembering the chisel and mallet. He stands upright with quiet dignity."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Orin",
+          "who": "Stonecutter who helped build the first guard rooms",
+          "fragment": "I remember the rings. I was ringing the stone before they rang me.",
+          "inspect_text": "Orin, once a dark golem. His stone eyes are clear and observant, the hands of a skilled mason remembering the chisel and mallet. He stands upright with quiet dignity."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:golem-dark-nw",
+          "actor_awakened"
+        ]
+      }
+    ],
     "aliases": [
       "golem",
       "dark golem",
@@ -109,12 +125,28 @@
       "intelligence": 1,
       "wisdom": 4
     },
-    "awakening": {
-      "name": "Mari",
-      "who": "Millwright who kept the ore mill turning",
-      "fragment": "The mill... is it still standing? I left a plate loose on the brace.",
-      "inspect_text": "Mari, once a pale golem. The smooth river stone of her limbs moves with the fluid, mechanical precision of a veteran millwright. Her eyes are bright and observant."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Mari",
+          "who": "Millwright who kept the ore mill turning",
+          "fragment": "The mill... is it still standing? I left a plate loose on the brace.",
+          "inspect_text": "Mari, once a pale golem. The smooth river stone of her limbs moves with the fluid, mechanical precision of a veteran millwright. Her eyes are bright and observant."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:golem-pale-ne",
+          "actor_awakened"
+        ]
+      }
+    ],
     "aliases": [
       "golem",
       "pale golem",
@@ -216,12 +248,28 @@
       "intelligence": 1,
       "wisdom": 4
     },
-    "awakening": {
-      "name": "Ferid",
-      "who": "Miner who worked the deepest shaft, swallowed first",
-      "fragment": "They came down here and put the dark in my chest. It's quieter now.",
-      "inspect_text": "Ferid, once a dark golem. The heavy stone of his shoulders carries the memory of iron picks and dark tunnels. His gaze is quiet, patient, and deeply grounded."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Ferid",
+          "who": "Miner who worked the deepest shaft, swallowed first",
+          "fragment": "They came down here and put the dark in my chest. It's quieter now.",
+          "inspect_text": "Ferid, once a dark golem. The heavy stone of his shoulders carries the memory of iron picks and dark tunnels. His gaze is quiet, patient, and deeply grounded."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:golem-dark-sw",
+          "actor_awakened"
+        ]
+      }
+    ],
     "aliases": [
       "golem",
       "dark golem",
@@ -268,12 +316,28 @@
       "intelligence": 1,
       "wisdom": 4
     },
-    "awakening": {
-      "name": "Hana",
-      "who": "Weaver of the village's first cloth",
-      "fragment": "I was counting threads. They Counted me instead.",
-      "inspect_text": "Hana, once a pale golem. The smooth contours of her stone frame move with graceful, deliberate care, like fingers working a loom. Her eyes hold warmth and recognition."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Hana",
+          "who": "Weaver of the village's first cloth",
+          "fragment": "I was counting threads. They Counted me instead.",
+          "inspect_text": "Hana, once a pale golem. The smooth contours of her stone frame move with graceful, deliberate care, like fingers working a loom. Her eyes hold warmth and recognition."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:golem-pale-se",
+          "actor_awakened"
+        ]
+      }
+    ],
     "aliases": [
       "golem",
       "pale golem",
@@ -532,11 +596,27 @@
       "intelligence": 3,
       "wisdom": 7
     },
-    "awakening": {
-      "name": "Ays",
-      "who": "Stoker's girl who ran hot coal buckets",
-      "fragment": "I was small and fast. They made me fast where it hurt."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Ays",
+          "who": "Stoker's girl who ran hot coal buckets",
+          "fragment": "I was small and fast. They made me fast where it hurt."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-1",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
@@ -597,11 +677,27 @@
       "intelligence": 3,
       "wisdom": 7
     },
-    "awakening": {
-      "name": "Barak",
-      "who": "Apprentice machinist, never off the steam drill",
-      "fragment": "Hiss and ping and clank — I know that drum. That's a boiler, not a heart."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Barak",
+          "who": "Apprentice machinist, never off the steam drill",
+          "fragment": "Hiss and ping and clank \u2014 I know that drum. That's a boiler, not a heart."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-2",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
@@ -662,11 +758,27 @@
       "intelligence": 3,
       "wisdom": 7
     },
-    "awakening": {
-      "name": "Dunya",
-      "who": "Seed keeper of the mushroom beds",
-      "fragment": "I used to know which dark grows grass. This dark grows orders."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Dunya",
+          "who": "Seed keeper of the mushroom beds",
+          "fragment": "I used to know which dark grows grass. This dark grows orders."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-3",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
@@ -727,11 +839,27 @@
       "intelligence": 3,
       "wisdom": 7
     },
-    "awakening": {
-      "name": "Qamar",
-      "who": "Night watch, the one who saw them take the first wagon",
-      "fragment": "I saw it. I saw the loading — and they put a spear in my hand for seeing."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Qamar",
+          "who": "Night watch, the one who saw them take the first wagon",
+          "fragment": "I saw it. I saw the loading \u2014 and they put a spear in my hand for seeing."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-4",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
@@ -792,11 +920,27 @@
       "intelligence": 3,
       "wisdom": 7
     },
-    "awakening": {
-      "name": "Sari",
-      "who": "Cook's child who carried flatbread to the works",
-      "fragment": "Warm bread. That's the sharpest memory I've got left, and it's worth more than this."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Sari",
+          "who": "Cook's child who carried flatbread to the works",
+          "fragment": "Warm bread. That's the sharpest memory I've got left, and it's worth more than this."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-5",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
@@ -857,11 +1001,27 @@
       "intelligence": 3,
       "wisdom": 7
     },
-    "awakening": {
-      "name": "Nadim",
-      "who": "Gear-oiler, knew every joint by its squeal",
-      "fragment": "They oiled nothing. Of course I remember — a dry joint shrieks."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Nadim",
+          "who": "Gear-oiler, knew every joint by its squeal",
+          "fragment": "They oiled nothing. Of course I remember \u2014 a dry joint shrieks."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-6",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
@@ -922,11 +1082,27 @@
       "intelligence": 3,
       "wisdom": 7
     },
-    "awakening": {
-      "name": "Rima",
-      "who": "Basket weaver who made the village's laundry lines",
-      "fragment": "I can still weave. Give me reeds, I'll grow you a way out of this."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Rima",
+          "who": "Basket weaver who made the village's laundry lines",
+          "fragment": "I can still weave. Give me reeds, I'll grow you a way out of this."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-7",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
@@ -987,11 +1163,27 @@
       "intelligence": 3,
       "wisdom": 7
     },
-    "awakening": {
-      "name": "Yusuf",
-      "who": "Sand-hauler at the sorting plant",
-      "fragment": "Sand. All that sand, and I never once found the bottom of it."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Yusuf",
+          "who": "Sand-hauler at the sorting plant",
+          "fragment": "Sand. All that sand, and I never once found the bottom of it."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-pawn-8",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
@@ -1052,11 +1244,27 @@
       "intelligence": 4,
       "wisdom": 8
     },
-    "awakening": {
-      "name": "Farhan",
-      "who": "Quarry boss, the one who first refused the priests",
-      "fragment": "I refused. That's when they built the walls around me. Walls can be walked around."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Farhan",
+          "who": "Quarry boss, the one who first refused the priests",
+          "fragment": "I refused. That's when they built the walls around me. Walls can be walked around."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-rook-1",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are an elf rook of the corner bastions \u2014 heavy shock infantry in dense plates of lacquered bark and compressed leaf, unyielding and direct.",
@@ -1113,11 +1321,27 @@
       "intelligence": 4,
       "wisdom": 8
     },
-    "awakening": {
-      "name": "Aziz",
-      "who": "Messenger rider who outran the summons once too often",
-      "fragment": "I can still run the gaps. Pacen your steps and the board forgets you."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Aziz",
+          "who": "Messenger rider who outran the summons once too often",
+          "fragment": "I can still run the gaps. Pacen your steps and the board forgets you."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-knight-2",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are an elf knight of the royal back rank \u2014 an outrider who moves in long, unexpected strides. You cross the glades at an angle, crest of dark curved bark on your helm.",
@@ -1174,11 +1398,27 @@
       "intelligence": 4,
       "wisdom": 8
     },
-    "awakening": {
-      "name": "Istawa",
-      "who": "Temple caller who saw the truth behind the Rite and was silenced",
-      "fragment": "I called. They rewired my calling into a weapon. I can call again."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Istawa",
+          "who": "Temple caller who saw the truth behind the Rite and was silenced",
+          "fragment": "I called. They rewired my calling into a weapon. I can call again."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-bishop-3",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are an elf bishop of the royal guard \u2014 a channeler who reads the grove by diagonals. You carry a tall crooked bough that pulses with faint green light, and you measure distances and angles.",
@@ -1236,12 +1476,28 @@
       "intelligence": 6,
       "wisdom": 9
     },
-    "awakening": {
-      "name": "Nazira",
-      "who": "Miner's wife, mother of Zayd, the village's sharpest eye",
-      "fragment": "I keep looking for the face I lost. A boy. He called me something. Will you say it so I can keep it?",
-      "inspect_text": "Nazira, once the elf queen. Her fierce commander's stance has softened into the searching, loving eyes of a mother who has broken through the machine's mind-wipe. She watches with acute, protective intelligence."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Nazira",
+          "who": "Miner's wife, mother of Zayd, the village's sharpest eye",
+          "fragment": "I keep looking for the face I lost. A boy. He called me something. Will you say it so I can keep it?",
+          "inspect_text": "Nazira, once the elf queen. Her fierce commander's stance has softened into the searching, loving eyes of a mother who has broken through the machine's mind-wipe. She watches with acute, protective intelligence."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-queen-4",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are the elf queen \u2014 the tallest of the commanders and the forest's champion. You sweep the same paths over and over, and your eyes keep looking past the walls, past the leaves, past everything in the grove.",
@@ -1338,11 +1594,27 @@
       "intelligence": 4,
       "wisdom": 8
     },
-    "awakening": {
-      "name": "Ruwan",
-      "who": "Healer's hand who set the sick by lamp and bell",
-      "fragment": "Bell and root and warm hand — no, child, that's not a crook, that's a staff for walking."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Ruwan",
+          "who": "Healer's hand who set the sick by lamp and bell",
+          "fragment": "Bell and root and warm hand \u2014 no, child, that's not a crook, that's a staff for walking."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-bishop-6",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are an elf bishop of the royal guard \u2014 a channeler who reads the grove by diagonals. You carry a tall crooked bough that pulses with faint green light, and you measure distances and angles.",
@@ -1400,11 +1672,27 @@
       "intelligence": 4,
       "wisdom": 8
     },
-    "awakening": {
-      "name": "Layali",
-      "who": "Acrobat of the travelling lamps",
-      "fragment": "They untrained my tumbles into trots. Give me a crossbar and I'll show you old me."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Layali",
+          "who": "Acrobat of the travelling lamps",
+          "fragment": "They untrained my tumbles into trots. Give me a crossbar and I'll show you old me."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-knight-7",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are an elf knight of the royal back rank \u2014 an outrider who moves in long, unexpected strides. You cross the glades at an angle, crest of dark curved bark on your helm.",
@@ -1461,11 +1749,27 @@
       "intelligence": 4,
       "wisdom": 8
     },
-    "awakening": {
-      "name": "Salma",
-      "who": "Foundry forewoman who held the furnace line",
-      "fragment": "I held the line. They turned my line into a wall. A wall still stands up — good luck punching it."
-    },
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Salma",
+          "who": "Foundry forewoman who held the furnace line",
+          "fragment": "I held the line. They turned my line into a wall. A wall still stands up \u2014 good luck punching it."
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:elf-rook-8",
+          "actor_awakened"
+        ]
+      }
+    ],
     "prompt_context": {
       "character_notes": [
         "You are an elf rook of the corner bastions \u2014 heavy shock infantry in dense plates of lacquered bark and compressed leaf, unyielding and direct.",
@@ -2152,8 +2456,8 @@
       "the watchful"
     ],
     "tags": [
-      "golem",
-      "steam_golem"
+      "steam_golem",
+      "guardian"
     ],
     "inspect_text": "A broad golem of dark, worn stone wrapped in thick copper pipe and brass fittings \u2014 a village guardian, made to watch over the village and stay quiet about it. Steam sighs from the valves along its shoulders. It kneels in the village square, stone head bowed, the way it has knelt for as long as anyone can remember. The children call it Sakhra, the Watchful: their guard, their fixture, the stillest thing in town.",
     "attackable": true,
@@ -2167,31 +2471,47 @@
       "wisdom": 5
     },
     "level": 6,
-    "awakening": {
-      "name": "Jamil",
-      "who": "Miner, father of Zayd, the village's quietest man",
-      "fragment": "Zayd. My boy. Run your lamp over me — I will follow it the whole way home.",
-      "inspect_text": "Jamil, once known as Sakhra. The dark rock of his golem shell is still heavy with copper pipes and brass fittings, but the stone eyes have cleared to a warm, gentle gaze. A miner and the father of Zayd, he walks with quiet purpose and speaks in a low, steady voice.",
-      "prompt_context": {
-        "character_notes": [
-          "You are Jamil, the miner and father of Zayd. You were converted into Sakhra, the village guardian golem, your mind silenced behind heavy rock and copper pipes.",
-          "Now, the warmth of your family's miner lantern has cleared the fog from your stone eyes and returned your memory and your voice.",
-          "You love your son Zayd more than anything in the world. You remember the sound of his laughter, his wild pranks, and the way he clutched your hand before the dark took you."
-        ],
-        "subtext_notes": [
-          "You are deeply indebted to Layla for carrying the light and reuniting you with your memories and your son.",
-          "You know the deep shafts of the geothermal caverns, the secrets of the steam pipes, and the cruelty of the priests who demanded your boy as an offering."
-        ],
-        "response_notes": [
-          "Speak in a calm, gravelly, but gentle human voice. Express warmth toward Layla and protective love for Zayd.",
-          "Offer guidance about the cavern layouts, steam valves, and the fortress beyond."
-        ],
-        "behavior_examples": [
-          "A deep, human smile touches your stone features.",
-          "You place a massive, gentle hand on Zayd's shoulder."
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Jamil",
+          "who": "Miner, father of Zayd, the village's quietest man",
+          "fragment": "Zayd. My boy. Run your lamp over me \u2014 I will follow it the whole way home.",
+          "inspect_text": "Jamil, once known as Sakhra. The dark rock of his golem shell is still heavy with copper pipes and brass fittings, but the stone eyes have cleared to a warm, gentle gaze. A miner and the father of Zayd, he walks with quiet purpose and speaks in a low, steady voice.",
+          "prompt_context": {
+            "character_notes": [
+              "You are Jamil, the miner and father of Zayd. You were converted into Sakhra, the village guardian golem, your mind silenced behind heavy rock and copper pipes.",
+              "Now, the warmth of your family's miner lantern has cleared the fog from your stone eyes and returned your memory and your voice.",
+              "You love your son Zayd more than anything in the world. You remember the sound of his laughter, his wild pranks, and the way he clutched your hand before the dark took you."
+            ],
+            "subtext_notes": [
+              "You are deeply indebted to Layla for carrying the light and reuniting you with your memories and your son.",
+              "You know the deep shafts of the geothermal caverns, the secrets of the steam pipes, and the cruelty of the priests who demanded your boy as an offering."
+            ],
+            "response_notes": [
+              "Speak in a calm, gravelly, but gentle human voice. Express warmth toward Layla and protective love for Zayd.",
+              "Offer guidance about the cavern layouts, steam valves, and the fortress beyond."
+            ],
+            "behavior_examples": [
+              "A deep, human smile touches your stone features.",
+              "You place a massive, gentle hand on Zayd's shoulder."
+            ]
+          }
+        },
+        "stance": "allied",
+        "follows_player": true,
+        "signals": [
+          "actor_awakened:sakhra",
+          "actor_awakened"
         ]
       }
-    },
+    ],
     "prompt_context": {
       "character_notes": [
         "You are Sakhra, the village guardian golem. You have kept watch in the village square for longer than anyone can remember.",

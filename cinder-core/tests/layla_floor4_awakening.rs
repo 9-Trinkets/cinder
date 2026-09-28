@@ -2,7 +2,7 @@
 
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::engine::narrative::NarrativeLines;
-use cinder_core::engine::reducer::awakening::check_follower_awakening;
+use cinder_core::engine::reducer::transformations::maybe_apply_transformations;
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 
@@ -46,7 +46,10 @@ fn sakhra_awakens_into_jamil_via_zayd_lantern() {
 
     let s = runtime.export_state().unwrap();
     assert!(s.is_actor_awakened("sakhra"));
-    assert_eq!(s.story_vars.get("awakened.sakhra"), Some("true"));
+    assert_eq!(
+        s.story_vars.get("transformed:sakhra:awakening"),
+        Some("true")
+    );
     assert!(s.follows_player("sakhra"), "awakened Jamil follows player");
 
     // Inspecting Jamil shows awakened inspect text
@@ -143,11 +146,12 @@ fn hard_limit_shaman_and_king_cannot_awaken() {
         .or_default()
         .insert("wisdom".to_string(), 20);
 
-    let shaman_awakened = check_follower_awakening(&mut state, &pack, "goblin-shaman", &mut lines);
+    let shaman_awakened =
+        maybe_apply_transformations(&mut state, &pack, "goblin-shaman", &mut lines);
     assert!(!shaman_awakened, "goblin-shaman cannot awaken");
     assert!(!state.is_actor_awakened("goblin-shaman"));
 
-    let king_awakened = check_follower_awakening(&mut state, &pack, "elf-king-5", &mut lines);
+    let king_awakened = maybe_apply_transformations(&mut state, &pack, "elf-king-5", &mut lines);
     assert!(!king_awakened, "elf-king cannot awaken");
     assert!(!state.is_actor_awakened("elf-king-5"));
 }

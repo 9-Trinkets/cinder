@@ -149,21 +149,22 @@ pub fn resolved_actor_prompt_context(
     state: &WorldState,
     actor: &ActorDefinition,
 ) -> ActorPromptContext {
-    if state.is_actor_awakened(&actor.id)
-        && let Some(awakening) = &actor.awakening
+    if let Some(rename) = content
+        .applied_transformation(state, &actor.id)
+        .and_then(|transformation| transformation.rename.as_ref())
     {
-        if let Some(prompt_context) = &awakening.prompt_context {
+        if let Some(prompt_context) = &rename.prompt_context {
             return prompt_context.clone();
         }
         let mut base = actor.prompt_context.clone();
         base.character_notes.push(format!(
             "You have awakened and remembered who you are: {}, {}.",
-            awakening.name, awakening.who
+            rename.name, rename.who
         ));
-        if !awakening.fragment.is_empty() {
+        if !rename.fragment.is_empty() {
             base.subtext_notes.push(format!(
                 "Your true memory has returned. Fragment: '{}'",
-                awakening.fragment
+                rename.fragment
             ));
         }
         base.response_notes.push(

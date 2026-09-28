@@ -275,5 +275,8 @@
         "text": "Good. That sigil links your chalk to anchor points. Powered platforms give you permanent anchors. In other rooms, you can trace up to three temporary chalk anchors. Use them to jump across the floor in a second, but remember: chalk anchors vanish after one teleport."
     },
     "sigil.chalk_anchor_placed": "You draw the double triangle on the stone. The chalk glows with a soft light, anchoring this room.",
-    "platform.activated": "As you finish tracing the double triangle, blue light flares through the brass conduits. The platform roars to life with ancient power, opening the descent to Floor 5!"
+    "platform.activated": "As you finish tracing the double triangle, blue light flares through the brass conduits. The platform roars to life with ancient power, opening the descent to Floor 5!",
+    "transformation.wake.intro": "The warmth of high wisdom stirs deep within {actor_name}. The fog in their mind shatters.",
+    "transformation.wake.fragment": "\"{fragment}\"",
+    "transformation.wake.reveal": "{actor_name} remembers who they are: {actor_name} is now {woken_name}."
 }

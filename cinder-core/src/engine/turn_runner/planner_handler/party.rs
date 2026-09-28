@@ -19,7 +19,8 @@ pub(super) fn find_party_member<'a>(
     let mut matches = planner_state
         .onstage_actors(content)
         .filter(|actor| {
-            (planner_state.stance(&actor.id) == ActorStance::Allied || actor.awakening.is_some())
+            (planner_state.stance(&actor.id) == ActorStance::Allied
+                || !actor.transformations.is_empty())
                 && planner_state.actor_is_in_room(content, &actor.id, current_room_id)
                 && !planner_state
                     .actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)

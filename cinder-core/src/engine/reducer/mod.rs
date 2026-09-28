@@ -1,5 +1,4 @@
 mod actor_commands;
-pub mod awakening;
 pub(crate) mod beat_advance;
 mod combat;
 mod command_effects;
@@ -10,6 +9,7 @@ mod observation;
 mod summaries;
 mod surround;
 mod tick;
+pub mod transformations;
 
 use self::actor_commands::ActorCommandContext;
 use self::combat::handle_periodic_actor_effect_applied;

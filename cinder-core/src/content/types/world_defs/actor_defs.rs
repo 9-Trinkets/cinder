@@ -93,7 +93,7 @@ pub struct ActorDefinition {
     #[serde(default)]
     pub act_cast: Option<ActorActCast>,
     #[serde(default)]
-    pub awakening: Option<ActorAwakening>,
+    pub transformations: Vec<ActorTransformation>,
     #[serde(default)]
     pub game_data: BTreeMap<String, String>,
 }
@@ -141,24 +141,85 @@ pub struct ActorActCast {
     pub metadata: BTreeMap<String, String>,
 }
 
-/// Awakening definition for a follower or piece whose true self can be
-/// awakened when their Wisdom reaches a threshold (default 10).
+/// A content-declared transformation stage for an actor (job change,
+/// evolution, awakening, promotion, ...). The engine applies the first stage
+/// whose trigger is met at a transformation checkpoint (e.g. when the actor
+/// joins or follows the party), but never decides *what* transformations
+/// mean — renames, stance changes, signals, and narration are pack-authored.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct ActorAwakening {
+pub struct ActorTransformation {
+    /// Stable stage id for state tracking (e.g. `"awakening"`). Applied
+    /// stages are recorded as `transformed:{actor}:{id}` story variables and
+    /// exposed through `WorldState::is_actor_transformed`.
+    pub id: String,
+    /// Condition under which the transformation applies.
     #[serde(default)]
-    pub name: String,
+    pub trigger: TransformationTrigger,
+    /// Optional rename the actor takes on when transformed.
     #[serde(default)]
-    pub who: String,
+    pub rename: Option<TransformationRename>,
+    /// Stance the actor adopts once transformed.
     #[serde(default)]
-    pub fragment: String,
+    pub stance: Option<String>,
+    /// Whether the actor also follows/joins the player once transformed.
+    #[serde(default = "default_transformation_follows")]
+    pub follows_player: bool,
+    /// Beat advance signals emitted when the transformation is applied.
     #[serde(default)]
-    pub inspect_text: Option<String>,
+    pub signals: Vec<String>,
+    /// Override message keys used for the transformation's narration. When
+    /// empty the engine uses the pack's standard `transformation.wake.*`
+    /// narration keys, so all renames share one prose set by default.
     #[serde(default)]
-    pub prompt_context: Option<ActorPromptContext>,
-    #[serde(default = "default_awakening_wisdom")]
-    pub required_wisdom: i32,
+    pub narration_keys: Vec<String>,
 }
 
-fn default_awakening_wisdom() -> i32 {
+fn default_transformation_follows() -> bool {
+    true
+}
+
+/// Condition a transformation stage waits on.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case", tag = "kind")]
+pub enum TransformationTrigger {
+    /// Fires immediately whenever the transformation is evaluated.
+    #[default]
+    Always,
+    /// Requires an (effective) stat to meet a threshold.
+    Stat {
+        /// Stat key, e.g. `"wisdom"`.
+        stat: String,
+        #[serde(default = "default_trigger_gte")]
+        gte: i32,
+    },
+    /// Requires a story variable to equal `value`.
+    StoryVar {
+        key: String,
+        #[serde(default)]
+        value: String,
+    },
+}
+
+fn default_trigger_gte() -> i32 {
     10
+}
+
+/// The identity a transformed actor takes on.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct TransformationRename {
+    /// New display name (kept empty to keep the actor's current name).
+    #[serde(default)]
+    pub name: String,
+    /// Blurb establishing who they really are (used in prompt grounding).
+    #[serde(default)]
+    pub who: String,
+    /// Forgotten-memory fragment surfaced during the transformation.
+    #[serde(default)]
+    pub fragment: String,
+    /// Inspect text shown after the transformation.
+    #[serde(default)]
+    pub inspect_text: Option<String>,
+    /// Prompt context used for the transformed actor.
+    #[serde(default)]
+    pub prompt_context: Option<ActorPromptContext>,
 }
