@@ -122,8 +122,9 @@ impl WorldState {
     ) {
         match storage {
             ItemStorageTarget::PlayerInventory => {
+                let player_id = self.player_actor_id.clone();
                 self.add_item(item_id);
-                self.actor_add_item("player", item_id);
+                self.actor_add_item(&player_id, item_id);
             }
             ItemStorageTarget::CurrentRoom => {
                 *self
@@ -142,8 +143,9 @@ impl WorldState {
     ) -> bool {
         match storage {
             ItemStorageTarget::PlayerInventory => {
+                let player_id = self.player_actor_id.clone();
                 let removed = self.remove_item(item_id);
-                self.actor_remove_item("player", item_id);
+                self.actor_remove_item(&player_id, item_id);
                 removed
             }
             ItemStorageTarget::CurrentRoom => {

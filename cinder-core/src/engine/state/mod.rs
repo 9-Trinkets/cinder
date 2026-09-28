@@ -36,6 +36,12 @@ fn default_state_version() -> u32 {
     WORLD_STATE_VERSION
 }
 
+/// Legacy player id used by saves written before the id was recorded in
+/// state. All historical packs used the `"player"` actor id.
+fn default_player_actor_id() -> String {
+    "player".to_string()
+}
+
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum GamePhase {
@@ -51,6 +57,12 @@ pub struct WorldState {
     #[serde(default = "default_state_version")]
     pub state_version: u32,
     pub current_room_id: String,
+    /// The id of the player-controlled actor, resolved from
+    /// `settings.combat.player_actor_id` at construction. Runtime code must
+    /// compare identities against this rather than a literal `"player"` so a
+    /// pack (e.g. a test fixture using `"blair"`) may name its player anything.
+    #[serde(default = "default_player_actor_id")]
+    pub player_actor_id: String,
     pub turn_number: u32,
     pub current_time_minutes: u32,
     #[serde(default)]
@@ -273,6 +285,7 @@ impl WorldState {
         Self {
             state_version: WORLD_STATE_VERSION,
             current_room_id: start_room_id,
+            player_actor_id: content.settings.combat.player_actor_id.clone(),
             turn_number: 0,
             current_time_minutes: content.opening.start_time_minutes,
             phase: GamePhase::Active,

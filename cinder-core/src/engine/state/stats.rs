@@ -4,6 +4,11 @@ use super::*;
 use crate::content::types::{ContentPack, ItemDefinition};
 
 impl WorldState {
+    /// Whether `actor_id` is the player-controlled actor.
+    pub fn is_player_actor(&self, actor_id: &str) -> bool {
+        actor_id == self.player_actor_id
+    }
+
     /// Current level for an actor; absent entries read as level 1.
     pub fn actor_level(&self, actor_id: &str) -> u32 {
         self.actor_level.get(actor_id).copied().unwrap_or(1).max(1)
@@ -170,7 +175,7 @@ impl WorldState {
 
     /// Item id equipped in `slot_id` for `actor_id`, if any.
     pub fn actor_equipped_item<'a>(&'a self, actor_id: &str, slot_id: &str) -> Option<&'a str> {
-        if actor_id == "player" {
+        if self.is_player_actor(actor_id) {
             self.equipped_item(slot_id)
         } else {
             self.actor_equipment(actor_id)

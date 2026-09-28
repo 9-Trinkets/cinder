@@ -94,7 +94,7 @@ pub(super) fn plan_targetless_command(
     let room_id = context.current_room_id.to_string();
     let actor_name = content.opening.title.as_str();
     planned.events.push(WorldEvent::ActorCommandUsed {
-        actor_id: "player".to_string(),
+        actor_id: content.settings.combat.player_actor_id.clone(),
         actor_name: actor_name.to_string(),
         room_id,
         command_id: action.id.clone(),
