@@ -47,6 +47,20 @@
             }
           ],
           "payload_template": {
+            "kind": "actor_speech",
+            "actor_id": "goblin-shaman",
+            "key": "shaman.defeat_line"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "goblin-shaman"
+            }
+          ],
+          "payload_template": {
             "kind": "narrate_message",
             "key": "shaman.reveal"
           }
@@ -314,6 +328,20 @@
             {
               "path": "actor_id",
               "operator": "equal",
+              "value": "captain_malik"
+            }
+          ],
+          "payload_template": {
+            "kind": "actor_speech",
+            "actor_id": "captain_malik",
+            "key": "malik.defeat_line"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
               "value": "priest_harun"
             }
           ],
@@ -334,6 +362,20 @@
           "payload_template": {
             "kind": "narrate_message",
             "key": "priest_harun.defeat"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "priest_harun"
+            }
+          ],
+          "payload_template": {
+            "kind": "actor_speech",
+            "actor_id": "priest_harun",
+            "key": "priest_harun.defeat_line"
           }
         }
       ]

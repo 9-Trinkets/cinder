@@ -86,12 +86,11 @@ fn goblin_shaman_defeat_narrates_world_hint_lines() {
     assert!(pack.messages.contains_key("shaman.defeat"));
     assert!(pack.messages.contains_key("handler.minimap_unlocked"));
     let defeat_msg = pack.render_message("shaman.defeat", &[]).unwrap();
-    assert!(defeat_msg.contains("dead do not stay here"));
-    assert!(
-        defeat_msg.contains("relief")
-            || defeat_msg.contains("void")
-            || defeat_msg.contains("Cold at last")
-    );
+    assert!(defeat_msg.contains("relief"));
+    // The shaman's words are an actor speech line, not part of the narration
+    assert!(!defeat_msg.contains("dead do not stay here"));
+    let defeat_line = pack.render_message("shaman.defeat_line", &[]).unwrap();
+    assert!(defeat_line.contains("dead do not stay here"));
 
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     state.current_room_id = "r5c5".to_string();
