@@ -9,6 +9,9 @@ set -u
 REPO_ROOT="__CINDER_REPO_ROOT__"
 
 if [ -f "$REPO_ROOT/Cargo.toml" ]; then
+    # Clean stale build artifacts first, then run the checks below.
+    "$REPO_ROOT/scripts/clean-target.sh"
+
     # rustfmt is the one check that blocks: it has a single canonical form and
     # a one-command fix, so a violation is always a mistake rather than a
     # judgement call.
