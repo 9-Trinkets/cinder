@@ -88,20 +88,46 @@ function splitSegmentByLabels(
   return parts
 }
 
+export function extractOccupantLabels(text: string): string[] {
+  const occupantPattern = /(?:Here with you|People here|Your party|這裡的人)[：:]\s*([^.\n。]+)/gi
+  const labels: string[] = []
+  let match: RegExpExecArray | null
+  while ((match = occupantPattern.exec(text)) !== null) {
+    const listStr = match[1].trim()
+    const items = listStr.split(/,\s*|，\s*/)
+    for (const item of items) {
+      const cleaned = item
+        .replace(/\s*\(.*?\)/g, '')
+        .replace(/\s*（.*?）/g, '')
+        .replace(/\s*[×xX]\s*\d+/g, '')
+        .trim()
+      if (cleaned) {
+        labels.push(cleaned)
+      }
+    }
+  }
+  return labels
+}
+
 export function HighlightedText({
   text,
   query,
-  craftedLabels,
-  interactableLabels,
+  craftedLabels = [],
+  interactableLabels = [],
 }: {
   text: string
   query: string
-  craftedLabels: string[]
-  interactableLabels: string[]
+  craftedLabels?: string[]
+  interactableLabels?: string[]
 }) {
+  const occupantLabels = extractOccupantLabels(text)
+  const allInteractable = occupantLabels.length > 0
+    ? Array.from(new Set([...interactableLabels, ...occupantLabels]))
+    : interactableLabels
+
   const highlights: LabelHighlight[] = [
     ...craftedLabels.map(label => ({ label, kind: 'crafted' as const })),
-    ...interactableLabels.map(label => ({ label, kind: 'interactable' as const })),
+    ...allInteractable.map(label => ({ label, kind: 'interactable' as const })),
   ]
   const parts = splitByQuery(text, query).flatMap(part =>
     splitSegmentByLabels(part, highlights),
