@@ -74,6 +74,36 @@ fn clean_shaman_trial_triggers_and_rewards_ring_on_clean_run() {
             .contains("sq_defeat_clean_shaman"),
         "sq_defeat_clean_shaman must be completed"
     );
+    // Sakhra on Floor 4 is unaffected by the Shaman's defeat
+    assert_eq!(
+        final_state.relationship("sakhra").stance,
+        cinder_core::engine::state::ActorStance::Neutral
+    );
+    assert!(!final_state.follows_player("sakhra"));
+    assert!(!final_state.is_party_member(&pack, "sakhra"));
+
+    // Equipping the Shaman's ring converts Floor 1 cave golems, but NOT Sakhra on Floor 4
+    let _ = runtime2
+        .run_turn("equip shaman-ring")
+        .expect("equip shaman ring");
+    let s_equip = runtime2.export_state().unwrap();
+    assert_eq!(
+        s_equip.relationship("sakhra").stance,
+        cinder_core::engine::state::ActorStance::Neutral,
+        "Sakhra must remain neutral on Floor 4 after equipping the shaman ring"
+    );
+    assert!(
+        !s_equip.follows_player("sakhra"),
+        "Sakhra must not follow after equipping the shaman ring"
+    );
+    assert!(
+        !s_equip.is_party_member(&pack, "sakhra"),
+        "Sakhra must not join party after equipping the shaman ring"
+    );
+    assert_eq!(
+        s_equip.actor_current_room_id(&pack, "sakhra"),
+        "village_square"
+    );
 }
 
 #[test]
