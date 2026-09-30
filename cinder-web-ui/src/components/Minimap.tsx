@@ -80,11 +80,48 @@ export default function Minimap({
           </g>
           {map.rooms.map(room => {
             const position = point(room.x, room.y)
+            const tooltipParts = [
+              room.label,
+              room.current ? 'current location' : room.visited ? 'visited' : 'revealed',
+            ]
+            if (room.has_teleport) {
+              tooltipParts.push('Teleport Portal')
+            }
+            if (room.ally_count && room.ally_count > 0) {
+              tooltipParts.push(
+                `Allies (${room.ally_count}): ${room.ally_names?.join(', ') || 'allies'}`
+              )
+            }
+            if (room.hostile_count && room.hostile_count > 0) {
+              tooltipParts.push(
+                `Hostiles (${room.hostile_count}): ${room.hostile_names?.join(', ') || 'hostiles'}`
+              )
+            }
+
             return (
               <g key={room.id}>
-                <title>
-                  {room.label}{room.current ? ' — current location' : room.visited ? ' — visited' : ' — revealed'}
-                </title>
+                <title>{tooltipParts.join(' — ')}</title>
+
+                {/* Portal aura */}
+                {room.has_teleport && (
+                  <circle
+                    cx={position.x}
+                    cy={position.y}
+                    r={ROOM_SIZE * 0.95}
+                    fill="none"
+                    stroke="var(--color-foam)"
+                    strokeWidth="1.2"
+                    strokeDasharray="2.5 1.5"
+                    className="motion-safe:animate-spin"
+                    style={{
+                      transformOrigin: `${position.x}px ${position.y}px`,
+                      animationDuration: '10s',
+                      opacity: 0.85,
+                    }}
+                  />
+                )}
+
+                {/* Player current pulse */}
                 {room.current && (
                   <circle
                     cx={position.x}
@@ -97,6 +134,8 @@ export default function Minimap({
                     opacity="0.55"
                   />
                 )}
+
+                {/* Room node rect */}
                 <rect
                   x={position.x - ROOM_SIZE / 2}
                   y={position.y - ROOM_SIZE / 2}
@@ -120,13 +159,82 @@ export default function Minimap({
                   strokeWidth={room.current ? 2 : 1.25}
                   vectorEffect="non-scaling-stroke"
                 />
-                {room.current && (
+
+                {/* Center marker: current player dot or portal diamond */}
+                {room.current ? (
                   <circle
                     cx={position.x}
                     cy={position.y}
                     r="1.5"
                     fill="var(--color-base)"
                   />
+                ) : room.has_teleport ? (
+                  <polygon
+                    points={`
+                      ${position.x},${position.y - 2.5}
+                      ${position.x + 2.5},${position.y}
+                      ${position.x},${position.y + 2.5}
+                      ${position.x - 2.5},${position.y}
+                    `}
+                    fill="var(--color-foam)"
+                    opacity="0.95"
+                  />
+                ) : null}
+
+                {/* Live Ally Tracker (top-left badge) */}
+                {Boolean(room.ally_count && room.ally_count > 0) && (
+                  <g>
+                    <circle
+                      cx={position.x - ROOM_SIZE / 2}
+                      cy={position.y - ROOM_SIZE / 2}
+                      r="2.2"
+                      fill="var(--color-pine)"
+                      stroke="var(--color-base)"
+                      strokeWidth="0.75"
+                    />
+                    <circle
+                      cx={position.x - ROOM_SIZE / 2}
+                      cy={position.y - ROOM_SIZE / 2}
+                      r="3.2"
+                      fill="none"
+                      stroke="var(--color-pine)"
+                      strokeWidth="0.5"
+                      opacity="0.6"
+                      className="motion-safe:animate-ping"
+                      style={{
+                        transformOrigin: `${position.x - ROOM_SIZE / 2}px ${position.y - ROOM_SIZE / 2}px`,
+                        animationDuration: '3s',
+                      }}
+                    />
+                  </g>
+                )}
+
+                {/* Live Hostile Tracker (top-right badge) */}
+                {Boolean(room.hostile_count && room.hostile_count > 0) && (
+                  <g>
+                    <circle
+                      cx={position.x + ROOM_SIZE / 2}
+                      cy={position.y - ROOM_SIZE / 2}
+                      r="2.2"
+                      fill="var(--color-love)"
+                      stroke="var(--color-base)"
+                      strokeWidth="0.75"
+                    />
+                    <circle
+                      cx={position.x + ROOM_SIZE / 2}
+                      cy={position.y - ROOM_SIZE / 2}
+                      r="3.2"
+                      fill="none"
+                      stroke="var(--color-love)"
+                      strokeWidth="0.5"
+                      opacity="0.6"
+                      className="motion-safe:animate-ping"
+                      style={{
+                        transformOrigin: `${position.x + ROOM_SIZE / 2}px ${position.y - ROOM_SIZE / 2}px`,
+                        animationDuration: '2s',
+                      }}
+                    />
+                  </g>
                 )}
               </g>
             )
@@ -141,6 +249,28 @@ export default function Minimap({
             : `${map.visited_count} ${uiText.minimap_charted_label}`}
         </span>
       </div>
+      {(map.has_teleports || map.entity_tracking) && (
+        <div className="flex flex-wrap items-center gap-3 pt-1 border-t border-subtle/50 text-[10px] tracking-wider text-muted">
+          {map.has_teleports && (
+            <span className="inline-flex items-center gap-1.5">
+              <span className="inline-block h-2 w-2 rounded-full border border-dashed border-[var(--color-foam)] bg-[var(--color-foam)]/30" />
+              <span>Portal</span>
+            </span>
+          )}
+          {map.entity_tracking && (
+            <>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="inline-block h-2 w-2 rounded-full bg-[var(--color-pine)]" />
+                <span>Allies</span>
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <span className="inline-block h-2 w-2 rounded-full bg-[var(--color-love)]" />
+                <span>Hostiles</span>
+              </span>
+            </>
+          )}
+        </div>
+      )}
     </div>
   )
 }

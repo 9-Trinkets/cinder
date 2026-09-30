@@ -93,6 +93,11 @@ pub struct MinimapRoom {
     pub y: f64,
     pub current: bool,
     pub visited: bool,
+    pub has_teleport: bool,
+    pub ally_count: usize,
+    pub hostile_count: usize,
+    pub ally_names: Vec<String>,
+    pub hostile_names: Vec<String>,
 }
 
 #[derive(Clone, Serialize)]
@@ -110,6 +115,8 @@ pub struct MinimapData {
     pub total_count: Option<usize>,
     pub rooms: Vec<MinimapRoom>,
     pub connections: Vec<MinimapConnection>,
+    pub entity_tracking: bool,
+    pub has_teleports: bool,
 }
 
 #[derive(Clone, Serialize)]

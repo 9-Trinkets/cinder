@@ -271,6 +271,11 @@ export interface MinimapRoom {
   y: number
   current: boolean
   visited: boolean
+  has_teleport?: boolean
+  ally_count?: number
+  hostile_count?: number
+  ally_names?: string[]
+  hostile_names?: string[]
 }
 
 export interface MinimapConnection {
@@ -286,6 +291,8 @@ export interface MinimapData {
   total_count: number | null
   rooms: MinimapRoom[]
   connections: MinimapConnection[]
+  entity_tracking?: boolean
+  has_teleports?: boolean
 }
 
 export interface ConsumableInfo {
