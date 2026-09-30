@@ -70,6 +70,7 @@
     "item.used": "Warmth spreads from the {item}. You feel mended.",
     "item.date-flatbread.used": "You break the warm date flatbread and eat. Sweet dates and roasted sesame fill you with warmth.",
     "item.leaf-paste.used": "You press the leaf paste into your wounds. It goes warm and green, and the hurt eases.",
+    "item.bitter-moss.used": "You press the bitter moss into your wounds. The herbs bite, then settle warm.",
     "item.charm-sigil.acquired_room": "",
     "conversion.ring": "The {actor} lowers its head and falls in behind you. You watch for a moment, then turn to go.",
     "shaman.defeat": "The shaman sinks back against the cold stone, its staff clattering loose across the floor. A dry, rattling breath escapes its chest — not of pain, but of profound, exhausted relief. Its milky eye stares into the dark ceiling.",

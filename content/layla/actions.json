@@ -168,43 +168,6 @@
       }
     },
     {
-      "id": "use_salve",
-      "command": "USE SALVE",
-      "label": "Use Moss Poultice",
-      "group": "gear",
-      "phrases": [
-        "use salve",
-        "use poultice",
-        "apply salve",
-        "apply poultice",
-        "eat poultice",
-        "heal"
-      ],
-      "player_enabled": true,
-      "target_mode": "none",
-      "outcome_mode": "event",
-      "effects": [
-        "use_item"
-      ],
-      "item_id": "moss-poultice",
-      "event_text": "{actor_name} presses the moss poultice into her wounds. The herbs bite, then settle warm.",
-      "available": {},
-      "ui": {
-        "bar": false,
-        "overflow": true,
-        "group": "gear",
-        "sort_order": 34
-      },
-      "player_command": {
-        "usage": "use salve",
-        "example": "use salve",
-        "advances_time": true,
-        "input": {
-          "required": false
-        }
-      }
-    },
-    {
       "id": "trace",
       "command": "TRACE",
       "label": "Trace",

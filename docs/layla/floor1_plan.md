@@ -172,7 +172,7 @@ hunt-goblins (or looting their camps) yields their gear:
 - **Chisel-axe** — a goblin skinning tool: a wedge of chipped stone half-wrapped
   in hide. The **weapon** Layla picks up before facing the shaman. (Rename of
   the old `iron-chisel`; drops from a goblin or lies in a camp.)
-- **Moss-poultice** — a wad of crushed herbs and moss, wet, tied in a scrap of
+- **Bitter-moss** — a wad of crushed herbs and bitter cave moss, wet, tied in a scrap of
   hide. Goblin medicine; heals when used. (Rename of `herb-salve`.)
 
 Starting inventory is **empty** in intent: Layla wakes with nothing but what she
@@ -284,7 +284,7 @@ and `trace`/`move` are available immediately.
 - `warden-ring` / `warden ring` → **shaman's ring** (a ring of dark carved bone
   and clay, still warm; on equip, surviving golems bow to Layla's will).
 - `iron-chisel` → **chisel-axe** (goblin skinning tool / the weapon find).
-- `herb-salve` → **moss-poultice** (goblin medicine).
+- `herb-salve` → **bitter-moss** (goblin medicine).
 - `warden.reveal` / `warden.memory` → shaman reveal/memory.
 - Map label **"Upper Works"** → **"The Cave"**.
 - Pack `description` / opening `intro_text` → rewritten for the cave premise.
@@ -309,8 +309,8 @@ Settled during the content build (Decisions recorded):
   `golem-pale-ne` r3c7, `golem-dark-sw` r7c3, `golem-pale-se` r7c7) and their
   rooms read as **"A Guarded Crossing"**.
 - **Goblin placements + drops.** `goblin-1` r2c2 (drops chisel-axe),
-  `goblin-2` r2c8 (drops moss-poultice), `goblin-3` r8c2 (drops chisel-axe),
-  `goblin-4` r8c8 (drops moss-poultice ×2). The weapon and medicine are each
+  `goblin-2` r2c8 (drops bitter-moss), `goblin-3` r8c2 (drops chisel-axe),
+  `goblin-4` r8c8 (drops bitter-moss ×2). The weapon and medicine are each
   reachable from two corners. Goblins wander the patrol tracks (movement.json,
   cadence 2); golems and the shaman stay still.
 - **Shaman's work-ring.** Traversable — it is the center room r5c5 itself, and

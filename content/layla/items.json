@@ -51,11 +51,14 @@
     "description": "A wedge of chipped stone half-wrapped in greasy hide, a goblin's skinning tool. It bites into meat and stone alike."
   },
   {
-    "id": "moss-poultice",
-    "label": "moss poultice",
+    "id": "bitter-moss",
+    "label": "bitter moss",
+    "aliases": [
+      "moss"
+    ],
     "kind": "potion",
     "use_hook": "item.salve_used",
-    "description": "A wad of crushed herbs and wet moss tied in a scrap of hide. Goblin medicine — it mends wounds the way they mend hides."
+    "description": "A wad of crushed herbs and bitter cave moss tied in a scrap of hide. Goblin medicine — it mends wounds the way they mend hides."
   },
   {
     "id": "shaman-ring",

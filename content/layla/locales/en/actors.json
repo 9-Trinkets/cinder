@@ -466,7 +466,7 @@
     "xp_drop": 8,
     "drops": {},
     "initial_inventory": {
-      "moss-poultice": 1
+      "bitter-moss": 1
     },
     "tags": [
       "goblin"
@@ -566,7 +566,7 @@
     "xp_drop": 10,
     "drops": {},
     "initial_inventory": {
-      "moss-poultice": 2
+      "bitter-moss": 2
     },
     "tags": [
       "goblin"

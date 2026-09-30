@@ -50,11 +50,11 @@ fn bar_shows_actions_that_are_bar_only_even_when_not_typed_command() {
 #[test]
 fn overflow_label_uses_the_authored_action_label() {
     let action = ActionDefinition {
-        id: "use_salve".to_string(),
-        label: "Use Moss Poultice".to_string(),
+        id: "read_scroll".to_string(),
+        label: "Read Worn Scroll".to_string(),
         ..ActionDefinition::default()
     };
-    assert_eq!(overflow_action_title(&action), "Use Moss Poultice");
+    assert_eq!(overflow_action_title(&action), "Read Worn Scroll");
 }
 
 #[test]
@@ -506,4 +506,17 @@ fn use_panel_surfaces_leaf_paste_under_items() {
     assert_eq!(use_opts[0].id, "leaf-paste");
     assert_eq!(use_opts[0].title, "Leaf Paste");
     assert_eq!(use_opts[0].command.as_deref(), Some("use leaf-paste"));
+}
+
+#[test]
+fn use_panel_surfaces_bitter_moss_under_items() {
+    let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.add_item("bitter-moss");
+
+    let use_opts = build_use_panel_options(&pack, &state);
+    assert_eq!(use_opts.len(), 1);
+    assert_eq!(use_opts[0].id, "bitter-moss");
+    assert_eq!(use_opts[0].title, "Bitter Moss");
+    assert_eq!(use_opts[0].command.as_deref(), Some("use bitter-moss"));
 }

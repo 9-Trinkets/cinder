@@ -10,7 +10,7 @@ use cinder_core::engine::state::WorldState;
 use cinder_core::engine::turn_policies::action_is_available;
 
 /// Display title for an overflow action button: the authored `label` (e.g.
-/// "Use Moss Poultice").
+/// "Read Worn Scroll").
 pub(crate) fn overflow_action_title(action: &ActionDefinition) -> String {
     action.label.clone()
 }

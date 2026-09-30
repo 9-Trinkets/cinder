@@ -279,6 +279,60 @@ fn leaf_paste_used_via_generic_item_use() {
 }
 
 #[test]
+fn bitter_moss_used_via_generic_item_use() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+
+    // Must not be exposed as a standalone action in actions.json
+    assert!(pack.action("use_salve").is_none());
+    assert!(pack.action("use_bitter-moss").is_none());
+
+    let mut state = cinder_core::engine::state::WorldState::new(&pack);
+    state.add_item("bitter-moss");
+    state
+        .actor_stats
+        .entry("player".to_string())
+        .or_default()
+        .insert("hp".to_string(), 5);
+
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack.clone(),
+        state,
+        dialogue.clone(),
+    )
+    .expect("runtime creates");
+
+    let outcome = runtime.run_turn("use bitter moss").expect("turn runs");
+
+    let end_state = runtime.export_state().unwrap();
+    let player_hp = end_state.actor_stat("player", "hp");
+    assert_eq!(player_hp, 9); // healed 4 hp
+    assert!(!end_state.has_item("bitter-moss"));
+
+    let text = outcome.text();
+    assert!(
+        text.contains(
+            "You press the bitter moss into your wounds. The herbs bite, then settle warm."
+        )
+    );
+
+    // Also verify alias "use moss" resolves cleanly
+    let mut state_moss = cinder_core::engine::state::WorldState::new(&pack);
+    state_moss.add_item("bitter-moss");
+    let runtime_moss = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack, state_moss, dialogue,
+    )
+    .expect("runtime creates");
+    let outcome_moss = runtime_moss.run_turn("use moss").expect("turn runs");
+    assert!(
+        outcome_moss.text().contains(
+            "You press the bitter moss into your wounds. The herbs bite, then settle warm."
+        )
+    );
+}
+
+#[test]
 fn transition_commentary_falls_back_when_no_llm() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
