@@ -80,28 +80,9 @@ export default function Minimap({
           </g>
           {map.rooms.map(room => {
             const position = point(room.x, room.y)
-            const tooltipParts = [
-              room.label,
-              room.current ? 'current location' : room.visited ? 'visited' : 'revealed',
-            ]
-            if (room.has_teleport) {
-              tooltipParts.push('Teleport Portal')
-            }
-            if (room.ally_count && room.ally_count > 0) {
-              tooltipParts.push(
-                `Allies (${room.ally_count}): ${room.ally_names?.join(', ') || 'allies'}`
-              )
-            }
-            if (room.hostile_count && room.hostile_count > 0) {
-              tooltipParts.push(
-                `Hostiles (${room.hostile_count}): ${room.hostile_names?.join(', ') || 'hostiles'}`
-              )
-            }
 
             return (
               <g key={room.id}>
-                <title>{tooltipParts.join(' — ')}</title>
-
                 {/* Portal aura */}
                 {room.has_teleport && (
                   <circle
