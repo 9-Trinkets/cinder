@@ -303,5 +303,27 @@
     "label": "copper pipe fitting",
     "kind": "misc",
     "description": "A durable section of high-pressure copper steam pipe with threaded brass couplings."
+  },
+  {
+    "id": "courtyard-cage-key",
+    "label": "courtyard cage key",
+    "aliases": [
+      "cage key",
+      "key"
+    ],
+    "kind": "key",
+    "description": "A heavy frost-bitten iron key stamped with the Citadel crest. It unlocks the mass offering cages in the central courtyard."
+  },
+  {
+    "id": "sensory-enhancer",
+    "label": "sensory enhancer",
+    "aliases": [
+      "pill",
+      "capsule",
+      "enhancer"
+    ],
+    "kind": "potion",
+    "use_hook": "item.sensory_enhancer_used",
+    "description": "A small, translucent blue capsule synthesized in the High Sanctuary of Floor 6. Swallowing it heightens human senses and clears neural static, upgrading the interface map with live ally trackers and active teleport portals."
   }
 ]

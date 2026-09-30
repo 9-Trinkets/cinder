@@ -55,6 +55,7 @@
       "beat_note": "Having acquired the knowledge of the Teleportation Sigil, Layla can now reach the teleport platform in the heart of the fortress and descend.",
       "update_message": "Use the Teleportation Sigil at the teleport platform to descend to Floor 5.",
       "advance_signals": [
+        "room_entered:courtyard_center",
         "room_entered:floor5_start",
         "descend_floor_5"
       ],

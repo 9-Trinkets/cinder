@@ -186,6 +186,14 @@ pub enum WorldEvent {
     HostileStrike {
         actor_id: String,
     },
+    /// A hostile actor heals an ally or themselves. Declared by tick policies;
+    /// the reducer resolves healing and caps at maximum health.
+    HostileHeal {
+        actor_id: String,
+        target_id: String,
+        amount: i32,
+        message: String,
+    },
     /// A content-configured periodic actor effect applies. The reducer looks
     /// up the effect by id, revalidates its trigger and target, and resolves
     /// the generic mechanics.

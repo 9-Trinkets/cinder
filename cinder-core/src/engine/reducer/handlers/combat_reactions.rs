@@ -213,9 +213,18 @@ fn resolve_support(
     else {
         return None;
     };
+    let heal_delta = if stat == &content.settings.combat.health_stat_id {
+        state
+            .actor(content, &decision.actor_id)
+            .and_then(|a| a.healing.as_ref())
+            .map(|h| h.amount)
+            .unwrap_or(*delta)
+    } else {
+        *delta
+    };
     let before = state.actor_stat(&target_id, stat);
     state
-        .adjust_actor_stat(content, &target_id, stat, *delta)
+        .adjust_actor_stat(content, &target_id, stat, heal_delta)
         .unwrap_or_else(|error| eprintln!("[cinder] party support stat error: {error}"));
     let remaining = state.actor_stat(&target_id, stat);
     let target_name = actor_display_name(state, content, &target_id);

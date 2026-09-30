@@ -10,10 +10,12 @@
 use crate::content::types::ContentPack;
 use crate::engine::behavior;
 use crate::engine::events::WorldEvent;
-use crate::engine::state::WorldState;
+use crate::engine::state::{ActorStance, WorldState};
 
-/// Rules mode: an actor declares a strike when its pack's `behavior.json`
-/// `strike` rule fires.
+/// Rules mode: an actor declares a strike or heal when ready.
+/// If an actor has healing capability and any wounded hostile ally (or self)
+/// is present in the room, it prioritizes healing.
+/// Otherwise, it declares a strike against the player.
 pub(crate) fn plan_rules_hostile_actions(
     content: &ContentPack,
     state: &WorldState,
@@ -25,8 +27,89 @@ pub(crate) fn plan_rules_hostile_actions(
         .collect::<Vec<_>>();
     actor_ids
         .into_iter()
-        .filter_map(|actor_id| behavior::strike_event(content, state, &actor_id))
+        .filter_map(|actor_id| {
+            let strike = behavior::strike_event(content, state, &actor_id)?;
+            if let Some(healing) = state
+                .actor(content, &actor_id)
+                .and_then(|a| a.healing.as_ref())
+            {
+                if let Some(target_id) = select_hostile_heal_target(content, state, &actor_id) {
+                    return Some(WorldEvent::HostileHeal {
+                        actor_id,
+                        target_id,
+                        amount: healing.amount,
+                        message: healing.message.clone(),
+                    });
+                }
+            }
+            Some(strike)
+        })
         .collect()
+}
+
+fn select_hostile_heal_target(
+    content: &ContentPack,
+    state: &WorldState,
+    actor_id: &str,
+) -> Option<String> {
+    let health_stat = &content.settings.combat.health_stat_id;
+    let default_room = content
+        .actor(actor_id)
+        .map(|a| a.room_id.as_str())
+        .unwrap_or_default();
+    let room_id = state.actor_room_id(actor_id, default_room);
+
+    // Self-preservation: if self is wounded below 50% HP, prioritize self-healing.
+    let self_hp = state.actor_stat(actor_id, health_stat);
+    let self_max = state
+        .actor_stat_maximum(content, actor_id, health_stat)
+        .max(1);
+    if self_hp * 2 < self_max {
+        return Some(actor_id.to_string());
+    }
+
+    // Otherwise, collect all wounded living hostile allies in the same room (including self if below max).
+    let mut wounded_allies = state
+        .onstage_actors(content)
+        .map(|actor| actor.id.clone())
+        .filter(|other_id| {
+            state.actor_is_in_room(content, other_id, &room_id)
+                && state.stance(other_id) == ActorStance::Hostile
+                && state.actor_stat(other_id, health_stat) > 0
+                && state.actor_stat(other_id, health_stat)
+                    < state.actor_stat_maximum(content, other_id, health_stat)
+        })
+        .collect::<Vec<_>>();
+
+    if wounded_allies.is_empty() {
+        return None;
+    }
+
+    // Select the wounded ally with the lowest health percentage.
+    // If self is equally low, prioritize self.
+    wounded_allies.sort_by(|left, right| {
+        let (left_hp, left_max) = (
+            state.actor_stat(left, health_stat),
+            state.actor_stat_maximum(content, left, health_stat).max(1),
+        );
+        let (right_hp, right_max) = (
+            state.actor_stat(right, health_stat),
+            state.actor_stat_maximum(content, right, health_stat).max(1),
+        );
+        (i64::from(left_hp) * i64::from(right_max))
+            .cmp(&(i64::from(right_hp) * i64::from(left_max)))
+            .then_with(|| {
+                if left == actor_id {
+                    std::cmp::Ordering::Less
+                } else if right == actor_id {
+                    std::cmp::Ordering::Greater
+                } else {
+                    left.cmp(right)
+                }
+            })
+    });
+
+    wounded_allies.into_iter().next()
 }
 
 #[cfg(test)]

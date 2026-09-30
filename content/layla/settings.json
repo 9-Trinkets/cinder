@@ -188,6 +188,31 @@
         "message": "combat.guard_intercepts"
       },
       {
+        "id": "healer-support-order",
+        "tier": "order",
+        "window": "after_hostile_damage",
+        "action": "support",
+        "conditions": [
+          {
+            "condition": "actor_has_tag",
+            "tag": "healer"
+          },
+          {
+            "condition": "any_ally_wounded"
+          }
+        ],
+        "target": "lowest_health_ally",
+        "support_effect": {
+          "effect": "adjust_actor_stat",
+          "stat": "hp",
+          "delta": 4
+        },
+        "cooldown": {
+          "mode": "actor_combat_interval"
+        },
+        "message": "combat.party_support"
+      },
+      {
         "id": "assist-order",
         "tier": "order",
         "window": "after_hostile_damage",

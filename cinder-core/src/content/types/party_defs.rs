@@ -53,6 +53,9 @@ pub enum PartyDecisionCondition {
     ActorHealthAtMostPercent { percent: u8 },
     ActorHealthAtLeastPercent { percent: u8 },
     PlayerHealthAtMostPercent { percent: u8 },
+    ActorHasTag { tag: String },
+    AnyAllyWounded,
+    AnyAllyHealthAtMostPercent { percent: u8 },
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]

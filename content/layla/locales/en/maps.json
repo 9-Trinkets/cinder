@@ -921,5 +921,52 @@
       }
     ],
     "reveal_conditions": []
+  },
+  {
+    "id": "the-frost-citadel",
+    "label": "The Frost Citadel",
+    "rooms": [
+      {
+        "room_id": "courtyard_center",
+        "x": 12.0,
+        "y": 12.0
+      },
+      {
+        "room_id": "courtyard_north",
+        "x": 12.0,
+        "y": 6.0
+      },
+      {
+        "room_id": "courtyard_northeast",
+        "x": 17.2,
+        "y": 9.0
+      },
+      {
+        "room_id": "courtyard_southeast",
+        "x": 17.2,
+        "y": 15.0
+      },
+      {
+        "room_id": "courtyard_south",
+        "x": 12.0,
+        "y": 18.0
+      },
+      {
+        "room_id": "courtyard_southwest",
+        "x": 6.8,
+        "y": 15.0
+      },
+      {
+        "room_id": "courtyard_northwest",
+        "x": 6.8,
+        "y": 9.0
+      }
+    ],
+    "reveal_conditions": [
+      {
+        "kind": "story_var_truthy",
+        "key": "has_sensory_enhancer"
+      }
+    ]
   }
 ]

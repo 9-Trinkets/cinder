@@ -126,7 +126,11 @@ impl WorldState {
             .copied()
             .unwrap_or_else(|| definition.as_ref().map(|stat| stat.default).unwrap_or(0));
         let level = self.actor_level.get(actor_id).copied().unwrap_or(1).max(1);
-        let growth = (1..level)
+        let initial_level = content
+            .actor(actor_id)
+            .map(|actor| actor.level.max(1))
+            .unwrap_or(1);
+        let growth = (initial_level..level)
             .filter_map(|prior_level| content.level_definition(actor_id, prior_level))
             .filter_map(|definition| definition.stat_changes.get(stat_key))
             .copied()

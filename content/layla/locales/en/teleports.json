@@ -13,10 +13,12 @@
       ]
     },
     {
-      "room_id": "floor5_start",
+      "room_id": "courtyard_center",
       "armed_by": "anchor_floor5_gate",
-      "title": "Floor 5 Descent Platform",
+      "title": "The Frost Courtyard",
       "aliases": [
+        "courtyard_center",
+        "courtyard",
         "floor5_start",
         "floor5_gate",
         "floor 5 descent platform",

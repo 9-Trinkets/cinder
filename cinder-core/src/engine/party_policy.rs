@@ -173,6 +173,48 @@ fn condition_matches(
             &content.settings.combat.player_actor_id,
             *percent,
         ),
+        PartyDecisionCondition::ActorHasTag { tag } => state
+            .actor(content, actor_id)
+            .is_some_and(|actor| actor.tags.contains(tag)),
+        PartyDecisionCondition::AnyAllyWounded => {
+            let player_id = content.settings.combat.player_actor_id.as_str();
+            std::iter::once(player_id)
+                .chain(
+                    state
+                        .onstage_actors(content)
+                        .map(|actor| actor.id.as_str())
+                        .filter(|other_id| *other_id != player_id)
+                        .filter(|other_id| state.stance(other_id) == ActorStance::Allied),
+                )
+                .filter(|other_id| {
+                    (*other_id == player_id
+                        || state.actor_is_in_room(content, other_id, &state.current_room_id))
+                        && !state
+                            .actor_is_defeated(other_id, &content.settings.combat.health_stat_id)
+                })
+                .any(|other_id| {
+                    let (current, maximum) = health_values(content, state, other_id);
+                    current < maximum
+                })
+        }
+        PartyDecisionCondition::AnyAllyHealthAtMostPercent { percent } => {
+            let player_id = content.settings.combat.player_actor_id.as_str();
+            std::iter::once(player_id)
+                .chain(
+                    state
+                        .onstage_actors(content)
+                        .map(|actor| actor.id.as_str())
+                        .filter(|other_id| *other_id != player_id)
+                        .filter(|other_id| state.stance(other_id) == ActorStance::Allied),
+                )
+                .filter(|other_id| {
+                    (*other_id == player_id
+                        || state.actor_is_in_room(content, other_id, &state.current_room_id))
+                        && !state
+                            .actor_is_defeated(other_id, &content.settings.combat.health_stat_id)
+                })
+                .any(|other_id| health_percent_at_most(content, state, other_id, *percent))
+        }
     }
 }
 

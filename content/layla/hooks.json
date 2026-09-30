@@ -405,6 +405,36 @@
       ]
     }
   },
+  "item.sensory_enhancer_used": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "has_sensory_enhancer",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "item.sensory-enhancer.used"
+          }
+        }
+      ]
+    }
+  },
   "actor.attacked": {
     "rule": "effect_table",
     "rule_config": {
@@ -690,7 +720,7 @@
             {
               "path": "to_room_id",
               "operator": "equal",
-              "value": "floor5_start"
+              "value": "courtyard_center"
             }
           ],
           "payload_template": {
@@ -704,7 +734,7 @@
             {
               "path": "to_room_id",
               "operator": "equal",
-              "value": "floor5_start"
+              "value": "courtyard_center"
             }
           ],
           "payload_template": {
@@ -1239,6 +1269,62 @@
           {
             "kind": "narrate_message",
             "key": "handler.zayd_freed_warning"
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
+  "courtyard.cages_unlocked": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "set_story_var",
+            "key": "courtyard_cages_opened",
+            "value": "true"
+          },
+          {
+            "kind": "convert_actor_to_ally",
+            "actor_id": "commander_astrid",
+            "follows_player": true,
+            "messages": []
+          },
+          {
+            "kind": "convert_actor_to_ally",
+            "actor_id": "einar",
+            "follows_player": true,
+            "messages": []
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
+  "item.sensory_enhancer_used": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "set_story_var",
+            "key": "has_sensory_enhancer",
+            "value": "true"
+          },
+          {
+            "kind": "narrate_message",
+            "key": "item.sensory_enhancer.consumed"
           }
         ]
       }

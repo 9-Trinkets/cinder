@@ -145,3 +145,102 @@ pub(crate) fn handle_pair_stat_adjusted(
 ) {
     let _ = state.adjust_pair_stat(participant_a_id, participant_b_id, stat, delta);
 }
+
+pub(crate) fn handle_hostile_heal(
+    state: &mut WorldState,
+    content: &ContentPack,
+    actor_id: &str,
+    target_id: &str,
+    amount: i32,
+    message: &str,
+    lines: &mut NarrativeLines,
+) {
+    let combat = &content.settings.combat;
+    if state.phase != GamePhase::Active
+        || state.stance(actor_id) != ActorStance::Hostile
+        || state.actor_stat(actor_id, &combat.health_stat_id) <= 0
+    {
+        return;
+    }
+    if state.current_time_minutes < *state.next_hostile_strike_at.get(actor_id).unwrap_or(&0) {
+        return;
+    }
+    if state.actor_current_room_id(content, actor_id) != state.current_room_id {
+        return;
+    }
+    if state.stance(target_id) != ActorStance::Hostile
+        || state.actor_stat(target_id, &combat.health_stat_id) <= 0
+        || state.actor_current_room_id(content, target_id) != state.current_room_id
+    {
+        return;
+    }
+
+    let before = state.actor_stat(target_id, &combat.health_stat_id);
+    state
+        .adjust_actor_stat(content, target_id, &combat.health_stat_id, amount.max(0))
+        .unwrap_or_else(|error| eprintln!("[cinder] hostile heal stat error: {error}"));
+    let remaining = state.actor_stat(target_id, &combat.health_stat_id);
+    let actual_healed = remaining.saturating_sub(before);
+    let amount_str = if actual_healed > 0 {
+        actual_healed.to_string()
+    } else {
+        amount.to_string()
+    };
+    let remaining_str = remaining.to_string();
+
+    let actor_name = actor_display_name(state, content, actor_id);
+    let is_self = actor_id == target_id;
+    let target_name = if is_self {
+        "itself".to_string()
+    } else {
+        actor_display_name(state, content, target_id)
+    };
+
+    let replacements = [
+        ("actor", actor_name.as_str()),
+        ("target", target_name.as_str()),
+        ("amount", amount_str.as_str()),
+        ("remaining", remaining_str.as_str()),
+        ("stat", combat.health_stat_id.as_str()),
+    ];
+
+    let line = if !message.is_empty() {
+        if is_self {
+            content
+                .render_message(&format!("{message}_self"), &replacements)
+                .or_else(|| content.render_message(message, &replacements))
+        } else {
+            content.render_message(message, &replacements)
+        }
+    } else {
+        None
+    };
+
+    let line = line
+        .or_else(|| {
+            if is_self {
+                content
+                    .render_message("combat.hostile_heal_self", &replacements)
+                    .or_else(|| content.render_message("combat.hostile_heal", &replacements))
+            } else {
+                content.render_message("combat.hostile_heal", &replacements)
+            }
+        })
+        .unwrap_or_else(|| {
+            if is_self {
+                format!("{actor_name} restores {amount_str} health to itself. ({remaining_str} HP remaining)")
+            } else {
+                format!("{actor_name} restores {amount_str} health to {target_name}. ({remaining_str} HP remaining)")
+            }
+        });
+
+    lines.narration(line);
+
+    let interval = content
+        .actor(actor_id)
+        .map(|actor| actor.attack_interval_minutes(combat.default_attack_interval_minutes))
+        .unwrap_or(combat.default_attack_interval_minutes);
+    state
+        .next_hostile_strike_at
+        .insert(actor_id.to_string(), state.current_time_minutes + interval);
+}

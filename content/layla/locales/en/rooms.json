@@ -11079,7 +11079,7 @@
         "requires_story_var": ""
       },
       {
-        "room_id": "floor5_start",
+        "room_id": "courtyard_center",
         "label": "Descend to Floor 5",
         "aliases": [
           "descend",
@@ -11095,24 +11095,41 @@
     "descriptions": []
   },
   {
-    "id": "floor5_start",
-    "title": "Floor 5 Descent Platform",
-    "summary": "A deep subterranean vault where warm mist curls off ancient flagstones. A matching brass teleport circle hums quietly here, anchoring the transit line from Floor 4.",
-    "inspect_text": "The brass dais beneath your boots remains warm from the transit pulse. Ancient archways open into the forgotten depths of the fifth floor.",
-    "allow_rest": true,
+    "id": "courtyard_center",
+    "title": "The Frost Courtyard",
+    "summary": "A colossal hexagonal courtyard paved in frost-rimed stone, enclosed by towering fortress walls under a cold purple sky. In the center hums a wide brass teleport platform. Nearby stand rows of heavy iron cages marked with white block codes, packing shivering civilians into the freezing wind.",
+    "inspect_text": "High battlements hem in the six-sided courtyard. Howling wind whips snow across the flags and through the bars of four mass offering cages. Sentry posts look down from the ramparts, and six stone archways connect to the surrounding approaches and defensive chokepoints.",
+    "allow_rest": false,
     "features": [
       {
-        "id": "floor5_platform-feature",
-        "label": "the descent platform",
+        "id": "courtyard_center-teleport",
+        "label": "the brass teleport platform",
         "aliases": [
           "platform",
-          "dais",
           "teleport",
+          "dais",
+          "circle",
+          "pad",
           "conduits"
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A brass transport platform anchored into the stone bedrock. It hums with stable transit energy connecting back to Floor 4."
+        "inspect_text": "A broad circular brass dais inlaid with geometric conduits. It pulses with pale turquoise energy, anchoring the transit line to Floor 4."
+      },
+      {
+        "id": "courtyard_center-cages",
+        "label": "the offering cages",
+        "aliases": [
+          "cages",
+          "cage",
+          "iron cages",
+          "bars",
+          "prisoners",
+          "offerings"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Four heavy iron cages labeled BLOCK 01, BLOCK 04, BLOCK 07, and BLOCK 12. Shivering elderly commoners and frightened children peer through the frosted bars. A massive padlocked gate keeps them sealed inside."
       }
     ],
     "exits": [
@@ -11128,6 +11145,502 @@
           "platform"
         ],
         "menu_label": "Ascend to Floor 4 Platform",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_north",
+        "label": "North to Frost-Wolf Approach",
+        "aliases": [
+          "north",
+          "n",
+          "frost-wolf",
+          "wolf"
+        ],
+        "menu_label": "North to Frost-Wolf Approach",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_northeast",
+        "label": "Northeast to Rampart Chokepoint",
+        "aliases": [
+          "northeast",
+          "ne",
+          "rampart"
+        ],
+        "menu_label": "Northeast to Rampart Chokepoint",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_southeast",
+        "label": "Southeast to Iron-Ram Approach",
+        "aliases": [
+          "southeast",
+          "se",
+          "iron-ram",
+          "ram"
+        ],
+        "menu_label": "Southeast to Iron-Ram Approach",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_south",
+        "label": "South to Fortress Gate Chokepoint",
+        "aliases": [
+          "south",
+          "s",
+          "gate"
+        ],
+        "menu_label": "South to Fortress Gate Chokepoint",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_southwest",
+        "label": "Southwest to Frost-Leopard Approach",
+        "aliases": [
+          "southwest",
+          "sw",
+          "frost-leopard",
+          "leopard"
+        ],
+        "menu_label": "Southwest to Frost-Leopard Approach",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_northwest",
+        "label": "Northwest to Parapet Chokepoint",
+        "aliases": [
+          "northwest",
+          "nw",
+          "parapet"
+        ],
+        "menu_label": "Northwest to Parapet Chokepoint",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "courtyard_north",
+    "title": "The Frost-Wolf Approach",
+    "summary": "The northern avenue of the courtyard, flanked by fluted marble pillars hung with deep navy banners bearing a howling silver wolf. To the north rises the frost-caked archway into House Frost-Wolf Manor.",
+    "inspect_text": "Snow drifts against the bases of the pillars. The silver wolf crest gleams on heavy navy silk. Ahead, heavy spiked iron gates seal the entrance to the Frost-Wolf estate.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "courtyard_north-banners",
+        "label": "the wolf banners",
+        "aliases": [
+          "banners",
+          "banner",
+          "crest",
+          "wolf",
+          "frost-wolf"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Banners of heavy navy silk bearing the snarling silver wolf crest of House Frost-Wolf."
+      },
+      {
+        "id": "courtyard_north-manor_gate",
+        "label": "the Frost-Wolf manor gate",
+        "aliases": [
+          "gate",
+          "gates",
+          "iron gate",
+          "manor gate",
+          "doors"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A massive spiked gate of black iron and rime frost, barring passage into House Frost-Wolf Manor. It is barred from within."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "courtyard_center",
+        "label": "South to Courtyard Center",
+        "aliases": [
+          "south",
+          "s",
+          "courtyard",
+          "center"
+        ],
+        "menu_label": "South to Courtyard Center",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_northwest",
+        "label": "West to Northwest Parapet",
+        "aliases": [
+          "west",
+          "w",
+          "northwest",
+          "nw",
+          "parapet"
+        ],
+        "menu_label": "West to Northwest Parapet",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_northeast",
+        "label": "East to Northeast Rampart",
+        "aliases": [
+          "east",
+          "e",
+          "northeast",
+          "ne",
+          "rampart"
+        ],
+        "menu_label": "East to Northeast Rampart",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "courtyard_northeast",
+    "title": "The North-East Rampart",
+    "summary": "An elevated stone battlement along the fortress curtain wall. Freezing gales rush up from sheer mountain ravines far below. Broad stone crenels form a natural defensive chokepoint.",
+    "inspect_text": "Thick granite crenels provide solid cover against incoming fire. The stones are slick with rime ice, overlooking a terrifying drop into the abyss.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "courtyard_northeast-crenels",
+        "label": "the stone crenels",
+        "aliases": [
+          "crenels",
+          "parapet",
+          "wall",
+          "chokepoint",
+          "battlements"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Thick granite crenels providing solid cover against incoming missile fire and funneling attackers into a narrow breach."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "courtyard_center",
+        "label": "Southwest to Courtyard Center",
+        "aliases": [
+          "southwest",
+          "sw",
+          "courtyard",
+          "center"
+        ],
+        "menu_label": "Southwest to Courtyard Center",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_north",
+        "label": "West to Frost-Wolf Approach",
+        "aliases": [
+          "west",
+          "w",
+          "northwest",
+          "nw",
+          "north",
+          "n"
+        ],
+        "menu_label": "West to Frost-Wolf Approach",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_southeast",
+        "label": "South to Iron-Ram Approach",
+        "aliases": [
+          "south",
+          "s",
+          "southeast",
+          "se"
+        ],
+        "menu_label": "South to Iron-Ram Approach",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "courtyard_southeast",
+    "title": "The Iron-Ram Approach",
+    "summary": "The southeastern wing of the courtyard paved with soot-stained iron flags. Heavy crimson and charcoal banners emblazoned with a horned ram's skull hang above roaring steam flues. To the east looms the fortified portcullis into House Iron-Ram Bastion.",
+    "inspect_text": "Steam hisses constantly from brass grates set into the floor, melting the falling snow into grey slush. To the east, a massive iron-toothed portcullis seals the entrance to the Iron-Ram Bastion.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "courtyard_southeast-banners",
+        "label": "the ram banners",
+        "aliases": [
+          "banners",
+          "banner",
+          "crest",
+          "ram",
+          "iron-ram"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Banners of coarse crimson wool displaying the horned iron ram skull over cross-hammers."
+      },
+      {
+        "id": "courtyard_southeast-portcullis",
+        "label": "the Iron-Ram portcullis",
+        "aliases": [
+          "portcullis",
+          "gate",
+          "bastion gate",
+          "doors"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A three-ton portcullis of interlocking forged iron teeth, dropped firmly in place to seal the bastion entrance."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "courtyard_center",
+        "label": "Northwest to Courtyard Center",
+        "aliases": [
+          "northwest",
+          "nw",
+          "courtyard",
+          "center"
+        ],
+        "menu_label": "Northwest to Courtyard Center",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_northeast",
+        "label": "North to Northeast Rampart",
+        "aliases": [
+          "north",
+          "n",
+          "northeast",
+          "ne"
+        ],
+        "menu_label": "North to Northeast Rampart",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_south",
+        "label": "West to South Fortress Gate",
+        "aliases": [
+          "west",
+          "w",
+          "southwest",
+          "sw",
+          "south",
+          "s"
+        ],
+        "menu_label": "West to South Fortress Gate",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "courtyard_south",
+    "title": "The South Fortress Gate",
+    "summary": "The southern defensive bottleneck of the citadel. A pair of colossal banded-iron fortress doors seal the courtyard against the frozen mountain pass outside. Heavy barricades of reinforced timber narrow the path into a brutal killing zone.",
+    "inspect_text": "Huge iron timbers block the southern gates, encrusted in frost. Defensive murder holes and reinforced palisades funnel any attack into a tight chokepoint.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "courtyard_south-doors",
+        "label": "the fortress doors",
+        "aliases": [
+          "doors",
+          "door",
+          "gate",
+          "fortress gate",
+          "barricade"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Enormous gates of banded iron and mountain oak, reinforced by heavy crossbars. They stand closed against the howling blizzard outside."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "courtyard_center",
+        "label": "North to Courtyard Center",
+        "aliases": [
+          "north",
+          "n",
+          "courtyard",
+          "center"
+        ],
+        "menu_label": "North to Courtyard Center",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_southeast",
+        "label": "East to Iron-Ram Approach",
+        "aliases": [
+          "east",
+          "e",
+          "northeast",
+          "ne",
+          "southeast",
+          "se"
+        ],
+        "menu_label": "East to Iron-Ram Approach",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_southwest",
+        "label": "West to Frost-Leopard Approach",
+        "aliases": [
+          "west",
+          "w",
+          "northwest",
+          "nw",
+          "southwest",
+          "sw"
+        ],
+        "menu_label": "West to Frost-Leopard Approach",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "courtyard_southwest",
+    "title": "The Frost-Leopard Approach",
+    "summary": "The southwestern avenue of the courtyard where frost-crusted colonnades display ash-grey banners of a leaping snow leopard. To the west, ornate frosted glass and wrought-iron doors open into House Frost-Leopard Hall.",
+    "inspect_text": "The colonnade is lined with delicate frosted glass lanterns. Ash-grey banners bearing the snow leopard crest rustle in the freezing mountain wind. The glass conservatory doors to the west are locked tight.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "courtyard_southwest-banners",
+        "label": "the leopard banners",
+        "aliases": [
+          "banners",
+          "banner",
+          "crest",
+          "leopard",
+          "frost-leopard"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Silken ash-grey banners with ice-blue trim, portraying a snarling snow leopard mid-leap."
+      },
+      {
+        "id": "courtyard_southwest-doors",
+        "label": "the conservatory doors",
+        "aliases": [
+          "doors",
+          "door",
+          "glass doors",
+          "hall doors"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Heavy wrought-iron conservatory doors fitted with frosted glass panels, bolted from inside House Frost-Leopard Hall."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "courtyard_center",
+        "label": "Northeast to Courtyard Center",
+        "aliases": [
+          "northeast",
+          "ne",
+          "courtyard",
+          "center"
+        ],
+        "menu_label": "Northeast to Courtyard Center",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_south",
+        "label": "East to South Fortress Gate",
+        "aliases": [
+          "east",
+          "e",
+          "southeast",
+          "se",
+          "south",
+          "s"
+        ],
+        "menu_label": "East to South Fortress Gate",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_northwest",
+        "label": "North to Northwest Parapet",
+        "aliases": [
+          "north",
+          "n",
+          "northwest",
+          "nw",
+          "parapet"
+        ],
+        "menu_label": "North to Northwest Parapet",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "courtyard_northwest",
+    "title": "The North-West Parapet",
+    "summary": "A narrow catwalk skirting the outer fortress wall between the courtyard and the mountain precipice. Cold wind swirls snow across the flags, and a narrow stone stair connects the rampart to the courtyard below.",
+    "inspect_text": "A narrow, single-file walkway along the battlements. Any force attempting to cross here must march in a narrow column, making it ideal for defense.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "courtyard_northwest-catwalk",
+        "label": "the stone catwalk",
+        "aliases": [
+          "catwalk",
+          "parapet",
+          "walkway",
+          "chokepoint",
+          "stairs"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A narrow, single-file walkway along the battlements. Any force attempting to cross here must march in a narrow column, making it ideal for defense."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "courtyard_center",
+        "label": "Southeast to Courtyard Center",
+        "aliases": [
+          "southeast",
+          "se",
+          "courtyard",
+          "center"
+        ],
+        "menu_label": "Southeast to Courtyard Center",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_southwest",
+        "label": "South to Frost-Leopard Approach",
+        "aliases": [
+          "south",
+          "s",
+          "southwest",
+          "sw"
+        ],
+        "menu_label": "South to Frost-Leopard Approach",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "courtyard_north",
+        "label": "East to Frost-Wolf Approach",
+        "aliases": [
+          "east",
+          "e",
+          "northeast",
+          "ne",
+          "north",
+          "n"
+        ],
+        "menu_label": "East to Frost-Wolf Approach",
         "requires_story_var": ""
       }
     ],

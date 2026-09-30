@@ -18,12 +18,12 @@ use self::handlers::{
     handle_actor_command_used_event, handle_actor_moved, handle_actor_observed,
     handle_actor_observed_actor, handle_actor_observed_feature, handle_actor_observed_room,
     handle_actor_relocated, handle_channel_message, handle_current_room_observed,
-    handle_feature_observed, handle_help_shown, handle_hostile_strike, handle_item_acquired,
-    handle_item_consumed, handle_item_observed, handle_item_transferred, handle_menu_choice_made,
-    handle_menu_opened, handle_menu_selection_toggled, handle_narrative_line,
-    handle_pair_stat_adjusted, handle_party_order_assigned, handle_player_dropped_item,
-    handle_player_followed_actor, handle_player_moved, handle_player_took_item,
-    handle_player_used_item, handle_turn_started, handle_unknown_input,
+    handle_feature_observed, handle_help_shown, handle_hostile_heal, handle_hostile_strike,
+    handle_item_acquired, handle_item_consumed, handle_item_observed, handle_item_transferred,
+    handle_menu_choice_made, handle_menu_opened, handle_menu_selection_toggled,
+    handle_narrative_line, handle_pair_stat_adjusted, handle_party_order_assigned,
+    handle_player_dropped_item, handle_player_followed_actor, handle_player_moved,
+    handle_player_took_item, handle_player_used_item, handle_turn_started, handle_unknown_input,
 };
 
 pub(crate) use self::handlers::handler_attributed_line;
@@ -334,6 +334,16 @@ pub fn apply_events(
             }
             WorldEvent::HostileStrike { actor_id } => {
                 handle_hostile_strike(state, content, actor_id, &mut lines);
+            }
+            WorldEvent::HostileHeal {
+                actor_id,
+                target_id,
+                amount,
+                message,
+            } => {
+                handle_hostile_heal(
+                    state, content, actor_id, target_id, *amount, message, &mut lines,
+                );
             }
             WorldEvent::PeriodicActorEffectApplied {
                 actor_id,

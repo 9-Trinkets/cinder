@@ -89,6 +89,8 @@ pub struct ActorDefinition {
     /// negative values) work through the same map.
     #[serde(default)]
     pub resistances: BTreeMap<String, i32>,
+    #[serde(default)]
+    pub healing: Option<ActorHealingSpec>,
     pub prompt_context: ActorPromptContext,
     #[serde(default)]
     pub act_cast: Option<ActorActCast>,
@@ -96,6 +98,17 @@ pub struct ActorDefinition {
     pub transformations: Vec<ActorTransformation>,
     #[serde(default)]
     pub game_data: BTreeMap<String, String>,
+}
+
+/// Optional healing capability configured on an actor definition.
+/// Hostile actors prioritize healing wounded allies (or self) before striking.
+/// Allied party members use this to determine support reaction healing values.
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ActorHealingSpec {
+    #[serde(default)]
+    pub amount: i32,
+    #[serde(default)]
+    pub message: String,
 }
 
 impl ActorDefinition {

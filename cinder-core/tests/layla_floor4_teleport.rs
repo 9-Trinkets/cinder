@@ -213,7 +213,7 @@ fn test_platform_discovery_activation_and_floor5_gate() {
 
     // Before activation, descending to floor 5 is blocked
     let blocked = runtime.run_turn("go floor 5").expect("try descend");
-    assert_ne!(runtime.current_room_id().unwrap(), "floor5_start");
+    assert_ne!(runtime.current_room_id().unwrap(), "courtyard_center");
     assert!(
         blocked.text().contains("route sheet")
             || blocked.text().contains("cannot go")
@@ -241,7 +241,7 @@ fn test_platform_discovery_activation_and_floor5_gate() {
 
     // Descend to Floor 5 now succeeds
     runtime.run_turn("go floor 5").expect("descend floor 5");
-    assert_eq!(runtime.current_room_id().unwrap(), "floor5_start");
+    assert_eq!(runtime.current_room_id().unwrap(), "courtyard_center");
 }
 
 #[test]
@@ -268,11 +268,11 @@ fn test_permanent_anchor_fast_travel_infinite_uses() {
     let s1 = runtime.export_state().unwrap();
     assert_eq!(s1.story_vars.get("anchor_floor4_platform"), Some("true"));
 
-    // Teleport to Floor 5 platform
+    // Teleport to Floor 5 platform (via floor5_start alias or courtyard_center)
     let _out2 = runtime
         .run_turn("teleport floor5_start")
         .expect("teleport 2");
-    assert_eq!(runtime.current_room_id().unwrap(), "floor5_start");
+    assert_eq!(runtime.current_room_id().unwrap(), "courtyard_center");
 
     // Teleport back to Floor 4 platform
     runtime

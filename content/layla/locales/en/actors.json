@@ -1384,8 +1384,13 @@
       "elf bishop"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "healer"
     ],
+    "healing": {
+      "amount": 4,
+      "message": "combat.bishop_heal"
+    },
     "inspect_text": "An elf holding a tall crooked branch that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
     "attackable": true,
     "attack_interval_minutes": 2,
@@ -1462,8 +1467,13 @@
       "elf queen"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "healer"
     ],
+    "healing": {
+      "amount": 6,
+      "message": "combat.queen_heal"
+    },
     "inspect_text": "The tallest of the elf commanders, in a cloak woven from leaf and pale root. A braided leaf ring hums quietly on her hand. She is always moving, retracing the same paths, and her eyes keep looking past the walls \u2014 searching for a name she cannot hold onto.",
     "attackable": true,
     "attack_interval_minutes": 2,
@@ -1580,8 +1590,13 @@
       "elf bishop"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "healer"
     ],
+    "healing": {
+      "amount": 4,
+      "message": "combat.bishop_heal"
+    },
     "inspect_text": "An elf holding a tall crooked branch that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
     "attackable": true,
     "attack_interval_minutes": 2,
@@ -3018,6 +3033,254 @@
       ],
       "response_notes": [
         "You do not speak in human words. You bank low and pulse softly when you are content."
+      ]
+    }
+  },
+  {
+    "id": "citadel_sentry_captain",
+    "name": "Sentry Captain",
+    "room_id": "courtyard_center",
+    "aliases": [
+      "captain",
+      "sentry captain",
+      "sentry",
+      "guard",
+      "soldier"
+    ],
+    "tags": [
+      "citadel",
+      "sentry",
+      "soldier",
+      "guard"
+    ],
+    "inspect_text": "A stern citadel guard captain clad in cold-forged plate armor, gripping a heavy frost-axe. At his belt jingles a heavy iron key stamped with the fortress insignia.",
+    "attackable": true,
+    "initial_hostile": true,
+    "attack_interval_minutes": 2,
+    "xp_drop": 30,
+    "drops": {},
+    "initial_inventory": {
+      "courtyard-cage-key": 1
+    },
+    "initial_stats": {
+      "hp": 24,
+      "strength": 5,
+      "defense": 4,
+      "intelligence": 3
+    },
+    "level": 6,
+    "prompt_context": {
+      "character_notes": [
+        "You are the captain of the citadel courtyard watch, tasked with guarding the cages of civilian offerings until the culling process begins.",
+        "You carry the courtyard cage key at your hip and will execute any unauthorized entities who appear on the teleport platform."
+      ],
+      "response_notes": [
+        "Bark sharp orders demanding immediate surrender.",
+        "Attack trespassers without hesitation."
+      ],
+      "behavior_examples": [
+        "He draws his frost-axe with a metallic rasp.",
+        "He points toward the teleport pad and shouts for archers."
+      ]
+    }
+  },
+  {
+    "id": "citadel_sentry",
+    "name": "Citadel Sentry",
+    "room_id": "courtyard_center",
+    "aliases": [
+      "sentry",
+      "guard",
+      "citadel sentry",
+      "soldier"
+    ],
+    "tags": [
+      "citadel",
+      "sentry",
+      "soldier"
+    ],
+    "inspect_text": "A fortress guard in rime-frosted iron chainmail, holding a notched polearm and scanning the courtyard for intruders.",
+    "attackable": true,
+    "initial_hostile": true,
+    "attack_interval_minutes": 2,
+    "xp_drop": 20,
+    "drops": {},
+    "initial_inventory": {},
+    "initial_stats": {
+      "hp": 18,
+      "strength": 4,
+      "defense": 3,
+      "intelligence": 2
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are a citadel sentry stationed in the courtyard.",
+        "You obey the captain and defend the perimeter against escaped prisoners or intruders."
+      ],
+      "behavior_examples": [
+        "He levels his polearm with a gruff shout."
+      ]
+    }
+  },
+  {
+    "id": "commander_astrid",
+    "name": "Commander Astrid",
+    "room_id": "courtyard_center",
+    "aliases": [
+      "astrid",
+      "commander",
+      "commander astrid",
+      "woman",
+      "soldier"
+    ],
+    "tags": [
+      "commander",
+      "warrior",
+      "garrison",
+      "ally"
+    ],
+    "inspect_text": "A formidable woman in scarred steel plate armor, bearing a towering iron-rimmed kite shield and a heavy broadsword. Her blonde hair is braided tightly across her brow, and her icy grey eyes burn with unbroken defiance.",
+    "attackable": false,
+    "initial_hostile": false,
+    "initial_stats": {
+      "hp": 34,
+      "strength": 6,
+      "defense": 6,
+      "intelligence": 3,
+      "wisdom": 4
+    },
+    "level": 7,
+    "transformations": [
+      {
+        "id": "cage_freed",
+        "trigger": {
+          "kind": "story_var",
+          "key": "courtyard_cages_opened",
+          "value": "true"
+        },
+        "stance": "allied",
+        "follows_player": false,
+        "signals": [
+          "astrid_freed"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are Commander Astrid, former head of the citadel garrison. When ordered to herd village children and the elderly into the culling cages, you mutinied. You were overpowered and thrown into the cages in chains.",
+        "You fight with a massive kite shield and heavy broadsword, specializing in intercepting blows and crushing counterattacks."
+      ],
+      "subtext_notes": [
+        "You are fiercely loyal to anyone who protects commoners.",
+        "You recognize that the three noble houses are competing to slaughter the offerings to curry favor with the Handler."
+      ],
+      "response_notes": [
+        "Speak with crisp military authority and deep warmth for the innocent.",
+        "Offer to hold any chokepoint or gate: 'Tell me where to stand, and none shall pass.'"
+      ],
+      "behavior_examples": [
+        "She slams her broadsword against the rim of her tower shield in salute.",
+        "She steps between a shivering child and the open courtyard avenue."
+      ]
+    }
+  },
+  {
+    "id": "einar",
+    "name": "Einar",
+    "room_id": "courtyard_center",
+    "aliases": [
+      "einar",
+      "healer",
+      "apothecary",
+      "scholar"
+    ],
+    "tags": [
+      "healer",
+      "apothecary",
+      "scholar",
+      "ally"
+    ],
+    "healing": {
+      "amount": 5,
+      "message": "combat.einar_heal"
+    },
+    "inspect_text": "A quiet, pale young man with sharp Nordic features and observant ice-blue eyes, dressed in tattered grey scholar robes trimmed with frayed silver thread. A leather satchel of dried herbs and glass phials hangs at his hip.",
+    "attackable": false,
+    "initial_hostile": false,
+    "initial_inventory": {
+      "sensory-enhancer": 1
+    },
+    "initial_stats": {
+      "hp": 20,
+      "strength": 2,
+      "defense": 3,
+      "intelligence": 7,
+      "wisdom": 6
+    },
+    "level": 6,
+    "transformations": [
+      {
+        "id": "cage_freed",
+        "trigger": {
+          "kind": "story_var",
+          "key": "courtyard_cages_opened",
+          "value": "true"
+        },
+        "stance": "allied",
+        "follows_player": false,
+        "signals": [
+          "einar_freed"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are Einar, an apothecary and healer originally from Floor 6 (The Clergy / High Sanctuary). When you refused to synthesize memory-wiping draughts for the Inquisitors, they demoted your code to Floor 5 to be purged.",
+        "You carry a smuggled Sensory Enhancer capsule in the lining of your sleeve.",
+        "You believe deeply in healing and restoring clarity to those trapped in the simulation."
+      ],
+      "subtext_notes": [
+        "You want Layla to take the sensory enhancer so her perception can penetrate the citadel's stone walls and reveal ally locations and teleport portals."
+      ],
+      "response_notes": [
+        "Speak in a calm, steady, articulate voice.",
+        "Offer the sensory enhancer to Layla: 'Take this sensory enhancer. Back in the High Sanctuary, we synthesized it to heighten human senses and expand spatial perception. It will clear the static in your mind and reveal where your allies stand and where active portals hum.' [GIVE: sensory-enhancer]"
+      ],
+      "behavior_examples": [
+        "He kneels to gently wrap a wool blanket around an elderly woman's shoulders.",
+        "He extracts a glowing blue capsule from his sleeve and holds it out to Layla."
+      ]
+    }
+  },
+  {
+    "id": "caged_offerings",
+    "name": "Caged Offerings",
+    "room_id": "courtyard_center",
+    "aliases": [
+      "offerings",
+      "civilians",
+      "prisoners",
+      "children",
+      "villagers",
+      "people"
+    ],
+    "tags": [
+      "civilian",
+      "offerings",
+      "villagers"
+    ],
+    "inspect_text": "Scores of terrified elderly men, women, and young children from Towns 01, 04, 07, and 12, shivering behind the frosted iron bars. Their eyes widen in hope as they look out at you.",
+    "attackable": false,
+    "initial_hostile": false,
+    "prompt_context": {
+      "character_notes": [
+        "You are the innocent commoners selected as offerings for reformatting.",
+        "You huddle together for warmth and pray for rescue."
+      ],
+      "behavior_examples": [
+        "A young girl presses her small hands against the cold bars.",
+        "An old man whispers blessings in cracked, trembling tones."
       ]
     }
   }
