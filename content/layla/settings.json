@@ -144,7 +144,8 @@
           }
         ],
         "cooldown": {
-          "mode": "actor_combat_interval"
+          "mode": "fixed_minutes",
+          "minutes": 0
         },
         "message": "combat.guard_intercepts"
       },
@@ -196,7 +197,8 @@
             "condition": "order_is",
             "orders": [
               "follow",
-              "patrol"
+              "patrol",
+              "guard"
             ]
           }
         ],
