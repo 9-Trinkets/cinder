@@ -200,6 +200,7 @@
     },
     "combat.no_effect": "The {kind} passes over the {actor} like wind over stone. No damage is done.",
     "elemental.release": "The fire elemental does not fall — it lets go. Its fire unknots, loosens, and the spiral in its chest unwinds like a long-held breath. It is released back to the elemental realm, and the board is suddenly, quietly cool. You stand at the edge of the pit and let it go.",
+    "elemental.charmed": "The fire elemental does not fight. The spiral in its chest slows, and the heat pouring off it banks down to something you could stand beside. It turns to you, patient as ever, and the ring of basins stops burning. The board is quietly cool, and the way down is open.",
     "conversion.fire": "The {actor} flickers once, then settles at a low, steady glow. It turns to you, no longer afraid, no longer opposed. You hold still in the drift of its warmth.",
     "equipment.chisel-axe.equipped": "You wrap your hand around the chisel-axe, balancing the flat of the blade the way the goblins do.",
     "equipment.chisel-axe.unequipped": "You loosen your grip on the chisel-axe and stow it.",

@@ -3,7 +3,7 @@
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::content::types::{DropSpec, ItemStorageTarget};
 use cinder_core::engine::runtime::CinderRuntime;
-use cinder_core::engine::state::WorldState;
+use cinder_core::engine::state::{ActorStance, WorldState};
 
 const EXPECTED_FLOOR4_ROOMS: &[&str] = &[
     "village_square",
@@ -1033,4 +1033,55 @@ fn floor4_alternative_gate_entry_via_guard_key() {
     // 5. Bulkhead is now unlocked, player can enter fortress_gate
     runtime.run_turn("go south").expect("enter fortress");
     assert_eq!(runtime.current_room_id().unwrap(), "fortress_gate");
+}
+
+#[test]
+fn charming_the_fire_elemental_opens_the_floor4_exit() {
+    use cinder_core::content::types::ItemStorageTarget as Storage;
+    use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
+    use cinder_core::engine::reducer::apply_events;
+
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+
+    // The elemental is stationed in oas; the descent lives in its neighbour oh.
+    assert_eq!(pack.actor("fire-elemental").unwrap().room_id, "oas");
+
+    // Charm the elemental. The surround gate is a resistance check on
+    // intelligence against the elemental's level, so level Layla up the way a
+    // real playthrough would have done by the time she reaches Floor 3.
+    state.current_room_id = "oas".to_string();
+    let player_id = pack.settings.combat.player_actor_id.clone();
+    state.actor_level.insert(player_id.clone(), 12);
+
+    // Ring the elemental's room: a sigil in every neighbouring room. The final
+    // stroke — placing one in oas itself — is what closes the circle, so oas is
+    // deliberately left empty here and filled by the ItemAcquired event below.
+    for room_id in ["o6", "o7", "oh"] {
+        state.add_item_to_storage("charm-sigil", Storage::CurrentRoom, room_id);
+    }
+
+    // Placing that final sigil fires the surround hook.
+    apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::ItemAcquired {
+            item_id: "charm-sigil".to_string(),
+            storage: Storage::CurrentRoom,
+        })],
+    );
+
+    // The charm converts the boss and opens the descent, exactly as a defeat does.
+    assert_eq!(state.stance("fire-elemental"), ActorStance::Allied);
+    assert_eq!(
+        state.story_vars.get("elemental_released"),
+        Some("true"),
+        "charming the elemental must release it and open the exit, not just defeat it"
+    );
+
+    // And the exit is genuinely passable: go down from oh to the village.
+    state.current_room_id = "oh".to_string();
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+    runtime.run_turn("go down").expect("descend after charm");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_square");
 }
