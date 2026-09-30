@@ -274,7 +274,7 @@
     "zayd.lantern_speech": "I... I'm sorry I don't have anything valuable to give you as a reward for saving me. But here—this was my dad's lantern from the lower drift. The glass never really goes cold, even near the frost vents. Please, take it with you... you'll need the light down there more than me.",
     "handler.teleport_tutorial": {
         "voice": "handler",
-        "text": "Good. That sigil links your chalk to anchor points. Powered platforms give you permanent anchors. In other rooms, you can trace up to three temporary chalk anchors. Use them to jump across the floor in a second, but remember: chalk anchors vanish after one teleport."
+        "text": "Good. That sigil hooks your chalk to the anchor points. Powered platform? Permanent anchor, so those are free. Anywhere else you're down to three chalk anchors, and they burn out after a single teleport. Don't get comfortable with them."
     },
     "sigil.chalk_anchor_placed": "You draw the double triangle on the stone. The chalk glows with a soft light, anchoring this room.",
     "platform.activated": "As you finish tracing the double triangle, blue light flares through the brass conduits. The platform roars to life with ancient power, opening the descent to Floor 5!",
