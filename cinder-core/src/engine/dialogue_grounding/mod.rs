@@ -496,21 +496,41 @@ pub(crate) fn extract_gift_tags(raw: &str) -> (String, Vec<String>) {
     (final_text, gifts)
 }
 
-pub(crate) fn resolve_gift_item_id(content: &ContentPack, raw_id: &str) -> Option<String> {
+/// Resolves a `[GIVE: ...]` tag to an item the giver can actually hand over.
+///
+/// Only items in the giver's inventory qualify. Equipped items are excluded:
+/// with several items sharing a name (two "leaf spear"s, say), matching on
+/// content order alone would hand over the equipped one, which either fails
+/// silently or strips the giver's gear. Returns `None` when the giver holds
+/// nothing by that name, so no phantom transfer is emitted.
+pub(crate) fn resolve_gift_item_id(
+    content: &ContentPack,
+    state: &WorldState,
+    giver_id: &str,
+    raw_id: &str,
+) -> Option<String> {
     let raw = raw_id.trim();
-    if let Some(item) = content.item(raw) {
-        return Some(item.id.clone());
-    }
     let with_dashes = raw.replace(' ', "-");
     let with_spaces = raw.replace('-', " ");
-    content
-        .items
-        .iter()
-        .find(|item| {
-            item.id.eq_ignore_ascii_case(raw)
-                || item.id.eq_ignore_ascii_case(&with_dashes)
-                || item.label.eq_ignore_ascii_case(raw)
-                || item.label.eq_ignore_ascii_case(&with_spaces)
+    let held = |item_id: &str| {
+        if content.is_player_actor(giver_id) {
+            state.has_item(item_id)
+        } else {
+            state.actor_has_item(giver_id, item_id)
+        }
+    };
+    // An exact id names one item, so it wins over any label match.
+    let by_id = content.items.iter().find(|item| {
+        held(&item.id)
+            && (item.id.eq_ignore_ascii_case(raw) || item.id.eq_ignore_ascii_case(&with_dashes))
+    });
+    by_id
+        .or_else(|| {
+            content.items.iter().find(|item| {
+                held(&item.id)
+                    && (item.label.eq_ignore_ascii_case(raw)
+                        || item.label.eq_ignore_ascii_case(&with_spaces))
+            })
         })
         .map(|item| item.id.clone())
 }
@@ -569,6 +589,68 @@ mod tests {
         let (clean, gifts) = extract_gift_tags(raw);
         assert_eq!(clean, "Here, take this.");
         assert_eq!(gifts, vec!["date-flatbread"]);
+    }
+
+    /// Builds a pack holding two items that share the label "leaf spear", so
+    /// name resolution can only pick correctly by consulting the giver.
+    fn colliding_spear_pack() -> ContentPack {
+        let mut pack = crate::engine::test_fixtures::minimal_test_pack();
+        for id in ["spear-a", "spear-b"] {
+            pack.items.push(crate::content::types::ItemDefinition {
+                id: id.to_string(),
+                label: "leaf spear".to_string(),
+                description: "A leaf-shaped spear.".to_string(),
+                ..crate::content::types::ItemDefinition::default()
+            });
+        }
+        crate::engine::test_fixtures::rebuild_test_pack_indexes(&mut pack);
+        pack
+    }
+
+    #[test]
+    fn gift_resolution_skips_an_equipped_item_that_shares_a_name() {
+        let pack = colliding_spear_pack();
+        let mut state = crate::engine::state::WorldState::new(&pack);
+        // The giver holds spear-b but has spear-a equipped, so a name-only
+        // lookup would hand over the equipped weapon.
+        state.actor_add_item("gifter", "spear-b");
+        state
+            .actor_equipment
+            .entry("gifter".to_string())
+            .or_default()
+            .insert("weapon".to_string(), "spear-a".to_string());
+
+        assert_eq!(
+            resolve_gift_item_id(&pack, &state, "gifter", "leaf spear"),
+            Some("spear-b".to_string()),
+            "a gift by name must resolve to the held item, not the equipped one"
+        );
+    }
+
+    #[test]
+    fn gift_resolution_prefers_an_exact_id_over_a_shared_label() {
+        let pack = colliding_spear_pack();
+        let mut state = crate::engine::state::WorldState::new(&pack);
+        state.actor_add_item("gifter", "spear-a");
+        state.actor_add_item("gifter", "spear-b");
+
+        assert_eq!(
+            resolve_gift_item_id(&pack, &state, "gifter", "spear-a"),
+            Some("spear-a".to_string()),
+            "an exact id names one item and must win over the shared label"
+        );
+    }
+
+    #[test]
+    fn gift_resolution_returns_none_when_the_giver_holds_no_match() {
+        let pack = colliding_spear_pack();
+        let state = crate::engine::state::WorldState::new(&pack);
+
+        assert_eq!(
+            resolve_gift_item_id(&pack, &state, "gifter", "leaf spear"),
+            None,
+            "a name the giver does not hold must not resolve to a phantom transfer"
+        );
     }
 
     #[test]

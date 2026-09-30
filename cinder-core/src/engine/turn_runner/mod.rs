@@ -268,6 +268,7 @@ impl CinderRoleRunner {
         dialogue_handler::handle_actor_dialogue(
             self.dialogue.as_ref(),
             self.content.as_ref(),
+            &self.state.lock().expect("state lock"),
             role_name,
             self.next_non_complete_role(role_name)?,
             inbound,

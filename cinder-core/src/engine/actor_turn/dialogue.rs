@@ -156,7 +156,7 @@ pub(crate) fn actor_to_actor_dialogue(
         ),
     }];
     for raw_item_id in gift_tags {
-        if let Some(item_id) = resolve_gift_item_id(content, &raw_item_id) {
+        if let Some(item_id) = resolve_gift_item_id(content, state, &actor_id, &raw_item_id) {
             events.push(WorldEvent::ItemTransferred {
                 item_id: item_id.clone(),
                 from_actor_id: actor_id.clone(),

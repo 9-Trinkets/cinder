@@ -4,10 +4,12 @@ use crate::engine::dialogue::{DialogueGenerator, DirectSpeechIntentRequest};
 use crate::engine::events::WorldEvent;
 use crate::engine::events::apply_speech_intent_effects;
 use crate::engine::messaging::ChannelMessage;
+use crate::engine::state::WorldState;
 
 pub(super) fn handle_actor_dialogue(
     dialogue: &dyn DialogueGenerator,
     content: &ContentPack,
+    state: &WorldState,
     role_name: &str,
     next_role: String,
     inbound: &str,
@@ -74,9 +76,12 @@ pub(super) fn handle_actor_dialogue(
                 ),
             });
             for raw_item_id in gift_tags {
-                if let Some(item_id) =
-                    crate::engine::dialogue_grounding::resolve_gift_item_id(content, &raw_item_id)
-                {
+                if let Some(item_id) = crate::engine::dialogue_grounding::resolve_gift_item_id(
+                    content,
+                    state,
+                    &request.actor_id,
+                    &raw_item_id,
+                ) {
                     planned.events.push(WorldEvent::ItemTransferred {
                         item_id: item_id.clone(),
                         from_actor_id: request.actor_id.clone(),
