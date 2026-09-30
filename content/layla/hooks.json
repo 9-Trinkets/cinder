@@ -775,7 +775,7 @@
             {
               "path": "to_room_id",
               "operator": "equal",
-              "value": "village_square"
+              "value": "village_south_1"
             },
             {
               "path": "story_vars.zayd_rescued",
@@ -798,7 +798,7 @@
             {
               "path": "to_room_id",
               "operator": "equal",
-              "value": "village_square"
+              "value": "village_south_1"
             },
             {
               "path": "story_vars.zayd_rescued",
@@ -821,7 +821,7 @@
             {
               "path": "to_room_id",
               "operator": "equal",
-              "value": "village_square"
+              "value": "village_south_1"
             },
             {
               "path": "story_vars.zayd_rescued",
@@ -843,7 +843,7 @@
             {
               "path": "to_room_id",
               "operator": "equal",
-              "value": "village_square"
+              "value": "village_south_1"
             },
             {
               "path": "story_vars.zayd_rescued",
@@ -866,7 +866,7 @@
             {
               "path": "to_room_id",
               "operator": "equal",
-              "value": "village_square"
+              "value": "village_south_1"
             },
             {
               "path": "story_vars.zayd_rescued",

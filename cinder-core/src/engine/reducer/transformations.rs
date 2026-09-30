@@ -1,7 +1,7 @@
 use crate::content::types::{ActorTransformation, ContentPack, TransformationTrigger};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
-use crate::engine::state::{ActorStance, WorldState};
+use crate::engine::state::{ActorStance, GamePhase, WorldState};
 
 /// Standard wake/evolution narration keys. The engine only *requests* these;
 /// the pack owns their text. A transformation may override them with
@@ -38,6 +38,37 @@ pub fn maybe_apply_transformations(
         }
         apply_transformation(state, content, actor_id, transformation, lines);
         applied = true;
+    }
+    applied
+}
+
+/// Applies pending transformation stages for every onstage actor.
+///
+/// Individual actors are otherwise only transformed when they join the party or
+/// auto-equip an item, which leaves a stage triggered by a story variable or a
+/// stat threshold unreached until the actor happens to equip something. The
+/// engine runs this sweep at the end of every reducer event batch so those
+/// triggers fire as soon as their condition becomes true. Applied stages are
+/// recorded in state, so the sweep is idempotent and costs one pass over the
+/// actors the pack keeps on the map.
+///
+/// Gated on an active game: act transitions reseed the cast, and narrating a
+/// transformation into an act-boundary beat would be wrong.
+pub fn apply_pending_transformations(
+    state: &mut WorldState,
+    content: &ContentPack,
+    lines: &mut NarrativeLines,
+) -> bool {
+    if state.phase != GamePhase::Active {
+        return false;
+    }
+    let actor_ids: Vec<String> = state
+        .onstage_actors(content)
+        .map(|actor| actor.id.clone())
+        .collect();
+    let mut applied = false;
+    for actor_id in &actor_ids {
+        applied |= maybe_apply_transformations(state, content, actor_id, lines);
     }
     applied
 }
@@ -111,9 +142,11 @@ fn apply_transformation(
             .map(|key| key.as_str())
             .collect()
     };
-    for key in keys {
-        if let Some(line) = content.render_message(key, &vars) {
-            lines.narration(line);
+    if !transformation.silent {
+        for key in keys {
+            if let Some(line) = content.render_message(key, &vars) {
+                lines.narration(line);
+            }
         }
     }
 

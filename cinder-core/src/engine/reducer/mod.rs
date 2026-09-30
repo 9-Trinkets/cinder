@@ -352,6 +352,10 @@ pub fn apply_events(
             }
         }
     }
+    // Transformation triggers are evaluated once the whole batch has settled, so
+    // a stage keyed on a story variable or stat applies in the same turn the
+    // condition became true, whether or not the actor auto-equipped anything.
+    transformations::apply_pending_transformations(state, content, &mut lines);
     ReducerOutput {
         lines,
         phase: state.phase.clone(),

@@ -172,6 +172,13 @@ pub struct ActorTransformation {
     /// narration keys, so all renames share one prose set by default.
     #[serde(default)]
     pub narration_keys: Vec<String>,
+    /// Suppresses the transformation's narration entirely. Use for quiet state
+    /// shifts — a villager's mood turning, an actor settling into a new role —
+    /// where the pack narrates its own beat or nothing should be said at all.
+    /// Without this, a shift with no `narration_keys` falls back to the
+    /// `transformation.wake.*` prose, which would be wrong for it.
+    #[serde(default)]
+    pub silent: bool,
 }
 
 fn default_transformation_follows() -> bool {

@@ -928,19 +928,33 @@ fn floor4_zayd_rescue_and_village_escort() {
     let _ = runtime.run_turn("southwest").expect("to village_sw_corner");
     assert_eq!(runtime.current_room_id().unwrap(), "village_sw_corner");
 
-    // Still does not have lantern right before entering village square
-    let s_before_square = runtime.export_state().unwrap();
-    assert!(!s_before_square.actor_has_item("player", "zayd-lantern"));
-    assert!(s_before_square.relationship("zayd").follows_player);
+    // Still does not have lantern right before entering the Elder's quarters
+    let s_before_quarters = runtime.export_state().unwrap();
+    assert!(!s_before_quarters.actor_has_item("player", "zayd-lantern"));
+    assert!(s_before_quarters.relationship("zayd").follows_player);
 
-    // 5. Enter village_square -> triggers safe arrival hook
-    let return_outcome = runtime.run_turn("east").expect("enter village_square");
+    // 5. Cross the square and knock on Elder Rashid's door -> triggers safe arrival hook
+    let _ = runtime.run_turn("east").expect("enter village_square");
     assert_eq!(runtime.current_room_id().unwrap(), "village_square");
+    let s_in_square = runtime.export_state().unwrap();
+    assert_eq!(
+        s_in_square.story_vars.get("zayd_safe"),
+        None,
+        "Escort must not end in the square; it ends at the Elder's quarters"
+    );
+    assert!(s_in_square.relationship("zayd").follows_player);
+    assert_eq!(
+        s_in_square.actor_current_room_id(&pack, "zayd"),
+        "village_square"
+    );
+
+    let return_outcome = runtime.run_turn("east").expect("enter village_south_1");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_south_1");
     let return_text = return_outcome.text();
 
     // Verify safe arrival narrative
     assert!(
-        return_text.contains("Yasmin rushes forward"),
+        return_text.contains("The Elder makes it no further than his own doorway"),
         "Return safe narrative missing in: {return_text}"
     );
     assert!(
@@ -962,10 +976,43 @@ fn floor4_zayd_rescue_and_village_escort() {
         !final_state.relationship("zayd").follows_player,
         "Zayd must stop following once safe in the village"
     );
+    assert_eq!(
+        final_state.actor_current_room_id(&pack, "zayd"),
+        "village_south_1",
+        "Zayd must stay behind in the Elder's quarters rather than follow Layla on"
+    );
     assert!(
         final_state.actor_has_item("player", "zayd-lantern")
             || final_state.has_item("zayd-lantern"),
         "Player must now possess zayd-lantern"
+    );
+
+    // The village mood shift is a silent transformation, so it must not leak
+    // awakening prose into the arrival beat.
+    assert!(
+        !return_text.contains("awakened") && !return_text.contains("You have awakened"),
+        "Silent transformation must not narrate: {return_text}"
+    );
+
+    // Zayd is home, so his prompt must no longer be the escape prompt.
+    let zayd_actor = pack.actor("zayd").expect("zayd actor definition");
+    let zayd_prompt =
+        cinder_core::engine::state::resolved_actor_prompt_context(&pack, &final_state, zayd_actor);
+    assert!(
+        zayd_prompt
+            .character_notes
+            .iter()
+            .any(|note| note.contains("You are home")),
+        "Zayd prompt did not shift to his home state: {:?}",
+        zayd_prompt.character_notes
+    );
+    assert!(
+        !zayd_prompt
+            .subtext_notes
+            .iter()
+            .any(|note| note.contains("focus entirely on getting past the guards")),
+        "Zayd still carries his escape prompt after reaching safety: {:?}",
+        zayd_prompt.subtext_notes
     );
 
     // Verify quest completion
@@ -975,6 +1022,128 @@ fn floor4_zayd_rescue_and_village_escort() {
             .iter()
             .any(|o| o.quest_id.as_deref() == Some("save_zayd")),
         "save_zayd quest must be completed upon safe return"
+    );
+}
+
+#[test]
+fn zayd_home_shifts_villager_prompts_to_relief_and_dread() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "village_sw_corner".to_string();
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+
+    // Before the boy is home, the villagers still carry their rescue prompts.
+    let before = runtime.export_state().unwrap();
+    for villager in ["elder_rashid", "yasmin", "tariq"] {
+        assert!(
+            !before.is_actor_transformed(villager, "zayd_home"),
+            "{villager} must not be transformed before Zayd is safe"
+        );
+    }
+    let rashid_before = cinder_core::engine::state::resolved_actor_prompt_context(
+        &pack,
+        &before,
+        pack.actor("elder_rashid").expect("rashid exists"),
+    );
+    assert!(
+        rashid_before
+            .response_notes
+            .iter()
+            .any(|note| note.contains("rescue the boy")),
+        "Rashid should still be asking for the rescue before it happens: {:?}",
+        rashid_before.response_notes
+    );
+
+    // Set both flags, then walk the final leg of the escort into the Elder's quarters.
+    let mut seeded = runtime.export_state().unwrap();
+    seeded.story_vars.set_unchecked("zayd_rescued", "true");
+    seeded
+        .actor_room_overrides
+        .insert("zayd".to_string(), "village_square".to_string());
+    seeded.set_actor_stance(
+        &pack,
+        "zayd",
+        cinder_core::engine::state::ActorStance::Allied,
+        true,
+    );
+    let runtime = CinderRuntime::from_state(pack.clone(), seeded, false).expect("runtime creates");
+
+    runtime.run_turn("east").expect("enter the square");
+    let in_square = runtime.export_state().unwrap();
+    assert_eq!(
+        in_square.story_vars.get("zayd_safe"),
+        None,
+        "Zayd is not safe while the player is still in the square"
+    );
+
+    let arrival = runtime
+        .run_turn("east")
+        .expect("enter the Elder's quarters");
+    let arrival_text = arrival.text();
+    let after = runtime.export_state().unwrap();
+    assert_eq!(after.story_vars.get("zayd_safe"), Some("true"));
+
+    for villager in ["elder_rashid", "yasmin", "tariq"] {
+        assert!(
+            after.is_actor_transformed(villager, "zayd_home"),
+            "{villager} must pick up the post-rescue prompt once Zayd is safe"
+        );
+    }
+
+    // Every villager reads relieved and every villager is also afraid.
+    for (villager, relief, dread) in [
+        ("elder_rashid", "Zayd is home", "garrison"),
+        ("yasmin", "Zayd is home", "garrison"),
+        ("tariq", "Zayd is home", "manifest"),
+    ] {
+        let prompt = cinder_core::engine::state::resolved_actor_prompt_context(
+            &pack,
+            &after,
+            pack.actor(villager).expect("villager exists"),
+        );
+        let all = format!("{:?} {:?}", prompt.character_notes, prompt.subtext_notes);
+        assert!(
+            all.contains(relief),
+            "{villager} prompt lacks relief: {all}"
+        );
+        assert!(
+            all.contains(dread),
+            "{villager} prompt lacks the worried side of the relief: {all}"
+        );
+    }
+
+    // The shift is a mood change, not an awakening, so it must not narrate and
+    // must not rename anyone. A non-silent transformation falls back to the
+    // pack's `transformation.wake.*` prose, which is wrong for a villager
+    // whose name and identity never changed.
+    for wake_leak in ["remembers who they are", "high wisdom"] {
+        assert!(
+            !arrival_text.contains(wake_leak),
+            "village mood shift leaked awakening prose ({wake_leak}): {arrival_text}"
+        );
+    }
+    assert!(
+        !arrival_text.contains("Yasmin rushes forward"),
+        "village mood shift should not narrate a separate reaction: {arrival_text}"
+    );
+    let rashid_after = cinder_core::engine::state::resolved_actor_prompt_context(
+        &pack,
+        &after,
+        pack.actor("elder_rashid").expect("rashid exists"),
+    );
+    assert_eq!(
+        after.actor_display_name(&pack, "elder_rashid"),
+        Some("Elder Rashid"),
+        "a name-less rename must keep the actor's name"
+    );
+    assert!(
+        !rashid_after
+            .character_notes
+            .iter()
+            .any(|note| note.contains("You have awakened")),
+        "villagers must not be told they awakened: {:?}",
+        rashid_after.character_notes
     );
 }
 
