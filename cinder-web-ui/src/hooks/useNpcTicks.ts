@@ -31,7 +31,6 @@ export function useNpcTicks(params: {
     const ws = new WebSocket(api.gameTicksWebSocketUrl(id, token, intervalMs))
 
     ws.onmessage = (event) => {
-      if (inputValueRef.current.trim().length > 0) return
       try {
         const data = JSON.parse(event.data)
         if (data.type === 'tick_status') {
@@ -40,8 +39,19 @@ export function useNpcTicks(params: {
         }
         onTickStatusRef.current?.(false)
         const res: api.CommandResponse = data
-        if ((res.lines && res.lines.length > 0) || res.movie || res.game_over || res.act_closure || res.game_closure) {
-          onTickRef.current(res)
+        if (
+          (res.lines && res.lines.length > 0) ||
+          res.movie ||
+          res.game_over ||
+          res.act_closure ||
+          res.game_closure ||
+          res.ui_snapshot
+        ) {
+          if (inputValueRef.current.trim().length > 0 && res.lines && res.lines.length > 0) {
+            onTickRef.current({ ...res, lines: [] })
+          } else {
+            onTickRef.current(res)
+          }
         }
       } catch {
         console.error('ws: failed to parse tick message')

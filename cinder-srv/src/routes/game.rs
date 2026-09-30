@@ -355,7 +355,12 @@ async fn handle_ws(
                             "status": "idle"
                         }).to_string().into()));
 
-                        if resp.lines.is_empty() && resp.movie.is_none() && !resp.game_over && resp.act_closure.is_none() {
+                        if resp.lines.is_empty()
+                            && resp.movie.is_none()
+                            && !resp.game_over
+                            && resp.act_closure.is_none()
+                            && resp.ui_snapshot.is_none()
+                        {
                             continue;
                         }
                         match serde_json::to_string(&resp) {
