@@ -11097,8 +11097,8 @@
   {
     "id": "courtyard_center",
     "title": "The Frost Courtyard",
-    "summary": "A colossal hexagonal courtyard paved in frost-rimed stone, enclosed by towering fortress walls under a cold purple sky. In the center hums a wide brass teleport platform. Nearby stand rows of heavy iron cages marked with white block codes, packing shivering civilians into the freezing wind.",
-    "inspect_text": "High battlements hem in the six-sided courtyard. Howling wind whips snow across the flags and through the bars of four mass offering cages. Sentry posts look down from the ramparts, and six stone archways connect to the surrounding approaches and defensive chokepoints.",
+    "summary": "A colossal hexagonal courtyard paved in frost-rimed stone, enclosed by towering fortress walls under a cold purple sky. In the center hums a wide brass teleport platform—the citadel's sole link across the dimensional divide to Floor 4. Nearby stand rows of heavy iron cages marked with white block codes, packing shivering civilians into the freezing wind.",
+    "inspect_text": "High battlements hem in the six-sided courtyard, backed by sheer abyss and mountain rock. No physical stair, ramp, or shaft connects this citadel to the floors above; only the glowing brass platform bridges the gap via teleportation. Howling wind whips snow across the flags and through the bars of four mass offering cages. Sentry posts look down from the ramparts, and six stone archways connect to the surrounding approaches and defensive chokepoints.",
     "allow_rest": false,
     "features": [
       {
@@ -11114,7 +11114,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A broad circular brass dais inlaid with geometric conduits. It pulses with pale turquoise energy, anchoring the transit line to Floor 4."
+        "inspect_text": "A broad circular brass dais inlaid with geometric conduits. It pulses with pale turquoise energy, serving as the sole teleportation anchor linking this isolated citadel back to the Floor 4 platform. Without any physical connection between floors, stepping onto the transit circuit and using teleport is the only way back."
       },
       {
         "id": "courtyard_center-cages",
@@ -11133,20 +11133,6 @@
       }
     ],
     "exits": [
-      {
-        "room_id": "teleport_platform",
-        "label": "Ascend to Floor 4 Platform",
-        "aliases": [
-          "ascend",
-          "up",
-          "u",
-          "floor 4",
-          "floor4",
-          "platform"
-        ],
-        "menu_label": "Ascend to Floor 4 Platform",
-        "requires_story_var": ""
-      },
       {
         "room_id": "courtyard_north",
         "label": "North to Frost-Wolf Approach",
