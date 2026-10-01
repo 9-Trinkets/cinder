@@ -1254,3 +1254,52 @@ fn charming_the_fire_elemental_opens_the_floor4_exit() {
     runtime.run_turn("go down").expect("descend after charm");
     assert_eq!(runtime.current_room_id().unwrap(), "village_square");
 }
+
+#[test]
+fn drain_sigils_surrounding_fire_elemental_do_not_charm_or_release_it() {
+    use cinder_core::content::types::ItemStorageTarget as Storage;
+    use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
+    use cinder_core::engine::reducer::apply_events;
+
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+
+    state.current_room_id = "oas".to_string();
+    let player_id = pack.settings.combat.player_actor_id.clone();
+    state.actor_level.insert(player_id.clone(), 12);
+
+    // Ring the elemental's room with drain sigils instead of charm sigils.
+    for room_id in ["o6", "o7", "oh"] {
+        state.add_item_to_storage("drain-sigil", Storage::CurrentRoom, room_id);
+    }
+
+    // Placing a drain sigil in oas must NOT trigger surround charm or release.
+    apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::ItemAcquired {
+            item_id: "drain-sigil".to_string(),
+            storage: Storage::CurrentRoom,
+        })],
+    );
+
+    // Fire elemental is NOT charmed or allied.
+    assert_ne!(state.stance("fire-elemental"), ActorStance::Allied);
+    assert_eq!(state.stance("fire-elemental"), ActorStance::Hostile);
+    assert_eq!(
+        state.story_vars.get("elemental_released"),
+        None,
+        "drain sigil must not trigger elemental release"
+    );
+
+    // Sprites are NOT allied.
+    assert_ne!(state.stance("fire-sprite-1"), ActorStance::Allied);
+
+    // Drain sigils must remain in place (not consumed or cleared as refused charms).
+    for room_id in ["o6", "o7", "oh"] {
+        assert!(
+            state.has_item_in_storage("drain-sigil", Storage::CurrentRoom, room_id),
+            "drain sigil in {room_id} must not be cleared by surround check"
+        );
+    }
+}

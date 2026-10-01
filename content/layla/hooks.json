@@ -547,6 +547,11 @@
         {
           "conditions": [
             {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            },
+            {
               "path": "actor_id",
               "operator": "equal",
               "value": "fire-elemental"
@@ -561,6 +566,11 @@
         {
           "conditions": [
             {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            },
+            {
               "path": "actor_id",
               "operator": "equal",
               "value": "fire-elemental"
@@ -573,6 +583,11 @@
         },
         {
           "conditions": [
+            {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            },
             {
               "path": "actor_id",
               "operator": "equal",
@@ -590,7 +605,13 @@
           }
         },
         {
-          "conditions": [],
+          "conditions": [
+            {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            }
+          ],
           "payload_template": {
             "kind": "convert_actor_to_ally",
             "actor_id": "$input.actor_id",
@@ -603,6 +624,11 @@
         },
         {
           "conditions": [
+            {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            },
             {
               "path": "tags",
               "operator": "array_contains_any",
@@ -628,6 +654,11 @@
         },
         {
           "conditions": [
+            {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            },
             {
               "path": "tags",
               "operator": "array_contains_any",

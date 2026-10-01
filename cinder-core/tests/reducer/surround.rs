@@ -469,3 +469,60 @@ fn refused_conversion_falls_back_to_the_neutral_default() {
         "a refused conversion must spend the encircling markers"
     );
 }
+
+#[test]
+fn surrounding_with_unmatched_item_does_not_refuse_or_consume_items() {
+    let mut pack = surround_test_pack();
+    // A target that would fail resistance if the rule evaluated.
+    add_surround_target(&mut pack, "elf-pawn", 3, 3);
+    // Replace the default hook with one requiring a specific item ("specific-marker").
+    pack.hooks.insert(
+        "actor.surrounded".to_string(),
+        json!({
+            "rule": "effect_table",
+            "rule_config": {
+                "cases_path": "rules",
+                "next_on_match": "complete",
+                "next_on_default": "complete",
+                "default_payload_template": {
+                    "effects": []
+                }
+            },
+            "input_overlay": {
+                "rules": [
+                    {
+                        "conditions": [
+                            {
+                                "path": "item_id",
+                                "operator": "equal",
+                                "value": "specific-marker"
+                            }
+                        ],
+                        "payload_template": {
+                            "kind": "convert_actor_to_ally",
+                            "actor_id": "$input.actor_id",
+                            "follows_player": true,
+                            "messages": ["conversion.encircled"]
+                        }
+                    }
+                ]
+            }
+        }),
+    );
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = KITCHEN_ID.to_string();
+
+    let output = trace_marker(&mut state, &pack);
+
+    // Because trace drops "marker" (not "specific-marker"), the hook produces no effects,
+    // so no conversion happens, no refusal is output, and the markers are not consumed.
+    assert_ne!(state.stance("elf-pawn"), ActorStance::Allied);
+    assert!(
+        !output.lines.iter().any(|line| line.text.contains(REFUSAL)),
+        "unmatched item must not trigger surround refusal"
+    );
+    assert!(
+        state.has_item_in_storage("marker", ItemStorageTarget::CurrentRoom, KITCHEN_ID),
+        "unmatched item must remain in storage and not be consumed"
+    );
+}
