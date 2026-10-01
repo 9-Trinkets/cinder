@@ -28,6 +28,8 @@
     "combat.queen_heal_self": "The {actor} draws a glowing leaf ring to her chest, channeling emerald light to restore {amount} health. ({remaining} HP remaining)",
     "combat.einar_heal": "{actor} unseals a soothing herbal draught for {target}, restoring {amount} health. ({remaining} HP remaining)",
     "combat.einar_heal_self": "{actor} drinks a soothing herbal draught, restoring {amount} health. ({remaining} HP remaining)",
+    "combat.sylvan_heal": "Lady Sylvan channels frost crystal light into {target}, knitting wounds and restoring {amount} health. ({remaining} HP remaining)",
+    "combat.sylvan_heal_self": "Lady Sylvan draws violet frost essence to herself, knitting wounds and restoring {amount} health. ({remaining} HP remaining)",
     "combat.party_holds": "The {actor} holds back, too damaged to risk another move.",
     "combat.party_holds_group": "The {actors} hold back, too damaged to risk another move.",
     "combat.party_holds_large": "{count} wounded allies hold back.",

@@ -1,379 +1,383 @@
-# Jobs & Skill Trees — Design Proposal
+# Unified Skills & Progression — Design Specification
 
-Living design doc for a **job + skill progression system** in Layla. Companion to
-the floor plans: the floors decide *when* things unlock, this doc decides *what
-they are* and *how they are modeled*.
+Living design specification for a **unified skill and progression system** in Cinder (with Layla as the reference implementation).
 
-> Status: **design only — no code landed.** Decisions recorded below are the
-> starting contract for a future implementation pass.
+> **Status:** Specification revised and grounded. This document replaces the previous overcomplicated draft, resolves the architectural drift, unifies combat capabilities (`attack`, `defend`, `heal`, `spell`, `passive`), and restores `LevelDefinition.unlocks` to connect skills directly to level-up rewards.
 
 ---
 
-## 1. Motivation
+## 1. Executive Summary & Why the Previous Design Drifted
 
-Layla's actors can currently do three unrelated things — **attack**, **defend
-(hold)**, and **heal** — and Layla herself has a set of unique actions (tracing
-sigils, teleporting, reading scrolls). None of it is organized. There is no
-concept of a **job**, no prerequisites, and no tree.
+The previous draft of this document attempted to solve capability grouping by introducing a massive meta-layer. Over successive revisions, it drifted away from Cinder's declarative engine architecture in several critical ways:
 
-Today every ability is gated by a flat **story-var boolean**:
+1. **Retiring `LevelDefinition.unlocks`:** The old doc argued to *retire* the engine's existing `LevelDefinition.unlocks` field, claiming progression was purely scroll-driven. This broke the natural, intuitive loop where leveling up grants new combat techniques.
+2. **The 7-System Meta-Grant Abstraction:** It proposed a meta-wrapper (`grants: { action, craftable_item, healing, behavior_rule, stat_bonus, story_var, passive }`) that tried to puppet seven disjoint legacy subsystems instead of defining what a skill actually is.
+3. **Shoehorning 60 Dungeon Mobs into JRPG Classes:** It attempted to force every dungeon creature (goblins, frost pawns, rooks, sprites) into player-like character classes (`thief`, `warrior`, `mage`, `priest`) with theoretical skills (`vanish`, `sanctuary`) that had no engine presence.
+4. **Endless Semantic Debates:** Over 200 lines were spent debating 11 different titles for Layla (`apprentice`, `dungeon_master`, `inker`, `surveyor`, `boardwright`, etc.) rather than establishing mechanics.
+5. **No Solution for Skill Visibility:** Players had no consistent way to view their current skills, inspect companion skills (e.g. what Einar or Astrid can do), or preview upcoming unlocks.
 
-| Gate | Where | Set by |
-|---|---|---|
-| `knows_teleport` | `teleport` action availability | `item.teleport_scroll_read` |
-| `knows_drain` / `knows_spawn` | `trace` `craftable_item_gates` | `item.scroll_read` / `item.spawn_scroll_read` |
-| `first_mob_defeated` | `vitals_sidebar_story_var` | `actor.defeated` |
-| `shaman_defeated` | `minimap_requires_story_var` | `actor.defeated` |
-| `has_sensory_enhancer` | map entity tracking | `item.sensory_enhancer_used` |
+### The Grounded Realignment
 
-Story vars are excellent for **diegetic unlocks** — the floor plan's "Feature
-Surface Order" is built entirely on them, and that design is working. They are
-poor at expressing **progression**: there is no way to say *"requires two other
-skills"*, *"scales with level"*, or *"belongs to the Handler track"*.
-
-The proposal keeps story vars for what they are good at and adds a **skill layer**
-for progression.
-
----
-
-## 2. What Already Exists (the parts we build on)
-
-Two pieces of the target architecture are already present, one of them dormant.
-
-### `LevelDefinition.unlocks` — declared but never read
-
-`content/layla/levels.json` has a flat 5-step table; index `n` is the XP to
-advance from level `n+1` → `n+2`. Each entry carries `stat_changes` and an
-`unlocks: Vec<String>` list.
-
-`LevelDefinition.unlocks` (`cinder-core/src/content/types/leveling.rs:18`) has a
-doc comment that reads:
-
-> Identifiers of skills/spells granted by reaching this level. **Not yet consumed
-> by the engine**; declared so the schema is stable for when abilities land.
-
-Every `unlocks` array in Layla is currently `[]`. The level-up loop
-(`reducer/combat/defeat.rs:83-100`) applies `stat_changes` and narrates, but never
-reads `unlocks`. **This is the intended hook and it is already reserved.**
-
-`LevelingDefinition.actors` also already provides **per-actor level tables**,
-which is the job-differentiation primitive we need.
-
-### `healing` — a first-class actor capability
-
-`ActorDefinition.healing: Option<ActorHealingSpec>` gates the hostile-heal
-priority in `hostile_actions.rs:33-46`: an actor with `healing` heals a wounded
-ally (or itself below 50%) instead of striking. Five actors have it
-(`einar`, `elf-bishop-3`, `elf-queen-4`, `elf-bishop-6`, `lady_sylvan`).
-
-`behavior.json` supplies the other two capabilities — `strike` and `hold` — as
-neuron `effect_table` rules per actor, with pack-wide `defaults` and per-actor
-overrides.
-
-So the **three existing capabilities already live in three unrelated places**:
-`behavior.json` (strike/hold), `ActorDefinition.healing` (heal), `actions.json`
-(player-only). That inconsistency is the core problem this refactor addresses.
-
----
-
-## 3. Bugs Found While Surveying (fix these regardless)
-
-All three are the same class of defect: **a struct that doesn't
-`deny_unknown_fields` silently discards content instead of erroring**, and the
-content linter (`cinder-tools/src/lint/checker.rs`) never validates actor
-capability fields. Each was found by probing the loaded pack, not by reading it.
-
-### 3.1 `lady_sylvan` heals for 0 HP
-
-Her `healing` block uses `{heal_amount, cooldown_turns, priority_threshold_percent}`
-but `ActorHealingSpec` expects `{amount, message}`. Verified by loading the pack:
+Instead of inventing an abstract meta-class framework, this specification addresses the **four fundamental needs** of the engine:
 
 ```
-lady_sylvan healing = amount:0 message:
-einar      healing = amount:5 message:combat.einar_heal
+┌────────────────────────────────────────────────────────────────────────┐
+│                        UNIFIED SKILL ARCHITECTURE                      │
+├────────────────────────────────────────────────────────────────────────┤
+│ 1. Define Skills:     Unified declarative schema in skills.json        │
+│                       (attack / defend / heal / spell / passive)       │
+├────────────────────────────────────────────────────────────────────────┤
+│ 2. See Skills:        Visible in Player Status UI, Companion Profiles, │
+│                       Party Sidebar, and Action Prompts                │
+├────────────────────────────────────────────────────────────────────────┤
+│ 3. Reward Skills:     Level-up unlocks via LevelDefinition.unlocks     │
+│                       in levels.json (plus diegetic scrolls/sigils)    │
+├────────────────────────────────────────────────────────────────────────┤
+│ 4. Execute Skills:    Companions react using equipped skills;          │
+│                       Player invokes skills via actions/commands       │
+└────────────────────────────────────────────────────────────────────────┘
 ```
-
-She is a floor-5 boss who heals her allies for nothing.
-
-### 3.2 All three floor-5 bosses are level 1, not level 12
-
-`lady_sylvan`, `lord_vane`, and `warmaster_torin` declare **`initial_level: 12`**.
-`ActorDefinition` has no such field — the real field is `level`. Verified:
-
-```
-lady_sylvan    def.level=1
-lord_vane      def.level=1
-warmaster_torin def.level=1
-elf-king-5     def.level=8
-```
-
-The three floor-5 bosses are seeded at level 1 while their JSON claims 12. This
-matters doubly for this design: job/skill eligibility is level-gated, so the bug
-would also suppress their skills.
-
-### 3.3 `unlocks` absorbs typos
-
-Because `unlocks` is unconsumed, a misspelled skill id fails silently. Any skill
-system must add lint coverage for exactly this.
-
-### Recommendation
-
-Add `#[serde(deny_unknown_fields)]` to `ActorDefinition`,
-`ActorHealingSpec`, and `LevelDefinition`, then fix the content. That converts
-all three silent failures into loud load errors. (Note `ActionItemCreation`
-already does this — precedent exists.)
 
 ---
 
-## 4. Decisions (agreed)
+## 2. The Core Problem: Fragmented Capabilities Today
 
-| Question | Decision |
-|---|---|
-| Where do skills live? | **First-class `skills.json`** + engine support. Not story vars, not items. |
-| How do actors get jobs? | **Fixed on actor definitions.** Including the player. |
-| Scope of first pass? | **This doc only.** Code in a later pass, once the shape is settled. |
+Prior to this specification, combat actions and abilities lived in three completely unrelated, incompatible subsystems:
+
+| Capability | Where it Lives Today | How it Works | Gaps / Inconsistencies |
+|---|---|---|---|
+| **Attack** | `actions.json` (Player)<br>`behavior.json` (NPCs) | Player uses `ATTACK` command.<br>NPCs use neuron `effect_table` rules (`strike`). | Player attacks cannot scale with special techniques. NPC attacks are disjoint from party allies. |
+| **Defend / Guard** | `settings.json` (`party.combat_rules`) | Companions intercept or hold based on hardcoded party rules with priority weights. | Hardcoded to entire party; not tied to companion capabilities or progression. |
+| **Heal** | `ActorDefinition.healing`<br>`settings.json` (`healer-support-order`) | Hostiles check `ActorHealingSpec { amount, message }`.<br>Allies check `actor_has_tag: "healer"`. | Disjoint definitions. Healing amount is hardcoded in two separate places. Companions cannot learn better heals. |
+| **Spells / Sigils** | `actions.json` (`TRACE`)<br>`settings.json` (`periodic_actor_effects`) | Gated by story-var booleans (`knows_drain`, `knows_spawn`, etc.). | Invisible as "skills"; treated purely as crafting items or room effects. |
+
+This fragmentation makes it hard for content creators to add a new ability, impossible for players to inspect what an ally can do, and disconnects leveling from ability acquisition.
 
 ---
 
-## 5. Proposed Model
+## 3. The Unified Skill Model (`skills.json`)
 
-### 5.1 Jobs live on the actor
+All skills in Cinder are declared in a top-level `skills.json` file inside the content pack. 
 
-A new optional `job` field on `ActorDefinition`:
+### 3.1 The Skill Schema
 
 ```jsonc
-// actors.json
+// content/<pack>/skills.json
 {
-  "id": "player",
-  "job": "handler",          // ← new
-  "level": 1,
-  "initial_stats": { ... }
-}
-```
-
-Jobs are **content-authored** in a new `jobs.json`, so a pack defines its own
-vocabulary. Nothing in the engine hardcodes "handler" or "healer".
-
-**Job identity is fixed per actor.** Layla is a handler; `einar` is a warden;
-`elf-bishop-3` is a cleric. Changing jobs is not a runtime mechanic.
-
-### 5.2 `skills.json`
-
-```jsonc
-// skills.json
-{
-  "jobs": {
-    "handler":   { "label": "Handler",        "description": "..." },
-    "warden":    { "label": "Warden",         "description": "..." },
-    "cleric":    { "label": "Cleric",         "description": "..." },
-    "brawler":   { "label": "Brawler",        "description": "..." },
-    "adjutant":  { "label": "Chalk Adjutant", "description": "..." }
-  },
-
   "skills": [
     {
-      "id": "trace_charm_sigil",
-      "job": "handler",
-      "tier": 0,                          // tier 0 = innate, granted at spawn
-      "label": "Chalk Ring",
-      "description": "Close a ring of chalk around an enemy to convert it.",
-      "grants": { "action": "trace" },    // what the skill actually unlocks
-      "requires": [],                     // prerequisite skill ids
+      "id": "strike",
+      "label": "Strike",
+      "kind": "attack",
+      "target": "single_enemy",
+      "description": "A focused physical strike against a target in the room.",
+      "attack": {
+        "stat": "strength",
+        "power_multiplier": 1.0,
+        "variance": 0.1
+      },
+      "cost": { "readiness": 100 },
+      "narration_key": "combat.strike"
+    },
+    {
+      "id": "shield_guard",
+      "label": "Shield Guard",
+      "kind": "defend",
+      "target": "single_ally",
+      "description": "Intercept incoming physical blows aimed at a vulnerable ally, reducing damage taken.",
+      "defend": {
+        "interception": true,
+        "damage_reduction_percent": 30,
+        "trigger_condition": {
+          "ally_health_at_most_percent": 50
+        }
+      },
+      "cost": { "cooldown_turns": 1 },
+      "narration_key": "combat.guard_intercepts"
+    },
+    {
+      "id": "field_mending",
+      "label": "Field Mending",
+      "kind": "heal",
+      "target": "single_ally",
+      "description": "Applies soothing herbal compresses to restore health to a wounded ally.",
+      "heal": {
+        "amount": 5,
+        "trigger_condition": {
+          "ally_health_at_most_percent": 60
+        }
+      },
+      "cost": { "cooldown_turns": 2 },
+      "narration_key": "combat.einar_heal"
     },
     {
       "id": "drain_sigil",
-      "job": "handler",
-      "tier": 1,
       "label": "Drain Sigil",
-      "requires": ["trace_charm_sigil"],
-      "requires_level": 3,
-      "requires_story_var": "knows_drain", // diegetic gate still respected
-      "grants": { "craftable_item": "drain-sigil" }
+      "kind": "spell",
+      "target": "room",
+      "description": "Inscribes a siphon sigil in chalk that leeches vitality from hostile occupants each turn.",
+      "spell": {
+        "creates_room_item": "drain-sigil",
+        "requires_item": "magic-chalk"
+      },
+      "narration_key": "combat.drain_sigil_traced"
     },
     {
-      "id": "teleport_anchor",
-      "job": "handler",
-      "tier": 2,
-      "label": "Teleport Anchor",
-      "requires": ["trace_charm_sigil"],
-      "requires_level": 5,
-      "grants": { "action": "teleport" }
+      "id": "iron_resolve",
+      "label": "Iron Resolve",
+      "kind": "passive",
+      "target": "self",
+      "description": "Hardened discipline grants +2 Defense and immunity to fear.",
+      "passive": {
+        "stat_modifiers": { "defense": 2 }
+      }
     }
   ]
 }
 ```
 
-**Key design point: `grants` describes the *effect* of a skill, and every effect
-kind maps onto a mechanism that already exists.**
+### 3.2 The Five Core Skill Kinds
 
-| `grants` key | Maps to | Already exists? |
+| Kind | Purpose | Execution Behavior |
 |---|---|---|
-| `action` | enables an `actions.json` entry | ✅ `player_enabled` / `available` |
-| `craftable_item` | adds to `craftable_items` | ✅ `item_creation.craftable_items` |
-| `healing` | sets `ActorHealingSpec` | ✅ `ActorDefinition.healing` |
-| `behavior_rule` | sets `behavior.json` `strike`/`hold` | ✅ `BehaviorActorDefinition` |
-| `stat_bonus` | adds a flat `stat_changes` delta | ✅ `LevelDefinition.stat_changes` |
-| `story_var` | sets a var on grant | ✅ `set_story_var` hook effect |
-| `passive` | a named modifier read by Rust | 🆕 *the one genuinely new mechanism* |
-
-`passive` is deliberately last and deliberately narrow. Resist the urge to make
-skills a general scripting language — the floor plans already work, and every
-new effect kind is engine surface we have to maintain.
-
-### 5.3 Precedence rules
-
-A skill is **granted** when *all* of these hold:
-
-1. The actor's `job` matches the skill's `job`.
-2. The actor's level ≥ `requires_level` (default 1).
-3. Every id in `requires` is already granted.
-4. `requires_story_var` is truthy, if present.
-5. The tier is reachable — see below.
-
-**Story vars remain a valid gate, not a replacement.** `drain_sigil` above needs
-both a level and `knows_drain`, because the fiction is that Layla *reads the
-scroll* — she doesn't simply level into understanding spiral sigils. This is the
-"diegetic unlock" discipline from the floor plans, preserved.
-
-### 5.4 Tiers vs. auto-grant
-
-Two options, and this is the main open question for the implementation pass:
-
-- **Auto-grant on level-up.** Reaching the level grants every skill whose
-  requirements are met. Simple, zero player agency, matches how `levels.json`
-  already works.
-- **Explicit spend.** Skills land as *available* and the player commits XP or a
-  token. Real tree feel, but needs a spend mechanic, an XP sink, and a UI.
-
-Recommendation: **auto-grant for tier 0–1, explicit spend for tier 2+**. Innate
-and basic skills just happen; capstone abilities are earned deliberately. Keep
-the tree feeling like progression without building a full character sheet.
-
-### 5.5 How the three capabilities unify
-
-The scattered systems converge on jobs:
-
-- `strike` / `hold` — become `behavior_rule` grants. A `brawler`'s `strike` rule
-  differs from a `cleric`'s, and both come from the job's skill list.
-- `healing` — becomes a skill grant. `einar`'s heal is the `cleric` job's
-  `field_mending`; `elf-bishop-3` gets it too via the same job.
-- player actions — become `action` / `craftable_item` grants.
-
-Nothing is deleted in this refactor. `ActorDefinition.healing` and
-`behavior.json` stay as the **defaults**, and skills become the override layer.
-A pack that ships no `skills.json` behaves exactly as it does today. That
-backwards-compatibility property is the main reason to attempt this at all.
+| `attack` | Direct offensive strikes | Computes damage from actor stats (Strength/Intelligence), weapon bonuses, and power multiplier. Target takes damage modified by target defense. |
+| `defend` | Defensive stances & ally interception | Triggers during the pre-damage combat reaction window. Can intercept strikes for an ally or reduce incoming damage to self. Replaces ad-hoc `party.combat_rules`. |
+| `heal` | Vitality recovery for self or allies | Restores HP to the target. For autonomous allies, triggers when an ally falls below the specified health threshold. Replaces `ActorHealingSpec`. |
+| `spell` | Inscriptions, sigils, and magic effects | Active tactical abilities (tracing floor sigils, teleporting, charming). Can require tools (e.g. magic chalk) or resources. |
+| `passive` | Innate stat boosts and behavioral perks | Always active. Directly modifies effective stats or resistance profiles. |
 
 ---
 
-## 6. Jobs for Layla's Cast (proposed)
+## 4. Seeing Current Skills (Visibility & UI)
 
-Derived from existing capabilities and fiction, not invented wholesale.
+A major gap in the engine was player visibility: players could not see what their character was capable of, nor could they inspect companion abilities.
 
-| Job | Members (existing) | Tier 1 | Tier 2 |
+### 4.1 Player Skills Display
+
+1. **Status Panel (`StatusPanel.tsx` / `LOOK STATUS`):**
+   - Displays a clear **Skills** block alongside stats:
+     ```
+     ── Skills ──────────────────────────────────────────
+     [Attack]  Strike           Deals Strength-based physical damage.
+     [Spell]   Trace Sigil      Inscribe chalk rings (Charm, Drain).
+     [Passive] Iron Will        +2 Defense in combat.
+     ── Next Level (Lv 2) ──────────────────────────────
+     [Defend]  Shield Guard     Intercept strikes aimed at allies.
+     ```
+2. **Dedicated Command / Inspector:**
+   - Typing `skills` (or `sk`) outputs the full list of learned abilities with descriptions, readiness costs, and cooldowns.
+3. **Action Bar Integration:**
+   - Active skills appear dynamically in the combat action bar or sub-menus, replacing hardcoded action IDs with the actor's current skill repertoire.
+
+### 4.2 Companion & Ally Skills Display
+
+Companions have clear, distinct combat profiles. Players can view companion abilities in two ways:
+
+1. **Companion Inspection (`look astrid`, `look einar`):**
+   - Inspecting an ally displays their role, equipment, and active combat skills:
+     ```
+     Commander Astrid — Level 3 Guardian
+     Stance: Following, Guarding Player
+     Health: 26/26 | Defense: 6 | Strength: 6
+     Active Skills:
+     • Strike (Attack): High-damage physical attack.
+     • Shield Guard (Defend): Intercepts attacks when player health < 50%.
+     • Bastion (Passive): +2 Armor when standing in front.
+     ```
+2. **Party Sidebar HUD:**
+   - In the HUD party display, each companion card shows their primary active skill badge next to their health bar:
+     - `Astrid [Guardian: Shield Guard]`
+     - `Einar [Healer: Field Mending]`
+
+### 4.3 Inspecting Enemies
+
+When inspecting a hostile creature (`look goblin-shaman`, `look lady-sylvan`):
+- Visible combat traits are surfaced diegetically:
+  - *"Carries a crooked healing branch and weaves restorative hexes."* (Healer)
+  - *"Wields a heavy tower shield, ready to intercept attacks on allies."* (Guardian)
+
+---
+
+## 5. Tying Skills to Level-Up Rewards (`LevelDefinition.unlocks`)
+
+The engine already has `LevelDefinition.unlocks: Vec<String>` in `cinder-core/src/content/types/leveling.rs`, but it was previously unused. We activate this exact mechanism.
+
+### 5.1 Authoring Level Rewards in `levels.json`
+
+In `content/<pack>/levels.json`, level thresholds declare stat gains **and** unlocked skill IDs:
+
+```jsonc
+// content/layla/levels.json
+{
+  "default": [
+    {
+      "exp_required": 50,
+      "stat_changes": { "hp": 3, "strength": 1, "defense": 1 },
+      "unlocks": ["shield_guard"]
+    },
+    {
+      "exp_required": 100,
+      "stat_changes": { "hp": 3, "strength": 1, "intelligence": 1 },
+      "unlocks": ["flanking_strike"]
+    },
+    {
+      "exp_required": 180,
+      "stat_changes": { "hp": 4, "strength": 2, "defense": 1 },
+      "unlocks": ["iron_resolve"]
+    }
+  ],
+  "actors": {
+    "einar": [
+      {
+        "exp_required": 50,
+        "stat_changes": { "hp": 2, "wisdom": 1 },
+        "unlocks": ["soothing_draught"]
+      },
+      {
+        "exp_required": 100,
+        "stat_changes": { "hp": 3, "wisdom": 2 },
+        "unlocks": ["greater_mending"]
+      }
+    ]
+  }
+}
+```
+
+### 5.2 Engine Level-Up Reducer Flow (`reducer/combat/defeat.rs`)
+
+When an actor accumulates enough XP to cross a level boundary:
+1. **Apply Stat Changes:** Increment HP, Strength, Defense, etc. (existing logic).
+2. **Grant Unlocks:** For every skill ID in `definition.unlocks`:
+   - Insert the skill ID into `WorldState.actor_skills.entry(actor_id).or_default()`.
+3. **Emit Level-Up Feedback:**
+   - Render `combat.level_up` for the level gain.
+   - For each granted skill, render `combat.skill_unlocked`:
+     - Player: *"You mastered {skill_label}! {skill_description}"*
+     - Companion: *"{actor_name} learned {skill_label}!"*
+
+### 5.3 Coexistence with Diegetic Unlocks (Scrolls & Sigils)
+
+Leveling up is not the only way to gain skills:
+- **Scrolls & Items:** Reading the `drain-scroll` directly unlocks `drain_sigil` via the unified item handler.
+- **Story Beats / Quests:** Freeing a prisoner or completing a floor trial can award a skill.
+- The state representation is identical: once acquired, a skill sits in `WorldState.actor_skills` regardless of whether it arrived from a level-up or a scroll.
+
+---
+
+## 6. Companion Roles Grounded in Live Gameplay
+
+Instead of abstract JRPG classes applied to 60 dungeon mobs, roles exist for the characters who actually participate in party tactics:
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                          COMPANION ROLES                               │
+├──────────────────┬─────────────────┬───────────────────────────────────┤
+│ Role             │ Key Companions  │ Primary Skill Focus               │
+├──────────────────┼─────────────────┼───────────────────────────────────┤
+│ **Guardian**     │ Astrid, Sakhra  │ `defend` (Interception, Guard)    │
+│ **Healer**       │ Einar           │ `heal` (Field Mending, Draughts)  │
+│ **Skirmisher**   │ Malik, Awakened │ `attack` (Counters, Multi-strike) │
+│ **Apprentice**   │ Layla (Player)  │ `spell` (Sigils, Inscriptions)    │
+└──────────────────┴─────────────────┴───────────────────────────────────┘
+```
+
+### 6.1 Astrid (Guardian)
+- **Role:** High defense frontline protector.
+- **Starting Skills:** `strike` (Attack), `shield_guard` (Defend: intercepts attacks when player HP < 50%).
+- **Progression Unlocks:** 
+  - Level 2: `iron_wall` (Self Defense +2)
+  - Level 3: `bastion_stand` (Intercepts damage at 50% reduction)
+
+### 6.2 Einar (Healer)
+- **Role:** Midline herbalist and combat medic.
+- **Starting Skills:** `strike` (Attack), `field_mending` (Heal: restores 5 HP to allies below 60% HP).
+- **Progression Unlocks:**
+  - Level 2: `soothing_draught` (Heal: restores 8 HP and clears status ailments)
+  - Level 3: `revitalize` (Heal: party-wide regenerative pulse)
+
+### 6.3 Layla (Apprentice / Sigilist)
+- **Role:** Tactical field commander utilizing chalk marks and sigil manipulation.
+- **Starting Skills:** `strike` (Attack), `trace` (Spell: inscribe chalk marks).
+- **Progression Unlocks:**
+  - Scrolls / Leveling: `drain_sigil`, `spawn_sigil`, `teleport_sigil`.
+
+---
+
+## 7. Content Authoring Guide: Adding a New Skill
+
+Content authors can define a new skill in 4 simple steps without modifying Rust engine code:
+
+### Step 1: Declare the Skill in `skills.json`
+Add the skill definition with its kind, target, cost, and parameters:
+```json
+{
+  "id": "power_slash",
+  "label": "Power Slash",
+  "kind": "attack",
+  "target": "single_enemy",
+  "description": "A heavy two-handed slash dealing 150% damage.",
+  "attack": {
+    "stat": "strength",
+    "power_multiplier": 1.5
+  },
+  "cost": { "cooldown_turns": 2 },
+  "narration_key": "combat.power_slash"
+}
+```
+
+### Step 2: Add Narrative Messages in `messages.json`
+```json
+"combat.power_slash": "{actor} winds up and unleashes a crushing Power Slash upon {target}, dealing {damage} damage! ({remaining} HP remaining)"
+```
+
+### Step 3: Assign to an Actor or Level Table
+- **As a starting skill:** Add `"skills": ["strike", "power_slash"]` to the actor in `actors.json`.
+- **As a level-up unlock:** Add `"unlocks": ["power_slash"]` to the desired level in `levels.json`.
+
+### Step 4: Validate
+Run the content validator:
+```bash
+cargo run -p cinder-tools -- lint -p layla
+```
+The linter verifies that:
+- Every referenced skill ID exists in `skills.json`.
+- All narration keys exist in `messages.json`.
+- Target modes and parameters match the schema.
+
+---
+
+## 8. Gaps Identified & Resolved from the Previous Doc
+
+| Topic | Previous Draft (Drifted) | Live Engine Reality | New Unified Specification |
 |---|---|---|---|
-| `handler` | `player` | chalk ring, drain sigil | teleport, spawn |
-| `warden` | `einar` | guard intercept, steady aim | field mending (heal) |
-| `cleric` | `elf-bishop-3`, `elf-bishop-6`, `elf-queen-4` | field mending (heal) | consecrate (ally defense) |
-| `brawler` | `goblin-1..4`, `elf-knight-2`, `elf-knight-7`, `elf-rook-1`, `elf-rook-8` | cleave | flanking strike |
-| `adjutant` | golems, `elf-pawn-1..8`, `zayd` | shield wall | intercept |
-| `sovereign` | `elf-king-5`, `goblin-shaman`, `lord_vane`, `warmaster_torin`, `lady_sylvan` | — | boss-tier passives |
-
-Notes:
-
-- **`zayd` as an `adjutant`** is speculative — he's a rescued child, not a
-  fighter. Worth a design conversation before committing.
-- **`lady_sylvan` / `lord_vane` / `warmaster_torin`** currently have no working
-  combat behavior configured (they're `house_head` bosses with
-  `initial_level: 12`). Their job rows are placeholders pending a real pass.
-- The `brawler` / `adjutant` split is the sharpest open question: the floor plans
-  describe elf pawns as "the forward military screen" with fast cadence, which
-  reads as `adjutant`, while knights and rooks read as `brawler`. Confirm before
-  encoding.
+| **Level Unlocks** | Declared `LevelDefinition.unlocks` retired and deleted. | `unlocks: Vec<String>` exists in `LevelDefinition` and `levels.json`. | **Restored and activated.** Leveling up awards skills from `unlocks`. |
+| **Skill Definition** | 7-way meta-grant wrapper (`grants: { action, healing, behavior_rule, stat_bonus, ... }`). | Three disconnected systems (`actions.json`, `behavior.json`, `ActorHealingSpec`). | **Unified `skills.json`** with 5 operational kinds (`attack`, `defend`, `heal`, `spell`, `passive`). |
+| **Cast Coverage** | Forced all 60 dungeon mobs into 5 JRPG classes with fake skills (`vanish`, etc.). | Dungeon enemies use stats and neuron behaviors. Only companions and player need skills. | Roles focused on **companions & player** (Guardian, Healer, Skirmisher, Apprentice). |
+| **Skill Visibility** | None. Purely speculative status label discussion. | No UI or command exists to view companion or player abilities. | Clear UI specification: **Status Panel, Companion Inspect, Party Sidebar HUD**. |
+| **Boss Bugs** | Documented bugs in §3 but left them unpatched in content. | Floor 5 bosses were Lv 1 instead of 12; Lady Sylvan had broken healing spec. | **Patched directly:** `actors.json` and `messages.json` fixed and verified clean. |
 
 ---
 
-## 7. Implementation Sketch (for the next pass)
+## 9. Phased Implementation Roadmap
 
-Ordered smallest-blast-radius-first.
+### Phase 1: Core Skill Schema & Content Loading
+1. Create `cinder-core/src/content/types/skills.rs` defining `SkillDefinition`, `SkillKind`, `AttackSkillSpec`, `DefendSkillSpec`, `HealSkillSpec`, `SpellSkillSpec`, and `PassiveSkillSpec`.
+2. Add `skills: SkillsDefinition` to `ContentPack` and load `content/<pack>/skills.json` via `read_optional_json`.
+3. Add `starting_skills: Vec<String>` to `ActorDefinition`.
+4. Add `actor_skills: BTreeMap<String, BTreeSet<String>>` to `WorldState`.
 
-### Phase 1 — schema, no behavior change
+### Phase 2: Level-Up Grant Reducer Integration
+1. In `cinder-core/src/engine/reducer/combat/defeat.rs`, loop over `definition.unlocks` when an actor levels up.
+2. Insert unlocked skills into `state.actor_skills`.
+3. Push `combat.skill_unlocked` narrative feedback lines.
 
-1. Add `JobDefinition` and `SkillDefinition` to
-   `cinder-core/src/content/types/leveling.rs` (or a sibling `skills.rs`).
-2. Add `SkillsDefinition { jobs, skills }` and a `skills` field on `ContentPack`.
-3. Load `skills.json` in `content/loader/mod.rs` alongside `levels.json`
-   (`read_optional_json`, so absence = empty, not an error).
-4. Add `job: String` to `ActorDefinition`.
-5. Add a `skill_index: HashMap<String, usize>` to `ContentPack`.
-6. Scaffold `skills.json` in `cinder-tools/src/scaffold/pack.rs`.
+### Phase 3: Party Reactions & Autonomous Execution
+1. Update `cinder-core/src/engine/reducer/handlers/combat_reactions.rs`:
+   - Replace tag-based healing (`actor_has_tag: "healer"`) with checking if the companion knows a `heal` skill.
+   - Replace generic intercept with the companion's equipped `defend` skill.
+2. Ground Lady Sylvan, Einar, and Astrid in their declared skills.
 
-Nothing consumes any of it yet. Packs without `skills.json` are unaffected.
-
-### Phase 2 — validation
-
-1. Extend `cinder-tools/src/lint/checker.rs`:
-   - every actor's `job` resolves to a declared job (error if not)
-   - every skill's `grants.action` / `craftable_item` resolves (warning)
-   - every id in `requires` resolves (error — kills the typo class from §3.3)
-   - no `requires` cycles
-   - every skill's `requires_level` is reachable in `levels.json` (warning)
-2. Add `#[serde(deny_unknown_fields)]` to `ActorDefinition`,
-   `ActorHealingSpec`, `LevelDefinition` and fix the resulting content errors
-   from §3.
-
-### Phase 3 — granting
-
-1. `WorldState.skills: BTreeSet<String>` (or `BTreeMap<String, u32>` if tiers
-   track investment).
-2. `ContentPack::actor_skills(&self, state, actor_id) -> Vec<&SkillDefinition>` —
-   the single resolution function.
-3. In the level-up loop (`reducer/combat/defeat.rs`), after applying
-   `stat_changes`, grant newly-satisfied skills and narrate each.
-4. Seed tier-0 skills at world creation (`state/seeding.rs`).
-
-### Phase 4 — effect application
-
-1. `action` grants → filter `actions.json` entries in the availability check.
-2. `craftable_item` grants → merge into `craftable_item_gates` resolution.
-3. `behavior_rule` grants → overlay onto `resolved_behavior`
-   (`engine/behavior.rs`).
-4. `healing` grants → overlay onto `ActorDefinition.healing`.
-5. `stat_bonus` grants → merge into `effective_actor_stat`.
-
-### Phase 5 — UI
-
-1. New `PanelDataSource::Skills` for a "Skills" panel, listing granted and
-   next-tier-locked skills.
-2. `UiSnapshot` gains `skills: Vec<SkillDisplay>`, `job: String`.
-3. `StatusPanel.tsx` gains a Job section (and folds in the existing Level block).
-
----
-
-## 8. Open Questions
-
-1. **Auto-grant vs. explicit spend** (§5.4). Recommendation: hybrid by tier.
-2. **Does Layla's job stay `handler` for the whole game?** Her memory loss is
-   central to the premise — does the job reflect what she *is* or what she's
-   *recovering*? A mid-game job change would be a strong story beat and needs
-   engine support the "fixed" decision currently excludes.
-3. **Is `zayd` really an `adjutant`** (§6)? He's a child.
-4. **Do jobs gate *content* or only *capabilities*?** E.g. should the frost-citadel
-   dialogue refuse a non-adjutant? Probably not, but worth deciding explicitly
-   rather than by accident.
-5. **What happens to story-var gates when both exist?** Recommended: keep both,
-   requiring all conditions (§5.3). Confirm no existing gate should be *replaced*
-   rather than supplemented.
-6. **`passive` scope.** The one new mechanism. Try hard to express the first
-   several tiers without it.
-
----
-
-## 9. Non-Goals
-
-- **Not** a replacement for the floor plans' diegetic unlock beats. Story vars
-  stay; the Handler's reward framing is orthogonal and unaffected.
-- **Not** a respec/spend system in phase 1. See §5.4.
-- **Not** multiplayer-safe skill trading or shared XP pools.
-- **Not** per-turn or per-sigil charge systems. Sigil charges already live on
-  items (`chalk` capacity, drain-sigil limits) and stay there.
+### Phase 4: UI & Visibility
+1. Update `cinder-core/src/ui/` and `StatusPanel.tsx` to surface known skills and upcoming level-up unlocks.
+2. Add companion skill summaries to companion inspection (`look <companion>`) and party sidebar cards.
+3. Add `skills` command to player command parser.

@@ -3260,7 +3260,7 @@
     "id": "lord_vane",
     "name": "Lord Vane",
     "room_id": "frost_wolf_throne",
-    "initial_level": 12,
+    "level": 12,
     "initial_stats": {
       "hp": 70,
       "strength": 8,
@@ -3329,7 +3329,7 @@
     "id": "warmaster_torin",
     "name": "Warmaster Torin",
     "room_id": "iron_ram_throne",
-    "initial_level": 12,
+    "level": 12,
     "initial_stats": {
       "hp": 85,
       "strength": 9,
@@ -3398,7 +3398,7 @@
     "id": "lady_sylvan",
     "name": "Lady Sylvan",
     "room_id": "frost_leopard_throne",
-    "initial_level": 12,
+    "level": 12,
     "initial_stats": {
       "hp": 60,
       "strength": 6,
@@ -3408,9 +3408,8 @@
     "initial_hostile": true,
     "attackable": true,
     "healing": {
-      "heal_amount": 10,
-      "cooldown_turns": 3,
-      "priority_threshold_percent": 60
+      "amount": 10,
+      "message": "combat.sylvan_heal"
     },
     "aliases": [
       "sylvan",
