@@ -161,13 +161,7 @@ impl CinderRuntime {
         let mut ids: Vec<String> = state
             .player_inventory
             .iter()
-            .filter(|(item_id, count)| {
-                **count > 0
-                    && !state
-                        .equipment
-                        .values()
-                        .any(|equipped| equipped.as_str() == item_id.as_str())
-            })
+            .filter(|(_, count)| **count > 0)
             .map(|(item_id, _)| item_id.clone())
             .collect();
         ids.sort();

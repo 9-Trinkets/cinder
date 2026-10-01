@@ -427,3 +427,87 @@ fn npc_dialogue_gifts_item_to_player_during_conversation() {
         yasmin_req.response_notes
     );
 }
+
+#[test]
+fn runtime_give_duplicate_held_item_when_one_is_equipped() {
+    let pack =
+        cinder_core::content::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "r01c01".to_string();
+    // Player has 2 leaf-plates: equips one, holds the other
+    state.add_item("leaf-plate");
+    state.add_item("leaf-plate");
+    state
+        .equipment
+        .insert("chest".to_string(), "leaf-plate".to_string());
+    state.remove_item("leaf-plate");
+    assert_eq!(state.item_count("leaf-plate"), 1);
+    assert_eq!(state.equipped_item("chest"), Some("leaf-plate"));
+
+    state.set_stance("golem-dark-nw", ActorStance::Allied);
+    state.set_follows_player("golem-dark-nw", true);
+    state
+        .actor_room_overrides
+        .insert("golem-dark-nw".to_string(), "r01c01".to_string());
+
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue)
+            .expect("runtime creates");
+
+    let outcome = runtime
+        .run_turn("give leaf plate to Dark Golem")
+        .expect("turn runs without panic");
+    assert!(
+        outcome.text().contains("dark golem") || outcome.text().contains("Dark Golem"),
+        "outcome was: {}",
+        outcome.text()
+    );
+    let s = runtime.export_state().unwrap();
+    // Golem got the leaf plate and auto-equipped it
+    assert_eq!(
+        s.actor_equipped_item("golem-dark-nw", "chest"),
+        Some("leaf-plate")
+    );
+    // Player's equipped chest armor remains equipped
+    assert_eq!(s.equipped_item("chest"), Some("leaf-plate"));
+    // Player has 0 leaf-plates in inventory now
+    assert!(!s.has_item("leaf-plate"));
+}
+
+#[test]
+fn runtime_give_only_equipped_item_rejects_with_unequip_prompt() {
+    let pack =
+        cinder_core::content::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "r01c01".to_string();
+    state
+        .equipment
+        .insert("chest".to_string(), "leaf-plate".to_string());
+    assert!(!state.has_item("leaf-plate"));
+
+    state.set_stance("golem-dark-nw", ActorStance::Allied);
+    state.set_follows_player("golem-dark-nw", true);
+    state
+        .actor_room_overrides
+        .insert("golem-dark-nw".to_string(), "r01c01".to_string());
+
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue)
+            .expect("runtime creates");
+
+    let outcome = runtime
+        .run_turn("give leaf plate to Dark Golem")
+        .expect("turn runs without panic");
+    assert!(
+        outcome.text().to_lowercase().contains("unequip"),
+        "expected unequip rejection, got: {}",
+        outcome.text()
+    );
+    let s = runtime.export_state().unwrap();
+    assert_eq!(s.equipped_item("chest"), Some("leaf-plate"));
+    assert_eq!(s.actor_equipped_item("golem-dark-nw", "chest"), None);
+}

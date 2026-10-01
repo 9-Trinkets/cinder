@@ -201,19 +201,14 @@ fn menu_option_data(options: Vec<PanelOption>) -> Vec<MenuOptionData> {
         .collect()
 }
 
-/// Ids of inventory items the player can currently drop (present and not
-/// equipped). Equipped items must be unequipped before they can be dropped.
+/// Ids of inventory items the player can currently drop (present in inventory).
+/// Equipped items are stored in `state.equipment` and removed from `player_inventory`.
+/// Items remaining in `player_inventory` with count > 0 are held and can be dropped or given.
 fn droppable_inventory_items(state: &WorldState) -> Vec<String> {
     let mut ids: Vec<String> = state
         .player_inventory
         .iter()
-        .filter(|(item_id, count)| {
-            **count > 0
-                && !state
-                    .equipment
-                    .values()
-                    .any(|equipped| equipped.as_str() == item_id.as_str())
-        })
+        .filter(|(_, count)| **count > 0)
         .map(|(item_id, _)| item_id.clone())
         .collect();
     ids.sort();

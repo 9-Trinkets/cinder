@@ -158,7 +158,7 @@ pub(super) fn plan_give_to_party_member(
     let candidates = matching_items(content, item_target);
     let in_inventory = candidates
         .iter()
-        .filter(|item| planner_state.player_inventory.contains_key(&item.id))
+        .filter(|item| planner_state.has_item(&item.id))
         .copied()
         .collect::<Vec<_>>();
 

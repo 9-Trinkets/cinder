@@ -107,7 +107,7 @@ pub(crate) fn plan_drop_command(
 
     let in_inventory = candidates
         .into_iter()
-        .filter(|item| planner_state.player_inventory.contains_key(&item.id))
+        .filter(|item| planner_state.has_item(&item.id))
         .collect::<Vec<_>>();
 
     if in_inventory.is_empty() {

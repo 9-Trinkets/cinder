@@ -520,3 +520,64 @@ fn use_panel_surfaces_bitter_moss_under_items() {
     assert_eq!(use_opts[0].title, "Bitter Moss");
     assert_eq!(use_opts[0].command.as_deref(), Some("use bitter-moss"));
 }
+
+#[test]
+fn give_and_drop_surface_when_equipped_item_has_additional_inventory_copies() {
+    let mut content = minimal_test_pack();
+    content.actions.push(ActionDefinition {
+        id: "drop".to_string(),
+        player_enabled: true,
+        ..ActionDefinition::default()
+    });
+    content.settings.equipment_slots = ["chest".to_string()].into_iter().collect();
+    content.items.push(ItemDefinition {
+        id: "leaf-plate".to_string(),
+        label: "leaf plate".to_string(),
+        equip_slots: vec!["chest".to_string()],
+        ..ItemDefinition::default()
+    });
+
+    let mut state = WorldState::new(&content);
+    // 1 equipped on chest, 1 held in inventory
+    state
+        .equipment
+        .insert("chest".to_string(), "leaf-plate".to_string());
+    state.add_item("leaf-plate");
+
+    let party_member = PartyMember {
+        id: "zayd".to_string(),
+        label: "Zayd".to_string(),
+        order: String::new(),
+        level: 1,
+        hp: 10,
+        hp_max: 10,
+        order_panel: "order:zayd".to_string(),
+        equipped_items: vec![],
+        inventory: vec![],
+        in_room: true,
+    };
+
+    // Give panel options must list leaf-plate
+    let (_, _, give_opts) =
+        build_action_bar_items(&content, &state, std::slice::from_ref(&party_member));
+    assert_eq!(give_opts.len(), 1);
+    assert_eq!(give_opts[0].id, "leaf-plate");
+    assert_eq!(
+        give_opts[0].command.as_deref(),
+        Some("give leaf-plate to zayd")
+    );
+
+    // Drop panel options must list leaf-plate
+    let drop_opts = build_drop_panel_options(&content, &state);
+    assert_eq!(drop_opts.len(), 1);
+    assert_eq!(drop_opts[0].id, "leaf-plate");
+    assert_eq!(drop_opts[0].command.as_deref(), Some("drop leaf-plate"));
+
+    // If inventory count is 0 (only equipped copy remains), neither give nor drop should list it
+    state.remove_item("leaf-plate");
+    let (_, _, give_opts_empty) =
+        build_action_bar_items(&content, &state, std::slice::from_ref(&party_member));
+    assert!(give_opts_empty.is_empty());
+    let drop_opts_empty = build_drop_panel_options(&content, &state);
+    assert!(drop_opts_empty.is_empty());
+}
