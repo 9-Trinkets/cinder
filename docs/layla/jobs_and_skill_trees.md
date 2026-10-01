@@ -1,68 +1,56 @@
 # Unified Skills & Progression — Design Specification
 
-Living design specification for a **unified skill and progression system** in Cinder (with Layla as the reference implementation).
+Living design specification for consolidating live combat and tactical capabilities into a **unified skills and progression system** in Cinder (with Layla as the reference implementation).
 
-> **Status:** Specification revised and grounded. This document replaces the previous overcomplicated draft, resolves the architectural drift, unifies combat capabilities (`attack`, `defend`, `heal`, `spell`, `passive`), and restores `LevelDefinition.unlocks` to connect skills directly to level-up rewards.
+> **Core Principle:** **Do not invent new skills.** Every entry in the new skills schema is a 1:1 consolidation of an existing live behavior already running in Cinder (`strike`, `intercept`, `hold`, `heal`, `trace`, `teleport`).
 
 ---
 
-## 1. Executive Summary & Why the Previous Design Drifted
+## 1. Executive Summary & The Migration Goal
 
-The previous draft of this document attempted to solve capability grouping by introducing a massive meta-layer. Over successive revisions, it drifted away from Cinder's declarative engine architecture in several critical ways:
+Today, Cinder already has a rich set of combat actions and party reactions, but they are scattered across four disconnected subsystems:
+1. **Player Actions** (`actions.json`): `ATTACK`, `TRACE`, `TELEPORT`.
+2. **Enemy Hostile AI** (`behavior.json` & `hostile_actions.rs`): `strike` events and `ActorHealingSpec`.
+3. **Party Defense & Support** (`settings.json` `party.combat_rules` & `combat_reactions.rs`): `intercept`, `hold`, `support` (healer tag), `counterattack`.
+4. **Level-Up Unlocks** (`levels.json` & `leveling.rs`): `LevelDefinition.unlocks: Vec<String>` exists in the engine schema, but is left unused.
 
-1. **Retiring `LevelDefinition.unlocks`:** The old doc argued to *retire* the engine's existing `LevelDefinition.unlocks` field, claiming progression was purely scroll-driven. This broke the natural, intuitive loop where leveling up grants new combat techniques.
-2. **The 7-System Meta-Grant Abstraction:** It proposed a meta-wrapper (`grants: { action, craftable_item, healing, behavior_rule, stat_bonus, story_var, passive }`) that tried to puppet seven disjoint legacy subsystems instead of defining what a skill actually is.
-3. **Shoehorning 60 Dungeon Mobs into JRPG Classes:** It attempted to force every dungeon creature (goblins, frost pawns, rooks, sprites) into player-like character classes (`thief`, `warrior`, `mage`, `priest`) with theoretical skills (`vanish`, `sanctuary`) that had no engine presence.
-4. **Endless Semantic Debates:** Over 200 lines were spent debating 11 different titles for Layla (`apprentice`, `dungeon_master`, `inker`, `surveyor`, `boardwright`, etc.) rather than establishing mechanics.
-5. **No Solution for Skill Visibility:** Players had no consistent way to view their current skills, inspect companion skills (e.g. what Einar or Astrid can do), or preview upcoming unlocks.
+Because there is no central skill definition:
+- Players cannot see what abilities their companions (Astrid, Einar) have.
+- Companions cannot learn abilities upon leveling up.
+- Adding or adjusting an ability requires touching multiple disparate files and engine match arms.
 
-### The Grounded Realignment
-
-Instead of inventing an abstract meta-class framework, this specification addresses the **four fundamental needs** of the engine:
+### The Solution: 1:1 Behavior Consolidation
+We do not invent any new RPG skills. We migrate the **six existing live behaviors** into a single declarative file: `skills.json`.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│                        UNIFIED SKILL ARCHITECTURE                      │
-├────────────────────────────────────────────────────────────────────────┤
-│ 1. Define Skills:     Unified declarative schema in skills.json        │
-│                       (attack / defend / heal / spell / passive)       │
-├────────────────────────────────────────────────────────────────────────┤
-│ 2. See Skills:        Visible in Player Status UI, Companion Profiles, │
-│                       Party Sidebar, and Action Prompts                │
-├────────────────────────────────────────────────────────────────────────┤
-│ 3. Reward Skills:     Level-up unlocks via LevelDefinition.unlocks     │
-│                       in levels.json (plus diegetic scrolls/sigils)    │
-├────────────────────────────────────────────────────────────────────────┤
-│ 4. Execute Skills:    Companions react using equipped skills;          │
-│                       Player invokes skills via actions/commands       │
-└────────────────────────────────────────────────────────────────────────┘
+│                        LIVE BEHAVIORS MIGRATION                        │
+├─────────────────┬───────────┬──────────────────────────────────────────┤
+│ Live Behavior   │ Skill ID  │ Live Source                              │
+├─────────────────┼───────────┼──────────────────────────────────────────┤
+│ Basic Attack    │ strike    │ actions.json (ATTACK), behavior.json,    │
+│                 │           │ party assist counterattack               │
+├─────────────────┼───────────┼──────────────────────────────────────────┤
+│ Ally Guard      │ intercept │ settings.json (guard-order, follow-guard)│
+├─────────────────┼───────────┼──────────────────────────────────────────┤
+│ Survival Hold   │ hold      │ settings.json (survival-hold at < 25% HP)│
+├─────────────────┼───────────┼──────────────────────────────────────────┤
+│ Ally Healing    │ heal      │ ActorHealingSpec, healer-support-order   │
+├─────────────────┼───────────┼──────────────────────────────────────────┤
+│ Sigil Tracing   │ trace     │ actions.json (TRACE + magic chalk)       │
+├─────────────────┼───────────┼──────────────────────────────────────────┤
+│ Fast Travel     │ teleport  │ actions.json (TELEPORT command)          │
+└─────────────────┴───────────┴──────────────────────────────────────────┘
 ```
 
 ---
 
-## 2. The Core Problem: Fragmented Capabilities Today
+## 2. The Consolidated Skills Schema (`skills.json`)
 
-Prior to this specification, combat actions and abilities lived in three completely unrelated, incompatible subsystems:
-
-| Capability | Where it Lives Today | How it Works | Gaps / Inconsistencies |
-|---|---|---|---|
-| **Attack** | `actions.json` (Player)<br>`behavior.json` (NPCs) | Player uses `ATTACK` command.<br>NPCs use neuron `effect_table` rules (`strike`). | Player attacks cannot scale with special techniques. NPC attacks are disjoint from party allies. |
-| **Defend / Guard** | `settings.json` (`party.combat_rules`) | Companions intercept or hold based on hardcoded party rules with priority weights. | Hardcoded to entire party; not tied to companion capabilities or progression. |
-| **Heal** | `ActorDefinition.healing`<br>`settings.json` (`healer-support-order`) | Hostiles check `ActorHealingSpec { amount, message }`.<br>Allies check `actor_has_tag: "healer"`. | Disjoint definitions. Healing amount is hardcoded in two separate places. Companions cannot learn better heals. |
-| **Spells / Sigils** | `actions.json` (`TRACE`)<br>`settings.json` (`periodic_actor_effects`) | Gated by story-var booleans (`knows_drain`, `knows_spawn`, etc.). | Invisible as "skills"; treated purely as crafting items or room effects. |
-
-This fragmentation makes it hard for content creators to add a new ability, impossible for players to inspect what an ally can do, and disconnects leveling from ability acquisition.
-
----
-
-## 3. The Unified Skill Model (`skills.json`)
-
-All skills in Cinder are declared in a top-level `skills.json` file inside the content pack. 
-
-### 3.1 The Skill Schema
+All abilities are declared in `content/<pack>/skills.json`. Here is the complete declaration for Layla's existing behaviors:
 
 ```jsonc
-// content/<pack>/skills.json
+// content/layla/skills.json
 {
   "skills": [
     {
@@ -70,141 +58,137 @@ All skills in Cinder are declared in a top-level `skills.json` file inside the c
       "label": "Strike",
       "kind": "attack",
       "target": "single_enemy",
-      "description": "A focused physical strike against a target in the room.",
+      "description": "A focused physical attack against a target in the room.",
       "attack": {
         "stat": "strength",
-        "power_multiplier": 1.0,
-        "variance": 0.1
+        "power_multiplier": 1.0
       },
-      "cost": { "readiness": 100 },
       "narration_key": "combat.strike"
     },
     {
-      "id": "shield_guard",
-      "label": "Shield Guard",
+      "id": "intercept",
+      "label": "Intercept",
       "kind": "defend",
       "target": "single_ally",
-      "description": "Intercept incoming physical blows aimed at a vulnerable ally, reducing damage taken.",
+      "description": "Steps in front of incoming attacks aimed at a vulnerable ally, absorbing the blow.",
       "defend": {
         "interception": true,
-        "damage_reduction_percent": 30,
         "trigger_condition": {
           "ally_health_at_most_percent": 50
         }
       },
-      "cost": { "cooldown_turns": 1 },
       "narration_key": "combat.guard_intercepts"
     },
     {
-      "id": "field_mending",
-      "label": "Field Mending",
+      "id": "hold",
+      "label": "Hold",
+      "kind": "defend",
+      "target": "self",
+      "description": "Holds defensive stance when critically wounded, avoiding risky exposure.",
+      "defend": {
+        "interception": false,
+        "trigger_condition": {
+          "self_health_at_most_percent": 25
+        }
+      },
+      "narration_key": "combat.party_holds"
+    },
+    {
+      "id": "heal",
+      "label": "Heal",
       "kind": "heal",
-      "target": "single_ally",
-      "description": "Applies soothing herbal compresses to restore health to a wounded ally.",
+      "target": "lowest_health_ally",
+      "description": "Administers restorative herbs or weaves magic to restore health to a wounded ally.",
       "heal": {
         "amount": 5,
         "trigger_condition": {
           "ally_health_at_most_percent": 60
         }
       },
-      "cost": { "cooldown_turns": 2 },
       "narration_key": "combat.einar_heal"
     },
     {
-      "id": "drain_sigil",
-      "label": "Drain Sigil",
+      "id": "trace",
+      "label": "Trace",
       "kind": "spell",
       "target": "room",
-      "description": "Inscribes a siphon sigil in chalk that leeches vitality from hostile occupants each turn.",
+      "description": "Inscribes glowing tactical chalk sigils (Charm, Drain, Spawn, Teleport) upon the stone.",
       "spell": {
-        "creates_room_item": "drain-sigil",
         "requires_item": "magic-chalk"
       },
-      "narration_key": "combat.drain_sigil_traced"
+      "narration_key": "layla.traced"
     },
     {
-      "id": "iron_resolve",
-      "label": "Iron Resolve",
-      "kind": "passive",
-      "target": "self",
-      "description": "Hardened discipline grants +2 Defense and immunity to fear.",
-      "passive": {
-        "stat_modifiers": { "defense": 2 }
-      }
+      "id": "teleport",
+      "label": "Teleport",
+      "kind": "spell",
+      "target": "anchor",
+      "description": "Instantly transports the party back to the armed teleportation anchor.",
+      "spell": {
+        "requires_story_var": "knows_teleport"
+      },
+      "narration_key": "teleport.executed"
     }
   ]
 }
 ```
 
-### 3.2 The Five Core Skill Kinds
+---
 
-| Kind | Purpose | Execution Behavior |
-|---|---|---|
-| `attack` | Direct offensive strikes | Computes damage from actor stats (Strength/Intelligence), weapon bonuses, and power multiplier. Target takes damage modified by target defense. |
-| `defend` | Defensive stances & ally interception | Triggers during the pre-damage combat reaction window. Can intercept strikes for an ally or reduce incoming damage to self. Replaces ad-hoc `party.combat_rules`. |
-| `heal` | Vitality recovery for self or allies | Restores HP to the target. For autonomous allies, triggers when an ally falls below the specified health threshold. Replaces `ActorHealingSpec`. |
-| `spell` | Inscriptions, sigils, and magic effects | Active tactical abilities (tracing floor sigils, teleporting, charming). Can require tools (e.g. magic chalk) or resources. |
-| `passive` | Innate stat boosts and behavioral perks | Always active. Directly modifies effective stats or resistance profiles. |
+## 3. Skill Visibility: Seeing Current Skills
+
+Consolidating behaviors into skills enables players to easily view their own capabilities and inspect what their companions can do.
+
+### 3.1 Player Status Display (`StatusPanel.tsx` / `LOOK STATUS`)
+
+The status panel displays Layla's known skills and next level-up unlock:
+
+```
+── Skills ──────────────────────────────────────────
+[Attack] Strike        Physical attack against a foe in the room.
+[Defend] Hold          Defensive stance when critically wounded.
+[Spell]  Trace         Inscribe glowing chalk sigils on the floor.
+── Next Level (Lv 2) ──────────────────────────────
+Unlocks: Intercept (Protect party members in combat)
+```
+
+### 3.2 Companion Profile (`look astrid`, `look einar`)
+
+When inspecting a companion in the room, their role and active skills are rendered clearly:
+
+```
+Commander Astrid — Guardian (Level 2)
+Stance: Following, Guarding Layla
+Health: 26/26 | Defense: 6 | Strength: 6
+Active Skills:
+• Strike (Attack): Standard attack / counterattack.
+• Intercept (Defend): Protects allies when HP < 50%.
+• Hold (Defend): Holds stance when HP < 25%.
+```
+
+```
+Einar — Healer (Level 1)
+Stance: Following
+Health: 18/18 | Defense: 2 | Wisdom: 5
+Active Skills:
+• Strike (Attack): Standard physical attack.
+• Heal (Heal): Restores 5 HP to wounded allies.
+• Hold (Defend): Holds stance when HP < 25%.
+```
+
+### 3.3 Party Sidebar HUD
+
+In the HUD sidebar, each companion card displays their active role badge:
+- `Astrid [Guardian: Intercept]`
+- `Einar [Healer: Heal]`
 
 ---
 
-## 4. Seeing Current Skills (Visibility & UI)
+## 4. Tying Skills to Level-Up Rewards (`LevelDefinition.unlocks`)
 
-A major gap in the engine was player visibility: players could not see what their character was capable of, nor could they inspect companion abilities.
+We activate [`LevelDefinition.unlocks: Vec<String>`](file:///Users/li-hsuanlung/Projects/cinder/cinder-core/src/content/types/leveling.rs) in `levels.json`. When actors level up, skills in `unlocks` are automatically granted.
 
-### 4.1 Player Skills Display
-
-1. **Status Panel (`StatusPanel.tsx` / `LOOK STATUS`):**
-   - Displays a clear **Skills** block alongside stats:
-     ```
-     ── Skills ──────────────────────────────────────────
-     [Attack]  Strike           Deals Strength-based physical damage.
-     [Spell]   Trace Sigil      Inscribe chalk rings (Charm, Drain).
-     [Passive] Iron Will        +2 Defense in combat.
-     ── Next Level (Lv 2) ──────────────────────────────
-     [Defend]  Shield Guard     Intercept strikes aimed at allies.
-     ```
-2. **Dedicated Command / Inspector:**
-   - Typing `skills` (or `sk`) outputs the full list of learned abilities with descriptions, readiness costs, and cooldowns.
-3. **Action Bar Integration:**
-   - Active skills appear dynamically in the combat action bar or sub-menus, replacing hardcoded action IDs with the actor's current skill repertoire.
-
-### 4.2 Companion & Ally Skills Display
-
-Companions have clear, distinct combat profiles. Players can view companion abilities in two ways:
-
-1. **Companion Inspection (`look astrid`, `look einar`):**
-   - Inspecting an ally displays their role, equipment, and active combat skills:
-     ```
-     Commander Astrid — Level 3 Guardian
-     Stance: Following, Guarding Player
-     Health: 26/26 | Defense: 6 | Strength: 6
-     Active Skills:
-     • Strike (Attack): High-damage physical attack.
-     • Shield Guard (Defend): Intercepts attacks when player health < 50%.
-     • Bastion (Passive): +2 Armor when standing in front.
-     ```
-2. **Party Sidebar HUD:**
-   - In the HUD party display, each companion card shows their primary active skill badge next to their health bar:
-     - `Astrid [Guardian: Shield Guard]`
-     - `Einar [Healer: Field Mending]`
-
-### 4.3 Inspecting Enemies
-
-When inspecting a hostile creature (`look goblin-shaman`, `look lady-sylvan`):
-- Visible combat traits are surfaced diegetically:
-  - *"Carries a crooked healing branch and weaves restorative hexes."* (Healer)
-  - *"Wields a heavy tower shield, ready to intercept attacks on allies."* (Guardian)
-
----
-
-## 5. Tying Skills to Level-Up Rewards (`LevelDefinition.unlocks`)
-
-The engine already has `LevelDefinition.unlocks: Vec<String>` in `cinder-core/src/content/types/leveling.rs`, but it was previously unused. We activate this exact mechanism.
-
-### 5.1 Authoring Level Rewards in `levels.json`
-
-In `content/<pack>/levels.json`, level thresholds declare stat gains **and** unlocked skill IDs:
+### 4.1 Progression in `content/layla/levels.json`
 
 ```jsonc
 // content/layla/levels.json
@@ -213,179 +197,116 @@ In `content/<pack>/levels.json`, level thresholds declare stat gains **and** unl
     {
       "exp_required": 50,
       "stat_changes": { "hp": 3, "strength": 1, "defense": 1 },
-      "unlocks": ["shield_guard"]
+      "unlocks": ["intercept"]
     },
     {
       "exp_required": 100,
       "stat_changes": { "hp": 3, "strength": 1, "intelligence": 1 },
-      "unlocks": ["flanking_strike"]
-    },
-    {
-      "exp_required": 180,
-      "stat_changes": { "hp": 4, "strength": 2, "defense": 1 },
-      "unlocks": ["iron_resolve"]
+      "unlocks": []
     }
   ],
   "actors": {
+    "astrid": [
+      {
+        "exp_required": 50,
+        "stat_changes": { "hp": 4, "defense": 2 },
+        "unlocks": ["intercept"]
+      }
+    ],
     "einar": [
       {
         "exp_required": 50,
-        "stat_changes": { "hp": 2, "wisdom": 1 },
-        "unlocks": ["soothing_draught"]
-      },
-      {
-        "exp_required": 100,
-        "stat_changes": { "hp": 3, "wisdom": 2 },
-        "unlocks": ["greater_mending"]
+        "stat_changes": { "hp": 2, "wisdom": 2 },
+        "unlocks": ["heal"]
       }
     ]
   }
 }
 ```
 
-### 5.2 Engine Level-Up Reducer Flow (`reducer/combat/defeat.rs`)
+### 4.2 Level-Up Engine Flow (`reducer/combat/defeat.rs`)
 
-When an actor accumulates enough XP to cross a level boundary:
-1. **Apply Stat Changes:** Increment HP, Strength, Defense, etc. (existing logic).
-2. **Grant Unlocks:** For every skill ID in `definition.unlocks`:
-   - Insert the skill ID into `WorldState.actor_skills.entry(actor_id).or_default()`.
-3. **Emit Level-Up Feedback:**
-   - Render `combat.level_up` for the level gain.
-   - For each granted skill, render `combat.skill_unlocked`:
-     - Player: *"You mastered {skill_label}! {skill_description}"*
+When XP advances an actor's level:
+1. Apply stat changes to `WorldState`.
+2. For each skill ID in `definition.unlocks`:
+   - `state.actor_skills.entry(actor_id).or_default().insert(skill_id);`
+   - Push `combat.skill_unlocked`:
+     - Player: *"You mastered {skill_label}!"*
      - Companion: *"{actor_name} learned {skill_label}!"*
 
-### 5.3 Coexistence with Diegetic Unlocks (Scrolls & Sigils)
-
-Leveling up is not the only way to gain skills:
-- **Scrolls & Items:** Reading the `drain-scroll` directly unlocks `drain_sigil` via the unified item handler.
-- **Story Beats / Quests:** Freeing a prisoner or completing a floor trial can award a skill.
-- The state representation is identical: once acquired, a skill sits in `WorldState.actor_skills` regardless of whether it arrived from a level-up or a scroll.
+### 4.3 Diegetic Scroll Unlocks
+Reading scrolls (e.g. `teleport-scroll`, `drain-scroll`) continues to work naturally. When a scroll is read:
+- It grants the corresponding skill (or sets the story var that makes the sigil available in the `trace` menu).
+- Both level-up rewards and scroll items deposit their unlocked abilities into `WorldState.actor_skills`.
 
 ---
 
-## 6. Companion Roles Grounded in Live Gameplay
+## 5. Party Roles Grounded in Existing Behaviors
 
-Instead of abstract JRPG classes applied to 60 dungeon mobs, roles exist for the characters who actually participate in party tactics:
+Party roles simply describe which existing behaviors a character focuses on:
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│                          PARTY ROLES                                   │
+│                              PARTY ROLES                               │
 ├──────────────────┬─────────────────┬───────────────────────────────────┤
-│ Role             │ Key Actors      │ Primary Skill Focus               │
+│ Role             │ Key Actors      │ Existing Live Behaviors           │
 ├──────────────────┼─────────────────┼───────────────────────────────────┤
-│ **Commander**    │ Layla (Player)  │ Tactics, Directives, Sigils       │
-│ **Guardian**     │ Astrid, Sakhra  │ `defend` (Interception, Guard)    │
-│ **Healer**       │ Einar           │ `heal` (Field Mending, Draughts)  │
-│ **Skirmisher**   │ Malik, Awakened │ `attack` (Counters, Multi-strike) │
+│ **Commander**    │ Layla (Player)  │ strike, hold, trace, teleport     │
+│ **Guardian**     │ Astrid, Sakhra  │ strike, hold, intercept           │
+│ **Healer**       │ Einar           │ strike, hold, heal                │
+│ **Skirmisher**   │ Malik, Awakened │ strike, hold (counterattacks)     │
 └──────────────────┴─────────────────┴───────────────────────────────────┘
 ```
 
-### 6.1 Layla (Commander)
-- **Role:** Battlefield orchestrator who sets party stance, issues tactical directives, and shapes the combat zone with arcane chalk sigils.
-- **Starting Skills:**
-  - `strike` (Attack): Direct physical blow.
-  - `trace` (Spell): Inscribes tactical chalk marks on the room floor.
-  - `command_focus` (Command): Designates a target for focused companion strikes, boosting ally attack readiness and coordination.
-- **Progression Unlocks (Leveling & Scrolls):**
-  - **Level 2 Unlock:** `defensive_brace` (Command: orders the Guardian and party to brace, boosting ally defense during reaction windows).
-  - **Level 3 Unlock:** `rallying_surge` (Command: bolsters companion readiness and restores morale).
-  - **Diegetic Scroll Progression (Sigils):**
-    - `drain-scroll` → `drain_sigil` (Leeches vitality from hostile occupants).
-    - `spawn-scroll` → `spawn_sigil` (Summons allied elemental reinforcements).
-    - `teleport-scroll` → `teleport_sigil` (Instant tactical repositioning / extraction).
+### 5.1 Layla (Commander)
+- **Role:** Directs party movement, issues companion orders (`follow`, `guard`), and shapes the room with chalk sigils.
+- **Starting Skills:** `strike`, `hold`, `trace`.
+- **Acquired Skills:** `teleport` (unlocked via reading `teleport-scroll`), `intercept` (unlocked at Level 2).
 
-### 6.2 Astrid (Guardian)
-- **Role:** High defense frontline protector who shields the Commander and party.
-- **Starting Skills:** `strike` (Attack), `shield_guard` (Defend: intercepts attacks when Commander/allies HP < 50%).
-- **Progression Unlocks:** 
-  - Level 2: `iron_wall` (Self Defense +2)
-  - Level 3: `bastion_stand` (Intercepts damage at 50% reduction)
+### 5.2 Astrid (Guardian)
+- **Role:** Frontline defender shielding the Commander and party.
+- **Starting Skills:** `strike`, `hold`.
+- **Level-Up Unlock (Level 2):** `intercept` (actively intercepts attacks aimed at Layla or allies below 50% HP).
 
-### 6.3 Einar (Healer)
-- **Role:** Midline herbalist and combat medic keeping the party alive.
-- **Starting Skills:** `strike` (Attack), `field_mending` (Heal: restores 5 HP to allies below 60% HP).
-- **Progression Unlocks:**
-  - Level 2: `soothing_draught` (Heal: restores 8 HP and clears status ailments)
-  - Level 3: `revitalize` (Heal: party-wide regenerative pulse)
+### 5.3 Einar (Healer)
+- **Role:** Combat support keeping the party alive.
+- **Starting Skills:** `strike`, `hold`, `heal` (unseals soothing draughts for wounded allies below 60% HP).
+
+### 5.4 Clergy & Boss Hostiles (Lady Sylvan, Elf Bishops, Queen)
+- **Role:** Hostile combatants using existing behaviors.
+- **Skills:** `strike`, `heal` (heals wounded allies or self).
 
 ---
 
-## 7. Content Authoring Guide: Adding a New Skill
+## 6. Migration Map: 1:1 Code Consolidation
 
-Content authors can define a new skill in 4 simple steps without modifying Rust engine code:
-
-### Step 1: Declare the Skill in `skills.json`
-Add the skill definition with its kind, target, cost, and parameters:
-```json
-{
-  "id": "power_slash",
-  "label": "Power Slash",
-  "kind": "attack",
-  "target": "single_enemy",
-  "description": "A heavy two-handed slash dealing 150% damage.",
-  "attack": {
-    "stat": "strength",
-    "power_multiplier": 1.5
-  },
-  "cost": { "cooldown_turns": 2 },
-  "narration_key": "combat.power_slash"
-}
-```
-
-### Step 2: Add Narrative Messages in `messages.json`
-```json
-"combat.power_slash": "{actor} winds up and unleashes a crushing Power Slash upon {target}, dealing {damage} damage! ({remaining} HP remaining)"
-```
-
-### Step 3: Assign to an Actor or Level Table
-- **As a starting skill:** Add `"skills": ["strike", "power_slash"]` to the actor in `actors.json`.
-- **As a level-up unlock:** Add `"unlocks": ["power_slash"]` to the desired level in `levels.json`.
-
-### Step 4: Validate
-Run the content validator:
-```bash
-cargo run -p cinder-tools -- lint -p layla
-```
-The linter verifies that:
-- Every referenced skill ID exists in `skills.json`.
-- All narration keys exist in `messages.json`.
-- Target modes and parameters match the schema.
+| Live Subsystem | Live Location | Consolidated Skill Mapping |
+|---|---|---|
+| **Attack Command** | `content/layla/actions.json` (`command: "ATTACK"`) | Invokes `strike` skill. |
+| **Hostile Strike** | `cinder-core/src/engine/hostile_actions.rs` | Uses `strike` skill. |
+| **Party Counter** | `settings.json: assist-order` (`Counterattack`) | Uses `strike` skill during reaction window. |
+| **Party Intercept**| `settings.json: guard-order` (`Intercept`) | Uses `intercept` skill during pre-damage window. |
+| **Party Hold** | `settings.json: survival-hold` (`Hold`) | Uses `hold` skill when health <= 25%. |
+| **Party Healing** | `settings.json: healer-support-order` (`Support`) | Uses `heal` skill when ally health <= 60%. |
+| **Hostile Healing**| `ActorDefinition.healing` & `hostile_actions.rs` | Uses `heal` skill when enemy ally health <= 60%. |
+| **Chalk Sigils** | `content/layla/actions.json` (`command: "TRACE"`) | Uses `trace` skill with `magic-chalk`. |
+| **Fast Travel** | `content/layla/actions.json` (`command: "TELEPORT"`) | Uses `teleport` skill. |
 
 ---
 
-## 8. Gaps Identified & Resolved from the Previous Doc
+## 7. Phased Implementation Plan
 
-| Topic | Previous Draft (Drifted) | Live Engine Reality | New Unified Specification |
-|---|---|---|---|
-| **Level Unlocks** | Declared `LevelDefinition.unlocks` retired and deleted. | `unlocks: Vec<String>` exists in `LevelDefinition` and `levels.json`. | **Restored and activated.** Leveling up awards skills from `unlocks`. |
-| **Skill Definition** | 7-way meta-grant wrapper (`grants: { action, healing, behavior_rule, stat_bonus, ... }`). | Three disconnected systems (`actions.json`, `behavior.json`, `ActorHealingSpec`). | **Unified `skills.json`** with 5 operational kinds (`attack`, `defend`, `heal`, `spell`, `passive`). |
-| **Cast Coverage** | Forced all 60 dungeon mobs into 5 JRPG classes with fake skills (`vanish`, etc.). | Dungeon enemies use stats and neuron behaviors. Only companions and player need skills. | Roles focused on **party members** (Commander, Guardian, Healer, Skirmisher). |
-| **Skill Visibility** | None. Purely speculative status label discussion. | No UI or command exists to view companion or player abilities. | Clear UI specification: **Status Panel, Companion Inspect, Party Sidebar HUD**. |
-| **Boss Bugs** | Documented bugs in §3 but left them unpatched in content. | Floor 5 bosses were Lv 1 instead of 12; Lady Sylvan had broken healing spec. | **Patched directly:** `actors.json` and `messages.json` fixed and verified clean. |
-
----
-
-## 9. Phased Implementation Roadmap
-
-### Phase 1: Core Skill Schema & Content Loading
-1. Create `cinder-core/src/content/types/skills.rs` defining `SkillDefinition`, `SkillKind`, `AttackSkillSpec`, `DefendSkillSpec`, `HealSkillSpec`, `SpellSkillSpec`, and `PassiveSkillSpec`.
-2. Add `skills: SkillsDefinition` to `ContentPack` and load `content/<pack>/skills.json` via `read_optional_json`.
-3. Add `starting_skills: Vec<String>` to `ActorDefinition`.
-4. Add `actor_skills: BTreeMap<String, BTreeSet<String>>` to `WorldState`.
-
-### Phase 2: Level-Up Grant Reducer Integration
-1. In `cinder-core/src/engine/reducer/combat/defeat.rs`, loop over `definition.unlocks` when an actor levels up.
-2. Insert unlocked skills into `state.actor_skills`.
-3. Push `combat.skill_unlocked` narrative feedback lines.
-
-### Phase 3: Party Reactions & Autonomous Execution
-1. Update `cinder-core/src/engine/reducer/handlers/combat_reactions.rs`:
-   - Replace tag-based healing (`actor_has_tag: "healer"`) with checking if the companion knows a `heal` skill.
-   - Replace generic intercept with the companion's equipped `defend` skill.
-2. Ground Lady Sylvan, Einar, and Astrid in their declared skills.
-
-### Phase 4: UI & Visibility
-1. Update `cinder-core/src/ui/` and `StatusPanel.tsx` to surface known skills and upcoming level-up unlocks.
-2. Add companion skill summaries to companion inspection (`look <companion>`) and party sidebar cards.
-3. Add `skills` command to player command parser.
+1. **Phase 1: Content Type & Loader**
+   - Add `cinder-core/src/content/types/skills.rs` defining `SkillDefinition` (`id`, `label`, `kind`, `target`, `attack`, `defend`, `heal`, `spell`).
+   - Add `skills.json` loading to `cinder-core/src/content/loader/mod.rs`.
+   - Add `skills: Vec<String>` to `ActorDefinition` and `actor_skills: BTreeMap<String, BTreeSet<String>>` to `WorldState`.
+2. **Phase 2: Level-Up Wireup**
+   - In `cinder-core/src/engine/reducer/combat/defeat.rs`, iterate `definition.unlocks` to grant skills on level advancement.
+3. **Phase 3: Reaction & AI Hook Consolidation**
+   - Update `combat_reactions.rs` to check whether the companion has `intercept`, `hold`, or `heal` in `actor_skills`.
+   - Update `hostile_actions.rs` to check for `heal` skill in enemy `actor_skills`.
+4. **Phase 4: Author `content/layla/skills.json`**
+   - Create `skills.json` containing the 6 live behaviors.
+   - Populate `skills` on `actors.json` (`player`, `astrid`, `einar`).
+5. **Phase 5: Visibility & UI**
+   - Expose skills in the Status panel and companion inspect/sidebar.
