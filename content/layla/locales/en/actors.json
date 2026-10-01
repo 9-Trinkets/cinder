@@ -3151,21 +3151,7 @@
       "wisdom": 4
     },
     "level": 7,
-    "transformations": [
-      {
-        "id": "cage_freed",
-        "trigger": {
-          "kind": "story_var",
-          "key": "courtyard_cages_opened",
-          "value": "true"
-        },
-        "stance": "allied",
-        "follows_player": false,
-        "signals": [
-          "astrid_freed"
-        ]
-      }
-    ],
+    "transformations": [],
     "prompt_context": {
       "character_notes": [
         "You are Commander Astrid, former head of the citadel garrison. When ordered to herd village children and the elderly into the culling cages, you mutinied. You were overpowered and thrown into the cages in chains.",
@@ -3219,21 +3205,7 @@
       "wisdom": 6
     },
     "level": 6,
-    "transformations": [
-      {
-        "id": "cage_freed",
-        "trigger": {
-          "kind": "story_var",
-          "key": "courtyard_cages_opened",
-          "value": "true"
-        },
-        "stance": "allied",
-        "follows_player": false,
-        "signals": [
-          "einar_freed"
-        ]
-      }
-    ],
+    "transformations": [],
     "prompt_context": {
       "character_notes": [
         "You are Einar, an apothecary and healer originally from Floor 6 (The Clergy / High Sanctuary). When you refused to synthesize memory-wiping draughts for the Inquisitors, they demoted your code to Floor 5 to be purged.",

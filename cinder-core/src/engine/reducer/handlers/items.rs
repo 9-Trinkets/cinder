@@ -182,8 +182,10 @@ pub(crate) fn handle_player_used_item(
     let specific_key = format!("item.{item_id}.used");
     let line = if content.message(&specific_key).is_some() {
         content.render_message(&specific_key, &[("item", item.label.as_str())])
-    } else {
+    } else if lines.is_empty() {
         content.render_message("item.used", &[("item", item.label.as_str())])
+    } else {
+        None
     };
     if let Some(line) = line {
         lines.narration(line);

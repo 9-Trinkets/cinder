@@ -144,8 +144,14 @@ fn apply_transformation(
     };
     if !transformation.silent {
         for key in keys {
+            if key == "transformation.wake.fragment" && fragment.trim().is_empty() {
+                continue;
+            }
             if let Some(line) = content.render_message(key, &vars) {
-                lines.narration(line);
+                let trimmed = line.trim();
+                if !trimmed.is_empty() && trimmed != "\"\"" {
+                    lines.narration(line);
+                }
             }
         }
     }

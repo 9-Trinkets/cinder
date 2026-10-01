@@ -52,7 +52,7 @@ pub(super) fn build_minimap(
         .filter(|room| visible_room_ids.contains(room.room_id.as_str()))
         .filter_map(|map_room| {
             let room = content.room(&map_room.room_id)?;
-            let has_teleport = is_teleport_anchor(&map_room.room_id);
+            let has_teleport = entity_tracking && is_teleport_anchor(&map_room.room_id);
             let (ally_names, hostile_names) = if entity_tracking {
                 let mut allies = Vec::new();
                 let mut hostiles = Vec::new();
@@ -297,8 +297,17 @@ mod tests {
         assert!(!kitchen.has_teleport);
         assert!(!minimap.has_teleports);
 
-        // After arming
+        // After arming, but without sensory enhancer -> still false
         state.story_vars.set_unchecked("anchor_kitchen", "true");
+        let minimap = build_minimap(&state, &content, "kitchen").unwrap();
+        let kitchen = minimap.rooms.iter().find(|r| r.id == "kitchen").unwrap();
+        assert!(!kitchen.has_teleport);
+        assert!(!minimap.has_teleports);
+
+        // With sensory enhancer active -> teleport portal revealed
+        state
+            .story_vars
+            .set_unchecked("has_sensory_enhancer", "true");
         let minimap = build_minimap(&state, &content, "kitchen").unwrap();
         let kitchen = minimap.rooms.iter().find(|r| r.id == "kitchen").unwrap();
         assert!(kitchen.has_teleport);

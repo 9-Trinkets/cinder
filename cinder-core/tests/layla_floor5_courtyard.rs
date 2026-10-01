@@ -171,20 +171,41 @@ fn floor5_unlock_cages_frees_astrid_and_einar() {
     assert_ne!(s0.stance("commander_astrid"), ActorStance::Allied);
     assert_ne!(s0.stance("einar"), ActorStance::Allied);
     assert_ne!(s0.story_vars.get("courtyard_cages_opened"), Some("true"));
+    assert_eq!(s0.actor_item_count("einar", "sensory-enhancer"), 1);
+    assert!(!s0.has_item("sensory-enhancer"));
 
     // Unlock cages command
     let unlock_out = runtime.run_turn("unlock cages").expect("unlock cages");
+    let text = unlock_out.text();
     assert!(
-        unlock_out.text().contains("Commander Astrid")
-            || unlock_out.text().contains("iron gates swing open")
-            || unlock_out.text().contains("weeping in relief")
+        text.contains("Commander Astrid")
+            || text.contains("iron gates swing open")
+            || text.contains("weeping in relief")
     );
+    assert!(
+        text.contains("Take this sensory enhancer capsule"),
+        "Einar must offer sensory enhancer in thanks: {text}"
+    );
+    assert!(
+        !text.contains("warmth of high wisdom"),
+        "Must not trigger wisdom awakening on cage unlock: {text}"
+    );
+    assert!(!text.contains("\"\""), "Must not emit empty quotes: {text}");
 
     let s1 = runtime.export_state().unwrap();
     assert_eq!(s1.story_vars.get("courtyard_cages_opened"), Some("true"));
     assert!(!s1.has_item("courtyard-cage-key"));
     assert_eq!(s1.stance("commander_astrid"), ActorStance::Allied);
     assert_eq!(s1.stance("einar"), ActorStance::Allied);
+    assert!(
+        s1.has_item("sensory-enhancer"),
+        "Player must receive sensory enhancer from Einar"
+    );
+    assert_eq!(
+        s1.actor_item_count("einar", "sensory-enhancer"),
+        0,
+        "Einar handed over the sensory enhancer"
+    );
 }
 
 #[test]
@@ -415,4 +436,105 @@ fn floor5_secret_passages_gated_by_awakening() {
 
     runtime2.run_turn("go northeast").expect("go northeast");
     assert_eq!(runtime2.current_room_id().unwrap(), "frost_wolf_throne");
+}
+
+#[test]
+fn floor5_arrival_starts_free_prisoners_quest_and_unlock_completes_it() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    // Player is on Floor 4 teleport platform with the quest to descend
+    state.current_room_id = "teleport_platform".to_string();
+    state.active_objective_stage_ids = vec!["mq_use_teleport_platform".to_string()];
+    state.story_vars.set_unchecked("knows_teleport", "true");
+    state.story_vars.set_unchecked("anchor_floor5_gate", "true");
+    state.acquire_player_item(&pack, "courtyard-cage-key");
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+
+    // Before descent: active quest is The Teleportation Scroll / mq_use_teleport_platform
+    let objs0 = runtime.current_objective_summaries().unwrap();
+    assert!(
+        objs0
+            .iter()
+            .any(|o| o.stage_id == "mq_use_teleport_platform"),
+        "mq_use_teleport_platform must be active before descent: {:?}",
+        objs0
+    );
+
+    // Teleport down to Floor 5 courtyard
+    runtime
+        .run_turn("teleport floor5_start")
+        .expect("teleport to floor 5");
+    assert_eq!(runtime.current_room_id().unwrap(), "courtyard_center");
+
+    // Arriving at Floor 5 activates mq_free_prisoners quest
+    let objs1 = runtime.current_objective_summaries().unwrap();
+    let free_prisoners_quest = objs1
+        .iter()
+        .find(|o| o.stage_id == "mq_free_prisoners")
+        .expect("Free prisoners quest must be active upon Floor 5 arrival");
+    assert_eq!(
+        free_prisoners_quest.quest_id.as_deref(),
+        Some("free_courtyard_prisoners")
+    );
+    assert_eq!(
+        free_prisoners_quest.quest_title.as_deref(),
+        Some("Free the Citadel Prisoners")
+    );
+    assert!(
+        free_prisoners_quest
+            .summary
+            .contains("Free the prisoners locked in the courtyard offering cages")
+    );
+
+    // Layla unlocks the cages
+    let unlock_out = runtime.run_turn("unlock cages").expect("unlock cages");
+    let text = unlock_out.text();
+    assert!(
+        text.contains("Take this sensory enhancer capsule"),
+        "Einar must give sensory enhancer upon cage release: {text}"
+    );
+
+    let state_after = runtime.export_state().unwrap();
+    assert!(
+        state_after.has_item("sensory-enhancer"),
+        "Player must receive sensory enhancer as reward"
+    );
+    assert!(
+        state_after
+            .completed_stage_ids
+            .contains("mq_free_prisoners"),
+        "mq_free_prisoners must be completed in state"
+    );
+
+    // Quest is now complete and cleared from active objectives
+    let objs2 = runtime.current_objective_summaries().unwrap();
+    assert!(
+        !objs2.iter().any(|o| o.stage_id == "mq_free_prisoners"),
+        "Completed quest must no longer be in active objectives: {:?}",
+        objs2
+    );
+}
+
+#[test]
+fn floor5_entry_activates_free_prisoners_quest_from_initial_listener() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_north".to_string();
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+
+    let objs0 = runtime.current_objective_summaries().unwrap();
+    assert!(!objs0.iter().any(|o| o.stage_id == "mq_free_prisoners"));
+
+    // Walk into courtyard_center
+    runtime.run_turn("south").expect("walk south");
+    assert_eq!(runtime.current_room_id().unwrap(), "courtyard_center");
+
+    let objs1 = runtime.current_objective_summaries().unwrap();
+    assert!(
+        objs1.iter().any(|o| o.stage_id == "mq_free_prisoners"),
+        "Stepping into courtyard_center must activate mq_free_prisoners: {:?}",
+        objs1
+    );
 }

@@ -2,7 +2,8 @@
   "initial_stage_ids": [
     "mq_hear_gate",
     "sq_hear_sacrifice",
-    "sq_clean_shaman_listen"
+    "sq_clean_shaman_listen",
+    "sq_listen_courtyard_cages"
   ],
   "stages": [
     {
@@ -58,6 +59,44 @@
         "room_entered:courtyard_center",
         "room_entered:floor5_start",
         "descend_floor_5"
+      ],
+      "next_stage_ids": [
+        "mq_free_prisoners"
+      ]
+    },
+    {
+      "id": "sq_listen_courtyard_cages",
+      "summary": "",
+      "beat_note": "Layla has arrived at the Floor 5 courtyard.",
+      "advance_signals": [
+        "room_entered:courtyard_center",
+        "room_entered:floor5_start",
+        "descend_floor_5"
+      ],
+      "next_stage_ids": [
+        "mq_free_prisoners"
+      ]
+    },
+    {
+      "id": "mq_free_prisoners",
+      "quest_id": "free_courtyard_prisoners",
+      "quest_title": "Free the Citadel Prisoners",
+      "quest_kind": "main",
+      "summary": "Free the prisoners locked in the courtyard offering cages.",
+      "beat_note": "Arriving at the Frost Citadel, Layla finds garrison dissenters Commander Astrid and Einar locked in culling cages along with commoner offerings. Defeat the Sentry Captain to obtain the courtyard key and unlock their cages.",
+      "update_message": "Defeat the Sentry Captain to obtain the courtyard cage key and unlock the offering cages in the central courtyard.",
+      "advance_signals": [
+        "courtyard_cages_unlocked",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.courtyard_cages_opened",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
       ],
       "next_stage_ids": []
     },
@@ -226,6 +265,34 @@
         "sacrifice",
         "offering",
         "boy"
+      ]
+    },
+    {
+      "signals": [
+        "speech_topic:free_prisoners",
+        "speech_topic:courtyard_cages"
+      ],
+      "keywords": [
+        "cage",
+        "cages",
+        "prisoner",
+        "prisoners",
+        "free",
+        "unlock",
+        "key",
+        "astrid",
+        "einar",
+        "captain"
+      ],
+      "reply_keywords": [
+        "cage",
+        "cages",
+        "prisoner",
+        "prisoners",
+        "free",
+        "unlock",
+        "key",
+        "captain"
       ]
     }
   ]

@@ -215,6 +215,54 @@ fn sensory_enhancer_narrates_handler_upgrade() {
 }
 
 #[test]
+fn killing_a_golem_first_also_unlocks_vitals() {
+    // Regression: the four floor-one golems sit beside the goblins, and the
+    // original rules only enumerated goblin-1..4. Killing a golem first left
+    // `first_mob_defeated` unset, so vitals stayed locked for the whole run.
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "r3c3".to_string(); // golem-dark-nw
+    strong_player(&mut state);
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+    let outcome = runtime
+        .run_turn("attack golem")
+        .expect("attack golem succeeds");
+
+    let after = runtime.export_state().expect("state exported");
+    assert_eq!(
+        after.story_vars.get("first_mob_defeated"),
+        Some("true"),
+        "a golem kill must count as the first mob kill"
+    );
+    assert!(
+        pack.vitals_sidebar_shown(&after),
+        "killing a golem first must still reveal vitals"
+    );
+    assert!(
+        handler_spoke(&outcome.lines, "First one down"),
+        "Handler must comment on a golem kill too"
+    );
+}
+
+#[test]
+fn killing_the_shaman_first_still_unlocks_vitals() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "r5c5".to_string();
+    strong_player(&mut state);
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+    runtime
+        .run_turn("attack goblin shaman")
+        .expect("attack shaman succeeds");
+
+    let after = runtime.export_state().expect("state exported");
+    assert_eq!(after.story_vars.get("first_mob_defeated"), Some("true"));
+    assert!(pack.vitals_sidebar_shown(&after));
+}
+
+#[test]
 fn handler_reward_lines_are_defined() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     for key in [

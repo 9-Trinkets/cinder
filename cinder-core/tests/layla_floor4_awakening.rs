@@ -175,3 +175,32 @@ fn sakhra_is_not_in_party_at_game_start() {
         "sakhra should be neutral before awakening"
     );
 }
+
+#[test]
+fn transformation_with_empty_fragment_omits_empty_quotes() {
+    let mut pack = load_named_pack("layla", Some("en")).expect("pack loads");
+    if let Some(actor) = pack.actors.iter_mut().find(|a| a.id == "sakhra") {
+        actor.transformations = vec![cinder_core::content::types::ActorTransformation {
+            id: "test_empty_fragment".to_string(),
+            trigger: cinder_core::content::types::TransformationTrigger::Stat {
+                stat: "wisdom".to_string(),
+                gte: 1,
+            },
+            rename: Some(cinder_core::content::types::TransformationRename {
+                name: "Jamil".to_string(),
+                fragment: String::new(),
+                ..Default::default()
+            }),
+            ..Default::default()
+        }];
+    }
+    let mut state = WorldState::new(&pack);
+    let mut lines = NarrativeLines::default();
+    let transformed = maybe_apply_transformations(&mut state, &pack, "sakhra", &mut lines);
+    assert!(transformed);
+    assert!(!lines.0.is_empty());
+    for line in &lines.0 {
+        assert_ne!(line.text.trim(), "\"\"");
+        assert!(!line.text.trim().is_empty());
+    }
+}

@@ -89,13 +89,30 @@ pub(super) fn parse_item_command(trimmed: &str) -> Option<PlayerCommand> {
     }
 
     // 6. Use / Consume: `use <item>`, `eat <item>`, `drink <item>`, `consume <item>`, etc.
-    if let Some(target) = phrase_target(
+    if let Some(mut target) = phrase_target(
         trimmed,
         &[
             "use ", "eat ", "drink ", "consume ", "quaff ", "apply ", "read ",
         ],
     ) {
+        if let Some((item_part, _)) = target.split_once(" on ") {
+            target = item_part.trim().to_string();
+        } else if let Some((item_part, _)) = target.split_once(" with ") {
+            target = item_part.trim().to_string();
+        }
         return Some(PlayerCommand::Use { target });
+    }
+
+    // 7. Unlock with key: `unlock <target> with <key>` -> Use key
+    if let Some(target) = phrase_target(trimmed, &["unlock "]) {
+        if let Some((_, key_part)) = target.split_once(" with ") {
+            let key = key_part.trim();
+            if !key.is_empty() {
+                return Some(PlayerCommand::Use {
+                    target: key.to_string(),
+                });
+            }
+        }
     }
 
     None
@@ -209,6 +226,18 @@ mod tests {
         assert!(matches!(
             parse_item_command("read spawn scroll"),
             Some(PlayerCommand::Use { target }) if target == "spawn scroll"
+        ));
+        assert!(matches!(
+            parse_item_command("use key on cage"),
+            Some(PlayerCommand::Use { target }) if target == "key"
+        ));
+        assert!(matches!(
+            parse_item_command("use leaf paste on wounds"),
+            Some(PlayerCommand::Use { target }) if target == "leaf paste"
+        ));
+        assert!(matches!(
+            parse_item_command("unlock gate with gate key"),
+            Some(PlayerCommand::Use { target }) if target == "gate key"
         ));
     }
 

@@ -44,6 +44,37 @@ function splitByQuery(text: string, query: string): TextSegment[] {
   return parts
 }
 
+function isWordChar(char: string | undefined): boolean {
+  if (!char) return false
+  return /[a-zA-Z0-9_]/.test(char)
+}
+
+function findLabelIndex(text: string, lowerText: string, label: string): number {
+  const labelLower = label.toLowerCase()
+  const labelLen = label.length
+  if (labelLen === 0) return -1
+
+  const checkStartBoundary = isWordChar(label[0])
+  const checkEndBoundary = isWordChar(label[labelLen - 1])
+
+  let startPos = 0
+  while (startPos <= text.length - labelLen) {
+    const idx = lowerText.indexOf(labelLower, startPos)
+    if (idx === -1) return -1
+
+    const startOk = !checkStartBoundary || idx === 0 || !isWordChar(text[idx - 1])
+    const endOk = !checkEndBoundary || idx + labelLen === text.length || !isWordChar(text[idx + labelLen])
+
+    if (startOk && endOk) {
+      return idx
+    }
+
+    startPos = idx + 1
+  }
+
+  return -1
+}
+
 function splitSegmentByLabels(
   segment: TextSegment,
   highlights: LabelHighlight[],
@@ -55,7 +86,7 @@ function splitSegmentByLabels(
   const lower = segment.text.toLowerCase()
   for (const highlight of highlights) {
     if (!highlight.label) continue
-    const idx = lower.indexOf(highlight.label.toLowerCase())
+    const idx = findLabelIndex(segment.text, lower, highlight.label)
     if (
       idx !== -1 &&
       (earliestIndex === -1 ||
@@ -201,7 +232,7 @@ const TranscriptLine = memo(function TranscriptLine({
             text={content}
             query={searchQuery ?? ''}
             craftedLabels={craftedLabels ?? []}
-            interactableLabels={interactableLabels ?? []}
+            interactableLabels={[]}
           />
         </div>
       </div>

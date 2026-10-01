@@ -153,51 +153,12 @@
         {
           "conditions": [
             {
-              "path": "actor_id",
-              "operator": "equal",
-              "value": "goblin-1"
-            }
-          ],
-          "payload_template": {
-            "kind": "set_story_var",
-            "key": "first_mob_defeated",
-            "value": "true"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "actor_id",
-              "operator": "equal",
-              "value": "goblin-2"
-            }
-          ],
-          "payload_template": {
-            "kind": "set_story_var",
-            "key": "first_mob_defeated",
-            "value": "true"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "actor_id",
-              "operator": "equal",
-              "value": "goblin-3"
-            }
-          ],
-          "payload_template": {
-            "kind": "set_story_var",
-            "key": "first_mob_defeated",
-            "value": "true"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "actor_id",
-              "operator": "equal",
-              "value": "goblin-4"
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": [
+                "goblin",
+                "golem"
+              ]
             }
           ],
           "payload_template": {
@@ -442,36 +403,6 @@
             "actor_id": "$input.actor_id",
             "stat": "hp",
             "delta": 4
-          }
-        }
-      ]
-    }
-  },
-  "item.sensory_enhancer_used": {
-    "rule": "effect_table",
-    "rule_config": {
-      "cases_path": "rules",
-      "next_on_match": "complete",
-      "next_on_default": "complete",
-      "default_payload_template": {
-        "effects": []
-      }
-    },
-    "input_overlay": {
-      "rules": [
-        {
-          "conditions": [],
-          "payload_template": {
-            "kind": "set_story_var",
-            "key": "has_sensory_enhancer",
-            "value": "true"
-          }
-        },
-        {
-          "conditions": [],
-          "payload_template": {
-            "kind": "narrate_message",
-            "key": "item.sensory-enhancer.used"
           }
         }
       ]
@@ -1421,6 +1352,16 @@
             "actor_id": "einar",
             "follows_player": true,
             "messages": []
+          },
+          {
+            "kind": "actor_speech",
+            "actor_id": "einar",
+            "key": "einar.freed_speech"
+          },
+          {
+            "kind": "acquire_item",
+            "item_id": "sensory-enhancer",
+            "from_actor_id": "einar"
           }
         ]
       }

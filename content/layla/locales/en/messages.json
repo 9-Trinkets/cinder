@@ -293,6 +293,7 @@
     "sigil.spawn_limit": "The air crackles with spent heat, but no flame takes hold. You cannot sustain more than {max} summoned sprites at once.",
     "magic.insufficient_mp": "You do not have enough magic to trace the {item}. (Requires {mp_cost} MP, you have {mp} MP)",
     "zayd.freed_speech": "You... you unlocked it! You're really here to save me? Please, let's get out of here before the guards come back!",
+    "einar.freed_speech": "Thank you... we thought we would freeze in those iron bars. Take this sensory enhancer capsule — I managed to keep it hidden in my sleeve. Back in the High Sanctuary, we synthesized it to heighten human senses and expand spatial perception. Swallow it, and it will reveal where your allies stand and where active portals hum through the citadel's stone.",
     "handler.zayd_freed_warning": {
         "voice": "handler",
         "text": "Layla. That offering was cleared on the manifest. Let the offering ship. That's the job."

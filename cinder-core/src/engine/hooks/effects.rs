@@ -37,8 +37,11 @@ pub(crate) enum WorldHookEffect {
     SetStanceByTag(SetStanceByTagEffect),
     /// Sets a story variable (e.g. a flag marking a boss as defeated).
     SetStoryVar { key: String, value: String },
-    /// Adds an item directly to the player's inventory and announces acquisition.
-    AcquireItem { item_id: String },
+    AcquireItem {
+        item_id: String,
+        #[serde(default)]
+        from_actor_id: Option<String>,
+    },
     /// Defeats every living actor carrying `tag`.
     DefeatActorsByTag { tag: String },
     /// Plot beat rendered through the pack's message table.
@@ -144,8 +147,17 @@ impl WorldHookEffect {
             WorldHookEffect::SetStoryVar { key, value } => {
                 self.apply_set_story_var(state, content, key, value, lines.as_deref_mut());
             }
-            WorldHookEffect::AcquireItem { item_id } => {
-                self.apply_acquire_item(state, content, item_id, lines.as_deref_mut());
+            WorldHookEffect::AcquireItem {
+                item_id,
+                from_actor_id,
+            } => {
+                self.apply_acquire_item(
+                    state,
+                    content,
+                    item_id,
+                    from_actor_id.as_deref(),
+                    lines.as_deref_mut(),
+                );
             }
             WorldHookEffect::NarrateMessage {
                 key,
@@ -249,8 +261,12 @@ impl WorldHookEffect {
         state: &mut WorldState,
         content: &ContentPack,
         item_id: &str,
+        from_actor_id: Option<&str>,
         lines: Option<&mut NarrativeLines>,
     ) {
+        if let Some(actor_id) = from_actor_id {
+            state.actor_remove_item(actor_id, item_id);
+        }
         state.acquire_player_item(content, item_id);
         if let Some(lines) = lines {
             let label = content.item_label(item_id);

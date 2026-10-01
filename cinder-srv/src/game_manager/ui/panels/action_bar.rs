@@ -183,16 +183,45 @@ pub(crate) fn build_use_panel_options(
     content: &ContentPack,
     state: &WorldState,
 ) -> Vec<PanelOptionData> {
+    let current_room_id = &state.current_room_id;
     super::super::usable_inventory_items(content, state)
         .into_iter()
-        .map(|item_id| PanelOptionData {
-            id: item_id.clone(),
-            title: title_case(content.item_label(&item_id)),
-            subtitle: None,
-            command: Some(format!("use {item_id}")),
-            disabled: false,
-            selected: false,
-            group: None,
+        .map(|item_id| {
+            let label = content.item_label(&item_id);
+            let item = content.item(&item_id);
+            let (title, subtitle) = if let Some(item) = item
+                && item.kind == cinder_core::content::types::ItemKind::Key
+            {
+                let matching_action = content.actions.iter().find(|action| {
+                    (action.available.requires_item.as_deref() == Some(item_id.as_str())
+                        || action.available.consumes_item.as_deref() == Some(item_id.as_str()))
+                        && cinder_core::engine::turn_policies::action_is_available(
+                            content,
+                            state,
+                            action,
+                            current_room_id,
+                        )
+                });
+                if let Some(act) = matching_action {
+                    (act.label.clone(), Some(title_case(label)))
+                } else {
+                    (title_case(label), None)
+                }
+            } else if item_id.ends_with("-scroll") || label.ends_with("scroll") {
+                (format!("Read {}", title_case(label)), None)
+            } else {
+                (title_case(label), None)
+            };
+
+            PanelOptionData {
+                id: item_id.clone(),
+                title,
+                subtitle,
+                command: Some(format!("use {item_id}")),
+                disabled: false,
+                selected: false,
+                group: None,
+            }
         })
         .collect()
 }

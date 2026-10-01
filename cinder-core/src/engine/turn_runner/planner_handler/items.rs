@@ -258,9 +258,12 @@ pub(crate) fn plan_use_command(
     }
     if let Some(item) = held.first().copied() {
         if item.use_hook.is_empty() {
-            planned.events.push(WorldEvent::ActionRejected {
-                message: format!("You cannot use the {}.", item.label),
-            });
+            let message = if item.kind == crate::content::types::ItemKind::Key {
+                format!("There is nothing to unlock here with the {}.", item.label)
+            } else {
+                format!("You cannot use the {}.", item.label)
+            };
+            planned.events.push(WorldEvent::ActionRejected { message });
             return false;
         }
         planned.events.push(WorldEvent::PlayerUsedItem {

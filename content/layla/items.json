@@ -27,6 +27,11 @@
   {
     "id": "drain-scroll",
     "label": "worn scroll",
+    "aliases": [
+      "scroll",
+      "drain scroll",
+      "worn scroll"
+    ],
     "kind": "misc",
     "use_hook": "item.scroll_read",
     "description": "A dry scroll of old bark, faintly warm. A spiral of charcoal spirals on the bark — a diagram for sapping the strength of whatever stands within. Reading it presses the words for drawing a draining sigil into your head."
@@ -34,6 +39,11 @@
   {
     "id": "spawn-scroll",
     "label": "ember scroll",
+    "aliases": [
+      "scroll",
+      "spawn scroll",
+      "ember scroll"
+    ],
     "kind": "misc",
     "use_hook": "item.spawn_scroll_read",
     "description": "A sheet of fire-cured bark marked with a round amber sigil. Amber strokes circle a tiny ember at the scroll's center — a diagram for a spawning sigil. Reading it reveals the lines that call a creature into being."
@@ -205,12 +215,24 @@
   {
     "id": "commander-safe-key",
     "label": "commander's safe key",
+    "aliases": [
+      "safe key",
+      "key",
+      "commander key",
+      "commander safe key",
+      "commander's safe key"
+    ],
     "kind": "key",
     "description": "A heavy brass key with intricate dual wards, looted from Captain Malik. It unlocks the iron safe in the Commander's Bastion."
   },
   {
     "id": "teleport-scroll",
     "label": "teleport scroll",
+    "aliases": [
+      "scroll",
+      "teleport scroll",
+      "teleportation scroll"
+    ],
     "kind": "misc",
     "use_hook": "item.teleport_scroll_read",
     "description": "A heavy brass-leaf scroll etched with fine geometric circuits. Reading the dual intersecting triangles teaches the Teleportation Sigil."
@@ -241,12 +263,24 @@
   {
     "id": "iron-cage-key",
     "label": "iron cage key",
-    "kind": "misc",
+    "aliases": [
+      "cage key",
+      "key",
+      "iron key",
+      "iron cage key"
+    ],
+    "kind": "key",
     "description": "A heavy brass-and-iron key carried by the cage warden, cut to turn the tumblers of the suspended steam prison cage."
   },
   {
     "id": "fortress-gate-key",
     "label": "fortress gate key",
+    "aliases": [
+      "gate key",
+      "key",
+      "fortress key",
+      "fortress gate key"
+    ],
     "kind": "key",
     "description": "A heavy brass skeleton key stamped with the fortress insignia, carried by the gate sentries to lock and unlock the northern bulkhead."
   },
@@ -309,7 +343,9 @@
     "label": "courtyard cage key",
     "aliases": [
       "cage key",
-      "key"
+      "key",
+      "courtyard key",
+      "courtyard cage key"
     ],
     "kind": "key",
     "description": "A heavy frost-bitten iron key stamped with the Citadel crest. It unlocks the mass offering cages in the central courtyard."

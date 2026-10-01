@@ -229,78 +229,7 @@
         }
       }
     },
-    {
-      "id": "read_spawn_scroll",
-      "command": "READ SPAWN SCROLL",
-      "label": "Read Ember Scroll",
-      "group": "gear",
-      "phrases": [
-        "read spawn scroll",
-        "read ember scroll",
-        "open ember scroll",
-        "unroll ember scroll",
-        "study ember scroll"
-      ],
-      "player_enabled": true,
-      "target_mode": "none",
-      "outcome_mode": "event",
-      "effects": [
-        "use_item"
-      ],
-      "item_id": "spawn-scroll",
-      "event_text": "Layla unfolds the fire-cured bark and follows the amber circle. The lines for calling life into a sigil settle into her memory.",
-      "available": {},
-      "ui": {
-        "bar": false,
-        "overflow": true,
-        "group": "gear",
-        "sort_order": 37
-      },
-      "player_command": {
-        "usage": "read spawn scroll",
-        "example": "read ember scroll",
-        "advances_time": true,
-        "input": {
-          "required": false
-        }
-      }
-    },
-    {
-      "id": "read_scroll",
-      "command": "READ SCROLL",
-      "label": "Read Worn Scroll",
-      "group": "gear",
-      "phrases": [
-        "read scroll",
-        "read the scroll",
-        "open scroll",
-        "unroll scroll",
-        "study scroll"
-      ],
-      "player_enabled": true,
-      "target_mode": "none",
-      "outcome_mode": "event",
-      "effects": [
-        "use_item"
-      ],
-      "item_id": "drain-scroll",
-      "event_text": "Layla unrolls the dry bark and works out the spiral. The words for drawing a draining sigil crowd into her head.",
-      "available": {},
-      "ui": {
-        "bar": false,
-        "overflow": true,
-        "group": "gear",
-        "sort_order": 36
-      },
-      "player_command": {
-        "usage": "read scroll",
-        "example": "read scroll",
-        "advances_time": true,
-        "input": {
-          "required": false
-        }
-      }
-    },
+
     {
       "id": "take",
       "command": "TAKE",
@@ -474,10 +403,24 @@
         "unlock the cage",
         "open cage",
         "open the cage",
+        "use iron-cage-key",
+        "use iron cage key",
+        "use cage key",
         "use key",
         "use the key",
-        "use cage key",
-        "use iron cage key",
+        "use iron-cage-key on cage",
+        "use iron-cage-key on the cage",
+        "use iron cage key on cage",
+        "use iron cage key on the cage",
+        "use cage key on cage",
+        "use cage key on the cage",
+        "use key on cage",
+        "use key on the cage",
+        "unlock cage with key",
+        "unlock cage with iron cage key",
+        "unlock cage with iron-cage-key",
+        "unlock the cage with key",
+        "unlock the cage with iron cage key",
         "free zayd",
         "free the boy",
         "free boy",
@@ -529,9 +472,25 @@
         "unlock bulkhead",
         "unlock the bulkhead",
         "unlock door",
-        "use gate key",
+        "use fortress-gate-key",
         "use fortress gate key",
-        "use the gate key"
+        "use gate key",
+        "use the gate key",
+        "use key",
+        "use the key",
+        "use fortress-gate-key on gate",
+        "use fortress-gate-key on the gate",
+        "use fortress gate key on gate",
+        "use fortress gate key on the gate",
+        "use gate key on gate",
+        "use gate key on the gate",
+        "use key on gate",
+        "use key on the gate",
+        "unlock gate with key",
+        "unlock gate with gate key",
+        "unlock gate with fortress gate key",
+        "unlock the gate with key",
+        "unlock the gate with gate key"
       ],
       "player_enabled": true,
       "target_mode": "none",
@@ -575,12 +534,33 @@
       "phrases": [
         "unlock cage",
         "unlock cages",
+        "unlock the cage",
+        "unlock the cages",
         "open cage",
         "open cages",
         "free prisoners",
         "free offerings",
+        "use courtyard-cage-key",
+        "use courtyard cage key",
         "use cage key",
-        "use courtyard cage key"
+        "use the cage key",
+        "use key",
+        "use the key",
+        "use courtyard-cage-key on cage",
+        "use courtyard-cage-key on cages",
+        "use courtyard cage key on cage",
+        "use courtyard cage key on cages",
+        "use cage key on cage",
+        "use cage key on cages",
+        "use key on cage",
+        "use key on cages",
+        "use key on the cages",
+        "unlock cages with key",
+        "unlock cage with key",
+        "unlock cages with courtyard cage key",
+        "unlock cage with courtyard cage key",
+        "unlock the cages with key",
+        "unlock the cage with key"
       ],
       "player_enabled": true,
       "target_mode": "none",
@@ -626,11 +606,26 @@
         "unlock the safe",
         "open safe",
         "open the safe",
+        "open iron safe",
+        "use commander-safe-key",
+        "use commander safe key",
         "use safe key",
         "use the safe key",
         "use key",
+        "use the key",
+        "use commander-safe-key on safe",
+        "use commander-safe-key on the safe",
+        "use commander safe key on safe",
+        "use commander safe key on the safe",
+        "use safe key on safe",
+        "use safe key on the safe",
         "use key on safe",
-        "open iron safe"
+        "use key on the safe",
+        "unlock safe with key",
+        "unlock safe with safe key",
+        "unlock safe with commander safe key",
+        "unlock the safe with key",
+        "unlock the safe with safe key"
       ],
       "player_enabled": true,
       "target_mode": "none",

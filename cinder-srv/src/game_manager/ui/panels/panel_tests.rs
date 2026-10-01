@@ -581,3 +581,53 @@ fn give_and_drop_surface_when_equipped_item_has_additional_inventory_copies() {
     let drop_opts_empty = build_drop_panel_options(&content, &state);
     assert!(drop_opts_empty.is_empty());
 }
+
+#[test]
+fn use_panel_surfaces_scrolls_with_read_prefix() {
+    let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.add_item("drain-scroll");
+    state.add_item("teleport-scroll");
+
+    let use_opts = build_use_panel_options(&pack, &state);
+    assert_eq!(use_opts.len(), 2);
+    assert_eq!(use_opts[0].id, "drain-scroll");
+    assert_eq!(use_opts[0].title, "Read Worn Scroll");
+    assert_eq!(use_opts[0].command.as_deref(), Some("use drain-scroll"));
+
+    assert_eq!(use_opts[1].id, "teleport-scroll");
+    assert_eq!(use_opts[1].title, "Read Teleport Scroll");
+    assert_eq!(use_opts[1].command.as_deref(), Some("use teleport-scroll"));
+}
+
+#[test]
+fn use_panel_surfaces_keys_only_when_in_lock_room() {
+    let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.add_item("courtyard-cage-key");
+
+    // Outside the courtyard: key should not be in use_panel
+    state.current_room_id = "citadel_corridor_south".to_string();
+    let use_opts_outside = build_use_panel_options(&pack, &state);
+    assert!(use_opts_outside.is_empty());
+
+    // In courtyard_center: key surfaces as an unlock option
+    state.current_room_id = "courtyard_center".to_string();
+    let use_opts_inside = build_use_panel_options(&pack, &state);
+    assert_eq!(use_opts_inside.len(), 1);
+    assert_eq!(use_opts_inside[0].id, "courtyard-cage-key");
+    assert_eq!(use_opts_inside[0].title, "Unlock Cages");
+    assert_eq!(
+        use_opts_inside[0].subtitle.as_deref(),
+        Some("Courtyard Cage Key")
+    );
+    assert_eq!(
+        use_opts_inside[0].command.as_deref(),
+        Some("use courtyard-cage-key")
+    );
+
+    // Once already opened: key is no longer usable
+    let _ = state.story_vars.set("courtyard_cages_opened", "true");
+    let use_opts_opened = build_use_panel_options(&pack, &state);
+    assert!(use_opts_opened.is_empty());
+}
