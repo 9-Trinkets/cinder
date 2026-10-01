@@ -11279,6 +11279,19 @@
         ],
         "menu_label": "East to Northeast Rampart",
         "requires_story_var": ""
+      },
+      {
+        "room_id": "frost_wolf_gallery",
+        "label": "North into House Frost-Wolf Gallery",
+        "aliases": [
+          "north",
+          "n",
+          "gallery",
+          "manor",
+          "frost-wolf"
+        ],
+        "menu_label": "North into House Frost-Wolf Gallery",
+        "requires_story_var": ""
       }
     ],
     "descriptions": []
@@ -11419,6 +11432,20 @@
           "s"
         ],
         "menu_label": "West to South Fortress Gate",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "iron_ram_gallery",
+        "label": "Southeast into House Iron-Ram Bastion",
+        "aliases": [
+          "southeast",
+          "se",
+          "bastion",
+          "portcullis",
+          "flue",
+          "iron-ram"
+        ],
+        "menu_label": "Southeast into House Iron-Ram Bastion",
         "requires_story_var": ""
       }
     ],
@@ -11564,6 +11591,20 @@
         ],
         "menu_label": "North to Northwest Parapet",
         "requires_story_var": ""
+      },
+      {
+        "room_id": "frost_leopard_gallery",
+        "label": "Southwest into House Frost-Leopard Hall",
+        "aliases": [
+          "southwest",
+          "sw",
+          "colonnade",
+          "hall",
+          "doors",
+          "frost-leopard"
+        ],
+        "menu_label": "Southwest into House Frost-Leopard Hall",
+        "requires_story_var": ""
       }
     ],
     "descriptions": []
@@ -11628,6 +11669,597 @@
         ],
         "menu_label": "East to Frost-Wolf Approach",
         "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "frost_wolf_gallery",
+    "title": "The Great Wolf Gallery",
+    "summary": "A grand, frost-rimed colonnade of pale blue stone hung with massive naval-blue banners bearing the silver wolf of House Frost-Wolf. Braziers of blue witchfire burn in iron baskets, throwing long, flickering shadows against fluted pillars.",
+    "inspect_text": "Howling wind sweeps down the long corridor from the north. The floor is paved in slabs of dark basalt veined with turquoise frost. Carvings of snarling wolves and huntsmen decorate the frieze above.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "frost_wolf_gallery-braziers",
+        "label": "the witchfire braziers",
+        "aliases": [
+          "braziers",
+          "brazier",
+          "witchfire",
+          "fire",
+          "flame"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Iron baskets filled with cold-burning blue witchfire. They emit intense light with virtually no warmth, casting the long gallery in pale twilight."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "courtyard_north",
+        "label": "South to Frost-Wolf Approach",
+        "aliases": [
+          "south",
+          "s",
+          "courtyard",
+          "approach"
+        ],
+        "menu_label": "South to Frost-Wolf Approach",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "frost_wolf_muster",
+        "label": "North to Wolfguard Muster",
+        "aliases": [
+          "north",
+          "n",
+          "muster",
+          "barracks"
+        ],
+        "menu_label": "North to Wolfguard Muster",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "frost_wolf_muster",
+    "title": "The Wolfguard Muster",
+    "summary": "A wide vaulted muster hall and drill armory. Racks of heavy frost-axes, spiked spears, and heavy hide pavises line the walls. Wolf pelts drape the weapon benches, and the air smells of weapon grease, rime frost, and mountain cedar.",
+    "inspect_text": "This is the staging hall where House Frost-Wolf's vanguard prepares for combat. Heavy weapon chests sit bolted to the flagstones, and training dummies of packed snow and bound wicker stand notched from axe strikes.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "frost_wolf_muster-weapon_racks",
+        "label": "the weapon racks",
+        "aliases": [
+          "racks",
+          "weapons",
+          "axes",
+          "pavises"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Sturdy iron stands holding notched frost-axes and spiked heater shields bearing the wolf crest."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "frost_wolf_gallery",
+        "label": "South to the Great Wolf Gallery",
+        "aliases": [
+          "south",
+          "s",
+          "gallery"
+        ],
+        "menu_label": "South to the Great Wolf Gallery",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "frost_wolf_throne",
+        "label": "North to the Howling Dais",
+        "aliases": [
+          "north",
+          "n",
+          "throne",
+          "dais"
+        ],
+        "menu_label": "North to the Howling Dais",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "frost_wolf_throne",
+    "title": "The Howling Dais",
+    "summary": "The high inner sanctum of House Frost-Wolf. At the northern apex, a colossal throne carved from a single jagged block of glacier ice rises atop tiered stone steps. Above the dais, massive arched skylights look out onto the shrieking blizzard.",
+    "inspect_text": "Runic glyphs etched in deep cobalt pulse across the glacial throne. Heavy wolf furs cover the frozen seat, and cold steam curls from the cracks in the surrounding dais.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "frost_wolf_throne-throne",
+        "label": "the glacial throne",
+        "aliases": [
+          "throne",
+          "seat",
+          "ice throne",
+          "dais"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A towering throne of ancient compressed glacier ice, surrounded by cold mist and wolf trophies."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "frost_wolf_muster",
+        "label": "South to Wolfguard Muster",
+        "aliases": [
+          "south",
+          "s",
+          "muster"
+        ],
+        "menu_label": "South to Wolfguard Muster",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "throne_passage_northeast",
+        "label": "East through Secret Conduit",
+        "aliases": [
+          "east",
+          "e",
+          "conduit",
+          "secret",
+          "passage"
+        ],
+        "menu_label": "East through Secret Conduit",
+        "requires_story_var": "throne_passages_revealed"
+      },
+      {
+        "room_id": "throne_passage_northwest",
+        "label": "West through Secret Aqueduct",
+        "aliases": [
+          "west",
+          "w",
+          "aqueduct",
+          "secret",
+          "passage"
+        ],
+        "menu_label": "West through Secret Aqueduct",
+        "requires_story_var": "throne_passages_revealed"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "iron_ram_gallery",
+    "title": "The Steam Flue Corridor",
+    "summary": "A reinforced industrial corridor of riveted bronze plates and heavy iron braces. Overhead conduits hiss with pressurized geothermal steam, and crimson and charcoal banners emblazoned with a horned ram's skull shudder in the rising heat.",
+    "inspect_text": "Steam rises through slotted floor grates, keeping the corridor stiflingly warm despite the freezing altitude outside. Brass gauges and steam release wheels are mounted along the basalt walls.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "iron_ram_gallery-pipes",
+        "label": "the steam pipes",
+        "aliases": [
+          "pipes",
+          "conduits",
+          "steam",
+          "valves"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Heavy insulated copper and bronze conduits delivering geothermal steam from the citadel boilers."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "courtyard_southeast",
+        "label": "Northwest to Iron-Ram Approach",
+        "aliases": [
+          "northwest",
+          "nw",
+          "courtyard",
+          "approach"
+        ],
+        "menu_label": "Northwest to Iron-Ram Approach",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "iron_ram_muster",
+        "label": "Southeast to Bastion Muster",
+        "aliases": [
+          "southeast",
+          "se",
+          "muster",
+          "bastion"
+        ],
+        "menu_label": "Southeast to Bastion Muster",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "iron_ram_muster",
+    "title": "The Bastion Muster",
+    "summary": "An industrial assembly hall and siege armory. Heavy hydraulic cranes, ammunition hoists, and racks of curved pavise shields flank the wide central corridor where Iron-Ram shock troopers muster for battle.",
+    "inspect_text": "The floor is stained with black engine soot and machine grease. Racks of barbed poleaxes and steam-assisted siege rams stand ready along the fortified bulkhead.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "iron_ram_muster-cranes",
+        "label": "the hydraulic cranes",
+        "aliases": [
+          "cranes",
+          "crane",
+          "hoists",
+          "machinery"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Pneumatic winches designed to lift heavy iron plates and barricade balks into place across the bastion."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "iron_ram_gallery",
+        "label": "Northwest to Steam Flue Corridor",
+        "aliases": [
+          "northwest",
+          "nw",
+          "gallery",
+          "corridor"
+        ],
+        "menu_label": "Northwest to Steam Flue Corridor",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "iron_ram_throne",
+        "label": "Southeast to the Anvil Throne",
+        "aliases": [
+          "southeast",
+          "se",
+          "throne",
+          "anvil"
+        ],
+        "menu_label": "Southeast to the Anvil Throne",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "iron_ram_throne",
+    "title": "The Anvil Throne",
+    "summary": "The martial command seat of House Iron-Ram. Built atop a raised stepped dais of slag-cast black iron sits a forge-hammered throne, framed by roaring blast chimneys that cast an intense fiery glow over the soot-streaked flags.",
+    "inspect_text": "A massive steel horn crest arches over the throne back. Hydraulic pressure lines pulse beneath the metal plates of the dais, and a massive war table displays iron markers of the citadel defenses.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "iron_ram_throne-throne",
+        "label": "the anvil throne",
+        "aliases": [
+          "throne",
+          "seat",
+          "anvil",
+          "forge"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A colossal chair forged from dark cast iron and tempered steel, shaped like a horn-crowned anvil."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "iron_ram_muster",
+        "label": "Northwest to Bastion Muster",
+        "aliases": [
+          "northwest",
+          "nw",
+          "muster"
+        ],
+        "menu_label": "Northwest to Bastion Muster",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "throne_passage_northeast",
+        "label": "North through Secret Conduit",
+        "aliases": [
+          "north",
+          "n",
+          "conduit",
+          "secret",
+          "passage"
+        ],
+        "menu_label": "North through Secret Conduit",
+        "requires_story_var": "throne_passages_revealed"
+      },
+      {
+        "room_id": "throne_passage_south",
+        "label": "Southwest through Secret Flue",
+        "aliases": [
+          "southwest",
+          "sw",
+          "flue",
+          "secret",
+          "passage"
+        ],
+        "menu_label": "Southwest through Secret Flue",
+        "requires_story_var": "throne_passages_revealed"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "frost_leopard_gallery",
+    "title": "The Frosted Colonnade",
+    "summary": "A soaring vaulted gallery flanked by slender pillars of ash-grey marble and lit by frosted crystal lanterns. Banners of pale slate silk embroidered with leaping snow leopards drape the walls beside tall lancet windows overlooking the sheer abyss.",
+    "inspect_text": "A dusting of powdery snow blows in through high stone tracery. The floor is paved in honed quartz that mirrors the pale violet sky outside with crystalline precision.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "frost_leopard_gallery-lanterns",
+        "label": "the crystal lanterns",
+        "aliases": [
+          "lanterns",
+          "lantern",
+          "crystal",
+          "lights"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Delicate geometric lanterns of faceted frost-glass containing soft, self-illuminating white crystals."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "courtyard_southwest",
+        "label": "Northeast to Frost-Leopard Approach",
+        "aliases": [
+          "northeast",
+          "ne",
+          "courtyard",
+          "approach"
+        ],
+        "menu_label": "Northeast to Frost-Leopard Approach",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "frost_leopard_muster",
+        "label": "Southwest to Shadow Promenade",
+        "aliases": [
+          "southwest",
+          "sw",
+          "muster",
+          "promenade"
+        ],
+        "menu_label": "Southwest to Shadow Promenade",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "frost_leopard_muster",
+    "title": "The Shadow Promenade",
+    "summary": "An opulent, silent muster hall paved in polished grey quartz. Mirrored alcoves and silk-screened partitions conceal training duels and weapon chests filled with curved ice-daggers, silent composite recurves, and throwing quills.",
+    "inspect_text": "Every step is muffled by thick fur runners. Concealed spy-holes and acoustic resonance tubes throughout the colonnade allow the Leopard guard to survey the avenue without being seen.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "frost_leopard_muster-alcoves",
+        "label": "the mirrored alcoves",
+        "aliases": [
+          "alcoves",
+          "alcove",
+          "mirrors",
+          "screens"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Deep niches set with frosted mirrors that reflect light at disorienting angles, concealing sentry positions."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "frost_leopard_gallery",
+        "label": "Northeast to the Frosted Colonnade",
+        "aliases": [
+          "northeast",
+          "ne",
+          "gallery",
+          "colonnade"
+        ],
+        "menu_label": "Northeast to the Frosted Colonnade",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "frost_leopard_throne",
+        "label": "Southwest to the Opal Throne",
+        "aliases": [
+          "southwest",
+          "sw",
+          "throne",
+          "opal"
+        ],
+        "menu_label": "Southwest to the Opal Throne",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "frost_leopard_throne",
+    "title": "The Opal Throne",
+    "summary": "The serene, perilous inner sanctum of House Frost-Leopard. Carved from a massive boulder of iridescent opal and polished silver, the throne rests upon a dais of dark velvet stone, commanding a sweeping view through tall open arches across the frozen mountains.",
+    "inspect_text": "Silver threads and frost-glass chimes hang from the high ceiling, chiming softly in the freezing alpine wind. The opal throne glimmers with shifting hues of lavender, mint, and pale gold.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "frost_leopard_throne-throne",
+        "label": "the opal throne",
+        "aliases": [
+          "throne",
+          "seat",
+          "opal",
+          "chair"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "An exquisite throne carved from shimmering glacial opal, cold as winter glass and cushioned in snow-leopard pelts."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "frost_leopard_muster",
+        "label": "Northeast to Shadow Promenade",
+        "aliases": [
+          "northeast",
+          "ne",
+          "muster"
+        ],
+        "menu_label": "Northeast to Shadow Promenade",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "throne_passage_south",
+        "label": "East through Secret Flue",
+        "aliases": [
+          "east",
+          "e",
+          "flue",
+          "secret",
+          "passage"
+        ],
+        "menu_label": "East through Secret Flue",
+        "requires_story_var": "throne_passages_revealed"
+      },
+      {
+        "room_id": "throne_passage_northwest",
+        "label": "North through Secret Aqueduct",
+        "aliases": [
+          "north",
+          "n",
+          "aqueduct",
+          "secret",
+          "passage"
+        ],
+        "menu_label": "North through Secret Aqueduct",
+        "requires_story_var": "throne_passages_revealed"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "throne_passage_northeast",
+    "title": "The Glacial Conduit",
+    "summary": "A hidden subterranean maintenance conduit bored directly through the mountain bedrock, bypassing the outer ramparts. Frost-caked copper brine pipes run along the arched walls, linking the secluded undercrofts of House Frost-Wolf and House Iron-Ram.",
+    "inspect_text": "Crushed gravel and hoarfrost crunch underfoot. The air is intensely cold and quiet, insulated deep inside the cliffside rock far from the wind of the courtyard.",
+    "allow_rest": false,
+    "features": [],
+    "exits": [
+      {
+        "room_id": "frost_wolf_throne",
+        "label": "Northwest to the Howling Dais",
+        "aliases": [
+          "northwest",
+          "nw",
+          "throne",
+          "frost-wolf",
+          "wolf"
+        ],
+        "menu_label": "Northwest to the Howling Dais",
+        "requires_story_var": "throne_passages_revealed"
+      },
+      {
+        "room_id": "iron_ram_throne",
+        "label": "South to the Anvil Throne",
+        "aliases": [
+          "south",
+          "s",
+          "throne",
+          "iron-ram",
+          "ram"
+        ],
+        "menu_label": "South to the Anvil Throne",
+        "requires_story_var": "throne_passages_revealed"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "throne_passage_south",
+    "title": "The Under-Keep Flue",
+    "summary": "A secret service gallery running deep beneath the southern fortress foundation. Warm, insulated conduits and heavy hydraulic pipes run along the basalt floor, covertly linking the Bastion of Iron-Ram to the private sanctum of House Frost-Leopard.",
+    "inspect_text": "The low ceiling is blackened with soot, and hot air hums through the valves. This secret bypass allows quiet movement between the two southern estates without crossing the sentry-guarded main gates.",
+    "allow_rest": false,
+    "features": [],
+    "exits": [
+      {
+        "room_id": "iron_ram_throne",
+        "label": "Northeast to the Anvil Throne",
+        "aliases": [
+          "northeast",
+          "ne",
+          "throne",
+          "iron-ram",
+          "ram"
+        ],
+        "menu_label": "Northeast to the Anvil Throne",
+        "requires_story_var": "throne_passages_revealed"
+      },
+      {
+        "room_id": "frost_leopard_throne",
+        "label": "Northwest to the Opal Throne",
+        "aliases": [
+          "northwest",
+          "nw",
+          "throne",
+          "frost-leopard",
+          "leopard"
+        ],
+        "menu_label": "Northwest to the Opal Throne",
+        "requires_story_var": "throne_passages_revealed"
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "throne_passage_northwest",
+    "title": "The Shadow Aqueduct",
+    "summary": "An ancient concealed aqueduct running behind false stone murals along the western precipice. Freezing meltwater rushes along a narrow stone trough beside a slick maintenance catwalk, secretly connecting House Frost-Leopard and House Frost-Wolf.",
+    "inspect_text": "The sound of rushing water echoes between the stone slabs. Siphon valves and maintenance ladders lead up into secret crawlspaces behind the high thrones.",
+    "allow_rest": false,
+    "features": [],
+    "exits": [
+      {
+        "room_id": "frost_leopard_throne",
+        "label": "South to the Opal Throne",
+        "aliases": [
+          "south",
+          "s",
+          "throne",
+          "frost-leopard",
+          "leopard"
+        ],
+        "menu_label": "South to the Opal Throne",
+        "requires_story_var": "throne_passages_revealed"
+      },
+      {
+        "room_id": "frost_wolf_throne",
+        "label": "Northeast to the Howling Dais",
+        "aliases": [
+          "northeast",
+          "ne",
+          "throne",
+          "frost-wolf",
+          "wolf"
+        ],
+        "menu_label": "Northeast to the Howling Dais",
+        "requires_story_var": "throne_passages_revealed"
       }
     ],
     "descriptions": []

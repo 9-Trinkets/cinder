@@ -153,4 +153,8 @@ fn apply_transformation(
     for signal in &transformation.signals {
         lines.extend_narration(advance_objective_for_signal(state, content, signal));
     }
+
+    for (key, value) in &transformation.story_vars {
+        let _ = state.story_vars.set(key, value);
+    }
 }

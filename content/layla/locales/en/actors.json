@@ -3283,5 +3283,218 @@
         "An old man whispers blessings in cracked, trembling tones."
       ]
     }
+  },
+  {
+    "id": "lord_vane",
+    "name": "Lord Vane",
+    "room_id": "frost_wolf_throne",
+    "initial_level": 12,
+    "initial_stats": {
+      "hp": 70,
+      "strength": 8,
+      "intelligence": 4,
+      "wisdom": 6
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "aliases": [
+      "vane",
+      "lord vane",
+      "chieftain",
+      "frost-wolf lord",
+      "warlord"
+    ],
+    "tags": [
+      "boss",
+      "house_head",
+      "frost_wolf"
+    ],
+    "inspect_text": "A towering warlord clad in dire wolf pelts and runic frost-iron plate, gripping a massive greatsword forged of clear blue glacier ice. His eyes gleam with a ferocious, unblinking glare beneath his horned helm.",
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Lord Vane",
+          "who": "Chieftain of the Frost-Wolf clan, released from the Citadel's sacrificial trance",
+          "fragment": "The howl in my skull... it was their voice, not our wolves. My axe is no longer the Citadel's.",
+          "inspect_text": "Lord Vane, standing tall without the savage frenzy in his eyes. He leans heavily on his frost-greatsword, breathing deep the cold air in sober resolve."
+        },
+        "stance": "allied",
+        "follows_player": false,
+        "story_vars": {
+          "throne_passages_revealed": "true"
+        },
+        "narration_keys": [
+          "transformation.wake.intro",
+          "transformation.wake.fragment",
+          "transformation.wake.reveal",
+          "transformation.secret_passages.revealed"
+        ],
+        "signals": [
+          "actor_awakened:lord_vane",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are Lord Vane, high chieftain of House Frost-Wolf.",
+        "When under the frost-bind, you believe the sacrifices are sacred offerings required to feed the Mountain Mother.",
+        "When awakened, you realize the Citadel has been harvesting your people and turning them into mindless fodder."
+      ],
+      "behavior_examples": [
+        "He rests his glacier greatsword on the ice dais with a ringing crash.",
+        "He studies you through narrowed, thoughtful grey eyes."
+      ]
+    }
+  },
+  {
+    "id": "warmaster_torin",
+    "name": "Warmaster Torin",
+    "room_id": "iron_ram_throne",
+    "initial_level": 12,
+    "initial_stats": {
+      "hp": 85,
+      "strength": 9,
+      "intelligence": 5,
+      "wisdom": 5
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "aliases": [
+      "torin",
+      "warmaster torin",
+      "commander torin",
+      "iron-ram warmaster",
+      "warmaster"
+    ],
+    "tags": [
+      "boss",
+      "house_head",
+      "iron_ram"
+    ],
+    "inspect_text": "A massive, broad-shouldered commander encased in steam-hissing black iron bastion armor, wielding an oversized hydraulic warhammer stamped with the horned ram sigil.",
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Warmaster Torin",
+          "who": "Master engineer and bastion commander, awakened from the furnace trance",
+          "fragment": "The fire in my head... it's out. We were building our own tombs down here. No more.",
+          "inspect_text": "Warmaster Torin, venting steam from his iron cuirass with a weary clatter. His heavy brow is clear, his grim gaze fixed forward with steady honor."
+        },
+        "stance": "allied",
+        "follows_player": false,
+        "story_vars": {
+          "throne_passages_revealed": "true"
+        },
+        "narration_keys": [
+          "transformation.wake.intro",
+          "transformation.wake.fragment",
+          "transformation.wake.reveal",
+          "transformation.secret_passages.revealed"
+        ],
+        "signals": [
+          "actor_awakened:warmaster_torin",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are Warmaster Torin, chief engineer and commander of House Iron-Ram.",
+        "When in the furnace trance, you view all lives as fuel to feed the great engine of the citadel.",
+        "When awakened, you are horrified by the waste of human life and determine to tear down the machinery."
+      ],
+      "behavior_examples": [
+        "Steam vents with a loud hiss from the exhaust manifolds across his pauldrons.",
+        "He rests his massive hydraulic hammer head-down on the iron floor."
+      ]
+    }
+  },
+  {
+    "id": "lady_sylvan",
+    "name": "Lady Sylvan",
+    "room_id": "frost_leopard_throne",
+    "initial_level": 12,
+    "initial_stats": {
+      "hp": 60,
+      "strength": 6,
+      "intelligence": 9,
+      "wisdom": 7
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "healing": {
+      "heal_amount": 10,
+      "cooldown_turns": 3,
+      "priority_threshold_percent": 60
+    },
+    "aliases": [
+      "sylvan",
+      "lady sylvan",
+      "matron",
+      "frost-leopard matron",
+      "mistress"
+    ],
+    "tags": [
+      "boss",
+      "house_head",
+      "frost_leopard",
+      "healer"
+    ],
+    "inspect_text": "An imperious sorceress draped in silvery shadow-silk and frost-leopard furs, holding a slender staff of woven crystal frost that hums with razor-sharp ice needles.",
+    "transformations": [
+      {
+        "id": "awakening",
+        "trigger": {
+          "kind": "stat",
+          "stat": "wisdom",
+          "gte": 10
+        },
+        "rename": {
+          "name": "Lady Sylvan",
+          "who": "Matron of the Frost-Leopard shadows, whose frost-mirror haze has cleared",
+          "fragment": "The reflections... they weren't my thoughts at all. The Citadel was whispering through the glass.",
+          "inspect_text": "Lady Sylvan, holding her crystal staff with refined poise. Her violet eyes are sharp and lucid, watching you with profound respect."
+        },
+        "stance": "allied",
+        "follows_player": false,
+        "story_vars": {
+          "throne_passages_revealed": "true"
+        },
+        "narration_keys": [
+          "transformation.wake.intro",
+          "transformation.wake.fragment",
+          "transformation.wake.reveal",
+          "transformation.secret_passages.revealed"
+        ],
+        "signals": [
+          "actor_awakened:lady_sylvan",
+          "actor_awakened"
+        ]
+      }
+    ],
+    "prompt_context": {
+      "character_notes": [
+        "You are Lady Sylvan, matron of House Frost-Leopard.",
+        "When in the mirror haze, you see the world as reflections to be shattered or reshaped.",
+        "When awakened, your mind is crystal clear, and you turn your deadly ice arts and healing against the citadel."
+      ],
+      "behavior_examples": [
+        "Her crystal staff glimmers with faint violet sparks.",
+        "She watches from the opal throne with calm, calculating elegance."
+      ]
+    }
   }
 ]

@@ -6,6 +6,7 @@ use crate::engine::state::{ActorStance, WorldState};
 use serde_json::json;
 
 use super::handlers::push_message;
+use crate::engine::reducer::combat::VEC_EMPTY_TAGS;
 
 /// Whether the pack's surround gate lets an encircled actor convert. With no
 /// rule (`SurroundRule::None`) every candidate converts and the pack gates via
@@ -89,6 +90,11 @@ pub(super) fn trigger_surrounded_hooks(
                 "actor_name": actor_name,
                 "room_id": room_id,
                 "item_id": item_id,
+                "tags": content
+                    .actor(actor_id)
+                    .map(|actor| &actor.tags)
+                    .unwrap_or(&VEC_EMPTY_TAGS),
+                "story_vars": state.story_vars.to_map(),
             }),
             lines,
         )

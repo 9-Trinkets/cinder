@@ -960,6 +960,66 @@
         "room_id": "courtyard_northwest",
         "x": 6.8,
         "y": 9.0
+      },
+      {
+        "room_id": "frost_wolf_gallery",
+        "x": 12.0,
+        "y": 4.0
+      },
+      {
+        "room_id": "frost_wolf_muster",
+        "x": 12.0,
+        "y": 2.0
+      },
+      {
+        "room_id": "frost_wolf_throne",
+        "x": 12.0,
+        "y": 0.0
+      },
+      {
+        "room_id": "iron_ram_gallery",
+        "x": 20.5,
+        "y": 17.0
+      },
+      {
+        "room_id": "iron_ram_muster",
+        "x": 23.8,
+        "y": 19.0
+      },
+      {
+        "room_id": "iron_ram_throne",
+        "x": 27.0,
+        "y": 21.0
+      },
+      {
+        "room_id": "frost_leopard_gallery",
+        "x": 3.5,
+        "y": 17.0
+      },
+      {
+        "room_id": "frost_leopard_muster",
+        "x": 0.2,
+        "y": 19.0
+      },
+      {
+        "room_id": "frost_leopard_throne",
+        "x": -3.0,
+        "y": 21.0
+      },
+      {
+        "room_id": "throne_passage_northeast",
+        "x": 24.5,
+        "y": 8.0
+      },
+      {
+        "room_id": "throne_passage_south",
+        "x": 12.0,
+        "y": 24.5
+      },
+      {
+        "room_id": "throne_passage_northwest",
+        "x": -0.5,
+        "y": 8.0
       }
     ],
     "reveal_conditions": [

@@ -192,6 +192,9 @@ pub struct ActorTransformation {
     /// `transformation.wake.*` prose, which would be wrong for it.
     #[serde(default)]
     pub silent: bool,
+    /// Story variables set in WorldState when the transformation is applied.
+    #[serde(default)]
+    pub story_vars: std::collections::BTreeMap<String, String>,
 }
 
 fn default_transformation_follows() -> bool {

@@ -5,7 +5,7 @@ mod periodic;
 use crate::content::types::ContentPack;
 use crate::engine::state::WorldState;
 
-static VEC_EMPTY_TAGS: Vec<String> = Vec::new();
+pub(crate) static VEC_EMPTY_TAGS: Vec<String> = Vec::new();
 
 pub(super) use attacks::apply_attack_target;
 pub(super) use defeat::{award_defeat_xp, defeat_actor, defeat_player_if_dead, spawn_defeat_drops};

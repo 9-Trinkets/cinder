@@ -262,6 +262,23 @@
         "voice": "handler",
         "text": "Floor four. Wait — my console is picking up civilian life signs. Actual people live down here? In this dump? Keep your weapons low; let's see what the locals have to say before you go swinging."
     },
+    "handler.first_mob_killed": {
+        "voice": "handler",
+        "text": "There it is. First one down, no help, no clever speech — just the job. I've left your own vitals on the readout now. Consider it a refresher, since you clearly needed one."
+    },
+    "handler.first_mob_charmed": {
+        "voice": "handler",
+        "text": "Oh, now that's a first. You didn't kill it, you walked up and closed a ring around it. Handlers are supposed to discourage improvisation, so naturally I've patched ally tracking into your console. Stop looking smug."
+    },
+    "handler.clean_shaman_reward": {
+        "voice": "handler",
+        "text": "The shaman's down and I have no idea how many golems are still standing down here — which means you actually did it. Clean. I'm upgrading nothing, don't get excited. Consider the readout a professional courtesy between operators."
+    },
+    "handler.sensory_enhancer_unlocked": {
+        "voice": "handler",
+        "text": "That's a Citadel-issue perception capsule. Either someone down there grew a conscience, or you charmed it out of one — either way, take it. I can already see the feed improving from up here, so the map's about to show you more than walls."
+    },
+    
     "bastion.entry_scene": "You step through the reinforced archway into the command bastion. Heavy steam vents hiss along the vaulted granite ceiling. Ahead, standing over a brass tactical map table, Captain Malik and Priest Harun are locked in a venomous exchange, oblivious to your entrance.",
     "harun.bastion_entry": "The transport cart sits idle on the gantry, Malik. The temple's patience is not infinite. Where is the offering? If your soldiers cannot secure a single boy, the high priests will find a commander who can.",
     "malik.bastion_entry": "Hold your tongue, priest! My sentries were killed when the steam line blew. There is an infiltrator loose in the complex, sabotaging valves, and you prattle about your holy offerings while my fortress burns—",
@@ -291,5 +308,6 @@
     "transformation.wake.intro": "The warmth of high wisdom stirs deep within {actor_name}. The fog in their mind shatters.",
     "transformation.wake.fragment": "\"{fragment}\"",
     "transformation.wake.reveal": "{actor_name} remembers who they are: {actor_name} is now {woken_name}.",
-    "item.sensory_enhancer.consumed": "You swallow the translucent blue capsule. An electric chill shoots through your veins, clearing the static behind your eyes. Your senses sharpen with startling clarity: you can feel where your allies breathe through the stone, and the hum of active teleport portals burns bright against your inner map."
+    "item.sensory_enhancer.consumed": "You swallow the translucent blue capsule. An electric chill shoots through your veins, clearing the static behind your eyes. Your senses sharpen with startling clarity: you can feel where your allies breathe through the stone, and the hum of active teleport portals burns bright against your inner map.",
+    "transformation.secret_passages.revealed": "As the frost-bind shatters from their mind, a gasp echoes through the high hall. Ancient counterweights shudder in the stone as hidden seals slide open, revealing the Citadel's secret perimeter ring connecting the three throne rooms!"
 }

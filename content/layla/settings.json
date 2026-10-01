@@ -44,7 +44,7 @@
   ],
   "feedback_channel_id": "handler-comms",
   "show_act_closure": false,
-  "vitals_sidebar_story_var": "",
+  "vitals_sidebar_story_var": "first_mob_defeated",
   "minimap_requires_story_var": "shaman_defeated",
   "level_reveal_room_prefix": "d",
   "quests_reveal_room_prefix": "village_",

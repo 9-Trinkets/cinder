@@ -28,6 +28,31 @@
         {
           "conditions": [
             {
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": [
+                "goblin",
+                "golem"
+              ]
+            },
+            {
+              "path": "actor_id",
+              "operator": "not_equal",
+              "value": "goblin-shaman"
+            },
+            {
+              "path": "story_vars.first_mob_defeated",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.first_mob_killed"
+          }
+        },
+        {
+          "conditions": [
+            {
               "path": "actor_id",
               "operator": "equal",
               "value": "goblin-shaman"
@@ -106,6 +131,23 @@
           "payload_template": {
             "kind": "acquire_item",
             "item_id": "shaman-ring"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "goblin-shaman"
+            },
+            {
+              "path": "story_vars.layla_attacked_floor_one_mob",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.clean_shaman_reward"
           }
         },
         {
@@ -494,7 +536,7 @@
     "rule": "effect_table",
     "rule_config": {
       "cases_path": "rules",
-      "next_on_match": "complete",
+      "next_on_match": "next",
       "next_on_default": "complete",
       "default_payload_template": {
         "effects": []
@@ -557,6 +599,53 @@
               "conversion.encircled",
               "conversion.encircled_follows"
             ]
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": [
+                "goblin",
+                "golem"
+              ]
+            },
+            {
+              "path": "actor_id",
+              "operator": "not_equal",
+              "value": "goblin-shaman"
+            },
+            {
+              "path": "story_vars.first_mob_charmed",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.first_mob_charmed"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": [
+                "goblin",
+                "golem"
+              ]
+            },
+            {
+              "path": "actor_id",
+              "operator": "not_equal",
+              "value": "goblin-shaman"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "first_mob_charmed",
+            "value": "true"
           }
         }
       ]
@@ -1325,6 +1414,10 @@
           {
             "kind": "narrate_message",
             "key": "item.sensory_enhancer.consumed"
+          },
+          {
+            "kind": "narrate_message",
+            "key": "handler.sensory_enhancer_unlocked"
           }
         ]
       }

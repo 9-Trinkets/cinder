@@ -225,7 +225,7 @@ fn floor5_citadel_map_definition_and_reveal_condition() {
         .expect("courtyard_center has map");
     assert_eq!(map.id, "the-frost-citadel");
     assert_eq!(map.label, "The Frost Citadel");
-    assert_eq!(map.rooms.len(), 7);
+    assert_eq!(map.rooms.len(), 19);
 
     // Each courtyard room is present in the map
     for room_id in EXPECTED_COURTYARD_ROOMS {
@@ -306,4 +306,113 @@ fn floor5_to_floor4_only_via_teleport() {
             .text()
             .contains("brass platform glows with blue light")
     );
+}
+
+#[test]
+fn floor5_house_hallways_and_thrones_navigate() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_north".to_string();
+
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+
+    // Walk north up House Frost-Wolf hallway to throne
+    runtime.run_turn("go north").expect("go north");
+    assert_eq!(runtime.current_room_id().unwrap(), "frost_wolf_gallery");
+
+    runtime.run_turn("go north").expect("go north");
+    assert_eq!(runtime.current_room_id().unwrap(), "frost_wolf_muster");
+
+    runtime.run_turn("go north").expect("go north");
+    assert_eq!(runtime.current_room_id().unwrap(), "frost_wolf_throne");
+
+    // Walk back south to courtyard_north
+    runtime.run_turn("go south").expect("go south");
+    assert_eq!(runtime.current_room_id().unwrap(), "frost_wolf_muster");
+
+    runtime.run_turn("go south").expect("go south");
+    assert_eq!(runtime.current_room_id().unwrap(), "frost_wolf_gallery");
+
+    runtime.run_turn("go south").expect("go south");
+    assert_eq!(runtime.current_room_id().unwrap(), "courtyard_north");
+}
+
+#[test]
+fn floor5_secret_passages_gated_by_awakening() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "frost_wolf_throne".to_string();
+
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+
+    // Secret passages are locked before awakening
+    let blocked_east = runtime.run_turn("go east").expect("turn runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "frost_wolf_throne");
+    let blocked_text = blocked_east.text();
+    assert!(
+        blocked_text.contains("cannot go that way")
+            || blocked_text.contains("can't go that way")
+            || blocked_text.contains("route sheet")
+            || blocked_text.contains("unknown"),
+        "expected blocked exit text: {blocked_text}"
+    );
+
+    // Awaken Lord Vane by elevating wisdom
+    let mut state2 = runtime.export_state().expect("export state");
+    state2
+        .actor_stats
+        .entry("lord_vane".to_string())
+        .or_default()
+        .insert("wisdom".to_string(), 10);
+
+    let pack2 = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let runtime2 = CinderRuntime::from_state(pack2, state2, false).expect("runtime creates");
+
+    // Taking a turn allows pending transformations to run
+    let wake_turn = runtime2.run_turn("look").expect("turn runs");
+    let final_state = runtime2.export_state().expect("export state");
+
+    assert_eq!(
+        final_state.story_vars.get("throne_passages_revealed"),
+        Some("true"),
+        "throne_passages_revealed must be true after awakening house head"
+    );
+    assert_eq!(
+        final_state.relationship("lord_vane").stance,
+        ActorStance::Allied,
+        "Lord Vane must be allied after awakening"
+    );
+    let wake_text = wake_turn.text();
+    assert!(
+        wake_text.contains("secret perimeter ring") || wake_text.contains("passages"),
+        "awakening must narrate the revelation of secret passages: {wake_text}"
+    );
+
+    // Now traverse the entire outer circle connecting all three throne rooms!
+    // 1. Frost-Wolf Throne -> Secret Conduit -> Iron-Ram Throne
+    runtime2.run_turn("go east").expect("go east");
+    assert_eq!(
+        runtime2.current_room_id().unwrap(),
+        "throne_passage_northeast"
+    );
+
+    runtime2.run_turn("go south").expect("go south");
+    assert_eq!(runtime2.current_room_id().unwrap(), "iron_ram_throne");
+
+    // 2. Iron-Ram Throne -> Under-Keep Flue -> Frost-Leopard Throne
+    runtime2.run_turn("go southwest").expect("go southwest");
+    assert_eq!(runtime2.current_room_id().unwrap(), "throne_passage_south");
+
+    runtime2.run_turn("go northwest").expect("go northwest");
+    assert_eq!(runtime2.current_room_id().unwrap(), "frost_leopard_throne");
+
+    // 3. Frost-Leopard Throne -> Shadow Aqueduct -> back to Frost-Wolf Throne
+    runtime2.run_turn("go north").expect("go north");
+    assert_eq!(
+        runtime2.current_room_id().unwrap(),
+        "throne_passage_northwest"
+    );
+
+    runtime2.run_turn("go northeast").expect("go northeast");
+    assert_eq!(runtime2.current_room_id().unwrap(), "frost_wolf_throne");
 }

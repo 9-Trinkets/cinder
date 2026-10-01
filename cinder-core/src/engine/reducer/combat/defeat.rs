@@ -8,7 +8,7 @@ use crate::engine::state::{ActorRelationship, GamePhase, WorldState, display_act
 use serde_json::json;
 use std::collections::BTreeMap;
 
-use super::actor_display_name;
+use super::{VEC_EMPTY_TAGS, actor_display_name};
 use crate::engine::reducer::handlers::push_message;
 
 /// Runs the shared defeat sequence for an actor whose health reached zero.
@@ -34,6 +34,10 @@ pub(in crate::engine::reducer) fn defeat_actor(
             "actor_id": actor_id,
             "actor_name": actor_name,
             "room_id": room_id,
+            "tags": content
+                .actor(actor_id)
+                .map(|actor| &actor.tags)
+                .unwrap_or(&VEC_EMPTY_TAGS),
             "story_vars": state.story_vars.to_map(),
         }),
         lines,
