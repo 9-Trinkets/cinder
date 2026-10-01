@@ -270,36 +270,44 @@ Instead of abstract JRPG classes applied to 60 dungeon mobs, roles exist for the
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
-│                          COMPANION ROLES                               │
+│                          PARTY ROLES                                   │
 ├──────────────────┬─────────────────┬───────────────────────────────────┤
-│ Role             │ Key Companions  │ Primary Skill Focus               │
+│ Role             │ Key Actors      │ Primary Skill Focus               │
 ├──────────────────┼─────────────────┼───────────────────────────────────┤
+│ **Commander**    │ Layla (Player)  │ Tactics, Directives, Sigils       │
 │ **Guardian**     │ Astrid, Sakhra  │ `defend` (Interception, Guard)    │
 │ **Healer**       │ Einar           │ `heal` (Field Mending, Draughts)  │
 │ **Skirmisher**   │ Malik, Awakened │ `attack` (Counters, Multi-strike) │
-│ **Apprentice**   │ Layla (Player)  │ `spell` (Sigils, Inscriptions)    │
 └──────────────────┴─────────────────┴───────────────────────────────────┘
 ```
 
-### 6.1 Astrid (Guardian)
-- **Role:** High defense frontline protector.
-- **Starting Skills:** `strike` (Attack), `shield_guard` (Defend: intercepts attacks when player HP < 50%).
+### 6.1 Layla (Commander)
+- **Role:** Battlefield orchestrator who sets party stance, issues tactical directives, and shapes the combat zone with arcane chalk sigils.
+- **Starting Skills:**
+  - `strike` (Attack): Direct physical blow.
+  - `trace` (Spell): Inscribes tactical chalk marks on the room floor.
+  - `command_focus` (Command): Designates a target for focused companion strikes, boosting ally attack readiness and coordination.
+- **Progression Unlocks (Leveling & Scrolls):**
+  - **Level 2 Unlock:** `defensive_brace` (Command: orders the Guardian and party to brace, boosting ally defense during reaction windows).
+  - **Level 3 Unlock:** `rallying_surge` (Command: bolsters companion readiness and restores morale).
+  - **Diegetic Scroll Progression (Sigils):**
+    - `drain-scroll` → `drain_sigil` (Leeches vitality from hostile occupants).
+    - `spawn-scroll` → `spawn_sigil` (Summons allied elemental reinforcements).
+    - `teleport-scroll` → `teleport_sigil` (Instant tactical repositioning / extraction).
+
+### 6.2 Astrid (Guardian)
+- **Role:** High defense frontline protector who shields the Commander and party.
+- **Starting Skills:** `strike` (Attack), `shield_guard` (Defend: intercepts attacks when Commander/allies HP < 50%).
 - **Progression Unlocks:** 
   - Level 2: `iron_wall` (Self Defense +2)
   - Level 3: `bastion_stand` (Intercepts damage at 50% reduction)
 
-### 6.2 Einar (Healer)
-- **Role:** Midline herbalist and combat medic.
+### 6.3 Einar (Healer)
+- **Role:** Midline herbalist and combat medic keeping the party alive.
 - **Starting Skills:** `strike` (Attack), `field_mending` (Heal: restores 5 HP to allies below 60% HP).
 - **Progression Unlocks:**
   - Level 2: `soothing_draught` (Heal: restores 8 HP and clears status ailments)
   - Level 3: `revitalize` (Heal: party-wide regenerative pulse)
-
-### 6.3 Layla (Apprentice / Sigilist)
-- **Role:** Tactical field commander utilizing chalk marks and sigil manipulation.
-- **Starting Skills:** `strike` (Attack), `trace` (Spell: inscribe chalk marks).
-- **Progression Unlocks:**
-  - Scrolls / Leveling: `drain_sigil`, `spawn_sigil`, `teleport_sigil`.
 
 ---
 
@@ -352,7 +360,7 @@ The linter verifies that:
 |---|---|---|---|
 | **Level Unlocks** | Declared `LevelDefinition.unlocks` retired and deleted. | `unlocks: Vec<String>` exists in `LevelDefinition` and `levels.json`. | **Restored and activated.** Leveling up awards skills from `unlocks`. |
 | **Skill Definition** | 7-way meta-grant wrapper (`grants: { action, healing, behavior_rule, stat_bonus, ... }`). | Three disconnected systems (`actions.json`, `behavior.json`, `ActorHealingSpec`). | **Unified `skills.json`** with 5 operational kinds (`attack`, `defend`, `heal`, `spell`, `passive`). |
-| **Cast Coverage** | Forced all 60 dungeon mobs into 5 JRPG classes with fake skills (`vanish`, etc.). | Dungeon enemies use stats and neuron behaviors. Only companions and player need skills. | Roles focused on **companions & player** (Guardian, Healer, Skirmisher, Apprentice). |
+| **Cast Coverage** | Forced all 60 dungeon mobs into 5 JRPG classes with fake skills (`vanish`, etc.). | Dungeon enemies use stats and neuron behaviors. Only companions and player need skills. | Roles focused on **party members** (Commander, Guardian, Healer, Skirmisher). |
 | **Skill Visibility** | None. Purely speculative status label discussion. | No UI or command exists to view companion or player abilities. | Clear UI specification: **Status Panel, Companion Inspect, Party Sidebar HUD**. |
 | **Boss Bugs** | Documented bugs in §3 but left them unpatched in content. | Floor 5 bosses were Lv 1 instead of 12; Lady Sylvan had broken healing spec. | **Patched directly:** `actors.json` and `messages.json` fixed and verified clean. |
 
