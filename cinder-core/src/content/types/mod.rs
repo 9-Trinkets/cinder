@@ -89,3 +89,6 @@ pub use content_pack::{ContentPack, RoomConsumableRef};
 
 mod item_defs;
 pub use item_defs::{ItemDefinition, ItemKind};
+
+mod skills;
+pub use skills::*;

@@ -91,6 +91,8 @@ pub struct ActorDefinition {
     pub resistances: BTreeMap<String, i32>,
     #[serde(default)]
     pub healing: Option<ActorHealingSpec>,
+    #[serde(default)]
+    pub skills: Vec<String>,
     pub prompt_context: ActorPromptContext,
     #[serde(default)]
     pub act_cast: Option<ActorActCast>,

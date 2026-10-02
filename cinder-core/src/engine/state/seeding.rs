@@ -3,7 +3,7 @@ use super::consumable_key;
 use crate::content::types::{ContentPack, DropPoolSpec, DropSpec, StatDefinition};
 use rand::Rng;
 use rand::seq::SliceRandom;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 pub(super) fn seeded_pair_stats(
     content: &ContentPack,
@@ -51,6 +51,14 @@ pub(super) fn seeded_actor_levels(content: &ContentPack) -> BTreeMap<String, u32
         .actors
         .iter()
         .map(|actor| (actor.id.clone(), actor.level.max(1)))
+        .collect()
+}
+
+pub(super) fn seeded_actor_skills(content: &ContentPack) -> BTreeMap<String, BTreeSet<String>> {
+    content
+        .actors
+        .iter()
+        .map(|actor| (actor.id.clone(), actor.skills.iter().cloned().collect()))
         .collect()
 }
 

@@ -1,0 +1,75 @@
+{
+  "skills": [
+    {
+      "id": "strike",
+      "label": "Strike",
+      "kind": "attack",
+      "target": "single_enemy",
+      "description": "A focused physical attack against a target in the room.",
+      "attack": {
+        "stat": "strength",
+        "power_multiplier": 1
+      }
+    },
+    {
+      "id": "intercept",
+      "label": "Intercept",
+      "kind": "defend",
+      "target": "single_ally",
+      "description": "Steps in front of incoming attacks aimed at a vulnerable ally, absorbing the blow.",
+      "defend": {
+        "interception": true,
+        "trigger_condition": {
+          "ally_health_at_most_percent": 50,
+          "self_health_at_least_percent": 25
+        }
+      },
+      "narration_key": "combat.guard_intercepts"
+    },
+    {
+      "id": "hold",
+      "label": "Hold",
+      "kind": "defend",
+      "target": "self_actor",
+      "description": "Holds defensive stance when critically wounded, avoiding risky exposure.",
+      "defend": {
+        "interception": false,
+        "trigger_condition": {
+          "self_health_at_most_percent": 25
+        }
+      },
+      "narration_key": "combat.party_holds"
+    },
+    {
+      "id": "heal",
+      "label": "Heal",
+      "kind": "heal",
+      "target": "lowest_health_ally",
+      "description": "Unseals soothing draughts for any wounded ally, restoring health.",
+      "heal": {
+        "amount": 5
+      },
+      "narration_key": "combat.einar_heal"
+    },
+    {
+      "id": "trace",
+      "label": "Trace",
+      "kind": "spell",
+      "target": "room",
+      "description": "Inscribes glowing tactical chalk sigils upon the stone.",
+      "spell": {
+        "requires_item": "magic-chalk"
+      }
+    },
+    {
+      "id": "teleport",
+      "label": "Teleport",
+      "kind": "spell",
+      "target": "anchor",
+      "description": "Instantly transports the party back to the armed teleportation anchor.",
+      "spell": {
+        "requires_story_var": "knows_teleport"
+      }
+    }
+  ]
+}

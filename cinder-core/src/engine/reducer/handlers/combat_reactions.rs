@@ -1,4 +1,4 @@
-use crate::content::types::{ContentPack, PartyReactionAction, PartySupportEffect};
+use crate::content::types::{ContentPack, PartyReactionAction, PartySupportEffect, SkillKind};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::party_policy::{
     PartyReactionDecision, consume_party_reaction, resolve_party_reaction_target,
@@ -214,11 +214,7 @@ fn resolve_support(
         return None;
     };
     let heal_delta = if stat == &content.settings.combat.health_stat_id {
-        state
-            .actor(content, &decision.actor_id)
-            .and_then(|a| a.healing.as_ref())
-            .map(|h| h.amount)
-            .unwrap_or(*delta)
+        companion_heal_amount(content, state, &decision.actor_id).unwrap_or(*delta)
     } else {
         *delta
     };
@@ -237,6 +233,19 @@ fn resolve_support(
         stat: stat.clone(),
         message: decision.message.clone(),
     })
+}
+
+fn companion_heal_amount(content: &ContentPack, state: &WorldState, actor_id: &str) -> Option<i32> {
+    if let Some(heal) = state
+        .actor_skill_of_kind(content, actor_id, SkillKind::Heal)
+        .and_then(|skill| skill.heal.as_ref())
+    {
+        return Some(heal.amount);
+    }
+    state
+        .actor(content, actor_id)
+        .and_then(|actor| actor.healing.as_ref())
+        .map(|healing| healing.amount)
 }
 
 fn render(content: &ContentPack, outcomes: &[PartyReactionOutcome], lines: &mut NarrativeLines) {

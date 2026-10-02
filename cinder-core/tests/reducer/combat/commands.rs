@@ -1,9 +1,10 @@
 use super::super::common::*;
 use super::{attack_action, attack_input, transcript};
 use cinder_core::content::types::{
-    CombatSettingsDefinition, DropSpec, ItemDefinition, LevelDefinition,
+    CombatSettingsDefinition, DropSpec, ItemDefinition, LevelDefinition, PackMessage,
+    SkillDefinition,
 };
-use cinder_core::engine::state::{ActorStance, WorldState};
+use cinder_core::engine::state::{ActorRelationship, ActorStance, WorldState};
 use std::collections::BTreeMap;
 
 #[test]
@@ -84,7 +85,7 @@ fn defeating_an_actor_awards_full_xp_to_every_party_member_with_own_curve() {
     state.current_room_id = LOUNGE_ID.to_string();
     state.set_relationship(
         ACTOR_B_ID,
-        cinder_core::engine::state::ActorRelationship {
+        ActorRelationship {
             stance: ActorStance::Allied,
             follows_player: true,
         },
@@ -276,4 +277,94 @@ fn partial_resistance_reduces_attack_damage() {
     );
 
     assert_eq!(state.actor_stat("golem", "stamina"), 6);
+}
+
+#[test]
+fn leveling_up_grants_declared_unlocks_and_narrates_them_per_actor() {
+    let mut pack = reducer_test_pack();
+    pack.settings.combat = CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_ID.to_string(),
+        health_stat_id: "stamina".to_string(),
+        attack_stat_id: "confidence".to_string(),
+        defense_stat_id: "hunger".to_string(),
+        ..CombatSettingsDefinition::default()
+    };
+    pack.levels.default = vec![LevelDefinition {
+        exp_required: 10,
+        stat_changes: BTreeMap::from([("stamina".to_string(), 1)]),
+        unlocks: vec!["power_slice".to_string()],
+    }];
+    pack.skills.skills = vec![SkillDefinition {
+        id: "power_slice".to_string(),
+        label: "Power Slice".to_string(),
+        ..SkillDefinition::default()
+    }];
+    pack.messages.insert(
+        "combat.player_skill_unlocked".to_string(),
+        PackMessage::Narration("You unlocked {skill_label}!".to_string()),
+    );
+    pack.messages.insert(
+        "combat.skill_unlocked".to_string(),
+        PackMessage::Narration("{actor_name} unlocked {skill_label}!".to_string()),
+    );
+    attack_action(&mut pack);
+    let mut goblin = test_actor("goblin", "goblin", LOUNGE_ID);
+    goblin.attackable = true;
+    goblin.initial_stats = BTreeMap::from([("stamina".to_string(), 1)]);
+    goblin.xp_drop = 10;
+    pack.actors.push(goblin);
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = LOUNGE_ID.to_string();
+    state.set_relationship(
+        ACTOR_B_ID,
+        ActorRelationship {
+            stance: ActorStance::Allied,
+            follows_player: true,
+        },
+    );
+    assert!(!state.actor_has_skill(ACTOR_A_ID, "power_slice"));
+
+    let lines = drive_actor_command(
+        &mut state,
+        &pack,
+        "attack",
+        attack_input(Some("goblin"), Some("goblin")),
+    )
+    .lines;
+
+    // Full 10 XP reaches both the player and the follower, so both unlock.
+    assert!(state.actor_has_skill(ACTOR_A_ID, "power_slice"));
+    assert!(state.actor_has_skill(ACTOR_B_ID, "power_slice"));
+
+    let transcripts = transcript(&lines);
+    assert!(
+        transcripts.contains("You unlocked Power Slice!"),
+        "expected the player unlock line, got: {transcripts:?}"
+    );
+    assert!(
+        transcripts.contains(&format!("{ACTOR_B_NAME} unlocked Power Slice!")),
+        "expected the follower unlock line, got: {transcripts:?}"
+    );
+    // Already-owned skills must not re-narrate on subsequent level-ups.
+    let mut goblin2 = test_actor("goblin2", "goblin2", LOUNGE_ID);
+    goblin2.attackable = true;
+    goblin2.initial_stats = BTreeMap::from([("stamina".to_string(), 1)]);
+    goblin2.xp_drop = 10;
+    pack.actors.push(goblin2);
+    rebuild_test_pack_indexes(&mut pack);
+    let second = transcript(
+        &drive_actor_command(
+            &mut state,
+            &pack,
+            "attack",
+            attack_input(Some("goblin2"), Some("goblin2")),
+        )
+        .lines,
+    );
+    assert!(
+        !second.contains("unlocked Power Slice"),
+        "a re-granted skill must not narrate a second unlock, got: {second:?}"
+    );
 }

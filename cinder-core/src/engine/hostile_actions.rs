@@ -7,7 +7,7 @@
 //! Rust retains reducer eligibility backstops, cooldown scheduling, and damage
 //! mechanics, but does not add another selection policy here.
 
-use crate::content::types::ContentPack;
+use crate::content::types::{ContentPack, SkillKind};
 use crate::engine::behavior;
 use crate::engine::events::WorldEvent;
 use crate::engine::state::{ActorStance, WorldState};
@@ -29,22 +29,42 @@ pub(crate) fn plan_rules_hostile_actions(
         .into_iter()
         .filter_map(|actor_id| {
             let strike = behavior::strike_event(content, state, &actor_id)?;
-            if let Some(healing) = state
-                .actor(content, &actor_id)
-                .and_then(|a| a.healing.as_ref())
+            if let Some((amount, message)) = hostile_healing_spec(content, state, &actor_id)
+                && let Some(target_id) = select_hostile_heal_target(content, state, &actor_id)
             {
-                if let Some(target_id) = select_hostile_heal_target(content, state, &actor_id) {
-                    return Some(WorldEvent::HostileHeal {
-                        actor_id,
-                        target_id,
-                        amount: healing.amount,
-                        message: healing.message.clone(),
-                    });
-                }
+                return Some(WorldEvent::HostileHeal {
+                    actor_id,
+                    target_id,
+                    amount,
+                    message,
+                });
             }
             Some(strike)
         })
         .collect()
+}
+
+/// Healing available to a hostile, preferring a declared `heal` skill over the
+/// legacy `ActorDefinition.healing` fallback.
+fn hostile_healing_spec(
+    content: &ContentPack,
+    state: &WorldState,
+    actor_id: &str,
+) -> Option<(i32, String)> {
+    let legacy = state
+        .actor(content, actor_id)
+        .and_then(|actor| actor.healing.as_ref());
+    if let Some(skill) = state.actor_skill_of_kind(content, actor_id, SkillKind::Heal)
+        && let Some(heal) = &skill.heal
+    {
+        let message = skill
+            .narration_key
+            .clone()
+            .or_else(|| legacy.map(|healing| healing.message.clone()))
+            .unwrap_or_default();
+        return Some((heal.amount, message));
+    }
+    legacy.map(|healing| (healing.amount, healing.message.clone()))
 }
 
 fn select_hostile_heal_target(

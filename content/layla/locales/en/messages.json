@@ -35,6 +35,8 @@
     "combat.party_holds_large": "{count} wounded allies hold back.",
     "combat.party_level_up_group": "The {actors} grow stronger. Level {level}.",
     "combat.party_level_up_large": "{count} allies grow stronger. Level {level}.",
+    "combat.skill_unlocked": "{actor_name} unlocked {skill_label}!",
+    "combat.player_skill_unlocked": "You unlocked {skill_label}!",
     "party.order_guard_assigned": {
         "voice": "system",
         "text": "{actor} assigned to guard."

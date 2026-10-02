@@ -40,6 +40,8 @@
   "equipment.already_equipped": "The {item} is already equipped.",
   "combat.defeat_drop": "The {actor} crumbles. Left behind: {items}.",
   "combat.level_up": "{actor_name} grows stronger. Level {level}.",
+  "combat.skill_unlocked": "{actor_name} unlocked {skill_label}!",
+  "combat.player_skill_unlocked": "You unlocked {skill_label}!",
   "combat.guard_intercepts": "The {actor} strikes, but {guard} steps in front of you, taking {damage} damage.",
   "combat.guard_falls": "{guard} crumples from the blow and collapses.",
   "error.command_not_now": "You can't {verb} right now.",

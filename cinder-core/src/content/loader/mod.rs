@@ -12,8 +12,8 @@ use crate::content::types::{
     BehaviorDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition, LevelingDefinition,
     MapDefinition, MovementConfigDefinition, OpeningDefinition, OpeningMenuDefinition,
     OpeningMovieDefinition, PresentationDefinition, RoomDefinition, SequencesDefinition,
-    SpeechConfigDefinition, SpeechIntentsConfig, StatsDefinition, TeleportNetworkDefinition,
-    UiTextDefinition,
+    SkillsDefinition, SpeechConfigDefinition, SpeechIntentsConfig, StatsDefinition,
+    TeleportNetworkDefinition, UiTextDefinition,
 };
 use serde_json::Value;
 use std::collections::BTreeMap;
@@ -156,10 +156,12 @@ pub fn load_pack_from_dir_with_locale(
         )?
         .unwrap_or_default();
     let levels = read_optional_json::<LevelingDefinition>(path, "levels.json")?.unwrap_or_default();
+    let skills = read_optional_json::<SkillsDefinition>(path, "skills.json")?.unwrap_or_default();
 
     let room_index = build_index(&rooms, |room| &room.id);
     let actor_index = build_index(&actors, |actor| &actor.id);
     let action_index = build_index(&actions, |action| &action.id);
+    let skill_index = build_index(&skills.skills, |skill| &skill.id);
 
     Ok(ContentPack {
         locale: effective_locale,
@@ -189,9 +191,11 @@ pub fn load_pack_from_dir_with_locale(
         variables,
         levels,
         messages,
+        skills,
         room_index,
         actor_index,
         action_index,
+        skill_index,
     })
 }
 

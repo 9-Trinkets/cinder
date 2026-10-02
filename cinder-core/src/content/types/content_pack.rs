@@ -40,9 +40,11 @@ pub struct ContentPack {
     /// sites skip lines whose key the pack does not define. Entries may be
     /// plain strings (world narration) or voice-tagged handler messages.
     pub messages: BTreeMap<String, PackMessage>,
+    pub skills: SkillsDefinition,
     pub room_index: HashMap<String, usize>,
     pub actor_index: HashMap<String, usize>,
     pub action_index: HashMap<String, usize>,
+    pub skill_index: HashMap<String, usize>,
 }
 
 #[derive(Debug, Clone, Copy)]
@@ -52,6 +54,12 @@ pub struct RoomConsumableRef<'a> {
 }
 
 impl ContentPack {
+    pub fn skill(&self, id: &str) -> Option<&SkillDefinition> {
+        self.skill_index
+            .get(id)
+            .and_then(|&index| self.skills.skills.get(index))
+    }
+
     pub fn map_for_room(&self, room_id: &str) -> Option<&MapDefinition> {
         self.maps
             .iter()

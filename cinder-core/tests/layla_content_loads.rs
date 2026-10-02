@@ -1055,3 +1055,109 @@ fn layla_shipped_pack_invariants_and_wiring() {
             if key == "handler_introduced" && value == "true"
     ));
 }
+
+#[test]
+fn layla_skills_declare_only_live_behaviors() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let ids: Vec<&str> = pack
+        .skills
+        .skills
+        .iter()
+        .map(|skill| skill.id.as_str())
+        .collect();
+    assert_eq!(
+        ids,
+        vec!["strike", "intercept", "hold", "heal", "trace", "teleport"],
+        "skills.json must stay a 1:1 map of the six live behaviors"
+    );
+    assert!(
+        pack.skills
+            .skills
+            .iter()
+            .all(|skill| !skill.label.is_empty())
+    );
+}
+
+#[test]
+fn layla_actor_skills_resolve_against_skills_json() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    for actor in &pack.actors {
+        for skill_id in &actor.skills {
+            assert!(
+                pack.skill(skill_id).is_some(),
+                "actor '{}' declares unknown skill '{skill_id}'",
+                actor.id
+            );
+        }
+    }
+}
+
+#[test]
+fn layla_party_actors_keep_their_live_reactive_behaviors() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let state = cinder_core::engine::state::WorldState::new(&pack);
+
+    // Astrid is the Guardian: interception and the survival hold must survive
+    // the skills gate, which only binds actors that declare skills.
+    for skill_id in ["strike", "hold", "intercept"] {
+        assert!(
+            state.actor_has_skill("commander_astrid", skill_id),
+            "Astrid lost '{skill_id}'"
+        );
+    }
+    assert!(!state.actor_has_skill("commander_astrid", "heal"));
+
+    for skill_id in ["strike", "hold", "heal"] {
+        assert!(
+            state.actor_has_skill("einar", skill_id),
+            "Einar lost '{skill_id}'"
+        );
+    }
+    assert!(!state.actor_has_skill("einar", "intercept"));
+
+    for skill_id in ["strike", "hold", "trace"] {
+        assert!(
+            state.actor_has_skill("player", skill_id),
+            "Layla lost '{skill_id}'"
+        );
+    }
+}
+
+#[test]
+fn actors_outside_the_skills_system_are_ungated() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let state = cinder_core::engine::state::WorldState::new(&pack);
+
+    // Golems and sprites are converted to allies at runtime via hooks and rely
+    // on the rule-driven reactions. They declare no skills, so they must keep
+    // an empty set rather than being implicitly gated out of holding.
+    for actor_id in ["golem-dark-nw", "handler"] {
+        assert!(
+            state
+                .actor_skills
+                .get(actor_id)
+                .is_some_and(|s| s.is_empty()),
+            "'{actor_id}' should stay outside the skills system"
+        );
+    }
+}
+
+#[test]
+fn level_up_unlocks_reference_declared_skills() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    // Layla deliberately grants no level-up unlocks yet: every reaction the
+    // engine supports is excluded for the player actor, so an unlock would be
+    // cosmetic. The invariant still holds for whenever unlocks are authored.
+    let unlocks = pack
+        .levels
+        .default
+        .iter()
+        .chain(pack.levels.actors.values().flatten())
+        .flat_map(|level| level.unlocks.iter());
+    for skill_id in unlocks {
+        assert!(
+            pack.skill(skill_id).is_some(),
+            "levels.json unlocks unknown skill '{skill_id}'"
+        );
+    }
+}

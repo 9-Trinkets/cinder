@@ -15,6 +15,11 @@
       "me",
       "myself"
     ],
+    "skills": [
+      "strike",
+      "hold",
+      "trace"
+    ],
     "inspect_text": "Yourself.",
     "attackable": false,
     "tags": [],
@@ -3143,6 +3148,11 @@
     "inspect_text": "A formidable woman in scarred steel plate armor, bearing a towering iron-rimmed kite shield and a heavy broadsword. Her blonde hair is braided tightly across her brow, and her icy grey eyes burn with unbroken defiance.",
     "attackable": false,
     "initial_hostile": false,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_stats": {
       "hp": 34,
       "strength": 6,
@@ -3191,6 +3201,11 @@
       "amount": 5,
       "message": "combat.einar_heal"
     },
+    "skills": [
+      "strike",
+      "hold",
+      "heal"
+    ],
     "inspect_text": "A quiet, pale young man with sharp Nordic features and observant ice-blue eyes, dressed in tattered grey scholar robes trimmed with frayed silver thread. A leather satchel of dried herbs and glass phials hangs at his hip.",
     "attackable": false,
     "initial_hostile": false,

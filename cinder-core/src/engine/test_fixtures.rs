@@ -50,6 +50,13 @@ pub fn rebuild_test_pack_indexes(pack: &mut ContentPack) {
         .enumerate()
         .map(|(index, action)| (action.id.clone(), index))
         .collect();
+    pack.skill_index = pack
+        .skills
+        .skills
+        .iter()
+        .enumerate()
+        .map(|(index, skill)| (skill.id.clone(), index))
+        .collect();
 }
 
 /// A unique test directory under this crate's `target/` tree.

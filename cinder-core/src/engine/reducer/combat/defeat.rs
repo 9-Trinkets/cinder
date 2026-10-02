@@ -1,4 +1,6 @@
-use crate::content::types::{ContentPack, ItemStorageTarget, XpDistributionMode, XpRecipientMode};
+use crate::content::types::{
+    ContentPack, ItemStorageTarget, LevelDefinition, XpDistributionMode, XpRecipientMode,
+};
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_narrating_world_hook_effects;
 use crate::engine::narrative::NarrativeLines;
@@ -69,6 +71,7 @@ pub(in crate::engine::reducer) fn award_defeat_xp(
         content.settings.combat.xp_distribution.mode,
     );
     let mut leveled: Vec<(String, u32)> = Vec::new();
+    let mut unlocked_skills: Vec<(String, String)> = Vec::new();
     for (target, award) in targets.into_iter().zip(awards) {
         if award == 0 {
             continue;
@@ -97,6 +100,7 @@ pub(in crate::engine::reducer) fn award_defeat_xp(
                     eprintln!("[cinder] level stat error ({target}/{stat}): {error}");
                 }
             }
+            grant_level_unlocks(state, &target, definition, &mut unlocked_skills);
         }
         state.actor_xp.insert(target.clone(), accrued);
         *state.actor_level.entry(target.clone()).or_insert(1) = level;
@@ -158,6 +162,58 @@ pub(in crate::engine::reducer) fn award_defeat_xp(
                     ],
                 );
             }
+        }
+    }
+    narrate_unlocked_skills(state, content, player_actor_id, unlocked_skills, lines);
+}
+
+fn grant_level_unlocks(
+    state: &mut WorldState,
+    actor_id: &str,
+    definition: &LevelDefinition,
+    unlocked_skills: &mut Vec<(String, String)>,
+) {
+    for skill_id in &definition.unlocks {
+        if state.grant_actor_skill(actor_id, skill_id) {
+            unlocked_skills.push((actor_id.to_string(), skill_id.clone()));
+        }
+    }
+}
+
+fn narrate_unlocked_skills(
+    state: &WorldState,
+    content: &ContentPack,
+    player_actor_id: &str,
+    unlocked_skills: Vec<(String, String)>,
+    lines: &mut NarrativeLines,
+) {
+    for (actor_id, skill_id) in unlocked_skills {
+        let skill_label = content
+            .skill(&skill_id)
+            .map(|s| s.label.as_str())
+            .unwrap_or(skill_id.as_str());
+        let actor_name = content
+            .actor(&actor_id)
+            .map(|actor| display_actor_name(state, actor))
+            .unwrap_or_else(|| actor_id.clone());
+        if actor_id == player_actor_id {
+            push_message(
+                lines,
+                content,
+                "combat.player_skill_unlocked",
+                &[("skill_label", skill_label), ("skill", &skill_id)],
+            );
+        } else {
+            push_message(
+                lines,
+                content,
+                "combat.skill_unlocked",
+                &[
+                    ("actor_name", actor_name.as_str()),
+                    ("skill_label", skill_label),
+                    ("skill", &skill_id),
+                ],
+            );
         }
     }
 }

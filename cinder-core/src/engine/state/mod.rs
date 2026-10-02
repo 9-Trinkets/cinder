@@ -1,7 +1,8 @@
 use rand::Rng;
 
 use crate::content::types::{
-    ActorDefinition, ContentPack, OpeningMenuOptionDefinition, RoomDefinition, StatDefinition,
+    ActorDefinition, ContentPack, OpeningMenuOptionDefinition, RoomDefinition, SkillDefinition,
+    SkillKind, StatDefinition,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet, HashMap};
@@ -152,6 +153,9 @@ pub struct WorldState {
     /// Per-actor current level. Absent entries read as 1.
     #[serde(default)]
     pub actor_level: BTreeMap<String, u32>,
+    /// Acquired skills per actor.
+    #[serde(default)]
+    pub actor_skills: BTreeMap<String, BTreeSet<String>>,
     /// Playheads of content-declared scripted conversation sequences, keyed by
     /// sequence id. Every pack sequence is present at session creation; the
     /// opening sequence starts running.
@@ -370,6 +374,7 @@ impl WorldState {
             actor_equipment: seeded_actor_equipment(content),
             actor_xp: BTreeMap::new(),
             actor_level: seeded_actor_levels(content),
+            actor_skills: seeded_actor_skills(content),
             scripted_sequences,
             transition_summaries: BTreeMap::new(),
             spawn_counter: 0,
@@ -424,6 +429,37 @@ impl WorldState {
         self.transformed_stages
             .get(actor_id)
             .is_some_and(|stages| stages.iter().any(|stage| stage == stage_id))
+    }
+
+    /// Whether an actor possesses a given skill.
+    pub fn actor_has_skill(&self, actor_id: &str, skill_id: &str) -> bool {
+        self.actor_skills
+            .get(actor_id)
+            .is_some_and(|skills| skills.contains(skill_id))
+    }
+
+    /// Grants a skill to an actor. Returns true if the skill was newly acquired.
+    pub fn grant_actor_skill(&mut self, actor_id: &str, skill_id: &str) -> bool {
+        self.actor_skills
+            .entry(actor_id.to_string())
+            .or_default()
+            .insert(skill_id.to_string())
+    }
+
+    /// The first skill of `kind` this actor owns, resolved through the content
+    /// pack. Skills are stored in a `BTreeSet`, so a given kind resolves
+    /// deterministically by skill id.
+    pub fn actor_skill_of_kind<'a>(
+        &self,
+        content: &'a ContentPack,
+        actor_id: &str,
+        kind: SkillKind,
+    ) -> Option<&'a SkillDefinition> {
+        self.actor_skills
+            .get(actor_id)?
+            .iter()
+            .filter_map(|skill_id| content.skill(skill_id))
+            .find(|skill| skill.kind == Some(kind))
     }
 
     /// Transformation stages applied to an actor, in application order.
@@ -529,8 +565,8 @@ pub struct WorldSnapshot {
 
 mod seeding;
 use seeding::{
-    seeded_actor_equipment, seeded_actor_inventories, seeded_actor_levels, seeded_actor_stats,
-    seeded_feature_consumable_stock, seeded_pair_stats,
+    seeded_actor_equipment, seeded_actor_inventories, seeded_actor_levels, seeded_actor_skills,
+    seeded_actor_stats, seeded_feature_consumable_stock, seeded_pair_stats,
 };
 mod act_cast;
 pub use act_cast::{

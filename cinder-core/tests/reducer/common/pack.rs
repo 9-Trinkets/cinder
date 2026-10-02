@@ -265,6 +265,7 @@ pub fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
         initial_inventory: BTreeMap::new(),
         game_data: BTreeMap::new(),
         healing: None,
+        skills: vec![],
     }
 }
 
@@ -306,6 +307,13 @@ pub fn rebuild_test_pack_indexes(pack: &mut ContentPack) {
         .iter()
         .enumerate()
         .map(|(index, action)| (action.id.clone(), index))
+        .collect::<HashMap<_, _>>();
+    pack.skill_index = pack
+        .skills
+        .skills
+        .iter()
+        .enumerate()
+        .map(|(index, skill)| (skill.id.clone(), index))
         .collect::<HashMap<_, _>>();
 }
 
