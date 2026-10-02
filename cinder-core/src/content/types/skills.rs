@@ -65,10 +65,15 @@ pub struct HealTriggerCondition {
 }
 
 /// Specification for a healing skill.
+///
+/// Potency is deliberately *not* declared here: healing strength is a per-actor
+/// property (`ActorDefinition.healing.amount` ranges from 4 to 10 across the
+/// Layla pack's clergy and bosses), so `amount` is only an optional override for
+/// the rare skill that needs to differ from its actor.
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct HealSkillSpec {
     #[serde(default)]
-    pub amount: i32,
+    pub amount: Option<i32>,
     #[serde(default)]
     pub trigger_condition: Option<HealTriggerCondition>,
 }

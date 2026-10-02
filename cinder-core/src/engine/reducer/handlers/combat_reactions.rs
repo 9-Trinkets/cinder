@@ -235,17 +235,19 @@ fn resolve_support(
     })
 }
 
+/// Healing potency for a companion. Potency is per-actor, so a skill only
+/// overrides it when it explicitly declares an amount.
 fn companion_heal_amount(content: &ContentPack, state: &WorldState, actor_id: &str) -> Option<i32> {
-    if let Some(heal) = state
+    state
         .actor_skill_of_kind(content, actor_id, SkillKind::Heal)
         .and_then(|skill| skill.heal.as_ref())
-    {
-        return Some(heal.amount);
-    }
-    state
-        .actor(content, actor_id)
-        .and_then(|actor| actor.healing.as_ref())
-        .map(|healing| healing.amount)
+        .and_then(|heal| heal.amount)
+        .or_else(|| {
+            state
+                .actor(content, actor_id)
+                .and_then(|actor| actor.healing.as_ref())
+                .map(|healing| healing.amount)
+        })
 }
 
 fn render(content: &ContentPack, outcomes: &[PartyReactionOutcome], lines: &mut NarrativeLines) {

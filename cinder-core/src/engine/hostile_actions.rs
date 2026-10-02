@@ -44,8 +44,11 @@ pub(crate) fn plan_rules_hostile_actions(
         .collect()
 }
 
-/// Healing available to a hostile, preferring a declared `heal` skill over the
-/// legacy `ActorDefinition.healing` fallback.
+/// Healing available to a hostile.
+///
+/// Potency and narration are per-actor: the pack's clergy and bosses heal for
+/// 4 to 10 with distinct lines, so a shared skill spec only supplies an optional
+/// override. Actors without either source cannot heal.
 fn hostile_healing_spec(
     content: &ContentPack,
     state: &WorldState,
@@ -54,17 +57,16 @@ fn hostile_healing_spec(
     let legacy = state
         .actor(content, actor_id)
         .and_then(|actor| actor.healing.as_ref());
-    if let Some(skill) = state.actor_skill_of_kind(content, actor_id, SkillKind::Heal)
-        && let Some(heal) = &skill.heal
-    {
-        let message = skill
-            .narration_key
-            .clone()
-            .or_else(|| legacy.map(|healing| healing.message.clone()))
-            .unwrap_or_default();
-        return Some((heal.amount, message));
-    }
-    legacy.map(|healing| (healing.amount, healing.message.clone()))
+    let skill = state.actor_skill_of_kind(content, actor_id, SkillKind::Heal);
+    let amount = skill
+        .and_then(|skill| skill.heal.as_ref())
+        .and_then(|heal| heal.amount)
+        .or_else(|| legacy.map(|healing| healing.amount))?;
+    let message = skill
+        .and_then(|skill| skill.narration_key.clone())
+        .or_else(|| legacy.map(|healing| healing.message.clone()))
+        .unwrap_or_default();
+    Some((amount, message))
 }
 
 fn select_hostile_heal_target(
@@ -241,5 +243,57 @@ mod tests {
         state.set_stance(&brute_id, ActorStance::Hostile);
 
         assert!(plan_rules_hostile_actions(&content, &state).is_empty());
+    }
+
+    /// Healing potency and narration must stay per-actor. The Layla pack's
+    /// bishops heal for 4 with `combat.bishop_heal` while Lady Sylvan heals for
+    /// 10 with `combat.sylvan_heal`, so a shared skill spec that carried an
+    /// amount or narration would silently rewrite four of the five healers.
+    #[test]
+    fn hostile_healing_keeps_each_actors_own_potency_and_line() {
+        let mut content = crate::engine::test_fixtures::minimal_test_pack();
+        assert!(content.actors.len() >= 2, "fixture needs two actors");
+        content.skills.skills = vec![crate::content::types::SkillDefinition {
+            id: "heal".to_string(),
+            label: "Heal".to_string(),
+            kind: Some(SkillKind::Heal),
+            ..Default::default()
+        }];
+        let healer_id = content.actors[0].id.clone();
+        let bare_id = content.actors[1].id.clone();
+        content.actors[0].healing = Some(crate::content::types::ActorHealingSpec {
+            amount: 10,
+            message: "combat.sylvan_heal".to_string(),
+        });
+        content.actors[0].skills = vec!["heal".to_string()];
+        content.actors[1].healing = Some(crate::content::types::ActorHealingSpec {
+            amount: 4,
+            message: "combat.bishop_heal".to_string(),
+        });
+        content.actors[1].skills = vec!["heal".to_string()];
+        let state = WorldState::new(&content);
+
+        assert_eq!(
+            hostile_healing_spec(&content, &state, &healer_id),
+            Some((10, "combat.sylvan_heal".to_string()))
+        );
+        assert_eq!(
+            hostile_healing_spec(&content, &state, &bare_id),
+            Some((4, "combat.bishop_heal".to_string()))
+        );
+    }
+
+    #[test]
+    fn a_healer_without_the_heal_skill_or_actor_healing_cannot_heal() {
+        let content = crate::engine::test_fixtures::minimal_test_pack();
+        let state = WorldState::new(&content);
+        assert!(
+            content.actors.iter().all(|actor| actor.healing.is_none()),
+            "fixture actors should not heal by default"
+        );
+        assert_eq!(
+            hostile_healing_spec(&content, &state, &content.actors[0].id),
+            None
+        );
     }
 }

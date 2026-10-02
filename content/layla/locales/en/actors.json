@@ -1396,6 +1396,10 @@
       "amount": 4,
       "message": "combat.bishop_heal"
     },
+    "skills": [
+      "strike",
+      "heal"
+    ],
     "inspect_text": "An elf holding a tall crooked branch that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
     "attackable": true,
     "attack_interval_minutes": 2,
@@ -1479,6 +1483,10 @@
       "amount": 6,
       "message": "combat.queen_heal"
     },
+    "skills": [
+      "strike",
+      "heal"
+    ],
     "inspect_text": "The tallest of the elf commanders, in a cloak woven from leaf and pale root. A braided leaf ring hums quietly on her hand. She is always moving, retracing the same paths, and her eyes keep looking past the walls \u2014 searching for a name she cannot hold onto.",
     "attackable": true,
     "attack_interval_minutes": 2,
@@ -1602,6 +1610,10 @@
       "amount": 4,
       "message": "combat.bishop_heal"
     },
+    "skills": [
+      "strike",
+      "heal"
+    ],
     "inspect_text": "An elf holding a tall crooked branch that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
     "attackable": true,
     "attack_interval_minutes": 2,
@@ -3426,6 +3438,10 @@
       "amount": 10,
       "message": "combat.sylvan_heal"
     },
+    "skills": [
+      "strike",
+      "heal"
+    ],
     "aliases": [
       "sylvan",
       "lady sylvan",

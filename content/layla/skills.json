@@ -46,10 +46,7 @@
       "kind": "heal",
       "target": "lowest_health_ally",
       "description": "Unseals soothing draughts for any wounded ally, restoring health.",
-      "heal": {
-        "amount": 5
-      },
-      "narration_key": "combat.einar_heal"
+      "heal": {}
     },
     {
       "id": "trace",
