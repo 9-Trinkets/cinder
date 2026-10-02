@@ -127,6 +127,7 @@
     },
     {
       "id": "attack",
+      "skill_id": "strike",
       "command": "ATTACK",
       "label": "Attack",
       "group": "combat",
@@ -169,6 +170,7 @@
     },
     {
       "id": "trace",
+      "skill_id": "trace",
       "command": "TRACE",
       "label": "Trace",
       "group": "territory",
@@ -661,6 +663,7 @@
     },
     {
       "id": "teleport",
+      "skill_id": "teleport",
       "command": "TELEPORT",
       "label": "Teleport",
       "group": "movement",

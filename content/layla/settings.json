@@ -99,6 +99,7 @@
     "combat_rules": [
       {
         "id": "survival-hold",
+        "skill_id": "hold",
         "tier": "survival",
         "window": "after_hostile_damage",
         "action": "hold",
@@ -116,6 +117,7 @@
       },
       {
         "id": "guard-order",
+        "skill_id": "intercept",
         "tier": "order",
         "window": "before_hostile_damage",
         "action": "intercept",
@@ -151,6 +153,7 @@
       },
       {
         "id": "follow-protect-player",
+        "skill_id": "intercept",
         "tier": "order",
         "window": "before_hostile_damage",
         "action": "intercept",
@@ -189,6 +192,7 @@
       },
       {
         "id": "healer-support-order",
+        "skill_id": "heal",
         "tier": "order",
         "window": "after_hostile_damage",
         "action": "support",
@@ -214,6 +218,7 @@
       },
       {
         "id": "assist-order",
+        "skill_id": "strike",
         "tier": "order",
         "window": "after_hostile_damage",
         "action": "counterattack",

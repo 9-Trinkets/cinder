@@ -37,6 +37,12 @@ pub(crate) enum WorldHookEffect {
     SetStanceByTag(SetStanceByTagEffect),
     /// Sets a story variable (e.g. a flag marking a boss as defeated).
     SetStoryVar { key: String, value: String },
+    /// Grants a declared skill to an actor. Omitted actor id targets the player.
+    GrantSkill {
+        skill_id: String,
+        #[serde(default)]
+        actor_id: Option<String>,
+    },
     AcquireItem {
         item_id: String,
         #[serde(default)]
@@ -146,6 +152,18 @@ impl WorldHookEffect {
             }
             WorldHookEffect::SetStoryVar { key, value } => {
                 self.apply_set_story_var(state, content, key, value, lines.as_deref_mut());
+            }
+            WorldHookEffect::GrantSkill { skill_id, actor_id } => {
+                if content.skill(skill_id).is_none() {
+                    return Err(format!("hook grants unknown skill '{skill_id}'"));
+                }
+                let actor_id = actor_id
+                    .as_deref()
+                    .unwrap_or(&content.settings.combat.player_actor_id);
+                if state.actor(content, actor_id).is_none() {
+                    return Err(format!("hook grants skill to unknown actor '{actor_id}'"));
+                }
+                state.grant_actor_skill(actor_id, skill_id);
             }
             WorldHookEffect::AcquireItem {
                 item_id,

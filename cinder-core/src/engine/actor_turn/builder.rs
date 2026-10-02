@@ -10,7 +10,7 @@ use crate::engine::dialogue_grounding::{
 use crate::engine::events::WorldEvent;
 use crate::engine::hooks::{actor_state_notes, pair_state_note};
 use crate::engine::state::WorldState;
-use crate::engine::turn_policies::{action_is_available, apply_actor_turn_policies};
+use crate::engine::turn_policies::{action_is_available_for_actor, apply_actor_turn_policies};
 use serde::{Deserialize, Serialize};
 use std::error::Error;
 use std::sync::Arc;
@@ -373,7 +373,13 @@ pub fn build_actor_turn(
             let ActorTurnCommandInvocation::Command { command_id, .. } =
                 &candidate.option.invocation;
             content.action(command_id).is_some_and(|action| {
-                action_is_available(content.as_ref(), state, action, &current_room_id)
+                action_is_available_for_actor(
+                    content.as_ref(),
+                    state,
+                    action,
+                    &current_room_id,
+                    &actor.id,
+                )
             })
         })
         .collect::<Vec<_>>();

@@ -17,6 +17,7 @@ fn test_read_scroll_learns_teleport_and_handler_explains() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = "command_bastion".to_string();
     state.acquire_player_item(&pack, "teleport-scroll");
+    assert!(!state.actor_has_skill("player", "teleport"));
 
     let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
 
@@ -32,6 +33,7 @@ fn test_read_scroll_learns_teleport_and_handler_explains() {
 
     let state = runtime.export_state().expect("export state");
     assert_eq!(state.story_vars.get("knows_teleport"), Some("true"));
+    assert!(state.actor_has_skill("player", "teleport"));
 
     let options = runtime
         .panel_options(&PanelDataSource::TeleportAnchors)

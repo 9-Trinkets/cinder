@@ -9,6 +9,14 @@ const orderLabel = (order: string) => {
   return known[order] ?? `Order: ${order}`
 }
 
+const skillKindClasses: Record<api.SkillKind, string> = {
+  attack: 'border-rose/30 bg-rose/10 text-rose',
+  defend: 'border-pine/30 bg-pine/10 text-pine',
+  heal: 'border-foam/30 bg-foam/10 text-foam',
+  spell: 'border-iris/30 bg-iris/10 text-iris',
+  passive: 'border-gold/30 bg-gold/10 text-gold',
+}
+
 export default function StatusPanel({
   uiSnapshot,
   onTakeItem,
@@ -146,6 +154,27 @@ export default function StatusPanel({
                     <span className="text-[10px] tabular-nums text-muted">{member.hp}/{member.hp_max}</span>
                   </span>
                 </button>
+
+                {member.skills && member.skills.length > 0 && (
+                  <ul
+                    aria-label={`${member.label} skills`}
+                    className="mt-2 flex flex-wrap gap-1"
+                  >
+                    {member.skills.map(skill => (
+                      <li
+                        key={skill.id}
+                        title={skill.kind ? `${titleize(skill.kind)} skill` : 'Skill'}
+                        className={`max-w-full truncate rounded-full border px-1.5 py-0.5 text-[9px] font-medium leading-none ${
+                          skill.kind
+                            ? skillKindClasses[skill.kind]
+                            : 'border-subtle bg-overlay/60 text-muted'
+                        }`}
+                      >
+                        {skill.label}
+                      </li>
+                    ))}
+                  </ul>
+                )}
 
                 {member.equipped_items && member.equipped_items.length > 0 && (
                   <div className="mt-2 pt-2 border-t border-subtle/50 text-[11px]">

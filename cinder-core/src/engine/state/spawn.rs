@@ -123,6 +123,14 @@ impl WorldState {
             .insert(instance_id.clone(), instance.initial_stats.clone());
         self.actor_room_overrides
             .insert(instance_id.clone(), target_room_id.clone());
+        self.actor_skills.insert(
+            instance_id.clone(),
+            instance
+                .skills
+                .iter()
+                .map(|skill| skill.id().to_string())
+                .collect(),
+        );
         self.mark_actor_room_visited(&instance_id, &target_room_id);
         self.spawned_actors.insert(instance_id.clone(), instance);
 

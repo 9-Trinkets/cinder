@@ -1,4 +1,5 @@
 use super::DropSpec;
+use crate::content::types::ActorSkillAssignment;
 use crate::engine::state::ActorRelationship;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -90,9 +91,7 @@ pub struct ActorDefinition {
     #[serde(default)]
     pub resistances: BTreeMap<String, i32>,
     #[serde(default)]
-    pub healing: Option<ActorHealingSpec>,
-    #[serde(default)]
-    pub skills: Vec<String>,
+    pub skills: Vec<ActorSkillAssignment>,
     pub prompt_context: ActorPromptContext,
     #[serde(default)]
     pub act_cast: Option<ActorActCast>,
@@ -102,18 +101,11 @@ pub struct ActorDefinition {
     pub game_data: BTreeMap<String, String>,
 }
 
-/// Optional healing capability configured on an actor definition.
-/// Hostile actors prioritize healing wounded allies (or self) before striking.
-/// Allied party members use this to determine support reaction healing values.
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct ActorHealingSpec {
-    #[serde(default)]
-    pub amount: i32,
-    #[serde(default)]
-    pub message: String,
-}
-
 impl ActorDefinition {
+    pub fn skill(&self, skill_id: &str) -> Option<&ActorSkillAssignment> {
+        self.skills.iter().find(|skill| skill.id() == skill_id)
+    }
+
     /// Whether the actor has no home room and therefore no spatial location.
     /// Offstage actors never participate in movement, room observation,
     /// combat, targeting, party, or proximity, but keep their identity,

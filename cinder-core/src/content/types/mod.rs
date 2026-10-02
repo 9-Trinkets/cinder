@@ -54,12 +54,11 @@ pub use actor_tick_defs::*;
 
 mod world_defs;
 pub use world_defs::{
-    ActorActCast, ActorDefinition, ActorHealingSpec, ActorMovementRulesDefinition,
-    ActorMovementTargetRuleDefinition, ActorPromptContext, ActorTransformation,
-    BeatObjectiveAffordancePriorityDefinition, BeatObjectiveAffordanceTarget,
-    BeatObjectiveCompletionDefinition, BeatObjectiveCompletionTrigger,
-    BeatObjectiveConditionalGuidanceDefinition, BeatObjectiveDefinition,
-    BeatObjectiveGuidanceDefinition, BeatObjectiveProgressDefinition,
+    ActorActCast, ActorDefinition, ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition,
+    ActorPromptContext, ActorTransformation, BeatObjectiveAffordancePriorityDefinition,
+    BeatObjectiveAffordanceTarget, BeatObjectiveCompletionDefinition,
+    BeatObjectiveCompletionTrigger, BeatObjectiveConditionalGuidanceDefinition,
+    BeatObjectiveDefinition, BeatObjectiveGuidanceDefinition, BeatObjectiveProgressDefinition,
     BeatObjectiveProgressKeyDefinition, BeatObjectivesDefinition, BehaviorActorDefinition,
     BehaviorDefinition, ConsumableDefinition, ConsumableKind, DropChanceSpec, DropConditionSpec,
     DropPoolEntry, DropPoolSpec, DropSpec, ErrorTextDefinition, MovementConfigDefinition,

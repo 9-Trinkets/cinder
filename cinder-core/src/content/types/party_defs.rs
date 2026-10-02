@@ -86,6 +86,9 @@ pub enum PartySupportEffect {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PartyCombatDecisionRule {
     pub id: String,
+    /// Skill required for an actor to execute this reaction.
+    #[serde(default)]
+    pub skill_id: String,
     pub tier: PartyDecisionTier,
     pub window: PartyReactionWindow,
     pub action: PartyReactionAction,
@@ -149,6 +152,7 @@ mod tests {
             initial_orders: BTreeMap::from([("stone-guard".to_string(), "guard".to_string())]),
             combat_rules: vec![PartyCombatDecisionRule {
                 id: "guard-player".to_string(),
+                skill_id: "intercept".to_string(),
                 tier: PartyDecisionTier::Order,
                 window: PartyReactionWindow::BeforeHostileDamage,
                 action: PartyReactionAction::Intercept,
@@ -187,6 +191,7 @@ mod tests {
             initial_orders: BTreeMap::from([("a".to_string(), "assist".to_string())]),
             combat_rules: vec![PartyCombatDecisionRule {
                 id: "r".to_string(),
+                skill_id: "strike".to_string(),
                 tier: PartyDecisionTier::Order,
                 window: PartyReactionWindow::AfterHostileDamage,
                 action: PartyReactionAction::Counterattack,

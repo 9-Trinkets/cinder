@@ -1,9 +1,9 @@
 use super::common::*;
 use cinder_core::content::types::{
-    ActionDefinition, ActionItemCreation, ActionItemStorageTarget, CombatSettingsDefinition,
-    CommandTargetMode, ItemDefinition, ItemStorageTarget, PackMessage, PeriodicActorEffect,
-    PeriodicActorEffectDefinition, PeriodicActorEffectTargets, PeriodicActorEffectTrigger,
-    StatDefinition,
+    ActionDefinition, ActionItemCreation, ActionItemStorageTarget, ActorSkillAssignment,
+    CombatSettingsDefinition, CommandTargetMode, ItemDefinition, ItemStorageTarget, PackMessage,
+    PeriodicActorEffect, PeriodicActorEffectDefinition, PeriodicActorEffectTargets,
+    PeriodicActorEffectTrigger, StatDefinition,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::reducer::apply_events;
@@ -250,6 +250,7 @@ fn spawn_sigil_scales_with_intelligence_and_spawns_allied_follower() {
         ("intelligence".to_string(), 2),
     ]);
     sprite.attackable = true;
+    sprite.skills = vec![ActorSkillAssignment::Id("strike".to_string())];
     pack.actors.push(sprite);
     pack.messages.insert(
         "sigil.spawned".to_string(),
@@ -314,6 +315,7 @@ fn spawn_sigil_scales_with_intelligence_and_spawns_allied_follower() {
     assert_eq!(state.actor_stat(instance_id, "stamina"), 13);
     assert_eq!(state.actor_stat(instance_id, "strength"), 5);
     assert_eq!(state.actor_stat(instance_id, "intelligence"), 6);
+    assert!(state.actor_has_skill(instance_id, "strike"));
 
     // 4. Narration matches
     assert!(

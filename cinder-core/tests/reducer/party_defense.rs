@@ -1,8 +1,9 @@
 use super::common::*;
 use cinder_core::content::types::{
-    ContentPack, PackMessage, PartyCandidatePriority, PartyCombatDecisionRule,
-    PartyDecisionCondition, PartyDecisionTier, PartyPolicyDefinition, PartyReactionAction,
-    PartyReactionCooldown, PartyReactionWindow, PartyTargetSelection, SkillDefinition,
+    ActorSkillAssignment, ContentPack, PackMessage, PartyCandidatePriority,
+    PartyCombatDecisionRule, PartyDecisionCondition, PartyDecisionTier, PartyPolicyDefinition,
+    PartyReactionAction, PartyReactionCooldown, PartyReactionWindow, PartyTargetSelection,
+    SkillDefinition,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::reducer::apply_events;
@@ -20,6 +21,7 @@ fn policy_selected_defender_takes_the_full_unsplit_strike_and_becomes_unready() 
         initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), "guard".to_string())]),
         combat_rules: vec![PartyCombatDecisionRule {
             id: "defender-intercepts".to_string(),
+            skill_id: String::new(),
             tier: PartyDecisionTier::Order,
             window: PartyReactionWindow::BeforeHostileDamage,
             action: PartyReactionAction::Intercept,
@@ -75,6 +77,7 @@ fn a_policy_with_no_ready_defender_falls_back_to_player_damage() {
         initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), "guard".to_string())]),
         combat_rules: vec![PartyCombatDecisionRule {
             id: "defender-intercepts".to_string(),
+            skill_id: String::new(),
             tier: PartyDecisionTier::Order,
             window: PartyReactionWindow::BeforeHostileDamage,
             action: PartyReactionAction::Intercept,
@@ -124,6 +127,7 @@ fn follower_intercepts_strike_when_player_health_is_low() {
         combat_rules: vec![
             PartyCombatDecisionRule {
                 id: "guard-order".to_string(),
+                skill_id: String::new(),
                 tier: PartyDecisionTier::Order,
                 window: PartyReactionWindow::BeforeHostileDamage,
                 action: PartyReactionAction::Intercept,
@@ -138,6 +142,7 @@ fn follower_intercepts_strike_when_player_health_is_low() {
             },
             PartyCombatDecisionRule {
                 id: "follow-protect-player".to_string(),
+                skill_id: String::new(),
                 tier: PartyDecisionTier::Order,
                 window: PartyReactionWindow::BeforeHostileDamage,
                 action: PartyReactionAction::Intercept,
@@ -223,6 +228,7 @@ fn intercept_policy() -> cinder_core::content::types::PartyPolicyDefinition {
         initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), "follow".to_string())]),
         combat_rules: vec![PartyCombatDecisionRule {
             id: "follow-protect-player".to_string(),
+            skill_id: "intercept".to_string(),
             tier: PartyDecisionTier::Order,
             window: PartyReactionWindow::BeforeHostileDamage,
             action: PartyReactionAction::Intercept,
@@ -287,7 +293,10 @@ fn a_follower_without_the_intercept_skill_does_not_intercept() {
         .iter_mut()
         .find(|actor| actor.id == ACTOR_B_ID)
         .expect("follower exists");
-    follower.skills = vec!["strike".to_string(), "hold".to_string()];
+    follower.skills = vec![
+        ActorSkillAssignment::Id("strike".to_string()),
+        ActorSkillAssignment::Id("hold".to_string()),
+    ];
     rebuild_test_pack_indexes(&mut pack);
 
     let mut state = intercept_scenario(&pack);
@@ -331,58 +340,14 @@ fn the_same_follower_intercepts_once_it_learns_the_skill() {
         .find(|actor| actor.id == ACTOR_B_ID)
         .expect("follower exists");
     follower.skills = vec![
-        "strike".to_string(),
-        "hold".to_string(),
-        "intercept".to_string(),
+        ActorSkillAssignment::Id("strike".to_string()),
+        ActorSkillAssignment::Id("hold".to_string()),
+        ActorSkillAssignment::Id("intercept".to_string()),
     ];
     rebuild_test_pack_indexes(&mut pack);
 
     let mut state = intercept_scenario(&pack);
     assert!(state.actor_has_skill(ACTOR_B_ID, "intercept"));
-    let player_before = state.actor_stat(ACTOR_A_ID, "stamina");
-    let defender_before = state.actor_stat(ACTOR_B_ID, "stamina");
-
-    apply_events(
-        &mut state,
-        &pack,
-        &[TimestampedWorldEvent::now(WorldEvent::HostileStrike {
-            actor_id: ACTOR_C_ID.to_string(),
-        })],
-    );
-
-    assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), player_before);
-    assert!(state.actor_stat(ACTOR_B_ID, "stamina") < defender_before);
-}
-
-#[test]
-fn followers_outside_the_skills_system_keep_intercepting() {
-    let mut pack = reducer_test_pack();
-    pack.settings.combat.player_actor_id = ACTOR_A_ID.to_string();
-    pack.settings.combat.health_stat_id = "stamina".to_string();
-    pack.settings.combat.attack_stat_id = "confidence".to_string();
-    pack.settings.combat.defense_stat_id = "hunger".to_string();
-    pack.settings.party = intercept_policy();
-    pack.messages.insert(
-        "combat.guard_intercepts".to_string(),
-        PackMessage::Narration("{guard} takes {damage}.".to_string()),
-    );
-    // Pack ships the skill, but the follower declares none: it stays on the
-    // legacy rule-driven path. This is what keeps the golems and sprites that
-    // hooks convert to allies behaving exactly as they did before.
-    pack.skills.skills = vec![SkillDefinition {
-        id: "intercept".to_string(),
-        label: "Intercept".to_string(),
-        ..SkillDefinition::default()
-    }];
-    let follower = pack
-        .actors
-        .iter_mut()
-        .find(|actor| actor.id == ACTOR_B_ID)
-        .expect("follower exists");
-    follower.skills = vec![];
-    rebuild_test_pack_indexes(&mut pack);
-
-    let mut state = intercept_scenario(&pack);
     let player_before = state.actor_stat(ACTOR_A_ID, "stamina");
     let defender_before = state.actor_stat(ACTOR_B_ID, "stamina");
 

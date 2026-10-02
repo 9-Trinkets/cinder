@@ -133,9 +133,10 @@ impl CinderRuntime {
 
     pub fn from_state(
         content: ContentPack,
-        state: WorldState,
+        mut state: WorldState,
         trace_events: bool,
     ) -> Result<Self, Box<dyn Error>> {
+        state.reconcile_authored_actor_skills(&content);
         let workflow_id = if content.settings.workflow_id.is_empty() {
             "cinder_turn".to_string()
         } else {

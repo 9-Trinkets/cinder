@@ -702,6 +702,10 @@
             "value": "true"
           },
           {
+            "kind": "grant_skill",
+            "skill_id": "teleport"
+          },
+          {
             "kind": "narrate_message",
             "key": "item.teleport_scroll_read.learned"
           },

@@ -9,6 +9,7 @@ use super::objectives::{objective_progress_is_met, objective_progress_label};
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) enum CommandAvailabilityIssue {
     StageInactive,
+    MissingSkill,
     MissingObjectiveProgress(Vec<String>),
     BlockedByObjectiveProgress(Vec<String>),
     /// A room-item condition is unmet (`requires_room_item` / `requires_room_without_item`).
@@ -20,6 +21,23 @@ pub(crate) fn command_availability_issue(
     state: &WorldState,
     action: &ActionDefinition,
 ) -> Option<CommandAvailabilityIssue> {
+    command_availability_issue_for_actor(
+        content,
+        state,
+        action,
+        &content.settings.combat.player_actor_id,
+    )
+}
+
+pub(crate) fn command_availability_issue_for_actor(
+    content: &ContentPack,
+    state: &WorldState,
+    action: &ActionDefinition,
+    actor_id: &str,
+) -> Option<CommandAvailabilityIssue> {
+    if !action.skill_id.is_empty() && !state.actor_has_skill(actor_id, &action.skill_id) {
+        return Some(CommandAvailabilityIssue::MissingSkill);
+    }
     let a = &action.available;
     if !a.available_during.is_empty()
         && !a
@@ -103,7 +121,7 @@ pub(crate) fn command_unavailable_message(
 ) -> String {
     let verb = action.command.to_ascii_lowercase();
     match issue {
-        CommandAvailabilityIssue::StageInactive => content
+        CommandAvailabilityIssue::StageInactive | CommandAvailabilityIssue::MissingSkill => content
             .render_message("error.command_not_now", &[("verb", verb.as_str())])
             .unwrap_or_default(),
         CommandAvailabilityIssue::MissingObjectiveProgress(labels) => {
@@ -143,6 +161,25 @@ pub fn action_is_available(
     action: &ActionDefinition,
     context_room_id: &str,
 ) -> bool {
+    action_is_available_for_actor(
+        content,
+        state,
+        action,
+        context_room_id,
+        &content.settings.combat.player_actor_id,
+    )
+}
+
+pub(crate) fn action_is_available_for_actor(
+    content: &ContentPack,
+    state: &WorldState,
+    action: &ActionDefinition,
+    context_room_id: &str,
+    actor_id: &str,
+) -> bool {
+    if !action.skill_id.is_empty() && !state.actor_has_skill(actor_id, &action.skill_id) {
+        return false;
+    }
     let a = &action.available;
 
     if !a.allowed_rooms.is_empty() && !a.allowed_rooms.contains(&context_room_id.to_string()) {

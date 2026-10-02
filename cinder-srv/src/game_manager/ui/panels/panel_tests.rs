@@ -226,6 +226,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
         order_panel: "order:zayd".to_string(),
         equipped_items: vec![],
         inventory: vec![],
+        skills: vec![],
         in_room: true,
     };
 
@@ -309,6 +310,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
         order_panel: "order:bess".to_string(),
         equipped_items: vec![],
         inventory: vec![],
+        skills: vec![],
         in_room: true,
     };
     let (_, _, multi_opts) = build_action_bar_items(&content, &state, &[party_member, bess]);
@@ -342,6 +344,7 @@ fn take_surfaces_in_overflow_items_group_when_companion_has_items_even_without_r
             count: 1,
             usable: false,
         }],
+        skills: vec![],
         in_room: true,
     };
 
@@ -407,6 +410,7 @@ fn items_section_orders_take_give_drop() {
             count: 1,
             usable: false,
         }],
+        skills: vec![],
         in_room: true,
     };
 
@@ -485,6 +489,7 @@ fn take_and_give_exclude_party_members_not_in_current_room() {
             count: 1,
             usable: false,
         }],
+        skills: vec![],
         in_room: false,
     };
 
@@ -554,6 +559,7 @@ fn give_and_drop_surface_when_equipped_item_has_additional_inventory_copies() {
         order_panel: "order:zayd".to_string(),
         equipped_items: vec![],
         inventory: vec![],
+        skills: vec![],
         in_room: true,
     };
 

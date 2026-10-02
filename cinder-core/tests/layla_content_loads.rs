@@ -3,10 +3,8 @@
 //! and action hooks must keep resolving against the engine.
 
 use cinder_core::content::loader::load_named_pack;
-use cinder_core::content::types::{
-    CommandEffect, ContentPack, DropSpec, PartyDecisionCondition, PartyReactionAction,
-};
-use std::collections::{BTreeMap, BTreeSet};
+use cinder_core::content::types::{CommandEffect, DropSpec};
+use std::collections::BTreeMap;
 
 #[test]
 fn layla_pack_loads_and_validates() {
@@ -1085,7 +1083,8 @@ fn layla_skills_declare_only_live_behaviors() {
 fn layla_actor_skills_resolve_against_skills_json() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     for actor in &pack.actors {
-        for skill_id in &actor.skills {
+        for assignment in &actor.skills {
+            let skill_id = assignment.id();
             assert!(
                 pack.skill(skill_id).is_some(),
                 "actor '{}' declares unknown skill '{skill_id}'",
@@ -1127,20 +1126,15 @@ fn layla_party_actors_keep_their_live_reactive_behaviors() {
 }
 
 #[test]
-fn actors_outside_the_skills_system_are_ungated() {
+fn every_attackable_actor_explicitly_owns_strike() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let state = cinder_core::engine::state::WorldState::new(&pack);
 
-    // Golems and sprites are converted to allies at runtime via hooks and rely
-    // on the rule-driven reactions. They declare no skills, so they must keep
-    // an empty set rather than being implicitly gated out of holding.
-    for actor_id in ["golem-dark-nw", "handler"] {
+    for actor in pack.actors.iter().filter(|actor| actor.attackable) {
         assert!(
-            state
-                .actor_skills
-                .get(actor_id)
-                .is_some_and(|s| s.is_empty()),
-            "'{actor_id}' should stay outside the skills system"
+            state.actor_has_skill(&actor.id, "strike"),
+            "attackable actor '{}' must explicitly own strike",
+            actor.id
         );
     }
 }
@@ -1165,130 +1159,46 @@ fn level_up_unlocks_reference_declared_skills() {
     }
 }
 
-/// Skill ids that back a reactive party behavior, paired with the reaction
-/// action they are expected to gate in `settings.json`.
-const REACTIVE_SKILLS: [(&str, PartyReactionAction); 3] = [
-    ("intercept", PartyReactionAction::Intercept),
-    ("hold", PartyReactionAction::Hold),
-    ("heal", PartyReactionAction::Support),
-];
-
-fn reaction_action_key(action: &PartyReactionAction) -> &'static str {
-    match action {
-        PartyReactionAction::Intercept => "intercept",
-        PartyReactionAction::Counterattack => "counterattack",
-        PartyReactionAction::Support => "support",
-        PartyReactionAction::Hold => "hold",
-    }
-}
-
-/// Health percentages the party rules actually gate on, grouped by action.
-fn live_rule_percentages(pack: &ContentPack) -> BTreeMap<&'static str, BTreeSet<u8>> {
-    let mut percentages: BTreeMap<&'static str, BTreeSet<u8>> = BTreeMap::new();
-    for rule in &pack.settings.party.combat_rules {
-        let key = reaction_action_key(&rule.action);
-        for condition in &rule.conditions {
-            let percent = match condition {
-                PartyDecisionCondition::ActorHealthAtMostPercent { percent }
-                | PartyDecisionCondition::ActorHealthAtLeastPercent { percent }
-                | PartyDecisionCondition::PlayerHealthAtMostPercent { percent }
-                | PartyDecisionCondition::AnyAllyHealthAtMostPercent { percent } => Some(*percent),
-                _ => None,
-            };
-            if let Some(percent) = percent {
-                percentages.entry(key).or_default().insert(percent);
-            }
-        }
-    }
-    percentages
-}
-
 #[test]
-fn skill_trigger_percentages_come_from_the_live_party_rules() {
+fn party_rules_bind_explicitly_to_the_expected_skills() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
-    let live = live_rule_percentages(&pack);
-
-    for (skill_id, action) in REACTIVE_SKILLS {
-        let Some(trigger) = pack
-            .skill(skill_id)
-            .and_then(|skill| skill.defend.as_ref())
-            .and_then(|defend| defend.trigger_condition.as_ref())
-        else {
-            continue;
-        };
-        let key = reaction_action_key(&action);
-        for percent in [
-            trigger.ally_health_at_most_percent,
-            trigger.self_health_at_most_percent,
-            trigger.self_health_at_least_percent,
-        ]
-        .into_iter()
-        .flatten()
-        {
-            assert!(
-                live.get(key).is_some_and(|set| set.contains(&percent)),
-                "skill '{skill_id}' invents {percent}% for '{key}', which no '{key}' \
-                 rule in settings.json gates on (live: {:?})",
-                live.get(key)
-            );
-        }
-    }
-}
-
-#[test]
-fn every_reactive_party_rule_has_a_declared_skill() {
-    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
-    for rule in &pack.settings.party.combat_rules {
-        let Some((skill_id, _)) = REACTIVE_SKILLS
-            .iter()
-            .find(|(_, action)| *action == rule.action)
-        else {
-            continue;
-        };
-        assert!(
-            pack.skill(skill_id).is_some(),
-            "rule '{}' performs '{}' but skills.json declares no '{skill_id}'",
-            rule.id,
-            reaction_action_key(&rule.action)
-        );
-    }
-}
-
-#[test]
-fn the_heal_skill_defers_potency_and_narration_to_the_actor() {
-    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
-    let heal = pack
-        .skill("heal")
-        .and_then(|skill| skill.heal.as_ref())
-        .expect("heal skill declares a heal spec");
-
-    // Potency and narration are per-actor: the pack's clergy and bosses heal
-    // for 4 to 10 with distinct lines, so the shared skill must not claim a
-    // universal amount or borrow one actor's narration.
+    let bindings = pack
+        .settings
+        .party
+        .combat_rules
+        .iter()
+        .map(|rule| (rule.id.as_str(), rule.skill_id.as_str()))
+        .collect::<BTreeMap<_, _>>();
     assert_eq!(
-        heal.amount, None,
-        "heal potency belongs to ActorDefinition.healing, not the shared skill"
+        bindings,
+        BTreeMap::from([
+            ("assist-order", "strike"),
+            ("follow-protect-player", "intercept"),
+            ("guard-order", "intercept"),
+            ("healer-support-order", "heal"),
+            ("survival-hold", "hold"),
+        ])
     );
-    assert_eq!(
-        pack.skill("heal")
-            .and_then(|skill| skill.narration_key.as_deref()),
-        None,
-        "heal narration belongs to ActorDefinition.healing.message"
-    );
+}
 
-    // Every actor that heals must declare the skill, and each keeps its own
-    // distinct potency.
+#[test]
+fn healer_configuration_lives_on_the_actor_skill_assignment() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    // Every configured healer owns heal through the canonical skills field.
     let mut amounts = std::collections::BTreeSet::new();
     for actor in &pack.actors {
-        let Some(healing) = &actor.healing else {
+        let Some(assignment) = actor.skill("heal") else {
             continue;
         };
+        let amount = assignment
+            .power()
+            .expect("Layla healers configure power on their skill assignment");
         assert!(
-            actor.skills.contains(&"heal".to_string()),
-            "actor '{}' heals but does not declare the heal skill",
+            assignment.narration_key().is_some(),
+            "healer '{}' must configure narration on the heal assignment",
             actor.id
         );
-        amounts.insert(healing.amount);
+        amounts.insert(amount);
     }
     assert_eq!(
         amounts,

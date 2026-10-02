@@ -40,7 +40,7 @@ pub(crate) fn select_defensive_reaction(
                             .party_reaction_ready_at
                             .get(&actor.id)
                             .is_none_or(|ready_at| *ready_at <= state.current_time_minutes)
-                        && actor_may_use_reaction(content, state, &actor.id, &rule.action)
+                        && actor_may_use_reaction(state, &actor.id, &rule.skill_id)
                         && rule.conditions.iter().all(|condition| {
                             condition_matches(content, state, &actor.id, condition)
                         })
@@ -90,7 +90,7 @@ pub(crate) fn select_post_damage_reactions(
                             && rule.conditions.iter().all(|condition| {
                                 condition_matches(content, state, &actor.id, condition)
                             })
-                            && actor_may_use_reaction(content, state, &actor.id, &rule.action)
+                            && actor_may_use_reaction(state, &actor.id, &rule.skill_id)
                     })
                 })
                 .map(|rule| PartyReactionDecision {
@@ -153,38 +153,9 @@ fn actor_is_reaction_eligible(content: &ContentPack, state: &WorldState, actor_i
             .is_none_or(|ready_at| *ready_at <= state.current_time_minutes)
 }
 
-/// Skill id backing each reactive party behavior. `Counterattack` maps to
-/// `strike`, which companions always own implicitly and so is not gated.
-fn required_skill_id(action: &PartyReactionAction) -> Option<&'static str> {
-    match action {
-        PartyReactionAction::Intercept => Some("intercept"),
-        PartyReactionAction::Hold => Some("hold"),
-        PartyReactionAction::Support => Some("heal"),
-        PartyReactionAction::Counterattack => None,
-    }
-}
-
 /// Whether an actor may perform a reactive behavior.
-///
-/// The gate is opt-in on both sides: only actors that declare a non-empty
-/// `skills` list in `actors.json`, in a pack that ships a `skills.json`, are
-/// bound by it. Actors outside the skills system (including the many hostiles
-/// that are converted to allies at runtime) keep their rule-driven behavior
-/// untouched.
-fn actor_may_use_reaction(
-    content: &ContentPack,
-    state: &WorldState,
-    actor_id: &str,
-    action: &PartyReactionAction,
-) -> bool {
-    let Some(skill_id) = required_skill_id(action) else {
-        return true;
-    };
-    if content.skills.skills.is_empty() {
-        return true;
-    }
-    let declared = state.actor_skills.get(actor_id);
-    if declared.is_none_or(|skills| skills.is_empty()) {
+fn actor_may_use_reaction(state: &WorldState, actor_id: &str, skill_id: &str) -> bool {
+    if skill_id.is_empty() {
         return true;
     }
     state.actor_has_skill(actor_id, skill_id)
@@ -366,6 +337,7 @@ mod tests {
             ]),
             combat_rules: vec![PartyCombatDecisionRule {
                 id: "guard-order".to_string(),
+                skill_id: String::new(),
                 tier: PartyDecisionTier::Order,
                 window: PartyReactionWindow::BeforeHostileDamage,
                 action: PartyReactionAction::Intercept,

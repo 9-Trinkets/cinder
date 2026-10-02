@@ -235,6 +235,14 @@ export interface EquippedItem {
   id?: string
 }
 
+export type SkillKind = 'attack' | 'defend' | 'heal' | 'spell' | 'passive'
+
+export interface PartySkill {
+  id: string
+  label: string
+  kind: SkillKind | null
+}
+
 export interface PartyMember {
   id: string
   label: string
@@ -245,6 +253,7 @@ export interface PartyMember {
   order_panel: string
   inventory?: InventoryItem[]
   equipped_items?: EquippedItem[]
+  skills?: PartySkill[]
   in_room?: boolean
 }
 

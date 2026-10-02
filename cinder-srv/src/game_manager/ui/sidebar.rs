@@ -2,7 +2,9 @@ use cinder_core::content::types::ContentPack;
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::{ActorStance, WorldState};
 
-use super::{EquippedItem, InventoryItem, PanelOptionData, PartyMember, PlayerStatus, StatValue};
+use super::{
+    EquippedItem, InventoryItem, PanelOptionData, PartyMember, PartySkill, PlayerStatus, StatValue,
+};
 use std::collections::BTreeMap;
 
 /// The player's progress toward the next level. XP/level are per-actor now:
@@ -120,6 +122,19 @@ pub(super) fn build_party_members(
                 .collect::<Vec<_>>();
             inventory.sort_by(|a, b| a.label.cmp(&b.label));
             let in_room = state.actor_is_in_room(content, &actor_id, &state.current_room_id);
+            let skills = state
+                .actor_skills
+                .get(&actor_id)
+                .into_iter()
+                .flatten()
+                .filter_map(|skill_id| {
+                    content.skill(skill_id).map(|skill| PartySkill {
+                        id: skill.id.clone(),
+                        label: skill.label.clone(),
+                        kind: skill.kind,
+                    })
+                })
+                .collect();
             PartyMember {
                 id: actor_id.clone(),
                 label,
@@ -130,6 +145,7 @@ pub(super) fn build_party_members(
                 order_panel: format!("party-order:{actor_id}"),
                 inventory,
                 equipped_items,
+                skills,
                 in_room,
             }
         })
@@ -364,6 +380,7 @@ mod tests {
             order_panel: "party-order:dark-golem-2".to_string(),
             inventory: Vec::new(),
             equipped_items: Vec::new(),
+            skills: Vec::new(),
             in_room: true,
         }];
 
@@ -463,5 +480,58 @@ mod tests {
             companion.equipped_items[0].id.as_deref(),
             Some("iron-sword")
         );
+    }
+
+    #[test]
+    fn build_party_members_resolves_owned_skills_from_content() {
+        use cinder_core::content::types::{SkillDefinition, SkillKind};
+
+        let mut content = minimal_test_pack();
+        content.skills.skills.extend([
+            SkillDefinition {
+                id: "field-medicine".to_string(),
+                label: "Field Medicine".to_string(),
+                kind: Some(SkillKind::Heal),
+                ..SkillDefinition::default()
+            },
+            SkillDefinition {
+                id: "shield-wall".to_string(),
+                label: "Shield Wall".to_string(),
+                kind: Some(SkillKind::Defend),
+                ..SkillDefinition::default()
+            },
+        ]);
+        content.skill_index.insert(
+            "field-medicine".to_string(),
+            content.skills.skills.len() - 2,
+        );
+        content
+            .skill_index
+            .insert("shield-wall".to_string(), content.skills.skills.len() - 1);
+
+        let follower_id = "companion-1";
+        let mut state = WorldState::new(&content);
+        state.set_follows_player(follower_id, true);
+        state.actor_skills.insert(
+            follower_id.to_string(),
+            std::collections::BTreeSet::from([
+                "field-medicine".to_string(),
+                "missing-skill".to_string(),
+                "shield-wall".to_string(),
+            ]),
+        );
+
+        let runtime = CinderRuntime::new(content.clone(), false).unwrap();
+        let member = build_party_members(&runtime, &state, &content)
+            .into_iter()
+            .find(|member| member.id == follower_id)
+            .unwrap();
+
+        assert_eq!(member.skills.len(), 2);
+        assert_eq!(member.skills[0].id, "field-medicine");
+        assert_eq!(member.skills[0].label, "Field Medicine");
+        assert_eq!(member.skills[0].kind, Some(SkillKind::Heal));
+        assert_eq!(member.skills[1].id, "shield-wall");
+        assert_eq!(member.skills[1].kind, Some(SkillKind::Defend));
     }
 }

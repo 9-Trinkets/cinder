@@ -135,6 +135,7 @@ fn support_applies_its_authored_effect_to_the_selected_target() {
 fn an_interceptor_cannot_counterattack_during_the_same_interval() {
     let intercept = PartyCombatDecisionRule {
         id: "defender-intercepts".to_string(),
+        skill_id: String::new(),
         tier: PartyDecisionTier::Order,
         window: PartyReactionWindow::BeforeHostileDamage,
         action: PartyReactionAction::Intercept,

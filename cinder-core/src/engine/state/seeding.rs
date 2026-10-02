@@ -58,7 +58,16 @@ pub(super) fn seeded_actor_skills(content: &ContentPack) -> BTreeMap<String, BTr
     content
         .actors
         .iter()
-        .map(|actor| (actor.id.clone(), actor.skills.iter().cloned().collect()))
+        .map(|actor| {
+            (
+                actor.id.clone(),
+                actor
+                    .skills
+                    .iter()
+                    .map(|skill| skill.id().to_string())
+                    .collect(),
+            )
+        })
         .collect()
 }
 

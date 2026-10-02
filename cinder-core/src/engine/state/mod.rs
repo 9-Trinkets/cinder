@@ -446,6 +446,57 @@ impl WorldState {
             .insert(skill_id.to_string())
     }
 
+    /// Backfills authored starting skills into a restored save. Acquired skills
+    /// remain untouched, while saves created before actor skill persistence
+    /// gain the capabilities their current content definitions require.
+    pub fn reconcile_authored_actor_skills(&mut self, content: &ContentPack) {
+        let authored = content
+            .actors
+            .iter()
+            .chain(self.spawned_actors.values())
+            .map(|actor| {
+                (
+                    actor.id.clone(),
+                    actor
+                        .skills
+                        .iter()
+                        .map(|skill| skill.id().to_string())
+                        .collect::<Vec<_>>(),
+                )
+            })
+            .collect::<Vec<_>>();
+        for (actor_id, skills) in authored {
+            self.actor_skills
+                .entry(actor_id)
+                .or_default()
+                .extend(skills);
+        }
+
+        let player_id = content.settings.combat.player_actor_id.clone();
+        let story_unlocked_skills = content
+            .actions
+            .iter()
+            .filter(|action| {
+                !action.skill_id.is_empty()
+                    && !action.available.requires_story_var.is_empty()
+                    && self
+                        .story_vars
+                        .get(&action.available.requires_story_var)
+                        .is_some_and(|value| {
+                            !matches!(
+                                value.trim().to_ascii_lowercase().as_str(),
+                                "" | "false" | "0"
+                            )
+                        })
+            })
+            .map(|action| action.skill_id.clone())
+            .collect::<Vec<_>>();
+        self.actor_skills
+            .entry(player_id)
+            .or_default()
+            .extend(story_unlocked_skills);
+    }
+
     /// The first skill of `kind` this actor owns, resolved through the content
     /// pack. Skills are stored in a `BTreeSet`, so a given kind resolves
     /// deterministically by skill id.
@@ -643,5 +694,35 @@ mod tests {
         assert_eq!(reloaded.turn_number, state.turn_number);
         assert_eq!(reloaded.transition_summaries, state.transition_summaries);
         assert_eq!(reloaded.relationships, state.relationships);
+    }
+
+    #[test]
+    fn restored_state_backfills_authored_skills_without_losing_acquired_skills() {
+        let mut content = crate::engine::test_fixtures::minimal_test_pack();
+        let actor_id = content.actors[0].id.clone();
+        content.actors[0].skills = vec![crate::content::types::ActorSkillAssignment::Id(
+            "strike".to_string(),
+        )];
+        content
+            .actions
+            .push(crate::content::types::ActionDefinition {
+                id: "teleport".to_string(),
+                skill_id: "teleport".to_string(),
+                available: crate::content::types::ActionAvailability {
+                    requires_story_var: "knows_teleport".to_string(),
+                    ..Default::default()
+                },
+                ..Default::default()
+            });
+        let mut state = WorldState::new(&content);
+        state.actor_skills.clear();
+        state.grant_actor_skill(&actor_id, "learned");
+        state.story_vars.set_unchecked("knows_teleport", "true");
+
+        state.reconcile_authored_actor_skills(&content);
+
+        assert!(state.actor_has_skill(&actor_id, "strike"));
+        assert!(state.actor_has_skill(&actor_id, "learned"));
+        assert!(state.actor_has_skill(&content.settings.combat.player_actor_id, "teleport"));
     }
 }

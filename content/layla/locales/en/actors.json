@@ -112,6 +112,11 @@
       ]
     },
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "drops": {},
     "tags": [
@@ -180,6 +185,11 @@
       ]
     },
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "drops": {},
     "tags": [
@@ -230,6 +240,11 @@
       ]
     },
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 25,
@@ -303,6 +318,11 @@
       ]
     },
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "drops": {},
     "tags": [
@@ -371,6 +391,11 @@
       ]
     },
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "drops": {},
     "tags": [
@@ -416,6 +441,11 @@
       ]
     },
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 8,
@@ -466,6 +496,11 @@
       ]
     },
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 8,
@@ -516,6 +551,11 @@
       ]
     },
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
@@ -566,6 +606,11 @@
       ]
     },
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
@@ -591,6 +636,11 @@
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
@@ -672,6 +722,11 @@
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
@@ -753,6 +808,11 @@
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
@@ -834,6 +894,11 @@
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
@@ -915,6 +980,11 @@
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
@@ -996,6 +1066,11 @@
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
@@ -1077,6 +1152,11 @@
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
@@ -1158,6 +1238,11 @@
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 10,
@@ -1239,6 +1324,11 @@
     ],
     "inspect_text": "A broad elf sentinel in heavy plates of lacquered bark. They plant their feet wide and hold still, the way a gate holds.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 40,
@@ -1316,6 +1406,11 @@
     ],
     "inspect_text": "An elf warrior in a crest of dark curved bark. They never stop shifting weight, ready to spring sideways the moment anything moves.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 25,
@@ -1392,13 +1487,15 @@
       "elf",
       "healer"
     ],
-    "healing": {
-      "amount": 4,
-      "message": "combat.bishop_heal"
-    },
     "skills": [
       "strike",
-      "heal"
+      "hold",
+      "intercept",
+      {
+        "id": "heal",
+        "power": 4,
+        "narration_key": "combat.bishop_heal"
+      }
     ],
     "inspect_text": "An elf holding a tall crooked branch that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
     "attackable": true,
@@ -1479,13 +1576,15 @@
       "elf",
       "healer"
     ],
-    "healing": {
-      "amount": 6,
-      "message": "combat.queen_heal"
-    },
     "skills": [
       "strike",
-      "heal"
+      "hold",
+      "intercept",
+      {
+        "id": "heal",
+        "power": 6,
+        "narration_key": "combat.queen_heal"
+      }
     ],
     "inspect_text": "The tallest of the elf commanders, in a cloak woven from leaf and pale root. A braided leaf ring hums quietly on her hand. She is always moving, retracing the same paths, and her eyes keep looking past the walls \u2014 searching for a name she cannot hold onto.",
     "attackable": true,
@@ -1558,6 +1657,11 @@
     ],
     "inspect_text": "The king of the underground forest, wrapped in a cloak of dark root-stitched leaves. He sits on a throne grown from living wood and watches you approach \u2014 calm, unhurried, without fear or mockery.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 0,
@@ -1606,13 +1710,15 @@
       "elf",
       "healer"
     ],
-    "healing": {
-      "amount": 4,
-      "message": "combat.bishop_heal"
-    },
     "skills": [
       "strike",
-      "heal"
+      "hold",
+      "intercept",
+      {
+        "id": "heal",
+        "power": 4,
+        "narration_key": "combat.bishop_heal"
+      }
     ],
     "inspect_text": "An elf holding a tall crooked branch that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles.",
     "attackable": true,
@@ -1694,6 +1800,11 @@
     ],
     "inspect_text": "An elf warrior in a crest of dark curved bark. They never stop shifting weight, ready to spring sideways the moment anything moves.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 25,
@@ -1771,6 +1882,11 @@
     ],
     "inspect_text": "A broad elf sentinel in heavy plates of lacquered bark. They plant their feet wide and hold still, the way a gate holds.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_interval_minutes": 2,
     "initial_hostile": true,
     "xp_drop": 40,
@@ -1852,6 +1968,11 @@
     ],
     "inspect_text": "It is not quite a body, not quite a flame. The shape in the pit holds itself together out of memory: a wide, patient form, made of the board's old fire. It does not flicker. It holds. A spiral of warmth beats slow inside it.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_kind": "fire",
     "resistances": {
       "physical": 100000
@@ -1900,6 +2021,11 @@
     ],
     "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_kind": "fire",
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -1940,6 +2066,11 @@
     ],
     "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_kind": "fire",
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -1980,6 +2111,11 @@
     ],
     "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_kind": "fire",
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -2064,6 +2200,11 @@
     ],
     "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_kind": "fire",
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -2104,6 +2245,11 @@
     ],
     "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_kind": "fire",
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -2144,6 +2290,11 @@
     ],
     "inspect_text": "A small twist of heat shaped like a child of the old fire, leaking embers onto the black glass. It crackles once, watching, then settles back to a banked glow.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_kind": "fire",
     "attack_interval_minutes": 2,
     "initial_hostile": true,
@@ -2524,6 +2675,11 @@
     ],
     "inspect_text": "A tall, hollow-cheeked priest in deep crimson ceremonial robes embroidered with blackened flame motifs. A bronze chain hangs from his neck, swaying slightly as he intones low, rhythmic litanies of flame and offering.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 40,
@@ -2580,6 +2736,11 @@
     ],
     "inspect_text": "The garrison commander stands over a broad tactical map, clad in polished brass cuirass and pauldrons connected by pressurized steam conduits. A heavy curved officer's saber hangs at his hip. His eyes are cold, steel-gray, and unyielding.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 60,
@@ -2634,6 +2795,11 @@
     ],
     "inspect_text": "A broad golem of dark, worn stone wrapped in thick copper pipe and brass fittings \u2014 a village guardian, made to watch over the village and stay quiet about it. Steam sighs from the valves along its shoulders. It kneels in the village square, stone head bowed, the way it has knelt for as long as anyone can remember. The children call it Sakhra, the Watchful: their guard, their fixture, the stillest thing in town.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "xp_drop": 30,
     "drops": {},
     "initial_stats": {
@@ -2726,6 +2892,11 @@
     ],
     "inspect_text": "A stern armored guard holding a heavy steam-powered repeating crossbow, keeping watch before the massive iron-and-brass bulkhead of the fortress.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_hostile": false,
     "attack_interval_minutes": 2,
     "xp_drop": 20,
@@ -2772,6 +2943,11 @@
     ],
     "inspect_text": "A towering garrison guard in heavy iron plating, leaning on a tall halberd and watching the plaza with cold indifference.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_hostile": false,
     "attack_interval_minutes": 2,
     "xp_drop": 20,
@@ -2817,6 +2993,11 @@
     ],
     "inspect_text": "A garrison soldier pacing the iron parapet of the western bastion with a steam bayonet fixed to their carbine.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 18,
@@ -2859,6 +3040,11 @@
     ],
     "inspect_text": "A sentinel scanning the eastern quarries below through a brass spyglass, their steam carbine resting ready on the crenel.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 18,
@@ -2902,6 +3088,11 @@
     ],
     "inspect_text": "A burly soldier in reinforced iron armor, holding a heavy ring of brass keys and standing watch over the suspended steam cage.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 25,
@@ -2947,6 +3138,11 @@
     ],
     "inspect_text": "A rogue steam-powered drilling unit on iron tracks. Its twin rotating diamond-tipped picks spin with a high-pitched metallic whine as steam billows from its exhaust flue.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 22,
@@ -2989,6 +3185,11 @@
     ],
     "inspect_text": "A heavy clockwork hauling machine fitted with reinforced iron scoops, clattering relentlessly along the haulage rails.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 22,
@@ -3031,6 +3232,11 @@
     ],
     "inspect_text": "A small twist of conjured living flame hovering obediently beside you, crackling softly with banked embers.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "attack_kind": "fire",
     "attack_interval_minutes": 2,
     "initial_hostile": false,
@@ -3072,6 +3278,11 @@
     ],
     "inspect_text": "A stern citadel guard captain clad in cold-forged plate armor, gripping a heavy frost-axe. At his belt jingles a heavy iron key stamped with the fortress insignia.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 30,
@@ -3118,6 +3329,11 @@
     ],
     "inspect_text": "A fortress guard in rime-frosted iron chainmail, holding a notched polearm and scanning the courtyard for intruders.",
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_hostile": true,
     "attack_interval_minutes": 2,
     "xp_drop": 20,
@@ -3209,14 +3425,14 @@
       "scholar",
       "ally"
     ],
-    "healing": {
-      "amount": 5,
-      "message": "combat.einar_heal"
-    },
     "skills": [
       "strike",
       "hold",
-      "heal"
+      {
+        "id": "heal",
+        "power": 5,
+        "narration_key": "combat.einar_heal"
+      }
     ],
     "inspect_text": "A quiet, pale young man with sharp Nordic features and observant ice-blue eyes, dressed in tattered grey scholar robes trimmed with frayed silver thread. A leather satchel of dried herbs and glass phials hangs at his hip.",
     "attackable": false,
@@ -3296,6 +3512,11 @@
     },
     "initial_hostile": true,
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "aliases": [
       "vane",
       "lord vane",
@@ -3365,6 +3586,11 @@
     },
     "initial_hostile": true,
     "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "aliases": [
       "torin",
       "warmaster torin",
@@ -3434,13 +3660,15 @@
     },
     "initial_hostile": true,
     "attackable": true,
-    "healing": {
-      "amount": 10,
-      "message": "combat.sylvan_heal"
-    },
     "skills": [
       "strike",
-      "heal"
+      "hold",
+      "intercept",
+      {
+        "id": "heal",
+        "power": 10,
+        "narration_key": "combat.sylvan_heal"
+      }
     ],
     "aliases": [
       "sylvan",

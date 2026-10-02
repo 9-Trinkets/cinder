@@ -116,6 +116,11 @@ pub(crate) fn strike_event(
         return None;
     }
     let behavior = resolved_behavior(content, actor_id);
+    if !behavior.strike_skill_id.is_empty()
+        && !state.actor_has_skill(actor_id, &behavior.strike_skill_id)
+    {
+        return None;
+    }
     match rule_decides(&behavior.strike, "strike", content, state, actor_id) {
         Decision::Yes => Some(WorldEvent::HostileStrike {
             actor_id: actor_id.to_string(),

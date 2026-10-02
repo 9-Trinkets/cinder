@@ -24,6 +24,7 @@ pub fn rule(
 ) -> PartyCombatDecisionRule {
     PartyCombatDecisionRule {
         id: id.to_string(),
+        skill_id: String::new(),
         tier,
         window: PartyReactionWindow::AfterHostileDamage,
         action,

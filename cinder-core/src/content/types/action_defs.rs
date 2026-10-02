@@ -208,6 +208,10 @@ impl ActionItemCreation {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ActionDefinition {
     pub id: String,
+    /// Skill required to invoke this action. Empty keeps legacy packs
+    /// compatible while packs with strict skills reject missing bindings.
+    #[serde(default)]
+    pub skill_id: String,
     #[serde(default)]
     pub command: String,
     #[serde(default)]

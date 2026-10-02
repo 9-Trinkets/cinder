@@ -12,7 +12,8 @@ mod objectives;
 pub use availability::action_is_available;
 
 pub(crate) use availability::{
-    command_availability_issue, command_unavailable_message, story_var_is_truthy,
+    action_is_available_for_actor, command_availability_issue,
+    command_availability_issue_for_actor, command_unavailable_message, story_var_is_truthy,
 };
 pub(crate) use objectives::{
     ObjectiveSpeechEvent, actor_objective_guidance_notes, apply_actor_turn_policies,

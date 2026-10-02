@@ -16,7 +16,7 @@ use crate::content::types::{
     TeleportNetworkDefinition, UiTextDefinition,
 };
 use serde_json::Value;
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 use std::error::Error;
 use std::fs as std_fs;
 use std::path::{Path, PathBuf};
@@ -163,7 +163,7 @@ pub fn load_pack_from_dir_with_locale(
     let action_index = build_index(&actions, |action| &action.id);
     let skill_index = build_index(&skills.skills, |skill| &skill.id);
 
-    Ok(ContentPack {
+    let pack = ContentPack {
         locale: effective_locale,
         settings,
         ui_text,
@@ -196,7 +196,176 @@ pub fn load_pack_from_dir_with_locale(
         actor_index,
         action_index,
         skill_index,
-    })
+    };
+    validate_skills(&pack)?;
+    Ok(pack)
+}
+
+fn validate_skills(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
+    let mut declared = BTreeSet::new();
+    for skill in &pack.skills.skills {
+        if skill.id.trim().is_empty() {
+            return Err("skills.json contains a skill with an empty id".into());
+        }
+        if !declared.insert(skill.id.as_str()) {
+            return Err(format!("skills.json declares duplicate skill '{}'", skill.id).into());
+        }
+    }
+
+    for actor in &pack.actors {
+        let mut assigned = BTreeSet::new();
+        for assignment in &actor.skills {
+            let skill_id = assignment.id();
+            let Some(skill) = pack.skill(skill_id) else {
+                return Err(
+                    format!("actor '{}' declares unknown skill '{skill_id}'", actor.id).into(),
+                );
+            };
+            if !assigned.insert(skill_id) {
+                return Err(format!(
+                    "actor '{}' declares skill '{skill_id}' more than once",
+                    actor.id
+                )
+                .into());
+            }
+            if pack.skills.strict
+                && skill.kind == Some(crate::content::types::SkillKind::Heal)
+                && assignment.power().is_none()
+            {
+                return Err(format!(
+                    "strict skills require actor '{}' to configure power for heal skill '{}'",
+                    actor.id, skill_id
+                )
+                .into());
+            }
+        }
+    }
+
+    for action in &pack.actions {
+        if !action.skill_id.is_empty() && pack.skill(&action.skill_id).is_none() {
+            return Err(format!(
+                "action '{}' references unknown skill '{}'",
+                action.id, action.skill_id
+            )
+            .into());
+        }
+    }
+    for rule in &pack.settings.party.combat_rules {
+        if !rule.skill_id.is_empty() && pack.skill(&rule.skill_id).is_none() {
+            return Err(format!(
+                "party combat rule '{}' references unknown skill '{}'",
+                rule.id, rule.skill_id
+            )
+            .into());
+        }
+    }
+    for level in pack
+        .levels
+        .default
+        .iter()
+        .chain(pack.levels.actors.values().flatten())
+    {
+        for skill_id in &level.unlocks {
+            if pack.skill(skill_id).is_none() {
+                return Err(format!("levels.json unlocks unknown skill '{skill_id}'").into());
+            }
+        }
+    }
+    for (hook_id, hook) in &pack.hooks {
+        validate_hook_skill_grants(pack, hook_id, hook)?;
+    }
+
+    if !pack.skills.strict {
+        return Ok(());
+    }
+
+    for action in &pack.actions {
+        if matches!(action.command.as_str(), "ATTACK" | "TRACE" | "TELEPORT")
+            && action.skill_id.is_empty()
+        {
+            return Err(format!(
+                "strict skills require action '{}' to name a skill",
+                action.id
+            )
+            .into());
+        }
+    }
+    for rule in &pack.settings.party.combat_rules {
+        if rule.skill_id.is_empty() {
+            return Err(format!(
+                "strict skills require party combat rule '{}' to name a skill",
+                rule.id
+            )
+            .into());
+        }
+    }
+    for actor in &pack.actors {
+        let behavior = pack
+            .behavior
+            .actors
+            .get(&actor.id)
+            .cloned()
+            .unwrap_or_default()
+            .resolved_with_default(&pack.behavior.defaults);
+        if behavior.strike.is_some() && behavior.strike_skill_id.is_empty() {
+            return Err(format!(
+                "strict skills require actor '{}' strike behavior to name a skill",
+                actor.id
+            )
+            .into());
+        }
+        if (actor.attackable || actor.initial_hostile)
+            && behavior.strike.is_some()
+            && actor.skill(&behavior.strike_skill_id).is_none()
+        {
+            return Err(format!(
+                "combat actor '{}' lacks required strike skill '{}'",
+                actor.id, behavior.strike_skill_id
+            )
+            .into());
+        }
+    }
+    Ok(())
+}
+
+fn validate_hook_skill_grants(
+    pack: &ContentPack,
+    hook_id: &str,
+    value: &Value,
+) -> Result<(), Box<dyn Error>> {
+    match value {
+        Value::Array(values) => {
+            for value in values {
+                validate_hook_skill_grants(pack, hook_id, value)?;
+            }
+        }
+        Value::Object(object) => {
+            if object.get("kind").and_then(Value::as_str) == Some("grant_skill") {
+                let skill_id = object
+                    .get("skill_id")
+                    .and_then(Value::as_str)
+                    .unwrap_or_default();
+                if pack.skill(skill_id).is_none() {
+                    return Err(
+                        format!("hook '{hook_id}' grants unknown skill '{skill_id}'").into(),
+                    );
+                }
+                if let Some(actor_id) = object.get("actor_id").and_then(Value::as_str)
+                    && pack.actor(actor_id).is_none()
+                {
+                    return Err(format!(
+                        "hook '{hook_id}' grants a skill to unknown actor '{actor_id}'"
+                    )
+                    .into());
+                }
+            }
+            for value in object.values() {
+                validate_hook_skill_grants(pack, hook_id, value)?;
+            }
+        }
+        _ => {}
+    }
+    Ok(())
 }
 
 pub fn available_locales(path: &Path) -> Result<Vec<LocaleOption>, Box<dyn Error>> {

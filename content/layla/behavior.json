@@ -1,5 +1,6 @@
 {
   "defaults": {
+    "strike_skill_id": "strike",
     "strike": {
       "rule": "effect_table",
       "rule_config": {

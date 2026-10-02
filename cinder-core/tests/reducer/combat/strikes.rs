@@ -173,6 +173,7 @@ fn hostile_strike_intercepted_by_guard_takes_at_least_minimum_damage() {
         initial_orders: BTreeMap::from([("bodyguard".to_string(), "guard".to_string())]),
         combat_rules: vec![PartyCombatDecisionRule {
             id: "defender-intercepts".to_string(),
+            skill_id: String::new(),
             tier: PartyDecisionTier::Order,
             window: PartyReactionWindow::BeforeHostileDamage,
             action: PartyReactionAction::Intercept,

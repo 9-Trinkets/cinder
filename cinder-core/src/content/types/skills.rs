@@ -1,5 +1,50 @@
 use serde::{Deserialize, Serialize};
 
+/// One skill assigned to an actor.
+///
+/// Most assignments are authored as a plain skill id. The object form carries
+/// actor-specific tuning for skills whose output varies by user while keeping
+/// the capability itself defined once in `skills.json`.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ActorSkillAssignment {
+    Id(String),
+    Configured(ActorSkillConfig),
+}
+
+impl ActorSkillAssignment {
+    pub fn id(&self) -> &str {
+        match self {
+            Self::Id(id) => id,
+            Self::Configured(config) => &config.id,
+        }
+    }
+
+    pub fn power(&self) -> Option<i32> {
+        match self {
+            Self::Id(_) => None,
+            Self::Configured(config) => config.power,
+        }
+    }
+
+    pub fn narration_key(&self) -> Option<&str> {
+        match self {
+            Self::Id(_) => None,
+            Self::Configured(config) => config.narration_key.as_deref(),
+        }
+    }
+}
+
+/// Actor-specific parameters for an assigned skill.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ActorSkillConfig {
+    pub id: String,
+    #[serde(default)]
+    pub power: Option<i32>,
+    #[serde(default)]
+    pub narration_key: Option<String>,
+}
+
 /// Operational kind of a skill.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
@@ -24,70 +69,9 @@ pub enum SkillTargetMode {
     None,
 }
 
-/// Specification for an attack skill.
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct AttackSkillSpec {
-    #[serde(default)]
-    pub stat: String,
-    #[serde(default = "default_power_multiplier")]
-    pub power_multiplier: u32,
-}
-
-fn default_power_multiplier() -> u32 {
-    1
-}
-
-/// Trigger condition for defensive reactions.
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct DefendTriggerCondition {
-    #[serde(default)]
-    pub ally_health_at_most_percent: Option<u8>,
-    #[serde(default)]
-    pub self_health_at_least_percent: Option<u8>,
-    #[serde(default)]
-    pub self_health_at_most_percent: Option<u8>,
-}
-
-/// Specification for a defend skill.
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct DefendSkillSpec {
-    #[serde(default)]
-    pub interception: bool,
-    #[serde(default)]
-    pub trigger_condition: Option<DefendTriggerCondition>,
-}
-
-/// Trigger condition for healing reactions.
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct HealTriggerCondition {
-    #[serde(default)]
-    pub ally_health_at_most_percent: Option<u8>,
-}
-
-/// Specification for a healing skill.
-///
-/// Potency is deliberately *not* declared here: healing strength is a per-actor
-/// property (`ActorDefinition.healing.amount` ranges from 4 to 10 across the
-/// Layla pack's clergy and bosses), so `amount` is only an optional override for
-/// the rare skill that needs to differ from its actor.
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct HealSkillSpec {
-    #[serde(default)]
-    pub amount: Option<i32>,
-    #[serde(default)]
-    pub trigger_condition: Option<HealTriggerCondition>,
-}
-
-/// Specification for a spell / utility skill.
-#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct SpellSkillSpec {
-    #[serde(default)]
-    pub requires_item: Option<String>,
-    #[serde(default)]
-    pub requires_story_var: Option<String>,
-}
-
-/// Declarative definition of an ability in Cinder.
+/// Declarative identity and presentation metadata for an ability in Cinder.
+/// Invocation timing, requirements, and effects stay with the action, party
+/// rule, or behavior that explicitly binds this skill id.
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SkillDefinition {
     pub id: String,
@@ -98,21 +82,15 @@ pub struct SkillDefinition {
     pub target: Option<SkillTargetMode>,
     #[serde(default)]
     pub description: String,
-    #[serde(default)]
-    pub attack: Option<AttackSkillSpec>,
-    #[serde(default)]
-    pub defend: Option<DefendSkillSpec>,
-    #[serde(default)]
-    pub heal: Option<HealSkillSpec>,
-    #[serde(default)]
-    pub spell: Option<SpellSkillSpec>,
-    #[serde(default)]
-    pub narration_key: Option<String>,
 }
 
 /// Top-level container for all skills declared in `skills.json`.
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SkillsDefinition {
+    /// When enabled, all skill references and actor capabilities are validated
+    /// and runtime behavior never falls back to implicit ownership.
+    #[serde(default)]
+    pub strict: bool,
     #[serde(default)]
     pub skills: Vec<SkillDefinition>,
 }

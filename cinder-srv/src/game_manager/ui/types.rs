@@ -1,4 +1,4 @@
-use cinder_core::content::types::{PanelDataSource, ThemeDefinition, UiTextDefinition};
+use cinder_core::content::types::{PanelDataSource, SkillKind, ThemeDefinition, UiTextDefinition};
 use cinder_core::engine::runtime::{ActClosure, RelationshipPair};
 use serde::Serialize;
 use std::collections::BTreeMap;
@@ -45,6 +45,14 @@ pub struct EquippedItem {
     pub id: Option<String>,
 }
 
+/// A skill currently owned by a party member.
+#[derive(Clone, Serialize)]
+pub struct PartySkill {
+    pub id: String,
+    pub label: String,
+    pub kind: Option<SkillKind>,
+}
+
 /// One living follower and its current combat directive.
 #[derive(Clone, Serialize)]
 pub struct PartyMember {
@@ -57,6 +65,7 @@ pub struct PartyMember {
     pub order_panel: String,
     pub inventory: Vec<InventoryItem>,
     pub equipped_items: Vec<EquippedItem>,
+    pub skills: Vec<PartySkill>,
     pub in_room: bool,
 }
 

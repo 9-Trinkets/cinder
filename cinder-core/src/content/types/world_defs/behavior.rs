@@ -21,6 +21,10 @@ pub struct BehaviorDefinition {
 /// left `null` inherit the default.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct BehaviorActorDefinition {
+    /// Skill required to execute the strike rule. Empty preserves compatibility
+    /// for packs that have not migrated to explicit skill ownership.
+    #[serde(default)]
+    pub strike_skill_id: String,
     /// `effect_table` rule returning `[{ "kind": "strike" }]` when the actor
     /// should strike this tick.
     #[serde(default)]
@@ -37,6 +41,11 @@ impl BehaviorActorDefinition {
         default: &BehaviorActorDefinition,
     ) -> BehaviorActorDefinition {
         BehaviorActorDefinition {
+            strike_skill_id: if self.strike_skill_id.is_empty() {
+                default.strike_skill_id.clone()
+            } else {
+                self.strike_skill_id.clone()
+            },
             strike: self.strike.clone().or_else(|| default.strike.clone()),
             hold: self.hold.clone().or_else(|| default.hold.clone()),
         }
