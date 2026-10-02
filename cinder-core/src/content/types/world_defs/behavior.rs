@@ -2,12 +2,9 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::BTreeMap;
 
-/// The behavior of a hostile actor during a tick, declared per pack in
-/// `behavior.json`. Movement *destination* and *cadence* stay in
-/// `movement.json`; this file governs the *eligibility* decisions — whether an
-/// actor strikes, holds, or is free to move. Each rule is a neuron symbolic
-/// hook (`effect_table`) evaluated against a rich actor/world input JSON, so
-/// all policy lives in content rather than Rust.
+/// Non-skill actor behavior declared in `behavior.json`. Strict skill packs
+/// define autonomous attacks and support in `skills.json`; movement hold rules
+/// remain here because they constrain navigation rather than execute a skill.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct BehaviorDefinition {
     #[serde(default)]
@@ -21,12 +18,13 @@ pub struct BehaviorDefinition {
 /// left `null` inherit the default.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct BehaviorActorDefinition {
-    /// Skill required to execute the strike rule. Empty preserves compatibility
-    /// for packs that have not migrated to explicit skill ownership.
+    /// Skill required by the compatibility strike rule. Strict skill packs
+    /// reject legacy strike rules and author autonomous uses in `skills.json`.
     #[serde(default)]
     pub strike_skill_id: String,
     /// `effect_table` rule returning `[{ "kind": "strike" }]` when the actor
-    /// should strike this tick.
+    /// should strike this tick. Retained for packs that do not declare
+    /// centralized autonomous skill behavior.
     #[serde(default)]
     pub strike: Option<Value>,
     /// `effect_table` rule returning `[{ "kind": "hold" }]` when the actor must

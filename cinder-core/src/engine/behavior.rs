@@ -1,18 +1,15 @@
 //! Content-driven hostile behavior decisions during a background tick.
 //!
-//! `behavior.json` declares, per pack (with pack-wide `defaults` and per-actor
-//! overrides), two neuron `effect_table` symbolic rules evaluated against a
-//! shared actor/world input JSON:
+//! Non-skill movement holds and compatibility hostile strikes are declared in
+//! `behavior.json` as neuron `effect_table` rules evaluated against a shared
+//! actor/world input JSON:
 //!
-//! - `strike`: yields an effect `{ "kind": "strike" }` when the actor should
-//!   declare a strike this tick.
+//! - `strike`: compatibility path for packs without centralized skills.
 //! - `hold`: yields `{ "kind": "hold" }` when the actor must stay put
 //!   (blocking movement); an empty result means it is free to move.
 //!
-//! Only the *eligibility* decisions live here. Movement *destination* and
-//! *cadence* are declared in `movement.json` and consumed separately. Because
-//! every pack ships its own `behavior.json`, there is no built-in engine
-//! default: the pack is the single source of truth for hostile policy.
+//! Strict skill packs author autonomous skill eligibility in `skills.json`.
+//! Movement destination and cadence remain in `movement.json`.
 
 use crate::content::types::{BehaviorActorDefinition, ContentPack};
 use crate::engine::events::WorldEvent;
@@ -103,6 +100,19 @@ fn rule_decides(
     } else {
         Decision::No
     }
+}
+
+pub(crate) fn skill_rule_emits(
+    rule: &Value,
+    effect_kind: &str,
+    content: &ContentPack,
+    state: &WorldState,
+    actor_id: &str,
+) -> bool {
+    matches!(
+        rule_decides(&Some(rule.clone()), effect_kind, content, state, actor_id),
+        Decision::Yes
+    )
 }
 
 /// Should this actor declare a strike this tick? Fully decided by the pack's

@@ -1077,6 +1077,72 @@ fn layla_skills_declare_only_live_behaviors() {
             .iter()
             .all(|skill| !skill.label.is_empty())
     );
+
+    let strike = pack.skill("strike").unwrap();
+    assert_eq!(
+        strike
+            .player_action
+            .as_ref()
+            .map(|action| action.id.as_str()),
+        Some("attack")
+    );
+    assert_eq!(strike.reactions.len(), 1);
+    assert_eq!(strike.autonomous.len(), 1);
+
+    let intercept = pack.skill("intercept").unwrap();
+    assert_eq!(intercept.reactions.len(), 2);
+
+    let hold = pack.skill("hold").unwrap();
+    assert_eq!(hold.reactions.len(), 1);
+
+    let heal = pack.skill("heal").unwrap();
+    assert_eq!(heal.reactions.len(), 1);
+    assert_eq!(heal.autonomous.len(), 1);
+
+    for (skill_id, action_id) in [("trace", "trace"), ("teleport", "teleport")] {
+        assert_eq!(
+            pack.skill(skill_id)
+                .and_then(|skill| skill.player_action.as_ref())
+                .map(|action| action.id.as_str()),
+            Some(action_id)
+        );
+    }
+}
+
+#[test]
+fn layla_skill_behaviors_compile_into_generic_runtime_indexes() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+
+    for (action_id, skill_id) in [
+        ("attack", "strike"),
+        ("trace", "trace"),
+        ("teleport", "teleport"),
+    ] {
+        assert_eq!(
+            pack.action(action_id)
+                .map(|action| action.skill_id.as_str()),
+            Some(skill_id)
+        );
+    }
+
+    let rules = pack
+        .settings
+        .party
+        .combat_rules
+        .iter()
+        .map(|rule| (rule.id.as_str(), rule.skill_id.as_str()))
+        .collect::<Vec<_>>();
+    assert_eq!(
+        rules,
+        vec![
+            ("survival-hold", "hold"),
+            ("guard-order", "intercept"),
+            ("follow-protect-player", "intercept"),
+            ("healer-support-order", "heal"),
+            ("assist-order", "strike"),
+        ]
+    );
+    assert!(pack.behavior.defaults.strike.is_none());
 }
 
 #[test]

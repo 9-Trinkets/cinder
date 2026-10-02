@@ -135,8 +135,9 @@ pub struct ContentSettingsDefinition {
     /// always visible.
     #[serde(default)]
     pub quests_reveal_room_prefix: String,
-    /// `behavior.json` defines eligible hostile strikes. `rules` applies them
-    /// directly; `llm` asks a validated planner to choose a subset.
+    /// Skill definitions (or legacy behavior rules in non-strict packs)
+    /// define eligible hostile actions. `rules` applies them directly; `llm`
+    /// asks a validated planner to choose a subset.
     #[serde(default)]
     pub autonomous_hostility_mode: AutonomousHostilityMode,
     /// Content-authored actor effects evaluated after each background tick.

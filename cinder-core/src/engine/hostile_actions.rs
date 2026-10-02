@@ -7,7 +7,9 @@
 //! Rust retains reducer eligibility backstops, cooldown scheduling, and damage
 //! mechanics, but does not add another selection policy here.
 
-use crate::content::types::{ContentPack, SkillKind};
+use crate::content::types::{
+    ContentPack, SkillAutonomousAction, SkillAutonomousTarget, SkillAutonomousUse, SkillKind,
+};
 use crate::engine::behavior;
 use crate::engine::events::WorldEvent;
 use crate::engine::state::{ActorStance, WorldState};
@@ -20,6 +22,9 @@ pub(crate) fn plan_rules_hostile_actions(
     content: &ContentPack,
     state: &WorldState,
 ) -> Vec<WorldEvent> {
+    if state.phase != crate::engine::state::GamePhase::Active {
+        return Vec::new();
+    }
     let actor_ids = content
         .actors
         .iter()
@@ -28,20 +33,63 @@ pub(crate) fn plan_rules_hostile_actions(
     actor_ids
         .into_iter()
         .filter_map(|actor_id| {
-            let strike = behavior::strike_event(content, state, &actor_id)?;
-            if let Some((amount, message)) = hostile_healing_spec(content, state, &actor_id)
-                && let Some(target_id) = select_hostile_heal_target(content, state, &actor_id)
-            {
-                return Some(WorldEvent::HostileHeal {
-                    actor_id,
+            if let Some(event) = centralized_skill_event(content, state, &actor_id) {
+                return Some(event);
+            }
+            behavior::strike_event(content, state, &actor_id)
+        })
+        .collect()
+}
+
+fn centralized_skill_event(
+    content: &ContentPack,
+    state: &WorldState,
+    actor_id: &str,
+) -> Option<WorldEvent> {
+    let mut uses = content
+        .skills
+        .skills
+        .iter()
+        .enumerate()
+        .filter(|(_, skill)| state.actor_has_skill(actor_id, &skill.id))
+        .flat_map(|(skill_index, skill)| {
+            skill
+                .autonomous
+                .iter()
+                .enumerate()
+                .map(move |(use_index, use_)| (use_.priority, skill_index, use_index, skill, use_))
+        })
+        .collect::<Vec<_>>();
+    uses.sort_by_key(|(priority, skill_index, use_index, _, _)| {
+        (*priority, *skill_index, *use_index)
+    });
+
+    uses.into_iter().find_map(|(_, _, _, skill, use_)| {
+        if !behavior::skill_rule_emits(
+            &use_.rule,
+            use_.action.effect_kind(),
+            content,
+            state,
+            actor_id,
+        ) {
+            return None;
+        }
+        match use_.action {
+            SkillAutonomousAction::Strike => Some(WorldEvent::HostileStrike {
+                actor_id: actor_id.to_string(),
+            }),
+            SkillAutonomousAction::Heal => {
+                let (amount, message) = hostile_healing_spec(content, state, actor_id, &skill.id)?;
+                let target_id = select_autonomous_target(content, state, actor_id, use_)?;
+                Some(WorldEvent::HostileHeal {
+                    actor_id: actor_id.to_string(),
                     target_id,
                     amount,
                     message,
-                });
+                })
             }
-            Some(strike)
-        })
-        .collect()
+        }
+    })
 }
 
 /// Healing available to a hostile through its assigned heal skill.
@@ -49,13 +97,15 @@ fn hostile_healing_spec(
     content: &ContentPack,
     state: &WorldState,
     actor_id: &str,
+    skill_id: &str,
 ) -> Option<(i32, String)> {
-    let skill = state.actor_skill_of_kind(content, actor_id, SkillKind::Heal);
-    let assignment = skill.and_then(|skill| {
-        state
-            .actor(content, actor_id)
-            .and_then(|actor| actor.skill(&skill.id))
-    });
+    let skill = content.skill(skill_id)?;
+    if skill.kind != Some(SkillKind::Heal) {
+        return None;
+    }
+    let assignment = state
+        .actor(content, actor_id)
+        .and_then(|actor| actor.skill(skill_id));
     let amount = assignment.and_then(|assignment| assignment.power())?;
     let message = assignment
         .and_then(|assignment| assignment.narration_key())
@@ -64,11 +114,18 @@ fn hostile_healing_spec(
     Some((amount, message))
 }
 
-fn select_hostile_heal_target(
+fn select_autonomous_target(
     content: &ContentPack,
     state: &WorldState,
     actor_id: &str,
+    use_: &SkillAutonomousUse,
 ) -> Option<String> {
+    match use_.target {
+        SkillAutonomousTarget::Player => {
+            return Some(content.settings.combat.player_actor_id.clone());
+        }
+        SkillAutonomousTarget::LowestHealthHostileAlly => {}
+    }
     let health_stat = &content.settings.combat.health_stat_id;
     let default_room = content
         .actor(actor_id)
@@ -76,12 +133,14 @@ fn select_hostile_heal_target(
         .unwrap_or_default();
     let room_id = state.actor_room_id(actor_id, default_room);
 
-    // Self-preservation: if self is wounded below 50% HP, prioritize self-healing.
+    // Optional self-preservation threshold is authored with the skill use.
     let self_hp = state.actor_stat(actor_id, health_stat);
     let self_max = state
         .actor_stat_maximum(content, actor_id, health_stat)
         .max(1);
-    if self_hp * 2 < self_max {
+    if let Some(percent) = use_.prefer_self_below_percent
+        && i64::from(self_hp) * 100 < i64::from(self_max) * i64::from(percent)
+    {
         return Some(actor_id.to_string());
     }
 
@@ -166,11 +225,28 @@ mod tests {
     fn hostile_fixture() -> (ContentPack, WorldState, String, String) {
         let mut content = crate::engine::test_fixtures::minimal_test_pack();
         assert!(content.actors.len() >= 2, "fixture needs two actors");
-        // Re-declare the strike eligibility as content (matching the historical
-        // hardcoded policy) so the fixture exercises the real content-driven path.
-        content.behavior.defaults.strike = Some(strike_default_rule());
+        content.skills.skills = vec![crate::content::types::SkillDefinition {
+            id: "strike".to_string(),
+            label: "Strike".to_string(),
+            kind: Some(SkillKind::Attack),
+            autonomous: vec![crate::content::types::SkillAutonomousUse {
+                id: "hostile-strike".to_string(),
+                priority: 20,
+                action: SkillAutonomousAction::Strike,
+                target: SkillAutonomousTarget::Player,
+                rule: strike_default_rule(),
+                prefer_self_below_percent: None,
+            }],
+            ..Default::default()
+        }];
+        content.skill_index.insert("strike".to_string(), 0);
         let brute_id = content.actors[0].id.clone();
         let bystander_id = content.actors[1].id.clone();
+        for actor in &mut content.actors[..2] {
+            actor.skills = vec![crate::content::types::ActorSkillAssignment::Id(
+                "strike".to_string(),
+            )];
+        }
         content.actors[0].room_id = "hall".to_string();
         content.actors[0].attack_interval_minutes = Some(3);
         content.actors[1].room_id = "annex".to_string();
@@ -271,11 +347,11 @@ mod tests {
         let state = WorldState::new(&content);
 
         assert_eq!(
-            hostile_healing_spec(&content, &state, &healer_id),
+            hostile_healing_spec(&content, &state, &healer_id, "heal"),
             Some((10, "combat.sylvan_heal".to_string()))
         );
         assert_eq!(
-            hostile_healing_spec(&content, &state, &bare_id),
+            hostile_healing_spec(&content, &state, &bare_id, "heal"),
             Some((4, "combat.bishop_heal".to_string()))
         );
     }
@@ -285,7 +361,7 @@ mod tests {
         let content = crate::engine::test_fixtures::minimal_test_pack();
         let state = WorldState::new(&content);
         assert_eq!(
-            hostile_healing_spec(&content, &state, &content.actors[0].id),
+            hostile_healing_spec(&content, &state, &content.actors[0].id, "heal"),
             None
         );
     }

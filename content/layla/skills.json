@@ -6,42 +6,433 @@
       "label": "Strike",
       "kind": "attack",
       "target": "single_enemy",
-      "description": "A focused physical attack against a target in the room."
+      "description": "A focused physical attack against a target in the room.",
+      "reaction_priority": 30,
+      "player_action": {
+        "id": "attack",
+        "command": "ATTACK",
+        "label": "Attack",
+        "group": "combat",
+        "phrases": [
+          "attack",
+          "hit",
+          "strike",
+          "fight",
+          "kill"
+        ],
+        "player_enabled": true,
+        "target_mode": "actor",
+        "outcome_mode": "event",
+        "effects": [
+          "attack_target"
+        ],
+        "event_text": "{actor_name} strikes {target_actor_name}.",
+        "ui": {
+          "bar": true,
+          "overflow": false,
+          "panel": "attack",
+          "panel_config": {
+            "title": "Who do you want to attack?",
+            "prompt": "Select a target",
+            "data_source": "actors_in_room",
+            "on_select": "execute_command"
+          },
+          "group": "combat",
+          "sort_order": 10
+        },
+        "player_command": {
+          "target_mode": "actor_reference",
+          "usage": "attack <target>",
+          "example": "attack crawler",
+          "advances_time": true,
+          "input": {
+            "required": true
+          }
+        }
+      },
+      "reactions": [
+        {
+          "id": "assist-order",
+          "tier": "order",
+          "window": "after_hostile_damage",
+          "action": "counterattack",
+          "conditions": [
+            {
+              "condition": "order_is",
+              "orders": [
+                "follow",
+                "patrol",
+                "guard"
+              ]
+            }
+          ],
+          "target": "attacker",
+          "cooldown": {
+            "mode": "actor_combat_interval"
+          },
+          "message": "combat.party_counterattack"
+        }
+      ],
+      "autonomous": [
+        {
+          "id": "hostile-strike",
+          "priority": 20,
+          "action": "strike",
+          "target": "player",
+          "rule": {
+            "rule": "effect_table",
+            "rule_config": {
+              "cases_path": "rules",
+              "next_on_match": "complete",
+              "next_on_default": "complete",
+              "default_payload_template": {
+                "effects": []
+              }
+            },
+            "input_overlay": {
+              "rules": [
+                {
+                  "conditions": [
+                    {
+                      "path": "actor.stance",
+                      "operator": "equal",
+                      "value": "hostile"
+                    },
+                    {
+                      "path": "actor.alive",
+                      "operator": "equal",
+                      "value": true
+                    },
+                    {
+                      "path": "world.cooldown_elapsed",
+                      "operator": "equal",
+                      "value": true
+                    },
+                    {
+                      "path": "world.in_player_room",
+                      "operator": "equal",
+                      "value": true
+                    }
+                  ],
+                  "payload_template": {
+                    "kind": "strike"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "id": "intercept",
       "label": "Intercept",
       "kind": "defend",
       "target": "single_ally",
-      "description": "Steps in front of incoming attacks aimed at a vulnerable ally, absorbing the blow."
+      "description": "Steps in front of incoming attacks aimed at a vulnerable ally, absorbing the blow.",
+      "reaction_priority": 10,
+      "reactions": [
+        {
+          "id": "guard-order",
+          "tier": "order",
+          "window": "before_hostile_damage",
+          "action": "intercept",
+          "conditions": [
+            {
+              "condition": "order_is",
+              "orders": [
+                "guard"
+              ]
+            },
+            {
+              "condition": "actor_health_at_least_percent",
+              "percent": 25
+            }
+          ],
+          "target": "player",
+          "candidate_priority": [
+            {
+              "priority": "highest_health_percent"
+            },
+            {
+              "priority": "highest_defense"
+            },
+            {
+              "priority": "content_order"
+            }
+          ],
+          "cooldown": {
+            "mode": "fixed_minutes",
+            "minutes": 0
+          },
+          "message": "combat.guard_intercepts"
+        },
+        {
+          "id": "follow-protect-player",
+          "tier": "order",
+          "window": "before_hostile_damage",
+          "action": "intercept",
+          "conditions": [
+            {
+              "condition": "order_is",
+              "orders": [
+                "follow"
+              ]
+            },
+            {
+              "condition": "player_health_at_most_percent",
+              "percent": 50
+            },
+            {
+              "condition": "actor_health_at_least_percent",
+              "percent": 25
+            }
+          ],
+          "target": "player",
+          "candidate_priority": [
+            {
+              "priority": "highest_health_percent"
+            },
+            {
+              "priority": "highest_defense"
+            },
+            {
+              "priority": "content_order"
+            }
+          ],
+          "cooldown": {
+            "mode": "actor_combat_interval"
+          },
+          "message": "combat.guard_intercepts"
+        }
+      ]
     },
     {
       "id": "hold",
       "label": "Hold",
       "kind": "defend",
       "target": "self_actor",
-      "description": "Holds defensive stance when critically wounded, avoiding risky exposure."
+      "description": "Holds defensive stance when critically wounded, avoiding risky exposure.",
+      "reactions": [
+        {
+          "id": "survival-hold",
+          "tier": "survival",
+          "window": "after_hostile_damage",
+          "action": "hold",
+          "conditions": [
+            {
+              "condition": "actor_health_at_most_percent",
+              "percent": 25
+            }
+          ],
+          "target": "self_actor",
+          "cooldown": {
+            "mode": "actor_combat_interval"
+          },
+          "message": "combat.party_holds"
+        }
+      ]
     },
     {
       "id": "heal",
       "label": "Heal",
       "kind": "heal",
       "target": "lowest_health_ally",
-      "description": "Unseals soothing draughts for any wounded ally, restoring health."
+      "description": "Unseals soothing draughts for any wounded ally, restoring health.",
+      "reaction_priority": 20,
+      "reactions": [
+        {
+          "id": "healer-support-order",
+          "tier": "order",
+          "window": "after_hostile_damage",
+          "action": "support",
+          "conditions": [
+            {
+              "condition": "actor_has_tag",
+              "tag": "healer"
+            },
+            {
+              "condition": "any_ally_wounded"
+            }
+          ],
+          "target": "lowest_health_ally",
+          "support_effect": {
+            "effect": "adjust_actor_stat",
+            "stat": "hp",
+            "delta": 4
+          },
+          "cooldown": {
+            "mode": "actor_combat_interval"
+          },
+          "message": "combat.party_support"
+        }
+      ],
+      "autonomous": [
+        {
+          "id": "hostile-heal",
+          "priority": 10,
+          "action": "heal",
+          "target": "lowest_health_hostile_ally",
+          "prefer_self_below_percent": 50,
+          "rule": {
+            "rule": "effect_table",
+            "rule_config": {
+              "cases_path": "rules",
+              "next_on_match": "complete",
+              "next_on_default": "complete",
+              "default_payload_template": {
+                "effects": []
+              }
+            },
+            "input_overlay": {
+              "rules": [
+                {
+                  "conditions": [
+                    {
+                      "path": "actor.stance",
+                      "operator": "equal",
+                      "value": "hostile"
+                    },
+                    {
+                      "path": "actor.alive",
+                      "operator": "equal",
+                      "value": true
+                    },
+                    {
+                      "path": "world.cooldown_elapsed",
+                      "operator": "equal",
+                      "value": true
+                    },
+                    {
+                      "path": "world.in_player_room",
+                      "operator": "equal",
+                      "value": true
+                    }
+                  ],
+                  "payload_template": {
+                    "kind": "heal"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "id": "trace",
       "label": "Trace",
       "kind": "spell",
       "target": "room",
-      "description": "Inscribes glowing tactical chalk sigils upon the stone."
+      "description": "Inscribes glowing tactical chalk sigils upon the stone.",
+      "player_action": {
+        "id": "trace",
+        "command": "TRACE",
+        "label": "Trace",
+        "group": "territory",
+        "phrases": [
+          "trace",
+          "trace a line",
+          "draw",
+          "draw a line",
+          "use chalk",
+          "sketch"
+        ],
+        "player_enabled": true,
+        "target_mode": "none",
+        "outcome_mode": "event",
+        "content_event": {
+          "id": "layla.traced",
+          "event_text": "Layla crouches and draws a line of chalk across the floor. It glows, pale and steady, and stays.",
+          "hook_id": "",
+          "signals": []
+        },
+        "item_creation": {
+          "creates_item": "charm-sigil",
+          "craftable_items": [
+            "charm-sigil",
+            "drain-sigil",
+            "spawn-sigil",
+            "teleport-sigil"
+          ],
+          "craftable_item_gates": {
+            "drain-sigil": "knows_drain",
+            "spawn-sigil": "knows_spawn",
+            "teleport-sigil": "knows_teleport"
+          },
+          "storage": "current_room"
+        },
+        "available": {
+          "requires_item": "magic-chalk"
+        },
+        "ui": {
+          "bar": true,
+          "overflow": false,
+          "panel": "trace",
+          "panel_config": {
+            "title": "Inscribe",
+            "prompt": "Choose a mark to trace",
+            "data_source": "craftable_items",
+            "on_select": "execute_command"
+          },
+          "group": "territory",
+          "sort_order": 20
+        },
+        "player_command": {
+          "usage": "trace",
+          "example": "trace",
+          "advances_time": true,
+          "input": {
+            "required": false
+          }
+        }
+      }
     },
     {
       "id": "teleport",
       "label": "Teleport",
       "kind": "spell",
       "target": "anchor",
-      "description": "Instantly transports the party back to the armed teleportation anchor."
+      "description": "Instantly transports the party back to the armed teleportation anchor.",
+      "player_action": {
+        "id": "teleport",
+        "command": "TELEPORT",
+        "label": "Teleport",
+        "group": "movement",
+        "phrases": [
+          "teleport",
+          "tp",
+          "teleport to"
+        ],
+        "player_enabled": true,
+        "target_mode": "none",
+        "outcome_mode": "event",
+        "available": {
+          "requires_story_var": "knows_teleport"
+        },
+        "ui": {
+          "bar": true,
+          "overflow": false,
+          "panel": "teleport",
+          "panel_config": {
+            "title": "Teleport to Anchor",
+            "prompt": "Choose an anchor to teleport to:",
+            "data_source": "teleport_anchors",
+            "on_select": "execute_command"
+          },
+          "group": "movement",
+          "sort_order": 1
+        },
+        "player_command": {
+          "usage": "teleport <anchor>",
+          "example": "teleport teleport_platform",
+          "advances_time": true,
+          "input": {
+            "required": true
+          },
+          "kind": "teleport"
+        }
+      }
     }
   ]
 }

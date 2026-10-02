@@ -82,7 +82,7 @@ pub fn load_pack_from_dir_with_locale(
     path: &Path,
     locale: Option<&str>,
 ) -> Result<ContentPack, Box<dyn Error>> {
-    let settings =
+    let mut settings =
         read_optional_json::<ContentSettingsDefinition>(path, "settings.json")?.unwrap_or_default();
     let effective_locale = match locale {
         Some(locale) if !locale.trim().is_empty() => locale.to_string(),
@@ -126,7 +126,7 @@ pub fn load_pack_from_dir_with_locale(
     let act_cast = collect_act_cast(&actors);
     let stats = read_optional_json::<StatsDefinition>(path, "stats.json")?.unwrap_or_default();
 
-    let actions = if let Some(actions_json) = read_optional_json_raw(path, "actions.json")? {
+    let mut actions = if let Some(actions_json) = read_optional_json_raw(path, "actions.json")? {
         let actions_def: ActionsDefinition =
             serde_json::from_str(&actions_json).map_err(|e| format!("actions.json: {e}"))?;
         actions_def.actions
@@ -157,6 +157,7 @@ pub fn load_pack_from_dir_with_locale(
         .unwrap_or_default();
     let levels = read_optional_json::<LevelingDefinition>(path, "levels.json")?.unwrap_or_default();
     let skills = read_optional_json::<SkillsDefinition>(path, "skills.json")?.unwrap_or_default();
+    install_skill_behaviors(&skills, &mut actions, &mut settings)?;
 
     let room_index = build_index(&rooms, |room| &room.id);
     let actor_index = build_index(&actors, |actor| &actor.id);
@@ -201,6 +202,84 @@ pub fn load_pack_from_dir_with_locale(
     Ok(pack)
 }
 
+fn install_skill_behaviors(
+    skills: &SkillsDefinition,
+    actions: &mut Vec<crate::content::types::ActionDefinition>,
+    settings: &mut ContentSettingsDefinition,
+) -> Result<(), Box<dyn Error>> {
+    if skills.strict {
+        if let Some(action) = actions.iter().find(|action| !action.skill_id.is_empty()) {
+            return Err(format!(
+                "strict skills require skill action '{}' to be authored in skills.json",
+                action.id
+            )
+            .into());
+        }
+        if let Some(rule) = settings.party.combat_rules.first() {
+            return Err(format!(
+                "strict skills require party reaction '{}' to be authored in skills.json",
+                rule.id
+            )
+            .into());
+        }
+    }
+
+    let mut reactions = Vec::new();
+    let mut reaction_ids = settings
+        .party
+        .combat_rules
+        .iter()
+        .map(|rule| rule.id.clone())
+        .collect::<BTreeSet<_>>();
+    for (skill_index, skill) in skills.skills.iter().enumerate() {
+        if let Some(mut action) = skill.player_action.clone() {
+            if !action.skill_id.is_empty() && action.skill_id != skill.id {
+                return Err(format!(
+                    "skill '{}' player action '{}' binds a different skill '{}'",
+                    skill.id, action.id, action.skill_id
+                )
+                .into());
+            }
+            if actions.iter().any(|existing| existing.id == action.id) {
+                return Err(format!(
+                    "skill '{}' player action duplicates action id '{}'",
+                    skill.id, action.id
+                )
+                .into());
+            }
+            action.skill_id = skill.id.clone();
+            actions.push(action);
+        }
+        for (rule_index, authored_rule) in skill.reactions.iter().enumerate() {
+            if !authored_rule.skill_id.is_empty() && authored_rule.skill_id != skill.id {
+                return Err(format!(
+                    "skill '{}' reaction '{}' binds a different skill '{}'",
+                    skill.id, authored_rule.id, authored_rule.skill_id
+                )
+                .into());
+            }
+            if !reaction_ids.insert(authored_rule.id.clone()) {
+                return Err(format!(
+                    "skill '{}' reaction duplicates rule id '{}'",
+                    skill.id, authored_rule.id
+                )
+                .into());
+            }
+            let mut rule = authored_rule.clone();
+            rule.skill_id = skill.id.clone();
+            reactions.push((skill.reaction_priority, skill_index, rule_index, rule));
+        }
+    }
+    reactions.sort_by_key(|(priority, skill_index, rule_index, _)| {
+        (*priority, *skill_index, *rule_index)
+    });
+    settings
+        .party
+        .combat_rules
+        .extend(reactions.into_iter().map(|(_, _, _, rule)| rule));
+    Ok(())
+}
+
 fn validate_skills(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
     let mut declared = BTreeSet::new();
     for skill in &pack.skills.skills {
@@ -209,6 +288,64 @@ fn validate_skills(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
         }
         if !declared.insert(skill.id.as_str()) {
             return Err(format!("skills.json declares duplicate skill '{}'", skill.id).into());
+        }
+        if let Some(action) = &skill.player_action
+            && action.id.trim().is_empty()
+        {
+            return Err(
+                format!("skill '{}' has a player action with an empty id", skill.id).into(),
+            );
+        }
+        let mut autonomous_ids = BTreeSet::new();
+        for autonomous in &skill.autonomous {
+            if autonomous.id.trim().is_empty() {
+                return Err(format!(
+                    "skill '{}' has an autonomous use with an empty id",
+                    skill.id
+                )
+                .into());
+            }
+            if !autonomous_ids.insert(autonomous.id.as_str()) {
+                return Err(format!(
+                    "skill '{}' declares autonomous use '{}' more than once",
+                    skill.id, autonomous.id
+                )
+                .into());
+            }
+            let valid_kind = matches!(
+                (skill.kind, autonomous.action),
+                (
+                    Some(crate::content::types::SkillKind::Attack),
+                    crate::content::types::SkillAutonomousAction::Strike
+                ) | (
+                    Some(crate::content::types::SkillKind::Heal),
+                    crate::content::types::SkillAutonomousAction::Heal
+                )
+            );
+            if !valid_kind {
+                return Err(format!(
+                    "skill '{}' autonomous use '{}' is incompatible with its skill kind",
+                    skill.id, autonomous.id
+                )
+                .into());
+            }
+            let valid_target = matches!(
+                (autonomous.action, autonomous.target),
+                (
+                    crate::content::types::SkillAutonomousAction::Strike,
+                    crate::content::types::SkillAutonomousTarget::Player
+                ) | (
+                    crate::content::types::SkillAutonomousAction::Heal,
+                    crate::content::types::SkillAutonomousTarget::LowestHealthHostileAlly
+                )
+            );
+            if !valid_target {
+                return Err(format!(
+                    "skill '{}' autonomous use '{}' has an incompatible target",
+                    skill.id, autonomous.id
+                )
+                .into());
+            }
         }
     }
 
@@ -299,28 +436,30 @@ fn validate_skills(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
             .into());
         }
     }
-    for actor in &pack.actors {
-        let behavior = pack
+    if pack.behavior.defaults.strike.is_some()
+        || pack
             .behavior
             .actors
-            .get(&actor.id)
-            .cloned()
-            .unwrap_or_default()
-            .resolved_with_default(&pack.behavior.defaults);
-        if behavior.strike.is_some() && behavior.strike_skill_id.is_empty() {
-            return Err(format!(
-                "strict skills require actor '{}' strike behavior to name a skill",
-                actor.id
-            )
-            .into());
-        }
+            .values()
+            .any(|behavior| behavior.strike.is_some())
+    {
+        return Err(
+            "strict skills require hostile skill behavior to be authored in skills.json".into(),
+        );
+    }
+    for actor in &pack.actors {
         if (actor.attackable || actor.initial_hostile)
-            && behavior.strike.is_some()
-            && actor.skill(&behavior.strike_skill_id).is_none()
+            && !actor.skills.iter().any(|assignment| {
+                pack.skill(assignment.id()).is_some_and(|skill| {
+                    skill.autonomous.iter().any(|use_| {
+                        use_.action == crate::content::types::SkillAutonomousAction::Strike
+                    })
+                })
+            })
         {
             return Err(format!(
-                "combat actor '{}' lacks required strike skill '{}'",
-                actor.id, behavior.strike_skill_id
+                "combat actor '{}' lacks a skill with autonomous strike behavior",
+                actor.id
             )
             .into());
         }
@@ -416,8 +555,13 @@ mod shipped_pack_load_tests {
             let loaded = load_pack_from_dir_with_locale(&dir, Some("en"))
                 .unwrap_or_else(|e| panic!("pack {pack} failed to load: {e}"));
             assert!(
-                loaded.behavior.defaults.strike.is_some(),
-                "{pack}: strike default absent"
+                loaded.behavior.defaults.strike.is_some()
+                    || loaded.skills.skills.iter().any(|skill| {
+                        skill.autonomous.iter().any(|use_| {
+                            use_.action == crate::content::types::SkillAutonomousAction::Strike
+                        })
+                    }),
+                "{pack}: hostile strike behavior absent"
             );
             assert!(
                 loaded.behavior.defaults.hold.is_some(),
