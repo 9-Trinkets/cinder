@@ -14,9 +14,9 @@ Implemented:
 - the sentry ambush, cage key, prisoner rescue, Astrid, and Einar;
 - the sensory enhancer and enhanced tactical map;
 - the three house leaders and their defeat/awakening paths;
-- the continuous 0/15/30-minute siege clock and timed estate gates;
+- the continuous 10/70/130-minute siege clock and timed estate gates;
 - all three house dispatch queues: each house sends 30 soldiers in ten squads
-  of three at three-minute intervals, and its queue stops when its leader is
+  of three at ten-minute intervals, and its queue stops when its leader is
   defeated or awakened.
 
 The siege begins when the prisoners are freed and advances on a continuous
@@ -24,9 +24,10 @@ in-game clock:
 
 | Time from rescue | Event | Estate access |
 |---|---|---|
-| 0 minutes | Wave 1 begins: Frost-Wolf lane | Frost-Wolf gate opens |
-| 15 minutes | Wave 2 begins: Iron-Ram joins | Iron-Ram portcullis opens |
-| 30 minutes | Wave 3 begins: Frost-Leopard joins | Frost-Leopard doors open |
+| 0 minutes | Preparation begins | All estate gates remain closed |
+| 10 minutes | Wave 1 begins: Frost-Wolf lane | Frost-Wolf gate opens |
+| 70 minutes | Wave 2 begins: Iron-Ram joins | Iron-Ram portcullis opens |
+| 130 minutes | Wave 3 begins: Frost-Leopard joins | Frost-Leopard doors open |
 
 The clock never pauses while Layla explores. Neutralizing a leader permanently
 stops that house's lane, but it does not delay the next scheduled wave. This
@@ -58,12 +59,13 @@ Looking up past the high battlements, she sees sheer snowy peaks, hanging glacie
 
 ### The Opening Confrontation: Ambush & The Key
 1. **The Teleport Arrival:** Layla arrives on the teleport pad at `courtyard_center`.
-2. **The Sight:** Grouped across the courtyard are heavy iron cages labeled with white stenciled code:
-   - `BLOCK 01 — TOWN 01`
-   - `BLOCK 04 — TOWN 04` (The mining village of Zayd, Rashid, and Yasmin!)
-   - `BLOCK 07 — TOWN 07`
-   - `BLOCK 12 — TOWN 12`
-   Inside the cages are hundreds of huddled virtual people—the vast majority being **frail old people and frightened children** marked for reformatting.
+2. **The Sight:** Five iron offering cages surround the courtyard teleport pad. Each holds one named worker selected from a different town:
+   - `BLOCK 01 — SALT REACH`
+   - `BLOCK 02 — GLASSBANK`
+   - `BLOCK 03 — WOOLCROSS`
+   - `BLOCK 05 — GREENREST`
+   - `BLOCK 06 — BRASS YARD`
+   Town 04 is **Deepwell**, the mining and steam-work town Layla visited on Floor 4. Its people include Zayd, Rashid, Yasmin, Tariq, and Jamil/Sakhra, so Layla already knows its teleport anchor.
 3. **The Ambush:** The courtyard sentries spot her instantly: *"Unsanctioned entity on the pad! Neutralize!"*
 4. **The Battle:** Layla fights off the initial wave of sentries.
 5. **The Key:** The defeated sentry captain drops the **Courtyard Cage Key** (`courtyard-cage-key`).
@@ -111,8 +113,8 @@ Three points connect to the estates of the three rival noble houses; the alterna
 
 ### The 7 Courtyard Rooms
 1. **`courtyard_center` (The Heart):**
-   - The central teleport pad, the unlocked cages, and the safe haven where the elderly and children shelter.
-   - If enemy soldiers reach this room uncontested, they begin slaughtering the civilians. If civilian casualties reach the limit, the mission fails.
+   - The central teleport pad, the unlocked cages, and the five named offerings sheltering with Astrid and Einar.
+   - If enemy soldiers hold this room for three minutes, the current at-risk civilian dies. The protection quest fails on the third death, but the main siege continues.
 2. **`courtyard_north` (Frost-Wolf Approach):**
    - The grand arched gateway leading north into **House Frost-Wolf Manor**.
 3. **`courtyard_northeast` (North-East Rampart — Choke 1):**
@@ -184,11 +186,47 @@ Each house possesses a unique crest, banner, combat style, and a commanding **He
 ### 3. Sakhra (`sakhra`) — The Stone Anvil (Optional Companion)
 - **Role:** Second frontline tank.
 - **Synergy:** If the player brought Sakhra from Floor 4, Layla now has **two heavy tanks** (Astrid and Sakhra). Astrid can hold one chokepoint while Sakhra locks down another, giving Layla immense defensive security while she goes on offense!
-- **Civilian Interaction:** Town 04 civilians in the cages recognize Sakhra's lantern, unlocking his passive **"Father's Vow"** (+3 Defense).
 
-### 4. The Civilian Offerings
-- Dozens of elderly villagers and children from Towns 01, 04, 07, and 12 sheltered in `courtyard_center`.
-- They do not fight, but they offer gratitude, bandaging items, and warm dialogue. If any enemy reaches `courtyard_center`, the player receives urgent alerts to teleport back and clear the threat before civilians take damage.
+### 4. The Six Worker Towns
+
+The kingdom contains six worker towns. Each town has a culturally distinct
+community, but ethnicity never determines stats, combat abilities, or
+personality. Culture appears through names, food, clothing, architecture,
+family customs, and dialogue. The simulation assigned each town its industry.
+
+| ID | Town | Cultural identity | Primary work |
+|---|---|---|---|
+| 01 | **Salt Reach** | Kalaallit Greenlandic | Salt, mineral brine, and ice cutting |
+| 02 | **Glassbank** | Czech | Furnace glass, lenses, and signal lamps |
+| 03 | **Woolcross** | Quechua Peruvian | Wool, rope, and insulated clothing |
+| 04 | **Deepwell** | Levantine Arab | Mining, metalwork, and geothermal steam |
+| 05 | **Greenrest** | Yoruba Nigerian | Mushrooms, medicinal herbs, and heated-cave farming |
+| 06 | **Brass Yard** | Taiwanese | Pumps, gears, tools, and maintenance machines |
+
+Deepwell is the Floor 4 village. Its existing cast and teleport anchor represent
+the sixth town, so none of the five Floor 5 offerings comes from Deepwell.
+
+### 5. The Five Civilian Offerings
+
+The five offerings shelter in `courtyard_center`. They do not fight. Each one
+is an individual life, a representative of one worker town, and a possible
+route to optional allies and equipment on later floors.
+
+| Civilian | Home | Character | Survival token |
+|---|---|---|---|
+| **Nivi Olsen** | Salt Reach | A supply clerk who stays organized under pressure and keeps track of dwindling food and blankets. | **Salt Reach Transit Seal**, a soapstone-and-brass routing badge |
+| **Eliška Nováková** | Glassbank | A signal-lamp tester with a patient manner and a sharp eye for faults in machinery. | **Glassbank Transit Prism**, a cobalt glass routing key |
+| **Amaru Quispe** | Woolcross | A young loom mechanic who protects the other captives even when frightened. | **Woolcross Transit Knot**, woven copper wire around a ceramic routing core |
+| **Abeni Adeyemi** | Greenrest | An experienced grower who helps Einar stabilize wounded defenders. | **Greenrest Transit Seed**, a green enamel routing disk |
+| **Chen Yu-xin (陳雨欣)** | Brass Yard | An apprentice machinist who studies every lock, pump, and damaged mechanism she sees. | **Brass Yard Transit Gear**, a toothed brass routing coin |
+
+After the siege, every survivor gives Layla their permanent town token. Binding
+a token adds that town to Layla's teleport destinations and tactical map. The
+token is never consumed by travel. Visiting that town later can provide local
+items, charm opportunities, named awakenings, and recruitable allies.
+
+If all five survive, their tokens join Deepwell's known anchor to complete the
+**Six-Town Accord**, restoring direct travel across the worker-town network.
 
 ---
 
@@ -219,10 +257,42 @@ Floor 5 plays out in an active, dynamic RTS loop:
 4. **Teleportation Micro:**
    - If an alert warns that a courtyard chokepoint is buckling while Layla is inside an estate, Layla casts `teleport courtyard_center` or `teleport <choke_anchor>`, blinks back instantly, drops a `drain-sigil` to wipe out the breach, and then teleports back to resume her attack!
 
+### Civilian Danger and Fail-Forward Consequences
+
+- When one or more hostile soldiers enter `courtyard_center`, one living
+  civilian becomes **at risk**.
+- Astrid, Einar, or the Handler names that civilian and warns Layla.
+- Layla has **ten in-game minutes** to clear every hostile from the center.
+- Clearing the center resets the breach countdown and saves the civilian.
+- If the countdown expires, the at-risk civilian dies. If enemies remain,
+  another living civilian becomes at risk and a new countdown begins.
+- Selection follows a deterministic rotation so warnings, saves, and tests
+  remain predictable.
+
+The civilian-protection quest fails when the third civilian dies, but the game
+does not reset and Layla does not receive a game over. The siege continues, the
+three houses can still be neutralized, the Rime Colossus can still be defeated,
+and Floor 6 remains reachable. Surviving civilians still grant their tokens
+even after the protection quest has failed.
+
+| Survivors | Outcome |
+|---:|---|
+| **5** | Perfect protection; all five towns and the Six-Town Accord unlock |
+| **4** | Protection quest completed; four towns unlock |
+| **3** | Protection quest completed narrowly; three towns unlock |
+| **2** | Protection quest failed; two towns unlock |
+| **1** | Protection quest failed; one town unlocks |
+| **0** | Protection quest failed; no additional worker towns unlock |
+
+Lost civilians permanently remove their direct town tokens for that playthrough.
+That means fewer optional items, charm and awakening opportunities, recruitable
+party members, and safe teleport destinations before Floor 6. This persistent
+loss is the punishment; there is no additional failure sequence.
+
 ### The Spawning Cadence: Continuous Clock, 3 at a Time
 To deliver authentic Tower Defense pacing, each house deploys its forces in a disciplined marching cadence:
 - **House Quota (30 Soldiers):** Each mobilized house queues a total contingent of **30 soldiers** per wave.
-- **Dispatch Cadence (3 at a Time):** Soldiers spawn and march out in squads of **3 units at a fixed tick interval** (e.g. every 3–4 turns).
+- **Dispatch Cadence (3 at a Time):** Soldiers spawn and march out in squads of **3 units every 10 in-game minutes** (about once per real-world minute with the current tick rate).
 - **The Marching Lanes:** 
   - Squads emerge from the house estate gates and march down their designated approach lane toward `courtyard_center`.
   - When they hit a chokepoint held by a companion on `guard`, the guard intercepts the 3-man squad, soaking their strikes and counterattacking them into scrap.
@@ -262,7 +332,8 @@ The defense occurs across **three exponentially harder waves**, with the noble h
 ## 7. The Quests
 
 ### Main Quest: "The Frost Siege & The Three Houses"
-- **Goal:** Defend the vulnerable civilians in `courtyard_center`, neutralize the three noble houses (Frost-Wolf, Iron-Ram, Frost-Leopard), survive the Handler's purge waves, and unlock the descent path to Floor 6.
+- **Goal:** Neutralize the three noble houses (Frost-Wolf, Iron-Ram, Frost-Leopard), survive the Handler's purge waves, defeat the Rime Colossus, and unlock the descent path to Floor 6.
+- **Fail-forward rule:** Civilian losses never block this quest or the route to Floor 6.
 - **Key Milestones:**
   1. Arrive at `courtyard_center`, defeat the sentry ambush, and loot the **Courtyard Cage Key**.
   2. Free the captives, recruiting **Commander Astrid** (tank) and **Einar** (healer).
@@ -274,10 +345,12 @@ The defense occurs across **three exponentially harder waves**, with the noble h
   8. Repel the final Rime Colossus wave at the courtyard.
   9. The Handler's terminal shuts down. Open the grand iron portcullis leading to Floor 6 (`citadel_sanctum_gate`).
 
-### Side Quest / Secret: "The Lantern in the Dark"
-- **Trigger:** Bring **Sakhra** to talk to the Town 04 civilians gathered in `courtyard_center`.
-- **Resolution:** A small girl notices Sakhra's battered miner's lantern: *"That lantern... it's Master Sakhra's mark from the village forge!"* Sakhra's stone core blazes with memory.
-- **Reward:** Sakhra gains **"Father's Vow"** (+3 Defense, boosted counterattack damage).
+### Protection Quest: "The Five Offerings"
+- **Goal:** Keep at least three of the five named civilians alive until the siege ends.
+- **Completion:** Three or more civilians survive.
+- **Failure:** The third civilian dies. Mark the quest failed immediately, but continue the siege normally.
+- **Individual rewards:** Every survivor grants their town's permanent teleport token, whether the quest completed or failed.
+- **Perfect reward:** If all five survive, unlock the **Six-Town Accord** and direct travel across the complete worker-town network.
 
 ### Side Quest: "Heirloom Banners of the Citadel"
 - **Trigger:** Inspect the crest banners inside each house estate after defeating or awakening its leader.

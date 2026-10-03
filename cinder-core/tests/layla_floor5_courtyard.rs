@@ -384,6 +384,27 @@ fn floor5_house_access_opens_with_timed_siege_waves() {
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
     runtime.run_turn("unlock cages").expect("unlock cages");
 
+    let preparation = runtime.export_state().expect("export preparation");
+    assert!(
+        preparation
+            .active_objective_stage_ids
+            .contains(&"siege_preparation".to_string())
+    );
+    assert_ne!(preparation.story_vars.get("citadel_siege_wave"), Some("1"));
+    assert_ne!(
+        preparation.story_vars.get("frost_wolf_access_open"),
+        Some("true")
+    );
+    assert_eq!(spawned_count(&preparation, "frost_wolf_raider"), 0);
+
+    let mut wave1_state = preparation;
+    let preparation_started = wave1_state.stage_started_minutes["siege_preparation"];
+    wave1_state.current_time_minutes = preparation_started + 10;
+    wave1_state.current_room_id = "courtyard_center".to_string();
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let runtime = CinderRuntime::from_state(pack, wave1_state, false).expect("runtime creates");
+    runtime.run_turn("go north").expect("advance into wave 1");
+
     let wave1 = runtime.export_state().expect("export wave 1");
     assert_eq!(wave1.story_vars.get("citadel_siege_wave"), Some("1"));
     assert_eq!(wave1.story_vars.get("frost_wolf_access_open"), Some("true"));
@@ -405,7 +426,7 @@ fn floor5_house_access_opens_with_timed_siege_waves() {
 
     let mut wave2_state = wave1;
     let wave1_started = wave2_state.stage_started_minutes["siege_wave_1"];
-    wave2_state.current_time_minutes = wave1_started + 15;
+    wave2_state.current_time_minutes = wave1_started + 60;
     wave2_state.current_room_id = "courtyard_center".to_string();
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let runtime = CinderRuntime::from_state(pack, wave2_state, false).expect("runtime creates");
@@ -414,7 +435,7 @@ fn floor5_house_access_opens_with_timed_siege_waves() {
     let wave2 = runtime.export_state().expect("export wave 2");
     assert_eq!(wave2.story_vars.get("citadel_siege_wave"), Some("2"));
     assert_eq!(wave2.story_vars.get("iron_ram_access_open"), Some("true"));
-    assert_eq!(spawned_count(&wave2, "frost_wolf_raider"), 18);
+    assert_eq!(spawned_count(&wave2, "frost_wolf_raider"), 21);
     assert_eq!(spawned_count(&wave2, "iron_ram_mauler"), 3);
     assert_ne!(
         wave2.story_vars.get("frost_leopard_access_open"),
@@ -423,7 +444,7 @@ fn floor5_house_access_opens_with_timed_siege_waves() {
 
     let mut wave3_state = wave2;
     let wave2_started = wave3_state.stage_started_minutes["siege_wave_2"];
-    wave3_state.current_time_minutes = wave2_started + 15;
+    wave3_state.current_time_minutes = wave2_started + 60;
     wave3_state.current_room_id = "courtyard_center".to_string();
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let runtime = CinderRuntime::from_state(pack, wave3_state, false).expect("runtime creates");
@@ -436,12 +457,12 @@ fn floor5_house_access_opens_with_timed_siege_waves() {
         Some("true")
     );
     assert_eq!(spawned_count(&wave3, "frost_wolf_raider"), 30);
-    assert_eq!(spawned_count(&wave3, "iron_ram_mauler"), 18);
+    assert_eq!(spawned_count(&wave3, "iron_ram_mauler"), 21);
     assert_eq!(spawned_count(&wave3, "frost_leopard_hunter"), 3);
 
     let mut completed_dispatches = wave3;
     let leopard_started = completed_dispatches.stage_started_minutes["frost_leopard_dispatch"];
-    completed_dispatches.current_time_minutes = leopard_started + 27;
+    completed_dispatches.current_time_minutes = leopard_started + 90;
     completed_dispatches.current_room_id = "courtyard_center".to_string();
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let runtime =
@@ -468,6 +489,14 @@ fn floor5_wave_one_raiders_march_until_their_lane_stops() {
 
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
     runtime.run_turn("unlock cages").expect("unlock cages");
+
+    let mut state = runtime.export_state().expect("export preparation");
+    let preparation_started = state.stage_started_minutes["siege_preparation"];
+    state.current_time_minutes = preparation_started + 10;
+    state.current_room_id = "courtyard_center".to_string();
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+    runtime.run_turn("go north").expect("advance into wave 1");
     runtime.run_tick().expect("raiders march");
 
     let marched = runtime.export_state().expect("export marched state");
@@ -515,7 +544,7 @@ fn floor5_spawned_siege_armies_do_not_emit_npc_tick_soft_errors() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_center".to_string();
-    state.current_time_minutes = 27;
+    state.current_time_minutes = 90;
     state.active_objective_stage_ids = vec![
         "frost_wolf_dispatch".to_string(),
         "iron_ram_dispatch".to_string(),

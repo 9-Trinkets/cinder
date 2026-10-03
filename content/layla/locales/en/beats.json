@@ -102,8 +102,7 @@
       ],
       "next_stage_ids": [
         "mq_frost_siege",
-        "siege_wave_1",
-        "frost_wolf_dispatch"
+        "siege_preparation"
       ]
     },
     {
@@ -118,14 +117,29 @@
       "next_stage_ids": []
     },
     {
+      "id": "siege_preparation",
+      "summary": "",
+      "beat_note": "Layla has ten in-game minutes to place defenders and prepare the courtyard before House Frost-Wolf begins the first assault.",
+      "narrative_lines": [
+        "The freed workers crowd around the teleport pad while Astrid studies the three approaches. The first house horn has not sounded yet. There is still time to place defenders."
+      ],
+      "advance_signals": [
+        "stage_elapsed:10"
+      ],
+      "next_stage_ids": [
+        "siege_wave_1",
+        "frost_wolf_dispatch"
+      ]
+    },
+    {
       "id": "siege_wave_1",
       "summary": "",
-      "beat_note": "Wave 1 begins immediately after the prisoners are freed. House Frost-Wolf opens and starts the northern assault lane.",
+      "beat_note": "Wave 1 begins ten in-game minutes after the prisoners are freed. House Frost-Wolf opens and starts the northern assault lane.",
       "narrative_lines": [
         "A deep horn sounds from the north. The Frost-Wolf gate lifts, and boots begin striking the frozen avenue in formation."
       ],
       "advance_signals": [
-        "stage_elapsed:15"
+        "stage_elapsed:60"
       ],
       "next_stage_ids": [
         "siege_wave_2",
@@ -147,12 +161,12 @@
     {
       "id": "siege_wave_2",
       "summary": "",
-      "beat_note": "Wave 2 begins fifteen in-game minutes after Wave 1 whether or not Frost-Wolf has been neutralized. House Iron-Ram opens its lane.",
+      "beat_note": "Wave 2 begins sixty in-game minutes after Wave 1 whether or not Frost-Wolf has been neutralized. House Iron-Ram opens its lane.",
       "narrative_lines": [
         "A second horn answers from the southeast. The Iron-Ram portcullis rises through a cloud of steam as heavy troops march out."
       ],
       "advance_signals": [
-        "stage_elapsed:15"
+        "stage_elapsed:60"
       ],
       "next_stage_ids": [
         "siege_wave_3",
@@ -174,7 +188,7 @@
     {
       "id": "siege_wave_3",
       "summary": "",
-      "beat_note": "Wave 3 begins fifteen in-game minutes after Wave 2 whether or not either earlier house has been neutralized. House Frost-Leopard opens its lane.",
+      "beat_note": "Wave 3 begins sixty in-game minutes after Wave 2 whether or not either earlier house has been neutralized. House Frost-Leopard opens its lane.",
       "narrative_lines": [
         "A third horn cuts across the courtyard. The Frost-Leopard doors unlock, and shadows move behind the frosted glass."
       ],
@@ -196,51 +210,51 @@
     {
       "id": "frost_wolf_dispatch",
       "summary": "",
-      "beat_note": "House Frost-Wolf dispatches ten northern squads of three soldiers at three-minute intervals.",
+      "beat_note": "House Frost-Wolf dispatches ten northern squads of three soldiers at ten-minute intervals.",
       "actor_spawn_schedule": {
         "template_id": "frost_wolf_raider",
         "room_id": "frost_wolf_throne",
         "batch_size": 3,
-        "interval_minutes": 3,
+        "interval_minutes": 10,
         "total_count": 30,
         "stop_story_var": "frost_wolf_lane_stopped"
       },
       "advance_signals": [
-        "stage_elapsed:27"
+        "stage_elapsed:90"
       ],
       "next_stage_ids": []
     },
     {
       "id": "iron_ram_dispatch",
       "summary": "",
-      "beat_note": "House Iron-Ram dispatches ten southeast squads of three soldiers at three-minute intervals.",
+      "beat_note": "House Iron-Ram dispatches ten southeast squads of three soldiers at ten-minute intervals.",
       "actor_spawn_schedule": {
         "template_id": "iron_ram_mauler",
         "room_id": "iron_ram_throne",
         "batch_size": 3,
-        "interval_minutes": 3,
+        "interval_minutes": 10,
         "total_count": 30,
         "stop_story_var": "iron_ram_lane_stopped"
       },
       "advance_signals": [
-        "stage_elapsed:27"
+        "stage_elapsed:90"
       ],
       "next_stage_ids": []
     },
     {
       "id": "frost_leopard_dispatch",
       "summary": "",
-      "beat_note": "House Frost-Leopard dispatches ten southwest squads of three soldiers at three-minute intervals.",
+      "beat_note": "House Frost-Leopard dispatches ten southwest squads of three soldiers at ten-minute intervals.",
       "actor_spawn_schedule": {
         "template_id": "frost_leopard_hunter",
         "room_id": "frost_leopard_throne",
         "batch_size": 3,
-        "interval_minutes": 3,
+        "interval_minutes": 10,
         "total_count": 30,
         "stop_story_var": "frost_leopard_lane_stopped"
       },
       "advance_signals": [
-        "stage_elapsed:27"
+        "stage_elapsed:90"
       ],
       "next_stage_ids": []
     },
