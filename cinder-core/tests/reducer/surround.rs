@@ -526,3 +526,170 @@ fn surrounding_with_unmatched_item_does_not_refuse_or_consume_items() {
         "unmatched item must remain in storage and not be consumed"
     );
 }
+
+#[test]
+fn surround_removes_all_surrounding_sigils_on_success() {
+    use cinder_core::content::types::RoomDefinition;
+    use cinder_core::content::types::RoomExitDefinition;
+
+    let mut pack = surround_test_pack();
+    pack.items.push(ItemDefinition {
+        id: "charm-sigil".to_string(),
+        label: "charm sigil".to_string(),
+        description: "A chalk ring.".to_string(),
+        trace_mark: true,
+        consumed_on_surround_conversion: true,
+        ..ItemDefinition::default()
+    });
+    pack.actions.push(ActionDefinition {
+        id: "trace-charm".to_string(),
+        command: "trace-charm".to_string(),
+        target_mode: CommandTargetMode::None,
+        item_creation: Some(ActionItemCreation {
+            creates_item: "charm-sigil".to_string(),
+            storage: ActionItemStorageTarget::CurrentRoom,
+            ..ActionItemCreation::default()
+        }),
+        event_text: "{actor_name} draws chalk across the floor.".to_string(),
+        ..ActionDefinition::default()
+    });
+    pack.rooms.push(RoomDefinition {
+        id: "center".to_string(),
+        title: "Center".to_string(),
+        summary: "".to_string(),
+        inspect_text: "".to_string(),
+        allow_rest: false,
+        features: vec![],
+        exits: vec![
+            RoomExitDefinition {
+                room_id: "north".to_string(),
+                label: "North".to_string(),
+                aliases: vec![],
+                menu_label: None,
+                requires_story_var: String::new(),
+            },
+            RoomExitDefinition {
+                room_id: "south".to_string(),
+                label: "South".to_string(),
+                aliases: vec![],
+                menu_label: None,
+                requires_story_var: String::new(),
+            },
+            RoomExitDefinition {
+                room_id: "east".to_string(),
+                label: "East".to_string(),
+                aliases: vec![],
+                menu_label: None,
+                requires_story_var: String::new(),
+            },
+        ],
+        descriptions: vec![],
+    });
+    for r in ["north", "south", "east"] {
+        pack.rooms.push(RoomDefinition {
+            id: r.to_string(),
+            title: r.to_string(),
+            summary: "".to_string(),
+            inspect_text: "".to_string(),
+            allow_rest: false,
+            features: vec![],
+            exits: vec![RoomExitDefinition {
+                room_id: "center".to_string(),
+                label: "Center".to_string(),
+                aliases: vec![],
+                menu_label: None,
+                requires_story_var: String::new(),
+            }],
+            descriptions: vec![],
+        });
+    }
+
+    let mut mob = test_actor("mob", "mob", "center");
+    mob.initial_stats.insert("intelligence".to_string(), 1);
+    mob.level = 1;
+    pack.actors.push(mob);
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "east".to_string();
+    state.add_item_to_storage("charm-sigil", ItemStorageTarget::CurrentRoom, "north");
+    state.add_item_to_storage("charm-sigil", ItemStorageTarget::CurrentRoom, "south");
+
+    let output = drive_actor_command(
+        &mut state,
+        &pack,
+        "trace-charm",
+        ActorCommandInput {
+            actor_id: ACTOR_A_ID,
+            actor_name: ACTOR_A_NAME,
+            room_id: "east",
+            target_room_id: None,
+            target_actor_id: None,
+            target_actor_name: None,
+            context_label: None,
+            feature_id: None,
+            consumable_id: None,
+            freeform_text: None,
+        },
+    );
+
+    assert_eq!(state.stance("mob"), ActorStance::Allied);
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|l| l.text.contains("turns toward you"))
+    );
+    // All 3 surrounding rooms must have charm-sigil removed!
+    assert!(!state.has_item_in_storage("charm-sigil", ItemStorageTarget::CurrentRoom, "north"));
+    assert!(!state.has_item_in_storage("charm-sigil", ItemStorageTarget::CurrentRoom, "south"));
+    assert!(!state.has_item_in_storage("charm-sigil", ItemStorageTarget::CurrentRoom, "east"));
+}
+
+#[test]
+fn surround_converts_all_mobs_in_the_surrounded_room() {
+    let mut pack = surround_test_pack();
+    add_surround_target(&mut pack, "mob-1", 1, 1);
+    add_surround_target(&mut pack, "mob-2", 1, 1);
+    add_surround_target(&mut pack, "mob-3", 2, 1);
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = KITCHEN_ID.to_string();
+
+    let output = trace_marker(&mut state, &pack);
+
+    assert_eq!(state.stance("mob-1"), ActorStance::Allied);
+    assert_eq!(state.stance("mob-2"), ActorStance::Allied);
+    assert_eq!(state.stance("mob-3"), ActorStance::Allied);
+    assert!(state.actor_is_in_room(&pack, "mob-1", KITCHEN_ID));
+    assert!(state.actor_is_in_room(&pack, "mob-2", KITCHEN_ID));
+    assert!(state.actor_is_in_room(&pack, "mob-3", KITCHEN_ID));
+    assert!(!output.lines.iter().any(|l| l.text.contains(REFUSAL)));
+}
+
+#[test]
+fn surround_evaluates_mobs_individually_in_mixed_room() {
+    let mut pack = surround_test_pack();
+    // Player intelligence is 5, level 1 -> score 6.
+    // Weak mob: int 1, level 1 -> resistance 3 <= 6 (converts)
+    add_surround_target(&mut pack, "weak-mob", 1, 1);
+    // Strong mob: int 5, level 2 -> resistance 9 > 6 (refuses)
+    add_surround_target(&mut pack, "strong-mob", 5, 2);
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = KITCHEN_ID.to_string();
+
+    let output = trace_marker(&mut state, &pack);
+
+    assert_eq!(state.stance("weak-mob"), ActorStance::Allied);
+    assert_ne!(state.stance("strong-mob"), ActorStance::Allied);
+    assert!(state.actor_is_in_room(&pack, "weak-mob", KITCHEN_ID));
+    assert!(!state.actor_is_in_room(&pack, "strong-mob", KITCHEN_ID));
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|l| l.text.contains("turns toward you"))
+    );
+    assert!(output.lines.iter().any(|l| l.text.contains(REFUSAL)));
+    // Because refusal occurred, the ring is spent
+    assert!(!state.has_item_in_storage("marker", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
+}

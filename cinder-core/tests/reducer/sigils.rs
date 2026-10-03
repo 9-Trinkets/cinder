@@ -114,7 +114,7 @@ fn drain_sigil_without_a_charge_limit_never_fades() {
 }
 
 #[test]
-fn charm_sigil_converts_a_single_actor_and_is_consumed() {
+fn charm_sigil_converts_all_actors_in_room_and_is_consumed() {
     let mut pack = reducer_test_pack();
     pack.settings.combat.player_actor_id = ACTOR_A_ID.to_string();
     pack.items.push(ItemDefinition {
@@ -142,7 +142,7 @@ fn charm_sigil_converts_a_single_actor_and_is_consumed() {
         PackMessage::Narration("The {actor} turns toward you, no longer hostile.".to_string()),
     );
     // Both golems share the lounge; its only neighbor (the kitchen) fills with
-    // the freshly traced charm, so either would convert from the same placement.
+    // the freshly traced charm, so both convert from the same surround.
     pack.actors = vec![
         test_actor(ACTOR_A_ID, ACTOR_A_NAME, LOUNGE_ID),
         test_actor("golem-1", "first golem", LOUNGE_ID),
@@ -181,7 +181,7 @@ fn charm_sigil_converts_a_single_actor_and_is_consumed() {
     );
 
     assert_eq!(state.stance("golem-1"), ActorStance::Allied);
-    assert_eq!(state.stance("golem-2"), ActorStance::Neutral);
+    assert_eq!(state.stance("golem-2"), ActorStance::Allied);
     assert!(!state.has_item_in_storage("charm-sigil", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
     assert!(
         output
