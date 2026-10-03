@@ -93,7 +93,7 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 
 ## 4. The Quests
 
-### Main Quest: "The Teleportation Scroll"
+### Main Quest: "Locked Away"
 - **Goal:** Infiltrate the Inner Military Complex, defeat Commander Malik, crack his iron safe for the **Teleportation Scroll**, learn the **Teleportation Sigil**, and activate the central teleport platform to descend to Floor 5.
 - **Why You Need It:** There are no stairs leading up or down from the cavern. The only path forward is the massive geothermal Teleportation Platform inside the fortified complex. Learning the Teleportation Sigil unlocks fast-travel anchors across the dungeon and powers up the descent gate to Floor 5.
 - **How to Complete It:**
@@ -112,7 +112,7 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 
 **Beat stages:** `mq_hear_gate` → `mq_find_scroll` → `mq_use_teleport_platform` (planned stages; `beat_objectives.json` authoring is the next pass — see [Implementation Status & Next Steps](#7-implementation-status--next-steps)).
 
-### Side Quest: "Save the Boy Zayd"
+### Side Quest: "The Eighth Signature"
 - **The Boy (Zayd, age 11):**
   - The village believes Zayd lost both parents in a steam drill collapse years ago. With no family left, the village took turns looking after him: Yasmin gave him bread, miners taught him the machinery, Tariq let him fiddle with gears, and the elders looked the other way when he played pranks. Only Sakhra, the guardian golem, was *always* beside him.
   - He was wild, loud, and constantly climbed on steam pipes and threw pebbles at the soldiers. But he had a loyal heart, always carrying heavy coal buckets for the elderly and tending to injured stray animals. He still brings his lamp to the old golem and talks to it about his parents.

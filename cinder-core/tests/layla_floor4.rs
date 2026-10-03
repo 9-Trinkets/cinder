@@ -532,7 +532,7 @@ fn floor4_quests_activation_via_speech() {
     );
     assert_eq!(
         objectives_after_rashid[0].quest_title.as_deref(),
-        Some("Save the Boy Zayd")
+        Some("The Eighth Signature")
     );
     assert_eq!(
         objectives_after_rashid[0].quest_kind.as_deref(),
@@ -559,10 +559,7 @@ fn floor4_quests_activation_via_speech() {
         .find(|o| o.quest_kind.as_deref() == Some("main"))
         .expect("main quest must be active");
     assert_eq!(main_quest.quest_id.as_deref(), Some("teleport_scroll"));
-    assert_eq!(
-        main_quest.quest_title.as_deref(),
-        Some("The Teleportation Scroll")
-    );
+    assert_eq!(main_quest.quest_title.as_deref(), Some("Locked Away"));
 
     let side_quest = objectives_after_tariq
         .iter()

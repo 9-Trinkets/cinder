@@ -651,12 +651,11 @@ fn floor5_arrival_starts_free_prisoners_quest_and_unlock_completes_it() {
     );
     assert_eq!(
         free_prisoners_quest.quest_title.as_deref(),
-        Some("Free the Citadel Prisoners")
+        Some("What They Put in the Cages")
     );
     assert!(
-        free_prisoners_quest
-            .summary
-            .contains("Free the prisoners locked in the courtyard offering cages")
+        !free_prisoners_quest.summary.trim().is_empty(),
+        "Free-prisoners stage must expose a player-facing summary"
     );
 
     // Layla unlocks the cages

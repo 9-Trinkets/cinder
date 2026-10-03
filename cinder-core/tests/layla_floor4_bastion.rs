@@ -156,7 +156,7 @@ fn floor4_bastion_malik_defeat_safe_unlock_and_teleport_scroll() {
         objectives
             .iter()
             .any(|o| o.quest_id.as_deref() == Some("teleport_scroll")
-                && o.summary.contains("Activate the teleport platform")),
+                && o.stage_id == "mq_use_teleport_platform"),
         "Quest must advance to mq_use_teleport_platform once scroll is acquired: {:?}",
         objectives
     );
