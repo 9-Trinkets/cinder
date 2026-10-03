@@ -1020,12 +1020,102 @@
         "room_id": "throne_passage_northwest",
         "x": -0.5,
         "y": 8.0
+      },
+      {
+        "room_id": "citadel_sanctum_gate",
+        "x": 12.0,
+        "y": 28.0
       }
     ],
     "reveal_conditions": [
       {
         "kind": "story_var_truthy",
         "key": "has_sensory_enhancer"
+      }
+    ]
+  },
+  {
+    "id": "salt-reach",
+    "label": "Salt Reach",
+    "rooms": [
+      {
+        "room_id": "salt_reach_square",
+        "x": 12.0,
+        "y": 12.0
+      }
+    ],
+    "reveal_conditions": [
+      {
+        "kind": "story_var_truthy",
+        "key": "town_salt_reach_unlocked"
+      }
+    ]
+  },
+  {
+    "id": "glassbank",
+    "label": "Glassbank",
+    "rooms": [
+      {
+        "room_id": "glassbank_square",
+        "x": 12.0,
+        "y": 12.0
+      }
+    ],
+    "reveal_conditions": [
+      {
+        "kind": "story_var_truthy",
+        "key": "town_glassbank_unlocked"
+      }
+    ]
+  },
+  {
+    "id": "woolcross",
+    "label": "Woolcross",
+    "rooms": [
+      {
+        "room_id": "woolcross_square",
+        "x": 12.0,
+        "y": 12.0
+      }
+    ],
+    "reveal_conditions": [
+      {
+        "kind": "story_var_truthy",
+        "key": "town_woolcross_unlocked"
+      }
+    ]
+  },
+  {
+    "id": "greenrest",
+    "label": "Greenrest",
+    "rooms": [
+      {
+        "room_id": "greenrest_square",
+        "x": 12.0,
+        "y": 12.0
+      }
+    ],
+    "reveal_conditions": [
+      {
+        "kind": "story_var_truthy",
+        "key": "town_greenrest_unlocked"
+      }
+    ]
+  },
+  {
+    "id": "brass-yard",
+    "label": "Brass Yard",
+    "rooms": [
+      {
+        "room_id": "brass_yard_square",
+        "x": 12.0,
+        "y": 12.0
+      }
+    ],
+    "reveal_conditions": [
+      {
+        "kind": "story_var_truthy",
+        "key": "town_brass_yard_unlocked"
       }
     ]
   }

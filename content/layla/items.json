@@ -367,5 +367,35 @@
     "kind": "potion",
     "use_hook": "item.sensory_enhancer_used",
     "description": "A small, translucent blue capsule synthesized in the High Sanctuary of Floor 6. Swallowing it heightens human senses and clears neural static, upgrading the interface map with live ally trackers and active teleport portals."
+  },
+  {
+    "id": "salt-reach-transit-seal",
+    "label": "Salt Reach transit seal",
+    "kind": "key",
+    "description": "A soapstone-and-brass routing badge from Salt Reach. Its permanent code opens the town's teleport anchor."
+  },
+  {
+    "id": "glassbank-transit-prism",
+    "label": "Glassbank transit prism",
+    "kind": "key",
+    "description": "A cobalt glass routing key from Glassbank. Light gathers inside it when the town's teleport anchor answers."
+  },
+  {
+    "id": "woolcross-transit-knot",
+    "label": "Woolcross transit knot",
+    "kind": "key",
+    "description": "Woven copper wire wrapped around a ceramic routing core. It carries the permanent address of Woolcross."
+  },
+  {
+    "id": "greenrest-transit-seed",
+    "label": "Greenrest transit seed",
+    "kind": "key",
+    "description": "A green enamel routing disk shaped like a seed. It opens the warm-cave anchor at Greenrest."
+  },
+  {
+    "id": "brass-yard-transit-gear",
+    "label": "Brass Yard transit gear",
+    "kind": "key",
+    "description": "A toothed brass routing coin from Brass Yard. Its engraved code opens the town's machine-yard anchor."
   }
 ]

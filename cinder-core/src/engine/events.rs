@@ -181,6 +181,9 @@ pub enum WorldEvent {
         actor_id: String,
         relationship: crate::engine::state::ActorRelationship,
     },
+    StageEffectApplied {
+        effect: crate::content::types::AdvanceEffect,
+    },
     /// A hostile actor strikes a living member of the player's party in its
     /// room. The reducer selects the target and resolves mechanics from stats.
     HostileStrike {

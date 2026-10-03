@@ -154,12 +154,68 @@
       "on_advance_effects": [
         {
           "kind": "set_story_var",
-          "key": "citadel_siege_complete",
+          "key": "citadel_siege_resolved",
           "value": "true"
         }
       ],
-      "advance_signals": [],
-      "next_stage_ids": []
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.citadel_siege_resolved",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [],
+      "completion_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "citadel_siege_complete",
+          "value": "true"
+        },
+        {
+          "kind": "resolve_survivor_rewards",
+          "survivor_count_story_var": "five_offerings_survivors",
+          "all_survived_story_var": "six_town_accord",
+          "all_survived_message": "civilian.reward.six_town_accord",
+          "rewards": [
+            {
+              "actor_id": "nivi_olsen",
+              "unlock_story_var": "town_salt_reach_unlocked",
+              "item_id": "salt-reach-transit-seal",
+              "message": "civilian.reward.salt_reach"
+            },
+            {
+              "actor_id": "eliska_novakova",
+              "unlock_story_var": "town_glassbank_unlocked",
+              "item_id": "glassbank-transit-prism",
+              "message": "civilian.reward.glassbank"
+            },
+            {
+              "actor_id": "amaru_quispe",
+              "unlock_story_var": "town_woolcross_unlocked",
+              "item_id": "woolcross-transit-knot",
+              "message": "civilian.reward.woolcross"
+            },
+            {
+              "actor_id": "abeni_adeyemi",
+              "unlock_story_var": "town_greenrest_unlocked",
+              "item_id": "greenrest-transit-seed",
+              "message": "civilian.reward.greenrest"
+            },
+            {
+              "actor_id": "chen_yu_xin",
+              "unlock_story_var": "town_brass_yard_unlocked",
+              "item_id": "brass-yard-transit-gear",
+              "message": "civilian.reward.brass_yard"
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "sq_five_offerings",
@@ -189,7 +245,28 @@
         "failure_signal": "civilian_protection_failed"
       },
       "advance_signals": [
-        "civilian_protection_failed"
+        "civilian_protection_failed",
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.frost_wolf_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.values.iron_ram_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.values.frost_leopard_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            }
+          ],
+          "next_stage_ids": []
+        }
       ],
       "next_stage_ids": [
         "sq_five_offerings_failed"
@@ -222,7 +299,29 @@
         "failure_story_var": "five_offerings_failed",
         "failure_signal": ""
       },
-      "advance_signals": [],
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.frost_wolf_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.values.iron_ram_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.values.frost_leopard_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            }
+          ],
+          "next_stage_ids": []
+        }
+      ],
       "next_stage_ids": []
     },
     {

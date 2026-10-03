@@ -25,6 +25,36 @@
         "floor 5 platform",
         "floor 5"
       ]
+    },
+    {
+      "room_id": "salt_reach_square",
+      "armed_by": "town_salt_reach_unlocked",
+      "title": "Salt Reach",
+      "aliases": ["salt reach", "salt_reach", "salt"]
+    },
+    {
+      "room_id": "glassbank_square",
+      "armed_by": "town_glassbank_unlocked",
+      "title": "Glassbank",
+      "aliases": ["glassbank", "glass bank", "glass"]
+    },
+    {
+      "room_id": "woolcross_square",
+      "armed_by": "town_woolcross_unlocked",
+      "title": "Woolcross",
+      "aliases": ["woolcross", "wool cross", "wool"]
+    },
+    {
+      "room_id": "greenrest_square",
+      "armed_by": "town_greenrest_unlocked",
+      "title": "Greenrest",
+      "aliases": ["greenrest", "green rest", "green"]
+    },
+    {
+      "room_id": "brass_yard_square",
+      "armed_by": "town_brass_yard_unlocked",
+      "title": "Brass Yard",
+      "aliases": ["brass yard", "brass_yard", "brass"]
     }
   ]
 }

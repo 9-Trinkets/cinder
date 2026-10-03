@@ -1,9 +1,9 @@
 use super::common::*;
 use cinder_core::content::types::{
-    ActionDefinition, AdvanceCondition, AdvanceSignal, BeatDefinition,
+    ActionDefinition, AdvanceCondition, AdvanceEffect, AdvanceSignal, BeatDefinition,
     BeatObjectiveCompletionDefinition, BeatObjectiveDefinition, BeatObjectiveGuidanceDefinition,
     BeatObjectiveProgressDefinition, BeatObjectiveProgressKeyDefinition, BeatObjectiveProgressRef,
-    BeatObjectivesDefinition, BeatsDefinition, CommandEffect,
+    BeatObjectivesDefinition, BeatsDefinition, CommandEffect, ItemDefinition,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::reducer::apply_events;
@@ -25,6 +25,7 @@ fn command_used_signal_can_advance_stage_after_objective_completion_and_clears_p
                         operator: "equal".to_string(),
                         value: json!("true"),
                     }],
+                    next_stage_ids: None,
                 }],
                 next_stage_ids: vec!["share-dinner".to_string()],
                 ..BeatDefinition::default()
@@ -92,4 +93,52 @@ fn command_used_signal_can_advance_stage_after_objective_completion_and_clears_p
             .get("beat_objective:progress:dinner-prep-cook-and-check-in:meal_ready"),
         None
     );
+}
+
+#[test]
+fn terminal_completion_rewards_apply_once_and_signal_can_override_default_successor() {
+    let mut pack = reducer_test_pack();
+    pack.items.push(ItemDefinition {
+        id: "quest-token".to_string(),
+        label: "quest token".to_string(),
+        ..ItemDefinition::default()
+    });
+    pack.beats = BeatsDefinition {
+        initial_stage_ids: vec!["choice".to_string()],
+        stages: vec![
+            BeatDefinition {
+                id: "choice".to_string(),
+                advance_signals: vec![AdvanceSignal::Conditional {
+                    signal: "story_vars_changed".to_string(),
+                    conditions: vec![],
+                    next_stage_ids: Some(vec![]),
+                }],
+                next_stage_ids: vec!["wrong-branch".to_string()],
+                completion_effects: vec![AdvanceEffect::GrantItem {
+                    item_id: "quest-token".to_string(),
+                    message: String::new(),
+                }],
+                ..BeatDefinition::default()
+            },
+            BeatDefinition {
+                id: "wrong-branch".to_string(),
+                ..BeatDefinition::default()
+            },
+        ],
+        ..BeatsDefinition::default()
+    };
+    let mut state = WorldState::new(&pack);
+
+    let signal = [TimestampedWorldEvent::now(WorldEvent::StoryVarSet {
+        key: "ready".to_string(),
+        value: "true".to_string(),
+    })];
+    apply_events(&mut state, &pack, &signal);
+
+    assert!(state.completed_stage_ids.contains("choice"));
+    assert!(state.active_objective_stage_ids.is_empty());
+    assert_eq!(state.item_count("quest-token"), 1);
+
+    apply_events(&mut state, &pack, &signal);
+    assert_eq!(state.item_count("quest-token"), 1);
 }

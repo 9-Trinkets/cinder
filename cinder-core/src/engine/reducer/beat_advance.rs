@@ -33,7 +33,7 @@ pub(crate) fn advance_objective_for_signal(
             next_active_stage_ids.push(current_stage_id);
             continue;
         };
-        if !current_stage.advance_signals.iter().any(|candidate| {
+        let Some(matched_signal) = current_stage.advance_signals.iter().find(|candidate| {
             advance_signal_matches(
                 state,
                 &current_stage_id,
@@ -41,12 +41,12 @@ pub(crate) fn advance_objective_for_signal(
                 candidate.signal(),
                 candidate.conditions(),
             )
-        }) {
+        }) else {
             next_stage_started_minutes
                 .insert(current_stage_id.clone(), current_stage_started_minutes);
             next_active_stage_ids.push(current_stage_id);
             continue;
-        }
+        };
         state.stages_completed += 1;
         state.completed_stage_ids.insert(current_stage_id.clone());
         // Completion commentary belongs to the stage that was just finished, so
@@ -56,10 +56,19 @@ pub(crate) fn advance_objective_for_signal(
         {
             messages.push(line);
         }
-        if current_stage.next_stage_ids.is_empty() {
+        apply_stage_effects(
+            state,
+            content,
+            &current_stage.completion_effects,
+            &mut messages,
+        );
+        let next_stage_ids = matched_signal
+            .next_stage_ids()
+            .unwrap_or(&current_stage.next_stage_ids);
+        if next_stage_ids.is_empty() {
             continue;
         }
-        for next_stage_id in &current_stage.next_stage_ids {
+        for next_stage_id in next_stage_ids {
             next_active_stage_ids.push(next_stage_id.clone());
             let Some(next_stage) = content
                 .beats
@@ -108,34 +117,12 @@ pub(crate) fn advance_objective_for_signal(
             if !next_stage.open_menu.is_empty() {
                 state.active_menu_id = Some(next_stage.open_menu.clone());
             }
-            for effect in &next_stage.on_advance_effects {
-                match effect {
-                    AdvanceEffect::AdjustActorStat {
-                        actor_id,
-                        stat,
-                        delta,
-                    } => {
-                        if let Err(e) = state.adjust_actor_stat(content, actor_id, stat, *delta) {
-                            eprintln!("[cinder] on_advance_effect error: {e}");
-                        }
-                    }
-                    AdvanceEffect::AdjustPairStat {
-                        participant_a_id,
-                        participant_b_id,
-                        stat,
-                        delta,
-                    } => {
-                        if let Err(e) =
-                            state.adjust_pair_stat(participant_a_id, participant_b_id, stat, *delta)
-                        {
-                            eprintln!("[cinder] on_advance_effect error: {e}");
-                        }
-                    }
-                    AdvanceEffect::SetStoryVar { key, value } => {
-                        state.story_vars.set_unchecked(key, value);
-                    }
-                }
-            }
+            apply_stage_effects(
+                state,
+                content,
+                &next_stage.on_advance_effects,
+                &mut messages,
+            );
             if next_stage.end_act && !content.act_cast.is_empty() {
                 state.stages_completed += 1;
                 state.phase = GamePhase::ActEnded;
@@ -168,6 +155,95 @@ pub(crate) fn advance_objective_for_signal(
             .insert(stage_id, state.current_time_minutes);
     }
     messages
+}
+
+pub(super) fn apply_stage_effects(
+    state: &mut WorldState,
+    content: &ContentPack,
+    effects: &[AdvanceEffect],
+    messages: &mut Vec<NarrativeLine>,
+) {
+    for effect in effects {
+        match effect {
+            AdvanceEffect::AdjustActorStat {
+                actor_id,
+                stat,
+                delta,
+            } => {
+                if let Err(error) = state.adjust_actor_stat(content, actor_id, stat, *delta) {
+                    eprintln!("[cinder] stage effect error: {error}");
+                }
+            }
+            AdvanceEffect::AdjustPairStat {
+                participant_a_id,
+                participant_b_id,
+                stat,
+                delta,
+            } => {
+                if let Err(error) =
+                    state.adjust_pair_stat(participant_a_id, participant_b_id, stat, *delta)
+                {
+                    eprintln!("[cinder] stage effect error: {error}");
+                }
+            }
+            AdvanceEffect::SetStoryVar { key, value } => {
+                state.story_vars.set_unchecked(key, value);
+            }
+            AdvanceEffect::GrantItem { item_id, message } => {
+                if !state.has_item(item_id) {
+                    state.add_item(item_id);
+                    push_effect_message(content, message, messages);
+                }
+            }
+            AdvanceEffect::ResolveSurvivorRewards {
+                rewards,
+                survivor_count_story_var,
+                all_survived_story_var,
+                all_survived_message,
+            } => {
+                let health_stat_id = &content.settings.combat.health_stat_id;
+                let mut survivor_count = 0;
+                for reward in rewards {
+                    if state.actor_is_defeated(&reward.actor_id, health_stat_id) {
+                        continue;
+                    }
+                    survivor_count += 1;
+                    let newly_unlocked =
+                        state.story_vars.get(&reward.unlock_story_var) != Some("true");
+                    state
+                        .story_vars
+                        .set_unchecked(&reward.unlock_story_var, "true");
+                    if !state.has_item(&reward.item_id) {
+                        state.add_item(&reward.item_id);
+                    }
+                    if newly_unlocked {
+                        push_effect_message(content, &reward.message, messages);
+                    }
+                }
+                state
+                    .story_vars
+                    .set_unchecked(survivor_count_story_var, &survivor_count.to_string());
+                if !all_survived_story_var.is_empty() && survivor_count == rewards.len() {
+                    let newly_unlocked =
+                        state.story_vars.get(all_survived_story_var) != Some("true");
+                    state
+                        .story_vars
+                        .set_unchecked(all_survived_story_var, "true");
+                    if newly_unlocked {
+                        push_effect_message(content, all_survived_message, messages);
+                    }
+                }
+            }
+        }
+    }
+}
+
+fn push_effect_message(content: &ContentPack, message: &str, messages: &mut Vec<NarrativeLine>) {
+    if !message.is_empty()
+        && let Some(line) = rendered_message_line(content, message, &[])
+    {
+        messages.push(line);
+    }
 }
 
 fn dispatch_due_actor_spawns(state: &mut WorldState, content: &ContentPack) {

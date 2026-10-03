@@ -8,7 +8,7 @@ use crate::content::loader::fs::{
 };
 use crate::content::loader::index::{build_index, collect_act_cast};
 use crate::content::types::{
-    ActionsDefinition, ActorDefinition, BeatObjectivesDefinition, BeatsDefinition,
+    ActionsDefinition, ActorDefinition, AdvanceEffect, BeatObjectivesDefinition, BeatsDefinition,
     BehaviorDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition, LevelingDefinition,
     MapDefinition, MovementConfigDefinition, OpeningDefinition, OpeningMenuDefinition,
     OpeningMovieDefinition, PresentationDefinition, RoomDefinition, SequencesDefinition,
@@ -205,6 +205,28 @@ pub fn load_pack_from_dir_with_locale(
 
 fn validate_protection_rules(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
     for stage in &pack.beats.stages {
+        for next_stage_id in stage.next_stage_ids.iter().chain(
+            stage
+                .advance_signals
+                .iter()
+                .filter_map(|signal| signal.next_stage_ids())
+                .flatten(),
+        ) {
+            if !pack
+                .beats
+                .stages
+                .iter()
+                .any(|candidate| candidate.id == *next_stage_id)
+            {
+                return Err(format!(
+                    "stage '{}' references unknown next stage '{}'",
+                    stage.id, next_stage_id
+                )
+                .into());
+            }
+        }
+        validate_stage_effects(pack, &stage.id, &stage.on_advance_effects)?;
+        validate_stage_effects(pack, &stage.id, &stage.completion_effects)?;
         if let Some(schedule) = &stage.actor_spawn_schedule {
             if schedule.rout_on_stop && schedule.stop_story_var.is_empty() {
                 return Err(format!(
@@ -283,6 +305,72 @@ fn validate_protection_rules(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
                 .into());
             }
         }
+    }
+    Ok(())
+}
+
+fn validate_stage_effects(
+    pack: &ContentPack,
+    stage_id: &str,
+    effects: &[AdvanceEffect],
+) -> Result<(), Box<dyn Error>> {
+    for effect in effects {
+        match effect {
+            AdvanceEffect::GrantItem { item_id, message } => {
+                validate_reward_reference(pack, stage_id, item_id, message)?;
+            }
+            AdvanceEffect::ResolveSurvivorRewards {
+                rewards,
+                all_survived_message,
+                ..
+            } => {
+                if !all_survived_message.is_empty()
+                    && !pack.messages.contains_key(all_survived_message)
+                {
+                    return Err(format!(
+                        "stage '{}' survivor rewards reference unknown message '{}'",
+                        stage_id, all_survived_message
+                    )
+                    .into());
+                }
+                for reward in rewards {
+                    if pack.actor(&reward.actor_id).is_none() {
+                        return Err(format!(
+                            "stage '{}' survivor rewards reference unknown actor '{}'",
+                            stage_id, reward.actor_id
+                        )
+                        .into());
+                    }
+                    validate_reward_reference(pack, stage_id, &reward.item_id, &reward.message)?;
+                }
+            }
+            AdvanceEffect::AdjustActorStat { .. }
+            | AdvanceEffect::AdjustPairStat { .. }
+            | AdvanceEffect::SetStoryVar { .. } => {}
+        }
+    }
+    Ok(())
+}
+
+fn validate_reward_reference(
+    pack: &ContentPack,
+    stage_id: &str,
+    item_id: &str,
+    message: &str,
+) -> Result<(), Box<dyn Error>> {
+    if pack.item(item_id).is_none() {
+        return Err(format!(
+            "stage '{}' reward references unknown item '{}'",
+            stage_id, item_id
+        )
+        .into());
+    }
+    if !message.is_empty() && !pack.messages.contains_key(message) {
+        return Err(format!(
+            "stage '{}' reward references unknown message '{}'",
+            stage_id, message
+        )
+        .into());
     }
     Ok(())
 }

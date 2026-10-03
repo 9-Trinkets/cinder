@@ -333,6 +333,16 @@ pub fn apply_events(
                     state.set_relationship(actor_id, *relationship);
                 }
             }
+            WorldEvent::StageEffectApplied { effect } => {
+                let mut effect_lines = Vec::new();
+                beat_advance::apply_stage_effects(
+                    state,
+                    content,
+                    std::slice::from_ref(effect),
+                    &mut effect_lines,
+                );
+                lines.extend_lines(effect_lines);
+            }
             WorldEvent::HostileStrike { actor_id } => {
                 handle_hostile_strike(state, content, actor_id, &mut lines);
             }

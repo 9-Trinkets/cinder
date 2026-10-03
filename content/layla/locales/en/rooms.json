@@ -11531,6 +11531,20 @@
         ],
         "menu_label": "West to Frost-Leopard Approach",
         "requires_story_var": ""
+      },
+      {
+        "room_id": "citadel_sanctum_gate",
+        "label": "South through the Sanctum Gate",
+        "aliases": [
+          "south",
+          "s",
+          "sanctum",
+          "floor 6",
+          "floor6",
+          "descend"
+        ],
+        "menu_label": "Descend toward Floor 6",
+        "requires_story_var": "citadel_siege_complete"
       }
     ],
     "descriptions": []
@@ -12280,6 +12294,138 @@
         "requires_story_var": "frost_leopard_access_open"
       }
     ],
+    "descriptions": []
+  },
+  {
+    "id": "citadel_sanctum_gate",
+    "title": "The High Sanctuary Gate",
+    "summary": "Beyond the opened south doors, a steep covered passage drops through the mountain toward a white stone gate. Warm air rises through its bars, carrying clean herbs, lamp smoke, and distant bells from Floor 6.",
+    "inspect_text": "The Citadel's last portcullis stands raised. Beyond it, pale stairs descend toward the High Sanctuary. The route is open, but the worker towns now shining on the teleport map can still be visited before you leave.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "citadel_sanctum_gate-portcullis",
+        "label": "the raised portcullis",
+        "aliases": [
+          "portcullis",
+          "gate",
+          "bars",
+          "floor 6"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "The iron teeth hang above the passage. The command lock is dark, and nothing remains to close the gate again."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "courtyard_south",
+        "label": "North to the Frost Courtyard",
+        "aliases": [
+          "north",
+          "n",
+          "courtyard",
+          "back"
+        ],
+        "menu_label": "Return to the Frost Courtyard",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "salt_reach_square",
+    "title": "Salt Reach Landing",
+    "summary": "A low town of dark timber and blue-grey stone stands beside white brine fields. Wind pushes loose salt over the road like dry snow while families cut clear blocks from the frozen pools.",
+    "inspect_text": "The teleport seal rests in a brass socket beside a warm storehouse. Sled tracks run toward the brine pans, and rows of drying fish hang under deep roofs built to survive the polar wind.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "salt_reach-brine_pans",
+        "label": "the frozen brine pans",
+        "aliases": ["brine", "salt fields", "pans", "ice"],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Workers cut neat slabs from shallow mineral pools. Blue ice shows beneath a crust of clean white salt."
+      }
+    ],
+    "exits": [],
+    "descriptions": []
+  },
+  {
+    "id": "glassbank_square",
+    "title": "Glassbank Furnace Square",
+    "summary": "Brick workshops ring a square lit orange by furnace doors. Glass lamps in cobalt, amber, and green hang above the street, turning the snow into pools of colored light.",
+    "inspect_text": "The teleport prism stands in a steel frame near the public lens shop. Long brick chimneys breathe into the cold while glass workers carry glowing rods between the furnaces.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "glassbank-signal_lamps",
+        "label": "the signal lamps",
+        "aliases": ["lamps", "glass", "lenses", "lights"],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Each lamp uses a different cut of glass to send a clear color through snow and fog."
+      }
+    ],
+    "exits": [],
+    "descriptions": []
+  },
+  {
+    "id": "woolcross_square",
+    "title": "Woolcross Loom Court",
+    "summary": "Stone homes climb a sheltered slope around a broad weaving court. Bright woven cloth covers the rails, and thick ropes stretch between workshops built against the mountain wind.",
+    "inspect_text": "The copper transit knot is fixed beside a communal loom house. Families sort wool, twist climbing rope, and carry folded winter cloth through the busy court.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "woolcross-community_looms",
+        "label": "the community looms",
+        "aliases": ["looms", "weaving", "cloth", "rope"],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Heavy wooden looms beat in a steady rhythm as red, gold, and deep blue threads become warm mountain cloth."
+      }
+    ],
+    "exits": [],
+    "descriptions": []
+  },
+  {
+    "id": "greenrest_square",
+    "title": "Greenrest Garden Cavern",
+    "summary": "Warm cave air carries the smell of wet soil and herbs. Homes and garden beds fill a wide glowing cavern where mushrooms rise beneath hanging lamps.",
+    "inspect_text": "The enamel transit seed rests in a living wall of roots near the market. Growers move between raised beds of medicine plants, mushrooms, and dark leafy vegetables.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "greenrest-medicine_gardens",
+        "label": "the medicine gardens",
+        "aliases": ["gardens", "herbs", "mushrooms", "plants"],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Carefully labeled beds hold bitter leaves, pale mushrooms, and warming roots used by the town's healers."
+      }
+    ],
+    "exits": [],
+    "descriptions": []
+  },
+  {
+    "id": "brass_yard_square",
+    "title": "Brass Yard Machine Court",
+    "summary": "A crowded machine town fills a stone basin with pumps, cranes, repair sheds, and narrow homes. Brass signs click in the wind while steam rolls across the paving stones.",
+    "inspect_text": "The transit gear turns slowly inside a wall-mounted routing clock. Mechanics test valves at open benches, and handcarts carry broken parts toward workshops bright with clean white lamps.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "brass_yard-repair_benches",
+        "label": "the repair benches",
+        "aliases": ["benches", "machines", "gears", "tools"],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Every bench holds labeled trays of screws, gears, seals, and careful drawings for machines used across the worker towns."
+      }
+    ],
+    "exits": [],
     "descriptions": []
   }
 ]

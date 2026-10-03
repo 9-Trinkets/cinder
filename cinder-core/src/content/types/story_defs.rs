@@ -65,6 +65,8 @@ pub enum AdvanceSignal {
         signal: String,
         #[serde(default)]
         conditions: Vec<AdvanceCondition>,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        next_stage_ids: Option<Vec<String>>,
     },
 }
 
@@ -79,6 +81,13 @@ impl AdvanceSignal {
         match self {
             Self::Simple(_) => &[],
             Self::Conditional { conditions, .. } => conditions,
+        }
+    }
+
+    pub fn next_stage_ids(&self) -> Option<&[String]> {
+        match self {
+            Self::Simple(_) => None,
+            Self::Conditional { next_stage_ids, .. } => next_stage_ids.as_deref(),
         }
     }
 }
@@ -108,6 +117,28 @@ pub enum AdvanceEffect {
         key: String,
         value: String,
     },
+    GrantItem {
+        item_id: String,
+        #[serde(default)]
+        message: String,
+    },
+    ResolveSurvivorRewards {
+        rewards: Vec<SurvivorRewardDefinition>,
+        survivor_count_story_var: String,
+        #[serde(default)]
+        all_survived_story_var: String,
+        #[serde(default)]
+        all_survived_message: String,
+    },
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SurvivorRewardDefinition {
+    pub actor_id: String,
+    pub unlock_story_var: String,
+    pub item_id: String,
+    #[serde(default)]
+    pub message: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -238,6 +269,11 @@ pub struct BeatDefinition {
     /// `{ "voice": "handler" }` message renders as Handler comms.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub completion_message: Option<String>,
+    /// Content-authored rewards and state changes applied once when this stage
+    /// completes. Unlike `on_advance_effects`, these also work on terminal
+    /// quest stages with no successor.
+    #[serde(default)]
+    pub completion_effects: Vec<AdvanceEffect>,
     #[serde(default)]
     pub next_chapter_preview: String,
     #[serde(default)]

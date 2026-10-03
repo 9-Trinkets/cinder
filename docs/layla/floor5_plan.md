@@ -24,7 +24,15 @@ Implemented:
   it, victims rotate deterministically, and the third death marks the side
   quest failed without ending the siege;
 - leader neutralization now routs that house's deployed soldiers, and stopping
-  all three command lanes ends the siege and begins survivor resolution.
+  all three command lanes ends the siege and begins survivor resolution;
+- siege completion now counts the five civilians, completes or preserves the
+  failed protection quest, grants each survivor's permanent town token, and
+  unlocks the Six-Town Accord when all five survive;
+- Salt Reach, Glassbank, Woolcross, Greenrest, and Brass Yard now have initial
+  teleport landing hubs as optional Floor 5 map extensions, each gated by its
+  survivor token;
+- the High Sanctuary Gate opens after the siege regardless of civilian losses
+  or town visits, completing the route toward Floor 6.
 
 The siege begins when the prisoners are freed and advances on a continuous
 in-game clock:
@@ -41,9 +49,11 @@ stops that house's lane, but it does not delay the next scheduled wave. This
 keeps the tower-defense pressure active while making each decapitation strike
 meaningful.
 
-The next implementation slice completes the defensive side of the loop:
-defender placement and tactical warnings, siege-end survivor resolution and
-town-token rewards, and the Floor 6 gate transition.
+The next implementation slice builds deeper content inside the five optional
+worker towns: local residents, town problems, items, awakening and charm
+opportunities, and possible recruits. Guard orders and party-wide hostility
+already provide the defender-placement mechanics; Floor 5 does not model a
+separate guarded-lane state.
 
 ---
 
@@ -229,8 +239,10 @@ route to optional allies and equipment on later floors.
 
 After the siege, every survivor gives Layla their permanent town token. Binding
 a token adds that town to Layla's teleport destinations and tactical map. The
-token is never consumed by travel. Visiting that town later can provide local
-items, charm opportunities, named awakenings, and recruitable allies.
+token is never consumed by travel. Each unlocked town is an optional extension
+of the Floor 5 map rather than a separate floor. Layla can visit these towns
+before descending to Floor 6 to find local items, charm opportunities, named
+awakenings, and recruitable allies.
 
 If all five survive, their tokens join Deepwell's known anchor to complete the
 **Six-Town Accord**, restoring direct travel across the worker-town network.
@@ -262,7 +274,7 @@ Floor 5 plays out in an active, dynamic RTS loop:
    - Neutralizing Frost-Wolf early does not delay Wave 2. Neutralizing
      Iron-Ram early does not delay Wave 3.
 4. **Teleportation Micro:**
-   - If an alert warns that a courtyard chokepoint is buckling while Layla is inside an estate, Layla casts `teleport courtyard_center` or `teleport <choke_anchor>`, blinks back instantly, drops a `drain-sigil` to wipe out the breach, and then teleports back to resume her attack!
+   - If soldiers reach the courtyard center while Layla is inside an estate, Layla casts `teleport courtyard_center`, blinks back instantly, drops a `drain-sigil` to clear the breach, and then teleports back to resume her attack.
 
 ### Civilian Danger and Fail-Forward Consequences
 
@@ -349,7 +361,8 @@ The defense occurs across **three exponentially harder waves**, with the noble h
   6. Enter House Iron-Ram when Wave 2 opens its portcullis, confront **Warmaster Torin**, and stop the heavy lane.
   7. Enter House Frost-Leopard when Wave 3 opens its doors, confront **Lady Sylvan**, and stop the ranged lane.
   8. Clear any remaining attackers from the courtyard after all three command lanes stop.
-  9. The Handler's terminal shuts down. Open the grand iron portcullis leading to Floor 6 (`citadel_sanctum_gate`).
+  9. Resolve the surviving offerings, grant their town tokens, and unlock their towns as optional Floor 5 destinations.
+  10. The Handler's terminal shuts down. Open the grand iron portcullis leading to Floor 6 (`citadel_sanctum_gate`). The unlocked towns remain optional; visiting them is never required to descend.
 
 ### Protection Quest: "The Five Offerings"
 - **Goal:** Keep at least three of the five named civilians alive until the siege ends.

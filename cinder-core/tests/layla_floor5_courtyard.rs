@@ -423,7 +423,7 @@ fn floor5_citadel_map_definition_and_reveal_condition() {
         .expect("courtyard_center has map");
     assert_eq!(map.id, "the-frost-citadel");
     assert_eq!(map.label, "The Frost Citadel");
-    assert_eq!(map.rooms.len(), 19);
+    assert_eq!(map.rooms.len(), 20);
 
     // Each courtyard room is present in the map
     for room_id in EXPECTED_COURTYARD_ROOMS {
@@ -432,6 +432,12 @@ fn floor5_citadel_map_definition_and_reveal_condition() {
             "map should include room {room_id}"
         );
     }
+    assert!(
+        map.rooms
+            .iter()
+            .any(|room| room.room_id == "citadel_sanctum_gate"),
+        "the opened Floor 6 threshold should extend the citadel map"
+    );
 
     // Map reveal condition is gated by has_sensory_enhancer
     assert!(
@@ -468,6 +474,7 @@ fn floor5_to_floor4_only_via_teleport() {
         assert!(
             text.contains("cannot go that way")
                 || text.contains("can't go that way")
+                || text.contains("aren't sure how to")
                 || text.contains("route sheet")
                 || text.contains("approved playbook")
                 || text.contains("unknown"),
@@ -716,6 +723,7 @@ fn floor5_all_three_stopped_lanes_end_the_siege() {
     state.current_room_id = "courtyard_center".to_string();
     state.active_objective_stage_ids = vec![
         "mq_frost_siege".to_string(),
+        "sq_five_offerings".to_string(),
         "frost_wolf_dispatch".to_string(),
         "iron_ram_dispatch".to_string(),
         "frost_leopard_dispatch".to_string(),
@@ -752,8 +760,8 @@ fn floor5_all_three_stopped_lanes_end_the_siege() {
         state.story_vars.set_unchecked(stopped_var, "true");
     }
 
-    let resolution = apply_events(&mut state, &pack, &[]);
-    let text = narrative_text(&resolution.lines);
+    let siege_end = apply_events(&mut state, &pack, &[]);
+    let siege_text = narrative_text(&siege_end.lines);
 
     assert_eq!(spawned_count(&state, "frost_wolf_raider"), 0);
     assert_eq!(spawned_count(&state, "iron_ram_mauler"), 0);
@@ -767,10 +775,168 @@ fn floor5_all_three_stopped_lanes_end_the_siege() {
             .active_objective_stage_ids
             .contains(&"mq_secure_courtyard".to_string())
     );
+    assert_eq!(state.story_vars.get("citadel_siege_resolved"), Some("true"));
+    assert!(
+        siege_text.contains("The siege is over"),
+        "siege completion should be announced: {siege_text}"
+    );
+    assert!(
+        state.completed_stage_ids.contains("sq_five_offerings"),
+        "the protection quest should complete when at least three survive"
+    );
+
+    let rewards = apply_events(&mut state, &pack, &[]);
+    let reward_text = narrative_text(&rewards.lines);
+    assert_eq!(state.story_vars.get("citadel_siege_complete"), Some("true"));
+    assert_eq!(state.story_vars.get("five_offerings_survivors"), Some("5"));
+    assert_eq!(state.story_vars.get("six_town_accord"), Some("true"));
+    for (unlock_var, token_id) in [
+        ("town_salt_reach_unlocked", "salt-reach-transit-seal"),
+        ("town_glassbank_unlocked", "glassbank-transit-prism"),
+        ("town_woolcross_unlocked", "woolcross-transit-knot"),
+        ("town_greenrest_unlocked", "greenrest-transit-seed"),
+        ("town_brass_yard_unlocked", "brass-yard-transit-gear"),
+    ] {
+        assert_eq!(state.story_vars.get(unlock_var), Some("true"));
+        assert!(
+            state.has_item(token_id),
+            "missing survivor token {token_id}"
+        );
+    }
+    assert!(
+        reward_text.contains("Six-Town Accord"),
+        "perfect survival should announce the accord: {reward_text}"
+    );
+    assert!(
+        state.completed_stage_ids.contains("mq_secure_courtyard"),
+        "the main Floor 5 quest should close after survivor resolution"
+    );
+    let repeated = apply_events(&mut state, &pack, &[]);
+    assert!(repeated.lines.is_empty(), "rewards must not repeat");
+    assert_eq!(state.item_count("salt-reach-transit-seal"), 1);
+}
+
+#[test]
+fn floor5_survivor_rewards_unlock_only_living_civilians_towns() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_center".to_string();
+    state.active_objective_stage_ids = vec![
+        "mq_frost_siege".to_string(),
+        "sq_five_offerings".to_string(),
+    ];
+    for stage_id in &state.active_objective_stage_ids {
+        state
+            .stage_started_minutes
+            .insert(stage_id.clone(), state.current_time_minutes);
+    }
+    for actor_id in ["nivi_olsen", "eliska_novakova"] {
+        state
+            .actor_stats
+            .entry(actor_id.to_string())
+            .or_default()
+            .insert("hp".to_string(), 0);
+    }
+    for stopped_var in [
+        "frost_wolf_lane_stopped",
+        "iron_ram_lane_stopped",
+        "frost_leopard_lane_stopped",
+    ] {
+        state.story_vars.set_unchecked(stopped_var, "true");
+    }
+
+    apply_events(&mut state, &pack, &[]);
+    apply_events(&mut state, &pack, &[]);
+
+    assert_eq!(state.story_vars.get("five_offerings_survivors"), Some("3"));
+    assert_eq!(state.story_vars.get("town_salt_reach_unlocked"), None);
+    assert_eq!(state.story_vars.get("town_glassbank_unlocked"), None);
+    assert_eq!(
+        state.story_vars.get("town_woolcross_unlocked"),
+        Some("true")
+    );
+    assert_eq!(
+        state.story_vars.get("town_greenrest_unlocked"),
+        Some("true")
+    );
+    assert_eq!(
+        state.story_vars.get("town_brass_yard_unlocked"),
+        Some("true")
+    );
+    assert_eq!(state.story_vars.get("six_town_accord"), None);
+    assert!(!state.has_item("salt-reach-transit-seal"));
+    assert!(!state.has_item("glassbank-transit-prism"));
+    assert!(state.has_item("woolcross-transit-knot"));
+    assert_eq!(
+        pack.resolve_teleport_target(&state, "woolcross")
+            .map(|(room_id, _)| room_id),
+        Some("woolcross_square".to_string())
+    );
+    assert_eq!(pack.resolve_teleport_target(&state, "salt reach"), None);
+}
+
+#[test]
+fn floor5_failed_protection_still_rewards_survivors_and_opens_floor6() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_center".to_string();
+    state.active_objective_stage_ids = vec![
+        "mq_frost_siege".to_string(),
+        "sq_five_offerings_failed".to_string(),
+    ];
+    for stage_id in &state.active_objective_stage_ids {
+        state
+            .stage_started_minutes
+            .insert(stage_id.clone(), state.current_time_minutes);
+    }
+    state
+        .story_vars
+        .set_unchecked("five_offerings_failed", "true");
+    for actor_id in ["nivi_olsen", "eliska_novakova", "amaru_quispe"] {
+        state
+            .actor_stats
+            .entry(actor_id.to_string())
+            .or_default()
+            .insert("hp".to_string(), 0);
+    }
+    for stopped_var in [
+        "frost_wolf_lane_stopped",
+        "iron_ram_lane_stopped",
+        "frost_leopard_lane_stopped",
+    ] {
+        state.story_vars.set_unchecked(stopped_var, "true");
+    }
+
+    apply_events(&mut state, &pack, &[]);
+    apply_events(&mut state, &pack, &[]);
+
+    assert_eq!(state.story_vars.get("five_offerings_survivors"), Some("2"));
+    assert_eq!(
+        state.story_vars.get("town_greenrest_unlocked"),
+        Some("true")
+    );
+    assert_eq!(
+        state.story_vars.get("town_brass_yard_unlocked"),
+        Some("true")
+    );
+    assert_eq!(state.story_vars.get("town_woolcross_unlocked"), None);
     assert_eq!(state.story_vars.get("citadel_siege_complete"), Some("true"));
     assert!(
-        text.contains("The siege is over"),
-        "siege completion should be announced: {text}"
+        state
+            .completed_stage_ids
+            .contains("sq_five_offerings_failed"),
+        "the quest must remain failed after survivor rewards resolve"
+    );
+
+    let south = pack.room("courtyard_south").expect("south gate room");
+    let floor6_exit = south
+        .exits
+        .iter()
+        .find(|exit| exit.room_id == "citadel_sanctum_gate")
+        .expect("Floor 6 gate exit");
+    assert_eq!(
+        floor6_exit.requires_story_var, "citadel_siege_complete",
+        "town visits must not gate Floor 6"
     );
 }
 

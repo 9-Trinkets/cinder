@@ -176,31 +176,36 @@ fn completion_effect_events(sequence: &ScriptedSequence) -> Vec<WorldEvent> {
     sequence
         .completion_effects
         .iter()
-        .map(|effect| match effect {
+        .flat_map(|effect| match effect {
             AdvanceEffect::AdjustActorStat {
                 actor_id,
                 stat,
                 delta,
-            } => WorldEvent::ActorStatAdjusted {
+            } => vec![WorldEvent::ActorStatAdjusted {
                 actor_id: actor_id.clone(),
                 stat: stat.clone(),
                 delta: *delta,
-            },
+            }],
             AdvanceEffect::AdjustPairStat {
                 participant_a_id,
                 participant_b_id,
                 stat,
                 delta,
-            } => WorldEvent::PairStatAdjusted {
+            } => vec![WorldEvent::PairStatAdjusted {
                 participant_a_id: participant_a_id.clone(),
                 participant_b_id: participant_b_id.clone(),
                 stat: stat.clone(),
                 delta: *delta,
-            },
-            AdvanceEffect::SetStoryVar { key, value } => WorldEvent::StoryVarSet {
+            }],
+            AdvanceEffect::SetStoryVar { key, value } => vec![WorldEvent::StoryVarSet {
                 key: key.clone(),
                 value: value.clone(),
-            },
+            }],
+            AdvanceEffect::GrantItem { .. } | AdvanceEffect::ResolveSurvivorRewards { .. } => {
+                vec![WorldEvent::StageEffectApplied {
+                    effect: effect.clone(),
+                }]
+            }
         })
         .collect()
 }
