@@ -43,10 +43,6 @@
   "shell_menu": {
     "items": [
       {
-        "id": "rooms",
-        "label": "Rooms"
-      },
-      {
         "id": "language",
         "label": "Language"
       },

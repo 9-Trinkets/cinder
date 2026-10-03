@@ -22,6 +22,19 @@ fn layla_pack_loads_and_validates() {
 }
 
 #[test]
+fn layla_shell_menu_does_not_offer_rooms() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+
+    assert!(
+        pack.ui_text
+            .shell_menu
+            .items
+            .iter()
+            .all(|item| item.id != "rooms")
+    );
+}
+
+#[test]
 fn elf_chess_mobs_declarations_resolve() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
 
