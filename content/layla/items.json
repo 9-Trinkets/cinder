@@ -327,6 +327,9 @@
     "equip_slots": [
       "weapon"
     ],
+    "stat_bonuses": {
+      "strength": 2
+    },
     "description": "A fluted steel bolt designed for high-pressure garrison repeating crossbows."
   },
   {

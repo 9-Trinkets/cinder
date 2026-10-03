@@ -47,6 +47,12 @@ fn steam_crossbow_bolt_is_authored_as_an_equippable_weapon() {
         ["weapon".to_string()],
         "the bolt must claim the weapon slot"
     );
+    assert_eq!(
+        bolt.stat_bonuses.get("strength"),
+        Some(&2),
+        "garrison issue steel should outpace a conscript's leaf spear (1) \
+         without matching an officer's brass saber (3)"
+    );
 }
 
 #[test]
