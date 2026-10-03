@@ -323,7 +323,10 @@
   {
     "id": "steam-crossbow-bolt",
     "label": "steam crossbow bolt",
-    "kind": "misc",
+    "kind": "weapon",
+    "equip_slots": [
+      "weapon"
+    ],
     "description": "A fluted steel bolt designed for high-pressure garrison repeating crossbows."
   },
   {
