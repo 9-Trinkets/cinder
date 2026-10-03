@@ -151,6 +151,8 @@ pub struct ActionBarAction {
     pub panel: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub panel_config: Option<PanelConfigData>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub shortcut: Option<u8>,
 }
 
 #[derive(Clone, Serialize)]

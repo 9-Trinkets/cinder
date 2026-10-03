@@ -33,7 +33,8 @@
           "on_select": "execute_command"
         },
         "group": "observe",
-        "sort_order": 0
+        "sort_order": 1,
+        "shortcut": 1
       },
       "player_command": {
         "usage": "look [at <thing or person>]",
@@ -75,7 +76,8 @@
           "on_select": "execute_command"
         },
         "group": "movement",
-        "sort_order": 1
+        "sort_order": 2,
+        "shortcut": 2
       },
       "player_command": {
         "target_mode": "room_reference",
@@ -113,7 +115,8 @@
           "on_select": "prefill_input"
         },
         "group": "social",
-        "sort_order": 2
+        "sort_order": 5,
+        "shortcut": 5
       },
       "player_command": {
         "target_mode": "actor_reference",

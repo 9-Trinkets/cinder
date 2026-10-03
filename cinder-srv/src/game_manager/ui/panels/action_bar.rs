@@ -18,7 +18,7 @@ pub(crate) fn build_action_bar_items(
     Vec<PanelOptionData>,
     Vec<PanelOptionData>,
 ) {
-    let action_bar_actions: Vec<ActionBarAction> = if !content.actions.is_empty() {
+    let mut action_bar_actions: Vec<ActionBarAction> = if !content.actions.is_empty() {
         content
             .actions
             .iter()
@@ -34,11 +34,13 @@ pub(crate) fn build_action_bar_items(
                 label: a.label.clone(),
                 panel: a.ui.panel.clone(),
                 panel_config: a.ui.panel_config.as_ref().map(panel_config_data),
+                shortcut: a.ui.shortcut,
             })
             .collect()
     } else {
         vec![]
     };
+    action_bar_actions.sort_by_key(|a| a.shortcut.unwrap_or(u8::MAX));
 
     let present_party: Vec<&PartyMember> = party.iter().filter(|m| m.in_room).collect();
 

@@ -69,6 +69,8 @@ pub struct ActionUi {
     pub group: String,
     #[serde(default)]
     pub sort_order: usize,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub shortcut: Option<u8>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

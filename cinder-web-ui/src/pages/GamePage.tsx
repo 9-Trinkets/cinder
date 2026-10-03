@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth'
 import * as api from '../api'
@@ -71,8 +71,9 @@ export default function GamePage() {
   } = play
   const [showFolio, setShowFolio] = useState(false)
   const [showSidebar, setShowSidebar] = useState(true)
+  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(0)
 
-  const handleTriggerAction = (action: api.ActionBarAction) => {
+  const handleTriggerAction = useCallback((action: api.ActionBarAction) => {
     if (busy || gameOver) return
     if (action.id === 'look') {
       setQuickPanel(current => current === 'look' ? null : 'look')
@@ -91,13 +92,13 @@ export default function GamePage() {
       }
     }
     void execCommand(action.id)
-  }
+  }, [busy, gameOver, uiSnapshot, handleSelectPanelOption, setQuickPanel, execCommand])
 
-  const handleTakeItem = (item: api.InventoryItem) => {
+  const handleTakeItem = useCallback((item: api.InventoryItem) => {
     if (busy || gameOver) return
     const idOrName = item.id ?? item.label.toLowerCase()
     void execCommand(`take ${idOrName}`)
-  }
+  }, [busy, gameOver, execCommand])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -112,33 +113,77 @@ export default function GamePage() {
         return
       }
 
-      // Escape closes open quick panel
-      if (e.key === 'Escape' && quickPanel) {
-        setQuickPanel(null)
+      // Escape closes open overlays/panels/modals in priority order, or opens menu if none are open
+      if (e.key === 'Escape') {
+        if (atSuggestions && atSuggestions.length > 0) {
+          e.preventDefault()
+          setAtSuggestions(null)
+          setSelectedSuggestionIndex(0)
+          return
+        }
+        if (quickPanel) {
+          e.preventDefault()
+          setQuickPanel(null)
+          return
+        }
+        if (activeMenu) {
+          e.preventDefault()
+          setActiveMenu(null)
+          return
+        }
+        if (showFolio) {
+          e.preventDefault()
+          setShowFolio(false)
+          return
+        }
+        if (showExitConfirm) {
+          e.preventDefault()
+          setShowExitConfirm(false)
+          return
+        }
+        if (movie) {
+          e.preventDefault()
+          closeMovie()
+          return
+        }
+        if (showMenu) {
+          e.preventDefault()
+          setShowMenu(false)
+          return
+        }
+        e.preventDefault()
+        openMenu()
         return
       }
 
       // Check for 1-9 shortcuts
       const match = e.key.match(/^[1-9]$/)
       if (match) {
-        const allowShortcut = !isInputActive || e.altKey
+        if (e.metaKey) return
+        const allowShortcut = e.ctrlKey || e.altKey || !isInputActive
         if (!allowShortcut) return
 
-        const idx = parseInt(e.key, 10) - 1
+        const num = parseInt(e.key, 10)
         const actions = uiSnapshot?.action_bar_actions ?? [
-          { id: 'look', label: 'Look' },
-          { id: 'move', label: 'Move' },
-          { id: 'follow', label: 'Follow' },
+          { id: 'look', label: 'Look', shortcut: 1 },
+          { id: 'move', label: 'Move', shortcut: 2 },
+          { id: 'follow', label: 'Follow', shortcut: 3 },
         ]
 
-        if (idx < actions.length) {
+        const hasExplicitShortcuts = actions.some(a => a.shortcut !== undefined)
+        const targetAction = hasExplicitShortcuts
+          ? actions.find(a => a.shortcut === num)
+          : actions[num - 1]
+
+        if (targetAction) {
           e.preventDefault()
-          handleTriggerAction(actions[idx])
-        } else {
+          handleTriggerAction(targetAction)
+        } else if (!hasExplicitShortcuts) {
           const roomItems = (uiSnapshot?.current_room_items ?? []).filter(item => {
             const id = (item.id ?? item.label).toLowerCase()
             return !id.includes('sigil') && !item.label.toLowerCase().includes('sigil')
           })
+          const idx = num - 1
           const itemIdx = idx - actions.length
           if (itemIdx >= 0 && itemIdx < roomItems.length) {
             e.preventDefault()
@@ -149,7 +194,8 @@ export default function GamePage() {
 
       // Check for '0' shortcut (More actions / overflow menu)
       if (e.key === '0') {
-        const allowShortcut = !isInputActive || e.altKey
+        if (e.metaKey) return
+        const allowShortcut = e.ctrlKey || e.altKey || !isInputActive
         if (!allowShortcut) return
         const hasOverflow = Boolean(uiSnapshot && uiSnapshot.overflow_actions?.length > 0)
         if (hasOverflow) {
@@ -161,7 +207,28 @@ export default function GamePage() {
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [busy, gameOver, quickPanel, uiSnapshot, handleSelectPanelOption, execCommand])
+  }, [
+    busy,
+    gameOver,
+    atSuggestions,
+    quickPanel,
+    activeMenu,
+    showFolio,
+    showExitConfirm,
+    movie,
+    showMenu,
+    uiSnapshot,
+    handleTriggerAction,
+    handleTakeItem,
+    setAtSuggestions,
+    setQuickPanel,
+    setActiveMenu,
+    setShowFolio,
+    setShowExitConfirm,
+    closeMovie,
+    setShowMenu,
+    openMenu,
+  ])
 
   useEffect(() => {
     if (!busy && !gameOver && !quickPanel && !showMenu && !showExitConfirm && !showFolio && !movie) {
@@ -311,19 +378,35 @@ export default function GamePage() {
               {atSuggestions && atSuggestions.length > 0 && (
                 <div role="listbox" aria-label="Talk to" className="absolute bottom-full left-4 right-4 mb-1">
                   <div className="max-w-2xl mx-auto rounded border border-subtle bg-overlay shadow-lg overflow-hidden">
-                    {atSuggestions.map(opt => (
-                      <button
-                        key={opt.id}
-                        role="option"
-                        onMouseDown={e => {
-                          e.preventDefault()
-                          setInput(`@${opt.title} `)
-                          setAtSuggestions(null)
-                          focusInputToEnd()
-                        }}
-                        className="block w-full text-left px-3 py-2 text-sm text-text transition duration-200 hover:bg-canvas cursor-pointer"
-                      >@{opt.title}</button>
-                    ))}
+                    {atSuggestions.map((opt, idx) => {
+                      const safeIdx = selectedSuggestionIndex < atSuggestions.length ? selectedSuggestionIndex : 0
+                      const isSelected = idx === safeIdx
+                      return (
+                        <button
+                          key={opt.id}
+                          role="option"
+                          aria-selected={isSelected}
+                          onMouseDown={e => {
+                            e.preventDefault()
+                            setInput(`@${opt.title} `)
+                            setAtSuggestions(null)
+                            setSelectedSuggestionIndex(0)
+                            focusInputToEnd()
+                          }}
+                          onMouseEnter={() => setSelectedSuggestionIndex(idx)}
+                          className={`w-full text-left px-3 py-2 text-sm transition duration-150 cursor-pointer flex items-center justify-between ${
+                            isSelected
+                              ? 'bg-pine/20 text-foam font-medium'
+                              : 'text-text hover:bg-canvas'
+                          }`}
+                        >
+                          <span>@{opt.title}</span>
+                          {opt.menu_text && (
+                            <span className="text-xs text-muted font-normal">{opt.menu_text}</span>
+                          )}
+                        </button>
+                      )
+                    })}
                   </div>
                 </div>
               )}
@@ -340,12 +423,45 @@ export default function GamePage() {
                       const query = val.slice(1).toLowerCase()
                       const opts = uiSnapshot?.talk_options ?? []
                       setAtSuggestions(opts.filter(o => o.title.toLowerCase().includes(query)))
+                      setSelectedSuggestionIndex(0)
                     } else {
                       setAtSuggestions(null)
+                      setSelectedSuggestionIndex(0)
                     }
                   }}
                   onKeyDown={e => {
-                    if (e.key === 'Escape') setAtSuggestions(null)
+                    if (atSuggestions && atSuggestions.length > 0) {
+                      if (e.key === 'ArrowDown') {
+                        e.preventDefault()
+                        setSelectedSuggestionIndex(prev => (prev + 1) % atSuggestions.length)
+                        return
+                      }
+                      if (e.key === 'ArrowUp') {
+                        e.preventDefault()
+                        setSelectedSuggestionIndex(prev => (prev - 1 + atSuggestions.length) % atSuggestions.length)
+                        return
+                      }
+                      if (e.key === 'Enter' || e.key === 'Tab') {
+                        e.preventDefault()
+                        const safeIdx = selectedSuggestionIndex < atSuggestions.length ? selectedSuggestionIndex : 0
+                        const opt = atSuggestions[safeIdx] ?? atSuggestions[0]
+                        if (opt) {
+                          setInput(`@${opt.title} `)
+                          setAtSuggestions(null)
+                          setSelectedSuggestionIndex(0)
+                          focusInputToEnd()
+                        }
+                        return
+                      }
+                      if (e.key === 'Escape') {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        setAtSuggestions(null)
+                        setSelectedSuggestionIndex(0)
+                        return
+                      }
+                    }
+
                     const history = commandHistoryRef.current
                     if (e.key === 'ArrowUp' && !atSuggestions?.length) {
                       if (history.length === 0) return

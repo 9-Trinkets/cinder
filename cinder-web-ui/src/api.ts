@@ -160,6 +160,7 @@ export interface ActionBarAction {
   label: string
   panel?: string
   panel_config?: PanelConfigData
+  shortcut?: number
 }
 
 export interface PanelConfigData {

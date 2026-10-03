@@ -38,7 +38,8 @@
             "on_select": "execute_command"
           },
           "group": "combat",
-          "sort_order": 10
+          "sort_order": 4,
+          "shortcut": 4
         },
         "player_command": {
           "target_mode": "actor_reference",
@@ -376,7 +377,8 @@
             "on_select": "execute_command"
           },
           "group": "territory",
-          "sort_order": 20
+          "sort_order": 3,
+          "shortcut": 3
         },
         "player_command": {
           "usage": "trace",
@@ -421,7 +423,8 @@
             "on_select": "execute_command"
           },
           "group": "movement",
-          "sort_order": 1
+          "sort_order": 6,
+          "shortcut": 6
         },
         "player_command": {
           "usage": "teleport <anchor>",

@@ -637,3 +637,35 @@ fn use_panel_surfaces_keys_only_when_in_lock_room() {
     let use_opts_opened = build_use_panel_options(&pack, &state);
     assert!(use_opts_opened.is_empty());
 }
+
+#[test]
+fn layla_action_bar_shortcuts_are_consistent() {
+    let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+    let state = WorldState::new(&pack);
+    let (bar, _, _) = build_action_bar_items(&pack, &state, &[]);
+    let trace_action = bar
+        .iter()
+        .find(|a| a.id == "trace")
+        .expect("trace is on bar");
+    assert_eq!(trace_action.shortcut, Some(3));
+    let look_action = bar.iter().find(|a| a.id == "look").expect("look is on bar");
+    assert_eq!(look_action.shortcut, Some(1));
+    let move_action = bar.iter().find(|a| a.id == "move").expect("move is on bar");
+    assert_eq!(move_action.shortcut, Some(2));
+    let ids: Vec<&str> = bar.iter().map(|a| a.id.as_str()).collect();
+    assert_eq!(ids, vec!["look", "move", "trace", "attack", "speak"]);
+    assert_eq!(bar[0].shortcut, Some(1));
+    assert_eq!(bar[1].shortcut, Some(2));
+    assert_eq!(bar[2].shortcut, Some(3));
+    assert_eq!(bar[3].shortcut, Some(4));
+    assert_eq!(bar[4].shortcut, Some(5));
+
+    // In an empty room without other actors: attack and speak hide, but trace remains shortcut 3
+    let mut empty_room_state = state.clone();
+    empty_room_state.current_room_id = "empty_test_room".to_string();
+    let (empty_bar, _, _) = build_action_bar_items(&pack, &empty_room_state, &[]);
+    let empty_ids: Vec<&str> = empty_bar.iter().map(|a| a.id.as_str()).collect();
+    assert_eq!(empty_ids, vec!["look", "move", "trace"]);
+    assert_eq!(empty_bar[2].id, "trace");
+    assert_eq!(empty_bar[2].shortcut, Some(3));
+}

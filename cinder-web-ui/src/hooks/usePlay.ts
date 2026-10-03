@@ -412,16 +412,6 @@ export function usePlay() {
     }
   }, [gameOver])
 
-  useEffect(() => {
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape' && !showMenu) {
-        e.preventDefault()
-        openMenu()
-      }
-    }
-    document.addEventListener('keydown', handleKeyDown)
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [showMenu])
 
   const handleTickStatus = useCallback((generating: boolean, actorName?: string) => {
     setTickGenerating(generating)
