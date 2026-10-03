@@ -340,7 +340,7 @@ function MainMenu({
             const activeCount = ui.quests.filter(quest => quest.status === 'active').length
             subtitle = activeCount === 1 ? '1 active quest' : `${activeCount} active quests`
           }
-          else if (item.id === 'bookmarks') subtitle = 'Save and restore game state'
+          else if (item.id === 'bookmarks') subtitle = 'Bookmark progress or restore'
           else if (item.id === 'language') subtitle = ui.locale_options.find(l => l.code === ui.current_locale)?.label || ui.current_locale
 
           if (hasChildren) {
@@ -454,7 +454,6 @@ function BookmarksView({
 }: BookmarksViewProps) {
   const [bookmarks, setBookmarks] = useState<BookmarkInfo[]>([])
   const [loading, setLoading] = useState(true)
-  const [labelInput, setLabelInput] = useState('')
   const [creating, setCreating] = useState(false)
   const [actionBusy, setActionBusy] = useState(false)
   const [confirmResumeId, setConfirmResumeId] = useState<string | null>(null)
@@ -478,15 +477,13 @@ function BookmarksView({
     return () => { active = false }
   }, [token, playId])
 
-  async function handleCreate(e?: React.FormEvent) {
-    if (e) e.preventDefault()
+  async function handleCreate() {
     if (!onCreateBookmark || creating || busy || actionBusy) return
     setCreating(true)
     try {
-      const created = await onCreateBookmark(labelInput.trim() || undefined)
+      const created = await onCreateBookmark()
       if (created) {
         setBookmarks(prev => [created, ...prev])
-        setLabelInput('')
       }
     } finally {
       setCreating(false)
@@ -525,31 +522,24 @@ function BookmarksView({
     <Modal title={(t.bookmark_modal_title as string) || 'Bookmarks'} onClose={onClose}>
       <MenuBackButton onClick={() => onViewChange('main')} />
 
-      <form onSubmit={handleCreate} className="mb-4 flex gap-2">
-        <input
-          type="text"
-          value={labelInput}
-          onChange={e => setLabelInput(e.target.value)}
-          placeholder="Bookmark note / label (optional)..."
-          disabled={creating || busy || actionBusy}
-          className="flex-1 px-3 py-1.5 text-xs rounded bg-surface border border-subtle text-text placeholder:text-muted focus:outline-none focus:border-foam"
-        />
+      <div className="mb-4">
         <Button
           variant="primary"
           size="sm"
-          type="submit"
+          type="button"
+          onClick={handleCreate}
           disabled={creating || busy || actionBusy || !onCreateBookmark}
-          className="text-xs px-3 py-1.5 whitespace-nowrap cursor-pointer"
+          className="w-full py-2 text-xs font-semibold tracking-wide cursor-pointer flex items-center justify-center gap-1.5"
         >
-          {creating ? 'Saving…' : ((t.create_bookmark_label as string) || '+ Save Bookmark')}
+          {creating ? 'Saving Bookmark…' : ((t.create_bookmark_label as string) || '+ Bookmark Current Progress')}
         </Button>
-      </form>
+      </div>
 
       {loading ? (
         <div className="py-6 text-center text-xs text-muted">Loading bookmarks…</div>
       ) : bookmarks.length === 0 ? (
         <p className="border-y border-subtle/40 py-6 text-center text-xs text-muted">
-          {(t.bookmark_empty as string) || 'No bookmarks saved yet. Save a bookmark to create a restore point.'}
+          {(t.bookmark_empty as string) || 'No bookmarks saved yet. Tap above to bookmark your current progress.'}
         </p>
       ) : (
         <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40 max-h-72 overflow-y-auto">
@@ -558,7 +548,7 @@ function BookmarksView({
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-medium text-text truncate">
-                    {b.label || b.current_room_name || 'Save Point'}
+                    {b.current_room_name || 'Bookmark'}
                   </span>
                   {b.day_number !== null && b.day_number !== undefined && (
                     <span className="text-[10px] font-mono uppercase tracking-wider text-foam bg-pine/15 px-1.5 py-0.5 rounded border border-pine/30">
@@ -568,9 +558,8 @@ function BookmarksView({
                 </div>
                 <p className="text-xs text-muted mt-0.5 truncate">
                   {[
-                    b.time_label,
                     b.turn_number !== null && b.turn_number !== undefined ? `Turn ${b.turn_number}` : null,
-                    b.current_room_name && b.label ? b.current_room_name : null,
+                    b.time_label,
                     fmtBookmarkDate(b.created_at),
                   ].filter(Boolean).join(' • ')}
                 </p>
@@ -602,7 +591,7 @@ function BookmarksView({
       {confirmResumeId && (
         <ConfirmDialog
           title="Resume Bookmark"
-          message="Resuming this bookmark will replace your current running session and progress. Continue?"
+          message="Resuming this bookmark will replace your current session with this state. Continue?"
           confirmLabel="Resume"
           onConfirm={() => handleResume(confirmResumeId)}
           onCancel={() => setConfirmResumeId(null)}

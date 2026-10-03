@@ -175,10 +175,10 @@ export default function PackDetailPage() {
                       onClick={() => navigate(`/games/${plays[0].play_id}`)}
                       className="px-6 py-2.5 text-sm font-semibold tracking-wide shadow-xs cursor-pointer"
                     >
-                      Resume Running Chronicle
+                      Resume Session
                     </Button>
                     <span className="text-xs text-muted">
-                      A chronicle is currently in progress. Delete it below to begin anew.
+                      A session is currently in progress. Delete it below to begin anew.
                     </span>
                   </div>
                 ) : (
@@ -188,7 +188,7 @@ export default function PackDetailPage() {
                     disabled={creating}
                     className="px-6 py-2.5 text-sm font-semibold tracking-wide shadow-xs cursor-pointer"
                   >
-                    {creating ? 'Opening Chronicle…' : '+ Begin New Chronicle'}
+                    {creating ? 'Opening Chronicle…' : '+ Begin Chronicle'}
                   </Button>
                 )}
               </div>
@@ -201,7 +201,7 @@ export default function PackDetailPage() {
                     Session
                   </span>
                   <h2 className="text-xl font-bold font-prose text-text tracking-tight">
-                    Running Chronicle
+                    Current Session
                   </h2>
                 </div>
                 {plays.length > 0 && (
@@ -213,8 +213,8 @@ export default function PackDetailPage() {
 
               {plays.length === 0 ? (
                 <div className="text-center py-8 px-4 border border-dashed border-subtle/60 rounded-xl">
-                  <p className="text-muted text-sm italic mb-1.5">No open chronicles for this tale.</p>
-                  <p className="text-faint text-xs">Begin a new chronicle above to start reading.</p>
+                  <p className="text-muted text-sm italic mb-1.5">No active session.</p>
+                  <p className="text-faint text-xs">Begin a chronicle above to start playing.</p>
                 </div>
               ) : (
                 <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40">
@@ -230,11 +230,14 @@ export default function PackDetailPage() {
                         <div className="min-w-0">
                           <p className="text-sm font-medium text-text group-hover:text-foam transition-colors truncate">
                             {p.current_room_name
-                              ? `Day ${p.day_number} — ${p.current_room_name}`
-                              : `Chronicle started ${fmtTime(p.created_at)}`}
+                              ? p.current_room_name
+                              : `Session started ${fmtTime(p.created_at)}`}
                           </p>
                           <p className="text-xs text-muted/70 font-mono mt-0.5">
-                            Updated {fmtTime(p.updated_at)}
+                            {[
+                              p.day_number !== null && p.day_number !== undefined ? `Day ${p.day_number}` : null,
+                              `Updated ${fmtTime(p.updated_at)}`,
+                            ].filter(Boolean).join(' • ')}
                           </p>
                         </div>
                         <span className="text-xs font-medium text-foam group-hover:translate-x-1 transition-transform duration-150 inline-flex items-center gap-1 shrink-0">
@@ -247,7 +250,7 @@ export default function PackDetailPage() {
                         onClick={() => setConfirmDelete(p.play_id)}
                         disabled={deleting === p.play_id}
                         className="opacity-0 group-hover:opacity-100 text-muted hover:text-love transition-opacity text-xs"
-                        title="Delete chronicle"
+                        title="Delete session"
                       >
                         {deleting === p.play_id ? '…' : '✕'}
                       </Button>
@@ -261,7 +264,7 @@ export default function PackDetailPage() {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <span className="text-[10px] font-mono uppercase tracking-widest text-muted block mb-0.5">
-                    Save Points
+                    Bookmarks
                   </span>
                   <h2 className="text-xl font-bold font-prose text-text tracking-tight">
                     Bookmarks
@@ -276,8 +279,8 @@ export default function PackDetailPage() {
 
               {bookmarks.length === 0 ? (
                 <div className="text-center py-8 px-4 border border-dashed border-subtle/60 rounded-xl">
-                  <p className="text-muted text-sm italic mb-1.5">No bookmarks saved for this tale.</p>
-                  <p className="text-faint text-xs">You can save bookmarks from the in-game menu while playing.</p>
+                  <p className="text-muted text-sm italic mb-1.5">No bookmarks saved yet.</p>
+                  <p className="text-faint text-xs">You can bookmark your progress anytime from the in-game menu.</p>
                 </div>
               ) : (
                 <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40">
@@ -292,14 +295,13 @@ export default function PackDetailPage() {
                       >
                         <div className="min-w-0">
                           <p className="text-sm font-medium text-text group-hover:text-foam transition-colors truncate">
-                            {b.label || b.current_room_name || 'Save Point'}
+                            {b.current_room_name || 'Bookmark'}
                           </p>
                           <p className="text-xs text-muted/70 font-mono mt-0.5">
                             {[
                               b.day_number !== null && b.day_number !== undefined ? `Day ${b.day_number}` : null,
                               b.time_label,
                               b.turn_number !== null && b.turn_number !== undefined ? `Turn ${b.turn_number}` : null,
-                              b.current_room_name && b.label ? b.current_room_name : null,
                               fmtTime(b.created_at),
                             ].filter(Boolean).join(' • ')}
                           </p>
@@ -329,8 +331,8 @@ export default function PackDetailPage() {
 
       {confirmDelete && (
         <ConfirmDialog
-          title="Delete Chronicle"
-          message="Delete this active chronicle? This cannot be undone."
+          title="Delete Session"
+          message="Delete this active session? This cannot be undone."
           confirmLabel="Delete"
           onConfirm={() => doDelete(confirmDelete)}
           onCancel={() => setConfirmDelete(null)}
@@ -342,8 +344,8 @@ export default function PackDetailPage() {
           title="Resume Bookmark"
           message={
             plays.length > 0
-              ? 'Resuming this bookmark will replace your current running chronicle. Continue?'
-              : 'Resume chronicle from this bookmark?'
+              ? 'Resuming this bookmark will replace your current session with this state. Continue?'
+              : 'Resume session from this bookmark?'
           }
           confirmLabel="Resume"
           onConfirm={() => doResumeBookmark(confirmResumeBookmark)}
