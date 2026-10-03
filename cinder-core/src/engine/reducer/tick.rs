@@ -201,6 +201,29 @@ pub(super) fn advance_stat_threshold_objectives(
     Vec::new()
 }
 
+pub(super) fn advance_story_var_objectives(
+    state: &mut WorldState,
+    content: &ContentPack,
+) -> Vec<NarrativeLine> {
+    for stage_id in state.active_objective_stage_ids.clone() {
+        let Some(stage) = content
+            .beats
+            .stages
+            .iter()
+            .find(|stage| stage.id == stage_id)
+        else {
+            continue;
+        };
+        if stage.advance_signals.iter().any(|signal| {
+            signal.signal() == "story_vars_changed"
+                && advance_conditions_met(state, signal.conditions())
+        }) {
+            return advance_objective_for_signal(state, content, "story_vars_changed");
+        }
+    }
+    Vec::new()
+}
+
 pub(super) fn all_actors_have_learned_house(state: &WorldState, content: &ContentPack) -> bool {
     let room_ids = content
         .rooms

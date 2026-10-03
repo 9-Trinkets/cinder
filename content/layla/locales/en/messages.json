@@ -329,6 +329,9 @@
         "voice": "handler",
         "text": "{actor} is down. Civilian losses: {deaths}."
     },
+    "siege.frost_wolf_rout": "The Frost-Wolf soldiers falter as their command signal dies. {count} raiders break formation and retreat into the northern estate.",
+    "siege.iron_ram_rout": "Steam vents from abandoned Iron-Ram armor as the command signal cuts out. {count} maulers turn back toward the bastion.",
+    "siege.frost_leopard_rout": "The Frost-Leopard hunters lower their weapons when the mirror signal goes dark. {count} hunters vanish back through the southwest doors.",
     "handler.quest.save_zayd_complete": {
         "voice": "handler",
         "text": "Zayd is off my board and inside your reach, which is a sentence I would rather not have had to write. That file's closed. I won't ask what it cost—you'll hand me a charming half-truth and change the subject."

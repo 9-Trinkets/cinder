@@ -32,6 +32,28 @@ pub enum SpawnActorOutcome {
 }
 
 impl WorldState {
+    /// Removes every runtime instance created from `template_id`.
+    pub fn despawn_template_instances(&mut self, template_id: &str) -> usize {
+        let prefix = format!("{template_id}-");
+        let actor_ids = self
+            .spawned_actors
+            .keys()
+            .filter(|actor_id| actor_id.starts_with(&prefix))
+            .cloned()
+            .collect::<Vec<_>>();
+        for actor_id in &actor_ids {
+            self.spawned_actors.remove(actor_id);
+            self.actor_room_overrides.remove(actor_id);
+            self.actor_stats.remove(actor_id);
+            self.actor_inventories.remove(actor_id);
+            self.actor_equipment.remove(actor_id);
+            self.relationships.remove(actor_id);
+            self.party_orders.remove(actor_id);
+            self.next_hostile_strike_at.remove(actor_id);
+        }
+        actor_ids.len()
+    }
+
     pub fn spawn_actor(
         &mut self,
         content: &ContentPack,

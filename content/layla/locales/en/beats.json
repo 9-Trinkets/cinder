@@ -114,6 +114,50 @@
       "summary": "Three houses are coming. All three will open eventually.",
       "beat_note": "The siege clock is running. Each wave opens another estate while its house sends troops toward the courtyard. Defeating or awakening a house leader stops that house's lane, but the remaining waves still begin on schedule.",
       "update_message": "Every gate that lifts is a door you have to close yourself.",
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.frost_wolf_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.values.iron_ram_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.values.frost_leopard_lane_stopped",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "mq_secure_courtyard"
+      ]
+    },
+    {
+      "id": "mq_secure_courtyard",
+      "quest_id": "frost_citadel_siege",
+      "quest_title": "Three Doors",
+      "quest_kind": "main",
+      "summary": "The three command lanes are broken. Account for the survivors and open the way to Floor 6.",
+      "beat_note": "All three house leaders have been defeated or awakened. Their deployed soldiers have routed, the siege is over, and the survivor rewards and Floor 6 gate transition can now resolve.",
+      "update_message": "The courtyard is yours. Finish the count and find the gate.",
+      "narrative_lines": [
+        "The last command signal goes silent. Across the courtyard, the remaining house soldiers break ranks and withdraw. The siege is over."
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "citadel_siege_complete",
+          "value": "true"
+        }
+      ],
       "advance_signals": [],
       "next_stage_ids": []
     },
@@ -282,7 +326,9 @@
         "batch_size": 3,
         "interval_minutes": 10,
         "total_count": 30,
-        "stop_story_var": "frost_wolf_lane_stopped"
+        "stop_story_var": "frost_wolf_lane_stopped",
+        "rout_on_stop": true,
+        "rout_message": "siege.frost_wolf_rout"
       },
       "advance_signals": [
         "stage_elapsed:90"
@@ -299,7 +345,9 @@
         "batch_size": 3,
         "interval_minutes": 10,
         "total_count": 30,
-        "stop_story_var": "iron_ram_lane_stopped"
+        "stop_story_var": "iron_ram_lane_stopped",
+        "rout_on_stop": true,
+        "rout_message": "siege.iron_ram_rout"
       },
       "advance_signals": [
         "stage_elapsed:90"
@@ -316,7 +364,9 @@
         "batch_size": 3,
         "interval_minutes": 10,
         "total_count": 30,
-        "stop_story_var": "frost_leopard_lane_stopped"
+        "stop_story_var": "frost_leopard_lane_stopped",
+        "rout_on_stop": true,
+        "rout_message": "siege.frost_leopard_rout"
       },
       "advance_signals": [
         "stage_elapsed:90"

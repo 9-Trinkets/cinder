@@ -190,6 +190,47 @@ fn dispatch_due_actor_spawns(state: &mut WorldState, content: &ContentPack) {
     }
 }
 
+pub(super) fn route_stopped_spawn_schedules(
+    state: &mut WorldState,
+    content: &ContentPack,
+) -> Vec<NarrativeLine> {
+    let mut messages = Vec::new();
+    for stage in &content.beats.stages {
+        let Some(schedule) = stage.actor_spawn_schedule.as_ref() else {
+            continue;
+        };
+        let schedule_started = state
+            .active_objective_stage_ids
+            .iter()
+            .any(|stage_id| stage_id == &stage.id)
+            || state.completed_stage_ids.contains(&stage.id);
+        if !schedule_started
+            || !schedule.rout_on_stop
+            || schedule.stop_story_var.is_empty()
+            || !crate::engine::turn_policies::story_var_is_truthy(state, &schedule.stop_story_var)
+        {
+            continue;
+        }
+        let routed_key = format!("spawn_schedule_routed:{}", stage.id);
+        if crate::engine::turn_policies::story_var_is_truthy(state, &routed_key) {
+            continue;
+        }
+        let count = state.despawn_template_instances(&schedule.template_id);
+        state.story_vars.set_unchecked(&routed_key, "true");
+        if count > 0
+            && !schedule.rout_message.is_empty()
+            && let Some(line) = rendered_message_line(
+                content,
+                &schedule.rout_message,
+                &[("count", count.to_string().as_str())],
+            )
+        {
+            messages.push(line);
+        }
+    }
+    messages
+}
+
 fn dispatch_actor_spawns_for_stage(
     state: &mut WorldState,
     content: &ContentPack,

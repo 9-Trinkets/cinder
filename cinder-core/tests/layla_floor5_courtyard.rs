@@ -674,19 +674,86 @@ fn floor5_wave_one_raiders_march_until_their_lane_stops() {
     stopped.current_time_minutes += 30;
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let runtime = CinderRuntime::from_state(pack, stopped, false).expect("runtime creates");
-    runtime.run_turn("go north").expect("stopped lane turn");
+    let routed = runtime.run_turn("go north").expect("stopped lane turn");
 
     let after_stop = runtime.export_state().expect("export stopped state");
-    assert_eq!(spawned_count(&after_stop, "frost_wolf_raider"), 3);
+    assert_eq!(spawned_count(&after_stop, "frost_wolf_raider"), 0);
+    assert!(
+        routed.text().contains("3 raiders break formation"),
+        "lane stop should narrate the deployed soldiers routing: {}",
+        routed.text()
+    );
     for raider_id in &raider_ids {
-        assert_eq!(
-            after_stop
-                .actor_room_overrides
-                .get(raider_id)
-                .map(String::as_str),
-            Some("frost_wolf_muster")
+        assert!(
+            !after_stop.actor_room_overrides.contains_key(raider_id),
+            "routed actor state should be removed"
         );
     }
+}
+
+#[test]
+fn floor5_all_three_stopped_lanes_end_the_siege() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_center".to_string();
+    state.active_objective_stage_ids = vec![
+        "mq_frost_siege".to_string(),
+        "frost_wolf_dispatch".to_string(),
+        "iron_ram_dispatch".to_string(),
+        "frost_leopard_dispatch".to_string(),
+    ];
+    for stage_id in &state.active_objective_stage_ids {
+        state
+            .stage_started_minutes
+            .insert(stage_id.clone(), state.current_time_minutes);
+    }
+    for template_id in [
+        "frost_wolf_raider",
+        "iron_ram_mauler",
+        "frost_leopard_hunter",
+    ] {
+        let outcome = state.spawn_actor(
+            &pack,
+            SpawnActorConfig {
+                template_id,
+                room_id: Some("courtyard_center"),
+                stance: Some(ActorStance::Hostile),
+                follows_player: false,
+                scale_with_actor_id: None,
+                scale_stat: None,
+                max_active_instances: None,
+            },
+        );
+        assert!(matches!(outcome, SpawnActorOutcome::Success(_)));
+    }
+    for stopped_var in [
+        "frost_wolf_lane_stopped",
+        "iron_ram_lane_stopped",
+        "frost_leopard_lane_stopped",
+    ] {
+        state.story_vars.set_unchecked(stopped_var, "true");
+    }
+
+    let resolution = apply_events(&mut state, &pack, &[]);
+    let text = narrative_text(&resolution.lines);
+
+    assert_eq!(spawned_count(&state, "frost_wolf_raider"), 0);
+    assert_eq!(spawned_count(&state, "iron_ram_mauler"), 0);
+    assert_eq!(spawned_count(&state, "frost_leopard_hunter"), 0);
+    assert!(
+        state.completed_stage_ids.contains("mq_frost_siege"),
+        "all stopped lanes should complete the siege objective"
+    );
+    assert!(
+        state
+            .active_objective_stage_ids
+            .contains(&"mq_secure_courtyard".to_string())
+    );
+    assert_eq!(state.story_vars.get("citadel_siege_complete"), Some("true"));
+    assert!(
+        text.contains("The siege is over"),
+        "siege completion should be announced: {text}"
+    );
 }
 
 #[test]

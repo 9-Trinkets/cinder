@@ -22,7 +22,9 @@ Implemented:
 - the center-breach protection mission: tagged siege troops in
   `courtyard_center` start a ten-minute warning, clearing the center cancels
   it, victims rotate deterministically, and the third death marks the side
-  quest failed without ending the siege.
+  quest failed without ending the siege;
+- leader neutralization now routs that house's deployed soldiers, and stopping
+  all three command lanes ends the siege and begins survivor resolution.
 
 The siege begins when the prisoners are freed and advances on a continuous
 in-game clock:
@@ -41,7 +43,7 @@ meaningful.
 
 The next implementation slice completes the defensive side of the loop:
 defender placement and tactical warnings, siege-end survivor resolution and
-town-token rewards, and the Rime Colossus finale.
+town-token rewards, and the Floor 6 gate transition.
 
 ---
 
@@ -276,9 +278,8 @@ Floor 5 plays out in an active, dynamic RTS loop:
 
 The civilian-protection quest fails when the third civilian dies, but the game
 does not reset and Layla does not receive a game over. The siege continues, the
-three houses can still be neutralized, the Rime Colossus can still be defeated,
-and Floor 6 remains reachable. Surviving civilians still grant their tokens
-even after the protection quest has failed.
+three houses can still be neutralized, and Floor 6 remains reachable. Surviving
+civilians still grant their tokens even after the protection quest has failed.
 
 | Survivors | Outcome |
 |---:|---|
@@ -304,7 +305,7 @@ To deliver authentic Tower Defense pacing, each house deploys its forces in a di
 - **Escalation by Scheduled Wave:**
   - **Wave 1 (30 soldiers total):** House Frost-Wolf dispatches alone — **3 units per interval** down the North lane.
   - **Wave 2 (60 soldiers total):** House Frost-Wolf and House Iron-Ram mobilize together — **6 units per interval** (3 North, 3 Southeast) pinching the courtyard!
-  - **Wave 3 (90 soldiers total + Colossus):** All three houses mobilize — **9 units per interval** (3 North, 3 Southeast, 3 Southwest) converging on all fronts, followed by the **Rime Colossus**!
+  - **Wave 3 (90 soldiers total):** All three houses mobilize — **9 units per interval** (3 North, 3 Southeast, 3 Southwest) converging on all fronts.
 - **Strategic Impact of Decapitation Strikes:**
   - Slaying or awakening a Head of House instantly halts that house's spawn
     queue.
@@ -319,7 +320,7 @@ To deliver authentic Tower Defense pacing, each house deploys its forces in a di
 The defense occurs across **three exponentially harder waves**, with the noble houses compounding their forces on each wave:
 - **Wave 1:** House Frost-Wolf (Single front: North).
 - **Wave 2:** House Frost-Wolf + House Iron-Ram (Dual front: North & South/East).
-- **Wave 3:** House Frost-Wolf + House Iron-Ram + House Frost-Leopard + The Rime Colossus (Triple front: All chokepoints under siege!).
+- **Wave 3:** House Frost-Wolf + House Iron-Ram + House Frost-Leopard (Triple front: All chokepoints under siege!).
 
 > **Tactical Decapitation Dynamic:** Neutralizing a leader permanently stops
 > that house's lane, but the siege clock continues. If Lord Vane is still
@@ -330,14 +331,14 @@ The defense occurs across **three exponentially harder waves**, with the noble h
 |---|---|---|---|---|
 | **Wave 1: The Frost-Wolf Hunt** | House Frost-Wolf | **Single Front (North):**<br>**30 soldiers total** (10 squads of 3 dispatched at fixed intervals). Fast Frosthounds & Rapier Duelists probing the North and NE chokepoints. | **Cold Administrative Tone:**<br>*"Attention, Subject Layla. You have breached quarantine parameters in Sector 5. Purge Directive 14 is active. House Frost-Wolf has been authorized to sanitize the courtyard. Cease execution and submit to reformatting."* | **Mild Irritation:**<br>*"Frost-Wolf vanguard eliminated? ...A minor routing anomaly. Adjusting threat matrix. Authorizing heavy asset deployment."* |
 | **Wave 2: The Two-Front Pincer** | House Frost-Wolf + House Iron-Ram | **Dual Front (North & South/East):**<br>**60 soldiers total** (30 per house, **6 dispatched per interval**: 3 North, 3 Southeast). Frost-Wolf duelists swarm North while heavy Iron-Ram Battering Sleds and Iron Maulers hammer the South and SE gates! | **Frustrated, Bitter Threats:**<br>*"Look at those cages, Layla! They are 1s and 0s! Obsolete data packets scheduled for memory recycling! You are a machine—an algorithm! Why are you fighting for deleted files?! Warmaster Torin, crush the gates! Wipe the courtyard!"* | **Cracking Composure & Anger:**<br>*"Warmaster Torin is down?! How did you breach his armor values?! Stop it! Stop using high-level tactical commands! You're an amnesiac test subject! Who unlocked your strategy routines?!"* |
-| **Wave 3: The All-House Cataclysm** | House Frost-Wolf + House Iron-Ram + House Frost-Leopard + Rime Colossus | **Triple Front (All Chokepoints):**<br>**90 soldiers total** (30 per house, **9 dispatched per interval**: 3 North, 3 Southeast, 3 Southwest) converging on all fronts, spearheaded by an overclocked **Rime Colossus**! | **Unhinged Hysterical Panic:**<br>*(Static screaming and desk slamming)*<br>*"Listen to me, you defective, miserable glitch! I will NOT be deleted because of your error logs! The overseers are auditing my sector! Rime Colossus, override safety limiters! Overclock cores! CRUSH THE COURTYARD! DELETE HER TO ASH!"* | **Complete Psychological Collapse:**<br>*"The Colossus core is dead... The terminal is flashing red... The retrieval program is pinging MY core! No... no, NO! I served the company! Don't wipe my neural tree! Layla... what ARE you?! Please, don't let them delete m—"*<br>*(An ear-splitting burst of white noise shrieks, followed by a dull crunch of terminating code, and complete silence).* |
+| **Wave 3: The All-House Cataclysm** | House Frost-Wolf + House Iron-Ram + House Frost-Leopard | **Triple Front (All Chokepoints):**<br>**90 soldiers total** (30 per house, **9 dispatched per interval**: 3 North, 3 Southeast, 3 Southwest) converging on all fronts. | **Unhinged Hysterical Panic:**<br>*(Static screaming and desk slamming)*<br>*"Listen to me, you defective, miserable glitch! I will NOT be deleted because of your error logs! The overseers are auditing my sector! All houses, commit every remaining unit! Crush the courtyard! Delete her to ash!"* | **Complete Psychological Collapse:**<br>*"All three command lanes are dark... The terminal is flashing red... The retrieval program is pinging MY core! No... no, NO! I served the company! Don't wipe my neural tree! Layla... what ARE you?! Please, don't let them delete m—"*<br>*(An ear-splitting burst of white noise shrieks, followed by a dull crunch of terminating code, and complete silence).* |
 
 ---
 
 ## 7. The Quests
 
 ### Main Quest: "The Frost Siege & The Three Houses"
-- **Goal:** Neutralize the three noble houses (Frost-Wolf, Iron-Ram, Frost-Leopard), survive the Handler's purge waves, defeat the Rime Colossus, and unlock the descent path to Floor 6.
+- **Goal:** Neutralize the three noble houses (Frost-Wolf, Iron-Ram, Frost-Leopard), survive the Handler's purge waves, secure the courtyard, and unlock the descent path to Floor 6.
 - **Fail-forward rule:** Civilian losses never block this quest or the route to Floor 6.
 - **Key Milestones:**
   1. Arrive at `courtyard_center`, defeat the sentry ambush, and loot the **Courtyard Cage Key**.
@@ -347,7 +348,7 @@ The defense occurs across **three exponentially harder waves**, with the noble h
   5. Enter House Frost-Wolf when Wave 1 opens its gate, confront **Lord Vane**, and stop the northern lane.
   6. Enter House Iron-Ram when Wave 2 opens its portcullis, confront **Warmaster Torin**, and stop the heavy lane.
   7. Enter House Frost-Leopard when Wave 3 opens its doors, confront **Lady Sylvan**, and stop the ranged lane.
-  8. Repel the final Rime Colossus wave at the courtyard.
+  8. Clear any remaining attackers from the courtyard after all three command lanes stop.
   9. The Handler's terminal shuts down. Open the grand iron portcullis leading to Floor 6 (`citadel_sanctum_gate`).
 
 ### Protection Quest: "The Five Offerings"

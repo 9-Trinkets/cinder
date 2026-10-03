@@ -367,7 +367,9 @@ pub fn apply_events(
     // a stage keyed on a story variable or stat applies in the same turn the
     // condition became true, whether or not the actor auto-equipped anything.
     transformations::apply_pending_transformations(state, content, &mut lines);
+    lines.extend_lines(beat_advance::route_stopped_spawn_schedules(state, content));
     protection::apply_active_protection_rules(state, content, &mut lines);
+    lines.extend_lines(tick::advance_story_var_objectives(state, content));
     ReducerOutput {
         lines,
         phase: state.phase.clone(),

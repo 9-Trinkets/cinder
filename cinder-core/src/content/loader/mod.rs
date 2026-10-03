@@ -205,6 +205,24 @@ pub fn load_pack_from_dir_with_locale(
 
 fn validate_protection_rules(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
     for stage in &pack.beats.stages {
+        if let Some(schedule) = &stage.actor_spawn_schedule {
+            if schedule.rout_on_stop && schedule.stop_story_var.is_empty() {
+                return Err(format!(
+                    "stage '{}' routed spawn schedule requires stop_story_var",
+                    stage.id
+                )
+                .into());
+            }
+            if !schedule.rout_message.is_empty()
+                && !pack.messages.contains_key(&schedule.rout_message)
+            {
+                return Err(format!(
+                    "stage '{}' spawn schedule references unknown rout message '{}'",
+                    stage.id, schedule.rout_message
+                )
+                .into());
+            }
+        }
         let Some(rule) = &stage.protection_rule else {
             continue;
         };

@@ -280,6 +280,10 @@ pub struct ActorSpawnScheduleDefinition {
     pub total_count: usize,
     #[serde(default)]
     pub stop_story_var: String,
+    #[serde(default)]
+    pub rout_on_stop: bool,
+    #[serde(default)]
+    pub rout_message: String,
 }
 
 fn default_actor_spawn_batch_size() -> usize {
