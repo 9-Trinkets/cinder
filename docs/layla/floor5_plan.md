@@ -17,7 +17,12 @@ Implemented:
 - the continuous 10/70/130-minute siege clock and timed estate gates;
 - all three house dispatch queues: each house sends 30 soldiers in ten squads
   of three at ten-minute intervals, and its queue stops when its leader is
-  defeated or awakened.
+  defeated or awakened;
+- the five named civilian offerings as individual actors;
+- the center-breach protection mission: tagged siege troops in
+  `courtyard_center` start a ten-minute warning, clearing the center cancels
+  it, victims rotate deterministically, and the third death marks the side
+  quest failed without ending the siege.
 
 The siege begins when the prisoners are freed and advances on a continuous
 in-game clock:
@@ -35,8 +40,8 @@ keeps the tower-defense pressure active while making each decapitation strike
 meaningful.
 
 The next implementation slice completes the defensive side of the loop:
-defender placement, civilian danger, a clear loss condition, and the Rime
-Colossus finale.
+defender placement and tactical warnings, siege-end survivor resolution and
+town-token rewards, and the Rime Colossus finale.
 
 ---
 

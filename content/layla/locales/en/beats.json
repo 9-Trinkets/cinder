@@ -102,7 +102,8 @@
       ],
       "next_stage_ids": [
         "mq_frost_siege",
-        "siege_preparation"
+        "siege_preparation",
+        "sq_five_offerings"
       ]
     },
     {
@@ -113,6 +114,70 @@
       "summary": "Three houses are coming. All three will open eventually.",
       "beat_note": "The siege clock is running. Each wave opens another estate while its house sends troops toward the courtyard. Defeating or awakening a house leader stops that house's lane, but the remaining waves still begin on schedule.",
       "update_message": "Every gate that lifts is a door you have to close yourself.",
+      "advance_signals": [],
+      "next_stage_ids": []
+    },
+    {
+      "id": "sq_five_offerings",
+      "quest_id": "five_offerings",
+      "quest_title": "The Five Offerings",
+      "quest_kind": "side",
+      "summary": "Keep at least three of the five rescued offerings alive through the siege.",
+      "beat_note": "Five named civilians shelter at the courtyard teleport platform. When siege troops hold the courtyard center, one civilian is endangered for ten minutes. Clearing every siege soldier from the center resets the breach.",
+      "update_message": "The center has to stay clear. Three deaths and this rescue fails.",
+      "protection_rule": {
+        "room_id": "courtyard_center",
+        "hostile_tag": "siege",
+        "protected_actor_ids": [
+          "nivi_olsen",
+          "eliska_novakova",
+          "amaru_quispe",
+          "abeni_adeyemi",
+          "chen_yu_xin"
+        ],
+        "breach_minutes": 10,
+        "warning_message": "civilian.breach_warning",
+        "cleared_message": "civilian.breach_cleared",
+        "death_message": "civilian.breach_death",
+        "death_count_story_var": "five_offerings_deaths",
+        "failure_death_count": 3,
+        "failure_story_var": "five_offerings_failed",
+        "failure_signal": "civilian_protection_failed"
+      },
+      "advance_signals": [
+        "civilian_protection_failed"
+      ],
+      "next_stage_ids": [
+        "sq_five_offerings_failed"
+      ]
+    },
+    {
+      "id": "sq_five_offerings_failed",
+      "quest_id": "five_offerings",
+      "quest_title": "The Five Offerings — Failed",
+      "quest_kind": "failed",
+      "summary": "Three offerings have died. Protect whoever remains.",
+      "beat_note": "The protection quest has failed, but surviving civilians can still be saved and will still grant their town tokens after the siege.",
+      "update_message": "The mission is lost. The people who are left are not.",
+      "protection_rule": {
+        "room_id": "courtyard_center",
+        "hostile_tag": "siege",
+        "protected_actor_ids": [
+          "nivi_olsen",
+          "eliska_novakova",
+          "amaru_quispe",
+          "abeni_adeyemi",
+          "chen_yu_xin"
+        ],
+        "breach_minutes": 10,
+        "warning_message": "civilian.breach_warning",
+        "cleared_message": "civilian.breach_cleared",
+        "death_message": "civilian.breach_death",
+        "death_count_story_var": "five_offerings_deaths",
+        "failure_death_count": 3,
+        "failure_story_var": "five_offerings_failed",
+        "failure_signal": ""
+      },
       "advance_signals": [],
       "next_stage_ids": []
     },

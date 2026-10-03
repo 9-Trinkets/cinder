@@ -6,6 +6,7 @@ mod equipment;
 pub(crate) mod handlers;
 mod movement;
 mod observation;
+mod protection;
 mod summaries;
 mod surround;
 mod tick;
@@ -366,6 +367,7 @@ pub fn apply_events(
     // a stage keyed on a story variable or stat applies in the same turn the
     // condition became true, whether or not the actor auto-equipped anything.
     transformations::apply_pending_transformations(state, content, &mut lines);
+    protection::apply_active_protection_rules(state, content, &mut lines);
     ReducerOutput {
         lines,
         phase: state.phase.clone(),

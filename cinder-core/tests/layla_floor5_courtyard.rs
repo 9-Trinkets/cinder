@@ -2,6 +2,7 @@
 
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::content::types::ItemStorageTarget;
+use cinder_core::engine::reducer::apply_events;
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::{ActorStance, SpawnActorConfig, SpawnActorOutcome, WorldState};
 
@@ -22,6 +23,19 @@ fn spawned_count(state: &WorldState, template_id: &str) -> usize {
         .keys()
         .filter(|actor_id| actor_id.starts_with(&prefix))
         .count()
+}
+
+fn apply_protection_rules(state: &mut WorldState, pack: &cinder_core::content::types::ContentPack) {
+    apply_events(state, pack, &[]);
+}
+
+fn narrative_text(lines: &cinder_core::engine::narrative::NarrativeLines) -> String {
+    lines
+        .0
+        .iter()
+        .map(|line| line.text.as_str())
+        .collect::<Vec<_>>()
+        .join("\n")
 }
 
 #[test]
@@ -54,6 +68,142 @@ fn floor5_courtyard_rooms_load_and_validate() {
             );
         }
     }
+}
+
+#[test]
+fn floor5_defines_five_named_civilian_offerings() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let civilians = [
+        ("nivi_olsen", "salt_reach"),
+        ("eliska_novakova", "glassbank"),
+        ("amaru_quispe", "woolcross"),
+        ("abeni_adeyemi", "greenrest"),
+        ("chen_yu_xin", "brass_yard"),
+    ];
+
+    for (actor_id, town_tag) in civilians {
+        let actor = pack
+            .actor(actor_id)
+            .unwrap_or_else(|| panic!("missing civilian {actor_id}"));
+        assert_eq!(actor.room_id, "courtyard_center");
+        assert!(!actor.attackable);
+        assert!(actor.tags.iter().any(|tag| tag == "civilian"));
+        assert!(actor.tags.iter().any(|tag| tag == town_tag));
+    }
+    assert!(
+        pack.actor("caged_offerings").is_none(),
+        "the aggregate offering actor must be replaced by named civilians"
+    );
+}
+
+#[test]
+fn floor5_center_breach_warns_resets_and_kills_in_rotation() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_center".to_string();
+    state.active_objective_stage_ids = vec!["sq_five_offerings".to_string()];
+    state
+        .stage_started_minutes
+        .insert("sq_five_offerings".to_string(), state.current_time_minutes);
+    let raider_id = match state.spawn_actor(
+        &pack,
+        SpawnActorConfig {
+            template_id: "frost_wolf_raider",
+            room_id: Some("courtyard_center"),
+            stance: Some(ActorStance::Hostile),
+            follows_player: false,
+            scale_with_actor_id: None,
+            scale_stat: None,
+            max_active_instances: None,
+        },
+    ) {
+        SpawnActorOutcome::Success(actor) => actor.instance_id,
+        other => panic!("raider should spawn: {other:?}"),
+    };
+
+    let warning = apply_events(&mut state, &pack, &[]);
+    let warning_text = narrative_text(&warning.lines);
+    assert!(
+        warning_text.contains("They have a line to Nivi Olsen"),
+        "first breach should warn about Nivi: {}",
+        warning_text
+    );
+
+    state
+        .actor_room_overrides
+        .insert(raider_id.clone(), "frost_wolf_muster".to_string());
+    let cleared = apply_events(&mut state, &pack, &[]);
+    assert!(narrative_text(&cleared.lines).contains("countdown canceled"));
+    state.current_time_minutes += 20;
+    apply_protection_rules(&mut state, &pack);
+    assert!(
+        !state.actor_is_defeated("nivi_olsen", &pack.settings.combat.health_stat_id),
+        "clearing the center must reset the breach timer"
+    );
+
+    state
+        .actor_room_overrides
+        .insert(raider_id, "courtyard_center".to_string());
+    apply_protection_rules(&mut state, &pack);
+    state.current_time_minutes += 10;
+    let death = apply_events(&mut state, &pack, &[]);
+    assert!(narrative_text(&death.lines).contains("Eliška Nováková is down"));
+    assert!(state.actor_is_defeated("eliska_novakova", &pack.settings.combat.health_stat_id));
+    assert_eq!(state.story_vars.get("five_offerings_deaths"), Some("1"));
+
+    let next_warning = apply_events(&mut state, &pack, &[]);
+    let next_warning_text = narrative_text(&next_warning.lines);
+    assert!(
+        next_warning_text.contains("They have a line to Amaru Quispe"),
+        "victim selection must rotate deterministically: {}",
+        next_warning_text
+    );
+}
+
+#[test]
+fn floor5_protection_quest_fails_on_third_death_without_ending_game() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_center".to_string();
+    state.active_objective_stage_ids = vec!["sq_five_offerings".to_string()];
+    state
+        .stage_started_minutes
+        .insert("sq_five_offerings".to_string(), state.current_time_minutes);
+    state.spawn_actor(
+        &pack,
+        SpawnActorConfig {
+            template_id: "frost_wolf_raider",
+            room_id: Some("courtyard_center"),
+            stance: Some(ActorStance::Hostile),
+            follows_player: false,
+            scale_with_actor_id: None,
+            scale_stat: None,
+            max_active_instances: None,
+        },
+    );
+
+    for expected_deaths in 1..=3 {
+        apply_protection_rules(&mut state, &pack);
+        state.current_time_minutes += 10;
+        apply_protection_rules(&mut state, &pack);
+        let expected_deaths = expected_deaths.to_string();
+        assert_eq!(
+            state.story_vars.get("five_offerings_deaths"),
+            Some(expected_deaths.as_str())
+        );
+    }
+
+    assert_eq!(state.story_vars.get("five_offerings_failed"), Some("true"));
+    assert!(
+        state
+            .active_objective_stage_ids
+            .contains(&"sq_five_offerings_failed".to_string())
+    );
+    assert_eq!(state.phase, cinder_core::engine::state::GamePhase::Active);
+    assert!(
+        !state.actor_is_defeated("abeni_adeyemi", &pack.settings.combat.health_stat_id),
+        "failure must leave remaining civilians alive and protectable"
+    );
 }
 
 #[test]

@@ -199,7 +199,74 @@ pub fn load_pack_from_dir_with_locale(
         skill_index,
     };
     validate_skills(&pack)?;
+    validate_protection_rules(&pack)?;
     Ok(pack)
+}
+
+fn validate_protection_rules(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
+    for stage in &pack.beats.stages {
+        let Some(rule) = &stage.protection_rule else {
+            continue;
+        };
+        if pack.room(&rule.room_id).is_none() {
+            return Err(format!(
+                "stage '{}' protection rule references unknown room '{}'",
+                stage.id, rule.room_id
+            )
+            .into());
+        }
+        if rule.hostile_tag.trim().is_empty() {
+            return Err(format!(
+                "stage '{}' protection rule requires a hostile_tag",
+                stage.id
+            )
+            .into());
+        }
+        if rule.protected_actor_ids.is_empty() {
+            return Err(format!(
+                "stage '{}' protection rule requires protected_actor_ids",
+                stage.id
+            )
+            .into());
+        }
+        for actor_id in &rule.protected_actor_ids {
+            if pack.actor(actor_id).is_none() {
+                return Err(format!(
+                    "stage '{}' protection rule references unknown actor '{}'",
+                    stage.id, actor_id
+                )
+                .into());
+            }
+        }
+        if rule.breach_minutes == 0 {
+            return Err(format!(
+                "stage '{}' protection rule requires breach_minutes greater than zero",
+                stage.id
+            )
+            .into());
+        }
+        if rule.failure_death_count > rule.protected_actor_ids.len() {
+            return Err(format!(
+                "stage '{}' protection rule failure_death_count exceeds its protected actor count",
+                stage.id
+            )
+            .into());
+        }
+        for message_key in [
+            &rule.warning_message,
+            &rule.cleared_message,
+            &rule.death_message,
+        ] {
+            if !message_key.is_empty() && !pack.messages.contains_key(message_key) {
+                return Err(format!(
+                    "stage '{}' protection rule references unknown message '{}'",
+                    stage.id, message_key
+                )
+                .into());
+            }
+        }
+    }
+    Ok(())
 }
 
 fn install_skill_behaviors(

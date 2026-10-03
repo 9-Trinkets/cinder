@@ -245,6 +245,8 @@ pub struct BeatDefinition {
     #[serde(default)]
     pub actor_spawn_schedule: Option<ActorSpawnScheduleDefinition>,
     #[serde(default)]
+    pub protection_rule: Option<ProtectionRuleDefinition>,
+    #[serde(default)]
     pub narrative_lines: Vec<String>,
     #[serde(default)]
     pub elapsed_minutes: u32,
@@ -282,6 +284,29 @@ pub struct ActorSpawnScheduleDefinition {
 
 fn default_actor_spawn_batch_size() -> usize {
     1
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ProtectionRuleDefinition {
+    pub room_id: String,
+    pub hostile_tag: String,
+    #[serde(default)]
+    pub protected_actor_ids: Vec<String>,
+    pub breach_minutes: u32,
+    #[serde(default)]
+    pub warning_message: String,
+    #[serde(default)]
+    pub cleared_message: String,
+    #[serde(default)]
+    pub death_message: String,
+    #[serde(default)]
+    pub death_count_story_var: String,
+    #[serde(default)]
+    pub failure_death_count: usize,
+    #[serde(default)]
+    pub failure_story_var: String,
+    #[serde(default)]
+    pub failure_signal: String,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]

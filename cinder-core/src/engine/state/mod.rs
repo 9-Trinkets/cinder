@@ -183,6 +183,16 @@ pub struct WorldState {
     /// Runtime name overrides for actors (e.g. awakened names).
     #[serde(default)]
     pub actor_name_overrides: BTreeMap<String, String>,
+    /// Runtime state for content-authored room protection rules, keyed by stage id.
+    #[serde(default)]
+    pub protection_rule_states: BTreeMap<String, ProtectionRuleState>,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct ProtectionRuleState {
+    pub next_actor_index: usize,
+    pub at_risk_actor_id: Option<String>,
+    pub breach_started_minutes: Option<u32>,
 }
 
 /// Summary milestone recorded upon transitioning from one area / act to the
@@ -382,6 +392,7 @@ impl WorldState {
             chalk_anchors: Vec::new(),
             transformed_stages: BTreeMap::new(),
             actor_name_overrides: BTreeMap::new(),
+            protection_rule_states: BTreeMap::new(),
         }
     }
 

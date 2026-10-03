@@ -317,6 +317,18 @@
         "voice": "handler",
         "text": "Cage count reads zero. Every one of them breathing, which was nowhere on my forecast, so I'm revising my estimate of you upward. That's three doors now instead of two. Wouldn't call it breathing room."
     },
+    "civilian.breach_warning": {
+        "voice": "handler",
+        "text": "Center breach. They have a line to {actor}. Clear every siege soldier from the teleport pad in {minutes} minutes or we lose them."
+    },
+    "civilian.breach_cleared": {
+        "voice": "handler",
+        "text": "Center is clear. Civilian countdown canceled."
+    },
+    "civilian.breach_death": {
+        "voice": "handler",
+        "text": "{actor} is down. Civilian losses: {deaths}."
+    },
     "handler.quest.save_zayd_complete": {
         "voice": "handler",
         "text": "Zayd is off my board and inside your reach, which is a sentence I would rather not have had to write. That file's closed. I won't ask what it cost—you'll hand me a charming half-truth and change the subject."

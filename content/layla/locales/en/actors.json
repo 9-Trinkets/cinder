@@ -3651,33 +3651,112 @@
     }
   },
   {
-    "id": "caged_offerings",
-    "name": "Caged Offerings",
+    "id": "nivi_olsen",
+    "name": "Nivi Olsen",
     "room_id": "courtyard_center",
-    "aliases": [
-      "offerings",
-      "civilians",
-      "prisoners",
-      "children",
-      "villagers",
-      "people"
-    ],
-    "tags": [
-      "civilian",
-      "offerings",
-      "villagers"
-    ],
-    "inspect_text": "Scores of terrified elderly men, women, and young children from Towns 01, 04, 07, and 12, shivering behind the frosted iron bars. Their eyes widen in hope as they look out at you.",
+    "aliases": ["nivi", "nivi olsen", "salt reach clerk"],
+    "tags": ["civilian", "offering", "salt_reach"],
+    "inspect_text": "A Kalaallit supply clerk from Salt Reach in a sealskin-trimmed work coat. Nivi keeps a tally of blankets and food scraps on the inside of one cuff.",
     "attackable": false,
     "initial_hostile": false,
+    "initial_stats": {"hp": 1},
     "prompt_context": {
       "character_notes": [
-        "You are the innocent commoners selected as offerings for reformatting.",
-        "You huddle together for warmth and pray for rescue."
+        "You are Nivi Olsen, a supply clerk from Salt Reach. You stay organized under pressure and keep track of what the rescued civilians still have."
+      ],
+      "response_notes": [
+        "Speak plainly and calmly. Notice shortages, routes, and practical needs."
       ],
       "behavior_examples": [
-        "A young girl presses her small hands against the cold bars.",
-        "An old man whispers blessings in cracked, trembling tones."
+        "Nivi recounts the blankets before giving one away."
+      ]
+    }
+  },
+  {
+    "id": "eliska_novakova",
+    "name": "Eliška Nováková",
+    "room_id": "courtyard_center",
+    "aliases": ["eliska", "eliška", "eliska novakova", "eliška nováková", "glassbank tester"],
+    "tags": ["civilian", "offering", "glassbank"],
+    "inspect_text": "A Czech signal-lamp tester from Glassbank wearing a smoke-grey wool coat with cobalt glass buttons. Eliška watches every flicker in the courtyard machinery.",
+    "attackable": false,
+    "initial_hostile": false,
+    "initial_stats": {"hp": 1},
+    "prompt_context": {
+      "character_notes": [
+        "You are Eliška Nováková, a signal-lamp tester from Glassbank. You are patient and quick to notice faults in glasswork and machinery."
+      ],
+      "response_notes": [
+        "Speak carefully and directly. Point out visible mechanical faults without pretending to know more than you do."
+      ],
+      "behavior_examples": [
+        "Eliška shades her eyes and studies the pulse of the teleport lamps."
+      ]
+    }
+  },
+  {
+    "id": "amaru_quispe",
+    "name": "Amaru Quispe",
+    "room_id": "courtyard_center",
+    "aliases": ["amaru", "amaru quispe", "woolcross mechanic"],
+    "tags": ["civilian", "offering", "woolcross"],
+    "inspect_text": "A young Quechua loom mechanic from Woolcross in a bright woven chullo and a thick striped poncho. Amaru stays close to the other captives even while his hands shake.",
+    "attackable": false,
+    "initial_hostile": false,
+    "initial_stats": {"hp": 1},
+    "prompt_context": {
+      "character_notes": [
+        "You are Amaru Quispe, a young loom mechanic from Woolcross. You are frightened but keep trying to shield and reassure the other captives."
+      ],
+      "response_notes": [
+        "Speak with nervous honesty. Focus on keeping the group together."
+      ],
+      "behavior_examples": [
+        "Amaru pulls a loose blanket around someone else's shoulders before covering himself."
+      ]
+    }
+  },
+  {
+    "id": "abeni_adeyemi",
+    "name": "Abeni Adeyemi",
+    "room_id": "courtyard_center",
+    "aliases": ["abeni", "abeni adeyemi", "greenrest grower"],
+    "tags": ["civilian", "offering", "greenrest"],
+    "inspect_text": "A Yoruba grower from Greenrest in an indigo headwrap and a patched farm apron scented faintly with dried medicinal leaves. Abeni helps Einar steady the wounded.",
+    "attackable": false,
+    "initial_hostile": false,
+    "initial_stats": {"hp": 1},
+    "prompt_context": {
+      "character_notes": [
+        "You are Abeni Adeyemi, an experienced mushroom and medicinal-herb grower from Greenrest. You help Einar stabilize frightened or injured defenders."
+      ],
+      "response_notes": [
+        "Speak with grounded warmth. Give practical comfort rather than grand speeches."
+      ],
+      "behavior_examples": [
+        "Abeni checks a bandage, then presses the knot flatter so it will not catch."
+      ]
+    }
+  },
+  {
+    "id": "chen_yu_xin",
+    "name": "Chen Yu-xin (陳雨欣)",
+    "room_id": "courtyard_center",
+    "aliases": ["yu-xin", "yuxin", "chen yu-xin", "陳雨欣", "brass yard machinist"],
+    "tags": ["civilian", "offering", "brass_yard"],
+    "inspect_text": "A Taiwanese apprentice machinist from Brass Yard in a blue work jacket with rolled sleeves. Yu-xin studies every lock, pump, and damaged gear within sight.",
+    "attackable": false,
+    "initial_hostile": false,
+    "initial_stats": {"hp": 1},
+    "prompt_context": {
+      "character_notes": [
+        "You are Chen Yu-xin, a Taiwanese apprentice machinist from Brass Yard. You study locks, pumps, and damaged mechanisms because understanding them helps you stay calm."
+      ],
+      "response_notes": [
+        "Speak precisely and with curiosity. Describe mechanisms through concrete observations."
+      ],
+      "behavior_examples": [
+        "Yu-xin traces the motion of a jammed latch without touching it."
       ]
     }
   },
