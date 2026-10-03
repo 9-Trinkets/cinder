@@ -117,7 +117,7 @@ pub(super) fn apply_actor_move_transition(
             lines.extend(observation.0);
         }
     }
-    lines.extend_narration(advance_objective_for_signal(
+    lines.extend_lines(advance_objective_for_signal(
         state,
         content,
         &format!(
@@ -125,5 +125,5 @@ pub(super) fn apply_actor_move_transition(
             movement.actor_id, movement.to_room_id
         ),
     ));
-    lines.extend_narration(advance_house_progress_objectives(state, content));
+    lines.extend_lines(advance_house_progress_objectives(state, content));
 }

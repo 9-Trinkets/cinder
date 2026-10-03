@@ -29,10 +29,10 @@ pub(crate) fn handle_turn_started(
             suppressed_actor_stats,
         );
         for signal in time_reached_signals(previous_time_minutes, state.current_time_minutes) {
-            lines.extend_narration(advance_objective_for_signal(state, content, &signal));
+            lines.extend_lines(advance_objective_for_signal(state, content, &signal));
         }
-        lines.extend_narration(advance_house_progress_objectives(state, content));
-        lines.extend_narration(advance_stat_threshold_objectives(state, content));
+        lines.extend_lines(advance_house_progress_objectives(state, content));
+        lines.extend_lines(advance_stat_threshold_objectives(state, content));
     }
     // Strike policy is external (tick workflows, rules or LLM); the reducer
     // only resolves declared HostileStrike events.

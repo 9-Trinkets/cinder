@@ -20,7 +20,7 @@ pub(crate) fn handle_menu_opened(
                 .map(|line| render_story_text(line, state)),
         );
     }
-    lines.extend_narration(advance_objective_for_signal(
+    lines.extend_lines(advance_objective_for_signal(
         state,
         content,
         &format!("menu_opened:{menu_id}"),
@@ -130,7 +130,7 @@ pub(crate) fn handle_menu_choice_made(
         }),
     )
     .unwrap_or_else(|error| eprintln!("[cinder] hook warning (menu.selected): {error}"));
-    lines.extend_narration(advance_objective_for_signal(
+    lines.extend_lines(advance_objective_for_signal(
         state,
         content,
         &format!("menu_selected:{menu_id}"),

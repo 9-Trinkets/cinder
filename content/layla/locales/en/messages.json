@@ -309,6 +309,22 @@
         "voice": "handler",
         "text": "Good. That sigil hooks your chalk to the anchor points. Powered platform? Permanent anchor, so those are free. Anywhere else you're down to three chalk anchors, and they burn out after a single teleport. Don't get comfortable with them."
     },
+    "handler.quest.teleport_scroll_complete": {
+        "voice": "handler",
+        "text": "Signed off on the retrieval. Whatever that sigil was keeping locked is behind you now—I'm not asking what you found inside it, and I'd advise you not to volunteer. Floor's below you. I've got your back down there."
+    },
+    "handler.quest.free_prisoners_complete": {
+        "voice": "handler",
+        "text": "Cage count reads zero. Every one of them breathing, which was nowhere on my forecast, so I'm revising my estimate of you upward. That's three doors now instead of two. Wouldn't call it breathing room."
+    },
+    "handler.quest.save_zayd_complete": {
+        "voice": "handler",
+        "text": "Zayd is off my board and inside your reach, which is a sentence I would rather not have had to write. That file's closed. I won't ask what it cost—you'll hand me a charming half-truth and change the subject."
+    },
+    "handler.quest.awaken_jamil_complete": {
+        "voice": "handler",
+        "text": "The shell's quiet and the voice inside it belongs to a man again. Objective un-flagged. I'm not going to discuss the rest of that with you—some lines read better quiet. Take a minute. You've earned one."
+    },
     "sigil.chalk_anchor_placed": "You draw the double triangle on the stone. The chalk glows with a soft light, anchoring this room.",
     "platform.activated": "As you finish tracing the double triangle, blue light flares through the brass conduits. The platform roars to life with ancient power, opening the descent to Floor 5!",
     "transformation.wake.intro": "The warmth of high wisdom stirs deep within {actor_name}. The fog in their mind shatters.",

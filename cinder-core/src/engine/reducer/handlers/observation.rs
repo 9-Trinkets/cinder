@@ -38,12 +38,12 @@ pub(crate) fn handle_feature_observed(
     } else {
         lines.narration(content.presentation.error_text.room_missing.clone());
     }
-    lines.extend_narration(advance_objective_for_signal(
+    lines.extend_lines(advance_objective_for_signal(
         state,
         content,
         &format!("feature_observed:{room_id}:{feature_id}"),
     ));
-    lines.extend_narration(advance_objective_for_signal(
+    lines.extend_lines(advance_objective_for_signal(
         state,
         content,
         &format!("feature_observed:{feature_id}"),
@@ -70,7 +70,7 @@ pub(crate) fn handle_actor_observed(
     } else {
         lines.narration(content.presentation.error_text.actor_unknown.clone());
     }
-    lines.extend_narration(advance_objective_for_signal(
+    lines.extend_lines(advance_objective_for_signal(
         state,
         content,
         &format!("actor_observed:{actor_id}"),

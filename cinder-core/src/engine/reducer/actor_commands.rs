@@ -219,7 +219,7 @@ pub(super) fn handle_actor_command_used(
             lines.narration(command_text);
         }
     }
-    lines.extend_narration(advance_objective_for_signal(state, content, "command_used"));
+    lines.extend_lines(advance_objective_for_signal(state, content, "command_used"));
     Some(lines)
 }
 

@@ -230,18 +230,18 @@ pub(crate) fn handle_item_transferred(
     }
 
     // 4. Signals
-    lines.extend_narration(advance_objective_for_signal(
+    lines.extend_lines(advance_objective_for_signal(
         state,
         content,
         &format!("item_transferred:{item_id}"),
     ));
     if content.is_player_actor(to_actor_id) {
-        lines.extend_narration(advance_objective_for_signal(
+        lines.extend_lines(advance_objective_for_signal(
             state,
             content,
             &format!("item_acquired:{item_id}"),
         ));
-        lines.extend_narration(advance_objective_for_signal(
+        lines.extend_lines(advance_objective_for_signal(
             state,
             content,
             "item_acquired",

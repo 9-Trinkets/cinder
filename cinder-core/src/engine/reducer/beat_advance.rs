@@ -1,14 +1,17 @@
 use crate::content::types::{AdvanceCondition, AdvanceEffect, ContentPack};
+use crate::engine::narrative::NarrativeLine;
 use crate::engine::state::{
     GamePhase, SpawnActorConfig, SpawnActorOutcome, VariableStore, WorldState,
 };
 use crate::engine::turn_policies::clear_inactive_objective_state;
 
+use super::handlers::rendered_message_line;
+
 pub(crate) fn advance_objective_for_signal(
     state: &mut WorldState,
     content: &ContentPack,
     signal: &str,
-) -> Vec<String> {
+) -> Vec<NarrativeLine> {
     dispatch_due_actor_spawns(state, content);
     let mut messages = Vec::new();
     let mut next_active_stage_ids = Vec::with_capacity(state.active_objective_stage_ids.len());
@@ -46,6 +49,13 @@ pub(crate) fn advance_objective_for_signal(
         }
         state.stages_completed += 1;
         state.completed_stage_ids.insert(current_stage_id.clone());
+        // Completion commentary belongs to the stage that was just finished, so
+        // it is emitted here — ahead of the terminal-stage early return below.
+        if let Some(key) = current_stage.completion_message.as_deref()
+            && let Some(line) = rendered_message_line(content, key, &[])
+        {
+            messages.push(line);
+        }
         if current_stage.next_stage_ids.is_empty() {
             continue;
         }
@@ -91,7 +101,9 @@ pub(crate) fn advance_objective_for_signal(
                 .entry(next_stage_id.clone())
                 .or_insert(state.current_time_minutes);
             for line in &next_stage.narrative_lines {
-                messages.push(super::observation::render_story_text(line, state));
+                messages.push(NarrativeLine::narration(
+                    super::observation::render_story_text(line, state),
+                ));
             }
             if !next_stage.open_menu.is_empty() {
                 state.active_menu_id = Some(next_stage.open_menu.clone());

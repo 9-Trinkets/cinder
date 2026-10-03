@@ -55,6 +55,7 @@
       "summary": "Get below the wall.",
       "beat_note": "Having acquired the knowledge of the Teleportation Sigil, Layla can now reach the teleport platform in the heart of the fortress and descend.",
       "update_message": "The way down was never a door.",
+"completion_message": "handler.quest.teleport_scroll_complete",
       "advance_signals": [
         "room_entered:courtyard_center",
         "room_entered:floor5_start",
@@ -85,6 +86,7 @@
       "summary": "Living people went into the cages meant for grain.",
       "beat_note": "Arriving at the Frost Citadel, Layla finds garrison dissenters Commander Astrid and Einar locked in culling cages along with commoner offerings. Defeat the Sentry Captain to obtain the courtyard key and unlock their cages.",
       "update_message": "All of it is locked, and the key is on someone who does not mean to hand it over.",
+"completion_message": "handler.quest.free_prisoners_complete",
       "advance_signals": [
         "courtyard_cages_unlocked",
         {
@@ -290,6 +292,7 @@
       "summary": "Get him back down the stairs.",
       "beat_note": "Zayd is rescued from his cage. Escort him back to the safety of the worker village.",
       "update_message": "He cannot keep the pace. Do not make him run.",
+"completion_message": "handler.quest.save_zayd_complete",
       "advance_signals": [
         "zayd_safe",
         {
@@ -315,6 +318,7 @@
       "summary": "Something in the square has been standing out there a long time without being spoken to.",
       "beat_note": "Zayd gave Layla his father's miner lantern. Its warm light can awaken the sleeping memories within the guardian golem Sakhra.",
       "update_message": "He gave you his father's light. Somebody ought to be the one to use it.",
+"completion_message": "handler.quest.awaken_jamil_complete",
       "advance_signals": [
         "actor_awakened:sakhra",
         "actor_awakened"

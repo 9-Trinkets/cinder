@@ -30,7 +30,7 @@ pub(crate) fn handle_channel_message(
         } => handle_targeted_message(state, content, lines, message, recipient_id, recipient_name),
         ChannelAudience::Broadcast => handle_broadcast_message(state, content, lines, message),
     }
-    lines.extend_narration(advance_house_progress_objectives(state, content));
+    lines.extend_lines(advance_house_progress_objectives(state, content));
 }
 
 fn handle_targeted_message(
@@ -134,23 +134,23 @@ fn handle_targeted_message(
     }
 
     if content.is_player_actor(recipient_id) {
-        lines.extend_narration(advance_objective_for_signal(
+        lines.extend_lines(advance_objective_for_signal(
             state,
             content,
             &format!("spoken_to:{actor_id}"),
         ));
-        lines.extend_narration(advance_objective_for_signal(
+        lines.extend_lines(advance_objective_for_signal(
             state,
             content,
             &format!("speech_from:{actor_id}"),
         ));
     } else if content.is_player_actor(actor_id) {
-        lines.extend_narration(advance_objective_for_signal(
+        lines.extend_lines(advance_objective_for_signal(
             state,
             content,
             &format!("spoken_to:{recipient_id}"),
         ));
-        lines.extend_narration(advance_objective_for_signal(
+        lines.extend_lines(advance_objective_for_signal(
             state,
             content,
             &format!("speech_to:{recipient_id}"),
@@ -174,7 +174,7 @@ fn handle_targeted_message(
                     .any(|keyword| reply_lower.contains(keyword.as_str()));
             if mentioned {
                 for signal in &topic.signals {
-                    lines.extend_narration(advance_objective_for_signal(state, content, signal));
+                    lines.extend_lines(advance_objective_for_signal(state, content, signal));
                 }
             }
         }
@@ -230,7 +230,7 @@ fn handle_broadcast_message(
             lines.narration(line);
         }
     }
-    lines.extend_narration(advance_objective_for_signal(
+    lines.extend_lines(advance_objective_for_signal(
         state,
         content,
         &format!("speech_broadcast:{actor_id}"),

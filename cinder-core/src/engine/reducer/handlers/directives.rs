@@ -63,7 +63,7 @@ pub(crate) fn apply_content_event(
     for signal in &event.signals {
         let rendered_signal =
             render_story_text(&content.render_template(signal, &template_values), state);
-        lines.extend_narration(advance_objective_for_signal(
+        lines.extend_lines(advance_objective_for_signal(
             state,
             content,
             &rendered_signal,

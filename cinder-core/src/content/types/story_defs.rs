@@ -228,6 +228,16 @@ pub struct BeatDefinition {
     pub beat_note: String,
     #[serde(default)]
     pub update_message: String,
+    /// Pack message key played once when this stage completes.
+    ///
+    /// Fires against the stage that was *completed*, not the stage being
+    /// entered, so it also works for terminal stages (no `next_stage_ids`) —
+    /// which `on_advance_effects` cannot, since those are read off the next
+    /// stage and terminal stages return before any of them are applied. The
+    /// message's own `voice` decides the line kind, so a
+    /// `{ "voice": "handler" }` message renders as Handler comms.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub completion_message: Option<String>,
     #[serde(default)]
     pub next_chapter_preview: String,
     #[serde(default)]

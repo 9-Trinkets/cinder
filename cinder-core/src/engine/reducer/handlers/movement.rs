@@ -24,7 +24,7 @@ pub(crate) fn handle_actor_relocated(
     state
         .actor_room_overrides
         .insert(actor_id.to_string(), to_room_id.to_string());
-    lines.extend_narration(advance_house_progress_objectives(state, content));
+    lines.extend_lines(advance_house_progress_objectives(state, content));
 }
 
 pub(crate) fn handle_actor_moved(
@@ -56,7 +56,7 @@ pub(crate) fn handle_player_moved(
     lines: &mut NarrativeLines,
 ) {
     let from_room_id = state.current_room_id.clone();
-    lines.extend_narration(advance_objective_for_signal(
+    lines.extend_lines(advance_objective_for_signal(
         state,
         content,
         &format!("room_left:{from_room_id}"),
@@ -65,7 +65,7 @@ pub(crate) fn handle_player_moved(
         !state.actor_has_visited_room(&content.settings.combat.player_actor_id, to_room_id);
     state.current_room_id = to_room_id.to_string();
     state.mark_actor_room_visited(&content.settings.combat.player_actor_id, to_room_id);
-    lines.extend_narration(advance_objective_for_signal(
+    lines.extend_lines(advance_objective_for_signal(
         state,
         content,
         &format!("room_entered:{to_room_id}"),

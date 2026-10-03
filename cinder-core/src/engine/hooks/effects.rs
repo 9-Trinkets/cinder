@@ -266,7 +266,7 @@ impl WorldHookEffect {
     ) {
         state.story_vars.set_unchecked(key, value);
         if let Some(lines) = lines {
-            lines.extend_narration(
+            lines.extend_lines(
                 crate::engine::reducer::beat_advance::advance_objective_for_signal(
                     state, content, key,
                 ),
@@ -300,14 +300,14 @@ impl WorldHookEffect {
                 line,
                 content.message_voice("item.acquired_inventory"),
             );
-            lines.extend_narration(
+            lines.extend_lines(
                 crate::engine::reducer::beat_advance::advance_objective_for_signal(
                     state,
                     content,
                     &format!("item_acquired:{item_id}"),
                 ),
             );
-            lines.extend_narration(
+            lines.extend_lines(
                 crate::engine::reducer::beat_advance::advance_objective_for_signal(
                     state,
                     content,

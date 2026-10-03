@@ -1,6 +1,6 @@
 use crate::content::types::{ContentPack, PackMessageVoice};
 use crate::engine::commands::{player_command_help_text, player_command_suggestions};
-use crate::engine::narrative::NarrativeLines;
+use crate::engine::narrative::{NarrativeLine, NarrativeLines};
 use crate::engine::reducer::observation::render_actor_speech_line;
 use crate::engine::state::WorldState;
 
@@ -67,6 +67,32 @@ pub(crate) fn handler_attributed_line(content: &ContentPack, text: &str) -> Opti
     Some(render_actor_speech_line(content, &speaker_name, None, text))
 }
 
+/// Render a pack message key into a styled line, honoring the key's declared
+/// voice. Skips keys the pack does not define and empty overrides (the authored
+/// suppression signal), returning `None` for both.
+///
+/// This is the single place that maps a message key to a line kind, so callers
+/// that need the line rather than a push (the beat reducer, which collects
+/// lines before placing them) stay consistent with `push_message`.
+pub(crate) fn rendered_message_line(
+    content: &ContentPack,
+    key: &str,
+    replacements: &[(&str, &str)],
+) -> Option<NarrativeLine> {
+    let text = content.render_message(key, replacements)?;
+    if text.trim().is_empty() {
+        return None;
+    }
+    Some(match content.message_voice(key) {
+        PackMessageVoice::System => NarrativeLine::system(text),
+        PackMessageVoice::Handler => match handler_attributed_line(content, &text) {
+            Some(attributed) => NarrativeLine::channel(attributed),
+            None => NarrativeLine::narration(text),
+        },
+        PackMessageVoice::Narration => NarrativeLine::narration(text),
+    })
+}
+
 /// Push an already-rendered pack message, honoring its per-key voice:
 /// handler-voiced messages become handler-attributed comms; everything else
 /// stays world narration.
@@ -95,11 +121,7 @@ pub(crate) fn push_message(
     key: &str,
     replacements: &[(&str, &str)],
 ) {
-    let Some(text) = content.render_message(key, replacements) else {
-        return;
-    };
-    if text.trim().is_empty() {
-        return;
+    if let Some(line) = rendered_message_line(content, key, replacements) {
+        lines.0.push(line);
     }
-    push_rendered_message(lines, content, text, content.message_voice(key));
 }

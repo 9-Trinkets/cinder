@@ -2,6 +2,7 @@ use crate::content::types::ContentPack;
 use crate::engine::dialogue_grounding::viewer_participant_id;
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_world_hook_effects;
+use crate::engine::narrative::NarrativeLine;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
 use serde_json::json;
 
@@ -78,7 +79,7 @@ pub(super) fn crossed_interval_steps(
 pub(super) fn advance_house_progress_objectives(
     state: &mut WorldState,
     content: &ContentPack,
-) -> Vec<String> {
+) -> Vec<NarrativeLine> {
     let met_everyone = all_actors_have_met_everyone(state, content);
     let learned_house = all_actors_have_learned_house(state, content);
     let mut messages = Vec::new();
@@ -184,7 +185,7 @@ pub(super) fn all_actors_have_met_everyone(state: &WorldState, content: &Content
 pub(super) fn advance_stat_threshold_objectives(
     state: &mut WorldState,
     content: &ContentPack,
-) -> Vec<String> {
+) -> Vec<NarrativeLine> {
     let active_ids: Vec<String> = state.active_objective_stage_ids.clone();
     for stage_id in &active_ids {
         let Some(stage) = content.beats.stages.iter().find(|s| s.id == *stage_id) else {

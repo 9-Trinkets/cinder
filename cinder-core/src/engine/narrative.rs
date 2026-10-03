@@ -141,6 +141,13 @@ impl NarrativeLines {
             .extend(iter.into_iter().map(NarrativeLine::narration));
     }
 
+    /// Extends from already-typed lines, preserving each line's kind. Used by
+    /// producers that decide styling themselves (the beat reducer, which emits
+    /// a stage's completion message at whatever voice the pack gave it).
+    pub fn extend_lines<I: IntoIterator<Item = NarrativeLine>>(&mut self, iter: I) {
+        self.0.extend(iter);
+    }
+
     /// Joins the line texts the way the turn text has historically been built.
     pub fn to_text(&self) -> String {
         self.0

@@ -29,12 +29,12 @@ pub(crate) fn handle_item_acquired(
             {
                 push_rendered_message(lines, content, line, voice);
             }
-            lines.extend_narration(advance_objective_for_signal(
+            lines.extend_lines(advance_objective_for_signal(
                 state,
                 content,
                 &format!("item_acquired:{item_id}"),
             ));
-            lines.extend_narration(advance_objective_for_signal(
+            lines.extend_lines(advance_objective_for_signal(
                 state,
                 content,
                 "item_acquired",
@@ -105,12 +105,12 @@ pub(crate) fn handle_player_took_item(
     if state.remove_item_from_storage(item_id, ItemStorageTarget::CurrentRoom, &room_id) {
         state.add_item(item_id);
         push_message(lines, content, "item.taken", &[("label", label)]);
-        lines.extend_narration(advance_objective_for_signal(
+        lines.extend_lines(advance_objective_for_signal(
             state,
             content,
             &format!("item_acquired:{item_id}"),
         ));
-        lines.extend_narration(advance_objective_for_signal(
+        lines.extend_lines(advance_objective_for_signal(
             state,
             content,
             "item_acquired",
@@ -190,17 +190,17 @@ pub(crate) fn handle_player_used_item(
     if let Some(line) = line {
         lines.narration(line);
     }
-    lines.extend_narration(advance_objective_for_signal(
+    lines.extend_lines(advance_objective_for_signal(
         state,
         content,
         &format!("item_used:{item_id}"),
     ));
-    lines.extend_narration(advance_objective_for_signal(
+    lines.extend_lines(advance_objective_for_signal(
         state,
         content,
         &format!("item_consumed:{item_id}"),
     ));
-    lines.extend_narration(advance_objective_for_signal(
+    lines.extend_lines(advance_objective_for_signal(
         state,
         content,
         "item_consumed",
