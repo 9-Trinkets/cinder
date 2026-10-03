@@ -271,18 +271,18 @@ pub async fn resume_bookmark(
         .await
         .map_err(|e| format!("db begin error: {e}"))?;
 
-    // Check if an existing game_plays row exists for this player and pack
-    let existing_play = sqlx::query_scalar::<_, Uuid>(
-        "SELECT id FROM game_plays WHERE player_id = $1 AND pack_id = $2 FOR UPDATE",
+    // Check if existing game_plays row(s) exist for this player and pack
+    let existing_plays = sqlx::query_scalar::<_, Uuid>(
+        "SELECT id FROM game_plays WHERE player_id = $1 AND pack_id = $2 ORDER BY updated_at DESC FOR UPDATE",
     )
     .bind(player_uuid)
     .bind(&pack_id)
-    .fetch_optional(&mut *tx)
+    .fetch_all(&mut *tx)
     .await
     .map_err(|e| format!("db error: {e}"))?;
 
-    let target_play_uuid = match existing_play {
-        Some(play_id) => {
+    let target_play_uuid = match existing_plays.first() {
+        Some(&play_id) => {
             // Replace existing running session
             sqlx::query(
                 "UPDATE game_plays
@@ -303,6 +303,21 @@ pub async fn resume_bookmark(
                 .execute(&mut *tx)
                 .await
                 .map_err(|e| format!("db delete transcript error: {e}"))?;
+
+            // Clean up any other legacy duplicate sessions for this pack
+            for &extra_id in &existing_plays[1..] {
+                sqlx::query("DELETE FROM transcript_entries WHERE play_id = $1")
+                    .bind(extra_id)
+                    .execute(&mut *tx)
+                    .await
+                    .map_err(|e| format!("db delete duplicate transcript error: {e}"))?;
+
+                sqlx::query("DELETE FROM game_plays WHERE id = $1")
+                    .bind(extra_id)
+                    .execute(&mut *tx)
+                    .await
+                    .map_err(|e| format!("db delete duplicate play error: {e}"))?;
+            }
 
             play_id
         }
