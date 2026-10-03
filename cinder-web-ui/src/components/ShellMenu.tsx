@@ -340,7 +340,7 @@ function MainMenu({
             const activeCount = ui.quests.filter(quest => quest.status === 'active').length
             subtitle = activeCount === 1 ? '1 active quest' : `${activeCount} active quests`
           }
-          else if (item.id === 'bookmarks') subtitle = 'Bookmark progress or restore'
+          else if (item.id === 'bookmarks') subtitle = 'Leave a bookmark or return to an earlier moment'
           else if (item.id === 'language') subtitle = ui.locale_options.find(l => l.code === ui.current_locale)?.label || ui.current_locale
 
           if (hasChildren) {
@@ -531,7 +531,7 @@ function BookmarksView({
           disabled={creating || busy || actionBusy || !onCreateBookmark}
           className="w-full py-2 text-xs font-semibold tracking-wide cursor-pointer flex items-center justify-center gap-1.5"
         >
-          {creating ? 'Saving Bookmark…' : ((t.create_bookmark_label as string) || '+ Bookmark Current Progress')}
+          {creating ? 'Placing Bookmark…' : ((t.create_bookmark_label as string) || '+ Bookmark This Moment')}
         </Button>
       </div>
 
@@ -539,7 +539,7 @@ function BookmarksView({
         <div className="py-6 text-center text-xs text-muted">Loading bookmarks…</div>
       ) : bookmarks.length === 0 ? (
         <p className="border-y border-subtle/40 py-6 text-center text-xs text-muted">
-          {(t.bookmark_empty as string) || 'No bookmarks saved yet. Tap above to bookmark your current progress.'}
+          {(t.bookmark_empty as string) || 'No bookmarks saved yet. Tap above to bookmark this moment.'}
         </p>
       ) : (
         <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40 max-h-72 overflow-y-auto">
@@ -571,7 +571,7 @@ function BookmarksView({
                   disabled={busy || actionBusy}
                   className="px-2.5 py-1 text-xs font-semibold rounded text-foam hover:bg-pine/20 border border-pine/30 transition-colors cursor-pointer"
                 >
-                  Resume
+                  Return to &rsaquo;
                 </button>
                 <button
                   type="button"
@@ -590,9 +590,9 @@ function BookmarksView({
 
       {confirmResumeId && (
         <ConfirmDialog
-          title="Resume Bookmark"
-          message="Resuming this bookmark will replace your current session with this state. Continue?"
-          confirmLabel="Resume"
+          title="Return to Bookmark"
+          message="Return to this point in your tale? Your current journey will be set back to this moment."
+          confirmLabel="Return"
           onConfirm={() => handleResume(confirmResumeId)}
           onCancel={() => setConfirmResumeId(null)}
         />

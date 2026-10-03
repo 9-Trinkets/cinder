@@ -243,10 +243,10 @@ export function usePlay() {
     if (!token || !id) return null
     try {
       const b = await api.createBookmark(token, id, label)
-      showToast('Bookmark saved', 'info')
+      showToast('Bookmark placed', 'info')
       return b
     } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'failed to save bookmark'), 'error')
+      showToast(toErrorMessage(err, 'failed to place bookmark'), 'error')
       return null
     }
   }
@@ -261,10 +261,10 @@ export function usePlay() {
       setActiveMenu(res.snapshot.active_menu ?? null)
       setGameOver(res.snapshot.game_closure !== null)
       setShowMenu(false)
-      showToast('Bookmark restored', 'info')
+      showToast('Returned to bookmark', 'info')
       return true
     } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'failed to resume bookmark'), 'error')
+      showToast(toErrorMessage(err, 'failed to return to bookmark'), 'error')
       return false
     } finally {
       setPanelBusy(false)

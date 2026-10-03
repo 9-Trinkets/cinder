@@ -79,10 +79,10 @@ export default function PackDetailPage() {
     setResumingBookmark(bookmarkId)
     try {
       const res = await api.resumeBookmark(token, bookmarkId)
-      showToast('Bookmark restored', 'info')
+      showToast('Returned to bookmark', 'info')
       navigate(`/games/${res.play_id}`, { state: { title: res.snapshot?.title } })
     } catch (err: unknown) {
-      showToast(toErrorMessage(err, 'failed to resume bookmark'), 'error')
+      showToast(toErrorMessage(err, 'failed to return to bookmark'), 'error')
     } finally {
       setResumingBookmark(null)
     }
@@ -280,7 +280,7 @@ export default function PackDetailPage() {
               {bookmarks.length === 0 ? (
                 <div className="text-center py-8 px-4 border border-dashed border-subtle/60 rounded-xl">
                   <p className="text-muted text-sm italic mb-1.5">No bookmarks saved yet.</p>
-                  <p className="text-faint text-xs">You can bookmark your progress anytime from the in-game menu.</p>
+                  <p className="text-faint text-xs">You can bookmark any moment from the in-game menu.</p>
                 </div>
               ) : (
                 <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40">
@@ -307,7 +307,7 @@ export default function PackDetailPage() {
                           </p>
                         </div>
                         <span className="text-xs font-medium text-foam group-hover:translate-x-1 transition-transform duration-150 inline-flex items-center gap-1 shrink-0">
-                          Resume &rsaquo;
+                          Return to &rsaquo;
                         </span>
                       </div>
                       <Button
@@ -341,13 +341,9 @@ export default function PackDetailPage() {
 
       {confirmResumeBookmark && (
         <ConfirmDialog
-          title="Resume Bookmark"
-          message={
-            plays.length > 0
-              ? 'Resuming this bookmark will replace your current session with this state. Continue?'
-              : 'Resume session from this bookmark?'
-          }
-          confirmLabel="Resume"
+          title="Return to Bookmark"
+          message="Return to this point in your tale? Your current journey will be set back to this moment."
+          confirmLabel="Return"
           onConfirm={() => doResumeBookmark(confirmResumeBookmark)}
           onCancel={() => setConfirmResumeBookmark(null)}
         />
