@@ -110,6 +110,23 @@ The behavior of these skills is not authored in Layla's `actions.json`,
 `settings.json`, or `behavior.json`. Those files continue to define non-skill
 actions, initial party orders and global settings, and navigation behavior.
 
+## Combat Cadence
+
+Layla uses stat-driven combat cooldowns for autonomous hostile actions and
+party reactions:
+
+- physical attacks, counters, guards, and holds use Dexterity;
+- healing and other support actions use Intelligence;
+- stats 0-2 produce a four-minute cooldown, 3-5 produce three minutes, 6-8
+  produce two minutes, and 9-10 produce one minute;
+- one game minute is the hard floor, so no actor acts more often than once
+  every six real-world seconds while the game is idle.
+
+Dexterity defaults to 6, giving ordinary actors a two-minute cadence (roughly
+twelve real-world seconds). Exceptional fast actors can reach the one-minute
+floor, while deliberately heavy actors author lower Dexterity values. Packs
+without a Dexterity stat retain the legacy `attack_interval_minutes` behavior.
+
 ## Generic Runtime Primitives
 
 Centralized definitions use reusable engines rather than skill-specific

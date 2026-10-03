@@ -49,6 +49,19 @@ pub(super) fn build_ui_snapshot(
             quest_kind: item.quest_kind,
         })
         .collect();
+    let quests = runtime
+        .quest_summaries()
+        .map_err(|error| error.to_string())?
+        .into_iter()
+        .map(|quest| QuestItem {
+            quest_id: quest.quest_id,
+            title: quest.title,
+            kind: quest.kind,
+            status: quest.status,
+            summary: quest.summary,
+            message: quest.message,
+        })
+        .collect();
     let (secrets_found, secrets_total) = runtime
         .current_secret_progress()
         .map_err(|error| error.to_string())?;
@@ -127,6 +140,7 @@ pub(super) fn build_ui_snapshot(
         current_locale: content.locale.clone(),
         locale_options: locales,
         objectives,
+        quests,
         objective_message,
         secrets_found,
         secrets_total,

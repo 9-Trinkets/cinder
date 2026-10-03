@@ -11,6 +11,11 @@
   "resume_label": "Resume",
   "things_to_do_label": "Things to do",
   "language_menu_label": "Language",
+  "quests_menu_title": "Quest Log",
+  "quests_active_label": "Active",
+  "quests_completed_label": "Completed",
+  "quests_failed_label": "Failed",
+  "quests_empty": "No quests have been recorded yet.",
   "about_label": "About",
   "exit_label": "Exit",
   "things_to_do_empty": "The playbook only says to find a way out. I'm trying to get you something more useful.",
@@ -42,6 +47,10 @@
   "npc_tick_soft_error": "{actor_name} goes still, listening to the dark.",
   "shell_menu": {
     "items": [
+      {
+        "id": "quests",
+        "label": "Quests"
+      },
       {
         "id": "language",
         "label": "Language"

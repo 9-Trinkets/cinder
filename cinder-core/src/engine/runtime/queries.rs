@@ -1,4 +1,4 @@
-use super::{CinderRuntime, ObjectiveSummary};
+use super::{CinderRuntime, ObjectiveSummary, QuestSummary};
 use crate::content::types::{
     ActionDefinition, ContentPack, ItemStorageTarget, OpeningMovieDefinition,
 };
@@ -194,6 +194,7 @@ impl CinderRuntime {
                     .stages
                     .iter()
                     .find(|stage| stage.id == *current_id)
+                    .filter(|stage| stage.quest_kind.as_deref() != Some("failed"))
                     .map(|stage| {
                         let summary = render_story_text(&stage.summary, &state);
                         let message = render_story_text(&stage.update_message, &state);
@@ -212,6 +213,94 @@ impl CinderRuntime {
                     })
             })
             .filter(|o| !o.summary.is_empty())
+            .collect())
+    }
+
+    pub fn quest_summaries(&self) -> Result<Vec<QuestSummary>, Box<dyn Error>> {
+        let state = self
+            .state
+            .lock()
+            .map_err(|_| "failed to lock runtime state for quests")?;
+        let mut quest_ids = Vec::new();
+        for stage in &self.content.beats.stages {
+            let Some(quest_id) = stage.quest_id.as_deref() else {
+                continue;
+            };
+            let started = state
+                .active_objective_stage_ids
+                .iter()
+                .any(|stage_id| stage_id == &stage.id)
+                || state.completed_stage_ids.contains(&stage.id);
+            if started && !quest_ids.iter().any(|id| id == quest_id) {
+                quest_ids.push(quest_id.to_string());
+            }
+        }
+
+        Ok(quest_ids
+            .into_iter()
+            .filter_map(|quest_id| {
+                let quest_stages = self
+                    .content
+                    .beats
+                    .stages
+                    .iter()
+                    .filter(|stage| stage.quest_id.as_deref() == Some(quest_id.as_str()))
+                    .collect::<Vec<_>>();
+                let canonical = quest_stages
+                    .iter()
+                    .copied()
+                    .find(|stage| stage.quest_kind.as_deref() != Some("failed"))
+                    .or_else(|| quest_stages.first().copied())?;
+                let active_stages = quest_stages
+                    .iter()
+                    .copied()
+                    .filter(|stage| {
+                        state
+                            .active_objective_stage_ids
+                            .iter()
+                            .any(|stage_id| stage_id == &stage.id)
+                    })
+                    .collect::<Vec<_>>();
+                let failed_stage = quest_stages.iter().copied().find(|stage| {
+                    stage.quest_kind.as_deref() == Some("failed")
+                        && (state
+                            .active_objective_stage_ids
+                            .iter()
+                            .any(|stage_id| stage_id == &stage.id)
+                            || state.completed_stage_ids.contains(&stage.id))
+                });
+                let display_stage = failed_stage
+                    .or_else(|| active_stages.last().copied())
+                    .or_else(|| {
+                        quest_stages
+                            .iter()
+                            .rev()
+                            .copied()
+                            .find(|stage| state.completed_stage_ids.contains(&stage.id))
+                    })?;
+                let status = if failed_stage.is_some() {
+                    "failed"
+                } else if active_stages.is_empty() {
+                    "completed"
+                } else {
+                    "active"
+                };
+                Some(QuestSummary {
+                    quest_id,
+                    title: canonical
+                        .quest_title
+                        .as_deref()
+                        .map(|title| render_story_text(title, &state))
+                        .unwrap_or_else(|| canonical.id.clone()),
+                    kind: canonical
+                        .quest_kind
+                        .clone()
+                        .unwrap_or_else(|| "quest".to_string()),
+                    status: status.to_string(),
+                    summary: render_story_text(&display_stage.summary, &state),
+                    message: render_story_text(&display_stage.update_message, &state),
+                })
+            })
             .collect())
     }
 
@@ -349,6 +438,7 @@ impl CinderRuntime {
 mod tests {
     use super::*;
     use crate::content::types::BeatDefinition;
+    use crate::engine::state::WorldState;
     use crate::engine::test_fixtures::minimal_test_pack;
 
     #[test]
@@ -395,5 +485,73 @@ mod tests {
         );
         assert_eq!(objectives[1].quest_kind.as_deref(), Some("side"));
         assert_eq!(objectives[1].summary, "Locate the steam prison cage");
+    }
+
+    #[test]
+    fn quest_summaries_include_history_while_failed_objectives_stay_out_of_sidebar() {
+        let mut content = minimal_test_pack();
+        content.beats.initial_stage_ids = vec!["active".to_string(), "failed".to_string()];
+        content.beats.stages = vec![
+            BeatDefinition {
+                id: "completed".to_string(),
+                quest_id: Some("old_quest".to_string()),
+                quest_title: Some("Old Work".to_string()),
+                quest_kind: Some("side".to_string()),
+                summary: "The old work is done.".to_string(),
+                ..BeatDefinition::default()
+            },
+            BeatDefinition {
+                id: "active".to_string(),
+                quest_id: Some("current_quest".to_string()),
+                quest_title: Some("Current Work".to_string()),
+                quest_kind: Some("main".to_string()),
+                summary: "Keep moving.".to_string(),
+                ..BeatDefinition::default()
+            },
+            BeatDefinition {
+                id: "failed_origin".to_string(),
+                quest_id: Some("failed_quest".to_string()),
+                quest_title: Some("Fragile Work".to_string()),
+                quest_kind: Some("side".to_string()),
+                summary: "Protect the fragile work.".to_string(),
+                ..BeatDefinition::default()
+            },
+            BeatDefinition {
+                id: "failed".to_string(),
+                quest_id: Some("failed_quest".to_string()),
+                quest_title: Some("Fragile Work — Failed".to_string()),
+                quest_kind: Some("failed".to_string()),
+                summary: "The work was lost.".to_string(),
+                ..BeatDefinition::default()
+            },
+        ];
+        let mut state = WorldState::new(&content);
+        state.completed_stage_ids.insert("completed".to_string());
+        state
+            .completed_stage_ids
+            .insert("failed_origin".to_string());
+
+        let runtime = CinderRuntime::from_state(content, state, false).unwrap();
+        let objectives = runtime.current_objective_summaries().unwrap();
+        assert_eq!(objectives.len(), 1);
+        assert_eq!(objectives[0].quest_id.as_deref(), Some("current_quest"));
+
+        let quests = runtime.quest_summaries().unwrap();
+        assert_eq!(quests.len(), 3);
+        assert_eq!(
+            quests
+                .iter()
+                .find(|quest| quest.quest_id == "old_quest")
+                .map(|quest| quest.status.as_str()),
+            Some("completed")
+        );
+        let failed = quests
+            .iter()
+            .find(|quest| quest.quest_id == "failed_quest")
+            .expect("failed quest is retained in history");
+        assert_eq!(failed.status, "failed");
+        assert_eq!(failed.title, "Fragile Work");
+        assert_eq!(failed.kind, "side");
+        assert_eq!(failed.summary, "The work was lost.");
     }
 }

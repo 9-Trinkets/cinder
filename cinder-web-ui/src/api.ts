@@ -149,6 +149,15 @@ export interface ObjectiveItem {
   quest_kind?: 'main' | 'side' | string
 }
 
+export interface QuestItem {
+  quest_id: string
+  title: string
+  kind: string
+  status: 'active' | 'completed' | 'failed'
+  summary: string
+  message: string
+}
+
 export interface MenuOptionItem {
   id: string
   title: string
@@ -360,6 +369,7 @@ export interface UiSnapshot {
   current_locale: string
   locale_options: LocaleItem[]
   objectives: ObjectiveItem[]
+  quests: QuestItem[]
   objective_message: string
   secrets_found: number
   secrets_total: number

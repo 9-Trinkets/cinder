@@ -3,6 +3,7 @@ use super::workflow::{
     ActorTickRoleRunner, ActorTickWorkflowEnvelope, extract_inbound_message, route_tick_workflow,
 };
 use crate::content::types::{AutonomousHostilityMode, ContentPack};
+use crate::engine::combat_cooldowns::{CombatCooldownKind, actor_combat_cooldown_minutes};
 use crate::engine::dialogue::{HostilityCandidate, HostilityPlanRequest};
 use crate::engine::events::WorldEvent;
 use crate::engine::hostile_actions::plan_rules_hostile_actions;
@@ -108,13 +109,12 @@ fn build_hostility_plan_request(
                 .next_hostile_strike_at
                 .get(actor_id)
                 .unwrap_or(&current_time_minutes);
-            let interval = actor
-                .map(|actor| {
-                    actor.attack_interval_minutes(
-                        content.settings.combat.default_attack_interval_minutes,
-                    )
-                })
-                .unwrap_or(content.settings.combat.default_attack_interval_minutes);
+            let interval = actor_combat_cooldown_minutes(
+                content,
+                state,
+                actor_id,
+                CombatCooldownKind::Physical,
+            );
             HostilityCandidate {
                 actor_id: actor_id.clone(),
                 actor_name: actor

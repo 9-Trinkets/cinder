@@ -90,10 +90,28 @@ fn floor5_defines_five_named_civilian_offerings() {
         assert!(actor.tags.iter().any(|tag| tag == "civilian"));
         assert!(actor.tags.iter().any(|tag| tag == town_tag));
     }
+
     assert!(
         pack.actor("caged_offerings").is_none(),
         "the aggregate offering actor must be replaced by named civilians"
     );
+}
+
+#[test]
+fn floor5_house_heads_have_role_appropriate_defense() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let expected = [("lord_vane", 6), ("warmaster_torin", 8), ("lady_sylvan", 4)];
+
+    for (actor_id, defense) in expected {
+        let actor = pack
+            .actor(actor_id)
+            .unwrap_or_else(|| panic!("missing house head {actor_id}"));
+        assert_eq!(
+            actor.initial_stats.get("defense").copied(),
+            Some(defense),
+            "{actor_id} defense should match its combat role"
+        );
+    }
 }
 
 #[test]

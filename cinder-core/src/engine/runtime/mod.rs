@@ -27,6 +27,16 @@ pub struct ObjectiveSummary {
     pub quest_kind: Option<String>,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct QuestSummary {
+    pub quest_id: String,
+    pub title: String,
+    pub kind: String,
+    pub status: String,
+    pub summary: String,
+    pub message: String,
+}
+
 pub struct CinderRuntime {
     content: Arc<ContentPack>,
     dialogue: Arc<dyn DialogueGenerator>,

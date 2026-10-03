@@ -1,6 +1,6 @@
 import * as api from '../api'
 
-export type MenuView = 'main' | 'rooms' | 'follow' | 'language'
+export type MenuView = 'main' | 'rooms' | 'follow' | 'quests' | 'language'
 
 export type QuickPanel = string | null
 

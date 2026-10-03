@@ -225,7 +225,7 @@ route to optional allies and equipment on later floors.
 | **Eliška Nováková** | Glassbank | A signal-lamp tester with a patient manner and a sharp eye for faults in machinery. | **Glassbank Transit Prism**, a cobalt glass routing key |
 | **Amaru Quispe** | Woolcross | A young loom mechanic who protects the other captives even when frightened. | **Woolcross Transit Knot**, woven copper wire around a ceramic routing core |
 | **Abeni Adeyemi** | Greenrest | An experienced grower who helps Einar stabilize wounded defenders. | **Greenrest Transit Seed**, a green enamel routing disk |
-| **Chen Yu-xin (陳雨欣)** | Brass Yard | An apprentice machinist who studies every lock, pump, and damaged mechanism she sees. | **Brass Yard Transit Gear**, a toothed brass routing coin |
+| **Chen Yu-xin** | Brass Yard | An apprentice machinist who studies every lock, pump, and damaged mechanism she sees. | **Brass Yard Transit Gear**, a toothed brass routing coin |
 
 After the siege, every survivor gives Layla their permanent town token. Binding
 a token adds that town to Layla's teleport destinations and tactical map. The

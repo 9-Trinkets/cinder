@@ -1,6 +1,7 @@
 pub mod actor_tick;
 pub mod actor_turn;
 pub mod behavior;
+mod combat_cooldowns;
 pub mod commands;
 pub mod conversation_memory;
 pub mod dialogue;

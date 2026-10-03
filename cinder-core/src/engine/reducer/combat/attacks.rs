@@ -1,4 +1,5 @@
 use crate::content::types::{AllyAttackMode, AllyAttackParticipants, ContentPack};
+use crate::engine::combat_cooldowns::{CombatCooldownKind, actor_combat_cooldown_minutes};
 use crate::engine::hook_ids;
 use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::narrative::NarrativeLines;
@@ -149,10 +150,12 @@ pub(in crate::engine::reducer) fn apply_attack_target(
     if relationship.stance != ActorStance::Allied && relationship.stance != ActorStance::Hostile {
         relationship.stance = ActorStance::Hostile;
         state.set_relationship(target_actor_id, relationship);
-        let interval = content
-            .actor(target_actor_id)
-            .map(|actor| actor.attack_interval_minutes(combat.default_attack_interval_minutes))
-            .unwrap_or(combat.default_attack_interval_minutes);
+        let interval = actor_combat_cooldown_minutes(
+            content,
+            state,
+            target_actor_id,
+            CombatCooldownKind::Physical,
+        );
         state.next_hostile_strike_at.insert(
             target_actor_id.to_string(),
             state.current_time_minutes + interval,

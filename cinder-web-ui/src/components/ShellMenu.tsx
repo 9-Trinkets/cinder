@@ -26,7 +26,7 @@ const CANONICAL_FALLBACK: { id: string; labelKey: string }[] = [
 ]
 
 const KNOWN_IDS = new Set([
-  'rooms', 'follow', 'language',
+  'rooms', 'follow', 'quests', 'language',
 ])
 
 function isKnownMenuItem(id: string): boolean {
@@ -57,7 +57,7 @@ export default function ShellMenu({
   busy,
 }: ShellMenuProps) {
   const t = ui.ui_text
-  const items = flattenItems(t)
+  const items = flattenItems(t).filter(item => item.id !== 'quests' || ui.quests_revealed !== false)
 
   if (view === 'rooms') {
     return (
@@ -141,6 +141,78 @@ export default function ShellMenu({
             </button>
           ))}
         </div>
+      </Modal>
+    )
+  }
+
+  if (view === 'quests') {
+    const groups = [
+      { status: 'active', label: (t.quests_active_label as string) || 'Active' },
+      { status: 'completed', label: (t.quests_completed_label as string) || 'Completed' },
+      { status: 'failed', label: (t.quests_failed_label as string) || 'Failed' },
+    ] as const
+    return (
+      <Modal title={(t.quests_menu_title as string) || 'Quest Log'} onClose={onClose}>
+        <MenuBackButton onClick={() => onViewChange('main')} />
+        {ui.quests.length > 0 ? (
+          <div className="space-y-5">
+            {groups.map(group => {
+              const quests = ui.quests.filter(quest => quest.status === group.status)
+              if (quests.length === 0) return null
+              return (
+                <section key={group.status} aria-labelledby={`quests-${group.status}`}>
+                  <div className="mb-2 flex items-center gap-2">
+                    <h3
+                      id={`quests-${group.status}`}
+                      className={`text-[10px] font-mono font-semibold uppercase tracking-[0.2em] ${
+                        group.status === 'active'
+                          ? 'text-foam'
+                          : group.status === 'completed'
+                          ? 'text-pine'
+                          : 'text-love'
+                      }`}
+                    >
+                      {group.label}
+                    </h3>
+                    <span className="h-px flex-1 bg-subtle/60" />
+                    <span className="text-[10px] tabular-nums text-muted">{quests.length}</span>
+                  </div>
+                  <div className="space-y-2">
+                    {quests.map(quest => (
+                      <article
+                        key={quest.quest_id}
+                        className={`rounded-lg border p-3 ${
+                          quest.status === 'active'
+                            ? 'border-foam/25 bg-foam/5'
+                            : quest.status === 'completed'
+                            ? 'border-pine/20 bg-pine/5'
+                            : 'border-love/25 bg-love/5'
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-3">
+                          <h4 className="text-sm font-semibold leading-tight text-text">{quest.title}</h4>
+                          <span className="shrink-0 text-[9px] font-mono uppercase tracking-[0.14em] text-muted">
+                            {quest.kind}
+                          </span>
+                        </div>
+                        {quest.summary && (
+                          <p className="mt-1.5 text-xs leading-relaxed text-text/90">{quest.summary}</p>
+                        )}
+                        {quest.message && quest.message !== quest.summary && (
+                          <p className="mt-1 text-[11px] leading-relaxed text-muted">{quest.message}</p>
+                        )}
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              )
+            })}
+          </div>
+        ) : (
+          <p className="border-y border-subtle/40 py-5 text-center text-sm text-muted">
+            {(t.quests_empty as string) || 'No quests have been recorded yet.'}
+          </p>
+        )}
       </Modal>
     )
   }
@@ -234,6 +306,10 @@ function MainMenu({
           let subtitle = ''
           if (item.id === 'rooms') subtitle = 'Fast travel to discovered chambers'
           else if (item.id === 'follow') subtitle = ui.followed_actor_name ? `Accompanying ${ui.followed_actor_name}` : 'Travel unaccompanied'
+          else if (item.id === 'quests') {
+            const activeCount = ui.quests.filter(quest => quest.status === 'active').length
+            subtitle = activeCount === 1 ? '1 active quest' : `${activeCount} active quests`
+          }
           else if (item.id === 'language') subtitle = ui.locale_options.find(l => l.code === ui.current_locale)?.label || ui.current_locale
 
           if (hasChildren) {
@@ -301,6 +377,7 @@ function MenuBackButton({ onClick }: { onClick: () => void }) {
 const VIEW_ROUTE: Record<string, MenuView> = {
   rooms: 'rooms',
   follow: 'follow',
+  quests: 'quests',
   language: 'language',
 }
 

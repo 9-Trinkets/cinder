@@ -78,7 +78,8 @@ fn goblin_shaman_is_initially_hostile_and_attacks_on_sight() {
     let shaman = pack.actor("goblin-shaman").expect("goblin-shaman exists");
     assert!(shaman.initial_hostile);
     assert!(shaman.attackable);
-    assert_eq!(shaman.attack_interval_minutes, Some(2));
+    assert_eq!(shaman.attack_interval_minutes, None);
+    assert_eq!(pack.stats.actor["dexterity"].default, 6);
 
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     assert_eq!(

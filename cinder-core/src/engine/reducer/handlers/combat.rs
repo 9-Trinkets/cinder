@@ -1,4 +1,5 @@
 use crate::content::types::ContentPack;
+use crate::engine::combat_cooldowns::{CombatCooldownKind, actor_combat_cooldown_minutes};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::party_policy::{consume_party_reaction, select_defensive_reaction};
 use crate::engine::reducer::combat::resisted_damage;
@@ -123,10 +124,8 @@ pub(crate) fn handle_hostile_strike(
             }
         }
     }
-    let interval = state
-        .actor(content, actor_id)
-        .map(|actor| actor.attack_interval_minutes(combat.default_attack_interval_minutes))
-        .unwrap_or(combat.default_attack_interval_minutes);
+    let interval =
+        actor_combat_cooldown_minutes(content, state, actor_id, CombatCooldownKind::Physical);
     state
         .next_hostile_strike_at
         .insert(actor_id.to_string(), state.current_time_minutes + interval);
@@ -236,10 +235,8 @@ pub(crate) fn handle_hostile_heal(
 
     lines.narration(line);
 
-    let interval = state
-        .actor(content, actor_id)
-        .map(|actor| actor.attack_interval_minutes(combat.default_attack_interval_minutes))
-        .unwrap_or(combat.default_attack_interval_minutes);
+    let interval =
+        actor_combat_cooldown_minutes(content, state, actor_id, CombatCooldownKind::Spell);
     state
         .next_hostile_strike_at
         .insert(actor_id.to_string(), state.current_time_minutes + interval);

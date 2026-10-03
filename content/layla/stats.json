@@ -4,6 +4,7 @@
     "mp": { "default": 10, "min": 0, "max": 20, "time_step_minutes": 5 },
     "strength": { "default": 3, "min": 0, "max": 10 },
     "defense": { "default": 1, "min": 0, "max": 10 },
+    "dexterity": { "default": 6, "min": 0, "max": 10 },
     "intelligence": { "default": 3, "min": 0, "max": 10 },
     "wisdom": { "default": 3, "min": 0, "max": 10 }
   }

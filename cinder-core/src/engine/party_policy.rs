@@ -3,6 +3,7 @@ use crate::content::types::{
     PartyReactionAction, PartyReactionCooldown, PartyReactionWindow, PartySupportEffect,
     PartyTargetSelection,
 };
+use crate::engine::combat_cooldowns::{CombatCooldownKind, actor_combat_cooldown_minutes};
 use crate::engine::state::{ActorStance, WorldState};
 use std::cmp::Ordering;
 
@@ -112,14 +113,14 @@ pub(crate) fn consume_party_reaction(
     decision: &PartyReactionDecision,
 ) {
     let minutes = match decision.cooldown {
-        PartyReactionCooldown::ActorCombatInterval => content
-            .actor(&decision.actor_id)
-            .map(|actor| {
-                actor.attack_interval_minutes(
-                    content.settings.combat.default_attack_interval_minutes,
-                )
-            })
-            .unwrap_or(content.settings.combat.default_attack_interval_minutes),
+        PartyReactionCooldown::ActorCombatInterval => {
+            let kind = if decision.action == PartyReactionAction::Support {
+                CombatCooldownKind::Spell
+            } else {
+                CombatCooldownKind::Physical
+            };
+            actor_combat_cooldown_minutes(content, state, &decision.actor_id, kind)
+        }
         PartyReactionCooldown::FixedMinutes { minutes } => minutes,
     };
     state.party_reaction_ready_at.insert(

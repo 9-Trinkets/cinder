@@ -22,6 +22,16 @@ pub struct ObjectiveItem {
     pub quest_kind: Option<String>,
 }
 
+#[derive(Clone, Serialize)]
+pub struct QuestItem {
+    pub quest_id: String,
+    pub title: String,
+    pub kind: String,
+    pub status: String,
+    pub summary: String,
+    pub message: String,
+}
+
 fn is_false(b: &bool) -> bool {
     !*b
 }
@@ -247,6 +257,7 @@ pub struct UiSnapshot {
     pub current_locale: String,
     pub locale_options: Vec<LocaleItem>,
     pub objectives: Vec<ObjectiveItem>,
+    pub quests: Vec<QuestItem>,
     pub objective_message: String,
     pub secrets_found: usize,
     pub secrets_total: usize,
