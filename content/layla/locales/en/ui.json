@@ -16,6 +16,10 @@
   "quests_completed_label": "Completed",
   "quests_failed_label": "Failed",
   "quests_empty": "No quests have been recorded yet.",
+  "bookmark_menu_label": "Bookmarks",
+  "bookmark_modal_title": "Bookmarks",
+  "create_bookmark_label": "+ Save Bookmark",
+  "bookmark_empty": "No bookmarks saved yet. Save a bookmark to create a restore point.",
   "about_label": "About",
   "exit_label": "Exit",
   "things_to_do_empty": "The playbook only says to find a way out. I'm trying to get you something more useful.",
@@ -50,6 +54,10 @@
       {
         "id": "quests",
         "label": "Quests"
+      },
+      {
+        "id": "bookmarks",
+        "label": "Bookmarks"
       },
       {
         "id": "language",

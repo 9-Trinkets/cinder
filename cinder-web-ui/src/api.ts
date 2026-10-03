@@ -484,3 +484,49 @@ export interface PackInfo {
 export function listPacks(token: string) {
   return reqAuth<PackInfo[]>('/packs', token)
 }
+
+export interface BookmarkInfo {
+  id: string
+  pack_id: string
+  play_id?: string | null
+  label: string
+  turn_number: number
+  current_room_name: string
+  day_number: number
+  time_label: string
+  created_at: string
+}
+
+export interface ResumeBookmarkResponse {
+  play_id: string
+  snapshot: UiSnapshot
+  lines: NarrativeLine[]
+}
+
+export function listGameBookmarks(token: string, playId: string) {
+  return reqAuth<BookmarkInfo[]>(`/games/${playId}/bookmarks`, token)
+}
+
+export function listPackBookmarks(token: string, packId: string) {
+  return reqAuth<BookmarkInfo[]>(`/packs/${packId}/bookmarks`, token)
+}
+
+export function createBookmark(token: string, playId: string, label?: string) {
+  return reqAuth<BookmarkInfo>(`/games/${playId}/bookmarks`, token, {
+    method: 'POST',
+    body: JSON.stringify({ label }),
+  })
+}
+
+export function resumeBookmark(token: string, bookmarkId: string) {
+  return reqAuth<ResumeBookmarkResponse>(`/bookmarks/${bookmarkId}/resume`, token, {
+    method: 'POST',
+  })
+}
+
+export function deleteBookmark(token: string, bookmarkId: string) {
+  return reqAuth<void>(`/bookmarks/${bookmarkId}`, token, {
+    method: 'DELETE',
+  })
+}
+

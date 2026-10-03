@@ -43,6 +43,10 @@ pub struct CreatePlayRequest {
 pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
     let auth_routes = Router::new()
         .route("/api/packs", get(list_packs))
+        .route(
+            "/api/packs/{pack_id}/bookmarks",
+            get(list_pack_bookmarks_handler),
+        )
         .route("/api/games", get(list_plays).post(create_play))
         .route("/api/games/{id}/command", post(run_command))
         .route("/api/games/{id}/tick", post(run_tick))
@@ -50,6 +54,12 @@ pub fn routes(state: Arc<AppState>) -> Router<Arc<AppState>> {
         .route("/api/games/{id}/transcript", get(transcript_handler))
         .route("/api/games/{id}/locale", post(set_locale_handler))
         .route("/api/games/{id}/continue", post(continue_play_handler))
+        .route(
+            "/api/games/{id}/bookmarks",
+            get(list_play_bookmarks_handler).post(create_bookmark_handler),
+        )
+        .route("/api/bookmarks/{id}/resume", post(resume_bookmark_handler))
+        .route("/api/bookmarks/{id}", delete(delete_bookmark_handler))
         .route("/api/games/{id}", delete(delete_play_handler))
         .route_layer(middleware::from_fn_with_state(
             state.clone(),
@@ -68,6 +78,23 @@ pub async fn create_play(
     auth: AuthPlayer,
     Json(req): Json<CreatePlayRequest>,
 ) -> Result<Json<PlayInfo>, (StatusCode, String)> {
+    let player_uuid = Uuid::parse_str(&auth.id).map_err(internal)?;
+    let existing = sqlx::query_scalar::<_, Uuid>(
+        "SELECT id FROM game_plays WHERE player_id = $1 AND pack_id = $2 LIMIT 1",
+    )
+    .bind(player_uuid)
+    .bind(&req.pack_id)
+    .fetch_optional(&*state.pool)
+    .await
+    .map_err(internal)?;
+
+    if existing.is_some() {
+        return Err((
+            StatusCode::CONFLICT,
+            "A running chronicle already exists for this tale. Delete it before beginning a new one.".to_string(),
+        ));
+    }
+
     let (play_id, title, intro_text) =
         game_manager::create_play(&state.pool, &auth.id, &req.pack_id)
             .await
@@ -392,4 +419,65 @@ async fn handle_ws(
     }
 
     writer_handle.abort();
+}
+
+#[derive(Deserialize)]
+pub struct CreateBookmarkRequest {
+    pub label: Option<String>,
+}
+
+pub async fn create_bookmark_handler(
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+    Path(play_id): Path<String>,
+    Json(req): Json<CreateBookmarkRequest>,
+) -> Result<Json<game_manager::BookmarkInfo>, (StatusCode, String)> {
+    let bookmark = game_manager::create_bookmark(&state.pool, &play_id, &auth.id, req.label)
+        .await
+        .map_err(internal)?;
+    Ok(Json(bookmark))
+}
+
+pub async fn list_play_bookmarks_handler(
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+    Path(play_id): Path<String>,
+) -> Result<Json<Vec<game_manager::BookmarkInfo>>, (StatusCode, String)> {
+    let bookmarks = game_manager::list_play_bookmarks(&state.pool, &play_id, &auth.id)
+        .await
+        .map_err(internal)?;
+    Ok(Json(bookmarks))
+}
+
+pub async fn list_pack_bookmarks_handler(
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+    Path(pack_id): Path<String>,
+) -> Result<Json<Vec<game_manager::BookmarkInfo>>, (StatusCode, String)> {
+    let bookmarks = game_manager::list_pack_bookmarks(&state.pool, &auth.id, &pack_id)
+        .await
+        .map_err(internal)?;
+    Ok(Json(bookmarks))
+}
+
+pub async fn resume_bookmark_handler(
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+    Path(bookmark_id): Path<String>,
+) -> Result<Json<game_manager::ResumeBookmarkResult>, (StatusCode, String)> {
+    let result = game_manager::resume_bookmark(&state.pool, &bookmark_id, &auth.id)
+        .await
+        .map_err(internal)?;
+    Ok(Json(result))
+}
+
+pub async fn delete_bookmark_handler(
+    State(state): State<Arc<AppState>>,
+    auth: AuthPlayer,
+    Path(bookmark_id): Path<String>,
+) -> Result<Json<()>, (StatusCode, String)> {
+    game_manager::delete_bookmark(&state.pool, &bookmark_id, &auth.id)
+        .await
+        .map_err(internal)?;
+    Ok(Json(()))
 }

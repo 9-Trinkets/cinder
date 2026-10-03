@@ -68,6 +68,9 @@ export default function GamePage() {
     closeMovie,
     showExitConfirm,
     setShowExitConfirm,
+    doCreateBookmark,
+    doResumeBookmark,
+    doDeleteBookmark,
   } = play
   const [showFolio, setShowFolio] = useState(false)
   const [showSidebar, setShowSidebar] = useState(true)
@@ -522,6 +525,11 @@ export default function GamePage() {
           onChangeLocale={doChangeLocale}
           onExit={doExit}
           busy={busy}
+          playId={id ?? undefined}
+          token={token ?? undefined}
+          onCreateBookmark={doCreateBookmark}
+          onResumeBookmark={doResumeBookmark}
+          onDeleteBookmark={doDeleteBookmark}
         />
       )}
 

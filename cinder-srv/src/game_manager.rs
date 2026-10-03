@@ -6,6 +6,7 @@ use std::sync::Arc;
 use uuid::Uuid;
 
 mod actions;
+mod bookmarks;
 mod db;
 mod response;
 mod ui;
@@ -13,6 +14,10 @@ mod ui;
 pub use self::actions::{
     continue_play, create_play, run_command, run_realtime_tick, run_realtime_tick_with_status,
     set_locale,
+};
+pub use self::bookmarks::{
+    BookmarkInfo, ResumeBookmarkResult, create_bookmark, delete_bookmark, list_pack_bookmarks,
+    list_play_bookmarks, resume_bookmark,
 };
 pub use self::response::{CommandResponse, consume_projector_sequence};
 pub use self::ui::UiSnapshot;

@@ -13,6 +13,10 @@
   "resume_label": "Resume",
   "things_to_do_label": "Session goals",
   "language_menu_label": "Language",
+  "bookmark_menu_label": "Bookmarks",
+  "bookmark_modal_title": "Bookmarks",
+  "create_bookmark_label": "+ Save Bookmark",
+  "bookmark_empty": "No bookmarks saved yet.",
   "about_label": "About",
   "exit_label": "Exit",
   "things_to_do_empty": "Listen, recommend, support, and see the reading through.",
@@ -65,6 +69,10 @@
       {
         "id": "goals",
         "label": "Session goals"
+      },
+      {
+        "id": "bookmarks",
+        "label": "Bookmarks"
       },
       {
         "id": "settings",

@@ -1,6 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Modal from './Modal'
-import type { UiSnapshot } from '../api'
+import Button from './Button'
+import ConfirmDialog from './ConfirmDialog'
+import * as api from '../api'
+import type { BookmarkInfo, UiSnapshot } from '../api'
 import type { MenuView } from '../hooks/playUtils'
 
 interface ShellMenuProps {
@@ -13,6 +16,11 @@ interface ShellMenuProps {
   onChangeLocale: (locale: string) => void
   onExit: () => void
   busy: boolean
+  playId?: string
+  token?: string
+  onCreateBookmark?: (label?: string) => Promise<BookmarkInfo | null>
+  onResumeBookmark?: (bookmarkId: string) => Promise<boolean>
+  onDeleteBookmark?: (bookmarkId: string) => Promise<boolean>
 }
 
 interface FlatItem {
@@ -21,12 +29,13 @@ interface FlatItem {
 }
 
 const CANONICAL_FALLBACK: { id: string; labelKey: string }[] = [
+  { id: 'bookmarks', labelKey: 'bookmark_menu_label' },
   { id: 'language', labelKey: 'language_menu_label' },
   { id: 'exit', labelKey: 'exit_label' },
 ]
 
 const KNOWN_IDS = new Set([
-  'rooms', 'follow', 'quests', 'language',
+  'rooms', 'follow', 'quests', 'bookmarks', 'language',
 ])
 
 function isKnownMenuItem(id: string): boolean {
@@ -55,6 +64,11 @@ export default function ShellMenu({
   onChangeLocale,
   onExit,
   busy,
+  playId,
+  token,
+  onCreateBookmark,
+  onResumeBookmark,
+  onDeleteBookmark,
 }: ShellMenuProps) {
   const t = ui.ui_text
   const items = flattenItems(t).filter(item => item.id !== 'quests' || ui.quests_revealed !== false)
@@ -217,6 +231,22 @@ export default function ShellMenu({
     )
   }
 
+  if (view === 'bookmarks') {
+    return (
+      <BookmarksView
+        playId={playId}
+        token={token}
+        t={t}
+        onViewChange={onViewChange}
+        onClose={onClose}
+        onCreateBookmark={onCreateBookmark}
+        onResumeBookmark={onResumeBookmark}
+        onDeleteBookmark={onDeleteBookmark}
+        busy={busy}
+      />
+    )
+  }
+
   return (
     <MainMenu
       items={items}
@@ -293,7 +323,7 @@ function MainMenu({
                     {item.label}
                   </span>
                   <span className="text-xs text-muted">
-                    Bookmark progress and return to library
+                    Leave session and return to library
                   </span>
                 </div>
                 <span className="text-muted group-hover:text-love group-hover:translate-x-1 transition-transform">
@@ -310,6 +340,7 @@ function MainMenu({
             const activeCount = ui.quests.filter(quest => quest.status === 'active').length
             subtitle = activeCount === 1 ? '1 active quest' : `${activeCount} active quests`
           }
+          else if (item.id === 'bookmarks') subtitle = 'Save and restore game state'
           else if (item.id === 'language') subtitle = ui.locale_options.find(l => l.code === ui.current_locale)?.label || ui.current_locale
 
           if (hasChildren) {
@@ -378,6 +409,7 @@ const VIEW_ROUTE: Record<string, MenuView> = {
   rooms: 'rooms',
   follow: 'follow',
   quests: 'quests',
+  bookmarks: 'bookmarks',
   language: 'language',
 }
 
@@ -390,3 +422,203 @@ function handleItemClick(
   const view = VIEW_ROUTE[id]
   if (view) onViewChange(view)
 }
+
+function fmtBookmarkDate(s: string): string {
+  const d = new Date(s)
+  if (!isNaN(d.getTime())) return d.toLocaleString()
+  return s
+}
+
+interface BookmarksViewProps {
+  playId?: string
+  token?: string
+  t: UiSnapshot['ui_text']
+  onViewChange: (v: MenuView) => void
+  onClose: () => void
+  onCreateBookmark?: (label?: string) => Promise<BookmarkInfo | null>
+  onResumeBookmark?: (bookmarkId: string) => Promise<boolean>
+  onDeleteBookmark?: (bookmarkId: string) => Promise<boolean>
+  busy: boolean
+}
+
+function BookmarksView({
+  playId,
+  token,
+  t,
+  onViewChange,
+  onClose,
+  onCreateBookmark,
+  onResumeBookmark,
+  onDeleteBookmark,
+  busy,
+}: BookmarksViewProps) {
+  const [bookmarks, setBookmarks] = useState<BookmarkInfo[]>([])
+  const [loading, setLoading] = useState(true)
+  const [labelInput, setLabelInput] = useState('')
+  const [creating, setCreating] = useState(false)
+  const [actionBusy, setActionBusy] = useState(false)
+  const [confirmResumeId, setConfirmResumeId] = useState<string | null>(null)
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!token || !playId) {
+      setLoading(false)
+      return
+    }
+    let active = true
+    setLoading(true)
+    api.listGameBookmarks(token, playId)
+      .then(items => {
+        if (active) setBookmarks(items)
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (active) setLoading(false)
+      })
+    return () => { active = false }
+  }, [token, playId])
+
+  async function handleCreate(e?: React.FormEvent) {
+    if (e) e.preventDefault()
+    if (!onCreateBookmark || creating || busy || actionBusy) return
+    setCreating(true)
+    try {
+      const created = await onCreateBookmark(labelInput.trim() || undefined)
+      if (created) {
+        setBookmarks(prev => [created, ...prev])
+        setLabelInput('')
+      }
+    } finally {
+      setCreating(false)
+    }
+  }
+
+  async function handleResume(bookmarkId: string) {
+    if (!onResumeBookmark || actionBusy) return
+    setActionBusy(true)
+    try {
+      const ok = await onResumeBookmark(bookmarkId)
+      if (ok) {
+        setConfirmResumeId(null)
+        onClose()
+      }
+    } finally {
+      setActionBusy(false)
+    }
+  }
+
+  async function handleDelete(bookmarkId: string) {
+    if (!onDeleteBookmark || actionBusy) return
+    setActionBusy(true)
+    try {
+      const ok = await onDeleteBookmark(bookmarkId)
+      if (ok) {
+        setBookmarks(prev => prev.filter(b => b.id !== bookmarkId))
+        setConfirmDeleteId(null)
+      }
+    } finally {
+      setActionBusy(false)
+    }
+  }
+
+  return (
+    <Modal title={(t.bookmark_modal_title as string) || 'Bookmarks'} onClose={onClose}>
+      <MenuBackButton onClick={() => onViewChange('main')} />
+
+      <form onSubmit={handleCreate} className="mb-4 flex gap-2">
+        <input
+          type="text"
+          value={labelInput}
+          onChange={e => setLabelInput(e.target.value)}
+          placeholder="Bookmark note / label (optional)..."
+          disabled={creating || busy || actionBusy}
+          className="flex-1 px-3 py-1.5 text-xs rounded bg-surface border border-subtle text-text placeholder:text-muted focus:outline-none focus:border-foam"
+        />
+        <Button
+          variant="primary"
+          size="sm"
+          type="submit"
+          disabled={creating || busy || actionBusy || !onCreateBookmark}
+          className="text-xs px-3 py-1.5 whitespace-nowrap cursor-pointer"
+        >
+          {creating ? 'Saving…' : ((t.create_bookmark_label as string) || '+ Save Bookmark')}
+        </Button>
+      </form>
+
+      {loading ? (
+        <div className="py-6 text-center text-xs text-muted">Loading bookmarks…</div>
+      ) : bookmarks.length === 0 ? (
+        <p className="border-y border-subtle/40 py-6 text-center text-xs text-muted">
+          {(t.bookmark_empty as string) || 'No bookmarks saved yet. Save a bookmark to create a restore point.'}
+        </p>
+      ) : (
+        <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40 max-h-72 overflow-y-auto">
+          {bookmarks.map(b => (
+            <div key={b.id} className="py-3 px-1 flex items-center justify-between gap-3 group">
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-text truncate">
+                    {b.label || b.current_room_name || 'Save Point'}
+                  </span>
+                  {b.day_number !== null && b.day_number !== undefined && (
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-foam bg-pine/15 px-1.5 py-0.5 rounded border border-pine/30">
+                      Day {b.day_number}
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-muted mt-0.5 truncate">
+                  {[
+                    b.time_label,
+                    b.turn_number !== null && b.turn_number !== undefined ? `Turn ${b.turn_number}` : null,
+                    b.current_room_name && b.label ? b.current_room_name : null,
+                    fmtBookmarkDate(b.created_at),
+                  ].filter(Boolean).join(' • ')}
+                </p>
+              </div>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setConfirmResumeId(b.id)}
+                  disabled={busy || actionBusy}
+                  className="px-2.5 py-1 text-xs font-semibold rounded text-foam hover:bg-pine/20 border border-pine/30 transition-colors cursor-pointer"
+                >
+                  Resume
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConfirmDeleteId(b.id)}
+                  disabled={busy || actionBusy}
+                  className="px-2 py-1 text-xs rounded text-muted hover:text-love transition-colors cursor-pointer"
+                  title="Delete bookmark"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {confirmResumeId && (
+        <ConfirmDialog
+          title="Resume Bookmark"
+          message="Resuming this bookmark will replace your current running session and progress. Continue?"
+          confirmLabel="Resume"
+          onConfirm={() => handleResume(confirmResumeId)}
+          onCancel={() => setConfirmResumeId(null)}
+        />
+      )}
+
+      {confirmDeleteId && (
+        <ConfirmDialog
+          title="Delete Bookmark"
+          message="Are you sure you want to delete this bookmark? This cannot be undone."
+          confirmLabel="Delete"
+          onConfirm={() => handleDelete(confirmDeleteId)}
+          onCancel={() => setConfirmDeleteId(null)}
+        />
+      )}
+    </Modal>
+  )
+}
+

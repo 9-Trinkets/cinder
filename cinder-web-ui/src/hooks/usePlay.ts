@@ -239,6 +239,50 @@ export function usePlay() {
     setShowExitConfirm(true)
   }
 
+  async function doCreateBookmark(label?: string): Promise<api.BookmarkInfo | null> {
+    if (!token || !id) return null
+    try {
+      const b = await api.createBookmark(token, id, label)
+      showToast('Bookmark saved', 'info')
+      return b
+    } catch (err: unknown) {
+      showToast(toErrorMessage(err, 'failed to save bookmark'), 'error')
+      return null
+    }
+  }
+
+  async function doResumeBookmark(bookmarkId: string): Promise<boolean> {
+    if (!token || !id) return false
+    setPanelBusy(true)
+    try {
+      const res = await api.resumeBookmark(token, bookmarkId)
+      setLines(res.lines.map(l => ({ text: l.text, kind: l.kind as api.LineKind, key: nextKey.current++ })))
+      setUiSnapshot(res.snapshot)
+      setActiveMenu(res.snapshot.active_menu ?? null)
+      setGameOver(res.snapshot.game_closure !== null)
+      setShowMenu(false)
+      showToast('Bookmark restored', 'info')
+      return true
+    } catch (err: unknown) {
+      showToast(toErrorMessage(err, 'failed to resume bookmark'), 'error')
+      return false
+    } finally {
+      setPanelBusy(false)
+    }
+  }
+
+  async function doDeleteBookmark(bookmarkId: string): Promise<boolean> {
+    if (!token) return false
+    try {
+      await api.deleteBookmark(token, bookmarkId)
+      showToast('Bookmark deleted', 'info')
+      return true
+    } catch (err: unknown) {
+      showToast(toErrorMessage(err, 'failed to delete bookmark'), 'error')
+      return false
+    }
+  }
+
   function closeMovie() {
     if (movie && movie.narrative_lines.length > 0) {
       appendLines(movie.narrative_lines.map(text => ({ text, kind: 'narration' })), 'auto')
@@ -482,6 +526,9 @@ export function usePlay() {
     doFollowActor,
     doChangeLocale,
     doExit,
+    doCreateBookmark,
+    doResumeBookmark,
+    doDeleteBookmark,
     send,
     findPanelConfig: getPanelConfig,
     handleSelectPanelOption,
