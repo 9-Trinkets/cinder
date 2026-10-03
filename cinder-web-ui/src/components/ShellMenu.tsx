@@ -75,7 +75,7 @@ export default function ShellMenu({
 
   if (view === 'rooms') {
     return (
-      <Modal title={t.room_switcher_title || 'Fast Travel'} onClose={onClose}>
+      <Modal title={t.room_switcher_title || 'Travel'} onClose={onClose}>
         <MenuBackButton onClick={() => onViewChange('main')} />
         <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40">
           {ui.rooms.map((r) => (
@@ -304,7 +304,7 @@ function MainMenu({
   }
 
   return (
-    <Modal title={t.shell_menu_title || 'System Menu'} onClose={onClose}>
+    <Modal title={t.shell_menu_title || 'Menu'} onClose={onClose}>
       <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40 my-1">
         {items.map((item) => {
           const packItem = t.shell_menu.items.find(i => i.id === item.id)
@@ -323,7 +323,7 @@ function MainMenu({
                     {item.label}
                   </span>
                   <span className="text-xs text-muted">
-                    Leave session and return to library
+                    Leave chronicle and return to library
                   </span>
                 </div>
                 <span className="text-muted group-hover:text-love group-hover:translate-x-1 transition-transform">
@@ -334,7 +334,7 @@ function MainMenu({
           }
 
           let subtitle = ''
-          if (item.id === 'rooms') subtitle = 'Fast travel to discovered chambers'
+          if (item.id === 'rooms') subtitle = 'Travel to discovered chambers'
           else if (item.id === 'follow') subtitle = ui.followed_actor_name ? `Accompanying ${ui.followed_actor_name}` : 'Travel unaccompanied'
           else if (item.id === 'quests') {
             const activeCount = ui.quests.filter(quest => quest.status === 'active').length

@@ -175,10 +175,10 @@ export default function PackDetailPage() {
                       onClick={() => navigate(`/games/${plays[0].play_id}`)}
                       className="px-6 py-2.5 text-sm font-semibold tracking-wide shadow-xs cursor-pointer"
                     >
-                      Resume Session
+                      Resume Reading
                     </Button>
                     <span className="text-xs text-muted">
-                      A session is currently in progress. Delete it below to begin anew.
+                      A reading is currently in progress. Delete it below to begin anew.
                     </span>
                   </div>
                 ) : (
@@ -198,10 +198,10 @@ export default function PackDetailPage() {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <span className="text-[10px] font-mono uppercase tracking-widest text-muted block mb-0.5">
-                    Session
+                    Reading
                   </span>
                   <h2 className="text-xl font-bold font-prose text-text tracking-tight">
-                    Current Session
+                    Ongoing Reading
                   </h2>
                 </div>
                 {plays.length > 0 && (
@@ -213,8 +213,8 @@ export default function PackDetailPage() {
 
               {plays.length === 0 ? (
                 <div className="text-center py-8 px-4 border border-dashed border-subtle/60 rounded-xl">
-                  <p className="text-muted text-sm italic mb-1.5">No active session.</p>
-                  <p className="text-faint text-xs">Begin a chronicle above to start playing.</p>
+                  <p className="text-muted text-sm italic mb-1.5">No active reading.</p>
+                  <p className="text-faint text-xs">Begin a chronicle above to start.</p>
                 </div>
               ) : (
                 <div className="divide-y divide-subtle/40 border-t border-b border-subtle/40">
@@ -231,7 +231,7 @@ export default function PackDetailPage() {
                           <p className="text-sm font-medium text-text group-hover:text-foam transition-colors truncate">
                             {p.current_room_name
                               ? p.current_room_name
-                              : `Session started ${fmtTime(p.created_at)}`}
+                              : `Started ${fmtTime(p.created_at)}`}
                           </p>
                           <p className="text-xs text-muted/70 font-mono mt-0.5">
                             {[
@@ -250,7 +250,7 @@ export default function PackDetailPage() {
                         onClick={() => setConfirmDelete(p.play_id)}
                         disabled={deleting === p.play_id}
                         className="opacity-0 group-hover:opacity-100 text-muted hover:text-love transition-opacity text-xs"
-                        title="Delete session"
+                        title="Delete reading"
                       >
                         {deleting === p.play_id ? '…' : '✕'}
                       </Button>
@@ -331,8 +331,8 @@ export default function PackDetailPage() {
 
       {confirmDelete && (
         <ConfirmDialog
-          title="Delete Session"
-          message="Delete this active session? This cannot be undone."
+          title="Delete Reading"
+          message="Delete this active reading? This cannot be undone."
           confirmLabel="Delete"
           onConfirm={() => doDelete(confirmDelete)}
           onCancel={() => setConfirmDelete(null)}

@@ -1,7 +1,7 @@
 {
   "language_name": "English",
   "menu_button_label": "? Menu",
-  "game_over_hint": "↑/↓ or PageUp/PageDown scroll • q exits",
+  "game_over_hint": "↑/↓ or PageUp/PageDown to scroll",
   "menu_option_list_title": "Choose an option",
   "menu_choice_hint": "Use ↑/↓ and Enter to choose.",
   "menu_choice_transcript": "chose {title}",
@@ -42,7 +42,7 @@
   "final_summary_preview_label": "Next chapter",
   "final_summary_empty_preview": "The next chapter is still taking shape.",
   "exit_confirm_title": "Exit chapter?",
-  "exit_confirm_body": "Press Enter to exit to the terminal, or Esc to keep playing.",
+  "exit_confirm_body": "Return to the library? Your journey is saved.",
   "projector_skip_hint": "Press Enter to skip ahead. Esc closes.",
   "projector_title_prefix": "Projector",
   "error_prefix": "Handler:",

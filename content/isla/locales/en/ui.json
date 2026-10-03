@@ -3,7 +3,7 @@
   "menu_button_label": "? Menu",
   "act_ended_title": "Session Ended",
   "commands_group_act": "Session",
-  "game_over_hint": "↑/↓ or PageUp/PageDown scroll • q exits",
+  "game_over_hint": "↑/↓ or PageUp/PageDown to scroll",
   "menu_option_list_title": "Choose an option",
   "menu_choice_hint": "Use ↑/↓ and Enter to choose.",
   "menu_choice_transcript": "chose {title}",
@@ -52,8 +52,8 @@
       }
     ]
   },
-  "exit_confirm_title": "Exit act?",
-  "exit_confirm_body": "Press Enter to exit to the terminal, or Esc to keep playing.",
+  "exit_confirm_title": "Leave session?",
+  "exit_confirm_body": "Return to the library? Your journey is saved.",
   "projector_skip_hint": "Press Enter to skip ahead. Esc closes.",
   "projector_title_prefix": "Projector",
   "error_prefix": "Error:",

@@ -173,7 +173,7 @@ pub(super) fn default_act_ended_title() -> String {
 }
 
 pub(super) fn default_game_over_hint() -> String {
-    "↑/↓ or PageUp/PageDown scroll • q exits".to_string()
+    "↑/↓ or PageUp/PageDown to scroll".to_string()
 }
 
 pub(super) fn default_menu_option_list_title() -> String {
@@ -309,11 +309,11 @@ pub(super) fn default_final_summary_empty_preview() -> String {
 }
 
 pub(super) fn default_exit_confirm_title() -> String {
-    "Exit act?".to_string()
+    "Leave Chronicle?".to_string()
 }
 
 pub(super) fn default_exit_confirm_body() -> String {
-    "Press Enter to exit to the terminal, or Esc to keep playing.".to_string()
+    "Return to the library? Your journey is saved.".to_string()
 }
 
 pub(super) fn default_projector_skip_hint() -> String {

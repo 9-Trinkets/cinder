@@ -171,7 +171,7 @@ const TranscriptPane = memo(function TranscriptPane({
             <ActClosureModal actClosure={gameClosure} onDismiss={onDismissGameClosure} />
           )}
           {gameOver && !actClosure && !gameClosure && (
-            <p className="text-love font-semibold text-center pt-4">Game Over</p>
+            <p className="text-love font-semibold text-center pt-4">The End</p>
           )}
           <div ref={bottomRef} />
         </div>

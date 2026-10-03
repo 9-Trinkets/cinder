@@ -417,7 +417,7 @@ export default function GamePage() {
                 <input
                   ref={inputRef}
                   className="flex-1 px-3 py-2 rounded bg-overlay border border-subtle text-text placeholder-faint focus:outline-none focus:border-pine text-sm font-mono"
-                  placeholder={gameOver ? 'Game over' : 'What do you do?'}
+                  placeholder={gameOver ? 'The tale has ended.' : 'What do you do?'}
                   value={input}
                   onChange={e => {
                     const val = e.target.value
@@ -629,8 +629,8 @@ export default function GamePage() {
 
       {showExitConfirm && (
         <ConfirmDialog
-          title="Exit game?"
-          message="Return to session list?"
+          title={uiSnapshot?.ui_text?.exit_confirm_title || 'Leave Chronicle?'}
+          message={uiSnapshot?.ui_text?.exit_confirm_body || 'Return to the library? Your journey is saved.'}
           onConfirm={() => navigate('/games')}
           onCancel={() => setShowExitConfirm(false)}
         />
