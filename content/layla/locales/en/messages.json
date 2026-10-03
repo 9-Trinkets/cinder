@@ -262,6 +262,7 @@
         "voice": "handler",
         "text": "Signal's clear. Looks like taking out the shaman cleared the interference on the surveyor feed. I've patched the floor grid into your console — check your sidebar, you've got a live minimap now. Try not to walk in circles."
     },
+    "floor4.arrival.the_village": "You step off the last stair into gaslight and the smell of bread. Warm stone rings under your boots, worn pale in a path from the stairs down to a low iron hearth. Somebody has raked ash over a pair of small boots by the hearthstones and gone off to do something else. Up ahead, past the steam pipes, an iron bulkhead seals off the entire north side of the village, and two soldiers stand in front of it not moving at all. Somewhere behind the terraces a cart wheel grinds over a grate, and somebody calls a number out loud and gets it wrong.",
     "handler.descend.the_village": {
         "voice": "handler",
         "text": "Floor four. Wait — my console is picking up civilian life signs. Actual people live down here? In this dump? Keep your weapons low; let's see what the locals have to say before you go swinging."

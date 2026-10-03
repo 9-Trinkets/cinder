@@ -10280,8 +10280,8 @@
   {
     "id": "village_north_gate",
     "title": "North Approach Plaza",
-    "summary": "A broad paved plaza at the northern apex of the village. Ahead, the massive iron-and-brass bulkhead of the military fortress looms over the road, sealed shut. Two heavily-armed garrison guards stand sentry before the reinforced gates.",
-    "inspect_text": "Steam pipes run along high stone pylons to heat the open plaza. Two stern garrison sentries stand watch before the sealed brass bulkhead with ready steam crossbows, permitting no one to pass.",
+    "summary": "The road ends at a wall. You can see the whole plaza from here: a wide apron of paving where carts turn, steam pipes running the length of it, and the massive iron-and-brass bulkhead of the military fortress filling the far side. Two garrison sentries stand in front of it with their crossbows up, letting nothing past and letting nothing out.",
+    "inspect_text": "Warm air runs off the pipes along the pylons and the plaza smells like rain on hot iron. Carts have turned on the apron so many times the stone is dished into a curve. There are fresh drag marks across the paving in front of the bulkhead, and a scuff of bright brass where something heavy was dragged and then lifted again. The sentries have not moved. One of them is chewing, and swallowing is the loudest sound on the plaza. You take four steps closer and stop, because there is a point past which one of them would have to do something about you.",
     "allow_rest": false,
     "features": [
       {
@@ -10297,7 +10297,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A towering bulkhead of banded iron and riveted brass, bolted firmly from within. There is no exterior handle, and the sentries ensure nobody approaches."
+        "inspect_text": "The bulkhead is banded iron over riveted brass, three spans wide, and it is bolted from the far side. You cannot find a handle anywhere on this face, and you run your hand along the seam anyway. The warm air stops dead at the metal. Somebody has tied a strip of red cloth to a rivet at knee height, and it has faded almost through."
       }
     ],
     "exits": [
@@ -10335,13 +10335,19 @@
         "requires_story_var": "fortress_gate_open"
       }
     ],
-    "descriptions": []
+    "descriptions": [
+      {
+        "actor_defeated": "garrison_guard",
+        "summary": "The road still ends at the wall, but the plaza is empty now. You can see the whole apron of paving, the steam pipes running its length, and the massive iron-and-brass bulkhead of the military fortress filling the far side. Nothing is standing in front of it.",
+        "inspect_text": "Warm air runs off the pipes along the pylons and the plaza smells like rain on hot iron. The drag marks across the paving have not been washed out. Where the sentries stood there are two patches of flagstone that have not been walked on, and a scatter of brass bolt-heads where the crossbows came apart. Without them the bulkhead is only a wall, and it is a much larger thing to walk up to alone."
+      }
+    ]
   },
   {
     "id": "village_west_2",
     "title": "Clockmaker's Workshop",
-    "summary": "A stone terrace and open workshop lined with brass fittings. The air clicks and hums with miniature clockwork gears and steam escapements.",
-    "inspect_text": "Tariq's clockwork workshop overlooks the cavern descent. Glass cabinets house brass calipers, gear trains, and intricate timing mechanisms.",
+    "summary": "You hear the workshop before you turn into it. Gears, ticking, and a thin high whine off something escapement-small, all running at once and none of them in the same rhythm.",
+    "inspect_text": "Tariq has the whole north side open to the drop, so the workshop is lit twice, once by lamps and once by the cavern. Glass cabinets hold calipers, gear trains and timing mechanisms in order, and one drawer is out on the bench with its parts laid out in a line. He keeps looking across the plaza at the fortress pipes and then back at his own work. There is a cup on the bench with a cold skin of tea in it, and a second cup beside it, empty. Both have been sitting there a while. From the north road a cart turns: the wheel noise arrives, and then stops, and nobody comes through the workshop door. You wait to find out.",
     "allow_rest": false,
     "features": [
       {
@@ -10356,7 +10362,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A sturdy wooden workbench covered in jeweler's loupes, brass cogwheels, fine tweezers, and sketches of intricate escapements."
+        "inspect_text": "The bench is scarred with tiny brass swarf and burned at the edges. Loupes, tweezers, a jeweler's saw and four cogwheels sit where he left them, which means he put them down mid-job to go and look at something. You can see where his knee has worn the boards pale. Sketches are pinned above the bench, all the same escapement drawn over and over, each one a little more wrong than the last."
       }
     ],
     "exits": [
@@ -10386,8 +10392,8 @@
   {
     "id": "village_west_1",
     "title": "Wash Basin Terrace",
-    "summary": "A communal stone terrace lined with laundry tubs fed by warm condensed-water pipes from the central boiler.",
-    "inspect_text": "Lines of heavy canvas work-shirts and overalls hang drying in warm air rising from floor grates. Clear, warm water drains into low limestone gutters. A heavy iron pressure valve is mounted beside the main steam riser.",
+    "summary": "Everything the village washes goes through here. You hear the terrace before you turn onto it: a long steady run of warm water draining, with the dry scrape of canvas moving in the heat coming off the grates.",
+    "inspect_text": "Lines of work-shirts and overalls hang shoulder to shoulder over the whole terrace, so much of them that you have to walk underneath. Two of the lines are bare. Somebody took those down early and did not hang them back up, and there are still damp prints on the stones underneath. Warm water runs the length of a limestone gutter and vanishes into a grate. The iron pressure valve is bolted to the riser at the far end, and it ticks as it cools, one tick every few seconds, like something counting.",
     "allow_rest": false,
     "features": [
       {
@@ -10402,7 +10408,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A long zinc-lined stone trough filled with warm steaming water, scrubbed clean by generations of miners' families."
+        "inspect_text": "The trough is cut from stone and lined with zinc, and it is full to a hand's width of water hot enough to sting. Six wooden pegs are lined up on the near lip. Only four of them are wet, and you find yourself counting the dry ones twice. The scrub brush at the end has its handle worn smooth in one place, exactly where a thumb goes."
       },
       {
         "id": "village_west_1-valve",
@@ -10417,7 +10423,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A heavy cast-iron wheel mounted to a high-pressure brass junction. It vents steam directly from the central boiler lines into an exhaust flue. Turning it would release line pressure with a deafening roar."
+        "inspect_text": "A cast-iron wheel at waist height on a brass junction where four pipes meet. You put a hand on the wheel and it turns a quarter turn before it binds, which tells you it is not seized. The rust on the hub is broken away in a band where a gloved hand has been. Turn it the rest of the way and the line pressure vents into the flue at once. It will be loud enough to be heard everywhere on this floor."
       }
     ],
     "exits": [
@@ -10447,8 +10453,8 @@
   {
     "id": "village_sw_corner",
     "title": "Water Spring Terrace",
-    "summary": "A tranquil corner where cold subterranean springs bubble from living rock into tiered stone basins.",
-    "inspect_text": "Villagers fill brass canteens and wooden buckets. Overhead copper pipes radiate gentle warmth to keep the damp terrace comfortable.",
+    "summary": "Water comes out of the rock here and nowhere else on this floor. You hear it before you see it, a soft steady push into stone basins, and the air over the terrace is cooler than the rest of the village by enough to feel on your arms.",
+    "inspect_text": "Four stone basins step down the terrace, each one overflowing into the next. Brass canteens are stacked in a row on the lowest lip, and a line of them is still warm. Nafisa works at the top basin with her sleeves pushed up, filling a bucket and then letting it rest on the stone before she moves it, the way you would test a floor you did not trust. Copper pipes overhead bleed off just enough warmth to keep the damp down. From the west a cart wheel grinds over a grate, and somebody calls a number out and gets it wrong.",
     "allow_rest": false,
     "features": [
       {
@@ -10462,7 +10468,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A natural moss-edged hollow in limestone overflowing with cold, clear drinking water."
+        "inspect_text": "The spring comes up through a moss-edged hollow in bare limestone, clear enough that you can see the grit on the bottom. The moss is thickest on the side facing away from the pipes, which tells you the water has been running here a good deal longer than the village has."
       }
     ],
     "exits": [
@@ -10492,8 +10498,8 @@
   {
     "id": "village_square",
     "title": "The Village Square",
-    "summary": "The beating heart of the village. A broad circular plaza paved in concentric stone rings, illuminated by warm gas lamps.",
-    "inspect_text": "At the center, broad spiral stone stairs lead UP to the Floor 3 Heart-Pit ('oh'). A large iron hearth warms the gathering villagers.",
+    "summary": "You come down the last step into a broad circle of stone laid in rings, warm under gas lamps somebody keeps filled. The rings are worn pale along a path from the stairs to the hearth, and nobody is standing on that path now.",
+    "inspect_text": "Broad spiral stone stairs climb back up into the dark you just came out of. A large iron hearth sits at the center, banked low and ticking as it cools, ringed by benches cut into the paving. Flatbread is wrapped in cloth on one bench and has gone cold. Two pairs of small boots are lined up against the hearthstones, and the ash has been raked over them. From the north road you can hear someone moving crates, and a voice counting under its breath. Nobody counts out loud here unless they have forgotten you are standing in the middle.",
     "allow_rest": false,
     "features": [
       {
@@ -10507,7 +10513,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "Solid granite stairs ascending into the dark ceiling toward Floor 3."
+        "inspect_text": "The stairs are cut from one piece of granite, wide enough for four abreast, and worn into shallow bowls where everyone puts their feet going up. You take one of the bowls in your stride without meaning to. The dark at the top has a draft coming down it, hot and dry, that smells of old smoke and hot glass. Somebody has scratched a row of short marks up the second step and stopped halfway."
       }
     ],
     "exits": [
@@ -10550,8 +10556,8 @@
   {
     "id": "village_south_1",
     "title": "Elder Rashid's Quarters",
-    "summary": "A modest stone building lined with bookshelves, maps of the cavern system, and brass surveying instruments.",
-    "inspect_text": "Elder Rashid sits here at a heavy oak desk, head in his hands, surrounded by official military decrees and the requisition roll for Zayd.",
+    "summary": "Books, maps and rolled charts fill every wall, and one heavy desk sits under the window with a lamp still burning on it. Elder Rashid has not moved out of his chair. Two chairs have been pulled up to that desk. Only one of them is occupied, and there is a clean dust ring on the seat of the other where somebody used to sit.",
+    "inspect_text": "Garrison decrees are stacked under a brass paperweight in one neat pile, and a requisition roll lies open beside them, which tells you he has read it more than once. The window is a slot cut into the rock, too narrow to look out of and too narrow for anything to come in through. From the square you can hear the hearth, and a chair scraping, and then a woman's voice saying a name once and giving up on it.",
     "allow_rest": false,
     "features": [
       {
@@ -10566,7 +10572,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A parchment document bearing Captain Malik's iron seal, demanding one youth as an offering."
+        "inspect_text": "A single sheet under Malik's iron seal, asking the council for one youth and giving a date. Eight signatures run along the bottom. Seven of them are steady. The eighth has been gone over so many times the nib has torn the parchment. On the back, in a much younger hand, somebody has written ASK HIM FIRST, and then scratched it out. You read it twice."
       }
     ],
     "exits": [
@@ -10596,8 +10602,8 @@
   {
     "id": "village_se_corner",
     "title": "South Overlook Terrace",
-    "summary": "A high stone parapet at the southeastern tip of the village, looking down into the deep subterranean abyss.",
-    "inspect_text": "A low stone wall keeps children safe from the drop. Lanterns flicker along the railing, casting long shadows into the cavern vastness.",
+    "summary": "The paving stops at a waist-high wall, and past the wall there is nothing at all but dark going down a long way. You stand at the edge and the cavern air comes up past you, cold and moving. It is the only wind on this floor.",
+    "inspect_text": "Lanterns are hooked along the railing at intervals, and two of them have been turned down to nothing. Kamil is sitting on the wall with his boots hanging over it, counting the ore carts on the rail below and marking each one off on his fingers. He loses his place and starts again. The stone under your hands is polished to a shine in one long strip, worn by a great many people leaning here, none of them in any hurry. Far below and out of sight, a drill comes down on rock four times, waits, and comes down again.",
     "allow_rest": false,
     "features": [
       {
@@ -10611,7 +10617,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "Solid limestone blocks cut with drainage scuppers, polished smooth by generations of leaning villagers."
+        "inspect_text": "The wall is laid in limestone blocks with scuppers cut through the base to let the wet out, and it has been patched so many times the joints are a patchwork. Along the top the stone is dished into one long shallow groove, and your palm finds it without your looking. That is not weather wearing it down. That is shoulders."
       }
     ],
     "exits": [
@@ -10641,8 +10647,8 @@
   {
     "id": "village_east_2",
     "title": "Yasmin's Bakery",
-    "summary": "A warm, flour-dusted bakery smelling wonderfully of fresh flatbread, sesame, and roasted dates.",
-    "inspect_text": "A huge brick oven heated by copper steam coils dominates the back. Yasmin stands by the counter, tearful and furious over Zayd's capture.",
+    "summary": "The oven throws heat out into the street before it reaches you, and with it the smell of sesame and roasted dates, which is the first food smell on this floor. Six flatbreads are cooling on the rack. Yasmin has pulled four of them.",
+    "inspect_text": "Flour is on the counter, on the floor, and down the front of her apron, and it has been walked through twice. The brick oven is banked and hissing at its door, and the copper coils around its base are furred white with scale. On the counter there is a second bowl of dough, already proved, and a rolling pin set out beside it, and nobody there to use them. Through the doorway the terrace wall ends and the light simply stops going. Somebody has chalked a height mark on the door frame, a second one above it with a date, and a third that has been rubbed out and chalked again a little higher. You put your own hand on the frame to see, and the newest mark is about level with your shoulder.",
     "allow_rest": false,
     "features": [
       {
@@ -10656,7 +10662,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A massive domed brick hearth with steam pipes wrapping its base, baking scores of flatbreads."
+        "inspect_text": "The hearth is a broad brick dome with steam pipes wrapped around its base, and the fire inside is banked so low you have to look twice to find it. You put your palm flat on the bricks and the heat comes through, even and enormous. There is a shelf of finished loaves going cold on your left, and more going in on your right, and nobody is turning the right-hand side."
       }
     ],
     "exits": [
@@ -10686,8 +10692,8 @@
   {
     "id": "village_east_1",
     "title": "North Terrace Gardens",
-    "summary": "Tiered planter boxes cut from the cavern floor, glowing with phosphorescent green and blue lichen.",
-    "inspect_text": "Carefully tended moisture trays nurture edible mushrooms and small sweet subterranean root vegetables.",
+    "summary": "The light here comes up out of the plants, so the terrace glows green and blue from the ground up and your own shadow falls the wrong way. Three tiers of planters step up out of the cavern floor, and every one of them has been weeded.",
+    "inspect_text": "Mushrooms grow in the shade under the lower tier in tight pale rows, and the root vegetables are swelling in the second. The third tier has been replanted and the soil there is still raw. A watering can sits on the rim with its handle turned to stand up on its own, which nobody does on purpose. The moisture trays are all full and none of them are dripping, so whoever filled them came back and checked. The phosphorescence catches on the wet leaves and the whole terrace breathes a little when you walk past. From the square you can hear the hearth being raked.",
     "allow_rest": false,
     "features": [
       {
@@ -10702,7 +10708,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "Carved limestone planters filled with rich compost and glowing moss providing soft blue illumination."
+        "inspect_text": "The planters are carved out of the limestone itself, so the roots have something to grip that will not move. Blue moss fills the gaps between the compost and glows steady enough to read by. Where a plant has been lifted out there is a clean ring of unfaded stone. You count the empty rings. There are four, and none of them have been replanted."
       }
     ],
     "exits": [
@@ -10732,8 +10738,8 @@
   {
     "id": "fortress_gate",
     "title": "Fortress Checkpoint",
-    "summary": "The main entry checkpoint just inside the massive brass bulkhead. High iron barricades, coiled wire, and sentry platforms overlook the passage. Red emergency lamps cast long shadows across the steel floor.",
-    "inspect_text": "A fortified staging area designed to control movement between the village and the military fortress. Steam conduits hiss against the reinforced stone ceiling. A heavy hydraulic lever mounted to the wall controls the locking pins on the outer bulkhead.",
+    "summary": "You are inside the wall now and the temperature drops. The checkpoint is a short steel chamber with barricades zigzagged across it, wire coiled on the racks overhead, and red lamps burning low enough to make everything look like it is happening to somebody else. A drilling machine is grinding across the far end of the floor on iron tracks, and it has not come round to the wire yet.",
+    "inspect_text": "The floor is steel plate over stone, and the steam conduits run right along the ceiling at head height, close enough to touch. A firing step runs the length of the east wall with the tread worn through in patches and a firing slot at every fourth stone. A heavy hydraulic lever sits in an iron console on the west wall, and the steel rams it drives are visible through a grille: four pins as thick as your arm, all of them pushed home. The lamp buzz is drowned out by the driller, which works its way along the rail with a whine that climbs at the end of every stroke. Its exhaust lays a white haze along the barricades and the rails go on straight under it, which means somebody sent it this way and did not think about the wire. Through the floor, you can hear the dynamos turning over on the other side.",
     "allow_rest": false,
     "features": [
       {
@@ -10748,7 +10754,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A heavy brass lever set into an iron console. Pulling it cycles the steam rams that lock and unlock the outer bulkhead."
+        "inspect_text": "The lever is brass on iron, worn to bright metal along the grip. Somebody has scratched a tally into the console beside it and stopped at nine. You put your palm on the pin housing and it is still warm. Whatever last ran through this, the pressure has not been off the lines long."
       }
     ],
     "exits": [
@@ -10791,8 +10797,8 @@
   {
     "id": "west_iron_walkway",
     "title": "West Iron Walkway",
-    "summary": "A narrow, damp iron catwalk bolted to the dark cavern wall. Hissing copper steam pipes run overhead, dripping hot water into the shadowy drop below. The metal mesh floor trembles underfoot.",
-    "inspect_text": "Cold air mixes with warm steam rising from deep rock cracks below. The walkway provides a direct route along the western flank of the military complex toward the detention wing.",
+    "summary": "The walkway is bolted to the rock and barely a body's width, and the drop on your left goes down far enough that you cannot see the bottom of it. It quivers when you step. Overhead the copper pipes are wet with condensation, and it comes down the back of your neck in one slow line. A garrison sentry is pacing the grating at the far end with a steam bayonet fixed to a carbine.",
+    "inspect_text": "Steam comes up through cracks in the rock below. It is cold where the steam is not, so you walk through cold and warm in stretches of about four paces. Hot water drips off the brackets in a regular pattern and lands on the mesh, and every drop lands in the same place long enough to have worn a bright spot through it. The bolts at the anchor points are crusted with old scale, which means this has been standing here longer than the garrison has. Below and to the left, the rock face is polished pale where ore carts have run close under you. The sentry walks the same six paces and turns at the same bracket every time, and on the third pass he misses the loose plate entirely and catches himself on the rail. He is the only set of boots on this walkway and he has been up here a while. You count his passes before you decide what to do.",
     "allow_rest": false,
     "features": [
       {
@@ -10807,7 +10813,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "Thick copper and iron pipes clamped to the cavern rock with heavy steel brackets. Steam wheezes rhythmically through sealed joints."
+        "inspect_text": "Four pipes clamped to the rock on steel brackets, two of them sweating and one hissing. A joint at head height has been re-banded in clean copper against old rust, so somebody has been up here after something started leaking. The clamp nearest you is loose enough to rock by hand. It would hold your weight. You would rather not find out by standing on it."
       }
     ],
     "exits": [
@@ -10837,8 +10843,8 @@
   {
     "id": "steam_prison_cage",
     "title": "Suspended Steam Cage",
-    "summary": "A reinforced iron cage hanging from heavy ceiling chains over a hissing geothermal fissure. An iron walkway rings the pit, guarded by a locked winch console.",
-    "inspect_text": "The iron bars are black with soot and hot to the touch from the thermal draft below. Heavy steel cables run from the cage roof to a mechanical winch bolted into the granite floor.",
+    "summary": "The cage hangs from four chains over a vent throwing heat up hard enough to make the air wobble. You can hear the vent breathing. The bars are black with soot and hot on the side nearest the rock, and the boy inside has backed himself into the far corner where it is cooler.",
+    "inspect_text": "A single iron walkway rings the pit, and the winch that controls the cage is bolted into the granite with its handle padlocked. Four chains go up into the dark, all four taut, and all four stretched before: they are thinner at the links where they turn. A rope ends in a loop on the walkway rail at the height of a child's chest, worn smooth. Below, the vent breathes in and out and the light coming up off it is orange and unsteady. Zayd has his coat pulled tight around one fist and is not looking at the heat. The warden has not sat down at all. You can tell where his weight has worn the flagstones.",
     "allow_rest": false,
     "features": [
       {
@@ -10854,7 +10860,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A sturdy iron-barred cage suspended ten feet out over the steam pit. A heavy brass padlock secures the cage gate, cut to fit the warden's iron key."
+        "inspect_text": "Iron bars, close enough together that you could not get a hand through, and a floor of the same. The brass padlock on the gate is good work and has no keyhole big enough to pick. The chains are greased, and grease means somebody does this on purpose. Under the floor the cage swings a little with every breath out of the vent, always the same direction, always the same inch."
       }
     ],
     "exits": [
@@ -10879,13 +10885,19 @@
         "requires_story_var": ""
       }
     ],
-    "descriptions": []
+    "descriptions": [
+      {
+        "actor_defeated": "garrison_warden",
+        "summary": "The cage still hangs from four chains over the vent, but nobody is standing on the walkway. The winch handle is loose in its housing, and the boy has moved to the front of the cage where he can see out through the bars.",
+        "inspect_text": "The vent breathes in and out and the light coming up off it is orange and unsteady. Where the warden was standing there is one worn patch of flagstone and a ring of ration tins nobody collected. The winch console stands open, the locking bar lifted and left hanging. Zayd has both hands on the cage door and is not touching the padlock yet, as though he has decided he is finished waiting and is waiting to see if anyone agrees with him."
+      }
+    ]
   },
   {
     "id": "south_steam_gantry",
     "title": "South Steam Gantry",
-    "summary": "A low, sweltering maintenance corridor threading between massive steam boiler pipes and humming power dynamos. Dense white vapor billows from floor grates.",
-    "inspect_text": "The heat is intense and smells of hot machine oil and warm stone. Pressure gauges vibrate in the brass housings lining the wall, regulating the power flow to the central platform.",
+    "summary": "This corridor runs between the boilers and it is the hottest part of the complex. The vapor comes up out of the floor grates in slow rolling sheets, so you walk into a wall of it every twenty paces and out the far side of it. An ore hauler is coming down the corridor on the rails, and it is between you and the south door.",
+    "inspect_text": "The dynamos along the north wall are turning over, and you can feel each one in your teeth. A bank of round gauges runs the length of the south wall, and every needle in the row is sitting in the same band, ticking together, which means the whole floor is running on one pressure. A rivet line on the ceiling is weeping. Somebody has caught the drip in a flat tin, and the tin has been emptied twice today. Far off down the corridor a door bangs and swings, and this time you can see what opened it: an ore hauler coming up the rails with its scoops down, throwing sparks off the plate in a rhythm that matches the gauges exactly. It is not slowing down for you and it is not speeding up either. You have about as long as it takes to decide.",
     "allow_rest": false,
     "features": [
       {
@@ -10900,7 +10912,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A bank of round glass-faced gauges with vibrating needles. They monitor steam pressure flowing between the southern boilers and the central courtyard."
+        "inspect_text": "Round glass faces in brass housings, and behind the glass the needles sit in a tight band and never stray from it. The lowest gauge in the row is painted round the rim in red, and its needle is just inside the paint. There is a date scratched into the housing beside it, and a set of initials. Under the gauges the wall is scorched in a long strip, and the paint there has blistered and peeled away in flakes. You could read the initials if you stepped closer, and you decide not to."
       }
     ],
     "exits": [
@@ -10930,8 +10942,8 @@
   {
     "id": "command_bastion",
     "title": "Commander's Bastion",
-    "summary": "The fortified headquarters of Captain Malik. A large brass tactical table dominates the center of the room, surrounded by patrol routes and subterranean maps. An iron combination safe is embedded in the stone wall.",
-    "inspect_text": "Neat weapon racks and polished armor stands line the walls. Red silk military banners hang between steam vents. A heavy steel safe with dual combination tumblers stands bolted into the granite.",
+    "summary": "The room is built for a meeting, not for a war. A brass tactical table fills the center under a low lamp with the floor around it left clear for standing. Racks of weapons line two walls, all of them polished. You are two steps inside the doorway before anything in the room moves.",
+    "inspect_text": "The tactical table is a model of this whole floor cut into the brass, and it is kept up to date. There is chalk dust in the gutters of it and a fresh score in two places. Red silk banners hang between the steam vents, and one of them has a burn through the lower corner. Along the third wall, armor stands hold six sets of dress brass, and four of the stands are empty. The safe is set into the granite under a low lamp of its own, with its own little light and its own clean patch of floor. Through the wall, you can hear the platform humming.",
     "allow_rest": false,
     "features": [
       {
@@ -10947,7 +10959,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A heavy iron safe with brass combination dials and reinforced hinges, embedded into the granite wall. It is locked tight by dual tumbler deadbolts, requiring Commander Malik's key to open."
+        "inspect_text": "An iron body with brass dials and reinforced hinges, bolted through the stone rather than into it. There is a clean rectangle in the dust on the floor in front of it, the size of somebody kneeling. The tumblers are well used and the brass around them is bright where hands have gone. You try to imagine the combination and there are too many ways to be wrong."
       }
     ],
     "exits": [
@@ -10988,13 +11000,19 @@
         "requires_story_var": "malik_defeated"
       }
     ],
-    "descriptions": []
+    "descriptions": [
+      {
+        "actor_defeated": "captain_malik",
+        "summary": "The room is still built for a meeting, and the meeting is over. The brass tactical table sits under its low lamp with the floor around it clear. Malik is on the flagstones and not moving, and nobody else in the room is moving either.",
+        "inspect_text": "Chalk dust in the gutters of the tactical table, and the two fresh scores in it are where a hand stopped. One of the red silk banners has come down off its vent and lies across the corner of the table. The hydraulic rams behind the grille have gone back into the wall with a bang you can still hear in the walls. The safe sits under its own lamp with its own clean patch of floor, and the lamp is still burning, and nothing is standing between you and it."
+      }
+    ]
   },
   {
     "id": "east_sentry_walk",
     "title": "East Sentry Rampart",
-    "summary": "A wide, steel-plated rampart running along the eastern face of the fortress. Brass searchlight housings sit mounted on iron tripods, aimed into the open central courtyard.",
-    "inspect_text": "Spent crossbow bolts and discarded ration tins lie near the guard benches. The vantage point offers a clear view through the security grilles into the glowing platform in the center courtyard.",
+    "summary": "A steel rampart two carts wide runs along the eastern face, and three searchlights on tripods are all aimed at the same patch of empty courtyard below. You look for what they are watching and there is nothing down there to watch. One sentry is up here anyway, working the same empty ground with a brass spyglass.",
+    "inspect_text": "The bolt cradles along the parapet are full. Spent crossbow bolts lie by the guard benches with their fletching chewed off, and a ration tin sits unopened on a bench arm. On the underside of the rampart, forty names are scratched into the stone in four neat columns, and the fourth column has been gone over so often the numbers are hard to make out. A duty roster is nailed to the post by the ladder. Tonight's names are crossed out in chalk. There is no second shift written underneath, and the sentry at the ladder is the only man still up here, which means the chalk is either already true or about to be. Below and to the south, the platform glows up through the security grille, pale turquoise, steady as a held breath. He has the spyglass up and the courtyard is empty in it, and when he lowers it he does not look surprised. He looks tired, and he goes back to watching. You step into the searchlight and do the arithmetic: three lights, one man, and nothing on the roster under his name.",
     "allow_rest": false,
     "features": [
       {
@@ -11009,7 +11027,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A directional brass searchlight powered by a heavy steam conduit battery. Its reflector lens is angled downward toward the courtyard below."
+        "inspect_text": "A brass searchlight on a tripod, fed by its own heavy steam conduit, with the reflector lens angled down and away. There is no shutter and no hood, so it burns the same all night regardless of what walks into it. The tripod feet are sunk into the steel and the bolts have been backed off and retightened more than once. On the housing somebody has scratched a child's height mark and a date, and then scratched the date out. Your hand is bigger than the mark. You know it, and you look at it anyway."
       }
     ],
     "exits": [
@@ -11042,8 +11060,8 @@
   {
     "id": "teleport_platform",
     "title": "Teleportation Platform",
-    "summary": "A sunken circular courtyard of dark basalt. At its center rises a massive circular brass platform etched with geometric circuits, pulsing with pale turquoise light from deep geothermal conduits.",
-    "inspect_text": "Thick copper energy lines converge on the central brass ring. Steam releases in rhythmic pulses from surrounding relief valves. Tracing the Teleportation Sigil here will activate the descent gate to Floor 5.",
+    "summary": "The courtyard is sunk below the level of everything around it, and the brass platform in the middle is the lowest thing you have stood on since you came down here. It is pulsing. Not fast, and not in time with your breathing, and it has been pulsing the whole time you have been on this floor.",
+    "inspect_text": "Copper lines come in under the ground from every direction and all of them meet the ring. Relief valves let off steam in rhythm, and the steam goes up and is gone before it reaches the walls. The stone here is basalt, scorched in a wide ring where the steam has been coming up for years. There are boot prints in the ash, hundreds of them, all going the same way. From the north you can hear the rampart you came in by, and further off, faintly, someone hammering something in the village, which you would not hear at all if the platform were not so quiet.",
     "allow_rest": false,
     "features": [
       {
@@ -11059,7 +11077,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "An ancient brass disc inscribed with intersecting double triangles. The central circle hums with arcane and geothermal power, waiting for the matching chalk sigil."
+        "inspect_text": "A brass disc, wider than your arms are long, cut with two triangles that cross and a circle drawn round the crossing. The metal is warm, and it is not the geothermal heat making it warm. Where boots have worn it the brass is bright; at the rim it is still black with scale, and the scale rings the edge in clean steps, showing the water rising and falling over years. The geometry is the same one your chalk draws. It was not always the size of a room. It has been added to."
       }
     ],
     "exits": [
