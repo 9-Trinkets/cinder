@@ -3455,6 +3455,90 @@
     }
   },
   {
+    "id": "frost_wolf_raider",
+    "name": "Frost-Wolf Raider",
+    "room_id": "",
+    "aliases": ["raider", "frost-wolf raider", "wolf soldier", "soldier"],
+    "tags": ["citadel", "siege", "frost_wolf", "frost_wolf_lane", "soldier"],
+    "inspect_text": "A Frost-Wolf house soldier in white-furred mail, advancing behind a hooked shield with an ice-edged axe raised.",
+    "attackable": true,
+    "skills": ["strike", "hold", "intercept"],
+    "initial_hostile": true,
+    "attack_interval_minutes": 2,
+    "xp_drop": 18,
+    "initial_stats": {
+      "hp": 16,
+      "strength": 4,
+      "defense": 3,
+      "intelligence": 2
+    },
+    "level": 5,
+    "prompt_context": {
+      "character_notes": [
+        "You are a Frost-Wolf house raider ordered to march from the northern estate into the courtyard and seize the freed offerings."
+      ],
+      "behavior_examples": [
+        "He advances in lockstep behind his hooked shield."
+      ]
+    }
+  },
+  {
+    "id": "iron_ram_mauler",
+    "name": "Iron-Ram Mauler",
+    "room_id": "",
+    "aliases": ["mauler", "iron-ram mauler", "ram soldier", "soldier"],
+    "tags": ["citadel", "siege", "iron_ram", "iron_ram_lane", "soldier"],
+    "inspect_text": "An Iron-Ram heavy soldier in riveted plate, driving forward with a broad hammer braced against one shoulder.",
+    "attackable": true,
+    "skills": ["strike", "hold", "intercept"],
+    "initial_hostile": true,
+    "attack_interval_minutes": 3,
+    "xp_drop": 22,
+    "initial_stats": {
+      "hp": 22,
+      "strength": 5,
+      "defense": 5,
+      "intelligence": 2
+    },
+    "level": 6,
+    "prompt_context": {
+      "character_notes": [
+        "You are an Iron-Ram house mauler ordered to march from the southeast bastion and break the courtyard defenders."
+      ],
+      "behavior_examples": [
+        "He lowers his plated shoulder and advances like a battering ram."
+      ]
+    }
+  },
+  {
+    "id": "frost_leopard_hunter",
+    "name": "Frost-Leopard Hunter",
+    "room_id": "",
+    "aliases": ["hunter", "frost-leopard hunter", "leopard soldier", "soldier"],
+    "tags": ["citadel", "siege", "frost_leopard", "frost_leopard_lane", "soldier"],
+    "inspect_text": "A Frost-Leopard hunter wrapped in pale camouflage cloth, carrying a narrow blade and a compact ice-bow.",
+    "attackable": true,
+    "skills": ["strike", "hold", "intercept"],
+    "initial_hostile": true,
+    "attack_interval_minutes": 2,
+    "xp_drop": 20,
+    "initial_stats": {
+      "hp": 17,
+      "strength": 5,
+      "defense": 3,
+      "intelligence": 4
+    },
+    "level": 6,
+    "prompt_context": {
+      "character_notes": [
+        "You are a Frost-Leopard house hunter ordered to slip out of the southwest hall and strike the courtyard from its exposed flank."
+      ],
+      "behavior_examples": [
+        "She moves low and fast beneath a pale camouflage cloak."
+      ]
+    }
+  },
+  {
     "id": "commander_astrid",
     "name": "Commander Astrid",
     "room_id": "courtyard_center",
@@ -3645,13 +3729,12 @@
         "stance": "allied",
         "follows_player": false,
         "story_vars": {
-          "throne_passages_revealed": "true"
+          "frost_wolf_lane_stopped": "true"
         },
         "narration_keys": [
           "transformation.wake.intro",
           "transformation.wake.fragment",
-          "transformation.wake.reveal",
-          "transformation.secret_passages.revealed"
+          "transformation.wake.reveal"
         ],
         "signals": [
           "actor_awakened:lord_vane",
@@ -3719,13 +3802,12 @@
         "stance": "allied",
         "follows_player": false,
         "story_vars": {
-          "throne_passages_revealed": "true"
+          "iron_ram_lane_stopped": "true"
         },
         "narration_keys": [
           "transformation.wake.intro",
           "transformation.wake.fragment",
-          "transformation.wake.reveal",
-          "transformation.secret_passages.revealed"
+          "transformation.wake.reveal"
         ],
         "signals": [
           "actor_awakened:warmaster_torin",
@@ -3799,13 +3881,12 @@
         "stance": "allied",
         "follows_player": false,
         "story_vars": {
-          "throne_passages_revealed": "true"
+          "frost_leopard_lane_stopped": "true"
         },
         "narration_keys": [
           "transformation.wake.intro",
           "transformation.wake.fragment",
-          "transformation.wake.reveal",
-          "transformation.secret_passages.revealed"
+          "transformation.wake.reveal"
         ],
         "signals": [
           "actor_awakened:lady_sylvan",

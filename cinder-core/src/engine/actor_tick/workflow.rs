@@ -54,8 +54,8 @@ pub(crate) fn peek_conversational_speaker(
     let observed_room_candidates: Vec<String> = conversational
         .iter()
         .filter(|id| {
-            content
-                .actor(id)
+            state
+                .actor(content, id)
                 .map(|a| state.actor_room_id(id, &a.room_id) == state.current_room_id)
                 .unwrap_or(false)
         })

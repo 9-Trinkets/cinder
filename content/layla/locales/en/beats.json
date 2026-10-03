@@ -24,11 +24,11 @@
     {
       "id": "mq_find_scroll",
       "quest_id": "teleport_scroll",
-      "quest_title": "The Teleportation Scroll",
+      "quest_title": "Locked Away",
       "quest_kind": "main",
-      "summary": "Recover the Teleportation Scroll from Commander Malik's safe.",
+      "summary": "Something down there is worth more than the men standing in front of it.",
       "beat_note": "Layla learned that the military fortress gate is locked, but Commander Malik holds an ancient Teleportation Scroll in his safe. She needs to infiltrate the fortress and retrieve it.",
-      "update_message": "Find Commander Malik's safe inside the military fortress and retrieve the Teleportation Scroll.",
+      "update_message": "Tariq said it is kept behind a door that does not open for you.",
       "advance_signals": [
         "item_acquired:teleport-scroll",
         "knows_teleport",
@@ -50,11 +50,11 @@
     {
       "id": "mq_use_teleport_platform",
       "quest_id": "teleport_scroll",
-      "quest_title": "The Teleportation Scroll",
+      "quest_title": "Locked Away",
       "quest_kind": "main",
-      "summary": "Activate the teleport platform to descend to Floor 5.",
+      "summary": "Get below the wall.",
       "beat_note": "Having acquired the knowledge of the Teleportation Sigil, Layla can now reach the teleport platform in the heart of the fortress and descend.",
-      "update_message": "Use the Teleportation Sigil at the teleport platform to descend to Floor 5.",
+      "update_message": "The way down was never a door.",
       "advance_signals": [
         "room_entered:courtyard_center",
         "room_entered:floor5_start",
@@ -80,11 +80,11 @@
     {
       "id": "mq_free_prisoners",
       "quest_id": "free_courtyard_prisoners",
-      "quest_title": "Free the Citadel Prisoners",
+      "quest_title": "What They Put in the Cages",
       "quest_kind": "main",
-      "summary": "Free the prisoners locked in the courtyard offering cages.",
+      "summary": "Living people went into the cages meant for grain.",
       "beat_note": "Arriving at the Frost Citadel, Layla finds garrison dissenters Commander Astrid and Einar locked in culling cages along with commoner offerings. Defeat the Sentry Captain to obtain the courtyard key and unlock their cages.",
-      "update_message": "Defeat the Sentry Captain to obtain the courtyard cage key and unlock the offering cages in the central courtyard.",
+      "update_message": "All of it is locked, and the key is on someone who does not mean to hand it over.",
       "advance_signals": [
         "courtyard_cages_unlocked",
         {
@@ -97,6 +97,148 @@
             }
           ]
         }
+      ],
+      "next_stage_ids": [
+        "mq_frost_siege",
+        "siege_wave_1",
+        "frost_wolf_dispatch"
+      ]
+    },
+    {
+      "id": "mq_frost_siege",
+      "quest_id": "frost_citadel_siege",
+      "quest_title": "Three Doors",
+      "quest_kind": "main",
+      "summary": "Three houses are coming. All three will open eventually.",
+      "beat_note": "The siege clock is running. Each wave opens another estate while its house sends troops toward the courtyard. Defeating or awakening a house leader stops that house's lane, but the remaining waves still begin on schedule.",
+      "update_message": "Every gate that lifts is a door you have to close yourself.",
+      "advance_signals": [],
+      "next_stage_ids": []
+    },
+    {
+      "id": "siege_wave_1",
+      "summary": "",
+      "beat_note": "Wave 1 begins immediately after the prisoners are freed. House Frost-Wolf opens and starts the northern assault lane.",
+      "narrative_lines": [
+        "A deep horn sounds from the north. The Frost-Wolf gate lifts, and boots begin striking the frozen avenue in formation."
+      ],
+      "advance_signals": [
+        "stage_elapsed:15"
+      ],
+      "next_stage_ids": [
+        "siege_wave_2",
+        "iron_ram_dispatch"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "frost_wolf_access_open",
+          "value": "true"
+        },
+        {
+          "kind": "set_story_var",
+          "key": "citadel_siege_wave",
+          "value": "1"
+        }
+      ]
+    },
+    {
+      "id": "siege_wave_2",
+      "summary": "",
+      "beat_note": "Wave 2 begins fifteen in-game minutes after Wave 1 whether or not Frost-Wolf has been neutralized. House Iron-Ram opens its lane.",
+      "narrative_lines": [
+        "A second horn answers from the southeast. The Iron-Ram portcullis rises through a cloud of steam as heavy troops march out."
+      ],
+      "advance_signals": [
+        "stage_elapsed:15"
+      ],
+      "next_stage_ids": [
+        "siege_wave_3",
+        "frost_leopard_dispatch"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "iron_ram_access_open",
+          "value": "true"
+        },
+        {
+          "kind": "set_story_var",
+          "key": "citadel_siege_wave",
+          "value": "2"
+        }
+      ]
+    },
+    {
+      "id": "siege_wave_3",
+      "summary": "",
+      "beat_note": "Wave 3 begins fifteen in-game minutes after Wave 2 whether or not either earlier house has been neutralized. House Frost-Leopard opens its lane.",
+      "narrative_lines": [
+        "A third horn cuts across the courtyard. The Frost-Leopard doors unlock, and shadows move behind the frosted glass."
+      ],
+      "advance_signals": [],
+      "next_stage_ids": [],
+      "on_advance_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "frost_leopard_access_open",
+          "value": "true"
+        },
+        {
+          "kind": "set_story_var",
+          "key": "citadel_siege_wave",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "id": "frost_wolf_dispatch",
+      "summary": "",
+      "beat_note": "House Frost-Wolf dispatches ten northern squads of three soldiers at three-minute intervals.",
+      "actor_spawn_schedule": {
+        "template_id": "frost_wolf_raider",
+        "room_id": "frost_wolf_throne",
+        "batch_size": 3,
+        "interval_minutes": 3,
+        "total_count": 30,
+        "stop_story_var": "frost_wolf_lane_stopped"
+      },
+      "advance_signals": [
+        "stage_elapsed:27"
+      ],
+      "next_stage_ids": []
+    },
+    {
+      "id": "iron_ram_dispatch",
+      "summary": "",
+      "beat_note": "House Iron-Ram dispatches ten southeast squads of three soldiers at three-minute intervals.",
+      "actor_spawn_schedule": {
+        "template_id": "iron_ram_mauler",
+        "room_id": "iron_ram_throne",
+        "batch_size": 3,
+        "interval_minutes": 3,
+        "total_count": 30,
+        "stop_story_var": "iron_ram_lane_stopped"
+      },
+      "advance_signals": [
+        "stage_elapsed:27"
+      ],
+      "next_stage_ids": []
+    },
+    {
+      "id": "frost_leopard_dispatch",
+      "summary": "",
+      "beat_note": "House Frost-Leopard dispatches ten southwest squads of three soldiers at three-minute intervals.",
+      "actor_spawn_schedule": {
+        "template_id": "frost_leopard_hunter",
+        "room_id": "frost_leopard_throne",
+        "batch_size": 3,
+        "interval_minutes": 3,
+        "total_count": 30,
+        "stop_story_var": "frost_leopard_lane_stopped"
+      },
+      "advance_signals": [
+        "stage_elapsed:27"
       ],
       "next_stage_ids": []
     },
@@ -117,11 +259,11 @@
     {
       "id": "sq_save_zayd",
       "quest_id": "save_zayd",
-      "quest_title": "Save the Boy Zayd",
+      "quest_title": "The Eighth Signature",
       "quest_kind": "side",
-      "summary": "Rescue the orphan boy Zayd from the military complex.",
+      "summary": "Rashid has not stopped crying, and nobody in the village will say why.",
       "beat_note": "Elder Rashid and Yasmin revealed that the village council offered Zayd up as a sacrifice. Layla needs to find the boy and rescue him from his iron cage.",
-      "update_message": "Search the military complex for the orphan boy Zayd and rescue him from the garrison.",
+      "update_message": "Find out what the council handed over, and take it back.",
       "advance_signals": [
         "spoken_to:zayd",
         "zayd_freed",
@@ -143,11 +285,11 @@
     {
       "id": "sq_return_zayd",
       "quest_id": "save_zayd",
-      "quest_title": "Save the Boy Zayd",
+      "quest_title": "The Eighth Signature",
       "quest_kind": "side",
-      "summary": "Escort Zayd back to safety in the village.",
+      "summary": "Get him back down the stairs.",
       "beat_note": "Zayd is rescued from his cage. Escort him back to the safety of the worker village.",
-      "update_message": "Escort Zayd back to the village safely.",
+      "update_message": "He cannot keep the pace. Do not make him run.",
       "advance_signals": [
         "zayd_safe",
         {
@@ -170,9 +312,9 @@
       "quest_id": "awaken_jamil",
       "quest_title": "Return the Light",
       "quest_kind": "side",
-      "summary": "Use Zayd's lantern to awaken Sakhra and restore his true memories.",
+      "summary": "Something in the square has been standing out there a long time without being spoken to.",
       "beat_note": "Zayd gave Layla his father's miner lantern. Its warm light can awaken the sleeping memories within the guardian golem Sakhra.",
-      "update_message": "Give Zayd's lantern to Sakhra in the village square to awaken him.",
+      "update_message": "He gave you his father's light. Somebody ought to be the one to use it.",
       "advance_signals": [
         "actor_awakened:sakhra",
         "actor_awakened"
@@ -215,9 +357,9 @@
       "quest_id": "clean_shaman",
       "quest_title": "Trial of the Silent Path",
       "quest_kind": "secret",
-      "summary": "Defeat the Goblin Shaman without having harmed the goblins or golems of the cave.",
+      "summary": "There is a way through this cave that does not involve blood.",
       "beat_note": "Having navigated the labyrinth without striking down any goblins or golems, Layla challenges the Goblin Shaman.",
-      "update_message": "Defeat the Goblin Shaman to claim your reward.",
+      "update_message": "Nobody down here has drawn a weapon yet. Keep it that way until there is no other way.",
       "advance_signals": [
         "item_acquired:shaman-ring"
       ],

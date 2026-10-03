@@ -221,20 +221,23 @@ pub(crate) fn decide_movement(
     if target_room_id == current_room_id {
         return Ok(vec![]);
     }
-    Ok(next_room_toward(&content, current_room_id, &target_room_id)
-        .map(|next_room_id| {
-            vec![WorldEvent::ActorMoved {
-                actor_id: actor.id.clone(),
-                from_room_id: current_room_id.to_string(),
-                to_room_id: next_room_id,
-            }]
-        })
-        .unwrap_or_default())
+    Ok(
+        next_room_toward(&content, state, current_room_id, &target_room_id)
+            .map(|next_room_id| {
+                vec![WorldEvent::ActorMoved {
+                    actor_id: actor.id.clone(),
+                    from_room_id: current_room_id.to_string(),
+                    to_room_id: next_room_id,
+                }]
+            })
+            .unwrap_or_default(),
+    )
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::content::types::{ActorMovementTargetRuleDefinition, MovementTargetBehavior};
     use crate::engine::test_fixtures::minimal_test_pack;
 
     #[test]
@@ -326,6 +329,60 @@ mod tests {
         let state = WorldState::new(&content);
         let dest = wander_destination(&content, &state, &content.actors[0], "lounge", &wander);
         assert_eq!(dest.as_deref(), Some("kitchen"));
+    }
+
+    #[test]
+    fn target_rule_stops_when_forbidden_story_var_is_true() {
+        let content = minimal_test_pack();
+        let mut state = WorldState::new(&content);
+        let rules = ActorMovementRulesDefinition {
+            target_rules: vec![ActorMovementTargetRuleDefinition {
+                target_room_id: "kitchen".to_string(),
+                forbidden_story_var: "lane_stopped".to_string(),
+                target_behavior: Some(MovementTargetBehavior::Move),
+                ..Default::default()
+            }],
+            ..Default::default()
+        };
+
+        assert_eq!(
+            required_movement_target_room_id(&state, &rules, "lounge").as_deref(),
+            Some("kitchen")
+        );
+
+        state.story_vars.set_unchecked("lane_stopped", "true");
+        assert_eq!(
+            required_movement_target_room_id(&state, &rules, "lounge"),
+            None
+        );
+    }
+
+    #[test]
+    fn pathfinding_does_not_cross_locked_story_exit() {
+        let mut content = minimal_test_pack();
+        let state = WorldState::new(&content);
+        content
+            .rooms
+            .iter_mut()
+            .find(|room| room.id == "lounge")
+            .expect("lounge exists")
+            .exits
+            .iter_mut()
+            .find(|exit| exit.room_id == "kitchen")
+            .expect("kitchen exit exists")
+            .requires_story_var = "gate_open".to_string();
+
+        assert_eq!(
+            next_room_toward(&content, &state, "lounge", "kitchen"),
+            None
+        );
+
+        let mut open_state = state;
+        open_state.story_vars.set_unchecked("gate_open", "true");
+        assert_eq!(
+            next_room_toward(&content, &open_state, "lounge", "kitchen").as_deref(),
+            Some("kitchen")
+        );
     }
 
     #[test]

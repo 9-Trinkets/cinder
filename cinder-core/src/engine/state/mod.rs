@@ -554,11 +554,15 @@ impl WorldState {
         &'a self,
         content: &'a ContentPack,
     ) -> impl Iterator<Item = &'a ActorDefinition> {
-        content.onstage_actors().chain(
-            self.spawned_actors
-                .values()
-                .filter(|actor| !actor.is_offstage()),
-        )
+        content
+            .actors
+            .iter()
+            .filter(move |actor| !self.actor_is_offstage(content, &actor.id))
+            .chain(
+                self.spawned_actors
+                    .values()
+                    .filter(move |actor| !self.actor_is_offstage(content, &actor.id)),
+            )
     }
 
     /// Iterates all actors across static content and runtime spawned actors.

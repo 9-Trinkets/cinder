@@ -28,6 +28,48 @@
         {
           "conditions": [
             {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "lord_vane"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "frost_wolf_lane_stopped",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "warmaster_torin"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "iron_ram_lane_stopped",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "lady_sylvan"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "frost_leopard_lane_stopped",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
               "path": "tags",
               "operator": "array_contains_any",
               "value": [
@@ -851,8 +893,7 @@
           ],
           "payload_template": {
             "kind": "narrate_message",
-            "key": "handler.descend.the_village",
-            "generate_commentary": true
+            "key": "floor4.arrival.the_village"
           }
         },
         {
@@ -870,7 +911,8 @@
           ],
           "payload_template": {
             "kind": "narrate_message",
-            "key": "floor4.arrival.the_village"
+            "key": "handler.descend.the_village",
+            "generate_commentary": true
           }
         },
         {

@@ -162,6 +162,33 @@
         "mode": "random_adjacent",
         "cadence_ticks": 1
       }
+    },
+    "frost_wolf_raider": {
+      "target_rules": [
+        {
+          "target_room_id": "courtyard_center",
+          "target_behavior": "move",
+          "forbidden_story_var": "frost_wolf_lane_stopped"
+        }
+      ]
+    },
+    "iron_ram_mauler": {
+      "target_rules": [
+        {
+          "target_room_id": "courtyard_center",
+          "target_behavior": "move",
+          "forbidden_story_var": "iron_ram_lane_stopped"
+        }
+      ]
+    },
+    "frost_leopard_hunter": {
+      "target_rules": [
+        {
+          "target_room_id": "courtyard_center",
+          "target_behavior": "move",
+          "forbidden_story_var": "frost_leopard_lane_stopped"
+        }
+      ]
     }
   }
 }

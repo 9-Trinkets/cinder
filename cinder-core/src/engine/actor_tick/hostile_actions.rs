@@ -103,7 +103,7 @@ fn build_hostility_plan_request(
             Some(actor_id)
         })
         .map(|actor_id| {
-            let actor = content.actor(actor_id);
+            let actor = state.actor(content, actor_id);
             let due_at = *state
                 .next_hostile_strike_at
                 .get(actor_id)

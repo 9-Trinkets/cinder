@@ -11309,7 +11309,7 @@
           "frost-wolf"
         ],
         "menu_label": "North into House Frost-Wolf Gallery",
-        "requires_story_var": ""
+        "requires_story_var": "frost_wolf_access_open"
       }
     ],
     "descriptions": []
@@ -11464,7 +11464,7 @@
           "iron-ram"
         ],
         "menu_label": "Southeast into House Iron-Ram Bastion",
-        "requires_story_var": ""
+        "requires_story_var": "iron_ram_access_open"
       }
     ],
     "descriptions": []
@@ -11622,7 +11622,7 @@
           "frost-leopard"
         ],
         "menu_label": "Southwest into House Frost-Leopard Hall",
-        "requires_story_var": ""
+        "requires_story_var": "frost_leopard_access_open"
       }
     ],
     "descriptions": []
@@ -11833,7 +11833,7 @@
           "passage"
         ],
         "menu_label": "East through Secret Conduit",
-        "requires_story_var": "throne_passages_revealed"
+        "requires_story_var": "iron_ram_access_open"
       },
       {
         "room_id": "throne_passage_northwest",
@@ -11846,7 +11846,7 @@
           "passage"
         ],
         "menu_label": "West through Secret Aqueduct",
-        "requires_story_var": "throne_passages_revealed"
+        "requires_story_var": "frost_leopard_access_open"
       }
     ],
     "descriptions": []
@@ -11993,7 +11993,7 @@
           "passage"
         ],
         "menu_label": "North through Secret Conduit",
-        "requires_story_var": "throne_passages_revealed"
+        "requires_story_var": "iron_ram_access_open"
       },
       {
         "room_id": "throne_passage_south",
@@ -12006,7 +12006,7 @@
           "passage"
         ],
         "menu_label": "Southwest through Secret Flue",
-        "requires_story_var": "throne_passages_revealed"
+        "requires_story_var": "frost_leopard_access_open"
       }
     ],
     "descriptions": []
@@ -12153,7 +12153,7 @@
           "passage"
         ],
         "menu_label": "East through Secret Flue",
-        "requires_story_var": "throne_passages_revealed"
+        "requires_story_var": "frost_leopard_access_open"
       },
       {
         "room_id": "throne_passage_northwest",
@@ -12166,7 +12166,7 @@
           "passage"
         ],
         "menu_label": "North through Secret Aqueduct",
-        "requires_story_var": "throne_passages_revealed"
+        "requires_story_var": "frost_leopard_access_open"
       }
     ],
     "descriptions": []
@@ -12190,7 +12190,7 @@
           "wolf"
         ],
         "menu_label": "Northwest to the Howling Dais",
-        "requires_story_var": "throne_passages_revealed"
+        "requires_story_var": "iron_ram_access_open"
       },
       {
         "room_id": "iron_ram_throne",
@@ -12203,7 +12203,7 @@
           "ram"
         ],
         "menu_label": "South to the Anvil Throne",
-        "requires_story_var": "throne_passages_revealed"
+        "requires_story_var": "iron_ram_access_open"
       }
     ],
     "descriptions": []
@@ -12227,7 +12227,7 @@
           "ram"
         ],
         "menu_label": "Northeast to the Anvil Throne",
-        "requires_story_var": "throne_passages_revealed"
+        "requires_story_var": "frost_leopard_access_open"
       },
       {
         "room_id": "frost_leopard_throne",
@@ -12240,7 +12240,7 @@
           "leopard"
         ],
         "menu_label": "Northwest to the Opal Throne",
-        "requires_story_var": "throne_passages_revealed"
+        "requires_story_var": "frost_leopard_access_open"
       }
     ],
     "descriptions": []
@@ -12264,7 +12264,7 @@
           "leopard"
         ],
         "menu_label": "South to the Opal Throne",
-        "requires_story_var": "throne_passages_revealed"
+        "requires_story_var": "frost_leopard_access_open"
       },
       {
         "room_id": "frost_wolf_throne",
@@ -12277,7 +12277,7 @@
           "wolf"
         ],
         "menu_label": "Northeast to the Howling Dais",
-        "requires_story_var": "throne_passages_revealed"
+        "requires_story_var": "frost_leopard_access_open"
       }
     ],
     "descriptions": []

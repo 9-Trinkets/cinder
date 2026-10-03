@@ -1,6 +1,7 @@
 use super::{MovementStrategy, next_room_toward};
 use crate::content::types::{ActorDefinition, ContentPack};
 use crate::engine::state::WorldState;
+use crate::engine::turn_policies::story_var_is_truthy;
 use rand::Rng;
 
 /// Stationary strategy for guarding, sentry, or hold orders.
@@ -43,11 +44,21 @@ impl MovementStrategy for RandomAdjacentStrategy {
     fn plan_destination(
         &self,
         content: &ContentPack,
-        _state: &WorldState,
+        state: &WorldState,
         _actor: &ActorDefinition,
         current_room_id: &str,
     ) -> Option<String> {
-        let neighbors = content.adjacent_room_ids(current_room_id);
+        let room = content.room(current_room_id)?;
+        let neighbors: Vec<_> = room
+            .exits
+            .iter()
+            .filter(|exit| {
+                content.room_is_reachable(&exit.room_id)
+                    && (exit.requires_story_var.is_empty()
+                        || story_var_is_truthy(state, &exit.requires_story_var))
+            })
+            .map(|exit| exit.room_id.clone())
+            .collect();
         if neighbors.is_empty() {
             return None;
         }
@@ -80,7 +91,7 @@ impl MovementStrategy for TowardPlayerStrategy {
         _actor: &ActorDefinition,
         current_room_id: &str,
     ) -> Option<String> {
-        next_room_toward(content, current_room_id, &state.current_room_id)
+        next_room_toward(content, state, current_room_id, &state.current_room_id)
     }
 }
 
@@ -108,7 +119,7 @@ impl MovementStrategy for ToDestinationStrategy {
     fn plan_destination(
         &self,
         content: &ContentPack,
-        _state: &WorldState,
+        state: &WorldState,
         actor: &ActorDefinition,
         current_room_id: &str,
     ) -> Option<String> {
@@ -117,7 +128,7 @@ impl MovementStrategy for ToDestinationStrategy {
         } else {
             &self.destination_room_id
         };
-        next_room_toward(content, current_room_id, destination)
+        next_room_toward(content, state, current_room_id, destination)
     }
 }
 
@@ -145,17 +156,19 @@ impl MovementStrategy for ExitLabelStrategy {
     fn plan_destination(
         &self,
         content: &ContentPack,
-        _state: &WorldState,
+        state: &WorldState,
         _actor: &ActorDefinition,
         current_room_id: &str,
     ) -> Option<String> {
         let room = content.room(current_room_id)?;
         let target_exit = room.exits.iter().find(|exit| {
-            exit.label.eq_ignore_ascii_case(&self.exit_label)
+            (exit.label.eq_ignore_ascii_case(&self.exit_label)
                 || exit
                     .aliases
                     .iter()
-                    .any(|alias| alias.eq_ignore_ascii_case(&self.exit_label))
+                    .any(|alias| alias.eq_ignore_ascii_case(&self.exit_label)))
+                && (exit.requires_story_var.is_empty()
+                    || story_var_is_truthy(state, &exit.requires_story_var))
         })?;
         if content.room_is_reachable(&target_exit.room_id) {
             Some(target_exit.room_id.clone())

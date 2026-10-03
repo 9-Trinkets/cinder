@@ -233,6 +233,8 @@ pub struct BeatDefinition {
     #[serde(default)]
     pub actor_relocations: Vec<ActorRelocationDefinition>,
     #[serde(default)]
+    pub actor_spawn_schedule: Option<ActorSpawnScheduleDefinition>,
+    #[serde(default)]
     pub narrative_lines: Vec<String>,
     #[serde(default)]
     pub elapsed_minutes: u32,
@@ -254,6 +256,22 @@ pub struct BeatDefinition {
     pub open_menu: String,
     #[serde(default)]
     pub target_actor_story_var: String,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+pub struct ActorSpawnScheduleDefinition {
+    pub template_id: String,
+    pub room_id: String,
+    #[serde(default = "default_actor_spawn_batch_size")]
+    pub batch_size: usize,
+    pub interval_minutes: u32,
+    pub total_count: usize,
+    #[serde(default)]
+    pub stop_story_var: String,
+}
+
+fn default_actor_spawn_batch_size() -> usize {
+    1
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]

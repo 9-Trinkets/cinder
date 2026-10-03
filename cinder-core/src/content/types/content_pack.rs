@@ -434,6 +434,23 @@ impl ContentPack {
         self.movement
             .actors
             .get(actor_id)
+            .or_else(|| {
+                self.movement
+                    .actors
+                    .iter()
+                    .filter(|(template_id, _)| {
+                        actor_id
+                            .strip_prefix(template_id.as_str())
+                            .is_some_and(|suffix| {
+                                suffix.strip_prefix('-').is_some_and(|counter| {
+                                    !counter.is_empty()
+                                        && counter.chars().all(|ch| ch.is_ascii_digit())
+                                })
+                            })
+                    })
+                    .max_by_key(|(template_id, _)| template_id.len())
+                    .map(|(_, rules)| rules)
+            })
             .cloned()
             .unwrap_or_default()
     }

@@ -200,7 +200,10 @@ fn movement_target_rule_matches(
     rule: &ActorMovementTargetRuleDefinition,
 ) -> bool {
     (rule.when_player_room_id.is_empty() || rule.when_player_room_id == state.current_room_id)
-        && (rule.required_story_var.is_empty() || state.story_vars.has(&rule.required_story_var))
+        && (rule.required_story_var.is_empty()
+            || crate::engine::turn_policies::story_var_is_truthy(state, &rule.required_story_var))
+        && (rule.forbidden_story_var.is_empty()
+            || !crate::engine::turn_policies::story_var_is_truthy(state, &rule.forbidden_story_var))
         && (rule.any_active_stage_ids.is_empty()
             || rule
                 .any_active_stage_ids
@@ -264,6 +267,14 @@ fn nearest_unvisited_room(
     while let Some((room_id, first_step)) = queue.pop_front() {
         let room = content.room(&room_id)?;
         for exit in &room.exits {
+            if !exit.requires_story_var.is_empty()
+                && !crate::engine::turn_policies::story_var_is_truthy(
+                    state,
+                    &exit.requires_story_var,
+                )
+            {
+                continue;
+            }
             if !content.room_is_reachable(&exit.room_id) || !visited.insert(exit.room_id.clone()) {
                 continue;
             }

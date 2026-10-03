@@ -1,5 +1,7 @@
 use crate::content::types::{AdvanceCondition, AdvanceEffect, ContentPack};
-use crate::engine::state::{GamePhase, VariableStore, WorldState};
+use crate::engine::state::{
+    GamePhase, SpawnActorConfig, SpawnActorOutcome, VariableStore, WorldState,
+};
 use crate::engine::turn_policies::clear_inactive_objective_state;
 
 pub(crate) fn advance_objective_for_signal(
@@ -7,6 +9,7 @@ pub(crate) fn advance_objective_for_signal(
     content: &ContentPack,
     signal: &str,
 ) -> Vec<String> {
+    dispatch_due_actor_spawns(state, content);
     let mut messages = Vec::new();
     let mut next_active_stage_ids = Vec::with_capacity(state.active_objective_stage_ids.len());
     let mut next_stage_started_minutes = std::collections::BTreeMap::new();
@@ -61,6 +64,7 @@ pub(crate) fn advance_objective_for_signal(
                     .actor_room_overrides
                     .insert(relocation.actor_id.clone(), relocation.to_room_id.clone());
             }
+            dispatch_actor_spawns_for_stage(state, content, next_stage, 0);
             if !next_stage.projector_sequence_var_key.is_empty() {
                 let selected_value = state.story_vars.get(&next_stage.projector_sequence_var_key);
                 if let Some(selected_value) = selected_value
@@ -152,6 +156,73 @@ pub(crate) fn advance_objective_for_signal(
             .insert(stage_id, state.current_time_minutes);
     }
     messages
+}
+
+fn dispatch_due_actor_spawns(state: &mut WorldState, content: &ContentPack) {
+    for stage_id in state.active_objective_stage_ids.clone() {
+        let Some(stage) = content
+            .beats
+            .stages
+            .iter()
+            .find(|stage| stage.id == stage_id)
+        else {
+            continue;
+        };
+        let started_at = state
+            .stage_started_minutes
+            .get(&stage_id)
+            .copied()
+            .unwrap_or(state.current_time_minutes);
+        let elapsed_minutes = state.current_time_minutes.saturating_sub(started_at);
+        dispatch_actor_spawns_for_stage(state, content, stage, elapsed_minutes);
+    }
+}
+
+fn dispatch_actor_spawns_for_stage(
+    state: &mut WorldState,
+    content: &ContentPack,
+    stage: &crate::content::types::BeatDefinition,
+    elapsed_minutes: u32,
+) {
+    let Some(schedule) = stage.actor_spawn_schedule.as_ref() else {
+        return;
+    };
+    if !schedule.stop_story_var.is_empty()
+        && crate::engine::turn_policies::story_var_is_truthy(state, &schedule.stop_story_var)
+    {
+        return;
+    }
+    let interval = schedule.interval_minutes.max(1);
+    let due_batches = elapsed_minutes / interval + 1;
+    let due_count = schedule
+        .total_count
+        .min(schedule.batch_size.saturating_mul(due_batches as usize));
+    let instance_prefix = format!("{}-", schedule.template_id);
+    let dispatched_count = state
+        .spawned_actors
+        .keys()
+        .filter(|actor_id| actor_id.starts_with(&instance_prefix))
+        .count();
+
+    for _ in dispatched_count..due_count {
+        match state.spawn_actor(
+            content,
+            SpawnActorConfig {
+                template_id: &schedule.template_id,
+                room_id: Some(&schedule.room_id),
+                stance: None,
+                follows_player: false,
+                scale_with_actor_id: None,
+                scale_stat: None,
+                max_active_instances: None,
+            },
+        ) {
+            SpawnActorOutcome::Success(_) => {}
+            SpawnActorOutcome::CapacityExceeded { .. } | SpawnActorOutcome::TemplateNotFound => {
+                break;
+            }
+        }
+    }
 }
 
 fn advance_signal_matches(

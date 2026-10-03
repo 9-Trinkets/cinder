@@ -55,6 +55,7 @@ impl WorldState {
             }
         }
 
+        let template_initial_hostile = template.initial_hostile;
         let target_room_id = config
             .room_id
             .filter(|r| !r.is_empty())
@@ -134,7 +135,11 @@ impl WorldState {
         self.mark_actor_room_visited(&instance_id, &target_room_id);
         self.spawned_actors.insert(instance_id.clone(), instance);
 
-        let stance = config.stance.unwrap_or(ActorStance::Allied);
+        let stance = config.stance.unwrap_or(if template_initial_hostile {
+            ActorStance::Hostile
+        } else {
+            ActorStance::Allied
+        });
         self.set_actor_stance(content, &instance_id, stance, config.follows_player);
 
         SpawnActorOutcome::Success(SpawnedActorInfo {

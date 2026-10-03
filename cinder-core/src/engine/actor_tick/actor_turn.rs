@@ -15,16 +15,15 @@ impl ActorTickRoleRunner {
         let actor_id = envelope.current_actor_id.clone().ok_or_else(|| {
             "npc_actor_turn_build_actions is missing current_actor_id".to_string()
         })?;
-        let actor = self
-            .content
-            .actor(&actor_id)
-            .cloned()
-            .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
-        let rules = self.content.movement_rules(&actor_id);
         let state = self
             .state
             .lock()
             .map_err(|_| "failed to lock state for actor turn build actions".to_string())?;
+        let actor = state
+            .actor(&self.content, &actor_id)
+            .cloned()
+            .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
+        let rules = self.content.movement_rules(&actor_id);
         if !self.content.settings.autonomous_actor_dialogue {
             let events =
                 run_actor_turn(self.content.clone(), &state, &actor, &rules).map_err(|error| {
@@ -107,16 +106,15 @@ impl ActorTickRoleRunner {
                 "npc_actor_turn_decide_action stage actor mismatch '{stage_actor_id}' != '{actor_id}'"
             ));
         }
-        let actor = self
-            .content
-            .actor(&actor_id)
-            .cloned()
-            .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
-        let rules = self.content.movement_rules(&actor_id);
         let state = self
             .state
             .lock()
             .map_err(|_| "failed to lock state for actor turn decide action".to_string())?;
+        let actor = state
+            .actor(&self.content, &actor_id)
+            .cloned()
+            .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
+        let rules = self.content.movement_rules(&actor_id);
         let build = build_actor_turn(self.content.clone(), &state, &actor, &rules)
             .map_err(|error| error.to_string())?;
         drop(state);
@@ -163,16 +161,15 @@ impl ActorTickRoleRunner {
                 "npc_actor_turn_write_dialogue stage actor mismatch '{stage_actor_id}' != '{actor_id}'"
             ));
         }
-        let actor = self
-            .content
-            .actor(&actor_id)
-            .cloned()
-            .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
-        let rules = self.content.movement_rules(&actor_id);
         let state = self
             .state
             .lock()
             .map_err(|_| "failed to lock state for actor turn write dialogue".to_string())?;
+        let actor = state
+            .actor(&self.content, &actor_id)
+            .cloned()
+            .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
+        let rules = self.content.movement_rules(&actor_id);
         let build = build_actor_turn(self.content.clone(), &state, &actor, &rules)
             .map_err(|error| error.to_string())?;
         let mut emit_trace = |role_name: &str, topic: &str, payload: serde_json::Value| {

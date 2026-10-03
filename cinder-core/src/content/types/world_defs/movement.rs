@@ -94,6 +94,8 @@ pub struct ActorMovementTargetRuleDefinition {
     #[serde(default)]
     pub required_story_var: String,
     #[serde(default)]
+    pub forbidden_story_var: String,
+    #[serde(default)]
     pub any_active_stage_ids: Vec<String>,
     #[serde(default)]
     pub target_from_story_var: String,
