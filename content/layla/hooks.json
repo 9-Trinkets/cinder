@@ -1270,20 +1270,6 @@
             }
           ],
           "payload_template": {
-            "kind": "set_story_var",
-            "key": "descend_floor_5",
-            "value": "true"
-          }
-        },
-        {
-          "conditions": [
-            {
-              "path": "room_id",
-              "operator": "equal",
-              "value": "teleport_platform"
-            }
-          ],
-          "payload_template": {
             "kind": "narrate_message",
             "key": "platform.activated"
           }

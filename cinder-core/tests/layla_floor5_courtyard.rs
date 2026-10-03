@@ -803,3 +803,60 @@ fn floor5_entry_activates_free_prisoners_quest_from_initial_listener() {
         objs1
     );
 }
+
+#[test]
+fn tracing_platform_sigil_does_not_count_as_descending() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "teleport_platform".to_string();
+    state.active_objective_stage_ids = vec!["mq_use_teleport_platform".to_string()];
+    state.story_vars.set_unchecked("knows_teleport", "true");
+    state
+        .story_vars
+        .set_unchecked("anchor_floor4_platform", "true");
+    state.story_vars.set_unchecked("anchor_floor5_gate", "true");
+    state.acquire_player_item(&pack, "magic-chalk");
+    state
+        .actor_stats
+        .entry("player".to_string())
+        .or_default()
+        .insert("mp".to_string(), 20);
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+
+    runtime
+        .run_turn("trace teleport sigil")
+        .expect("trace platform sigil");
+
+    // The platform activates, but Layla is still standing on Floor 4.
+    assert_eq!(runtime.current_room_id().unwrap(), "teleport_platform");
+    let after = runtime.export_state().unwrap();
+    assert_eq!(after.story_vars.get("platform_activated"), Some("true"));
+
+    // "Get below the wall." must survive activation.
+    assert!(
+        !after
+            .completed_stage_ids
+            .contains("mq_use_teleport_platform"),
+        "descent quest completed by tracing the sigil: {:?}",
+        after.completed_stage_ids
+    );
+    assert!(
+        after
+            .active_objective_stage_ids
+            .contains(&"mq_use_teleport_platform".to_string()),
+        "descent quest lost before arriving on Floor 5: {:?}",
+        after.active_objective_stage_ids
+    );
+    assert_ne!(after.story_vars.get("descend_floor_5"), Some("true"));
+
+    // Only actual arrival completes it.
+    runtime.run_turn("go floor 5").expect("descend floor 5");
+    assert_eq!(runtime.current_room_id().unwrap(), "courtyard_center");
+    let arrived = runtime.export_state().unwrap();
+    assert!(
+        arrived
+            .completed_stage_ids
+            .contains("mq_use_teleport_platform")
+    );
+}
