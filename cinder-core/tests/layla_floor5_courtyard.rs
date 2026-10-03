@@ -3,7 +3,7 @@
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::content::types::ItemStorageTarget;
 use cinder_core::engine::runtime::CinderRuntime;
-use cinder_core::engine::state::{ActorStance, WorldState};
+use cinder_core::engine::state::{ActorStance, SpawnActorConfig, SpawnActorOutcome, WorldState};
 
 const EXPECTED_COURTYARD_ROOMS: &[&str] = &[
     "courtyard_center",
@@ -508,6 +508,100 @@ fn floor5_wave_one_raiders_march_until_their_lane_stops() {
             Some("frost_wolf_muster")
         );
     }
+}
+
+#[test]
+fn floor5_spawned_siege_armies_do_not_emit_npc_tick_soft_errors() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_center".to_string();
+    state.current_time_minutes = 27;
+    state.active_objective_stage_ids = vec![
+        "frost_wolf_dispatch".to_string(),
+        "iron_ram_dispatch".to_string(),
+        "frost_leopard_dispatch".to_string(),
+    ];
+    for stage_id in &state.active_objective_stage_ids {
+        state.stage_started_minutes.insert(stage_id.clone(), 0);
+    }
+    for access_var in [
+        "frost_wolf_access_open",
+        "iron_ram_access_open",
+        "frost_leopard_access_open",
+    ] {
+        state.story_vars.set_unchecked(access_var, "true");
+    }
+
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+    runtime.run_turn("go north").expect("dispatch siege armies");
+    let mut state = runtime.export_state().expect("export dispatched armies");
+    assert_eq!(spawned_count(&state, "frost_wolf_raider"), 30);
+    assert_eq!(spawned_count(&state, "iron_ram_mauler"), 30);
+    assert_eq!(spawned_count(&state, "frost_leopard_hunter"), 30);
+    state.current_room_id = "courtyard_center".to_string();
+
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+
+    for tick in 1..=6 {
+        let outcome = runtime.run_tick().expect("spawned siege actor tick runs");
+        assert!(
+            !outcome.text().contains("goes still, listening to the dark"),
+            "tick {tick} produced NPC soft error: {}",
+            outcome.text()
+        );
+    }
+}
+
+#[test]
+fn floor5_spawned_hostile_continues_attacking_on_its_cooldown() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_north".to_string();
+    state.turn_number = 1;
+    state
+        .story_vars
+        .set_unchecked("frost_wolf_lane_stopped", "true");
+    let actor_id = match state.spawn_actor(
+        &pack,
+        SpawnActorConfig {
+            template_id: "frost_wolf_raider",
+            room_id: Some("courtyard_north"),
+            stance: None,
+            follows_player: false,
+            scale_with_actor_id: None,
+            scale_stat: None,
+            max_active_instances: None,
+        },
+    ) {
+        SpawnActorOutcome::Success(info) => info.instance_id,
+        outcome => panic!("expected spawned hostile, got {outcome:?}"),
+    };
+    assert_eq!(state.stance(&actor_id), ActorStance::Hostile);
+    let initial_hp = state.actor_stat("player", "hp");
+
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+    runtime.run_tick().expect("first autonomous strike");
+    let after_first = runtime.export_state().expect("export first strike");
+    assert!(
+        after_first.actor_stat("player", "hp") < initial_hp,
+        "spawned hostile should initiate an attack without a player attack"
+    );
+
+    runtime.run_tick().expect("cooldown tick");
+    let during_cooldown = runtime.export_state().expect("export cooldown");
+    assert_eq!(
+        during_cooldown.actor_stat("player", "hp"),
+        after_first.actor_stat("player", "hp"),
+        "spawned hostile should respect its attack interval"
+    );
+
+    runtime.run_tick().expect("second autonomous strike");
+    let after_second = runtime.export_state().expect("export second strike");
+    assert!(
+        after_second.actor_stat("player", "hp") < during_cooldown.actor_stat("player", "hp"),
+        "spawned hostile should attack again once its cooldown expires"
+    );
 }
 
 #[test]

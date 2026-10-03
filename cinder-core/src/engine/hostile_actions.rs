@@ -25,9 +25,8 @@ pub(crate) fn plan_rules_hostile_actions(
     if state.phase != crate::engine::state::GamePhase::Active {
         return Vec::new();
     }
-    let actor_ids = content
-        .actors
-        .iter()
+    let actor_ids = state
+        .onstage_actors(content)
         .map(|actor| actor.id.clone())
         .collect::<Vec<_>>();
     actor_ids

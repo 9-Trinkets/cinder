@@ -29,8 +29,8 @@ pub(crate) fn handle_hostile_strike(
     let raw_damage = (state.actor_stat(actor_id, &combat.attack_stat_id)
         - state.effective_actor_stat(content, &combat.player_actor_id, &combat.defense_stat_id))
     .max(combat.minimum_damage);
-    let attack_kind = content
-        .actor(actor_id)
+    let attack_kind = state
+        .actor(content, actor_id)
         .map(|actor| actor.attack_kind())
         .unwrap_or("physical");
     let actor_name = actor_display_name(state, content, actor_id);
@@ -123,8 +123,8 @@ pub(crate) fn handle_hostile_strike(
             }
         }
     }
-    let interval = content
-        .actor(actor_id)
+    let interval = state
+        .actor(content, actor_id)
         .map(|actor| actor.attack_interval_minutes(combat.default_attack_interval_minutes))
         .unwrap_or(combat.default_attack_interval_minutes);
     state
@@ -236,8 +236,8 @@ pub(crate) fn handle_hostile_heal(
 
     lines.narration(line);
 
-    let interval = content
-        .actor(actor_id)
+    let interval = state
+        .actor(content, actor_id)
         .map(|actor| actor.attack_interval_minutes(combat.default_attack_interval_minutes))
         .unwrap_or(combat.default_attack_interval_minutes);
     state
