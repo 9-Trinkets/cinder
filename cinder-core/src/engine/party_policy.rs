@@ -4,6 +4,7 @@ use crate::content::types::{
     PartyTargetSelection,
 };
 use crate::engine::combat_cooldowns::{CombatCooldownKind, actor_combat_cooldown_minutes};
+use crate::engine::combat_targets::party_actor_is_in_room;
 use crate::engine::state::{ActorStance, WorldState};
 use std::cmp::Ordering;
 
@@ -43,7 +44,13 @@ pub(crate) fn select_defensive_reaction(
                             .is_none_or(|ready_at| *ready_at <= state.current_time_minutes)
                         && actor_may_use_reaction(state, &actor.id, &rule.skill_id)
                         && rule.conditions.iter().all(|condition| {
-                            condition_matches(content, state, &actor.id, condition)
+                            condition_matches(
+                                content,
+                                state,
+                                &actor.id,
+                                &state.current_room_id,
+                                condition,
+                            )
                         })
                 })
                 .map(|(content_index, actor)| Candidate {
@@ -71,10 +78,11 @@ pub(crate) fn select_defensive_reaction(
 pub(crate) fn select_post_damage_reactions(
     content: &ContentPack,
     state: &WorldState,
+    room_id: &str,
 ) -> Vec<PartyReactionDecision> {
     state
         .onstage_actors(content)
-        .filter(|actor| actor_is_reaction_eligible(content, state, &actor.id))
+        .filter(|actor| actor_is_reaction_eligible(content, state, &actor.id, room_id))
         .filter_map(|actor| {
             PartyDecisionTier::EVALUATION_ORDER
                 .into_iter()
@@ -89,7 +97,7 @@ pub(crate) fn select_post_damage_reactions(
                                     | PartyReactionAction::Hold
                             )
                             && rule.conditions.iter().all(|condition| {
-                                condition_matches(content, state, &actor.id, condition)
+                                condition_matches(content, state, &actor.id, room_id, condition)
                             })
                             && actor_may_use_reaction(state, &actor.id, &rule.skill_id)
                     })
@@ -134,19 +142,25 @@ pub(crate) fn resolve_party_reaction_target(
     state: &WorldState,
     decision: &PartyReactionDecision,
     attacker_id: &str,
+    room_id: &str,
 ) -> Option<String> {
     match decision.target {
         PartyTargetSelection::SelfActor => Some(decision.actor_id.clone()),
         PartyTargetSelection::Player => Some(content.settings.combat.player_actor_id.clone()),
         PartyTargetSelection::Attacker => Some(attacker_id.to_string()),
-        PartyTargetSelection::LowestHealthAlly => lowest_health_ally(content, state),
+        PartyTargetSelection::LowestHealthAlly => lowest_health_ally(content, state, room_id),
     }
 }
 
-fn actor_is_reaction_eligible(content: &ContentPack, state: &WorldState, actor_id: &str) -> bool {
+fn actor_is_reaction_eligible(
+    content: &ContentPack,
+    state: &WorldState,
+    actor_id: &str,
+    room_id: &str,
+) -> bool {
     actor_id != content.settings.combat.player_actor_id
         && state.stance(actor_id) == ActorStance::Allied
-        && state.actor_is_in_room(content, actor_id, &state.current_room_id)
+        && state.actor_is_in_room(content, actor_id, room_id)
         && !state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id)
         && state
             .party_reaction_ready_at
@@ -166,6 +180,7 @@ fn condition_matches(
     content: &ContentPack,
     state: &WorldState,
     actor_id: &str,
+    room_id: &str,
     condition: &PartyDecisionCondition,
 ) -> bool {
     match condition {
@@ -198,8 +213,7 @@ fn condition_matches(
                         .filter(|other_id| state.stance(other_id) == ActorStance::Allied),
                 )
                 .filter(|other_id| {
-                    (*other_id == player_id
-                        || state.actor_is_in_room(content, other_id, &state.current_room_id))
+                    party_actor_is_in_room(content, state, other_id, room_id)
                         && !state
                             .actor_is_defeated(other_id, &content.settings.combat.health_stat_id)
                 })
@@ -219,8 +233,7 @@ fn condition_matches(
                         .filter(|other_id| state.stance(other_id) == ActorStance::Allied),
                 )
                 .filter(|other_id| {
-                    (*other_id == player_id
-                        || state.actor_is_in_room(content, other_id, &state.current_room_id))
+                    party_actor_is_in_room(content, state, other_id, room_id)
                         && !state
                             .actor_is_defeated(other_id, &content.settings.combat.health_stat_id)
                 })
@@ -248,7 +261,7 @@ fn health_values(content: &ContentPack, state: &WorldState, actor_id: &str) -> (
     (current, maximum)
 }
 
-fn lowest_health_ally(content: &ContentPack, state: &WorldState) -> Option<String> {
+fn lowest_health_ally(content: &ContentPack, state: &WorldState, room_id: &str) -> Option<String> {
     let player_id = content.settings.combat.player_actor_id.as_str();
     std::iter::once(player_id)
         .chain(
@@ -259,8 +272,7 @@ fn lowest_health_ally(content: &ContentPack, state: &WorldState) -> Option<Strin
                 .filter(|actor_id| state.stance(actor_id) == ActorStance::Allied),
         )
         .filter(|actor_id| {
-            (*actor_id == player_id
-                || state.actor_is_in_room(content, actor_id, &state.current_room_id))
+            party_actor_is_in_room(content, state, actor_id, room_id)
                 && !state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id)
         })
         .min_by(|left, right| {

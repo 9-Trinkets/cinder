@@ -44,6 +44,8 @@
   "combat.player_skill_unlocked": "You unlocked {skill_label}!",
   "combat.guard_intercepts": "The {actor} strikes, but {guard} steps in front of you, taking {damage} damage.",
   "combat.guard_falls": "{guard} crumples from the blow and collapses.",
+  "combat.hostile_strike_actor": "{actor} strikes {target}! {target} takes {damage} damage. ({remaining} HP remaining)",
+  "combat.party_member_falls": "{actor} falls.",
   "error.command_not_now": "You can't {verb} right now.",
   "error.command_needs_more": "You can't {verb} yet. Still needed: {labels}.",
   "error.command_blocked_by_progress": "You can't {verb} again right now. Already ready: {labels}.",

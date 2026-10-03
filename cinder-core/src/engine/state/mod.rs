@@ -118,7 +118,7 @@ pub struct WorldState {
     pub room_item_charges: BTreeMap<String, u32>,
     #[serde(default)]
     pub act_series: Option<ActSeriesState>,
-    /// Per-actor relationship toward the player. Absent entries mean
+    /// Per-actor relationship toward the player's faction. Absent entries mean
     /// `ActorRelationship::default()` (neutral, not following), so packs that
     /// never touch relationships carry no state.
     #[serde(default)]
@@ -129,8 +129,8 @@ pub struct WorldState {
     /// Earliest game minute at which each party member may react again.
     #[serde(default)]
     pub party_reaction_ready_at: BTreeMap<String, u32>,
-    /// Next game-minute at which each hostile actor may autonomously strike
-    /// the player. Only meaningful while the stance is hostile; entries are
+    /// Next game-minute at which each hostile actor may autonomously strike a
+    /// party member. Only meaningful while the stance is hostile; entries are
     /// seeded when a mob wakes and cleared when it leaves hostility.
     #[serde(default)]
     pub next_hostile_strike_at: BTreeMap<String, u32>,
@@ -209,8 +209,8 @@ pub struct TransitionSummary {
     pub transcript_line_count: usize,
 }
 
-/// Discrete stance of an actor toward the player. Mutual exclusion is inherent:
-/// a stance is a single value, not independent flags.
+/// Discrete stance of an actor toward the player's faction. Mutual exclusion
+/// is inherent: a stance is a single value, not independent flags.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum ActorStance {
@@ -220,7 +220,7 @@ pub enum ActorStance {
     Allied,
 }
 
-/// Relationship of one actor to the player.
+/// Relationship of one actor to the player's faction.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub struct ActorRelationship {
     #[serde(default)]

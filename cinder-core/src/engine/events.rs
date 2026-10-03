@@ -181,8 +181,8 @@ pub enum WorldEvent {
         actor_id: String,
         relationship: crate::engine::state::ActorRelationship,
     },
-    /// A hostile actor strikes the player. Declared by tick policies (rules or
-    /// LLM); the reducer resolves the mechanics generically from stats.
+    /// A hostile actor strikes a living member of the player's party in its
+    /// room. The reducer selects the target and resolves mechanics from stats.
     HostileStrike {
         actor_id: String,
     },

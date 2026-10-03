@@ -1,5 +1,6 @@
 use crate::content::types::ContentPack;
 use crate::engine::combat_cooldowns::{CombatCooldownKind, actor_combat_cooldown_minutes};
+use crate::engine::combat_targets::select_hostile_target;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::party_policy::{consume_party_reaction, select_defensive_reaction};
 use crate::engine::reducer::combat::resisted_damage;
@@ -24,22 +25,25 @@ pub(crate) fn handle_hostile_strike(
     if state.current_time_minutes < *state.next_hostile_strike_at.get(actor_id).unwrap_or(&0) {
         return;
     }
-    if state.actor_current_room_id(content, actor_id) != state.current_room_id {
+    let Some(target_id) = select_hostile_target(content, state, actor_id) else {
         return;
-    }
+    };
+    let room_id = state.actor_current_room_id(content, actor_id).to_string();
     let raw_damage = (state.actor_stat(actor_id, &combat.attack_stat_id)
-        - state.effective_actor_stat(content, &combat.player_actor_id, &combat.defense_stat_id))
+        - state.effective_actor_stat(content, &target_id, &combat.defense_stat_id))
     .max(combat.minimum_damage);
     let attack_kind = state
         .actor(content, actor_id)
         .map(|actor| actor.attack_kind())
         .unwrap_or("physical");
     let actor_name = actor_display_name(state, content, actor_id);
-    let player_name = actor_display_name(state, content, &combat.player_actor_id);
+    let target_name = actor_display_name(state, content, &target_id);
     // A guarding follower intercepts the blow aimed at the player. The guard
     // soaks the attacker's raw strike against its own defense, floored by the
     // minimum-damage rule just like a direct hit on the player.
-    let defensive_reaction = select_defensive_reaction(content, state);
+    let defensive_reaction = (target_id == combat.player_actor_id)
+        .then(|| select_defensive_reaction(content, state))
+        .flatten();
     let guard_id = defensive_reaction
         .as_ref()
         .map(|decision| decision.actor_id.clone());
@@ -90,36 +94,46 @@ pub(crate) fn handle_hostile_strike(
             consume_party_reaction(content, state, decision);
         }
     } else {
-        let damage = resisted_damage(content, &combat.player_actor_id, attack_kind, raw_damage);
+        let damage = resisted_damage(content, &target_id, attack_kind, raw_damage);
         if raw_damage > 0 && damage == 0 {
             if let Some(line) = content.render_message(
                 "combat.no_effect",
-                &[("actor", player_name.as_str()), ("kind", attack_kind)],
+                &[("actor", target_name.as_str()), ("kind", attack_kind)],
             ) {
                 lines.narration(line);
             }
         } else {
             state
-                .adjust_actor_stat(
-                    content,
-                    &combat.player_actor_id,
-                    &combat.health_stat_id,
-                    -damage,
-                )
+                .adjust_actor_stat(content, &target_id, &combat.health_stat_id, -damage)
                 .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
-            let remaining = state.effective_actor_stat(
-                content,
-                &combat.player_actor_id,
-                &combat.health_stat_id,
-            );
-            if let Some(line) = content.render_message(
-                "combat.hostile_strike",
-                &[
-                    ("actor", actor_name.as_str()),
-                    ("damage", damage.to_string().as_str()),
-                    ("remaining", remaining.to_string().as_str()),
-                ],
-            ) {
+            let remaining = state.effective_actor_stat(content, &target_id, &combat.health_stat_id);
+            let damage = damage.to_string();
+            let remaining_text = remaining.to_string();
+            let replacements = [
+                ("actor", actor_name.as_str()),
+                ("target", target_name.as_str()),
+                ("damage", damage.as_str()),
+                ("remaining", remaining_text.as_str()),
+            ];
+            let message = if target_id == combat.player_actor_id {
+                "combat.hostile_strike"
+            } else {
+                "combat.hostile_strike_actor"
+            };
+            if let Some(line) = content.render_message(message, &replacements) {
+                lines.narration(line);
+            } else if target_id != combat.player_actor_id {
+                lines.narration(format!(
+                    "{actor_name} strikes {target_name}! {target_name} takes {damage} damage. ({remaining_text} HP remaining)"
+                ));
+            }
+            if target_id != combat.player_actor_id
+                && remaining <= 0
+                && let Some(line) = content.render_message(
+                    "combat.party_member_falls",
+                    &[("actor", target_name.as_str())],
+                )
+            {
                 lines.narration(line);
             }
         }
@@ -129,9 +143,11 @@ pub(crate) fn handle_hostile_strike(
     state
         .next_hostile_strike_at
         .insert(actor_id.to_string(), state.current_time_minutes + interval);
-    defeat_player_if_dead(state, content, lines);
+    if target_id == combat.player_actor_id {
+        defeat_player_if_dead(state, content, lines);
+    }
     if state.phase == GamePhase::Active {
-        resolve_post_damage_reactions(state, content, actor_id, lines);
+        resolve_post_damage_reactions(state, content, actor_id, &room_id, lines);
     }
 }
 

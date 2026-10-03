@@ -4,6 +4,7 @@ pub(crate) mod strategies;
 use super::{room_is_in_tick_scope, tick_scope_room_ids};
 use crate::content::types::{ActorDefinition, ContentPack, WanderDefinition, WanderMode};
 use crate::engine::behavior::should_hold;
+use crate::engine::combat_targets::room_has_living_guard;
 use crate::engine::events::WorldEvent;
 use crate::engine::state::{ActorStance, GamePhase, WorldState};
 use std::collections::BTreeSet;
@@ -87,6 +88,9 @@ impl MovementEligibilityPolicy for DefaultMovementEligibilityPolicy {
         }
         let current_room_id = state.actor_room_id(&actor.id, &actor.room_id);
         if !room_is_in_tick_scope(scope_room_ids, current_room_id) {
+            return false;
+        }
+        if is_hostile && room_has_living_guard(content, state, current_room_id) {
             return false;
         }
         if should_hold(content, state, &actor.id) {
@@ -436,6 +440,53 @@ mod tests {
             event,
             WorldEvent::ActorMoved { actor_id, .. } if actor_id == &ally_id
         )));
+    }
+
+    #[test]
+    fn living_guard_blocks_hostile_movement_until_no_longer_defending_room() {
+        let mut content = minimal_test_pack();
+        let hostile_id = content.actors[0].id.clone();
+        let guard_id = content.actors[1].id.clone();
+        content.actors[0].room_id = "lounge".to_string();
+        content.actors[1].room_id = "lounge".to_string();
+
+        let mut state = WorldState::new(&content);
+        state.set_stance(&hostile_id, ActorStance::Hostile);
+        state.set_stance(&guard_id, ActorStance::Allied);
+        state.set_follows_player(&guard_id, false);
+        state
+            .party_orders
+            .insert(guard_id.clone(), "guard".to_string());
+        state
+            .actor_stats
+            .entry(hostile_id.clone())
+            .or_default()
+            .insert("hp".to_string(), 10);
+        state
+            .actor_stats
+            .entry(guard_id.clone())
+            .or_default()
+            .insert("hp".to_string(), 10);
+
+        let policy = DefaultMovementEligibilityPolicy;
+        assert!(!policy.is_eligible(&content, &state, &content.actors[0], &None));
+
+        state
+            .actor_stats
+            .entry(guard_id.clone())
+            .or_default()
+            .insert("hp".to_string(), 0);
+        assert!(policy.is_eligible(&content, &state, &content.actors[0], &None));
+
+        state
+            .actor_stats
+            .entry(guard_id.clone())
+            .or_default()
+            .insert("hp".to_string(), 10);
+        state
+            .actor_room_overrides
+            .insert(guard_id, "kitchen".to_string());
+        assert!(policy.is_eligible(&content, &state, &content.actors[0], &None));
     }
 
     #[test]

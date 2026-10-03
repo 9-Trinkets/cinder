@@ -121,7 +121,7 @@ Three points connect to the estates of the three rival noble houses; the alterna
 ### The 7 Courtyard Rooms
 1. **`courtyard_center` (The Heart):**
    - The central teleport pad, the unlocked cages, and the five named offerings sheltering with Astrid and Einar.
-   - If enemy soldiers hold this room for three minutes, the current at-risk civilian dies. The protection quest fails on the third death, but the main siege continues.
+   - If enemy soldiers hold this room for ten minutes, the current at-risk civilian dies. The protection quest fails on the third death, but the main siege continues.
 2. **`courtyard_north` (Frost-Wolf Approach):**
    - The grand arched gateway leading north into **House Frost-Wolf Manor**.
 3. **`courtyard_northeast` (North-East Rampart — Choke 1):**

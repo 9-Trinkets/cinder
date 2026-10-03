@@ -12,6 +12,7 @@
 //! Movement destination and cadence remain in `movement.json`.
 
 use crate::content::types::{BehaviorActorDefinition, ContentPack};
+use crate::engine::combat_targets::select_hostile_target;
 use crate::engine::events::WorldEvent;
 use crate::engine::neuron::evaluate_symbolic_value;
 use crate::engine::state::{ActorStance, WorldState};
@@ -33,6 +34,7 @@ pub(crate) fn build_input(content: &ContentPack, state: &WorldState, actor_id: &
         .next_hostile_strike_at
         .get(actor_id)
         .is_none_or(|next_strike| current_time_minutes >= *next_strike);
+    let opposing_party_actor_in_room = select_hostile_target(content, state, actor_id).is_some();
 
     json!({
         "actor": {
@@ -45,6 +47,7 @@ pub(crate) fn build_input(content: &ContentPack, state: &WorldState, actor_id: &
         },
         "world": {
             "in_player_room": room_id == state.current_room_id,
+            "opposing_party_actor_in_room": opposing_party_actor_in_room,
             "cooldown_elapsed": cooldown_elapsed,
             "time": state.current_time_minutes,
         }
@@ -132,10 +135,13 @@ pub(crate) fn strike_event(
         return None;
     }
     match rule_decides(&behavior.strike, "strike", content, state, actor_id) {
-        Decision::Yes => Some(WorldEvent::HostileStrike {
-            actor_id: actor_id.to_string(),
-        }),
+        Decision::Yes if select_hostile_target(content, state, actor_id).is_some() => {
+            Some(WorldEvent::HostileStrike {
+                actor_id: actor_id.to_string(),
+            })
+        }
         Decision::No => None,
+        Decision::Yes => None,
     }
 }
 

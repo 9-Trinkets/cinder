@@ -10,6 +10,8 @@
     "combat.drain_sigil_spent": "The grey light runs out of the spiral and it powders to dust. The drain is spent.",
     "combat.actor_wakes_hostile": "The {actor}'s eyes snap open. It turns to face you.",
     "combat.hostile_strike": "The {actor} strikes you! You take {damage} damage. ({remaining} HP remaining)",
+    "combat.hostile_strike_actor": "The {actor} strikes {target}! {target} takes {damage} damage. ({remaining} HP remaining)",
+    "combat.party_member_falls": "{actor} falls where they were stationed.",
     "combat.guard_intercepts": "The {guard} steps across the {actor}'s strike and takes {damage} damage.",
     "combat.guard_falls": "The {guard} breaks apart where it stands.",
     "combat.party_counterattack": "The {actor} answers the strike, hitting the {target} for {damage} damage. ({remaining} HP remaining)",

@@ -1,7 +1,8 @@
 use super::*;
 
 impl WorldState {
-    /// Relationship of an actor toward the player; absent entries are neutral.
+    /// Relationship of an actor toward the player's faction; absent entries
+    /// are neutral.
     pub fn relationship(&self, actor_id: &str) -> ActorRelationship {
         let actor_id = remap_story_actor_id(self, actor_id);
         self.relationships

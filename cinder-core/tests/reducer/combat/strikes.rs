@@ -11,6 +11,82 @@ use cinder_core::engine::state::{ActorStance, GamePhase, WorldState};
 use std::collections::BTreeMap;
 
 #[test]
+fn hostile_strikes_off_screen_ally_using_that_allys_defense() {
+    let mut pack = reducer_test_pack();
+    pack.settings.combat = CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_ID.to_string(),
+        health_stat_id: "stamina".to_string(),
+        attack_stat_id: "confidence".to_string(),
+        defense_stat_id: "hunger".to_string(),
+        minimum_damage: 1,
+        ..CombatSettingsDefinition::default()
+    };
+    pack.actors[1].initial_stats.insert("hunger".to_string(), 3);
+    pack.actors[2]
+        .initial_stats
+        .insert("confidence".to_string(), 7);
+    let mut state = WorldState::new(&pack);
+    state
+        .actor_room_overrides
+        .insert(ACTOR_B_ID.to_string(), KITCHEN_ID.to_string());
+    state.set_stance(ACTOR_B_ID, ActorStance::Allied);
+    state.set_stance(ACTOR_C_ID, ActorStance::Hostile);
+
+    let player_before = state.actor_stat(ACTOR_A_ID, "stamina");
+    let ally_before = state.actor_stat(ACTOR_B_ID, "stamina");
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::HostileStrike {
+            actor_id: ACTOR_C_ID.to_string(),
+        })],
+    );
+
+    assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), player_before);
+    assert_eq!(state.actor_stat(ACTOR_B_ID, "stamina"), ally_before - 4);
+    assert!(
+        transcript(&output.lines).contains("Casey strikes Blair"),
+        "expected off-screen strike narration, got: {}",
+        transcript(&output.lines)
+    );
+}
+
+#[test]
+fn allied_follower_defeat_does_not_end_the_game() {
+    let mut pack = reducer_test_pack();
+    pack.settings.combat = CombatSettingsDefinition {
+        player_actor_id: ACTOR_A_ID.to_string(),
+        health_stat_id: "stamina".to_string(),
+        attack_stat_id: "confidence".to_string(),
+        minimum_damage: 9,
+        ..CombatSettingsDefinition::default()
+    };
+    let mut state = WorldState::new(&pack);
+    state
+        .actor_room_overrides
+        .insert(ACTOR_B_ID.to_string(), KITCHEN_ID.to_string());
+    state.set_stance(ACTOR_B_ID, ActorStance::Allied);
+    state.set_stance(ACTOR_C_ID, ActorStance::Hostile);
+
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::HostileStrike {
+            actor_id: ACTOR_C_ID.to_string(),
+        })],
+    );
+
+    assert!(state.actor_stat(ACTOR_B_ID, "stamina") <= 0);
+    assert_eq!(state.phase, GamePhase::Active);
+    assert_eq!(output.phase, GamePhase::Active);
+    assert!(
+        transcript(&output.lines).contains("Blair falls"),
+        "expected follower defeat narration, got: {}",
+        transcript(&output.lines)
+    );
+}
+
+#[test]
 fn hostile_strike_uses_pack_declared_combat_vocabulary() {
     let mut pack = reducer_test_pack();
     pack.stats.actor.insert(
@@ -31,7 +107,7 @@ fn hostile_strike_uses_pack_declared_combat_vocabulary() {
         actor.initial_stats.insert("ward".to_string(), 0);
     }
     pack.settings.combat = CombatSettingsDefinition {
-        player_actor_id: ACTOR_A_NAME.to_string(),
+        player_actor_id: ACTOR_A_ID.to_string(),
         health_stat_id: "vitality".to_string(),
         attack_stat_id: "fury".to_string(),
         defense_stat_id: "ward".to_string(),
@@ -42,19 +118,22 @@ fn hostile_strike_uses_pack_declared_combat_vocabulary() {
     let mut state = WorldState::new(&pack);
     state
         .actor_stats
-        .entry(ACTOR_A_ID.to_string())
+        .entry(ACTOR_C_ID.to_string())
         .or_default()
         .insert("fury".to_string(), 5);
-    state.set_stance(ACTOR_A_ID, ActorStance::Hostile);
+    state
+        .actor_room_overrides
+        .insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
+    state.set_stance(ACTOR_C_ID, ActorStance::Hostile);
     let events = [TimestampedWorldEvent::now(WorldEvent::HostileStrike {
-        actor_id: ACTOR_A_ID.to_string(),
+        actor_id: ACTOR_C_ID.to_string(),
     })];
 
     apply_events(&mut state, &pack, &events);
 
-    assert_eq!(state.actor_stat(ACTOR_A_NAME, "vitality"), 5);
+    assert_eq!(state.actor_stat(ACTOR_A_ID, "vitality"), 5);
     assert_eq!(
-        state.next_hostile_strike_at.get(ACTOR_A_ID),
+        state.next_hostile_strike_at.get(ACTOR_C_ID),
         Some(&(state.current_time_minutes + 7))
     );
 }
@@ -64,7 +143,7 @@ fn player_defeat_narration_and_phase_come_from_content() {
     let mut pack = reducer_test_pack();
     let defeat_text = "The lounge lights fade for good.";
     pack.settings.combat = CombatSettingsDefinition {
-        player_actor_id: ACTOR_B_NAME.to_string(),
+        player_actor_id: ACTOR_B_ID.to_string(),
         health_stat_id: "stamina".to_string(),
         attack_stat_id: "confidence".to_string(),
         minimum_damage: 9,
@@ -145,7 +224,7 @@ fn hostile_strike_respects_defender_resistance() {
 }
 
 #[test]
-fn hostile_strike_intercepted_by_guard_takes_at_least_minimum_damage() {
+fn hostile_strike_against_guard_takes_at_least_minimum_damage() {
     let mut pack = reducer_test_pack();
     pack.settings.combat = CombatSettingsDefinition {
         player_actor_id: ACTOR_A_ID.to_string(),
@@ -212,14 +291,14 @@ fn hostile_strike_intercepted_by_guard_takes_at_least_minimum_damage() {
         })],
     );
 
-    // The player takes no damage; the guard absorbs the blow for at least the
+    // The player takes no damage; the guard is targeted for at least the
     // minimum-damage amount instead of a confusing zero.
     assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), 10);
     assert_eq!(state.actor_stat("bodyguard", "stamina"), 9);
     let output_text = transcript(&output.lines);
     assert!(
-        output_text.contains("steps in front of you, taking 1 damage"),
-        "expected guard intercept narration, got: {output_text}"
+        output_text.contains("strikes golem bodyguard") && output_text.contains("takes 1 damage"),
+        "expected direct guard-target narration, got: {output_text}"
     );
     assert!(
         !output_text.contains("taking 0 damage"),

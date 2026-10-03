@@ -110,7 +110,7 @@
                       "value": true
                     },
                     {
-                      "path": "world.in_player_room",
+                      "path": "world.opposing_party_actor_in_room",
                       "operator": "equal",
                       "value": true
                     }
@@ -305,7 +305,7 @@
                       "value": true
                     },
                     {
-                      "path": "world.in_player_room",
+                      "path": "world.opposing_party_actor_in_room",
                       "operator": "equal",
                       "value": true
                     }

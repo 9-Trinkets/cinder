@@ -11,7 +11,7 @@ use cinder_core::engine::state::{ActorStance, WorldState};
 use std::collections::BTreeMap;
 
 #[test]
-fn policy_selected_defender_takes_the_full_unsplit_strike_and_becomes_unready() {
+fn guard_order_makes_defender_the_direct_target_without_spending_reaction_cooldown() {
     let mut pack = reducer_test_pack();
     pack.settings.combat.player_actor_id = ACTOR_A_ID.to_string();
     pack.settings.combat.health_stat_id = "stamina".to_string();
@@ -58,16 +58,13 @@ fn policy_selected_defender_takes_the_full_unsplit_strike_and_becomes_unready() 
 
     assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), player_before);
     assert!(state.actor_stat(ACTOR_B_ID, "stamina") < defender_before);
-    assert_eq!(
-        state.party_reaction_ready_at.get(ACTOR_B_ID),
-        Some(&(state.current_time_minutes + 5))
-    );
+    assert_eq!(state.party_reaction_ready_at.get(ACTOR_B_ID), None);
     assert_eq!(output.lines.len(), 1);
-    assert!(output.lines[0].text.contains("Blair blocks Casey"));
+    assert!(output.lines[0].text.contains("Casey strikes Blair"));
 }
 
 #[test]
-fn a_policy_with_no_ready_defender_falls_back_to_player_damage() {
+fn direct_guard_targeting_does_not_depend_on_reaction_readiness() {
     let mut pack = reducer_test_pack();
     pack.settings.combat.player_actor_id = ACTOR_A_ID.to_string();
     pack.settings.combat.health_stat_id = "stamina".to_string();
@@ -111,8 +108,8 @@ fn a_policy_with_no_ready_defender_falls_back_to_player_damage() {
         })],
     );
 
-    assert!(state.actor_stat(ACTOR_A_ID, "stamina") < player_before);
-    assert_eq!(state.actor_stat(ACTOR_B_ID, "stamina"), defender_before);
+    assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), player_before);
+    assert!(state.actor_stat(ACTOR_B_ID, "stamina") < defender_before);
 }
 
 #[test]

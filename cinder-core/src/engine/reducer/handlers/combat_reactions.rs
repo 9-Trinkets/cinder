@@ -99,18 +99,21 @@ pub(super) fn resolve_post_damage_reactions(
     state: &mut WorldState,
     content: &ContentPack,
     attacker_id: &str,
+    room_id: &str,
     lines: &mut NarrativeLines,
 ) {
     let mut outcomes = Vec::new();
-    for decision in select_post_damage_reactions(content, state) {
+    for decision in select_post_damage_reactions(content, state, room_id) {
         if state.actor_is_defeated(attacker_id, &content.settings.combat.health_stat_id) {
             break;
         }
         let outcome = match decision.action {
             PartyReactionAction::Counterattack => {
-                resolve_counterattack(state, content, attacker_id, &decision)
+                resolve_counterattack(state, content, attacker_id, room_id, &decision)
             }
-            PartyReactionAction::Support => resolve_support(state, content, attacker_id, &decision),
+            PartyReactionAction::Support => {
+                resolve_support(state, content, attacker_id, room_id, &decision)
+            }
             PartyReactionAction::Hold => Some(PartyReactionOutcome::Hold {
                 actor: actor_display_name(state, content, &decision.actor_id),
                 message: decision.message.clone(),
@@ -132,8 +135,7 @@ pub(super) fn resolve_post_damage_reactions(
             if let Some(target_id) = defeated_target {
                 render(content, &outcomes, lines);
                 outcomes.clear();
-                let room_id = state.current_room_id.clone();
-                defeat_actor(state, content, &target_id, &room_id, lines);
+                defeat_actor(state, content, &target_id, room_id, lines);
             }
         }
     }
@@ -144,9 +146,10 @@ fn resolve_counterattack(
     state: &mut WorldState,
     content: &ContentPack,
     attacker_id: &str,
+    room_id: &str,
     decision: &PartyReactionDecision,
 ) -> Option<PartyReactionOutcome> {
-    let target_id = resolve_party_reaction_target(content, state, decision, attacker_id)?;
+    let target_id = resolve_party_reaction_target(content, state, decision, attacker_id, room_id)?;
     if state.actor_is_defeated(&target_id, &content.settings.combat.health_stat_id) {
         return None;
     }
@@ -196,13 +199,14 @@ fn resolve_support(
     state: &mut WorldState,
     content: &ContentPack,
     attacker_id: &str,
+    room_id: &str,
     decision: &PartyReactionDecision,
 ) -> Option<PartyReactionOutcome> {
-    let target_id = resolve_party_reaction_target(content, state, decision, attacker_id)?;
+    let target_id = resolve_party_reaction_target(content, state, decision, attacker_id, room_id)?;
     let player_id = content.settings.combat.player_actor_id.as_str();
     let not_ally_or_outside = target_id != player_id
         && (state.stance(&target_id) != ActorStance::Allied
-            || !state.actor_is_in_room(content, &target_id, &state.current_room_id));
+            || !state.actor_is_in_room(content, &target_id, room_id));
     if not_ally_or_outside
         || state.actor_is_defeated(&target_id, &content.settings.combat.health_stat_id)
     {

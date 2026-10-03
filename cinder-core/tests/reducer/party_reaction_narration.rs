@@ -137,6 +137,7 @@ fn mixed_reactions_are_narrated_in_execution_order_without_nonadjacent_grouping(
             .map(|line| line.text.as_str())
             .collect::<Vec<_>>(),
         vec![
+            "Casey strikes Drew! Drew takes 3 damage. (7 HP remaining)",
             "Blair hits Casey for 3 fire. (17 remaining)",
             "Drew holds.",
             "Evan hits Casey for 5 cold. (12 remaining)",
@@ -224,14 +225,8 @@ fn empty_messages_suppress_normal_reaction_narration_without_suppressing_mechani
     ] {
         assert!(state.party_reaction_ready_at.contains_key(actor_id));
     }
-    assert!(output.lines.iter().all(|line| {
-        !line.text.contains("Blair")
-            && !line.text.contains("Drew")
-            && !line.text.contains("Evan")
-            && !line.text.contains("Faye")
-            && !line.text.contains("Gia")
-            && !line.text.contains("Hank")
-    }));
+    assert_eq!(output.lines.len(), 1);
+    assert!(output.lines[0].text.contains("Casey strikes Gia"));
 }
 
 #[test]

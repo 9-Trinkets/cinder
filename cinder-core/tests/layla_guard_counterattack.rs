@@ -3,12 +3,12 @@ use cinder_core::engine::state::{ActorStance, WorldState};
 use cinder_core::loader::load_named_pack;
 
 #[test]
-fn guarding_ally_intercepts_and_counterattacks_attacker() {
+fn guarding_ally_is_targeted_and_counterattacks_off_screen() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
 
-    // Position player in r2c2 (goblin-1's room)
-    state.current_room_id = "r2c2".to_string();
+    // Leave Layla elsewhere while Sakhra holds the goblin's room.
+    state.current_room_id = "r1c1".to_string();
 
     // Place sakhra in r2c2 as an allied follower on guard
     state
@@ -42,19 +42,19 @@ fn guarding_ally_intercepts_and_counterattacks_attacker() {
 
     let end_state = runtime.export_state().unwrap();
 
-    // 1. Guard intercepts damage meant for the player: player takes 0 damage, sakhra takes damage
+    // 1. The hostile targets the stationed guard without requiring Layla nearby.
     assert_eq!(
         end_state.actor_stat("player", "hp"),
         player_initial_hp,
-        "Player should take no damage when guard intercepts"
+        "Layla should take no damage during an off-screen engagement"
     );
     assert!(
         end_state.actor_stat("sakhra", "hp") < sakhra_initial_hp,
-        "Sakhra should have absorbed the intercept damage"
+        "Sakhra should be the goblin's direct target"
     );
     assert!(
-        text.contains("steps across the goblin's strike and takes"),
-        "Expected intercept narration in text: {text}"
+        text.contains("The goblin strikes Sakhra"),
+        "Expected party-target narration in text: {text}"
     );
 
     // 2. Guard counterattacks: goblin takes counterattack damage from Sakhra

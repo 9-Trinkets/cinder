@@ -68,14 +68,14 @@ pub struct ActorDefinition {
     /// while the actor is hostile; defaults to 4 when omitted.
     #[serde(default)]
     pub attack_interval_minutes: Option<u32>,
-    /// Whether the actor starts hostile to the player (used for mobs that
-    /// attack on sight, like the level-2 elf army).
+    /// Whether the actor starts hostile to the player's faction (used for mobs
+    /// that attack on sight, like the level-2 elf army).
     #[serde(default)]
     pub initial_hostile: bool,
-    /// The actor's authored relationship toward the player, seeded into world
-    /// state at session creation. Absent = neutral/non-following. When set,
-    /// takes precedence over `initial_hostile` (which is shorthand for
-    /// `{ stance: hostile, follows_player: false }` and used by combat packs).
+    /// The actor's authored relationship toward the player's faction, seeded
+    /// into world state at session creation. Absent = neutral/non-following.
+    /// When set, takes precedence over `initial_hostile` (which is shorthand
+    /// for `{ stance: hostile, follows_player: false }`).
     #[serde(default)]
     pub initial_relationship: Option<ActorRelationship>,
     /// The element this actor's basic attacks deal (e.g. "physical", "fire").

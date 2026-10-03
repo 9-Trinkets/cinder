@@ -11,6 +11,7 @@ use crate::content::types::{
     ContentPack, SkillAutonomousAction, SkillAutonomousTarget, SkillAutonomousUse, SkillKind,
 };
 use crate::engine::behavior;
+use crate::engine::combat_targets::select_hostile_target;
 use crate::engine::events::WorldEvent;
 use crate::engine::state::{ActorStance, WorldState};
 
@@ -74,9 +75,12 @@ fn centralized_skill_event(
             return None;
         }
         match use_.action {
-            SkillAutonomousAction::Strike => Some(WorldEvent::HostileStrike {
-                actor_id: actor_id.to_string(),
-            }),
+            SkillAutonomousAction::Strike => {
+                select_hostile_target(content, state, actor_id)?;
+                Some(WorldEvent::HostileStrike {
+                    actor_id: actor_id.to_string(),
+                })
+            }
             SkillAutonomousAction::Heal => {
                 let (amount, message) = hostile_healing_spec(content, state, actor_id, &skill.id)?;
                 let target_id = select_autonomous_target(content, state, actor_id, use_)?;
@@ -193,8 +197,8 @@ mod tests {
     use crate::engine::state::{ActorStance, GamePhase};
 
     /// The strike decision re-declared as a neuron `effect_table` rule: strike
-    /// when the actor is a living hostile sharing the player's room whose
-    /// attack cooldown has elapsed. Mirrors the historical built-in policy.
+    /// when the actor is a living hostile sharing a room with a party target
+    /// whose attack cooldown has elapsed.
     fn strike_default_rule() -> serde_json::Value {
         serde_json::json!({
             "rule": "effect_table",
@@ -210,7 +214,7 @@ mod tests {
                         { "path": "actor.stance", "operator": "equal", "value": "hostile" },
                         { "path": "actor.alive", "operator": "equal", "value": true },
                         { "path": "world.cooldown_elapsed", "operator": "equal", "value": true },
-                        { "path": "world.in_player_room", "operator": "equal", "value": true }
+                        { "path": "world.opposing_party_actor_in_room", "operator": "equal", "value": true }
                     ],
                     "payload_template": { "kind": "strike" }
                 }]
@@ -249,6 +253,11 @@ mod tests {
         content.actors[0].room_id = "hall".to_string();
         content.actors[0].attack_interval_minutes = Some(3);
         content.actors[1].room_id = "annex".to_string();
+        let mut player = content.actors[1].clone();
+        player.id = content.settings.combat.player_actor_id.clone();
+        player.room_id = "hall".to_string();
+        content.actors.push(player);
+        crate::engine::test_fixtures::rebuild_test_pack_indexes(&mut content);
         let mut state = WorldState::new(&content);
         state.current_room_id = "hall".to_string();
         state
@@ -265,7 +274,7 @@ mod tests {
     }
 
     #[test]
-    fn rules_policy_selects_due_hostile_in_player_room() {
+    fn rules_policy_selects_due_hostile_with_party_target_in_room() {
         let (content, mut state, brute_id, _) = hostile_fixture();
         state.set_stance(&brute_id, ActorStance::Hostile);
 
