@@ -217,6 +217,11 @@ pub(crate) fn decide_movement(
     if should_hold(&content, state, &actor.id) {
         return Ok(vec![]);
     }
+    if state.stance(&actor.id) == ActorStance::Hostile
+        && room_has_living_guard(&content, state, current_room_id)
+    {
+        return Ok(vec![]);
+    }
     let target_room_id = required_movement_target_room_id(state, rules, current_room_id)
         .or_else(|| preferred_target_room_id.map(str::to_string));
     let Some(target_room_id) = target_room_id else {
@@ -359,6 +364,77 @@ mod tests {
             required_movement_target_room_id(&state, &rules, "lounge"),
             None
         );
+    }
+
+    #[test]
+    fn living_guard_blocks_hostile_target_rule_movement() {
+        let mut content = minimal_test_pack();
+        let hostile_id = content.actors[0].id.clone();
+        let guard_id = content.actors[1].id.clone();
+        content.actors[0].room_id = "lounge".to_string();
+        content.actors[1].room_id = "lounge".to_string();
+        let rules = ActorMovementRulesDefinition {
+            target_rules: vec![ActorMovementTargetRuleDefinition {
+                target_room_id: "kitchen".to_string(),
+                target_behavior: Some(MovementTargetBehavior::Move),
+                ..Default::default()
+            }],
+            ..Default::default()
+        };
+
+        let mut state = WorldState::new(&content);
+        state.set_stance(&hostile_id, ActorStance::Hostile);
+        state.set_stance(&guard_id, ActorStance::Allied);
+        state.set_follows_player(&guard_id, false);
+        state
+            .party_orders
+            .insert(guard_id.clone(), "guard".to_string());
+        state
+            .actor_stats
+            .entry(hostile_id.clone())
+            .or_default()
+            .insert("hp".to_string(), 10);
+        state
+            .actor_stats
+            .entry(guard_id.clone())
+            .or_default()
+            .insert("hp".to_string(), 10);
+
+        let blocked = decide_movement(
+            Arc::new(content.clone()),
+            &state,
+            &content.actors[0],
+            &rules,
+            "lounge",
+            None,
+        )
+        .expect("movement resolves");
+        assert!(blocked.is_empty());
+
+        state
+            .actor_stats
+            .entry(guard_id)
+            .or_default()
+            .insert("hp".to_string(), 0);
+        let resumed = decide_movement(
+            Arc::new(content.clone()),
+            &state,
+            &content.actors[0],
+            &rules,
+            "lounge",
+            None,
+        )
+        .expect("movement resolves");
+        assert!(matches!(
+            resumed.as_slice(),
+            [WorldEvent::ActorMoved {
+                actor_id,
+                from_room_id,
+                to_room_id,
+            }] if actor_id == &hostile_id
+                && from_room_id == "lounge"
+                && to_room_id == "kitchen"
+        ));
     }
 
     #[test]

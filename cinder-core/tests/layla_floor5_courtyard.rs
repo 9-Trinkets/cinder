@@ -727,6 +727,68 @@ fn floor5_wave_one_raiders_march_until_their_lane_stops() {
 }
 
 #[test]
+fn floor5_guard_blocks_wave_soldiers_at_the_north_approach() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_center".to_string();
+    state.turn_number = 1;
+    state.set_stance("elf-knight-2", ActorStance::Allied);
+    state.set_follows_player("elf-knight-2", false);
+    state
+        .party_orders
+        .insert("elf-knight-2".to_string(), "guard".to_string());
+    state
+        .actor_room_overrides
+        .insert("elf-knight-2".to_string(), "courtyard_north".to_string());
+
+    let raider_id = match state.spawn_actor(
+        &pack,
+        SpawnActorConfig {
+            template_id: "frost_wolf_raider",
+            room_id: Some("courtyard_north"),
+            stance: None,
+            follows_player: false,
+            scale_with_actor_id: None,
+            scale_stat: None,
+            max_active_instances: None,
+        },
+    ) {
+        SpawnActorOutcome::Success(info) => info.instance_id,
+        outcome => panic!("expected raider to spawn, got {outcome:?}"),
+    };
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+    runtime.run_tick().expect("guarded siege tick runs");
+    let blocked = runtime.export_state().expect("export blocked state");
+    assert_eq!(
+        blocked
+            .actor_room_overrides
+            .get(&raider_id)
+            .map(String::as_str),
+        Some("courtyard_north"),
+        "a living guard should stop the raider at the north approach"
+    );
+
+    let mut defeated_guard = blocked;
+    defeated_guard
+        .actor_stats
+        .entry("elf-knight-2".to_string())
+        .or_default()
+        .insert("hp".to_string(), 0);
+    let runtime = CinderRuntime::from_state(pack, defeated_guard, false).expect("runtime creates");
+    runtime.run_tick().expect("unguarded siege tick runs");
+    let resumed = runtime.export_state().expect("export resumed state");
+    assert_eq!(
+        resumed
+            .actor_room_overrides
+            .get(&raider_id)
+            .map(String::as_str),
+        Some("courtyard_center"),
+        "the raider should resume marching after the guard falls"
+    );
+}
+
+#[test]
 fn floor5_all_three_stopped_lanes_end_the_siege() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);
