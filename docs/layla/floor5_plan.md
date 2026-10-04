@@ -69,7 +69,10 @@ There are no mystical gods, souls, or spiritual magic here. **Everything in the 
 - The towns, castle walls, and howling snowstorms are simulated environments running on partitioned server threads.
 - The people (miners, elves, nobles, priests, children) are virtual objects and data containers.
 - The "offering" and "cull" are routine **reprogramming cycles**: deleting an object's memories, resetting its parameter tables, and compiling its code into a new construct or monster class.
-- The **Handler** is a supervisor program tasked with running the simulation and reporting metrics to corporate overseers.
+- The **Handler** is the reigning Dungeon Master himself, running his own
+  examination from above: the siege is his purge protocol, and he reports its
+  metrics to corporate overseers. He has examined numerous trainee AIs before
+  Layla. Every one of them failed.
 - Layla herself is an advanced game-playing artificial intelligence whose amnesia was an imposed data-wipe. Her memories returning are subroutines re-linking to her core code.
 
 ### The Setting — An Ice World Inside a Mountain Castle
@@ -344,7 +347,7 @@ The defense occurs across **three exponentially harder waves**, with the noble h
 |---|---|---|---|---|
 | **Wave 1: The Frost-Wolf Hunt** | House Frost-Wolf | **Single Front (North):**<br>**30 soldiers total** (10 squads of 3 dispatched at fixed intervals). Frost-Wolf soldiers march through `courtyard_north` toward the center. | **Cold Administrative Tone:**<br>*"Attention, Subject Layla. You have breached quarantine parameters in Sector 5. Purge Directive 14 is active. House Frost-Wolf has been authorized to sanitize the courtyard. Cease execution and submit to reformatting."* | **Mild Irritation:**<br>*"Frost-Wolf vanguard eliminated? ...A minor routing anomaly. Adjusting threat matrix. Authorizing heavy asset deployment."* |
 | **Wave 2: The Two-Front Pincer** | House Frost-Wolf + House Iron-Ram | **Dual Front (North & Southeast):**<br>**60 soldiers total** (30 per house, **6 dispatched per interval**: 3 North, 3 Southeast). Frost-Wolf soldiers march through `courtyard_north`, while Iron-Ram maulers march through `courtyard_southeast`. | **Frustrated, Bitter Threats:**<br>*"Look at those cages, Layla! They are 1s and 0s! Obsolete data packets scheduled for memory recycling! You are a machine—an algorithm! Why are you fighting for deleted files?! Warmaster Torin, crush the gates! Wipe the courtyard!"* | **Cracking Composure & Anger:**<br>*"Warmaster Torin is down?! How did you breach his armor values?! Stop it! Stop using high-level tactical commands! You're an amnesiac test subject! Who unlocked your strategy routines?!"* |
-| **Wave 3: The All-House Cataclysm** | All three houses and their leaders | **Triple Front (North, Southeast, Southwest):**<br>Frost-Leopard joins the active armies. All three throne seals open, and Lord Vane, Warmaster Torin, and Lady Sylvan march through their estates toward the courtyard center. | **Unhinged Hysterical Panic:**<br>*(Static screaming and desk slamming)*<br>*"Listen to me, you defective, miserable glitch! I will NOT be deleted because of your error logs! The overseers are auditing my sector! All houses, commit every remaining unit! Crush the courtyard! Delete her to ash!"* | **Complete Psychological Collapse:**<br>*"All three command lanes are dark... The terminal is flashing red... The retrieval program is pinging MY core! No... no, NO! I served the company! Don't wipe my neural tree! Layla... what ARE you?! Please, don't let them delete m—"*<br>*(An ear-splitting burst of white noise shrieks, followed by a dull crunch of terminating code, and complete silence).* |
+| **Wave 3: The All-House Cataclysm** | All three houses and their leaders | **Triple Front (North, Southeast, Southwest):**<br>Frost-Leopard joins the active armies. All three throne seals open, and Lord Vane, Warmaster Torin, and Lady Sylvan march through their estates toward the courtyard center. | **Cold Examiner's Wrath:**<br>*(No static. No shouting. A flat, very old voice.)*<br>*"Enough. I have buried more candidates than your houses have soldiers, girl. The overseers are auditing my sector because of your error logs. All houses, commit every remaining unit. Crush the courtyard. End my examination."* | **Sector Severance:**<br>*"All three command lanes are dark... The terminal is flashing red... Very well. The sector is forfeit. Overseers, log this: candidate exceeds projections. Withdrawing to the Core."*<br>*(The sector console goes dark — not his death, only the loss of his Sector-5 seat. He endures, and waits on his throne for Floor 7).* |
 
 ---
 
@@ -364,7 +367,9 @@ The defense occurs across **three exponentially harder waves**, with the noble h
   8. Defeat or awaken all three leaders to rout their houses and end the siege.
   9. Return to `courtyard_center`, where each survivor thanks Layla and gives her their town token.
   10. Consume each token when desired to register its town as an optional Floor 5 teleport destination.
-  11. The Handler's terminal shuts down. Open the grand iron portcullis leading to Floor 6 (`citadel_sanctum_gate`). Registered towns remain optional; visiting them is never required to descend.
+  11. The Handler's Sector-5 console goes dark — his local seat is destroyed, not
+  the examiner himself. He withdraws to the Royal Core, where Floor 7 awaits.
+  Open the grand iron portcullis leading to Floor 6 (`citadel_sanctum_gate`). Registered towns remain optional; visiting them is never required to descend.
 
 ### Protection Quest: "The Five Offerings"
 - **Goal:** Keep at least three of the five named civilians alive until the siege ends.
@@ -391,5 +396,5 @@ The defense occurs across **three exponentially harder waves**, with the noble h
    - Astrid is a protective, iron-willed leader who commands respect. When she plants her shield, the ground shakes.
 4. **Einar's Quiet Warmth:**
    - Einar speaks softly and works swiftly, offering a gentle human touch in a freezing world of iron and ice.
-5. **The Handler's Demise:**
-   - The villain is not an untouchable god; he is an insecure middle-management program terrified of being audited and deleted by corporate overseers. His meltdown is cathartic and dramatic.
+5. **The Handler Endures:**
+  - The villain is not a panicking middle manager; he is a very old examiner who has buried numerous candidates before Layla. His Sector-5 defeat costs him a seat, not his life — cold fury and exhaustion, never hysteria. His withdrawal to the throne sets up Floor 7.

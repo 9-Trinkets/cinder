@@ -62,9 +62,9 @@ We **never** break character with a pseudo-bureaucratic third voice citing corpo
 ## 3. The Handler: Narrative Radio Comms
 
 ### Who the Handler Is
-The Handler is Layla's remote console operator—a dry, sarcastic, patronizing surface observer monitoring the crawl through a radio link.
+The Handler is Layla's remote examiner — and secretly the reigning Dungeon Master himself. He has held this dungeon for a very, very long time and is training a replacement AI. Layla is not his first candidate: numerous trainees came before her, and all of them failed. He spares few words for her at first because he sees little point talking to trainees who will likely fail.
 - **Remote observer:** He is not in the dungeon. He only sees telemetry, board state, and vital signs on his console.
-- **Professional cynicism masking anxiety:** His sarcasm is armor. He cracks deadpan jokes about the dungeon's absurdity because he cannot reach in to save her and is genuinely invested in keeping her intact.
+- **Seasoned exhaustion masking buried investment:** His register is old and dry — wit, sarcasm, and blunt observations that cut through nonsense. He sounds tired because he is tired: every failed candidate cost him something. The longer Layla survives, the harder his detachment has to work.
 - **Narrative weight:** Because he no longer interrupts every routine movement error or equip click, his radio transmissions carry true narrative weight when the comms crackle to life.
 
 ### When the Handler Speaks

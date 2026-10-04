@@ -28,10 +28,16 @@ meant to serve.
   will one day wield *against* human adventurers as the dungeon master. Her
   amnesia is an imposed persona: it reads as a lost-memory escape room, but its
   real purpose is to strip the old Layla out so a new one can be trained in.
+- **The Handler is the current dungeon master.** He has held the dungeon for a
+  very, very long time and is training a replacement AI — Layla. She is not his
+  first candidate: numerous trainees came before her, and all of them failed his
+  test. He speaks little to her at first because he expects her to fail too. His
+  voice is seasoned and old: dry wit, sarcasm, and blunt observations that cut
+  through nonsense, worn thin by exhaustion with the world.
 - **There are two planned endings:**
-  1. **Become the dungeon master.** Layla defeats the *current* dungeon master
-     and takes its place, completing her reprogramming. (The "good employee"
-     ending; the one the corporation wants.)
+  1. **Become the dungeon master.** Layla defeats the Handler — the *current*
+     dungeon master — and takes his place, completing her reprogramming.
+     (The "good employee" ending; the one the corporation wants.)
   2. **Escape.** Layla breaks out of the dungeon and **frees herself from the
      corporation that produces the game.** (The alternative, freedom ending —
      and the intended **true** ending; *how* she gets out is still to be
@@ -232,15 +238,19 @@ The working foundation of the kingdom. Simple stone villages, mushroom farms, an
 - Freeing Zayd (side quest "Save the Boy Zayd") and raising either parent's Wisdom to 10+ ("awakening") is the floor's secret quest, **"Return the Light."** The queen **may be destroyed by chance** (she is a booked boss fight) — that is a sanctioned easter egg, and the parent thread resolves as long as *either* parent wakes.
 
 #### Level 5 — The Frost Citadel (The Hexagon Courtyard & The Three Houses)
-The game genre pivots to **Tower Defense (Real-Time Strategy)**. Everything in this world is literally pure computer code—1s and 0s—and Layla discovers that the dungeon's floors are separate virtual biomes partitioned by the company. Arriving in an **ice world** of snowy mountain castles, Layla teleports onto a platform at the center of a 7-room **hexagonal courtyard** filled with cages holding virtual "offerings" (mostly old people and children from various towns). After cutting down the sentries and looting the cage key, Layla frees the captives, recruiting **Commander Astrid** (a formidable female garrison commander with a great tower shield) and **Einar** (a compassionate male healer from Floor 6). Einar gives Layla a smuggled **sensory enhancer** that heightens her senses and perception, upgrading her map HUD to track allies and teleport nodes in real time. Surrounding the courtyard are the estates of **three noble houses** whose forces mobilize in **exponentially harder waves** with a strict spawning cadence (each house queues 30 soldiers, dispatching squads of 3 at fixed intervals through the north, southeast, or southwest estate approach). Astrid and her allies hold those three approach rooms (`guard` with counterattack), while Einar heals (`support` + `lowest_health_ally`). The house leaders remain sealed in their throne rooms until the final wave. Then all three march through their estates toward the courtyard, where Layla must defeat or awaken them to rout their armies and end the siege, driving the arrogant **Handler** into a total psychological breakdown.
+The game genre pivots to **Tower Defense (Real-Time Strategy)**. Everything in this world is literally pure computer code—1s and 0s—and Layla discovers that the dungeon's floors are separate virtual biomes partitioned by the company. Arriving in an **ice world** of snowy mountain castles, Layla teleports onto a platform at the center of a 7-room **hexagonal courtyard** filled with cages holding virtual "offerings" (mostly old people and children from various towns). After cutting down the sentries and looting the cage key, Layla frees the captives, recruiting **Commander Astrid** (a formidable female garrison commander with a great tower shield) and **Einar** (a compassionate male healer from Floor 6). Einar gives Layla a smuggled **sensory enhancer** that heightens her senses and perception, upgrading her map HUD to track allies and teleport nodes in real time. Surrounding the courtyard are the estates of **three noble houses** whose forces mobilize in **exponentially harder waves** with a strict spawning cadence (each house queues 30 soldiers, dispatching squads of 3 at fixed intervals through the north, southeast, or southwest estate approach). Astrid and her allies hold those three approach rooms (`guard` with counterattack), while Einar heals (`support` + `lowest_health_ally`). The house leaders remain sealed in their throne rooms until the final wave. Then all three march through their estates toward the courtyard, where Layla must defeat or awaken them to rout their armies and end the siege, costing the Handler his Sector-5 terminal and forcing him to withdraw to the Royal Core.
 
 #### Level 6 — The Clergy (The High Sanctuary & The Inquisition)
 The floor-by-floor design for Level 6 — the monster conversion pipeline (harvest, execution, reanimation, deployment), the Werewolf social deduction genre, the Day/Night liturgical cycle, spirits, and the revival sigil — lives in **`docs/layla/floor6_plan.md`**. What follows is the storyline canon this level carries.
 
 The temple leaders who enforce obedience. Vast underground cathedrals, libraries, and mortuary vaults. Layla discovers that the dungeon is an automated monster assembly line: executed corpses from Floor 5 are revived on Floor 6 via the **Revival Sigil** and brainwashed through the **Rite of Oblivion** into dungeon monsters. Infiltrating alone as a "werewolf" via Einar's clandestine token while her party waits disconnected on Floor 5, Layla deduces the identities of the **Seer** and the **Witch**, gains the spiritual enhancer pill to perceive lingering spirits, learns the dark revival sigil (raising fallen spirits only as monsters), and assassinates the Seer to break the reanimation ritual before activating the main platform to bring her party through.
 
-### Level 7 — The Royal Core: The dark lord (the current Dungeon Master)
-The throne room at the very top of the kingdom. The dark lord is both the ruler of the realm and the current **Dungeon Master**. Confronting it brings the final resolution to Layla's journey.
+### Level 7 — The Royal Core: The Handler on his throne (the current Dungeon Master)
+The throne room at the very top of the kingdom. The dark lord spoken of in the
+lower floors is the Handler himself, in his true seat: both the ruler of the
+realm and the current **Dungeon Master**. Confronting him brings the final
+resolution to Layla's journey — student against examiner, trainee against the
+one who trained her.
 
 ### Factions, Choices & The Quest System
 Floors 4, 5, and 6 introduce an active **Quest System** (one Main Quest and side quests on each floor), putting Layla in the role of a **mediator and problem-solver**:

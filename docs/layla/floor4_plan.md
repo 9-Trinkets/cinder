@@ -85,7 +85,7 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 | **Priest Harun** | `priest_harun` | Temple Emissary | `command_bastion` | Eerie, soft-spoken, from the upper floors. Smooth talk about "sacred duty" while he waits to take Zayd away. On defeat he narrates the truth of the offering (hook `priest_harun.defeat`). |
 | **Sakhra** | `sakhra` | Village Guardian Golem | Village square → the party | An ordinary guardian golem the village retrofitted with steam pistons long ago — **secretly Zayd's father.** He has guarded this village, and his son, since before Zayd could walk. He does not remember that. |
 | **The Queen** | `elf-queen-4` | Wandering Convert (Floor 2) | Floor 2 ranks | **Secretly Zayd's mother.** The piece that remembers a son it cannot name; the reason the elves stand close to waking. |
-| **The Handler** | — | External System | Voice | His friction with Layla on this floor is where he turns hostile: he will order her to "let the offering ship." Saving Zayd is her first open act against the machine. |
+| **The Handler** | — | Reigning Dungeon Master (examiner) | Voice | His friction with Layla on this floor is where he turns hostile: his examination protocol has no missing offerings, so he will order her to "let the offering ship." Saving Zayd is her first open act against the machine — and the first candidate file he cannot close cleanly. |
 
 > **Name reconciliation:** the earlier plan named the elder "Elder Tariq" and the baker "Farida"; content now uses `elder_rashid`, `yasmin` (baker), and `tariq` (clockmaker). This plan is authoritative under the content ids.
 
