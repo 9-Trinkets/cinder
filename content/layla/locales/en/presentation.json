@@ -1,7 +1,7 @@
 {
   "error_text": {
     "room_missing": "The way forward is lost in darkness.",
-    "cannot_go": "You don't see a path to {target} from here; you can't go that way.",
+    "cannot_go": "You see no path {target} from here.",
     "actor_not_here": "You don't see {actor_name} here.",
     "actor_unknown": "You don't recognize anyone called '{target}' here.",
     "feature_unknown": "You don't notice anything called '{target}' here.",

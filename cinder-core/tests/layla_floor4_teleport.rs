@@ -217,7 +217,7 @@ fn test_platform_discovery_activation_and_floor5_gate() {
     let blocked = runtime.run_turn("go floor 5").expect("try descend");
     assert_ne!(runtime.current_room_id().unwrap(), "courtyard_center");
     assert!(
-        blocked.text().contains("route sheet")
+        blocked.text().contains("see no path")
             || blocked.text().contains("cannot go")
             || blocked.text().contains("can't go")
     );

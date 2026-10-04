@@ -4,6 +4,7 @@ use crate::content::types::ContentPack;
 use crate::engine::events::{ObservationMode, WorldEvent};
 use crate::engine::state::display_actor_name;
 use crate::engine::turn_policies::story_var_is_truthy;
+use crate::engine::turn_runner::planner_handler::menus::format_cannot_go_target;
 
 pub(super) fn plan_observe_room(context: &PlanningContext<'_>, planned: &mut PlannedTurn) -> bool {
     planned.events.push(WorldEvent::CurrentRoomObserved {
@@ -101,10 +102,11 @@ pub(super) fn plan_move_to_room_target(
         });
         advances_time
     } else {
+        let formatted = format_cannot_go_target(target);
         planned.events.push(WorldEvent::ActionRejected {
             message: content.render_template(
                 &content.presentation.error_text.cannot_go,
-                &[("target", target)],
+                &[("target", &formatted)],
             ),
         });
         false

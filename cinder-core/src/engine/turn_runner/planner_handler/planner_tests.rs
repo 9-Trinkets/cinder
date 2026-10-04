@@ -456,3 +456,87 @@ fn take_from_party_member_plans_event_when_held() {
             if from_actor_id == "blair" && item_id == "iron-chisel"
     )));
 }
+
+#[test]
+fn format_cannot_go_target_normalizes_directions_and_landmarks() {
+    use super::menus::format_cannot_go_target;
+
+    // Cardinal directions
+    assert_eq!(format_cannot_go_target("south"), "south");
+    assert_eq!(format_cannot_go_target("s"), "south");
+    assert_eq!(format_cannot_go_target("north"), "north");
+    assert_eq!(format_cannot_go_target("n"), "north");
+    assert_eq!(format_cannot_go_target("go south"), "south");
+    assert_eq!(format_cannot_go_target("move to north"), "north");
+    assert_eq!(format_cannot_go_target("up"), "up");
+    assert_eq!(format_cannot_go_target("down"), "down");
+    assert_eq!(format_cannot_go_target("in"), "in");
+    assert_eq!(format_cannot_go_target("out"), "out");
+    assert_eq!(format_cannot_go_target("northeast"), "northeast");
+
+    // Landmarks without prepositions
+    assert_eq!(format_cannot_go_target("north gate"), "to the north gate");
+    assert_eq!(
+        format_cannot_go_target("the north gate"),
+        "to the north gate"
+    );
+    assert_eq!(format_cannot_go_target("iron door"), "to the iron door");
+    assert_eq!(
+        format_cannot_go_target("go to north gate"),
+        "to the north gate"
+    );
+    assert_eq!(
+        format_cannot_go_target("go to the north gate"),
+        "to the north gate"
+    );
+
+    // Landmarks with prepositions
+    assert_eq!(
+        format_cannot_go_target("to the north gate"),
+        "to the north gate"
+    );
+    assert_eq!(
+        format_cannot_go_target("through the iron gate"),
+        "through the iron gate"
+    );
+    assert_eq!(
+        format_cannot_go_target("into House Frost-Wolf Gallery"),
+        "into House Frost-Wolf Gallery"
+    );
+
+    // Numbered floors/levels
+    assert_eq!(format_cannot_go_target("Floor 5"), "to Floor 5");
+    assert_eq!(format_cannot_go_target("Level 2"), "to Level 2");
+}
+
+#[test]
+fn template_rendering_with_cannot_go_target_produces_natural_prose() {
+    let mut content = minimal_test_pack();
+    content.presentation.error_text.cannot_go = "You see no path {target} from here.".to_string();
+
+    use super::menus::format_cannot_go_target;
+
+    let dir_msg = content.render_template(
+        &content.presentation.error_text.cannot_go,
+        &[("target", &format_cannot_go_target("south"))],
+    );
+    assert_eq!(dir_msg, "You see no path south from here.");
+
+    let landmark_msg = content.render_template(
+        &content.presentation.error_text.cannot_go,
+        &[("target", &format_cannot_go_target("north gate"))],
+    );
+    assert_eq!(landmark_msg, "You see no path to the north gate from here.");
+
+    let prep_msg = content.render_template(
+        &content.presentation.error_text.cannot_go,
+        &[(
+            "target",
+            &format_cannot_go_target("through the Sanctum Gate"),
+        )],
+    );
+    assert_eq!(
+        prep_msg,
+        "You see no path through the Sanctum Gate from here."
+    );
+}

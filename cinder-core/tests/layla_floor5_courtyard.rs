@@ -473,7 +473,8 @@ fn floor5_to_floor4_only_via_teleport() {
         );
         let text = outcome.text();
         assert!(
-            text.contains("cannot go that way")
+            text.contains("see no path")
+                || text.contains("cannot go that way")
                 || text.contains("can't go that way")
                 || text.contains("aren't sure how to")
                 || text.contains("route sheet")

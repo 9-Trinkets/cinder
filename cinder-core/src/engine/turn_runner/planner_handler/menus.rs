@@ -169,10 +169,11 @@ fn try_reject_unreachable_exit(
             })
         });
     if room_has_gated_exit {
+        let formatted = format_cannot_go_target(raw);
         planned.events.push(WorldEvent::ActionRejected {
             message: content.render_template(
                 &content.presentation.error_text.cannot_go,
-                &[("target", raw)],
+                &[("target", &formatted)],
             ),
         });
         return true;
@@ -180,7 +181,7 @@ fn try_reject_unreachable_exit(
     false
 }
 
-fn canonical_direction(raw: &str) -> Option<&'static str> {
+pub(crate) fn canonical_direction(raw: &str) -> Option<&'static str> {
     let lower = raw.trim().to_ascii_lowercase();
     let stripped = strip_direction_prefix(&lower);
     match stripped {
@@ -200,7 +201,7 @@ fn canonical_direction(raw: &str) -> Option<&'static str> {
     }
 }
 
-fn strip_direction_prefix(s: &str) -> &str {
+pub(crate) fn strip_direction_prefix(s: &str) -> &str {
     let s = s
         .strip_prefix("go to ")
         .or_else(|| s.strip_prefix("go "))
@@ -214,4 +215,59 @@ fn strip_direction_prefix(s: &str) -> &str {
         .unwrap_or(s)
         .trim();
     s.strip_prefix("the ").unwrap_or(s).trim()
+}
+
+pub(crate) fn format_cannot_go_target(raw: &str) -> String {
+    let trimmed = raw.trim();
+    if let Some(dir) = canonical_direction(trimmed) {
+        return dir.to_string();
+    }
+
+    // Strip generic command words if typed ("go to ", "go ", "move to ", "move ", "enter ")
+    let mut cleaned = trimmed;
+    let lower = trimmed.to_ascii_lowercase();
+    for prefix in &["go to ", "go ", "move to ", "move ", "enter "] {
+        if lower.starts_with(prefix) {
+            cleaned = trimmed[prefix.len()..].trim();
+            break;
+        }
+    }
+
+    if let Some(dir) = canonical_direction(cleaned) {
+        return dir.to_string();
+    }
+
+    let cleaned_lower = cleaned.to_ascii_lowercase();
+
+    if cleaned_lower.starts_with("through ")
+        || cleaned_lower.starts_with("into ")
+        || cleaned_lower.starts_with("towards ")
+        || cleaned_lower.starts_with("toward ")
+        || cleaned_lower.starts_with("to the ")
+    {
+        return cleaned.to_string();
+    }
+
+    if cleaned_lower.starts_with("to ") {
+        let after_to = cleaned[3..].trim();
+        let after_lower = after_to.to_ascii_lowercase();
+        if after_lower.starts_with("the ")
+            || after_lower.starts_with("floor ")
+            || after_lower.starts_with("level ")
+            || after_lower.starts_with("room ")
+        {
+            return cleaned.to_string();
+        }
+        return format!("to the {after_to}");
+    }
+
+    if cleaned_lower.starts_with("the ")
+        || cleaned_lower.starts_with("floor ")
+        || cleaned_lower.starts_with("level ")
+        || cleaned_lower.starts_with("room ")
+    {
+        return format!("to {cleaned}");
+    }
+
+    format!("to the {cleaned}")
 }

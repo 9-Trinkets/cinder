@@ -24,7 +24,7 @@ flowchart TD
 
 | Channel / Voice | Visual Style | Purpose | Example |
 |---|---|---|---|
-| **Second-Person Narration** | Standard body text, `text-sm` (`NarrativeLineKind::Narration`) | Direct physical reality: sensory exploration, combat, item handling, party orders, and physical roadblocks. | `You wrap your hand around the chisel-axe.`<br>`You assign Alex to guard your flank.`<br>`You don't see a path to north from here; you can't go that way.` |
+| **Second-Person Narration** | Standard body text, `text-sm` (`NarrativeLineKind::Narration`) | Direct physical reality: sensory exploration, combat, item handling, party orders, and physical roadblocks. | `You wrap your hand around the chisel-axe.`<br>`You assign Alex to guard your flank.`<br>`You see no path north from here.` |
 | **Handler Comms** | Italic rose, `Dispatch • Handler` prefix (`NarrativeLineKind::Channel`) | Radio dispatches: narrative milestones, floor transitions, mission objectives, and high-stakes tactical warnings. | `Dispatch • Handler: Cage count reads zero. Every one of them breathing, which was nowhere on my forecast.` |
 | **System / Engine Feed** | Clean, muted typography (`NarrativeLineKind::System`) | Engine-level affordances and meta-interaction: bookmark save points, session resumes, confirmation prompts. | `Saved bookmark to slot 1.` |
 
@@ -50,7 +50,7 @@ We **never** break character with a pseudo-bureaucratic third voice citing corpo
 | Drop Item | `Placed {label} on the ground.` | `You place {label} on the ground.` |
 | Empty Pack Drop | `Your pack is already empty—nothing to drop.` | `Your pack is already empty; you have nothing to drop.` |
 | Equip Gear | `The equipment chart says you can't equip {item}.` | `You equip {item}. {bonuses}` / `You cannot equip {item}.` |
-| Navigation Block | `No, sorry. The route sheet doesn't show a path to {target}...` | `You don't see a path to {target} from here; you can't go that way.` |
+| Navigation Block | `No, sorry. The route sheet doesn't show a path to {target}...` | `You see no path {target} from here.` |
 | Party Assignment | `Alex assigned to guard.` | `You assign {actor} to guard your flank.` |
 | Party Member Absent | `I don't show {actor} in your room right now.` | `You don't see {actor} in the room with you.` |
 | Ambiguous Name | `I have more than one match in the registry for that.` | `More than one target matches '{actor}'. Be more specific.` |

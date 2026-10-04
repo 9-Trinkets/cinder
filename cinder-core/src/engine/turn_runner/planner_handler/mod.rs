@@ -4,7 +4,7 @@
 //! file.
 
 pub(crate) mod items;
-mod menus;
+pub(crate) mod menus;
 mod party;
 #[cfg(test)]
 mod planner_tests;

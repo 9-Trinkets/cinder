@@ -277,16 +277,13 @@ const TranscriptLine = memo(function TranscriptLine({
   // 5. Error Feedback
   if (line.kind === 'error') {
     return (
-      <div className="my-2 pl-3 py-1 border-l-2 border-love text-xs text-love font-mono flex items-center gap-2">
-        <span className="font-semibold uppercase tracking-wider opacity-80 shrink-0">[Note]</span>
-        <div>
-          <HighlightedText
-            text={line.text}
-            query={searchQuery ?? ''}
-            craftedLabels={craftedLabels ?? []}
-            interactableLabels={interactableLabels ?? []}
-          />
-        </div>
+      <div className="py-1 text-base leading-[1.8] text-muted font-prose italic">
+        <HighlightedText
+          text={line.text}
+          query={searchQuery ?? ''}
+          craftedLabels={craftedLabels ?? []}
+          interactableLabels={interactableLabels ?? []}
+        />
       </div>
     )
   }

@@ -1205,8 +1205,8 @@ fn floor4_alternative_gate_entry_via_guard_key() {
     let blocked = runtime.run_turn("go south").expect("turn runs");
     assert_ne!(runtime.current_room_id().unwrap(), "fortress_gate");
     assert!(
-        blocked.text().contains("cannot go")
-            || blocked.text().contains("route sheet")
+        blocked.text().contains("see no path")
+            || blocked.text().contains("cannot go")
             || blocked.text().contains("can't go")
     );
 
