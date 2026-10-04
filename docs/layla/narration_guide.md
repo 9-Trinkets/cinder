@@ -4,89 +4,79 @@ This document is the dedicated, authoritative guide for writing and formatting a
 
 ---
 
-## 1. The 3-Tier Voice Hierarchy
+## 1. The Voice Architecture
 
-Player interactions in Layla are communicated through three distinct tiers:
+Player interactions in Layla are communicated through two primary storytelling channels plus neutral engine affordances:
 
 ```mermaid
 flowchart TD
-    Event[Game Event / User Action] --> TierSelect{Category}
-    TierSelect -->|High-frequency routine actions| T1[Tier 1: Sleek HUD / System Feed]
-    TierSelect -->|Errors, roadblocks, SOP directives| T2[Tier 2: The Handler's Comms]
-    TierSelect -->|Sensory world, combat, rooms, memories| T3[Tier 3: Sensory World Narration]
+    Event[Game Event / User Action] --> VoiceSelect{Category}
+    VoiceSelect -->|World, actions, roadblocks, party orders| Narration[Second-Person Narration]
+    VoiceSelect -->|Floor descents, quest milestones, breach alarms| Handler[Handler Radio Comms]
+    VoiceSelect -->|Engine UI, save points, quit confirmation| SystemUI[System / Engine Feed]
 
-    T1 -->|Style: cyan CRT-glow text-xs| Out1[Quiet Action Confirmation]
-    T2 -->|Style: italic rose text-sm, Handler prefix| Out2[Procedural Radio Transmission]
-    T3 -->|Style: regular text-sm, second-person| Out3[Direct Sensory Perception]
+    Narration -->|Style: regular body text, second-person You| Out1[Grounded Sensory Experience & Direct Action Feedback]
+    Handler -->|Style: italic rose text-sm, Dispatch prefix| Out2[Procedural Radio Broadcasts]
+    SystemUI -->|Style: clean neutral text-xs| Out3[Engine Affordances]
 ```
 
 ### Quick Reference Matrix
 
-| Tier | Channel / Voice | Visual Style | Purpose | Example |
-|---|---|---|---|---|
-| **Tier 1: HUD / System Feed** | `voice: "system"` (`NarrativeLineKind::System`) | Cyan CRT-glow, `text-xs`, monospace/clean | Routine, high-frequency micro-actions (taking, dropping, equipping, party orders). Low friction. | `Picked up chisel-axe.`<br>`Alex assigned to guard.` |
-| **Tier 2: Handler Comms** | `voice: "handler"` (`NarrativeLineKind::Channel`) | Italic rose, `Handler:` prefix | Roadblocks, system errors, SOP directives, objective reminders, confusion. | `Handler: The playbook says you need the worn scroll for this.` |
-| **Tier 3: World Narration** | `NarrativeLineKind::Narration` | Standard body text, `text-sm` | Immediate physical reality: room inspection, combat strikes, creature behavior, memories. | `You wrap your hand around the chisel-axe. It bites into stone and meat alike.` |
+| Channel / Voice | Visual Style | Purpose | Example |
+|---|---|---|---|
+| **Second-Person Narration** | Standard body text, `text-sm` (`NarrativeLineKind::Narration`) | Direct physical reality: sensory exploration, combat, item handling, party orders, and physical roadblocks. | `You wrap your hand around the chisel-axe.`<br>`You assign Alex to guard your flank.`<br>`You don't see a path to north from here; you can't go that way.` |
+| **Handler Comms** | Italic rose, `Dispatch • Handler` prefix (`NarrativeLineKind::Channel`) | Radio dispatches: narrative milestones, floor transitions, mission objectives, and high-stakes tactical warnings. | `Dispatch • Handler: Cage count reads zero. Every one of them breathing, which was nowhere on my forecast.` |
+| **System / Engine Feed** | Clean, muted typography (`NarrativeLineKind::System`) | Engine-level affordances and meta-interaction: bookmark save points, session resumes, confirmation prompts. | `Saved bookmark to slot 1.` |
 
 ---
 
-## 2. Tier 1: Sleek HUD / System Feed (Routine Actions)
+## 2. Second-Person Gameplay & Action Feedback
 
-### Philosophy: Zero Narrative Fatigue
-When players perform routine inventory and combat management ten or twenty times in a crawl, they do not need a conversational interruption. Repetitive micro-actions must be **instant, quiet, and unobtrusive**.
+### Philosophy: Grounded Immediacy
+All routine physical actions (taking items, equipping gear, commanding companions) and physical impossibilities (blocked doors, anchored items, empty packs) are told directly from Layla's immediate perspective in the second person (`You...`).
+
+We **never** break character with a pseudo-bureaucratic third voice citing corporate manuals, route sheets, or equipment charts for mundane physical failures. If Layla cannot go north, she simply does not see a path. If she tries to take an anchored pillar, stone does not yield.
 
 ### Formatting Rules
-1. **Never use raw ALL-CAPS terminal shouting.** Retire legacy mainframe strings (`INVENTORY UPDATED: ...`, `OBJECT NOT EQUIPPED: ...`).
-2. **Use concise, sentence-case action confirmations.**
-3. **Keep confirmations to a single line** with direct verb-object syntax.
+1. **Always use second-person phrasing (`You...` / `Your...`).**
+2. **Avoid passive or robotic logs** (e.g. do not use `Picked up sword.` or `Alex assigned to guard.`; use `You pick up the sword.` and `You assign Alex to guard your flank.`).
+3. **No faux-clerical roadblocks.** Retire references to "the playbook", "the route sheet", "the recognition guide", or "the equipment chart". The world itself resists or guides the player.
 
 ### Authoring Guide:
-| Event | Legacy Syntax (Retired) | Approved Tier 1 Syntax |
+| Scenario | Former Bureaucratic Style (Retired) | Second-Person Narration (Approved) |
 |---|---|---|
-| Take Item | `INVENTORY UPDATED: {label} acquired.` | `Picked up {label}.` |
-| Place / Drop Item | `LOCAL OBJECT REGISTERED: {label}.` | `Dropped {label}.` |
-| Equip Gear | `EQUIPPED: {item}. {bonuses}.` | `Equipped {item}. {bonuses}` |
-| Unequip Gear | `UNEQUIPPED: {item}.` | `Unequipped {item}.` |
-| Item Expended | `ITEM EXPENDED: {label}.` | `Used {label}.` |
-| Assign Guard Order | `ORDER UPDATED: {actor} assigned to GUARD.` | `{actor} assigned to guard.` |
-| Assign Follow Order | `ORDER UPDATED: {actor} assigned to FOLLOW.` | `{actor} assigned to follow.` |
-| Assign Patrol Order | `ORDER UPDATED: {actor} assigned to PATROL.` | `{actor} assigned to patrol.` |
+| Take Item | `Picked up {label}.` | `You pick up {label}.` |
+| Anchored Item | `Leave the {label} where it is — the field notes say it's anchored...` | `The {label} is firmly anchored to the floor; you cannot pry it loose.` |
+| Drop Item | `Placed {label} on the ground.` | `You place {label} on the ground.` |
+| Empty Pack Drop | `Your pack is already empty—nothing to drop.` | `Your pack is already empty; you have nothing to drop.` |
+| Equip Gear | `The equipment chart says you can't equip {item}.` | `You equip {item}. {bonuses}` / `You cannot equip {item}.` |
+| Navigation Block | `No, sorry. The route sheet doesn't show a path to {target}...` | `You don't see a path to {target} from here; you can't go that way.` |
+| Party Assignment | `Alex assigned to guard.` | `You assign {actor} to guard your flank.` |
+| Party Member Absent | `I don't show {actor} in your room right now.` | `You don't see {actor} in the room with you.` |
+| Ambiguous Name | `I have more than one match in the registry for that.` | `More than one target matches '{actor}'. Be more specific.` |
+| Missing Prerequisite | `The playbook says you need the {label} before you can do that.` | `You need the {label} to do that.` |
+| Unknown Command | `I don't have {raw_input} in the approved playbook.` | `You don't know how to '{raw_input}'. Try {available_commands}.` |
 
 ---
 
-## 3. Tier 2: The Handler's Comms (Roadblocks & Systems)
+## 3. The Handler: Narrative Radio Comms
 
 ### Who the Handler Is
-System directives and roadblocks come from Layla's human handler—a young, anxious corporate employee monitoring the crawl from a remote console.
-- **Bound by procedure:** He relies on corporate SOPs, route sheets, and playbooks because he is terrified of making a mistake.
-- **Human, not robotic:** When instructions fail, he admits it ("That's on my side, Layla, not yours"). He gets nervous, corrects himself, and occasionally treats Layla like a person before remembering he isn't supposed to.
-- **Operational brevity:** His lines must remain crisp operational feedback. Do not turn every message into a comedy routine or a long monologue.
+The Handler is Layla's remote console operator—a dry, sarcastic, patronizing surface observer monitoring the crawl through a radio link.
+- **Remote observer:** He is not in the dungeon. He only sees telemetry, board state, and vital signs on his console.
+- **Professional cynicism masking anxiety:** His sarcasm is armor. He cracks deadpan jokes about the dungeon's absurdity because he cannot reach in to save her and is genuinely invested in keeping her intact.
+- **Narrative weight:** Because he no longer interrupts every routine movement error or equip click, his radio transmissions carry true narrative weight when the comms crackle to life.
 
 ### When the Handler Speaks
-The handler speaks **only** when there is a reason to intervene:
-- Blocked actions or unmet prerequisites.
-- Navigation dead ends or map discrepancy errors.
-- Unrecognized commands or console glitches.
-- Critical mission objectives or SOP directives.
-
-### Authoring Guide:
-| Scenario | Approved Handler Line |
-|---|---|
-| Immovable Feature | *"Leave the {label} where it is — the field notes say it's anchored to the floor. I'd rather not find out if they're wrong."* |
-| No Exit | *"No, sorry. The route sheet doesn't show a path to {target} from there."* |
-| Unknown Command | *"I don't have `{raw_input}` in the approved playbook. Try {available_commands}."* |
-| Missing Prerequisite | *"The playbook says you need the {label} before you can do that."* |
-| Target Required | *"I need a target for that. Who are you aiming at? ({actors})"* |
-| No Target in Room | *"Target what? There's no one in the room right now."* |
-| Duplicate Sigil | *"There's already a trace mark drawn in this spot."* |
-| Unequip Required | *"You're wearing that right now. Unequip the {label} first."* |
-| Invalid Party Member | *"I don't show {actor} in your room right now. Check who's with you."* |
-| Ambiguous Name | *"I have more than one match in the registry for that. Be a bit more specific?"* |
-| Non-Equippable Item | *"The equipment chart says you can't equip {item}."* |
+The Handler speaks **exclusively** on significant narrative moments:
+- **Floor transitions:** Introducing new environments (e.g. descending to Floor 2's deep wood or Floor 5's citadel).
+- **Major quest milestones:** Acknowledging the freeing of prisoners, finding Zayd, or clearing corrupted guardians.
+- **Tactical emergencies:** Countdown warnings when siege forces breach civilian quarters (`civilian.breach_warning`).
+- **Story friction:** Challenging Layla when her choices diverge from corporate expectations.
 
 ---
 
-## 4. Tier 3: Sensory World Narration (Layla's Experience)
+## 4. Sensory World Narration (Layla's Experience)
 
 ### Core Rules
 1. **Strictly Second-Person (`You...`)**:
@@ -125,9 +115,9 @@ Layla is instinctively gentle with the golems and creatures she charms, without 
 
 Before adding or editing content in `content/layla/`:
 
-- [ ] **Voice Check:** Is routine feedback formatted as sleek sentence-case Tier 1 HUD?
-- [ ] **Handler Check:** If it's a roadblock or error, does it sound like an anxious, procedural human handler referencing SOPs/field notes?
-- [ ] **POV Check:** Is all world narration and equipment flavor strictly in the **second person** (`You...`)?
+- [ ] **Second-Person Check:** Are routine actions (take, drop, equip, order) and physical roadblocks phrased naturally in the second person (`You...`)?
+- [ ] **No Pseudo-Clerk Voice:** Did you avoid citing "playbooks", "route sheets", "field notes", or "equipment charts" for mundane gameplay events?
+- [ ] **Handler Scope Check:** Is the Handler reserved for genuine narrative radio comms (`Dispatch • Handler`) on floor descents, quest milestones, and tactical alarms?
 - [ ] **Sensory Check:** Does the room or action description include at least one concrete sound, smell, or tactile texture?
 - [ ] **Tone Check:** Are enemies described in material/physical terms rather than moral terms?
 - [ ] **Character Check:** Does Layla's observation notice geometry, counts, or physical rules?

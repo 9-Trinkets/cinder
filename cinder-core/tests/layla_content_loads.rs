@@ -609,7 +609,7 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
 
     // 1. take shaman-ring (exact id)
     let outcome = runtime.run_turn("take shaman-ring").expect("turn runs");
-    assert!(outcome.text().contains("Picked up shaman's ring."));
+    assert!(outcome.text().contains("You pick up shaman's ring."));
     {
         let s = runtime.export_state().unwrap();
         assert!(s.has_item("shaman-ring"));
@@ -621,7 +621,7 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
     assert!(
         outcome
             .text()
-            .contains("Placed shaman's ring on the ground.")
+            .contains("You place shaman's ring on the ground.")
     );
     {
         let s = runtime.export_state().unwrap();
@@ -634,7 +634,7 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
 
     // 3. take shaman ring (without hyphen)
     let outcome = runtime.run_turn("take shaman ring").expect("turn runs");
-    assert!(outcome.text().contains("Picked up shaman's ring."));
+    assert!(outcome.text().contains("You pick up shaman's ring."));
     {
         let s = runtime.export_state().unwrap();
         assert!(s.has_item("shaman-ring"));
@@ -645,12 +645,12 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
     assert!(
         outcome
             .text()
-            .contains("Placed shaman's ring on the ground.")
+            .contains("You place shaman's ring on the ground.")
     );
 
     // 5. take ring (substring/token match)
     let outcome = runtime.run_turn("take ring").expect("turn runs");
-    assert!(outcome.text().contains("Picked up shaman's ring."));
+    assert!(outcome.text().contains("You pick up shaman's ring."));
     {
         let s = runtime.export_state().unwrap();
         assert!(s.has_item("shaman-ring"));
@@ -658,29 +658,29 @@ fn player_can_take_and_drop_shaman_ring_with_various_phrasings() {
 
     // 6. equip ring
     let outcome = runtime.run_turn("equip ring").expect("turn runs");
-    assert!(outcome.text().contains("Equipped shaman's ring."));
+    assert!(outcome.text().contains("You equip shaman's ring."));
 
     // 7. drop ring while equipped is rejected
     let outcome = runtime.run_turn("drop ring").expect("turn runs");
-    assert!(outcome.text().contains("Unequip it before dropping"));
+    assert!(outcome.text().contains("Unequip it before setting it down"));
 
     // 8. take off ring (unequip via take off phrase)
     let outcome = runtime.run_turn("take off ring").expect("turn runs");
-    assert!(outcome.text().contains("Unequipped shaman's ring."));
+    assert!(outcome.text().contains("You unequip shaman's ring."));
 
     // 9. drop ring now succeeds
     let outcome = runtime.run_turn("drop ring").expect("turn runs");
     assert!(
         outcome
             .text()
-            .contains("Placed shaman's ring on the ground.")
+            .contains("You place shaman's ring on the ground.")
     );
 
     // 10. take the shaman's ring (with article and apostrophe)
     let outcome = runtime
         .run_turn("take the shaman's ring")
         .expect("turn runs");
-    assert!(outcome.text().contains("Picked up shaman's ring."));
+    assert!(outcome.text().contains("You pick up shaman's ring."));
     {
         let s = runtime.export_state().unwrap();
         assert!(s.has_item("shaman-ring"));
@@ -994,19 +994,19 @@ fn layla_shipped_pack_invariants_and_wiring() {
     assert_eq!(pack.settings.feedback_channel_id.as_str(), "handler-comms");
     assert_eq!(
         pack.message("item.acquired_inventory"),
-        Some("Picked up {label}.")
+        Some("You pick up {label}.")
     );
     assert_eq!(
         pack.message_voice("item.acquired_inventory"),
-        cinder_core::content::types::PackMessageVoice::System
+        cinder_core::content::types::PackMessageVoice::Narration
     );
     assert_eq!(
         pack.message_voice("item.consumed_use"),
-        cinder_core::content::types::PackMessageVoice::System
+        cinder_core::content::types::PackMessageVoice::Narration
     );
     assert_eq!(
         pack.message_voice("item.takedenied"),
-        cinder_core::content::types::PackMessageVoice::Handler
+        cinder_core::content::types::PackMessageVoice::Narration
     );
     assert_eq!(
         pack.message_voice("combat.attack_hit"),

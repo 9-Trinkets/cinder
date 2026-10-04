@@ -39,44 +39,20 @@
     "combat.party_level_up_large": "{count} allies grow stronger. Level {level}.",
     "combat.skill_unlocked": "{actor_name} unlocked {skill_label}!",
     "combat.player_skill_unlocked": "You unlocked {skill_label}!",
-    "party.order_guard_assigned": {
-        "voice": "system",
-        "text": "{actor} assigned to guard."
-    },
-    "party.order_guard_recalled": {
-        "voice": "system",
-        "text": "{actor} returns to your side and takes up guard position."
-    },
-    "party.order_follow_assigned": {
-        "voice": "system",
-        "text": "{actor} assigned to follow."
-    },
-    "party.order_follow_recalled": {
-        "voice": "system",
-        "text": "{actor} returns to your side and falls in."
-    },
-    "party.order_patrol_assigned": {
-        "voice": "system",
-        "text": "{actor} assigned to patrol."
-    },
-    "party.order_member_unavailable": {
-        "voice": "handler",
-        "text": "I don't show that party member near you right now. Check who's with you."
-    },
-    "party.order_member_ambiguous": {
-        "voice": "handler",
-        "text": "I have more than one match in the registry for that. Be a bit more specific?"
-    },
+    "party.order_guard_assigned": "You assign {actor} to guard your flank.",
+    "party.order_guard_recalled": "{actor} returns to your side and takes up guard position.",
+    "party.order_follow_assigned": "You signal {actor} to follow.",
+    "party.order_follow_recalled": "{actor} returns to your side and falls in.",
+    "party.order_patrol_assigned": "You send {actor} out to patrol the area.",
+    "party.order_member_unavailable": "That companion is not close enough to receive your order.",
+    "party.order_member_ambiguous": "More than one companion matches that name. Be more specific.",
     "party.directive.guard.title": "Guard",
     "party.directive.guard.subtitle": "Intercept attacks against Layla.",
     "party.directive.follow.title": "Follow",
     "party.directive.follow.subtitle": "Stay close to Layla and travel with the party.",
     "party.directive.patrol.title": "Patrol",
     "party.directive.patrol.subtitle": "Roam independently and engage nearby threats.",
-    "surround.refused": {
-        "voice": "system",
-        "text": "The ring does not hold."
-    },
+    "surround.refused": "The ring does not hold.",
     "conversion.encircled": "The {actor} shudders, its surface brightening. It turns toward you, no longer hostile.",
     "conversion.encircled_follows": "The {actor} is pulled through the ring and falls in beside you.",
     "follow.actor_follows": "The {actor} falls in beside you.",
@@ -98,122 +74,35 @@
     "king.aftermath": "He bows his head. The forest holds its breath. Then, one by one, the other elves lower their weapons and step back. No ring binds them \u2014 they simply choose to let you pass. You feel their eyes on you a long moment, and you lower your own blade.",
     "item.scroll_read.learned": "The dry bark is cool in your hand. The spiral unrolls behind your eyes, exact as a dictated rule: drain \u2014 take the strength of what stands within the circle and hold it until it holds nothing at all. The lines settle into your hand. You know the drain sigil.",
     "item.spawn_scroll_read.learned": "The fire-cured bark is cool against your palm. The amber circle resolves into a dictated rule: spawn \u2014 call one creature into the empty space. What answers, and how strong it stands, depends on the strength of the hand that draws it. The lines settle into your hand. You know the shape.",
-    "item.acquired_inventory": {
-        "voice": "system",
-        "text": "Picked up {label}."
-    },
-    "item.acquired_room": {
-        "voice": "system",
-        "text": "Placed {label} on the ground."
-    },
-    "item.consumed_player": {
-        "voice": "system",
-        "text": "Used {label}."
-    },
-    "item.consumed_actor": {
-        "voice": "system",
-        "text": "Gave {label} to {consumer_name}."
-    },
-    "item.consumed_use": {
-        "voice": "system",
-        "text": "Used {label}."
-    },
-    "item.take_nothing": {
-        "voice": "handler",
-        "text": "Nothing loose on the floor to pick up here."
-    },
-    "item.take_not_here": {
-        "voice": "handler",
-        "text": "I don't see that on the ground near you."
-    },
-    "item.taken": {
-        "voice": "system",
-        "text": "Picked up {label}."
-    },
-    "item.takedenied": {
-        "voice": "handler",
-        "text": "Leave the {label} where it is — the field notes say it's anchored to the floor. I'd rather not find out if they're wrong."
-    },
-    "item.drop_nothing": {
-        "voice": "handler",
-        "text": "Your pack is already empty—nothing to drop."
-    },
-    "item.drop_not_have": {
-        "voice": "handler",
-        "text": "You aren't carrying that in your inventory."
-    },
-    "item.drop_equipped": {
-        "voice": "handler",
-        "text": "You're wearing that right now. Unequip it before dropping."
-    },
-    "item.dropped": {
-        "voice": "system",
-        "text": "Placed {label} on the ground."
-    },
-    "equipment.equipped": {
-        "voice": "system",
-        "text": "Equipped {item}. {bonuses}"
-    },
-    "equipment.unequipped": {
-        "voice": "system",
-        "text": "Unequipped {item}."
-    },
-    "equipment.not_equipped": {
-        "voice": "handler",
-        "text": "You aren't wearing {item} right now."
-    },
-    "equipment.already_equipped": {
-        "voice": "handler",
-        "text": "You're already wearing {item}."
-    },
-    "error.command_not_now": {
-        "voice": "handler",
-        "text": "You can't do that right now: {verb}."
-    },
-    "error.command_needs_more": {
-        "voice": "handler",
-        "text": "You still need to resolve: {labels}."
-    },
-    "error.command_blocked_by_progress": {
-        "voice": "handler",
-        "text": "That's already taken care of: {labels}."
-    },
-    "error.cannot_command_here": {
-        "voice": "handler",
-        "text": "You can't run `{command}` from here—the playbook says to be in {room}."
-    },
-    "error.missing_item": {
-        "voice": "handler",
-        "text": "The playbook says you need the {label} for this."
-    },
-    "error.nothing_to_consume": {
-        "voice": "handler",
-        "text": "There's nothing consumable here to use."
-    },
-    "error.no_actor_to_serve": {
-        "voice": "handler",
-        "text": "There's no one here to give that to."
-    },
-    "error.no_actor_to_listen": {
-        "voice": "handler",
-        "text": "There's no one here listening."
-    },
-    "error.no_target": {
-        "voice": "handler",
-        "text": "Target what? There's no one in the room right now."
-    },
-    "error.target_required": {
-        "voice": "handler",
-        "text": "I need a target for that. Who are you aiming at? ({actors})"
-    },
-    "error.trace_mark_exists": {
-        "voice": "handler",
-        "text": "There's already a trace mark drawn in this spot."
-    },
-    "error.no_craftable_available": {
-        "voice": "handler",
-        "text": "You don't have any new trace patterns unlocked to draw."
-    },
+    "item.acquired_inventory": "You pick up {label}.",
+    "item.acquired_room": "You place {label} on the ground.",
+    "item.consumed_player": "You use {label}.",
+    "item.consumed_actor": "You give {label} to {consumer_name}.",
+    "item.consumed_use": "You use {label}.",
+    "item.take_nothing": "You see nothing loose on the floor to pick up here.",
+    "item.take_not_here": "You don't see that on the ground here.",
+    "item.taken": "You pick up {label}.",
+    "item.takedenied": "The {label} is firmly anchored to the floor; you cannot pry it loose.",
+    "item.drop_nothing": "Your pack is already empty; you have nothing to drop.",
+    "item.drop_not_have": "You aren't carrying that in your pack.",
+    "item.drop_equipped": "You are wearing that right now. Unequip it before setting it down.",
+    "item.dropped": "You place {label} on the ground.",
+    "equipment.equipped": "You equip {item}. {bonuses}",
+    "equipment.unequipped": "You unequip {item}.",
+    "equipment.not_equipped": "You aren't wearing {item} right now.",
+    "equipment.already_equipped": "You are already wearing {item}.",
+    "error.command_not_now": "You cannot do that right now ({verb}).",
+    "error.command_needs_more": "You still need to resolve: {labels}.",
+    "error.command_blocked_by_progress": "You have already taken care of {labels}.",
+    "error.cannot_command_here": "You cannot do that from here. You must be in {room}.",
+    "error.missing_item": "You need the {label} to do that.",
+    "error.nothing_to_consume": "There is nothing consumable here for you to use.",
+    "error.no_actor_to_serve": "There is no one here to give that to.",
+    "error.no_actor_to_listen": "There is no one here listening.",
+    "error.no_target": "There is no one in the room to target.",
+    "error.target_required": "Choose a target ({actors}).",
+    "error.trace_mark_exists": "A trace mark is already drawn in this spot.",
+    "error.no_craftable_available": "You do not have any new trace patterns unlocked to draw.",
     "combat.no_effect": "The {kind} passes over the {actor} like wind over stone. No damage is done.",
     "elemental.release": "The fire elemental does not fall — it lets go. Its fire unknots, loosens, and the spiral in its chest unwinds like a long-held breath. It is released back to the elemental realm, and the board is suddenly, quietly cool. You stand at the edge of the pit and let it go.",
     "elemental.charmed": "The fire elemental does not fight. The spiral in its chest slows, and the heat pouring off it banks down to something you could stand beside. It turns to you, patient as ever, and the ring of basins stops burning. The board is quietly cool, and the way down is open.",
@@ -240,18 +129,9 @@
     "equipment.leaf-boots.unequipped": "You set down the boots.",
     "equipment.leaf-buckler.equipped": "You take up the buckler.",
     "equipment.leaf-buckler.unequipped": "You set down the buckler.",
-    "equipment.item_not_held": {
-        "voice": "handler",
-        "text": "You don't have {item} in your inventory."
-    },
-    "equipment.not_equippable": {
-        "voice": "handler",
-        "text": "The equipment chart says you can't equip {item}."
-    },
-    "equipment.ambiguous_item": {
-        "voice": "handler",
-        "text": "I have more than one match for {item}. Be a bit more specific?"
-    },
+    "equipment.item_not_held": "You don't have {item} in your pack.",
+    "equipment.not_equippable": "You cannot equip {item}.",
+    "equipment.ambiguous_item": "More than one item matches '{item}'. Be more specific.",
     "handler.descend.deep_wood": {
         "voice": "handler",
         "text": "Floor two. A glowing wood under a cave — because a quiet, well-lit walkable warp would have been far too considerate. Keep the chalk ring hand ready; I'll keep the sarcasm mild."

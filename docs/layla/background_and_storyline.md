@@ -278,7 +278,7 @@ In this kingdom, people and monsters have been brainwashed into fixed roles (Pea
 
 ## Voice, Narration & Writing Guide
 
-All guidelines for prose style, the 3-tier voice hierarchy (Sleek HUD vs. Handler Comms vs. Sensory Narration), second-person perspective, and Layla's characterization are documented in the dedicated guide:
+All guidelines for prose style, the voice architecture (second-person narration for actions and roadblocks vs. Handler radio comms for story milestones), and Layla's characterization are documented in the dedicated guide:
 
 👉 **[`docs/layla/narration_guide.md`](file:///Users/li-hsuanlung/Projects/cinder/docs/layla/narration_guide.md)**
 

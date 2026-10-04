@@ -22,7 +22,7 @@
   "bookmark_empty": "No bookmarks saved yet. Tap above to bookmark this moment.",
   "about_label": "About",
   "exit_label": "Exit",
-  "things_to_do_empty": "The playbook only says to find a way out. I'm trying to get you something more useful.",
+  "things_to_do_empty": "The only way forward is deeper into the dark.",
   "about_body": "Layla\nA board game in the dark",
   "language_modal_title": "Display language",
   "language_changed_text": "Okay, I switched your display to {language_name}. Tell me if that made it worse.",
@@ -45,9 +45,9 @@
   "exit_confirm_body": "Return to the library? Your journey is saved.",
   "projector_skip_hint": "Press Enter to skip ahead. Esc closes.",
   "projector_title_prefix": "Projector",
-  "error_prefix": "Handler:",
+  "error_prefix": "",
   "response_worker_disconnected": "I lost the response channel. That's on my side—hold on.",
-  "menu_unavailable": "That menu expired. Sorry. The playbook says to open it again.",
+  "menu_unavailable": "That choice is no longer available.",
   "npc_tick_soft_error": "{actor_name} goes still, listening to the dark.",
   "shell_menu": {
     "items": [
