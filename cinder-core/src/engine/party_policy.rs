@@ -306,16 +306,8 @@ fn compare_candidates(
                     .cmp(&(i64::from(left_current) * i64::from(right_max)))
             }
             PartyCandidatePriority::HighestDefense => state
-                .effective_actor_stat(
-                    content,
-                    right.actor_id,
-                    &content.settings.combat.defense_stat_id,
-                )
-                .cmp(&state.effective_actor_stat(
-                    content,
-                    left.actor_id,
-                    &content.settings.combat.defense_stat_id,
-                )),
+                .actor_combat_defense(content, right.actor_id)
+                .cmp(&state.actor_combat_defense(content, left.actor_id)),
             PartyCandidatePriority::ContentOrder => left.content_index.cmp(&right.content_index),
         };
         if ordering != Ordering::Equal {

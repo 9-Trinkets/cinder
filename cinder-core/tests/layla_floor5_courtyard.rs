@@ -98,18 +98,18 @@ fn floor5_defines_five_named_civilian_offerings() {
 }
 
 #[test]
-fn floor5_house_heads_have_role_appropriate_defense() {
+fn floor5_house_heads_have_role_appropriate_endurance() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let expected = [("lord_vane", 6), ("warmaster_torin", 8), ("lady_sylvan", 4)];
 
-    for (actor_id, defense) in expected {
+    for (actor_id, endurance) in expected {
         let actor = pack
             .actor(actor_id)
             .unwrap_or_else(|| panic!("missing house head {actor_id}"));
         assert_eq!(
-            actor.initial_stats.get("defense").copied(),
-            Some(defense),
-            "{actor_id} defense should match its combat role"
+            actor.initial_stats.get("endurance").copied(),
+            Some(endurance),
+            "{actor_id} endurance should match its combat role"
         );
     }
 }

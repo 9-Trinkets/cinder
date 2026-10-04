@@ -56,7 +56,7 @@
       "weapon"
     ],
     "stat_bonuses": {
-      "strength": 2
+      "attack": 2
     },
     "description": "A wedge of chipped stone half-wrapped in greasy hide, a goblin's skinning tool. It bites into meat and stone alike."
   },
@@ -104,7 +104,7 @@
       "weapon"
     ],
     "stat_bonuses": {
-      "strength": 1
+      "attack": 1
     },
     "description": "A young spear of leaf-spear wood, straight and honest. A soldier's first blade."
   },
@@ -292,7 +292,7 @@
       "weapon"
     ],
     "stat_bonuses": {
-      "strength": 3
+      "attack": 3
     },
     "description": "A finely balanced curved cavalry saber issued to garrison commanders, with a steam-assisted counterweight in the hilt."
   },
@@ -328,7 +328,7 @@
       "weapon"
     ],
     "stat_bonuses": {
-      "strength": 2
+      "attack": 2
     },
     "description": "A fluted steel bolt designed for high-pressure garrison repeating crossbows."
   },

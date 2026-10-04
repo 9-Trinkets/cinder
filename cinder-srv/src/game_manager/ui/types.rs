@@ -95,6 +95,10 @@ pub struct PlayerStatus {
     pub mp: Option<u32>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub mp_max: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub attack: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub defense: Option<i32>,
     pub stats: Vec<StatValue>,
     /// The player's (per-actor) level.
     pub level: u32,

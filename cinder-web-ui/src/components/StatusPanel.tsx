@@ -86,8 +86,24 @@ export default function StatusPanel({
                 </div>
               </>
             )}
+            {(player.attack !== undefined || player.defense !== undefined) && (
+              <div className="grid grid-cols-2 gap-2 text-xs pt-1.5 pb-1 border-t border-overlay/40">
+                {player.attack !== undefined && (
+                  <div className="flex justify-between">
+                    <span className="text-muted">Attack</span>
+                    <span className="text-text font-medium">{player.attack}</span>
+                  </div>
+                )}
+                {player.defense !== undefined && (
+                  <div className="flex justify-between">
+                    <span className="text-muted">Defense</span>
+                    <span className="text-text font-medium">{player.defense}</span>
+                  </div>
+                )}
+              </div>
+            )}
             {player.stats.length > 0 && (
-              <ul className="space-y-0.5">
+              <ul className="space-y-0.5 pt-1 border-t border-overlay/30">
                 {player.stats.map(stat => (
                   <li key={stat.id} className="flex justify-between text-xs">
                     <span className="text-muted">{stat.id}</span>

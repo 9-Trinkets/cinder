@@ -195,7 +195,7 @@ Only pieces that were **not destroyed** can wake, and only if they receive enoug
 With recruited party members, players can issue tactical commands to coordinate combat and movement:
 
 - **`follow`:** The follower accompanies Layla from room to room, supporting her in combat and attacking alongside the party.
-- **`guard`:** The follower enters a defensive interception stance (`before_hostile_damage`). When a hostile enemy strikes at Layla, a guarding follower with at least 25% health intercepts the blow to protect her, absorbing the damage based on their defense stat. If multiple followers guard, priority goes to the follower with highest health percentage, then highest defense. In terms of movement, a guarding follower holds position in their current room rather than following room-to-room movements.
+- **`guard`:** The follower enters a defensive interception stance (`before_hostile_damage`). When a hostile enemy strikes at Layla, a guarding follower with at least 25% health intercepts the blow to protect her, absorbing the damage based on their defense rating (derived from endurance and equipped armor/shields). If multiple followers guard, priority goes to the follower with highest health percentage, then highest defense rating. In terms of movement, a guarding follower holds position in their current room rather than following room-to-room movements.
 
 ---
 

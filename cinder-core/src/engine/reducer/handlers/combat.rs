@@ -29,8 +29,8 @@ pub(crate) fn handle_hostile_strike(
         return;
     };
     let room_id = state.actor_current_room_id(content, actor_id).to_string();
-    let raw_damage = (state.actor_stat(actor_id, &combat.attack_stat_id)
-        - state.effective_actor_stat(content, &target_id, &combat.defense_stat_id))
+    let raw_damage = (state.actor_combat_attack(content, actor_id)
+        - state.actor_combat_defense(content, &target_id))
     .max(combat.minimum_damage);
     let attack_kind = state
         .actor(content, actor_id)
@@ -48,10 +48,8 @@ pub(crate) fn handle_hostile_strike(
         .as_ref()
         .map(|decision| decision.actor_id.clone());
     if let Some(guard_id) = guard_id {
-        let guard_defense = state
-            .effective_actor_stat(content, &guard_id, &combat.defense_stat_id)
-            .max(0);
-        let raw_guard_takes = (state.actor_stat(actor_id, &combat.attack_stat_id) - guard_defense)
+        let guard_defense = state.actor_combat_defense(content, &guard_id).max(0);
+        let raw_guard_takes = (state.actor_combat_attack(content, actor_id) - guard_defense)
             .max(combat.minimum_damage);
         let guard_takes = resisted_damage(content, &guard_id, attack_kind, raw_guard_takes);
         let guard_name = actor_display_name(state, content, &guard_id);

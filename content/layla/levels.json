@@ -5,7 +5,7 @@
       "stat_changes": {
         "hp": 3,
         "strength": 1,
-        "defense": 1,
+        "endurance": 1,
         "intelligence": 1
       },
       "unlocks": []
@@ -15,7 +15,7 @@
       "stat_changes": {
         "hp": 3,
         "strength": 1,
-        "defense": 1,
+        "endurance": 1,
         "intelligence": 1
       },
       "unlocks": []
@@ -25,7 +25,7 @@
       "stat_changes": {
         "hp": 4,
         "strength": 2,
-        "defense": 1,
+        "endurance": 1,
         "intelligence": 1
       },
       "unlocks": []
@@ -35,7 +35,7 @@
       "stat_changes": {
         "hp": 4,
         "strength": 2,
-        "defense": 2,
+        "endurance": 2,
         "intelligence": 1
       },
       "unlocks": []
@@ -45,7 +45,7 @@
       "stat_changes": {
         "hp": 5,
         "strength": 3,
-        "defense": 2,
+        "endurance": 2,
         "intelligence": 1
       },
       "unlocks": []

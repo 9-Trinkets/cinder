@@ -7,7 +7,7 @@
       "hp": 10,
       "mp": 10,
       "strength": 3,
-      "defense": 1,
+      "endurance": 1,
       "intelligence": 5
     },
     "aliases": [
@@ -203,7 +203,7 @@
     "initial_stats": {
       "hp": 24,
       "strength": 5,
-      "defense": 1,
+      "endurance": 1,
       "intelligence": 6
     },
     "aliases": [
@@ -637,7 +637,7 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1,
+      "endurance": 1,
       "intelligence": 3,
       "wisdom": 7
     },
@@ -722,7 +722,7 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1,
+      "endurance": 1,
       "intelligence": 3,
       "wisdom": 7
     },
@@ -807,7 +807,7 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1,
+      "endurance": 1,
       "intelligence": 3,
       "wisdom": 7
     },
@@ -892,7 +892,7 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1,
+      "endurance": 1,
       "intelligence": 3,
       "wisdom": 7
     },
@@ -977,7 +977,7 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1,
+      "endurance": 1,
       "intelligence": 3,
       "wisdom": 7
     },
@@ -1062,7 +1062,7 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1,
+      "endurance": 1,
       "intelligence": 3,
       "wisdom": 7
     },
@@ -1147,7 +1147,7 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1,
+      "endurance": 1,
       "intelligence": 3,
       "wisdom": 7
     },
@@ -1232,7 +1232,7 @@
     "initial_stats": {
       "hp": 6,
       "strength": 2,
-      "defense": 1,
+      "endurance": 1,
       "intelligence": 3,
       "wisdom": 7
     },
@@ -1317,7 +1317,7 @@
     "initial_stats": {
       "hp": 14,
       "strength": 5,
-      "defense": 3,
+      "endurance": 3,
       "intelligence": 4,
       "wisdom": 8
     },
@@ -1398,7 +1398,7 @@
     "initial_stats": {
       "hp": 10,
       "strength": 4,
-      "defense": 2,
+      "endurance": 2,
       "intelligence": 4,
       "wisdom": 8
     },
@@ -1485,7 +1485,7 @@
     "initial_stats": {
       "hp": 10,
       "strength": 4,
-      "defense": 2,
+      "endurance": 2,
       "intelligence": 4,
       "wisdom": 8
     },
@@ -1573,7 +1573,7 @@
     "initial_stats": {
       "hp": 16,
       "strength": 6,
-      "defense": 3,
+      "endurance": 3,
       "intelligence": 6,
       "wisdom": 9
     },
@@ -1654,7 +1654,7 @@
     "initial_stats": {
       "hp": 20,
       "strength": 6,
-      "defense": 4,
+      "endurance": 4,
       "intelligence": 7,
       "wisdom": 8
     },
@@ -1705,7 +1705,7 @@
     "initial_stats": {
       "hp": 10,
       "strength": 4,
-      "defense": 2,
+      "endurance": 2,
       "intelligence": 4,
       "wisdom": 8
     },
@@ -1787,7 +1787,7 @@
     "initial_stats": {
       "hp": 10,
       "strength": 4,
-      "defense": 2,
+      "endurance": 2,
       "intelligence": 4,
       "wisdom": 8
     },
@@ -1868,7 +1868,7 @@
     "initial_stats": {
       "hp": 14,
       "strength": 5,
-      "defense": 3,
+      "endurance": 3,
       "intelligence": 4,
       "wisdom": 8
     },
@@ -1960,7 +1960,7 @@
     "initial_stats": {
       "hp": 18,
       "strength": 3,
-      "defense": 2,
+      "endurance": 2,
       "intelligence": 7
     },
     "prompt_context": {
@@ -2006,7 +2006,7 @@
     "initial_stats": {
       "hp": 4,
       "strength": 2,
-      "defense": 0,
+      "endurance": 0,
       "intelligence": 2
     },
     "prompt_context": {
@@ -2050,7 +2050,7 @@
     "initial_stats": {
       "hp": 4,
       "strength": 2,
-      "defense": 0,
+      "endurance": 0,
       "intelligence": 2
     },
     "prompt_context": {
@@ -2094,7 +2094,7 @@
     "initial_stats": {
       "hp": 4,
       "strength": 2,
-      "defense": 0,
+      "endurance": 0,
       "intelligence": 2
     },
     "prompt_context": {
@@ -2181,7 +2181,7 @@
     "initial_stats": {
       "hp": 4,
       "strength": 2,
-      "defense": 0,
+      "endurance": 0,
       "intelligence": 2
     },
     "prompt_context": {
@@ -2225,7 +2225,7 @@
     "initial_stats": {
       "hp": 4,
       "strength": 2,
-      "defense": 0,
+      "endurance": 0,
       "intelligence": 2
     },
     "prompt_context": {
@@ -2269,7 +2269,7 @@
     "initial_stats": {
       "hp": 4,
       "strength": 2,
-      "defense": 0,
+      "endurance": 0,
       "intelligence": 2
     },
     "prompt_context": {
@@ -2307,7 +2307,7 @@
     "initial_stats": {
       "hp": 12,
       "strength": 2,
-      "defense": 2,
+      "endurance": 2,
       "intelligence": 7
     },
     "level": 3,
@@ -2391,7 +2391,7 @@
     "initial_stats": {
       "hp": 15,
       "strength": 4,
-      "defense": 2,
+      "endurance": 2,
       "intelligence": 5
     },
     "level": 3,
@@ -2477,7 +2477,7 @@
     "initial_stats": {
       "hp": 14,
       "strength": 3,
-      "defense": 3,
+      "endurance": 3,
       "intelligence": 8
     },
     "level": 4,
@@ -2558,7 +2558,7 @@
     "initial_stats": {
       "hp": 13,
       "strength": 4,
-      "defense": 3,
+      "endurance": 3,
       "intelligence": 6
     },
     "level": 3,
@@ -2607,7 +2607,7 @@
     "initial_stats": {
       "hp": 9,
       "strength": 2,
-      "defense": 2,
+      "endurance": 2,
       "intelligence": 5
     },
     "level": 2,
@@ -2657,7 +2657,7 @@
     "initial_stats": {
       "hp": 10,
       "strength": 2,
-      "defense": 1,
+      "endurance": 1,
       "intelligence": 6
     },
     "level": 2,
@@ -2754,7 +2754,7 @@
     "initial_stats": {
       "hp": 28,
       "strength": 5,
-      "defense": 3,
+      "endurance": 3,
       "intelligence": 8
     },
     "level": 7,
@@ -2815,7 +2815,7 @@
     "initial_stats": {
       "hp": 38,
       "strength": 7,
-      "defense": 5,
+      "endurance": 5,
       "intelligence": 5
     },
     "level": 8,
@@ -2868,7 +2868,7 @@
     "initial_stats": {
       "hp": 26,
       "strength": 6,
-      "defense": 6,
+      "endurance": 6,
       "intelligence": 2,
       "wisdom": 5
     },
@@ -2969,7 +2969,7 @@
     "initial_stats": {
       "hp": 18,
       "strength": 4,
-      "defense": 3,
+      "endurance": 3,
       "intelligence": 3
     },
     "level": 5,
@@ -3020,7 +3020,7 @@
     "initial_stats": {
       "hp": 20,
       "strength": 5,
-      "defense": 4,
+      "endurance": 4,
       "intelligence": 3
     },
     "level": 5,
@@ -3068,7 +3068,7 @@
     "initial_stats": {
       "hp": 16,
       "strength": 4,
-      "defense": 3,
+      "endurance": 3,
       "intelligence": 3
     },
     "level": 5,
@@ -3114,7 +3114,7 @@
     "initial_stats": {
       "hp": 16,
       "strength": 4,
-      "defense": 3,
+      "endurance": 3,
       "intelligence": 3
     },
     "level": 5,
@@ -3161,7 +3161,7 @@
     "initial_stats": {
       "hp": 22,
       "strength": 5,
-      "defense": 4,
+      "endurance": 4,
       "intelligence": 3
     },
     "level": 6,
@@ -3211,7 +3211,7 @@
     "initial_stats": {
       "hp": 20,
       "strength": 5,
-      "defense": 4,
+      "endurance": 4,
       "intelligence": 1
     },
     "level": 5,
@@ -3256,7 +3256,7 @@
     "initial_stats": {
       "hp": 22,
       "strength": 5,
-      "defense": 4,
+      "endurance": 4,
       "intelligence": 1
     },
     "level": 5,
@@ -3298,7 +3298,7 @@
     "initial_stats": {
       "hp": 4,
       "strength": 2,
-      "defense": 1,
+      "endurance": 1,
       "intelligence": 2
     },
     "level": 3,
@@ -3347,7 +3347,7 @@
     "initial_stats": {
       "hp": 24,
       "strength": 5,
-      "defense": 4,
+      "endurance": 4,
       "intelligence": 3
     },
     "level": 6,
@@ -3395,7 +3395,7 @@
     "initial_stats": {
       "hp": 18,
       "strength": 4,
-      "defense": 3,
+      "endurance": 3,
       "intelligence": 2
     },
     "level": 5,
@@ -3423,7 +3423,7 @@
     "initial_stats": {
       "hp": 16,
       "strength": 4,
-      "defense": 3,
+      "endurance": 3,
       "intelligence": 2
     },
     "level": 5,
@@ -3450,7 +3450,7 @@
     "initial_stats": {
       "hp": 22,
       "strength": 5,
-      "defense": 5,
+      "endurance": 5,
       "dexterity": 3,
       "intelligence": 2
     },
@@ -3478,7 +3478,7 @@
     "initial_stats": {
       "hp": 17,
       "strength": 5,
-      "defense": 3,
+      "endurance": 3,
       "intelligence": 4
     },
     "level": 6,
@@ -3519,7 +3519,7 @@
     "initial_stats": {
       "hp": 34,
       "strength": 6,
-      "defense": 6,
+      "endurance": 6,
       "intelligence": 3,
       "wisdom": 4
     },
@@ -3578,7 +3578,7 @@
     "initial_stats": {
       "hp": 20,
       "strength": 2,
-      "defense": 3,
+      "endurance": 3,
       "intelligence": 7,
       "wisdom": 6
     },
@@ -3721,7 +3721,7 @@
     "initial_stats": {
       "hp": 70,
       "strength": 8,
-      "defense": 6,
+      "endurance": 6,
       "dexterity": 7,
       "intelligence": 4,
       "wisdom": 6
@@ -3796,7 +3796,7 @@
     "initial_stats": {
       "hp": 85,
       "strength": 9,
-      "defense": 8,
+      "endurance": 8,
       "dexterity": 3,
       "intelligence": 5,
       "wisdom": 5
@@ -3871,7 +3871,7 @@
     "initial_stats": {
       "hp": 60,
       "strength": 6,
-      "defense": 4,
+      "endurance": 4,
       "dexterity": 9,
       "intelligence": 9,
       "wisdom": 7

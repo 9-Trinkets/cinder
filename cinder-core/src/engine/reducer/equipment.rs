@@ -158,13 +158,14 @@ fn render_equipment_message(
         .stat_bonuses
         .iter()
         .map(|(stat_id, delta)| {
-            (
-                stat_id.clone(),
-                format!(
-                    "{delta:+} ({})",
-                    state.effective_actor_stat(content, &combat.player_actor_id, stat_id)
-                ),
-            )
+            let total = if stat_id == "attack" {
+                state.actor_combat_attack(content, &combat.player_actor_id)
+            } else if stat_id == "defense" {
+                state.actor_combat_defense(content, &combat.player_actor_id)
+            } else {
+                state.effective_actor_stat(content, &combat.player_actor_id, stat_id)
+            };
+            (stat_id.clone(), format!("{delta:+} ({total})"))
         })
         .collect::<Vec<_>>();
     bonuses.sort();

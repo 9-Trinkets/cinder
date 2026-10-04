@@ -149,15 +149,14 @@ fn resolve_counterattack(
     room_id: &str,
     decision: &PartyReactionDecision,
 ) -> Option<PartyReactionOutcome> {
+    let combat = &content.settings.combat;
     let target_id = resolve_party_reaction_target(content, state, decision, attacker_id, room_id)?;
-    if state.actor_is_defeated(&target_id, &content.settings.combat.health_stat_id) {
+    if state.actor_is_defeated(&target_id, &combat.health_stat_id) {
         return None;
     }
-    let combat = &content.settings.combat;
-    let raw_damage =
-        (state.effective_actor_stat(content, &decision.actor_id, &combat.attack_stat_id)
-            - state.effective_actor_stat(content, &target_id, &combat.defense_stat_id))
-        .max(combat.minimum_damage);
+    let raw_damage = (state.actor_combat_attack(content, &decision.actor_id)
+        - state.actor_combat_defense(content, &target_id))
+    .max(combat.minimum_damage);
     let attack_kind = content
         .actor(&decision.actor_id)
         .map(|actor| actor.attack_kind())

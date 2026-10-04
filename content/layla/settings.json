@@ -79,6 +79,7 @@
     "cloak"
   ],
   "combat": {
+    "defense_stat_id": "endurance",
     "xp_distribution": {
       "recipients": "player_and_followers",
       "mode": "full_each"

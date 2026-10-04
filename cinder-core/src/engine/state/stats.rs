@@ -165,6 +165,32 @@ impl WorldState {
         value
     }
 
+    /// Effective combat attack rating: the actor's effective attack attribute
+    /// (e.g. `strength`) plus any equipment bonuses to `"attack"`.
+    pub fn actor_combat_attack(&self, content: &ContentPack, actor_id: &str) -> i32 {
+        let base =
+            self.effective_actor_stat(content, actor_id, &content.settings.combat.attack_stat_id);
+        let weapon_bonus = if content.settings.combat.attack_stat_id != "attack" {
+            self.actor_equipped_stat_bonus(content, actor_id, "attack")
+        } else {
+            0
+        };
+        base + weapon_bonus
+    }
+
+    /// Effective combat defense rating: the actor's effective defense attribute
+    /// (e.g. `endurance`) plus any equipment bonuses to `"defense"`.
+    pub fn actor_combat_defense(&self, content: &ContentPack, actor_id: &str) -> i32 {
+        let base =
+            self.effective_actor_stat(content, actor_id, &content.settings.combat.defense_stat_id);
+        let armor_bonus = if content.settings.combat.defense_stat_id != "defense" {
+            self.actor_equipped_stat_bonus(content, actor_id, "defense")
+        } else {
+            0
+        };
+        base + armor_bonus
+    }
+
     /// Item id equipped in `slot_id`, if any.
     pub fn equipped_item(&self, slot_id: &str) -> Option<&str> {
         self.equipment.get(slot_id).map(String::as_str)

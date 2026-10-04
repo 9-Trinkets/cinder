@@ -56,11 +56,23 @@ pub(super) fn build_player_status(state: &WorldState, content: &ContentPack) -> 
         .collect::<Vec<_>>();
     stats.sort_by(|a, b| a.id.cmp(&b.id));
     let (level, xp, xp_max) = xp_progress(state, content);
+    let attack = if !content.settings.combat.attack_stat_id.is_empty() {
+        Some(state.actor_combat_attack(content, player_id))
+    } else {
+        None
+    };
+    let defense = if !content.settings.combat.defense_stat_id.is_empty() {
+        Some(state.actor_combat_defense(content, player_id))
+    } else {
+        None
+    };
     PlayerStatus {
         hp,
         hp_max,
         mp,
         mp_max,
+        attack,
+        defense,
         stats,
         level,
         xp,

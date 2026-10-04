@@ -48,10 +48,8 @@ pub(in crate::engine::reducer) fn apply_attack_target(
         )
         .unwrap_or_else(|error| eprintln!("[cinder] hook warning (actor.attacked): {error}"));
     }
-    let player_attack =
-        state.effective_actor_stat(content, &combat.player_actor_id, &combat.attack_stat_id);
-    let target_defense =
-        state.effective_actor_stat(content, target_actor_id, &combat.defense_stat_id);
+    let player_attack = state.actor_combat_attack(content, &combat.player_actor_id);
+    let target_defense = state.actor_combat_defense(content, target_actor_id);
     let base_damage = (player_attack - target_defense).max(combat.minimum_damage);
     let allied_participants = participating_allies(state, content, room_id);
     let ally_damage = allied_participants
@@ -196,9 +194,7 @@ fn participating_allies(state: &WorldState, content: &ContentPack, room_id: &str
 fn ally_attack_contribution(state: &WorldState, content: &ContentPack, actor_id: &str) -> i32 {
     let policy = &content.settings.combat.ally_attack;
     let raw = match policy.mode {
-        AllyAttackMode::AttackStat => state
-            .actor_stat(actor_id, &content.settings.combat.attack_stat_id)
-            .max(0),
+        AllyAttackMode::AttackStat => state.actor_combat_attack(content, actor_id).max(0),
     };
     let scaled = (i64::from(raw) * i64::from(policy.contribution_percent) / 100)
         .min(i64::from(i32::MAX)) as i32;
