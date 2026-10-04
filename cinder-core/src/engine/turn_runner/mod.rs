@@ -553,38 +553,12 @@ pub(crate) fn run_pending_comms_upgrades(
                         upgrade.reporter_name, upgrade.room_name
                     )]
                 });
-            let mut response_notes = prompt_ctx
-                .as_ref()
-                .map(|p| {
-                    p.response_notes
-                        .iter()
-                        .filter(|note| {
-                            let lower = note.to_ascii_lowercase();
-                            !lower.contains("[give")
-                                && !lower.contains("offer ")
-                                && !lower.contains("gift ")
-                        })
-                        .cloned()
-                        .collect::<Vec<_>>()
-                })
-                .unwrap_or_default();
-            if response_notes.is_empty() {
-                response_notes.push(
-                    "Speak succinctly and tactically over the comms radio. Keep your report to 1-2 short sentences.".to_string(),
-                );
-            }
+            let response_notes = vec![
+                "Speak succinctly and tactically over the comms radio. Keep your report to 1-2 short sentences in your character's voice.".to_string(),
+            ];
             let subtext_notes = prompt_ctx
                 .as_ref()
-                .map(|p| {
-                    p.subtext_notes
-                        .iter()
-                        .filter(|note| {
-                            let lower = note.to_ascii_lowercase();
-                            !lower.contains("[give") && !lower.contains("offer ")
-                        })
-                        .cloned()
-                        .collect::<Vec<_>>()
-                })
+                .map(|p| p.subtext_notes.clone())
                 .unwrap_or_default();
 
             let request = CommsDispatchRequest {
