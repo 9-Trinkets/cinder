@@ -2,6 +2,7 @@
 
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::content::types::ItemStorageTarget;
+use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::reducer::apply_events;
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::{ActorStance, SpawnActorConfig, SpawnActorOutcome, WorldState};
@@ -792,7 +793,7 @@ fn floor5_guard_blocks_wave_soldiers_at_the_north_approach() {
 fn floor5_all_three_stopped_lanes_end_the_siege() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);
-    state.current_room_id = "courtyard_center".to_string();
+    state.current_room_id = "frost_wolf_throne".to_string();
     state.active_objective_stage_ids = vec![
         "mq_frost_siege".to_string(),
         "sq_five_offerings".to_string(),
@@ -845,9 +846,11 @@ fn floor5_all_three_stopped_lanes_end_the_siege() {
     assert!(
         state
             .active_objective_stage_ids
-            .contains(&"mq_secure_courtyard".to_string())
+            .contains(&"mq_return_to_courtyard".to_string())
     );
     assert_eq!(state.story_vars.get("citadel_siege_resolved"), Some("true"));
+    assert_eq!(state.story_vars.get("citadel_siege_complete"), None);
+    assert!(!state.has_item("salt-reach-transit-seal"));
     assert!(
         siege_text.contains("The siege is over"),
         "siege completion should be announced: {siege_text}"
@@ -857,19 +860,55 @@ fn floor5_all_three_stopped_lanes_end_the_siege() {
         "the protection quest should complete when at least three survive"
     );
 
-    let rewards = apply_events(&mut state, &pack, &[]);
-    let reward_text = narrative_text(&rewards.lines);
+    apply_events(&mut state, &pack, &[]);
+    assert!(
+        state
+            .active_objective_stage_ids
+            .contains(&"mq_return_to_courtyard".to_string()),
+        "the conclusion must wait while Layla is away from the courtyard center"
+    );
+
+    let settlement = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::PlayerMoved {
+            from_room_id: "frost_wolf_throne".to_string(),
+            to_room_id: "courtyard_center".to_string(),
+        })],
+    );
+    let reward_text = narrative_text(&settlement.lines);
     assert_eq!(state.story_vars.get("citadel_siege_complete"), Some("true"));
     assert_eq!(state.story_vars.get("five_offerings_survivors"), Some("5"));
     assert_eq!(state.story_vars.get("six_town_accord"), Some("true"));
-    for (unlock_var, token_id) in [
-        ("town_salt_reach_unlocked", "salt-reach-transit-seal"),
-        ("town_glassbank_unlocked", "glassbank-transit-prism"),
-        ("town_woolcross_unlocked", "woolcross-transit-knot"),
-        ("town_greenrest_unlocked", "greenrest-transit-seed"),
-        ("town_brass_yard_unlocked", "brass-yard-transit-gear"),
+    for (received_var, unlock_var, token_id) in [
+        (
+            "town_salt_reach_token_received",
+            "town_salt_reach_unlocked",
+            "salt-reach-transit-seal",
+        ),
+        (
+            "town_glassbank_token_received",
+            "town_glassbank_unlocked",
+            "glassbank-transit-prism",
+        ),
+        (
+            "town_woolcross_token_received",
+            "town_woolcross_unlocked",
+            "woolcross-transit-knot",
+        ),
+        (
+            "town_greenrest_token_received",
+            "town_greenrest_unlocked",
+            "greenrest-transit-seed",
+        ),
+        (
+            "town_brass_yard_token_received",
+            "town_brass_yard_unlocked",
+            "brass-yard-transit-gear",
+        ),
     ] {
-        assert_eq!(state.story_vars.get(unlock_var), Some("true"));
+        assert_eq!(state.story_vars.get(received_var), Some("true"));
+        assert_eq!(state.story_vars.get(unlock_var), None);
         assert!(
             state.has_item(token_id),
             "missing survivor token {token_id}"
@@ -879,6 +918,13 @@ fn floor5_all_three_stopped_lanes_end_the_siege() {
         reward_text.contains("Six-Town Accord"),
         "perfect survival should announce the accord: {reward_text}"
     );
+    assert!(reward_text.contains("Salt Reach will remember"));
+    assert!(reward_text.contains("welcomed as family"));
+    assert!(reward_text.contains("return that kindness"));
+    assert!(reward_text.contains("warmth and medicine"));
+    assert!(reward_text.contains("owes you more than words"));
+
+    apply_events(&mut state, &pack, &[]);
     assert!(
         state.completed_stage_ids.contains("mq_secure_courtyard"),
         "the main Floor 5 quest should close after survivor resolution"
@@ -919,26 +965,46 @@ fn floor5_survivor_rewards_unlock_only_living_civilians_towns() {
 
     apply_events(&mut state, &pack, &[]);
     apply_events(&mut state, &pack, &[]);
+    apply_events(&mut state, &pack, &[]);
 
     assert_eq!(state.story_vars.get("five_offerings_survivors"), Some("3"));
     assert_eq!(state.story_vars.get("town_salt_reach_unlocked"), None);
     assert_eq!(state.story_vars.get("town_glassbank_unlocked"), None);
     assert_eq!(
-        state.story_vars.get("town_woolcross_unlocked"),
+        state.story_vars.get("town_woolcross_token_received"),
         Some("true")
     );
     assert_eq!(
-        state.story_vars.get("town_greenrest_unlocked"),
+        state.story_vars.get("town_greenrest_token_received"),
         Some("true")
     );
     assert_eq!(
-        state.story_vars.get("town_brass_yard_unlocked"),
+        state.story_vars.get("town_brass_yard_token_received"),
         Some("true")
     );
     assert_eq!(state.story_vars.get("six_town_accord"), None);
     assert!(!state.has_item("salt-reach-transit-seal"));
     assert!(!state.has_item("glassbank-transit-prism"));
     assert!(state.has_item("woolcross-transit-knot"));
+    assert_eq!(state.story_vars.get("town_woolcross_unlocked"), None);
+    assert_eq!(pack.resolve_teleport_target(&state, "woolcross"), None);
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+    let used = runtime
+        .run_turn("use woolcross transit knot")
+        .expect("token use resolves");
+    assert!(
+        used.text()
+            .contains("Woolcross is now a permanent destination"),
+        "token use should explain the new destination: {}",
+        used.text()
+    );
+    let state = runtime.export_state().expect("export token state");
+    assert!(!state.has_item("woolcross-transit-knot"));
+    assert_eq!(
+        state.story_vars.get("town_woolcross_unlocked"),
+        Some("true")
+    );
     assert_eq!(
         pack.resolve_teleport_target(&state, "woolcross")
             .map(|(room_id, _)| room_id),
@@ -981,17 +1047,20 @@ fn floor5_failed_protection_still_rewards_survivors_and_opens_floor6() {
 
     apply_events(&mut state, &pack, &[]);
     apply_events(&mut state, &pack, &[]);
+    apply_events(&mut state, &pack, &[]);
 
     assert_eq!(state.story_vars.get("five_offerings_survivors"), Some("2"));
     assert_eq!(
-        state.story_vars.get("town_greenrest_unlocked"),
+        state.story_vars.get("town_greenrest_token_received"),
         Some("true")
     );
     assert_eq!(
-        state.story_vars.get("town_brass_yard_unlocked"),
+        state.story_vars.get("town_brass_yard_token_received"),
         Some("true")
     );
     assert_eq!(state.story_vars.get("town_woolcross_unlocked"), None);
+    assert_eq!(state.story_vars.get("town_greenrest_unlocked"), None);
+    assert_eq!(state.story_vars.get("town_brass_yard_unlocked"), None);
     assert_eq!(state.story_vars.get("citadel_siege_complete"), Some("true"));
     assert!(
         state

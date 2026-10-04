@@ -413,6 +413,7 @@ pub(super) fn advance_conditions_met(state: &WorldState, conditions: &[AdvanceCo
 pub(super) fn world_state_condition_input(state: &WorldState) -> serde_json::Value {
     serde_json::json!({
         "current_time_minutes": state.current_time_minutes,
+        "current_room_id": state.current_room_id,
         "active_stage_ids": state.active_objective_stage_ids,
         "stages_completed": state.stages_completed,
         "actor_stats": state.actor_stats,

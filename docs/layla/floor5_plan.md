@@ -25,13 +25,14 @@ Implemented:
   it, victims rotate deterministically, and the third death marks the side
   quest failed without ending the siege;
 - leader neutralization now routs that house's deployed soldiers, and stopping
-  all three command lanes ends the siege and begins survivor resolution;
-- siege completion now counts the five civilians, completes or preserves the
-  failed protection quest, grants each survivor's permanent town token, and
-  unlocks the Six-Town Accord when all five survive;
+  all three command lanes ends the siege and directs Layla back to
+  `courtyard_center`;
+- once Layla returns, each survivor thanks her and presents their permanent
+  town token; the conclusion completes or preserves the failed protection
+  quest and recognizes the Six-Town Accord when all five survive;
 - Salt Reach, Glassbank, Woolcross, Greenrest, and Brass Yard now have initial
-  teleport landing hubs as optional Floor 5 map extensions, each gated by its
-  survivor token;
+  teleport landing hubs as optional Floor 5 map extensions, each registered by
+  consuming its survivor token;
 - the High Sanctuary Gate opens after the siege regardless of civilian losses
   or town visits, completing the route toward Floor 6.
 
@@ -241,15 +242,17 @@ route to optional allies and equipment on later floors.
 | **Abeni Adeyemi** | Greenrest | An experienced grower who helps Einar stabilize wounded defenders. | **Greenrest Transit Seed**, a green enamel routing disk |
 | **Chen Yu-xin** | Brass Yard | An apprentice machinist who studies every lock, pump, and damaged mechanism she sees. | **Brass Yard Transit Gear**, a toothed brass routing coin |
 
-After the siege, every survivor gives Layla their permanent town token. Binding
-a token adds that town to Layla's teleport destinations and tactical map. The
-token is never consumed by travel. Each unlocked town is an optional extension
-of the Floor 5 map rather than a separate floor. Layla can visit these towns
-before descending to Floor 6 to find local items, charm opportunities, named
-awakenings, and recruitable allies.
+After the siege, Layla must return to `courtyard_center`. Each survivor
+personally thanks her and gives her their town token. Using a token consumes it
+to register that town permanently in Layla's teleport spell and tactical map;
+future travel does not require another token. Each registered town is an
+optional extension of the Floor 5 map rather than a separate floor. Layla can
+visit these towns before descending to Floor 6 to find local items, charm
+opportunities, named awakenings, and recruitable allies.
 
-If all five survive, their tokens join Deepwell's known anchor to complete the
-**Six-Town Accord**, restoring direct travel across the worker-town network.
+If all five survive, their trust joins Deepwell's known anchor to complete the
+**Six-Town Accord**. Layla still chooses when to consume each token and register
+its route.
 
 ---
 
@@ -298,12 +301,12 @@ civilians still grant their tokens even after the protection quest has failed.
 
 | Survivors | Outcome |
 |---:|---|
-| **5** | Perfect protection; all five towns and the Six-Town Accord unlock |
-| **4** | Protection quest completed; four towns unlock |
-| **3** | Protection quest completed narrowly; three towns unlock |
-| **2** | Protection quest failed; two towns unlock |
-| **1** | Protection quest failed; one town unlocks |
-| **0** | Protection quest failed; no additional worker towns unlock |
+| **5** | Perfect protection; receive all five tokens and complete the Six-Town Accord |
+| **4** | Protection quest completed; receive four town tokens |
+| **3** | Protection quest completed narrowly; receive three town tokens |
+| **2** | Protection quest failed; receive two town tokens |
+| **1** | Protection quest failed; receive one town token |
+| **0** | Protection quest failed; receive no additional worker-town tokens |
 
 Lost civilians permanently remove their direct town tokens for that playthrough.
 That means fewer optional items, charm and awakening opportunities, recruitable
@@ -363,15 +366,16 @@ The defense occurs across **three exponentially harder waves**, with the noble h
   6. Hold the northern and southeastern approaches through Wave 2.
   7. At Wave 3, face **Lord Vane**, **Warmaster Torin**, and **Lady Sylvan** as they march from their newly opened throne rooms toward the courtyard.
   8. Defeat or awaken all three leaders to rout their houses and end the siege.
-  9. Resolve the surviving offerings, grant their town tokens, and unlock their towns as optional Floor 5 destinations.
-  10. The Handler's terminal shuts down. Open the grand iron portcullis leading to Floor 6 (`citadel_sanctum_gate`). The unlocked towns remain optional; visiting them is never required to descend.
+  9. Return to `courtyard_center`, where each survivor thanks Layla and gives her their town token.
+  10. Consume each token when desired to register its town as an optional Floor 5 teleport destination.
+  11. The Handler's terminal shuts down. Open the grand iron portcullis leading to Floor 6 (`citadel_sanctum_gate`). Registered towns remain optional; visiting them is never required to descend.
 
 ### Protection Quest: "The Five Offerings"
 - **Goal:** Keep at least three of the five named civilians alive until the siege ends.
 - **Completion:** Three or more civilians survive.
 - **Failure:** The third civilian dies. Mark the quest failed immediately, but continue the siege normally.
-- **Individual rewards:** Every survivor grants their town's permanent teleport token, whether the quest completed or failed.
-- **Perfect reward:** If all five survive, unlock the **Six-Town Accord** and direct travel across the complete worker-town network.
+- **Individual rewards:** Every survivor grants their town's consumable registration token, whether the quest completed or failed. Consuming it permanently adds that town to Layla's teleport destinations.
+- **Perfect reward:** If all five survive, recognize the **Six-Town Accord**. Each route becomes available when Layla consumes its token.
 
 ### Side Quest: "Heirloom Banners of the Citadel"
 - **Trigger:** Inspect the crest banners inside each house estate after defeating or awakening its leader.

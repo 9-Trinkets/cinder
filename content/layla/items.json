@@ -371,31 +371,41 @@
   {
     "id": "salt-reach-transit-seal",
     "label": "Salt Reach transit seal",
+    "aliases": ["salt reach token", "salt token", "transit seal"],
     "kind": "key",
-    "description": "A soapstone-and-brass routing badge from Salt Reach. Its permanent code opens the town's teleport anchor."
+    "use_hook": "item.salt_reach_token_used",
+    "description": "A soapstone-and-brass routing badge from Salt Reach. Consume it to register Salt Reach as a permanent teleport destination."
   },
   {
     "id": "glassbank-transit-prism",
     "label": "Glassbank transit prism",
+    "aliases": ["glassbank token", "glass token", "transit prism"],
     "kind": "key",
-    "description": "A cobalt glass routing key from Glassbank. Light gathers inside it when the town's teleport anchor answers."
+    "use_hook": "item.glassbank_token_used",
+    "description": "A cobalt glass routing key from Glassbank. Consume it to register Glassbank as a permanent teleport destination."
   },
   {
     "id": "woolcross-transit-knot",
     "label": "Woolcross transit knot",
+    "aliases": ["woolcross token", "wool token", "transit knot"],
     "kind": "key",
-    "description": "Woven copper wire wrapped around a ceramic routing core. It carries the permanent address of Woolcross."
+    "use_hook": "item.woolcross_token_used",
+    "description": "Woven copper wire wrapped around a ceramic routing core. Consume it to register Woolcross as a permanent teleport destination."
   },
   {
     "id": "greenrest-transit-seed",
     "label": "Greenrest transit seed",
+    "aliases": ["greenrest token", "green token", "transit seed"],
     "kind": "key",
-    "description": "A green enamel routing disk shaped like a seed. It opens the warm-cave anchor at Greenrest."
+    "use_hook": "item.greenrest_token_used",
+    "description": "A green enamel routing disk shaped like a seed. Consume it to register Greenrest as a permanent teleport destination."
   },
   {
     "id": "brass-yard-transit-gear",
     "label": "Brass Yard transit gear",
+    "aliases": ["brass yard token", "brass token", "transit gear"],
     "kind": "key",
-    "description": "A toothed brass routing coin from Brass Yard. Its engraved code opens the town's machine-yard anchor."
+    "use_hook": "item.brass_yard_token_used",
+    "description": "A toothed brass routing coin from Brass Yard. Consume it to register Brass Yard as a permanent teleport destination."
   }
 ]

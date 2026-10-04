@@ -8,8 +8,12 @@
   "stages": [
     {
       "id": "mq_hear_gate",
-      "summary": "",
+      "quest_id": "the_way_down",
+      "quest_title": "The Way Down",
+      "quest_kind": "main",
+      "summary": "Find a way past the sealed fortress gate to descend deeper into the dungeon.",
       "beat_note": "Layla has arrived at the mining village on Floor 4, but hasn't yet learned how to pass beyond the sealed fortress gate or descend to Floor 5.",
+      "update_message": "The iron bulkhead seals the road north. Ask the villagers how to reach the lower floors.",
       "advance_signals": [
         "spoken_to:tariq",
         "spoken_to:garrison_sentry_gate",
@@ -24,11 +28,11 @@
     {
       "id": "mq_find_scroll",
       "quest_id": "teleport_scroll",
-      "quest_title": "Locked Away",
+      "quest_title": "The Teleportation Scroll",
       "quest_kind": "main",
-      "summary": "Something down there is worth more than the men standing in front of it.",
+      "summary": "Retrieve Commander Malik's Teleportation Scroll from the fortress safe.",
       "beat_note": "Layla learned that the military fortress gate is locked, but Commander Malik holds an ancient Teleportation Scroll in his safe. She needs to infiltrate the fortress and retrieve it.",
-      "update_message": "Tariq said it is kept behind a door that does not open for you.",
+      "update_message": "The scroll is locked inside Commander Malik's safe within the fortress bastion.",
       "advance_signals": [
         "item_acquired:teleport-scroll",
         "knows_teleport",
@@ -50,12 +54,12 @@
     {
       "id": "mq_use_teleport_platform",
       "quest_id": "teleport_scroll",
-      "quest_title": "Locked Away",
+      "quest_title": "The Teleportation Scroll",
       "quest_kind": "main",
-      "summary": "Get below the wall.",
+      "summary": "Activate the teleportation platform in the fortress to descend to Floor 5.",
       "beat_note": "Having acquired the knowledge of the Teleportation Sigil, Layla can now reach the teleport platform in the heart of the fortress and descend.",
-      "update_message": "The way down was never a door.",
-"completion_message": "handler.quest.teleport_scroll_complete",
+      "update_message": "Trace the Teleportation Sigil on the central platform to power the conduit down.",
+      "completion_message": "handler.quest.teleport_scroll_complete",
       "advance_signals": [
         "room_entered:courtyard_center",
         "room_entered:floor5_start",
@@ -83,10 +87,10 @@
       "quest_id": "free_courtyard_prisoners",
       "quest_title": "What They Put in the Cages",
       "quest_kind": "main",
-      "summary": "Living people went into the cages meant for grain.",
+      "summary": "Unlock the culling cages in the Frost Citadel courtyard to free Astrid, Einar, and the offerings.",
       "beat_note": "Arriving at the Frost Citadel, Layla finds garrison dissenters Commander Astrid and Einar locked in culling cages along with commoner offerings. Defeat the Sentry Captain to obtain the courtyard key and unlock their cages.",
-      "update_message": "All of it is locked, and the key is on someone who does not mean to hand it over.",
-"completion_message": "handler.quest.free_prisoners_complete",
+      "update_message": "The cages are held by the Sentry Captain. Secure the courtyard key to release them.",
+      "completion_message": "handler.quest.free_prisoners_complete",
       "advance_signals": [
         "courtyard_cages_unlocked",
         {
@@ -109,11 +113,11 @@
     {
       "id": "mq_frost_siege",
       "quest_id": "frost_citadel_siege",
-      "quest_title": "Three Doors",
+      "quest_title": "The Frost Citadel Siege",
       "quest_kind": "main",
-      "summary": "Three houses are coming. All three will open eventually.",
+      "summary": "Defend the courtyard and break the assault waves of the three rival houses.",
       "beat_note": "The siege clock is running. Frost-Wolf troops enter through the north approach, Iron-Ram through the southeast approach, and Frost-Leopard through the southwest approach. The house leaders remain sealed in their throne rooms until the final wave, when all three march toward the courtyard.",
-      "update_message": "Guard the north, southeast, and southwest approaches. The three house leaders will join the final wave.",
+      "update_message": "Guard the north, southeast, and southwest approaches. Neutralize the house leaders to break the siege.",
       "advance_signals": [
         {
           "signal": "story_vars_changed",
@@ -137,17 +141,17 @@
         }
       ],
       "next_stage_ids": [
-        "mq_secure_courtyard"
+        "mq_return_to_courtyard"
       ]
     },
     {
-      "id": "mq_secure_courtyard",
+      "id": "mq_return_to_courtyard",
       "quest_id": "frost_citadel_siege",
-      "quest_title": "Three Doors",
+      "quest_title": "The Frost Citadel Siege",
       "quest_kind": "main",
-      "summary": "The three command lanes are broken. Account for the survivors and open the way to Floor 6.",
-      "beat_note": "All three house leaders have been defeated or awakened. Their deployed soldiers have routed, the siege is over, and the survivor rewards and Floor 6 gate transition can now resolve.",
-      "update_message": "The courtyard is yours. Finish the count and find the gate.",
+      "summary": "The three assault lanes are broken. Return to the courtyard center and account for the survivors.",
+      "beat_note": "The siege is over, but its conclusion waits until Layla returns to the surviving civilians at courtyard_center.",
+      "update_message": "Return to the courtyard center and check on the survivors.",
       "narrative_lines": [
         "The last command signal goes silent. Across the courtyard, the remaining house soldiers break ranks and withdraw. The siege is over."
       ],
@@ -159,6 +163,7 @@
         }
       ],
       "advance_signals": [
+        "room_entered:courtyard_center",
         {
           "signal": "story_vars_changed",
           "conditions": [
@@ -166,12 +171,31 @@
               "path": "story_vars.values.citadel_siege_resolved",
               "operator": "equal",
               "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "equal",
+              "value": "courtyard_center"
             }
           ]
         }
       ],
-      "next_stage_ids": [],
-      "completion_effects": [
+      "next_stage_ids": [
+        "mq_secure_courtyard"
+      ]
+    },
+    {
+      "id": "mq_secure_courtyard",
+      "quest_id": "frost_citadel_siege",
+      "quest_title": "The Frost Citadel Siege",
+      "quest_kind": "main",
+      "summary": "The siege is over. Receive the survivors' thanks and prepare for Floor 6.",
+      "beat_note": "Each living civilian thanks Layla and gives her an inactive town token. Using a token consumes it and registers that town with the teleport spell.",
+      "update_message": "The survivors are safe. Their town tokens can now be added to the teleport spell.",
+      "narrative_lines": [
+        "The surviving workers gather around the courtyard teleport pad. One by one, they step forward to thank you."
+      ],
+      "on_advance_effects": [
         {
           "kind": "set_story_var",
           "key": "citadel_siege_complete",
@@ -185,36 +209,56 @@
           "rewards": [
             {
               "actor_id": "nivi_olsen",
-              "unlock_story_var": "town_salt_reach_unlocked",
+              "unlock_story_var": "town_salt_reach_token_received",
               "item_id": "salt-reach-transit-seal",
               "message": "civilian.reward.salt_reach"
             },
             {
               "actor_id": "eliska_novakova",
-              "unlock_story_var": "town_glassbank_unlocked",
+              "unlock_story_var": "town_glassbank_token_received",
               "item_id": "glassbank-transit-prism",
               "message": "civilian.reward.glassbank"
             },
             {
               "actor_id": "amaru_quispe",
-              "unlock_story_var": "town_woolcross_unlocked",
+              "unlock_story_var": "town_woolcross_token_received",
               "item_id": "woolcross-transit-knot",
               "message": "civilian.reward.woolcross"
             },
             {
               "actor_id": "abeni_adeyemi",
-              "unlock_story_var": "town_greenrest_unlocked",
+              "unlock_story_var": "town_greenrest_token_received",
               "item_id": "greenrest-transit-seed",
               "message": "civilian.reward.greenrest"
             },
             {
               "actor_id": "chen_yu_xin",
-              "unlock_story_var": "town_brass_yard_unlocked",
+              "unlock_story_var": "town_brass_yard_token_received",
               "item_id": "brass-yard-transit-gear",
               "message": "civilian.reward.brass_yard"
             }
           ]
+        },
+        {
+          "kind": "set_story_var",
+          "key": "citadel_survivor_settlement_complete",
+          "value": "true"
         }
+      ],
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.citadel_survivor_settlement_complete",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [],
+      "completion_effects": [
       ]
     },
     {
@@ -547,9 +591,9 @@
       "quest_id": "save_zayd",
       "quest_title": "Save the Boy Zayd",
       "quest_kind": "side",
-      "summary": "The garrison dragged an orphan boy named Zayd away in chains to be used as an offering.",
+      "summary": "Rescue the orphan boy Zayd from the fortress prison cage before he is shipped away.",
       "beat_note": "Elder Rashid and Yasmin revealed that the village gave Zayd up as an offering. Layla needs to find the boy and rescue him from his iron cage.",
-      "update_message": "Infiltrate the fortress and free Zayd from the cage before the transport wagon ships him away.",
+      "update_message": "The garrison is holding Zayd in an iron cage inside the military complex.",
       "advance_signals": [
         "spoken_to:zayd",
         "zayd_freed",
@@ -573,10 +617,10 @@
       "quest_id": "save_zayd",
       "quest_title": "Save the Boy Zayd",
       "quest_kind": "side",
-      "summary": "Get him back down the stairs.",
+      "summary": "Escort Zayd safely back to the village.",
       "beat_note": "Zayd is rescued from his cage. Escort him back to the safety of the worker village.",
-      "update_message": "He cannot keep the pace. Do not make him run.",
-"completion_message": "handler.quest.save_zayd_complete",
+      "update_message": "Lead Zayd back to Elder Rashid's house in the village square.",
+      "completion_message": "handler.quest.save_zayd_complete",
       "advance_signals": [
         "zayd_safe",
         {
@@ -598,11 +642,11 @@
       "id": "sq_awaken_father",
       "quest_id": "awaken_jamil",
       "quest_title": "Return the Light",
-      "quest_kind": "side",
-      "summary": "Something in the square has been standing out there a long time without being spoken to.",
+      "quest_kind": "secret",
+      "summary": "Bring the amber light of Zayd's lantern to the silent guardian golem Sakhra in the village square.",
       "beat_note": "Zayd gave Layla his father's miner lantern. Its warm light can awaken the sleeping memories within the guardian golem Sakhra.",
-      "update_message": "He gave you his father's light. Somebody ought to be the one to use it.",
-"completion_message": "handler.quest.awaken_jamil_complete",
+      "update_message": "The amber filament in Zayd's miner lantern matches the core of the stone golem standing silent in the square.",
+      "completion_message": "handler.quest.awaken_jamil_complete",
       "advance_signals": [
         "actor_awakened:sakhra",
         "actor_awakened"
@@ -645,9 +689,9 @@
       "quest_id": "clean_shaman",
       "quest_title": "Trial of the Silent Path",
       "quest_kind": "secret",
-      "summary": "There is a way through this cave that does not involve blood.",
+      "summary": "Defeat the Goblin Shaman on Floor 1 without harming any other creatures.",
       "beat_note": "Having navigated the labyrinth without striking down any goblins or golems, Layla challenges the Goblin Shaman.",
-      "update_message": "Nobody down here has drawn a weapon yet. Keep it that way until there is no other way.",
+      "update_message": "You navigated the labyrinth without drawing blood. Finish the duel with the Goblin Shaman to claim your reward.",
       "advance_signals": [
         "item_acquired:shaman-ring"
       ],

@@ -93,7 +93,7 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 
 ## 4. The Quests
 
-### Main Quest: "Locked Away"
+### Main Quests: "The Way Down" & "The Teleportation Scroll"
 - **Goal:** Infiltrate the Inner Military Complex, defeat Commander Malik, crack his iron safe for the **Teleportation Scroll**, learn the **Teleportation Sigil**, and activate the central teleport platform to descend to Floor 5.
 - **Why You Need It:** There are no stairs leading up or down from the cavern. The only path forward is the massive geothermal Teleportation Platform inside the fortified complex. Learning the Teleportation Sigil unlocks fast-travel anchors across the dungeon and powers up the descent gate to Floor 5.
 - **How to Complete It:**
@@ -110,7 +110,7 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
   - **Temporary Chalk Anchors:** Tracing the sigil in non-platform rooms places a single-use chalk anchor. Up to 3 active chalk anchors can exist simultaneously across the floor; tracing a 4th automatically evicts the oldest anchor (FIFO). Teleporting to a chalk anchor instantly consumes it, rubbing the chalk mark away.
   - **Platform Activation:** Tracing the Teleportation Sigil on the central `teleport_platform` activates the sleeping conduits (`platform_activated = "true"`), opening the exit down to Floor 5.
 
-**Beat stages:** `mq_hear_gate` → `mq_find_scroll` → `mq_use_teleport_platform` (planned stages; `beat_objectives.json` authoring is the next pass — see [Implementation Status & Next Steps](#7-implementation-status--next-steps)).
+**Beat stages:** `mq_hear_gate` ("The Way Down") → `mq_find_scroll` ("The Teleportation Scroll") → `mq_use_teleport_platform` ("The Teleportation Scroll").
 
 ### Side Quest: "Save the Boy Zayd"
 - **The Boy (Zayd, age 11):**
@@ -229,7 +229,7 @@ With recruited party members, players can issue tactical commands to coordinate 
   - Added `awakened_actors` and `actor_name_overrides` tracking to `WorldState`, dynamic name override in `actor_display_name` and `display_actor_name`, and awakened inspect text and prompt context overrides.
   - Authored awakening definitions across surviving Floor 1-3 pieces: `sakhra` (Jamil, father of Zayd), `golem-dark-nw` (Orin), `golem-pale-ne` (Mari), `golem-dark-sw` (Ferid), `golem-pale-se` (Hana), and `elf-queen-4` (Nazira, mother of Zayd).
   - Placed `sakhra` in `village_square` (starts neutral to prevent premature party following on Floor 1). Giving `zayd-lantern` (+6 WIS) raises his wisdom to 11 (≥ 10), triggering the Awakening: Sakhra remembers his identity as Jamil, breaking out of his mind-wipe with his waking fragment, unlocking human speech and guidance, and joining the party as a loyal ally.
-  - Planned: `sq_return_zayd` will lead into the side quest beat `sq_awaken_father` ("Return the Light") once beat objectives are authored.
+  - Authored: `sq_return_zayd` leads into the secret quest beat `sq_awaken_father` ("Return the Light").
   - Enforced hard limits: `goblin-shaman` and `elf-king-5` cannot awaken.
   - Verified via full end-to-end integration tests `cinder-core/tests/layla_floor4_awakening.rs`.
 - **Command Bastion Confrontation & Commander Malik Safe (`command_bastion`):**

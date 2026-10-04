@@ -111,7 +111,51 @@ Layla is instinctively gentle with the golems and creatures she charms, without 
 
 ---
 
-## 6. Authoring Sanity Checklist
+## 6. Quest Architecture & Writing Best Practices
+
+Quests in Layla structure player progression and provide narrative weight across the crawl. Quests are presented in the HUD Status Panel (`Quests` section) once unlocked.
+
+### 1. The Three Quest Tiers
+
+| Quest Tier | UI Badge | Purpose & Scope | Player Expectation |
+|---|---|---|---|
+| **Main** (`quest_kind: "main"`) | Gold `MAIN` | Core progression spine. Mandatory objectives required to unlock routes, solve floor obstacles, and descend to deeper levels. | **Always active.** Once unlocked on Floor 4, the player must always have an active main quest step in their feed so they are never directionless. |
+| **Side** (`quest_kind: "side"`) | Iris `SIDE` | Optional narrative arcs rooted in local communities, moral quandaries, and companion stories (e.g. *Save the Boy Zayd*, *The Five Offerings*). | Rewarded with companions, powerful gear, lore revelations, or town transit seals. |
+| **Secret** (`quest_kind: "secret"`) | Pine `SECRET` | Hidden trials, secret awakening rituals, or alternative non-violent pathways discovered through experimentation, exploration, or pacifism (e.g. *Trial of the Silent Path*, *Return the Light*). | Invisible until triggered by player initiative; rewards mastery, emergent secrets, and unusual choices. |
+
+### 2. Onboarding on Floor 4
+
+Floors 1 through 3 represent an isolated subterranean descent with no civilian life and no structured quest board.
+Upon stepping onto Floor 4 (`the_village`):
+1. **The Quests UI unlocks** (`quests_revealed = true` across Floor 4 rooms).
+2. **The Handler formally introduces the system:** Comms crackle to life (`handler.descend.the_village`), noting civilian life signs and patching the live quest feed into Layla's console.
+3. **An initial Main Quest is already active:** Layla immediately possesses an objective card (`The Way Down`) directing her to explore the village and speak with the locals about bypassing the sealed fortress bulkhead.
+
+### 3. The "What, Not How" Principle
+
+Quest summaries and updates must give the player clear agency without spoiling the solution.
+
+- **State the Goal and Stakes ("What"):** State what needs to be achieved, who is affected, and what the immediate obstacle is.
+- **Do Not Prescribe the Solution ("How"):** Never write a walkthrough into the quest card. Do not enumerate puzzle steps, command syntax, or specific items required to bypass an obstacle. Let the player explore, talk to characters, and deduce solutions.
+
+**Comparison Examples:**
+
+| Scenario | ❌ "How" Walkthrough (Avoid) | ❌ Evasive Mystery (Avoid) | ✅ Clear "What, Not How" (Approved) |
+|---|---|---|---|
+| Rescue Zayd | *"Turn the overpressure valve in the wash basin terrace to open the bulkhead, kill the warden, loot the key, and type unlock cage."* | *"Someone has been taken and someone has the key."* | **Summary:** *"Rescue the orphan boy Zayd from the fortress prison cage before he is shipped away."*<br>**Update:** *"The garrison is holding Zayd in an iron cage inside the military complex."* |
+| Infiltrate Fortress | *"Speak to Tariq to learn about steam lines, then vent the terrace valve or defeat the gate guards."* | *"Something down there is worth more than the men standing in front of it."* | **Summary:** *"Find a way past the sealed fortress gate to descend deeper into the dungeon."*<br>**Update:** *"The iron bulkhead seals the road north. Ask the villagers how to reach the lower floors."* |
+| Teleportation Scroll | *"Defeat Commander Malik in the bastion, take his key, unlock his safe, and read the scroll."* | *"A door that does not open for you holds what you need."* | **Summary:** *"Retrieve Commander Malik's Teleportation Scroll from the fortress safe."*<br>**Update:** *"The scroll is locked inside Commander Malik's safe within the fortress bastion."* |
+| Return the Light (Secret) | *"Stand in front of Sakhra with Zayd's lantern in inventory and run awaken sakhra."* | *"Something in the square has been standing out there a long time."* | **Summary:** *"Bring the amber light of Zayd's lantern to the silent guardian golem Sakhra in the village square."*<br>**Update:** *"The amber filament in Zayd's miner lantern matches the core of the stone golem standing silent in the square."* |
+
+### 4. Grounded Nouns vs. Grammatical Evasion
+
+Do not use pronoun vagueness (*"something down there"*, *"someone who does not mean to hand it over"*, *"a door that does not open for you"*) to manufacture artificial mystery.
+- Use concrete, proper nouns: name **Commander Malik**, the **Teleportation Scroll**, the **guardian golem Sakhra**, the **Goblin Shaman**, the **Frost Citadel cages**.
+- True mystery comes from moral choices, world history, and mechanical discovery—not concealing basic nouns from the interface.
+
+---
+
+## 7. Authoring Sanity Checklist
 
 Before adding or editing content in `content/layla/`:
 
@@ -121,3 +165,6 @@ Before adding or editing content in `content/layla/`:
 - [ ] **Sensory Check:** Does the room or action description include at least one concrete sound, smell, or tactile texture?
 - [ ] **Tone Check:** Are enemies described in material/physical terms rather than moral terms?
 - [ ] **Character Check:** Does Layla's observation notice geometry, counts, or physical rules?
+- [ ] **Quest Tier Check:** Is every quest tagged with the proper `quest_kind` (`main`, `side`, or `secret`)?
+- [ ] **What, Not How Check:** Does the quest summary explain the objective and stakes without enumerating the puzzle steps or execution mechanics?
+- [ ] **Concrete Noun Check:** Are characters, items, and locations identified by name instead of vague pronouns?

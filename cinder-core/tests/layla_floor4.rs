@@ -509,12 +509,22 @@ fn floor4_quests_activation_via_speech() {
     )
     .expect("runtime creates");
 
-    // Initially on Floor 4, no quests are yet visible in summaries
+    // On Floor 4 arrival, the main quest "The Way Down" is active in the player's quest feed
     let initial_objectives = runtime.current_objective_summaries().unwrap();
-    assert!(
-        initial_objectives.is_empty(),
-        "Quests should be latent until NPC tells Layla"
+    assert_eq!(
+        initial_objectives.len(),
+        1,
+        "Main quest 'The Way Down' should be active upon Floor 4 arrival"
     );
+    assert_eq!(
+        initial_objectives[0].quest_id.as_deref(),
+        Some("the_way_down")
+    );
+    assert_eq!(
+        initial_objectives[0].quest_title.as_deref(),
+        Some("The Way Down")
+    );
+    assert_eq!(initial_objectives[0].quest_kind.as_deref(), Some("main"));
 
     // 1. Move to Elder Rashid's room (village_south_1) and talk
     let _ = runtime.run_turn("east").expect("move to elder");
@@ -523,20 +533,25 @@ fn floor4_quests_activation_via_speech() {
     let outcome = runtime.run_turn("talk to rashid").expect("talk to rashid");
     assert!(outcome.text().contains("Zayd"));
 
-    // Now Side Quest "Save the Boy Zayd" should be active!
+    // Now Side Quest "Save the Boy Zayd" is active alongside Main Quest "The Way Down"!
     let objectives_after_rashid = runtime.current_objective_summaries().unwrap();
-    assert_eq!(objectives_after_rashid.len(), 1);
+    assert_eq!(objectives_after_rashid.len(), 2);
+
+    let main_initial = objectives_after_rashid
+        .iter()
+        .find(|o| o.quest_kind.as_deref() == Some("main"))
+        .expect("main quest must be active upon Floor 4 arrival");
+    assert_eq!(main_initial.quest_id.as_deref(), Some("the_way_down"));
+    assert_eq!(main_initial.quest_title.as_deref(), Some("The Way Down"));
+
+    let side_initial = objectives_after_rashid
+        .iter()
+        .find(|o| o.quest_kind.as_deref() == Some("side"))
+        .expect("side quest must be active after talking to rashid");
+    assert_eq!(side_initial.quest_id.as_deref(), Some("save_zayd"));
     assert_eq!(
-        objectives_after_rashid[0].quest_id.as_deref(),
-        Some("save_zayd")
-    );
-    assert_eq!(
-        objectives_after_rashid[0].quest_title.as_deref(),
+        side_initial.quest_title.as_deref(),
         Some("Save the Boy Zayd")
-    );
-    assert_eq!(
-        objectives_after_rashid[0].quest_kind.as_deref(),
-        Some("side")
     );
 
     // 2. Move along to Tariq's workshop (village_west_2):
@@ -550,7 +565,7 @@ fn floor4_quests_activation_via_speech() {
     let outcome = runtime.run_turn("talk to tariq").expect("talk to tariq");
     assert!(outcome.text().contains("Teleportation Scroll"));
 
-    // Now BOTH Main Quest and Side Quest should be active!
+    // Talking to Tariq advanced the main quest to "The Teleportation Scroll"!
     let objectives_after_tariq = runtime.current_objective_summaries().unwrap();
     assert_eq!(objectives_after_tariq.len(), 2);
 
@@ -559,7 +574,10 @@ fn floor4_quests_activation_via_speech() {
         .find(|o| o.quest_kind.as_deref() == Some("main"))
         .expect("main quest must be active");
     assert_eq!(main_quest.quest_id.as_deref(), Some("teleport_scroll"));
-    assert_eq!(main_quest.quest_title.as_deref(), Some("Locked Away"));
+    assert_eq!(
+        main_quest.quest_title.as_deref(),
+        Some("The Teleportation Scroll")
+    );
 
     let side_quest = objectives_after_tariq
         .iter()

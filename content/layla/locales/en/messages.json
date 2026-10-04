@@ -147,7 +147,7 @@
     "floor4.arrival.the_village": "You step off the last stair into gaslight and the smell of bread. Warm stone rings under your boots, worn pale in a path from the stairs down to a low iron hearth. Somebody has raked ash over a pair of small boots by the hearthstones and gone off to do something else. Up ahead, past the steam pipes, an iron bulkhead seals off the entire north side of the village, and two soldiers stand in front of it not moving at all. Somewhere behind the terraces a cart wheel grinds over a grate, and somebody calls a number out loud and gets it wrong.",
     "handler.descend.the_village": {
         "voice": "handler",
-        "text": "Floor four. Wait — my console is picking up civilian life signs. Actual people live down here? In this dump? Keep your weapons low; let's see what the locals have to say before you go swinging."
+        "text": "Floor four. Wait — my console is picking up civilian life signs. Actual people live down here? In this dump? I've patched a live quest feed into your console so you can track what they need. Keep your weapons low, check your objectives log, and let's see what the locals have to say before you go swinging."
     },
     "handler.first_mob_killed": {
         "voice": "handler",
@@ -211,12 +211,17 @@
         "voice": "handler",
         "text": "{actor} is down. Civilian losses: {deaths}."
     },
-    "civilian.reward.salt_reach": "Nivi presses a soapstone-and-brass seal into your hand. Salt Reach appears on the teleport map.",
-    "civilian.reward.glassbank": "Eliška gives you a cobalt glass prism. Glassbank appears on the teleport map.",
-    "civilian.reward.woolcross": "Amaru ties a copper routing knot around your wrist. Woolcross appears on the teleport map.",
-    "civilian.reward.greenrest": "Abeni gives you a green enamel routing seed. Greenrest appears on the teleport map.",
-    "civilian.reward.brass_yard": "Chen Yu-xin gives you a toothed brass routing gear. Brass Yard appears on the teleport map.",
-    "civilian.reward.six_town_accord": "All five routes answer at once. Together with Deepwell, the worker towns form the Six-Town Accord.",
+    "civilian.reward.salt_reach": "Nivi clasps your hand. \"You stood between us and the houses when no one else would. Salt Reach will remember that.\" She presses a soapstone-and-brass transit seal into your palm.",
+    "civilian.reward.glassbank": "Eliška bows her head. \"You gave us back a future. If you come to Glassbank, you will be welcomed as family.\" She gives you a cobalt glass transit prism.",
+    "civilian.reward.woolcross": "Amaru smiles through his exhaustion. \"You held the line for people you had only just met. Let Woolcross return that kindness.\" He places a copper transit knot in your hand.",
+    "civilian.reward.greenrest": "Abeni embraces you. \"You kept hope alive in this frozen place. Greenrest has warmth and medicine waiting for you.\" She gives you a green enamel transit seed.",
+    "civilian.reward.brass_yard": "Chen Yu-xin grips your shoulder. \"You broke the command that treated us like parts. Brass Yard owes you more than words.\" She gives you a toothed brass transit gear.",
+    "civilian.reward.six_town_accord": "All five survivors entrust their town routes to you. Together with Deepwell, the worker towns renew the Six-Town Accord.",
+    "item.salt-reach-transit-seal.used": "The seal dissolves into pale routing light. Salt Reach is now a permanent destination in your teleport spell.",
+    "item.glassbank-transit-prism.used": "The prism breaks into cobalt light. Glassbank is now a permanent destination in your teleport spell.",
+    "item.woolcross-transit-knot.used": "The knot unwinds into a glowing route. Woolcross is now a permanent destination in your teleport spell.",
+    "item.greenrest-transit-seed.used": "The seed opens into green routing light. Greenrest is now a permanent destination in your teleport spell.",
+    "item.brass-yard-transit-gear.used": "The gear turns once and dissolves into golden code. Brass Yard is now a permanent destination in your teleport spell.",
     "siege.frost_wolf_rout": "The Frost-Wolf soldiers falter as their command signal dies. {count} raiders break formation and retreat into the northern estate.",
     "siege.iron_ram_rout": "Steam vents from abandoned Iron-Ram armor as the command signal cuts out. {count} maulers turn back toward the bastion.",
     "siege.frost_leopard_rout": "The Frost-Leopard hunters lower their weapons when the mirror signal goes dark. {count} hunters vanish back through the southwest doors.",
