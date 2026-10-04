@@ -12,7 +12,9 @@ use self::types::{
 use crate::content::types::ContentPack;
 use crate::engine::commands::parse_command;
 use crate::engine::conversation_memory::refresh_conversation_summaries;
-use crate::engine::dialogue::{DialogueGenerator, TransitionCommentaryRequest};
+use crate::engine::dialogue::{
+    CommsDispatchRequest, DialogueGenerator, TransitionCommentaryRequest,
+};
 use crate::engine::dialogue_grounding::build_grounded_dialogue_request;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
 use crate::engine::menus::{PendingMenuDialogue, menu_to_offer_for_pending_dialogue};
@@ -296,6 +298,11 @@ impl CinderRoleRunner {
             &mut state,
             &mut reduced.lines,
         );
+        run_pending_comms_upgrades(
+            self.content.as_ref(),
+            self.dialogue.as_ref(),
+            &mut reduced.lines,
+        );
         for line in &reduced.lines.0 {
             if !line.text.trim().is_empty() {
                 state.transcript.push(line.text.clone());
@@ -521,6 +528,64 @@ pub(crate) fn run_pending_commentary_upgrades(
                     transcript_line_count: transcript_cutoff,
                 },
             );
+        }
+    }
+}
+
+pub(crate) fn run_pending_comms_upgrades(
+    content: &ContentPack,
+    dialogue: &dyn DialogueGenerator,
+    lines: &mut NarrativeLines,
+) {
+    for line in &mut lines.0 {
+        if let Some(upgrade) = line.pending_comms_upgrade.take() {
+            let actor = content.actor(&upgrade.reporter_id);
+            let prompt_ctx = actor.map(|a| &a.prompt_context);
+            let character_notes = prompt_ctx
+                .map(|p| p.character_notes.clone())
+                .unwrap_or_else(|| {
+                    vec![format!(
+                        "You are {}, an allied companion reporting from {}.",
+                        upgrade.reporter_name, upgrade.room_name
+                    )]
+                });
+            let response_notes = prompt_ctx
+                .map(|p| p.response_notes.clone())
+                .unwrap_or_else(|| {
+                    vec!["Speak succinctly and tactically over the comms radio. Keep your report to 1-2 short sentences.".to_string()]
+                });
+            let subtext_notes = prompt_ctx
+                .map(|p| p.subtext_notes.clone())
+                .unwrap_or_default();
+
+            let request = CommsDispatchRequest {
+                locale: content.locale.clone(),
+                system_text: content.system_text.clone(),
+                reporter_id: upgrade.reporter_id.clone(),
+                reporter_name: upgrade.reporter_name.clone(),
+                room_id: upgrade.room_id.clone(),
+                room_name: upgrade.room_name.clone(),
+                milestone: upgrade.milestone,
+                fallback_text: upgrade.fallback_text.clone(),
+                enemies_remaining: upgrade.enemies_remaining,
+                ally_names: upgrade.ally_names.clone(),
+                character_notes,
+                response_notes,
+                subtext_notes,
+            };
+
+            if let Ok(generated) = dialogue.generate_comms_dispatch(&request) {
+                let trimmed = generated.trim().trim_matches('"').trim();
+                let prefix = format!("{}:", upgrade.reporter_name);
+                let content_text = if trimmed.starts_with(&prefix) {
+                    trimmed[prefix.len()..].trim()
+                } else {
+                    trimmed
+                };
+                if !content_text.is_empty() {
+                    line.text = format!("{}: {}", upgrade.reporter_name, content_text);
+                }
+            }
         }
     }
 }

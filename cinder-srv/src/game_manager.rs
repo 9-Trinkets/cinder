@@ -169,6 +169,7 @@ pub async fn get_transcript(
                 kind: narrative_kind(&role),
                 text,
                 pending_commentary_upgrade: None,
+                pending_comms_upgrade: None,
             },
         )
         .collect())

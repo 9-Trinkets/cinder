@@ -121,4 +121,8 @@ pub trait DialogueGenerator: Send + Sync {
     ) -> Result<Vec<String>, String> {
         Ok(vec![request.fallback_text.clone()])
     }
+
+    fn generate_comms_dispatch(&self, request: &CommsDispatchRequest) -> Result<String, String> {
+        Ok(request.fallback_text.clone())
+    }
 }

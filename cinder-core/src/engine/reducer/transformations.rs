@@ -112,6 +112,7 @@ fn apply_transformation(
         .unwrap_or_else(|| original_name.clone());
 
     state.set_transformation_applied(actor_id, &transformation.id);
+    state.grant_actor_skill(actor_id, "comms");
 
     if let Some(rename) = &transformation.rename
         && !rename.name.is_empty()

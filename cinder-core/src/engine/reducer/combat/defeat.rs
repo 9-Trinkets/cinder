@@ -22,8 +22,9 @@ pub(in crate::engine::reducer) fn defeat_actor(
     lines: &mut NarrativeLines,
 ) {
     let actor_name = actor_display_name(state, content, actor_id);
-    if let Some(line) =
-        content.render_message("combat.actor_defeated", &[("actor", actor_name.as_str())])
+    if room_id == state.current_room_id
+        && let Some(line) =
+            content.render_message("combat.actor_defeated", &[("actor", actor_name.as_str())])
     {
         lines.narration(line);
     }
@@ -245,16 +246,18 @@ pub(in crate::engine::reducer) fn spawn_defeat_drops(
     if dropped_labels.is_empty() {
         return;
     }
-    let actor_name = actor_display_name(state, content, actor_id);
-    if let Some(line) = content.render_message(
-        "combat.defeat_drop",
-        &[
-            ("actor", actor_name.as_str()),
-            ("items", dropped_labels.join(", ").as_str()),
-            ("room", room_id),
-        ],
-    ) {
-        lines.narration(line);
+    if room_id == state.current_room_id {
+        let actor_name = actor_display_name(state, content, actor_id);
+        if let Some(line) = content.render_message(
+            "combat.defeat_drop",
+            &[
+                ("actor", actor_name.as_str()),
+                ("items", dropped_labels.join(", ").as_str()),
+                ("room", room_id),
+            ],
+        ) {
+            lines.narration(line);
+        }
     }
 }
 

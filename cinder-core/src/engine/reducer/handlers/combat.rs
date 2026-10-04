@@ -64,40 +64,59 @@ pub(crate) fn handle_hostile_strike(
             state
                 .adjust_actor_stat(content, &guard_id, &combat.health_stat_id, -guard_takes)
                 .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
-            let message = defensive_reaction
-                .as_ref()
-                .map(|decision| decision.message.as_str())
-                .filter(|message| !message.is_empty())
-                .unwrap_or("combat.guard_intercepts");
-            if let Some(line) = content.render_message(
-                message,
-                &[
-                    ("actor", actor_name.as_str()),
-                    ("guard", guard_name.as_str()),
-                    ("damage", guard_takes.to_string().as_str()),
-                ],
-            ) {
-                lines.narration(line);
+            let is_current_room = room_id == state.current_room_id;
+            if is_current_room {
+                let message = defensive_reaction
+                    .as_ref()
+                    .map(|decision| decision.message.as_str())
+                    .filter(|message| !message.is_empty())
+                    .unwrap_or("combat.guard_intercepts");
+                if let Some(line) = content.render_message(
+                    message,
+                    &[
+                        ("actor", actor_name.as_str()),
+                        ("guard", guard_name.as_str()),
+                        ("damage", guard_takes.to_string().as_str()),
+                    ],
+                ) {
+                    lines.narration(line);
+                }
             }
         }
         let remaining = state.effective_actor_stat(content, &guard_id, &combat.health_stat_id);
-        if remaining <= 0
-            && guard_takes > 0
-            && let Some(line) =
-                content.render_message("combat.guard_falls", &[("guard", guard_name.as_str())])
-        {
-            lines.narration(line);
+        if remaining <= 0 && guard_takes > 0 {
+            if room_id == state.current_room_id {
+                if let Some(line) =
+                    content.render_message("combat.guard_falls", &[("guard", guard_name.as_str())])
+                {
+                    lines.narration(line);
+                }
+            } else {
+                let offscreen_state = state
+                    .offscreen_combat_states
+                    .entry(room_id.clone())
+                    .or_default();
+                if !offscreen_state.reported_fallen_allies.contains(&guard_id) {
+                    offscreen_state
+                        .reported_fallen_allies
+                        .insert(guard_id.clone());
+                    offscreen_state.newly_fallen_allies.push(guard_name.clone());
+                }
+            }
         }
         if let Some(decision) = defensive_reaction.as_ref() {
             consume_party_reaction(content, state, decision);
         }
     } else {
         let damage = resisted_damage(content, &target_id, attack_kind, raw_damage);
+        let is_current_room = room_id == state.current_room_id;
         if raw_damage > 0 && damage == 0 {
-            if let Some(line) = content.render_message(
-                "combat.no_effect",
-                &[("actor", target_name.as_str()), ("kind", attack_kind)],
-            ) {
+            if is_current_room
+                && let Some(line) = content.render_message(
+                    "combat.no_effect",
+                    &[("actor", target_name.as_str()), ("kind", attack_kind)],
+                )
+            {
                 lines.narration(line);
             }
         } else {
@@ -105,34 +124,51 @@ pub(crate) fn handle_hostile_strike(
                 .adjust_actor_stat(content, &target_id, &combat.health_stat_id, -damage)
                 .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
             let remaining = state.effective_actor_stat(content, &target_id, &combat.health_stat_id);
-            let damage = damage.to_string();
-            let remaining_text = remaining.to_string();
-            let replacements = [
-                ("actor", actor_name.as_str()),
-                ("target", target_name.as_str()),
-                ("damage", damage.as_str()),
-                ("remaining", remaining_text.as_str()),
-            ];
-            let message = if target_id == combat.player_actor_id {
-                "combat.hostile_strike"
+            if is_current_room {
+                let damage = damage.to_string();
+                let remaining_text = remaining.to_string();
+                let replacements = [
+                    ("actor", actor_name.as_str()),
+                    ("target", target_name.as_str()),
+                    ("damage", damage.as_str()),
+                    ("remaining", remaining_text.as_str()),
+                ];
+                let message = if target_id == combat.player_actor_id {
+                    "combat.hostile_strike"
+                } else {
+                    "combat.hostile_strike_actor"
+                };
+                if let Some(line) = content.render_message(message, &replacements) {
+                    lines.narration(line);
+                } else if target_id != combat.player_actor_id {
+                    lines.narration(format!(
+                        "{actor_name} strikes {target_name}! {target_name} takes {damage} damage. ({remaining_text} HP remaining)"
+                    ));
+                }
+                if target_id != combat.player_actor_id
+                    && remaining <= 0
+                    && let Some(line) = content.render_message(
+                        "combat.party_member_falls",
+                        &[("actor", target_name.as_str())],
+                    )
+                {
+                    lines.narration(line);
+                }
             } else {
-                "combat.hostile_strike_actor"
-            };
-            if let Some(line) = content.render_message(message, &replacements) {
-                lines.narration(line);
-            } else if target_id != combat.player_actor_id {
-                lines.narration(format!(
-                    "{actor_name} strikes {target_name}! {target_name} takes {damage} damage. ({remaining_text} HP remaining)"
-                ));
-            }
-            if target_id != combat.player_actor_id
-                && remaining <= 0
-                && let Some(line) = content.render_message(
-                    "combat.party_member_falls",
-                    &[("actor", target_name.as_str())],
-                )
-            {
-                lines.narration(line);
+                let offscreen_state = state
+                    .offscreen_combat_states
+                    .entry(room_id.clone())
+                    .or_default();
+                if target_id != combat.player_actor_id && remaining <= 0 {
+                    if !offscreen_state.reported_fallen_allies.contains(&target_id) {
+                        offscreen_state
+                            .reported_fallen_allies
+                            .insert(target_id.clone());
+                        offscreen_state
+                            .newly_fallen_allies
+                            .push(target_name.clone());
+                    }
+                }
             }
         }
     }
@@ -178,6 +214,7 @@ pub(crate) fn handle_hostile_heal(
     if state.current_time_minutes < *state.next_hostile_strike_at.get(actor_id).unwrap_or(&0) {
         return;
     }
+    let room_id = state.actor_current_room_id(content, actor_id).to_string();
     if state.actor_current_room_id(content, actor_id) != state.current_room_id {
         return;
     }
@@ -247,7 +284,9 @@ pub(crate) fn handle_hostile_heal(
             }
         });
 
-    lines.narration(line);
+    if room_id == state.current_room_id {
+        lines.narration(line);
+    }
 
     let interval =
         actor_combat_cooldown_minutes(content, state, actor_id, CombatCooldownKind::Spell);

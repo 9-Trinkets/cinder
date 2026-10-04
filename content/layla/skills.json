@@ -436,6 +436,13 @@
           "kind": "teleport"
         }
       }
+    },
+    {
+      "id": "comms",
+      "label": "Comms",
+      "kind": "support",
+      "target": "none",
+      "description": "Enables remote radio and synaptic dispatches to relay tactical updates and battlefield status across rooms."
     }
   ]
 }

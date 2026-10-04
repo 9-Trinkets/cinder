@@ -35,6 +35,10 @@ pub struct NarrativeLine {
     /// in-process signal between the reducer and the turn runner.
     #[serde(default, skip_serializing)]
     pub pending_commentary_upgrade: Option<PendingCommentaryUpgrade>,
+    /// Pending upgrade for autonomous offscreen combat dispatches. Replaced
+    /// with an in-character LLM voice message during turn runner execution.
+    #[serde(default, skip_serializing)]
+    pub pending_comms_upgrade: Option<PendingCommsUpgrade>,
 }
 
 /// Context a flagged `narrate_message` line carries into the transition
@@ -49,12 +53,37 @@ pub struct PendingCommentaryUpgrade {
     pub fallback_text: String,
 }
 
+/// High-level combat milestone reported over tactical comms by an offscreen party member.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum CommsMilestone {
+    Contact,
+    LowHealth,
+    AllyDown,
+    AreaCleared,
+    PeriodicStatus,
+}
+
+/// Context an offscreen comms dispatch line carries into the character voice generation pass.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct PendingCommsUpgrade {
+    pub reporter_id: String,
+    pub reporter_name: String,
+    pub room_id: String,
+    pub room_name: String,
+    pub milestone: CommsMilestone,
+    pub fallback_text: String,
+    pub enemies_remaining: usize,
+    pub ally_names: Vec<String>,
+}
+
 impl NarrativeLine {
     pub fn narration(text: impl Into<String>) -> Self {
         Self {
             kind: NarrativeLineKind::Narration,
             text: text.into(),
             pending_commentary_upgrade: None,
+            pending_comms_upgrade: None,
         }
     }
 
@@ -63,6 +92,7 @@ impl NarrativeLine {
             kind: NarrativeLineKind::Heading,
             text: text.into(),
             pending_commentary_upgrade: None,
+            pending_comms_upgrade: None,
         }
     }
 
@@ -71,6 +101,7 @@ impl NarrativeLine {
             kind: NarrativeLineKind::Player,
             text: text.into(),
             pending_commentary_upgrade: None,
+            pending_comms_upgrade: None,
         }
     }
 
@@ -79,6 +110,7 @@ impl NarrativeLine {
             kind: NarrativeLineKind::Error,
             text: text.into(),
             pending_commentary_upgrade: None,
+            pending_comms_upgrade: None,
         }
     }
 
@@ -87,6 +119,7 @@ impl NarrativeLine {
             kind: NarrativeLineKind::System,
             text: text.into(),
             pending_commentary_upgrade: None,
+            pending_comms_upgrade: None,
         }
     }
 
@@ -95,6 +128,16 @@ impl NarrativeLine {
             kind: NarrativeLineKind::Channel,
             text: text.into(),
             pending_commentary_upgrade: None,
+            pending_comms_upgrade: None,
+        }
+    }
+
+    pub fn comms_dispatch(text: impl Into<String>, upgrade: PendingCommsUpgrade) -> Self {
+        Self {
+            kind: NarrativeLineKind::Channel,
+            text: text.into(),
+            pending_commentary_upgrade: None,
+            pending_comms_upgrade: Some(upgrade),
         }
     }
 }
@@ -133,6 +176,10 @@ impl NarrativeLines {
 
     pub fn channel(&mut self, text: impl Into<String>) {
         self.0.push(NarrativeLine::channel(text));
+    }
+
+    pub fn comms_dispatch(&mut self, text: impl Into<String>, upgrade: PendingCommsUpgrade) {
+        self.0.push(NarrativeLine::comms_dispatch(text, upgrade));
     }
 
     /// Extends from a stream of plain strings, each becoming narration.

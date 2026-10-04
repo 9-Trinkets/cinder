@@ -1,6 +1,6 @@
 mod actor_commands;
 pub(crate) mod beat_advance;
-mod combat;
+pub mod combat;
 mod command_effects;
 mod equipment;
 pub(crate) mod handlers;
@@ -380,6 +380,13 @@ pub fn apply_events(
     lines.extend_lines(beat_advance::route_stopped_spawn_schedules(state, content));
     protection::apply_active_protection_rules(state, content, &mut lines);
     lines.extend_lines(tick::advance_story_var_objectives(state, content));
+    if !events.is_empty()
+        && !events
+            .iter()
+            .all(|e| matches!(e.event, WorldEvent::TurnStarted { .. }))
+    {
+        combat::evaluate_offscreen_combat_dispatches(state, content, &mut lines);
+    }
     ReducerOutput {
         lines,
         phase: state.phase.clone(),

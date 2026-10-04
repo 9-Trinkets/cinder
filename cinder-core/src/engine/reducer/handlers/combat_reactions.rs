@@ -133,13 +133,17 @@ pub(super) fn resolve_post_damage_reactions(
             };
             outcomes.push(outcome);
             if let Some(target_id) = defeated_target {
-                render(content, &outcomes, lines);
+                if room_id == state.current_room_id {
+                    render(content, &outcomes, lines);
+                }
                 outcomes.clear();
                 defeat_actor(state, content, &target_id, room_id, lines);
             }
         }
     }
-    render(content, &outcomes, lines);
+    if room_id == state.current_room_id {
+        render(content, &outcomes, lines);
+    }
 }
 
 fn resolve_counterattack(

@@ -1,8 +1,8 @@
 use super::{
     ActorTurnActionRequest, ActorTurnAffordanceOption, ActorTurnAffordanceTarget,
     ActorTurnCommandInvocation, ActorTurnSpeakCandidate, ChapterRelationshipSummaryRequest,
-    ChapterScriptSummaryRequest, ConversationMemorySummaryRequest, DialogueRequest,
-    DirectSpeechIntentRequest, MenuIntentRequest, StageAssignmentRequest,
+    ChapterScriptSummaryRequest, CommsDispatchRequest, ConversationMemorySummaryRequest,
+    DialogueRequest, DirectSpeechIntentRequest, MenuIntentRequest, StageAssignmentRequest,
     TransitionCommentaryRequest,
 };
 use crate::content::types::SpeechIntentLabel;
@@ -461,4 +461,48 @@ pub(super) fn render_prompt_template(template: &str, replacements: &[(&str, &str
         rendered = rendered.replace(&format!("{{{key}}}"), value);
     }
     rendered
+}
+
+pub(crate) fn comms_dispatch_system_prompt(_request: &CommsDispatchRequest) -> &'static str {
+    "You are generating a short, in-character tactical radio dispatch from an allied companion engaged in combat in an offscreen room. Speak in the character's unique voice, military discipline or personality, and perspective. The dispatch must be 1 to 2 short sentences. Report the tactical situation clearly without greetings or meta-commentary. Do not prefix the line with your character's name."
+}
+
+pub(crate) fn build_comms_dispatch_prompt(request: &CommsDispatchRequest) -> String {
+    let milestone_desc = match request.milestone {
+        crate::engine::narrative::CommsMilestone::Contact => {
+            "Initial contact: enemies have engaged our position."
+        }
+        crate::engine::narrative::CommsMilestone::LowHealth => {
+            "Critical condition: party members taking heavy damage, vitals low."
+        }
+        crate::engine::narrative::CommsMilestone::AllyDown => {
+            "Casualty report: a companion has fallen in battle."
+        }
+        crate::engine::narrative::CommsMilestone::AreaCleared => {
+            "Victory: all hostile forces in the area have been neutralized."
+        }
+        crate::engine::narrative::CommsMilestone::PeriodicStatus => {
+            "Status update: battle is ongoing, holding the position."
+        }
+    };
+    let allies = if request.ally_names.is_empty() {
+        "None".to_string()
+    } else {
+        request.ally_names.join(", ")
+    };
+    let character = format_bullets(&request.character_notes, "(No character notes)");
+    let response_notes = format_bullets(&request.response_notes, "(No response notes)");
+    let subtext_notes = format_bullets(&request.subtext_notes, "(No subtext notes)");
+
+    format!(
+        "## Character Persona\n{}\n\n## Voice & Demeanor\n{}\n\n## Subtext & Motives\n{}\n\n## Tactical Situation\n- Location: {}\n- Tactical Milestone: {}\n- Hostiles Remaining: {}\n- Allies Present: {}\n- Standard Dispatch Fallback: \"{}\"\n\nGenerate a 1-2 sentence in-character tactical dispatch over the comms radio. Be concise and authentic to the character.",
+        character,
+        response_notes,
+        subtext_notes,
+        request.room_name,
+        milestone_desc,
+        request.enemies_remaining,
+        allies,
+        request.fallback_text
+    )
 }

@@ -45,8 +45,8 @@ fn hostile_strikes_off_screen_ally_using_that_allys_defense() {
     assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), player_before);
     assert_eq!(state.actor_stat(ACTOR_B_ID, "stamina"), ally_before - 4);
     assert!(
-        transcript(&output.lines).contains("Casey strikes Blair"),
-        "expected off-screen strike narration, got: {}",
+        !transcript(&output.lines).contains("Casey strikes Blair"),
+        "raw off-screen strike narration should be suppressed: {}",
         transcript(&output.lines)
     );
 }
@@ -80,8 +80,8 @@ fn allied_follower_defeat_does_not_end_the_game() {
     assert_eq!(state.phase, GamePhase::Active);
     assert_eq!(output.phase, GamePhase::Active);
     assert!(
-        transcript(&output.lines).contains("Blair falls"),
-        "expected follower defeat narration, got: {}",
+        !transcript(&output.lines).contains("Blair falls"),
+        "raw off-screen defeat narration should be suppressed: {}",
         transcript(&output.lines)
     );
 }

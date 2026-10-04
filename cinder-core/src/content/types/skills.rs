@@ -57,6 +57,7 @@ pub enum SkillKind {
     Heal,
     Spell,
     Passive,
+    Support,
 }
 
 /// Target selection mode for skill execution.

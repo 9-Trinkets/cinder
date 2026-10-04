@@ -3517,7 +3517,8 @@
     "skills": [
       "strike",
       "hold",
-      "intercept"
+      "intercept",
+      "comms"
     ],
     "initial_stats": {
       "hp": 34,
@@ -3566,6 +3567,7 @@
     "skills": [
       "strike",
       "hold",
+      "comms",
       {
         "id": "heal",
         "power": 5,

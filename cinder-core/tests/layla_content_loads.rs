@@ -1082,8 +1082,16 @@ fn layla_skills_declare_only_live_behaviors() {
         .collect();
     assert_eq!(
         ids,
-        vec!["strike", "intercept", "hold", "heal", "trace", "teleport"],
-        "skills.json must stay a 1:1 map of the six live behaviors"
+        vec![
+            "strike",
+            "intercept",
+            "hold",
+            "heal",
+            "trace",
+            "teleport",
+            "comms"
+        ],
+        "skills.json must stay a 1:1 map of the live behaviors"
     );
     assert!(
         pack.skills

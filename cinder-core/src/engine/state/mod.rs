@@ -186,6 +186,21 @@ pub struct WorldState {
     /// Runtime state for content-authored room protection rules, keyed by stage id.
     #[serde(default)]
     pub protection_rule_states: BTreeMap<String, ProtectionRuleState>,
+    /// Runtime tracking for autonomous remote comms dispatches during offscreen party combat.
+    #[serde(default)]
+    pub offscreen_combat_states: BTreeMap<String, OffscreenCombatState>,
+}
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct OffscreenCombatState {
+    pub engaged_at_turn: u32,
+    pub last_dispatch_turn: u32,
+    pub contact_dispatched: bool,
+    pub low_health_dispatched: bool,
+    #[serde(default)]
+    pub reported_fallen_allies: BTreeSet<String>,
+    #[serde(default)]
+    pub newly_fallen_allies: Vec<String>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
@@ -393,6 +408,7 @@ impl WorldState {
             transformed_stages: BTreeMap::new(),
             actor_name_overrides: BTreeMap::new(),
             protection_rule_states: BTreeMap::new(),
+            offscreen_combat_states: BTreeMap::new(),
         }
     }
 

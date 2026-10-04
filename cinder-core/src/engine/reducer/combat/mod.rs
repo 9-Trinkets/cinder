@@ -1,5 +1,6 @@
 mod attacks;
 mod defeat;
+pub mod offscreen_comms;
 mod periodic;
 
 use crate::content::types::ContentPack;
@@ -9,6 +10,7 @@ pub(crate) static VEC_EMPTY_TAGS: Vec<String> = Vec::new();
 
 pub(super) use attacks::apply_attack_target;
 pub(super) use defeat::{award_defeat_xp, defeat_actor, defeat_player_if_dead, spawn_defeat_drops};
+pub use offscreen_comms::evaluate_offscreen_combat_dispatches;
 pub(super) use periodic::handle_periodic_actor_effect_applied;
 
 pub(super) fn actor_display_name(

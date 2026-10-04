@@ -18,9 +18,10 @@ use super::parsing::{
 };
 use super::prompts::{
     actor_turn_decider_system_prompt, build_chapter_relationship_summary_prompt,
-    build_chapter_script_summary_prompt, build_stage_assignment_prompt,
-    build_transition_commentary_prompt, chapter_relationship_summarizer_system_prompt,
-    chapter_script_summarizer_system_prompt, conversation_memory_summarizer_system_prompt,
+    build_chapter_script_summary_prompt, build_comms_dispatch_prompt,
+    build_stage_assignment_prompt, build_transition_commentary_prompt,
+    chapter_relationship_summarizer_system_prompt, chapter_script_summarizer_system_prompt,
+    comms_dispatch_system_prompt, conversation_memory_summarizer_system_prompt,
     dialogue_system_prompt, direct_speech_intent_system_prompt, hostility_planner_system_prompt,
     menu_intent_system_prompt, sanitize_statement, transition_commentary_system_prompt,
 };
@@ -438,6 +439,30 @@ Make the options feel distinct from each other and grounded in the recent conver
             Err(e) => {
                 eprintln!("[cinder] generate_transition_commentary failed: {e}");
                 Ok(vec![request.fallback_text.clone()])
+            }
+        }
+    }
+
+    fn generate_comms_dispatch(&self, request: &CommsDispatchRequest) -> Result<String, String> {
+        let prompt = build_comms_dispatch_prompt(request);
+        let system_prompt = comms_dispatch_system_prompt(request).to_string();
+        match self.run_text_role_with_timeout(
+            ACTOR_DIALOGUE_ROLE,
+            prompt,
+            system_prompt,
+            Duration::from_secs(6),
+        ) {
+            Ok(response) => {
+                let cleaned = response.trim().trim_matches('"').trim();
+                if cleaned.is_empty() {
+                    Ok(request.fallback_text.clone())
+                } else {
+                    Ok(cleaned.to_string())
+                }
+            }
+            Err(e) => {
+                eprintln!("[cinder] generate_comms_dispatch failed: {e}");
+                Ok(request.fallback_text.clone())
             }
         }
     }

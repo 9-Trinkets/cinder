@@ -103,6 +103,23 @@ pub struct TransitionCommentaryRequest {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct CommsDispatchRequest {
+    pub locale: String,
+    pub system_text: SystemTextDefinition,
+    pub reporter_id: String,
+    pub reporter_name: String,
+    pub room_id: String,
+    pub room_name: String,
+    pub milestone: crate::engine::narrative::CommsMilestone,
+    pub fallback_text: String,
+    pub enemies_remaining: usize,
+    pub ally_names: Vec<String>,
+    pub character_notes: Vec<String>,
+    pub response_notes: Vec<String>,
+    pub subtext_notes: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DirectSpeechIntentRequest {
     pub locale: String,
     pub system_text: SystemTextDefinition,

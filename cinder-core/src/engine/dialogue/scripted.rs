@@ -19,6 +19,7 @@ pub struct ScriptedDialogueGenerator {
     perspective_reviews: BTreeMap<String, PerspectiveReview>,
     stage_assignments: BTreeMap<String, StageAssignment>,
     transition_commentaries: BTreeMap<String, Vec<String>>,
+    comms_dispatches: BTreeMap<String, String>,
     requests: std::sync::Arc<std::sync::Mutex<Vec<DialogueRequest>>>,
     transition_requests: std::sync::Arc<std::sync::Mutex<Vec<TransitionCommentaryRequest>>>,
 }
@@ -101,6 +102,12 @@ impl ScriptedDialogueGenerator {
     pub fn with_transition_commentary_lines(mut self, room_id: &str, lines: Vec<String>) -> Self {
         self.transition_commentaries
             .insert(room_id.to_string(), lines);
+        self
+    }
+
+    pub fn with_comms_dispatch(mut self, reporter_id: &str, message: &str) -> Self {
+        self.comms_dispatches
+            .insert(reporter_id.to_string(), message.to_string());
         self
     }
 
@@ -253,6 +260,17 @@ impl DialogueGenerator for ScriptedDialogueGenerator {
             Ok(reply.clone())
         } else {
             Ok(vec![request.fallback_text.clone()])
+        }
+    }
+
+    fn generate_comms_dispatch(
+        &self,
+        request: &super::types::CommsDispatchRequest,
+    ) -> Result<String, String> {
+        if let Some(reply) = self.comms_dispatches.get(&request.reporter_id) {
+            Ok(reply.clone())
+        } else {
+            Ok(request.fallback_text.clone())
         }
     }
 }
