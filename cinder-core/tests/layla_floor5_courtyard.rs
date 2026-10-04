@@ -423,7 +423,7 @@ fn floor5_citadel_map_definition_and_reveal_condition() {
         .expect("courtyard_center has map");
     assert_eq!(map.id, "the-frost-citadel");
     assert_eq!(map.label, "The Frost Citadel");
-    assert_eq!(map.rooms.len(), 20);
+    assert_eq!(map.rooms.len(), 17);
 
     // Each courtyard room is present in the map
     for room_id in EXPECTED_COURTYARD_ROOMS {
@@ -521,6 +521,9 @@ fn floor5_house_hallways_and_thrones_navigate() {
     state
         .story_vars
         .set_unchecked("frost_wolf_access_open", "true");
+    state
+        .story_vars
+        .set_unchecked("citadel_final_wave_open", "true");
 
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
 
@@ -628,12 +631,19 @@ fn floor5_house_access_opens_with_timed_siege_waves() {
     let wave3 = runtime.export_state().expect("export wave 3");
     assert_eq!(wave3.story_vars.get("citadel_siege_wave"), Some("3"));
     assert_eq!(
+        wave3.story_vars.get("citadel_final_wave_open"),
+        Some("true")
+    );
+    assert_eq!(
         wave3.story_vars.get("frost_leopard_access_open"),
         Some("true")
     );
     assert_eq!(spawned_count(&wave3, "frost_wolf_raider"), 30);
     assert_eq!(spawned_count(&wave3, "iron_ram_mauler"), 21);
     assert_eq!(spawned_count(&wave3, "frost_leopard_hunter"), 3);
+    assert_eq!(spawned_count(&wave3, "lord_vane"), 1);
+    assert_eq!(spawned_count(&wave3, "warmaster_torin"), 1);
+    assert_eq!(spawned_count(&wave3, "lady_sylvan"), 1);
 
     let mut completed_dispatches = wave3;
     let leopard_started = completed_dispatches.stage_started_minutes["frost_leopard_dispatch"];
@@ -1060,78 +1070,165 @@ fn floor5_house_gates_prevent_premature_exploration() {
 }
 
 #[test]
-fn floor5_secret_passages_follow_wave_access() {
+fn floor5_throne_rooms_stay_sealed_until_final_wave() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    for passage_id in [
+        "throne_passage_northeast",
+        "throne_passage_south",
+        "throne_passage_northwest",
+    ] {
+        assert!(
+            pack.room(passage_id).is_none(),
+            "removed outer passage {passage_id} should not load"
+        );
+    }
+
+    for (start, command, throne) in [
+        ("frost_wolf_muster", "go north", "frost_wolf_throne"),
+        ("iron_ram_muster", "go southeast", "iron_ram_throne"),
+        (
+            "frost_leopard_muster",
+            "go southwest",
+            "frost_leopard_throne",
+        ),
+    ] {
+        let mut state = WorldState::new(&pack);
+        state.current_room_id = start.to_string();
+        let runtime =
+            CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+
+        runtime.run_turn(command).expect("blocked throne movement");
+        assert_eq!(runtime.current_room_id().unwrap(), start);
+
+        let mut final_wave = runtime.export_state().expect("export state");
+        final_wave
+            .story_vars
+            .set_unchecked("citadel_final_wave_open", "true");
+        let runtime =
+            CinderRuntime::from_state(pack.clone(), final_wave, false).expect("runtime creates");
+
+        runtime.run_turn(command).expect("open throne movement");
+        assert_eq!(runtime.current_room_id().unwrap(), throne);
+    }
+}
+
+#[test]
+fn floor5_house_leaders_march_to_the_courtyard_in_final_wave() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);
-    state.current_room_id = "frost_wolf_throne".to_string();
+    state.current_room_id = "courtyard_center".to_string();
+    state.turn_number = 1;
+    state
+        .story_vars
+        .set_unchecked("citadel_final_wave_open", "true");
+    let leaders = [
+        ("lord_vane", "frost_wolf_throne", "frost_wolf_muster"),
+        ("warmaster_torin", "iron_ram_throne", "iron_ram_muster"),
+        (
+            "lady_sylvan",
+            "frost_leopard_throne",
+            "frost_leopard_muster",
+        ),
+    ];
+    let mut instances = Vec::new();
+    for (template_id, throne, muster) in leaders {
+        let instance_id = match state.spawn_actor(
+            &pack,
+            SpawnActorConfig {
+                template_id,
+                room_id: Some(throne),
+                stance: None,
+                follows_player: false,
+                scale_with_actor_id: None,
+                scale_stat: None,
+                max_active_instances: None,
+            },
+        ) {
+            SpawnActorOutcome::Success(info) => info.instance_id,
+            outcome => panic!("expected {template_id} to spawn, got {outcome:?}"),
+        };
+        instances.push((instance_id, muster));
+    }
+    assert!(
+        state
+            .onstage_actors(&pack)
+            .any(|actor| actor.id.starts_with("lord_vane-")),
+        "spawned leader should be onstage"
+    );
 
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+    runtime.run_tick().expect("final-wave leaders march");
+    let marched = runtime.export_state().expect("export marched state");
 
-    // Secret passages are locked before awakening
-    let blocked_east = runtime.run_turn("go east").expect("turn runs");
-    assert_eq!(runtime.current_room_id().unwrap(), "frost_wolf_throne");
-    let blocked_text = blocked_east.text();
-    assert!(
-        blocked_text.contains("cannot go that way")
-            || blocked_text.contains("can't go that way")
-            || blocked_text.contains("route sheet")
-            || blocked_text.contains("unknown"),
-        "expected blocked exit text: {blocked_text}"
-    );
+    for (leader, muster) in instances {
+        assert_eq!(
+            marched
+                .actor_room_overrides
+                .get(&leader)
+                .map(String::as_str),
+            Some(muster),
+            "{leader} should leave the throne room when the final wave opens"
+        );
+    }
+}
 
-    // Wave 2 opens the Frost-Wolf to Iron-Ram conduit.
-    let mut state2 = runtime.export_state().expect("export state");
-    state2
-        .story_vars
-        .set_unchecked("iron_ram_access_open", "true");
+#[test]
+fn floor5_defeating_spawned_house_leaders_stops_their_armies() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
 
-    let pack2 = load_named_pack("layla", Some("en")).expect("layla loads and validates");
-    let runtime2 = CinderRuntime::from_state(pack2, state2, false).expect("runtime creates");
-    assert_eq!(
-        runtime2
-            .export_state()
-            .expect("export state")
-            .story_vars
-            .get("iron_ram_access_open"),
-        Some("true")
-    );
+    for (template_id, room_id, command, stopped_var) in [
+        (
+            "lord_vane",
+            "frost_wolf_throne",
+            "attack lord vane",
+            "frost_wolf_lane_stopped",
+        ),
+        (
+            "warmaster_torin",
+            "iron_ram_throne",
+            "attack warmaster torin",
+            "iron_ram_lane_stopped",
+        ),
+        (
+            "lady_sylvan",
+            "frost_leopard_throne",
+            "attack lady sylvan",
+            "frost_leopard_lane_stopped",
+        ),
+    ] {
+        let mut state = WorldState::new(&pack);
+        state.current_room_id = room_id.to_string();
+        let leader_id = match state.spawn_actor(
+            &pack,
+            SpawnActorConfig {
+                template_id,
+                room_id: Some(room_id),
+                stance: None,
+                follows_player: false,
+                scale_with_actor_id: None,
+                scale_stat: None,
+                max_active_instances: None,
+            },
+        ) {
+            SpawnActorOutcome::Success(info) => info.instance_id,
+            outcome => panic!("expected {template_id} to spawn, got {outcome:?}"),
+        };
+        state
+            .actor_stats
+            .entry(leader_id)
+            .or_default()
+            .insert("hp".to_string(), 1);
 
-    runtime2.run_turn("go east").expect("go east");
-    assert_eq!(
-        runtime2.current_room_id().unwrap(),
-        "throne_passage_northeast"
-    );
-
-    runtime2.run_turn("go south").expect("go south");
-    assert_eq!(runtime2.current_room_id().unwrap(), "iron_ram_throne");
-
-    // Frost-Leopard remains inaccessible until Wave 3.
-    runtime2
-        .run_turn("go southwest")
-        .expect("blocked southwest");
-    assert_eq!(runtime2.current_room_id().unwrap(), "iron_ram_throne");
-
-    let mut wave3 = runtime2.export_state().expect("export state");
-    wave3
-        .story_vars
-        .set_unchecked("frost_leopard_access_open", "true");
-    let pack3 = load_named_pack("layla", Some("en")).expect("layla loads");
-    let runtime3 = CinderRuntime::from_state(pack3, wave3, false).expect("runtime creates");
-
-    runtime3.run_turn("go southwest").expect("go southwest");
-    assert_eq!(runtime3.current_room_id().unwrap(), "throne_passage_south");
-
-    runtime3.run_turn("go northwest").expect("go northwest");
-    assert_eq!(runtime3.current_room_id().unwrap(), "frost_leopard_throne");
-
-    runtime3.run_turn("go north").expect("go north");
-    assert_eq!(
-        runtime3.current_room_id().unwrap(),
-        "throne_passage_northwest"
-    );
-
-    runtime3.run_turn("go northeast").expect("go northeast");
-    assert_eq!(runtime3.current_room_id().unwrap(), "frost_wolf_throne");
+        let runtime =
+            CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+        runtime.run_turn(command).expect("leader attack resolves");
+        let defeated = runtime.export_state().expect("export defeated state");
+        assert_eq!(
+            defeated.story_vars.get(stopped_var),
+            Some("true"),
+            "defeating spawned {template_id} should stop its house"
+        );
+    }
 }
 
 #[test]

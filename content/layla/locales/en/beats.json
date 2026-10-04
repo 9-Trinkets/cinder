@@ -112,8 +112,8 @@
       "quest_title": "Three Doors",
       "quest_kind": "main",
       "summary": "Three houses are coming. All three will open eventually.",
-      "beat_note": "The siege clock is running. Each wave opens another estate while its house sends troops toward the courtyard. Defeating or awakening a house leader stops that house's lane, but the remaining waves still begin on schedule.",
-      "update_message": "Every gate that lifts is a door you have to close yourself.",
+      "beat_note": "The siege clock is running. Frost-Wolf troops enter through the north approach, Iron-Ram through the southeast approach, and Frost-Leopard through the southwest approach. The house leaders remain sealed in their throne rooms until the final wave, when all three march toward the courtyard.",
+      "update_message": "Guard the north, southeast, and southwest approaches. The three house leaders will join the final wave.",
       "advance_signals": [
         {
           "signal": "story_vars_changed",
@@ -329,7 +329,7 @@
       "summary": "",
       "beat_note": "Layla has ten in-game minutes to place defenders and prepare the courtyard before House Frost-Wolf begins the first assault.",
       "narrative_lines": [
-        "The freed workers crowd around the teleport pad while Astrid studies the three approaches. The first house horn has not sounded yet. There is still time to place defenders."
+        "The freed workers crowd around the teleport pad. Astrid points to the north, southeast, and southwest approaches. The house soldiers must pass through those rooms to reach the center. There is still time to place defenders."
       ],
       "advance_signals": [
         "stage_elapsed:10"
@@ -378,7 +378,10 @@
       ],
       "next_stage_ids": [
         "siege_wave_3",
-        "frost_leopard_dispatch"
+        "frost_leopard_dispatch",
+        "frost_wolf_leader_march",
+        "iron_ram_leader_march",
+        "frost_leopard_leader_march"
       ],
       "on_advance_effects": [
         {
@@ -406,6 +409,11 @@
         {
           "kind": "set_story_var",
           "key": "frost_leopard_access_open",
+          "value": "true"
+        },
+        {
+          "kind": "set_story_var",
+          "key": "citadel_final_wave_open",
           "value": "true"
         },
         {
@@ -470,6 +478,54 @@
       "advance_signals": [
         "stage_elapsed:90"
       ],
+      "next_stage_ids": []
+    },
+    {
+      "id": "frost_wolf_leader_march",
+      "summary": "",
+      "beat_note": "Lord Vane leaves the Howling Dais during the final wave and marches toward the courtyard center.",
+      "actor_spawn_schedule": {
+        "template_id": "lord_vane",
+        "room_id": "frost_wolf_throne",
+        "batch_size": 1,
+        "interval_minutes": 10,
+        "total_count": 1,
+        "stop_story_var": "frost_wolf_lane_stopped",
+        "rout_on_stop": false
+      },
+      "advance_signals": [],
+      "next_stage_ids": []
+    },
+    {
+      "id": "iron_ram_leader_march",
+      "summary": "",
+      "beat_note": "Warmaster Torin leaves the Anvil Throne during the final wave and marches toward the courtyard center.",
+      "actor_spawn_schedule": {
+        "template_id": "warmaster_torin",
+        "room_id": "iron_ram_throne",
+        "batch_size": 1,
+        "interval_minutes": 10,
+        "total_count": 1,
+        "stop_story_var": "iron_ram_lane_stopped",
+        "rout_on_stop": false
+      },
+      "advance_signals": [],
+      "next_stage_ids": []
+    },
+    {
+      "id": "frost_leopard_leader_march",
+      "summary": "",
+      "beat_note": "Lady Sylvan leaves the Opal Throne during the final wave and marches toward the courtyard center.",
+      "actor_spawn_schedule": {
+        "template_id": "lady_sylvan",
+        "room_id": "frost_leopard_throne",
+        "batch_size": 1,
+        "interval_minutes": 10,
+        "total_count": 1,
+        "stop_story_var": "frost_leopard_lane_stopped",
+        "rout_on_stop": false
+      },
+      "advance_signals": [],
       "next_stage_ids": []
     },
     {

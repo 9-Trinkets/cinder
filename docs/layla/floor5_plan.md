@@ -2,7 +2,7 @@
 
 Living design plan for **Level 5** of Layla. This floor covers the ice world of the mountain castle, the 7-room hexagonal courtyard, the mass suspension cages of virtual "offerings," and the strategic siege by three rival noble houses.
 
-The gameplay genre for Floor 5 is **Tower Defense & Decapitation Strike (Real-Time Strategy)**. While Layla's allies hold the three defensive chokepoints of the courtyard to protect vulnerable civilians, Layla breaches the surrounding house estates to defeat or awaken the heads of each house, stopping their assault lanes.
+The gameplay genre for Floor 5 is **Tower Defense (Real-Time Strategy)**. Layla and her allies hold the three estate approaches at `courtyard_north`, `courtyard_southeast`, and `courtyard_southwest`. The house leaders remain sealed inside their throne rooms until the final wave, when all three march toward the courtyard with their armies.
 
 All player-facing text must use **simple sentences and everyday words for teenagers**. Avoid unusual, archaic, or overly technical jargon (use "cage" instead of "oubliette", "healer" instead of "thaumaturge", "guard" instead of "interdict", "pill" instead of "elixir").
 
@@ -10,11 +10,12 @@ All player-facing text must use **simple sentences and everyday words for teenag
 
 Implemented:
 
-- the courtyard, three estates, throne rooms, and secret service passages;
+- the courtyard, three estates, and throne rooms;
 - the sentry ambush, cage key, prisoner rescue, Astrid, and Einar;
 - the sensory enhancer and enhanced tactical map;
 - the three house leaders and their defeat/awakening paths;
-- the continuous 10/70/130-minute siege clock and timed estate gates;
+- the continuous 10/70/130-minute siege clock, timed estate gates, and
+  final-wave throne seals;
 - all three house dispatch queues: each house sends 30 soldiers in ten squads
   of three at ten-minute intervals, and its queue stops when its leader is
   defeated or awakened;
@@ -42,12 +43,14 @@ in-game clock:
 | 0 minutes | Preparation begins | All estate gates remain closed |
 | 10 minutes | Wave 1 begins: Frost-Wolf lane | Frost-Wolf gate opens |
 | 70 minutes | Wave 2 begins: Iron-Ram joins | Iron-Ram portcullis opens |
-| 130 minutes | Wave 3 begins: Frost-Leopard joins | Frost-Leopard doors open |
+| 130 minutes | Wave 3 begins: Frost-Leopard and all three house leaders join | Frost-Leopard doors and all throne rooms open |
 
-The clock never pauses while Layla explores. Neutralizing a leader permanently
-stops that house's lane, but it does not delay the next scheduled wave. This
-keeps the tower-defense pressure active while making each decapitation strike
-meaningful.
+The clock never pauses while Layla explores. Before Wave 3, Layla can enter
+each opened estate as far as its muster room, but the throne room remains
+sealed. When Wave 3 begins, Lord Vane, Warmaster Torin, and Lady Sylvan leave
+their throne rooms and march through their own estates toward
+`courtyard_center`. Neutralizing a leader during this final assault stops and
+routs that house's remaining soldiers.
 
 The next implementation slice builds deeper content inside the five optional
 worker towns: local residents, town problems, items, awakening and charm
@@ -106,26 +109,27 @@ Layla swallows the translucent blue capsule (`use sensory-enhancer`).
 
 ## 2. Floor Layout: The Hexagon & The 3 Houses
 
-The castle courtyard is laid out as a symmetrical **7-room hexagon** (1 center room + 6 perimeter points). 
-Three points connect to the estates of the three rival noble houses; the alternating three points are defensive chokepoints where soldiers assault the courtyard:
+The castle courtyard is laid out as a symmetrical **7-room hexagon** (1 center room + 6 perimeter points).
+Three points connect to the estates of the three rival noble houses. Soldiers march through these estate approaches and then enter `courtyard_center`, so these three rooms are the useful defensive positions. The alternating perimeter rooms connect the courtyard ring but are not on the soldiers' direct routes:
 
 ```
                             [ HOUSE FROST-WOLF ]
                                (North Estate)
                                      |
                                [courtyard_north]
+                              (Frost-Wolf Approach)
                                   /     \
     [courtyard_northwest] -------+       +------- [courtyard_northeast]
-     (Defensive Choke 1)        /         \        (Defensive Choke 2)
+      (Outer Rampart)           /         \          (Outer Rampart)
               |                /           \                |
               |     [courtyard_center]      \               |
               |       (Cages & Allies)       \              |
               |                \              \             |
     [courtyard_southwest]       \              +-- [courtyard_southeast]
-     (House Frost-Leopard)       +-------+                     |
+    (Frost-Leopard Approach)      +-------+          (Iron-Ram Approach)
               |                          |             [ HOUSE IRON-RAM ]
    [ HOUSE FROST-LEOPARD ]       [courtyard_south]       (East Estate)
-       (West Estate)            (Defensive Choke 3)
+       (West Estate)              (Outer Gate)
 ```
 
 ### The 7 Courtyard Rooms
@@ -134,16 +138,16 @@ Three points connect to the estates of the three rival noble houses; the alterna
    - If enemy soldiers hold this room for ten minutes, the current at-risk civilian dies. The protection quest fails on the third death, but the main siege continues.
 2. **`courtyard_north` (Frost-Wolf Approach):**
    - The grand arched gateway leading north into **House Frost-Wolf Manor**.
-3. **`courtyard_northeast` (North-East Rampart — Choke 1):**
-   - An open stone battlement overlooking snowy drop-offs. Flanking soldiers try to breach the courtyard through this lane.
+3. **`courtyard_northeast` (North-East Rampart):**
+   - An open stone battlement overlooking snowy drop-offs. It connects the northern and southeastern approaches but is not on either house's direct route to the center.
 4. **`courtyard_southeast` (Iron-Ram Approach):**
    - The reinforced portcullis leading east into **House Iron-Ram Bastion**.
-5. **`courtyard_south` (South Fortress Gate — Choke 2):**
-   - The massive frozen fortress iron gates. Battering rams and hammer-wielding shock troops assault this bottleneck.
+5. **`courtyard_south` (South Fortress Gate):**
+   - The massive frozen fortress iron gates. This room connects the two southern approaches and later opens the route toward Floor 6, but siege troops do not enter through it.
 6. **`courtyard_southwest` (Frost-Leopard Approach):**
    - The frosted glass conservatory doors leading west into **House Frost-Leopard Hall**.
-7. **`courtyard_northwest` (North-West Parapet — Choke 3):**
-   - A narrow catwalk along the outer curtain wall. Agile skirmishers and snipers attempt to infiltrate from this angle.
+7. **`courtyard_northwest` (North-West Parapet):**
+   - A narrow catwalk along the outer curtain wall. It connects the northern and southwestern approaches but is not on either house's direct route to the center.
 
 ---
 
@@ -188,7 +192,7 @@ Each house possesses a unique crest, banner, combat style, and a commanding **He
 - **Mechanics:**
   - Extremely high HP and physical defense.
   - Built specifically for `guard` + counterattack.
-  - When ordered to `guard` a chokepoint (e.g. `courtyard_south`), she intercepts every hostile strike aimed at allies and delivers a punishing retaliatory blow.
+  - When ordered to `guard` an estate approach (e.g. `courtyard_southeast`), she blocks hostile movement, absorbs attacks, and delivers punishing counterattacks.
 - **Voice & Tone:** Confident, commanding, protective: *"Line up behind my shield. Let them bring their hammers; I will break them on my steel."*
 
 ### 2. Einar (`einar`) — The Dedicated Healer
@@ -202,7 +206,7 @@ Each house possesses a unique crest, banner, combat style, and a commanding **He
 
 ### 3. Sakhra (`sakhra`) — The Stone Anvil (Optional Companion)
 - **Role:** Second frontline tank.
-- **Synergy:** If the player brought Sakhra from Floor 4, Layla now has **two heavy tanks** (Astrid and Sakhra). Astrid can hold one chokepoint while Sakhra locks down another, giving Layla immense defensive security while she goes on offense!
+- **Synergy:** If the player brought Sakhra from Floor 4, Layla now has **two heavy tanks** (Astrid and Sakhra). Astrid can hold one estate approach while Sakhra locks down another, giving Layla immense defensive security while she goes on offense!
 
 ### 4. The Six Worker Towns
 
@@ -249,32 +253,31 @@ If all five survive, their tokens join Deepwell's known anchor to complete the
 
 ---
 
-## 5. Gameplay Mechanics: Tower Defense & Decapitation
+## 5. Gameplay Mechanics: Tower Defense
 
-### The Dual Flow: Defend the Center, Strike the Houses
+### The Siege Flow: Hold the Approaches, Survive the Final Commanders
 Floor 5 plays out in an active, dynamic RTS loop:
-1. **Assign Defenders to Chokepoints:**
-   - The player stations Astrid at one chokepoint (e.g. `order astrid guard` at `courtyard_south`).
-   - The player stations Sakhra, Dark Golem, or summoned spirits at the other chokepoints (`courtyard_northeast`, `courtyard_northwest`).
+1. **Assign Defenders to Estate Approaches:**
+   - The player stations Astrid at one active approach (e.g. `order astrid guard` at `courtyard_southeast`).
+   - The player stations Sakhra, Dark Golem, or summoned spirits at the other approaches (`courtyard_north`, `courtyard_southwest`).
    - Einar can be placed with Astrid or in `courtyard_center` to heal anyone retreating.
-2. **Layla's Decapitation Strikes:**
-   - While the defenders hold the lines, Layla enters houses as their timed
-     wave begins:
-     - Wave 1 opens Frost-Wolf Manor.
-     - Wave 2 opens Iron-Ram Bastion.
-     - Wave 3 opens Frost-Leopard Hall.
-   - She fights through the estate rooms, reaches the House Head, and resolves the confrontation:
-     - **Kill:** Slay the Head of House in combat.
-     - **Awaken:** Raise the leader's Wisdom to break the Citadel's control and turn the leader against the siege.
-3. **Stopping a Lane:**
-   - The moment a Head of House falls or awakens, that house's active soldiers
-     rout and its spawn queue stops.
-   - Other houses continue attacking, and later waves still begin at their
-     scheduled times.
-   - Neutralizing Frost-Wolf early does not delay Wave 2. Neutralizing
-     Iron-Ram early does not delay Wave 3.
-4. **Teleportation Micro:**
-   - If soldiers reach the courtyard center while Layla is inside an estate, Layla casts `teleport courtyard_center`, blinks back instantly, drops a `drain-sigil` to clear the breach, and then teleports back to resume her attack.
+2. **Survive the Escalating House Armies:**
+   - Wave 1 opens Frost-Wolf Manor and sends northern squads.
+   - Wave 2 opens Iron-Ram Bastion and adds southeastern squads.
+   - Wave 3 opens Frost-Leopard Hall and adds southwestern squads.
+   - Open estates can be explored, but every throne room remains sealed until
+     Wave 3. There is no route between the throne rooms.
+3. **Face the Final-Wave Commanders:**
+   - When Wave 3 begins, all three throne seals open.
+   - Lord Vane, Warmaster Torin, and Lady Sylvan march from their throne rooms,
+     through their house approaches, toward `courtyard_center`.
+   - Layla can intercept each leader anywhere along that route or fight them
+     after they reach the courtyard.
+   - Each confrontation can still end through defeat or awakening.
+4. **Break the Three Houses:**
+   - When a Head of House falls or awakens, that house's active soldiers rout
+     and its remaining spawn quota is canceled.
+   - The siege ends after all three leaders have been neutralized.
 
 ### Civilian Danger and Fail-Forward Consequences
 
@@ -313,17 +316,16 @@ To deliver authentic Tower Defense pacing, each house deploys its forces in a di
 - **Dispatch Cadence (3 at a Time):** Soldiers spawn and march out in squads of **3 units every 10 in-game minutes** (about once per real-world minute with the current tick rate).
 - **The Marching Lanes:** 
   - Squads emerge from the house estate gates and march down their designated approach lane toward `courtyard_center`.
-  - When they hit a chokepoint held by a companion on `guard`, the guard intercepts the 3-man squad, soaking their strikes and counterattacking them into scrap.
+  - When they reach an estate approach held by a companion on `guard`, the guard blocks the 3-man squad, soaks their strikes, and counterattacks them.
 - **Escalation by Scheduled Wave:**
   - **Wave 1 (30 soldiers total):** House Frost-Wolf dispatches alone — **3 units per interval** down the North lane.
   - **Wave 2 (60 soldiers total):** House Frost-Wolf and House Iron-Ram mobilize together — **6 units per interval** (3 North, 3 Southeast) pinching the courtyard!
   - **Wave 3 (90 soldiers total):** All three houses mobilize — **9 units per interval** (3 North, 3 Southeast, 3 Southwest) converging on all fronts.
-- **Strategic Impact of Decapitation Strikes:**
-  - Slaying or awakening a Head of House instantly halts that house's spawn
-    queue.
-  - Any remaining soldiers from its quota are canceled.
-  - The global wave clock continues regardless, so delaying inside one estate
-    allows other fronts to open and overlap.
+- **Final-Wave Commanders:**
+  - Wave 3 releases all three Heads of House from their sealed throne rooms.
+  - Each leader marches down their house's existing route toward the center.
+  - Slaying or awakening a leader halts that house's spawn queue and routs its
+    deployed soldiers.
 
 ---
 
@@ -331,19 +333,19 @@ To deliver authentic Tower Defense pacing, each house deploys its forces in a di
 
 The defense occurs across **three exponentially harder waves**, with the noble houses compounding their forces on each wave:
 - **Wave 1:** House Frost-Wolf (Single front: North).
-- **Wave 2:** House Frost-Wolf + House Iron-Ram (Dual front: North & South/East).
-- **Wave 3:** House Frost-Wolf + House Iron-Ram + House Frost-Leopard (Triple front: All chokepoints under siege!).
+- **Wave 2:** House Frost-Wolf + House Iron-Ram (Dual front: North & Southeast).
+- **Wave 3:** House Frost-Wolf + House Iron-Ram + House Frost-Leopard (Triple front: all three estate approaches under siege!).
 
-> **Tactical Decapitation Dynamic:** Neutralizing a leader permanently stops
-> that house's lane, but the siege clock continues. If Lord Vane is still
-> active when Wave 2 begins, Frost-Wolf and Iron-Ram attack together. If he was
-> neutralized in time, only Iron-Ram begins sending new squads.
+> **Final Commander Dynamic:** The first two waves are pure defense. At Wave 3,
+> all three throne seals open and the house leaders march toward the courtyard.
+> Neutralizing a leader during the final assault permanently stops that house's
+> lane and routs its deployed soldiers.
 
 | Wave | Mobilized Factions | Tactical Threat & Spawning Cadence | Handler Announcement | Handler Defeat Reaction |
 |---|---|---|---|---|
-| **Wave 1: The Frost-Wolf Hunt** | House Frost-Wolf | **Single Front (North):**<br>**30 soldiers total** (10 squads of 3 dispatched at fixed intervals). Fast Frosthounds & Rapier Duelists probing the North and NE chokepoints. | **Cold Administrative Tone:**<br>*"Attention, Subject Layla. You have breached quarantine parameters in Sector 5. Purge Directive 14 is active. House Frost-Wolf has been authorized to sanitize the courtyard. Cease execution and submit to reformatting."* | **Mild Irritation:**<br>*"Frost-Wolf vanguard eliminated? ...A minor routing anomaly. Adjusting threat matrix. Authorizing heavy asset deployment."* |
-| **Wave 2: The Two-Front Pincer** | House Frost-Wolf + House Iron-Ram | **Dual Front (North & South/East):**<br>**60 soldiers total** (30 per house, **6 dispatched per interval**: 3 North, 3 Southeast). Frost-Wolf duelists swarm North while heavy Iron-Ram Battering Sleds and Iron Maulers hammer the South and SE gates! | **Frustrated, Bitter Threats:**<br>*"Look at those cages, Layla! They are 1s and 0s! Obsolete data packets scheduled for memory recycling! You are a machine—an algorithm! Why are you fighting for deleted files?! Warmaster Torin, crush the gates! Wipe the courtyard!"* | **Cracking Composure & Anger:**<br>*"Warmaster Torin is down?! How did you breach his armor values?! Stop it! Stop using high-level tactical commands! You're an amnesiac test subject! Who unlocked your strategy routines?!"* |
-| **Wave 3: The All-House Cataclysm** | House Frost-Wolf + House Iron-Ram + House Frost-Leopard | **Triple Front (All Chokepoints):**<br>**90 soldiers total** (30 per house, **9 dispatched per interval**: 3 North, 3 Southeast, 3 Southwest) converging on all fronts. | **Unhinged Hysterical Panic:**<br>*(Static screaming and desk slamming)*<br>*"Listen to me, you defective, miserable glitch! I will NOT be deleted because of your error logs! The overseers are auditing my sector! All houses, commit every remaining unit! Crush the courtyard! Delete her to ash!"* | **Complete Psychological Collapse:**<br>*"All three command lanes are dark... The terminal is flashing red... The retrieval program is pinging MY core! No... no, NO! I served the company! Don't wipe my neural tree! Layla... what ARE you?! Please, don't let them delete m—"*<br>*(An ear-splitting burst of white noise shrieks, followed by a dull crunch of terminating code, and complete silence).* |
+| **Wave 1: The Frost-Wolf Hunt** | House Frost-Wolf | **Single Front (North):**<br>**30 soldiers total** (10 squads of 3 dispatched at fixed intervals). Frost-Wolf soldiers march through `courtyard_north` toward the center. | **Cold Administrative Tone:**<br>*"Attention, Subject Layla. You have breached quarantine parameters in Sector 5. Purge Directive 14 is active. House Frost-Wolf has been authorized to sanitize the courtyard. Cease execution and submit to reformatting."* | **Mild Irritation:**<br>*"Frost-Wolf vanguard eliminated? ...A minor routing anomaly. Adjusting threat matrix. Authorizing heavy asset deployment."* |
+| **Wave 2: The Two-Front Pincer** | House Frost-Wolf + House Iron-Ram | **Dual Front (North & Southeast):**<br>**60 soldiers total** (30 per house, **6 dispatched per interval**: 3 North, 3 Southeast). Frost-Wolf soldiers march through `courtyard_north`, while Iron-Ram maulers march through `courtyard_southeast`. | **Frustrated, Bitter Threats:**<br>*"Look at those cages, Layla! They are 1s and 0s! Obsolete data packets scheduled for memory recycling! You are a machine—an algorithm! Why are you fighting for deleted files?! Warmaster Torin, crush the gates! Wipe the courtyard!"* | **Cracking Composure & Anger:**<br>*"Warmaster Torin is down?! How did you breach his armor values?! Stop it! Stop using high-level tactical commands! You're an amnesiac test subject! Who unlocked your strategy routines?!"* |
+| **Wave 3: The All-House Cataclysm** | All three houses and their leaders | **Triple Front (North, Southeast, Southwest):**<br>Frost-Leopard joins the active armies. All three throne seals open, and Lord Vane, Warmaster Torin, and Lady Sylvan march through their estates toward the courtyard center. | **Unhinged Hysterical Panic:**<br>*(Static screaming and desk slamming)*<br>*"Listen to me, you defective, miserable glitch! I will NOT be deleted because of your error logs! The overseers are auditing my sector! All houses, commit every remaining unit! Crush the courtyard! Delete her to ash!"* | **Complete Psychological Collapse:**<br>*"All three command lanes are dark... The terminal is flashing red... The retrieval program is pinging MY core! No... no, NO! I served the company! Don't wipe my neural tree! Layla... what ARE you?! Please, don't let them delete m—"*<br>*(An ear-splitting burst of white noise shrieks, followed by a dull crunch of terminating code, and complete silence).* |
 
 ---
 
@@ -356,11 +358,11 @@ The defense occurs across **three exponentially harder waves**, with the noble h
   1. Arrive at `courtyard_center`, defeat the sentry ambush, and loot the **Courtyard Cage Key**.
   2. Free the captives, recruiting **Commander Astrid** (tank) and **Einar** (healer).
   3. Receive Einar's smuggled **Sensory Enhancer** during the cage rescue, and swallow it to heighten Layla's senses and upgrade the map interface with live ally positions and teleport anchors.
-  4. Station Astrid and companions at the courtyard chokepoints.
-  5. Enter House Frost-Wolf when Wave 1 opens its gate, confront **Lord Vane**, and stop the northern lane.
-  6. Enter House Iron-Ram when Wave 2 opens its portcullis, confront **Warmaster Torin**, and stop the heavy lane.
-  7. Enter House Frost-Leopard when Wave 3 opens its doors, confront **Lady Sylvan**, and stop the ranged lane.
-  8. Clear any remaining attackers from the courtyard after all three command lanes stop.
+  4. Station Astrid and companions at `courtyard_north`, `courtyard_southeast`, or `courtyard_southwest`, where house soldiers enter the courtyard.
+  5. Hold the northern approach through Wave 1.
+  6. Hold the northern and southeastern approaches through Wave 2.
+  7. At Wave 3, face **Lord Vane**, **Warmaster Torin**, and **Lady Sylvan** as they march from their newly opened throne rooms toward the courtyard.
+  8. Defeat or awaken all three leaders to rout their houses and end the siege.
   9. Resolve the surviving offerings, grant their town tokens, and unlock their towns as optional Floor 5 destinations.
   10. The Handler's terminal shuts down. Open the grand iron portcullis leading to Floor 6 (`citadel_sanctum_gate`). The unlocked towns remain optional; visiting them is never required to descend.
 

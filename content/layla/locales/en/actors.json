@@ -3719,7 +3719,7 @@
   {
     "id": "lord_vane",
     "name": "Lord Vane",
-    "room_id": "frost_wolf_throne",
+    "room_id": "",
     "level": 12,
     "initial_stats": {
       "hp": 70,
@@ -3794,7 +3794,7 @@
   {
     "id": "warmaster_torin",
     "name": "Warmaster Torin",
-    "room_id": "iron_ram_throne",
+    "room_id": "",
     "level": 12,
     "initial_stats": {
       "hp": 85,
@@ -3869,7 +3869,7 @@
   {
     "id": "lady_sylvan",
     "name": "Lady Sylvan",
-    "room_id": "frost_leopard_throne",
+    "room_id": "",
     "level": 12,
     "initial_stats": {
       "hp": 60,

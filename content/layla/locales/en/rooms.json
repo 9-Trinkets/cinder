@@ -11798,7 +11798,7 @@
           "dais"
         ],
         "menu_label": "North to the Howling Dais",
-        "requires_story_var": ""
+        "requires_story_var": "citadel_final_wave_open"
       }
     ],
     "descriptions": []
@@ -11835,32 +11835,6 @@
         ],
         "menu_label": "South to Wolfguard Muster",
         "requires_story_var": ""
-      },
-      {
-        "room_id": "throne_passage_northeast",
-        "label": "East through Secret Conduit",
-        "aliases": [
-          "east",
-          "e",
-          "conduit",
-          "secret",
-          "passage"
-        ],
-        "menu_label": "East through Secret Conduit",
-        "requires_story_var": "iron_ram_access_open"
-      },
-      {
-        "room_id": "throne_passage_northwest",
-        "label": "West through Secret Aqueduct",
-        "aliases": [
-          "west",
-          "w",
-          "aqueduct",
-          "secret",
-          "passage"
-        ],
-        "menu_label": "West through Secret Aqueduct",
-        "requires_story_var": "frost_leopard_access_open"
       }
     ],
     "descriptions": []
@@ -11958,7 +11932,7 @@
           "anvil"
         ],
         "menu_label": "Southeast to the Anvil Throne",
-        "requires_story_var": ""
+        "requires_story_var": "citadel_final_wave_open"
       }
     ],
     "descriptions": []
@@ -11995,32 +11969,6 @@
         ],
         "menu_label": "Northwest to Bastion Muster",
         "requires_story_var": ""
-      },
-      {
-        "room_id": "throne_passage_northeast",
-        "label": "North through Secret Conduit",
-        "aliases": [
-          "north",
-          "n",
-          "conduit",
-          "secret",
-          "passage"
-        ],
-        "menu_label": "North through Secret Conduit",
-        "requires_story_var": "iron_ram_access_open"
-      },
-      {
-        "room_id": "throne_passage_south",
-        "label": "Southwest through Secret Flue",
-        "aliases": [
-          "southwest",
-          "sw",
-          "flue",
-          "secret",
-          "passage"
-        ],
-        "menu_label": "Southwest through Secret Flue",
-        "requires_story_var": "frost_leopard_access_open"
       }
     ],
     "descriptions": []
@@ -12118,7 +12066,7 @@
           "opal"
         ],
         "menu_label": "Southwest to the Opal Throne",
-        "requires_story_var": ""
+        "requires_story_var": "citadel_final_wave_open"
       }
     ],
     "descriptions": []
@@ -12155,143 +12103,6 @@
         ],
         "menu_label": "Northeast to Shadow Promenade",
         "requires_story_var": ""
-      },
-      {
-        "room_id": "throne_passage_south",
-        "label": "East through Secret Flue",
-        "aliases": [
-          "east",
-          "e",
-          "flue",
-          "secret",
-          "passage"
-        ],
-        "menu_label": "East through Secret Flue",
-        "requires_story_var": "frost_leopard_access_open"
-      },
-      {
-        "room_id": "throne_passage_northwest",
-        "label": "North through Secret Aqueduct",
-        "aliases": [
-          "north",
-          "n",
-          "aqueduct",
-          "secret",
-          "passage"
-        ],
-        "menu_label": "North through Secret Aqueduct",
-        "requires_story_var": "frost_leopard_access_open"
-      }
-    ],
-    "descriptions": []
-  },
-  {
-    "id": "throne_passage_northeast",
-    "title": "The Glacial Conduit",
-    "summary": "A hidden subterranean maintenance conduit bored directly through the mountain bedrock, bypassing the outer ramparts. Frost-caked copper brine pipes run along the arched walls, linking the secluded undercrofts of House Frost-Wolf and House Iron-Ram.",
-    "inspect_text": "Crushed gravel and hoarfrost crunch underfoot. The air is intensely cold and quiet, insulated deep inside the cliffside rock far from the wind of the courtyard.",
-    "allow_rest": false,
-    "features": [],
-    "exits": [
-      {
-        "room_id": "frost_wolf_throne",
-        "label": "Northwest to the Howling Dais",
-        "aliases": [
-          "northwest",
-          "nw",
-          "throne",
-          "frost-wolf",
-          "wolf"
-        ],
-        "menu_label": "Northwest to the Howling Dais",
-        "requires_story_var": "iron_ram_access_open"
-      },
-      {
-        "room_id": "iron_ram_throne",
-        "label": "South to the Anvil Throne",
-        "aliases": [
-          "south",
-          "s",
-          "throne",
-          "iron-ram",
-          "ram"
-        ],
-        "menu_label": "South to the Anvil Throne",
-        "requires_story_var": "iron_ram_access_open"
-      }
-    ],
-    "descriptions": []
-  },
-  {
-    "id": "throne_passage_south",
-    "title": "The Under-Keep Flue",
-    "summary": "A secret service gallery running deep beneath the southern fortress foundation. Warm, insulated conduits and heavy hydraulic pipes run along the basalt floor, covertly linking the Bastion of Iron-Ram to the private sanctum of House Frost-Leopard.",
-    "inspect_text": "The low ceiling is blackened with soot, and hot air hums through the valves. This secret bypass allows quiet movement between the two southern estates without crossing the sentry-guarded main gates.",
-    "allow_rest": false,
-    "features": [],
-    "exits": [
-      {
-        "room_id": "iron_ram_throne",
-        "label": "Northeast to the Anvil Throne",
-        "aliases": [
-          "northeast",
-          "ne",
-          "throne",
-          "iron-ram",
-          "ram"
-        ],
-        "menu_label": "Northeast to the Anvil Throne",
-        "requires_story_var": "frost_leopard_access_open"
-      },
-      {
-        "room_id": "frost_leopard_throne",
-        "label": "Northwest to the Opal Throne",
-        "aliases": [
-          "northwest",
-          "nw",
-          "throne",
-          "frost-leopard",
-          "leopard"
-        ],
-        "menu_label": "Northwest to the Opal Throne",
-        "requires_story_var": "frost_leopard_access_open"
-      }
-    ],
-    "descriptions": []
-  },
-  {
-    "id": "throne_passage_northwest",
-    "title": "The Shadow Aqueduct",
-    "summary": "An ancient concealed aqueduct running behind false stone murals along the western precipice. Freezing meltwater rushes along a narrow stone trough beside a slick maintenance catwalk, secretly connecting House Frost-Leopard and House Frost-Wolf.",
-    "inspect_text": "The sound of rushing water echoes between the stone slabs. Siphon valves and maintenance ladders lead up into secret crawlspaces behind the high thrones.",
-    "allow_rest": false,
-    "features": [],
-    "exits": [
-      {
-        "room_id": "frost_leopard_throne",
-        "label": "South to the Opal Throne",
-        "aliases": [
-          "south",
-          "s",
-          "throne",
-          "frost-leopard",
-          "leopard"
-        ],
-        "menu_label": "South to the Opal Throne",
-        "requires_story_var": "frost_leopard_access_open"
-      },
-      {
-        "room_id": "frost_wolf_throne",
-        "label": "Northeast to the Howling Dais",
-        "aliases": [
-          "northeast",
-          "ne",
-          "throne",
-          "frost-wolf",
-          "wolf"
-        ],
-        "menu_label": "Northeast to the Howling Dais",
-        "requires_story_var": "frost_leopard_access_open"
       }
     ],
     "descriptions": []

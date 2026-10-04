@@ -1007,21 +1007,6 @@
         "y": 21.0
       },
       {
-        "room_id": "throne_passage_northeast",
-        "x": 24.5,
-        "y": 8.0
-      },
-      {
-        "room_id": "throne_passage_south",
-        "x": 12.0,
-        "y": 24.5
-      },
-      {
-        "room_id": "throne_passage_northwest",
-        "x": -0.5,
-        "y": 8.0
-      },
-      {
         "room_id": "citadel_sanctum_gate",
         "x": 12.0,
         "y": 28.0

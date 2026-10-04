@@ -28,9 +28,14 @@
         {
           "conditions": [
             {
-              "path": "actor_id",
-              "operator": "equal",
-              "value": "lord_vane"
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": ["house_head"]
+            },
+            {
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": ["frost_wolf"]
             }
           ],
           "payload_template": {
@@ -42,9 +47,14 @@
         {
           "conditions": [
             {
-              "path": "actor_id",
-              "operator": "equal",
-              "value": "warmaster_torin"
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": ["house_head"]
+            },
+            {
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": ["iron_ram"]
             }
           ],
           "payload_template": {
@@ -56,9 +66,14 @@
         {
           "conditions": [
             {
-              "path": "actor_id",
-              "operator": "equal",
-              "value": "lady_sylvan"
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": ["house_head"]
+            },
+            {
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": ["frost_leopard"]
             }
           ],
           "payload_template": {

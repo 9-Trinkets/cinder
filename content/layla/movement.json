@@ -189,6 +189,36 @@
           "forbidden_story_var": "frost_leopard_lane_stopped"
         }
       ]
+    },
+    "lord_vane": {
+      "target_rules": [
+        {
+          "target_room_id": "courtyard_center",
+          "target_behavior": "move",
+          "required_story_var": "citadel_final_wave_open",
+          "forbidden_story_var": "frost_wolf_lane_stopped"
+        }
+      ]
+    },
+    "warmaster_torin": {
+      "target_rules": [
+        {
+          "target_room_id": "courtyard_center",
+          "target_behavior": "move",
+          "required_story_var": "citadel_final_wave_open",
+          "forbidden_story_var": "iron_ram_lane_stopped"
+        }
+      ]
+    },
+    "lady_sylvan": {
+      "target_rules": [
+        {
+          "target_room_id": "courtyard_center",
+          "target_behavior": "move",
+          "required_story_var": "citadel_final_wave_open",
+          "forbidden_story_var": "frost_leopard_lane_stopped"
+        }
+      ]
     }
   }
 }
