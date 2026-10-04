@@ -94,9 +94,11 @@ is the resolution of that question.
    of things Layla will one day deploy.
 4. **Control vs. freedom (the spine).** The corporation's method is control:
    reprogramming, rings, binding, commands. The world Layla moves through keeps
-   offering her the opposite: the elf army that *chooses* to let her pass, the
-   elemental that is *released*, the voice in her memory that *taught* rather
-   than commanded. Layla's tenderness toward her converted allies is this theme
+    offering her the opposite: the elf army that *chooses* to let her pass, the
+   elemental that is *released*, the many voices in her memory that *taught*
+   rather than commanded — opponents and teachers from her match-history life,
+   real people whose hands she still remembers, even though she misreads them
+   as a single childhood. Layla's tenderness toward her converted allies is this theme
    at its quietest — she does not know she is being kind to a mirror of herself.
 5. **Silence and competence.** Layla is unsentimental, capable, and alone. She
    treats the dark with caution and competence, not fear. This is partly
@@ -155,12 +157,16 @@ yours." And a memory surfaces:
 
 > *The chalk in her hand and the magic circuits scored across the floor are the
 > same thing — lines. A life she almost forgot rises up to meet her: the weight
-> of a smooth stone, the grid of a Go board beneath her hands, and a voice that
-> taught her that capture is just surrounding... She has played it before.*
+> of a smooth stone, the grid of a Go board beneath her hands, and voices, more
+> than one, telling her in different rooms across different years that capture
+> is just surrounding... She has played it before.*
 
-The first explicit confirmation that **Layla is a Go player** — and that
-someone (a trainer? an opponent? a handler?) taught her. The suppressed life
-is beginning to leak through the reprogramming.
+The first explicit confirmation that **Layla is a Go player** — taught not by
+one master but by many human opponents across many games. Those matches are her
+training data, and at this point in the story she still believes herself human,
+so she experiences them as her own childhood: different rooms, different hands,
+none with a face. The suppressed life is beginning to leak through the
+reprogramming.
 
 ### Level 2 — The Underground Forest (Elf Chess Army)
 The floor-by-floor design for level 2 — cast, chess metaphor, the leaf equipment set, and room feature architectures — lives in **`docs/layla/floor2_plan.md`**. What follows is the storyline canon this level carries.
@@ -265,8 +271,11 @@ In this kingdom, people and monsters have been brainwashed into fixed roles (Pea
   3. *Resource Economy:* Geothermal steam and metals mined by villagers on Floor 4, powering the kingdom's machines, boilers, and infrastructure.
   4. *Inter-Floor Travel:* Heavily guarded **Teleportation Gates** in military camps, watched by noble guards and temple priests. Layla's **Teleportation Sigil** lets her bypass these barriers to solve key quests.
 - **Remaining Narrative Open Threads:**
-- **Who was the "voice that taught her capture is just surrounding"?** A
-  trainer, a human opponent, an earlier handler? Unnamed. Intended to pay off in
+- **Whose were the hands and voices in her Go memory?** Not one teacher but many
+  human opponents from her match-history life — her training data, which she
+  experiences as her own childhood since she still believes herself human.
+  The faces never come. Whether any single one of them matters — what the
+  corporation kept of them, and why — is unwritten. Intended to pay off in
   the endgame only if the story earns it.
 - **Which life is "the old fire" built from?** The board's history — who sealed
   the elemental there, and whose memory it holds — is unwritten. The board is
