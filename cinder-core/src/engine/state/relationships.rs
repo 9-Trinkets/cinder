@@ -59,6 +59,8 @@ impl WorldState {
         self.set_relationship(actor_id, relationship);
         if stance == ActorStance::Allied {
             self.initialize_party_order(content, actor_id);
+        } else if !follows_player {
+            self.party_orders.remove(actor_id);
         }
     }
 

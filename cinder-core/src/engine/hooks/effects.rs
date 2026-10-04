@@ -33,8 +33,19 @@ pub(crate) enum WorldHookEffect {
         #[serde(default)]
         messages: Vec<String>,
     },
+    /// Sets an actor's stance and follower state directly.
+    SetActorStance {
+        actor_id: String,
+        stance: ActorStance,
+        #[serde(default)]
+        follows_player: bool,
+        #[serde(default)]
+        messages: Vec<String>,
+    },
     /// Sets the stance of matching living actors carrying `tag`.
     SetStanceByTag(SetStanceByTagEffect),
+    /// Moves an actor to a designated room.
+    MoveActor { actor_id: String, room_id: String },
     /// Sets a story variable (e.g. a flag marking a boss as defeated).
     SetStoryVar { key: String, value: String },
     /// Grants a declared skill to an actor. Omitted actor id targets the player.
@@ -147,8 +158,27 @@ impl WorldHookEffect {
                     lines.as_deref_mut(),
                 );
             }
+            WorldHookEffect::SetActorStance {
+                actor_id,
+                stance,
+                follows_player,
+                messages,
+            } => {
+                self.apply_set_actor_stance(
+                    state,
+                    content,
+                    actor_id,
+                    *stance,
+                    *follows_player,
+                    messages,
+                    lines.as_deref_mut(),
+                );
+            }
             WorldHookEffect::SetStanceByTag(effect) => {
                 self.apply_set_stance_by_tag(state, content, effect, lines.as_deref_mut());
+            }
+            WorldHookEffect::MoveActor { actor_id, room_id } => {
+                state.set_actor_room(actor_id, room_id);
             }
             WorldHookEffect::SetStoryVar { key, value } => {
                 self.apply_set_story_var(state, content, key, value, lines.as_deref_mut());
@@ -213,7 +243,28 @@ impl WorldHookEffect {
         messages: &[String],
         lines: Option<&mut NarrativeLines>,
     ) {
-        state.set_actor_stance(content, actor_id, ActorStance::Allied, follows_player);
+        self.apply_set_actor_stance(
+            state,
+            content,
+            actor_id,
+            ActorStance::Allied,
+            follows_player,
+            messages,
+            lines,
+        );
+    }
+
+    fn apply_set_actor_stance(
+        &self,
+        state: &mut WorldState,
+        content: &ContentPack,
+        actor_id: &str,
+        stance: ActorStance,
+        follows_player: bool,
+        messages: &[String],
+        lines: Option<&mut NarrativeLines>,
+    ) {
+        state.set_actor_stance(content, actor_id, stance, follows_player);
         if let Some(lines) = lines {
             let actor_name = content
                 .actor(actor_id)

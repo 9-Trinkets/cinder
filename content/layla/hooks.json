@@ -956,9 +956,33 @@
             }
           ],
           "payload_template": {
-            "kind": "convert_actor_to_ally",
+            "kind": "set_actor_stance",
             "actor_id": "zayd",
+            "stance": "neutral",
             "follows_player": false
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "village_south_1"
+            },
+            {
+              "path": "story_vars.zayd_rescued",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "story_vars.zayd_safe",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "move_actor",
+            "actor_id": "zayd",
+            "room_id": "village_south_1"
           }
         },
         {

@@ -112,13 +112,13 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 
 **Beat stages:** `mq_hear_gate` → `mq_find_scroll` → `mq_use_teleport_platform` (planned stages; `beat_objectives.json` authoring is the next pass — see [Implementation Status & Next Steps](#7-implementation-status--next-steps)).
 
-### Side Quest: "The Eighth Signature"
+### Side Quest: "Save the Boy Zayd"
 - **The Boy (Zayd, age 11):**
   - The village believes Zayd lost both parents in a steam drill collapse years ago. With no family left, the village took turns looking after him: Yasmin gave him bread, miners taught him the machinery, Tariq let him fiddle with gears, and the elders looked the other way when he played pranks. Only Sakhra, the guardian golem, was *always* beside him.
   - He was wild, loud, and constantly climbed on steam pipes and threw pebbles at the soldiers. But he had a loyal heart, always carrying heavy coal buckets for the elderly and tending to injured stray animals. He still brings his lamp to the old golem and talks to it about his parents.
 - **The Tragedy:**
   - The temple priests sent an order demanding one youth as an **offering** for the rituals above.
-  - Paralyzed with fear for their own children, the village council made a cowardly decision: they gave up Zayd, rationalizing that *"he has no mother to cry for him."*
+  - Paralyzed with fear for their own children, the village elders made a cowardly decision: they gave up Zayd, rationalizing that *"he has no mother to cry for him."*
   - The moment Malik's soldiers dragged Zayd away in brass shackles, heavy guilt crushed the village. Nobody can look at one another without shame.
 - **Rescuing Zayd:**
   - Zayd is locked in the suspended `steam_prison_cage`, awaiting the priest's transport wagon (`priest_harun`), guarded by `garrison_warden`.

@@ -532,7 +532,7 @@ fn floor4_quests_activation_via_speech() {
     );
     assert_eq!(
         objectives_after_rashid[0].quest_title.as_deref(),
-        Some("The Eighth Signature")
+        Some("Save the Boy Zayd")
     );
     assert_eq!(
         objectives_after_rashid[0].quest_kind.as_deref(),
@@ -974,6 +974,15 @@ fn floor4_zayd_rescue_and_village_escort() {
         "Zayd must stop following once safe in the village"
     );
     assert_eq!(
+        final_state.relationship("zayd").stance,
+        cinder_core::engine::state::ActorStance::Neutral,
+        "Zayd must return to Neutral stance once safe in the village"
+    );
+    assert!(
+        !final_state.is_party_member(&pack, "zayd"),
+        "Zayd must leave Layla's party once his quest concludes"
+    );
+    assert_eq!(
         final_state.actor_current_room_id(&pack, "zayd"),
         "village_south_1",
         "Zayd must stay behind in the Elder's quarters rather than follow Layla on"
@@ -982,6 +991,20 @@ fn floor4_zayd_rescue_and_village_escort() {
         final_state.actor_has_item("player", "zayd-lantern")
             || final_state.has_item("zayd-lantern"),
         "Player must now possess zayd-lantern"
+    );
+
+    // Walking out of the Elder's quarters confirms Zayd remains behind with the Elder
+    let _ = runtime.run_turn("west").expect("walk to square");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_square");
+    let state_outside = runtime.export_state().unwrap();
+    assert_eq!(
+        state_outside.actor_current_room_id(&pack, "zayd"),
+        "village_south_1",
+        "Zayd must remain with the Elder in village_south_1 when Layla moves"
+    );
+    assert!(
+        !state_outside.is_party_member(&pack, "zayd"),
+        "Zayd must remain out of the party after Layla leaves the room"
     );
 
     // The village mood shift is a silent transformation, so it must not leak

@@ -24,6 +24,12 @@ impl WorldState {
             .unwrap_or_default()
     }
 
+    /// Sets the actor's current room location override.
+    pub fn set_actor_room(&mut self, actor_id: &str, room_id: &str) {
+        self.actor_room_overrides
+            .insert(actor_id.to_string(), room_id.to_string());
+    }
+
     /// Whether `actor_id` is physically present in `room_id` right now.
     /// The single presence predicate: resolves the actor's current room and
     /// returns `false` for offstage actors, so no caller relies on the

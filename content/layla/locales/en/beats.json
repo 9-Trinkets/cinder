@@ -475,7 +475,7 @@
     {
       "id": "sq_hear_sacrifice",
       "summary": "",
-      "beat_note": "Layla hasn't yet heard the dark truth about the village council surrendering the orphan boy Zayd as a sacrifice to the garrison.",
+      "beat_note": "Layla hasn't yet heard the dark truth about the village surrendering the orphan boy Zayd as an offering to the garrison.",
       "advance_signals": [
         "spoken_to:elder_rashid",
         "spoken_to:yasmin",
@@ -489,11 +489,11 @@
     {
       "id": "sq_save_zayd",
       "quest_id": "save_zayd",
-      "quest_title": "The Eighth Signature",
+      "quest_title": "Save the Boy Zayd",
       "quest_kind": "side",
-      "summary": "Rashid has not stopped crying, and nobody in the village will say why.",
-      "beat_note": "Elder Rashid and Yasmin revealed that the village council offered Zayd up as a sacrifice. Layla needs to find the boy and rescue him from his iron cage.",
-      "update_message": "Find out what the council handed over, and take it back.",
+      "summary": "The garrison dragged an orphan boy named Zayd away in chains to be used as an offering.",
+      "beat_note": "Elder Rashid and Yasmin revealed that the village gave Zayd up as an offering. Layla needs to find the boy and rescue him from his iron cage.",
+      "update_message": "Infiltrate the fortress and free Zayd from the cage before the transport wagon ships him away.",
       "advance_signals": [
         "spoken_to:zayd",
         "zayd_freed",
@@ -515,7 +515,7 @@
     {
       "id": "sq_return_zayd",
       "quest_id": "save_zayd",
-      "quest_title": "The Eighth Signature",
+      "quest_title": "Save the Boy Zayd",
       "quest_kind": "side",
       "summary": "Get him back down the stairs.",
       "beat_note": "Zayd is rescued from his cage. Escort him back to the safety of the worker village.",
