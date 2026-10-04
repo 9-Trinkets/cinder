@@ -137,8 +137,14 @@ recalled skill:
 - **Teleport sigil** (`teleport-sigil`) — a double ring intersected by cross-directional
   axes that displaces matter instantly to a linked anchor or across short spatial
   barriers. *As a master power: instantaneous movement and breach of fortified sectors.*
-  Learned on Floor 4 from the **teleport scroll** lifted out of Commander Malik's safe
-  (`item.teleport_scroll_read`).
+   Learned on Floor 4 from the **teleport scroll** lifted out of Commander Malik's safe
+   (`item.teleport_scroll_read`).
+
+**How learning a sigil feels.** A new mark is never studied — it is remembered.
+Reading its scroll sends heat through the back of Layla's hand, and the lines
+settle in (`item.scroll_read.learned`: *"The lines settle into your hand"*).
+Her hands simply know the shape afterward the way they know how to fight.
+Later powers (e.g. the Floor 6 revival sigil) arrive the same way.
 
 ### Level 1 — The Goblin Cave (Go)
 The floor-by-floor design for level 1 — cast and power economy (goblins, golems,
