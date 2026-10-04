@@ -770,6 +770,31 @@ fn floor5_guard_blocks_wave_soldiers_at_the_north_approach() {
         "a living guard should stop the raider at the north approach"
     );
 
+    let mut defeated_raider = blocked.clone();
+    defeated_raider
+        .actor_stats
+        .entry(raider_id.clone())
+        .or_default()
+        .insert("hp".to_string(), 0);
+    defeated_raider.relationships.remove(&raider_id);
+    let runtime =
+        CinderRuntime::from_state(pack.clone(), defeated_raider, false).expect("runtime creates");
+    let defeated_tick = runtime.run_tick().expect("defeated raider tick runs");
+    let defeated = runtime.export_state().expect("export defeated state");
+    assert_eq!(
+        defeated
+            .actor_room_overrides
+            .get(&raider_id)
+            .map(String::as_str),
+        Some("courtyard_north"),
+        "a defeated raider must not resume its target-rule movement"
+    );
+    assert!(
+        !defeated_tick.text().contains("steps away"),
+        "defeated raiders must not narrate movement: {}",
+        defeated_tick.text()
+    );
+
     let mut defeated_guard = blocked;
     defeated_guard
         .actor_stats
@@ -879,7 +904,6 @@ fn floor5_all_three_stopped_lanes_end_the_siege() {
     let reward_text = narrative_text(&settlement.lines);
     assert_eq!(state.story_vars.get("citadel_siege_complete"), Some("true"));
     assert_eq!(state.story_vars.get("five_offerings_survivors"), Some("5"));
-    assert_eq!(state.story_vars.get("six_town_accord"), Some("true"));
     for (received_var, unlock_var, token_id) in [
         (
             "town_salt_reach_token_received",
@@ -914,15 +938,23 @@ fn floor5_all_three_stopped_lanes_end_the_siege() {
             "missing survivor token {token_id}"
         );
     }
-    assert!(
-        reward_text.contains("Six-Town Accord"),
-        "perfect survival should announce the accord: {reward_text}"
-    );
-    assert!(reward_text.contains("Salt Reach will remember"));
-    assert!(reward_text.contains("welcomed as family"));
-    assert!(reward_text.contains("return that kindness"));
-    assert!(reward_text.contains("warmth and medicine"));
-    assert!(reward_text.contains("owes you more than words"));
+    for expected in [
+        "Nivi Olsen: You stood between us",
+        "Nivi Olsen gives you the Salt Reach Teleportation Token.",
+        "Eliška Nováková: You gave us back a future.",
+        "Eliška Nováková gives you the Glassbank Teleportation Token.",
+        "Amaru Quispe: You held the line",
+        "Amaru Quispe gives you the Woolcross Teleportation Token.",
+        "Abeni Adeyemi: You kept hope alive",
+        "Abeni Adeyemi gives you the Greenrest Teleportation Token.",
+        "Chen Yu-xin: You broke the command",
+        "Chen Yu-xin gives you the Brass Yard Teleportation Token.",
+    ] {
+        assert!(
+            reward_text.contains(expected),
+            "missing structured survivor reward line {expected:?}: {reward_text}"
+        );
+    }
 
     apply_events(&mut state, &pack, &[]);
     assert!(
@@ -982,7 +1014,6 @@ fn floor5_survivor_rewards_unlock_only_living_civilians_towns() {
         state.story_vars.get("town_brass_yard_token_received"),
         Some("true")
     );
-    assert_eq!(state.story_vars.get("six_town_accord"), None);
     assert!(!state.has_item("salt-reach-transit-seal"));
     assert!(!state.has_item("glassbank-transit-prism"));
     assert!(state.has_item("woolcross-transit-knot"));
@@ -991,7 +1022,7 @@ fn floor5_survivor_rewards_unlock_only_living_civilians_towns() {
 
     let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
     let used = runtime
-        .run_turn("use woolcross transit knot")
+        .run_turn("use woolcross teleportation token")
         .expect("token use resolves");
     assert!(
         used.text()

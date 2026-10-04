@@ -293,7 +293,7 @@ const TranscriptLine = memo(function TranscriptLine({
 
   // 6. In-Room Character Dialogue (e.g. "Bess: ...", "Daichi (to Ren): ...", "garrison sentry (to Layla): ...")
   const dialogueMatch = line.text.match(
-    /^([a-zA-Z\u4e00-\u9fa5][a-zA-Z0-9_\s.'-\u4e00-\u9fa5]{0,31}?)(?:\s*(?:\(\s*(?:to\s+)?([^)]+)\)|（\s*(?:對\s*)?([^）]+)）))?\s*[:：]\s*(.*)$/s
+    /^([\p{L}][\p{L}\p{N}_\s.'-]{0,63}?)(?:\s*(?:\(\s*(?:to\s+)?([^)]+)\)|（\s*(?:對\s*)?([^）]+)）))?\s*[:：]\s*(.*)$/su
   )
   if (dialogueMatch) {
     const speaker = dialogueMatch[1].trim()

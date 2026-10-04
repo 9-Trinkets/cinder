@@ -27,9 +27,9 @@ Implemented:
 - leader neutralization now routs that house's deployed soldiers, and stopping
   all three command lanes ends the siege and directs Layla back to
   `courtyard_center`;
-- once Layla returns, each survivor thanks her and presents their permanent
-  town token; the conclusion completes or preserves the failed protection
-  quest and recognizes the Six-Town Accord when all five survive;
+- once Layla returns, each survivor thanks her and presents their town's
+  teleportation token; the conclusion completes or preserves the failed
+  protection quest;
 - Salt Reach, Glassbank, Woolcross, Greenrest, and Brass Yard now have initial
   teleport landing hubs as optional Floor 5 map extensions, each registered by
   consuming its survivor token;
@@ -236,11 +236,11 @@ route to optional allies and equipment on later floors.
 
 | Civilian | Home | Character | Survival token |
 |---|---|---|---|
-| **Nivi Olsen** | Salt Reach | A supply clerk who stays organized under pressure and keeps track of dwindling food and blankets. | **Salt Reach Transit Seal**, a soapstone-and-brass routing badge |
-| **Eliška Nováková** | Glassbank | A signal-lamp tester with a patient manner and a sharp eye for faults in machinery. | **Glassbank Transit Prism**, a cobalt glass routing key |
-| **Amaru Quispe** | Woolcross | A young loom mechanic who protects the other captives even when frightened. | **Woolcross Transit Knot**, woven copper wire around a ceramic routing core |
-| **Abeni Adeyemi** | Greenrest | An experienced grower who helps Einar stabilize wounded defenders. | **Greenrest Transit Seed**, a green enamel routing disk |
-| **Chen Yu-xin** | Brass Yard | An apprentice machinist who studies every lock, pump, and damaged mechanism she sees. | **Brass Yard Transit Gear**, a toothed brass routing coin |
+| **Nivi Olsen** | Salt Reach | A supply clerk who stays organized under pressure and keeps track of dwindling food and blankets. | **Salt Reach Teleportation Token**, made from soapstone and brass |
+| **Eliška Nováková** | Glassbank | A signal-lamp tester with a patient manner and a sharp eye for faults in machinery. | **Glassbank Teleportation Token**, made from cobalt glass |
+| **Amaru Quispe** | Woolcross | A young loom mechanic who protects the other captives even when frightened. | **Woolcross Teleportation Token**, made from woven copper and ceramic |
+| **Abeni Adeyemi** | Greenrest | An experienced grower who helps Einar stabilize wounded defenders. | **Greenrest Teleportation Token**, made from green enamel |
+| **Chen Yu-xin** | Brass Yard | An apprentice machinist who studies every lock, pump, and damaged mechanism she sees. | **Brass Yard Teleportation Token**, made from toothed brass |
 
 After the siege, Layla must return to `courtyard_center`. Each survivor
 personally thanks her and gives her their town token. Using a token consumes it
@@ -249,10 +249,6 @@ future travel does not require another token. Each registered town is an
 optional extension of the Floor 5 map rather than a separate floor. Layla can
 visit these towns before descending to Floor 6 to find local items, charm
 opportunities, named awakenings, and recruitable allies.
-
-If all five survive, their trust joins Deepwell's known anchor to complete the
-**Six-Town Accord**. Layla still chooses when to consume each token and register
-its route.
 
 ---
 
@@ -301,7 +297,7 @@ civilians still grant their tokens even after the protection quest has failed.
 
 | Survivors | Outcome |
 |---:|---|
-| **5** | Perfect protection; receive all five tokens and complete the Six-Town Accord |
+| **5** | Perfect protection; receive all five town teleportation tokens |
 | **4** | Protection quest completed; receive four town tokens |
 | **3** | Protection quest completed narrowly; receive three town tokens |
 | **2** | Protection quest failed; receive two town tokens |
@@ -375,7 +371,7 @@ The defense occurs across **three exponentially harder waves**, with the noble h
 - **Completion:** Three or more civilians survive.
 - **Failure:** The third civilian dies. Mark the quest failed immediately, but continue the siege normally.
 - **Individual rewards:** Every survivor grants their town's consumable registration token, whether the quest completed or failed. Consuming it permanently adds that town to Layla's teleport destinations.
-- **Perfect reward:** If all five survive, recognize the **Six-Town Accord**. Each route becomes available when Layla consumes its token.
+- **Perfect reward:** If all five survive, Layla receives all five town teleportation tokens. Each route becomes available when she consumes its token.
 
 ### Side Quest: "Heirloom Banners of the Citadel"
 - **Trigger:** Inspect the crest banners inside each house estate after defeating or awakening its leader.

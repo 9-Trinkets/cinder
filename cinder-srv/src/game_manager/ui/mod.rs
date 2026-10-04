@@ -117,7 +117,13 @@ pub(super) fn build_ui_snapshot(
     let exit_labels = runtime
         .current_room_exit_labels()
         .map_err(|e| e.to_string())?;
-    let interactable_labels = build_interactable_labels(&look_options, &exit_labels);
+    let inventory_labels = state
+        .player_inventory
+        .keys()
+        .filter_map(|item_id| content.item(item_id).map(|item| item.label.clone()))
+        .collect::<Vec<_>>();
+    let interactable_labels =
+        build_interactable_labels(&look_options, &exit_labels, &inventory_labels);
 
     let bar_ids: Vec<&str> = action_bar_actions
         .iter()

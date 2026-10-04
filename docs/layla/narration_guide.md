@@ -120,7 +120,7 @@ Quests in Layla structure player progression and provide narrative weight across
 | Quest Tier | UI Badge | Purpose & Scope | Player Expectation |
 |---|---|---|---|
 | **Main** (`quest_kind: "main"`) | Gold `MAIN` | Core progression spine. Mandatory objectives required to unlock routes, solve floor obstacles, and descend to deeper levels. | **Always active.** Once unlocked on Floor 4, the player must always have an active main quest step in their feed so they are never directionless. |
-| **Side** (`quest_kind: "side"`) | Iris `SIDE` | Optional narrative arcs rooted in local communities, moral quandaries, and companion stories (e.g. *Save the Boy Zayd*, *The Five Offerings*). | Rewarded with companions, powerful gear, lore revelations, or town transit seals. |
+| **Side** (`quest_kind: "side"`) | Iris `SIDE` | Optional narrative arcs rooted in local communities, moral quandaries, and companion stories (e.g. *Save the Boy Zayd*, *The Five Offerings*). | Rewarded with companions, powerful gear, lore revelations, or town teleportation tokens. |
 | **Secret** (`quest_kind: "secret"`) | Pine `SECRET` | Hidden trials, secret awakening rituals, or alternative non-violent pathways discovered through experimentation, exploration, or pacifism (e.g. *Trial of the Silent Path*, *Return the Light*). | Invisible until triggered by player initiative; rewards mastery, emergent secrets, and unusual choices. |
 
 ### 2. Onboarding on Floor 4

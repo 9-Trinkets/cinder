@@ -1,11 +1,12 @@
 use crate::content::types::{AdvanceCondition, AdvanceEffect, ContentPack};
-use crate::engine::narrative::NarrativeLine;
+use crate::engine::narrative::{NarrativeLine, NarrativeLines};
 use crate::engine::state::{
     GamePhase, SpawnActorConfig, SpawnActorOutcome, VariableStore, WorldState,
 };
 use crate::engine::turn_policies::clear_inactive_objective_state;
 
-use super::handlers::rendered_message_line;
+use super::handlers::{handle_item_transferred, rendered_message_line};
+use super::observation::render_actor_speech_line;
 
 pub(crate) fn advance_objective_for_signal(
     state: &mut WorldState,
@@ -213,11 +214,35 @@ pub(super) fn apply_stage_effects(
                     state
                         .story_vars
                         .set_unchecked(&reward.unlock_story_var, "true");
-                    if !state.has_item(&reward.item_id) {
-                        state.add_item(&reward.item_id);
-                    }
                     if newly_unlocked {
-                        push_effect_message(content, &reward.message, messages);
+                        let actor_name = state
+                            .actor_display_name(content, &reward.actor_id)
+                            .unwrap_or(&reward.actor_id);
+                        if let Some(speech) = content.render_message(&reward.message, &[])
+                            && !speech.trim().is_empty()
+                        {
+                            messages.push(NarrativeLine::narration(render_actor_speech_line(
+                                content,
+                                &actor_name,
+                                None,
+                                &speech,
+                            )));
+                        }
+                    }
+                    if !state.has_item(&reward.item_id) {
+                        let mut transfer_lines = NarrativeLines::default();
+                        state.actor_add_item(&reward.actor_id, &reward.item_id);
+                        let player_id = content.settings.combat.player_actor_id.clone();
+                        handle_item_transferred(
+                            state,
+                            content,
+                            &reward.item_id,
+                            &reward.actor_id,
+                            &player_id,
+                            Some(&reward.actor_id),
+                            &mut transfer_lines,
+                        );
+                        messages.extend(transfer_lines.0);
                     }
                 }
                 state

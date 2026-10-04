@@ -56,6 +56,7 @@ pub(crate) fn build_active_menu(runtime: &CinderRuntime) -> Result<Option<Active
 pub(crate) fn build_interactable_labels(
     look_options: &[LookOptionData],
     exit_labels: &[String],
+    inventory_labels: &[String],
 ) -> Vec<String> {
     let mut labels: Vec<String> = look_options
         .iter()
@@ -63,6 +64,7 @@ pub(crate) fn build_interactable_labels(
         .map(|option| option.title.clone())
         .collect();
     labels.extend(exit_labels.iter().cloned());
+    labels.extend(inventory_labels.iter().cloned());
     labels.sort();
     labels.dedup();
     labels
@@ -91,12 +93,14 @@ mod tests {
             "South Through the Store".to_string(),
             "Down into the Cave Below".to_string(),
         ];
-        let labels = build_interactable_labels(&look_opts, &exit_labels);
+        let inventory_labels = vec!["Salt Reach Teleportation Token".to_string()];
+        let labels = build_interactable_labels(&look_opts, &exit_labels, &inventory_labels);
         assert_eq!(
             labels,
             vec![
                 "Down into the Cave Below",
                 "North Through the Store",
+                "Salt Reach Teleportation Token",
                 "South Through the Store",
                 "steam pipes",
             ]

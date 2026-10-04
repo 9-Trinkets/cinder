@@ -204,8 +204,6 @@
         {
           "kind": "resolve_survivor_rewards",
           "survivor_count_story_var": "five_offerings_survivors",
-          "all_survived_story_var": "six_town_accord",
-          "all_survived_message": "civilian.reward.six_town_accord",
           "rewards": [
             {
               "actor_id": "nivi_olsen",

@@ -52,6 +52,9 @@ pub(crate) fn is_actor_movement_locked(
     actor_id: &str,
     suppression: &MovementSuppressionContext,
 ) -> Result<bool, Box<dyn Error>> {
+    if state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id) {
+        return Ok(true);
+    }
     if content
         .movement
         .stage_locks
