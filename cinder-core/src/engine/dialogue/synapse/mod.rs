@@ -453,11 +453,14 @@ Make the options feel distinct from each other and grounded in the recent conver
             Duration::from_secs(6),
         ) {
             Ok(response) => {
-                let cleaned = response.trim().trim_matches('"').trim();
+                let cleaned = crate::engine::dialogue::sanitize_comms_dispatch(
+                    &response,
+                    &request.reporter_name,
+                );
                 if cleaned.is_empty() {
                     Ok(request.fallback_text.clone())
                 } else {
-                    Ok(cleaned.to_string())
+                    Ok(cleaned)
                 }
             }
             Err(e) => {

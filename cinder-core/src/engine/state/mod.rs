@@ -522,6 +522,14 @@ impl WorldState {
             .entry(player_id)
             .or_default()
             .extend(story_unlocked_skills);
+
+        // Ensure any awakened actors possess the comms skill
+        let awakened_ids = self.transformed_stages.keys().cloned().collect::<Vec<_>>();
+        for actor_id in awakened_ids {
+            if self.is_actor_awakened(&actor_id) {
+                self.grant_actor_skill(&actor_id, "comms");
+            }
+        }
     }
 
     /// The first skill of `kind` this actor owns, resolved through the content

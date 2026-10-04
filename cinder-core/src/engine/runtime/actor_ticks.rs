@@ -255,6 +255,7 @@ impl CinderRuntime {
             crate::engine::turn_runner::run_pending_comms_upgrades(
                 self.content.as_ref(),
                 self.dialogue.as_ref(),
+                &state,
                 &mut reduced.lines,
             );
             lines.extend(reduced.lines.0);

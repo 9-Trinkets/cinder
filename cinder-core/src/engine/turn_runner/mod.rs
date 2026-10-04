@@ -301,6 +301,7 @@ impl CinderRoleRunner {
         run_pending_comms_upgrades(
             self.content.as_ref(),
             self.dialogue.as_ref(),
+            &state,
             &mut reduced.lines,
         );
         for line in &reduced.lines.0 {
@@ -535,13 +536,16 @@ pub(crate) fn run_pending_commentary_upgrades(
 pub(crate) fn run_pending_comms_upgrades(
     content: &ContentPack,
     dialogue: &dyn DialogueGenerator,
+    state: &WorldState,
     lines: &mut NarrativeLines,
 ) {
     for line in &mut lines.0 {
         if let Some(upgrade) = line.pending_comms_upgrade.take() {
-            let actor = content.actor(&upgrade.reporter_id);
-            let prompt_ctx = actor.map(|a| &a.prompt_context);
+            let prompt_ctx = content.actor(&upgrade.reporter_id).map(|actor| {
+                crate::engine::state::resolved_actor_prompt_context(content, state, actor)
+            });
             let character_notes = prompt_ctx
+                .as_ref()
                 .map(|p| p.character_notes.clone())
                 .unwrap_or_else(|| {
                     vec![format!(
@@ -549,13 +553,38 @@ pub(crate) fn run_pending_comms_upgrades(
                         upgrade.reporter_name, upgrade.room_name
                     )]
                 });
-            let response_notes = prompt_ctx
-                .map(|p| p.response_notes.clone())
-                .unwrap_or_else(|| {
-                    vec!["Speak succinctly and tactically over the comms radio. Keep your report to 1-2 short sentences.".to_string()]
-                });
+            let mut response_notes = prompt_ctx
+                .as_ref()
+                .map(|p| {
+                    p.response_notes
+                        .iter()
+                        .filter(|note| {
+                            let lower = note.to_ascii_lowercase();
+                            !lower.contains("[give")
+                                && !lower.contains("offer ")
+                                && !lower.contains("gift ")
+                        })
+                        .cloned()
+                        .collect::<Vec<_>>()
+                })
+                .unwrap_or_default();
+            if response_notes.is_empty() {
+                response_notes.push(
+                    "Speak succinctly and tactically over the comms radio. Keep your report to 1-2 short sentences.".to_string(),
+                );
+            }
             let subtext_notes = prompt_ctx
-                .map(|p| p.subtext_notes.clone())
+                .as_ref()
+                .map(|p| {
+                    p.subtext_notes
+                        .iter()
+                        .filter(|note| {
+                            let lower = note.to_ascii_lowercase();
+                            !lower.contains("[give") && !lower.contains("offer ")
+                        })
+                        .cloned()
+                        .collect::<Vec<_>>()
+                })
                 .unwrap_or_default();
 
             let request = CommsDispatchRequest {
@@ -575,16 +604,16 @@ pub(crate) fn run_pending_comms_upgrades(
             };
 
             if let Ok(generated) = dialogue.generate_comms_dispatch(&request) {
-                let trimmed = generated.trim().trim_matches('"').trim();
-                let prefix = format!("{}:", upgrade.reporter_name);
-                let content_text = if trimmed.starts_with(&prefix) {
-                    trimmed[prefix.len()..].trim()
+                let sanitized = crate::engine::dialogue::sanitize_comms_dispatch(
+                    &generated,
+                    &upgrade.reporter_name,
+                );
+                let content_text = if sanitized.is_empty() {
+                    upgrade.fallback_text.as_str()
                 } else {
-                    trimmed
+                    sanitized.as_str()
                 };
-                if !content_text.is_empty() {
-                    line.text = format!("{}: {}", upgrade.reporter_name, content_text);
-                }
+                line.text = format!("{}: {}", upgrade.reporter_name, content_text);
             }
         }
     }

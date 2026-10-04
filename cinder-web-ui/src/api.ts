@@ -245,7 +245,7 @@ export interface EquippedItem {
   id?: string
 }
 
-export type SkillKind = 'attack' | 'defend' | 'heal' | 'spell' | 'passive'
+export type SkillKind = 'attack' | 'defend' | 'heal' | 'spell' | 'passive' | 'support'
 
 export interface PartySkill {
   id: string

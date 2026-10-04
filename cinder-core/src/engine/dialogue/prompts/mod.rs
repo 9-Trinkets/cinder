@@ -464,7 +464,7 @@ pub(super) fn render_prompt_template(template: &str, replacements: &[(&str, &str
 }
 
 pub(crate) fn comms_dispatch_system_prompt(_request: &CommsDispatchRequest) -> &'static str {
-    "You are generating a short, in-character tactical radio dispatch from an allied companion engaged in combat in an offscreen room. Speak in the character's unique voice, military discipline or personality, and perspective. The dispatch must be 1 to 2 short sentences. Report the tactical situation clearly without greetings or meta-commentary. Do not prefix the line with your character's name."
+    "You are generating a short, in-character tactical radio dispatch from an allied companion engaged in combat in an offscreen room. Speak in the character's unique voice and personality, but as spoken radio chatter during active battle. The dispatch must be 1 to 2 short sentences strictly focused on the immediate combat situation. Report tactical status clearly (enemies, defenses, casualties, or area control). Do not greet the player, do not mention inventory or offer items, do not give side quests, and do not use meta-commentary. Output ONLY spoken dialogue: NEVER include sound effects, stage directions, action tags, asterisks (*...*), or descriptions of mechanical noises. Do not prefix the line with your character's name."
 }
 
 pub(crate) fn build_comms_dispatch_prompt(request: &CommsDispatchRequest) -> String {
@@ -495,7 +495,7 @@ pub(crate) fn build_comms_dispatch_prompt(request: &CommsDispatchRequest) -> Str
     let subtext_notes = format_bullets(&request.subtext_notes, "(No subtext notes)");
 
     format!(
-        "## Character Persona\n{}\n\n## Voice & Demeanor\n{}\n\n## Subtext & Motives\n{}\n\n## Tactical Situation\n- Location: {}\n- Tactical Milestone: {}\n- Hostiles Remaining: {}\n- Allies Present: {}\n- Standard Dispatch Fallback: \"{}\"\n\nGenerate a 1-2 sentence in-character tactical dispatch over the comms radio. Be concise and authentic to the character.",
+        "## Character Persona\n{}\n\n## Voice & Demeanor\n{}\n\n## Subtext & Motives\n{}\n\n## Tactical Situation\n- Location: {}\n- Tactical Milestone: {}\n- Hostiles Remaining: {}\n- Allies Present: {}\n- Standard Dispatch Fallback: \"{}\"\n\nGenerate a 1-2 sentence in-character tactical dispatch over the comms radio. Speak the message directly as spoken dialogue over the radio. Do not include action tags, sound effects (*rumble*, *hiss*, etc.), or item offers.",
         character,
         response_notes,
         subtext_notes,

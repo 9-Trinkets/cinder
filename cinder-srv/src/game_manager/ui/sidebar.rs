@@ -134,13 +134,20 @@ pub(super) fn build_party_members(
                 .collect::<Vec<_>>();
             inventory.sort_by(|a, b| a.label.cmp(&b.label));
             let in_room = state.actor_is_in_room(content, &actor_id, &state.current_room_id);
-            let skills = state
+            let mut skills_set = state
                 .actor_skills
                 .get(&actor_id)
+                .cloned()
+                .unwrap_or_default();
+            if cinder_core::engine::reducer::combat::offscreen_comms::actor_can_use_comms(
+                state, &actor_id,
+            ) {
+                skills_set.insert("comms".to_string());
+            }
+            let skills = skills_set
                 .into_iter()
-                .flatten()
                 .filter_map(|skill_id| {
-                    content.skill(skill_id).map(|skill| PartySkill {
+                    content.skill(&skill_id).map(|skill| PartySkill {
                         id: skill.id.clone(),
                         label: skill.label.clone(),
                         kind: skill.kind,
@@ -314,7 +321,7 @@ pub(super) fn build_current_room_items(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use cinder_core::content::types::LevelDefinition;
+    use cinder_core::content::types::{LevelDefinition, SkillDefinition, SkillKind};
     use cinder_core::engine::test_fixtures::minimal_test_pack;
 
     #[test]
@@ -496,8 +503,6 @@ mod tests {
 
     #[test]
     fn build_party_members_resolves_owned_skills_from_content() {
-        use cinder_core::content::types::{SkillDefinition, SkillKind};
-
         let mut content = minimal_test_pack();
         content.skills.skills.extend([
             SkillDefinition {
@@ -545,5 +550,38 @@ mod tests {
         assert_eq!(member.skills[0].kind, Some(SkillKind::Heal));
         assert_eq!(member.skills[1].id, "shield-wall");
         assert_eq!(member.skills[1].kind, Some(SkillKind::Defend));
+    }
+
+    #[test]
+    fn build_party_members_includes_comms_skill_for_awakened_member() {
+        let mut content = minimal_test_pack();
+        content.skills.skills.push(SkillDefinition {
+            id: "comms".to_string(),
+            label: "Comms".to_string(),
+            kind: Some(SkillKind::Support),
+            ..SkillDefinition::default()
+        });
+        content
+            .skill_index
+            .insert("comms".to_string(), content.skills.skills.len() - 1);
+
+        let follower_id = "companion-1";
+        let mut state = WorldState::new(&content);
+        state.set_follows_player(follower_id, true);
+        state.set_transformation_applied(follower_id, "awakening");
+
+        let runtime = CinderRuntime::new(content.clone(), false).unwrap();
+        let member = build_party_members(&runtime, &state, &content)
+            .into_iter()
+            .find(|member| member.id == follower_id)
+            .unwrap();
+
+        let comms_skill = member.skills.iter().find(|s| s.id == "comms");
+        assert!(
+            comms_skill.is_some(),
+            "Awakened member must show comms skill in sidebar"
+        );
+        assert_eq!(comms_skill.unwrap().label, "Comms");
+        assert_eq!(comms_skill.unwrap().kind, Some(SkillKind::Support));
     }
 }

@@ -319,3 +319,79 @@ fn comms_upgrade_pass_uses_dialogue_generator_voice() {
         line.text
     );
 }
+
+#[test]
+fn jamil_awakened_uses_jamil_persona_and_sanitizes_stage_directions() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+
+    state.current_room_id = "r1c1".to_string();
+
+    // Awaken Sakhra into Jamil
+    let mut lines = cinder_core::engine::narrative::NarrativeLines::default();
+    state
+        .adjust_actor_stat(&pack, "sakhra", "wisdom", 10)
+        .unwrap();
+    cinder_core::engine::reducer::transformations::maybe_apply_transformations(
+        &mut state, &pack, "sakhra", &mut lines,
+    );
+    assert_eq!(state.actor_display_name(&pack, "sakhra"), Some("Jamil"));
+    assert!(state.actor_has_skill("sakhra", "comms"));
+
+    state
+        .actor_room_overrides
+        .insert("sakhra".to_string(), "courtyard_south".to_string());
+    state
+        .assign_party_order(&pack, "sakhra", "guard".to_string())
+        .expect("assign guard order");
+
+    state
+        .actor_room_overrides
+        .insert("citadel_sentry".to_string(), "courtyard_south".to_string());
+    state.set_actor_stance(&pack, "citadel_sentry", ActorStance::Hostile, false);
+    state
+        .next_hostile_strike_at
+        .insert("citadel_sentry".to_string(), 0);
+
+    state.turn_number = 1;
+
+    // Simulate an LLM that output sound effects and name prefix
+    let dialogue = std::sync::Arc::new(
+        cinder_core::engine::dialogue::ScriptedDialogueGenerator::new().with_comms_dispatch(
+            "sakhra",
+            "Jamil: *Low mechanical rumble, the sound of stone grinding against stone, and a sharp brass hiss*—Heavy wounds weaken us at Frost-Leopard. Three foes remain; stand firm, shield the fragile.",
+        ),
+    );
+    let runtime =
+        CinderRuntime::with_dialogue_generator(pack, state, dialogue).expect("runtime creates");
+
+    let outcome = runtime.run_tick().expect("tick runs");
+
+    let dispatch = outcome
+        .lines
+        .iter()
+        .find(|l| l.kind == NarrativeLineKind::Channel && l.text.starts_with("Jamil:"));
+    assert!(
+        dispatch.is_some(),
+        "Jamil should send a comms dispatch with his awakened display name: {:?}",
+        outcome.lines
+    );
+    let line = dispatch.unwrap();
+    // Sound effects must be stripped!
+    assert!(
+        !line.text.contains("rumble") && !line.text.contains("grinding"),
+        "Stage directions and sound effects must be sanitized out: {}",
+        line.text
+    );
+    // Spoken dialogue is preserved
+    assert!(
+        line.text
+            .contains("Heavy wounds weaken us at Frost-Leopard"),
+        "Actual dialogue must be kept: {}",
+        line.text
+    );
+    assert_eq!(
+        line.text,
+        "Jamil: Heavy wounds weaken us at Frost-Leopard. Three foes remain; stand firm, shield the fragile."
+    );
+}

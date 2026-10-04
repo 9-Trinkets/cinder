@@ -126,3 +126,113 @@ pub trait DialogueGenerator: Send + Sync {
         Ok(request.fallback_text.clone())
     }
 }
+
+/// Sanitizes generated comms dispatch text by:
+/// 1. Stripping speaker prefixes (e.g. "Jamil: ")
+/// 2. Removing markdown italic stage directions/sound effects (*mechanical rumble...*)
+/// 3. Removing parenthetical sound effects or stage directions ((hisses), (grunts))
+/// 4. Removing bracketed meta tags ([GIVE: ...])
+/// 5. Trimming stray leading/trailing quotes, dashes, punctuation, and whitespace
+pub fn sanitize_comms_dispatch(raw: &str, reporter_name: &str) -> String {
+    let mut text = raw
+        .trim()
+        .trim_matches('"')
+        .trim_matches('\'')
+        .trim()
+        .to_string();
+
+    // Strip speaker prefix if present (e.g. "Jamil: ...")
+    let prefix = format!("{reporter_name}:");
+    if let Some(stripped) = text.strip_prefix(&prefix) {
+        text = stripped.trim().to_string();
+    } else if text
+        .to_ascii_lowercase()
+        .starts_with(&prefix.to_ascii_lowercase())
+    {
+        text = text[prefix.len()..].trim().to_string();
+    }
+
+    // Strip bracketed meta tags e.g. [GIVE: sensory-enhancer]
+    while let Some(start) = text.find('[') {
+        if let Some(end) = text[start..].find(']') {
+            text.replace_range(start..=start + end, "");
+        } else {
+            break;
+        }
+    }
+
+    // Strip markdown italic blocks (*sound effects*, *stage directions*)
+    while let Some(start) = text.find('*') {
+        if let Some(end) = text[start + 1..].find('*') {
+            text.replace_range(start..=start + 1 + end, "");
+        } else {
+            break;
+        }
+    }
+
+    // Strip parenthetical stage directions e.g. (hisses with steam)
+    while let Some(start) = text.find('(') {
+        if let Some(end) = text[start..].find(')') {
+            text.replace_range(start..=start + end, "");
+        } else {
+            break;
+        }
+    }
+
+    // Strip leading and trailing punctuation often left over from stage directions (e.g. "—", "-", ":")
+    let cleaned = text.trim();
+    let trimmed = cleaned
+        .trim_start_matches(|c: char| {
+            c == '—'
+                || c == '-'
+                || c == ':'
+                || c == ';'
+                || c == ','
+                || c == '.'
+                || c == '"'
+                || c == '\''
+        })
+        .trim_end_matches(|c: char| c == '"' || c == '\'')
+        .trim();
+
+    trimmed.to_string()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_sanitize_comms_dispatch_strips_stage_directions_and_rumble() {
+        let raw = "*Low mechanical rumble, the sound of stone grinding against stone, and a sharp brass hiss*—Heavy wounds weaken us at Frost-Leopard. Three foes remain; stand firm, shield the fragile.";
+        let cleaned = sanitize_comms_dispatch(raw, "Jamil");
+        assert_eq!(
+            cleaned,
+            "Heavy wounds weaken us at Frost-Leopard. Three foes remain; stand firm, shield the fragile."
+        );
+    }
+
+    #[test]
+    fn test_sanitize_comms_dispatch_strips_name_prefix() {
+        let raw = "Einar: Engagement continues at The Iron-Ram Approach; we hold firm with 2 hostiles remaining.";
+        let cleaned = sanitize_comms_dispatch(raw, "Einar");
+        assert_eq!(
+            cleaned,
+            "Engagement continues at The Iron-Ram Approach; we hold firm with 2 hostiles remaining."
+        );
+    }
+
+    #[test]
+    fn test_sanitize_comms_dispatch_strips_bracketed_tags() {
+        let raw = "All hostiles down at courtyard! [GIVE: key]";
+        let cleaned = sanitize_comms_dispatch(raw, "Astrid");
+        assert_eq!(cleaned, "All hostiles down at courtyard!");
+    }
+
+    #[test]
+    fn test_sanitize_comms_dispatch_returns_empty_when_pure_stage_direction() {
+        let raw = "*loud metallic clang and groaning*";
+        let cleaned = sanitize_comms_dispatch(raw, "Sakhra");
+        assert!(cleaned.is_empty());
+    }
+}

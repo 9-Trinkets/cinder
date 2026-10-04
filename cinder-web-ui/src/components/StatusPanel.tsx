@@ -15,6 +15,7 @@ const skillKindClasses: Record<api.SkillKind, string> = {
   heal: 'border-foam/30 bg-foam/10 text-foam',
   spell: 'border-iris/30 bg-iris/10 text-iris',
   passive: 'border-gold/30 bg-gold/10 text-gold',
+  support: 'border-crt-glow/30 bg-crt-glow/10 text-crt-glow',
 }
 
 export default function StatusPanel({
