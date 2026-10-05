@@ -57,7 +57,7 @@ Rather than a hard failure or immersion-breaking plot armor, Einar's survival st
                     ▼                                         ▼
          【Path A: Scholar's Guidance】              【Path B: Shadow Hard Route】
                (Einar Survives)                           (Einar Fallen)
-       • Einar explains the assassination pact    • Layla loots Einar's bloodstained satchel
+       • Einar explains the assassination pact    • Einar crumbles; retrieves satchel
        • Einar gifts Clandestine Token            • Discovers sealed Token & torn notes
        • Coaches Layla on Liturgical Dogma        • Enters Floor 6 blind (no quiz coaching)
        • Shares secret counter-phrase for Witch   • Witch is hostile (must be subdued)
@@ -76,7 +76,7 @@ Rather than a hard failure or immersion-breaking plot armor, Einar's survival st
 - **The Secret Counter-Phrase:** Einar teaches Layla his apothecary greeting (*"mint, crushed moss, and mountain snow"*), allowing Layla to peacefully identify and converse with the Witch.
 
 ### Path B: The Shadow Hard Route (Einar Dies)
-- **Looting the Relic:** Layla retrieves the clandestine token and Einar's journal from his fallen satchel (`item.einar_bloodstained_satchel`), or Astrid helps unseal the frozen Citadel Sanctum Gate.
+- **Retrieving the Token:** When Einar falls in combat, his physical shell crumbles into grey dust like all fallen beings in the dungeon. Left behind among the settling dust on the cobblestones is his leather satchel (`item.einar_satchel`), holding the clandestine token and his torn notes. Layla (or Astrid) picks it up directly from the ground.
 - **Blind Infiltration:** Layla enters the High Sanctuary with zero coaching on monastic doctrine or guard rituals.
 - **Brutal Checkpoint Quizzes:**
   - When Templar patrol guards stop Layla at checkpoint arches during Inspection Shifts, Layla has no answers.
