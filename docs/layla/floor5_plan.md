@@ -369,7 +369,10 @@ The defense occurs across **three exponentially harder waves**, with the noble h
   10. Consume each token when desired to register its town as an optional Floor 5 teleport destination.
   11. The Handler's Sector-5 console goes dark — his local seat is destroyed, not
   the examiner himself. He withdraws to the Royal Core, where Floor 7 awaits.
-  Receive the Clandestine Sanctuary Token (`clandestine-sanctuary-token`) to solo teleport into Floor 6 past perimeter security wards. Registered towns remain optional; visiting them is never required to descend.
+  12. **Transition to Floor 6 (Branching Entry):**
+    - **Path A (Einar Survives):** Einar reveals the assassination pact against the Seer, coaches Layla on High Sanctuary liturgical dogma, and gifts her the single-use **Clandestine Sanctuary Token** (`clandestine-sanctuary-token`).
+    - **Path B (Einar Fallen):** If Einar fell defending `courtyard_center`, he dissolves into grey dust like all fallen beings. His leather apothecary satchel (`item.einar_satchel`) drops to the cobblestones as a loose item. Layla or Astrid retrieves the satchel from the settling dust, recovering the clandestine token and his torn notes. Layla must enter Floor 6 blind without liturgical coaching.
+    - **Solo Infiltration:** Consuming the token teleports Layla alone into Floor 6 past perimeter security wards; Astrid and the party remain stationed in the Citadel courtyard until Layla unlocks Floor 6's Main Teleport Platform. Registered towns remain optional; visiting them is never required to descend.
 
 ### Protection Quest: "The Five Offerings"
 - **Goal:** Keep at least three of the five named civilians alive until the siege ends.

@@ -36,10 +36,17 @@ In the High Sanctuary’s mortuary records and embalming vaults, Layla finds the
 - **The Goblin Golems** on Floor 1 were the earliest batches of commoners.
 - Every monster on the board was once a living person from the worker towns.
 
-### The Spirits Mechanic
-When an actor is defeated anywhere in the game, their physical shell collapses, but a **spirit** remains anchored in the room where they fell.
-- Spirits are completely invisible, silent, and intangible to normal senses.
-- They linger quietly in the room state, hidden until Layla consumes the **Spiritual Enhancer pill** on Floor 6.
+### The Spirits & Defeat Mechanics: Dust, Drops, and Anchored Spirits
+
+1. **The Crumble-to-Dust Rule (No Human Corpses):**
+   - In Cinder and Layla lore, living beings, constructs, and monsters are digital constructs running on partitioned world threads. When an actor's HP reaches 0, their physical shell dissolves into grey dust (`combat.actor_defeated`: *"The {actor} crumbles to dust."*).
+   - There are **no human corpses, bloodied cadavers, or anatomical remains left on the battlefield** to loot or autopsy.
+2. **Defeat Drops & Loose Items:**
+   - When an actor crumbles away, physical possessions do not vanish. The engine's defeat system (`spawn_defeat_drops`) drains their inventory onto the cobblestones of the room (`combat.defeat_drop`: *"From the settling dust, something remains: {items}."*).
+   - Any dropped satchel, weapon, or key becomes a loose room object that can be picked up with `take <item>` or collected in post-combat dialogue.
+3. **The Anchored Spirit:**
+   - While the physical shell dissolves into dust, the metaphysical data container—the **spirit**—remains anchored invisibly in the exact room where the actor fell.
+   - Spirits are completely silent and intangible to normal senses. They linger quietly in the room state, hidden until Layla consumes the **Spiritual Enhancer pill** on Floor 6.
 
 ---
 
@@ -76,7 +83,10 @@ Rather than a hard failure or immersion-breaking plot armor, Einar's survival st
 - **The Secret Counter-Phrase:** Einar teaches Layla his apothecary greeting (*"mint, crushed moss, and mountain snow"*), allowing Layla to peacefully identify and converse with the Witch.
 
 ### Path B: The Shadow Hard Route (Einar Dies)
-- **Retrieving the Token:** When Einar falls in combat, his physical shell crumbles into grey dust like all fallen beings in the dungeon. Left behind among the settling dust on the cobblestones is his leather satchel (`item.einar_satchel`), holding the clandestine token and his torn notes. Layla (or Astrid) picks it up directly from the ground.
+- **Retrieving the Token from the Dust:**
+  - When Einar falls in combat, his physical shell crumbles into grey dust upon the cobblestones of `courtyard_center`.
+  - From the settling dust, his leather apothecary satchel (`item.einar_satchel`) drops to the ground as a loose room object. Layla picks it up (`take satchel`), or Astrid scoops it from the dust when conferring with Layla after the final wave.
+  - Inside the satchel lies the single-use **Clandestine Sanctuary Token** (`clandestine-sanctuary-token`) and Einar's torn field notebook. The notebook outlines their plot to assassinate the Seer, but key liturgical answers and the Witch's secret greeting are torn away.
 - **Blind Infiltration:** Layla enters the High Sanctuary with zero coaching on monastic doctrine or guard rituals.
 - **Brutal Checkpoint Quizzes:**
   - When Templar patrol guards stop Layla at checkpoint arches during Inspection Shifts, Layla has no answers.
@@ -88,13 +98,18 @@ Rather than a hard failure or immersion-breaking plot armor, Einar's survival st
   - Without Einar's counter-phrase, the Witch assumes Layla is an Inquisitor assassin sent to silence her.
   - The Witch attacks with toxic vapors and flash powder; Layla must duel and subdue her to half HP before presenting Einar's keepsake to prove she is an ally.
 - **Spiritual Resonance:**
-  - Later, when Layla earns the Revival Sigil and Spiritual Sight, Einar's spirit is found lingering in the Floor 5 courtyard. Layla can revive him—but only as a monster thrall, delivering an unforgettable emotional climax.
+  - Later, when Layla earns the Revival Sigil and Spiritual Sight, Einar's spirit is found lingering in the Floor 5 courtyard where his dust settled. Layla can revive him—but only as a monster thrall, delivering an unforgettable emotional climax.
 
-### The Party Disconnection Rule
-- When Layla is on a different floor from her party members, the party enters a **`[Disconnected]`** state.
-- In the UI, companions are marked as *Off-Floor / Out of Range*.
-- **Gameplay Constraint:** Layla **cannot issue party orders** (`guard`, `follow`, `support`, `strike`) to companions who are on a different floor.
-- Companions can only cross between floors when Layla reaches and activates a **Main Teleportation Platform / Resonance Gate**.
+### The Solo Teleportation & Party Disconnection Invariant
+- **Solo Infiltration:**
+  - Layla enters Floor 6 exclusively by consuming the single-use `clandestine-sanctuary-token`.
+  - There is **no physical door, stair, or portcullis** connecting Floor 5 and Floor 6 (`citadel_sanctum_gate` has been removed).
+- **Party Disconnection:**
+  - When Layla teleports into Floor 6, her party members (Astrid, surviving Einar, and all charmed allies) remain behind in Floor 5 (`courtyard_center`).
+  - The engine enforces cross-map party isolation: `sync_followers_to_room` ignores companions situated on different floor maps (`f_map.id != t_map.id`).
+  - Attempting to issue party orders (`order <actor> <order>`) fails with `party.order_member_unavailable` (*"That companion is not close enough to receive your order."*).
+- **Unlocking the Party Cross-Over:**
+  - Companions cannot cross into Floor 6 until Layla infiltrates the High Sanctuary basilica, identifies and slays the Seer, and unlocks the **Main Teleportation Platform** on Floor 6.
 
 ---
 
