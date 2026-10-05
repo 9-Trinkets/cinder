@@ -94,9 +94,9 @@ fn floor6_all_exits_are_bidirectional() {
     for room_id in EXPECTED_FLOOR6_ROOMS {
         let room = pack.room(room_id).unwrap();
         for exit in &room.exits {
-            let target = pack
-                .room(&exit.room_id)
-                .unwrap_or_else(|| panic!("exit in {room_id} points to missing room {}", exit.room_id));
+            let target = pack.room(&exit.room_id).unwrap_or_else(|| {
+                panic!("exit in {room_id} points to missing room {}", exit.room_id)
+            });
             assert!(
                 target.exits.iter().any(|e| e.room_id == *room_id),
                 "room {} points to {}, but {} has no return exit back to {}",
@@ -179,7 +179,10 @@ fn floor6_central_crossroads_connects_to_all_four_zones() {
         );
         let p_room = pack.room(portal).unwrap();
         assert!(
-            p_room.exits.iter().any(|e| e.room_id == "sanctuary_crossroads"),
+            p_room
+                .exits
+                .iter()
+                .any(|e| e.room_id == "sanctuary_crossroads"),
             "{portal} must connect back to sanctuary_crossroads"
         );
     }
