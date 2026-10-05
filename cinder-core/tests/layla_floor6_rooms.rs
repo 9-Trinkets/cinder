@@ -80,17 +80,6 @@ fn floor6_rooms_load_and_validate() {
 fn floor6_all_exits_are_bidirectional() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
 
-    // Floor 5 exit to Floor 6
-    let gate = pack
-        .room("citadel_sanctum_gate")
-        .expect("citadel_sanctum_gate exists");
-    assert!(
-        gate.exits
-            .iter()
-            .any(|e| e.room_id == "sanctuary_grand_terrace"),
-        "citadel_sanctum_gate must have exit to sanctuary_grand_terrace"
-    );
-
     for room_id in EXPECTED_FLOOR6_ROOMS {
         let room = pack.room(room_id).unwrap();
         for exit in &room.exits {
@@ -189,19 +178,63 @@ fn floor6_central_crossroads_connects_to_all_four_zones() {
 }
 
 #[test]
-fn floor6_layla_can_walk_from_floor5_into_sanctuary_and_explore() {
+fn floor6_layla_teleports_alone_into_sanctuary_and_explores() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);
-    state.current_room_id = "citadel_sanctum_gate".to_string();
+    state.current_room_id = "courtyard_center".to_string();
+
+    // Allies in Floor 5 courtyard follow the player
+    state.set_follows_player("commander_astrid", true);
+    state.set_follows_player("einar", true);
+    state.actor_room_overrides.insert(
+        "commander_astrid".to_string(),
+        "courtyard_center".to_string(),
+    );
+    state
+        .actor_room_overrides
+        .insert("einar".to_string(), "courtyard_center".to_string());
+
+    // Give Layla the clandestine token
+    state.add_item("clandestine-sanctuary-token");
 
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
 
-    // Walk south from Floor 5 into Floor 6 Gate Terrace
-    runtime.run_turn("go south").expect("turn runs");
+    // Consume the token to solo teleport into Floor 6 Gate Terrace
+    let outcome = runtime
+        .run_turn("use clandestine-sanctuary-token")
+        .expect("turn runs");
     assert_eq!(
         runtime.current_room_id().unwrap(),
         "sanctuary_grand_terrace",
-        "walking south from Floor 5 gate brings Layla to sanctuary_grand_terrace"
+        "consuming clandestine token brings Layla to sanctuary_grand_terrace"
+    );
+    assert!(
+        outcome.text().contains("High Sanctuary"),
+        "Handler arrival line for High Sanctuary should be narrated, got: {}",
+        outcome.text()
+    );
+
+    // Verify party members were left behind in Floor 5 courtyard (Party Disconnection)
+    let s = runtime.export_state().unwrap();
+    assert_eq!(
+        s.actor_room_id("commander_astrid", "courtyard_center"),
+        "courtyard_center",
+        "Astrid must stay on Floor 5"
+    );
+    assert_eq!(
+        s.actor_room_id("einar", "courtyard_center"),
+        "courtyard_center",
+        "Einar must stay on Floor 5"
+    );
+
+    // Layla cannot order off-floor party members
+    let order_outcome = runtime.run_turn("order astrid guard").expect("turn runs");
+    assert!(
+        order_outcome
+            .text()
+            .contains("That companion is not close enough to receive your order"),
+        "cannot issue party orders to off-floor companions, got: {}",
+        order_outcome.text()
     );
 
     // Walk north across terrace into the Grand Plaza
@@ -210,6 +243,13 @@ fn floor6_layla_can_walk_from_floor5_into_sanctuary_and_explore() {
         runtime.current_room_id().unwrap(),
         "sanctuary_crossroads",
         "walking north enters sanctuary_crossroads"
+    );
+
+    // Companions still remain on Floor 5 after moving within Floor 6
+    let s2 = runtime.export_state().unwrap();
+    assert_eq!(
+        s2.actor_room_id("commander_astrid", "courtyard_center"),
+        "courtyard_center"
     );
 
     // Walk northwest to the Basilica Portal

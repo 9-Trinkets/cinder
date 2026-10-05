@@ -165,6 +165,18 @@ pub(crate) fn handle_player_used_item(
         return;
     }
     let player_id = content.settings.combat.player_actor_id.clone();
+    let initial_room_id = state.current_room_id.clone();
+
+    let specific_key = format!("item.{item_id}.used");
+    let specific_line = if content.message(&specific_key).is_some() {
+        content.render_message(&specific_key, &[("item", item.label.as_str())])
+    } else {
+        None
+    };
+    if let Some(ref line) = specific_line {
+        lines.narration(line.clone());
+    }
+
     if let Err(error) = crate::engine::hooks::apply_narrating_world_hook_effects(
         state,
         content,
@@ -179,17 +191,15 @@ pub(crate) fn handle_player_used_item(
     ) {
         eprintln!("[cinder] hook warning ({}): {error}", item.use_hook);
     }
-    let specific_key = format!("item.{item_id}.used");
-    let line = if content.message(&specific_key).is_some() {
-        content.render_message(&specific_key, &[("item", item.label.as_str())])
-    } else if lines.is_empty() {
-        content.render_message("item.used", &[("item", item.label.as_str())])
-    } else {
-        None
-    };
-    if let Some(line) = line {
-        lines.narration(line);
+
+    if specific_line.is_none() && lines.is_empty() {
+        if let Some(fallback) =
+            content.render_message("item.used", &[("item", item.label.as_str())])
+        {
+            lines.narration(fallback);
+        }
     }
+
     lines.extend_lines(advance_objective_for_signal(
         state,
         content,
@@ -205,6 +215,17 @@ pub(crate) fn handle_player_used_item(
         content,
         "item_consumed",
     ));
+
+    if state.current_room_id != initial_room_id {
+        let new_room_id = state.current_room_id.clone();
+        super::observation::handle_current_room_observed(
+            state,
+            content,
+            &new_room_id,
+            crate::engine::events::ObservationMode::Summary,
+            lines,
+        );
+    }
 }
 
 /// `item.<id>.<generic key>` to override the message; an empty override

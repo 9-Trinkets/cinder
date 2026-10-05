@@ -11531,20 +11531,6 @@
         ],
         "menu_label": "West to Frost-Leopard Approach",
         "requires_story_var": ""
-      },
-      {
-        "room_id": "citadel_sanctum_gate",
-        "label": "South through the Sanctum Gate",
-        "aliases": [
-          "south",
-          "s",
-          "sanctum",
-          "floor 6",
-          "floor6",
-          "descend"
-        ],
-        "menu_label": "Descend toward Floor 6",
-        "requires_story_var": "citadel_siege_complete"
       }
     ],
     "descriptions": []
@@ -12108,59 +12094,6 @@
     "descriptions": []
   },
   {
-    "id": "citadel_sanctum_gate",
-    "title": "The High Sanctuary Gate",
-    "summary": "Beyond the opened south doors, a steep covered passage drops through the mountain toward a white stone gate. Warm air rises through its bars, carrying clean herbs, lamp smoke, and distant bells from Floor 6.",
-    "inspect_text": "The Citadel's last portcullis stands raised. Beyond it, pale stairs descend toward the High Sanctuary. The route is open, but the worker towns now shining on the teleport map can still be visited before you leave.",
-    "allow_rest": false,
-    "features": [
-      {
-        "id": "citadel_sanctum_gate-portcullis",
-        "label": "the raised portcullis",
-        "aliases": [
-          "portcullis",
-          "gate",
-          "bars",
-          "floor 6"
-        ],
-        "allow_rest": false,
-        "consumables": [],
-        "inspect_text": "The iron teeth hang above the passage. The command lock is dark, and nothing remains to close the gate again."
-      }
-    ],
-    "exits": [
-      {
-        "room_id": "courtyard_south",
-        "label": "North to the Frost Courtyard",
-        "aliases": [
-          "north",
-          "n",
-          "courtyard",
-          "back"
-        ],
-        "menu_label": "Return to the Frost Courtyard",
-        "requires_story_var": ""
-      },
-      {
-        "room_id": "sanctuary_grand_terrace",
-        "label": "South down the pale stairs to the High Sanctuary",
-        "aliases": [
-          "south",
-          "s",
-          "stairs",
-          "down",
-          "sanctuary",
-          "gate",
-          "floor 6",
-          "floor6"
-        ],
-        "menu_label": "Descend to the High Sanctuary",
-        "requires_story_var": ""
-      }
-    ],
-    "descriptions": []
-  },
-  {
     "id": "salt_reach_square",
     "title": "Salt Reach Landing",
     "summary": "A low town of dark timber and blue-grey stone stands beside white brine fields. Wind pushes loose salt over the road like dry snow while families cut clear blocks from the frozen pools.",
@@ -12302,20 +12235,6 @@
       }
     ],
     "exits": [
-      {
-        "room_id": "citadel_sanctum_gate",
-        "label": "North up the stairs to the Frost Citadel",
-        "aliases": [
-          "back",
-          "stairs",
-          "up",
-          "citadel",
-          "gate",
-          "frost citadel"
-        ],
-        "menu_label": "Climb back to the Frost Citadel",
-        "requires_story_var": ""
-      },
       {
         "room_id": "sanctuary_crossroads",
         "label": "North across the terrace to the Grand Plaza",

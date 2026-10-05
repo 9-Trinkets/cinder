@@ -255,9 +255,42 @@
           ]
         }
       ],
+      "next_stage_ids": [
+        "mq_infiltrate_sanctuary"
+      ],
+      "completion_effects": []
+    },
+    {
+      "id": "mq_infiltrate_sanctuary",
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_title": "The High Sanctuary",
+      "quest_kind": "main",
+      "summary": "Use the clandestine token to infiltrate the High Sanctuary alone.",
+      "beat_note": "Layla enters Floor 6 alone using the clandestine sanctuary token. Her party remains on Floor 5 until the main teleport platform is unlocked.",
+      "update_message": "Infiltrate the High Sanctuary alone using the clandestine token.",
+      "narrative_lines": [
+        "A small silver token etched with resonance sigils lies in your hand. The High Sanctuary perimeter wards will detect an armed squad — the only way in is alone. Infiltrate the cathedral, find the Seer, and unlock the platform to bring the others through."
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "clandestine-sanctuary-token"
+        }
+      ],
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.entered_floor6",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
       "next_stage_ids": [],
-      "completion_effects": [
-      ]
+      "completion_effects": []
     },
     {
       "id": "sq_five_offerings",

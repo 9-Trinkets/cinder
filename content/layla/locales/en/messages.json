@@ -149,6 +149,10 @@
         "voice": "handler",
         "text": "Floor four. Worker settlement — picking up civilian life signs. Keep your head down and stay off the garrison's radar. Quest feed enabled. Find the route down."
     },
+    "handler.descend.high_sanctuary": {
+        "voice": "handler",
+        "text": "Floor six. High Sanctuary. Monastic perimeter. You're alone. Stay quiet."
+    },
     "handler.first_mob_killed": {
         "voice": "handler",
         "text": "First one down. No clever speech. Just the job. Vitals are on your readout now. Keep moving."
@@ -221,6 +225,7 @@
     "item.woolcross-transit-knot.used": "The token unwinds into a glowing route. Woolcross is now a permanent destination in your teleport spell.",
     "item.greenrest-transit-seed.used": "The token opens into green routing light. Greenrest is now a permanent destination in your teleport spell.",
     "item.brass-yard-transit-gear.used": "The token turns once and dissolves into golden code. Brass Yard is now a permanent destination in your teleport spell.",
+    "item.clandestine-sanctuary-token.used": "You crush the silver token. A sharp chime rings out, dissolving the cold air around you into blinding silver light.",
     "siege.frost_wolf_rout": "The Frost-Wolf soldiers falter as their command signal dies. {count} raiders break formation and retreat into the northern estate.",
     "siege.iron_ram_rout": "Steam vents from abandoned Iron-Ram armor as the command signal cuts out. {count} maulers turn back toward the bastion.",
     "siege.frost_leopard_rout": "The Frost-Leopard hunters lower their weapons when the mirror signal goes dark. {count} hunters vanish back through the southwest doors.",

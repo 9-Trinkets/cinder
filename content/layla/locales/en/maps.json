@@ -1005,11 +1005,6 @@
         "room_id": "frost_leopard_throne",
         "x": -3.0,
         "y": 21.0
-      },
-      {
-        "room_id": "citadel_sanctum_gate",
-        "x": 12.0,
-        "y": 28.0
       }
     ],
     "reveal_conditions": [

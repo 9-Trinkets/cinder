@@ -369,7 +369,7 @@ The defense occurs across **three exponentially harder waves**, with the noble h
   10. Consume each token when desired to register its town as an optional Floor 5 teleport destination.
   11. The Handler's Sector-5 console goes dark — his local seat is destroyed, not
   the examiner himself. He withdraws to the Royal Core, where Floor 7 awaits.
-  Open the grand iron portcullis leading to Floor 6 (`citadel_sanctum_gate`). Registered towns remain optional; visiting them is never required to descend.
+  Receive the Clandestine Sanctuary Token (`clandestine-sanctuary-token`) to solo teleport into Floor 6 past perimeter security wards. Registered towns remain optional; visiting them is never required to descend.
 
 ### Protection Quest: "The Five Offerings"
 - **Goal:** Keep at least three of the five named civilians alive until the siege ends.

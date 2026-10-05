@@ -935,6 +935,25 @@
             {
               "path": "to_room_id",
               "operator": "equal",
+              "value": "sanctuary_grand_terrace"
+            },
+            {
+              "path": "first_visit",
+              "operator": "equal",
+              "value": true
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.descend.high_sanctuary",
+            "generate_commentary": true
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
               "value": "village_south_1"
             },
             {
@@ -1579,6 +1598,31 @@
             "kind": "set_story_var",
             "key": "town_brass_yard_unlocked",
             "value": "true"
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
+  "item.clandestine_sanctuary_token_used": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "set_story_var",
+            "key": "entered_floor6",
+            "value": "true"
+          },
+          {
+            "kind": "move_actor",
+            "actor_id": "player",
+            "room_id": "sanctuary_grand_terrace"
           }
         ]
       }

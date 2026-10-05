@@ -178,7 +178,62 @@ impl WorldHookEffect {
                 self.apply_set_stance_by_tag(state, content, effect, lines.as_deref_mut());
             }
             WorldHookEffect::MoveActor { actor_id, room_id } => {
-                state.set_actor_room(actor_id, room_id);
+                let is_player =
+                    actor_id == "player" || actor_id == &content.settings.combat.player_actor_id;
+                if is_player {
+                    let from_room_id = state.current_room_id.clone();
+                    let first_visit = !state
+                        .actor_has_visited_room(&content.settings.combat.player_actor_id, room_id);
+                    state.current_room_id = room_id.clone();
+                    state
+                        .mark_actor_room_visited(&content.settings.combat.player_actor_id, room_id);
+                    state.set_actor_room(&content.settings.combat.player_actor_id, room_id);
+                    state.set_actor_room("player", room_id);
+                    if let Some(lines) = lines.as_deref_mut() {
+                        lines.extend_lines(
+                            crate::engine::reducer::beat_advance::advance_objective_for_signal(
+                                state,
+                                content,
+                                &format!("room_left:{from_room_id}"),
+                            ),
+                        );
+                        lines.extend_lines(
+                            crate::engine::reducer::beat_advance::advance_objective_for_signal(
+                                state,
+                                content,
+                                &format!("room_entered:{room_id}"),
+                            ),
+                        );
+                        lines.extend_lines(
+                            crate::engine::reducer::beat_advance::advance_objective_for_signal(
+                                state,
+                                content,
+                                &format!("player_moved:{room_id}"),
+                            ),
+                        );
+                        lines.extend_lines(
+                            crate::engine::reducer::beat_advance::advance_objective_for_signal(
+                                state,
+                                content,
+                                "player_moved",
+                            ),
+                        );
+                        let _ = crate::engine::hooks::apply_narrating_world_hook_effects(
+                            state,
+                            content,
+                            crate::engine::hook_ids::PLAYER_MOVED,
+                            serde_json::json!({
+                                "from_room_id": from_room_id,
+                                "to_room_id": room_id,
+                                "first_visit": first_visit,
+                                "story_vars": state.story_vars.to_map(),
+                            }),
+                            lines,
+                        );
+                    }
+                } else {
+                    state.set_actor_room(actor_id, room_id);
+                }
             }
             WorldHookEffect::SetStoryVar { key, value } => {
                 self.apply_set_story_var(state, content, key, value, lines.as_deref_mut());

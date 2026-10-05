@@ -407,5 +407,13 @@
     "kind": "key",
     "use_hook": "item.brass_yard_token_used",
     "description": "A toothed brass token from Brass Yard. Consume it to register Brass Yard as a permanent teleport destination."
+  },
+  {
+    "id": "clandestine-sanctuary-token",
+    "label": "Clandestine Sanctuary Token",
+    "aliases": ["clandestine sanctuary token", "sanctuary token", "clandestine token", "infiltration token", "silver token"],
+    "kind": "key",
+    "use_hook": "item.clandestine_sanctuary_token_used",
+    "description": "A smuggled silver token etched with High Sanctuary resonance sigils. Consuming it teleports Layla past the outer wards into the High Sanctuary terrace alone."
   }
 ]

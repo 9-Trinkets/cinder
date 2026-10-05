@@ -424,7 +424,7 @@ fn floor5_citadel_map_definition_and_reveal_condition() {
         .expect("courtyard_center has map");
     assert_eq!(map.id, "the-frost-citadel");
     assert_eq!(map.label, "The Frost Citadel");
-    assert_eq!(map.rooms.len(), 17);
+    assert_eq!(map.rooms.len(), 16);
 
     // Each courtyard room is present in the map
     for room_id in EXPECTED_COURTYARD_ROOMS {
@@ -436,8 +436,8 @@ fn floor5_citadel_map_definition_and_reveal_condition() {
     assert!(
         map.rooms
             .iter()
-            .any(|room| room.room_id == "citadel_sanctum_gate"),
-        "the opened Floor 6 threshold should extend the citadel map"
+            .all(|room| room.room_id != "citadel_sanctum_gate"),
+        "citadel_sanctum_gate should not be on the map"
     );
 
     // Map reveal condition is gated by has_sensory_enhancer
@@ -1102,14 +1102,16 @@ fn floor5_failed_protection_still_rewards_survivors_and_opens_floor6() {
     );
 
     let south = pack.room("courtyard_south").expect("south gate room");
-    let floor6_exit = south
-        .exits
-        .iter()
-        .find(|exit| exit.room_id == "citadel_sanctum_gate")
-        .expect("Floor 6 gate exit");
-    assert_eq!(
-        floor6_exit.requires_story_var, "citadel_siege_complete",
-        "town visits must not gate Floor 6"
+    assert!(
+        south
+            .exits
+            .iter()
+            .all(|exit| exit.room_id != "citadel_sanctum_gate"),
+        "citadel_sanctum_gate is removed; Floor 6 entry is via clandestine token"
+    );
+    assert!(
+        state.has_item("clandestine-sanctuary-token"),
+        "siege completion advances to mq_infiltrate_sanctuary which grants clandestine sanctuary token"
     );
 }
 

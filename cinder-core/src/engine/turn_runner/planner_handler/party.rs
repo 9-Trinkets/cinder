@@ -87,7 +87,7 @@ pub(super) fn find_any_party_member<'a>(
 pub(super) fn plan_party_order(
     content: &ContentPack,
     planner_state: &WorldState,
-    _current_room_id: &str,
+    current_room_id: &str,
     actor_reference: &str,
     order: PartyOrderKind,
     planned: &mut PlannedTurn,
@@ -101,6 +101,20 @@ pub(super) fn plan_party_order(
             return false;
         }
     };
+    let actor_room = planner_state.actor_current_room_id(content, &actor.id);
+    if let (Some(a_map), Some(p_map)) = (
+        content.map_for_room(actor_room),
+        content.map_for_room(current_room_id),
+    ) {
+        if a_map.id != p_map.id {
+            planned.events.push(WorldEvent::ActionRejected {
+                message: content
+                    .render_message("party.order_member_unavailable", &[])
+                    .unwrap_or_else(|| "That party member is not available here.".to_string()),
+            });
+            return false;
+        }
+    }
     planned.events.push(WorldEvent::PartyOrderAssigned {
         actor_id: actor.id.clone(),
         order,
