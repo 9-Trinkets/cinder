@@ -1,10 +1,10 @@
 # Floor 6 — The High Sanctuary (The Clergy & The Inquisition)
 
-Living design plan for **Level 6** of Layla. This floor covers the ideological heart of the underground world: the soaring limestone cathedrals, incense-choked cloisters, relic vaults, and mortuary laboratories of the High Sanctuary.
+Living design plan for **Level 6** of Layla. Like earlier levels (the deep forest on Floor 2, the geothermal valley on Floor 4, and the snow peaks and glaciers on Floor 5), Floor 6 is a distinct magical partitioned world: a breathtaking sacred acropolis set under open skies, featuring soaring white limestone basilicas, sunlit colonnades, open cloister courtyards, terraces overlooking endless seas of clouds, towering bell towers, and silent embalming crypts below.
 
 Here, Layla discovers the terrifying truth of the dungeon: it is a **closed-loop bio-computational factory** that harvests living humans from the worker towns, executes them in Floor 5's citadel, and revives and brainwashes them in Floor 6 into dungeon monsters.
 
-The gameplay genre for Floor 6 is **Social Deduction / Infiltration (Werewolf / Mafia)**. Layla infiltrates the cathedral alone as the "Werewolf" in sheep's clothing, operating under a strict monastic Day/Night liturgical cycle to deduce the identities of the **Seer** and the **Witch**, learn the dark **Revival Sigil**, and unlock the main teleport platform to bring her party through.
+The gameplay genre for Floor 6 is **Social Deduction / Infiltration (Werewolf / Mafia)**. Layla infiltrates the cathedral alone as the "Werewolf" in sheep's clothing, operating under a fast-paced **Cathedral Watch Rotation (Guard Shifts)** to deduce the identities of the **Seer** and the **Witch**, learn the dark **Revival Sigil**, and unlock the main teleport platform to bring her party through.
 
 All player-facing text must follow the writing guide: **simple sentences and everyday words for teenagers**. Avoid archaic or pseudo-academic jargon (use "priest" instead of "hierophant", "hall" instead of "peristyle", "pill" instead of "tincture", "spirit" instead of "wraithly apparition").
 
@@ -63,27 +63,27 @@ Rather than a hard failure or immersion-breaking plot armor, Einar's survival st
        • Shares secret counter-phrase for Witch   • Witch is hostile (must be subdued)
                     │                                         │
                     ▼                                         ▼
-       [Smooth Day Phase: answers quizzes]        [Hazardous Day Phase: quizzes trigger alarms]
+       [Inspection Shift: answers quizzes]        [Inspection Shift: quizzes trigger alarms]
        [Free cloister navigation]                 [Must navigate crypts/bell towers/shadows]
-       [Peaceful Witch contact]                   [Night Scriptorium heist to learn dogma]
+       [Peaceful Witch contact]                   [Relief Shift Scriptorium heist for dogma]
 ```
 
 ### Path A: The Scholar's Guidance (Einar Survives)
 - **Einar's Confession:** Before Layla teleports, Einar reveals his and Astrid's past:
   > *"Astrid and I didn't end up in those cages by accident. We formed a pact to cut the snake's head off. We planned to assassinate the **Seer**—the high priest who conducts the reanimation rites and holds the revival scroll. Without the Seer, the entire monster-making pipeline stops cold. We were betrayed before we could strike."*
 - **The Clandestine Solo Token:** Einar gifts Layla a smuggled, single-use infiltration token (`item.clandestine_sanctuary_token`). It bypasses the High Sanctuary's security wards, but it can **only transport Layla alone**.
-- **Liturgical Coaching:** Einar quizzes Layla on Floor 5, teaching her the answers to the High Sanctuary's dogma quizzes (liturgical hours, saintly titles, prayer responses). When Templar patrol guards challenge Layla on Floor 6, the player can answer correctly and walk unhindered.
+- **Liturgical Coaching:** Einar quizzes Layla on Floor 5, teaching her the answers to the High Sanctuary's dogma quizzes (liturgical hours, saintly titles, prayer responses). When Templar patrol guards challenge Layla at checkpoint archways, the player can answer correctly and walk unhindered.
 - **The Secret Counter-Phrase:** Einar teaches Layla his apothecary greeting (*"mint, crushed moss, and mountain snow"*), allowing Layla to peacefully identify and converse with the Witch.
 
 ### Path B: The Shadow Hard Route (Einar Dies)
 - **Looting the Relic:** Layla retrieves the clandestine token and Einar's journal from his fallen satchel (`item.einar_bloodstained_satchel`), or Astrid helps unseal the frozen Citadel Sanctum Gate.
 - **Blind Infiltration:** Layla enters the High Sanctuary with zero coaching on monastic doctrine or guard rituals.
 - **Brutal Checkpoint Quizzes:**
-  - When Templar patrol guards stop Layla for dogma quizzes, Layla has no answers.
+  - When Templar patrol guards stop Layla at checkpoint arches during Inspection Shifts, Layla has no answers.
   - Guessing wrong raises the Sanctuary **Alert Level**, locking down holy cloisters and dispatching Inquisitor hounds.
   - To avoid guards, Layla must take dangerous alternate routes: claustrophobic subterranean mortuary crypts, high-altitude bell tower catwalks, and smoke flues.
-- **The Scriptorium Heist (Night Phase):**
-  - To survive subsequent Day Phases, Layla must break into the heavily guarded Cathedral Scriptorium at night to steal liturgical catechism scrolls and learn the answers herself.
+- **The Scriptorium Heist (Relief Shift):**
+  - To survive subsequent Inspection Shifts, Layla must break into the heavily guarded Cathedral Scriptorium during a Relief Shift to steal liturgical catechism scrolls and learn the answers herself.
 - **The Witch Confrontation:**
   - Without Einar's counter-phrase, the Witch assumes Layla is an Inquisitor assassin sent to silence her.
   - The Witch attacks with toxic vapors and flash powder; Layla must duel and subdue her to half HP before presenting Einar's keepsake to prove she is an ally.
@@ -98,44 +98,55 @@ Rather than a hard failure or immersion-breaking plot armor, Einar's survival st
 
 ---
 
-## 3. Gameplay Genre: Social Deduction / Werewolf Infiltration
+## 3. Gameplay Genre: Social Deduction / Werewolf Infiltration & Cathedral Watches
 
-Floor 6 is structured around an underground monastic cathedral operating on a strict liturgical clock divided into two alternating phases:
+The High Sanctuary is a soaring sacred acropolis under open sky, but the clergy and Templar garrison live in lockstep with the **Cathedral Chimes and Canonical Watches**. 
+
+Rather than a sluggish, macro Day/Night cycle that strands the player waiting for hours, Floor 6 operates on **Cathedral Watch Rotations (Guard Shifts)** with tight, alternating micro-intervals:
 
 ```
-┌────────────────────────────────────────────────────────┐
-│                 THE LITURGICAL CYCLE                   │
-├────────────────────────────┬───────────────────────────┤
-│   DAY PHASE (Lauds-Vesper) │  NIGHT PHASE (Compline)   │
-│  • Monks & Guards active   │  • Monks in dormitory     │
-│  • NO ATTACKING allowed    │  • ATTACKING permitted    │
-│  • Interrogate & gather    │  • Silent assassinations  │
-│    clues (Seer & Witch)    │  • Scriptorium break-ins  │
-│  • Guard Checkpoint Quizzes│  • Mortuary infiltration  │
-└────────────────────────────┴───────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────┐
+│                   THE CATHEDRAL WATCH ROTATION                         │
+├───────────────────────────────────┬────────────────────────────────────┤
+│  INSPECTION SHIFT (~8-10 turns)   │   RELIEF SHIFT (~4-6 turns)        │
+│  • Checkpoints manned by guards   │  • Guards rotate to garrison/mess  │
+│  • Acolytes & monks in colonnades │  • Checkpoints UNMANNED            │
+│  • Dogma Quizzes at major arches  │  • Free passage without quizzes    │
+│  • Social inquiries & clues       │  • Scriptorium & Mortuary heists   │
+│  • OPEN COMBAT FORBIDDEN          │  • Werewolf strikes / assassinations│
+└───────────────────────────────────┴────────────────────────────────────┘
 ```
 
-### The Day Phase: Investigation & Guard Interrogations
-- **Public Sanctuary:** Layla moves freely through naves, cloisters, libraries, and refectories.
-- **The No-Combat Rule:** Layla **cannot initiate combat during the Day Phase**. Drawing a weapon or attacking in daylight triggers temple bells, immediately swarming the room with invincible Elite Templar guards.
-- **Guard Patrols & Faith Quizzes:**
-  - Templar guards patrol the corridors during the day and halt Layla at checkpoints to test her orthodoxy.
-  - Guards quiz her on High Sanctuary dogma, liturgical ranks, and daily rituals.
-  - **Dogma Knowledge & Quizzes:**
-    - **Path A (Einar Alive):** Einar coached Layla on Floor 5. If the player pays attention to Einar's coaching, Layla answers the guards correctly and passes unhindered.
-    - **Path B (Einar Fallen):** Layla has no coaching. Answering blindly risks triggering suspicious alerts and raising security levels. To bypass checkpoints, Layla must sneak through subterranean mortuary crypts and high-altitude bell tower catwalks, or break into the Scriptorium at night to study the dogma herself.
-  - If Layla fails a quiz, the guards become suspicious, raising alertness and restricting access to holy wings.
-- **Gathering Clues:**
-  - The high clergy wear uniform white robes and obscuring silver masks. Their identities are concealed behind monastic titles (*Curate*, *Precentor*, *Almoner*, *Archdeacon*, *Sacristan*).
-  - Layla talks to novices, examines ledgers, reads bulletin notices, and observes habits to deduce:
+### The Inspection Shift: Investigation & Checkpoint Quizzes (~8–10 Turns)
+- **Sanctuary Life:** Sunlight floods through stained glass and colonnades; incense smoke curls from bronze censers, and choir chants echo off marble walls. Layla moves freely through public basilicas, courtyards, and colonnaded walks.
+- **The Peace of the Sanctuary (No Combat):** Drawing a weapon or attacking in public halls rings alarm bells, immediately swarming the room with invulnerable Templar vanguards.
+- **Checkpoint Arches & Dogma Quizzes:**
+  - Templar guards man the archways connecting major wings (`checkpoint_nave`, `checkpoint_cloisters`, `checkpoint_undercrypt`).
+  - Guards challenge anyone seeking passage with faith quizzes on canonical hours, saintly titles, and orthodox chants.
+  - **Path A (Einar Alive):** With Einar's prior coaching, the dialogue choices supply the right answers; Layla passes without friction.
+  - **Path B (Einar Fallen):** Layla lacks the answers. Wrong answers raise the **Alert Level**, calling Inquisitor hounds and sealing doors. Layla must either sneak through high-altitude bell catwalks and crypt flues, or wait for the next Relief Shift.
+- **Social Deduction:**
+  - The high clergy wear uniform white vestments and silver masks concealing their faces behind monastic titles (*Curate*, *Precentor*, *Almoner*, *Archdeacon*, *Sacristan*).
+  - Layla questions novices, inspects offering ledgers, and studies habits to deduce:
     1. **Who is the "Witch"?**
     2. **Who is the "Seer"?**
 
-### The Night Phase: The Werewolf Strike
-- When the night bells toll, common monks retire to locked dormitories and ambient light drops.
-- **The Hunt Begins:** Layla can now attack and assassinate targets.
-- She can stalk corrupt priests in isolated chambers, eliminate night sentries, break into locked scriptoriums, and corner her prime suspects.
-- As long as Layla defeats enemies in an isolated room without allowing witnesses to escape, the floor-wide alarm is not triggered.
+### The Relief Shift: The Blind Window (~4–6 Turns)
+- **The Watch Bell Chimes:** The massive iron bells in the skyward towers toll for the change of watch. Guards step down from their posts and march in squads to the barracks and mess halls for roll call.
+- **Unmanned Checkpoints:** Checkpoint archways are left empty! Layla can walk right through without facing any dogma quizzes—a critical infiltration window, especially for Path B.
+- **The Werewolf Strike (Silent Assassinations):**
+  - Combat restrictions lift in private or unmonitored chambers.
+  - Layla can stalk corrupt clergy, eliminate lone night sentries, or corner her primary targets.
+  - As long as Layla eliminates targets in isolated rooms before any witness flees to sound an alarm, the sanctuary remains oblivious.
+- **Heists and Infiltration:**
+  - The Scriptorium and lower Mortuary vaults become vulnerable to break-ins while scribes and embalmers attend services.
+
+### Zero Downtime: Fast-Forward & Sabotage Mechanics
+To ensure Layla never sits idle waiting for shifts to change:
+1. **Prayer Benches (`rest` at Prie-Dieu):**
+   - Side chapels throughout the basilicas contain prie-dieu prayer desks. Using `rest` allows Layla to advance the clock directly to the next watch bell chime.
+2. **Shift Sabotage (Tampering):**
+   - Interacting with the **Cloister Water Clock** or snuffing central **Incense Flues** creates procedural anomalies that trigger early guard rotations or prolong a relief window.
 
 ---
 
@@ -152,7 +163,7 @@ Floor 6 is structured around an underground monastic cathedral operating on a st
 
 ### 2. The Seer $\rightarrow$ The Revival Sigil
 - **Deduction:** Clues point to the high priest whose fingers are stained with mortuary bitumen, who alone possesses the bronze key to the Grand Mortuary.
-- **Assassination:** Layla corners and defeats the Seer during the Night Phase (or within the sealed Mortuary).
+- **Assassination:** Layla corners and defeats the Seer during a Relief Shift (or within the sealed Mortuary).
 - **The Loot:** The Seer drops the **Torn Parchment of Reanimation**, teaching Layla the **Revival Sigil** (`revive-sigil`).
 
 ### 3. The Monster Twist: "Revived, But Bound"
@@ -186,8 +197,8 @@ Following our established quest principles (*clear goals, no step-by-step handho
 | Quest Type | Quest Title | Summary | Goal |
 |---|---|---|---|
 | **Main** | **The High Sanctuary Infiltration** | Infiltrate the Cathedral alone, assassinate the Seer to stop the monster conversion rites, and unlock the Main Teleport Platform. | Slay the Seer and activate the main platform to bring your party through. |
-| **Side** | **The Witch's Formula** | Track down the rogue temple apothecary hidden among the clergy and obtain the formula for spiritual sight (peacefully via Einar's phrase, or by subduing her in Path B). | Locate the Witch and acquire the Spiritual Enhancer pill. |
-| **Side (Path B)** | **The Scriptorium Catechisms** | *(Active only if Einar died)* Break into the locked Scriptorium at night to steal theological manuscripts and master the checkpoint quiz answers. | Recover the High Sanctuary Catechisms to pass day checkpoints. |
+| **Side** | **The Witch's Formula** | Track down the rogue temple apothecary hidden among the clergy and obtain the formula for spiritual sight (peacefully via Einar's phrase during a Relief Shift, or by subduing her in Path B). | Locate the Witch and acquire the Spiritual Enhancer pill. |
+| **Side (Path B)** | **The Scriptorium Catechisms** | *(Active only if Einar died)* Break into the locked Scriptorium during a Relief Shift to steal theological manuscripts and master the checkpoint quiz answers. | Recover the High Sanctuary Catechisms to pass Inspection Shift checkpoints. |
 | **Secret** | **The Archive of the Disappeared** | Locate the confidential mortuary ledgers in the Cathedral Undercrypt to uncover the original human identities of every monster in the dungeon. | Discover the true origins of Sakhra, the Elf Queen, and the goblin golems. |
 
 ---

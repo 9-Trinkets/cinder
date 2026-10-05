@@ -12140,6 +12140,22 @@
         ],
         "menu_label": "Return to the Frost Courtyard",
         "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_grand_terrace",
+        "label": "South down the pale stairs to the High Sanctuary",
+        "aliases": [
+          "south",
+          "s",
+          "stairs",
+          "down",
+          "sanctuary",
+          "gate",
+          "floor 6",
+          "floor6"
+        ],
+        "menu_label": "Descend to the High Sanctuary",
+        "requires_story_var": ""
       }
     ],
     "descriptions": []
@@ -12154,7 +12170,12 @@
       {
         "id": "salt_reach-brine_pans",
         "label": "the frozen brine pans",
-        "aliases": ["brine", "salt fields", "pans", "ice"],
+        "aliases": [
+          "brine",
+          "salt fields",
+          "pans",
+          "ice"
+        ],
         "allow_rest": false,
         "consumables": [],
         "inspect_text": "Workers cut neat slabs from shallow mineral pools. Blue ice shows beneath a crust of clean white salt."
@@ -12173,7 +12194,12 @@
       {
         "id": "glassbank-signal_lamps",
         "label": "the signal lamps",
-        "aliases": ["lamps", "glass", "lenses", "lights"],
+        "aliases": [
+          "lamps",
+          "glass",
+          "lenses",
+          "lights"
+        ],
         "allow_rest": false,
         "consumables": [],
         "inspect_text": "Each lamp uses a different cut of glass to send a clear color through snow and fog."
@@ -12192,7 +12218,12 @@
       {
         "id": "woolcross-community_looms",
         "label": "the community looms",
-        "aliases": ["looms", "weaving", "cloth", "rope"],
+        "aliases": [
+          "looms",
+          "weaving",
+          "cloth",
+          "rope"
+        ],
         "allow_rest": false,
         "consumables": [],
         "inspect_text": "Heavy wooden looms beat in a steady rhythm as red, gold, and deep blue threads become warm mountain cloth."
@@ -12211,7 +12242,12 @@
       {
         "id": "greenrest-medicine_gardens",
         "label": "the medicine gardens",
-        "aliases": ["gardens", "herbs", "mushrooms", "plants"],
+        "aliases": [
+          "gardens",
+          "herbs",
+          "mushrooms",
+          "plants"
+        ],
         "allow_rest": false,
         "consumables": [],
         "inspect_text": "Carefully labeled beds hold bitter leaves, pale mushrooms, and warming roots used by the town's healers."
@@ -12230,13 +12266,1811 @@
       {
         "id": "brass_yard-repair_benches",
         "label": "the repair benches",
-        "aliases": ["benches", "machines", "gears", "tools"],
+        "aliases": [
+          "benches",
+          "machines",
+          "gears",
+          "tools"
+        ],
         "allow_rest": false,
         "consumables": [],
         "inspect_text": "Every bench holds labeled trays of screws, gears, seals, and careful drawings for machines used across the worker towns."
       }
     ],
     "exits": [],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_grand_terrace",
+    "title": "The Sanctuary Gate Terrace",
+    "summary": "Broad marble steps ascend between limestone balustrades into the open mountain air. White towers rise ahead under the wide sky, while cool wind carries the scent of mountain herbs and temple incense.",
+    "inspect_text": "The steps climb toward the central plaza of the High Sanctuary. Below to the north, the covered passage leads back to the Frost Citadel.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "sanctuary_grand_terrace-balustrade",
+        "label": "the carved balustrade",
+        "aliases": [
+          "balustrade",
+          "rail",
+          "stone",
+          "view"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "White stone carved with geometric reliefs. Beyond it, rolling banks of mist drift through mountain gorges far below."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "citadel_sanctum_gate",
+        "label": "North up the stairs to the Frost Citadel",
+        "aliases": [
+          "back",
+          "stairs",
+          "up",
+          "citadel",
+          "gate",
+          "frost citadel"
+        ],
+        "menu_label": "Climb back to the Frost Citadel",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_crossroads",
+        "label": "North across the terrace to the Grand Plaza",
+        "aliases": [
+          "north",
+          "n",
+          "plaza",
+          "crossroads",
+          "center",
+          "in",
+          "sanctuary"
+        ],
+        "menu_label": "Enter the Grand Plaza",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_wall_south",
+        "label": "South up the stone stairs to the South Wall",
+        "aliases": [
+          "south",
+          "s",
+          "wall",
+          "rampart",
+          "stairs"
+        ],
+        "menu_label": "Climb to the South Wall",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_crossroads",
+    "title": "The Grand Acropolis Plaza",
+    "summary": "A vast white flagstone square opens beneath the wide sky. In the center, clear water spills from a tiered marble fountain. Four monumental stone arches open toward the four quarters of the sanctuary.",
+    "inspect_text": "Sunlight washes over the pale paving stones. The northwest arch leads to the Grand Basilica, the northeast arch to the Scriptorium, the southwest arch to the Herbarium, and the southeast arch to the Mortuary Crypts.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_crossroads-fountain",
+        "label": "the central marble fountain",
+        "aliases": [
+          "fountain",
+          "water",
+          "basin"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Clear mountain water flows steadily through tiered marble bowls into a wide reflection basin."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_grand_terrace",
+        "label": "South to the Gate Terrace",
+        "aliases": [
+          "south",
+          "s",
+          "terrace",
+          "gate",
+          "out"
+        ],
+        "menu_label": "Walk to the Gate Terrace",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "basilica_portal",
+        "label": "Northwest to the Arch of Chants",
+        "aliases": [
+          "northwest",
+          "nw",
+          "basilica",
+          "chants",
+          "church"
+        ],
+        "menu_label": "Approach the Grand Basilica",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "scriptorium_portal",
+        "label": "Northeast to the Arch of Letters",
+        "aliases": [
+          "northeast",
+          "ne",
+          "scriptorium",
+          "library",
+          "letters"
+        ],
+        "menu_label": "Approach the Scriptorium",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "herbarium_portal",
+        "label": "Southwest to the Arch of Remedies",
+        "aliases": [
+          "southwest",
+          "sw",
+          "herbarium",
+          "garden",
+          "apothecary",
+          "remedies"
+        ],
+        "menu_label": "Approach the Herbarium",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "mortuary_portal",
+        "label": "Southeast to the Arch of Passing",
+        "aliases": [
+          "southeast",
+          "se",
+          "mortuary",
+          "crypt",
+          "crypts",
+          "passing"
+        ],
+        "menu_label": "Approach the Mortuary Crypts",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "basilica_portal",
+    "title": "The Arch of Chants",
+    "summary": "A monumental limestone archway marks the entrance to the Basilica quarter. Statues of hooded figures with smooth silver masks hold ceremonial banners above the gate.",
+    "inspect_text": "Heavy iron hinges show the arch can be closed during lockdowns. Beyond the gate, the great doors of the basilica nave stand open.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "basilica_portal-statues",
+        "label": "the masked statues",
+        "aliases": [
+          "statues",
+          "masks",
+          "arch",
+          "carvings"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Smooth silver masks hide the faces of the carved figures, reflecting the sky in polished metal."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_crossroads",
+        "label": "Southeast to the Grand Plaza",
+        "aliases": [
+          "southeast",
+          "se",
+          "plaza",
+          "crossroads",
+          "back"
+        ],
+        "menu_label": "Return to the Grand Plaza",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "basilica_nave",
+        "label": "North into the Grand Basilica",
+        "aliases": [
+          "north",
+          "n",
+          "nave",
+          "in",
+          "basilica",
+          "church"
+        ],
+        "menu_label": "Enter the Grand Basilica",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "basilica_nave",
+    "title": "The Grand Basilica Nave",
+    "summary": "Ribbed limestone vaults soar overhead, supported by paired marble columns. Colored light spills across long oak pews from monumental rose windows, and the faint scent of ceremonial incense hangs in the quiet air.",
+    "inspect_text": "Rows of polished wooden benches face the high altar to the north. A stone spiral stair winds upward to the Northwest Bell Tower, while doors lead east into the vestry.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "basilica_nave-rose_window",
+        "label": "the great rose window",
+        "aliases": [
+          "window",
+          "glass",
+          "light"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Vibrant stained glass depicting geometric celestial wheels filters the sunlight into deep blues and golds."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "basilica_portal",
+        "label": "South to the Arch of Chants",
+        "aliases": [
+          "south",
+          "s",
+          "portal",
+          "arch",
+          "out"
+        ],
+        "menu_label": "Exit to the Arch of Chants",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "basilica_high_altar",
+        "label": "North to the High Altar",
+        "aliases": [
+          "north",
+          "n",
+          "altar",
+          "high altar",
+          "dais"
+        ],
+        "menu_label": "Walk to the High Altar",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "basilica_vestry",
+        "label": "East into the Vestry",
+        "aliases": [
+          "east",
+          "e",
+          "vestry",
+          "robing"
+        ],
+        "menu_label": "Enter the Robing Vestry",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_wall_nw_tower",
+        "label": "Up the spiral stair to the Bell Tower",
+        "aliases": [
+          "up",
+          "u",
+          "stairs",
+          "tower",
+          "bell tower"
+        ],
+        "menu_label": "Climb to the Northwest Bell Tower",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "basilica_high_altar",
+    "title": "The Sun Altar",
+    "summary": "A broad semicircular dais of polished white marble stands beneath a soaring dome. A massive altar table carved from single golden stone rests under hanging silver censers.",
+    "inspect_text": "Golden candlesticks stand unlit beside silver communion plates. Behind the altar, an arched passage leads east into the clergy cells.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "basilica_high_altar-table",
+        "label": "the golden altar table",
+        "aliases": [
+          "altar",
+          "table",
+          "stone",
+          "censers"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A solid block of golden limestone polished smooth. Intricate geometric runes are inlaid around the rim in thin silver wire."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "basilica_nave",
+        "label": "South to the Nave",
+        "aliases": [
+          "south",
+          "s",
+          "nave",
+          "pews",
+          "back"
+        ],
+        "menu_label": "Return to the Nave",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "basilica_clergy_cells",
+        "label": "East to the Clergy Cells",
+        "aliases": [
+          "east",
+          "e",
+          "cells",
+          "cloister",
+          "rooms"
+        ],
+        "menu_label": "Walk to the Clergy Cells",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "basilica_vestry",
+    "title": "The Robing Vestry",
+    "summary": "Tall cedar wardrobes line the walls of this quiet side hall. White vestments and silver ceremonial masks hang in neat rows, and small prayer desks face the arched windows.",
+    "inspect_text": "Embroidered stoles and linen robes smell faintly of cedar oil. Prie-dieu prayer benches offer quiet places for contemplative rest.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "basilica_vestry-wardrobes",
+        "label": "the cedar wardrobes",
+        "aliases": [
+          "wardrobes",
+          "cabinets",
+          "robes",
+          "masks"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Rows of immaculate white vestments hang beside silver masks with narrow eye-slits."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "basilica_nave",
+        "label": "West to the Nave",
+        "aliases": [
+          "west",
+          "w",
+          "nave",
+          "church",
+          "back"
+        ],
+        "menu_label": "Return to the Nave",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "basilica_clergy_cells",
+        "label": "North to the Clergy Cells",
+        "aliases": [
+          "north",
+          "n",
+          "cells",
+          "corridor"
+        ],
+        "menu_label": "Walk to the Clergy Cells",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "basilica_clergy_cells",
+    "title": "The Cloister Cells",
+    "summary": "A vaulted limestone corridor lined with heavy oak doors leading to the private living quarters of the senior priests. Small wall niches hold brass oil lamps.",
+    "inspect_text": "Iron locks secure each door, labeled with monastic titles such as Curate, Precentor, and Sacristan. Passages lead west to the high altar and south to the vestry.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "basilica_clergy_cells-doors",
+        "label": "the cell doors",
+        "aliases": [
+          "doors",
+          "cells",
+          "locks",
+          "plates"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Heavy oak doors with small grated peepholes. Brass nameplates denote monastic offices."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "basilica_high_altar",
+        "label": "West to the High Altar",
+        "aliases": [
+          "west",
+          "w",
+          "altar",
+          "high altar"
+        ],
+        "menu_label": "Return to the High Altar",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "basilica_vestry",
+        "label": "South to the Robing Vestry",
+        "aliases": [
+          "south",
+          "s",
+          "vestry",
+          "robing"
+        ],
+        "menu_label": "Return to the Robing Vestry",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "scriptorium_portal",
+    "title": "The Arch of Letters",
+    "summary": "A stately limestone gateway flanked by carved pedestals of scholars holding scrolls and styluses. The smell of ink, parchment, and beeswax drifts out from the scholarly halls.",
+    "inspect_text": "Broad steps pass under the archway leading north into the Scriptorium cloister. The central plaza lies back to the southwest.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "scriptorium_portal-carvings",
+        "label": "the scholar carvings",
+        "aliases": [
+          "carvings",
+          "reliefs",
+          "statues",
+          "arch"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Stone reliefs celebrating the recording and preservation of sacred texts across the centuries."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_crossroads",
+        "label": "Southwest to the Grand Plaza",
+        "aliases": [
+          "southwest",
+          "sw",
+          "plaza",
+          "crossroads",
+          "back"
+        ],
+        "menu_label": "Return to the Grand Plaza",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "scriptorium_cloister",
+        "label": "North into the Scriptorium",
+        "aliases": [
+          "north",
+          "n",
+          "scriptorium",
+          "hall",
+          "in"
+        ],
+        "menu_label": "Enter the Scriptorium",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "scriptorium_cloister",
+    "title": "The Scriptorium Hall",
+    "summary": "A wide, sun-filled hall lined with angled writing desks, inkhorns, and drying racks. Sunlight pours through tall arched windows overlooking the northern ramparts.",
+    "inspect_text": "Scribes' desks hold sheets of fresh vellum, quills, and jars of gall ink. Stairs climb up to the Northeast Watchtower, while doors open north to the library and east to the archive vault.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "scriptorium_cloister-desks",
+        "label": "the angled writing desks",
+        "aliases": [
+          "desks",
+          "quills",
+          "vellum",
+          "ink"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Neat wooden desks fitted with inkstands and brass paperweights. Sheets of half-copied liturgical texts lie drying."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "scriptorium_portal",
+        "label": "South to the Arch of Letters",
+        "aliases": [
+          "south",
+          "s",
+          "portal",
+          "arch",
+          "out"
+        ],
+        "menu_label": "Exit to the Arch of Letters",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "scriptorium_library",
+        "label": "North into the Great Library",
+        "aliases": [
+          "north",
+          "n",
+          "library",
+          "books"
+        ],
+        "menu_label": "Enter the Great Library",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "scriptorium_archive_vault",
+        "label": "East to the Catechism Chamber",
+        "aliases": [
+          "east",
+          "e",
+          "vault",
+          "archive",
+          "catechism"
+        ],
+        "menu_label": "Enter the Catechism Chamber",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_wall_ne_tower",
+        "label": "Up the stairs to the Northeast Tower",
+        "aliases": [
+          "up",
+          "u",
+          "stairs",
+          "tower",
+          "watchtower"
+        ],
+        "menu_label": "Climb to the Northeast Tower",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "scriptorium_library",
+    "title": "The Great Cathedral Library",
+    "summary": "Towering cedar bookshelves rise two stories high, accessed by rolling brass ladders. Hundreds of bound folios and manuscripts stand in orderly cataloged rows.",
+    "inspect_text": "Leather-bound volumes of theological law, astronomical tables, and historical chronicles fill the shelves. An inconspicuous corner shelf conceals a sliding seam to the east.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "scriptorium_library-shelves",
+        "label": "the towering bookshelves",
+        "aliases": [
+          "shelves",
+          "books",
+          "folios",
+          "ladders"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Neat rows of calfskin and vellum spines titled in gilt letters. A narrow seam runs along the baseboard behind the history section."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "scriptorium_cloister",
+        "label": "South to the Scriptorium Hall",
+        "aliases": [
+          "south",
+          "s",
+          "scriptorium",
+          "desks",
+          "back"
+        ],
+        "menu_label": "Return to the Scriptorium Hall",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "scriptorium_secret_archive",
+        "label": "East behind the sliding shelf",
+        "aliases": [
+          "east",
+          "e",
+          "secret",
+          "archive",
+          "shelf",
+          "hidden"
+        ],
+        "menu_label": "Slip behind the sliding shelf",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "scriptorium_archive_vault",
+    "title": "The Catechism Chamber",
+    "summary": "A reinforced stone chamber lined with iron-bound chest drawers. Manuscripts containing official dogma catechisms, exam rubrics, and liturgical hours are kept here under lock.",
+    "inspect_text": "Heavy iron grates secure several of the manuscript drawers. Passages lead west to the main scriptorium and north toward the inner archives.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "scriptorium_archive_vault-drawers",
+        "label": "the manuscript drawers",
+        "aliases": [
+          "drawers",
+          "chests",
+          "grates",
+          "scrolls"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Iron-banded drawers labeled by liturgical degree. These scrolls detail the exact doctrinal questions asked at sanctuary checkpoints."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "scriptorium_cloister",
+        "label": "West to the Scriptorium Hall",
+        "aliases": [
+          "west",
+          "w",
+          "scriptorium",
+          "hall",
+          "back"
+        ],
+        "menu_label": "Return to the Scriptorium Hall",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "scriptorium_secret_archive",
+        "label": "North to the Inner Archive",
+        "aliases": [
+          "north",
+          "n",
+          "archive",
+          "inner",
+          "in"
+        ],
+        "menu_label": "Enter the Inner Archive",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "scriptorium_secret_archive",
+    "title": "The Archive of the Disappeared",
+    "summary": "A hidden stone vault lit by dim crystal sconces. Metal racks hold confidential mortuary logs, transport manifests, and reanimation registries marked with official Inquisition seals.",
+    "inspect_text": "Thick ledgers detail the harvest of civilians from Deepwell, Salt Reach, and the other worker towns, recording their original identities and subsequent conversion into dungeon monsters.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "scriptorium_secret_archive-ledgers",
+        "label": "the confidential mortuary ledgers",
+        "aliases": [
+          "ledgers",
+          "records",
+          "files",
+          "racks"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Chilling entries matching living names to monster classes: miners turned into steam golems, forest scouts bound into shadow elves."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "scriptorium_library",
+        "label": "West to the Great Library",
+        "aliases": [
+          "west",
+          "w",
+          "library",
+          "books",
+          "back"
+        ],
+        "menu_label": "Return to the Great Library",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "scriptorium_archive_vault",
+        "label": "South to the Catechism Chamber",
+        "aliases": [
+          "south",
+          "s",
+          "chamber",
+          "vault",
+          "out"
+        ],
+        "menu_label": "Exit to the Catechism Chamber",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "herbarium_portal",
+    "title": "The Arch of Remedies",
+    "summary": "A graceful open-air archway carved with climbing vines and medicinal flowers. Warm, humid air carries the fresh aromas of sage, mint, and crushed mountain herbs.",
+    "inspect_text": "Terra-cotta planters flank the gateway. The archway opens south into the glass-roofed solarium garden, while the central plaza lies northeast.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "herbarium_portal-planters",
+        "label": "the carved planters",
+        "aliases": [
+          "planters",
+          "vines",
+          "flowers",
+          "arch"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Large glazed pots filled with blooming rosemary and wild mountain thyme."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_crossroads",
+        "label": "Northeast to the Grand Plaza",
+        "aliases": [
+          "northeast",
+          "ne",
+          "plaza",
+          "crossroads",
+          "back"
+        ],
+        "menu_label": "Return to the Grand Plaza",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "herbarium_garden",
+        "label": "South into the Solarium Garden",
+        "aliases": [
+          "south",
+          "s",
+          "garden",
+          "solarium",
+          "in"
+        ],
+        "menu_label": "Enter the Solarium Garden",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "herbarium_garden",
+    "title": "The Glass Solarium",
+    "summary": "A warm, bright botanical courtyard covered by an intricate wrought-iron and glass dome. Raised stone beds hold rare alpine mosses, flowering medicinal shrubs, and terraced herbs.",
+    "inspect_text": "Steam from warm floor pipes keeps the air humid and fragrant. Stone benches line the perimeter, stairs lead up to the Southwest Garden Bastion, and doors open south to the dispensary and west to the still room.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "herbarium_garden-beds",
+        "label": "the raised herb beds",
+        "aliases": [
+          "beds",
+          "herbs",
+          "plants",
+          "moss"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Neatly pruned clusters of silver moss, blue winter-sage, and pungent mint growing in dark, rich loam."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "herbarium_portal",
+        "label": "North to the Arch of Remedies",
+        "aliases": [
+          "north",
+          "n",
+          "portal",
+          "arch",
+          "out"
+        ],
+        "menu_label": "Exit to the Arch of Remedies",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "herbarium_apothecary",
+        "label": "South to the Dispensary",
+        "aliases": [
+          "south",
+          "s",
+          "apothecary",
+          "dispensary",
+          "shop"
+        ],
+        "menu_label": "Enter the Dispensary Hall",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "herbarium_still_room",
+        "label": "West to the Distillation Room",
+        "aliases": [
+          "west",
+          "w",
+          "still",
+          "distillation",
+          "lab"
+        ],
+        "menu_label": "Enter the Distillation Chamber",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_wall_sw_tower",
+        "label": "Up the stairs to the Southwest Bastion",
+        "aliases": [
+          "up",
+          "u",
+          "stairs",
+          "tower",
+          "bastion"
+        ],
+        "menu_label": "Climb to the Southwest Bastion",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "herbarium_apothecary",
+    "title": "The Dispensary Hall",
+    "summary": "Long oak workbenches hold brass balances, agate mortars, and rows of labeled ceramic jars. Bunches of dried herbs hang curing from rafters, filling the room with a crisp, earthy fragrance.",
+    "inspect_text": "This is the active workshop of the temple apothecary. Glass vials, filter papers, and wooden measuring spoons sit arranged in precise order.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "herbarium_apothecary-jars",
+        "label": "the labeled ceramic jars",
+        "aliases": [
+          "jars",
+          "medicines",
+          "shelves",
+          "pots"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Rows of sealed glazed jars labeled with herbal extracts, soothing balms, and powdered minerals."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "herbarium_garden",
+        "label": "North to the Solarium Garden",
+        "aliases": [
+          "north",
+          "n",
+          "garden",
+          "solarium",
+          "back"
+        ],
+        "menu_label": "Return to the Solarium Garden",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "herbarium_water_clock",
+        "label": "West to the Water Clock Cloister",
+        "aliases": [
+          "west",
+          "w",
+          "clock",
+          "water clock",
+          "cloister"
+        ],
+        "menu_label": "Enter the Water Clock Cloister",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "herbarium_still_room",
+    "title": "The Distillation Chamber",
+    "summary": "Copper stills and coiled condenser tubes gleam in the warm light. Steam gently hisses from pressure valves as pure floral waters and concentrated essences drip into glass flasks.",
+    "inspect_text": "Heavy ceramic basins collect cooling distillates. Pipes run through the stone walls, connecting to the neighboring clock cloister and garden beds.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "herbarium_still_room-alembic",
+        "label": "the copper distillation stills",
+        "aliases": [
+          "stills",
+          "alembic",
+          "copper",
+          "tubes"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Large burnished copper alembics connected by serpentine condenser coils bubbling with herbal extracts."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "herbarium_garden",
+        "label": "East to the Solarium Garden",
+        "aliases": [
+          "east",
+          "e",
+          "garden",
+          "solarium",
+          "back"
+        ],
+        "menu_label": "Return to the Solarium Garden",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "herbarium_water_clock",
+        "label": "South to the Water Clock Cloister",
+        "aliases": [
+          "south",
+          "s",
+          "clock",
+          "water clock"
+        ],
+        "menu_label": "Enter the Water Clock Cloister",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "herbarium_water_clock",
+    "title": "The Water Clock Cloister",
+    "summary": "A shaded stone alcove housing the sanctuary's master clepsydra—a colossal bronze water clock. Water drips with rhythmic precision from tiered bronze reservoirs, measuring the canonical watches.",
+    "inspect_text": "Intricate brass gearing tracks the hours, connected by trip-wires to the bell tower hammers. A drain valve and level float offer opportunities for careful tampering.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "herbarium_water_clock-clepsydra",
+        "label": "the bronze water clock",
+        "aliases": [
+          "clock",
+          "water clock",
+          "clepsydra",
+          "gears"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A masterwork of hydraulic engineering. Tiered bronze bowls drip measured amounts of water to turn floating gear-teeth and mark the change of guard shifts."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "herbarium_still_room",
+        "label": "North to the Distillation Chamber",
+        "aliases": [
+          "north",
+          "n",
+          "still",
+          "distillation",
+          "lab"
+        ],
+        "menu_label": "Return to the Distillation Chamber",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "herbarium_apothecary",
+        "label": "East to the Dispensary Hall",
+        "aliases": [
+          "east",
+          "e",
+          "apothecary",
+          "dispensary",
+          "hall"
+        ],
+        "menu_label": "Return to the Dispensary Hall",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "mortuary_portal",
+    "title": "The Arch of Passing",
+    "summary": "A somber archway of dark grey marble flanked by carved torches with cold silver flames. A faint draft smelling of bitumen, salt, and ceremonial myrrh rises from the stairs beyond.",
+    "inspect_text": "Heavy bronze-faced doors stand open beneath the lintel. Passages lead south down into the undercrypt, while the sunny central plaza spreads out to the northwest.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "mortuary_portal-torches",
+        "label": "the silver stone torches",
+        "aliases": [
+          "torches",
+          "carvings",
+          "arch",
+          "flames"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Stylized torches carved from veined marble, tipped with polished silver leaf."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_crossroads",
+        "label": "Northwest to the Grand Plaza",
+        "aliases": [
+          "northwest",
+          "nw",
+          "plaza",
+          "crossroads",
+          "back"
+        ],
+        "menu_label": "Return to the Grand Plaza",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "mortuary_descent",
+        "label": "South down the Undercrypt Stairs",
+        "aliases": [
+          "south",
+          "s",
+          "down",
+          "stairs",
+          "undercrypt",
+          "in"
+        ],
+        "menu_label": "Descend the Undercrypt Stairs",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "mortuary_descent",
+    "title": "The Undercrypt Stairs",
+    "summary": "A broad spiral staircase of pale dressed stone winds down beneath the acropolis. Brass wall sconces cast long shadows across the cool limestone steps.",
+    "inspect_text": "The air grows cooler with every step. Passages branch east toward the silent catacombs and south into the embalming hall.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "mortuary_descent-sconces",
+        "label": "the brass wall sconces",
+        "aliases": [
+          "sconces",
+          "lamps",
+          "stairs",
+          "walls"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Sturdy brass oil lamps burning with pale, smoke-free flame."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mortuary_portal",
+        "label": "North up the stairs to the Arch of Passing",
+        "aliases": [
+          "north",
+          "n",
+          "up",
+          "stairs",
+          "portal",
+          "out"
+        ],
+        "menu_label": "Climb up to the Arch of Passing",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "mortuary_crypt",
+        "label": "East into the Silent Catacombs",
+        "aliases": [
+          "east",
+          "e",
+          "crypt",
+          "catacombs"
+        ],
+        "menu_label": "Enter the Silent Catacombs",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "mortuary_embalming_hall",
+        "label": "South into the Embalming Hall",
+        "aliases": [
+          "south",
+          "s",
+          "embalming",
+          "lab",
+          "hall"
+        ],
+        "menu_label": "Enter the Embalming Laboratory",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "mortuary_crypt",
+    "title": "The Silent Catacombs",
+    "summary": "Vaulted stone corridors lined with burial niches and carved sarcophagi. The atmosphere is solemn, quiet, and chill, disturbed only by a faint draft from the corner flue.",
+    "inspect_text": "Stone plaques commemorate forgotten overseers. An iron ladder in a recessed chimney climbs to the Southeast Charnel Bastion, while a heavy arch leads south to the reanimation sanctum.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "mortuary_crypt-sarcophagi",
+        "label": "the carved sarcophagi",
+        "aliases": [
+          "sarcophagi",
+          "tombs",
+          "niches",
+          "stone"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Heavy limestone coffins carved with geometric knots and seal-marks."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mortuary_descent",
+        "label": "West to the Undercrypt Stairs",
+        "aliases": [
+          "west",
+          "w",
+          "stairs",
+          "descent",
+          "back"
+        ],
+        "menu_label": "Return to the Undercrypt Stairs",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "mortuary_reanimation_sanctum",
+        "label": "South to the Reanimation Sanctum",
+        "aliases": [
+          "south",
+          "s",
+          "sanctum",
+          "seer",
+          "in"
+        ],
+        "menu_label": "Enter the Reanimation Sanctum",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_wall_se_tower",
+        "label": "Up the chimney ladder to the Southeast Bastion",
+        "aliases": [
+          "up",
+          "u",
+          "ladder",
+          "flue",
+          "tower",
+          "bastion"
+        ],
+        "menu_label": "Climb ladder to Southeast Bastion",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "mortuary_embalming_hall",
+    "title": "The Embalming Laboratory",
+    "summary": "A wide, clinical chamber equipped with massive slate preparation tables, copper basins, and jars of embalming bitumen. Linen shrouds lie neatly folded on cedar shelving.",
+    "inspect_text": "This is where bodies harvested from the upper floors are cleansed and prepared before the reanimation ritual. Stone channels in the floor drain toward a central sump.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "mortuary_embalming_hall-tables",
+        "label": "the slate preparation tables",
+        "aliases": [
+          "tables",
+          "slabs",
+          "basins",
+          "linen"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Smooth slabs of black slate fitted with drainage gutters and bronze restraining straps."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mortuary_descent",
+        "label": "North to the Undercrypt Stairs",
+        "aliases": [
+          "north",
+          "n",
+          "stairs",
+          "descent",
+          "back"
+        ],
+        "menu_label": "Return to the Undercrypt Stairs",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "mortuary_reanimation_sanctum",
+        "label": "East to the Reanimation Sanctum",
+        "aliases": [
+          "east",
+          "e",
+          "sanctum",
+          "seer"
+        ],
+        "menu_label": "Enter the Reanimation Sanctum",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "mortuary_reanimation_sanctum",
+    "title": "The Seer's Sanctum",
+    "summary": "A colossal circular chamber illuminated by green chemical braziers. A raised bronze altar sits within concentric rings of inlaid silver runes, where the rite of oblivion and monster binding is performed.",
+    "inspect_text": "The floor is etched with the master patterns of the Revival Sigil. An elevated archway to the south opens onto the mountain terrace of the main platform.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "mortuary_reanimation_sanctum-altar",
+        "label": "the reanimation altar",
+        "aliases": [
+          "altar",
+          "bronze altar",
+          "runes",
+          "braziers"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A bronze dais encircled by glowing rune grooves. Faint residual hums of bio-computational reprogramming vibrate through the metal."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mortuary_embalming_hall",
+        "label": "West to the Embalming Laboratory",
+        "aliases": [
+          "west",
+          "w",
+          "embalming",
+          "lab",
+          "back"
+        ],
+        "menu_label": "Return to the Embalming Laboratory",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "mortuary_crypt",
+        "label": "North to the Silent Catacombs",
+        "aliases": [
+          "north",
+          "n",
+          "crypt",
+          "catacombs"
+        ],
+        "menu_label": "Return to the Silent Catacombs",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_main_platform",
+        "label": "South to the Main Teleport Platform",
+        "aliases": [
+          "south",
+          "s",
+          "platform",
+          "teleport",
+          "out"
+        ],
+        "menu_label": "Step out to the Main Platform",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_main_platform",
+    "title": "The Cathedral Sanctum Platform",
+    "summary": "A colossal open-air stone platform thrusting out from the mountain cliffs above a sea of clouds. A massive bronze resonance anchor is embedded into the center of the flagstones, cold and waiting for reactivation.",
+    "inspect_text": "From this dizzying vantage point, the entire snowy range stretches toward the horizon. Tracing the master anchor here will form a permanent cross-floor link to Floor 5, allowing Astrid and your companions to cross over.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_main_platform-anchor",
+        "label": "the master resonance anchor",
+        "aliases": [
+          "anchor",
+          "platform",
+          "ring",
+          "bronze"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A colossal bronze circle etched with four interlocked rings. It awaits a command pulse to synchronize with the lower floor teleport pads."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "mortuary_reanimation_sanctum",
+        "label": "North into the Seer's Sanctum",
+        "aliases": [
+          "north",
+          "n",
+          "sanctum",
+          "seer",
+          "back",
+          "inside"
+        ],
+        "menu_label": "Return to the Seer's Sanctum",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_wall_nw_tower",
+    "title": "The Northwest Bell Tower",
+    "summary": "A lofty stone tower rising high above the basilica. Massive bronze bells hang from heavy timber frames, their thick pull-ropes coiled on the plank floor. Arched windows open toward the western sky.",
+    "inspect_text": "Cool mountain winds rush through the open archways. Battlements lead east along the North Rampart and south along the West Rampart. A stone stair leads down into the basilica nave.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "sanctuary_wall_nw_tower-bells",
+        "label": "the great bronze watch bells",
+        "aliases": [
+          "bells",
+          "ropes",
+          "timbers",
+          "bronze"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Colossal bells of green-patinated bronze embossed with liturgical prayers. When struck, their chimes carry across the entire mountain range."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_wall_north",
+        "label": "East along the North Rampart",
+        "aliases": [
+          "east",
+          "e",
+          "rampart",
+          "wall",
+          "north wall"
+        ],
+        "menu_label": "Walk east along the North Rampart",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_wall_west",
+        "label": "South along the West Rampart",
+        "aliases": [
+          "south",
+          "s",
+          "rampart",
+          "wall",
+          "west wall"
+        ],
+        "menu_label": "Walk south along the West Rampart",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "basilica_nave",
+        "label": "Down the stone stair into the Basilica Nave",
+        "aliases": [
+          "down",
+          "d",
+          "stairs",
+          "nave",
+          "basilica"
+        ],
+        "menu_label": "Climb down to the Basilica Nave",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_wall_north",
+    "title": "The North Rampart",
+    "summary": "A wide limestone catwalk running along the northern perimeter wall. Stone crenels look out over dizzying drops and sheer snowy crags far below.",
+    "inspect_text": "The walkway connects the Northwest Bell Tower to the Northeast Watchtower. Far below to the south, the roofs of the basilica and scriptorium stretch toward the central plaza.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_wall_north-crenels",
+        "label": "the stone crenels",
+        "aliases": [
+          "crenels",
+          "battlements",
+          "parapet",
+          "view"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Sturdy limestone battlements notched for bowmen, offering an unobstructed vista of northern peaks."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_wall_nw_tower",
+        "label": "West to the Northwest Bell Tower",
+        "aliases": [
+          "west",
+          "w",
+          "tower",
+          "bell tower"
+        ],
+        "menu_label": "Walk to the Northwest Bell Tower",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_wall_ne_tower",
+        "label": "East to the Northeast Watchtower",
+        "aliases": [
+          "east",
+          "e",
+          "tower",
+          "watchtower"
+        ],
+        "menu_label": "Walk to the Northeast Watchtower",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_wall_ne_tower",
+    "title": "The Northeast Watchtower",
+    "summary": "A square corner bastion built high over the eastern abyss. Signal horn mounts and weapon racks line the stone walls beside a canvas-roofed sentry shelter.",
+    "inspect_text": "Catwalks run west along the North Rampart and south along the East Rampart. A narrow stairwell leads down into the Scriptorium cloister.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "sanctuary_wall_ne_tower-horns",
+        "label": "the copper signal horns",
+        "aliases": [
+          "horns",
+          "signals",
+          "mounts",
+          "racks"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Long polished horns of sheet copper mounted on swivel brackets to sound sanctuary-wide alerts."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_wall_north",
+        "label": "West along the North Rampart",
+        "aliases": [
+          "west",
+          "w",
+          "rampart",
+          "wall",
+          "north wall"
+        ],
+        "menu_label": "Walk west along the North Rampart",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_wall_east",
+        "label": "South along the East Rampart",
+        "aliases": [
+          "south",
+          "s",
+          "rampart",
+          "wall",
+          "east wall"
+        ],
+        "menu_label": "Walk south along the East Rampart",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "scriptorium_cloister",
+        "label": "Down the stairs into the Scriptorium",
+        "aliases": [
+          "down",
+          "d",
+          "stairs",
+          "scriptorium",
+          "cloister"
+        ],
+        "menu_label": "Climb down to the Scriptorium",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_wall_east",
+    "title": "The East Rampart",
+    "summary": "An exposed stone parapet along the eastern perimeter wall, where warm updrafts carry faint whispers of steam and smoke from lower flues.",
+    "inspect_text": "The battlement spans between the Northeast Watchtower and the Southeast Charnel Bastion. To the west, the peaked roofs of the scriptorium and mortuary meet.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_wall_east-flues",
+        "label": "the chimney flues",
+        "aliases": [
+          "flues",
+          "smoke",
+          "vents",
+          "wall"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Stone chimney cowls venting warm exhaust from the lower embalming chambers into the open mountain air."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_wall_ne_tower",
+        "label": "North to the Northeast Watchtower",
+        "aliases": [
+          "north",
+          "n",
+          "tower",
+          "watchtower"
+        ],
+        "menu_label": "Walk to the Northeast Watchtower",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_wall_se_tower",
+        "label": "South to the Southeast Bastion",
+        "aliases": [
+          "south",
+          "s",
+          "tower",
+          "bastion"
+        ],
+        "menu_label": "Walk to the Southeast Bastion",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_wall_se_tower",
+    "title": "The Southeast Charnel Bastion",
+    "summary": "A heavy, thick-walled stone bastion built above the mountain's eastern drop. Cold mountain air howls past narrow slit windows, carrying the scent of snow and cedar smoke.",
+    "inspect_text": "Catwalks lead north along the East Rampart and west along the South Terrace Wall. A recessed iron ladder leads down into the mortuary catacombs.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_wall_se_tower-slits",
+        "label": "the arrow slits",
+        "aliases": [
+          "slits",
+          "windows",
+          "walls"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Deep splayed arrow loops looking out over the clouds and lower glacier terraces."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_wall_east",
+        "label": "North along the East Rampart",
+        "aliases": [
+          "north",
+          "n",
+          "rampart",
+          "wall",
+          "east wall"
+        ],
+        "menu_label": "Walk north along the East Rampart",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_wall_south",
+        "label": "West along the South Wall",
+        "aliases": [
+          "west",
+          "w",
+          "rampart",
+          "wall",
+          "south wall"
+        ],
+        "menu_label": "Walk west along the South Wall",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "mortuary_crypt",
+        "label": "Down the chimney ladder into the Catacombs",
+        "aliases": [
+          "down",
+          "d",
+          "ladder",
+          "crypt",
+          "catacombs"
+        ],
+        "menu_label": "Climb ladder down to Catacombs",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_wall_south",
+    "title": "The South Terrace Wall",
+    "summary": "A sunlit stone battlement looking southward across the valley. Below, the grand entrance terrace ascends from the Frost Citadel gate.",
+    "inspect_text": "Stone steps drop north to the entrance terrace. Catwalks stretch east to the Southeast Bastion and west to the Southwest Garden Bastion.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_wall_south-parapet",
+        "label": "the south parapet",
+        "aliases": [
+          "parapet",
+          "wall",
+          "view",
+          "terrace"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Limestone battlements overlooking the terraced ascent path climbing up through the mountain gap from Floor 5."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_wall_se_tower",
+        "label": "East to the Southeast Bastion",
+        "aliases": [
+          "east",
+          "e",
+          "tower",
+          "bastion"
+        ],
+        "menu_label": "Walk to the Southeast Bastion",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_wall_sw_tower",
+        "label": "West to the Southwest Bastion",
+        "aliases": [
+          "west",
+          "w",
+          "tower",
+          "bastion"
+        ],
+        "menu_label": "Walk to the Southwest Bastion",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_grand_terrace",
+        "label": "Down the stone steps to the Gate Terrace",
+        "aliases": [
+          "down",
+          "d",
+          "steps",
+          "stairs",
+          "terrace"
+        ],
+        "menu_label": "Climb down to Gate Terrace",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_wall_sw_tower",
+    "title": "The Southwest Garden Bastion",
+    "summary": "A pleasant corner tower overlooking the mountain valley. Wild mint and flowering ivy climb the warm stone walls, spilling fragrant greenery across the battlements.",
+    "inspect_text": "Catwalks lead east along the South Wall and north along the West Rampart. A stone stair winds down into the herbarium solarium.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "sanctuary_wall_sw_tower-ivy",
+        "label": "the climbing ivy and mint",
+        "aliases": [
+          "ivy",
+          "mint",
+          "plants",
+          "vines"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Resilient alpine mint and dark green ivy clinging to the sun-warmed stone parapet."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_wall_south",
+        "label": "East along the South Wall",
+        "aliases": [
+          "east",
+          "e",
+          "rampart",
+          "wall",
+          "south wall"
+        ],
+        "menu_label": "Walk east along the South Wall",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_wall_west",
+        "label": "North along the West Rampart",
+        "aliases": [
+          "north",
+          "n",
+          "rampart",
+          "wall",
+          "west wall"
+        ],
+        "menu_label": "Walk north along the West Rampart",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "herbarium_garden",
+        "label": "Down the stairs into the Solarium Garden",
+        "aliases": [
+          "down",
+          "d",
+          "stairs",
+          "garden",
+          "solarium"
+        ],
+        "menu_label": "Climb down to Solarium Garden",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "sanctuary_wall_west",
+    "title": "The West Rampart",
+    "summary": "A broad, open wall walk along the western parapet. Afternoon sun gilds the limestone paving, and wind sweeps across the open drop-off to the west.",
+    "inspect_text": "The rampart connects the Southwest Garden Bastion to the Northwest Bell Tower. Below to the east lie the glass roofs of the herbarium and the tall nave of the basilica.",
+    "allow_rest": false,
+    "features": [
+      {
+        "id": "sanctuary_wall_west-battlements",
+        "label": "the western battlements",
+        "aliases": [
+          "battlements",
+          "parapet",
+          "crenels",
+          "wall"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Stout limestone merlons overlooking the western peaks and sunset horizon."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_wall_sw_tower",
+        "label": "South to the Southwest Bastion",
+        "aliases": [
+          "south",
+          "s",
+          "tower",
+          "bastion"
+        ],
+        "menu_label": "Walk south to the Southwest Bastion",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_wall_nw_tower",
+        "label": "North to the Northwest Bell Tower",
+        "aliases": [
+          "north",
+          "n",
+          "tower",
+          "bell tower"
+        ],
+        "menu_label": "Walk north to the Northwest Bell Tower",
+        "requires_story_var": ""
+      }
+    ],
     "descriptions": []
   }
 ]
