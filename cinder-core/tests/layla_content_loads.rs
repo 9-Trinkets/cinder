@@ -361,20 +361,12 @@ fn transition_commentary_falls_back_when_no_llm() {
             .expect("runtime creates");
 
     let outcome = runtime.run_turn("go down").expect("turn runs");
-    assert!(
-        outcome
-            .text()
-            .contains("Floor two. A glowing wood under a cave")
-    );
+    assert!(outcome.text().contains("Floor two. The wood."));
 
     // Climbing up and descending again does NOT repeat the fallback commentary
     let _ = runtime.run_turn("go up").expect("turn runs");
     let outcome2 = runtime.run_turn("go down").expect("turn runs");
-    assert!(
-        !outcome2
-            .text()
-            .contains("Floor two. A glowing wood under a cave")
-    );
+    assert!(!outcome2.text().contains("Floor two. The wood."));
 }
 
 #[test]
@@ -406,11 +398,7 @@ fn transition_commentary_tailored_when_llm_responds() {
             .text()
             .contains("Well, you survived the mines without getting turned into soup")
     );
-    assert!(
-        !outcome
-            .text()
-            .contains("Floor two. A glowing wood under a cave")
-    );
+    assert!(!outcome.text().contains("Floor two. The wood."));
 }
 
 #[test]
@@ -434,7 +422,7 @@ fn transition_commentary_floor_3_tailored() {
     assert!(outcome.text().contains(
         "You actually toppled the elf king. Try not to break whatever is left down on the board."
     ));
-    assert!(!outcome.text().contains("Floor three. The actual board"));
+    assert!(!outcome.text().contains("Floor three. The board"));
 }
 
 #[test]
@@ -460,11 +448,7 @@ fn transition_commentary_two_messages_summary_and_introduction() {
     // Both messages appear in the overall text
     assert!(outcome.text().contains(summary));
     assert!(outcome.text().contains(intro));
-    assert!(
-        !outcome
-            .text()
-            .contains("Floor two. A glowing wood under a cave")
-    );
+    assert!(!outcome.text().contains("Floor two. The wood."));
 
     // Both messages are emitted as distinct Channel lines
     let channel_lines: Vec<_> = outcome
@@ -504,11 +488,7 @@ fn transition_commentary_via_switch_room_view() {
 
     assert!(outcome.text().contains(summary));
     assert!(outcome.text().contains(intro));
-    assert!(
-        !outcome
-            .text()
-            .contains("Floor two. A glowing wood under a cave")
-    );
+    assert!(!outcome.text().contains("Floor two. The wood."));
 
     let channel_lines: Vec<_> = outcome
         .lines
@@ -568,11 +548,7 @@ fn transition_commentary_only_plays_on_first_descent() {
     // Neither tailored commentary nor fallback line should appear
     assert!(!outcome2.text().contains(summary));
     assert!(!outcome2.text().contains(intro));
-    assert!(
-        !outcome2
-            .text()
-            .contains("Floor two. A glowing wood under a cave")
-    );
+    assert!(!outcome2.text().contains("Floor two. The wood."));
     let channel_lines2: Vec<_> = outcome2
         .lines
         .iter()

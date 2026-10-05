@@ -948,7 +948,7 @@ fn floor5_all_three_stopped_lanes_end_the_siege() {
         "Amaru Quispe gives you the Woolcross Teleportation Token.",
         "Abeni Adeyemi: You kept hope alive",
         "Abeni Adeyemi gives you the Greenrest Teleportation Token.",
-        "Chen Yu-xin: You broke the command",
+        "Chen Yu-xin: Those who fix things",
         "Chen Yu-xin gives you the Brass Yard Teleportation Token.",
     ] {
         assert!(

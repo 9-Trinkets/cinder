@@ -134,36 +134,36 @@
     "equipment.ambiguous_item": "More than one item matches '{item}'. Be more specific.",
     "handler.descend.deep_wood": {
         "voice": "handler",
-        "text": "Floor two. A glowing wood under a cave — because a quiet, well-lit walkable warp would have been far too considerate. Keep the chalk ring hand ready; I'll keep the sarcasm mild."
+        "text": "Floor two. The wood. Keep the chalk ready. Don't make me pull your file."
     },
     "handler.descend.the_board": {
         "voice": "handler",
-        "text": "Floor three. The actual board. Whatever the elf king left standing, I'd rather not hear it called \"the final boss\" — it's a dish of black glass holding the ring together. Mind the ember near the south store."
+        "text": "Floor three. The board. Black glass dish holding the ring together. Mind the south store."
     },
     "handler.minimap_unlocked": {
         "voice": "handler",
-        "text": "Signal's clear. Looks like taking out the shaman cleared the interference on the surveyor feed. I've patched the floor grid into your console — check your sidebar, you've got a live minimap now. Try not to walk in circles."
+        "text": "Interference cleared. Floor grid patched into your console. You have a live minimap. Don't get lost."
     },
     "floor4.arrival.the_village": "You step off the last stair into gaslight and the smell of bread. Warm stone rings under your boots, worn pale in a path from the stairs down to a low iron hearth. Somebody has raked ash over a pair of small boots by the hearthstones and gone off to do something else. Up ahead, past the steam pipes, an iron bulkhead seals off the entire north side of the village, and two soldiers stand in front of it not moving at all. Somewhere behind the terraces a cart wheel grinds over a grate, and somebody calls a number out loud and gets it wrong.",
     "handler.descend.the_village": {
         "voice": "handler",
-        "text": "Floor four. Wait — my console is picking up civilian life signs. Actual people live down here? In this dump? I've patched a live quest feed into your console so you can track what they need. Keep your weapons low, check your objectives log, and let's see what the locals have to say before you go swinging."
+        "text": "Floor four. Worker settlement — picking up civilian life signs. Keep your head down and stay off the garrison's radar. Quest feed enabled. Find the route down."
     },
     "handler.first_mob_killed": {
         "voice": "handler",
-        "text": "There it is. First one down, no help, no clever speech — just the job. I've left your own vitals on the readout now. Consider it a refresher, since you clearly needed one."
+        "text": "First one down. No clever speech. Just the job. Vitals are on your readout now. Keep moving."
     },
     "handler.first_mob_charmed": {
         "voice": "handler",
-        "text": "Oh, now that's a first. You didn't kill it, you walked up and closed a ring around it. Handlers are supposed to discourage improvisation, so naturally I've patched ally tracking into your console. Stop looking smug."
+        "text": "You closed a ring around it instead of striking. Unorthodox. Live tracking is patched into your console. Keep moving."
     },
     "handler.clean_shaman_reward": {
         "voice": "handler",
-        "text": "The shaman's down and I have no idea how many golems are still standing down here — which means you actually did it. Clean. I'm upgrading nothing, don't get excited. Consider the readout a professional courtesy between operators."
+        "text": "Shaman down. Golems untouched. Clean. Readout updated. Don't get cocky."
     },
     "handler.sensory_enhancer_unlocked": {
         "voice": "handler",
-        "text": "That's a Citadel-issue perception capsule. Either someone down there grew a conscience, or you charmed it out of one — either way, take it. I can already see the feed improving from up here, so the map's about to show you more than walls."
+        "text": "Citadel perception capsule. Good. Swallow it. The sensor feed is clearing up — your map will track allies and portals now."
     },
     
     "bastion.entry_scene": "You step through the reinforced archway into the command bastion. Heavy steam vents hiss along the vaulted granite ceiling. Ahead, standing over a brass tactical map table, Captain Malik and Priest Harun are locked in a venomous exchange, oblivious to your entrance.",
@@ -180,7 +180,7 @@
     "sigil.spawn_limit": "The air crackles with spent heat, but no flame takes hold. You cannot sustain more than {max} summoned sprites at once.",
     "magic.insufficient_mp": "You do not have enough magic to trace the {item}. (Requires {mp_cost} MP, you have {mp} MP)",
     "zayd.freed_speech": "You... you unlocked it! You're really here to save me? Please, let's get out of here before the guards come back!",
-    "einar.freed_speech": "Thank you... we thought we would freeze in those iron bars. Take this sensory enhancer capsule — I managed to keep it hidden in my sleeve. Back in the High Sanctuary, we synthesized it to heighten human senses and expand spatial perception. Swallow it, and it will reveal where your allies stand and where active portals hum through the citadel's stone.",
+    "einar.freed_speech": "Thank you... we thought the cold would take us. Take this sensory enhancer capsule — I kept it hidden in my sleeve. It's a perception capsule from the High Sanctuary. Swallowing it will restart your head once — it makes you dizzy, don't be afraid. Once it clears, you will see where your people stand through the stone, and where active portals hum.",
     "handler.zayd_freed_warning": {
         "voice": "handler",
         "text": "Layla. That offering was cleared on the manifest. Let the offering ship. That's the job."
@@ -189,15 +189,15 @@
     "zayd.lantern_speech": "I... I'm sorry I don't have anything valuable to give you as a reward for saving me. But here—this was my dad's lantern from the lower drift. The glass never really goes cold, even near the frost vents. Please, take it with you... you'll need the light down there more than me.",
     "handler.teleport_tutorial": {
         "voice": "handler",
-        "text": "Good. That sigil hooks your chalk to the anchor points. Powered platform? Permanent anchor, so those are free. Anywhere else you're down to three chalk anchors, and they burn out after a single teleport. Don't get comfortable with them."
+        "text": "Good. That sigil hooks your chalk to anchors. Powered platforms are permanent. Anywhere else, you have three anchors and they burn out on use. Don't waste them."
     },
     "handler.quest.teleport_scroll_complete": {
         "voice": "handler",
-        "text": "Signed off on the retrieval. Whatever that sigil was keeping locked is behind you now—I'm not asking what you found inside it, and I'd advise you not to volunteer. Floor's below you. I've got your back down there."
+        "text": "Signed off on the retrieval. What you found inside stays off the record. The floor below is open. Move."
     },
     "handler.quest.free_prisoners_complete": {
         "voice": "handler",
-        "text": "Cage count reads zero. Every one of them breathing, which was nowhere on my forecast, so I'm revising my estimate of you upward. That's three doors now instead of two. Wouldn't call it breathing room."
+        "text": "Cage count reads zero. All breathing. Nowhere on my forecast. Three gates unlocked now. Don't linger."
     },
     "civilian.breach_warning": {
         "voice": "handler",
@@ -215,7 +215,7 @@
     "civilian.reward.glassbank": "You gave us back a future. If you come to Glassbank, you will be welcomed as family.",
     "civilian.reward.woolcross": "You held the line for people you had only just met. Let Woolcross return that kindness.",
     "civilian.reward.greenrest": "You kept hope alive in this frozen place. Greenrest has warmth and medicine waiting for you.",
-    "civilian.reward.brass_yard": "You broke the command that treated us like parts. Brass Yard owes you more than words.",
+    "civilian.reward.brass_yard": "Those who fix things thank those who fix things. Take this token — you will need it on the road.",
     "item.salt-reach-transit-seal.used": "The token dissolves into pale routing light. Salt Reach is now a permanent destination in your teleport spell.",
     "item.glassbank-transit-prism.used": "The token dissolves into cobalt light. Glassbank is now a permanent destination in your teleport spell.",
     "item.woolcross-transit-knot.used": "The token unwinds into a glowing route. Woolcross is now a permanent destination in your teleport spell.",
@@ -226,11 +226,11 @@
     "siege.frost_leopard_rout": "The Frost-Leopard hunters lower their weapons when the mirror signal goes dark. {count} hunters vanish back through the southwest doors.",
     "handler.quest.save_zayd_complete": {
         "voice": "handler",
-        "text": "Zayd is off my board and inside your reach, which is a sentence I would rather not have had to write. That file's closed. I won't ask what it cost—you'll hand me a charming half-truth and change the subject."
+        "text": "The boy is off my board and inside your reach. File closed. Don't make a habit of this."
     },
     "handler.quest.awaken_jamil_complete": {
         "voice": "handler",
-        "text": "The shell's quiet and the voice inside it belongs to a man again. Objective un-flagged. I'm not going to discuss the rest of that with you—some lines read better quiet. Take a minute. You've earned one."
+        "text": "The shell holds a man again. Record updated. Some lines read better quiet. Move when ready."
     },
     "sigil.chalk_anchor_placed": "You draw the double triangle on the stone. The chalk glows with a soft light, anchoring this room.",
     "platform.activated": "As you finish tracing the double triangle, blue light flares through the brass conduits. The platform roars to life with ancient power, opening the descent to Floor 5!",

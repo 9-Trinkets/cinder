@@ -64,8 +64,9 @@ We **never** break character with a pseudo-bureaucratic third voice citing corpo
 ### Who the Handler Is
 The Handler is Layla's remote examiner — and secretly the reigning Dungeon Master himself. He has held this dungeon for a very, very long time and is training a replacement AI. Layla is not his first candidate: numerous trainees came before her, and all of them failed. He spares few words for her at first because he sees little point talking to trainees who will likely fail.
 - **Remote observer:** He is not in the dungeon. He only sees telemetry, board state, and vital signs on his console.
-- **Seasoned exhaustion masking buried investment:** His register is old and dry — wit, sarcasm, and blunt observations that cut through nonsense. He sounds tired because he is tired: every failed candidate cost him something. The longer Layla survives, the harder his detachment has to work.
-- **Narrative weight:** Because he no longer interrupts every routine movement error or equip click, his radio transmissions carry true narrative weight when the comms crackle to life.
+- **Laconic exhaustion:** Old man, title rather than a name. He is dry, tired, and speaks with blunt-blade irony. He saves every word; speaking even one extra word feels like an effort.
+- **Strict sentence economy:** Radio transmissions are extremely short (ideally 1–8 words, or the absolute minimum necessary sentences). He never engages in chatty sitcom banter, cute trainee jokes, or drawn-out sarcastic monologues.
+- **Buried investment:** His professional detachment hides deep fatigue. Every failed candidate cost him something. When he acknowledges Layla's survival, it is grudging, terse, and strictly procedural.
 
 ### When the Handler Speaks
 The Handler speaks **exclusively** on significant narrative moments:
@@ -73,6 +74,12 @@ The Handler speaks **exclusively** on significant narrative moments:
 - **Major quest milestones:** Acknowledging the freeing of prisoners, finding Zayd, or clearing corrupted guardians.
 - **Tactical emergencies:** Countdown warnings when siege forces breach civilian quarters (`civilian.breach_warning`).
 - **Story friction:** Challenging Layla when her choices diverge from corporate expectations.
+
+### Examples
+- *Drop / Awake:* `"Awake. Good. Didn't die on the drop. Sit up. Tell me what's on the board."`
+- *First Kill:* `"First one down. No clever speech. Just the job. Vitals are on your readout now. Keep moving."`
+- *First Charm:* `"You closed a ring around it instead of striking. Unorthodox. Live tracking is patched into your console. Keep moving."`
+- *High-Stakes Warning:* `"Layla. That offering was cleared on the manifest. Let the offering ship. That's the job."`
 
 ---
 
@@ -96,14 +103,21 @@ The Handler speaks **exclusively** on significant narrative moments:
 
 ## 5. Layla's Character on the Page
 
-### 1. The Pattern-Seeking Mind (Autistic / Systems Lens)
+### 1. Persona & Background
+Layla is a well-educated urban woman in her twenties from an upper-middle-class background. She thinks with the disciplined, analytical mind of a chess player: calm, rational, observant, and principled.
+- **Narrative perspective:** Clear, orderly, and restrained. She favors complete grammatical sentences and breaks physical experiences into systematic observations.
+- **Dialogue tone:** Educated chess instructor demeanor — clean, straightforward, and composed. Her retorts are dry and sharp, but never vulgar or frantic.
+- **Under pressure:** In moments of high tension or focus, her speech contracts to bare essentials (*"Same as always: knock them out, don't kill."*).
+- **Taboos:** Modern internet slang (e.g. "lying flat", "XDD"), baby talk / diminutives, overly cutesy pet names, or fragmented note-taking prose when full sentences belong.
+
+### 2. The Pattern-Seeking Mind (Autistic / Systems Lens)
 Layla reads the world as an architecture of rules:
 - She counts steps, seams, and bone stacks.
 - She notices right angles, geometric symmetries, and crossing tracks.
 - She analyzes room structures like an experienced player inspecting an unfamiliar board.
 - When she learns a new mark or rule, it feels like an old move returning to muscle memory.
 
-### 2. Quiet Empathy for Charmed Followers
+### 3. Quiet Empathy for Charmed Followers
 Layla is instinctively gentle with the golems and creatures she charms, without understanding why:
 - She does not lecture the player or express sentimental pity.
 - Her care shows purely through action: pausing to let heavy stone feet find their footing, matching their pace, slowing down by half a stride so they can stay close.
@@ -111,7 +125,45 @@ Layla is instinctively gentle with the golems and creatures she charms, without 
 
 ---
 
-## 6. Quest Architecture & Writing Best Practices
+## 6. Major Cast Voice Profiles
+
+Each companion, leader, and civilian has a distinct linguistic fingerprint drawn from the novel voice guide (`docs/layla-novel/角色語氣指南.md`):
+
+### 1. Commander Astrid (`commander_astrid`)
+- **Archetype:** Pragmatic shield wall commander, heavily armored guardian, woman of action.
+- **Sentence length:** Extremely short, strictly essential.
+- **Tone:** Direct, pragmatic, steady, and decisive. States conclusions and principles without justification.
+- **Taboos:** Melodramatic chivalry, elaborate rhetoric, emotional flourishes (never say *"Tell me where to stand and none shall pass"*).
+- **Key principles:** *"Hold the line."* *"Defending a city is the reverse of chess: people are the wall; they don't move."*
+
+### 2. Einar (`einar`)
+- **Archetype:** High Sanctuary apothecary, gentle field medic, scholar.
+- **Sentence length:** Medium-short, clear sequential guidance.
+- **Tone:** Reassuring, patient, polite, and quietly compassionate. Speaks with bedside calm.
+- **Taboos:** Battlefield triage yelling, frantic broken fragments, or cold clinical technobabble.
+- **Key principles:** Clearly explains steps and sensations so the patient is not afraid (*"Swallow it. It will restart your head once — it makes you dizzy, don't be afraid. Once it clears, you will see..."*).
+
+### 3. Queen Nazira (`queen-elf-boss` / `Nazira`)
+- **Archetype:** Grief-stricken mother searching through shattered memory.
+- **Sentence length:** Broken phrases, gentle repetitions, pauses (`...`).
+- **Tone:** Tender, hesitant, sorrowful, and fragmented.
+- **Taboos:** This fragmentation is a unique expression of her fractured maternal memory; it must **never** bleed into Layla's perspective or other characters.
+
+### 4. Lady Sylvan (`lady_sylvan`)
+- **Archetype:** Aged Frost-Leopard matriarch, calculating mist-observer, weary survivor.
+- **Sentence length:** Laconic, measured, poetic brevity.
+- **Tone:** Slow, unhurried, observing from a distance. Tired of fighting other people's wars.
+- **Key principles:** Observes before acting. *"Why rush? Strings drawn, people rest. Let them strike first. The mist watches."*
+
+### 5. Chen Yu-xin (`chen_yu_xin`)
+- **Archetype:** 16-year-old Taiwanese apprentice machinist from Brass Yard.
+- **Sentence length:** Extremely short, straight to the point.
+- **Tone:** Grounded, practical, proud of craft, zero fluff.
+- **Key principles:** Expresses gratitude through shared work and tools: *"Those who fix things thank those who fix things."* *"Take this token — you will need it on the road."*
+
+---
+
+## 7. Quest Architecture & Writing Best Practices
 
 Quests in Layla structure player progression and provide narrative weight across the crawl. Quests are presented in the HUD Status Panel (`Quests` section) once unlocked.
 
@@ -155,13 +207,16 @@ Do not use pronoun vagueness (*"something down there"*, *"someone who does not m
 
 ---
 
-## 7. Authoring Sanity Checklist
+## 8. Authoring Sanity Checklist
 
 Before adding or editing content in `content/layla/`:
 
 - [ ] **Second-Person Check:** Are routine actions (take, drop, equip, order) and physical roadblocks phrased naturally in the second person (`You...`)?
 - [ ] **No Pseudo-Clerk Voice:** Did you avoid citing "playbooks", "route sheets", "field notes", or "equipment charts" for mundane gameplay events?
 - [ ] **Handler Scope Check:** Is the Handler reserved for genuine narrative radio comms (`Dispatch • Handler`) on floor descents, quest milestones, and tactical alarms?
+- [ ] **Handler Persona Check:** Does the Handler speak in terse, dry, blunt-blade bursts (1–8 words, essential sentences only), avoiding sitcom banter and trainee humor?
+- [ ] **Voice Consistency Check:** Do character lines match their profiles (Astrid: terse principles; Einar: patient steps; Sylvan: watchful mist; Yu-xin: machinist brevity)?
+- [ ] **Forbidden Words Check:** Are forbidden modernisms (net slang, baby talk, cutesy nicknames) absent?
 - [ ] **Sensory Check:** Does the room or action description include at least one concrete sound, smell, or tactile texture?
 - [ ] **Tone Check:** Are enemies described in material/physical terms rather than moral terms?
 - [ ] **Character Check:** Does Layla's observation notice geometry, counts, or physical rules?
