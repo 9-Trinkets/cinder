@@ -75,6 +75,7 @@ mod tests {
             targets: PeriodicActorEffectTargets::HostileLiving,
             effect: PeriodicActorEffect::Damage { amount: 2 },
             message: "combat.hazard".to_string(),
+            ..Default::default()
         }];
         content.items.push(ItemDefinition {
             id: "hazard-token".to_string(),

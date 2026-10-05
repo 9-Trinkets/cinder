@@ -189,6 +189,11 @@ pub struct WorldState {
     /// Runtime tracking for autonomous remote comms dispatches during offscreen party combat.
     #[serde(default)]
     pub offscreen_combat_states: BTreeMap<String, OffscreenCombatState>,
+    /// Tracks periodic effect ambient cues emitted in the current turn to prevent
+    /// duplicate audio/visual lines when multiple actors trigger in the same room.
+    /// Key: `{room_id}::{effect_id}` or `{room_id}::{effect_id}::boss`, Value: turn_number.
+    #[serde(default)]
+    pub periodic_effects_reported: BTreeMap<String, u32>,
 }
 
 #[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq, Eq)]
@@ -409,6 +414,7 @@ impl WorldState {
             actor_name_overrides: BTreeMap::new(),
             protection_rule_states: BTreeMap::new(),
             offscreen_combat_states: BTreeMap::new(),
+            periodic_effects_reported: BTreeMap::new(),
         }
     }
 

@@ -10,13 +10,23 @@ pub enum ActorTickScope {
     AllRooms,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub struct PeriodicActorEffectDefinition {
     pub id: String,
     pub trigger: PeriodicActorEffectTrigger,
     pub targets: PeriodicActorEffectTargets,
     pub effect: PeriodicActorEffect,
     pub message: String,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub adjacent_message: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub distant_message: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub boss_message: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub adjacent_kill_message: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub distant_kill_message: Option<String>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
@@ -31,11 +41,16 @@ pub struct PeriodicActorEffectTrigger {
     /// activations and fades away. Empty when the pack wants no line.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub deplete_message: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deplete_adjacent_message: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deplete_distant_message: Option<String>,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum PeriodicActorEffectTargets {
+    #[default]
     HostileLiving,
     AlliedLiving,
     AnyLiving,
@@ -45,6 +60,12 @@ pub enum PeriodicActorEffectTargets {
 #[serde(tag = "kind", rename_all = "snake_case")]
 pub enum PeriodicActorEffect {
     Damage { amount: i32 },
+}
+
+impl Default for PeriodicActorEffect {
+    fn default() -> Self {
+        Self::Damage { amount: 0 }
+    }
 }
 
 #[cfg(test)]

@@ -18,10 +18,12 @@ fn drain_effect(max_activations: Option<u32>) -> PeriodicActorEffectDefinition {
             room_item: "drain-sigil".to_string(),
             max_activations,
             deplete_message: Some("combat.room_hazard_spent".to_string()),
+            ..PeriodicActorEffectTrigger::default()
         },
         targets: PeriodicActorEffectTargets::HostileLiving,
         effect: PeriodicActorEffect::Damage { amount: 2 },
         message: "combat.room_hazard".to_string(),
+        ..PeriodicActorEffectDefinition::default()
     }
 }
 

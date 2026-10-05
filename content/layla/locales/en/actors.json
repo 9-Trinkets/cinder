@@ -1941,7 +1941,8 @@
     ],
     "tags": [
       "elemental",
-      "fire"
+      "fire",
+      "boss"
     ],
     "inspect_text": "It is not quite a body, not quite a flame. The shape in the pit holds itself together out of memory: a wide, patient form, made of the board's old fire. It does not flicker. It holds. A spiral of warmth beats slow inside it.",
     "attackable": true,
