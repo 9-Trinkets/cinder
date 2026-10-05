@@ -43,14 +43,52 @@ When an actor is defeated anywhere in the game, their physical shell collapses, 
 
 ---
 
-## 2. Einar & Astrid's Conspiracy: The Infiltration Mission
+## 2. Einar & Astrid's Conspiracy: The Infiltration Mission & Branching Descent
 
-### Einar's Confession
-Before Layla leaves Floor 5, Einar explains why he was stripped of his robes and thrown into the execution cages:
-> *"Astrid and I didn't end up in those cages by accident. We formed a pact to cut the snake's head off. We planned to assassinate the **Seer**—the high priest who conducts the reanimation rites and holds the revival scroll. Without the Seer, the entire monster-making pipeline stops cold. We were betrayed before we could strike."*
+### Einar's Survival Dynamic: Fail-Forward Branching
+Einar is a dedicated healer (`hp: 20`, `heal`, `hold`). During the Floor 5 siege, he is stationed in the central courtyard (`courtyard_center`) tending the wounded offerings. If the defense lanes hold, Einar survives. However, if a lane is overwhelmed and siege forces breach the courtyard center, Einar can be defeated.
 
-### The Clandestine Solo Token
-Einar gifts Layla a smuggled, single-use infiltration token (`item.clandestine_sanctuary_token`). It bypasses the High Sanctuary's security wards, but it can **only transport Layla alone**.
+Rather than a hard failure or immersion-breaking plot armor, Einar's survival status drives a **dynamic branching infiltration into Floor 6**:
+
+```
+                              【End of Floor 5 Siege】
+                                         │
+                    ┌────────────────────┴────────────────────┐
+                    ▼                                         ▼
+         【Path A: Scholar's Guidance】              【Path B: Shadow Hard Route】
+               (Einar Survives)                           (Einar Fallen)
+       • Einar explains the assassination pact    • Layla loots Einar's bloodstained satchel
+       • Einar gifts Clandestine Token            • Discovers sealed Token & torn notes
+       • Coaches Layla on Liturgical Dogma        • Enters Floor 6 blind (no quiz coaching)
+       • Shares secret counter-phrase for Witch   • Witch is hostile (must be subdued)
+                    │                                         │
+                    ▼                                         ▼
+       [Smooth Day Phase: answers quizzes]        [Hazardous Day Phase: quizzes trigger alarms]
+       [Free cloister navigation]                 [Must navigate crypts/bell towers/shadows]
+       [Peaceful Witch contact]                   [Night Scriptorium heist to learn dogma]
+```
+
+### Path A: The Scholar's Guidance (Einar Survives)
+- **Einar's Confession:** Before Layla teleports, Einar reveals his and Astrid's past:
+  > *"Astrid and I didn't end up in those cages by accident. We formed a pact to cut the snake's head off. We planned to assassinate the **Seer**—the high priest who conducts the reanimation rites and holds the revival scroll. Without the Seer, the entire monster-making pipeline stops cold. We were betrayed before we could strike."*
+- **The Clandestine Solo Token:** Einar gifts Layla a smuggled, single-use infiltration token (`item.clandestine_sanctuary_token`). It bypasses the High Sanctuary's security wards, but it can **only transport Layla alone**.
+- **Liturgical Coaching:** Einar quizzes Layla on Floor 5, teaching her the answers to the High Sanctuary's dogma quizzes (liturgical hours, saintly titles, prayer responses). When Templar patrol guards challenge Layla on Floor 6, the player can answer correctly and walk unhindered.
+- **The Secret Counter-Phrase:** Einar teaches Layla his apothecary greeting (*"mint, crushed moss, and mountain snow"*), allowing Layla to peacefully identify and converse with the Witch.
+
+### Path B: The Shadow Hard Route (Einar Dies)
+- **Looting the Relic:** Layla retrieves the clandestine token and Einar's journal from his fallen satchel (`item.einar_bloodstained_satchel`), or Astrid helps unseal the frozen Citadel Sanctum Gate.
+- **Blind Infiltration:** Layla enters the High Sanctuary with zero coaching on monastic doctrine or guard rituals.
+- **Brutal Checkpoint Quizzes:**
+  - When Templar patrol guards stop Layla for dogma quizzes, Layla has no answers.
+  - Guessing wrong raises the Sanctuary **Alert Level**, locking down holy cloisters and dispatching Inquisitor hounds.
+  - To avoid guards, Layla must take dangerous alternate routes: claustrophobic subterranean mortuary crypts, high-altitude bell tower catwalks, and smoke flues.
+- **The Scriptorium Heist (Night Phase):**
+  - To survive subsequent Day Phases, Layla must break into the heavily guarded Cathedral Scriptorium at night to steal liturgical catechism scrolls and learn the answers herself.
+- **The Witch Confrontation:**
+  - Without Einar's counter-phrase, the Witch assumes Layla is an Inquisitor assassin sent to silence her.
+  - The Witch attacks with toxic vapors and flash powder; Layla must duel and subdue her to half HP before presenting Einar's keepsake to prove she is an ally.
+- **Spiritual Resonance:**
+  - Later, when Layla earns the Revival Sigil and Spiritual Sight, Einar's spirit is found lingering in the Floor 5 courtyard. Layla can revive him—but only as a monster thrall, delivering an unforgettable emotional climax.
 
 ### The Party Disconnection Rule
 - When Layla is on a different floor from her party members, the party enters a **`[Disconnected]`** state.
@@ -83,7 +121,9 @@ Floor 6 is structured around an underground monastic cathedral operating on a st
 - **Guard Patrols & Faith Quizzes:**
   - Templar guards patrol the corridors during the day and halt Layla at checkpoints to test her orthodoxy.
   - Guards quiz her on High Sanctuary dogma, liturgical ranks, and daily rituals.
-  - **Einar's Briefing:** Before sending Layla through the token, Einar coaches and quizzes Layla in dialogue on Floor 5, teaching her the answers. If the player pays attention to Einar's coaching, Layla answers the guards correctly and passes unhindered.
+  - **Dogma Knowledge & Quizzes:**
+    - **Path A (Einar Alive):** Einar coached Layla on Floor 5. If the player pays attention to Einar's coaching, Layla answers the guards correctly and passes unhindered.
+    - **Path B (Einar Fallen):** Layla has no coaching. Answering blindly risks triggering suspicious alerts and raising security levels. To bypass checkpoints, Layla must sneak through subterranean mortuary crypts and high-altitude bell tower catwalks, or break into the Scriptorium at night to study the dogma herself.
   - If Layla fails a quiz, the guards become suspicious, raising alertness and restricting access to holy wings.
 - **Gathering Clues:**
   - The high clergy wear uniform white robes and obscuring silver masks. Their identities are concealed behind monastic titles (*Curate*, *Precentor*, *Almoner*, *Archdeacon*, *Sacristan*).
@@ -103,7 +143,9 @@ Floor 6 is structured around an underground monastic cathedral operating on a st
 
 ### 1. The Witch $\rightarrow$ The Spiritual Enhancer Pill
 - **Deduction:** Clues reveal a temple apothecary who secretly harbors sympathy for the victims, smelling of mint and crushed moss rather than ceremonial incense.
-- **Confrontation:** Cornered at night (or approached using Einar's secret counter-phrase), the Witch yields the **Spiritual Enhancer Pill** (`item.spiritual_enhancer`).
+- **Confrontation:**
+  - **Path A (Einar Alive):** Approached in secret using Einar's counter-phrase (*"mint, crushed moss, and mountain snow"*), the Witch recognizes an ally and willingly yields the **Spiritual Enhancer Pill** (`item.spiritual_enhancer`).
+  - **Path B (Einar Fallen):** Without the counter-phrase, the Witch believes Layla is an Inquisitor executioner sent to eliminate her and attacks with toxic vapors and flash powder. Layla must duel and subdue her to half HP, then display Einar's keepsake/satchel to de-escalate the fight and earn the pill.
 - **Spiritual Sight:** Swallowing the pill permanently alters Layla's vision:
   - Rooms where actors were defeated now display faint, translucent spirits lingering near the walls.
   - Layla can inspect these spirits to read their residual memories and identify who they were before they died.
@@ -129,9 +171,11 @@ Floor 6 is structured around an underground monastic cathedral operating on a st
    - In the chaos, Layla fights her way to the **Cathedral Sanctum Gate / Main Teleportation Platform** (`sanctuary_main_platform`).
    - Layla traces the master resonance anchor, establishing a permanent cross-floor link back to Floor 5.
 3. **The Party Arrives:**
-   - Commander Astrid, Einar, Sakhra, and any allied party members materialize on the platform!
+   - Commander Astrid, Sakhra, and surviving allies materialize on the platform!
+   - If Einar survived Floor 5, he teleports in beside Astrid and immediately sets up a triage post to treat traumatized acolytes.
+   - If Einar fell on Floor 5, Astrid solemnizes his memory as she locks shields in the vanguard. (Furthermore, Layla now holds the power to return to Floor 5 to view or revive Einar's lingering spirit).
    - The **`[Disconnected]`** status clears.
-   - Astrid establishes a defensive perimeter with her great tower shield, Einar begins treating traumatized acolytes, and the united party punches through to **Floor 7 (The Royal Core / Dungeon Master)**.
+   - Astrid establishes a defensive perimeter with her great tower shield, and the united party punches through to **Floor 7 (The Royal Core / Dungeon Master)**.
 
 ---
 
@@ -142,7 +186,8 @@ Following our established quest principles (*clear goals, no step-by-step handho
 | Quest Type | Quest Title | Summary | Goal |
 |---|---|---|---|
 | **Main** | **The High Sanctuary Infiltration** | Infiltrate the Cathedral alone, assassinate the Seer to stop the monster conversion rites, and unlock the Main Teleport Platform. | Slay the Seer and activate the main platform to bring your party through. |
-| **Side** | **The Witch's Formula** | Track down the rogue temple apothecary hidden among the clergy and obtain the formula for spiritual sight. | Locate the Witch and acquire the Spiritual Enhancer pill. |
+| **Side** | **The Witch's Formula** | Track down the rogue temple apothecary hidden among the clergy and obtain the formula for spiritual sight (peacefully via Einar's phrase, or by subduing her in Path B). | Locate the Witch and acquire the Spiritual Enhancer pill. |
+| **Side (Path B)** | **The Scriptorium Catechisms** | *(Active only if Einar died)* Break into the locked Scriptorium at night to steal theological manuscripts and master the checkpoint quiz answers. | Recover the High Sanctuary Catechisms to pass day checkpoints. |
 | **Secret** | **The Archive of the Disappeared** | Locate the confidential mortuary ledgers in the Cathedral Undercrypt to uncover the original human identities of every monster in the dungeon. | Discover the true origins of Sakhra, the Elf Queen, and the goblin golems. |
 
 ---
