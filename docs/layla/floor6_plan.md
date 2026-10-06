@@ -101,15 +101,18 @@ Rather than a hard failure or immersion-breaking plot armor, Einar's survival st
   - Later, when Layla earns the Revival Sigil and Spiritual Sight, Einar's spirit is found lingering in the Floor 5 courtyard where his dust settled. Layla can revive him—but only as a monster thrall, delivering an unforgettable emotional climax.
 
 ### The Solo Teleportation & Party Disconnection Invariant
-- **Solo Infiltration:**
+- **Permanent Platform Rule vs. Single-Use Tokens:**
+  - Party members only travel with the player during teleportation when departing from one of the **permanent teleportation points** (e.g. `teleport_platform` on Floor 4, `courtyard_center` on Floor 5).
+  - Single-use items (such as chalk anchors or tokens) are personal teleportations and do not bring party members.
+- **Solo Infiltration via Clandestine Token:**
   - Layla enters Floor 6 exclusively by consuming the single-use `clandestine-sanctuary-token`.
   - There is **no physical door, stair, or portcullis** connecting Floor 5 and Floor 6 (`citadel_sanctum_gate` has been removed).
-- **Party Disconnection:**
-  - When Layla teleports into Floor 6, her party members (Astrid, surviving Einar, and all charmed allies) remain behind in Floor 5 (`courtyard_center`).
-  - The engine enforces solo infiltration for Floor 6: `sync_followers_to_room` prevents companions from entering `the-high-sanctuary` before platform unlock, and ignores disconnected companions left behind on other floor maps.
+  - Because the infiltration uses a single-use token rather than a permanent platform, Layla's party members (Astrid, surviving Einar, and all charmed allies) remain behind in Floor 5 (`courtyard_center`).
+- **Party Member Isolation:**
+  - As Layla navigates Floor 6, companions left behind on Floor 5 do not follow because party synchronization requires companions to be present in the player's departure room.
   - Attempting to issue party orders (`order <actor> <order>`) fails with `party.order_member_unavailable` (*"That companion is not close enough to receive your order."*).
 - **Unlocking the Party Cross-Over:**
-  - Companions cannot cross into Floor 6 until Layla infiltrates the High Sanctuary basilica, identifies and slays the Seer, and unlocks the **Main Teleportation Platform** on Floor 6.
+  - Companions cannot cross into Floor 6 until Layla infiltrates the High Sanctuary basilica, identifies and slays the Seer, and unlocks the **Main Teleportation Platform** on Floor 6, establishing a permanent platform-to-platform route back to Floor 5.
 
 ---
 

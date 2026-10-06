@@ -121,24 +121,23 @@ pub(crate) fn sync_followers_to_room(
             continue;
         }
 
-        let f_map = content.map_for_room(follower_room);
-        let t_map = content.map_for_room(to_room_id);
-
-        // Floor 6 (The High Sanctuary) is a solo infiltration mission until the
-        // main teleport platform is unlocked; companions cannot cross into Floor 6.
-        if t_map.is_some_and(|m| m.id == "the-high-sanctuary") {
-            let unlocked = state.story_vars.get("sanctuary_platform_unlocked") == Some("true");
-            if !unlocked {
-                continue;
-            }
+        // Followers only accompany the player if they are physically present
+        // in the departure room with the player. Disconnected followers left
+        // behind on other rooms or other floors never magically follow.
+        if follower_room != from_room_id {
+            continue;
         }
 
-        // When crossing between different floor maps (or if the follower is on a
-        // different map), followers only cross if they were with the player in
-        // the departure room (e.g. traveling together via teleport platform or stairs).
-        // Disconnected followers left behind on other maps never magically follow.
-        let is_cross_map = f_map.map(|m| &m.id) != t_map.map(|m| &m.id);
-        if is_cross_map && follower_room != from_room_id {
+        // For non-adjacent movement (teleportation, rather than physical room exits),
+        // party members only travel with the player if departing from a permanent
+        // teleportation platform (e.g. Floor 4 teleport platform or Floor 5 courtyard).
+        // Single-use tokens and non-platform chalk teleports do not bring the party.
+        let is_physical_exit = content
+            .room(from_room_id)
+            .map(|r| r.exits.iter().any(|e| e.room_id == to_room_id))
+            .unwrap_or(false);
+
+        if !is_physical_exit && !content.is_permanent_teleport_room(from_room_id) {
             continue;
         }
 

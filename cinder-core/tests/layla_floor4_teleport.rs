@@ -9,7 +9,7 @@
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::content::types::{ItemStorageTarget, PanelDataSource};
 use cinder_core::engine::runtime::CinderRuntime;
-use cinder_core::engine::state::WorldState;
+use cinder_core::engine::state::{ActorStance, WorldState};
 
 #[test]
 fn test_read_scroll_learns_teleport_and_handler_explains() {
@@ -309,4 +309,42 @@ fn test_teleport_rejections() {
         .run_turn("teleport nonexistent_dungeon")
         .expect("teleport unknown");
     assert!(rej2.text().contains("Unknown anchor"));
+}
+
+#[test]
+fn test_teleport_from_chalk_anchor_does_not_bring_party_members() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.story_vars.set_unchecked("knows_teleport", "true");
+    state.current_room_id = "village_square".to_string();
+    state.add_chalk_anchor("fortress_gate", 3);
+
+    // Sakhra is with player in village_square, following player and allied
+    state.set_actor_stance(&pack, "sakhra", ActorStance::Allied, true);
+    state
+        .actor_room_overrides
+        .insert("sakhra".to_string(), "village_square".to_string());
+
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime =
+        CinderRuntime::with_dialogue_generator(pack, state, dialogue).expect("runtime creates");
+
+    // Teleport from non-permanent room (village_square) to chalk anchor (fortress_gate)
+    let outcome = runtime
+        .run_turn("teleport fortress_gate")
+        .expect("teleport runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "fortress_gate");
+    assert!(
+        !outcome.text().contains("Sakhra crosses the room with you"),
+        "Personal chalk teleportation must not bring party members: {}",
+        outcome.text()
+    );
+
+    let s = runtime.export_state().unwrap();
+    assert_eq!(
+        s.actor_room_id("sakhra", "village_square"),
+        "village_square",
+        "Sakhra must remain in village_square when teleporting without a permanent platform"
+    );
 }
