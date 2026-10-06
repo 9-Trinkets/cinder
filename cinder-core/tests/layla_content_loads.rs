@@ -834,9 +834,14 @@ fn trace_deducts_mp_and_recovers_over_time() {
     let initial_mp = state.actor_stat("player", "mp");
     assert_eq!(initial_mp, 10);
 
-    let runtime =
-        cinder_core::engine::runtime::CinderRuntime::from_state(pack.clone(), state, false)
-            .expect("runtime from state");
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
+        pack.clone(),
+        state,
+        dialogue.clone(),
+    )
+    .expect("runtime from state");
 
     // Tracing charm-sigil costs 1 MP (10 -> 9 MP)
     let outcome = runtime.run_turn("trace charm-sigil").expect("turn runs");
@@ -855,10 +860,10 @@ fn trace_deducts_mp_and_recovers_over_time() {
     state_with_drain
         .story_vars
         .set_unchecked("knows_drain", "true");
-    let runtime2 = cinder_core::engine::runtime::CinderRuntime::from_state(
+    let runtime2 = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
         pack.clone(),
         state_with_drain,
-        false,
+        dialogue,
     )
     .expect("runtime2");
 

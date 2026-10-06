@@ -60,7 +60,10 @@ fn test_chalk_anchors_fifo_eviction_and_mp_cost() {
         .insert("mp".to_string(), 20);
     state.current_room_id = "village_square".to_string();
 
-    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime = CinderRuntime::with_dialogue_generator(pack.clone(), state, dialogue)
+        .expect("runtime creates");
 
     // Anchor 1: village_square
     let mp_before_1 = runtime

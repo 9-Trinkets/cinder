@@ -70,7 +70,7 @@ pub(crate) fn handle_player_moved(
         content,
         &format!("room_entered:{to_room_id}"),
     ));
-    sync_followers_to_room(state, content, to_room_id, lines);
+    sync_followers_to_room(state, content, &from_room_id, to_room_id, lines);
     apply_narrating_world_hook_effects(
         state,
         content,
@@ -91,6 +91,7 @@ pub(crate) fn handle_player_moved(
 pub(crate) fn sync_followers_to_room(
     state: &mut WorldState,
     content: &ContentPack,
+    from_room_id: &str,
     to_room_id: &str,
     lines: &mut NarrativeLines,
 ) {
@@ -115,26 +116,41 @@ pub(crate) fn sync_followers_to_room(
             continue;
         }
         let follower_room = state.actor_current_room_id(content, &follower_id);
-        if let (Some(f_map), Some(t_map)) = (
-            content.map_for_room(follower_room),
-            content.map_for_room(to_room_id),
-        ) {
-            if f_map.id != t_map.id {
+        let already_here = follower_room == to_room_id;
+        if already_here {
+            continue;
+        }
+
+        let f_map = content.map_for_room(follower_room);
+        let t_map = content.map_for_room(to_room_id);
+
+        // Floor 6 (The High Sanctuary) is a solo infiltration mission until the
+        // main teleport platform is unlocked; companions cannot cross into Floor 6.
+        if t_map.is_some_and(|m| m.id == "the-high-sanctuary") {
+            let unlocked = state.story_vars.get("sanctuary_platform_unlocked") == Some("true");
+            if !unlocked {
                 continue;
             }
         }
-        let already_here = follower_room == to_room_id;
-        if !already_here {
-            state
-                .actor_room_overrides
-                .insert(follower_id.clone(), to_room_id.to_string());
-            moved_actor_names.push(
-                state
-                    .actor_display_name(content, &follower_id)
-                    .unwrap_or(&follower_id)
-                    .to_string(),
-            );
+
+        // When crossing between different floor maps (or if the follower is on a
+        // different map), followers only cross if they were with the player in
+        // the departure room (e.g. traveling together via teleport platform or stairs).
+        // Disconnected followers left behind on other maps never magically follow.
+        let is_cross_map = f_map.map(|m| &m.id) != t_map.map(|m| &m.id);
+        if is_cross_map && follower_room != from_room_id {
+            continue;
         }
+
+        state
+            .actor_room_overrides
+            .insert(follower_id.clone(), to_room_id.to_string());
+        moved_actor_names.push(
+            state
+                .actor_display_name(content, &follower_id)
+                .unwrap_or(&follower_id)
+                .to_string(),
+        );
     }
     let count = moved_actor_names.len();
     let group_key = follower_group_message_key(content, count);

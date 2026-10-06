@@ -1552,3 +1552,78 @@ fn tracing_platform_sigil_does_not_count_as_descending() {
             .contains("mq_use_teleport_platform")
     );
 }
+
+#[test]
+fn teleport_from_floor4_to_floor5_brings_following_party_members() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+
+    // Player is on Floor 4 teleport platform
+    state.current_room_id = "teleport_platform".to_string();
+    state.story_vars.set_unchecked("knows_teleport", "true");
+    state
+        .story_vars
+        .set_unchecked("anchor_floor4_platform", "true");
+    state.story_vars.set_unchecked("anchor_floor5_gate", "true");
+
+    // Sakhra is with player on teleport_platform following player and allied
+    state.set_actor_stance(&pack, "sakhra", ActorStance::Allied, true);
+    state
+        .actor_room_overrides
+        .insert("sakhra".to_string(), "teleport_platform".to_string());
+
+    // Zayd is left behind in village_square on Floor 4, also following player
+    state.set_follows_player("zayd", true);
+    state
+        .actor_room_overrides
+        .insert("zayd".to_string(), "village_square".to_string());
+
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+
+    // Teleport down from Floor 4 to Floor 5 courtyard
+    let outcome = runtime
+        .run_turn("teleport floor5_start")
+        .expect("teleport runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "courtyard_center");
+    assert!(
+        outcome.text().contains("Sakhra crosses the room with you")
+            || outcome.text().contains("Sakhra"),
+        "Sakhra should accompany the player through the teleport platform: {}",
+        outcome.text()
+    );
+
+    let s1 = runtime.export_state().unwrap();
+    assert_eq!(
+        s1.actor_room_id("sakhra", "teleport_platform"),
+        "courtyard_center",
+        "Sakhra must travel with player to Floor 5 courtyard"
+    );
+    assert_eq!(
+        s1.actor_room_id("zayd", "village_square"),
+        "village_square",
+        "Zayd was left in village_square and must NOT magically warp to Floor 5"
+    );
+
+    // Layla can issue party orders to Sakhra on Floor 5
+    let order_out = runtime.run_turn("order sakhra guard").expect("order runs");
+    assert!(
+        order_out.text().contains("guard") || !order_out.text().contains("unavailable"),
+        "Sakhra can be ordered on Floor 5: {}",
+        order_out.text()
+    );
+
+    // Moving on Floor 5: Sakhra is on guard, stays in courtyard_center; Zayd stays on Floor 4
+    runtime.run_turn("go north").expect("move runs");
+    assert_eq!(runtime.current_room_id().unwrap(), "courtyard_north");
+    let s2 = runtime.export_state().unwrap();
+    assert_eq!(
+        s2.actor_room_id("sakhra", "teleport_platform"),
+        "courtyard_center",
+        "Guarding Sakhra stays in courtyard_center"
+    );
+    assert_eq!(
+        s2.actor_room_id("zayd", "village_square"),
+        "village_square",
+        "Zayd still stays on Floor 4"
+    );
+}

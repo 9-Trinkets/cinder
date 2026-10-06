@@ -106,7 +106,7 @@ Rather than a hard failure or immersion-breaking plot armor, Einar's survival st
   - There is **no physical door, stair, or portcullis** connecting Floor 5 and Floor 6 (`citadel_sanctum_gate` has been removed).
 - **Party Disconnection:**
   - When Layla teleports into Floor 6, her party members (Astrid, surviving Einar, and all charmed allies) remain behind in Floor 5 (`courtyard_center`).
-  - The engine enforces cross-map party isolation: `sync_followers_to_room` ignores companions situated on different floor maps (`f_map.id != t_map.id`).
+  - The engine enforces solo infiltration for Floor 6: `sync_followers_to_room` prevents companions from entering `the-high-sanctuary` before platform unlock, and ignores disconnected companions left behind on other floor maps.
   - Attempting to issue party orders (`order <actor> <order>`) fails with `party.order_member_unavailable` (*"That companion is not close enough to receive your order."*).
 - **Unlocking the Party Cross-Over:**
   - Companions cannot cross into Floor 6 until Layla infiltrates the High Sanctuary basilica, identifies and slays the Seer, and unlocks the **Main Teleportation Platform** on Floor 6.

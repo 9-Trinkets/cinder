@@ -28,13 +28,24 @@ pub fn refresh_conversation_summaries(
                 .map(str::to_string),
             recent_lines,
         };
-        let summary = truncate_chars(&dialogue.summarize_conversation_memory(&request)?, 240);
-        if summary.is_empty() {
-            return Err(format!(
-                "conversation memory summarizer returned an empty summary for '{}'",
-                key
-            ));
-        }
+        let summary = match dialogue.summarize_conversation_memory(&request) {
+            Ok(s) => {
+                let trimmed = truncate_chars(&s, 240);
+                if trimmed.is_empty() {
+                    request
+                        .existing_summary
+                        .unwrap_or_else(|| "They are still figuring each other out.".to_string())
+                } else {
+                    trimmed
+                }
+            }
+            Err(error) => {
+                eprintln!("[cinder] conversation memory summarization failed for '{key}': {error}");
+                request
+                    .existing_summary
+                    .unwrap_or_else(|| "They are still figuring each other out.".to_string())
+            }
+        };
         state.set_conversation_summary(participant_a_id, participant_b_id, summary);
     }
     Ok(())
