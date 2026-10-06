@@ -1676,3 +1676,40 @@ fn teleport_from_floor4_to_floor5_brings_following_party_members() {
         "Zayd still stays on Floor 4"
     );
 }
+
+#[test]
+fn floor5_sentries_do_not_attack_caged_offerings_when_player_absent() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    // Player is on Floor 4 teleport chamber
+    state.current_room_id = "r4_teleport_chamber".to_string();
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+
+    // Run background ticks while player is absent from the courtyard
+    for _ in 0..5 {
+        runtime.run_tick().expect("tick runs successfully");
+    }
+
+    let exported = runtime.export_state().unwrap();
+    let health_stat = &pack.settings.combat.health_stat_id;
+    let offerings = [
+        "nivi_olsen",
+        "eliska_novakova",
+        "amaru_quispe",
+        "abeni_adeyemi",
+        "chen_yuxin",
+    ];
+
+    for offering in offerings {
+        assert!(
+            !exported.actor_is_defeated(offering, health_stat),
+            "Offering {offering} must NOT be killed by sentries while caged in courtyard!"
+        );
+    }
+    assert_eq!(
+        exported.story_vars.get("five_offerings_deaths"),
+        None,
+        "No offering deaths should occur while sentries guard the cages"
+    );
+}

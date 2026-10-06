@@ -19,9 +19,15 @@ pub(crate) fn select_hostile_target(
     }
 
     // 2. Defenseless civilians/offerings in the attacker's room.
-    let civilians = living_civilians_in_room(content, state, &room_id);
-    if let Some(civilian) = civilians.first() {
-        return Some(civilian.clone());
+    // Only hostile siege attackers target civilians or offerings.
+    let is_siege_attacker = state
+        .actor(content, attacker_id)
+        .is_some_and(|a| a.tags.iter().any(|t| t == "siege"));
+    if is_siege_attacker {
+        let civilians = living_civilians_in_room(content, state, &room_id);
+        if let Some(civilian) = civilians.first() {
+            return Some(civilian.clone());
+        }
     }
 
     // 3. Player or other living party members in the room.
@@ -94,6 +100,11 @@ fn living_civilians_in_room(
     state: &WorldState,
     room_id: &str,
 ) -> Vec<String> {
+    let cages_opened = state.story_vars.get("courtyard_cages_opened") == Some("true")
+        || state
+            .active_objective_stage_ids
+            .iter()
+            .any(|id| id == "sq_five_offerings");
     content
         .actors
         .iter()
@@ -104,6 +115,7 @@ fn living_civilians_in_room(
                     .tags
                     .iter()
                     .any(|tag| tag == "civilian" || tag == "offering")
+                && (!actor.tags.iter().any(|tag| tag == "offering") || cages_opened)
                 && state.actor_is_in_room(content, &actor.id, room_id)
                 && !state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
         })
@@ -118,6 +130,7 @@ fn living_civilians_in_room(
                             .tags
                             .iter()
                             .any(|tag| tag == "civilian" || tag == "offering")
+                        && (!actor.tags.iter().any(|tag| tag == "offering") || cages_opened)
                         && state.actor_is_in_room(content, &actor.id, room_id)
                         && !state
                             .actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
@@ -162,6 +175,7 @@ mod tests {
         let hostile_id = content.actors[0].id.clone();
         let room_id = content.actors[0].room_id.clone();
         let civilian_id = content.actors[1].id.clone();
+        content.actors[0].tags.push("siege".to_string());
         content.actors[1].tags.push("civilian".to_string());
         let mut player_actor = content.actors[0].clone();
         player_actor.id = player_id.clone();
@@ -213,6 +227,56 @@ mod tests {
         assert_eq!(
             select_hostile_target(&content, &state, &hostile_id),
             Some(guard_id)
+        );
+    }
+
+    #[test]
+    fn non_siege_hostile_does_not_target_civilians() {
+        let mut content = crate::engine::test_fixtures::minimal_test_pack();
+        let player_id = content.settings.combat.player_actor_id.clone();
+        let hostile_id = content.actors[0].id.clone();
+        let room_id = content.actors[0].room_id.clone();
+        let civilian_id = content.actors[1].id.clone();
+        content.actors[1].tags.push("civilian".to_string());
+        let mut player_actor = content.actors[0].clone();
+        player_actor.id = player_id;
+        player_actor.name = "Player".to_string();
+        player_actor.room_id = "other_room".to_string();
+        content.actors.push(player_actor);
+        crate::engine::test_fixtures::rebuild_test_pack_indexes(&mut content);
+
+        let mut state = WorldState::new(&content);
+        state.current_room_id = "other_room".to_string();
+        state.actor_room_overrides.insert(civilian_id, room_id);
+
+        // Hostile is in room with civilian, but lacks "siege" tag. Must not target civilian!
+        assert_eq!(select_hostile_target(&content, &state, &hostile_id), None);
+    }
+
+    #[test]
+    fn caged_offerings_not_targeted_before_cages_opened() {
+        let mut content = crate::engine::test_fixtures::minimal_test_pack();
+        let hostile_id = content.actors[0].id.clone();
+        let room_id = content.actors[0].room_id.clone();
+        let offering_id = content.actors[1].id.clone();
+        content.actors[0].tags.push("siege".to_string());
+        content.actors[1].tags.push("offering".to_string());
+        crate::engine::test_fixtures::rebuild_test_pack_indexes(&mut content);
+
+        let mut state = WorldState::new(&content);
+        state.current_room_id = "other_room".to_string();
+        state
+            .actor_room_overrides
+            .insert(offering_id.clone(), room_id);
+
+        // Cages not opened -> offering not targetable even by siege mob
+        assert_eq!(select_hostile_target(&content, &state, &hostile_id), None);
+
+        // Cages opened -> offering is targetable by siege mob
+        let _ = state.story_vars.set("courtyard_cages_opened", "true");
+        assert_eq!(
+            select_hostile_target(&content, &state, &hostile_id),
+            Some(offering_id)
         );
     }
 }
