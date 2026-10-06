@@ -216,15 +216,15 @@
     },
     "civilian.breach_warning": {
         "voice": "handler",
-        "text": "Center breach. They have a line to {actor}. Clear every siege soldier from the teleport pad in {minutes} minutes or we lose them."
+        "text": "Center compromised. Hostiles have reached the courtyard pad. Three fallen offerings and your rescue fails."
     },
     "civilian.breach_cleared": {
         "voice": "handler",
-        "text": "Center is clear. Civilian countdown canceled."
+        "text": "Center is clear. Hostiles repelled from the pad."
     },
     "civilian.breach_death": {
         "voice": "handler",
-        "text": "{actor} is down. Civilian losses: {deaths}."
+        "text": "{actor} is down. Losses: {deaths}/3. That's on your ledger, Layla."
     },
     "civilian.reward.salt_reach": "You stood between us and the houses when no one else would. Salt Reach will remember that.",
     "civilian.reward.glassbank": "You gave us back a future. If you come to Glassbank, you will be welcomed as family.",
