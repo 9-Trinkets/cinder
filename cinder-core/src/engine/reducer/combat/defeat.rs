@@ -22,7 +22,16 @@ pub(in crate::engine::reducer) fn defeat_actor(
     lines: &mut NarrativeLines,
 ) {
     let actor_name = actor_display_name(state, content, actor_id);
+    let is_civilian = state.actor(content, actor_id).is_some_and(|actor| {
+        actor
+            .tags
+            .iter()
+            .any(|tag| tag == "civilian" || tag == "offering")
+    });
+    let is_allied = state.stance(actor_id) == crate::engine::state::ActorStance::Allied;
     if room_id == state.current_room_id
+        && !is_civilian
+        && !is_allied
         && let Some(line) =
             content.render_message("combat.actor_defeated", &[("actor", actor_name.as_str())])
     {
@@ -47,6 +56,13 @@ pub(in crate::engine::reducer) fn defeat_actor(
     )
     .unwrap_or_else(|error| eprintln!("[cinder] hook warning (actor.defeated): {error}"));
     award_defeat_xp(state, content, actor_id, lines);
+    crate::engine::reducer::protection::handle_protected_actor_defeat(
+        state,
+        content,
+        actor_id,
+        &actor_name,
+        lines,
+    );
     state.set_relationship(actor_id, ActorRelationship::default());
 }
 

@@ -26,10 +26,6 @@ fn spawned_count(state: &WorldState, template_id: &str) -> usize {
         .count()
 }
 
-fn apply_protection_rules(state: &mut WorldState, pack: &cinder_core::content::types::ContentPack) {
-    apply_events(state, pack, &[]);
-}
-
 fn narrative_text(lines: &cinder_core::engine::narrative::NarrativeLines) -> String {
     lines
         .0
@@ -116,7 +112,7 @@ fn floor5_house_heads_have_role_appropriate_endurance() {
 }
 
 #[test]
-fn floor5_center_breach_warns_resets_and_kills_in_rotation() {
+fn floor5_courtyard_siege_soldiers_attack_civilians_and_charmed_civilians_can_evacuate() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_center".to_string();
@@ -140,43 +136,83 @@ fn floor5_center_breach_warns_resets_and_kills_in_rotation() {
         other => panic!("raider should spawn: {other:?}"),
     };
 
-    let warning = apply_events(&mut state, &pack, &[]);
-    let warning_text = narrative_text(&warning.lines);
-    assert!(
-        warning_text.contains("They have a line to Nivi Olsen"),
-        "first breach should warn about Nivi: {}",
-        warning_text
+    // First strike: raider attacks Nivi Olsen in courtyard_center
+    let strike1 = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::HostileStrike {
+            actor_id: raider_id.clone(),
+        })],
     );
-
-    state
-        .actor_room_overrides
-        .insert(raider_id.clone(), "frost_wolf_muster".to_string());
-    let cleared = apply_events(&mut state, &pack, &[]);
-    assert!(narrative_text(&cleared.lines).contains("countdown canceled"));
-    state.current_time_minutes += 20;
-    apply_protection_rules(&mut state, &pack);
+    let strike1_text = narrative_text(&strike1.lines);
     assert!(
-        !state.actor_is_defeated("nivi_olsen", &pack.settings.combat.health_stat_id),
-        "clearing the center must reset the breach timer"
+        strike1_text.contains("Nivi Olsen is down"),
+        "Handler must announce Nivi's fall: {strike1_text}"
     );
-
-    state
-        .actor_room_overrides
-        .insert(raider_id, "courtyard_center".to_string());
-    apply_protection_rules(&mut state, &pack);
-    state.current_time_minutes += 10;
-    let death = apply_events(&mut state, &pack, &[]);
-    assert!(narrative_text(&death.lines).contains("Eliška Nováková is down"));
-    assert!(state.actor_is_defeated("eliska_novakova", &pack.settings.combat.health_stat_id));
+    assert!(state.actor_is_defeated("nivi_olsen", &pack.settings.combat.health_stat_id));
     assert_eq!(state.story_vars.get("five_offerings_deaths"), Some("1"));
 
-    let next_warning = apply_events(&mut state, &pack, &[]);
-    let next_warning_text = narrative_text(&next_warning.lines);
-    assert!(
-        next_warning_text.contains("They have a line to Amaru Quispe"),
-        "victim selection must rotate deterministically: {}",
-        next_warning_text
+    // Player charms Eliška Nováková and evacuates her to courtyard_north
+    state.set_stance("eliska_novakova", ActorStance::Allied);
+    state.set_follows_player("eliska_novakova", true);
+    state
+        .actor_room_overrides
+        .insert("eliska_novakova".to_string(), "courtyard_north".to_string());
+
+    // Second strike in courtyard_center: raider cannot target evacuated Eliška, strikes Amaru Quispe instead
+    state.current_time_minutes += 5;
+    let strike2 = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::HostileStrike {
+            actor_id: raider_id.clone(),
+        })],
     );
+    let strike2_text = narrative_text(&strike2.lines);
+    assert!(
+        strike2_text.contains("Amaru Quispe is down"),
+        "Handler must announce Amaru's fall: {strike2_text}"
+    );
+    assert!(state.actor_is_defeated("amaru_quispe", &pack.settings.combat.health_stat_id));
+    assert!(
+        !state.actor_is_defeated("eliska_novakova", &pack.settings.combat.health_stat_id),
+        "Evacuated Eliška must remain safe and unattacked in courtyard_north"
+    );
+    assert_eq!(state.story_vars.get("five_offerings_deaths"), Some("2"));
+
+    // Station an allied guard in courtyard_center to protect remaining civilians
+    state.set_stance("commander_astrid", ActorStance::Allied);
+    state
+        .party_orders
+        .insert("commander_astrid".to_string(), "guard".to_string());
+    state.actor_room_overrides.insert(
+        "commander_astrid".to_string(),
+        "courtyard_center".to_string(),
+    );
+    let astrid_initial_hp = state.actor_stat("commander_astrid", "hp");
+
+    state.current_time_minutes += 5;
+    let strike3 = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::HostileStrike {
+            actor_id: raider_id,
+        })],
+    );
+    let strike3_text = narrative_text(&strike3.lines);
+    assert!(
+        strike3_text.contains("Astrid"),
+        "Guard must intercept strike: {strike3_text}"
+    );
+    assert!(
+        state.actor_stat("commander_astrid", "hp") < astrid_initial_hp,
+        "Astrid should absorb the damage"
+    );
+    assert!(
+        !state.actor_is_defeated("abeni_adeyemi", &pack.settings.combat.health_stat_id),
+        "Civilians remain safe while guard holds"
+    );
+    assert_eq!(state.story_vars.get("five_offerings_deaths"), Some("2"));
 }
 
 #[test]
@@ -188,7 +224,7 @@ fn floor5_protection_quest_fails_on_third_death_without_ending_game() {
     state
         .stage_started_minutes
         .insert("sq_five_offerings".to_string(), state.current_time_minutes);
-    state.spawn_actor(
+    let raider_id = match state.spawn_actor(
         &pack,
         SpawnActorConfig {
             template_id: "frost_wolf_raider",
@@ -199,12 +235,21 @@ fn floor5_protection_quest_fails_on_third_death_without_ending_game() {
             scale_stat: None,
             max_active_instances: None,
         },
-    );
+    ) {
+        SpawnActorOutcome::Success(actor) => actor.instance_id,
+        other => panic!("raider should spawn: {other:?}"),
+    };
 
+    // Raider strikes 3 times in courtyard_center, defeating 3 civilians sequentially
     for expected_deaths in 1..=3 {
-        apply_protection_rules(&mut state, &pack);
-        state.current_time_minutes += 10;
-        apply_protection_rules(&mut state, &pack);
+        state.current_time_minutes += 5;
+        apply_events(
+            &mut state,
+            &pack,
+            &[TimestampedWorldEvent::now(WorldEvent::HostileStrike {
+                actor_id: raider_id.clone(),
+            })],
+        );
         let expected_deaths = expected_deaths.to_string();
         assert_eq!(
             state.story_vars.get("five_offerings_deaths"),
@@ -221,6 +266,10 @@ fn floor5_protection_quest_fails_on_third_death_without_ending_game() {
     assert_eq!(state.phase, cinder_core::engine::state::GamePhase::Active);
     assert!(
         !state.actor_is_defeated("abeni_adeyemi", &pack.settings.combat.health_stat_id),
+        "failure must leave remaining civilians alive and protectable"
+    );
+    assert!(
+        !state.actor_is_defeated("chen_yu_xin", &pack.settings.combat.health_stat_id),
         "failure must leave remaining civilians alive and protectable"
     );
 }

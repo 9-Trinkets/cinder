@@ -7,21 +7,28 @@ pub(crate) fn select_hostile_target(
     attacker_id: &str,
 ) -> Option<String> {
     let room_id = state.actor_current_room_id(content, attacker_id);
-    let candidates = living_party_actors_in_room(content, state, &room_id);
+    let party_candidates = living_party_actors_in_room(content, state, &room_id);
 
-    candidates
+    // 1. Any allied actor on "guard" order intercepts first.
+    if let Some(guard) = party_candidates.iter().find(|actor_id| {
+        state
+            .party_order(content, actor_id)
+            .is_some_and(|order| order.eq_ignore_ascii_case("guard"))
+    }) {
+        return Some(guard.clone());
+    }
+
+    // 2. Defenseless civilians/offerings in the attacker's room.
+    let civilians = living_civilians_in_room(content, state, &room_id);
+    if let Some(civilian) = civilians.first() {
+        return Some(civilian.clone());
+    }
+
+    // 3. Player or other living party members in the room.
+    party_candidates
         .iter()
-        .find(|actor_id| {
-            state
-                .party_order(content, actor_id)
-                .is_some_and(|order| order.eq_ignore_ascii_case("guard"))
-        })
-        .or_else(|| {
-            candidates
-                .iter()
-                .find(|actor_id| *actor_id == &content.settings.combat.player_actor_id)
-        })
-        .or_else(|| candidates.first())
+        .find(|actor_id| *actor_id == &content.settings.combat.player_actor_id)
+        .or_else(|| party_candidates.first())
         .cloned()
 }
 
@@ -82,6 +89,44 @@ fn living_party_actors_in_room(
         .collect()
 }
 
+fn living_civilians_in_room(
+    content: &ContentPack,
+    state: &WorldState,
+    room_id: &str,
+) -> Vec<String> {
+    content
+        .actors
+        .iter()
+        .filter(|actor| {
+            !content.is_player_actor(&actor.id)
+                && state.stance(&actor.id) != ActorStance::Hostile
+                && actor
+                    .tags
+                    .iter()
+                    .any(|tag| tag == "civilian" || tag == "offering")
+                && state.actor_is_in_room(content, &actor.id, room_id)
+                && !state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
+        })
+        .map(|actor| actor.id.clone())
+        .chain(
+            state
+                .spawned_actors
+                .values()
+                .filter(|actor| {
+                    state.stance(&actor.id) != ActorStance::Hostile
+                        && actor
+                            .tags
+                            .iter()
+                            .any(|tag| tag == "civilian" || tag == "offering")
+                        && state.actor_is_in_room(content, &actor.id, room_id)
+                        && !state
+                            .actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
+                })
+                .map(|actor| actor.id.clone()),
+        )
+        .collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -108,5 +153,66 @@ mod tests {
             Some(guard_id)
         );
         assert_ne!(player_id, hostile_id);
+    }
+
+    #[test]
+    fn civilians_targeted_when_unguarded_and_ignored_when_moved() {
+        let mut content = crate::engine::test_fixtures::minimal_test_pack();
+        let player_id = content.settings.combat.player_actor_id.clone();
+        let hostile_id = content.actors[0].id.clone();
+        let room_id = content.actors[0].room_id.clone();
+        let civilian_id = content.actors[1].id.clone();
+        content.actors[1].tags.push("civilian".to_string());
+        let mut player_actor = content.actors[0].clone();
+        player_actor.id = player_id.clone();
+        player_actor.name = "Player".to_string();
+        player_actor.room_id = room_id.clone();
+        content.actors.push(player_actor);
+        crate::engine::test_fixtures::rebuild_test_pack_indexes(&mut content);
+
+        let mut state = WorldState::new(&content);
+        state.current_room_id = room_id.clone();
+        state
+            .actor_room_overrides
+            .insert(civilian_id.clone(), room_id.clone());
+
+        // 1. Without a guard, hostile attacks civilian instead of player
+        assert_eq!(
+            select_hostile_target(&content, &state, &hostile_id),
+            Some(civilian_id.clone())
+        );
+
+        // 2. When civilian is moved to another room, hostile attacks player in room
+        state
+            .actor_room_overrides
+            .insert(civilian_id.clone(), "other_room".to_string());
+        assert_eq!(
+            select_hostile_target(&content, &state, &hostile_id),
+            Some(player_id.clone())
+        );
+
+        // 3. When an ally guards in the room with civilian, guard is targeted over civilian
+        state
+            .actor_room_overrides
+            .insert(civilian_id.clone(), room_id.clone());
+        let guard_id = "test-guard".to_string();
+        let mut guard_actor = content.actors[0].clone();
+        guard_actor.id = guard_id.clone();
+        guard_actor.name = "Guard".to_string();
+        guard_actor.room_id = room_id.clone();
+        content.actors.push(guard_actor);
+        crate::engine::test_fixtures::rebuild_test_pack_indexes(&mut content);
+
+        state
+            .actor_room_overrides
+            .insert(guard_id.clone(), room_id.clone());
+        state.set_stance(&guard_id, ActorStance::Allied);
+        state
+            .party_orders
+            .insert(guard_id.clone(), "guard".to_string());
+        assert_eq!(
+            select_hostile_target(&content, &state, &hostile_id),
+            Some(guard_id)
+        );
     }
 }

@@ -298,7 +298,7 @@
       "quest_title": "The Five Offerings",
       "quest_kind": "side",
       "summary": "Keep at least three of the five rescued offerings alive through the siege.",
-      "beat_note": "Five named civilians shelter at the courtyard teleport platform. When siege troops hold the courtyard center, one civilian is endangered for ten minutes. Clearing every siege soldier from the center resets the breach.",
+      "beat_note": "Five named civilians shelter at the courtyard teleport platform. Hostile siege troops marching into the courtyard attack civilians and party members present in the room. If three civilians fall, the rescue fails.",
       "update_message": "The center has to stay clear. Three deaths and this rescue fails.",
       "protection_rule": {
         "room_id": "courtyard_center",

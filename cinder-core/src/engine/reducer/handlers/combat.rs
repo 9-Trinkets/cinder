@@ -3,7 +3,7 @@ use crate::engine::combat_cooldowns::{CombatCooldownKind, actor_combat_cooldown_
 use crate::engine::combat_targets::select_hostile_target;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::party_policy::{consume_party_reaction, select_defensive_reaction};
-use crate::engine::reducer::combat::resisted_damage;
+use crate::engine::reducer::combat::{defeat_actor, resisted_damage};
 use crate::engine::reducer::command_effects::{actor_display_name, defeat_player_if_dead};
 use crate::engine::state::{ActorStance, GamePhase, WorldState};
 
@@ -103,6 +103,7 @@ pub(crate) fn handle_hostile_strike(
                     offscreen_state.newly_fallen_allies.push(guard_name.clone());
                 }
             }
+            defeat_actor(state, content, &guard_id, &room_id, lines);
         }
         if let Some(decision) = defensive_reaction.as_ref() {
             consume_party_reaction(content, state, decision);
@@ -124,6 +125,15 @@ pub(crate) fn handle_hostile_strike(
                 .adjust_actor_stat(content, &target_id, &combat.health_stat_id, -damage)
                 .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
             let remaining = state.effective_actor_stat(content, &target_id, &combat.health_stat_id);
+            let is_civilian = state.actor(content, &target_id).is_some_and(|actor| {
+                actor
+                    .tags
+                    .iter()
+                    .any(|tag| tag == "civilian" || tag == "offering")
+            });
+            let is_guard = state
+                .party_order(content, &target_id)
+                .is_some_and(|order| order.eq_ignore_ascii_case("guard"));
             if is_current_room {
                 let damage = damage.to_string();
                 let remaining_text = remaining.to_string();
@@ -145,14 +155,22 @@ pub(crate) fn handle_hostile_strike(
                         "{actor_name} strikes {target_name}! {target_name} takes {damage} damage. ({remaining_text} HP remaining)"
                     ));
                 }
-                if target_id != combat.player_actor_id
-                    && remaining <= 0
-                    && let Some(line) = content.render_message(
-                        "combat.party_member_falls",
-                        &[("actor", target_name.as_str())],
-                    )
-                {
-                    lines.narration(line);
+                if target_id != combat.player_actor_id && remaining <= 0 {
+                    if is_guard {
+                        if let Some(line) = content.render_message(
+                            "combat.guard_falls",
+                            &[("guard", target_name.as_str())],
+                        ) {
+                            lines.narration(line);
+                        }
+                    } else if !is_civilian
+                        && let Some(line) = content.render_message(
+                            "combat.party_member_falls",
+                            &[("actor", target_name.as_str())],
+                        )
+                    {
+                        lines.narration(line);
+                    }
                 }
             } else {
                 let offscreen_state = state
@@ -169,6 +187,9 @@ pub(crate) fn handle_hostile_strike(
                             .push(target_name.clone());
                     }
                 }
+            }
+            if target_id != combat.player_actor_id && remaining <= 0 {
+                defeat_actor(state, content, &target_id, &room_id, lines);
             }
         }
     }
