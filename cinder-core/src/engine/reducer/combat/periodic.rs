@@ -151,39 +151,13 @@ fn resolve_exit_direction<'a>(
 }
 
 fn format_direction_phrase(raw: &str) -> String {
-    let trimmed = raw.trim();
-    let lower = trimmed.to_ascii_lowercase();
-
-    // If the label contains " to ", e.g. "Southwest to Courtyard Center",
-    // extract the direction portion before " to ".
-    let token = if let Some((before, _)) = lower.split_once(" to ") {
-        before.trim()
-    } else {
-        lower.as_str()
-    };
-
-    let token = token.strip_prefix("to ").unwrap_or(token).trim();
-
-    let first_word = token.split_whitespace().next().unwrap_or("");
-    match first_word {
-        "north" | "south" | "east" | "west" | "northeast" | "northwest" | "southeast"
-        | "southwest" => format!("the {first_word}"),
+    let lower = raw.trim().to_ascii_lowercase();
+    match lower.as_str() {
         "up" => "above".to_string(),
         "down" => "below".to_string(),
-        _ => {
-            if token.starts_with("the ") {
-                token.to_string()
-            } else {
-                format!("the {token}")
-            }
-        }
+        _ if lower.starts_with("the ") => lower,
+        _ => format!("the {lower}"),
     }
-}
-
-fn sanitize_cue_text(text: String) -> String {
-    text.replace("the The ", "The ")
-        .replace("the the ", "the ")
-        .replace("The The ", "The ")
 }
 
 fn maybe_emit_ambient_cue(
@@ -224,7 +198,7 @@ fn maybe_emit_ambient_cue(
     };
 
     if let Some(line) = cue {
-        lines.narration(sanitize_cue_text(line));
+        lines.narration(line);
         state
             .periodic_effects_reported
             .insert(report_key, state.turn_number);
@@ -253,7 +227,7 @@ fn maybe_emit_offscreen_kill_cue(
     };
 
     if let Some(line) = cue {
-        lines.narration(sanitize_cue_text(line));
+        lines.narration(line);
         state
             .periodic_effects_reported
             .insert(kill_key, state.turn_number);
@@ -436,17 +410,17 @@ fn handle_trigger_depletion(
                         ("room", room_title),
                     ],
                 ) {
-                    lines.narration(sanitize_cue_text(line));
+                    lines.narration(line);
                 }
             }
         } else if is_adjacent {
             if let Some(line) =
                 render_adjacent_depleted_cue(content, definition, exit_direction, room_title)
             {
-                lines.narration(sanitize_cue_text(line));
+                lines.narration(line);
             }
         } else if let Some(line) = render_distant_depleted_cue(content, definition, room_title) {
-            lines.narration(sanitize_cue_text(line));
+            lines.narration(line);
         }
     } else {
         state.room_item_charges.insert(key, remaining_charges - 1);

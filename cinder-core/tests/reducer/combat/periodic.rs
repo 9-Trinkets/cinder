@@ -692,7 +692,7 @@ fn offscreen_kills_emit_anonymous_kill_cues_and_deduplicate() {
 }
 
 #[test]
-fn exit_direction_phrase_extracts_directional_prefix_and_sanitizes_double_articles() {
+fn exit_direction_phrase_uses_clean_direction_and_bare_room_title() {
     let mut pack = reducer_test_pack();
     pack.settings.combat = CombatSettingsDefinition {
         player_actor_id: ACTOR_A_ID.to_string(),
@@ -703,19 +703,20 @@ fn exit_direction_phrase_extracts_directional_prefix_and_sanitizes_double_articl
     pack.messages.insert(
         "combat.room_hazard_adjacent_kill".to_string(),
         PackMessage::Narration(
-            "From {direction}, a sharp flare of cold light rises before falling quiet — something in {room} crumbles to dust.".to_string(),
+            "From {direction}, a sharp flare of cold light rises before falling quiet — something in the {room} crumbles to dust.".to_string(),
         ),
     );
 
-    // Set exit label to compound direction like Floor 5
+    // Set exit label to clean cardinal direction
     if let Some(lounge) = pack.rooms.iter_mut().find(|r| r.id == LOUNGE_ID) {
         if let Some(exit) = lounge.exits.iter_mut().find(|e| e.room_id == KITCHEN_ID) {
-            exit.label = "Southwest to Courtyard Center".to_string();
+            exit.label = "Southwest".to_string();
+            exit.menu_label = Some("Southwest to Courtyard Center".to_string());
         }
     }
-    // Set kitchen title to have a leading article
+    // Set kitchen title to bare name without leading article
     if let Some(kitchen) = pack.rooms.iter_mut().find(|r| r.id == KITCHEN_ID) {
-        kitchen.title = "The Frost Courtyard".to_string();
+        kitchen.title = "Frost Courtyard".to_string();
     }
 
     let mut goblin = test_actor("g1", "goblin one", KITCHEN_ID);
@@ -747,6 +748,6 @@ fn exit_direction_phrase_extracts_directional_prefix_and_sanitizes_double_articl
     assert_eq!(kill_lines.len(), 1);
     assert_eq!(
         kill_lines[0].text,
-        "From the southwest, a sharp flare of cold light rises before falling quiet — something in The Frost Courtyard crumbles to dust."
+        "From the southwest, a sharp flare of cold light rises before falling quiet — something in the Frost Courtyard crumbles to dust."
     );
 }

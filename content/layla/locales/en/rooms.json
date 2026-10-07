@@ -11114,7 +11114,7 @@
   },
   {
     "id": "courtyard_center",
-    "title": "The Frost Courtyard",
+    "title": "Frost Courtyard",
     "summary": "A colossal hexagonal courtyard paved in frost-rimed stone, enclosed by towering fortress walls under a cold purple sky. In the center hums a wide brass teleport platform—the citadel's sole link across the dimensional divide to Floor 4. Nearby stand rows of heavy iron cages marked with white block codes, packing shivering civilians into the freezing wind.",
     "inspect_text": "High battlements hem in the six-sided courtyard, backed by sheer abyss and mountain rock. No physical stair, ramp, or shaft connects this citadel to the floors above; only the glowing brass platform bridges the gap via teleportation. Howling wind whips snow across the flags and through the bars of four mass offering cages. Sentry posts look down from the ramparts, and six stone archways connect to the surrounding approaches and defensive chokepoints.",
     "allow_rest": false,
@@ -11153,7 +11153,7 @@
     "exits": [
       {
         "room_id": "courtyard_north",
-        "label": "North to Frost-Wolf Approach",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -11165,7 +11165,7 @@
       },
       {
         "room_id": "courtyard_northeast",
-        "label": "Northeast to Rampart Chokepoint",
+        "label": "Northeast",
         "aliases": [
           "northeast",
           "ne",
@@ -11176,7 +11176,7 @@
       },
       {
         "room_id": "courtyard_southeast",
-        "label": "Southeast to Iron-Ram Approach",
+        "label": "Southeast",
         "aliases": [
           "southeast",
           "se",
@@ -11188,7 +11188,7 @@
       },
       {
         "room_id": "courtyard_south",
-        "label": "South to Fortress Gate Chokepoint",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -11199,7 +11199,7 @@
       },
       {
         "room_id": "courtyard_southwest",
-        "label": "Southwest to Frost-Leopard Approach",
+        "label": "Southwest",
         "aliases": [
           "southwest",
           "sw",
@@ -11211,7 +11211,7 @@
       },
       {
         "room_id": "courtyard_northwest",
-        "label": "Northwest to Parapet Chokepoint",
+        "label": "Northwest",
         "aliases": [
           "northwest",
           "nw",
@@ -11225,7 +11225,7 @@
   },
   {
     "id": "courtyard_north",
-    "title": "The Frost-Wolf Approach",
+    "title": "Frost-Wolf Approach",
     "summary": "The northern avenue of the courtyard, flanked by fluted marble pillars hung with deep navy banners bearing a howling silver wolf. To the north rises the frost-caked archway into House Frost-Wolf Manor.",
     "inspect_text": "Snow drifts against the bases of the pillars. The silver wolf crest gleams on heavy navy silk. Ahead, heavy spiked iron gates seal the entrance to the Frost-Wolf estate.",
     "allow_rest": false,
@@ -11262,7 +11262,7 @@
     "exits": [
       {
         "room_id": "courtyard_center",
-        "label": "South to Courtyard Center",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -11274,7 +11274,7 @@
       },
       {
         "room_id": "courtyard_northwest",
-        "label": "West to Northwest Parapet",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -11287,7 +11287,7 @@
       },
       {
         "room_id": "courtyard_northeast",
-        "label": "East to Northeast Rampart",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -11300,7 +11300,7 @@
       },
       {
         "room_id": "frost_wolf_gallery",
-        "label": "North into House Frost-Wolf Gallery",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -11316,7 +11316,7 @@
   },
   {
     "id": "courtyard_northeast",
-    "title": "The North-East Rampart",
+    "title": "North-East Rampart",
     "summary": "An elevated stone battlement along the fortress curtain wall. Freezing gales rush up from sheer mountain ravines far below. Broad stone crenels form a natural defensive chokepoint.",
     "inspect_text": "Thick granite crenels provide solid cover against incoming fire. The stones are slick with rime ice, overlooking a terrifying drop into the abyss.",
     "allow_rest": false,
@@ -11339,7 +11339,7 @@
     "exits": [
       {
         "room_id": "courtyard_center",
-        "label": "Southwest to Courtyard Center",
+        "label": "Southwest",
         "aliases": [
           "southwest",
           "sw",
@@ -11351,7 +11351,7 @@
       },
       {
         "room_id": "courtyard_north",
-        "label": "West to Frost-Wolf Approach",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -11365,7 +11365,7 @@
       },
       {
         "room_id": "courtyard_southeast",
-        "label": "South to Iron-Ram Approach",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -11380,7 +11380,7 @@
   },
   {
     "id": "courtyard_southeast",
-    "title": "The Iron-Ram Approach",
+    "title": "Iron-Ram Approach",
     "summary": "The southeastern wing of the courtyard paved with soot-stained iron flags. Heavy crimson and charcoal banners emblazoned with a horned ram's skull hang above roaring steam flues. To the east looms the fortified portcullis into House Iron-Ram Bastion.",
     "inspect_text": "Steam hisses constantly from brass grates set into the floor, melting the falling snow into grey slush. To the east, a massive iron-toothed portcullis seals the entrance to the Iron-Ram Bastion.",
     "allow_rest": false,
@@ -11416,7 +11416,7 @@
     "exits": [
       {
         "room_id": "courtyard_center",
-        "label": "Northwest to Courtyard Center",
+        "label": "Northwest",
         "aliases": [
           "northwest",
           "nw",
@@ -11428,7 +11428,7 @@
       },
       {
         "room_id": "courtyard_northeast",
-        "label": "North to Northeast Rampart",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -11440,7 +11440,7 @@
       },
       {
         "room_id": "courtyard_south",
-        "label": "West to South Fortress Gate",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -11454,7 +11454,7 @@
       },
       {
         "room_id": "iron_ram_gallery",
-        "label": "Southeast into House Iron-Ram Bastion",
+        "label": "Southeast",
         "aliases": [
           "southeast",
           "se",
@@ -11471,7 +11471,7 @@
   },
   {
     "id": "courtyard_south",
-    "title": "The South Fortress Gate",
+    "title": "South Fortress Gate",
     "summary": "The southern defensive bottleneck of the citadel. A pair of colossal banded-iron fortress doors seal the courtyard against the frozen mountain pass outside. Heavy barricades of reinforced timber narrow the path into a brutal killing zone.",
     "inspect_text": "Huge iron timbers block the southern gates, encrusted in frost. Defensive murder holes and reinforced palisades funnel any attack into a tight chokepoint.",
     "allow_rest": false,
@@ -11494,7 +11494,7 @@
     "exits": [
       {
         "room_id": "courtyard_center",
-        "label": "North to Courtyard Center",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -11506,7 +11506,7 @@
       },
       {
         "room_id": "courtyard_southeast",
-        "label": "East to Iron-Ram Approach",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -11520,7 +11520,7 @@
       },
       {
         "room_id": "courtyard_southwest",
-        "label": "West to Frost-Leopard Approach",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -11537,7 +11537,7 @@
   },
   {
     "id": "courtyard_southwest",
-    "title": "The Frost-Leopard Approach",
+    "title": "Frost-Leopard Approach",
     "summary": "The southwestern avenue of the courtyard where frost-crusted colonnades display ash-grey banners of a leaping snow leopard. To the west, ornate frosted glass and wrought-iron doors open into House Frost-Leopard Hall.",
     "inspect_text": "The colonnade is lined with delicate frosted glass lanterns. Ash-grey banners bearing the snow leopard crest rustle in the freezing mountain wind. The glass conservatory doors to the west are locked tight.",
     "allow_rest": false,
@@ -11573,7 +11573,7 @@
     "exits": [
       {
         "room_id": "courtyard_center",
-        "label": "Northeast to Courtyard Center",
+        "label": "Northeast",
         "aliases": [
           "northeast",
           "ne",
@@ -11585,7 +11585,7 @@
       },
       {
         "room_id": "courtyard_south",
-        "label": "East to South Fortress Gate",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -11599,7 +11599,7 @@
       },
       {
         "room_id": "courtyard_northwest",
-        "label": "North to Northwest Parapet",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -11612,7 +11612,7 @@
       },
       {
         "room_id": "frost_leopard_gallery",
-        "label": "Southwest into House Frost-Leopard Hall",
+        "label": "Southwest",
         "aliases": [
           "southwest",
           "sw",
@@ -11629,7 +11629,7 @@
   },
   {
     "id": "courtyard_northwest",
-    "title": "The North-West Parapet",
+    "title": "North-West Parapet",
     "summary": "A narrow catwalk skirting the outer fortress wall between the courtyard and the mountain precipice. Cold wind swirls snow across the flags, and a narrow stone stair connects the rampart to the courtyard below.",
     "inspect_text": "A narrow, single-file walkway along the battlements. Any force attempting to cross here must march in a narrow column, making it ideal for defense.",
     "allow_rest": false,
@@ -11652,7 +11652,7 @@
     "exits": [
       {
         "room_id": "courtyard_center",
-        "label": "Southeast to Courtyard Center",
+        "label": "Southeast",
         "aliases": [
           "southeast",
           "se",
@@ -11664,7 +11664,7 @@
       },
       {
         "room_id": "courtyard_southwest",
-        "label": "South to Frost-Leopard Approach",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -11676,7 +11676,7 @@
       },
       {
         "room_id": "courtyard_north",
-        "label": "East to Frost-Wolf Approach",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -11693,7 +11693,7 @@
   },
   {
     "id": "frost_wolf_gallery",
-    "title": "The Great Wolf Gallery",
+    "title": "Great Wolf Gallery",
     "summary": "A grand, frost-rimed colonnade of pale blue stone hung with massive naval-blue banners bearing the silver wolf of House Frost-Wolf. Braziers of blue witchfire burn in iron baskets, throwing long, flickering shadows against fluted pillars.",
     "inspect_text": "Howling wind sweeps down the long corridor from the north. The floor is paved in slabs of dark basalt veined with turquoise frost. Carvings of snarling wolves and huntsmen decorate the frieze above.",
     "allow_rest": false,
@@ -11716,7 +11716,7 @@
     "exits": [
       {
         "room_id": "courtyard_north",
-        "label": "South to Frost-Wolf Approach",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -11728,7 +11728,7 @@
       },
       {
         "room_id": "frost_wolf_muster",
-        "label": "North to Wolfguard Muster",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -11743,7 +11743,7 @@
   },
   {
     "id": "frost_wolf_muster",
-    "title": "The Wolfguard Muster",
+    "title": "Wolfguard Muster",
     "summary": "A wide vaulted muster hall and drill armory. Racks of heavy frost-axes, spiked spears, and heavy hide pavises line the walls. Wolf pelts drape the weapon benches, and the air smells of weapon grease, rime frost, and mountain cedar.",
     "inspect_text": "This is the staging hall where House Frost-Wolf's vanguard prepares for combat. Heavy weapon chests sit bolted to the flagstones, and training dummies of packed snow and bound wicker stand notched from axe strikes.",
     "allow_rest": false,
@@ -11765,7 +11765,7 @@
     "exits": [
       {
         "room_id": "frost_wolf_gallery",
-        "label": "South to the Great Wolf Gallery",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -11776,7 +11776,7 @@
       },
       {
         "room_id": "frost_wolf_throne",
-        "label": "North to the Howling Dais",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -11791,7 +11791,7 @@
   },
   {
     "id": "frost_wolf_throne",
-    "title": "The Howling Dais",
+    "title": "Howling Dais",
     "summary": "The high inner sanctum of House Frost-Wolf. At the northern apex, a colossal throne carved from a single jagged block of glacier ice rises atop tiered stone steps. Above the dais, massive arched skylights look out onto the shrieking blizzard.",
     "inspect_text": "Runic glyphs etched in deep cobalt pulse across the glacial throne. Heavy wolf furs cover the frozen seat, and cold steam curls from the cracks in the surrounding dais.",
     "allow_rest": false,
@@ -11813,7 +11813,7 @@
     "exits": [
       {
         "room_id": "frost_wolf_muster",
-        "label": "South to Wolfguard Muster",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -11827,7 +11827,7 @@
   },
   {
     "id": "iron_ram_gallery",
-    "title": "The Steam Flue Corridor",
+    "title": "Steam Flue Corridor",
     "summary": "A reinforced industrial corridor of riveted bronze plates and heavy iron braces. Overhead conduits hiss with pressurized geothermal steam, and crimson and charcoal banners emblazoned with a horned ram's skull shudder in the rising heat.",
     "inspect_text": "Steam rises through slotted floor grates, keeping the corridor stiflingly warm despite the freezing altitude outside. Brass gauges and steam release wheels are mounted along the basalt walls.",
     "allow_rest": false,
@@ -11849,7 +11849,7 @@
     "exits": [
       {
         "room_id": "courtyard_southeast",
-        "label": "Northwest to Iron-Ram Approach",
+        "label": "Northwest",
         "aliases": [
           "northwest",
           "nw",
@@ -11861,7 +11861,7 @@
       },
       {
         "room_id": "iron_ram_muster",
-        "label": "Southeast to Bastion Muster",
+        "label": "Southeast",
         "aliases": [
           "southeast",
           "se",
@@ -11876,7 +11876,7 @@
   },
   {
     "id": "iron_ram_muster",
-    "title": "The Bastion Muster",
+    "title": "Bastion Muster",
     "summary": "An industrial assembly hall and siege armory. Heavy hydraulic cranes, ammunition hoists, and racks of curved pavise shields flank the wide central corridor where Iron-Ram shock troopers muster for battle.",
     "inspect_text": "The floor is stained with black engine soot and machine grease. Racks of barbed poleaxes and steam-assisted siege rams stand ready along the fortified bulkhead.",
     "allow_rest": false,
@@ -11898,7 +11898,7 @@
     "exits": [
       {
         "room_id": "iron_ram_gallery",
-        "label": "Northwest to Steam Flue Corridor",
+        "label": "Northwest",
         "aliases": [
           "northwest",
           "nw",
@@ -11910,7 +11910,7 @@
       },
       {
         "room_id": "iron_ram_throne",
-        "label": "Southeast to the Anvil Throne",
+        "label": "Southeast",
         "aliases": [
           "southeast",
           "se",
@@ -11925,7 +11925,7 @@
   },
   {
     "id": "iron_ram_throne",
-    "title": "The Anvil Throne",
+    "title": "Anvil Throne",
     "summary": "The martial command seat of House Iron-Ram. Built atop a raised stepped dais of slag-cast black iron sits a forge-hammered throne, framed by roaring blast chimneys that cast an intense fiery glow over the soot-streaked flags.",
     "inspect_text": "A massive steel horn crest arches over the throne back. Hydraulic pressure lines pulse beneath the metal plates of the dais, and a massive war table displays iron markers of the citadel defenses.",
     "allow_rest": false,
@@ -11947,7 +11947,7 @@
     "exits": [
       {
         "room_id": "iron_ram_muster",
-        "label": "Northwest to Bastion Muster",
+        "label": "Northwest",
         "aliases": [
           "northwest",
           "nw",
@@ -11961,7 +11961,7 @@
   },
   {
     "id": "frost_leopard_gallery",
-    "title": "The Frosted Colonnade",
+    "title": "Frosted Colonnade",
     "summary": "A soaring vaulted gallery flanked by slender pillars of ash-grey marble and lit by frosted crystal lanterns. Banners of pale slate silk embroidered with leaping snow leopards drape the walls beside tall lancet windows overlooking the sheer abyss.",
     "inspect_text": "A dusting of powdery snow blows in through high stone tracery. The floor is paved in honed quartz that mirrors the pale violet sky outside with crystalline precision.",
     "allow_rest": false,
@@ -11983,7 +11983,7 @@
     "exits": [
       {
         "room_id": "courtyard_southwest",
-        "label": "Northeast to Frost-Leopard Approach",
+        "label": "Northeast",
         "aliases": [
           "northeast",
           "ne",
@@ -11995,7 +11995,7 @@
       },
       {
         "room_id": "frost_leopard_muster",
-        "label": "Southwest to Shadow Promenade",
+        "label": "Southwest",
         "aliases": [
           "southwest",
           "sw",
@@ -12010,7 +12010,7 @@
   },
   {
     "id": "frost_leopard_muster",
-    "title": "The Shadow Promenade",
+    "title": "Shadow Promenade",
     "summary": "An opulent, silent muster hall paved in polished grey quartz. Mirrored alcoves and silk-screened partitions conceal training duels and weapon chests filled with curved ice-daggers, silent composite recurves, and throwing quills.",
     "inspect_text": "Every step is muffled by thick fur runners. Concealed spy-holes and acoustic resonance tubes throughout the colonnade allow the Leopard guard to survey the avenue without being seen.",
     "allow_rest": false,
@@ -12032,7 +12032,7 @@
     "exits": [
       {
         "room_id": "frost_leopard_gallery",
-        "label": "Northeast to the Frosted Colonnade",
+        "label": "Northeast",
         "aliases": [
           "northeast",
           "ne",
@@ -12044,7 +12044,7 @@
       },
       {
         "room_id": "frost_leopard_throne",
-        "label": "Southwest to the Opal Throne",
+        "label": "Southwest",
         "aliases": [
           "southwest",
           "sw",
@@ -12059,7 +12059,7 @@
   },
   {
     "id": "frost_leopard_throne",
-    "title": "The Opal Throne",
+    "title": "Opal Throne",
     "summary": "The serene, perilous inner sanctum of House Frost-Leopard. Carved from a massive boulder of iridescent opal and polished silver, the throne rests upon a dais of dark velvet stone, commanding a sweeping view through tall open arches across the frozen mountains.",
     "inspect_text": "Silver threads and frost-glass chimes hang from the high ceiling, chiming softly in the freezing alpine wind. The opal throne glimmers with shifting hues of lavender, mint, and pale gold.",
     "allow_rest": false,
@@ -12081,7 +12081,7 @@
     "exits": [
       {
         "room_id": "frost_leopard_muster",
-        "label": "Northeast to Shadow Promenade",
+        "label": "Northeast",
         "aliases": [
           "northeast",
           "ne",
