@@ -11095,19 +11095,6 @@
         ],
         "menu_label": "Commander's Bastion",
         "requires_story_var": ""
-      },
-      {
-        "room_id": "courtyard_center",
-        "label": "Down",
-        "aliases": [
-          "descend",
-          "down",
-          "d",
-          "floor 5",
-          "floor5"
-        ],
-        "menu_label": "Descend to Floor 5",
-        "requires_story_var": "platform_activated"
       }
     ],
     "descriptions": []

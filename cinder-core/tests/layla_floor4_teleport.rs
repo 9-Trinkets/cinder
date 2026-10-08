@@ -244,8 +244,19 @@ fn test_platform_discovery_activation_and_floor5_gate() {
         "teleport_platform"
     ));
 
-    // Descend to Floor 5 now succeeds
-    runtime.run_turn("go floor 5").expect("descend floor 5");
+    // Physical exit to Floor 5 does not exist; transit is exclusively via teleportation
+    let blocked_after = runtime.run_turn("go floor 5").expect("try physical move");
+    assert_ne!(runtime.current_room_id().unwrap(), "courtyard_center");
+    assert!(
+        blocked_after.text().contains("see no path")
+            || blocked_after.text().contains("cannot go")
+            || blocked_after.text().contains("can't go")
+    );
+
+    // Teleporting to Floor 5 now succeeds
+    runtime
+        .run_turn("teleport floor 5")
+        .expect("teleport floor 5");
     assert_eq!(runtime.current_room_id().unwrap(), "courtyard_center");
 }
 

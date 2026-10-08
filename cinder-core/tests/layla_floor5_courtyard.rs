@@ -287,6 +287,14 @@ fn floor5_courtyard_hexagonal_navigation_resolves() {
             .any(|e| e.room_id == "teleport_platform"),
         "floor 4 and floor 5 must not be physically connected by an exit"
     );
+    let platform = pack.room("teleport_platform").expect("platform exists");
+    assert!(
+        !platform
+            .exits
+            .iter()
+            .any(|e| e.room_id == "courtyard_center"),
+        "floor 4 teleport platform must not have a physical exit to floor 5"
+    );
     for perimeter_id in &EXPECTED_COURTYARD_ROOMS[1..] {
         assert!(
             center.exits.iter().any(|e| e.room_id == *perimeter_id),
@@ -1591,8 +1599,10 @@ fn tracing_platform_sigil_does_not_count_as_descending() {
     );
     assert_ne!(after.story_vars.get("descend_floor_5"), Some("true"));
 
-    // Only actual arrival completes it.
-    runtime.run_turn("go floor 5").expect("descend floor 5");
+    // Only actual arrival completes it (transit is exclusively via teleportation).
+    runtime
+        .run_turn("teleport floor 5")
+        .expect("teleport floor 5");
     assert_eq!(runtime.current_room_id().unwrap(), "courtyard_center");
     let arrived = runtime.export_state().unwrap();
     assert!(
