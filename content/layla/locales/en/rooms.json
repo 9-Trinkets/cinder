@@ -11098,7 +11098,7 @@
       },
       {
         "room_id": "courtyard_center",
-        "label": "Descend to Floor 5",
+        "label": "Down",
         "aliases": [
           "descend",
           "down",
@@ -12237,7 +12237,7 @@
     "exits": [
       {
         "room_id": "sanctuary_crossroads",
-        "label": "North across the terrace to the Grand Plaza",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -12252,8 +12252,10 @@
       },
       {
         "room_id": "sanctuary_wall_south",
-        "label": "South up the stone stairs to the South Wall",
+        "label": "Up",
         "aliases": [
+          "up",
+          "u",
           "south",
           "s",
           "wall",
@@ -12289,7 +12291,7 @@
     "exits": [
       {
         "room_id": "sanctuary_grand_terrace",
-        "label": "South to the Gate Terrace",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -12302,7 +12304,7 @@
       },
       {
         "room_id": "basilica_portal",
-        "label": "Northwest to the Arch of Chants",
+        "label": "Northwest",
         "aliases": [
           "northwest",
           "nw",
@@ -12315,7 +12317,7 @@
       },
       {
         "room_id": "scriptorium_portal",
-        "label": "Northeast to the Arch of Letters",
+        "label": "Northeast",
         "aliases": [
           "northeast",
           "ne",
@@ -12328,7 +12330,7 @@
       },
       {
         "room_id": "herbarium_portal",
-        "label": "Southwest to the Arch of Remedies",
+        "label": "Southwest",
         "aliases": [
           "southwest",
           "sw",
@@ -12342,7 +12344,7 @@
       },
       {
         "room_id": "mortuary_portal",
-        "label": "Southeast to the Arch of Passing",
+        "label": "Southeast",
         "aliases": [
           "southeast",
           "se",
@@ -12381,7 +12383,7 @@
     "exits": [
       {
         "room_id": "sanctuary_crossroads",
-        "label": "Southeast to the Grand Plaza",
+        "label": "Southeast",
         "aliases": [
           "southeast",
           "se",
@@ -12394,7 +12396,7 @@
       },
       {
         "room_id": "basilica_nave",
-        "label": "North into the Grand Basilica",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -12432,7 +12434,7 @@
     "exits": [
       {
         "room_id": "basilica_portal",
-        "label": "South to the Arch of Chants",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -12445,7 +12447,7 @@
       },
       {
         "room_id": "basilica_high_altar",
-        "label": "North to the High Altar",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -12458,7 +12460,7 @@
       },
       {
         "room_id": "basilica_vestry",
-        "label": "East into the Vestry",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -12470,7 +12472,7 @@
       },
       {
         "room_id": "sanctuary_wall_nw_tower",
-        "label": "Up the spiral stair to the Bell Tower",
+        "label": "Up",
         "aliases": [
           "up",
           "u",
@@ -12508,7 +12510,7 @@
     "exits": [
       {
         "room_id": "basilica_nave",
-        "label": "South to the Nave",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -12521,7 +12523,7 @@
       },
       {
         "room_id": "basilica_clergy_cells",
-        "label": "East to the Clergy Cells",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -12559,7 +12561,7 @@
     "exits": [
       {
         "room_id": "basilica_nave",
-        "label": "West to the Nave",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -12572,7 +12574,7 @@
       },
       {
         "room_id": "basilica_clergy_cells",
-        "label": "North to the Clergy Cells",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -12609,7 +12611,7 @@
     "exits": [
       {
         "room_id": "basilica_high_altar",
-        "label": "West to the High Altar",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -12621,7 +12623,7 @@
       },
       {
         "room_id": "basilica_vestry",
-        "label": "South to the Robing Vestry",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -12658,7 +12660,7 @@
     "exits": [
       {
         "room_id": "sanctuary_crossroads",
-        "label": "Southwest to the Grand Plaza",
+        "label": "Southwest",
         "aliases": [
           "southwest",
           "sw",
@@ -12671,7 +12673,7 @@
       },
       {
         "room_id": "scriptorium_cloister",
-        "label": "North into the Scriptorium",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -12709,7 +12711,7 @@
     "exits": [
       {
         "room_id": "scriptorium_portal",
-        "label": "South to the Arch of Letters",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -12722,7 +12724,7 @@
       },
       {
         "room_id": "scriptorium_library",
-        "label": "North into the Great Library",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -12734,7 +12736,7 @@
       },
       {
         "room_id": "scriptorium_archive_vault",
-        "label": "East to the Catechism Chamber",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -12747,7 +12749,7 @@
       },
       {
         "room_id": "sanctuary_wall_ne_tower",
-        "label": "Up the stairs to the Northeast Tower",
+        "label": "Up",
         "aliases": [
           "up",
           "u",
@@ -12785,7 +12787,7 @@
     "exits": [
       {
         "room_id": "scriptorium_cloister",
-        "label": "South to the Scriptorium Hall",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -12798,7 +12800,7 @@
       },
       {
         "room_id": "scriptorium_secret_archive",
-        "label": "East behind the sliding shelf",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -12837,7 +12839,7 @@
     "exits": [
       {
         "room_id": "scriptorium_cloister",
-        "label": "West to the Scriptorium Hall",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -12850,7 +12852,7 @@
       },
       {
         "room_id": "scriptorium_secret_archive",
-        "label": "North to the Inner Archive",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -12888,7 +12890,7 @@
     "exits": [
       {
         "room_id": "scriptorium_library",
-        "label": "West to the Great Library",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -12901,7 +12903,7 @@
       },
       {
         "room_id": "scriptorium_archive_vault",
-        "label": "South to the Catechism Chamber",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -12939,7 +12941,7 @@
     "exits": [
       {
         "room_id": "sanctuary_crossroads",
-        "label": "Northeast to the Grand Plaza",
+        "label": "Northeast",
         "aliases": [
           "northeast",
           "ne",
@@ -12952,7 +12954,7 @@
       },
       {
         "room_id": "herbarium_garden",
-        "label": "South into the Solarium Garden",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -12990,7 +12992,7 @@
     "exits": [
       {
         "room_id": "herbarium_portal",
-        "label": "North to the Arch of Remedies",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -13003,7 +13005,7 @@
       },
       {
         "room_id": "herbarium_apothecary",
-        "label": "South to the Dispensary",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -13016,7 +13018,7 @@
       },
       {
         "room_id": "herbarium_still_room",
-        "label": "West to the Distillation Room",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -13029,7 +13031,7 @@
       },
       {
         "room_id": "sanctuary_wall_sw_tower",
-        "label": "Up the stairs to the Southwest Bastion",
+        "label": "Up",
         "aliases": [
           "up",
           "u",
@@ -13067,7 +13069,7 @@
     "exits": [
       {
         "room_id": "herbarium_garden",
-        "label": "North to the Solarium Garden",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -13080,7 +13082,7 @@
       },
       {
         "room_id": "herbarium_water_clock",
-        "label": "West to the Water Clock Cloister",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -13118,7 +13120,7 @@
     "exits": [
       {
         "room_id": "herbarium_garden",
-        "label": "East to the Solarium Garden",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -13131,7 +13133,7 @@
       },
       {
         "room_id": "herbarium_water_clock",
-        "label": "South to the Water Clock Cloister",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -13168,7 +13170,7 @@
     "exits": [
       {
         "room_id": "herbarium_still_room",
-        "label": "North to the Distillation Chamber",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -13181,7 +13183,7 @@
       },
       {
         "room_id": "herbarium_apothecary",
-        "label": "East to the Dispensary Hall",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -13219,7 +13221,7 @@
     "exits": [
       {
         "room_id": "sanctuary_crossroads",
-        "label": "Northwest to the Grand Plaza",
+        "label": "Northwest",
         "aliases": [
           "northwest",
           "nw",
@@ -13232,7 +13234,7 @@
       },
       {
         "room_id": "mortuary_descent",
-        "label": "South down the Undercrypt Stairs",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -13271,7 +13273,7 @@
     "exits": [
       {
         "room_id": "mortuary_portal",
-        "label": "North up the stairs to the Arch of Passing",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -13285,7 +13287,7 @@
       },
       {
         "room_id": "mortuary_crypt",
-        "label": "East into the Silent Catacombs",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -13297,7 +13299,7 @@
       },
       {
         "room_id": "mortuary_embalming_hall",
-        "label": "South into the Embalming Hall",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -13335,7 +13337,7 @@
     "exits": [
       {
         "room_id": "mortuary_descent",
-        "label": "West to the Undercrypt Stairs",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -13348,7 +13350,7 @@
       },
       {
         "room_id": "mortuary_reanimation_sanctum",
-        "label": "South to the Reanimation Sanctum",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -13361,7 +13363,7 @@
       },
       {
         "room_id": "sanctuary_wall_se_tower",
-        "label": "Up the chimney ladder to the Southeast Bastion",
+        "label": "Up",
         "aliases": [
           "up",
           "u",
@@ -13400,7 +13402,7 @@
     "exits": [
       {
         "room_id": "mortuary_descent",
-        "label": "North to the Undercrypt Stairs",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -13413,7 +13415,7 @@
       },
       {
         "room_id": "mortuary_reanimation_sanctum",
-        "label": "East to the Reanimation Sanctum",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -13450,7 +13452,7 @@
     "exits": [
       {
         "room_id": "mortuary_embalming_hall",
-        "label": "West to the Embalming Laboratory",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -13463,7 +13465,7 @@
       },
       {
         "room_id": "mortuary_crypt",
-        "label": "North to the Silent Catacombs",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -13475,7 +13477,7 @@
       },
       {
         "room_id": "sanctuary_main_platform",
-        "label": "South to the Main Teleport Platform",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -13513,7 +13515,7 @@
     "exits": [
       {
         "room_id": "mortuary_reanimation_sanctum",
-        "label": "North into the Seer's Sanctum",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -13552,7 +13554,7 @@
     "exits": [
       {
         "room_id": "sanctuary_wall_north",
-        "label": "East along the North Rampart",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -13565,7 +13567,7 @@
       },
       {
         "room_id": "sanctuary_wall_west",
-        "label": "South along the West Rampart",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -13578,7 +13580,7 @@
       },
       {
         "room_id": "basilica_nave",
-        "label": "Down the stone stair into the Basilica Nave",
+        "label": "Down",
         "aliases": [
           "down",
           "d",
@@ -13616,7 +13618,7 @@
     "exits": [
       {
         "room_id": "sanctuary_wall_nw_tower",
-        "label": "West to the Northwest Bell Tower",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -13628,7 +13630,7 @@
       },
       {
         "room_id": "sanctuary_wall_ne_tower",
-        "label": "East to the Northeast Watchtower",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -13665,7 +13667,7 @@
     "exits": [
       {
         "room_id": "sanctuary_wall_north",
-        "label": "West along the North Rampart",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -13678,7 +13680,7 @@
       },
       {
         "room_id": "sanctuary_wall_east",
-        "label": "South along the East Rampart",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -13691,7 +13693,7 @@
       },
       {
         "room_id": "scriptorium_cloister",
-        "label": "Down the stairs into the Scriptorium",
+        "label": "Down",
         "aliases": [
           "down",
           "d",
@@ -13729,7 +13731,7 @@
     "exits": [
       {
         "room_id": "sanctuary_wall_ne_tower",
-        "label": "North to the Northeast Watchtower",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -13741,7 +13743,7 @@
       },
       {
         "room_id": "sanctuary_wall_se_tower",
-        "label": "South to the Southeast Bastion",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -13777,7 +13779,7 @@
     "exits": [
       {
         "room_id": "sanctuary_wall_east",
-        "label": "North along the East Rampart",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -13790,7 +13792,7 @@
       },
       {
         "room_id": "sanctuary_wall_south",
-        "label": "West along the South Wall",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -13803,7 +13805,7 @@
       },
       {
         "room_id": "mortuary_crypt",
-        "label": "Down the chimney ladder into the Catacombs",
+        "label": "Down",
         "aliases": [
           "down",
           "d",
@@ -13841,7 +13843,7 @@
     "exits": [
       {
         "room_id": "sanctuary_wall_se_tower",
-        "label": "East to the Southeast Bastion",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -13853,7 +13855,7 @@
       },
       {
         "room_id": "sanctuary_wall_sw_tower",
-        "label": "West to the Southwest Bastion",
+        "label": "West",
         "aliases": [
           "west",
           "w",
@@ -13865,7 +13867,7 @@
       },
       {
         "room_id": "sanctuary_grand_terrace",
-        "label": "Down the stone steps to the Gate Terrace",
+        "label": "Down",
         "aliases": [
           "down",
           "d",
@@ -13903,7 +13905,7 @@
     "exits": [
       {
         "room_id": "sanctuary_wall_south",
-        "label": "East along the South Wall",
+        "label": "East",
         "aliases": [
           "east",
           "e",
@@ -13916,7 +13918,7 @@
       },
       {
         "room_id": "sanctuary_wall_west",
-        "label": "North along the West Rampart",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -13929,7 +13931,7 @@
       },
       {
         "room_id": "herbarium_garden",
-        "label": "Down the stairs into the Solarium Garden",
+        "label": "Down",
         "aliases": [
           "down",
           "d",
@@ -13967,7 +13969,7 @@
     "exits": [
       {
         "room_id": "sanctuary_wall_sw_tower",
-        "label": "South to the Southwest Bastion",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -13979,7 +13981,7 @@
       },
       {
         "room_id": "sanctuary_wall_nw_tower",
-        "label": "North to the Northwest Bell Tower",
+        "label": "North",
         "aliases": [
           "north",
           "n",
