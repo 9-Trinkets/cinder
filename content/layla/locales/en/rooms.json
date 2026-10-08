@@ -2320,8 +2320,8 @@
   {
     "id": "r5c5",
     "title": "The Work-Ring",
-    "summary": "The deepest chamber on this level. A wide circle of chalk glows on the cave floor — the same pale light as your own lines — and inside it, golems stand unfinished: a shoulder, a head with no seams yet, slabs of raw rock. The air is thick with ash and hot clay.",
-    "inspect_text": "You stop at the edge of a wide chalk circle drawn on the cave floor, glowing the same pale light as the lines you draw yourself. Inside it, golems are being made: a shoulder of dark volcanic rock, a head still without seams, slabs of raw stone waiting to be given a shape. The air tastes of ash and hot clay and burned herbs. At the ring’s center the goblin shaman works, hunched and patient, one pale hand pressed flat to the stone. Tock. Tock. A staff beating slow time against the floor.",
+    "summary": "The deepest chamber on this level. A wide circle of chalk glows on the cave floor — the same pale light as your own lines — and inside it, stone golems delivered from below are bound on restraint slabs, iron chains holding them down while binding rings are carved into their chests. The air is thick with ash and hot clay.",
+    "inspect_text": "You stop at the edge of a wide chalk circle drawn on the cave floor, glowing the same pale light as the lines you draw yourself. Inside it, stone golems delivered from the deep are bound to restraint slabs, iron chains holding them down while binding rings are carved into their chests. Nearby, heavy hoist cables and lift pulleys lead into the dark. The air tastes of ash and hot clay and burned herbs. At the ring’s center the goblin shaman works, hunched and patient, branding fresh obedience marks into the stone. Tock. Tock. A staff beating slow time against the floor.",
     "allow_rest": false,
     "features": [
       {
@@ -2391,8 +2391,8 @@
     "descriptions": [
       {
         "actor_defeated": "goblin-shaman",
-        "summary": "The chalk ring lies scuffed and broken underfoot. The half-made golems stand unfinished, and there is no hand to finish them now. Only ash, and the cold smoke of an untended fire.",
-        "inspect_text": "The work-ring’s chalk is scuffed and broken under your feet. Half-made golems stand the way they were left — a shoulder, a seamless head, slabs of raw rock — and the dying fire twists one last thread of smoke at the room’s center. The air has gone still and cold."
+        "summary": "The chalk ring lies scuffed and broken underfoot. The restrained stone figures stand silent upon the slabs, and there is no warden to brand them now. Only ash, and the cold smoke of an untended fire.",
+        "inspect_text": "The work-ring’s chalk is scuffed and broken under your feet. The bound stone figures stand the way they were left upon their slabs, iron chains slackening into the dust. Nearby, hoist cables hang still over the shaft into the deep, and the dying fire twists one last thread of smoke at the room’s center. The air has gone still and cold."
       }
     ]
   },

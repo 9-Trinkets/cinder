@@ -153,10 +153,12 @@ the shaman), the loot justification, and the feature-surface order — lives in
 level carries.
 
 Level 1 is a **Go grid** that reads as a living **goblin cave**. A rare tribe of
-**goblins** hunts the floor beneath a **goblin shaman**, who made the **golems**
-*from the stone* — and "living stone" is literal: the golems are the earliest
-converts, villagers taken by the priests and bricked into the cave's guard rooms
-(see Level 4 below). The goblins are conscious and hostile,
+**goblins** hunts the floor beneath a **goblin shaman**, who binds the **golems**
+with chalk rings — and "living stone" is literal: the golems are the earliest
+converts, villagers taken by the priests, bricked in stone, and delivered to the
+outer border to guard the descent (see Level 4 below). The shaman does not sculpt
+the stone; he acts as the floor's border warden, carving the binding marks onto the
+converts' chests to keep them locked in place. The goblins are conscious and hostile,
 and the weakest enemies on the floor. Their hunting is what justifies the weapons
 and healing found in the cave. (Details: `docs/layla/floor1_plan.md`.)
 

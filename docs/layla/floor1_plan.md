@@ -19,18 +19,19 @@ Layla wakes on cold stone in one of the golems' guard rooms, next to a **golem**
 that is watching her silently. She should be afraid — but feels oddly calm.
 Despite having no memory, she feels like she's been here before.
 
-The floor is a **goblin cave**, not a prison. A **goblin tribe** lives here, and
-its **shaman made the golems**. The cave is theirs: dens, bone piles, hot
-fires, hunting grounds — and at the very center, the shaman's work-ring where
-the golems were shaped.
+The floor is a **goblin cave**, not a prison. A **goblin tribe** lives here beneath
+its **shaman**, who brands and binds the **golems**. The cave is theirs: dens, bone
+piles, hot fires, hunting grounds — and at the very center, the shaman's binding ring
+where arriving converts are chained and inscribed with obedience marks.
 
-> **Canon note (conversion).** "Made the golems" must be read through the
-> kingdom's truth (see `docs/layla/floor4_plan.md`): the shaman shapes servants
-> from **living stone** — villagers taken as offerings and bricked into golems.
-> The ring marks are the maker's stamp *and* the leftover of the wipe. Layla's
+> **Canon note (conversion).** The golems are not sculpted here; they arrive from
+> the deeper levels through hoisting shafts (see `docs/layla/floor4_plan.md` & Floor 6):
+> villagers taken as offerings, mind-wiped, and encased in living stone.
+> The shaman is the border warden whose duty is subjugation: gouging the chalk rings into
+> the stone shells to lock their wills into silent guard duty. Layla's
 > unaccountable calm beside them, and her gentleness with their heavy feet
 > (`docs/layla/narration_guide.md` § 5), are her instinct recognizing a fellow
-> convert. Each guard golem's real pre-stone name lives in the Floor 4 awakening
+> captive. Each guard golem's real pre-stone name lives in the Floor 4 awakening
 > table (`golem-dark-nw` → *Orin*, etc.).
 
 She is not a prisoner here. She is a stranger in someone's home, and she has to
@@ -114,12 +115,12 @@ Older, larger, quieter. The floor's maker.
   the conversion's floor-side face — it *rings* converts into pieces, the way
   the priests' works do on Floor 4. It itself is beyond waking — either its
   conversion took deepest, or it was never a person at all.)*
-- **The thread to Layla.** The shaman makes rings and shapes servants from
-  living stone. Layla traces rings and draws servants into step. Same mark,
-  same craft, same boarded life — the sigil she learns is the shaman's trade.
+- **The thread to Layla.** The shaman traces rings to bind and subdue servants.
+  Layla traces rings to release their bonds and draw servants into step. Same mark,
+  competing authority — the sigil she uses challenges the shaman's warden ring.
   Keep that echo in prose, never say it.
 
-### Golems (×4 — the shaman's constructs)
+### Golems (×4 — the bound converts)
 
 Crude, patient, made. Still, silent, and no longer elegant "architecture."
 **Canon:** these are converts — people bricked in stone (see the Premise note).
@@ -132,8 +133,8 @@ be written as if there was never a person in there.
   flat polished pebble set in sockets.
 - **Color / skin.** Two pairs, as in the old content: **dark** (near-black
   granite) and **pale** (bone-white river stone), but now visibly *built* —
-  seams where slabs meet, thumb-deep pocks where the shaman's hands pressed.
-  Chalk-ring marks on chest and brow: the maker's stamp.
+  seams where slabs meet, thumb-deep pocks where the stone was joined.
+  Chalk-ring marks gouged on chest and brow: the warden's binding seal.
 - **Smell.** Cold stone and chalk dust. Clean next to the goblins.
 - **Noises.** None. They do not breathe, do not shift, do not creak. The
   scariest thing about them is that they make no sound at all, ever.
@@ -151,8 +152,8 @@ Nine actors on the floor:
 
 | Actor | Count | Role | Strength |
 |---|---|---|---|
-| **goblin shaman** | 1 | Center of the cave; made the golems. The L1 boss. Cannot be converted, only defeated. | **> golems** |
-| **golems** | 4 | The shaman's constructs, holding the four off-center guard rooms. Silent, neutral, made things that don't know the game. Charmable. | mid |
+| **goblin shaman** | 1 | Center of the cave; binds and posts the golems. The L1 boss. Cannot be converted, only defeated. | **> golems** |
+| **golems** | 4 | Bound converts holding the four off-center guard rooms. Silent, neutral, encased souls that don't know the game. Charmable. | mid |
 | **goblins** | 4 | Hunt the cave. Conscious and hostile. The weakest enemies on the floor. | **< golems** |
 
 **Strength ladder:** shaman > golems > goblins.
@@ -199,7 +200,7 @@ livable variation by goblin life. Reference these for `rooms.json` prose.
 | **Hunting ground** | Fire-scorch on the walls, a gutting stone worn black, half-dried meat on a frame, the sour rot of kill. Buzzing flies you can hear before you see. |
 | **Fire-pit chamber** | A shallow pit of embers in the middle, ringed with scored rock, smoke layered along the ceiling like a roof. Warm enough to sweat in. |
 | **Larder / cache** | Deep cool room, meat hung from hooks, clay pots of pounded herbs, the fattest smell on the floor. Anything worth taking hides here. |
-| **Shaman's work-ring (center, r5c5)** | A wide chalk circle on the cave floor, drawn in the same pale light as Layla's sigils. Half-formed golems and stone slabs stand inside it. Ash and hot clay. The shaman works here. Coals. Tock. |
+| **Shaman's work-ring (center, r5c5)** | A wide chalk circle on the cave floor, glowing the same pale light as Layla's sigils. Chained stone figures on restraint slabs, iron chains, and hoist cables leading into the dark stand inside it. Ash and hot clay. The shaman carves binding rings here. Coals. Tock. |
 | **Pattern rooms** | The worn goblin tracks cross the floor in a faint grid. Layla measures them. The old content's "scored grid" prose is replaced by these *worn tracks*, and the ritual geometry now lives only in the work-ring. |
 
 Keyed rooms: start = one of the four guard rooms (r3c3 / r3c7 / r7c3 / r7c7) ·
