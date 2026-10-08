@@ -109,8 +109,8 @@ Older, larger, quieter. The floor's maker.
   *tock… tock… tock* — and it mutters in a low rumble that is less a voice than
   a second drum under the first. When it stands, its joints pop and it hisses
   through its teeth.
-- **Role.** Made the golems. Its stamp is on every one of them — the same
-  chalk-ring marks, the same hand in the shaping. It cannot be converted; only
+- **Role.** Brands and binds the golems. Its stamp is on every one of them — the same
+  chalk-ring marks, the same warden's binding seal. It cannot be converted; only
   defeated. It drops the **shaman's ring**. *(The deepest reading: the shaman is
   the conversion's floor-side face — it *rings* converts into pieces, the way
   the priests' works do on Floor 4. It itself is beyond waking — either its
