@@ -88,7 +88,9 @@ export default function ShellMenu({
             >
               <div>
                 <span className="text-sm font-medium text-text group-hover:text-foam transition-colors block">{r.title}</span>
-                {r.menu_text && <span className="text-xs text-muted">{r.menu_text}</span>}
+                {r.menu_text && r.menu_text.toLowerCase() !== r.title.toLowerCase() && (
+                  <span className="text-xs text-muted">{r.menu_text}</span>
+                )}
               </div>
               <span className="text-xs text-foam opacity-0 group-hover:opacity-100 transition-opacity">Travel &rsaquo;</span>
             </button>

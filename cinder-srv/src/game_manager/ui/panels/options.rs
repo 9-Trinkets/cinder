@@ -68,18 +68,23 @@ pub(crate) fn build_panel_options(
                     .panel_options(&PanelDataSource::Exits)
                     .map_err(|error| error.to_string())?
                     .into_iter()
-                    .map(|opt| PanelOptionData {
-                        id: opt.id.clone(),
-                        title: opt.title.clone(),
-                        subtitle: if opt.menu_text.is_empty() {
+                    .map(|opt| {
+                        let subtitle = if opt.menu_text.is_empty()
+                            || opt.menu_text.eq_ignore_ascii_case(&opt.title)
+                        {
                             None
                         } else {
                             Some(opt.menu_text)
-                        },
-                        command: Some(opt.command.clone()),
-                        disabled: false,
-                        selected: false,
-                        group: None,
+                        };
+                        PanelOptionData {
+                            id: opt.id.clone(),
+                            title: opt.title.clone(),
+                            subtitle,
+                            command: Some(opt.command.clone()),
+                            disabled: false,
+                            selected: false,
+                            group: None,
+                        }
                     })
                     .collect(),
                 PanelDataSource::Features => runtime

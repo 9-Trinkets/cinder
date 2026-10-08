@@ -230,7 +230,9 @@ const QuickActionPanel = memo(function QuickActionPanel({
                   <span className="flex items-center justify-between gap-3">
                     <span>
                       <span className="block font-medium">{titleize(opt.title)}</span>
-                      {opt.subtitle && <span className="block text-muted text-xs mt-0.5">{opt.subtitle}</span>}
+                      {opt.subtitle && opt.subtitle.toLowerCase() !== opt.title.toLowerCase() && (
+                        <span className="block text-muted text-xs mt-0.5">{opt.subtitle}</span>
+                      )}
                     </span>
                     {opt.selected && <span className="text-gold text-sm" aria-label="Current order">✓</span>}
                   </span>
@@ -320,7 +322,9 @@ const QuickActionPanel = memo(function QuickActionPanel({
                     <span className="flex items-center justify-between gap-3">
                       <span>
                         <span className="block font-medium">{titleize(opt.title)}</span>
-                        {opt.subtitle && <span className="block text-muted text-xs mt-0.5">{opt.subtitle}</span>}
+                        {opt.subtitle && opt.subtitle.toLowerCase() !== opt.title.toLowerCase() && (
+                          <span className="block text-muted text-xs mt-0.5">{opt.subtitle}</span>
+                        )}
                       </span>
                       {opt.selected && <span className="text-gold text-sm" aria-label="Current order">✓</span>}
                     </span>

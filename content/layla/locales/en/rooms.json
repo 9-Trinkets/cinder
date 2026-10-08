@@ -10257,7 +10257,7 @@
       },
       {
         "room_id": "village_square",
-        "label": "Down into the Cave Below",
+        "label": "Down",
         "aliases": [
           "down",
           "d",
@@ -10323,7 +10323,7 @@
       },
       {
         "room_id": "fortress_gate",
-        "label": "South through the Bulkhead",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -10539,7 +10539,7 @@
       },
       {
         "room_id": "oh",
-        "label": "Up to the Heart-Pit",
+        "label": "Up",
         "aliases": [
           "up",
           "u",
@@ -10780,7 +10780,7 @@
       },
       {
         "room_id": "village_north_gate",
-        "label": "North to North Approach Plaza",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -10975,7 +10975,7 @@
       },
       {
         "room_id": "east_sentry_walk",
-        "label": "North to East Sentry Rampart",
+        "label": "North",
         "aliases": [
           "north",
           "n",
@@ -10987,7 +10987,7 @@
       },
       {
         "room_id": "teleport_platform",
-        "label": "Northwest to Central Teleport Platform",
+        "label": "Northwest",
         "aliases": [
           "northwest",
           "nw",
@@ -11033,7 +11033,7 @@
     "exits": [
       {
         "room_id": "command_bastion",
-        "label": "South to Commander's Bastion",
+        "label": "South",
         "aliases": [
           "south",
           "s",
@@ -11083,7 +11083,7 @@
     "exits": [
       {
         "room_id": "command_bastion",
-        "label": "Southeast to Commander's Bastion",
+        "label": "Southeast",
         "aliases": [
           "southeast",
           "se",
