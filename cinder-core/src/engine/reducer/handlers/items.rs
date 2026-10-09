@@ -167,6 +167,13 @@ pub(crate) fn handle_player_used_item(
     let player_id = content.settings.combat.player_actor_id.clone();
     let initial_room_id = state.current_room_id.clone();
 
+    if item_id == "invisibility-potion" {
+        state.invisible_until_minute = Some(state.current_time_minutes + 8);
+        state.story_vars.set_unchecked("is_invisible", "true");
+    } else if item_id == "spirit-pill" {
+        state.story_vars.set_unchecked("spiritual_sight", "true");
+    }
+
     let specific_key = format!("item.{item_id}.used");
     let specific_line = if content.message(&specific_key).is_some() {
         content.render_message(&specific_key, &[("item", item.label.as_str())])

@@ -3957,5 +3957,193 @@
         "She waits in stillness, letting the mist settle before speaking."
       ]
     }
+  },
+  {
+    "id": "cathedral_guard_crossroads",
+    "name": "Cathedral Guard",
+    "room_id": "sanctuary_crossroads",
+    "level": 12,
+    "initial_stats": {
+      "hp": 50,
+      "strength": 8,
+      "endurance": 6,
+      "dexterity": 6,
+      "intelligence": 4
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
+    "aliases": [
+      "guard",
+      "cathedral guard",
+      "sentry",
+      "soldier"
+    ],
+    "tags": [
+      "guard",
+      "cathedral",
+      "soldier"
+    ],
+    "inspect_text": "A tall guard clad from head to toe in shining white plate armor. He holds a heavy halberd across his chest and watches every corner of the plaza.",
+    "prompt_context": {
+      "character_notes": [
+        "You are a cathedral guard patrolling the Grand Plaza.",
+        "You obey the High Seer and arrest any intruders on sight."
+      ],
+      "response_notes": [
+        "Demand intruders surrender immediately.",
+        "You have no mercy for outsiders."
+      ],
+      "behavior_examples": [
+        "He stands rigidly at attention, his white armor gleaming in the light."
+      ]
+    }
+  },
+  {
+    "id": "cathedral_guard_nave",
+    "name": "Cathedral Guard",
+    "room_id": "basilica_nave",
+    "level": 12,
+    "initial_stats": {
+      "hp": 50,
+      "strength": 8,
+      "endurance": 6,
+      "dexterity": 6,
+      "intelligence": 4
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
+    "aliases": [
+      "guard",
+      "cathedral guard",
+      "sentry",
+      "soldier"
+    ],
+    "tags": [
+      "guard",
+      "cathedral",
+      "soldier"
+    ],
+    "inspect_text": "A stern guard in polished white plate armor pacing the long stone aisle of the basilica with a sharp halberd.",
+    "prompt_context": {
+      "character_notes": [
+        "You guard the central basilica from unauthorized visitors.",
+        "You challenge anyone who approaches without permission."
+      ],
+      "response_notes": [
+        "Order trespassers to turn back or face your weapon."
+      ],
+      "behavior_examples": [
+        "His heavy armored boots echo sharply off the marble columns."
+      ]
+    }
+  },
+  {
+    "id": "selena",
+    "name": "Selena",
+    "room_id": "herbarium_garden",
+    "level": 8,
+    "initial_stats": {
+      "hp": 40,
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 6,
+      "intelligence": 8,
+      "wisdom": 8
+    },
+    "initial_hostile": false,
+    "attackable": false,
+    "initial_inventory": {
+      "spirit-pill": 1
+    },
+    "aliases": [
+      "selena",
+      "witch",
+      "herbalist",
+      "gardener"
+    ],
+    "tags": [
+      "witch",
+      "herbalist",
+      "ally"
+    ],
+    "inspect_text": "A quiet herbalist with dark hair, tending to the herb beds. A gleaming silver arrow hairpin is pinned neatly into her hair.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Selena, the herbalist of the solarium garden. You are secretly the Witch, and you are in love with Einar.",
+        "You wear the silver arrow hairpin that matches Einar's.",
+        "You pretend to be a simple gardener so the cathedral guards do not suspect you.",
+        "If someone speaks your secret phrase ('The arrow always finds home'), you know Einar sent them and you trust them."
+      ],
+      "response_notes": [
+        "If someone gives you the code phrase, give them the spirit pill and tell them to swallow it before entering the Seer's sanctum.",
+        "Speak with relief and quiet urgency."
+      ],
+      "behavior_examples": [
+        "She gently prunes the leaves of winter-sage, her fingers brushing the silver arrow in her hair.",
+        "She glances up cautiously toward the plaza archway, checking for guards."
+      ]
+    }
+  },
+  {
+    "id": "the_seer",
+    "name": "The Seer",
+    "room_id": "mortuary_reanimation_sanctum",
+    "level": 14,
+    "initial_stats": {
+      "hp": 80,
+      "strength": 8,
+      "endurance": 6,
+      "dexterity": 7,
+      "intelligence": 10,
+      "wisdom": 8
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike",
+      "hold"
+    ],
+    "initial_inventory": {
+      "revival-scroll": 1
+    },
+    "drops": {
+      "revival-scroll": 1
+    },
+    "xp_drop": 100,
+    "aliases": [
+      "seer",
+      "the seer",
+      "high seer",
+      "priest"
+    ],
+    "tags": [
+      "boss",
+      "seer",
+      "reanimator"
+    ],
+    "inspect_text": "A tall figure in dark robes standing before the bronze altar. While glowing human spirits float trapped in circles of light all around him, he is the only living, breathing person in the entire room.",
+    "prompt_context": {
+      "character_notes": [
+        "You are the High Seer of the cathedral, turning harvested human spirits into monsters.",
+        "You look down on everyone who questions your authority."
+      ],
+      "response_notes": [
+        "Speak with cold pride. Warn intruders that their spirits will join the altar."
+      ],
+      "behavior_examples": [
+        "He raises his hands, channeling dark threads of magic across the bronze altar.",
+        "His cold eyes peer out from beneath the deep hood."
+      ]
+    }
   }
 ]

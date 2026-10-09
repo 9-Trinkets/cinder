@@ -254,5 +254,9 @@
     "transformation.wake.fragment": "\"{fragment}\"",
     "transformation.wake.reveal": "{actor_name} remembers who they are: {actor_name} is now {woken_name}.",
     "item.sensory_enhancer.consumed": "You swallow the translucent blue capsule. An electric chill shoots through your veins, clearing the static behind your eyes. Your senses sharpen with startling clarity: you can feel where your allies breathe through the stone, and the hum of active teleport portals burns bright against your inner map.",
-    "transformation.secret_passages.revealed": "As the frost-bind shatters from their mind, a gasp echoes through the high hall. Ancient counterweights shudder in the stone as hidden seals slide open, revealing the Citadel's secret perimeter ring connecting the three throne rooms!"
+    "transformation.secret_passages.revealed": "As the frost-bind shatters from their mind, a gasp echoes through the high hall. Ancient counterweights shudder in the stone as hidden seals slide open, revealing the Citadel's secret perimeter ring connecting the three throne rooms!",
+    "item.invisibility-potion.used": "You drink the shimmering blue potion. A cold chill sweeps over your skin as you fade from sight. Cathedral guards cannot see you for 8 turns.",
+    "item.spirit-pill.used": "You swallow the bitter white pill. Your eyes tingle with sudden heat, and a pale glow outlines the world. You can now see spirits.",
+    "item.revival_scroll_read.learned": "You read the glowing parchment. The silver lines of the Revival Sigil burn into your mind.",
+    "sanctuary.platform_activated": "You trace the sigil upon the central anchor. A great beam of blue light shoots straight into the sky, activating the platform so Astrid and your companions can join you!"
 }

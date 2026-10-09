@@ -46,6 +46,9 @@ pub struct RoomDescriptionOverride {
     /// been defeated.
     #[serde(default)]
     pub actor_defeated: String,
+    /// When non-empty, this override applies only once the story variable is truthy.
+    #[serde(default)]
+    pub requires_story_var: String,
     pub summary: String,
     pub inspect_text: String,
 }

@@ -138,6 +138,9 @@ pub struct WorldState {
     /// `settings.equipment_slots` keys. Bonuses feed effective stat reads.
     #[serde(default)]
     pub equipment: BTreeMap<String, String>,
+    /// Minute until which player is invisible. None or <= current_time_minutes means visible.
+    #[serde(default)]
+    pub invisible_until_minute: Option<u32>,
     /// Per-actor inventory (non-player actors), actor id → item id → count.
     #[serde(default)]
     pub actor_inventories: BTreeMap<String, HashMap<String, u32>>,
@@ -400,6 +403,7 @@ impl WorldState {
                 .actor(&content.settings.combat.player_actor_id)
                 .map(|actor| actor.initial_equipment.clone())
                 .unwrap_or_default(),
+            invisible_until_minute: None,
             actor_inventories: seeded_actor_inventories(content),
             actor_equipment: seeded_actor_equipment(content),
             actor_xp: BTreeMap::new(),
@@ -420,6 +424,19 @@ impl WorldState {
 
     pub fn current_room<'a>(&self, content: &'a ContentPack) -> Option<&'a RoomDefinition> {
         content.room(&self.current_room_id)
+    }
+
+    /// Whether the player is currently under an active invisibility effect.
+    pub fn is_player_invisible(&self) -> bool {
+        self.invisible_until_minute
+            .is_some_and(|until| self.current_time_minutes < until)
+    }
+
+    /// Minutes of invisibility remaining for the player, or 0 if visible.
+    pub fn player_invisibility_remaining_minutes(&self) -> u32 {
+        self.invisible_until_minute
+            .map(|until| until.saturating_sub(self.current_time_minutes))
+            .unwrap_or(0)
     }
 
     /// Looks up an actor definition by id, checking runtime spawned actors first

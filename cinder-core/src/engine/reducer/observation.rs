@@ -50,8 +50,13 @@ pub(super) fn render_room_observation(
     let room = content.room(room_id)?;
     let health_stat_id = &content.settings.combat.health_stat_id;
     let active = room.descriptions.iter().find(|override_| {
-        override_.actor_defeated.is_empty()
-            || state.actor_is_defeated(&override_.actor_defeated, health_stat_id)
+        let actor_matches = override_.actor_defeated.is_empty()
+            || state.actor_is_defeated(&override_.actor_defeated, health_stat_id);
+        let story_var_matches = override_.requires_story_var.is_empty()
+            || content.story_var_is_truthy(state, &override_.requires_story_var);
+        let has_condition =
+            !override_.actor_defeated.is_empty() || !override_.requires_story_var.is_empty();
+        has_condition && actor_matches && story_var_matches
     });
     let body = match mode {
         ObservationMode::Summary => active

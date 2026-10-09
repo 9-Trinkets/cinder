@@ -30,6 +30,11 @@ pub(in crate::engine::reducer) fn apply_attack_target(
     // never reach this point). Packs use it to record run-rule flags, e.g. a
     // clean-floor reward that is forfeited by attacking ordinary mobs.
     if attacker_actor_id == content.settings.combat.player_actor_id {
+        if state.is_player_invisible() {
+            state.invisible_until_minute = None;
+            state.story_vars.set_unchecked("is_invisible", "false");
+            lines.narration("Attacking breaks your invisibility! You appear in plain sight.");
+        }
         let target_tags = content
             .actor(target_actor_id)
             .map(|actor| &actor.tags)

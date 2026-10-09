@@ -295,6 +295,7 @@ fn room_observation_switches_to_defeat_override_description_once_actor_falls() {
         .expect("kitchen room");
     kitchen.descriptions.push(RoomDescriptionOverride {
         actor_defeated: ACTOR_C_ID.to_string(),
+        requires_story_var: String::new(),
         summary: "The quiet kitchen is empty now.".to_string(),
         inspect_text: "No one stands in the quiet kitchen.".to_string(),
     });

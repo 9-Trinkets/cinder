@@ -13418,8 +13418,8 @@
   {
     "id": "mortuary_reanimation_sanctum",
     "title": "The Seer's Sanctum",
-    "summary": "A colossal circular chamber illuminated by green chemical braziers. A raised bronze altar sits within concentric rings of inlaid silver runes, where the rite of oblivion and monster binding is performed.",
-    "inspect_text": "The floor is etched with the master patterns of the Revival Sigil. An elevated archway to the south opens onto the mountain terrace of the main platform.",
+    "summary": "A large round chamber lit by green lanterns. A raised bronze altar sits in the center among silver rings carved into the stone floor.",
+    "inspect_text": "The stone floor is carved with glowing silver patterns. An open archway to the south leads out to the mountain terrace platform.",
     "allow_rest": false,
     "features": [
       {
@@ -13433,7 +13433,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "A bronze dais encircled by glowing rune grooves. Faint residual hums of bio-computational reprogramming vibrate through the metal."
+        "inspect_text": "A bronze altar surrounded by glowing silver circles. Faint magical humming vibrates through the metal."
       }
     ],
     "exits": [
@@ -13476,7 +13476,20 @@
         "requires_story_var": ""
       }
     ],
-    "descriptions": []
+    "descriptions": [
+      {
+        "actor_defeated": "the_seer",
+        "requires_story_var": "",
+        "summary": "The bronze altar stands cold and silent. With the Seer defeated, the captive spirits have faded away peacefully. The southern doorway to the platform is open.",
+        "inspect_text": "The dark ritual has ended. The Seer lies defeated on the stone floor, his binding spell broken. To the south, the platform opens beneath the mountain sky."
+      },
+      {
+        "actor_defeated": "",
+        "requires_story_var": "spiritual_sight",
+        "summary": "Your spiritual sight awakens! Dozens of pale, glowing human spirits float trapped in rings of light above the altar, waiting to be turned into monsters. In the middle of all the drifting ghosts stands only one living, breathing person: the Seer.",
+        "inspect_text": "Through the power of the spirit pill, the truth is revealed. Trapped human spirits drift helplessly in circles of silver light. While everyone around him is a trapped ghost, the hooded figure at the bronze altar has warm breath and a beating heart. He is the only living person in this room—the Seer."
+      }
+    ]
   },
   {
     "id": "sanctuary_main_platform",

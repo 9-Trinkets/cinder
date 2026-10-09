@@ -58,168 +58,79 @@ Einar is a dedicated healer (`hp: 20`, `heal`, `hold`). During the Floor 5 siege
 Rather than a hard failure or immersion-breaking plot armor, Einar's survival status drives a **dynamic branching infiltration into Floor 6**:
 
 ```
-                              【End of Floor 5 Siege】
-                                         │
-                    ┌────────────────────┴────────────────────┐
-                    ▼                                         ▼
-         【Path A: Scholar's Guidance】              【Path B: Shadow Hard Route】
-               (Einar Survives)                           (Einar Fallen)
-       • Einar explains the assassination pact    • Einar crumbles; retrieves satchel
-       • Einar gifts Clandestine Token            • Discovers sealed Token & torn notes
-       • Coaches Layla on Liturgical Dogma        • Enters Floor 6 blind (no quiz coaching)
-       • Shares secret counter-phrase for Witch   • Witch is hostile (must be subdued)
-                    │                                         │
-                    ▼                                         ▼
-       [Inspection Shift: answers quizzes]        [Inspection Shift: quizzes trigger alarms]
-       [Free cloister navigation]                 [Must navigate crypts/bell towers/shadows]
-       [Peaceful Witch contact]                   [Relief Shift Scriptorium heist for dogma]
-```
-
-### Path A: The Scholar's Guidance (Einar Survives)
-- **Einar's Confession:** Before Layla teleports, Einar reveals his and Astrid's past:
-  > *"Astrid and I didn't end up in those cages by accident. We formed a pact to cut the snake's head off. We planned to assassinate the **Seer**—the high priest who conducts the reanimation rites and holds the revival scroll. Without the Seer, the entire monster-making pipeline stops cold. We were betrayed before we could strike."*
-- **The Clandestine Solo Token:** Einar gifts Layla a smuggled, single-use infiltration token (`item.clandestine_sanctuary_token`). It bypasses the High Sanctuary's security wards, but it can **only transport Layla alone**.
-- **Liturgical Coaching:** Einar quizzes Layla on Floor 5, teaching her the answers to the High Sanctuary's dogma quizzes (liturgical hours, saintly titles, prayer responses). When Templar patrol guards challenge Layla at checkpoint archways, the player can answer correctly and walk unhindered.
-- **The Secret Counter-Phrase:** Einar teaches Layla his apothecary greeting (*"mint, crushed moss, and mountain snow"*), allowing Layla to peacefully identify and converse with the Witch.
-
-### Path B: The Shadow Hard Route (Einar Dies)
-- **Retrieving the Token from the Dust:**
-  - When Einar falls in combat, his physical shell crumbles into grey dust upon the cobblestones of `courtyard_center`.
-  - From the settling dust, his leather apothecary satchel (`item.einar_satchel`) drops to the ground as a loose room object. Layla picks it up (`take satchel`), or Astrid scoops it from the dust when conferring with Layla after the final wave.
-  - Inside the satchel lies the single-use **Clandestine Sanctuary Token** (`clandestine-sanctuary-token`) and Einar's torn field notebook. The notebook outlines their plot to assassinate the Seer, but key liturgical answers and the Witch's secret greeting are torn away.
-- **Blind Infiltration:** Layla enters the High Sanctuary with zero coaching on monastic doctrine or guard rituals.
-- **Brutal Checkpoint Quizzes:**
-  - When Templar patrol guards stop Layla at checkpoint arches during Inspection Shifts, Layla has no answers.
-  - Guessing wrong raises the Sanctuary **Alert Level**, locking down holy cloisters and dispatching Inquisitor hounds.
-  - To avoid guards, Layla must take dangerous alternate routes: claustrophobic subterranean mortuary crypts, high-altitude bell tower catwalks, and smoke flues.
-- **The Scriptorium Heist (Relief Shift):**
-  - To survive subsequent Inspection Shifts, Layla must break into the heavily guarded Cathedral Scriptorium during a Relief Shift to steal liturgical catechism scrolls and learn the answers herself.
-- **The Witch Confrontation:**
-  - Without Einar's counter-phrase, the Witch assumes Layla is an Inquisitor assassin sent to silence her.
-  - The Witch attacks with toxic vapors and flash powder; Layla must duel and subdue her to half HP before presenting Einar's keepsake to prove she is an ally.
-- **Spiritual Resonance:**
-  - Later, when Layla earns the Revival Sigil and Spiritual Sight, Einar's spirit is found lingering in the Floor 5 courtyard where his dust settled. Layla can revive him—but only as a monster thrall, delivering an unforgettable emotional climax.
-
-### The Solo Teleportation & Party Disconnection Invariant
-- **Permanent Platform Rule vs. Single-Use Tokens:**
-  - Party members only travel with the player during teleportation when departing from one of the **permanent teleportation points** (e.g. `teleport_platform` on Floor 4, `courtyard_center` on Floor 5).
-  - Single-use items (such as chalk anchors or tokens) are personal teleportations and do not bring party members.
-- **Solo Infiltration via Clandestine Token:**
-  - Layla enters Floor 6 exclusively by consuming the single-use `clandestine-sanctuary-token`.
-  - There is **no physical door, stair, or portcullis** connecting Floor 5 and Floor 6 (`citadel_sanctum_gate` has been removed).
-  - Because the infiltration uses a single-use token rather than a permanent platform, Layla's party members (Astrid, surviving Einar, and all charmed allies) remain behind in Floor 5 (`courtyard_center`).
-- **Party Member Isolation:**
-  - As Layla navigates Floor 6, companions left behind on Floor 5 do not follow because party synchronization requires companions to be present in the player's departure room.
-  - Attempting to issue party orders (`order <actor> <order>`) fails with `party.order_member_unavailable` (*"That companion is not close enough to receive your order."*).
-- **Unlocking the Party Cross-Over:**
-  - Companions cannot cross into Floor 6 until Layla infiltrates the High Sanctuary basilica, identifies and slays the Seer, and unlocks the **Main Teleportation Platform** on Floor 6, establishing a permanent platform-to-platform route back to Floor 5.
+### The Lovers & The Infiltration Mission
+- **The Star-Crossed Lovers (Werewolf Cupid Role):**
+  - Einar and the Witch (Sister Selena, the cathedral apothecary) fell in love before the cathedral gates were shut.
+  - She remained inside as an undercover ally while Einar fought alongside Astrid.
+  - Their shared keepsake: **The Twin Arrow** (a pair of matching silver arrow hairpins).
+  - Their secret phrase: **"The arrow always finds home."**
+- **Einar's Gift (Before Teleporting to Floor 6):**
+  - **1x Clandestine Sanctuary Token:** Teleports Layla alone into the High Sanctuary terrace.
+  - **3x Invisibility Potions:** Cool glass bottles that hide Layla from cathedral guards for 8 turns each.
+  - **The Keepsake (Silver Arrow Hairpin):** Einar's half of the twin arrow.
+  - **The Instruction:**
+    > *"Find Selena in the herb garden. She wears the other half of this silver arrow pinned in her hair. Say to her: 'The arrow always finds home.' She has a pill that lets you see spirits. The cathedral is full of white-armored guards who will attack strangers on sight. Drink a potion whenever you need to slip past them without being seen."*
+- **Fail-Forward Path (If Einar Fell on Floor 5):**
+  - When Einar falls in the siege, his physical shell crumbles into grey dust. Layla or Astrid retrieves his leather satchel (`einar-satchel`) from the dust.
+  - Inside the satchel: the Clandestine Token, the 3 Invisibility Potions, Einar's silver arrow hairpin, and his farewell note with the secret phrase.
+  - When Layla meets Selena in the garden and presents Einar's arrow, Selena realizes Einar didn't make it. Though heartbroken, she resolves to help Layla finish what they started and yields the Spirit Pill.
 
 ---
 
-## 3. Gameplay Genre: Social Deduction / Werewolf Infiltration & Cathedral Watches
+## 3. Gameplay: Invisibility Stealth & Finding the Witch
 
-The High Sanctuary is a soaring sacred acropolis under open sky, but the clergy and Templar garrison live in lockstep with the **Cathedral Chimes and Canonical Watches**. 
+Floor 6 cuts out complicated shift schedules and trivia tests in favor of direct, tense stealth gameplay:
 
-Rather than a sluggish, macro Day/Night cycle that strands the player waiting for hours, Floor 6 operates on **Cathedral Watch Rotations (Guard Shifts)** with tight, alternating micro-intervals:
-
-```
-┌────────────────────────────────────────────────────────────────────────┐
-│                   THE CATHEDRAL WATCH ROTATION                         │
-├───────────────────────────────────┬────────────────────────────────────┤
-│  INSPECTION SHIFT (~8-10 turns)   │   RELIEF SHIFT (~4-6 turns)        │
-│  • Checkpoints manned by guards   │  • Guards rotate to garrison/mess  │
-│  • Acolytes & monks in colonnades │  • Checkpoints UNMANNED            │
-│  • Dogma Quizzes at major arches  │  • Free passage without quizzes    │
-│  • Social inquiries & clues       │  • Scriptorium & Mortuary heists   │
-│  • OPEN COMBAT FORBIDDEN          │  • Werewolf strikes / assassinations│
-└───────────────────────────────────┴────────────────────────────────────┘
-```
-
-### The Inspection Shift: Investigation & Checkpoint Quizzes (~8–10 Turns)
-- **Sanctuary Life:** Sunlight floods through stained glass and colonnades; incense smoke curls from bronze censers, and choir chants echo off marble walls. Layla moves freely through public basilicas, courtyards, and colonnaded walks.
-- **The Peace of the Sanctuary (No Combat):** Drawing a weapon or attacking in public halls rings alarm bells, immediately swarming the room with invulnerable Templar vanguards.
-- **Checkpoint Arches & Dogma Quizzes:**
-  - Templar guards man the archways connecting major wings (`checkpoint_nave`, `checkpoint_cloisters`, `checkpoint_undercrypt`).
-  - Guards challenge anyone seeking passage with faith quizzes on canonical hours, saintly titles, and orthodox chants.
-  - **Path A (Einar Alive):** With Einar's prior coaching, the dialogue choices supply the right answers; Layla passes without friction.
-  - **Path B (Einar Fallen):** Layla lacks the answers. Wrong answers raise the **Alert Level**, calling Inquisitor hounds and sealing doors. Layla must either sneak through high-altitude bell catwalks and crypt flues, or wait for the next Relief Shift.
-- **Social Deduction:**
-  - The high clergy wear uniform white vestments and silver masks concealing their faces behind monastic titles (*Curate*, *Precentor*, *Almoner*, *Archdeacon*, *Sacristan*).
-  - Layla questions novices, inspects offering ledgers, and studies habits to deduce:
-    1. **Who is the "Witch"?**
-    2. **Who is the "Seer"?**
-
-### The Relief Shift: The Blind Window (~4–6 Turns)
-- **The Watch Bell Chimes:** The massive iron bells in the skyward towers toll for the change of watch. Guards step down from their posts and march in squads to the barracks and mess halls for roll call.
-- **Unmanned Checkpoints:** Checkpoint archways are left empty! Layla can walk right through without facing any dogma quizzes—a critical infiltration window, especially for Path B.
-- **The Werewolf Strike (Silent Assassinations):**
-  - Combat restrictions lift in private or unmonitored chambers.
-  - Layla can stalk corrupt clergy, eliminate lone night sentries, or corner her primary targets.
-  - As long as Layla eliminates targets in isolated rooms before any witness flees to sound an alarm, the sanctuary remains oblivious.
-- **Heists and Infiltration:**
-  - The Scriptorium and lower Mortuary vaults become vulnerable to break-ins while scribes and embalmers attend services.
-
-### Zero Downtime: Fast-Forward & Sabotage Mechanics
-To ensure Layla never sits idle waiting for shifts to change:
-1. **Prayer Benches (`rest` at Prie-Dieu):**
-   - Side chapels throughout the basilicas contain prie-dieu prayer desks. Using `rest` allows Layla to advance the clock directly to the next watch bell chime.
-2. **Shift Sabotage (Tampering):**
-   - Interacting with the **Cloister Water Clock** or snuffing central **Incense Flues** creates procedural anomalies that trigger early guard rotations or prolong a relief window.
+1. **Cathedral Patrols & Invisibility:**
+   - White-armored cathedral guards patrol the major crossroads and basilicas. If they spot Layla, they attack as hostile enemies.
+   - Layla drinks an **Invisibility Potion** (`drink potion` / `use invisibility-potion`).
+   - For **8 turns**, she fades from sight. Cathedral guards cannot target or attack her while she is invisible.
+   - Layla can freely walk through halls, explore rooms, and search for the Witch. Attacking an enemy breaks invisibility immediately.
+   - With 3 finite bottles, the player must choose their stealth windows wisely.
+2. **Finding the Witch in the Herb Garden:**
+   - In the cathedral herb garden (`herbarium_garden`), several robed herbalists work.
+   - Inspecting them reveals the clue: one quiet young woman wears a **silver arrow hairpin** in her braided hair.
+   - Layla speaks to her and whispers the code phrase: *"The arrow always finds home"* (or presents Einar's matching hairpin).
+   - Selena recognizes the token, shares news of Einar, and gives Layla the **Spirit Pill** (`spirit-pill`). (If Layla has run out of invisibility potions, Selena also provides an extra bottle).
 
 ---
 
-## 4. The Witch, The Seer, and The Revival Sigil
+## 4. The Spirit Pill, The Seer, and The Reanimation Sanctum
 
-### 1. The Witch $\rightarrow$ The Spiritual Enhancer Pill
-- **Deduction:** Clues reveal a temple apothecary who secretly harbors sympathy for the victims, smelling of mint and crushed moss rather than ceremonial incense.
-- **Confrontation:**
-  - **Path A (Einar Alive):** Approached in secret using Einar's counter-phrase (*"mint, crushed moss, and mountain snow"*), the Witch recognizes an ally and willingly yields the **Spiritual Enhancer Pill** (`item.spiritual_enhancer`).
-  - **Path B (Einar Fallen):** Without the counter-phrase, the Witch believes Layla is an Inquisitor executioner sent to eliminate her and attacks with toxic vapors and flash powder. Layla must duel and subdue her to half HP, then display Einar's keepsake/satchel to de-escalate the fight and earn the pill.
-- **Spiritual Sight:** Swallowing the pill permanently alters Layla's vision:
-  - Rooms where actors were defeated now display faint, translucent spirits lingering near the walls.
-  - Layla can inspect these spirits to read their residual memories and identify who they were before they died.
-
-### 2. The Seer $\rightarrow$ The Revival Sigil
-- **Deduction:** Clues point to the high priest whose fingers are stained with mortuary bitumen, who alone possesses the bronze key to the Grand Mortuary.
-- **Assassination:** Layla corners and defeats the Seer during a Relief Shift (or within the sealed Mortuary).
-- **The Loot:** The Seer drops the **Torn Parchment of Reanimation**, teaching Layla the **Revival Sigil** (`revive-sigil`).
-
-### 3. The Monster Twist: "Revived, But Bound"
-- Layla can trace the Revival Sigil in any room containing a lingering spirit to bring it back to life.
-- **The Moral & Mechanical Catch:** The sigil is a dungeon-master tool designed for the monster factory. Layla **cannot restore human form**—she can only revive the spirit as a **monstrous thrall** (a stone golem, a shadow stalker, or an animated soldier) bound to her party.
-- This creates deep thematic weight: Layla is wielding the very power the corporation uses, forcing her to confront whether she is becoming the Dungeon Master or using their weapons to destroy the system.
+1. **Swallowing the Spirit Pill:**
+   - Layla swallows the pill (`use spirit-pill` / `swallow pill`).
+   - Her eyes tingle as she gains **Spiritual Sight** (`spiritual_sight = "true"`).
+2. **The Reanimation Sanctum Reveal:**
+   - Layla drinks a potion and slips down into the dark stone reanimation sanctum (`mortuary_reanimation_sanctum`).
+   - Before taking the pill, the room appeared to be a quiet, cold hall of metal tables and pipes.
+   - With **Spiritual Sight** active, the room is revealed in all its horror:
+     > *The chamber is filled with dozens of glowing, translucent human spirits floating silently above the metal tables—the souls of executed offerings waiting to be wiped and converted into monsters.*
+     > *In the center of all the glowing spirits stands **a single living man** in golden robes holding a stone carving tool: **The Seer**.*
+3. **The Immediate Deduction:**
+   - Layla knows at once: *Every other figure in this room is a ghost. The only living man standing among them is the Seer!*
+4. **The Boss Fight & Revival Sigil:**
+   - Layla engages and defeats the Seer in combat.
+   - The Seer drops the **Revival Sigil Scroll**, teaching Layla the `revive-sigil`.
 
 ---
 
-## 5. Climax: Cathedral Chaos & Party Convergence
+## 5. Climax: Main Platform Activation & Party Reunion
 
-1. **The Fall of the Seer:**
-   - Slain by Layla, the Seer's death shatters the High Sanctuary's command structure.
-   - The liturgical clock breaks down; alarm sirens scream, acolytes scatter in panic, and the Inquisitors lose control of the cathedral.
-2. **Breaching the Main Teleport Platform:**
-   - In the chaos, Layla fights her way to the **Cathedral Sanctum Gate / Main Teleportation Platform** (`sanctuary_main_platform`).
-   - Layla traces the master resonance anchor, establishing a permanent cross-floor link back to Floor 5.
-3. **The Party Arrives:**
-   - Commander Astrid, Sakhra, and surviving allies materialize on the platform!
-   - If Einar survived Floor 5, he teleports in beside Astrid and immediately sets up a triage post to treat traumatized acolytes.
-   - If Einar fell on Floor 5, Astrid solemnizes his memory as she locks shields in the vanguard. (Furthermore, Layla now holds the power to return to Floor 5 to view or revive Einar's lingering spirit).
-   - The **`[Disconnected]`** status clears.
-   - Astrid establishes a defensive perimeter with her great tower shield, and the united party punches through to **Floor 7 (The Royal Core / Dungeon Master)**.
+1. **Activating the Platform:**
+   - In the adjoining chamber (`sanctuary_main_platform`), Layla activates the master brass teleport platform.
+   - This opens the permanent cross-floor portal back to Floor 5's courtyard (`courtyard_center`).
+2. **The Party Arrives:**
+   - Astrid, Einar (if he survived), and Layla's party materialize on the platform!
+   - The party disconnection state clears, restoring full party orders and dialogue.
+   - If Einar survived, he and Selena share a heartfelt reunion in the herb garden.
+   - Astrid plants her great shield, securing the high acropolis as the party prepares to breach **Floor 7 (The Royal Core / Dungeon Master)**.
 
 ---
 
 ## 6. Quests Architecture (Floor 6)
 
-Following our established quest principles (*clear goals, no step-by-step handholding, 'What, Not How'*):
-
 | Quest Type | Quest Title | Summary | Goal |
 |---|---|---|---|
-| **Main** | **The High Sanctuary Infiltration** | Infiltrate the Cathedral alone, assassinate the Seer to stop the monster conversion rites, and unlock the Main Teleport Platform. | Slay the Seer and activate the main platform to bring your party through. |
-| **Side** | **The Witch's Formula** | Track down the rogue temple apothecary hidden among the clergy and obtain the formula for spiritual sight (peacefully via Einar's phrase during a Relief Shift, or by subduing her in Path B). | Locate the Witch and acquire the Spiritual Enhancer pill. |
-| **Side (Path B)** | **The Scriptorium Catechisms** | *(Active only if Einar died)* Break into the locked Scriptorium during a Relief Shift to steal theological manuscripts and master the checkpoint quiz answers. | Recover the High Sanctuary Catechisms to pass Inspection Shift checkpoints. |
-| **Secret** | **The Archive of the Disappeared** | Locate the confidential mortuary ledgers in the Cathedral Undercrypt to uncover the original human identities of every monster in the dungeon. | Discover the true origins of Sakhra, the Elf Queen, and the goblin golems. |
-
----
-
-## 7. Deferred Implementation Note
-This document serves as the approved blueprint for Floor 6. Active development continues on **Floor 5** (the five worker towns, survivor interactions, local items, and siege tuning) before building Floor 6's rooms and mechanics.
+| **Main** | **The High Sanctuary Infiltration** | Infiltrate the cathedral alone, find the Witch in the herb garden, discover the Seer, and open the main platform. | Slay the Seer and activate the main teleport platform to bring your party through. |
+| **Side** | **The Witch's Keepsake** | Find the apothecary wearing the silver arrow hairpin in the herb garden and deliver Einar's code word to receive the Spirit Pill. | Find Selena in the herb garden and speak the secret phrase. |
+| **Secret** | **The Memory of the Offerings** | Inspect the floating spirits in the reanimation sanctum with Spiritual Sight to recognize the lost townspeople. | Discover the true human origins of the dungeon monsters. |

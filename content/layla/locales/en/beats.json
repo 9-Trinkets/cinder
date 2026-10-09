@@ -269,12 +269,28 @@
       "beat_note": "Layla enters Floor 6 alone using the clandestine sanctuary token. Her party remains on Floor 5 until the main teleport platform is unlocked.",
       "update_message": "Infiltrate the High Sanctuary alone using the clandestine token.",
       "narrative_lines": [
-        "A small silver token etched with resonance sigils lies in your hand. The High Sanctuary perimeter wards will detect an armed squad — the only way in is alone. Infiltrate the cathedral, find the Seer, and unlock the platform to bring the others through."
+        "Einar places a silver token and three bottles of blue invisibility potion into your hands. Beside them, he gives you a silver hairpin shaped like a feathered arrow. 'My love, Selena... she is trapped inside as the cathedral herbalist. She is the Witch. Show her this arrow pin and tell her: The arrow always finds home. She will give you what you need to expose the Seer. Drink the potions to slip past the white guards unseen.'"
       ],
       "on_advance_effects": [
         {
           "kind": "grant_item",
           "item_id": "clandestine-sanctuary-token"
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "invisibility-potion"
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "invisibility-potion"
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "invisibility-potion"
+        },
+        {
+          "kind": "grant_item",
+          "item_id": "silver-arrow-pin"
         }
       ],
       "advance_signals": [
@@ -289,8 +305,124 @@
           ]
         }
       ],
-      "next_stage_ids": [],
+      "next_stage_ids": [
+        "mq_find_the_witch"
+      ],
       "completion_effects": []
+    },
+    {
+      "id": "mq_find_the_witch",
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_title": "The High Sanctuary",
+      "quest_kind": "main",
+      "summary": "Find Selena in the herb garden and speak the code word.",
+      "beat_note": "Layla has slipped into the High Sanctuary. Find Selena in the herb garden, identified by her silver arrow hairpin. Speak the code word: 'The arrow always finds home'.",
+      "update_message": "Find Selena in the herb garden and give her the code word.",
+      "narrative_lines": [
+        "You stand alone on the High Sanctuary terrace. White-armored guards patrol the grand plaza ahead. Drink your invisibility potion to sneak past them to the herb garden in the southwest quarter."
+      ],
+      "on_advance_effects": [],
+      "advance_signals": [
+        "spoken_to:selena",
+        "witch_code_word_spoken",
+        "speech_topic:arrow_code_word",
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.met_witch",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "mq_slay_the_seer"
+      ],
+      "completion_effects": []
+    },
+    {
+      "id": "mq_slay_the_seer",
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_title": "The High Sanctuary",
+      "quest_kind": "main",
+      "summary": "Swallow the spirit pill and defeat the Seer in the Reanimation Sanctum.",
+      "beat_note": "Selena gave Layla the spirit pill. Swallow it to gain spiritual sight, revealing the Seer as the lone living human among the captive spirits. Defeat him to break the ritual and claim the Revival Scroll.",
+      "update_message": "Swallow the spirit pill and defeat the Seer.",
+      "narrative_lines": [
+        "Selena clutches the silver arrow pin to her chest, her eyes wide with relief. 'Einar... he lives! Take this spirit pill. Swallow it before you face the Seer. Without it, you will only see empty air, but with it, you will see the captive spirits and the Seer directing them. Stop him!'"
+      ],
+      "on_advance_effects": [
+        {
+          "kind": "grant_item",
+          "item_id": "spirit-pill"
+        },
+        {
+          "kind": "set_story_var",
+          "key": "met_witch",
+          "value": "true"
+        }
+      ],
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.seer_defeated",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [
+        "mq_activate_sanctuary_platform"
+      ],
+      "completion_effects": []
+    },
+    {
+      "id": "mq_activate_sanctuary_platform",
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_title": "The High Sanctuary",
+      "quest_kind": "main",
+      "summary": "Activate the master resonance anchor on the Sanctuary Platform to bring Astrid and the party through.",
+      "beat_note": "The Seer has fallen, and the Revival Scroll is recovered. Head south from the sanctum to the mountain terrace platform and activate the master resonance anchor.",
+      "update_message": "Activate the master anchor on the platform to bring your party through.",
+      "narrative_lines": [
+        "The dark ritual is broken, and the Seer lies defeated. Head to the outer platform and activate the master resonance anchor to bring Commander Astrid and your companions up to Floor 6."
+      ],
+      "on_advance_effects": [],
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor6_platform",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        }
+      ],
+      "next_stage_ids": [],
+      "completion_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "floor6_infiltration_complete",
+          "value": "true"
+        }
+      ],
+      "actor_relocations": [
+        {
+          "actor_id": "commander_astrid",
+          "to_room_id": "sanctuary_main_platform"
+        },
+        {
+          "actor_id": "einar",
+          "to_room_id": "sanctuary_main_platform"
+        }
+      ]
     },
     {
       "id": "sq_five_offerings",
@@ -798,6 +930,25 @@
         "unlock",
         "key",
         "captain"
+      ]
+    },
+    {
+      "signals": [
+        "witch_code_word_spoken",
+        "speech_topic:arrow_code_word"
+      ],
+      "keywords": [
+        "arrow always finds home",
+        "the arrow always finds home",
+        "arrow always finds",
+        "finds home"
+      ],
+      "reply_keywords": [
+        "arrow",
+        "einar",
+        "witch",
+        "selena",
+        "home"
       ]
     }
   ]

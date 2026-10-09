@@ -92,7 +92,7 @@ pub(super) fn parse_item_command(trimmed: &str) -> Option<PlayerCommand> {
     if let Some(mut target) = phrase_target(
         trimmed,
         &[
-            "use ", "eat ", "drink ", "consume ", "quaff ", "apply ", "read ",
+            "use ", "eat ", "drink ", "consume ", "swallow ", "quaff ", "apply ", "read ",
         ],
     ) {
         if let Some((item_part, _)) = target.split_once(" on ") {

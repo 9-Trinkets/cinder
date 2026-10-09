@@ -28,6 +28,20 @@
         {
           "conditions": [
             {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "the_seer"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "seer_defeated",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
               "path": "tags",
               "operator": "array_contains_any",
               "value": ["house_head"]
@@ -777,6 +791,34 @@
       "rules": []
     }
   },
+  "item.revival_scroll_read": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "set_story_var",
+            "key": "knows_revive",
+            "value": "true"
+          },
+          {
+            "kind": "acquire_item",
+            "item_id": "revive-sigil"
+          },
+          {
+            "kind": "narrate_message",
+            "key": "item.revival_scroll_read.learned"
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
   "player.moved": {
     "rule": "effect_table",
     "rule_config": {
@@ -789,6 +831,20 @@
     },
     "input_overlay": {
       "rules": [
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "sanctuary_main_platform"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "anchor_floor6_platform",
+            "value": "true"
+          }
+        },
         {
           "conditions": [
             {
@@ -1331,6 +1387,75 @@
             "kind": "narrate_message",
             "key": "platform.activated"
           }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_main_platform"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "anchor_floor6_platform",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_main_platform"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "sanctuary.platform_activated"
+          }
+        }
+      ]
+    }
+  },
+  "item.revive_sigil_placed": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_main_platform"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "anchor_floor6_platform",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_main_platform"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "sanctuary.platform_activated"
+          }
         }
       ]
     }
@@ -1623,6 +1748,46 @@
             "kind": "move_actor",
             "actor_id": "player",
             "room_id": "sanctuary_grand_terrace"
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
+  "item.invisibility_potion_used": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "set_story_var",
+            "key": "is_invisible",
+            "value": "true"
+          }
+        ]
+      }
+    },
+    "input_overlay": {
+      "rules": []
+    }
+  },
+  "item.spirit_pill_used": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "complete",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": [
+          {
+            "kind": "set_story_var",
+            "key": "spiritual_sight",
+            "value": "true"
           }
         ]
       }
