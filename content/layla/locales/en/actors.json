@@ -3960,7 +3960,7 @@
   },
   {
     "id": "cathedral_guard_crossroads",
-    "name": "Cathedral Guard",
+    "name": "Sentry Marcus",
     "room_id": "sanctuary_crossroads",
     "level": 12,
     "initial_stats": {
@@ -3978,6 +3978,9 @@
       "intercept"
     ],
     "aliases": [
+      "marcus",
+      "sentry marcus",
+      "guard marcus",
       "guard",
       "cathedral guard",
       "sentry",
@@ -3991,8 +3994,8 @@
     "inspect_text": "A tall guard clad from head to toe in shining white plate armor. He holds a heavy halberd across his chest and watches every corner of the plaza.",
     "prompt_context": {
       "character_notes": [
-        "You are a cathedral guard patrolling the Grand Plaza.",
-        "You obey the High Seer and arrest any intruders on sight."
+        "You are Sentry Marcus, a cathedral guard patrolling the Grand Plaza.",
+        "You obey Seer Valerius and arrest any intruders on sight."
       ],
       "response_notes": [
         "Demand intruders surrender immediately.",
@@ -4005,7 +4008,7 @@
   },
   {
     "id": "cathedral_guard_nave",
-    "name": "Cathedral Guard",
+    "name": "Sentry Cassius",
     "room_id": "basilica_nave",
     "level": 12,
     "initial_stats": {
@@ -4023,6 +4026,9 @@
       "intercept"
     ],
     "aliases": [
+      "cassius",
+      "sentry cassius",
+      "guard cassius",
       "guard",
       "cathedral guard",
       "sentry",
@@ -4036,7 +4042,7 @@
     "inspect_text": "A stern guard in polished white plate armor pacing the long stone aisle of the basilica with a sharp halberd.",
     "prompt_context": {
       "character_notes": [
-        "You guard the central basilica from unauthorized visitors.",
+        "You are Sentry Cassius, guarding the central basilica from unauthorized visitors.",
         "You challenge anyone who approaches without permission."
       ],
       "response_notes": [
@@ -4096,8 +4102,8 @@
     }
   },
   {
-    "id": "hanna",
-    "name": "Hanna",
+    "id": "flora",
+    "name": "Flora",
     "room_id": "herbarium_garden",
     "level": 5,
     "initial_stats": {
@@ -4110,7 +4116,7 @@
     "initial_hostile": false,
     "attackable": false,
     "aliases": [
-      "hanna",
+      "flora",
       "apprentice",
       "sorter",
       "girl"
@@ -4123,7 +4129,7 @@
     "inspect_text": "A young apprentice with bright red hair, sorting dried flower petals into wooden baskets. Her hair is clipped back with a small bronze leaf pin.",
     "prompt_context": {
       "character_notes": [
-        "You are Hanna, an apprentice botanist in the solarium garden.",
+        "You are Flora, an apprentice botanist in the solarium garden.",
         "You sort dried flower petals. You know nothing of secret codes or arrows."
       ],
       "response_notes": [
@@ -4136,8 +4142,8 @@
     }
   },
   {
-    "id": "mira",
-    "name": "Mira",
+    "id": "silvia",
+    "name": "Silvia",
     "room_id": "herbarium_garden",
     "level": 6,
     "initial_stats": {
@@ -4150,7 +4156,7 @@
     "initial_hostile": false,
     "attackable": false,
     "aliases": [
-      "mira",
+      "silvia",
       "moss gatherer",
       "gardener",
       "tender"
@@ -4163,7 +4169,7 @@
     "inspect_text": "A sturdy gardener wearing heavy work gloves, watering the alpine moss beds. Her blonde hair is tied back in a braid with a plain leather cord.",
     "prompt_context": {
       "character_notes": [
-        "You are Mira, tending the damp alpine moss beds in the solarium.",
+        "You are Silvia, tending the damp alpine moss beds in the solarium.",
         "You keep your head down and do your chores."
       ],
       "response_notes": [
@@ -4176,8 +4182,8 @@
     }
   },
   {
-    "id": "elder_rowan",
-    "name": "Rowan",
+    "id": "elder_fabian",
+    "name": "Elder Fabian",
     "room_id": "herbarium_apothecary",
     "level": 9,
     "initial_stats": {
@@ -4191,9 +4197,9 @@
     "initial_hostile": false,
     "attackable": false,
     "aliases": [
-      "rowan",
-      "elder rowan",
-      "master rowan",
+      "fabian",
+      "elder fabian",
+      "master fabian",
       "apothecary"
     ],
     "tags": [
@@ -4204,7 +4210,7 @@
     "inspect_text": "An elderly apothecary in a stained linen apron, grinding dried mountain roots with a stone pestle. He wears round brass spectacles and no hairpins at all.",
     "prompt_context": {
       "character_notes": [
-        "You are Master Rowan, chief apothecary of the cathedral dispensary.",
+        "You are Master Fabian, chief apothecary of the cathedral dispensary.",
         "You prepare remedies for cathedral staff and guards."
       ],
       "response_notes": [
@@ -4218,7 +4224,7 @@
   },
   {
     "id": "the_seer",
-    "name": "The Seer",
+    "name": "Seer Valerius",
     "room_id": "mortuary_reanimation_sanctum",
     "level": 14,
     "initial_stats": {
@@ -4243,6 +4249,8 @@
     },
     "xp_drop": 100,
     "aliases": [
+      "valerius",
+      "seer valerius",
       "seer",
       "the seer",
       "high seer",
@@ -4253,10 +4261,10 @@
       "seer",
       "reanimator"
     ],
-    "inspect_text": "A tall figure in dark robes standing before the bronze altar. While glowing human spirits float trapped in circles of light all around him, he is the only living, breathing person in the entire room.",
+    "inspect_text": "A tall figure in dark robes standing before the bronze altar. While glowing human spirits float trapped in circles of light all around him, Seer Valerius is the only living, breathing person in the entire room.",
     "prompt_context": {
       "character_notes": [
-        "You are the High Seer of the cathedral, turning harvested human spirits into monsters.",
+        "You are Seer Valerius, High Seer of the cathedral, turning harvested human spirits into monsters.",
         "You look down on everyone who questions your authority."
       ],
       "response_notes": [

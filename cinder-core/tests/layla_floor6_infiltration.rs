@@ -1,7 +1,7 @@
 //! Integration tests for Floor 6 Infiltration:
 //! - Handoff: Einar gives clandestine token, silver arrow pin, and 3 invisibility potions
 //! - Stealth: Invisibility allows sneaking past cathedral guards
-//! - Witch & Deduction: Finding Orva among gardeners (inspecting Hanna's bronze leaf, Mira's cord, Orva's silver arrow)
+//! - Witch & Deduction: Finding Orva among gardeners (inspecting Flora's bronze leaf, Silvia's cord, Orva's silver arrow)
 //! - Code Word: Speaking "The arrow always finds home" to Orva receives the spirit pill
 //! - Spiritual Sight: Swallowing pill reveals trapped spirits and exposes the living Seer
 //! - Boss Battle: Slaying the Seer, obtaining Revival Scroll, learning Revival Sigil
@@ -66,30 +66,30 @@ fn test_floor6_handoff_and_stealth_to_witch() {
         "herbarium_garden"
     );
 
-    // 4. In the garden, multiple herbalists are present: Hanna, Mira, and Orva
+    // 4. In the garden, multiple herbalists are present: Flora, Silvia, and Orva
     let look_garden = runtime.run_turn("look").expect("look around garden");
     assert!(
-        look_garden.text().contains("Hanna")
-            && look_garden.text().contains("Mira")
+        look_garden.text().contains("Flora")
+            && look_garden.text().contains("Silvia")
             && look_garden.text().contains("Orva"),
         "multiple garden workers must be listed in the room: {}",
         look_garden.text()
     );
 
-    // Inspect Hanna: red hair with bronze leaf pin (not the arrow)
-    let look_hanna = runtime.run_turn("look at hanna").expect("look at hanna");
+    // Inspect Flora: red hair with bronze leaf pin (not the arrow)
+    let look_flora = runtime.run_turn("look at flora").expect("look at flora");
     assert!(
-        look_hanna.text().contains("bronze leaf pin"),
-        "Hanna must have bronze leaf pin: {}",
-        look_hanna.text()
+        look_flora.text().contains("bronze leaf pin"),
+        "Flora must have bronze leaf pin: {}",
+        look_flora.text()
     );
 
-    // Inspect Mira: blonde braid with plain leather cord (not the arrow)
-    let look_mira = runtime.run_turn("look at mira").expect("look at mira");
+    // Inspect Silvia: blonde braid with plain leather cord (not the arrow)
+    let look_silvia = runtime.run_turn("look at silvia").expect("look at silvia");
     assert!(
-        look_mira.text().contains("leather cord"),
-        "Mira must have plain leather cord: {}",
-        look_mira.text()
+        look_silvia.text().contains("leather cord"),
+        "Silvia must have plain leather cord: {}",
+        look_silvia.text()
     );
 
     // Inspect Orva: dark hair with the matching silver arrow hairpin!

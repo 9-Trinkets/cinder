@@ -89,16 +89,16 @@ Floor 6 cuts out complicated shift schedules and trivia tests in favor of direct
    - With 3 finite bottles, the player must choose their stealth windows wisely.
 2. **Deducing the Witch Among the Herbarium Staff:**
    - In the cathedral herb garden (`herbarium_garden`) and adjacent dispensary (`herbarium_apothecary`), multiple botanical staff work:
-     - **Hanna**: An apprentice botanist sorting dried flower petals with a bronze leaf pin in her red hair.
-     - **Mira**: A gardener tending damp moss beds with a plain leather cord tying back her braid.
-     - **Rowan**: An elderly apothecary in the dispensary hall grinding roots in spectacles with no hair ornaments.
+     - **Flora**: An apprentice botanist sorting dried flower petals with a bronze leaf pin in her red hair.
+     - **Silvia**: A gardener tending damp moss beds with a plain leather cord tying back her braid.
+     - **Elder Fabian**: An elderly apothecary in the dispensary hall grinding roots in spectacles with no hair ornaments.
      - **Orva**: A quiet herbalist with dark hair, wearing the distinct **silver arrow hairpin** matching Einar's keepsake.
    - Layla must inspect the workers (`look at <person>`) to spot the silver arrow clue, then speak to Orva with the code phrase: *"The arrow always finds home"*.
    - Orva recognizes the token and phrase, confides in Layla, and gives her the **Spirit Pill** (`spirit-pill`).
 
 ---
 
-## 4. The Spirit Pill, The Seer, and The Reanimation Sanctum
+## 4. The Spirit Pill, Seer Valerius, and The Reanimation Sanctum
 
 1. **Swallowing the Spirit Pill:**
    - Layla swallows the pill (`use spirit-pill` / `swallow pill`).
@@ -108,12 +108,12 @@ Floor 6 cuts out complicated shift schedules and trivia tests in favor of direct
    - Before taking the pill, the room appeared to be a quiet, cold hall of stone tables and lanterns.
    - With **Spiritual Sight** active, the room is revealed in all its horror:
      > *The chamber is filled with dozens of glowing, translucent human spirits floating silently above the altar—the souls of executed offerings waiting to be wiped and converted into monsters.*
-     > *In the center of all the glowing spirits stands **a single living man** in dark robes conducting the binding rite: **The Seer**.*
+     > *In the center of all the glowing spirits stands **a single living man** in dark robes conducting the binding rite: **Seer Valerius**.*
 3. **The Immediate Deduction:**
-   - Layla knows at once: *Every other figure in this room is a ghost. The only living person standing among them is the Seer!*
+   - Layla knows at once: *Every other figure in this room is a ghost. The only living person standing among them is Seer Valerius!*
 4. **The Boss Fight & Revival Sigil:**
-   - Layla engages and defeats the Seer in combat.
-   - The Seer drops the **Revival Sigil Scroll**, teaching Layla the `revive-sigil`.
+   - Layla engages and defeats Seer Valerius in combat.
+   - Seer Valerius drops the **Revival Sigil Scroll**, teaching Layla the `revive-sigil`.
 
 ---
 
