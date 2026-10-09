@@ -60,7 +60,7 @@ Rather than a hard failure or immersion-breaking plot armor, Einar's survival st
 ```
 ### The Lovers & The Infiltration Mission
 - **The Star-Crossed Lovers (Werewolf Cupid Role):**
-  - Einar and the Witch (Sister Selena, the cathedral apothecary) fell in love before the cathedral gates were shut.
+  - Einar and the Witch (Sister Orva—named for the Old Norse word for "arrow"—the cathedral herbalist) fell in love before the cathedral gates were shut.
   - She remained inside as an undercover ally while Einar fought alongside Astrid.
   - Their shared keepsake: **The Twin Arrow** (a pair of matching silver arrow hairpins).
   - Their secret phrase: **"The arrow always finds home."**
@@ -69,17 +69,17 @@ Rather than a hard failure or immersion-breaking plot armor, Einar's survival st
   - **3x Invisibility Potions:** Cool glass bottles that hide Layla from cathedral guards for 8 turns each.
   - **The Keepsake (Silver Arrow Hairpin):** Einar's half of the twin arrow.
   - **The Instruction:**
-    > *"Find Selena in the herb garden. She wears the other half of this silver arrow pinned in her hair. Say to her: 'The arrow always finds home.' She has a pill that lets you see spirits. The cathedral is full of white-armored guards who will attack strangers on sight. Drink a potion whenever you need to slip past them without being seen."*
+    > *"Find Orva in the herb garden. She wears the other half of this silver arrow pinned in her hair. Say to her: 'The arrow always finds home.' She has a pill that lets you see spirits. The cathedral is full of white-armored guards who will attack strangers on sight. Drink a potion whenever you need to slip past them without being seen."*
 - **Fail-Forward Path (If Einar Fell on Floor 5):**
   - When Einar falls in the siege, his physical shell crumbles into grey dust. Layla or Astrid retrieves his leather satchel (`einar-satchel`) from the dust.
   - Inside the satchel: the Clandestine Token, the 3 Invisibility Potions, Einar's silver arrow hairpin, and his farewell note with the secret phrase.
-  - When Layla meets Selena in the garden and presents Einar's arrow, Selena realizes Einar didn't make it. Though heartbroken, she resolves to help Layla finish what they started and yields the Spirit Pill.
+  - When Layla meets Orva in the garden and presents Einar's arrow, Orva realizes Einar didn't make it. Though heartbroken, she resolves to help Layla finish what they started and yields the Spirit Pill.
 
 ---
 
 ## 3. Gameplay: Invisibility Stealth & Finding the Witch
 
-Floor 6 cuts out complicated shift schedules and trivia tests in favor of direct, tense stealth gameplay:
+Floor 6 cuts out complicated shift schedules and trivia tests in favor of direct, tense stealth gameplay and social deduction:
 
 1. **Cathedral Patrols & Invisibility:**
    - White-armored cathedral guards patrol the major crossroads and basilicas. If they spot Layla, they attack as hostile enemies.
@@ -87,11 +87,14 @@ Floor 6 cuts out complicated shift schedules and trivia tests in favor of direct
    - For **8 turns**, she fades from sight. Cathedral guards cannot target or attack her while she is invisible.
    - Layla can freely walk through halls, explore rooms, and search for the Witch. Attacking an enemy breaks invisibility immediately.
    - With 3 finite bottles, the player must choose their stealth windows wisely.
-2. **Finding the Witch in the Herb Garden:**
-   - In the cathedral herb garden (`herbarium_garden`), several robed herbalists work.
-   - Inspecting them reveals the clue: one quiet young woman wears a **silver arrow hairpin** in her braided hair.
-   - Layla speaks to her and whispers the code phrase: *"The arrow always finds home"* (or presents Einar's matching hairpin).
-   - Selena recognizes the token, shares news of Einar, and gives Layla the **Spirit Pill** (`spirit-pill`). (If Layla has run out of invisibility potions, Selena also provides an extra bottle).
+2. **Deducing the Witch Among the Herbarium Staff:**
+   - In the cathedral herb garden (`herbarium_garden`) and adjacent dispensary (`herbarium_apothecary`), multiple botanical staff work:
+     - **Hanna**: An apprentice botanist sorting dried flower petals with a bronze leaf pin in her red hair.
+     - **Mira**: A gardener tending damp moss beds with a plain leather cord tying back her braid.
+     - **Rowan**: An elderly apothecary in the dispensary hall grinding roots in spectacles with no hair ornaments.
+     - **Orva**: A quiet herbalist with dark hair, wearing the distinct **silver arrow hairpin** matching Einar's keepsake.
+   - Layla must inspect the workers (`look at <person>`) to spot the silver arrow clue, then speak to Orva with the code phrase: *"The arrow always finds home"*.
+   - Orva recognizes the token and phrase, confides in Layla, and gives her the **Spirit Pill** (`spirit-pill`).
 
 ---
 
@@ -102,12 +105,12 @@ Floor 6 cuts out complicated shift schedules and trivia tests in favor of direct
    - Her eyes tingle as she gains **Spiritual Sight** (`spiritual_sight = "true"`).
 2. **The Reanimation Sanctum Reveal:**
    - Layla drinks a potion and slips down into the dark stone reanimation sanctum (`mortuary_reanimation_sanctum`).
-   - Before taking the pill, the room appeared to be a quiet, cold hall of metal tables and pipes.
+   - Before taking the pill, the room appeared to be a quiet, cold hall of stone tables and lanterns.
    - With **Spiritual Sight** active, the room is revealed in all its horror:
-     > *The chamber is filled with dozens of glowing, translucent human spirits floating silently above the metal tables—the souls of executed offerings waiting to be wiped and converted into monsters.*
-     > *In the center of all the glowing spirits stands **a single living man** in golden robes holding a stone carving tool: **The Seer**.*
+     > *The chamber is filled with dozens of glowing, translucent human spirits floating silently above the altar—the souls of executed offerings waiting to be wiped and converted into monsters.*
+     > *In the center of all the glowing spirits stands **a single living man** in dark robes conducting the binding rite: **The Seer**.*
 3. **The Immediate Deduction:**
-   - Layla knows at once: *Every other figure in this room is a ghost. The only living man standing among them is the Seer!*
+   - Layla knows at once: *Every other figure in this room is a ghost. The only living person standing among them is the Seer!*
 4. **The Boss Fight & Revival Sigil:**
    - Layla engages and defeats the Seer in combat.
    - The Seer drops the **Revival Sigil Scroll**, teaching Layla the `revive-sigil`.
@@ -122,7 +125,7 @@ Floor 6 cuts out complicated shift schedules and trivia tests in favor of direct
 2. **The Party Arrives:**
    - Astrid, Einar (if he survived), and Layla's party materialize on the platform!
    - The party disconnection state clears, restoring full party orders and dialogue.
-   - If Einar survived, he and Selena share a heartfelt reunion in the herb garden.
+   - If Einar survived, he and Orva share a heartfelt reunion in the herb garden.
    - Astrid plants her great shield, securing the high acropolis as the party prepares to breach **Floor 7 (The Royal Core / Dungeon Master)**.
 
 ---
@@ -132,5 +135,5 @@ Floor 6 cuts out complicated shift schedules and trivia tests in favor of direct
 | Quest Type | Quest Title | Summary | Goal |
 |---|---|---|---|
 | **Main** | **The High Sanctuary Infiltration** | Infiltrate the cathedral alone, find the Witch in the herb garden, discover the Seer, and open the main platform. | Slay the Seer and activate the main teleport platform to bring your party through. |
-| **Side** | **The Witch's Keepsake** | Find the apothecary wearing the silver arrow hairpin in the herb garden and deliver Einar's code word to receive the Spirit Pill. | Find Selena in the herb garden and speak the secret phrase. |
+| **Side** | **The Witch's Keepsake** | Find the herbalist wearing the silver arrow hairpin in the herb garden and deliver Einar's code word to receive the Spirit Pill. | Find Orva in the herb garden and speak the secret phrase. |
 | **Secret** | **The Memory of the Offerings** | Inspect the floating spirits in the reanimation sanctum with Spiritual Sight to recognize the lost townspeople. | Discover the true human origins of the dungeon monsters. |

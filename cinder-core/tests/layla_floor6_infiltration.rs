@@ -1,7 +1,8 @@
 //! Integration tests for Floor 6 Infiltration:
 //! - Handoff: Einar gives clandestine token, silver arrow pin, and 3 invisibility potions
 //! - Stealth: Invisibility allows sneaking past cathedral guards
-//! - Witch: Meeting Selena in herb garden, speaking code word "The arrow always finds home", receiving spirit pill
+//! - Witch & Deduction: Finding Orva among gardeners (inspecting Hanna's bronze leaf, Mira's cord, Orva's silver arrow)
+//! - Code Word: Speaking "The arrow always finds home" to Orva receives the spirit pill
 //! - Spiritual Sight: Swallowing pill reveals trapped spirits and exposes the living Seer
 //! - Boss Battle: Slaying the Seer, obtaining Revival Scroll, learning Revival Sigil
 //! - Platform Activation: Linking Floor 6 to lower floors and reuniting with Astrid & Einar
@@ -26,7 +27,7 @@ fn test_floor6_handoff_and_stealth_to_witch() {
 
     let scripted_dialogue = cinder_core::engine::dialogue::ScriptedDialogueGenerator::new()
         .with_reply(
-            "selena",
+            "orva",
             "The arrow always finds home! Einar is alive! Take this spirit pill. Swallow it before you enter the Seer's sanctum.",
         );
 
@@ -65,21 +66,47 @@ fn test_floor6_handoff_and_stealth_to_witch() {
         "herbarium_garden"
     );
 
-    // 4. Inspect Selena to see silver arrow hairpin
-    let inspect_out = runtime.run_turn("look at selena").expect("look at selena");
+    // 4. In the garden, multiple herbalists are present: Hanna, Mira, and Orva
+    let look_garden = runtime.run_turn("look").expect("look around garden");
     assert!(
-        inspect_out.text().contains("silver arrow hairpin"),
-        "must describe silver arrow hairpin, got: {}",
-        inspect_out.text()
+        look_garden.text().contains("Hanna")
+            && look_garden.text().contains("Mira")
+            && look_garden.text().contains("Orva"),
+        "multiple garden workers must be listed in the room: {}",
+        look_garden.text()
     );
 
-    // 5. Speak the secret code word to Selena
+    // Inspect Hanna: red hair with bronze leaf pin (not the arrow)
+    let look_hanna = runtime.run_turn("look at hanna").expect("look at hanna");
+    assert!(
+        look_hanna.text().contains("bronze leaf pin"),
+        "Hanna must have bronze leaf pin: {}",
+        look_hanna.text()
+    );
+
+    // Inspect Mira: blonde braid with plain leather cord (not the arrow)
+    let look_mira = runtime.run_turn("look at mira").expect("look at mira");
+    assert!(
+        look_mira.text().contains("leather cord"),
+        "Mira must have plain leather cord: {}",
+        look_mira.text()
+    );
+
+    // Inspect Orva: dark hair with the matching silver arrow hairpin!
+    let look_orva = runtime.run_turn("look at orva").expect("look at orva");
+    assert!(
+        look_orva.text().contains("silver arrow hairpin"),
+        "Orva must have the silver arrow hairpin, got: {}",
+        look_orva.text()
+    );
+
+    // 5. Speak the secret code word to Orva
     let talk_out = runtime
-        .run_turn("talk to selena The arrow always finds home")
-        .expect("talk to selena");
+        .run_turn("talk to orva The arrow always finds home")
+        .expect("talk to orva");
     assert!(
         talk_out.text().to_lowercase().contains("arrow")
-            || talk_out.text().to_lowercase().contains("selena"),
+            || talk_out.text().to_lowercase().contains("orva"),
         "speech feedback received: {}",
         talk_out.text()
     );

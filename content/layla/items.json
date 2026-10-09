@@ -438,7 +438,7 @@
     "aliases": ["spirit pill", "pill", "spirit-pill"],
     "kind": "potion",
     "use_hook": "item.spirit_pill_used",
-    "description": "A small white pill given by Selena in the herb garden. Swallowing it lets you see the glowing spirits of the dead."
+    "description": "A small white pill given by Orva in the herb garden. Swallowing it lets you see the glowing spirits of the dead."
   },
   {
     "id": "revival-scroll",

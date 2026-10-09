@@ -269,7 +269,7 @@
       "beat_note": "Layla enters Floor 6 alone using the clandestine sanctuary token. Her party remains on Floor 5 until the main teleport platform is unlocked.",
       "update_message": "Infiltrate the High Sanctuary alone using the clandestine token.",
       "narrative_lines": [
-        "Einar places a silver token and three bottles of blue invisibility potion into your hands. Beside them, he gives you a silver hairpin shaped like a feathered arrow. 'My love, Selena... she is trapped inside as the cathedral herbalist. She is the Witch. Show her this arrow pin and tell her: The arrow always finds home. She will give you what you need to expose the Seer. Drink the potions to slip past the white guards unseen.'"
+        "Einar places a silver token and three bottles of blue invisibility potion into your hands. Beside them, he gives you a silver hairpin shaped like a feathered arrow. 'My love, Orva... she is trapped inside as the cathedral herbalist. She is the Witch. Show her this arrow pin and tell her: The arrow always finds home. She will give you what you need to expose the Seer. Drink the potions to slip past the white guards unseen.'"
       ],
       "on_advance_effects": [
         {
@@ -315,15 +315,15 @@
       "quest_id": "high_sanctuary_infiltration",
       "quest_title": "The High Sanctuary",
       "quest_kind": "main",
-      "summary": "Find Selena in the herb garden and speak the code word.",
-      "beat_note": "Layla has slipped into the High Sanctuary. Find Selena in the herb garden, identified by her silver arrow hairpin. Speak the code word: 'The arrow always finds home'.",
-      "update_message": "Find Selena in the herb garden and give her the code word.",
+      "summary": "Find Orva in the herb garden and speak the code word.",
+      "beat_note": "Layla has slipped into the High Sanctuary. Find Orva in the herb garden, identified by her silver arrow hairpin. Speak the code word: 'The arrow always finds home'.",
+      "update_message": "Find Orva in the herb garden and give her the code word.",
       "narrative_lines": [
         "You stand alone on the High Sanctuary terrace. White-armored guards patrol the grand plaza ahead. Drink your invisibility potion to sneak past them to the herb garden in the southwest quarter."
       ],
       "on_advance_effects": [],
       "advance_signals": [
-        "spoken_to:selena",
+        "spoken_to:orva",
         "witch_code_word_spoken",
         "speech_topic:arrow_code_word",
         {
@@ -348,10 +348,10 @@
       "quest_title": "The High Sanctuary",
       "quest_kind": "main",
       "summary": "Swallow the spirit pill and defeat the Seer in the Reanimation Sanctum.",
-      "beat_note": "Selena gave Layla the spirit pill. Swallow it to gain spiritual sight, revealing the Seer as the lone living human among the captive spirits. Defeat him to break the ritual and claim the Revival Scroll.",
+      "beat_note": "Orva gave Layla the spirit pill. Swallow it to gain spiritual sight, revealing the Seer as the lone living human among the captive spirits. Defeat him to break the ritual and claim the Revival Scroll.",
       "update_message": "Swallow the spirit pill and defeat the Seer.",
       "narrative_lines": [
-        "Selena clutches the silver arrow pin to her chest, her eyes wide with relief. 'Einar... he lives! Take this spirit pill. Swallow it before you face the Seer. Without it, you will only see empty air, but with it, you will see the captive spirits and the Seer directing them. Stop him!'"
+        "Orva clutches the silver arrow pin to her chest, her eyes wide with relief. 'Einar... he lives! Take this spirit pill. Swallow it before you face the Seer. Without it, you will only see empty air, but with it, you will see the captive spirits and the Seer directing them. Stop him!'"
       ],
       "on_advance_effects": [
         {
@@ -947,7 +947,7 @@
         "arrow",
         "einar",
         "witch",
-        "selena",
+        "orva",
         "home"
       ]
     }

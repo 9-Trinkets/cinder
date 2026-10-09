@@ -4048,8 +4048,8 @@
     }
   },
   {
-    "id": "selena",
-    "name": "Selena",
+    "id": "orva",
+    "name": "Orva",
     "room_id": "herbarium_garden",
     "level": 8,
     "initial_stats": {
@@ -4066,9 +4066,10 @@
       "spirit-pill": 1
     },
     "aliases": [
-      "selena",
+      "orva",
       "witch",
       "herbalist",
+      "arrow witch",
       "gardener"
     ],
     "tags": [
@@ -4076,10 +4077,10 @@
       "herbalist",
       "ally"
     ],
-    "inspect_text": "A quiet herbalist with dark hair, tending to the herb beds. A gleaming silver arrow hairpin is pinned neatly into her hair.",
+    "inspect_text": "A quiet herbalist with dark hair, gently tending the herb beds. A gleaming silver arrow hairpin is pinned neatly into her hair.",
     "prompt_context": {
       "character_notes": [
-        "You are Selena, the herbalist of the solarium garden. You are secretly the Witch, and you are in love with Einar.",
+        "You are Orva, the herbalist of the solarium garden. Your name means arrow in the old tongue. You are secretly the Witch, and you are in love with Einar.",
         "You wear the silver arrow hairpin that matches Einar's.",
         "You pretend to be a simple gardener so the cathedral guards do not suspect you.",
         "If someone speaks your secret phrase ('The arrow always finds home'), you know Einar sent them and you trust them."
@@ -4091,6 +4092,127 @@
       "behavior_examples": [
         "She gently prunes the leaves of winter-sage, her fingers brushing the silver arrow in her hair.",
         "She glances up cautiously toward the plaza archway, checking for guards."
+      ]
+    }
+  },
+  {
+    "id": "hanna",
+    "name": "Hanna",
+    "room_id": "herbarium_garden",
+    "level": 5,
+    "initial_stats": {
+      "hp": 25,
+      "strength": 3,
+      "endurance": 3,
+      "dexterity": 5,
+      "intelligence": 5
+    },
+    "initial_hostile": false,
+    "attackable": false,
+    "aliases": [
+      "hanna",
+      "apprentice",
+      "sorter",
+      "girl"
+    ],
+    "tags": [
+      "civilian",
+      "herbalist",
+      "apprentice"
+    ],
+    "inspect_text": "A young apprentice with bright red hair, sorting dried flower petals into wooden baskets. Her hair is clipped back with a small bronze leaf pin.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Hanna, an apprentice botanist in the solarium garden.",
+        "You sort dried flower petals. You know nothing of secret codes or arrows."
+      ],
+      "response_notes": [
+        "Speak cheerfully about drying flowers and herbs."
+      ],
+      "behavior_examples": [
+        "She counts dried calendula petals into a woven tray.",
+        "She adjusts the bronze leaf pin in her red curls."
+      ]
+    }
+  },
+  {
+    "id": "mira",
+    "name": "Mira",
+    "room_id": "herbarium_garden",
+    "level": 6,
+    "initial_stats": {
+      "hp": 30,
+      "strength": 5,
+      "endurance": 4,
+      "dexterity": 4,
+      "intelligence": 4
+    },
+    "initial_hostile": false,
+    "attackable": false,
+    "aliases": [
+      "mira",
+      "moss gatherer",
+      "gardener",
+      "tender"
+    ],
+    "tags": [
+      "civilian",
+      "herbalist",
+      "gardener"
+    ],
+    "inspect_text": "A sturdy gardener wearing heavy work gloves, watering the alpine moss beds. Her blonde hair is tied back in a braid with a plain leather cord.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Mira, tending the damp alpine moss beds in the solarium.",
+        "You keep your head down and do your chores."
+      ],
+      "response_notes": [
+        "Tell visitors to watch their step on the wet flagstones."
+      ],
+      "behavior_examples": [
+        "She ladles cool water over the green moss trays.",
+        "She wipes dirt from her gloves onto her canvas apron."
+      ]
+    }
+  },
+  {
+    "id": "elder_rowan",
+    "name": "Rowan",
+    "room_id": "herbarium_apothecary",
+    "level": 9,
+    "initial_stats": {
+      "hp": 35,
+      "strength": 3,
+      "endurance": 4,
+      "dexterity": 5,
+      "intelligence": 9,
+      "wisdom": 8
+    },
+    "initial_hostile": false,
+    "attackable": false,
+    "aliases": [
+      "rowan",
+      "elder rowan",
+      "master rowan",
+      "apothecary"
+    ],
+    "tags": [
+      "civilian",
+      "apothecary",
+      "elder"
+    ],
+    "inspect_text": "An elderly apothecary in a stained linen apron, grinding dried mountain roots with a stone pestle. He wears round brass spectacles and no hairpins at all.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Master Rowan, chief apothecary of the cathedral dispensary.",
+        "You prepare remedies for cathedral staff and guards."
+      ],
+      "response_notes": [
+        "Warn visitors not to touch the glass jars of distilled powders."
+      ],
+      "behavior_examples": [
+        "He grinds dried angelica root into fine yellow dust.",
+        "He pushes his round brass spectacles up his nose."
       ]
     }
   },
