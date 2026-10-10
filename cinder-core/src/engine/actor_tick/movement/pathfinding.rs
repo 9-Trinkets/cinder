@@ -43,6 +43,7 @@ pub(crate) fn next_room_toward(
 }
 
 /// BFS through reachable exits returning the distance from `current_room_id` to `target_room_id`.
+#[allow(dead_code)]
 pub(crate) fn path_distance(
     content: &ContentPack,
     state: &WorldState,
