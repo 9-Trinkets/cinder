@@ -247,13 +247,13 @@ fn ordering_distant_follower_to_patrol_does_not_recall_them() {
 }
 
 #[test]
-fn ordering_follower_to_hunt_assigns_hunt_order_and_sets_follows_player_false() {
+fn ordering_follower_to_deploy_assigns_deploy_order_and_sets_follows_player_false() {
     let mut pack = party_order_pack();
     pack.messages.insert(
-        "party.order_hunt_assigned".to_string(),
+        "party.order_deploy_assigned".to_string(),
         PackMessage::Voiced {
             voice: PackMessageVoice::System,
-            text: "{actor} will hunt {target}.".to_string(),
+            text: "{actor} will deploy to {target}.".to_string(),
         },
     );
     let mut state = allied_party_state(&pack);
@@ -262,16 +262,17 @@ fn ordering_follower_to_hunt_assigns_hunt_order_and_sets_follows_player_false() 
         &pack,
         &[TimestampedWorldEvent::now(WorldEvent::PartyOrderAssigned {
             actor_id: ACTOR_B_ID.to_string(),
-            order: "hunt civilian".to_string(),
+            order: "deploy courtyard_center".to_string(),
         })],
     );
 
     assert_eq!(
         state.party_order(&pack, ACTOR_B_ID),
-        Some("hunt civilian".to_string())
+        Some("deploy courtyard_center".to_string())
     );
     assert!(!state.follows_player(ACTOR_B_ID));
     assert!(output.lines.iter().any(|line| {
-        line.kind == NarrativeLineKind::System && line.text == "Blair will hunt civilian."
+        line.kind == NarrativeLineKind::System
+            && line.text == "Blair will deploy to courtyard_center."
     }));
 }

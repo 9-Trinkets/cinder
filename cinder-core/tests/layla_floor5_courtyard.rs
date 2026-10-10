@@ -1781,10 +1781,10 @@ fn floor5_squad_party_marches_together_and_promotes_follower_on_leader_defeat() 
         outcome => panic!("expected follower 2 raider, got {outcome:?}"),
     };
 
-    // Configure squad: l_id hunts civilian, f1 and f2 follow l_id
+    // Configure squad: l_id deploys to courtyard_center, f1 and f2 follow l_id
     state
         .party_orders
-        .insert(l_id.clone(), "hunt civilian".to_string());
+        .insert(l_id.clone(), "deploy courtyard_center".to_string());
     state
         .party_orders
         .insert(f1_id.clone(), "follow".to_string());
@@ -1794,7 +1794,7 @@ fn floor5_squad_party_marches_together_and_promotes_follower_on_leader_defeat() 
         .insert(f2_id.clone(), "follow".to_string());
     state.set_followed_actor(&f2_id, Some(&l_id));
 
-    // 2. Tick: leader marches toward civilian (frost_wolf_muster), followers sync
+    // 2. Tick: leader marches toward courtyard_center (frost_wolf_muster), followers sync
     let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
     runtime.run_tick().expect("squad march 1");
     let state = runtime.export_state().expect("export state");
@@ -1824,10 +1824,10 @@ fn floor5_squad_party_marches_together_and_promotes_follower_on_leader_defeat() 
         out.text()
     );
 
-    // Follower 1 should now be promoted to leader with "hunt civilian"
+    // Follower 1 should now be promoted to leader with "deploy courtyard_center"
     assert_eq!(
         state.party_order(&pack, &f1_id),
-        Some("hunt civilian".to_string())
+        Some("deploy courtyard_center".to_string())
     );
     assert_eq!(state.followed_actor(&f1_id), None);
     // Follower 2 should now follow follower 1

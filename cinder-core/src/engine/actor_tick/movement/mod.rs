@@ -14,10 +14,10 @@ use std::sync::Arc;
 use crate::content::types::ActorMovementRulesDefinition;
 use crate::engine::actor_turn::movement::required_movement_target_room_id;
 
-pub(crate) use pathfinding::{next_room_toward, path_distance};
+pub(crate) use pathfinding::next_room_toward;
 pub(crate) use strategies::{
-    ExitLabelStrategy, HuntStrategy, RandomAdjacentStrategy, StayStrategy, ToDestinationStrategy,
-    TowardPlayerStrategy, find_hunt_target_room_id,
+    DeployStrategy, ExitLabelStrategy, RandomAdjacentStrategy, StayStrategy, ToDestinationStrategy,
+    TowardPlayerStrategy,
 };
 
 /// Strategy defining movement destination selection and cadence for an actor.
@@ -144,14 +144,14 @@ impl MovementStrategyResolver for DefaultMovementStrategyResolver {
                 }
                 "follow" => None,
                 _ => {
-                    if order_lower.starts_with("hunt") {
+                    if order_lower.starts_with("deploy") {
                         let target = order
-                            .strip_prefix("hunt:")
-                            .or_else(|| order.strip_prefix("hunt "))
+                            .strip_prefix("deploy:")
+                            .or_else(|| order.strip_prefix("deploy "))
                             .unwrap_or("")
                             .trim()
                             .to_string();
-                        Some(Box::new(HuntStrategy::new(1, target)))
+                        Some(Box::new(DeployStrategy::new(1, target)))
                     } else {
                         None
                     }
@@ -245,14 +245,19 @@ pub(crate) fn decide_movement(
         return Ok(vec![]);
     }
     let target_room_id = if let Some(order) = state.party_order(&content, &actor.id)
-        && (order.to_ascii_lowercase().starts_with("hunt") || order.to_ascii_lowercase() == "hunt")
+        && (order.to_ascii_lowercase().starts_with("deploy")
+            || order.to_ascii_lowercase() == "deploy")
     {
         let target = order
-            .strip_prefix("hunt:")
-            .or_else(|| order.strip_prefix("hunt "))
+            .strip_prefix("deploy:")
+            .or_else(|| order.strip_prefix("deploy "))
             .unwrap_or("")
             .trim();
-        find_hunt_target_room_id(&content, state, &actor.id, target)
+        if !target.is_empty() && content.room(target).is_some() {
+            Some(target.to_string())
+        } else {
+            None
+        }
     } else {
         required_movement_target_room_id(state, rules, current_room_id)
             .or_else(|| preferred_target_room_id.map(str::to_string))

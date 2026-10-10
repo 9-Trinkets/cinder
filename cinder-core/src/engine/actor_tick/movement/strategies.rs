@@ -1,6 +1,6 @@
-use super::{MovementStrategy, next_room_toward, path_distance};
+use super::{MovementStrategy, next_room_toward};
 use crate::content::types::{ActorDefinition, ContentPack};
-use crate::engine::state::{ActorStance, WorldState};
+use crate::engine::state::WorldState;
 use crate::engine::turn_policies::story_var_is_truthy;
 use rand::Rng;
 
@@ -178,134 +178,23 @@ impl MovementStrategy for ExitLabelStrategy {
     }
 }
 
-/// Finds the target room for an actor on a hunt order.
-/// Target can be an actor id, an actor name, an actor tag (e.g. "civilian"),
-/// or a room id.
-pub(crate) fn find_hunt_target_room_id(
-    content: &ContentPack,
-    state: &WorldState,
-    hunter_id: &str,
-    target: &str,
-) -> Option<String> {
-    let target = target.trim();
-    if target.is_empty() {
-        return None;
-    }
-    let hunter_stance = state.stance(hunter_id);
-    let hunter_room = state.actor_current_room_id(content, hunter_id);
-    let health_stat_id = if content.settings.combat.health_stat_id.is_empty() {
-        "hp"
-    } else {
-        &content.settings.combat.health_stat_id
-    };
-
-    // 1. Look for living, onstage actors matching target by id, name, alias, or template prefix
-    let matching_actors: Vec<_> = state
-        .onstage_actors(content)
-        .filter(|a| a.id != hunter_id)
-        .filter(|a| !state.actor_is_defeated(&a.id, health_stat_id))
-        .filter(|a| {
-            a.id.eq_ignore_ascii_case(target)
-                || a.name.eq_ignore_ascii_case(target)
-                || a.aliases
-                    .iter()
-                    .any(|alias| alias.eq_ignore_ascii_case(target))
-                || a.id
-                    .split_once('-')
-                    .map(|(t, _)| t)
-                    .is_some_and(|t| t.eq_ignore_ascii_case(target))
-        })
-        .collect();
-
-    // 2. Look for living, onstage actors matching target by tag (e.g. "civilian")
-    let tagged_actors: Vec<_> = if matching_actors.is_empty() {
-        state
-            .onstage_actors(content)
-            .filter(|a| a.id != hunter_id)
-            .filter(|a| !state.actor_is_defeated(&a.id, health_stat_id))
-            .filter(|a| {
-                if hunter_stance == ActorStance::Allied
-                    && state.stance(&a.id) == ActorStance::Allied
-                {
-                    return false;
-                }
-                if hunter_stance == ActorStance::Hostile
-                    && state.stance(&a.id) == ActorStance::Hostile
-                {
-                    return false;
-                }
-                a.tags.iter().any(|t| t.eq_ignore_ascii_case(target))
-            })
-            .collect()
-    } else {
-        Vec::new()
-    };
-
-    let candidates = if !matching_actors.is_empty() {
-        matching_actors
-    } else {
-        tagged_actors
-    };
-
-    if !candidates.is_empty() {
-        let mut best_target_room: Option<(usize, String)> = None;
-        let mut same_board_room: Option<String> = None;
-        let board_room_ids = content.reachable_room_ids(hunter_room);
-
-        for a in &candidates {
-            let candidate_room = state.actor_current_room_id(content, &a.id);
-            if let Some(dist) = path_distance(content, state, hunter_room, candidate_room) {
-                if best_target_room
-                    .as_ref()
-                    .is_none_or(|(best_dist, _)| dist < *best_dist)
-                {
-                    best_target_room = Some((dist, candidate_room.to_string()));
-                }
-            } else if same_board_room.is_none() && board_room_ids.contains(candidate_room) {
-                same_board_room = Some(candidate_room.to_string());
-            }
-        }
-
-        if let Some((_, room)) = best_target_room {
-            return Some(room);
-        }
-        if let Some(room) = same_board_room {
-            return Some(room);
-        }
-        return Some(
-            state
-                .actor_current_room_id(content, &candidates[0].id)
-                .to_string(),
-        );
-    }
-
-    // 3. Check if target matches a room id
-    if content.room(target).is_some() {
-        return Some(target.to_string());
-    }
-
-    // 4. Fallback for hostile hunters targeting civilians if all civilians are dead: hunt player!
-    if hunter_stance == ActorStance::Hostile && target.eq_ignore_ascii_case("civilian") {
-        return Some(state.current_room_id.clone());
-    }
-
-    None
-}
-
-/// Pathfinds toward an actor, actor tag, or destination.
+/// Moves an actor toward a target room. Once in the room, they hold position.
 #[derive(Debug, Clone)]
-pub(crate) struct HuntStrategy {
+pub(crate) struct DeployStrategy {
     pub cadence: u32,
-    pub target: String,
+    pub target_room_id: String,
 }
 
-impl HuntStrategy {
-    pub(crate) fn new(cadence: u32, target: String) -> Self {
-        Self { cadence, target }
+impl DeployStrategy {
+    pub(crate) fn new(cadence: u32, target_room_id: String) -> Self {
+        Self {
+            cadence,
+            target_room_id,
+        }
     }
 }
 
-impl MovementStrategy for HuntStrategy {
+impl MovementStrategy for DeployStrategy {
     fn cadence_ticks(&self) -> u32 {
         self.cadence
     }
@@ -314,13 +203,13 @@ impl MovementStrategy for HuntStrategy {
         &self,
         content: &ContentPack,
         state: &WorldState,
-        actor: &ActorDefinition,
+        _actor: &ActorDefinition,
         current_room_id: &str,
     ) -> Option<String> {
-        let target_room_id = find_hunt_target_room_id(content, state, &actor.id, &self.target)?;
-        if target_room_id == current_room_id {
+        let target = self.target_room_id.trim();
+        if target.is_empty() || target == current_room_id {
             return None;
         }
-        next_room_toward(content, state, current_room_id, &target_room_id)
+        next_room_toward(content, state, current_room_id, target)
     }
 }

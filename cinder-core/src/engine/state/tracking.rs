@@ -55,6 +55,18 @@ impl WorldState {
             .entry(actor_id.to_string())
             .or_default()
             .insert(room_id.to_string());
+        if actor_id == "player" || actor_id == self.player_actor_id {
+            self.record_player_recent_room(room_id);
+        }
+    }
+
+    pub fn record_player_recent_room(&mut self, room_id: &str) {
+        if room_id.is_empty() {
+            return;
+        }
+        self.player_recent_room_ids.retain(|r| r != room_id);
+        self.player_recent_room_ids.insert(0, room_id.to_string());
+        self.player_recent_room_ids.truncate(4);
     }
 
     pub fn actor_has_seen_feature(&self, actor_id: &str, room_id: &str, feature_id: &str) -> bool {

@@ -171,14 +171,14 @@ fn party_order_phrase(trimmed: &str) -> Option<(String, PartyOrderKind)> {
     }
     let remainder = trimmed["order ".len()..].trim();
     let lower = remainder.to_ascii_lowercase();
-    if let Some(pos) = lower.find(" hunt") {
+    if let Some(pos) = lower.find(" deploy") {
         if pos > 0 && lower.as_bytes()[pos] == b' ' {
             let actor_reference = remainder[..pos].trim();
-            let after_hunt = remainder[pos + " hunt".len()..].trim();
-            let order = if after_hunt.is_empty() {
-                "hunt".to_string()
+            let after_deploy = remainder[pos + " deploy".len()..].trim();
+            let order = if after_deploy.is_empty() {
+                "deploy".to_string()
             } else {
-                format!("hunt {after_hunt}")
+                format!("deploy {after_deploy}")
             };
             if !actor_reference.is_empty() {
                 return Some((actor_reference.to_string(), order));

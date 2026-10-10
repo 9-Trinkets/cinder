@@ -20,8 +20,8 @@ pub(crate) fn handle_party_order_assigned(
     }
     let actor = actor_display_name(state, content, actor_id);
     let player_room = state.current_room_id.clone();
-    let base_order = if order.to_ascii_lowercase().starts_with("hunt") {
-        "hunt"
+    let base_order = if order.to_ascii_lowercase().starts_with("deploy") {
+        "deploy"
     } else {
         order.as_str()
     };
@@ -39,15 +39,19 @@ pub(crate) fn handle_party_order_assigned(
     } else {
         format!("party.order_{base_order}_assigned")
     };
-    let target = if order.to_ascii_lowercase().starts_with("hunt") {
+    let raw_target = if order.to_ascii_lowercase().starts_with("deploy") {
         order
-            .strip_prefix("hunt:")
-            .or_else(|| order.strip_prefix("hunt "))
+            .strip_prefix("deploy:")
+            .or_else(|| order.strip_prefix("deploy "))
             .unwrap_or("")
             .trim()
     } else {
         ""
     };
+    let target = content
+        .room(raw_target)
+        .map(|r| r.title.as_str())
+        .unwrap_or(raw_target);
     push_message(
         lines,
         content,

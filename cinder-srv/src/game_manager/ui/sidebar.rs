@@ -173,104 +173,58 @@ pub(super) fn build_party_members(
     members
 }
 
-struct HuntTargetInfo {
+struct DeployTargetInfo {
     id: String,
     title: String,
     subtitle: Option<String>,
 }
 
-fn build_hunt_targets_for_floor(content: &ContentPack, state: &WorldState) -> Vec<HuntTargetInfo> {
+fn build_deploy_targets_for_player(
+    content: &ContentPack,
+    state: &WorldState,
+) -> Vec<DeployTargetInfo> {
     let floor_rooms = content.reachable_room_ids(&state.current_room_id);
-    let player_id = &content.settings.combat.player_actor_id;
-    let health_stat_id = if content.settings.combat.health_stat_id.is_empty() {
-        "hp"
-    } else {
-        &content.settings.combat.health_stat_id
-    };
-
-    let mut seen_ids = BTreeSet::new();
     let mut targets = Vec::new();
-    let mut civilian_count = 0usize;
+    let mut seen = BTreeSet::new();
 
-    for actor in state.onstage_actors(content) {
-        if actor.id == *player_id {
+    // 1. First, check player_recent_room_ids in order
+    for room_id in &state.player_recent_room_ids {
+        if !floor_rooms.contains(room_id) {
             continue;
         }
-        if state.actor_is_defeated(&actor.id, health_stat_id) {
-            continue;
-        }
-        if state.follows_player(&actor.id)
-            || state
-                .relationships
-                .get(&actor.id)
-                .is_some_and(|r| r.follows_player || r.stance == ActorStance::Allied)
-        {
-            continue;
-        }
-
-        let actor_room = state.actor_room_id(&actor.id, &actor.room_id);
-        if !floor_rooms.contains(actor_room) {
-            continue;
-        }
-
-        let in_player_room = actor_room == state.current_room_id;
-        let visited_actor_room = state.actor_has_visited_room(player_id, actor_room);
-        let visited_home_room =
-            !actor.room_id.is_empty() && state.actor_has_visited_room(player_id, &actor.room_id);
-        let studied_actor = state.actor_has_studied_actor(player_id, &actor.id);
-        let studied_template = actor
-            .id
-            .split_once('-')
-            .map(|(prefix, _)| prefix)
-            .is_some_and(|prefix| state.actor_has_studied_actor(player_id, prefix));
-
-        let encountered = in_player_room
-            || visited_actor_room
-            || visited_home_room
-            || studied_actor
-            || studied_template;
-        if !encountered {
-            continue;
-        }
-
-        if actor
-            .tags
-            .iter()
-            .any(|t| t.eq_ignore_ascii_case("civilian"))
-        {
-            civilian_count += 1;
-            continue;
-        }
-
-        let base_id = actor
-            .id
-            .split_once('-')
-            .map(|(prefix, _)| prefix)
-            .unwrap_or(&actor.id);
-
-        if seen_ids.insert(base_id.to_string()) {
+        if seen.insert(room_id.clone()) {
             let title = content
-                .actor(base_id)
-                .map(|t| t.name.clone())
-                .unwrap_or_else(|| actor.name.clone());
-            targets.push(HuntTargetInfo {
-                id: base_id.to_string(),
+                .room(room_id)
+                .map(|r| r.title.clone())
+                .unwrap_or_else(|| room_id.clone());
+            let is_current = *room_id == state.current_room_id;
+            let subtitle = if is_current {
+                Some("Current room".to_string())
+            } else {
+                None
+            };
+            targets.push(DeployTargetInfo {
+                id: room_id.clone(),
                 title,
-                subtitle: None,
+                subtitle,
             });
         }
     }
 
-    targets.sort_by(|a, b| a.title.cmp(&b.title));
-
-    if civilian_count > 0 && seen_ids.insert("civilian".to_string()) {
-        targets.push(HuntTargetInfo {
-            id: "civilian".to_string(),
-            title: "Civilians".to_string(),
-            subtitle: Some("Courtyard refugees".to_string()),
+    // 2. Ensure current room is present if not already added
+    if seen.insert(state.current_room_id.clone()) {
+        let title = content
+            .room(&state.current_room_id)
+            .map(|r| r.title.clone())
+            .unwrap_or_else(|| state.current_room_id.clone());
+        targets.push(DeployTargetInfo {
+            id: state.current_room_id.clone(),
+            title,
+            subtitle: Some("Current room".to_string()),
         });
     }
 
+    targets.truncate(4);
     targets
 }
 
@@ -280,7 +234,7 @@ pub(super) fn build_party_order_panels(
     members: &[PartyMember],
 ) -> BTreeMap<String, Vec<PanelOptionData>> {
     let directives = content.settings.party.directives();
-    let hunt_targets = build_hunt_targets_for_floor(content, state);
+    let deploy_targets = build_deploy_targets_for_player(content, state);
     let mut panels = BTreeMap::new();
 
     for member in members {
@@ -301,19 +255,19 @@ pub(super) fn build_party_order_panels(
                 let subtitle =
                     content.render_message(&format!("party.directive.{directive}.subtitle"), &[]);
 
-                if directive == "hunt" {
-                    let is_hunting = member.order == "hunt"
-                        || member.order.starts_with("hunt ")
-                        || member.order.starts_with("hunt:");
+                if directive == "deploy" {
+                    let is_deployed = member.order == "deploy"
+                        || member.order.starts_with("deploy ")
+                        || member.order.starts_with("deploy:");
                     PanelOptionData {
-                        id: "hunt".to_string(),
+                        id: "deploy".to_string(),
                         title,
                         subtitle,
                         command: None,
                         disabled: false,
-                        selected: is_hunting,
+                        selected: is_deployed,
                         group: None,
-                        panel: Some(format!("party-order-hunt:{}", member.id)),
+                        panel: Some(format!("party-order-deploy:{}", member.id)),
                     }
                 } else {
                     let selected = member.order == *directive;
@@ -332,12 +286,12 @@ pub(super) fn build_party_order_panels(
             .collect();
         panels.insert(member.order_panel.clone(), options);
 
-        let hunt_panel_id = format!("party-order-hunt:{}", member.id);
-        let hunt_options: Vec<PanelOptionData> = if hunt_targets.is_empty() {
+        let deploy_panel_id = format!("party-order-deploy:{}", member.id);
+        let deploy_options: Vec<PanelOptionData> = if deploy_targets.is_empty() {
             vec![PanelOptionData {
                 id: "none".to_string(),
-                title: "No targets encountered".to_string(),
-                subtitle: Some("Explore the floor to encounter targets".to_string()),
+                title: "No destinations available".to_string(),
+                subtitle: Some("Explore the floor to unlock deployment positions".to_string()),
                 command: None,
                 disabled: true,
                 selected: false,
@@ -345,16 +299,16 @@ pub(super) fn build_party_order_panels(
                 panel: None,
             }]
         } else {
-            hunt_targets
+            deploy_targets
                 .iter()
                 .map(|target| {
-                    let is_selected = member.order == format!("hunt {}", target.id)
-                        || member.order == format!("hunt:{}", target.id);
+                    let is_selected = member.order == format!("deploy {}", target.id)
+                        || member.order == format!("deploy:{}", target.id);
                     PanelOptionData {
                         id: target.id.clone(),
                         title: target.title.clone(),
                         subtitle: target.subtitle.clone(),
-                        command: Some(format!("order {} hunt {}", member.id, target.id)),
+                        command: Some(format!("order {} deploy {}", member.id, target.id)),
                         disabled: is_selected,
                         selected: is_selected,
                         group: None,
@@ -363,7 +317,7 @@ pub(super) fn build_party_order_panels(
                 })
                 .collect()
         };
-        panels.insert(hunt_panel_id, hunt_options);
+        panels.insert(deploy_panel_id, deploy_options);
     }
 
     panels
@@ -573,38 +527,21 @@ mod tests {
     }
 
     #[test]
-    fn party_order_hunt_creates_subpanel_with_encountered_targets() {
+    fn party_order_deploy_creates_subpanel_with_recent_rooms() {
         let mut content = minimal_test_pack();
         let player_id = content.settings.combat.player_actor_id.clone();
         content.actors.retain(|a| a.id == player_id);
-        content.settings.party.directives = vec!["guard".to_string(), "hunt".to_string()];
+        content.settings.party.directives = vec!["guard".to_string(), "deploy".to_string()];
 
-        let mut enemy = minimal_test_pack().actors[0].clone();
-        enemy.id = "wolf_raider".to_string();
-        enemy.name = "Wolf Raider".to_string();
-        enemy.room_id = "lounge".to_string();
-        enemy.tags = Vec::new();
-
-        let mut civ = minimal_test_pack().actors[0].clone();
-        civ.id = "refugee_bob".to_string();
-        civ.name = "Refugee Bob".to_string();
-        civ.room_id = "lounge".to_string();
-        civ.tags = vec!["civilian".to_string()];
-
-        content.actors.push(enemy);
-        content.actors.push(civ);
+        let mut room_b = content.rooms[0].clone();
+        room_b.id = "kitchen".to_string();
+        room_b.title = "The Kitchen".to_string();
+        content.rooms.push(room_b);
         cinder_core::engine::test_fixtures::rebuild_test_pack_indexes(&mut content);
 
         let mut state = WorldState::new(&content);
-        state.current_room_id = "lounge".to_string();
-        // Spawned raider instance
-        let mut raider_inst = content.actor("wolf_raider").unwrap().clone();
-        raider_inst.id = "wolf_raider-1".to_string();
-        state
-            .spawned_actors
-            .insert(raider_inst.id.clone(), raider_inst);
-        state.set_actor_room("wolf_raider-1", "lounge");
-        state.set_actor_room("refugee_bob", "lounge");
+        state.current_room_id = "kitchen".to_string();
+        state.player_recent_room_ids = vec!["kitchen".to_string(), "lounge".to_string()];
 
         let members = vec![PartyMember {
             id: "sprite".to_string(),
@@ -612,7 +549,7 @@ mod tests {
             level: 1,
             hp: 10,
             hp_max: 10,
-            order: "hunt civilian".to_string(),
+            order: "deploy lounge".to_string(),
             order_panel: "party-order:sprite".to_string(),
             inventory: Vec::new(),
             equipped_items: Vec::new(),
@@ -622,34 +559,30 @@ mod tests {
 
         let panels = build_party_order_panels(&content, &state, &members);
         let main_options = &panels["party-order:sprite"];
-        let hunt_opt = main_options.iter().find(|o| o.id == "hunt").unwrap();
-        assert!(hunt_opt.selected);
-        assert!(!hunt_opt.disabled);
-        assert_eq!(hunt_opt.panel.as_deref(), Some("party-order-hunt:sprite"));
-        assert_eq!(hunt_opt.command, None);
-
-        let hunt_subpanel = &panels["party-order-hunt:sprite"];
-        assert_eq!(hunt_subpanel.len(), 2);
-
-        let raider_opt = hunt_subpanel
-            .iter()
-            .find(|o| o.id == "wolf_raider")
-            .unwrap();
-        assert_eq!(raider_opt.title, "Wolf Raider");
+        let deploy_opt = main_options.iter().find(|o| o.id == "deploy").unwrap();
+        assert!(deploy_opt.selected);
+        assert!(!deploy_opt.disabled);
         assert_eq!(
-            raider_opt.command.as_deref(),
-            Some("order sprite hunt wolf_raider")
+            deploy_opt.panel.as_deref(),
+            Some("party-order-deploy:sprite")
         );
-        assert!(!raider_opt.selected);
+        assert_eq!(deploy_opt.command, None);
 
-        let civ_opt = hunt_subpanel.iter().find(|o| o.id == "civilian").unwrap();
-        assert_eq!(civ_opt.title, "Civilians");
+        let deploy_subpanel = &panels["party-order-deploy:sprite"];
+        assert_eq!(deploy_subpanel.len(), 2);
+
+        let lounge_opt = deploy_subpanel.iter().find(|o| o.id == "lounge").unwrap();
         assert_eq!(
-            civ_opt.command.as_deref(),
-            Some("order sprite hunt civilian")
+            lounge_opt.command.as_deref(),
+            Some("order sprite deploy lounge")
         );
-        assert!(civ_opt.selected);
-        assert!(civ_opt.disabled);
+        assert!(lounge_opt.selected);
+        assert!(lounge_opt.disabled);
+
+        let kitchen_opt = deploy_subpanel.iter().find(|o| o.id == "kitchen").unwrap();
+        assert_eq!(kitchen_opt.title, "The Kitchen");
+        assert_eq!(kitchen_opt.subtitle.as_deref(), Some("Current room"));
+        assert!(!kitchen_opt.selected);
     }
 
     #[test]

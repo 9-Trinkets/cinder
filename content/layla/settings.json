@@ -95,19 +95,19 @@
       "guard",
       "follow",
       "patrol",
-      "hunt"
+      "deploy"
     ],
     "initial_orders": {
       "golem-dark-nw": "follow",
       "golem-dark-sw": "follow",
       "golem-pale-ne": "follow",
       "golem-pale-se": "follow",
-      "frost_wolf_raider": "hunt civilian",
-      "iron_ram_mauler": "hunt civilian",
-      "frost_leopard_hunter": "hunt civilian",
-      "lord_vane": "hunt civilian",
-      "warmaster_torin": "hunt civilian",
-      "lady_sylvan": "hunt civilian"
+      "frost_wolf_raider": "deploy courtyard_center",
+      "iron_ram_mauler": "deploy courtyard_center",
+      "frost_leopard_hunter": "deploy courtyard_center",
+      "lord_vane": "deploy courtyard_center",
+      "warmaster_torin": "deploy courtyard_center",
+      "lady_sylvan": "deploy courtyard_center"
     }
   },
   "surround_rule": {

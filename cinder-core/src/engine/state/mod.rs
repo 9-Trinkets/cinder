@@ -94,6 +94,8 @@ pub struct WorldState {
     pub story_vars: VariableStore,
     #[serde(default)]
     pub stage_started_minutes: BTreeMap<String, u32>,
+    #[serde(default)]
+    pub player_recent_room_ids: Vec<String>,
     pub actor_known_room_ids: BTreeMap<String, BTreeSet<String>>,
     pub actor_observed_room_ids: BTreeMap<String, BTreeSet<String>>,
     pub actor_known_feature_ids: BTreeMap<String, BTreeSet<String>>,
@@ -326,7 +328,7 @@ impl WorldState {
         }
         Self {
             state_version: WORLD_STATE_VERSION,
-            current_room_id: start_room_id,
+            current_room_id: start_room_id.clone(),
             player_actor_id: content.settings.combat.player_actor_id.clone(),
             turn_number: 0,
             current_time_minutes: content.opening.start_time_minutes,
@@ -357,6 +359,7 @@ impl WorldState {
                 .iter()
                 .map(|stage_id| (stage_id.clone(), content.opening.start_time_minutes))
                 .collect(),
+            player_recent_room_ids: vec![start_room_id.clone()],
             actor_known_room_ids,
             actor_observed_room_ids: BTreeMap::new(),
             actor_known_feature_ids: BTreeMap::new(),

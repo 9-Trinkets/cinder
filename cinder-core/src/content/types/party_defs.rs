@@ -211,7 +211,7 @@ mod tests {
             directives: vec!["guard".to_string(), "follow".to_string()],
             initial_orders: BTreeMap::from([
                 ("a".to_string(), "assist".to_string()),
-                ("b".to_string(), "hunt civilian".to_string()),
+                ("b".to_string(), "deploy courtyard_center".to_string()),
             ]),
             combat_rules: vec![PartyCombatDecisionRule {
                 id: "r".to_string(),
@@ -236,7 +236,7 @@ mod tests {
         };
         assert_eq!(
             policy.directives(),
-            vec!["guard", "follow", "assist", "hunt", "rally"]
+            vec!["guard", "follow", "assist", "deploy", "rally"]
         );
     }
 }

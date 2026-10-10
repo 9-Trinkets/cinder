@@ -7,11 +7,11 @@ import { titleize } from '../utils/text'
 const orderLabel = (order: string) => {
   const known: Record<string, string> = { guard: 'Guarding', follow: 'Following', patrol: 'Patrolling' }
   if (known[order]) return known[order]
-  if (order.startsWith('hunt ') || order.startsWith('hunt:')) {
-    const target = order.slice(5).trim()
-    return target ? `Hunting ${titleize(target)}` : 'Hunting'
+  if (order.startsWith('deploy ') || order.startsWith('deploy:')) {
+    const target = order.replace(/^deploy[:\s]+/, '').trim()
+    return target ? `Deploying to ${titleize(target)}` : 'Deployed'
   }
-  if (order === 'hunt') return 'Hunting'
+  if (order === 'deploy') return 'Deployed'
   return `Order: ${order}`
 }
 

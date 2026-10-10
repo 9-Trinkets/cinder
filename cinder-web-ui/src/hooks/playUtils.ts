@@ -12,13 +12,13 @@ export function findPanelConfig(
     uiSnapshot?.action_bar_actions.find(a => a.panel === panelName)?.panel_config ??
     uiSnapshot?.overflow_actions.find(a => a.panel === panelName)?.panel_config
   if (configured) return configured
-  if (panelName.startsWith('party-order-hunt:')) {
-    const actorId = panelName.slice('party-order-hunt:'.length)
-    const huntMember = uiSnapshot?.party.find(item => item.id === actorId)
-    const label = huntMember ? huntMember.label : 'Companion'
+  if (panelName.startsWith('party-order-deploy:')) {
+    const actorId = panelName.slice('party-order-deploy:'.length)
+    const deployMember = uiSnapshot?.party.find(item => item.id === actorId)
+    const label = deployMember ? deployMember.label : 'Companion'
     return {
-      title: `Hunt Target — ${label}`,
-      prompt: 'Choose a target for this companion to seek and engage.',
+      title: `Deploy Destination — ${label}`,
+      prompt: 'Choose a destination room for this companion to hold.',
       data_source: 'actors_in_room',
       on_select: 'execute_command',
     }
