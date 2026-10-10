@@ -54,6 +54,7 @@ pub fn reaction_pack(
     pack.settings.combat.defense_stat_id = "hunger".to_string();
     pack.settings.combat.minimum_damage = 1;
     pack.settings.party = PartyPolicyDefinition {
+        directives: Vec::new(),
         initial_orders,
         combat_rules: rules,
     };

@@ -13,6 +13,7 @@
   "party.order_follow_assigned": "{actor} is now following you.",
   "party.order_follow_recalled": "{actor} returns to your side and falls in.",
   "party.order_patrol_assigned": "{actor} is now patrolling.",
+  "party.order_hunt_assigned": "{actor} is now hunting.",
   "party.order_member_unavailable": "That party member is not available here.",
   "party.order_member_ambiguous": "That party member name is ambiguous.",
   "party.give_success": "You give the {item} to {actor}.",

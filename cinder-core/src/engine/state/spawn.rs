@@ -49,6 +49,7 @@ impl WorldState {
             self.actor_equipment.remove(actor_id);
             self.relationships.remove(actor_id);
             self.party_orders.remove(actor_id);
+            self.followed_actors.remove(actor_id);
             self.next_hostile_strike_at.remove(actor_id);
         }
         actor_ids.len()

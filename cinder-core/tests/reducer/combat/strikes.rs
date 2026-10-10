@@ -249,6 +249,7 @@ fn hostile_strike_against_guard_takes_at_least_minimum_damage() {
     salamander.attack_kind = "fire".to_string();
     pack.actors.push(salamander);
     pack.settings.party = PartyPolicyDefinition {
+        directives: Vec::new(),
         initial_orders: BTreeMap::from([("bodyguard".to_string(), "guard".to_string())]),
         combat_rules: vec![PartyCombatDecisionRule {
             id: "defender-intercepts".to_string(),

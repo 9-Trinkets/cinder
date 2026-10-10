@@ -320,6 +320,8 @@ pub struct ActorSpawnScheduleDefinition {
     pub rout_on_stop: bool,
     #[serde(default)]
     pub rout_message: String,
+    #[serde(default)]
+    pub party_order: Option<String>,
 }
 
 fn default_actor_spawn_batch_size() -> usize {

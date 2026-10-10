@@ -358,7 +358,8 @@ fn dispatch_actor_spawns_for_stage(
         .filter(|actor_id| actor_id.starts_with(&instance_prefix))
         .count();
 
-    for _ in dispatched_count..due_count {
+    let mut current_batch_leader: Option<String> = None;
+    for i in dispatched_count..due_count {
         match state.spawn_actor(
             content,
             SpawnActorConfig {
@@ -371,7 +372,32 @@ fn dispatch_actor_spawns_for_stage(
                 max_active_instances: None,
             },
         ) {
-            SpawnActorOutcome::Success(_) => {}
+            SpawnActorOutcome::Success(info) => {
+                if let Some(party_order) = &schedule.party_order {
+                    let batch_size = schedule.batch_size.max(1);
+                    if i % batch_size == 0 {
+                        current_batch_leader = Some(info.instance_id.clone());
+                        state
+                            .party_orders
+                            .insert(info.instance_id, party_order.clone());
+                    } else {
+                        let leader_id = current_batch_leader.clone().or_else(|| {
+                            let batch_start = (i / batch_size) * batch_size + 1;
+                            let candidate = format!("{}-{batch_start}", schedule.template_id);
+                            state
+                                .spawned_actors
+                                .contains_key(&candidate)
+                                .then_some(candidate)
+                        });
+                        if let Some(leader) = leader_id {
+                            state
+                                .party_orders
+                                .insert(info.instance_id.clone(), "follow".to_string());
+                            state.set_followed_actor(&info.instance_id, Some(&leader));
+                        }
+                    }
+                }
+            }
             SpawnActorOutcome::CapacityExceeded { .. } | SpawnActorOutcome::TemplateNotFound => {
                 break;
             }

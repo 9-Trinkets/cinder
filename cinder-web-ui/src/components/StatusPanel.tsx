@@ -6,7 +6,13 @@ import { titleize } from '../utils/text'
 
 const orderLabel = (order: string) => {
   const known: Record<string, string> = { guard: 'Guarding', follow: 'Following', patrol: 'Patrolling' }
-  return known[order] ?? `Order: ${order}`
+  if (known[order]) return known[order]
+  if (order.startsWith('hunt ') || order.startsWith('hunt:')) {
+    const target = order.slice(5).trim()
+    return target ? `Hunting ${titleize(target)}` : 'Hunting'
+  }
+  if (order === 'hunt') return 'Hunting'
+  return `Order: ${order}`
 }
 
 const skillKindClasses: Record<api.SkillKind, string> = {

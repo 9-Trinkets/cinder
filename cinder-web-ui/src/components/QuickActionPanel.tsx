@@ -39,6 +39,8 @@ const QuickActionPanel = memo(function QuickActionPanel({
   const genericOptions = uiSnapshot.panel_options?.[panel] ?? []
 
   const isGiveStep2 = panel === 'give' && selectedGiveItem !== null
+  const isHuntSubpanel = panel.startsWith('party-order-hunt:')
+  const huntMemberId = isHuntSubpanel ? panel.slice('party-order-hunt:'.length) : null
 
   const title = isGiveStep2
     ? `Give ${titleize(selectedGiveItem.title)}`
@@ -69,6 +71,16 @@ const QuickActionPanel = memo(function QuickActionPanel({
                 onClick={() => setSelectedGiveItem(null)}
                 className="text-xs text-muted hover:text-text px-2 py-0.5 rounded-md border border-subtle hover:border-muted cursor-pointer transition-colors"
                 title="Choose a different item"
+              >
+                &larr; Back
+              </button>
+            )}
+            {isHuntSubpanel && (
+              <button
+                type="button"
+                onClick={() => onSelectOption(panel, { id: 'back', title: 'Back', panel: `party-order:${huntMemberId}` })}
+                className="text-xs text-muted hover:text-text px-2 py-0.5 rounded-md border border-subtle hover:border-muted cursor-pointer transition-colors"
+                title="Back to orders"
               >
                 &larr; Back
               </button>

@@ -24,6 +24,7 @@ pub(crate) fn build_equipment_panel_options(
             disabled: false,
             selected: false,
             group: None,
+            panel: None,
         });
     }
 
@@ -60,6 +61,7 @@ pub(crate) fn build_equipment_panel_options(
             disabled: false,
             selected: false,
             group: None,
+            panel: None,
         });
     }
 

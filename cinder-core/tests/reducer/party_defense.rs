@@ -18,6 +18,7 @@ fn guard_order_makes_defender_the_direct_target_without_spending_reaction_cooldo
     pack.settings.combat.attack_stat_id = "confidence".to_string();
     pack.settings.combat.defense_stat_id = "hunger".to_string();
     pack.settings.party = PartyPolicyDefinition {
+        directives: Vec::new(),
         initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), "guard".to_string())]),
         combat_rules: vec![PartyCombatDecisionRule {
             id: "defender-intercepts".to_string(),
@@ -71,6 +72,7 @@ fn direct_guard_targeting_does_not_depend_on_reaction_readiness() {
     pack.settings.combat.attack_stat_id = "confidence".to_string();
     pack.settings.combat.defense_stat_id = "hunger".to_string();
     pack.settings.party = PartyPolicyDefinition {
+        directives: Vec::new(),
         initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), "guard".to_string())]),
         combat_rules: vec![PartyCombatDecisionRule {
             id: "defender-intercepts".to_string(),
@@ -120,6 +122,7 @@ fn follower_intercepts_strike_when_player_health_is_low() {
     pack.settings.combat.attack_stat_id = "confidence".to_string();
     pack.settings.combat.defense_stat_id = "hunger".to_string();
     pack.settings.party = PartyPolicyDefinition {
+        directives: Vec::new(),
         initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), "follow".to_string())]),
         combat_rules: vec![
             PartyCombatDecisionRule {
@@ -222,6 +225,7 @@ fn follower_intercepts_strike_when_player_health_is_low() {
 /// Builds the same follow-protect-player policy the Layla pack ships.
 fn intercept_policy() -> cinder_core::content::types::PartyPolicyDefinition {
     PartyPolicyDefinition {
+        directives: Vec::new(),
         initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), "follow".to_string())]),
         combat_rules: vec![PartyCombatDecisionRule {
             id: "follow-protect-player".to_string(),

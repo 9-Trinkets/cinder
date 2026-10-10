@@ -132,4 +132,57 @@ pub(super) fn apply_actor_move_transition(
         ),
     ));
     lines.extend_lines(advance_house_progress_objectives(state, content));
+    sync_followers_of_actor(
+        state,
+        content,
+        movement.actor_id,
+        movement.from_room_id,
+        movement.to_room_id,
+        lines,
+    );
+}
+
+fn sync_followers_of_actor(
+    state: &mut WorldState,
+    content: &ContentPack,
+    leader_id: &str,
+    from_room_id: &str,
+    to_room_id: &str,
+    lines: &mut NarrativeLines,
+) {
+    let followers = state.followers_of(leader_id);
+    let health_stat_id = if content.settings.combat.health_stat_id.is_empty() {
+        "hp"
+    } else {
+        &content.settings.combat.health_stat_id
+    };
+    for follower_id in followers {
+        if state.actor_is_offstage(content, &follower_id) {
+            continue;
+        }
+        if state.actor_is_defeated(&follower_id, health_stat_id) {
+            continue;
+        }
+        let follower_room = state.actor_current_room_id(content, &follower_id);
+        if follower_room != from_room_id {
+            continue;
+        }
+        state.mark_actor_room_visited(&follower_id, to_room_id);
+        state
+            .actor_room_overrides
+            .insert(follower_id.clone(), to_room_id.to_string());
+        lines.extend_lines(advance_objective_for_signal(
+            state,
+            content,
+            &format!("actor_entered:{follower_id}:{to_room_id}"),
+        ));
+        sync_followers_of_actor(
+            state,
+            content,
+            &follower_id,
+            from_room_id,
+            to_room_id,
+            lines,
+        );
+    }
 }

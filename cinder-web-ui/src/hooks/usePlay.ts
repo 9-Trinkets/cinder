@@ -293,6 +293,10 @@ export function usePlay() {
   }
 
   function handleSelectPanelOption(panelName: string, option: api.PanelOptionData) {
+    if (option.panel) {
+      setQuickPanel(option.panel)
+      return
+    }
     const config = getPanelConfig(panelName)
     setQuickPanel(null)
     if (!config) {

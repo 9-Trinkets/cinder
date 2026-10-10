@@ -425,6 +425,7 @@ fn items_section_orders_take_give_drop() {
         disabled: false,
         selected: false,
         group: None,
+        panel: None,
     }];
     let drop_opts = build_drop_panel_options(&content, &state);
     let runtime = CinderRuntime::new(content.clone(), false).unwrap();

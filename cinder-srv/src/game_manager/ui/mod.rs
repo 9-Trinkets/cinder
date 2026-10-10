@@ -131,7 +131,7 @@ pub(super) fn build_ui_snapshot(
         .collect();
     let overflow_actions = build_overflow_actions(runtime, content, &state, &bar_ids, &panels)?;
     let mut panel_options = build_panel_options(runtime, content, &state, panels)?;
-    panel_options.extend(sidebar::build_party_order_panels(content, &party));
+    panel_options.extend(sidebar::build_party_order_panels(content, &state, &party));
 
     Ok(UiSnapshot {
         pack_id: pack_id.to_string(),

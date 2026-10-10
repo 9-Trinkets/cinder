@@ -5,7 +5,7 @@ use cinder_core::engine::state::{ActorStance, WorldState};
 use super::{
     EquippedItem, InventoryItem, PanelOptionData, PartyMember, PartySkill, PlayerStatus, StatValue,
 };
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 /// The player's progress toward the next level. XP/level are per-actor now:
 /// `actor_xp` holds progress toward the *next* level (reset past each
@@ -173,30 +173,149 @@ pub(super) fn build_party_members(
     members
 }
 
+struct HuntTargetInfo {
+    id: String,
+    title: String,
+    subtitle: Option<String>,
+}
+
+fn build_hunt_targets_for_floor(content: &ContentPack, state: &WorldState) -> Vec<HuntTargetInfo> {
+    let floor_rooms = content.reachable_room_ids(&state.current_room_id);
+    let player_id = &content.settings.combat.player_actor_id;
+    let health_stat_id = if content.settings.combat.health_stat_id.is_empty() {
+        "hp"
+    } else {
+        &content.settings.combat.health_stat_id
+    };
+
+    let mut seen_ids = BTreeSet::new();
+    let mut targets = Vec::new();
+    let mut civilian_count = 0usize;
+
+    for actor in state.onstage_actors(content) {
+        if actor.id == *player_id {
+            continue;
+        }
+        if state.actor_is_defeated(&actor.id, health_stat_id) {
+            continue;
+        }
+        if state.follows_player(&actor.id)
+            || state
+                .relationships
+                .get(&actor.id)
+                .is_some_and(|r| r.follows_player || r.stance == ActorStance::Allied)
+        {
+            continue;
+        }
+
+        let actor_room = state.actor_room_id(&actor.id, &actor.room_id);
+        if !floor_rooms.contains(actor_room) {
+            continue;
+        }
+
+        let in_player_room = actor_room == state.current_room_id;
+        let visited_actor_room = state.actor_has_visited_room(player_id, actor_room);
+        let visited_home_room =
+            !actor.room_id.is_empty() && state.actor_has_visited_room(player_id, &actor.room_id);
+        let studied_actor = state.actor_has_studied_actor(player_id, &actor.id);
+        let studied_template = actor
+            .id
+            .split_once('-')
+            .map(|(prefix, _)| prefix)
+            .is_some_and(|prefix| state.actor_has_studied_actor(player_id, prefix));
+
+        let encountered = in_player_room
+            || visited_actor_room
+            || visited_home_room
+            || studied_actor
+            || studied_template;
+        if !encountered {
+            continue;
+        }
+
+        if actor
+            .tags
+            .iter()
+            .any(|t| t.eq_ignore_ascii_case("civilian"))
+        {
+            civilian_count += 1;
+            continue;
+        }
+
+        let base_id = actor
+            .id
+            .split_once('-')
+            .map(|(prefix, _)| prefix)
+            .unwrap_or(&actor.id);
+
+        if seen_ids.insert(base_id.to_string()) {
+            let title = content
+                .actor(base_id)
+                .map(|t| t.name.clone())
+                .unwrap_or_else(|| actor.name.clone());
+            targets.push(HuntTargetInfo {
+                id: base_id.to_string(),
+                title,
+                subtitle: None,
+            });
+        }
+    }
+
+    targets.sort_by(|a, b| a.title.cmp(&b.title));
+
+    if civilian_count > 0 && seen_ids.insert("civilian".to_string()) {
+        targets.push(HuntTargetInfo {
+            id: "civilian".to_string(),
+            title: "Civilians".to_string(),
+            subtitle: Some("Courtyard refugees".to_string()),
+        });
+    }
+
+    targets
+}
+
 pub(super) fn build_party_order_panels(
     content: &ContentPack,
+    state: &WorldState,
     members: &[PartyMember],
 ) -> BTreeMap<String, Vec<PanelOptionData>> {
     let directives = content.settings.party.directives();
-    members
-        .iter()
-        .map(|member| {
-            let options = directives
-                .iter()
-                .map(|directive| {
-                    let title = content
-                        .render_message(&format!("party.directive.{directive}.title"), &[])
-                        .unwrap_or_else(|| {
-                            let mut chars = directive.chars();
-                            match chars.next() {
-                                Some(first) => {
-                                    first.to_uppercase().collect::<String>() + chars.as_str()
-                                }
-                                None => directive.clone(),
+    let hunt_targets = build_hunt_targets_for_floor(content, state);
+    let mut panels = BTreeMap::new();
+
+    for member in members {
+        let options = directives
+            .iter()
+            .map(|directive| {
+                let title = content
+                    .render_message(&format!("party.directive.{directive}.title"), &[])
+                    .unwrap_or_else(|| {
+                        let mut chars = directive.chars();
+                        match chars.next() {
+                            Some(first) => {
+                                first.to_uppercase().collect::<String>() + chars.as_str()
                             }
-                        });
-                    let subtitle = content
-                        .render_message(&format!("party.directive.{directive}.subtitle"), &[]);
+                            None => directive.clone(),
+                        }
+                    });
+                let subtitle =
+                    content.render_message(&format!("party.directive.{directive}.subtitle"), &[]);
+
+                if directive == "hunt" {
+                    let is_hunting = member.order == "hunt"
+                        || member.order.starts_with("hunt ")
+                        || member.order.starts_with("hunt:");
+                    PanelOptionData {
+                        id: "hunt".to_string(),
+                        title,
+                        subtitle,
+                        command: None,
+                        disabled: false,
+                        selected: is_hunting,
+                        group: None,
+                        panel: Some(format!("party-order-hunt:{}", member.id)),
+                    }
+                } else {
                     let selected = member.order == *directive;
                     PanelOptionData {
                         id: directive.clone(),
@@ -206,12 +325,48 @@ pub(super) fn build_party_order_panels(
                         disabled: selected,
                         selected,
                         group: None,
+                        panel: None,
+                    }
+                }
+            })
+            .collect();
+        panels.insert(member.order_panel.clone(), options);
+
+        let hunt_panel_id = format!("party-order-hunt:{}", member.id);
+        let hunt_options: Vec<PanelOptionData> = if hunt_targets.is_empty() {
+            vec![PanelOptionData {
+                id: "none".to_string(),
+                title: "No targets encountered".to_string(),
+                subtitle: Some("Explore the floor to encounter targets".to_string()),
+                command: None,
+                disabled: true,
+                selected: false,
+                group: None,
+                panel: None,
+            }]
+        } else {
+            hunt_targets
+                .iter()
+                .map(|target| {
+                    let is_selected = member.order == format!("hunt {}", target.id)
+                        || member.order == format!("hunt:{}", target.id);
+                    PanelOptionData {
+                        id: target.id.clone(),
+                        title: target.title.clone(),
+                        subtitle: target.subtitle.clone(),
+                        command: Some(format!("order {} hunt {}", member.id, target.id)),
+                        disabled: is_selected,
+                        selected: is_selected,
+                        group: None,
+                        panel: None,
                     }
                 })
-                .collect();
-            (member.order_panel.clone(), options)
-        })
-        .collect()
+                .collect()
+        };
+        panels.insert(hunt_panel_id, hunt_options);
+    }
+
+    panels
 }
 
 fn living_follower_ids(state: &WorldState, content: &ContentPack) -> Vec<String> {
@@ -403,7 +558,8 @@ mod tests {
             in_room: true,
         }];
 
-        let panels = build_party_order_panels(&content, &members);
+        let state = WorldState::new(&content);
+        let panels = build_party_order_panels(&content, &state, &members);
         let options = &panels["party-order:dark-golem-2"];
 
         assert_eq!(options[0].id, "follow");
@@ -414,6 +570,86 @@ mod tests {
         assert_eq!(options[1].id, "guard");
         assert!(options[1].selected);
         assert!(options[1].disabled);
+    }
+
+    #[test]
+    fn party_order_hunt_creates_subpanel_with_encountered_targets() {
+        let mut content = minimal_test_pack();
+        let player_id = content.settings.combat.player_actor_id.clone();
+        content.actors.retain(|a| a.id == player_id);
+        content.settings.party.directives = vec!["guard".to_string(), "hunt".to_string()];
+
+        let mut enemy = minimal_test_pack().actors[0].clone();
+        enemy.id = "wolf_raider".to_string();
+        enemy.name = "Wolf Raider".to_string();
+        enemy.room_id = "lounge".to_string();
+        enemy.tags = Vec::new();
+
+        let mut civ = minimal_test_pack().actors[0].clone();
+        civ.id = "refugee_bob".to_string();
+        civ.name = "Refugee Bob".to_string();
+        civ.room_id = "lounge".to_string();
+        civ.tags = vec!["civilian".to_string()];
+
+        content.actors.push(enemy);
+        content.actors.push(civ);
+        cinder_core::engine::test_fixtures::rebuild_test_pack_indexes(&mut content);
+
+        let mut state = WorldState::new(&content);
+        state.current_room_id = "lounge".to_string();
+        // Spawned raider instance
+        let mut raider_inst = content.actor("wolf_raider").unwrap().clone();
+        raider_inst.id = "wolf_raider-1".to_string();
+        state
+            .spawned_actors
+            .insert(raider_inst.id.clone(), raider_inst);
+        state.set_actor_room("wolf_raider-1", "lounge");
+        state.set_actor_room("refugee_bob", "lounge");
+
+        let members = vec![PartyMember {
+            id: "sprite".to_string(),
+            label: "Sprite".to_string(),
+            level: 1,
+            hp: 10,
+            hp_max: 10,
+            order: "hunt civilian".to_string(),
+            order_panel: "party-order:sprite".to_string(),
+            inventory: Vec::new(),
+            equipped_items: Vec::new(),
+            skills: Vec::new(),
+            in_room: true,
+        }];
+
+        let panels = build_party_order_panels(&content, &state, &members);
+        let main_options = &panels["party-order:sprite"];
+        let hunt_opt = main_options.iter().find(|o| o.id == "hunt").unwrap();
+        assert!(hunt_opt.selected);
+        assert!(!hunt_opt.disabled);
+        assert_eq!(hunt_opt.panel.as_deref(), Some("party-order-hunt:sprite"));
+        assert_eq!(hunt_opt.command, None);
+
+        let hunt_subpanel = &panels["party-order-hunt:sprite"];
+        assert_eq!(hunt_subpanel.len(), 2);
+
+        let raider_opt = hunt_subpanel
+            .iter()
+            .find(|o| o.id == "wolf_raider")
+            .unwrap();
+        assert_eq!(raider_opt.title, "Wolf Raider");
+        assert_eq!(
+            raider_opt.command.as_deref(),
+            Some("order sprite hunt wolf_raider")
+        );
+        assert!(!raider_opt.selected);
+
+        let civ_opt = hunt_subpanel.iter().find(|o| o.id == "civilian").unwrap();
+        assert_eq!(civ_opt.title, "Civilians");
+        assert_eq!(
+            civ_opt.command.as_deref(),
+            Some("order sprite hunt civilian")
+        );
+        assert!(civ_opt.selected);
+        assert!(civ_opt.disabled);
     }
 
     #[test]

@@ -14,10 +14,10 @@ use std::sync::Arc;
 use crate::content::types::ActorMovementRulesDefinition;
 use crate::engine::actor_turn::movement::required_movement_target_room_id;
 
-pub(crate) use pathfinding::next_room_toward;
+pub(crate) use pathfinding::{next_room_toward, path_distance};
 pub(crate) use strategies::{
-    ExitLabelStrategy, RandomAdjacentStrategy, StayStrategy, ToDestinationStrategy,
-    TowardPlayerStrategy,
+    ExitLabelStrategy, HuntStrategy, RandomAdjacentStrategy, StayStrategy, ToDestinationStrategy,
+    TowardPlayerStrategy, find_hunt_target_room_id,
 };
 
 /// Strategy defining movement destination selection and cadence for an actor.
@@ -83,6 +83,9 @@ impl MovementEligibilityPolicy for DefaultMovementEligibilityPolicy {
         if !is_hostile && !is_autonomous_ally {
             return false;
         }
+        if state.followed_actor(&actor.id).is_some() {
+            return false;
+        }
         if state.actor_stat(&actor.id, &content.settings.combat.health_stat_id) <= 0 {
             return false;
         }
@@ -120,9 +123,13 @@ impl MovementStrategyResolver for DefaultMovementStrategyResolver {
         state: &WorldState,
         actor_id: &str,
     ) -> Option<Box<dyn MovementStrategy>> {
+        if state.followed_actor(actor_id).is_some() {
+            return None;
+        }
         if let Some(order) = state.party_order(content, actor_id) {
-            return match order.to_ascii_lowercase().as_str() {
-                "guard" | "sentry" | "hold" => Some(Box::new(StayStrategy)),
+            let order_lower = order.to_ascii_lowercase();
+            return match order_lower.as_str() {
+                "guard" => Some(Box::new(StayStrategy)),
                 "patrol" => {
                     let authored = content
                         .movement
@@ -136,7 +143,19 @@ impl MovementStrategyResolver for DefaultMovementStrategyResolver {
                     }
                 }
                 "follow" => None,
-                _ => None,
+                _ => {
+                    if order_lower.starts_with("hunt") {
+                        let target = order
+                            .strip_prefix("hunt:")
+                            .or_else(|| order.strip_prefix("hunt "))
+                            .unwrap_or("")
+                            .trim()
+                            .to_string();
+                        Some(Box::new(HuntStrategy::new(1, target)))
+                    } else {
+                        None
+                    }
+                }
             };
         }
 
@@ -222,8 +241,22 @@ pub(crate) fn decide_movement(
     {
         return Ok(vec![]);
     }
-    let target_room_id = required_movement_target_room_id(state, rules, current_room_id)
-        .or_else(|| preferred_target_room_id.map(str::to_string));
+    if state.followed_actor(&actor.id).is_some() {
+        return Ok(vec![]);
+    }
+    let target_room_id = if let Some(order) = state.party_order(&content, &actor.id)
+        && (order.to_ascii_lowercase().starts_with("hunt") || order.to_ascii_lowercase() == "hunt")
+    {
+        let target = order
+            .strip_prefix("hunt:")
+            .or_else(|| order.strip_prefix("hunt "))
+            .unwrap_or("")
+            .trim();
+        find_hunt_target_room_id(&content, state, &actor.id, target)
+    } else {
+        required_movement_target_room_id(state, rules, current_room_id)
+            .or_else(|| preferred_target_room_id.map(str::to_string))
+    };
     let Some(target_room_id) = target_room_id else {
         return Ok(vec![]);
     };

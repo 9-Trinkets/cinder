@@ -336,6 +336,7 @@ mod tests {
         drew.room_id = "lounge".to_string();
         content.actors.push(drew);
         content.settings.party = PartyPolicyDefinition {
+            directives: Vec::new(),
             initial_orders: std::collections::BTreeMap::from([
                 ("casey".to_string(), "guard".to_string()),
                 ("drew".to_string(), "guard".to_string()),

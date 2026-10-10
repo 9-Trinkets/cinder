@@ -126,6 +126,9 @@ pub struct WorldState {
     /// Persistent Guard/Assist directive for each allied party member.
     #[serde(default)]
     pub party_orders: BTreeMap<String, crate::content::types::PartyOrderKind>,
+    /// Target actor that this actor is following (for non-player leaders, e.g. squad leader).
+    #[serde(default)]
+    pub followed_actors: BTreeMap<String, String>,
     /// Earliest game minute at which each party member may react again.
     #[serde(default)]
     pub party_reaction_ready_at: BTreeMap<String, u32>,
@@ -397,6 +400,7 @@ impl WorldState {
                 )
                 .collect(),
             party_orders: BTreeMap::new(),
+            followed_actors: BTreeMap::new(),
             party_reaction_ready_at: BTreeMap::new(),
             next_hostile_strike_at: BTreeMap::new(),
             equipment: content

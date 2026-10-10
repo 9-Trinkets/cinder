@@ -63,6 +63,28 @@ pub(in crate::engine::reducer) fn defeat_actor(
         &actor_name,
         lines,
     );
+    let followers = state.followers_of(actor_id);
+    let health_stat_id = if content.settings.combat.health_stat_id.is_empty() {
+        "hp"
+    } else {
+        &content.settings.combat.health_stat_id
+    };
+    let living_followers: Vec<String> = followers
+        .into_iter()
+        .filter(|id| {
+            !state.actor_is_defeated(id, health_stat_id) && !state.actor_is_offstage(content, id)
+        })
+        .collect();
+    if let Some((new_leader, rest)) = living_followers.split_first() {
+        if let Some(order) = state.party_orders.get(actor_id).cloned() {
+            state.party_orders.insert(new_leader.clone(), order);
+        }
+        state.set_followed_actor(new_leader, None);
+        for follower_id in rest {
+            state.set_followed_actor(follower_id, Some(new_leader));
+        }
+    }
+    state.set_followed_actor(actor_id, None);
     state.set_relationship(actor_id, ActorRelationship::default());
 }
 

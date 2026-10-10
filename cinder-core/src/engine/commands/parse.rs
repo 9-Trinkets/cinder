@@ -169,7 +169,22 @@ fn party_order_phrase(trimmed: &str) -> Option<(String, PartyOrderKind)> {
     if !trimmed.to_ascii_lowercase().starts_with("order ") {
         return None;
     }
-    let remainder = &trimmed["order ".len()..];
+    let remainder = trimmed["order ".len()..].trim();
+    let lower = remainder.to_ascii_lowercase();
+    if let Some(pos) = lower.find(" hunt") {
+        if pos > 0 && lower.as_bytes()[pos] == b' ' {
+            let actor_reference = remainder[..pos].trim();
+            let after_hunt = remainder[pos + " hunt".len()..].trim();
+            let order = if after_hunt.is_empty() {
+                "hunt".to_string()
+            } else {
+                format!("hunt {after_hunt}")
+            };
+            if !actor_reference.is_empty() {
+                return Some((actor_reference.to_string(), order));
+            }
+        }
+    }
     let (actor_reference, order) = remainder.rsplit_once(' ')?;
     let order = order.trim().to_ascii_lowercase();
     if order.is_empty() {

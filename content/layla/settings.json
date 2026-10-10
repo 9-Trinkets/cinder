@@ -91,11 +91,23 @@
     }
   },
   "party": {
+    "directives": [
+      "guard",
+      "follow",
+      "patrol",
+      "hunt"
+    ],
     "initial_orders": {
       "golem-dark-nw": "follow",
       "golem-dark-sw": "follow",
       "golem-pale-ne": "follow",
-      "golem-pale-se": "follow"
+      "golem-pale-se": "follow",
+      "frost_wolf_raider": "hunt civilian",
+      "iron_ram_mauler": "hunt civilian",
+      "frost_leopard_hunter": "hunt civilian",
+      "lord_vane": "hunt civilian",
+      "warmaster_torin": "hunt civilian",
+      "lady_sylvan": "hunt civilian"
     }
   },
   "surround_rule": {

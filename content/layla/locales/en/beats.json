@@ -642,7 +642,8 @@
         "total_count": 30,
         "stop_story_var": "frost_wolf_lane_stopped",
         "rout_on_stop": true,
-        "rout_message": "siege.frost_wolf_rout"
+        "rout_message": "siege.frost_wolf_rout",
+        "party_order": "hunt civilian"
       },
       "advance_signals": [
         "stage_elapsed:90"
@@ -661,7 +662,8 @@
         "total_count": 30,
         "stop_story_var": "iron_ram_lane_stopped",
         "rout_on_stop": true,
-        "rout_message": "siege.iron_ram_rout"
+        "rout_message": "siege.iron_ram_rout",
+        "party_order": "hunt civilian"
       },
       "advance_signals": [
         "stage_elapsed:90"
@@ -680,7 +682,8 @@
         "total_count": 30,
         "stop_story_var": "frost_leopard_lane_stopped",
         "rout_on_stop": true,
-        "rout_message": "siege.frost_leopard_rout"
+        "rout_message": "siege.frost_leopard_rout",
+        "party_order": "hunt civilian"
       },
       "advance_signals": [
         "stage_elapsed:90"
@@ -698,7 +701,8 @@
         "interval_minutes": 10,
         "total_count": 1,
         "stop_story_var": "frost_wolf_lane_stopped",
-        "rout_on_stop": false
+        "rout_on_stop": false,
+        "party_order": "hunt civilian"
       },
       "advance_signals": [],
       "next_stage_ids": []
@@ -714,7 +718,8 @@
         "interval_minutes": 10,
         "total_count": 1,
         "stop_story_var": "iron_ram_lane_stopped",
-        "rout_on_stop": false
+        "rout_on_stop": false,
+        "party_order": "hunt civilian"
       },
       "advance_signals": [],
       "next_stage_ids": []
@@ -730,7 +735,8 @@
         "interval_minutes": 10,
         "total_count": 1,
         "stop_story_var": "frost_leopard_lane_stopped",
-        "rout_on_stop": false
+        "rout_on_stop": false,
+        "party_order": "hunt civilian"
       },
       "advance_signals": [],
       "next_stage_ids": []

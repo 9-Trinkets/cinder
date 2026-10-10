@@ -24,6 +24,15 @@ impl WorldState {
             .cloned()
             .or_else(|| content.settings.party.initial_orders.get(actor_id).cloned())
             .or_else(|| {
+                let template_id = actor_id.split_once('-').map(|(t, _)| t).unwrap_or(actor_id);
+                content
+                    .settings
+                    .party
+                    .initial_orders
+                    .get(template_id)
+                    .cloned()
+            })
+            .or_else(|| {
                 if self.stance(actor_id) == ActorStance::Allied
                     && !content.is_player_actor(actor_id)
                 {
@@ -42,12 +51,11 @@ impl WorldState {
     ) -> Result<(), String> {
         let actor_id = remap_story_actor_id(self, actor_id).to_string();
         validate_party_member(content, self, &actor_id)?;
-        let follows = !matches!(
-            order.to_ascii_lowercase().as_str(),
-            "guard" | "patrol" | "sentry" | "hold"
-        );
+        let follows = !matches!(order.to_ascii_lowercase().as_str(), "guard" | "patrol")
+            && !order.to_ascii_lowercase().starts_with("hunt");
         self.party_orders.insert(actor_id.clone(), order);
         self.set_follows_player(&actor_id, follows);
+        self.set_followed_actor(&actor_id, None);
         Ok(())
     }
 
@@ -63,10 +71,8 @@ impl WorldState {
             .get(&actor_id)
             .cloned()
             .unwrap_or_else(|| "follow".to_string());
-        if !matches!(
-            order.to_ascii_lowercase().as_str(),
-            "guard" | "patrol" | "sentry" | "hold"
-        ) && self.stance(&actor_id) == ActorStance::Allied
+        if !matches!(order.to_ascii_lowercase().as_str(), "guard" | "patrol")
+            && self.stance(&actor_id) == ActorStance::Allied
         {
             self.set_follows_player(&actor_id, true);
         }

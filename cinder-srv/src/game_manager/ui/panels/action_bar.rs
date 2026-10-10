@@ -70,6 +70,7 @@ pub(crate) fn build_action_bar_items(
                 disabled: false,
                 selected: false,
                 group: None,
+                panel: None,
             });
         }
         // Companion items
@@ -84,6 +85,7 @@ pub(crate) fn build_action_bar_items(
                     disabled: false,
                     selected: false,
                     group: None,
+                    panel: None,
                 });
             }
             for item in &member.equipped_items {
@@ -96,6 +98,7 @@ pub(crate) fn build_action_bar_items(
                     disabled: false,
                     selected: false,
                     group: None,
+                    panel: None,
                 });
             }
         }
@@ -128,6 +131,7 @@ pub(crate) fn build_action_bar_items(
                     disabled: false,
                     selected: false,
                     group: None,
+                    panel: None,
                 });
             }
 
@@ -176,6 +180,7 @@ pub(crate) fn build_drop_panel_options(
             disabled: false,
             selected: false,
             group: None,
+            panel: None,
         })
         .collect()
 }
@@ -223,6 +228,7 @@ pub(crate) fn build_use_panel_options(
                 disabled: false,
                 selected: false,
                 group: None,
+                panel: None,
             }
         })
         .collect()

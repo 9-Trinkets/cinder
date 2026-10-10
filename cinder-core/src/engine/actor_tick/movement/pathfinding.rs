@@ -41,3 +41,44 @@ pub(crate) fn next_room_toward(
     }
     None
 }
+
+/// BFS through reachable exits returning the distance from `current_room_id` to `target_room_id`.
+pub(crate) fn path_distance(
+    content: &ContentPack,
+    state: &WorldState,
+    current_room_id: &str,
+    target_room_id: &str,
+) -> Option<usize> {
+    if current_room_id.is_empty() || target_room_id.is_empty() {
+        return None;
+    }
+    if current_room_id == target_room_id {
+        return Some(0);
+    }
+    let mut queue = VecDeque::from([(current_room_id.to_string(), 0usize)]);
+    let mut visited = BTreeSet::from([current_room_id.to_string()]);
+
+    while let Some((room_id, dist)) = queue.pop_front() {
+        let Some(room) = content.room(&room_id) else {
+            continue;
+        };
+        for exit in &room.exits {
+            if !exit.requires_story_var.is_empty()
+                && !story_var_is_truthy(state, &exit.requires_story_var)
+            {
+                continue;
+            }
+            let is_target = exit.room_id == target_room_id;
+            if (!is_target && !content.room_is_reachable(&exit.room_id))
+                || !visited.insert(exit.room_id.clone())
+            {
+                continue;
+            }
+            if is_target {
+                return Some(dist + 1);
+            }
+            queue.push_back((exit.room_id.clone(), dist + 1));
+        }
+    }
+    None
+}

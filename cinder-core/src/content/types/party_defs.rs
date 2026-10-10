@@ -110,35 +110,54 @@ pub struct PartyCombatDecisionRule {
 /// defaults keep packs without controllable parties behavior-compatible.
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct PartyPolicyDefinition {
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub directives: Vec<String>,
     #[serde(default)]
     pub initial_orders: BTreeMap<String, PartyOrderKind>,
     #[serde(default)]
     pub combat_rules: Vec<PartyCombatDecisionRule>,
 }
 
+fn base_directive(s: &str) -> &str {
+    s.split(|c: char| c.is_whitespace() || c == ':')
+        .next()
+        .unwrap_or(s)
+}
+
 impl PartyPolicyDefinition {
-    /// The distinct directive ids this policy references, in sorted order:
-    /// every initial order plus every directive named by an `OrderIs`
-    /// condition. Used to build `order <member> <directive>` affordances.
+    /// The distinct directive ids this policy references: any author-defined
+    /// `directives`, plus every initial order and every directive named by an
+    /// `OrderIs` condition. Used to build `order <member> <directive>` affordances.
     pub fn directives(&self) -> Vec<String> {
         let mut seen = BTreeSet::new();
+        let mut result = Vec::new();
+        for d in &self.directives {
+            let base = base_directive(d);
+            if !base.is_empty() && seen.insert(base.to_string()) {
+                result.push(base.to_string());
+            }
+        }
+        let mut extra = BTreeSet::new();
         for directive in self.initial_orders.values() {
-            if !directive.is_empty() {
-                seen.insert(directive.clone());
+            let base = base_directive(directive);
+            if !base.is_empty() && !seen.contains(base) {
+                extra.insert(base.to_string());
             }
         }
         for rule in &self.combat_rules {
             for condition in &rule.conditions {
                 if let PartyDecisionCondition::OrderIs { orders } = condition {
                     for order in orders {
-                        if !order.is_empty() {
-                            seen.insert(order.clone());
+                        let base = base_directive(order);
+                        if !base.is_empty() && !seen.contains(base) {
+                            extra.insert(base.to_string());
                         }
                     }
                 }
             }
         }
-        seen.into_iter().collect()
+        result.extend(extra);
+        result
     }
 }
 
@@ -149,6 +168,7 @@ mod tests {
     #[test]
     fn party_orders_and_policy_round_trip_through_json() {
         let policy = PartyPolicyDefinition {
+            directives: Vec::new(),
             initial_orders: BTreeMap::from([("stone-guard".to_string(), "guard".to_string())]),
             combat_rules: vec![PartyCombatDecisionRule {
                 id: "guard-player".to_string(),
@@ -188,7 +208,11 @@ mod tests {
     #[test]
     fn directives_union_initial_orders_and_condition_orders() {
         let policy = PartyPolicyDefinition {
-            initial_orders: BTreeMap::from([("a".to_string(), "assist".to_string())]),
+            directives: vec!["guard".to_string(), "follow".to_string()],
+            initial_orders: BTreeMap::from([
+                ("a".to_string(), "assist".to_string()),
+                ("b".to_string(), "hunt civilian".to_string()),
+            ]),
             combat_rules: vec![PartyCombatDecisionRule {
                 id: "r".to_string(),
                 skill_id: "strike".to_string(),
@@ -200,7 +224,7 @@ mod tests {
                         orders: vec!["assist".to_string()],
                     },
                     PartyDecisionCondition::OrderIs {
-                        orders: vec!["rally".to_string()],
+                        orders: vec!["rally:charge".to_string()],
                     },
                 ],
                 target: PartyTargetSelection::Attacker,
@@ -210,6 +234,9 @@ mod tests {
                 message: "combat.counter".to_string(),
             }],
         };
-        assert_eq!(policy.directives(), vec!["assist", "rally"]);
+        assert_eq!(
+            policy.directives(),
+            vec!["guard", "follow", "assist", "hunt", "rally"]
+        );
     }
 }

@@ -45,6 +45,29 @@ impl WorldState {
         self.set_relationship(actor_id, relationship);
     }
 
+    pub fn followed_actor(&self, actor_id: &str) -> Option<&str> {
+        let actor_id = remap_story_actor_id(self, actor_id);
+        self.followed_actors.get(actor_id).map(String::as_str)
+    }
+
+    pub fn set_followed_actor(&mut self, actor_id: &str, followed_id: Option<&str>) {
+        let actor_id = remap_story_actor_id(self, actor_id).to_string();
+        if let Some(target) = followed_id {
+            self.followed_actors.insert(actor_id, target.to_string());
+        } else {
+            self.followed_actors.remove(&actor_id);
+        }
+    }
+
+    pub fn followers_of(&self, leader_id: &str) -> Vec<String> {
+        let leader_id = remap_story_actor_id(self, leader_id);
+        self.followed_actors
+            .iter()
+            .filter(|(_, target)| target.as_str() == leader_id)
+            .map(|(follower, _)| follower.clone())
+            .collect()
+    }
+
     /// Sets an actor's stance and follower state, and initializes party order if Allied.
     pub fn set_actor_stance(
         &mut self,

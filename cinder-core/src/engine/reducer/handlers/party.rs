@@ -20,6 +20,11 @@ pub(crate) fn handle_party_order_assigned(
     }
     let actor = actor_display_name(state, content, actor_id);
     let player_room = state.current_room_id.clone();
+    let base_order = if order.to_ascii_lowercase().starts_with("hunt") {
+        "hunt"
+    } else {
+        order.as_str()
+    };
     let key = if !was_in_room && (order == "guard" || order == "follow") {
         state.mark_actor_room_visited(actor_id, &player_room);
         state
@@ -29,12 +34,26 @@ pub(crate) fn handle_party_order_assigned(
         if content.message(&recall_key).is_some() {
             recall_key
         } else {
-            format!("party.order_{order}_assigned")
+            format!("party.order_{base_order}_assigned")
         }
     } else {
-        format!("party.order_{order}_assigned")
+        format!("party.order_{base_order}_assigned")
     };
-    push_message(lines, content, &key, &[("actor", actor.as_str())]);
+    let target = if order.to_ascii_lowercase().starts_with("hunt") {
+        order
+            .strip_prefix("hunt:")
+            .or_else(|| order.strip_prefix("hunt "))
+            .unwrap_or("")
+            .trim()
+    } else {
+        ""
+    };
+    push_message(
+        lines,
+        content,
+        &key,
+        &[("actor", actor.as_str()), ("target", target)],
+    );
 }
 
 pub(crate) fn handle_player_followed_actor(

@@ -60,6 +60,7 @@ pub(crate) fn build_panel_options(
                                 disabled: false,
                                 selected: false,
                                 group: None,
+                                panel: None,
                             }
                         })
                         .collect()
@@ -84,6 +85,7 @@ pub(crate) fn build_panel_options(
                             disabled: false,
                             selected: false,
                             group: None,
+                            panel: None,
                         }
                     })
                     .collect(),
@@ -99,6 +101,7 @@ pub(crate) fn build_panel_options(
                         disabled: false,
                         selected: false,
                         group: None,
+                        panel: None,
                     })
                     .collect(),
                 PanelDataSource::CraftableItems => {
@@ -116,6 +119,7 @@ pub(crate) fn build_panel_options(
                         disabled: false,
                         selected: false,
                         group: None,
+                        panel: None,
                     })
                     .collect(),
                 PanelDataSource::InventoryItems => runtime
@@ -130,6 +134,7 @@ pub(crate) fn build_panel_options(
                         disabled: false,
                         selected: false,
                         group: None,
+                        panel: None,
                     })
                     .collect(),
                 PanelDataSource::FollowActors | PanelDataSource::TeleportAnchors => {
@@ -228,6 +233,7 @@ pub(crate) fn craftable_item_panel_options(
                         disabled,
                         selected: false,
                         group: None,
+                        panel: None,
                     }
                 })
                 .collect()
@@ -255,6 +261,7 @@ fn map_actor_or_teleport_options(
                 disabled: false,
                 selected: false,
                 group,
+                panel: None,
             }
         })
         .collect();
