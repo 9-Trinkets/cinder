@@ -634,6 +634,78 @@
             {
               "path": "tags",
               "operator": "array_contains_any",
+              "value": ["house_head"]
+            },
+            {
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": ["frost_wolf"]
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "frost_wolf_lane_stopped",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            },
+            {
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": ["house_head"]
+            },
+            {
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": ["iron_ram"]
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "iron_ram_lane_stopped",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            },
+            {
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": ["house_head"]
+            },
+            {
+              "path": "tags",
+              "operator": "array_contains_any",
+              "value": ["frost_leopard"]
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "frost_leopard_lane_stopped",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            },
+            {
+              "path": "tags",
+              "operator": "array_contains_any",
               "value": [
                 "goblin",
                 "golem"

@@ -1460,6 +1460,106 @@ fn floor5_defeating_spawned_house_leaders_stops_their_armies() {
 }
 
 #[test]
+fn floor5_charming_spawned_house_leaders_stops_their_armies() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_center".to_string();
+    state.active_objective_stage_ids = vec!["mq_frost_siege".to_string()];
+    state
+        .stage_started_minutes
+        .insert("mq_frost_siege".to_string(), state.current_time_minutes);
+
+    // Boost player intelligence so the resistance check passes against level 12 bosses
+    let player_id = &pack.settings.combat.player_actor_id;
+    state
+        .actor_stats
+        .entry(player_id.clone())
+        .or_default()
+        .insert("intelligence".to_string(), 50);
+
+    for (template_id, throne_room_id, muster_room_id, stopped_var, expected_wisdom) in [
+        (
+            "lord_vane",
+            "frost_wolf_throne",
+            "frost_wolf_muster",
+            "frost_wolf_lane_stopped",
+            6,
+        ),
+        (
+            "warmaster_torin",
+            "iron_ram_throne",
+            "iron_ram_muster",
+            "iron_ram_lane_stopped",
+            5,
+        ),
+        (
+            "lady_sylvan",
+            "frost_leopard_throne",
+            "frost_leopard_muster",
+            "frost_leopard_lane_stopped",
+            7,
+        ),
+    ] {
+        let leader_id = match state.spawn_actor(
+            &pack,
+            SpawnActorConfig {
+                template_id,
+                room_id: Some(throne_room_id),
+                stance: None,
+                follows_player: false,
+                scale_with_actor_id: None,
+                scale_stat: None,
+                max_active_instances: None,
+            },
+        ) {
+            SpawnActorOutcome::Success(info) => info.instance_id,
+            outcome => panic!("expected {template_id} to spawn, got {outcome:?}"),
+        };
+
+        // Surrounding the throne room by placing charm-sigil in its only neighbor (muster_room)
+        state.current_room_id = muster_room_id.to_string();
+        apply_events(
+            &mut state,
+            &pack,
+            &[TimestampedWorldEvent::now(WorldEvent::ItemAcquired {
+                item_id: "charm-sigil".to_string(),
+                storage: ItemStorageTarget::CurrentRoom,
+            })],
+        );
+
+        assert_eq!(
+            state.story_vars.get(stopped_var),
+            Some("true"),
+            "charming spawned {template_id} should stop its house lane"
+        );
+        assert_eq!(
+            state.relationship(&leader_id).stance,
+            ActorStance::Allied,
+            "{template_id} should be allied when charmed"
+        );
+        // Ensure wisdom was not increased (charming does not awaken them)
+        assert_eq!(
+            state.actor_stat(&leader_id, "wisdom"),
+            expected_wisdom,
+            "{template_id} wisdom must remain unchanged"
+        );
+    }
+
+    // Now all 3 lanes are stopped, verify mq_frost_siege completes and advances
+    apply_events(&mut state, &pack, &[]);
+    assert!(
+        state.completed_stage_ids.contains("mq_frost_siege"),
+        "all stopped lanes should complete mq_frost_siege"
+    );
+    assert!(
+        state
+            .active_objective_stage_ids
+            .contains(&"mq_return_to_courtyard".to_string()),
+        "quest should advance to mq_return_to_courtyard"
+    );
+}
+
+#[test]
 fn floor5_arrival_starts_free_prisoners_quest_and_unlock_completes_it() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
