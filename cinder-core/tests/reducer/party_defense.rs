@@ -42,6 +42,7 @@ fn guard_order_makes_defender_the_direct_target_without_spending_reaction_cooldo
     );
     let mut state = WorldState::new(&pack);
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
     state.set_stance(ACTOR_B_ID, ActorStance::Allied);
@@ -59,7 +60,10 @@ fn guard_order_makes_defender_the_direct_target_without_spending_reaction_cooldo
 
     assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), player_before);
     assert!(state.actor_stat(ACTOR_B_ID, "stamina") < defender_before);
-    assert_eq!(state.party_reaction_ready_at.get(ACTOR_B_ID), None);
+    assert_eq!(
+        state.relations.party_reaction_ready_at.get(ACTOR_B_ID),
+        None
+    );
     assert_eq!(output.lines.len(), 1);
     assert!(output.lines[0].text.contains("Casey strikes Blair"));
 }
@@ -92,13 +96,15 @@ fn direct_guard_targeting_does_not_depend_on_reaction_readiness() {
     };
     let mut state = WorldState::new(&pack);
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
     state.set_stance(ACTOR_B_ID, ActorStance::Allied);
     state.set_stance(ACTOR_C_ID, ActorStance::Hostile);
-    state
-        .party_reaction_ready_at
-        .insert(ACTOR_B_ID.to_string(), state.current_time_minutes + 10);
+    state.relations.party_reaction_ready_at.insert(
+        ACTOR_B_ID.to_string(),
+        state.clock.current_time_minutes + 10,
+    );
     let player_before = state.actor_stat(ACTOR_A_ID, "stamina");
     let defender_before = state.actor_stat(ACTOR_B_ID, "stamina");
 
@@ -169,17 +175,20 @@ fn follower_intercepts_strike_when_player_health_is_low() {
 
     let mut state = WorldState::new(&pack);
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
     state.set_stance(ACTOR_B_ID, ActorStance::Allied);
     state.set_stance(ACTOR_C_ID, ActorStance::Hostile);
 
     state
+        .combat
         .initial_actor_stats
         .entry(ACTOR_A_ID.to_string())
         .or_default()
         .insert("stamina".to_string(), 10);
     state
+        .combat
         .actor_stats
         .entry(ACTOR_A_ID.to_string())
         .or_default()
@@ -201,8 +210,9 @@ fn follower_intercepts_strike_when_player_health_is_low() {
     assert_eq!(state.actor_stat(ACTOR_B_ID, "stamina"), defender_before);
 
     // 2. Reduce player stamina to 4 (4/10 = 40% <= 50%) and advance time past attack interval
-    state.current_time_minutes += 10;
+    state.clock.current_time_minutes += 10;
     state
+        .combat
         .actor_stats
         .entry(ACTOR_A_ID.to_string())
         .or_default()
@@ -253,16 +263,19 @@ fn intercept_policy() -> cinder_core::content::types::PartyPolicyDefinition {
 fn intercept_scenario(pack: &ContentPack) -> WorldState {
     let mut state = WorldState::new(pack);
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
     state.set_stance(ACTOR_B_ID, ActorStance::Allied);
     state.set_stance(ACTOR_C_ID, ActorStance::Hostile);
     state
+        .combat
         .initial_actor_stats
         .entry(ACTOR_A_ID.to_string())
         .or_default()
         .insert("stamina".to_string(), 10);
     state
+        .combat
         .actor_stats
         .entry(ACTOR_A_ID.to_string())
         .or_default()

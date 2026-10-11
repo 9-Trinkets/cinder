@@ -175,7 +175,7 @@ fn maybe_emit_ambient_cue(
     lines: &mut NarrativeLines,
 ) {
     let kill_key = format!("{room_id}::{}::kill", definition.id);
-    if state.periodic_effects_reported.get(&kill_key) == Some(&state.turn_number) {
+    if state.periodic_effects_reported.get(&kill_key) == Some(&state.clock.turn_number) {
         return;
     }
     let report_key = if is_boss {
@@ -183,7 +183,7 @@ fn maybe_emit_ambient_cue(
     } else {
         format!("{room_id}::{}", definition.id)
     };
-    if state.periodic_effects_reported.get(&report_key) == Some(&state.turn_number) {
+    if state.periodic_effects_reported.get(&report_key) == Some(&state.clock.turn_number) {
         return;
     }
 
@@ -203,7 +203,7 @@ fn maybe_emit_ambient_cue(
         lines.narration(line);
         state
             .periodic_effects_reported
-            .insert(report_key, state.turn_number);
+            .insert(report_key, state.clock.turn_number);
     }
 }
 
@@ -218,7 +218,7 @@ fn maybe_emit_offscreen_kill_cue(
     lines: &mut NarrativeLines,
 ) {
     let kill_key = format!("{room_id}::{}::kill", definition.id);
-    if state.periodic_effects_reported.get(&kill_key) == Some(&state.turn_number) {
+    if state.periodic_effects_reported.get(&kill_key) == Some(&state.clock.turn_number) {
         return;
     }
 
@@ -232,11 +232,12 @@ fn maybe_emit_offscreen_kill_cue(
         lines.narration(line);
         state
             .periodic_effects_reported
-            .insert(kill_key, state.turn_number);
+            .insert(kill_key, state.clock.turn_number);
         // Also suppress non-lethal trigger cue for this room this turn
-        state
-            .periodic_effects_reported
-            .insert(format!("{room_id}::{}", definition.id), state.turn_number);
+        state.periodic_effects_reported.insert(
+            format!("{room_id}::{}", definition.id),
+            state.clock.turn_number,
+        );
     }
 }
 
@@ -395,6 +396,7 @@ fn handle_trigger_depletion(
     };
     let key = format!("{room_id}::{}", definition.trigger.room_item);
     let remaining_charges = state
+        .inventory
         .room_item_charges
         .get(&key)
         .copied()
@@ -425,7 +427,10 @@ fn handle_trigger_depletion(
             lines.narration(line);
         }
     } else {
-        state.room_item_charges.insert(key, remaining_charges - 1);
+        state
+            .inventory
+            .room_item_charges
+            .insert(key, remaining_charges - 1);
     }
 }
 

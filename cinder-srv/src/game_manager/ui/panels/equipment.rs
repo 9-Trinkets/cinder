@@ -10,7 +10,12 @@ pub(crate) fn build_equipment_panel_options(
     state: &WorldState,
 ) -> Vec<PanelOptionData> {
     let mut options = Vec::new();
-    let equipped_ids: BTreeSet<&str> = state.equipment.values().map(String::as_str).collect();
+    let equipped_ids: BTreeSet<&str> = state
+        .inventory
+        .equipment
+        .values()
+        .map(String::as_str)
+        .collect();
 
     for item_id in &equipped_ids {
         let Some(item) = content.item(item_id) else {
@@ -28,7 +33,7 @@ pub(crate) fn build_equipment_panel_options(
         });
     }
 
-    for (item_id, count) in &state.player_inventory {
+    for (item_id, count) in &state.inventory.player_inventory {
         let Some(item) = content.item(item_id) else {
             continue;
         };
@@ -38,7 +43,7 @@ pub(crate) fn build_equipment_panel_options(
         let replaced: BTreeSet<&str> = item
             .occupied_slots()
             .iter()
-            .filter_map(|slot| state.equipment.get(slot).map(String::as_str))
+            .filter_map(|slot| state.inventory.equipment.get(slot).map(String::as_str))
             .collect();
         let replacement = if replaced.is_empty() {
             String::new()

@@ -179,6 +179,7 @@ pub(super) fn plan_give_to_party_member(
     if in_inventory.is_empty() {
         let is_equipped = candidates.iter().any(|item| {
             planner_state
+                .inventory
                 .equipment
                 .values()
                 .any(|equipped_id| equipped_id == &item.id)
@@ -188,6 +189,7 @@ pub(super) fn plan_give_to_party_member(
                 .iter()
                 .find(|item| {
                     planner_state
+                        .inventory
                         .equipment
                         .values()
                         .any(|equipped_id| equipped_id == &item.id)

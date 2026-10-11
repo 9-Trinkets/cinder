@@ -84,7 +84,7 @@ pub(super) fn parse_aggregated_turn(inbound: &str) -> Result<AggregatedTurn, Str
 pub(super) fn next_turn_id(state: &Arc<Mutex<WorldState>>) -> Result<u32, String> {
     state
         .lock()
-        .map(|state| state.turn_number + 1)
+        .map(|state| state.clock.turn_number + 1)
         .map_err(|_| "failed to lock state for next turn".to_string())
 }
 

@@ -123,12 +123,14 @@ fn ally_attack_policy_can_filter_scale_and_cap_contributions() {
     let mut state = WorldState::new(&pack);
     for (actor_id, attack) in [(ACTOR_A_ID, 2), (ACTOR_B_ID, 6), (ACTOR_C_ID, 20)] {
         state
+            .combat
             .actor_stats
             .entry(actor_id.to_string())
             .or_default()
             .insert("confidence".to_string(), attack);
     }
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
     add_follower(&mut state, ACTOR_B_ID);
@@ -166,14 +168,17 @@ fn multiple_ally_contributions_are_narrated_once() {
 
     let mut state = WorldState::new(&pack);
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
     state
+        .combat
         .actor_stats
         .entry(ACTOR_B_ID.to_string())
         .or_default()
         .insert("confidence".to_string(), 3);
     state
+        .combat
         .actor_stats
         .entry(ACTOR_C_ID.to_string())
         .or_default()

@@ -76,8 +76,11 @@ pub(in crate::engine::reducer) fn defeat_actor(
         })
         .collect();
     if let Some((new_leader, rest)) = living_followers.split_first() {
-        if let Some(order) = state.party_orders.get(actor_id).cloned() {
-            state.party_orders.insert(new_leader.clone(), order);
+        if let Some(order) = state.relations.party_orders.get(actor_id).cloned() {
+            state
+                .relations
+                .party_orders
+                .insert(new_leader.clone(), order);
         }
         state.set_followed_actor(new_leader, None);
         for follower_id in rest {
@@ -116,12 +119,19 @@ pub(in crate::engine::reducer) fn award_defeat_xp(
             continue;
         }
         let mut accrued = state
+            .combat
             .actor_xp
             .get(&target)
             .copied()
             .unwrap_or(0)
             .saturating_add(award);
-        let mut level = state.actor_level.get(&target).copied().unwrap_or(1).max(1);
+        let mut level = state
+            .combat
+            .actor_level
+            .get(&target)
+            .copied()
+            .unwrap_or(1)
+            .max(1);
         let mut gained = 0;
         while let Some(definition) = content.level_definition(&target, level) {
             if accrued < definition.exp_required {
@@ -133,7 +143,7 @@ pub(in crate::engine::reducer) fn award_defeat_xp(
             // Apply growth while the new level (and thus the new natural max
             // for health) is already recorded, so the health clamp cannot eat
             // the level's own +hp growth.
-            *state.actor_level.entry(target.clone()).or_insert(1) = level;
+            *state.combat.actor_level.entry(target.clone()).or_insert(1) = level;
             for (stat, delta) in &definition.stat_changes {
                 if let Err(error) = state.adjust_actor_stat(content, &target, stat, *delta) {
                     eprintln!("[cinder] level stat error ({target}/{stat}): {error}");
@@ -141,8 +151,8 @@ pub(in crate::engine::reducer) fn award_defeat_xp(
             }
             grant_level_unlocks(state, &target, definition, &mut unlocked_skills);
         }
-        state.actor_xp.insert(target.clone(), accrued);
-        *state.actor_level.entry(target.clone()).or_insert(1) = level;
+        state.combat.actor_xp.insert(target.clone(), accrued);
+        *state.combat.actor_level.entry(target.clone()).or_insert(1) = level;
         if gained > 0 {
             leveled.push((target, level));
         }
@@ -320,6 +330,7 @@ fn xp_recipients(state: &WorldState, content: &ContentPack) -> Vec<String> {
     let mut recipients = vec![player_actor_id.clone()];
     if content.settings.combat.xp_distribution.recipients == XpRecipientMode::PlayerAndFollowers {
         let mut followers = state
+            .relations
             .relationships
             .iter()
             .filter(|(actor_id, relationship)| {

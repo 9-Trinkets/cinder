@@ -100,6 +100,7 @@ pub(crate) fn plan_drop_command(
     let candidates = matching_items(content, trimmed);
     let target_is_equipped = candidates.iter().any(|item| {
         planner_state
+            .inventory
             .equipment
             .values()
             .any(|equipped_id| equipped_id == &item.id)
@@ -209,6 +210,7 @@ pub(crate) fn plan_unequip_command(
 ) -> bool {
     let target = target.trim();
     let equipped_ids = planner_state
+        .inventory
         .equipment
         .values()
         .map(String::as_str)

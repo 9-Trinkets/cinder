@@ -131,7 +131,7 @@ fn periodic_damage_at_zero_uses_normal_defeat_drop_and_xp_path() {
             ("herb-salve".to_string(), 2)
         ]
     );
-    assert_eq!(state.actor_xp.get(ACTOR_A_ID), Some(&4));
+    assert_eq!(state.combat.actor_xp.get(ACTOR_A_ID), Some(&4));
     assert_eq!(
         state.actor_stat(ACTOR_A_ID, "stamina"),
         state.actor_stat_maximum(&pack, ACTOR_A_ID, "stamina")
@@ -426,8 +426,9 @@ fn boss_triggers_emit_boss_cues_for_adjacent_and_distant_rooms() {
     );
 
     // 2. Distant boss trigger
-    state.turn_number += 1;
+    state.clock.turn_number += 1;
     state
+        .actors
         .actor_room_overrides
         .insert("fire-elemental".to_string(), "cellar".to_string());
     let output2 = apply_events(
@@ -531,7 +532,7 @@ fn distant_minion_is_silent_but_depletion_emits_distant_cue() {
     );
 
     // Second activation (charge 1 -> 0): depleted! Should emit distant depletion cue
-    state.turn_number += 1;
+    state.clock.turn_number += 1;
     let output2 = apply_events(
         &mut state,
         &pack,
@@ -666,7 +667,7 @@ fn offscreen_kills_emit_anonymous_kill_cues_and_deduplicate() {
     assert!(!kill_lines[0].text.contains("g1") && !kill_lines[0].text.contains("goblin"));
 
     // Now test distant kill in cellar
-    state.turn_number += 1;
+    state.clock.turn_number += 1;
     let output2 = apply_events(
         &mut state,
         &pack,

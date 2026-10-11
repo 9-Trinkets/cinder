@@ -346,8 +346,10 @@ fn action_has_available_target(
             .loose_room_items(room_id)
             .iter()
             .any(|(item_id, _)| content.item(item_id).is_none_or(|item| item.is_takeable())),
-        PanelDataSource::InventoryItems => {
-            state.player_inventory.iter().any(|(_, count)| *count > 0)
-        }
+        PanelDataSource::InventoryItems => state
+            .inventory
+            .player_inventory
+            .iter()
+            .any(|(_, count)| *count > 0),
     }
 }

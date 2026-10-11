@@ -1,11 +1,35 @@
 use super::*;
+use crate::content::types::PartyOrderKind;
+use serde::{Deserialize, Serialize};
+use std::collections::BTreeMap;
+
+/// Relationships of actors toward the player's faction, plus the party's
+/// follow target, standing orders, and reaction cooldowns.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RelationshipGraph {
+    /// Per-actor relationship toward the player's faction. Absent entries are
+    /// neutral.
+    #[serde(default)]
+    pub relationships: BTreeMap<String, ActorRelationship>,
+    /// Persistent Guard/Assist directive for each allied party member.
+    #[serde(default)]
+    pub party_orders: BTreeMap<String, PartyOrderKind>,
+    /// Target actor that this actor is following, actor id → followed actor id.
+    #[serde(default)]
+    pub followed_actors: BTreeMap<String, String>,
+    pub followed_actor_id: Option<String>,
+    /// Earliest game minute at which each party member may react again.
+    #[serde(default)]
+    pub party_reaction_ready_at: BTreeMap<String, u32>,
+}
 
 impl WorldState {
     /// Relationship of an actor toward the player's faction; absent entries
     /// are neutral.
     pub fn relationship(&self, actor_id: &str) -> ActorRelationship {
         let actor_id = remap_story_actor_id(self, actor_id);
-        self.relationships
+        self.relations
+            .relationships
             .get(actor_id)
             .copied()
             .unwrap_or_default()
@@ -24,12 +48,14 @@ impl WorldState {
     pub fn set_relationship(&mut self, actor_id: &str, relationship: ActorRelationship) {
         let actor_id = remap_story_actor_id(self, actor_id).to_string();
         if relationship == ActorRelationship::default() {
-            self.relationships.remove(actor_id.as_str());
+            self.relations.relationships.remove(actor_id.as_str());
         } else {
-            self.relationships.insert(actor_id.clone(), relationship);
+            self.relations
+                .relationships
+                .insert(actor_id.clone(), relationship);
         }
         if relationship.stance != ActorStance::Hostile {
-            self.next_hostile_strike_at.remove(actor_id.as_str());
+            self.combat.next_hostile_strike_at.remove(actor_id.as_str());
         }
     }
 
@@ -47,21 +73,27 @@ impl WorldState {
 
     pub fn followed_actor(&self, actor_id: &str) -> Option<&str> {
         let actor_id = remap_story_actor_id(self, actor_id);
-        self.followed_actors.get(actor_id).map(String::as_str)
+        self.relations
+            .followed_actors
+            .get(actor_id)
+            .map(String::as_str)
     }
 
     pub fn set_followed_actor(&mut self, actor_id: &str, followed_id: Option<&str>) {
         let actor_id = remap_story_actor_id(self, actor_id).to_string();
         if let Some(target) = followed_id {
-            self.followed_actors.insert(actor_id, target.to_string());
+            self.relations
+                .followed_actors
+                .insert(actor_id, target.to_string());
         } else {
-            self.followed_actors.remove(&actor_id);
+            self.relations.followed_actors.remove(&actor_id);
         }
     }
 
     pub fn followers_of(&self, leader_id: &str) -> Vec<String> {
         let leader_id = remap_story_actor_id(self, leader_id);
-        self.followed_actors
+        self.relations
+            .followed_actors
             .iter()
             .filter(|(_, target)| target.as_str() == leader_id)
             .map(|(follower, _)| follower.clone())
@@ -83,7 +115,7 @@ impl WorldState {
         if stance == ActorStance::Allied {
             self.initialize_party_order(content, actor_id);
         } else if !follows_player {
-            self.party_orders.remove(actor_id);
+            self.relations.party_orders.remove(actor_id);
         }
     }
 

@@ -615,6 +615,7 @@ mod tests {
         // lookup would hand over the equipped weapon.
         state.actor_add_item("gifter", "spear-b");
         state
+            .inventory
             .actor_equipment
             .entry("gifter".to_string())
             .or_default()

@@ -132,6 +132,7 @@ pub fn reaction_pack(
 pub fn combat_state(pack: &ContentPack) -> WorldState {
     let mut state = WorldState::new(pack);
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
     state.set_stance(ACTOR_B_ID, ActorStance::Allied);

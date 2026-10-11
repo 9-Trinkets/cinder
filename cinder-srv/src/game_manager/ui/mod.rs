@@ -118,6 +118,7 @@ pub(super) fn build_ui_snapshot(
         .current_room_exit_labels()
         .map_err(|e| e.to_string())?;
     let inventory_labels = state
+        .inventory
         .player_inventory
         .keys()
         .filter_map(|item_id| content.item(item_id).map(|item| item.label.clone()))
@@ -186,11 +187,13 @@ pub(super) fn build_ui_snapshot(
         },
         levels_revealed: content.levels_revealed_for_room(&current_room_id)
             || state
+                .actors
                 .actor_known_room_ids
                 .values()
                 .any(|rooms| rooms.iter().any(|r| content.levels_revealed_for_room(r))),
         quests_revealed: content.quests_revealed_for_room(&current_room_id)
             || state
+                .actors
                 .actor_known_room_ids
                 .values()
                 .any(|rooms| rooms.iter().any(|r| content.quests_revealed_for_room(r))),
@@ -222,10 +225,11 @@ fn menu_option_data(options: Vec<PanelOption>) -> Vec<MenuOptionData> {
 }
 
 /// Ids of inventory items the player can currently drop (present in inventory).
-/// Equipped items are stored in `state.equipment` and removed from `player_inventory`.
+/// Equipped items are stored in `state.inventory.equipment` and removed from `player_inventory`.
 /// Items remaining in `player_inventory` with count > 0 are held and can be dropped or given.
 fn droppable_inventory_items(state: &WorldState) -> Vec<String> {
     let mut ids: Vec<String> = state
+        .inventory
         .player_inventory
         .iter()
         .filter(|(_, count)| **count > 0)
@@ -241,6 +245,7 @@ fn droppable_inventory_items(state: &WorldState) -> Vec<String> {
 fn usable_inventory_items(content: &ContentPack, state: &WorldState) -> Vec<String> {
     let current_room_id = &state.current_room_id;
     let mut ids: Vec<String> = state
+        .inventory
         .player_inventory
         .iter()
         .filter(|(item_id, count)| {

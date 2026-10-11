@@ -20,6 +20,7 @@ const EXPECTED_COURTYARD_ROOMS: &[&str] = &[
 fn spawned_count(state: &WorldState, template_id: &str) -> usize {
     let prefix = format!("{template_id}-");
     state
+        .actors
         .spawned_actors
         .keys()
         .filter(|actor_id| actor_id.starts_with(&prefix))
@@ -117,9 +118,10 @@ fn floor5_courtyard_siege_soldiers_attack_civilians_and_charmed_civilians_can_ev
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_center".to_string();
     state.active_objective_stage_ids = vec!["sq_five_offerings".to_string()];
-    state
-        .stage_started_minutes
-        .insert("sq_five_offerings".to_string(), state.current_time_minutes);
+    state.stage_started_minutes.insert(
+        "sq_five_offerings".to_string(),
+        state.clock.current_time_minutes,
+    );
     state
         .story_vars
         .set_unchecked("courtyard_cages_opened", "true");
@@ -159,11 +161,12 @@ fn floor5_courtyard_siege_soldiers_attack_civilians_and_charmed_civilians_can_ev
     state.set_stance("eliska_novakova", ActorStance::Allied);
     state.set_follows_player("eliska_novakova", true);
     state
+        .actors
         .actor_room_overrides
         .insert("eliska_novakova".to_string(), "courtyard_north".to_string());
 
     // Second strike in courtyard_center: raider cannot target evacuated Eliška, strikes Amaru Quispe instead
-    state.current_time_minutes += 5;
+    state.clock.current_time_minutes += 5;
     let strike2 = apply_events(
         &mut state,
         &pack,
@@ -186,15 +189,16 @@ fn floor5_courtyard_siege_soldiers_attack_civilians_and_charmed_civilians_can_ev
     // Station an allied guard in courtyard_center to protect remaining civilians
     state.set_stance("commander_astrid", ActorStance::Allied);
     state
+        .relations
         .party_orders
         .insert("commander_astrid".to_string(), "guard".to_string());
-    state.actor_room_overrides.insert(
+    state.actors.actor_room_overrides.insert(
         "commander_astrid".to_string(),
         "courtyard_center".to_string(),
     );
     let astrid_initial_hp = state.actor_stat("commander_astrid", "hp");
 
-    state.current_time_minutes += 5;
+    state.clock.current_time_minutes += 5;
     let strike3 = apply_events(
         &mut state,
         &pack,
@@ -224,9 +228,10 @@ fn floor5_protection_quest_fails_on_third_death_without_ending_game() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_center".to_string();
     state.active_objective_stage_ids = vec!["sq_five_offerings".to_string()];
-    state
-        .stage_started_minutes
-        .insert("sq_five_offerings".to_string(), state.current_time_minutes);
+    state.stage_started_minutes.insert(
+        "sq_five_offerings".to_string(),
+        state.clock.current_time_minutes,
+    );
     state
         .story_vars
         .set_unchecked("courtyard_cages_opened", "true");
@@ -248,7 +253,7 @@ fn floor5_protection_quest_fails_on_third_death_without_ending_game() {
 
     // Raider strikes 3 times in courtyard_center, defeating 3 civilians sequentially
     for expected_deaths in 1..=3 {
-        state.current_time_minutes += 5;
+        state.clock.current_time_minutes += 5;
         apply_events(
             &mut state,
             &pack,
@@ -347,6 +352,7 @@ fn floor5_sentry_captain_defeat_drops_courtyard_key() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_center".to_string();
     state
+        .combat
         .actor_stats
         .entry("player".to_string())
         .or_default()
@@ -360,6 +366,7 @@ fn floor5_sentry_captain_defeat_drops_courtyard_key() {
 
     // Set captain to 1 HP so a single strike defeats him
     state
+        .combat
         .actor_stats
         .entry("citadel_sentry_captain".to_string())
         .or_default()
@@ -619,9 +626,10 @@ fn floor5_house_access_opens_with_timed_siege_waves() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_center".to_string();
     state.active_objective_stage_ids = vec!["mq_free_prisoners".to_string()];
-    state
-        .stage_started_minutes
-        .insert("mq_free_prisoners".to_string(), state.current_time_minutes);
+    state.stage_started_minutes.insert(
+        "mq_free_prisoners".to_string(),
+        state.clock.current_time_minutes,
+    );
     state.acquire_player_item(&pack, "courtyard-cage-key");
 
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
@@ -642,7 +650,7 @@ fn floor5_house_access_opens_with_timed_siege_waves() {
 
     let mut wave1_state = preparation;
     let preparation_started = wave1_state.stage_started_minutes["siege_preparation"];
-    wave1_state.current_time_minutes = preparation_started + 10;
+    wave1_state.clock.current_time_minutes = preparation_started + 10;
     wave1_state.current_room_id = "courtyard_center".to_string();
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let runtime = CinderRuntime::from_state(pack, wave1_state, false).expect("runtime creates");
@@ -657,9 +665,10 @@ fn floor5_house_access_opens_with_timed_siege_waves() {
         Some("true")
     );
     assert_eq!(spawned_count(&wave1, "frost_wolf_raider"), 3);
-    for raider_id in wave1.spawned_actors.keys() {
+    for raider_id in wave1.actors.spawned_actors.keys() {
         assert_eq!(
             wave1
+                .actors
                 .actor_room_overrides
                 .get(raider_id)
                 .map(String::as_str),
@@ -669,7 +678,7 @@ fn floor5_house_access_opens_with_timed_siege_waves() {
 
     let mut wave2_state = wave1;
     let wave1_started = wave2_state.stage_started_minutes["siege_wave_1"];
-    wave2_state.current_time_minutes = wave1_started + 60;
+    wave2_state.clock.current_time_minutes = wave1_started + 60;
     wave2_state.current_room_id = "courtyard_center".to_string();
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let runtime = CinderRuntime::from_state(pack, wave2_state, false).expect("runtime creates");
@@ -687,7 +696,7 @@ fn floor5_house_access_opens_with_timed_siege_waves() {
 
     let mut wave3_state = wave2;
     let wave2_started = wave3_state.stage_started_minutes["siege_wave_2"];
-    wave3_state.current_time_minutes = wave2_started + 60;
+    wave3_state.clock.current_time_minutes = wave2_started + 60;
     wave3_state.current_room_id = "courtyard_center".to_string();
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let runtime = CinderRuntime::from_state(pack, wave3_state, false).expect("runtime creates");
@@ -712,7 +721,7 @@ fn floor5_house_access_opens_with_timed_siege_waves() {
 
     let mut completed_dispatches = wave3;
     let leopard_started = completed_dispatches.stage_started_minutes["frost_leopard_dispatch"];
-    completed_dispatches.current_time_minutes = leopard_started + 90;
+    completed_dispatches.clock.current_time_minutes = leopard_started + 90;
     completed_dispatches.current_room_id = "courtyard_center".to_string();
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let runtime =
@@ -732,9 +741,10 @@ fn floor5_wave_one_raiders_march_until_their_lane_stops() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_center".to_string();
     state.active_objective_stage_ids = vec!["mq_free_prisoners".to_string()];
-    state
-        .stage_started_minutes
-        .insert("mq_free_prisoners".to_string(), state.current_time_minutes);
+    state.stage_started_minutes.insert(
+        "mq_free_prisoners".to_string(),
+        state.clock.current_time_minutes,
+    );
     state.acquire_player_item(&pack, "courtyard-cage-key");
 
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
@@ -742,7 +752,7 @@ fn floor5_wave_one_raiders_march_until_their_lane_stops() {
 
     let mut state = runtime.export_state().expect("export preparation");
     let preparation_started = state.stage_started_minutes["siege_preparation"];
-    state.current_time_minutes = preparation_started + 10;
+    state.clock.current_time_minutes = preparation_started + 10;
     state.current_room_id = "courtyard_center".to_string();
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
@@ -751,6 +761,7 @@ fn floor5_wave_one_raiders_march_until_their_lane_stops() {
 
     let marched = runtime.export_state().expect("export marched state");
     let raider_ids: Vec<_> = marched
+        .actors
         .spawned_actors
         .keys()
         .filter(|actor_id| actor_id.starts_with("frost_wolf_raider-"))
@@ -760,6 +771,7 @@ fn floor5_wave_one_raiders_march_until_their_lane_stops() {
     for raider_id in &raider_ids {
         assert_eq!(
             marched
+                .actors
                 .actor_room_overrides
                 .get(raider_id)
                 .map(String::as_str),
@@ -771,7 +783,7 @@ fn floor5_wave_one_raiders_march_until_their_lane_stops() {
     stopped
         .story_vars
         .set_unchecked("frost_wolf_lane_stopped", "true");
-    stopped.current_time_minutes += 30;
+    stopped.clock.current_time_minutes += 30;
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let runtime = CinderRuntime::from_state(pack, stopped, false).expect("runtime creates");
     let routed = runtime.run_turn("go north").expect("stopped lane turn");
@@ -785,7 +797,10 @@ fn floor5_wave_one_raiders_march_until_their_lane_stops() {
     );
     for raider_id in &raider_ids {
         assert!(
-            !after_stop.actor_room_overrides.contains_key(raider_id),
+            !after_stop
+                .actors
+                .actor_room_overrides
+                .contains_key(raider_id),
             "routed actor state should be removed"
         );
     }
@@ -838,7 +853,7 @@ fn floor5_charmed_soldiers_do_not_despawn_when_house_lane_stops() {
     state
         .story_vars
         .set_unchecked("frost_wolf_lane_stopped", "true");
-    state.current_time_minutes += 30;
+    state.clock.current_time_minutes += 30;
 
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
     let routed = runtime.run_turn("look").expect("look on routed turn");
@@ -846,12 +861,12 @@ fn floor5_charmed_soldiers_do_not_despawn_when_house_lane_stops() {
     let after_stop = runtime.export_state().expect("export state");
     // raider2 was not charmed, so it should be routed and despawned
     assert!(
-        !after_stop.spawned_actors.contains_key(&raider2),
+        !after_stop.actors.spawned_actors.contains_key(&raider2),
         "uncharmed raider2 should be despawned on rout"
     );
     // raider1 was charmed by Layla, so it must NOT be despawned!
     assert!(
-        after_stop.spawned_actors.contains_key(&raider1),
+        after_stop.actors.spawned_actors.contains_key(&raider1),
         "charmed raider1 must stay with Layla when head of house retreats"
     );
     assert_eq!(
@@ -876,13 +891,15 @@ fn floor5_guard_blocks_wave_soldiers_at_the_north_approach() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_center".to_string();
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     state.set_stance("elf-knight-2", ActorStance::Allied);
     state.set_follows_player("elf-knight-2", false);
     state
+        .relations
         .party_orders
         .insert("elf-knight-2".to_string(), "guard".to_string());
     state
+        .actors
         .actor_room_overrides
         .insert("elf-knight-2".to_string(), "courtyard_north".to_string());
 
@@ -907,6 +924,7 @@ fn floor5_guard_blocks_wave_soldiers_at_the_north_approach() {
     let blocked = runtime.export_state().expect("export blocked state");
     assert_eq!(
         blocked
+            .actors
             .actor_room_overrides
             .get(&raider_id)
             .map(String::as_str),
@@ -916,17 +934,19 @@ fn floor5_guard_blocks_wave_soldiers_at_the_north_approach() {
 
     let mut defeated_raider = blocked.clone();
     defeated_raider
+        .combat
         .actor_stats
         .entry(raider_id.clone())
         .or_default()
         .insert("hp".to_string(), 0);
-    defeated_raider.relationships.remove(&raider_id);
+    defeated_raider.relations.relationships.remove(&raider_id);
     let runtime =
         CinderRuntime::from_state(pack.clone(), defeated_raider, false).expect("runtime creates");
     let defeated_tick = runtime.run_tick().expect("defeated raider tick runs");
     let defeated = runtime.export_state().expect("export defeated state");
     assert_eq!(
         defeated
+            .actors
             .actor_room_overrides
             .get(&raider_id)
             .map(String::as_str),
@@ -941,6 +961,7 @@ fn floor5_guard_blocks_wave_soldiers_at_the_north_approach() {
 
     let mut defeated_guard = blocked;
     defeated_guard
+        .combat
         .actor_stats
         .entry("elf-knight-2".to_string())
         .or_default()
@@ -950,6 +971,7 @@ fn floor5_guard_blocks_wave_soldiers_at_the_north_approach() {
     let resumed = runtime.export_state().expect("export resumed state");
     assert_eq!(
         resumed
+            .actors
             .actor_room_overrides
             .get(&raider_id)
             .map(String::as_str),
@@ -973,7 +995,7 @@ fn floor5_all_three_stopped_lanes_end_the_siege() {
     for stage_id in &state.active_objective_stage_ids {
         state
             .stage_started_minutes
-            .insert(stage_id.clone(), state.current_time_minutes);
+            .insert(stage_id.clone(), state.clock.current_time_minutes);
     }
     for template_id in [
         "frost_wolf_raider",
@@ -1122,10 +1144,11 @@ fn floor5_survivor_rewards_unlock_only_living_civilians_towns() {
     for stage_id in &state.active_objective_stage_ids {
         state
             .stage_started_minutes
-            .insert(stage_id.clone(), state.current_time_minutes);
+            .insert(stage_id.clone(), state.clock.current_time_minutes);
     }
     for actor_id in ["nivi_olsen", "eliska_novakova"] {
         state
+            .combat
             .actor_stats
             .entry(actor_id.to_string())
             .or_default()
@@ -1200,13 +1223,14 @@ fn floor5_failed_protection_still_rewards_survivors_and_opens_floor6() {
     for stage_id in &state.active_objective_stage_ids {
         state
             .stage_started_minutes
-            .insert(stage_id.clone(), state.current_time_minutes);
+            .insert(stage_id.clone(), state.clock.current_time_minutes);
     }
     state
         .story_vars
         .set_unchecked("five_offerings_failed", "true");
     for actor_id in ["nivi_olsen", "eliska_novakova", "amaru_quispe"] {
         state
+            .combat
             .actor_stats
             .entry(actor_id.to_string())
             .or_default()
@@ -1263,7 +1287,7 @@ fn floor5_spawned_siege_armies_do_not_emit_npc_tick_soft_errors() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_center".to_string();
-    state.current_time_minutes = 90;
+    state.clock.current_time_minutes = 90;
     state.active_objective_stage_ids = vec![
         "frost_wolf_dispatch".to_string(),
         "iron_ram_dispatch".to_string(),
@@ -1306,7 +1330,7 @@ fn floor5_spawned_hostile_continues_attacking_on_its_cooldown() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_north".to_string();
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     state
         .story_vars
         .set_unchecked("frost_wolf_lane_stopped", "true");
@@ -1425,7 +1449,7 @@ fn floor5_house_leaders_march_to_the_courtyard_in_final_wave() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_center".to_string();
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     state
         .story_vars
         .set_unchecked("citadel_final_wave_open", "true");
@@ -1471,6 +1495,7 @@ fn floor5_house_leaders_march_to_the_courtyard_in_final_wave() {
     for (leader, muster) in instances {
         assert_eq!(
             marched
+                .actors
                 .actor_room_overrides
                 .get(&leader)
                 .map(String::as_str),
@@ -1522,6 +1547,7 @@ fn floor5_defeating_spawned_house_leaders_stops_their_armies() {
             outcome => panic!("expected {template_id} to spawn, got {outcome:?}"),
         };
         state
+            .combat
             .actor_stats
             .entry(leader_id)
             .or_default()
@@ -1545,13 +1571,15 @@ fn floor5_charming_spawned_house_leaders_stops_their_armies() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_center".to_string();
     state.active_objective_stage_ids = vec!["mq_frost_siege".to_string()];
-    state
-        .stage_started_minutes
-        .insert("mq_frost_siege".to_string(), state.current_time_minutes);
+    state.stage_started_minutes.insert(
+        "mq_frost_siege".to_string(),
+        state.clock.current_time_minutes,
+    );
 
     // Boost player intelligence so the resistance check passes against level 12 bosses
     let player_id = &pack.settings.combat.player_actor_id;
     state
+        .combat
         .actor_stats
         .entry(player_id.clone())
         .or_default()
@@ -1752,6 +1780,7 @@ fn tracing_platform_sigil_does_not_count_as_descending() {
     state.story_vars.set_unchecked("anchor_floor5_gate", "true");
     state.acquire_player_item(&pack, "magic-chalk");
     state
+        .combat
         .actor_stats
         .entry("player".to_string())
         .or_default()
@@ -1814,12 +1843,14 @@ fn teleport_from_floor4_to_floor5_brings_following_party_members() {
     // Sakhra is with player on teleport_platform following player and allied
     state.set_actor_stance(&pack, "sakhra", ActorStance::Allied, true);
     state
+        .actors
         .actor_room_overrides
         .insert("sakhra".to_string(), "teleport_platform".to_string());
 
     // Zayd is left behind in village_square on Floor 4, also following player
     state.set_follows_player("zayd", true);
     state
+        .actors
         .actor_room_overrides
         .insert("zayd".to_string(), "village_square".to_string());
 
@@ -1915,7 +1946,7 @@ fn floor5_squad_party_marches_together_and_promotes_follower_on_leader_defeat() 
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_center".to_string();
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     state
         .story_vars
         .set_unchecked("citadel_final_wave_open", "true");
@@ -1969,13 +2000,16 @@ fn floor5_squad_party_marches_together_and_promotes_follower_on_leader_defeat() 
 
     // Configure squad: l_id deploys to courtyard_center, f1 and f2 follow l_id
     state
+        .relations
         .party_orders
         .insert(l_id.clone(), "deploy courtyard_center".to_string());
     state
+        .relations
         .party_orders
         .insert(f1_id.clone(), "follow".to_string());
     state.set_followed_actor(&f1_id, Some(&l_id));
     state
+        .relations
         .party_orders
         .insert(f2_id.clone(), "follow".to_string());
     state.set_followed_actor(&f2_id, Some(&l_id));
@@ -1993,6 +2027,7 @@ fn floor5_squad_party_marches_together_and_promotes_follower_on_leader_defeat() 
     let mut state = state;
     state.current_room_id = "frost_wolf_muster".to_string();
     state
+        .combat
         .actor_stats
         .entry(l_id.clone())
         .or_default()

@@ -591,7 +591,7 @@ fn floor4_tick_runs_without_soft_error() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "village_square".to_string();
-    state.turn_number = 10;
+    state.clock.turn_number = 10;
 
     let scripted_dialogue = cinder_core::engine::dialogue::ScriptedDialogueGenerator::new();
     let runtime = cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(
@@ -615,7 +615,7 @@ fn floor4_large_state_tick_runs_without_soft_error() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "village_square".to_string();
-    state.turn_number = 50;
+    state.clock.turn_number = 50;
 
     // Simulate accumulated state from playing floors 1 to 4:
     // 30+ observation notes, actor memories, quest stages, etc.
@@ -626,6 +626,7 @@ fn floor4_large_state_tick_runs_without_soft_error() {
         ));
     }
     state
+        .actors
         .actor_recent_observation_notes
         .insert("layla".to_string(), notes);
     let serialized_len = serde_json::to_string(&state).unwrap().len();
@@ -1097,6 +1098,7 @@ fn zayd_home_shifts_villager_prompts_to_relief_and_dread() {
     let mut seeded = runtime.export_state().unwrap();
     seeded.story_vars.set_unchecked("zayd_rescued", "true");
     seeded
+        .actors
         .actor_room_overrides
         .insert("zayd".to_string(), "village_square".to_string());
     seeded.set_actor_stance(
@@ -1259,7 +1261,7 @@ fn charming_the_fire_elemental_opens_the_floor4_exit() {
     // real playthrough would have done by the time she reaches Floor 3.
     state.current_room_id = "oas".to_string();
     let player_id = pack.settings.combat.player_actor_id.clone();
-    state.actor_level.insert(player_id.clone(), 12);
+    state.combat.actor_level.insert(player_id.clone(), 12);
 
     // Ring the elemental's room: a sigil in every neighbouring room. The final
     // stroke — placing one in oas itself — is what closes the circle, so oas is
@@ -1304,7 +1306,7 @@ fn drain_sigils_surrounding_fire_elemental_do_not_charm_or_release_it() {
 
     state.current_room_id = "oas".to_string();
     let player_id = pack.settings.combat.player_actor_id.clone();
-    state.actor_level.insert(player_id.clone(), 12);
+    state.combat.actor_level.insert(player_id.clone(), 12);
 
     // Ring the elemental's room with drain sigils instead of charm sigils.
     for room_id in ["o6", "o7", "oh"] {

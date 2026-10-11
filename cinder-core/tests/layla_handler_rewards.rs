@@ -16,7 +16,11 @@ fn handler_spoke(lines: &[NarrativeLine], needle: &str) -> bool {
 }
 
 fn strong_player(state: &mut WorldState) {
-    let stats = state.actor_stats.entry("player".to_string()).or_default();
+    let stats = state
+        .combat
+        .actor_stats
+        .entry("player".to_string())
+        .or_default();
     stats.insert("strength".to_string(), 100);
     // `surround_rule` is intelligence-based resistance.
     stats.insert("intelligence".to_string(), 100);
@@ -132,7 +136,7 @@ fn ring_room(
     use cinder_core::engine::reducer::apply_events;
 
     let player_id = pack.settings.combat.player_actor_id.clone();
-    state.actor_level.insert(player_id, 12);
+    state.combat.actor_level.insert(player_id, 12);
 
     for neighbour in pack.adjacent_room_ids(room_id) {
         state.add_item_to_storage("charm-sigil", Storage::CurrentRoom, &neighbour);
@@ -198,6 +202,7 @@ fn sensory_enhancer_narrates_handler_upgrade() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = "r5c5".to_string();
     state
+        .inventory
         .player_inventory
         .insert("sensory-enhancer".to_string(), 1);
 

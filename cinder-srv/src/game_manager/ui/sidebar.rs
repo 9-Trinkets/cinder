@@ -135,6 +135,7 @@ pub(super) fn build_party_members(
             inventory.sort_by(|a, b| a.label.cmp(&b.label));
             let in_room = state.actor_is_in_room(content, &actor_id, &state.current_room_id);
             let mut skills_set = state
+                .combat
                 .actor_skills
                 .get(&actor_id)
                 .cloned()
@@ -325,6 +326,7 @@ pub(super) fn build_party_order_panels(
 
 fn living_follower_ids(state: &WorldState, content: &ContentPack) -> Vec<String> {
     state
+        .relations
         .relationships
         .iter()
         .filter(|(actor_id, relationship)| {
@@ -378,7 +380,7 @@ pub(super) fn build_equipped_items_from_map(
 }
 
 pub(super) fn build_equipped_items(state: &WorldState, content: &ContentPack) -> Vec<EquippedItem> {
-    build_equipped_items_from_map(&state.equipment, content)
+    build_equipped_items_from_map(&state.inventory.equipment, content)
 }
 
 pub(super) fn build_inventory(
@@ -443,7 +445,7 @@ mod tests {
             ..LevelDefinition::default()
         }];
         let mut state = WorldState::new(&content);
-        state.actor_level.insert("blair".to_string(), 2);
+        state.combat.actor_level.insert("blair".to_string(), 2);
         state
             .adjust_actor_stat(&content, "blair", "stamina", 4)
             .unwrap();
@@ -642,10 +644,10 @@ mod tests {
         state.set_follows_player(follower_id, true);
         state.actor_add_item(follower_id, "herb");
         state.actor_add_item(follower_id, "herb");
-        if let Some(equip) = state.actor_equipment.get_mut(follower_id) {
+        if let Some(equip) = state.inventory.actor_equipment.get_mut(follower_id) {
             equip.insert("weapon".to_string(), "iron-sword".to_string());
         } else {
-            state.actor_equipment.insert(
+            state.inventory.actor_equipment.insert(
                 follower_id.to_string(),
                 std::collections::BTreeMap::from([(
                     "weapon".to_string(),
@@ -698,7 +700,7 @@ mod tests {
         let follower_id = "companion-1";
         let mut state = WorldState::new(&content);
         state.set_follows_player(follower_id, true);
-        state.actor_skills.insert(
+        state.combat.actor_skills.insert(
             follower_id.to_string(),
             std::collections::BTreeSet::from([
                 "field-medicine".to_string(),

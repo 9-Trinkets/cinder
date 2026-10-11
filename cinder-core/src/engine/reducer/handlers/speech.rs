@@ -73,7 +73,7 @@ fn handle_targeted_message(
             actor_id,
             recipient_id,
             ConversationMemoryLine {
-                turn_number: state.turn_number,
+                turn_number: state.clock.turn_number,
                 event_sequence: 0,
                 speaker_id: recipient_id.to_string(),
                 speaker_name: recipient_name.to_string(),
@@ -87,7 +87,7 @@ fn handle_targeted_message(
         actor_id,
         recipient_id,
         ConversationMemoryLine {
-            turn_number: state.turn_number,
+            turn_number: state.clock.turn_number,
             event_sequence: 0,
             speaker_id: actor_id.to_string(),
             speaker_name: actor_name.to_string(),
@@ -120,7 +120,7 @@ fn handle_targeted_message(
         actor_id,
         recipient_id,
         message.delivery.room_id.as_deref().unwrap_or(""),
-        state.turn_number,
+        state.clock.turn_number,
     );
     if message_hearable(state, message) {
         let line =
@@ -199,7 +199,7 @@ fn handle_broadcast_message(
             actor_id,
             recipient_id,
             ConversationMemoryLine {
-                turn_number: state.turn_number,
+                turn_number: state.clock.turn_number,
                 event_sequence: 0,
                 speaker_id: actor_id.to_string(),
                 speaker_name: actor_name.to_string(),

@@ -263,6 +263,7 @@ fn partial_resistance_reduces_attack_damage() {
     let mut state = WorldState::new(&pack);
     // Attack 6 vs defense 0 → 6 raw; resistance 2 → 4 dealt.
     state
+        .combat
         .actor_stats
         .entry(ACTOR_A_ID.to_string())
         .or_default()

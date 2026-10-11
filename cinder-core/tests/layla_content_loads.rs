@@ -112,6 +112,7 @@ fn goblin_shaman_defeat_narrates_world_hint_lines() {
 
     // Reduce shaman hp to 1, then Layla attacks to defeat it
     state
+        .combat
         .actor_stats
         .entry("goblin-shaman".to_string())
         .or_default()
@@ -164,6 +165,7 @@ fn goblin_shaman_defeat_via_runtime_turn() {
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     state.current_room_id = "r5c5".to_string();
     state
+        .combat
         .actor_stats
         .entry("goblin-shaman".to_string())
         .or_default()
@@ -194,6 +196,7 @@ fn elf_king_defeat_narrates_dungeon_master_myth() {
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     state.current_room_id = "d8c5".to_string();
     state
+        .combat
         .actor_stats
         .entry("elf-king-5".to_string())
         .or_default()
@@ -269,6 +272,7 @@ fn leaf_paste_used_via_generic_item_use() {
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     state.add_item("leaf-paste");
     state
+        .combat
         .actor_stats
         .entry("player".to_string())
         .or_default()
@@ -304,6 +308,7 @@ fn bitter_moss_used_via_generic_item_use() {
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
     state.add_item("bitter-moss");
     state
+        .combat
         .actor_stats
         .entry("player".to_string())
         .or_default()
@@ -778,7 +783,10 @@ fn player_starting_inventory_seeds_from_actor_definition() {
     );
 
     let state = cinder_core::engine::state::WorldState::new(&pack);
-    assert_eq!(state.player_inventory.get("magic-chalk"), Some(&1));
+    assert_eq!(
+        state.inventory.player_inventory.get("magic-chalk"),
+        Some(&1)
+    );
 }
 
 #[test]
@@ -791,7 +799,10 @@ fn layla_trace_requires_magic_chalk_in_inventory() {
     );
 
     let mut state = cinder_core::engine::state::WorldState::new(&pack);
-    assert_eq!(state.player_inventory.get("magic-chalk"), Some(&1));
+    assert_eq!(
+        state.inventory.player_inventory.get("magic-chalk"),
+        Some(&1)
+    );
     assert!(cinder_core::engine::turn_policies::action_is_available(
         &pack,
         &state,
@@ -801,7 +812,7 @@ fn layla_trace_requires_magic_chalk_in_inventory() {
 
     // Remove magic-chalk from Layla's inventory (simulating giving it to an ally)
     state.remove_item("magic-chalk");
-    assert_eq!(state.player_inventory.get("magic-chalk"), None);
+    assert_eq!(state.inventory.player_inventory.get("magic-chalk"), None);
     assert!(!cinder_core::engine::turn_policies::action_is_available(
         &pack,
         &state,
@@ -903,6 +914,7 @@ fn trace_deducts_mp_and_recovers_over_time() {
     // Insufficient MP check (fresh room without existing marks)
     let mut state_low_mp = cinder_core::engine::state::WorldState::new(&pack);
     state_low_mp
+        .combat
         .actor_stats
         .entry("player".to_string())
         .or_default()

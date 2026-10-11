@@ -85,6 +85,7 @@ fn living_party_actors_in_room(
         .map(|actor| actor.id.clone())
         .chain(
             state
+                .actors
                 .spawned_actors
                 .values()
                 .filter(|actor| {
@@ -120,6 +121,7 @@ fn living_civilians_in_room(
         .map(|actor| actor.id.clone())
         .chain(
             state
+                .actors
                 .spawned_actors
                 .values()
                 .filter(|actor| {
@@ -152,10 +154,12 @@ mod tests {
         let mut state = WorldState::new(&content);
         state.current_room_id = room_id.clone();
         state
+            .actors
             .actor_room_overrides
             .insert(guard_id.clone(), room_id.clone());
         state.set_stance(&guard_id, ActorStance::Allied);
         state
+            .relations
             .party_orders
             .insert(guard_id.clone(), "guard".to_string());
 
@@ -185,6 +189,7 @@ mod tests {
         let mut state = WorldState::new(&content);
         state.current_room_id = room_id.clone();
         state
+            .actors
             .actor_room_overrides
             .insert(civilian_id.clone(), room_id.clone());
 
@@ -196,6 +201,7 @@ mod tests {
 
         // 2. When civilian is moved to another room, hostile attacks player in room
         state
+            .actors
             .actor_room_overrides
             .insert(civilian_id.clone(), "other_room".to_string());
         assert_eq!(
@@ -205,6 +211,7 @@ mod tests {
 
         // 3. When an ally guards in the room with civilian, guard is targeted over civilian
         state
+            .actors
             .actor_room_overrides
             .insert(civilian_id.clone(), room_id.clone());
         let guard_id = "test-guard".to_string();
@@ -216,10 +223,12 @@ mod tests {
         crate::engine::test_fixtures::rebuild_test_pack_indexes(&mut content);
 
         state
+            .actors
             .actor_room_overrides
             .insert(guard_id.clone(), room_id.clone());
         state.set_stance(&guard_id, ActorStance::Allied);
         state
+            .relations
             .party_orders
             .insert(guard_id.clone(), "guard".to_string());
         assert_eq!(
@@ -245,7 +254,10 @@ mod tests {
 
         let mut state = WorldState::new(&content);
         state.current_room_id = "other_room".to_string();
-        state.actor_room_overrides.insert(civilian_id, room_id);
+        state
+            .actors
+            .actor_room_overrides
+            .insert(civilian_id, room_id);
 
         // Hostile is in room with civilian, but lacks "siege" tag. Must not target civilian!
         assert_eq!(select_hostile_target(&content, &state, &hostile_id), None);
@@ -266,6 +278,7 @@ mod tests {
         let mut state = WorldState::new(&content);
         state.current_room_id = "other_room".to_string();
         state
+            .actors
             .actor_room_overrides
             .insert(offering_id.clone(), room_id);
 

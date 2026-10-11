@@ -51,7 +51,7 @@ pub(super) fn apply_actor_move_transition(
         .unwrap_or_else(|error| eprintln!("[cinder] hook warning (broken_reply): {error}"));
         state.clear_pending_reply(&pending.speaker_id, &pending.listener_id);
     }
-    let is_followed_actor = state.followed_actor_id.as_deref() == Some(movement.actor_id);
+    let is_followed_actor = state.relations.followed_actor_id.as_deref() == Some(movement.actor_id);
     let is_player = movement.actor_id == content.settings.combat.player_actor_id;
     let actor_name = movement
         .actor_name
@@ -99,7 +99,7 @@ pub(super) fn apply_actor_move_transition(
         ));
     }
     state.mark_actor_room_visited(movement.actor_id, movement.to_room_id);
-    state.actor_room_overrides.insert(
+    state.actors.actor_room_overrides.insert(
         movement.actor_id.to_string(),
         movement.to_room_id.to_string(),
     );
@@ -169,6 +169,7 @@ fn sync_followers_of_actor(
         }
         state.mark_actor_room_visited(&follower_id, to_room_id);
         state
+            .actors
             .actor_room_overrides
             .insert(follower_id.clone(), to_room_id.to_string());
         lines.extend_lines(advance_objective_for_signal(

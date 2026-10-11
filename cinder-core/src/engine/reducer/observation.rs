@@ -338,7 +338,7 @@ pub(crate) fn render_actor_speech_line(
 
 pub(super) fn render_story_text(template: &str, state: &WorldState) -> String {
     let mut rendered = state.story_vars.render_template(template);
-    for (actor_id, stats) in &state.actor_stats {
+    for (actor_id, stats) in &state.combat.actor_stats {
         for (stat_key, stat_value) in stats {
             rendered = rendered.replace(
                 &format!("{{actor.{actor_id}.{stat_key}}}"),

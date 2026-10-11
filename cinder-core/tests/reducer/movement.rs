@@ -21,6 +21,7 @@ fn player_movement_condenses_multiple_followers_into_one_line() {
     state.set_follows_player(ACTOR_B_ID, true);
     state.set_follows_player(ACTOR_C_ID, true);
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
 

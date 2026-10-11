@@ -261,11 +261,13 @@ mod tests {
         let mut state = WorldState::new(&content);
         state.current_room_id = "hall".to_string();
         state
+            .combat
             .actor_stats
             .entry(brute_id.clone())
             .or_default()
             .insert("hp".to_string(), 6);
         state
+            .combat
             .actor_stats
             .entry(brute_id.clone())
             .or_default()
@@ -291,11 +293,13 @@ mod tests {
         let (content, mut state, brute_id, bystander_id) = hostile_fixture();
         state.set_stance(&brute_id, ActorStance::Hostile);
         state
+            .combat
             .next_hostile_strike_at
-            .insert(brute_id.clone(), state.current_time_minutes + 5);
+            .insert(brute_id.clone(), state.clock.current_time_minutes + 5);
         // Dead hostile in the same room.
         state.set_stance(&bystander_id, ActorStance::Hostile);
         state
+            .combat
             .actor_stats
             .entry(bystander_id.clone())
             .or_default()

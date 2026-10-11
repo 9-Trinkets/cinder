@@ -159,6 +159,7 @@ impl CinderRuntime {
 
     fn inventory_panel_options(&self, state: &WorldState) -> Vec<PanelOption> {
         let mut ids: Vec<String> = state
+            .inventory
             .player_inventory
             .iter()
             .filter(|(_, count)| **count > 0)

@@ -68,6 +68,7 @@ fn equip_and_unequip_are_mutually_exclusive_in_the_bar() {
     // After equipping, only unequip is available.
     state.remove_item("chisel");
     state
+        .inventory
         .equipment
         .insert("weapon".to_string(), "chisel".to_string());
     assert!(!action_is_available(

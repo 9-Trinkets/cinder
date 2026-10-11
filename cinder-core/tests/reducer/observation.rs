@@ -121,6 +121,7 @@ fn room_observation_separates_party_members_from_other_actors_onto_separate_line
 
     // When only party members are present, party is preceded by new paragraph without 'Here:'
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_B_ID.to_string(), KITCHEN_ID.to_string());
     let party_only_text = apply_events(
@@ -316,6 +317,7 @@ fn room_observation_switches_to_defeat_override_description_once_actor_falls() {
     assert!(before.contains("quiet kitchen"), "got: {before}");
 
     state
+        .combat
         .actor_stats
         .entry(ACTOR_C_ID.to_string())
         .or_default()

@@ -42,20 +42,24 @@ pub(super) fn apply_equip(
     let replaced: BTreeSet<String> = item
         .occupied_slots()
         .iter()
-        .filter_map(|slot| state.equipment.get(slot).cloned())
+        .filter_map(|slot| state.inventory.equipment.get(slot).cloned())
         .filter(|old_item_id| old_item_id != item_id)
         .collect();
     let dangling_slots: Vec<String> = state
+        .inventory
         .equipment
         .iter()
         .filter(|(_, occupant)| replaced.contains(*occupant))
         .map(|(slot, _)| slot.clone())
         .collect();
     for slot in dangling_slots {
-        state.equipment.remove(&slot);
+        state.inventory.equipment.remove(&slot);
     }
     for slot in item.occupied_slots() {
-        state.equipment.insert(slot.clone(), item_id.to_string());
+        state
+            .inventory
+            .equipment
+            .insert(slot.clone(), item_id.to_string());
     }
     for old_item_id in replaced {
         state.add_item(&old_item_id);
@@ -101,7 +105,7 @@ pub(super) fn apply_unequip(
     }
     render_item_equipment_text(state, content, item, "unequipped", lines);
     for slot in item.occupied_slots() {
-        state.equipment.remove(slot);
+        state.inventory.equipment.remove(slot);
     }
     state.add_item(item_id);
     if let Some(line) = render_equipment_message(content, state, "equipment.unequipped", item) {

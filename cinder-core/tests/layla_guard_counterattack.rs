@@ -12,6 +12,7 @@ fn guarding_ally_is_targeted_and_counterattacks_off_screen() {
 
     // Place sakhra in r2c2 as an allied follower on guard
     state
+        .actors
         .actor_room_overrides
         .insert("sakhra".to_string(), "r2c2".to_string());
     state.set_actor_stance(&pack, "sakhra", ActorStance::Allied, false);
@@ -22,6 +23,7 @@ fn guarding_ally_is_targeted_and_counterattacks_off_screen() {
     // Ensure goblin-1 is hostile and ready to strike
     state.set_actor_stance(&pack, "goblin-1", ActorStance::Hostile, false);
     state
+        .combat
         .next_hostile_strike_at
         .insert("goblin-1".to_string(), 0);
 
@@ -29,7 +31,7 @@ fn guarding_ally_is_targeted_and_counterattacks_off_screen() {
     let sakhra_initial_hp = state.actor_stat("sakhra", "hp");
     let player_initial_hp = state.actor_stat("player", "hp");
 
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
 
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
@@ -78,6 +80,7 @@ fn guarding_ally_with_comms_transmits_remote_channel_dispatch() {
     state.current_room_id = "r1c1".to_string();
 
     state
+        .actors
         .actor_room_overrides
         .insert("sakhra".to_string(), "r2c2".to_string());
     state.set_actor_stance(&pack, "sakhra", ActorStance::Allied, false);
@@ -90,16 +93,18 @@ fn guarding_ally_with_comms_transmits_remote_channel_dispatch() {
 
     // Ensure goblin-1 is hostile in r2c2 and ready to strike with enough HP to survive counterattack
     state
+        .combat
         .actor_stats
         .entry("goblin-1".to_string())
         .or_default()
         .insert("hp".to_string(), 20);
     state.set_actor_stance(&pack, "goblin-1", ActorStance::Hostile, false);
     state
+        .combat
         .next_hostile_strike_at
         .insert("goblin-1".to_string(), 0);
 
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
 
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());

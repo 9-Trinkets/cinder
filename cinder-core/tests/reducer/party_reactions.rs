@@ -28,8 +28,8 @@ fn default_striker_counterattacks_with_its_own_kind_and_target_resistance() {
 
     assert_eq!(state.actor_stat(ACTOR_C_ID, "stamina"), 17);
     assert_eq!(
-        state.party_reaction_ready_at.get(ACTOR_B_ID),
-        Some(&(state.current_time_minutes + 5))
+        state.relations.party_reaction_ready_at.get(ACTOR_B_ID),
+        Some(&(state.clock.current_time_minutes + 5))
     );
 }
 
@@ -94,7 +94,12 @@ fn survival_hold_interrupts_an_assist_order_and_consumes_readiness() {
 
     assert_eq!(state.actor_stat(ACTOR_C_ID, "stamina"), 20);
     assert!(output.lines.iter().any(|line| line.text == "Blair holds."));
-    assert!(state.party_reaction_ready_at.contains_key(ACTOR_B_ID));
+    assert!(
+        state
+            .relations
+            .party_reaction_ready_at
+            .contains_key(ACTOR_B_ID)
+    );
 }
 
 #[test]
@@ -119,16 +124,23 @@ fn support_applies_its_authored_effect_to_the_selected_target() {
     let mut state = combat_state(&pack);
     state.current_room_id = KITCHEN_ID.to_string();
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_B_ID.to_string(), KITCHEN_ID.to_string());
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_C_ID.to_string(), KITCHEN_ID.to_string());
 
     let _ = hostile_strike(&mut state, &pack);
 
     assert_eq!(state.actor_stat(ACTOR_A_ID, "stamina"), 19);
-    assert!(state.party_reaction_ready_at.contains_key(ACTOR_B_ID));
+    assert!(
+        state
+            .relations
+            .party_reaction_ready_at
+            .contains_key(ACTOR_B_ID)
+    );
 }
 
 #[test]
@@ -191,5 +203,10 @@ fn player_defeat_ends_the_strike_before_party_reactions() {
     let _ = hostile_strike(&mut state, &pack);
 
     assert_eq!(state.actor_stat(ACTOR_C_ID, "stamina"), 20);
-    assert!(!state.party_reaction_ready_at.contains_key(ACTOR_B_ID));
+    assert!(
+        !state
+            .relations
+            .party_reaction_ready_at
+            .contains_key(ACTOR_B_ID)
+    );
 }

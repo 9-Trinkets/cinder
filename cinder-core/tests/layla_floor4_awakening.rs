@@ -72,6 +72,7 @@ fn awakening_persists_when_lantern_transferred_to_another_follower() {
 
     // Also place golem-dark-nw in village_square as ally
     state
+        .actors
         .actor_room_overrides
         .insert("golem-dark-nw".to_string(), "village_square".to_string());
     state.set_stance(
@@ -136,11 +137,13 @@ fn hard_limit_shaman_and_king_cannot_awaken() {
 
     // Set high wisdom on shaman and elf king
     state
+        .combat
         .actor_stats
         .entry("goblin-shaman".to_string())
         .or_default()
         .insert("wisdom".to_string(), 20);
     state
+        .combat
         .actor_stats
         .entry("elf-king-5".to_string())
         .or_default()

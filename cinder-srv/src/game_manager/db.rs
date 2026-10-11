@@ -85,7 +85,7 @@ pub(super) async fn fetch_transcript_lines(
          FROM transcript_entries te
          JOIN game_plays s ON s.id = te.play_id
          WHERE te.play_id = $1 AND s.player_id = $2
-         ORDER BY te.turn_number ASC, te.id ASC
+         ORDER BY te.clock.turn_number ASC, te.id ASC
          LIMIT $3",
     )
     .bind(play_id)

@@ -39,9 +39,10 @@ pub(crate) fn select_defensive_reaction(
                         && !state
                             .actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
                         && state
+                            .relations
                             .party_reaction_ready_at
                             .get(&actor.id)
-                            .is_none_or(|ready_at| *ready_at <= state.current_time_minutes)
+                            .is_none_or(|ready_at| *ready_at <= state.clock.current_time_minutes)
                         && actor_may_use_reaction(state, &actor.id, &rule.skill_id)
                         && rule.conditions.iter().all(|condition| {
                             condition_matches(
@@ -131,9 +132,9 @@ pub(crate) fn consume_party_reaction(
         }
         PartyReactionCooldown::FixedMinutes { minutes } => minutes,
     };
-    state.party_reaction_ready_at.insert(
+    state.relations.party_reaction_ready_at.insert(
         decision.actor_id.clone(),
-        state.current_time_minutes.saturating_add(minutes),
+        state.clock.current_time_minutes.saturating_add(minutes),
     );
 }
 
@@ -163,9 +164,10 @@ fn actor_is_reaction_eligible(
         && state.actor_is_in_room(content, actor_id, room_id)
         && !state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id)
         && state
+            .relations
             .party_reaction_ready_at
             .get(actor_id)
-            .is_none_or(|ready_at| *ready_at <= state.current_time_minutes)
+            .is_none_or(|ready_at| *ready_at <= state.clock.current_time_minutes)
 }
 
 /// Whether an actor may perform a reactive behavior.
@@ -367,6 +369,7 @@ mod tests {
     fn allied_state(content: &ContentPack) -> WorldState {
         let mut state = WorldState::new(content);
         state
+            .actors
             .actor_room_overrides
             .insert("casey".to_string(), "lounge".to_string());
         for actor_id in ["casey", "drew"] {

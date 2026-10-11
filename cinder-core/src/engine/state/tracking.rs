@@ -1,9 +1,36 @@
 use super::*;
-use crate::content::types::ContentPack;
+use crate::content::types::{ActorDefinition, ContentPack};
+use serde::{Deserialize, Serialize};
+use std::collections::{BTreeMap, BTreeSet};
+
+/// Per-actor world knowledge and runtime placements: room overrides, observed
+////known rooms and features, known actors, recent observations, spawned and
+/// renamed actors, and applied transformation stages.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ActorRegistry {
+    pub actor_room_overrides: BTreeMap<String, String>,
+    pub actor_known_room_ids: BTreeMap<String, BTreeSet<String>>,
+    pub actor_observed_room_ids: BTreeMap<String, BTreeSet<String>>,
+    pub actor_known_feature_ids: BTreeMap<String, BTreeSet<String>>,
+    pub actor_known_actor_ids: BTreeMap<String, BTreeSet<String>>,
+    pub actor_recent_observation_notes: BTreeMap<String, Vec<String>>,
+    /// Dynamically spawned actors instantiated at runtime from templates.
+    #[serde(default)]
+    pub spawned_actors: BTreeMap<String, ActorDefinition>,
+    /// Runtime name overrides for actors (e.g. awakened names).
+    #[serde(default)]
+    pub actor_name_overrides: BTreeMap<String, String>,
+    /// Transformation stages applied per actor, in application order (e.g.
+    /// `"sakhra" -> ["awakening"]`). Awakening is simply the `"awakening"`
+    /// stage of a transformation.
+    #[serde(default)]
+    pub transformed_stages: BTreeMap<String, Vec<String>>,
+}
 
 impl WorldState {
     pub fn actor_room_id<'a>(&'a self, actor_id: &str, default_room_id: &'a str) -> &'a str {
-        self.actor_room_overrides
+        self.actors
+            .actor_room_overrides
             .get(actor_id)
             .map(String::as_str)
             .unwrap_or(default_room_id)
@@ -16,7 +43,7 @@ impl WorldState {
         content: &'a ContentPack,
         actor_id: &str,
     ) -> &'a str {
-        if let Some(room_id) = self.actor_room_overrides.get(actor_id) {
+        if let Some(room_id) = self.actors.actor_room_overrides.get(actor_id) {
             return room_id;
         }
         self.actor(content, actor_id)
@@ -26,7 +53,8 @@ impl WorldState {
 
     /// Sets the actor's current room location override.
     pub fn set_actor_room(&mut self, actor_id: &str, room_id: &str) {
-        self.actor_room_overrides
+        self.actors
+            .actor_room_overrides
             .insert(actor_id.to_string(), room_id.to_string());
     }
 
@@ -63,13 +91,15 @@ impl WorldState {
     }
 
     pub fn actor_has_visited_room(&self, actor_id: &str, room_id: &str) -> bool {
-        self.actor_known_room_ids
+        self.actors
+            .actor_known_room_ids
             .get(actor_id)
             .is_some_and(|rooms| rooms.contains(room_id))
     }
 
     pub fn mark_actor_room_visited(&mut self, actor_id: &str, room_id: &str) {
-        self.actor_known_room_ids
+        self.actors
+            .actor_known_room_ids
             .entry(actor_id.to_string())
             .or_default()
             .insert(room_id.to_string());
@@ -88,26 +118,30 @@ impl WorldState {
     }
 
     pub fn actor_has_seen_feature(&self, actor_id: &str, room_id: &str, feature_id: &str) -> bool {
-        self.actor_known_feature_ids
+        self.actors
+            .actor_known_feature_ids
             .get(actor_id)
             .is_some_and(|features| features.contains(&feature_key(room_id, feature_id)))
     }
 
     pub fn mark_actor_feature_seen(&mut self, actor_id: &str, room_id: &str, feature_id: &str) {
-        self.actor_known_feature_ids
+        self.actors
+            .actor_known_feature_ids
             .entry(actor_id.to_string())
             .or_default()
             .insert(feature_key(room_id, feature_id));
     }
 
     pub fn actor_has_studied_actor(&self, actor_id: &str, target_actor_id: &str) -> bool {
-        self.actor_known_actor_ids
+        self.actors
+            .actor_known_actor_ids
             .get(actor_id)
             .is_some_and(|actors| actors.contains(target_actor_id))
     }
 
     pub fn mark_actor_studied_actor(&mut self, actor_id: &str, target_actor_id: &str) {
-        self.actor_known_actor_ids
+        self.actors
+            .actor_known_actor_ids
             .entry(actor_id.to_string())
             .or_default()
             .insert(target_actor_id.to_string());
@@ -115,6 +149,7 @@ impl WorldState {
 
     pub fn push_actor_observation_note(&mut self, actor_id: &str, note: String) {
         let notes = self
+            .actors
             .actor_recent_observation_notes
             .entry(actor_id.to_string())
             .or_default();
@@ -125,20 +160,23 @@ impl WorldState {
     }
 
     pub fn actor_recent_observation_notes(&self, actor_id: &str) -> &[String] {
-        self.actor_recent_observation_notes
+        self.actors
+            .actor_recent_observation_notes
             .get(actor_id)
             .map(Vec::as_slice)
             .unwrap_or(&[])
     }
 
     pub fn actor_has_observed_room(&self, actor_id: &str, room_id: &str) -> bool {
-        self.actor_observed_room_ids
+        self.actors
+            .actor_observed_room_ids
             .get(actor_id)
             .is_some_and(|rooms| rooms.contains(room_id))
     }
 
     pub fn mark_actor_observed_room(&mut self, actor_id: &str, room_id: &str) {
-        self.actor_observed_room_ids
+        self.actors
+            .actor_observed_room_ids
             .entry(actor_id.to_string())
             .or_default()
             .insert(room_id.to_string());

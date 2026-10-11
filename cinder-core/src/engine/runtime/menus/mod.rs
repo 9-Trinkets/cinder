@@ -19,7 +19,7 @@ impl CinderRuntime {
         let Some(room) = self.content.room(room_id) else {
             return Err(format!("missing room '{room_id}'").into());
         };
-        let turn_number = state.turn_number + 1;
+        let turn_number = state.clock.turn_number + 1;
         let mut events = vec![TimestampedWorldEvent::now(WorldEvent::TurnStarted {
             turn_number,
             raw_input: format!("switch-room:{room_id}"),
@@ -73,7 +73,7 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for following actor")?;
-        let turn_number = state.turn_number + 1;
+        let turn_number = state.clock.turn_number + 1;
         let feedback_line = format!(
             "> {}",
             match actor_id {
@@ -102,7 +102,7 @@ impl CinderRuntime {
                     .content
                     .actor(actor_id)
                     .ok_or_else(|| format!("missing actor '{actor_id}'"))?;
-                state.followed_actor_id = Some(actor_id.to_string());
+                state.relations.followed_actor_id = Some(actor_id.to_string());
                 let room_id = state.actor_room_id(actor_id, &actor.room_id).to_string();
                 if state.current_room_id != room_id {
                     events.push(TimestampedWorldEvent::now(WorldEvent::PlayerMoved {
@@ -118,7 +118,7 @@ impl CinderRuntime {
                 }
             }
             None => {
-                state.followed_actor_id = None;
+                state.relations.followed_actor_id = None;
             }
         }
         let reduced = apply_events(&mut state, self.content.as_ref(), &events);

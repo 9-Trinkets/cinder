@@ -94,7 +94,7 @@ fn build_hostility_plan_request(
     state: &WorldState,
     eligible_events: &[WorldEvent],
 ) -> HostilityPlanRequest {
-    let current_time_minutes = state.current_time_minutes;
+    let current_time_minutes = state.clock.current_time_minutes;
     let candidates = eligible_events
         .iter()
         .filter_map(|event| {
@@ -106,6 +106,7 @@ fn build_hostility_plan_request(
         .map(|actor_id| {
             let actor = state.actor(content, actor_id);
             let due_at = *state
+                .combat
                 .next_hostile_strike_at
                 .get(actor_id)
                 .unwrap_or(&current_time_minutes);

@@ -388,8 +388,8 @@ mod tests {
         let content = scripted_pack();
         let mut state = WorldState::new(&content);
         state.story_vars.set_unchecked("comms_ready", "true");
-        let starting_turn = state.turn_number;
-        let starting_time = state.current_time_minutes;
+        let starting_turn = state.clock.turn_number;
+        let starting_time = state.clock.current_time_minutes;
 
         let lines = drain_scripted_sequences(&content, &mut state);
 
@@ -409,8 +409,8 @@ mod tests {
             crate::engine::narrative::NarrativeLineKind::Channel
         );
         assert_eq!(lines[2].text, "Casey (to Blair): Your assigned handler.");
-        assert_eq!(state.turn_number, starting_turn);
-        assert_eq!(state.current_time_minutes, starting_time);
+        assert_eq!(state.clock.turn_number, starting_turn);
+        assert_eq!(state.clock.current_time_minutes, starting_time);
         assert!(
             state
                 .scripted_sequence_playhead("opening-call")
@@ -462,11 +462,13 @@ mod tests {
         }];
         let mut state = WorldState::new(&content);
         state
+            .actors
             .actor_room_overrides
             .insert("casey".to_string(), "kitchen".to_string());
 
         assert!(advance_scripted_sequences(&content, &state).is_empty());
         state
+            .actors
             .actor_room_overrides
             .insert("casey".to_string(), "lounge".to_string());
         assert!(!advance_scripted_sequences(&content, &state).is_empty());

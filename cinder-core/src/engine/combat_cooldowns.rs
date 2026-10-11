@@ -72,11 +72,13 @@ mod tests {
         let actor_id = content.actors[0].id.clone();
         let mut state = WorldState::new(&content);
         state
+            .combat
             .actor_stats
             .entry(actor_id.clone())
             .or_default()
             .insert(DEXTERITY_STAT_ID.to_string(), 9);
         state
+            .combat
             .actor_stats
             .entry(actor_id.clone())
             .or_default()

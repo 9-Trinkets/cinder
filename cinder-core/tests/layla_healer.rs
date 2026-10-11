@@ -12,27 +12,31 @@ fn hostile_bishop_heals_damaged_ally_before_striking() {
 
     // Place an allied elf mob (elf-pawn-1) in d8c3 with reduced HP
     state
+        .actors
         .actor_room_overrides
         .insert("elf-pawn-1".to_string(), "d8c3".to_string());
     state.set_actor_stance(&pack, "elf-pawn-1", ActorStance::Hostile, false);
     state
+        .combat
         .actor_stats
         .entry("elf-pawn-1".to_string())
         .or_default()
         .insert("hp".to_string(), 2);
-    state
-        .next_hostile_strike_at
-        .insert("elf-pawn-1".to_string(), state.current_time_minutes + 10);
+    state.combat.next_hostile_strike_at.insert(
+        "elf-pawn-1".to_string(),
+        state.clock.current_time_minutes + 10,
+    );
 
     // elf-bishop-3 is ready to strike/act
     state.set_actor_stance(&pack, "elf-bishop-3", ActorStance::Hostile, false);
     state
+        .combat
         .next_hostile_strike_at
-        .insert("elf-bishop-3".to_string(), state.current_time_minutes);
+        .insert("elf-bishop-3".to_string(), state.clock.current_time_minutes);
 
     let player_initial_hp = state.actor_stat("player", "hp");
 
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
     let runtime =
@@ -73,6 +77,7 @@ fn hostile_bishop_heals_self_when_badly_injured() {
 
     // Severely wound bishop (< 50% of 10 max HP)
     state
+        .combat
         .actor_stats
         .entry("elf-bishop-3".to_string())
         .or_default()
@@ -80,12 +85,13 @@ fn hostile_bishop_heals_self_when_badly_injured() {
 
     state.set_actor_stance(&pack, "elf-bishop-3", ActorStance::Hostile, false);
     state
+        .combat
         .next_hostile_strike_at
         .insert("elf-bishop-3".to_string(), 0);
 
     let player_initial_hp = state.actor_stat("player", "hp");
 
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
     let runtime =
@@ -124,12 +130,13 @@ fn hostile_bishop_strikes_player_when_all_hostiles_at_full_health() {
     // Bishop is at full health (10 HP), no wounded allies
     state.set_actor_stance(&pack, "elf-bishop-3", ActorStance::Hostile, false);
     state
+        .combat
         .next_hostile_strike_at
         .insert("elf-bishop-3".to_string(), 0);
 
     let player_initial_hp = state.actor_stat("player", "hp");
 
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
     let runtime =
@@ -160,25 +167,29 @@ fn hostile_queen_heals_damaged_ally_for_six() {
 
     // Place an allied elf mob in d8c4 with missing HP
     state
+        .actors
         .actor_room_overrides
         .insert("elf-rook-1".to_string(), "d8c4".to_string());
     state.set_actor_stance(&pack, "elf-rook-1", ActorStance::Hostile, false);
     state
+        .combat
         .actor_stats
         .entry("elf-rook-1".to_string())
         .or_default()
         .insert("hp".to_string(), 8);
-    state
-        .next_hostile_strike_at
-        .insert("elf-rook-1".to_string(), state.current_time_minutes + 10);
+    state.combat.next_hostile_strike_at.insert(
+        "elf-rook-1".to_string(),
+        state.clock.current_time_minutes + 10,
+    );
 
     // elf-queen-4 ready to act
     state.set_actor_stance(&pack, "elf-queen-4", ActorStance::Hostile, false);
     state
+        .combat
         .next_hostile_strike_at
-        .insert("elf-queen-4".to_string(), state.current_time_minutes);
+        .insert("elf-queen-4".to_string(), state.clock.current_time_minutes);
 
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
     let runtime =
@@ -210,6 +221,7 @@ fn allied_bishop_supports_wounded_ally_in_combat() {
 
     // Place elf-bishop-3 as allied follower in r2c2
     state
+        .actors
         .actor_room_overrides
         .insert("elf-bishop-3".to_string(), "r2c2".to_string());
     state.set_actor_stance(&pack, "elf-bishop-3", ActorStance::Allied, false);
@@ -220,17 +232,19 @@ fn allied_bishop_supports_wounded_ally_in_combat() {
     // Goblin-1 is hostile in r2c2 and ready to strike
     state.set_actor_stance(&pack, "goblin-1", ActorStance::Hostile, false);
     state
+        .combat
         .next_hostile_strike_at
-        .insert("goblin-1".to_string(), state.current_time_minutes);
+        .insert("goblin-1".to_string(), state.clock.current_time_minutes);
 
     // Set player HP to 6 (> 50% so bishop doesn't intercept, but taking 1 damage wounds player)
     state
+        .combat
         .actor_stats
         .entry("player".to_string())
         .or_default()
         .insert("hp".to_string(), 6);
 
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
     let runtime =
@@ -271,6 +285,7 @@ fn allied_bishop_counterattacks_when_no_ally_wounded() {
 
     // Place elf-bishop-3 as allied follower in r2c2
     state
+        .actors
         .actor_room_overrides
         .insert("elf-bishop-3".to_string(), "r2c2".to_string());
     state.set_actor_stance(&pack, "elf-bishop-3", ActorStance::Allied, false);
@@ -281,12 +296,13 @@ fn allied_bishop_counterattacks_when_no_ally_wounded() {
     // Goblin-1 is hostile in r2c2 and ready to strike
     state.set_actor_stance(&pack, "goblin-1", ActorStance::Hostile, false);
     state
+        .combat
         .next_hostile_strike_at
-        .insert("goblin-1".to_string(), state.current_time_minutes);
+        .insert("goblin-1".to_string(), state.clock.current_time_minutes);
 
     let goblin_initial_hp = state.actor_stat("goblin-1", "hp");
 
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
     let runtime =
@@ -318,6 +334,7 @@ fn allied_bishop_joins_player_attack() {
 
     // Place elf-bishop-3 as allied follower in r2c2
     state
+        .actors
         .actor_room_overrides
         .insert("elf-bishop-3".to_string(), "r2c2".to_string());
     state.set_actor_stance(&pack, "elf-bishop-3", ActorStance::Allied, false);
@@ -328,12 +345,13 @@ fn allied_bishop_joins_player_attack() {
     // Goblin-1 is hostile in r2c2 with high HP
     state.set_actor_stance(&pack, "goblin-1", ActorStance::Hostile, false);
     state
+        .combat
         .actor_stats
         .entry("goblin-1".to_string())
         .or_default()
         .insert("hp".to_string(), 20);
 
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
     let runtime =

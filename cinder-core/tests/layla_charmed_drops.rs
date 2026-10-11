@@ -74,11 +74,13 @@ fn charmed_guard_does_not_drop_duplicate_key_on_subsequent_defeat() {
 
     // Reduce guard HP to 1, make attackable, and turn hostile to simulate combat defeat
     let mut s = runtime.export_state().expect("state exported");
-    s.actor_stats
+    s.combat
+        .actor_stats
         .entry("garrison_guard".to_string())
         .or_default()
         .insert("hp".to_string(), 1);
-    s.actor_stats
+    s.combat
+        .actor_stats
         .entry("player".to_string())
         .or_default()
         .insert("strength".to_string(), 50);
@@ -111,11 +113,13 @@ fn unallied_guard_drops_key_normally_when_defeated() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = "village_north_gate".to_string();
     state
+        .combat
         .actor_stats
         .entry("garrison_guard".to_string())
         .or_default()
         .insert("hp".to_string(), 1);
     state
+        .combat
         .actor_stats
         .entry("player".to_string())
         .or_default()

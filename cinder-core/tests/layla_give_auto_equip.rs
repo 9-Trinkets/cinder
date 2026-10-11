@@ -19,6 +19,7 @@ fn runtime_with_bolt_in_room() -> (CinderRuntime, cinder_core::content::types::C
     // Put Layla and the ally together so the gift resolves.
     state.current_room_id = "fortress_gate".to_string();
     state
+        .actors
         .actor_room_overrides
         .insert(ALLY_ID.to_string(), "fortress_gate".to_string());
     // The garrison starts neutral; gifts only resolve for party members.
@@ -84,6 +85,7 @@ fn giving_a_non_equippable_item_still_lands_in_the_pack() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = "fortress_gate".to_string();
     state
+        .actors
         .actor_room_overrides
         .insert(ALLY_ID.to_string(), "fortress_gate".to_string());
     state.set_stance(ALLY_ID, ActorStance::Allied);

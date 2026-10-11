@@ -214,7 +214,7 @@ pub(super) fn handle_actor_command_used(
                 &mut lines,
             );
         } else if previous_current_room_id == command_context.room_id
-            || state.followed_actor_id.as_deref() == Some(command_context.actor_id)
+            || state.relations.followed_actor_id.as_deref() == Some(command_context.actor_id)
         {
             lines.narration(command_text);
         }
@@ -461,7 +461,7 @@ pub(super) fn record_actor_command_memory(
             context.actor_id,
             target_actor_id,
             ConversationMemoryLine {
-                turn_number: state.turn_number,
+                turn_number: state.clock.turn_number,
                 event_sequence: 0,
                 speaker_id: context.actor_id.to_string(),
                 speaker_name: context.actor_name.to_string(),

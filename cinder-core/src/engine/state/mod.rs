@@ -2,7 +2,7 @@ use rand::Rng;
 
 use crate::content::types::{
     ActorDefinition, ContentPack, OpeningMenuOptionDefinition, RoomDefinition, SkillDefinition,
-    SkillKind, StatDefinition,
+    SkillKind,
 };
 use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet, HashMap};
@@ -23,8 +23,13 @@ mod spawn;
 mod stats;
 mod tracking;
 
+pub use clock::Clock;
+pub use inventory::Inventory;
+pub use relationships::RelationshipGraph;
 pub use sequences::ScriptedSequencePlayhead;
 pub use spawn::{SpawnActorConfig, SpawnActorOutcome, SpawnedActorInfo};
+pub use stats::CombatState;
+pub use tracking::ActorRegistry;
 
 /// Current persisted `WorldState` format version. Version 1 predates the
 /// version field and used floor-conquest milestone naming (`floor_summaries`,
@@ -64,26 +69,26 @@ pub struct WorldState {
     /// pack (e.g. a test fixture using `"blair"`) may name its player anything.
     #[serde(default = "default_player_actor_id")]
     pub player_actor_id: String,
-    pub turn_number: u32,
-    pub current_time_minutes: u32,
+    #[serde(flatten)]
+    pub clock: Clock,
     #[serde(default)]
     pub phase: GamePhase,
     pub conversation_event_sequence: u64,
     pub conversation_memory: BTreeMap<String, Vec<ConversationMemoryLine>>,
     pub conversation_summaries: BTreeMap<String, ConversationSummaryState>,
-    pub actor_stat_defs: BTreeMap<String, StatDefinition>,
-    pub pair_stat_defs: BTreeMap<String, StatDefinition>,
-    pub pair_stats: BTreeMap<String, BTreeMap<String, i32>>,
-    pub actor_stats: BTreeMap<String, BTreeMap<String, i32>>,
+    #[serde(flatten)]
+    pub combat: CombatState,
     pub pending_replies: BTreeMap<String, PendingReplyState>,
     pub active_objective_stage_ids: Vec<String>,
-    pub actor_room_overrides: BTreeMap<String, String>,
+    #[serde(flatten)]
+    pub actors: ActorRegistry,
     #[serde(default)]
     pub stages_completed: usize,
     #[serde(default)]
     pub completed_stage_ids: BTreeSet<String>,
     pub feature_consumable_stock: BTreeMap<String, u32>,
-    pub followed_actor_id: Option<String>,
+    #[serde(flatten)]
+    pub relations: RelationshipGraph,
     pub active_menu_id: Option<String>,
     #[serde(default)]
     pub pending_menu_selections: Vec<String>,
@@ -96,74 +101,14 @@ pub struct WorldState {
     pub stage_started_minutes: BTreeMap<String, u32>,
     #[serde(default)]
     pub player_recent_room_ids: Vec<String>,
-    pub actor_known_room_ids: BTreeMap<String, BTreeSet<String>>,
-    pub actor_observed_room_ids: BTreeMap<String, BTreeSet<String>>,
-    pub actor_known_feature_ids: BTreeMap<String, BTreeSet<String>>,
-    pub actor_known_actor_ids: BTreeMap<String, BTreeSet<String>>,
-    pub actor_recent_observation_notes: BTreeMap<String, Vec<String>>,
-    #[serde(default)]
-    pub initial_actor_stats: BTreeMap<String, BTreeMap<String, i32>>,
-    #[serde(default)]
-    pub initial_pair_stats: BTreeMap<String, BTreeMap<String, i32>>,
     #[serde(default, skip_serializing)]
     pub transcript: Vec<String>,
     #[serde(default)]
     pub last_transcript_line: Option<String>,
-    #[serde(default)]
-    pub player_inventory: HashMap<String, u32>,
-    #[serde(default)]
-    pub room_item_stock: BTreeMap<String, u32>,
-    /// Remaining activations of charged room items, keyed like `room_item_stock`
-    /// (`room::item`). Absent entries mean the item is at full capacity; the
-    /// counter is cleared whenever a room stops holding the item.
-    #[serde(default)]
-    pub room_item_charges: BTreeMap<String, u32>,
+    #[serde(flatten)]
+    pub inventory: Inventory,
     #[serde(default)]
     pub act_series: Option<ActSeriesState>,
-    /// Per-actor relationship toward the player's faction. Absent entries mean
-    /// `ActorRelationship::default()` (neutral, not following), so packs that
-    /// never touch relationships carry no state.
-    #[serde(default)]
-    pub relationships: BTreeMap<String, ActorRelationship>,
-    /// Persistent Guard/Assist directive for each allied party member.
-    #[serde(default)]
-    pub party_orders: BTreeMap<String, crate::content::types::PartyOrderKind>,
-    /// Target actor that this actor is following (for non-player leaders, e.g. squad leader).
-    #[serde(default)]
-    pub followed_actors: BTreeMap<String, String>,
-    /// Earliest game minute at which each party member may react again.
-    #[serde(default)]
-    pub party_reaction_ready_at: BTreeMap<String, u32>,
-    /// Next game-minute at which each hostile actor may autonomously strike a
-    /// party member. Only meaningful while the stance is hostile; entries are
-    /// seeded when a mob wakes and cleared when it leaves hostility.
-    #[serde(default)]
-    pub next_hostile_strike_at: BTreeMap<String, u32>,
-    /// Player equipment, slot id → item id. Slot ids are the pack's fixed
-    /// `settings.equipment_slots` keys. Bonuses feed effective stat reads.
-    #[serde(default)]
-    pub equipment: BTreeMap<String, String>,
-    /// Minute until which player is invisible. None or <= current_time_minutes means visible.
-    #[serde(default)]
-    pub invisible_until_minute: Option<u32>,
-    /// Per-actor inventory (non-player actors), actor id → item id → count.
-    #[serde(default)]
-    pub actor_inventories: BTreeMap<String, HashMap<String, u32>>,
-    /// Per-actor equipment (non-player actors), actor id → slot id → item id.
-    #[serde(default)]
-    pub actor_equipment: BTreeMap<String, BTreeMap<String, String>>,
-    /// Per-actor experience toward their next level. Absent entries are 0.
-    /// When a mob is defeated its full XP drop is awarded to every party
-    /// member (the player and every follower), so each advances on their own
-    /// curve.
-    #[serde(default)]
-    pub actor_xp: BTreeMap<String, u32>,
-    /// Per-actor current level. Absent entries read as 1.
-    #[serde(default)]
-    pub actor_level: BTreeMap<String, u32>,
-    /// Acquired skills per actor.
-    #[serde(default)]
-    pub actor_skills: BTreeMap<String, BTreeSet<String>>,
     /// Playheads of content-declared scripted conversation sequences, keyed by
     /// sequence id. Every pack sequence is present at session creation; the
     /// opening sequence starts running.
@@ -176,21 +121,10 @@ pub struct WorldState {
     /// Counter for dynamically spawned actors to ensure unique instance IDs.
     #[serde(default)]
     pub spawn_counter: u32,
-    /// Dynamically spawned actors instantiated at runtime from templates.
-    #[serde(default)]
-    pub spawned_actors: BTreeMap<String, ActorDefinition>,
     /// Active temporary chalk anchors placed by tracing teleport-sigil (up to 3).
     /// Ordered from oldest to newest.
     #[serde(default)]
     pub chalk_anchors: Vec<String>,
-    /// Transformation stages applied per actor, in application order (e.g.
-    /// `"sakhra" -> ["awakening"]`). Awakening is simply the `"awakening"`
-    /// stage of a transformation.
-    #[serde(default)]
-    pub transformed_stages: BTreeMap<String, Vec<String>>,
-    /// Runtime name overrides for actors (e.g. awakened names).
-    #[serde(default)]
-    pub actor_name_overrides: BTreeMap<String, String>,
     /// Runtime state for content-authored room protection rules, keyed by stage id.
     #[serde(default)]
     pub protection_rule_states: BTreeMap<String, ProtectionRuleState>,
@@ -330,23 +264,75 @@ impl WorldState {
             state_version: WORLD_STATE_VERSION,
             current_room_id: start_room_id.clone(),
             player_actor_id: content.settings.combat.player_actor_id.clone(),
-            turn_number: 0,
-            current_time_minutes: content.opening.start_time_minutes,
+            clock: Clock {
+                turn_number: 0,
+                current_time_minutes: content.opening.start_time_minutes,
+            },
             phase: GamePhase::Active,
             conversation_event_sequence: 0,
             conversation_memory: BTreeMap::new(),
             conversation_summaries: BTreeMap::new(),
-            actor_stat_defs: content.stats.actor.clone(),
-            pair_stat_defs: content.stats.pair.clone(),
-            pair_stats: seeded_pair_stats(content, &content.stats.pair),
-            actor_stats: seeded_actor_stats(content, &content.stats.actor),
+            combat: CombatState {
+                actor_stat_defs: content.stats.actor.clone(),
+                pair_stat_defs: content.stats.pair.clone(),
+                pair_stats: seeded_pair_stats(content, &content.stats.pair),
+                actor_stats: seeded_actor_stats(content, &content.stats.actor),
+                initial_actor_stats: seeded_actor_stats(content, &content.stats.actor),
+                initial_pair_stats: seeded_pair_stats(content, &content.stats.pair),
+                actor_xp: BTreeMap::new(),
+                actor_level: seeded_actor_levels(content),
+                actor_skills: seeded_actor_skills(content),
+                next_hostile_strike_at: BTreeMap::new(),
+                invisible_until_minute: None,
+            },
             pending_replies: BTreeMap::new(),
             active_objective_stage_ids: content.beats.initial_stage_ids.clone(),
-            actor_room_overrides: BTreeMap::new(),
+            actors: ActorRegistry {
+                actor_room_overrides: BTreeMap::new(),
+                actor_known_room_ids,
+                actor_observed_room_ids: BTreeMap::new(),
+                actor_known_feature_ids: BTreeMap::new(),
+                actor_known_actor_ids: BTreeMap::new(),
+                actor_recent_observation_notes: BTreeMap::new(),
+                spawned_actors: BTreeMap::new(),
+                actor_name_overrides: BTreeMap::new(),
+                transformed_stages: BTreeMap::new(),
+            },
             stages_completed: 0,
             completed_stage_ids: BTreeSet::new(),
             feature_consumable_stock: seeded_feature_consumable_stock(content),
-            followed_actor_id: None,
+            relations: RelationshipGraph {
+                relationships: content
+                    .actors
+                    .iter()
+                    .filter_map(|actor| {
+                        actor
+                            .initial_relationship
+                            .map(|relationship| (actor.id.clone(), relationship))
+                    })
+                    .chain(
+                        content
+                            .actors
+                            .iter()
+                            .filter(|actor| {
+                                actor.initial_hostile && actor.initial_relationship.is_none()
+                            })
+                            .map(|actor| {
+                                (
+                                    actor.id.clone(),
+                                    ActorRelationship {
+                                        stance: ActorStance::Hostile,
+                                        follows_player: false,
+                                    },
+                                )
+                            }),
+                    )
+                    .collect(),
+                party_orders: BTreeMap::new(),
+                followed_actors: BTreeMap::new(),
+                followed_actor_id: None,
+                party_reaction_ready_at: BTreeMap::new(),
+            },
             active_menu_id: None,
             pending_menu_selections: Vec::new(),
             generated_menu_options: HashMap::new(),
@@ -360,69 +346,27 @@ impl WorldState {
                 .map(|stage_id| (stage_id.clone(), content.opening.start_time_minutes))
                 .collect(),
             player_recent_room_ids: vec![start_room_id.clone()],
-            actor_known_room_ids,
-            actor_observed_room_ids: BTreeMap::new(),
-            actor_known_feature_ids: BTreeMap::new(),
-            actor_known_actor_ids: BTreeMap::new(),
-            actor_recent_observation_notes: BTreeMap::new(),
-            initial_actor_stats: seeded_actor_stats(content, &content.stats.actor),
-            initial_pair_stats: seeded_pair_stats(content, &content.stats.pair),
             transcript: Vec::new(),
             last_transcript_line: None,
-            player_inventory: content
-                .actor(&content.settings.combat.player_actor_id)
-                .map(|actor| seeding::resolve_inventory_specs(&actor.initial_inventory))
-                .unwrap_or_default(),
-            room_item_stock: BTreeMap::new(),
-            room_item_charges: BTreeMap::new(),
+            inventory: Inventory {
+                player_inventory: content
+                    .actor(&content.settings.combat.player_actor_id)
+                    .map(|actor| seeding::resolve_inventory_specs(&actor.initial_inventory))
+                    .unwrap_or_default(),
+                room_item_stock: BTreeMap::new(),
+                room_item_charges: BTreeMap::new(),
+                actor_inventories: seeded_actor_inventories(content),
+                actor_equipment: seeded_actor_equipment(content),
+                equipment: content
+                    .actor(&content.settings.combat.player_actor_id)
+                    .map(|actor| actor.initial_equipment.clone())
+                    .unwrap_or_default(),
+            },
             act_series: None,
-            relationships: content
-                .actors
-                .iter()
-                .filter_map(|actor| {
-                    actor
-                        .initial_relationship
-                        .map(|relationship| (actor.id.clone(), relationship))
-                })
-                .chain(
-                    content
-                        .actors
-                        .iter()
-                        .filter(|actor| {
-                            actor.initial_hostile && actor.initial_relationship.is_none()
-                        })
-                        .map(|actor| {
-                            (
-                                actor.id.clone(),
-                                ActorRelationship {
-                                    stance: ActorStance::Hostile,
-                                    follows_player: false,
-                                },
-                            )
-                        }),
-                )
-                .collect(),
-            party_orders: BTreeMap::new(),
-            followed_actors: BTreeMap::new(),
-            party_reaction_ready_at: BTreeMap::new(),
-            next_hostile_strike_at: BTreeMap::new(),
-            equipment: content
-                .actor(&content.settings.combat.player_actor_id)
-                .map(|actor| actor.initial_equipment.clone())
-                .unwrap_or_default(),
-            invisible_until_minute: None,
-            actor_inventories: seeded_actor_inventories(content),
-            actor_equipment: seeded_actor_equipment(content),
-            actor_xp: BTreeMap::new(),
-            actor_level: seeded_actor_levels(content),
-            actor_skills: seeded_actor_skills(content),
             scripted_sequences,
             transition_summaries: BTreeMap::new(),
             spawn_counter: 0,
-            spawned_actors: BTreeMap::new(),
             chalk_anchors: Vec::new(),
-            transformed_stages: BTreeMap::new(),
-            actor_name_overrides: BTreeMap::new(),
             protection_rule_states: BTreeMap::new(),
             offscreen_combat_states: BTreeMap::new(),
             periodic_effects_reported: BTreeMap::new(),
@@ -435,14 +379,16 @@ impl WorldState {
 
     /// Whether the player is currently under an active invisibility effect.
     pub fn is_player_invisible(&self) -> bool {
-        self.invisible_until_minute
-            .is_some_and(|until| self.current_time_minutes < until)
+        self.combat
+            .invisible_until_minute
+            .is_some_and(|until| self.clock.current_time_minutes < until)
     }
 
     /// Minutes of invisibility remaining for the player, or 0 if visible.
     pub fn player_invisibility_remaining_minutes(&self) -> u32 {
-        self.invisible_until_minute
-            .map(|until| until.saturating_sub(self.current_time_minutes))
+        self.combat
+            .invisible_until_minute
+            .map(|until| until.saturating_sub(self.clock.current_time_minutes))
             .unwrap_or(0)
     }
 
@@ -453,7 +399,8 @@ impl WorldState {
         content: &'a ContentPack,
         actor_id: &str,
     ) -> Option<&'a ActorDefinition> {
-        self.spawned_actors
+        self.actors
+            .spawned_actors
             .get(actor_id)
             .or_else(|| content.actor(actor_id))
     }
@@ -465,7 +412,7 @@ impl WorldState {
         content: &'a ContentPack,
         actor_id: &str,
     ) -> Option<&'a str> {
-        if let Some(name) = self.actor_name_overrides.get(actor_id) {
+        if let Some(name) = self.actors.actor_name_overrides.get(actor_id) {
             return Some(name.as_str());
         }
         self.actor(content, actor_id)
@@ -476,28 +423,32 @@ impl WorldState {
     /// legacy "is awakened" check — awakening is simply a transformation
     /// stage with id `"awakening"`.
     pub fn is_actor_awakened(&self, actor_id: &str) -> bool {
-        self.transformed_stages
+        self.actors
+            .transformed_stages
             .get(actor_id)
             .is_some_and(|stages| !stages.is_empty())
     }
 
     /// Whether the actor has applied the given transformation stage.
     pub fn is_actor_transformed(&self, actor_id: &str, stage_id: &str) -> bool {
-        self.transformed_stages
+        self.actors
+            .transformed_stages
             .get(actor_id)
             .is_some_and(|stages| stages.iter().any(|stage| stage == stage_id))
     }
 
     /// Whether an actor possesses a given skill.
     pub fn actor_has_skill(&self, actor_id: &str, skill_id: &str) -> bool {
-        self.actor_skills
+        self.combat
+            .actor_skills
             .get(actor_id)
             .is_some_and(|skills| skills.contains(skill_id))
     }
 
     /// Grants a skill to an actor. Returns true if the skill was newly acquired.
     pub fn grant_actor_skill(&mut self, actor_id: &str, skill_id: &str) -> bool {
-        self.actor_skills
+        self.combat
+            .actor_skills
             .entry(actor_id.to_string())
             .or_default()
             .insert(skill_id.to_string())
@@ -510,7 +461,7 @@ impl WorldState {
         let authored = content
             .actors
             .iter()
-            .chain(self.spawned_actors.values())
+            .chain(self.actors.spawned_actors.values())
             .map(|actor| {
                 (
                     actor.id.clone(),
@@ -523,7 +474,8 @@ impl WorldState {
             })
             .collect::<Vec<_>>();
         for (actor_id, skills) in authored {
-            self.actor_skills
+            self.combat
+                .actor_skills
                 .entry(actor_id)
                 .or_default()
                 .extend(skills);
@@ -548,13 +500,19 @@ impl WorldState {
             })
             .map(|action| action.skill_id.clone())
             .collect::<Vec<_>>();
-        self.actor_skills
+        self.combat
+            .actor_skills
             .entry(player_id)
             .or_default()
             .extend(story_unlocked_skills);
 
         // Ensure any awakened actors possess the comms skill
-        let awakened_ids = self.transformed_stages.keys().cloned().collect::<Vec<_>>();
+        let awakened_ids = self
+            .actors
+            .transformed_stages
+            .keys()
+            .cloned()
+            .collect::<Vec<_>>();
         for actor_id in awakened_ids {
             if self.is_actor_awakened(&actor_id) {
                 self.grant_actor_skill(&actor_id, "comms");
@@ -571,7 +529,8 @@ impl WorldState {
         actor_id: &str,
         kind: SkillKind,
     ) -> Option<&'a SkillDefinition> {
-        self.actor_skills
+        self.combat
+            .actor_skills
             .get(actor_id)?
             .iter()
             .filter_map(|skill_id| content.skill(skill_id))
@@ -580,7 +539,8 @@ impl WorldState {
 
     /// Transformation stages applied to an actor, in application order.
     pub fn transformed_stages(&self, actor_id: &str) -> &[String] {
-        self.transformed_stages
+        self.actors
+            .transformed_stages
             .get(actor_id)
             .map(|stages| stages.as_slice())
             .unwrap_or(&[])
@@ -590,6 +550,7 @@ impl WorldState {
     /// it as a truthy `transformed:{actor}:{stage}` story variable.
     pub fn set_transformation_applied(&mut self, actor_id: &str, stage_id: &str) {
         let stages = self
+            .actors
             .transformed_stages
             .entry(actor_id.to_string())
             .or_default();
@@ -604,6 +565,7 @@ impl WorldState {
     /// Whether the actor is offstage, checking runtime spawned actors and room overrides first.
     pub fn actor_is_offstage(&self, content: &ContentPack, actor_id: &str) -> bool {
         if self
+            .actors
             .actor_room_overrides
             .get(actor_id)
             .is_some_and(|r| !r.trim().is_empty())
@@ -624,7 +586,8 @@ impl WorldState {
             .iter()
             .filter(move |actor| !self.actor_is_offstage(content, &actor.id))
             .chain(
-                self.spawned_actors
+                self.actors
+                    .spawned_actors
                     .values()
                     .filter(move |actor| !self.actor_is_offstage(content, &actor.id)),
             )
@@ -635,7 +598,10 @@ impl WorldState {
         &'a self,
         content: &'a ContentPack,
     ) -> impl Iterator<Item = &'a ActorDefinition> {
-        content.actors.iter().chain(self.spawned_actors.values())
+        content
+            .actors
+            .iter()
+            .chain(self.actors.spawned_actors.values())
     }
 }
 
@@ -714,7 +680,7 @@ mod tests {
 
         assert!(content.actor("blair").unwrap().is_offstage());
         assert!(
-            !state.actor_known_room_ids.contains_key("blair"),
+            !state.actors.actor_known_room_ids.contains_key("blair"),
             "offstage actor must not be seeded a (nonexistent) home room"
         );
         assert!(
@@ -760,9 +726,12 @@ mod tests {
         let reloaded = WorldState::from_saved_json(&raw).expect("current v2 roundtrips");
         assert_eq!(reloaded.state_version, WORLD_STATE_VERSION);
         assert_eq!(reloaded.current_room_id, state.current_room_id);
-        assert_eq!(reloaded.turn_number, state.turn_number);
+        assert_eq!(reloaded.clock.turn_number, state.clock.turn_number);
         assert_eq!(reloaded.transition_summaries, state.transition_summaries);
-        assert_eq!(reloaded.relationships, state.relationships);
+        assert_eq!(
+            reloaded.relations.relationships,
+            state.relations.relationships
+        );
     }
 
     #[test]
@@ -784,7 +753,7 @@ mod tests {
                 ..Default::default()
             });
         let mut state = WorldState::new(&content);
-        state.actor_skills.clear();
+        state.combat.actor_skills.clear();
         state.grant_actor_skill(&actor_id, "learned");
         state.story_vars.set_unchecked("knows_teleport", "true");
 

@@ -49,11 +49,13 @@ fn test_chalk_anchors_fifo_eviction_and_mp_cost() {
     state.story_vars.set_unchecked("knows_teleport", "true");
     state.acquire_player_item(&pack, "magic-chalk");
     state
+        .combat
         .initial_actor_stats
         .entry("player".to_string())
         .or_default()
         .insert("mp".to_string(), 20);
     state
+        .combat
         .actor_stats
         .entry("player".to_string())
         .or_default()
@@ -135,11 +137,13 @@ fn test_chalk_anchor_single_use_consumption() {
     state.story_vars.set_unchecked("knows_teleport", "true");
     state.acquire_player_item(&pack, "magic-chalk");
     state
+        .combat
         .initial_actor_stats
         .entry("player".to_string())
         .or_default()
         .insert("mp".to_string(), 20);
     state
+        .combat
         .actor_stats
         .entry("player".to_string())
         .or_default()
@@ -187,6 +191,7 @@ fn test_platform_discovery_activation_and_floor5_gate() {
     state.story_vars.set_unchecked("knows_teleport", "true");
     state.acquire_player_item(&pack, "magic-chalk");
     state
+        .combat
         .actor_stats
         .entry("player".to_string())
         .or_default()
@@ -333,6 +338,7 @@ fn test_teleport_from_chalk_anchor_does_not_bring_party_members() {
     // Sakhra is with player in village_square, following player and allied
     state.set_actor_stance(&pack, "sakhra", ActorStance::Allied, true);
     state
+        .actors
         .actor_room_overrides
         .insert("sakhra".to_string(), "village_square".to_string());
 

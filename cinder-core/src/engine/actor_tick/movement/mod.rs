@@ -200,7 +200,7 @@ pub(crate) fn plan_wander_moves_with_dependencies(
         .filter_map(|actor| {
             let strategy = resolver.resolve(content, state, &actor.id)?;
             let cadence = strategy.cadence_ticks();
-            if cadence == 0 || !state.current_time_minutes.is_multiple_of(cadence) {
+            if cadence == 0 || !state.clock.current_time_minutes.is_multiple_of(cadence) {
                 return None;
             }
             let current_room_id = state.actor_room_id(&actor.id, &actor.room_id);
@@ -344,11 +344,13 @@ mod tests {
         state.set_stance(&engaged_id, ActorStance::Hostile);
         state.set_stance(&roaming_id, ActorStance::Hostile);
         state
+            .combat
             .actor_stats
             .entry(engaged_id.clone())
             .or_default()
             .insert("hp".to_string(), 5);
         state
+            .combat
             .actor_stats
             .entry(roaming_id.clone())
             .or_default()
@@ -428,14 +430,17 @@ mod tests {
         state.set_stance(&guard_id, ActorStance::Allied);
         state.set_follows_player(&guard_id, false);
         state
+            .relations
             .party_orders
             .insert(guard_id.clone(), "guard".to_string());
         state
+            .combat
             .actor_stats
             .entry(hostile_id.clone())
             .or_default()
             .insert("hp".to_string(), 10);
         state
+            .combat
             .actor_stats
             .entry(guard_id.clone())
             .or_default()
@@ -453,6 +458,7 @@ mod tests {
         assert!(blocked.is_empty());
 
         state
+            .combat
             .actor_stats
             .entry(guard_id)
             .or_default()
@@ -517,9 +523,11 @@ mod tests {
         state.set_stance(&ally_id, ActorStance::Allied);
         state.set_follows_player(&ally_id, false);
         state
+            .relations
             .party_orders
             .insert(ally_id.clone(), "patrol".to_string());
         state
+            .combat
             .actor_stats
             .entry(ally_id.clone())
             .or_default()
@@ -544,9 +552,11 @@ mod tests {
         state.set_stance(&ally_id, ActorStance::Allied);
         state.set_follows_player(&ally_id, false);
         state
+            .relations
             .party_orders
             .insert(ally_id.clone(), "guard".to_string());
         state
+            .combat
             .actor_stats
             .entry(ally_id.clone())
             .or_default()
@@ -572,14 +582,17 @@ mod tests {
         state.set_stance(&guard_id, ActorStance::Allied);
         state.set_follows_player(&guard_id, false);
         state
+            .relations
             .party_orders
             .insert(guard_id.clone(), "guard".to_string());
         state
+            .combat
             .actor_stats
             .entry(hostile_id.clone())
             .or_default()
             .insert("hp".to_string(), 10);
         state
+            .combat
             .actor_stats
             .entry(guard_id.clone())
             .or_default()
@@ -589,6 +602,7 @@ mod tests {
         assert!(!policy.is_eligible(&content, &state, &content.actors[0], &None));
 
         state
+            .combat
             .actor_stats
             .entry(guard_id.clone())
             .or_default()
@@ -596,11 +610,13 @@ mod tests {
         assert!(policy.is_eligible(&content, &state, &content.actors[0], &None));
 
         state
+            .combat
             .actor_stats
             .entry(guard_id.clone())
             .or_default()
             .insert("hp".to_string(), 10);
         state
+            .actors
             .actor_room_overrides
             .insert(guard_id, "kitchen".to_string());
         assert!(policy.is_eligible(&content, &state, &content.actors[0], &None));
@@ -617,9 +633,11 @@ mod tests {
         state.set_stance(&ally_id, ActorStance::Allied);
         state.set_follows_player(&ally_id, true);
         state
+            .relations
             .party_orders
             .insert(ally_id.clone(), "follow".to_string());
         state
+            .combat
             .actor_stats
             .entry(ally_id.clone())
             .or_default()
@@ -681,7 +699,7 @@ mod tests {
 
         let content = minimal_test_pack();
         let mut state = WorldState::new(&content);
-        state.current_time_minutes = 1;
+        state.clock.current_time_minutes = 1;
 
         let events = plan_wander_moves_with_dependencies(
             &content,

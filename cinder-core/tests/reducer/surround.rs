@@ -366,8 +366,9 @@ fn player_level_three_plus_int_grants_unlock_previously_strong_targets() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = KITCHEN_ID.to_string();
     // Level 3, int 7 (base 5 + two level-ups): score 10.
-    state.actor_level.insert(ACTOR_A_ID.to_string(), 3);
+    state.combat.actor_level.insert(ACTOR_A_ID.to_string(), 3);
     state
+        .combat
         .actor_stats
         .entry(ACTOR_A_ID.to_string())
         .or_default()

@@ -20,6 +20,7 @@ pub(crate) fn handle_actor_relocated(ctx: &mut ReduceCtx<'_>, actor_id: &str, to
     let lines = &mut *ctx.lines;
     state.mark_actor_room_visited(actor_id, to_room_id);
     state
+        .actors
         .actor_room_overrides
         .insert(actor_id.to_string(), to_room_id.to_string());
     lines.extend_lines(advance_house_progress_objectives(state, content));
@@ -95,6 +96,7 @@ pub(crate) fn sync_followers_to_room(
     lines: &mut NarrativeLines,
 ) {
     let follower_actor_ids: Vec<String> = state
+        .relations
         .relationships
         .iter()
         .filter(|(_, relationship)| relationship.follows_player)
@@ -144,6 +146,7 @@ pub(crate) fn sync_followers_to_room(
         }
 
         state
+            .actors
             .actor_room_overrides
             .insert(follower_id.clone(), to_room_id.to_string());
         moved_actor_names.push(
@@ -226,7 +229,7 @@ mod tests {
 
         handle_player_moved(&mut state, &content, "kitchen", &mut lines);
 
-        assert!(!state.actor_room_overrides.contains_key("blair"));
+        assert!(!state.actors.actor_room_overrides.contains_key("blair"));
         assert_eq!(state.actor_room_id("blair", ""), "");
     }
 

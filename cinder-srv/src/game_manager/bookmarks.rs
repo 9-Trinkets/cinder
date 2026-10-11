@@ -59,14 +59,14 @@ pub async fn create_bookmark(
         .map_err(|e| format!("failed to load pack '{pack_id}' locale '{locale}': {e}"))?;
     let runtime = build_runtime_impl(content, &state_json)?;
 
-    let turn_number = state.turn_number;
+    let turn_number = state.clock.turn_number;
     let current_room_id = state.current_room_id.clone();
     let current_room_name = runtime
         .content()
         .room(&current_room_id)
         .map(|r| r.title.clone())
         .unwrap_or_else(|| current_room_id.clone());
-    let day_number = (state.current_time_minutes / (24 * 60)) + 1;
+    let day_number = (state.clock.current_time_minutes / (24 * 60)) + 1;
     let time_label = runtime.current_time_label().unwrap_or_default();
 
     let label = match label_override {

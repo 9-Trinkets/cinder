@@ -134,6 +134,7 @@ fn try_surround_room(
             if state.actor_room_id(&actor_id, &actor_home_room_id) != party_room_id {
                 state.mark_actor_room_visited(&actor_id, &party_room_id);
                 state
+                    .actors
                     .actor_room_overrides
                     .insert(actor_id.clone(), party_room_id);
             }

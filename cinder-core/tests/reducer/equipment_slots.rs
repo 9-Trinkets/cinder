@@ -124,11 +124,15 @@ fn two_hand_weapon_occupies_both_slots_and_bonus_applies_once() {
     drive(&pack, &mut state, "equip-greatbow");
 
     assert_eq!(
-        state.equipment.get("weapon").map(String::as_str),
+        state.inventory.equipment.get("weapon").map(String::as_str),
         Some("greatbow")
     );
     assert_eq!(
-        state.equipment.get("off-hand").map(String::as_str),
+        state
+            .inventory
+            .equipment
+            .get("off-hand")
+            .map(String::as_str),
         Some("greatbow")
     );
     assert_eq!(state.equipped_stat_bonus(&pack, "confidence"), 4);
@@ -146,10 +150,10 @@ fn one_hand_equip_swaps_out_a_two_hand_and_frees_the_off_hand() {
     drive(&pack, &mut state, "equip-dagger");
 
     assert_eq!(
-        state.equipment.get("weapon").map(String::as_str),
+        state.inventory.equipment.get("weapon").map(String::as_str),
         Some("dagger")
     );
-    assert!(!state.equipment.contains_key("off-hand"));
+    assert!(!state.inventory.equipment.contains_key("off-hand"));
     assert!(
         state.has_item("greatbow"),
         "the freed two-hand weapon returns to inventory"
@@ -167,18 +171,26 @@ fn two_hand_equip_swaps_out_a_one_hand_pair_returning_both() {
     drive(&pack, &mut state, "equip-dagger");
     drive(&pack, &mut state, "equip-greave");
     assert_eq!(
-        state.equipment.get("off-hand").map(String::as_str),
+        state
+            .inventory
+            .equipment
+            .get("off-hand")
+            .map(String::as_str),
         Some("loose-greave")
     );
 
     drive(&pack, &mut state, "equip-greatbow");
 
     assert_eq!(
-        state.equipment.get("weapon").map(String::as_str),
+        state.inventory.equipment.get("weapon").map(String::as_str),
         Some("greatbow")
     );
     assert_eq!(
-        state.equipment.get("off-hand").map(String::as_str),
+        state
+            .inventory
+            .equipment
+            .get("off-hand")
+            .map(String::as_str),
         Some("greatbow")
     );
     assert!(state.has_item("dagger"));
@@ -195,7 +207,7 @@ fn unequip_clears_every_occupied_slot_back_to_inventory() {
 
     drive(&pack, &mut state, "unequip-greatbow");
 
-    assert!(state.equipment.is_empty());
+    assert!(state.inventory.equipment.is_empty());
     assert!(state.has_item("greatbow"));
     assert_eq!(state.equipped_stat_bonus(&pack, "confidence"), 0);
 }

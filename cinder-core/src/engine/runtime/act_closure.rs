@@ -84,6 +84,7 @@ impl CinderRuntime {
                             .into_iter()
                             .filter_map(|(stat_key, value)| {
                                 let default = state
+                                    .combat
                                     .pair_stat_defs
                                     .get(&stat_key)
                                     .map(|definition| definition.default)

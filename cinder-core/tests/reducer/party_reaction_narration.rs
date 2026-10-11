@@ -223,7 +223,12 @@ fn empty_messages_suppress_normal_reaction_narration_without_suppressing_mechani
         FIFTH_ALLY_ID,
         SIXTH_ALLY_ID,
     ] {
-        assert!(state.party_reaction_ready_at.contains_key(actor_id));
+        assert!(
+            state
+                .relations
+                .party_reaction_ready_at
+                .contains_key(actor_id)
+        );
     }
     assert_eq!(output.lines.len(), 1);
     assert!(output.lines[0].text.contains("Casey strikes Gia"));
@@ -257,7 +262,12 @@ fn empty_counterattack_message_still_narrates_no_effect() {
     let output = hostile_strike(&mut state, &pack);
 
     assert_eq!(state.actor_stat(ACTOR_C_ID, "stamina"), 20);
-    assert!(state.party_reaction_ready_at.contains_key(ACTOR_B_ID));
+    assert!(
+        state
+            .relations
+            .party_reaction_ready_at
+            .contains_key(ACTOR_B_ID)
+    );
     assert!(
         output
             .lines
@@ -297,8 +307,18 @@ fn multiple_ready_members_counterattack_separately_until_the_attacker_falls() {
     let output = hostile_strike(&mut state, &pack);
 
     assert!(state.actor_is_defeated(ACTOR_C_ID, "stamina"));
-    assert!(state.party_reaction_ready_at.contains_key(ACTOR_B_ID));
-    assert!(state.party_reaction_ready_at.contains_key(SECOND_ALLY_ID));
+    assert!(
+        state
+            .relations
+            .party_reaction_ready_at
+            .contains_key(ACTOR_B_ID)
+    );
+    assert!(
+        state
+            .relations
+            .party_reaction_ready_at
+            .contains_key(SECOND_ALLY_ID)
+    );
     assert_eq!(state.stance(ACTOR_C_ID), ActorStance::Neutral);
     assert_eq!(
         output

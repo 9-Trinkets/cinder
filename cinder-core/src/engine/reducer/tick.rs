@@ -164,7 +164,7 @@ pub(super) fn pending_reply_broken_by_move(
         .pending_replies
         .values()
         .find(|pending| {
-            pending.turn_number + 1 == state.turn_number
+            pending.turn_number + 1 == state.clock.turn_number
                 && pending.room_id == from_room_id
                 && (pending.speaker_id == actor_id || pending.listener_id == actor_id)
         })
@@ -255,7 +255,7 @@ pub(super) fn record_room_action_memory(
             actor_id,
             &other_actor_id,
             ConversationMemoryLine {
-                turn_number: state.turn_number,
+                turn_number: state.clock.turn_number,
                 event_sequence: 0,
                 speaker_id: actor_id.to_string(),
                 speaker_name: actor_name.to_string(),

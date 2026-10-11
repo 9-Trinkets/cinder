@@ -31,6 +31,7 @@ pub(crate) fn handle_party_order_assigned(
     let key = if !was_in_room && (order == "guard" || order == "follow") {
         state.mark_actor_room_visited(actor_id, &player_room);
         state
+            .actors
             .actor_room_overrides
             .insert(actor_id.to_string(), player_room);
         let recall_key = format!("party.order_{order}_recalled");
@@ -67,7 +68,7 @@ pub(crate) fn handle_player_followed_actor(ctx: &mut ReduceCtx<'_>, actor_id: Op
     let state = &mut *ctx.state;
     let content = ctx.content;
     let lines = &mut *ctx.lines;
-    state.followed_actor_id = actor_id.map(ToString::to_string);
+    state.relations.followed_actor_id = actor_id.map(ToString::to_string);
     let feedback_text = match actor_id {
         Some(id) => {
             let actor_name = content
@@ -107,13 +108,14 @@ pub(crate) fn handle_item_transferred(
         }
     } else {
         let is_equipped = state
+            .inventory
             .actor_equipment
             .get(from_actor_id)
             .map(|eq| eq.values().any(|v| v == item_id))
             .unwrap_or(false);
 
         if is_equipped {
-            if let Some(equip) = state.actor_equipment.get_mut(from_actor_id) {
+            if let Some(equip) = state.inventory.actor_equipment.get_mut(from_actor_id) {
                 let slots_to_remove: Vec<String> = equip
                     .iter()
                     .filter(|(_, id)| *id == item_id)
@@ -146,6 +148,7 @@ pub(crate) fn handle_item_transferred(
         if is_equippable {
             auto_equipped = true;
             let actor_equipment = state
+                .inventory
                 .actor_equipment
                 .entry(to_actor_id.to_string())
                 .or_default();

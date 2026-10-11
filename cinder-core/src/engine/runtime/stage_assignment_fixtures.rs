@@ -100,7 +100,7 @@ pub(super) fn assert_dinner_prep_assignment(outcome: &TurnOutcome, state: &World
         state.story_vars.get("stage_assignment_applied:dinner-prep"),
         Some("true")
     );
-    assert!(state.actor_room_overrides.is_empty());
+    assert!(state.actors.actor_room_overrides.is_empty());
 }
 
 pub(super) fn assert_activity_split_assignment(state: &WorldState) {
@@ -116,7 +116,7 @@ pub(super) fn assert_activity_split_assignment(state: &WorldState) {
     );
     assert_eq!(state.story_vars.get("devon_assigned_room"), Some("patio"));
     assert_eq!(state.story_vars.get("alex_assigned_room"), Some("studio"));
-    assert!(state.actor_room_overrides.is_empty());
+    assert!(state.actors.actor_room_overrides.is_empty());
 }
 
 const STAGE_ASSIGNMENT_ROOMS_JSON: &str = r#"[

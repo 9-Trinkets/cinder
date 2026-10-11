@@ -77,7 +77,7 @@ pub(crate) fn peek_conversational_speaker(
     let chosen_speaker = if let Some(target_id) = reply_target {
         target_id.clone()
     } else {
-        let idx = (state.turn_number as usize) % pool.len();
+        let idx = (state.clock.turn_number as usize) % pool.len();
         pool[idx].clone()
     };
 
@@ -398,11 +398,11 @@ mod tests {
 
         let scope = Some(BTreeSet::from(["lounge".to_string()]));
 
-        state.turn_number = 0;
+        state.clock.turn_number = 0;
         let selected = select_tick_actors(&content, &state, &scope);
         assert_eq!(selected, vec![a0.clone()]);
 
-        state.turn_number = 1;
+        state.clock.turn_number = 1;
         let selected = select_tick_actors(&content, &state, &scope);
         assert_eq!(selected, vec![a1.clone()]);
 
@@ -424,13 +424,13 @@ mod tests {
 
         let scope = Some(BTreeSet::from(["lounge".to_string()]));
 
-        state.turn_number = 0;
+        state.clock.turn_number = 0;
         assert_eq!(
             peek_conversational_speaker(&content, &state, &scope),
             Some(a0.clone())
         );
 
-        state.turn_number = 1;
+        state.clock.turn_number = 1;
         assert_eq!(
             peek_conversational_speaker(&content, &state, &scope),
             Some(a1.clone())

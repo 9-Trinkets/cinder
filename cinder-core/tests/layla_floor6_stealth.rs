@@ -64,7 +64,7 @@ fn test_invisibility_evades_hostile_targeting() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_north".to_string();
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     state
         .story_vars
         .set_unchecked("frost_wolf_lane_stopped", "true");
@@ -101,7 +101,7 @@ fn test_invisibility_evades_hostile_targeting() {
     );
 
     // 2. When invisible, hostile raider does NOT strike the player and HP is untouched
-    state.invisible_until_minute = Some(state.current_time_minutes + 8);
+    state.combat.invisible_until_minute = Some(state.clock.current_time_minutes + 8);
     state.story_vars.set_unchecked("is_invisible", "true");
 
     let runtime_invisible = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
@@ -125,7 +125,7 @@ fn test_attacking_breaks_invisibility_early() {
 
     // Spawn a hostile enemy in the room
     state.set_stance("citadel_sentry", ActorStance::Hostile);
-    state.actor_room_overrides.insert(
+    state.actors.actor_room_overrides.insert(
         "citadel_sentry".to_string(),
         "sanctuary_crossroads".to_string(),
     );

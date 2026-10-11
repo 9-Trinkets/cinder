@@ -75,7 +75,7 @@ fn astrid_reports_contact_when_engaged_offscreen_and_suppresses_raw_narration() 
     state.current_room_id = "r1c1".to_string();
 
     // Astrid is stationed at courtyard_south on guard
-    state.actor_room_overrides.insert(
+    state.actors.actor_room_overrides.insert(
         "commander_astrid".to_string(),
         "courtyard_south".to_string(),
     );
@@ -86,14 +86,16 @@ fn astrid_reports_contact_when_engaged_offscreen_and_suppresses_raw_narration() 
 
     // Position citadel_sentry in courtyard_south ready to strike
     state
+        .actors
         .actor_room_overrides
         .insert("citadel_sentry".to_string(), "courtyard_south".to_string());
     state.set_actor_stance(&pack, "citadel_sentry", ActorStance::Hostile, false);
     state
+        .combat
         .next_hostile_strike_at
         .insert("citadel_sentry".to_string(), 0);
 
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
 
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
@@ -136,7 +138,7 @@ fn single_reporter_priority_selects_astrid_over_einar() {
     state.current_room_id = "r1c1".to_string();
 
     // Both Astrid and Einar are in courtyard_south
-    state.actor_room_overrides.insert(
+    state.actors.actor_room_overrides.insert(
         "commander_astrid".to_string(),
         "courtyard_south".to_string(),
     );
@@ -146,6 +148,7 @@ fn single_reporter_priority_selects_astrid_over_einar() {
         .expect("assign guard order");
 
     state
+        .actors
         .actor_room_overrides
         .insert("einar".to_string(), "courtyard_south".to_string());
     state.set_actor_stance(&pack, "einar", ActorStance::Allied, false);
@@ -155,14 +158,16 @@ fn single_reporter_priority_selects_astrid_over_einar() {
 
     // Enemy in courtyard_south
     state
+        .actors
         .actor_room_overrides
         .insert("citadel_sentry".to_string(), "courtyard_south".to_string());
     state.set_actor_stance(&pack, "citadel_sentry", ActorStance::Hostile, false);
     state
+        .combat
         .next_hostile_strike_at
         .insert("citadel_sentry".to_string(), 0);
 
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
 
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
@@ -201,7 +206,7 @@ fn area_cleared_milestone_dispatches_when_all_enemies_defeated() {
 
     state.current_room_id = "r1c1".to_string();
 
-    state.actor_room_overrides.insert(
+    state.actors.actor_room_overrides.insert(
         "commander_astrid".to_string(),
         "courtyard_south".to_string(),
     );
@@ -225,13 +230,15 @@ fn area_cleared_milestone_dispatches_when_all_enemies_defeated() {
 
     // Make sure no living hostiles exist in courtyard_south
     state
+        .actors
         .actor_room_overrides
         .insert("citadel_sentry".to_string(), "offstage".to_string());
     state
+        .actors
         .actor_room_overrides
         .insert("citadel_guard_captain".to_string(), "offstage".to_string());
 
-    state.turn_number = 2;
+    state.clock.turn_number = 2;
 
     let mut lines = cinder_core::engine::narrative::NarrativeLines::default();
     cinder_core::engine::reducer::combat::evaluate_offscreen_combat_dispatches(
@@ -273,7 +280,7 @@ fn comms_upgrade_pass_uses_dialogue_generator_voice() {
 
     state.current_room_id = "r1c1".to_string();
 
-    state.actor_room_overrides.insert(
+    state.actors.actor_room_overrides.insert(
         "commander_astrid".to_string(),
         "courtyard_south".to_string(),
     );
@@ -283,14 +290,16 @@ fn comms_upgrade_pass_uses_dialogue_generator_voice() {
         .expect("assign guard order");
 
     state
+        .actors
         .actor_room_overrides
         .insert("citadel_sentry".to_string(), "courtyard_south".to_string());
     state.set_actor_stance(&pack, "citadel_sentry", ActorStance::Hostile, false);
     state
+        .combat
         .next_hostile_strike_at
         .insert("citadel_sentry".to_string(), 0);
 
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
 
     let dialogue = std::sync::Arc::new(
         cinder_core::engine::dialogue::ScriptedDialogueGenerator::new().with_comms_dispatch(
@@ -339,6 +348,7 @@ fn jamil_awakened_uses_jamil_persona_and_sanitizes_stage_directions() {
     assert!(state.actor_has_skill("sakhra", "comms"));
 
     state
+        .actors
         .actor_room_overrides
         .insert("sakhra".to_string(), "courtyard_south".to_string());
     state
@@ -346,14 +356,16 @@ fn jamil_awakened_uses_jamil_persona_and_sanitizes_stage_directions() {
         .expect("assign guard order");
 
     state
+        .actors
         .actor_room_overrides
         .insert("citadel_sentry".to_string(), "courtyard_south".to_string());
     state.set_actor_stance(&pack, "citadel_sentry", ActorStance::Hostile, false);
     state
+        .combat
         .next_hostile_strike_at
         .insert("citadel_sentry".to_string(), 0);
 
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
 
     // Simulate an LLM that output sound effects and name prefix
     let dialogue = std::sync::Arc::new(

@@ -186,11 +186,12 @@ fn floor6_layla_teleports_alone_into_sanctuary_and_explores() {
     // Allies in Floor 5 courtyard follow the player
     state.set_follows_player("commander_astrid", true);
     state.set_follows_player("einar", true);
-    state.actor_room_overrides.insert(
+    state.actors.actor_room_overrides.insert(
         "commander_astrid".to_string(),
         "courtyard_center".to_string(),
     );
     state
+        .actors
         .actor_room_overrides
         .insert("einar".to_string(), "courtyard_center".to_string());
 

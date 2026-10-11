@@ -25,6 +25,7 @@ struct PairStatsTrace {
 
 pub(super) fn stats_trace_snapshot(state: &WorldState) -> StatTraceSnapshot {
     let actor_stats = state
+        .combat
         .actor_stats
         .iter()
         .map(|(actor_id, stats)| ActorStatsTrace {
@@ -33,6 +34,7 @@ pub(super) fn stats_trace_snapshot(state: &WorldState) -> StatTraceSnapshot {
         })
         .collect::<Vec<_>>();
     let pair_stats = state
+        .combat
         .pair_stats
         .iter()
         .filter_map(|(key, stats)| {
@@ -45,8 +47,8 @@ pub(super) fn stats_trace_snapshot(state: &WorldState) -> StatTraceSnapshot {
         })
         .collect::<Vec<_>>();
     StatTraceSnapshot {
-        turn_number: state.turn_number,
-        current_time_minutes: state.current_time_minutes,
+        turn_number: state.clock.turn_number,
+        current_time_minutes: state.clock.current_time_minutes,
         actor_stats,
         pair_stats,
     }

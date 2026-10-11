@@ -25,7 +25,7 @@ pub(crate) fn advance_objective_for_signal(
             .stage_started_minutes
             .get(&current_stage_id)
             .copied()
-            .unwrap_or(state.current_time_minutes);
+            .unwrap_or(state.clock.current_time_minutes);
         let Some(current_stage) = content
             .beats
             .stages
@@ -84,6 +84,7 @@ pub(crate) fn advance_objective_for_signal(
             };
             for relocation in &next_stage.actor_relocations {
                 state
+                    .actors
                     .actor_room_overrides
                     .insert(relocation.actor_id.clone(), relocation.to_room_id.clone());
             }
@@ -97,10 +98,10 @@ pub(crate) fn advance_objective_for_signal(
                         .find(|movie| movie.match_value == *selected_value)
                 {
                     state.pending_projector_sequence_id = Some(movie.id.clone());
-                    state.current_time_minutes += next_stage.elapsed_minutes;
+                    state.clock.current_time_minutes += next_stage.elapsed_minutes;
                     next_stage_started_minutes
                         .entry(next_stage_id.clone())
-                        .or_insert(state.current_time_minutes);
+                        .or_insert(state.clock.current_time_minutes);
                     state.pending_projector_narrative_lines = next_stage
                         .narrative_lines
                         .iter()
@@ -109,10 +110,10 @@ pub(crate) fn advance_objective_for_signal(
                     continue;
                 }
             }
-            state.current_time_minutes += next_stage.elapsed_minutes;
+            state.clock.current_time_minutes += next_stage.elapsed_minutes;
             next_stage_started_minutes
                 .entry(next_stage_id.clone())
-                .or_insert(state.current_time_minutes);
+                .or_insert(state.clock.current_time_minutes);
             for line in &next_stage.narrative_lines {
                 messages.push(NarrativeLine::narration(
                     super::observation::render_story_text(line, state),
@@ -156,7 +157,7 @@ pub(crate) fn advance_objective_for_signal(
         state.active_objective_stage_ids.push(stage_id.clone());
         state
             .stage_started_minutes
-            .insert(stage_id, state.current_time_minutes);
+            .insert(stage_id, state.clock.current_time_minutes);
     }
     messages
 }
@@ -320,8 +321,8 @@ fn dispatch_due_actor_spawns(state: &mut WorldState, content: &ContentPack) {
             .stage_started_minutes
             .get(&stage_id)
             .copied()
-            .unwrap_or(state.current_time_minutes);
-        let elapsed_minutes = state.current_time_minutes.saturating_sub(started_at);
+            .unwrap_or(state.clock.current_time_minutes);
+        let elapsed_minutes = state.clock.current_time_minutes.saturating_sub(started_at);
         dispatch_actor_spawns_for_stage(state, content, stage, elapsed_minutes);
     }
 }
@@ -388,6 +389,7 @@ fn dispatch_actor_spawns_for_stage(
         .min(schedule.batch_size.saturating_mul(due_batches as usize));
     let instance_prefix = format!("{}-", schedule.template_id);
     let dispatched_count = state
+        .actors
         .spawned_actors
         .keys()
         .filter(|actor_id| actor_id.starts_with(&instance_prefix))
@@ -413,6 +415,7 @@ fn dispatch_actor_spawns_for_stage(
                     if i % batch_size == 0 {
                         current_batch_leader = Some(info.instance_id.clone());
                         state
+                            .relations
                             .party_orders
                             .insert(info.instance_id, party_order.clone());
                     } else {
@@ -420,12 +423,14 @@ fn dispatch_actor_spawns_for_stage(
                             let batch_start = (i / batch_size) * batch_size + 1;
                             let candidate = format!("{}-{batch_start}", schedule.template_id);
                             state
+                                .actors
                                 .spawned_actors
                                 .contains_key(&candidate)
                                 .then_some(candidate)
                         });
                         if let Some(leader) = leader_id {
                             state
+                                .relations
                                 .party_orders
                                 .insert(info.instance_id.clone(), "follow".to_string());
                             state.set_followed_actor(&info.instance_id, Some(&leader));
@@ -456,7 +461,11 @@ fn advance_signal_matches(
             return false;
         };
         return current_signal.starts_with("time_reached:")
-            && state.current_time_minutes.saturating_sub(started_minutes) >= required_minutes
+            && state
+                .clock
+                .current_time_minutes
+                .saturating_sub(started_minutes)
+                >= required_minutes
             && advance_conditions_met(state, conditions);
     }
 
@@ -498,12 +507,12 @@ pub(super) fn advance_conditions_met(state: &WorldState, conditions: &[AdvanceCo
 
 pub(super) fn world_state_condition_input(state: &WorldState) -> serde_json::Value {
     serde_json::json!({
-        "current_time_minutes": state.current_time_minutes,
+        "current_time_minutes": state.clock.current_time_minutes,
         "current_room_id": state.current_room_id,
         "active_stage_ids": state.active_objective_stage_ids,
         "stages_completed": state.stages_completed,
-        "actor_stats": state.actor_stats,
-        "pair_stats": state.pair_stats,
+        "actor_stats": state.combat.actor_stats,
+        "pair_stats": state.combat.pair_stats,
         "story_vars": state.story_vars,
     })
 }
@@ -669,7 +678,7 @@ mod tests {
             ..BeatsDefinition::default()
         };
         let mut state = WorldState::new(&pack);
-        state.current_time_minutes = 9 * 60 + 12;
+        state.clock.current_time_minutes = 9 * 60 + 12;
         state
             .stage_started_minutes
             .insert("prep".to_string(), 9 * 60);

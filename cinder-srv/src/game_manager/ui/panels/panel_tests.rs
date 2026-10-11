@@ -157,9 +157,11 @@ fn equipment_panel_lists_each_equipped_item_once_and_held_gear_separately() {
     ]);
     let mut state = WorldState::new(&content);
     state
+        .inventory
         .equipment
         .insert("weapon".to_string(), "greatsword".to_string());
     state
+        .inventory
         .equipment
         .insert("off-hand".to_string(), "greatsword".to_string());
     state.add_item("greatsword");
@@ -546,6 +548,7 @@ fn give_and_drop_surface_when_equipped_item_has_additional_inventory_copies() {
     let mut state = WorldState::new(&content);
     // 1 equipped on chest, 1 held in inventory
     state
+        .inventory
         .equipment
         .insert("chest".to_string(), "leaf-plate".to_string());
     state.add_item("leaf-plate");

@@ -136,7 +136,7 @@ fn give_item_auto_equips_and_grants_stat_bonus() {
 fn give_item_replaces_existing_gear_and_returns_old_item_to_follower_inventory() {
     let pack = party_item_pack();
     let mut state = party_state_with_follower(&pack);
-    state.actor_equipment.insert(
+    state.inventory.actor_equipment.insert(
         ACTOR_A_ID.to_string(),
         BTreeMap::from([("weapon".to_string(), "bronze-dagger".to_string())]),
     );
@@ -164,7 +164,7 @@ fn give_item_replaces_existing_gear_and_returns_old_item_to_follower_inventory()
 fn give_two_handed_weapon_replaces_both_weapon_and_offhand() {
     let pack = party_item_pack();
     let mut state = party_state_with_follower(&pack);
-    state.actor_equipment.insert(
+    state.inventory.actor_equipment.insert(
         ACTOR_A_ID.to_string(),
         BTreeMap::from([
             ("weapon".to_string(), "iron-sword".to_string()),
@@ -227,7 +227,7 @@ fn take_item_from_follower_inventory() {
 fn take_item_from_follower_equipment_unequips_and_returns_to_player() {
     let pack = party_item_pack();
     let mut state = party_state_with_follower(&pack);
-    state.actor_equipment.insert(
+    state.inventory.actor_equipment.insert(
         ACTOR_A_ID.to_string(),
         BTreeMap::from([("weapon".to_string(), "iron-sword".to_string())]),
     );
@@ -332,6 +332,7 @@ fn runtime_give_command_with_authored_action_gives_item_to_companion() {
     state.set_stance("golem-dark-nw", ActorStance::Allied);
     state.set_follows_player("golem-dark-nw", true);
     state
+        .actors
         .actor_room_overrides
         .insert("golem-dark-nw".to_string(), "r01c01".to_string());
 
@@ -438,6 +439,7 @@ fn runtime_give_duplicate_held_item_when_one_is_equipped() {
     state.add_item("leaf-plate");
     state.add_item("leaf-plate");
     state
+        .inventory
         .equipment
         .insert("chest".to_string(), "leaf-plate".to_string());
     state.remove_item("leaf-plate");
@@ -447,6 +449,7 @@ fn runtime_give_duplicate_held_item_when_one_is_equipped() {
     state.set_stance("golem-dark-nw", ActorStance::Allied);
     state.set_follows_player("golem-dark-nw", true);
     state
+        .actors
         .actor_room_overrides
         .insert("golem-dark-nw".to_string(), "r01c01".to_string());
 
@@ -483,6 +486,7 @@ fn runtime_give_only_equipped_item_rejects_with_unequip_prompt() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = "r01c01".to_string();
     state
+        .inventory
         .equipment
         .insert("chest".to_string(), "leaf-plate".to_string());
     assert!(!state.has_item("leaf-plate"));
@@ -490,6 +494,7 @@ fn runtime_give_only_equipped_item_rejects_with_unequip_prompt() {
     state.set_stance("golem-dark-nw", ActorStance::Allied);
     state.set_follows_player("golem-dark-nw", true);
     state
+        .actors
         .actor_room_overrides
         .insert("golem-dark-nw".to_string(), "r01c01".to_string());
 

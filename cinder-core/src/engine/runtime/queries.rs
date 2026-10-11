@@ -66,7 +66,7 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for followed actor")?;
-        Ok(state.followed_actor_id.clone())
+        Ok(state.relations.followed_actor_id.clone())
     }
 
     pub fn player_has_item(&self, item_id: &str) -> Result<bool, Box<dyn Error>> {
@@ -94,7 +94,7 @@ impl CinderRuntime {
             .state
             .lock()
             .map_err(|_| "failed to lock runtime state for inventory")?;
-        Ok(state.player_inventory.clone())
+        Ok(state.inventory.player_inventory.clone())
     }
 
     pub fn current_room_item_count(&self, item_id: &str) -> Result<u32, Box<dyn Error>> {

@@ -29,8 +29,9 @@ pub(crate) fn build_input(content: &ContentPack, state: &WorldState, actor_id: &
         .map(|actor| actor.room_id.clone())
         .unwrap_or_default();
     let room_id = state.actor_room_id(actor_id, &default_room_id);
-    let current_time_minutes = state.current_time_minutes;
+    let current_time_minutes = state.clock.current_time_minutes;
     let cooldown_elapsed = state
+        .combat
         .next_hostile_strike_at
         .get(actor_id)
         .is_none_or(|next_strike| current_time_minutes >= *next_strike);
@@ -49,7 +50,7 @@ pub(crate) fn build_input(content: &ContentPack, state: &WorldState, actor_id: &
             "in_player_room": room_id == state.current_room_id,
             "opposing_party_actor_in_room": opposing_party_actor_in_room,
             "cooldown_elapsed": cooldown_elapsed,
-            "time": state.current_time_minutes,
+            "time": state.clock.current_time_minutes,
         }
     })
 }

@@ -118,6 +118,7 @@ fn apply_transformation(
         && !rename.name.is_empty()
     {
         state
+            .actors
             .actor_name_overrides
             .insert(actor_id.to_string(), rename.name.clone());
     }

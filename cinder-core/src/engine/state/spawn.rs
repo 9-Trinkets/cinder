@@ -36,6 +36,7 @@ impl WorldState {
     pub fn despawn_template_instances(&mut self, template_id: &str) -> usize {
         let prefix = format!("{template_id}-");
         let actor_ids = self
+            .actors
             .spawned_actors
             .keys()
             .filter(|actor_id| actor_id.starts_with(&prefix))
@@ -46,15 +47,15 @@ impl WorldState {
             .cloned()
             .collect::<Vec<_>>();
         for actor_id in &actor_ids {
-            self.spawned_actors.remove(actor_id);
-            self.actor_room_overrides.remove(actor_id);
-            self.actor_stats.remove(actor_id);
-            self.actor_inventories.remove(actor_id);
-            self.actor_equipment.remove(actor_id);
-            self.relationships.remove(actor_id);
-            self.party_orders.remove(actor_id);
-            self.followed_actors.remove(actor_id);
-            self.next_hostile_strike_at.remove(actor_id);
+            self.actors.spawned_actors.remove(actor_id);
+            self.actors.actor_room_overrides.remove(actor_id);
+            self.combat.actor_stats.remove(actor_id);
+            self.inventory.actor_inventories.remove(actor_id);
+            self.inventory.actor_equipment.remove(actor_id);
+            self.relations.relationships.remove(actor_id);
+            self.relations.party_orders.remove(actor_id);
+            self.relations.followed_actors.remove(actor_id);
+            self.combat.next_hostile_strike_at.remove(actor_id);
         }
         actor_ids.len()
     }
@@ -145,13 +146,16 @@ impl WorldState {
             };
 
         let actor_name = instance.name.clone();
-        self.actor_stats
+        self.combat
+            .actor_stats
             .insert(instance_id.clone(), instance.initial_stats.clone());
-        self.initial_actor_stats
+        self.combat
+            .initial_actor_stats
             .insert(instance_id.clone(), instance.initial_stats.clone());
-        self.actor_room_overrides
+        self.actors
+            .actor_room_overrides
             .insert(instance_id.clone(), target_room_id.clone());
-        self.actor_skills.insert(
+        self.combat.actor_skills.insert(
             instance_id.clone(),
             instance
                 .skills
@@ -160,7 +164,9 @@ impl WorldState {
                 .collect(),
         );
         self.mark_actor_room_visited(&instance_id, &target_room_id);
-        self.spawned_actors.insert(instance_id.clone(), instance);
+        self.actors
+            .spawned_actors
+            .insert(instance_id.clone(), instance);
 
         let stance = config.stance.unwrap_or(if template_initial_hostile {
             ActorStance::Hostile

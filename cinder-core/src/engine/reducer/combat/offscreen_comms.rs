@@ -114,6 +114,7 @@ pub fn evaluate_offscreen_combat_dispatches(
 
     // Identify candidate rooms: rooms containing allied party members or with tracked offscreen combat
     let mut rooms_to_check: BTreeSet<String> = state
+        .relations
         .relationships
         .keys()
         .filter(|actor_id| {
@@ -136,6 +137,7 @@ pub fn evaluate_offscreen_combat_dispatches(
 
     for room_id in rooms_to_check {
         let living_party_ids: Vec<String> = state
+            .relations
             .relationships
             .keys()
             .filter(|id| {
@@ -150,7 +152,7 @@ pub fn evaluate_offscreen_combat_dispatches(
         let living_hostiles: Vec<String> = content
             .actors
             .iter()
-            .chain(state.spawned_actors.values())
+            .chain(state.actors.spawned_actors.values())
             .map(|a| a.id.clone())
             .collect::<BTreeSet<_>>()
             .into_iter()
@@ -240,7 +242,7 @@ pub fn evaluate_offscreen_combat_dispatches(
             .entry(room_id.clone())
             .or_default();
         if combat_state.engaged_at_turn == 0 {
-            combat_state.engaged_at_turn = state.turn_number;
+            combat_state.engaged_at_turn = state.clock.turn_number;
         }
 
         // Milestone A: Ally Down
@@ -253,7 +255,7 @@ pub fn evaluate_offscreen_combat_dispatches(
                 Some(&fallen_name),
                 living_hostiles.len(),
             );
-            combat_state.last_dispatch_turn = state.turn_number;
+            combat_state.last_dispatch_turn = state.clock.turn_number;
             combat_state.contact_dispatched = true;
             lines.comms_dispatch(
                 format!("{reporter_name}: {fallback}"),
@@ -274,7 +276,7 @@ pub fn evaluate_offscreen_combat_dispatches(
         if any_critical && !combat_state.low_health_dispatched {
             combat_state.low_health_dispatched = true;
             combat_state.contact_dispatched = true;
-            combat_state.last_dispatch_turn = state.turn_number;
+            combat_state.last_dispatch_turn = state.clock.turn_number;
             let fallback = format_milestone_fallback(
                 reporter_id,
                 CommsMilestone::LowHealth,
@@ -301,7 +303,7 @@ pub fn evaluate_offscreen_combat_dispatches(
         // Milestone C: Contact
         if !combat_state.contact_dispatched {
             combat_state.contact_dispatched = true;
-            combat_state.last_dispatch_turn = state.turn_number;
+            combat_state.last_dispatch_turn = state.clock.turn_number;
             let fallback = format_milestone_fallback(
                 reporter_id,
                 CommsMilestone::Contact,
@@ -327,9 +329,9 @@ pub fn evaluate_offscreen_combat_dispatches(
 
         // Milestone D: Periodic Status (every 3 turns)
         if combat_state.contact_dispatched
-            && state.turn_number >= combat_state.last_dispatch_turn.saturating_add(3)
+            && state.clock.turn_number >= combat_state.last_dispatch_turn.saturating_add(3)
         {
-            combat_state.last_dispatch_turn = state.turn_number;
+            combat_state.last_dispatch_turn = state.clock.turn_number;
             let fallback = format_milestone_fallback(
                 reporter_id,
                 CommsMilestone::PeriodicStatus,

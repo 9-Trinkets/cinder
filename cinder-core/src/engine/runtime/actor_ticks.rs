@@ -17,7 +17,7 @@ impl CinderRuntime {
                 .state
                 .lock()
                 .map_err(|_| "failed to lock runtime state to start npc tick")?;
-            (state.phase.clone(), state.turn_number)
+            (state.phase.clone(), state.clock.turn_number)
         };
         let requires_first_action = !self.content.settings.autonomous_actor_dialogue;
         if phase_at_entry != GamePhase::Active || (requires_first_action && turn_number == 0) {
@@ -77,7 +77,7 @@ impl CinderRuntime {
     pub fn peek_upcoming_conversational_speaker(&self) -> Option<String> {
         let (phase_at_entry, turn_number) = {
             let state = self.state.lock().ok()?;
-            (state.phase.clone(), state.turn_number)
+            (state.phase.clone(), state.clock.turn_number)
         };
         let requires_first_action = !self.content.settings.autonomous_actor_dialogue;
         if phase_at_entry != GamePhase::Active || (requires_first_action && turn_number == 0) {
@@ -89,7 +89,7 @@ impl CinderRuntime {
 
         let state = self.state.lock().ok()?;
         let mut peek_state = state.clone();
-        peek_state.turn_number += 1;
+        peek_state.clock.turn_number += 1;
 
         let scope_room_ids =
             crate::engine::actor_tick::tick_scope_room_ids(self.content.as_ref(), &peek_state);
@@ -155,7 +155,7 @@ impl CinderRuntime {
                 return Ok((phase, Vec::new()));
             }
             let tick_start = [TimestampedWorldEvent::now(WorldEvent::TurnStarted {
-                turn_number: state.turn_number + 1,
+                turn_number: state.clock.turn_number + 1,
                 raw_input: "tick".to_string(),
                 advances_time: true,
             })];

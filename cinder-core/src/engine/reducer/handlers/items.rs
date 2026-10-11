@@ -166,7 +166,7 @@ pub(crate) fn handle_player_used_item(
     let initial_room_id = state.current_room_id.clone();
 
     if item_id == "invisibility-potion" {
-        state.invisible_until_minute = Some(state.current_time_minutes + 8);
+        state.combat.invisible_until_minute = Some(state.clock.current_time_minutes + 8);
         state.story_vars.set_unchecked("is_invisible", "true");
     } else if item_id == "spirit-pill" {
         state.story_vars.set_unchecked("spiritual_sight", "true");

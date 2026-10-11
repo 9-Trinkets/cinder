@@ -139,13 +139,13 @@ impl CinderRoleRunner {
             .lock()
             .map_err(|_| "failed to lock state_reader state".to_string())?;
         let snapshot = WorldSnapshot {
-            turn_number: state.turn_number,
+            turn_number: state.clock.turn_number,
             current_room_id: state.current_room_id.clone(),
         };
         Ok(RouteEnvelope {
             next: self.next_non_complete_role(role_name)?,
             message: serde_json::to_string(&SignalEnvelope {
-                window_id: (state.turn_number + 1).to_string(),
+                window_id: (state.clock.turn_number + 1).to_string(),
                 signal_type: "world".to_string(),
                 source: role_name.to_string(),
                 payload: serde_json::to_value(snapshot).map_err(|error| error.to_string())?,
@@ -458,7 +458,7 @@ pub(crate) fn run_pending_commentary_upgrades(
         {
             party_members.push(player.name.clone());
         }
-        for (actor_id, rel) in &state.relationships {
+        for (actor_id, rel) in &state.relations.relationships {
             if rel.follows_player {
                 let name = content
                     .actor(actor_id)
@@ -523,7 +523,7 @@ pub(crate) fn run_pending_commentary_upgrades(
                 TransitionSummary {
                     area_id: completed_area_id,
                     area_name: completed_area_name,
-                    completed_turn: state.turn_number,
+                    completed_turn: state.clock.turn_number,
                     summary_text: summary_prose,
                     party_at_transition: party_members,
                     transcript_line_count: transcript_cutoff,

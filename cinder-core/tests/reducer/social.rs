@@ -10,9 +10,11 @@ fn actor_action_is_injected_into_roommate_recent_memory() {
     let pack = reducer_test_pack();
     let mut state = WorldState::new(&pack);
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_A_ID.to_string(), LOUNGE_ID.to_string());
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_B_ID.to_string(), LOUNGE_ID.to_string());
     let events = [TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {
@@ -93,7 +95,7 @@ fn shared_room_tick_increases_pair_safety() {
 fn tick_progression_updates_hunger_without_reducing_stamina() {
     let pack = reducer_test_pack();
     let mut state = WorldState::new(&pack);
-    state.current_time_minutes = 18 * 60 + 55;
+    state.clock.current_time_minutes = 18 * 60 + 55;
     let starting_hunger = state.actor_stat_u32(ACTOR_A_ID, "hunger");
     let starting_stamina = state.actor_stat_u32(ACTOR_A_ID, "stamina");
     let events = [TimestampedWorldEvent::now(WorldEvent::TurnStarted {
@@ -225,7 +227,7 @@ fn visible_speech_lines_include_target_when_present() {
 fn leaving_before_reply_on_next_tick_decreases_safety() {
     let pack = reducer_test_pack();
     let mut state = WorldState::new(&pack);
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     state.set_pending_reply(ACTOR_A_ID, ACTOR_B_ID, LOUNGE_ID, 1);
     let events = [
         TimestampedWorldEvent::now(WorldEvent::TurnStarted {
@@ -252,6 +254,7 @@ fn offscreen_move_command_shows_arrival_when_actor_enters_current_room() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = KITCHEN_ID.to_string();
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_A_ID.to_string(), LOUNGE_ID.to_string());
     let events = [TimestampedWorldEvent::now(WorldEvent::ActorCommandUsed {

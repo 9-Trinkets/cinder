@@ -48,7 +48,8 @@ fn clean_shaman_trial_triggers_and_rewards_ring_on_clean_run() {
 
     // Defeat the shaman (set player strength high to defeat in one attack)
     let mut s2 = runtime.export_state().expect("state exported");
-    s2.actor_stats
+    s2.combat
+        .actor_stats
         .entry("player".to_string())
         .or_default()
         .insert("strength".to_string(), 100);
@@ -139,7 +140,8 @@ fn clean_shaman_trial_forfeited_if_layla_attacked_floor1_mob() {
 
     // Defeat the shaman
     let mut s4 = s3;
-    s4.actor_stats
+    s4.combat
+        .actor_stats
         .entry("player".to_string())
         .or_default()
         .insert("strength".to_string(), 100);

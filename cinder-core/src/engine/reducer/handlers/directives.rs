@@ -49,7 +49,7 @@ pub(crate) fn apply_content_event(
         for (key, value) in payload {
             input.insert(key.clone(), json!(value));
         }
-        input.insert("actor_stats".to_string(), json!(state.actor_stats));
+        input.insert("actor_stats".to_string(), json!(state.combat.actor_stats));
         apply_narrating_world_hook_effects(
             state,
             content,

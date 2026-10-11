@@ -336,6 +336,7 @@ mod tests {
         // message does not reach her, but the direct channel still does.
         let (content, mut state) = open_roster_state();
         state
+            .actors
             .actor_room_overrides
             .insert("casey".to_string(), "kitchen".to_string());
         let room_id = state.current_room_id.clone();
@@ -360,6 +361,7 @@ mod tests {
         // A runtime override tries to place the offstage actor in the room:
         // offstage still excludes them from local presence.
         state
+            .actors
             .actor_room_overrides
             .insert("casey".to_string(), "lounge".to_string());
         let audience = local_channel().hearing_audience(&content, &state, "blair", Some("lounge"));

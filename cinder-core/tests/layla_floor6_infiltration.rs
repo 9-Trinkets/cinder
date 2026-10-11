@@ -16,7 +16,7 @@ fn test_floor6_handoff_and_stealth_to_witch() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "sanctuary_grand_terrace".to_string();
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     // Set quest stage to mq_find_the_witch as if player just arrived on Floor 6
     state.active_objective_stage_ids = vec!["mq_find_the_witch".to_string()];
     state.story_vars.set_unchecked("entered_floor6", "true");
@@ -124,7 +124,7 @@ fn test_floor6_spiritual_sight_and_seer_deduction() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "mortuary_reanimation_sanctum".to_string();
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     state.add_item("spirit-pill");
 
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
@@ -169,7 +169,7 @@ fn test_floor6_defeat_seer_and_activate_platform() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "mortuary_reanimation_sanctum".to_string();
-    state.turn_number = 1;
+    state.clock.turn_number = 1;
     state.active_objective_stage_ids = vec!["mq_slay_the_seer".to_string()];
     state.story_vars.set_unchecked("spiritual_sight", "true");
 

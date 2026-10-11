@@ -1,12 +1,20 @@
 use super::*;
+use serde::{Deserialize, Serialize};
+
+/// In-world timekeeping: the turn counter and the running minute clock.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Clock {
+    pub turn_number: u32,
+    pub current_time_minutes: u32,
+}
 
 impl WorldState {
     pub fn current_time_label(&self) -> String {
-        format_clock_time(self.current_time_minutes)
+        format_clock_time(self.clock.current_time_minutes)
     }
 
     pub fn current_day_number(&self) -> u32 {
-        (self.current_time_minutes / MINUTES_PER_DAY) + 1
+        (self.clock.current_time_minutes / MINUTES_PER_DAY) + 1
     }
 
     pub fn current_time_note(&self) -> String {

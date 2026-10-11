@@ -188,10 +188,10 @@ fn print_summary(play: &PlayRow, state: &WorldState, transcript: &[TranscriptRow
     println!("locale: {}", play.locale);
     println!("created_at: {}", play.created_at);
     println!("updated_at: {}", play.updated_at);
-    println!("turn_number: {}", state.turn_number);
+    println!("turn_number: {}", state.clock.turn_number);
     println!("phase: {:?}", state.phase);
     println!("current_room_id: {}", state.current_room_id);
-    println!("current_time_minutes: {}", state.current_time_minutes);
+    println!("current_time_minutes: {}", state.clock.current_time_minutes);
     println!(
         "active_stage_ids: {}",
         state.active_objective_stage_ids.join(", ")

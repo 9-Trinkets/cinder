@@ -124,7 +124,7 @@ pub fn advance_to_next_act(
     next_state.act_series = Some(series);
     next_state.last_transcript_line = state.last_transcript_line.clone();
     if let Some(series) = next_state.act_series.as_ref() {
-        next_state.current_time_minutes = content.opening.start_time_minutes
+        next_state.clock.current_time_minutes = content.opening.start_time_minutes
             + (series.current_act_number.saturating_sub(1) * MINUTES_PER_DAY);
     }
     inject_act_cast_vars(content, &mut next_state);
@@ -133,7 +133,7 @@ pub fn advance_to_next_act(
 }
 
 pub fn display_actor_name(state: &WorldState, actor: &ActorDefinition) -> String {
-    if let Some(name) = state.actor_name_overrides.get(&actor.id) {
+    if let Some(name) = state.actors.actor_name_overrides.get(&actor.id) {
         return name.clone();
     }
     if is_current_cast_member_reference(state, &actor.id)
@@ -298,7 +298,7 @@ pub fn render_dynamic_story_text(template: &str, state: &WorldState) -> String {
     {
         rendered = rendered.replace(base_name, current_name);
     }
-    for (actor_id, stats) in &state.actor_stats {
+    for (actor_id, stats) in &state.combat.actor_stats {
         for (stat_key, stat_value) in stats {
             rendered = rendered.replace(
                 &format!("{{actor.{actor_id}.{stat_key}}}"),
@@ -368,10 +368,10 @@ fn inject_act_cast_vars(content: &ContentPack, state: &mut WorldState) {
             "false"
         },
     );
-    if let Some(stats) = state.actor_stats.get_mut(&patient.actor_id) {
+    if let Some(stats) = state.combat.actor_stats.get_mut(&patient.actor_id) {
         *stats = patient.actor_stats.clone();
     }
-    if let Some(initial_stats) = state.initial_actor_stats.get_mut(&patient.actor_id) {
+    if let Some(initial_stats) = state.combat.initial_actor_stats.get_mut(&patient.actor_id) {
         *initial_stats = patient.actor_stats.clone();
     }
     let patient_actor_ids = content
@@ -381,9 +381,10 @@ fn inject_act_cast_vars(content: &ContentPack, state: &mut WorldState) {
         .collect::<Vec<_>>();
     for actor_id in patient_actor_ids {
         if actor_id == patient.actor_id {
-            state.actor_room_overrides.remove(actor_id);
+            state.actors.actor_room_overrides.remove(actor_id);
         } else {
             state
+                .actors
                 .actor_room_overrides
                 .insert(actor_id.to_string(), ACT_OFFSTAGE_ROOM_ID.to_string());
         }
@@ -448,7 +449,7 @@ fn build_cast_member_record(
     for (key, value) in &definition.actor_stats {
         actor_stats.insert(key.clone(), *value);
     }
-    for (stat_key, definition) in &state.actor_stat_defs {
+    for (stat_key, definition) in &state.combat.actor_stat_defs {
         actor_stats
             .entry(stat_key.clone())
             .and_modify(|value| *value = definition.clamp(*value))

@@ -423,7 +423,7 @@ pub fn build_actor_turn(
             .iter()
             .filter(|c| c.kind == crate::content::types::ConsumableKind::Eat)
             .count(),
-        actor_count: state.actor_stats.len(),
+        actor_count: state.combat.actor_stats.len(),
         consume_target_item_id: preferred_hunger_recovery_consume_item_id(&consume_candidates),
         move_target_room_id: move_option.as_ref().map(|(room_id, _)| room_id.clone()),
         move_target_room_title: move_option.as_ref().map(|(_, title)| title.clone()),

@@ -31,7 +31,7 @@ pub(in crate::engine::reducer) fn apply_attack_target(
     // clean-floor reward that is forfeited by attacking ordinary mobs.
     if attacker_actor_id == content.settings.combat.player_actor_id {
         if state.is_player_invisible() {
-            state.invisible_until_minute = None;
+            state.combat.invisible_until_minute = None;
             state.story_vars.set_unchecked("is_invisible", "false");
             lines.narration("Attacking breaks your invisibility! You appear in plain sight.");
         }
@@ -159,9 +159,9 @@ pub(in crate::engine::reducer) fn apply_attack_target(
             target_actor_id,
             CombatCooldownKind::Physical,
         );
-        state.next_hostile_strike_at.insert(
+        state.combat.next_hostile_strike_at.insert(
             target_actor_id.to_string(),
-            state.current_time_minutes + interval,
+            state.clock.current_time_minutes + interval,
         );
         if let Some(line) = content.render_message(
             "combat.actor_wakes_hostile",
@@ -178,6 +178,7 @@ fn participating_allies(state: &WorldState, content: &ContentPack, room_id: &str
         return Vec::new();
     }
     let mut allies = state
+        .relations
         .relationships
         .iter()
         .filter(|(actor_id, relationship)| {

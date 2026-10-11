@@ -19,7 +19,8 @@ impl WorldState {
 
     pub fn party_order(&self, content: &ContentPack, actor_id: &str) -> Option<PartyOrderKind> {
         let actor_id = remap_story_actor_id(self, actor_id);
-        self.party_orders
+        self.relations
+            .party_orders
             .get(actor_id)
             .cloned()
             .or_else(|| content.settings.party.initial_orders.get(actor_id).cloned())
@@ -53,7 +54,7 @@ impl WorldState {
         validate_party_member(content, self, &actor_id)?;
         let follows = !matches!(order.to_ascii_lowercase().as_str(), "guard" | "patrol")
             && !order.to_ascii_lowercase().starts_with("deploy");
-        self.party_orders.insert(actor_id.clone(), order);
+        self.relations.party_orders.insert(actor_id.clone(), order);
         self.set_follows_player(&actor_id, follows);
         self.set_followed_actor(&actor_id, None);
         Ok(())
@@ -61,7 +62,7 @@ impl WorldState {
 
     pub fn initialize_party_order(&mut self, content: &ContentPack, actor_id: &str) {
         let actor_id = remap_story_actor_id(self, actor_id).to_string();
-        if self.party_orders.contains_key(&actor_id) {
+        if self.relations.party_orders.contains_key(&actor_id) {
             return;
         }
         let order = content
@@ -76,7 +77,7 @@ impl WorldState {
         {
             self.set_follows_player(&actor_id, true);
         }
-        self.party_orders.insert(actor_id, order);
+        self.relations.party_orders.insert(actor_id, order);
     }
 }
 
@@ -148,6 +149,7 @@ mod tests {
         assert!(error.contains("not allied"), "{error}");
 
         state
+            .actors
             .actor_room_overrides
             .insert("blair".to_string(), "kitchen".to_string());
         assert!(
@@ -183,7 +185,10 @@ mod tests {
 
         // initialize_party_order seeds follow into state
         state.initialize_party_order(&content, "blair");
-        assert_eq!(state.party_orders.get("blair"), Some(&"follow".to_string()));
+        assert_eq!(
+            state.relations.party_orders.get("blair"),
+            Some(&"follow".to_string())
+        );
         assert!(state.follows_player("blair"));
     }
 

@@ -118,7 +118,7 @@ impl WorldState {
     }
 
     pub fn clear_stale_pending_replies(&mut self) {
-        let turn_number = self.turn_number;
+        let turn_number = self.clock.turn_number;
         self.pending_replies
             .retain(|_, pending| pending.turn_number + 1 >= turn_number);
     }

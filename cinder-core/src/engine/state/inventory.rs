@@ -1,17 +1,51 @@
 use super::*;
 use crate::content::types::ItemStorageTarget;
+use serde::{Deserialize, Serialize};
+use std::collections::{BTreeMap, HashMap};
+
+/// Inventory and equipment holdings: the player's inventory, per-room item
+/// stock and charges, and per-actor inventories and equipment.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Inventory {
+    #[serde(default)]
+    pub player_inventory: HashMap<String, u32>,
+    #[serde(default)]
+    pub room_item_stock: BTreeMap<String, u32>,
+    /// Remaining activations of charged room items, room id → item id → charges.
+    #[serde(default)]
+    pub room_item_charges: BTreeMap<String, u32>,
+    /// Per-actor inventory (non-player actors), actor id → item id → count.
+    #[serde(default)]
+    pub actor_inventories: BTreeMap<String, HashMap<String, u32>>,
+    /// Per-actor equipment (non-player actors), actor id → slot id → item id.
+    #[serde(default)]
+    pub actor_equipment: BTreeMap<String, BTreeMap<String, String>>,
+    /// Player equipment, slot id → item id.
+    #[serde(default)]
+    pub equipment: BTreeMap<String, String>,
+}
 
 impl WorldState {
     pub fn has_item(&self, item_id: &str) -> bool {
-        self.player_inventory.get(item_id).copied().unwrap_or(0) > 0
+        self.inventory
+            .player_inventory
+            .get(item_id)
+            .copied()
+            .unwrap_or(0)
+            > 0
     }
 
     pub fn item_count(&self, item_id: &str) -> u32 {
-        self.player_inventory.get(item_id).copied().unwrap_or(0)
+        self.inventory
+            .player_inventory
+            .get(item_id)
+            .copied()
+            .unwrap_or(0)
     }
 
     pub fn add_item(&mut self, item_id: &str) {
         *self
+            .inventory
             .player_inventory
             .entry(item_id.to_string())
             .or_insert(0) += 1;
@@ -19,14 +53,14 @@ impl WorldState {
 
     pub fn remove_item(&mut self, item_id: &str) -> bool {
         let mut has = false;
-        if let Some(count) = self.player_inventory.get_mut(item_id)
+        if let Some(count) = self.inventory.player_inventory.get_mut(item_id)
             && *count > 0
         {
             *count -= 1;
             has = true;
         }
-        if let Some(0) = self.player_inventory.get(item_id) {
-            self.player_inventory.remove(item_id);
+        if let Some(0) = self.inventory.player_inventory.get(item_id) {
+            self.inventory.player_inventory.remove(item_id);
         }
         has
     }
@@ -36,7 +70,8 @@ impl WorldState {
     }
 
     pub fn actor_item_count(&self, actor_id: &str, item_id: &str) -> u32 {
-        self.actor_inventories
+        self.inventory
+            .actor_inventories
             .get(actor_id)
             .and_then(|inv| inv.get(item_id))
             .copied()
@@ -44,7 +79,7 @@ impl WorldState {
     }
 
     pub fn actor_inventory(&self, actor_id: &str) -> Vec<(String, u32)> {
-        if let Some(inv) = self.actor_inventories.get(actor_id) {
+        if let Some(inv) = self.inventory.actor_inventories.get(actor_id) {
             let mut items: Vec<(String, u32)> =
                 inv.iter().map(|(id, count)| (id.clone(), *count)).collect();
             items.sort_by(|a, b| a.0.cmp(&b.0));
@@ -55,7 +90,7 @@ impl WorldState {
     }
 
     pub fn drain_actor_inventory(&mut self, actor_id: &str) -> Vec<(String, u32)> {
-        if let Some(inv) = self.actor_inventories.remove(actor_id) {
+        if let Some(inv) = self.inventory.actor_inventories.remove(actor_id) {
             let mut items: Vec<(String, u32)> = inv.into_iter().filter(|(_, c)| *c > 0).collect();
             items.sort_by(|a, b| a.0.cmp(&b.0));
             items
@@ -66,6 +101,7 @@ impl WorldState {
 
     pub fn actor_add_item(&mut self, actor_id: &str, item_id: &str) {
         *self
+            .inventory
             .actor_inventories
             .entry(actor_id.to_string())
             .or_default()
@@ -75,7 +111,7 @@ impl WorldState {
 
     pub fn actor_remove_item(&mut self, actor_id: &str, item_id: &str) -> bool {
         let mut has = false;
-        if let Some(inv) = self.actor_inventories.get_mut(actor_id) {
+        if let Some(inv) = self.inventory.actor_inventories.get_mut(actor_id) {
             if let Some(count) = inv.get_mut(item_id)
                 && *count > 0
             {
@@ -107,6 +143,7 @@ impl WorldState {
         match storage {
             ItemStorageTarget::PlayerInventory => self.item_count(item_id),
             ItemStorageTarget::CurrentRoom => self
+                .inventory
                 .room_item_stock
                 .get(&room_item_key(current_room_id, item_id))
                 .copied()
@@ -128,6 +165,7 @@ impl WorldState {
             }
             ItemStorageTarget::CurrentRoom => {
                 *self
+                    .inventory
                     .room_item_stock
                     .entry(room_item_key(current_room_id, item_id))
                     .or_insert(0) += 1;
@@ -151,15 +189,15 @@ impl WorldState {
             ItemStorageTarget::CurrentRoom => {
                 let key = room_item_key(current_room_id, item_id);
                 let mut removed = false;
-                if let Some(count) = self.room_item_stock.get_mut(&key)
+                if let Some(count) = self.inventory.room_item_stock.get_mut(&key)
                     && *count > 0
                 {
                     *count -= 1;
                     removed = true;
                 }
-                if let Some(0) = self.room_item_stock.get(&key) {
-                    self.room_item_stock.remove(&key);
-                    self.room_item_charges.remove(&key);
+                if let Some(0) = self.inventory.room_item_stock.get(&key) {
+                    self.inventory.room_item_stock.remove(&key);
+                    self.inventory.room_item_charges.remove(&key);
                 }
                 removed
             }
@@ -171,8 +209,8 @@ impl WorldState {
     /// room item is spent (a drain sigil that ran out of activations).
     pub fn remove_items_from_room(&mut self, room_id: &str, item_id: &str) -> bool {
         let key = room_item_key(room_id, item_id);
-        let had = self.room_item_stock.remove(&key).is_some();
-        self.room_item_charges.remove(&key);
+        let had = self.inventory.room_item_stock.remove(&key).is_some();
+        self.inventory.room_item_charges.remove(&key);
         had
     }
 
@@ -180,7 +218,8 @@ impl WorldState {
     /// as `(item_id, count)`.
     pub fn loose_room_items(&self, room_id: &str) -> Vec<(String, u32)> {
         let prefix = format!("{room_id}::");
-        self.room_item_stock
+        self.inventory
+            .room_item_stock
             .iter()
             .filter(|(key, _)| key.starts_with(&prefix))
             .map(|(key, count)| (key[prefix.len()..].to_string(), *count))

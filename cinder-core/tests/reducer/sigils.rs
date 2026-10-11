@@ -581,7 +581,7 @@ fn mp_regenerates_on_tick_interval_and_clamps_at_max() {
     rebuild_test_pack_indexes(&mut pack);
 
     let mut state = WorldState::new(&pack);
-    state.current_time_minutes = 0;
+    state.clock.current_time_minutes = 0;
     state
         .adjust_actor_stat(&pack, ACTOR_A_ID, "mp", -3)
         .unwrap(); // 10 - 3 = 7 MP

@@ -14,27 +14,28 @@ pub(crate) fn handle_turn_started(
     let content = ctx.content;
     let suppressed_actor_stats = ctx.suppressed_actor_stats;
     let lines = &mut *ctx.lines;
-    state.turn_number = turn_number;
+    state.clock.turn_number = turn_number;
     if advances_time {
         increment_shared_room_safety(state, content);
         state.clear_stale_pending_replies();
-        let previous_time_minutes = state.current_time_minutes;
-        state.current_time_minutes += content.settings.tick_minutes_per_turn;
+        let previous_time_minutes = state.clock.current_time_minutes;
+        state.clock.current_time_minutes += content.settings.tick_minutes_per_turn;
         advance_actor_stats_on_tick(
             state,
             content,
             previous_time_minutes,
-            state.current_time_minutes,
+            state.clock.current_time_minutes,
             suppressed_actor_stats,
         );
-        for signal in time_reached_signals(previous_time_minutes, state.current_time_minutes) {
+        for signal in time_reached_signals(previous_time_minutes, state.clock.current_time_minutes)
+        {
             lines.extend_lines(advance_objective_for_signal(state, content, &signal));
         }
         lines.extend_lines(advance_house_progress_objectives(state, content));
         lines.extend_lines(advance_stat_threshold_objectives(state, content));
-        if let Some(until) = state.invisible_until_minute {
-            if state.current_time_minutes >= until {
-                state.invisible_until_minute = None;
+        if let Some(until) = state.combat.invisible_until_minute {
+            if state.clock.current_time_minutes >= until {
+                state.combat.invisible_until_minute = None;
                 state.story_vars.set_unchecked("is_invisible", "false");
                 lines.narration("Your invisibility wears off. You fade back into view.");
             }

@@ -27,6 +27,7 @@ fn hostile_strikes_off_screen_ally_using_that_allys_defense() {
         .insert("confidence".to_string(), 7);
     let mut state = WorldState::new(&pack);
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_B_ID.to_string(), KITCHEN_ID.to_string());
     state.set_stance(ACTOR_B_ID, ActorStance::Allied);
@@ -63,6 +64,7 @@ fn allied_follower_defeat_does_not_end_the_game() {
     };
     let mut state = WorldState::new(&pack);
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_B_ID.to_string(), KITCHEN_ID.to_string());
     state.set_stance(ACTOR_B_ID, ActorStance::Allied);
@@ -117,11 +119,13 @@ fn hostile_strike_uses_pack_declared_combat_vocabulary() {
     };
     let mut state = WorldState::new(&pack);
     state
+        .combat
         .actor_stats
         .entry(ACTOR_C_ID.to_string())
         .or_default()
         .insert("fury".to_string(), 5);
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
     state.set_stance(ACTOR_C_ID, ActorStance::Hostile);
@@ -133,8 +137,8 @@ fn hostile_strike_uses_pack_declared_combat_vocabulary() {
 
     assert_eq!(state.actor_stat(ACTOR_A_ID, "vitality"), 5);
     assert_eq!(
-        state.next_hostile_strike_at.get(ACTOR_C_ID),
-        Some(&(state.current_time_minutes + 7))
+        state.combat.next_hostile_strike_at.get(ACTOR_C_ID),
+        Some(&(state.clock.current_time_minutes + 7))
     );
 }
 
@@ -153,6 +157,7 @@ fn player_defeat_narration_and_phase_come_from_content() {
     let mut state = WorldState::new(&pack);
     // Move Casey into the player's room so the strike is in range.
     state
+        .actors
         .actor_room_overrides
         .insert(ACTOR_C_ID.to_string(), LOUNGE_ID.to_string());
     state.set_stance(ACTOR_C_ID, ActorStance::Hostile);

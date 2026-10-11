@@ -117,6 +117,7 @@ mod tests {
             descriptions: Vec::new(),
         });
         state
+            .actors
             .actor_room_overrides
             .insert(actor_id.clone(), "remote".to_string());
         state.add_item_to_storage("hazard-token", ItemStorageTarget::CurrentRoom, "remote");

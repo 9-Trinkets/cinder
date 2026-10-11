@@ -19,7 +19,13 @@ pub(crate) fn handle_hostile_strike(ctx: &mut ReduceCtx<'_>, actor_id: &str) {
     {
         return;
     }
-    if state.current_time_minutes < *state.next_hostile_strike_at.get(actor_id).unwrap_or(&0) {
+    if state.clock.current_time_minutes
+        < *state
+            .combat
+            .next_hostile_strike_at
+            .get(actor_id)
+            .unwrap_or(&0)
+    {
         return;
     }
     let Some(target_id) = select_hostile_target(content, state, actor_id) else {
@@ -192,9 +198,10 @@ pub(crate) fn handle_hostile_strike(ctx: &mut ReduceCtx<'_>, actor_id: &str) {
     }
     let interval =
         actor_combat_cooldown_minutes(content, state, actor_id, CombatCooldownKind::Physical);
-    state
-        .next_hostile_strike_at
-        .insert(actor_id.to_string(), state.current_time_minutes + interval);
+    state.combat.next_hostile_strike_at.insert(
+        actor_id.to_string(),
+        state.clock.current_time_minutes + interval,
+    );
     if target_id == combat.player_actor_id {
         defeat_player_if_dead(state, content, lines);
     }
@@ -231,7 +238,13 @@ pub(crate) fn handle_hostile_heal(
     {
         return;
     }
-    if state.current_time_minutes < *state.next_hostile_strike_at.get(actor_id).unwrap_or(&0) {
+    if state.clock.current_time_minutes
+        < *state
+            .combat
+            .next_hostile_strike_at
+            .get(actor_id)
+            .unwrap_or(&0)
+    {
         return;
     }
     let room_id = state.actor_current_room_id(content, actor_id).to_string();
@@ -310,7 +323,8 @@ pub(crate) fn handle_hostile_heal(
 
     let interval =
         actor_combat_cooldown_minutes(content, state, actor_id, CombatCooldownKind::Spell);
-    state
-        .next_hostile_strike_at
-        .insert(actor_id.to_string(), state.current_time_minutes + interval);
+    state.combat.next_hostile_strike_at.insert(
+        actor_id.to_string(),
+        state.clock.current_time_minutes + interval,
+    );
 }

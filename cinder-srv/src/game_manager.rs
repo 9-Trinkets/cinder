@@ -66,7 +66,7 @@ where
                 let new_state = runtime
                     .export_state()
                     .map_err(|e| format!("state export error: {e}"))?;
-                let turn_number = new_state.turn_number;
+                let turn_number = new_state.clock.turn_number;
                 let new_state_json = serde_json::to_string(&new_state)
                     .map_err(|e| format!("serialization error: {e}"))?;
 
@@ -154,7 +154,7 @@ pub async fn get_transcript(
          FROM transcript_entries te
          JOIN game_plays s ON s.id = te.play_id
          WHERE te.play_id = $1 AND s.player_id = $2
-         ORDER BY te.turn_number ASC, te.id ASC",
+         ORDER BY te.clock.turn_number ASC, te.id ASC",
     )
     .bind(play_id)
     .bind(player_id)

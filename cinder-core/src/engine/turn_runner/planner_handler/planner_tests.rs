@@ -18,12 +18,12 @@ fn plan_unknown(content: &ContentPack, state: &WorldState, raw_input: &str) -> (
                 command: PlayerCommand::Unknown,
             },
             world: WorldSnapshot {
-                turn_number: state.turn_number,
+                turn_number: state.clock.turn_number,
                 current_room_id: state.current_room_id.clone(),
             },
         },
         state,
-        state.turn_number + 1,
+        state.clock.turn_number + 1,
     )
 }
 
@@ -44,12 +44,12 @@ fn plan_order(
                 },
             },
             world: WorldSnapshot {
-                turn_number: state.turn_number,
+                turn_number: state.clock.turn_number,
                 current_room_id: state.current_room_id.clone(),
             },
         },
         state,
-        state.turn_number + 1,
+        state.clock.turn_number + 1,
     )
 }
 
@@ -67,12 +67,12 @@ fn plan_command(
                 command,
             },
             world: WorldSnapshot {
-                turn_number: state.turn_number,
+                turn_number: state.clock.turn_number,
                 current_room_id: state.current_room_id.clone(),
             },
         },
         state,
-        state.turn_number + 1,
+        state.clock.turn_number + 1,
     )
 }
 
@@ -186,6 +186,7 @@ fn party_order_resolves_an_allied_member_in_another_room() {
     let mut state = WorldState::new(&content);
     state.set_stance("blair", ActorStance::Allied);
     state
+        .actors
         .actor_room_overrides
         .insert("blair".to_string(), "other-room".to_string());
 

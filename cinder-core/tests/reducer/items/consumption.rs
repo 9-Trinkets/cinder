@@ -46,6 +46,7 @@ fn player_used_item_event_consumes_item_and_runs_hook() {
     let mut state = WorldState::new(&pack);
     let player_id = &pack.settings.combat.player_actor_id;
     state
+        .combat
         .actor_stats
         .entry(player_id.clone())
         .or_default()
@@ -78,6 +79,7 @@ fn player_can_eat_and_use_flatbread_in_layla_pack() {
     let player_id = pack.settings.combat.player_actor_id.clone();
     // Injure player slightly
     state
+        .combat
         .actor_stats
         .entry(player_id.clone())
         .or_default()

@@ -207,8 +207,8 @@ impl CinderRuntime {
         trace_dir: PathBuf,
     ) -> Result<Self, Box<dyn Error>> {
         let mut state = state;
-        state.actor_stat_defs = content.stats.actor.clone();
-        state.pair_stat_defs = content.stats.pair.clone();
+        state.combat.actor_stat_defs = content.stats.actor.clone();
+        state.combat.pair_stat_defs = content.stats.pair.clone();
         for initial_id in &content.beats.initial_stage_ids {
             if !state.active_objective_stage_ids.contains(initial_id)
                 && !state.completed_stage_ids.contains(initial_id)
