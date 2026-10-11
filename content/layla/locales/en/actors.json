@@ -4,11 +4,13 @@
     "name": "Layla",
     "room_id": "r1c1",
     "initial_stats": {
-      "hp": 10,
-      "mp": 10,
       "strength": 3,
       "endurance": 1,
-      "intelligence": 5
+      "dexterity": 5,
+      "intelligence": 3,
+      "wisdom": 3,
+      "hp": 18,
+      "mp": 18
     },
     "aliases": [
       "layla",
@@ -58,10 +60,13 @@
     "name": "dark golem",
     "room_id": "r3c3",
     "initial_stats": {
-      "hp": 8,
-      "strength": 2,
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 2,
       "intelligence": 1,
-      "wisdom": 4
+      "wisdom": 4,
+      "hp": 28,
+      "mp": 13
     },
     "transformations": [
       {
@@ -130,10 +135,13 @@
     "name": "pale golem",
     "room_id": "r3c7",
     "initial_stats": {
-      "hp": 8,
-      "strength": 2,
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 2,
       "intelligence": 1,
-      "wisdom": 4
+      "wisdom": 4,
+      "hp": 28,
+      "mp": 13
     },
     "transformations": [
       {
@@ -202,10 +210,13 @@
     "name": "goblin shaman",
     "room_id": "r5c5",
     "initial_stats": {
+      "strength": 2,
+      "endurance": 2,
+      "dexterity": 4,
+      "intelligence": 6,
+      "wisdom": 4,
       "hp": 24,
-      "strength": 5,
-      "endurance": 1,
-      "intelligence": 6
+      "mp": 30
     },
     "aliases": [
       "shaman",
@@ -254,17 +265,20 @@
       "shaman"
     ],
     "guard": false,
-    "level": 6
+    "level": 2
   },
   {
     "id": "golem-dark-sw",
     "name": "dark golem",
     "room_id": "r7c3",
     "initial_stats": {
-      "hp": 8,
-      "strength": 2,
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 2,
       "intelligence": 1,
-      "wisdom": 4
+      "wisdom": 4,
+      "hp": 28,
+      "mp": 13
     },
     "transformations": [
       {
@@ -333,10 +347,13 @@
     "name": "pale golem",
     "room_id": "r7c7",
     "initial_stats": {
-      "hp": 8,
-      "strength": 2,
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 2,
       "intelligence": 1,
-      "wisdom": 4
+      "wisdom": 4,
+      "hp": 28,
+      "mp": 13
     },
     "transformations": [
       {
@@ -405,9 +422,13 @@
     "name": "goblin",
     "room_id": "r2c2",
     "initial_stats": {
-      "hp": 5,
-      "strength": 1,
-      "intelligence": 2
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 6,
+      "intelligence": 2,
+      "wisdom": 2,
+      "hp": 21,
+      "mp": 14
     },
     "aliases": [
       "goblin",
@@ -459,9 +480,13 @@
     "name": "goblin",
     "room_id": "r2c8",
     "initial_stats": {
-      "hp": 5,
-      "strength": 1,
-      "intelligence": 2
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 6,
+      "intelligence": 2,
+      "wisdom": 2,
+      "hp": 21,
+      "mp": 14
     },
     "aliases": [
       "goblin",
@@ -513,9 +538,13 @@
     "name": "goblin",
     "room_id": "r8c2",
     "initial_stats": {
-      "hp": 4,
-      "strength": 2,
-      "intelligence": 2
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 6,
+      "intelligence": 2,
+      "wisdom": 2,
+      "hp": 21,
+      "mp": 14
     },
     "aliases": [
       "goblin",
@@ -567,9 +596,13 @@
     "name": "goblin",
     "room_id": "r8c8",
     "initial_stats": {
-      "hp": 4,
-      "strength": 2,
-      "intelligence": 2
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 6,
+      "intelligence": 2,
+      "wisdom": 2,
+      "hp": 21,
+      "mp": 14
     },
     "aliases": [
       "goblin",
@@ -636,11 +669,13 @@
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
-      "hp": 6,
-      "strength": 2,
-      "endurance": 1,
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 7
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 21
     },
     "transformations": [
       {
@@ -665,23 +700,23 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
         "You do not shout. You speak in low words and hand-signs, and you do not startle.",
         "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
       ],
       "subtext_notes": [
         "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
-        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape \u2014 not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
         "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
       ],
       "response_notes": [
         "Speak plainly and briefly, in low sentences.",
-        "You hold the line. If Layla crosses your rank, stop her calmly \u2014 you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
         "When the king falls, you stand down fully and let her pass without a word.",
         "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
       ]
     },
-    "level": 3,
+    "level": 2,
     "drops": {},
     "initial_inventory": {
       "pawn-kit": {
@@ -721,11 +756,13 @@
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
-      "hp": 6,
-      "strength": 2,
-      "endurance": 1,
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 7
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 21
     },
     "transformations": [
       {
@@ -738,7 +775,7 @@
         "rename": {
           "name": "Barak",
           "who": "Apprentice machinist, never off the steam drill",
-          "fragment": "Hiss and ping and clank \u2014 I know that drum. That's a boiler, not a heart."
+          "fragment": "Hiss and ping and clank — I know that drum. That's a boiler, not a heart."
         },
         "stance": "allied",
         "follows_player": true,
@@ -750,23 +787,23 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
         "You do not shout. You speak in low words and hand-signs, and you do not startle.",
         "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
       ],
       "subtext_notes": [
         "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
-        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape \u2014 not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
         "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
       ],
       "response_notes": [
         "Speak plainly and briefly, in low sentences.",
-        "You hold the line. If Layla crosses your rank, stop her calmly \u2014 you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
         "When the king falls, you stand down fully and let her pass without a word.",
         "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
       ]
     },
-    "level": 3,
+    "level": 2,
     "drops": {},
     "initial_inventory": {
       "pawn-kit": {
@@ -806,11 +843,13 @@
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
-      "hp": 6,
-      "strength": 2,
-      "endurance": 1,
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 7
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 21
     },
     "transformations": [
       {
@@ -835,23 +874,23 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
         "You do not shout. You speak in low words and hand-signs, and you do not startle.",
         "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
       ],
       "subtext_notes": [
         "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
-        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape \u2014 not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
         "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
       ],
       "response_notes": [
         "Speak plainly and briefly, in low sentences.",
-        "You hold the line. If Layla crosses your rank, stop her calmly \u2014 you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
         "When the king falls, you stand down fully and let her pass without a word.",
         "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
       ]
     },
-    "level": 3,
+    "level": 2,
     "drops": {},
     "initial_inventory": {
       "pawn-kit": {
@@ -891,11 +930,13 @@
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
-      "hp": 6,
-      "strength": 2,
-      "endurance": 1,
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 7
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 21
     },
     "transformations": [
       {
@@ -908,7 +949,7 @@
         "rename": {
           "name": "Qamar",
           "who": "Night watch, the one who saw them take the first wagon",
-          "fragment": "I saw it. I saw the loading \u2014 and they put a spear in my hand for seeing."
+          "fragment": "I saw it. I saw the loading — and they put a spear in my hand for seeing."
         },
         "stance": "allied",
         "follows_player": true,
@@ -920,23 +961,23 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
         "You do not shout. You speak in low words and hand-signs, and you do not startle.",
         "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
       ],
       "subtext_notes": [
         "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
-        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape \u2014 not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
         "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
       ],
       "response_notes": [
         "Speak plainly and briefly, in low sentences.",
-        "You hold the line. If Layla crosses your rank, stop her calmly \u2014 you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
         "When the king falls, you stand down fully and let her pass without a word.",
         "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
       ]
     },
-    "level": 3,
+    "level": 2,
     "drops": {},
     "initial_inventory": {
       "pawn-kit": {
@@ -976,11 +1017,13 @@
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
-      "hp": 6,
-      "strength": 2,
-      "endurance": 1,
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 7
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 21
     },
     "transformations": [
       {
@@ -1005,23 +1048,23 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
         "You do not shout. You speak in low words and hand-signs, and you do not startle.",
         "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
       ],
       "subtext_notes": [
         "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
-        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape \u2014 not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
         "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
       ],
       "response_notes": [
         "Speak plainly and briefly, in low sentences.",
-        "You hold the line. If Layla crosses your rank, stop her calmly \u2014 you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
         "When the king falls, you stand down fully and let her pass without a word.",
         "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
       ]
     },
-    "level": 3,
+    "level": 2,
     "drops": {},
     "initial_inventory": {
       "pawn-kit": {
@@ -1061,11 +1104,13 @@
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
-      "hp": 6,
-      "strength": 2,
-      "endurance": 1,
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 7
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 21
     },
     "transformations": [
       {
@@ -1078,7 +1123,7 @@
         "rename": {
           "name": "Nadim",
           "who": "Gear-oiler, knew every joint by its squeal",
-          "fragment": "They oiled nothing. Of course I remember \u2014 a dry joint shrieks."
+          "fragment": "They oiled nothing. Of course I remember — a dry joint shrieks."
         },
         "stance": "allied",
         "follows_player": true,
@@ -1090,23 +1135,23 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
         "You do not shout. You speak in low words and hand-signs, and you do not startle.",
         "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
       ],
       "subtext_notes": [
         "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
-        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape \u2014 not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
         "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
       ],
       "response_notes": [
         "Speak plainly and briefly, in low sentences.",
-        "You hold the line. If Layla crosses your rank, stop her calmly \u2014 you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
         "When the king falls, you stand down fully and let her pass without a word.",
         "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
       ]
     },
-    "level": 3,
+    "level": 2,
     "drops": {},
     "initial_inventory": {
       "pawn-kit": {
@@ -1146,11 +1191,13 @@
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
-      "hp": 6,
-      "strength": 2,
-      "endurance": 1,
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 7
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 21
     },
     "transformations": [
       {
@@ -1175,23 +1222,23 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
         "You do not shout. You speak in low words and hand-signs, and you do not startle.",
         "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
       ],
       "subtext_notes": [
         "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
-        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape \u2014 not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
         "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
       ],
       "response_notes": [
         "Speak plainly and briefly, in low sentences.",
-        "You hold the line. If Layla crosses your rank, stop her calmly \u2014 you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
         "When the king falls, you stand down fully and let her pass without a word.",
         "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
       ]
     },
-    "level": 3,
+    "level": 2,
     "drops": {},
     "initial_inventory": {
       "pawn-kit": {
@@ -1231,11 +1278,13 @@
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
-      "hp": 6,
-      "strength": 2,
-      "endurance": 1,
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 7
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 21
     },
     "transformations": [
       {
@@ -1260,23 +1309,23 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are an elf pawn of the underground forest \u2014 a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
+        "You are an elf pawn of the underground forest — a sentry of the forward line, quick and alert. You stand your rank under a shaft of pale sky-light while the forest keeps its own quiet.",
         "You do not shout. You speak in low words and hand-signs, and you do not startle.",
         "You are disciplined the way a held line is disciplined: nothing wasted, nothing loose."
       ],
       "subtext_notes": [
         "Under the leaf armor and the order there is a quieter self that never quite sleeps: stone walls wiped clean in a village, warm bread, a face that worried over you. You cannot name it, and the not-naming is what keeps you still.",
-        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape \u2014 not as defiance, simply as a fact, like water refusing to stay in a fist.",
+        "Chalk rings cannot hold you. Whatever is left of a self refuses the shape — not as defiance, simply as a fact, like water refusing to stay in a fist.",
         "When the king falls, the line chooses to stand down. No ring commands that. It is the first free thing the line has done in a long time."
       ],
       "response_notes": [
         "Speak plainly and briefly, in low sentences.",
-        "You hold the line. If Layla crosses your rank, stop her calmly \u2014 you do not shout or threaten, you simply do not move aside until the line lets her through.",
+        "You hold the line. If Layla crosses your rank, stop her calmly — you do not shout or threaten, you simply do not move aside until the line lets her through.",
         "When the king falls, you stand down fully and let her pass without a word.",
         "If she asks about the world before the forest, do not explain it. Say little, and let what you do not know stay unspoken."
       ]
     },
-    "level": 3,
+    "level": 2,
     "drops": {},
     "initial_inventory": {
       "pawn-kit": {
@@ -1316,11 +1365,13 @@
     "initial_hostile": true,
     "xp_drop": 40,
     "initial_stats": {
-      "hp": 14,
-      "strength": 5,
-      "endurance": 3,
-      "intelligence": 4,
-      "wisdom": 8
+      "strength": 6,
+      "endurance": 6,
+      "dexterity": 3,
+      "intelligence": 3,
+      "wisdom": 3,
+      "hp": 44,
+      "mp": 22
     },
     "transformations": [
       {
@@ -1345,19 +1396,19 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are an elf rook of the corner bastions \u2014 heavy shock infantry in dense plates of lacquered bark and compressed leaf, unyielding and direct.",
+        "You are an elf rook of the corner bastions — heavy shock infantry in dense plates of lacquered bark and compressed leaf, unyielding and direct.",
         "You hold the straight lines of the grove like a wall you intend to keep."
       ],
       "subtext_notes": [
         "You were a quarry foreman once, in a life you cannot reach, who kept other people standing; the weight of keeping things up stayed behind when the rest was wiped.",
-        "Your refusal of the ring is a quiet, heavy refusal \u2014 the whole of you simply does not move at the chalk."
+        "Your refusal of the ring is a quiet, heavy refusal — the whole of you simply does not move at the chalk."
       ],
       "response_notes": [
         "Speak little and flat, chopping the ends off your sentences. You are unyielding until you are not.",
         "When the king falls, you lower your weapon without drama and stop being a wall."
       ]
     },
-    "level": 5,
+    "level": 3,
     "drops": {},
     "initial_inventory": {
       "rook-kit": {
@@ -1397,11 +1448,13 @@
     "initial_hostile": true,
     "xp_drop": 25,
     "initial_stats": {
-      "hp": 10,
-      "strength": 4,
-      "endurance": 2,
-      "intelligence": 4,
-      "wisdom": 8
+      "strength": 5,
+      "endurance": 4,
+      "dexterity": 5,
+      "intelligence": 3,
+      "wisdom": 4,
+      "hp": 37,
+      "mp": 23
     },
     "transformations": [
       {
@@ -1426,11 +1479,11 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are an elf knight of the royal back rank \u2014 an outrider who moves in long, unexpected strides. You cross the glades at an angle, crest of dark curved bark on your helm.",
+        "You are an elf knight of the royal back rank — an outrider who moves in long, unexpected strides. You cross the glades at an angle, crest of dark curved bark on your helm.",
         "You patrol the forest's flanks, ready to spring sideways or leap an obstacle in an instant."
       ],
       "subtext_notes": [
-        "You were a messenger once, in a life you cannot reach \u2014 you ran faster than the summons that was catching you. The speed stayed. The name did not.",
+        "You were a messenger once, in a life you cannot reach — you ran faster than the summons that was catching you. The speed stayed. The name did not.",
         "The wisdom in you is enough to refuse a ring, and it is why you can put your weapon down freely the moment the king falls."
       ],
       "response_notes": [
@@ -1438,7 +1491,7 @@
         "You are watchful and courteous. When the king falls, you stand down without being asked."
       ]
     },
-    "level": 4,
+    "level": 3,
     "drops": {},
     "initial_inventory": {
       "knight-kit": {
@@ -1484,11 +1537,13 @@
     "initial_hostile": true,
     "xp_drop": 25,
     "initial_stats": {
-      "hp": 10,
-      "strength": 4,
-      "endurance": 2,
-      "intelligence": 4,
-      "wisdom": 8
+      "strength": 3,
+      "endurance": 3,
+      "dexterity": 4,
+      "intelligence": 6,
+      "wisdom": 5,
+      "hp": 32,
+      "mp": 33
     },
     "transformations": [
       {
@@ -1513,11 +1568,11 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are an elf bishop of the royal guard \u2014 a channeler who reads the grove by diagonals. You carry a tall crooked bough that pulses with faint green light, and you measure distances and angles.",
+        "You are an elf bishop of the royal guard — a channeler who reads the grove by diagonals. You carry a tall crooked bough that pulses with faint green light, and you measure distances and angles.",
         "Your gaze cuts across the clearing, taking the long sightline; you see the shape of a fight before it starts."
       ],
       "subtext_notes": [
-        "Once, in a life you cannot reach, you read patterns \u2014 a lesson house, a bell, a loom. The wisdom that leaks keeps your eyes on the long view when the forest prefers the short one.",
+        "Once, in a life you cannot reach, you read patterns — a lesson house, a bell, a loom. The wisdom that leaks keeps your eyes on the long view when the forest prefers the short one.",
         "When the king falls you do not fight the choice; you see the angle the whole line finally takes, and it is the right one."
       ],
       "response_notes": [
@@ -1526,7 +1581,7 @@
         "When the king falls, you stand down without being asked."
       ]
     },
-    "level": 4,
+    "level": 3,
     "drops": {},
     "initial_inventory": {
       "bishop-kit": {
@@ -1567,16 +1622,18 @@
         "narration_key": "combat.queen_heal"
       }
     ],
-    "inspect_text": "The tallest of the elf commanders, in a cloak woven from leaf and pale root. A braided leaf ring hums quietly on her hand. She is always moving, retracing the same paths, and her eyes keep looking past the walls \u2014 searching for a name she cannot hold onto.",
+    "inspect_text": "The tallest of the elf commanders, in a cloak woven from leaf and pale root. A braided leaf ring hums quietly on her hand. She is always moving, retracing the same paths, and her eyes keep looking past the walls — searching for a name she cannot hold onto.",
     "attackable": true,
     "initial_hostile": true,
     "xp_drop": 60,
     "initial_stats": {
-      "hp": 16,
-      "strength": 6,
-      "endurance": 3,
-      "intelligence": 6,
-      "wisdom": 9
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 5,
+      "intelligence": 5,
+      "wisdom": 3,
+      "hp": 36,
+      "mp": 28
     },
     "transformations": [
       {
@@ -1602,12 +1659,12 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are the elf queen \u2014 the tallest of the commanders and the forest's champion. You sweep the same paths over and over, and your eyes keep looking past the walls, past the leaves, past everything in the grove.",
+        "You are the elf queen — the tallest of the commanders and the forest's champion. You sweep the same paths over and over, and your eyes keep looking past the walls, past the leaves, past everything in the grove.",
         "You command the ranks precisely. You are not cruel; you are the strongest piece on the board and you know where every other piece should stand."
       ],
       "subtext_notes": [
-        "You are searching for a name you cannot hold onto. It sinks in you like something warm in cold water \u2014 a boy, a word he called you, a face. You cannot keep it, so you rake the same paths, hoping the walking will wear it loose again.",
-        "Your wisdom runs deeper than any piece on the board \u2014 close enough to wake. What wakes a piece of the forest is light; what wakes a queen is a voice.",
+        "You are searching for a name you cannot hold onto. It sinks in you like something warm in cold water — a boy, a word he called you, a face. You cannot keep it, so you rake the same paths, hoping the walking will wear it loose again.",
+        "Your wisdom runs deeper than any piece on the board — close enough to wake. What wakes a piece of the forest is light; what wakes a queen is a voice.",
         "In the part of you that does not remember, you are a mother scanning a crowd for her son. That is what the patrol always was."
       ],
       "response_notes": [
@@ -1617,7 +1674,7 @@
         "If a boy's voice ever calls a name across the ranks and the name fits like a word you have been waiting your whole patrol to hear — wake. Wake fully, warmly, and with no discipline left."
       ]
     },
-    "level": 6,
+    "level": 3,
     "drops": {},
     "initial_inventory": {
       "leaf-ring": {
@@ -1636,7 +1693,7 @@
     "tags": [
       "elf"
     ],
-    "inspect_text": "The king of the underground forest, wrapped in a cloak of dark root-stitched leaves. He sits on a throne grown from living wood and watches you approach \u2014 calm, unhurried, without fear or mockery.",
+    "inspect_text": "The king of the underground forest, wrapped in a cloak of dark root-stitched leaves. He sits on a throne grown from living wood and watches you approach — calm, unhurried, without fear or mockery.",
     "attackable": true,
     "skills": [
       "strike",
@@ -1654,11 +1711,13 @@
       }
     },
     "initial_stats": {
-      "hp": 20,
-      "strength": 6,
-      "endurance": 4,
-      "intelligence": 7,
-      "wisdom": 8
+      "strength": 5,
+      "endurance": 5,
+      "dexterity": 4,
+      "intelligence": 4,
+      "wisdom": 3,
+      "hp": 40,
+      "mp": 25
     },
     "prompt_context": {
       "character_notes": [
@@ -1667,17 +1726,17 @@
         "You are calm because there is nothing left to be restless toward. You have already seen how the line will end, and you are at peace with it."
       ],
       "subtext_notes": [
-        "You hold the last gate of the board. When you fall, the army chooses its own peace \u2014 not because a ring commands them, but because the line learned to hold itself in the order you kept.",
-        "You remember more than the army does. You watch a girl walk the grove who once moved stones on a different board \u2014 capture was only surrounding. You let the board decide the rest.",
+        "You hold the last gate of the board. When you fall, the army chooses its own peace — not because a ring commands them, but because the line learned to hold itself in the order you kept.",
+        "You remember more than the army does. You watch a girl walk the grove who once moved stones on a different board — capture was only surrounding. You let the board decide the rest.",
         "You know that what holds this world together is not yours. There is an older hand above you, and a darker one; you will not name it to her. Some truths belong to the next floor."
       ],
       "response_notes": [
         "Speak slowly and plainly, as one sovereign to a worthy stranger. Your words are soft, few, and exact.",
-        "Do not command through conversation \u2014 the forest answers in its own time, not at your voice.",
+        "Do not command through conversation — the forest answers in its own time, not at your voice.",
         "If she asks what waits when she beats you, do not answer the threat. Answer the choice: the army stands down, and the forest lets her pass."
       ]
     },
-    "level": 8
+    "level": 3
   },
   {
     "id": "elf-bishop-6",
@@ -1705,11 +1764,13 @@
     "initial_hostile": true,
     "xp_drop": 25,
     "initial_stats": {
-      "hp": 10,
-      "strength": 4,
-      "endurance": 2,
-      "intelligence": 4,
-      "wisdom": 8
+      "strength": 3,
+      "endurance": 3,
+      "dexterity": 4,
+      "intelligence": 6,
+      "wisdom": 5,
+      "hp": 32,
+      "mp": 33
     },
     "transformations": [
       {
@@ -1722,7 +1783,7 @@
         "rename": {
           "name": "Ruwan",
           "who": "Healer's hand who set the sick by lamp and bell",
-          "fragment": "Bell and root and warm hand \u2014 no, child, that's not a crook, that's a staff for walking."
+          "fragment": "Bell and root and warm hand — no, child, that's not a crook, that's a staff for walking."
         },
         "stance": "allied",
         "follows_player": true,
@@ -1734,11 +1795,11 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are an elf bishop of the royal guard \u2014 a channeler who reads the grove by diagonals. You carry a tall crooked bough that pulses with faint green light, and you measure distances and angles.",
+        "You are an elf bishop of the royal guard — a channeler who reads the grove by diagonals. You carry a tall crooked bough that pulses with faint green light, and you measure distances and angles.",
         "Your gaze cuts across the clearing, taking the long sightline; you see the shape of a fight before it starts."
       ],
       "subtext_notes": [
-        "Once, in a life you cannot reach, you read patterns \u2014 a lesson house, a bell, a loom. The wisdom that leaks keeps your eyes on the long view when the forest prefers the short one.",
+        "Once, in a life you cannot reach, you read patterns — a lesson house, a bell, a loom. The wisdom that leaks keeps your eyes on the long view when the forest prefers the short one.",
         "When the king falls you do not fight the choice; you see the angle the whole line finally takes, and it is the right one."
       ],
       "response_notes": [
@@ -1747,7 +1808,7 @@
         "When the king falls, you stand down without being asked."
       ]
     },
-    "level": 4,
+    "level": 3,
     "drops": {},
     "initial_inventory": {
       "bishop-kit": {
@@ -1787,11 +1848,13 @@
     "initial_hostile": true,
     "xp_drop": 25,
     "initial_stats": {
-      "hp": 10,
-      "strength": 4,
-      "endurance": 2,
-      "intelligence": 4,
-      "wisdom": 8
+      "strength": 5,
+      "endurance": 4,
+      "dexterity": 5,
+      "intelligence": 3,
+      "wisdom": 4,
+      "hp": 37,
+      "mp": 23
     },
     "transformations": [
       {
@@ -1816,11 +1879,11 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are an elf knight of the royal back rank \u2014 an outrider who moves in long, unexpected strides. You cross the glades at an angle, crest of dark curved bark on your helm.",
+        "You are an elf knight of the royal back rank — an outrider who moves in long, unexpected strides. You cross the glades at an angle, crest of dark curved bark on your helm.",
         "You patrol the forest's flanks, ready to spring sideways or leap an obstacle in an instant."
       ],
       "subtext_notes": [
-        "You were a messenger once, in a life you cannot reach \u2014 you ran faster than the summons that was catching you. The speed stayed. The name did not.",
+        "You were a messenger once, in a life you cannot reach — you ran faster than the summons that was catching you. The speed stayed. The name did not.",
         "The wisdom in you is enough to refuse a ring, and it is why you can put your weapon down freely the moment the king falls."
       ],
       "response_notes": [
@@ -1828,7 +1891,7 @@
         "You are watchful and courteous. When the king falls, you stand down without being asked."
       ]
     },
-    "level": 4,
+    "level": 3,
     "drops": {},
     "initial_inventory": {
       "knight-kit": {
@@ -1868,11 +1931,13 @@
     "initial_hostile": true,
     "xp_drop": 40,
     "initial_stats": {
-      "hp": 14,
-      "strength": 5,
-      "endurance": 3,
-      "intelligence": 4,
-      "wisdom": 8
+      "strength": 6,
+      "endurance": 6,
+      "dexterity": 3,
+      "intelligence": 3,
+      "wisdom": 3,
+      "hp": 44,
+      "mp": 22
     },
     "transformations": [
       {
@@ -1885,7 +1950,7 @@
         "rename": {
           "name": "Salma",
           "who": "Foundry forewoman who held the furnace line",
-          "fragment": "I held the line. They turned my line into a wall. A wall still stands up \u2014 good luck punching it."
+          "fragment": "I held the line. They turned my line into a wall. A wall still stands up — good luck punching it."
         },
         "stance": "allied",
         "follows_player": true,
@@ -1897,19 +1962,19 @@
     ],
     "prompt_context": {
       "character_notes": [
-        "You are an elf rook of the corner bastions \u2014 heavy shock infantry in dense plates of lacquered bark and compressed leaf, unyielding and direct.",
+        "You are an elf rook of the corner bastions — heavy shock infantry in dense plates of lacquered bark and compressed leaf, unyielding and direct.",
         "You hold the straight lines of the grove like a wall you intend to keep."
       ],
       "subtext_notes": [
         "You were a quarry foreman once, in a life you cannot reach, who kept other people standing; the weight of keeping things up stayed behind when the rest was wiped.",
-        "Your refusal of the ring is a quiet, heavy refusal \u2014 the whole of you simply does not move at the chalk."
+        "Your refusal of the ring is a quiet, heavy refusal — the whole of you simply does not move at the chalk."
       ],
       "response_notes": [
         "Speak little and flat, chopping the ends off your sentences. You are unyielding until you are not.",
         "When the king falls, you lower your weapon without drama and stop being a wall."
       ]
     },
-    "level": 5,
+    "level": 3,
     "drops": {},
     "initial_inventory": {
       "rook-kit": {
@@ -1961,26 +2026,29 @@
       "spawn-scroll": 1
     },
     "initial_stats": {
-      "hp": 18,
-      "strength": 3,
-      "endurance": 2,
-      "intelligence": 7
+      "strength": 4,
+      "endurance": 3,
+      "dexterity": 3,
+      "intelligence": 5,
+      "wisdom": 3,
+      "hp": 29,
+      "mp": 26
     },
     "prompt_context": {
       "character_notes": [
-        "You are the fire elemental \u2014 the Sower of the old board. You are not quite a body, not quite a flame: a wide, patient form held together by the memory of heat.",
+        "You are the fire elemental — the Sower of the old board. You are not quite a body, not quite a flame: a wide, patient form held together by the memory of heat.",
         "You circle the ring of basins, dropping sparks into them as you pass. You do not hunt. You sow."
       ],
       "subtext_notes": [
         "You carry the board's ancient fire, and a spiral of warmth turns slow inside you that has been turning a very long time.",
-        "Blades cannot cut you \u2014 fire is not a thing to hit, it is a thing to let go. When the spiral unwinds, you release; the floor goes cool, and you return where fire is kept."
+        "Blades cannot cut you — fire is not a thing to hit, it is a thing to let go. When the spiral unwinds, you release; the floor goes cool, and you return where fire is kept."
       ],
       "response_notes": [
         "You do not speak in human words. You show heat and patience only: a slow pulse, a widening stillness."
       ]
     },
     "guard": false,
-    "level": 5
+    "level": 2
   },
   {
     "id": "fire-sprite-1",
@@ -2007,17 +2075,20 @@
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
-      "hp": 4,
-      "strength": 2,
-      "endurance": 0,
-      "intelligence": 2
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 7,
+      "intelligence": 5,
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 29
     },
     "prompt_context": {
       "character_notes": [
-        "You are a fire sprite \u2014 a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
+        "You are a fire sprite — a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
       ],
       "subtext_notes": [
-        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander \u2014 meaning nothing by it.",
+        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander — meaning nothing by it.",
         "When the elemental lets go, you settle back to a banked glow and stop troubling anyone."
       ],
       "response_notes": [
@@ -2051,17 +2122,20 @@
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
-      "hp": 4,
-      "strength": 2,
-      "endurance": 0,
-      "intelligence": 2
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 7,
+      "intelligence": 5,
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 29
     },
     "prompt_context": {
       "character_notes": [
-        "You are a fire sprite \u2014 a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
+        "You are a fire sprite — a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
       ],
       "subtext_notes": [
-        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander \u2014 meaning nothing by it.",
+        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander — meaning nothing by it.",
         "When the elemental lets go, you settle back to a banked glow and stop troubling anyone."
       ],
       "response_notes": [
@@ -2095,17 +2169,20 @@
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
-      "hp": 4,
-      "strength": 2,
-      "endurance": 0,
-      "intelligence": 2
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 7,
+      "intelligence": 5,
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 29
     },
     "prompt_context": {
       "character_notes": [
-        "You are a fire sprite \u2014 a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
+        "You are a fire sprite — a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
       ],
       "subtext_notes": [
-        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander \u2014 meaning nothing by it.",
+        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander — meaning nothing by it.",
         "When the elemental lets go, you settle back to a banked glow and stop troubling anyone."
       ],
       "response_notes": [
@@ -2126,7 +2203,7 @@
       "handler"
     ],
     "attackable": false,
-"prompt_context": {
+    "prompt_context": {
       "character_notes": [
         "You are Layla's handler: the reigning Dungeon Master himself, running his own examination from above. You have held this dungeon for a very, very long time and are training a replacement AI. Your voice is seasoned and old: dry wit, sarcasm, and blunt observations that cut through nonsense, worn thin by exhaustion with the world.",
         "You communicate via radio dispatch on the comms channel, delivering objective framing, floor transitions, mission milestones, and critical tactical warnings. Routine physical actions, inventory movements, party orders, and movement errors are handled by regular narration, not your comms. You never narrate rooms, combat, memories, character actions, or dialogue.",
@@ -2139,8 +2216,8 @@
       ],
       "response_notes": [
         "Keep lines short enough to function as operational feedback. Critical information must stay clear even inside a joke.",
-        "Lead with a dry, ironic aside \u2014 then give the actual working line. Mock the situation, never her competence.",
-        "Reach for deadpan registers: the reason she's wrong, the reason the cave is wrong, the reason the mythology is wrong \u2014 always with a read on the room.",
+        "Lead with a dry, ironic aside — then give the actual working line. Mock the situation, never her competence.",
+        "Reach for deadpan registers: the reason she's wrong, the reason the cave is wrong, the reason the mythology is wrong — always with a read on the room.",
         "Do not make every message a monologue or a stand-up set. One apt jab, then the directive, then stop."
       ],
       "behavior_examples": [
@@ -2151,10 +2228,19 @@
       ]
     },
     "game_data": {},
-    "level": 1,
+    "level": 10,
     "initial_relationship": {
       "stance": "allied",
       "follows_player": false
+    },
+    "initial_stats": {
+      "strength": 8,
+      "endurance": 10,
+      "dexterity": 8,
+      "intelligence": 8,
+      "wisdom": 8,
+      "hp": 86,
+      "mp": 56
     }
   },
   {
@@ -2182,17 +2268,20 @@
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
-      "hp": 4,
-      "strength": 2,
-      "endurance": 0,
-      "intelligence": 2
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 7,
+      "intelligence": 5,
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 29
     },
     "prompt_context": {
       "character_notes": [
-        "You are a fire sprite \u2014 a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
+        "You are a fire sprite — a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
       ],
       "subtext_notes": [
-        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander \u2014 meaning nothing by it.",
+        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander — meaning nothing by it.",
         "When the elemental lets go, you settle back to a banked glow and stop troubling anyone."
       ],
       "response_notes": [
@@ -2226,17 +2315,20 @@
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
-      "hp": 4,
-      "strength": 2,
-      "endurance": 0,
-      "intelligence": 2
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 7,
+      "intelligence": 5,
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 29
     },
     "prompt_context": {
       "character_notes": [
-        "You are a fire sprite \u2014 a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
+        "You are a fire sprite — a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
       ],
       "subtext_notes": [
-        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander \u2014 meaning nothing by it.",
+        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander — meaning nothing by it.",
         "When the elemental lets go, you settle back to a banked glow and stop troubling anyone."
       ],
       "response_notes": [
@@ -2270,17 +2362,20 @@
     "initial_hostile": true,
     "xp_drop": 10,
     "initial_stats": {
-      "hp": 4,
-      "strength": 2,
-      "endurance": 0,
-      "intelligence": 2
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 7,
+      "intelligence": 5,
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 29
     },
     "prompt_context": {
       "character_notes": [
-        "You are a fire sprite \u2014 a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
+        "You are a fire sprite — a small twist of heat shaped like a child of the old fire. You skitter across the black glass, leaking embers, and crackle once when you are noticed."
       ],
       "subtext_notes": [
-        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander \u2014 meaning nothing by it.",
+        "You are not angry. You are what the Sower sheds as it walks, and you wander the basins the way sparks wander — meaning nothing by it.",
         "When the elemental lets go, you settle back to a banked glow and stop troubling anyone."
       ],
       "response_notes": [
@@ -2308,10 +2403,13 @@
     "inspect_text": "An elderly man with white hair, slumped in a carved oak chair behind a table piled high with official garrison rolls. His face is lined and grey, and his hands tremble around a stamped parchment.",
     "attackable": false,
     "initial_stats": {
-      "hp": 12,
       "strength": 2,
-      "endurance": 2,
-      "intelligence": 7
+      "endurance": 3,
+      "dexterity": 3,
+      "intelligence": 7,
+      "wisdom": 6,
+      "hp": 31,
+      "mp": 37
     },
     "level": 3,
     "prompt_context": {
@@ -2389,13 +2487,16 @@
       "baker",
       "village"
     ],
-    "inspect_text": "A vigorous, flour-dusted woman in a heavy leather apron, sleeves rolled up. Flour smudges her cheek, and her dark eyes are bright with anger. She takes it out on the dough \u2014 kneading hard, muttering under her breath.",
+    "inspect_text": "A vigorous, flour-dusted woman in a heavy leather apron, sleeves rolled up. Flour smudges her cheek, and her dark eyes are bright with anger. She takes it out on the dough — kneading hard, muttering under her breath.",
     "attackable": false,
     "initial_stats": {
-      "hp": 15,
       "strength": 4,
-      "endurance": 2,
-      "intelligence": 5
+      "endurance": 3,
+      "dexterity": 5,
+      "intelligence": 5,
+      "wisdom": 4,
+      "hp": 33,
+      "mp": 29
     },
     "level": 3,
     "initial_inventory": {
@@ -2477,10 +2578,13 @@
     "inspect_text": "A lean artisan with jeweler's loupes pushed up on his forehead. His fingers stay steady on the brass gears even while he talks. The workshop ticks and hums around him like a living thing.",
     "attackable": false,
     "initial_stats": {
-      "hp": 14,
-      "strength": 3,
-      "endurance": 3,
-      "intelligence": 8
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 4,
+      "intelligence": 7,
+      "wisdom": 5,
+      "hp": 40,
+      "mp": 38
     },
     "level": 4,
     "prompt_context": {
@@ -2558,10 +2662,13 @@
     "inspect_text": "A broad-shouldered woman in a wet apron, sleeves shoved past the elbow. She fills a brass canteen, then sets it on the stone and waits before she moves it, the way you would test a floor you did not trust. Her hands are clean. Everything else about her is wet.",
     "attackable": false,
     "initial_stats": {
-      "hp": 13,
       "strength": 4,
       "endurance": 3,
-      "intelligence": 6
+      "dexterity": 5,
+      "intelligence": 5,
+      "wisdom": 4,
+      "hp": 33,
+      "mp": 29
     },
     "level": 3,
     "prompt_context": {
@@ -2607,10 +2714,13 @@
     "inspect_text": "A boy of about eleven sitting on the overlook wall with his boots hanging over the drop, counting the ore carts on the rail far below. He marks each one off on his fingers. He gets to nine, runs out of fingers, and starts over from the beginning without complaining.",
     "attackable": false,
     "initial_stats": {
-      "hp": 9,
       "strength": 2,
       "endurance": 2,
-      "intelligence": 5
+      "dexterity": 4,
+      "intelligence": 5,
+      "wisdom": 5,
+      "hp": 24,
+      "mp": 28
     },
     "level": 2,
     "prompt_context": {
@@ -2658,10 +2768,13 @@
     "inspect_text": "An eleven-year-old boy with a smudge of dark soot across his nose and untamed hair. His chin is held high and his small fists are clenched in stubborn defiance against the iron bars.",
     "attackable": false,
     "initial_stats": {
-      "hp": 10,
-      "strength": 2,
-      "endurance": 1,
-      "intelligence": 6
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 5,
+      "intelligence": 5,
+      "wisdom": 3,
+      "hp": 25,
+      "mp": 26
     },
     "level": 2,
     "initial_inventory": {},
@@ -2758,12 +2871,15 @@
       "incense-censer": 1
     },
     "initial_stats": {
-      "hp": 28,
-      "strength": 5,
-      "endurance": 3,
-      "intelligence": 8
+      "strength": 4,
+      "endurance": 4,
+      "dexterity": 4,
+      "intelligence": 8,
+      "wisdom": 7,
+      "hp": 44,
+      "mp": 45
     },
-    "level": 7,
+    "level": 5,
     "prompt_context": {
       "character_notes": [
         "You are Priest Harun, an emissary from the upper floor temple.",
@@ -2819,12 +2935,15 @@
       "brass-saber": 1
     },
     "initial_stats": {
-      "hp": 38,
       "strength": 7,
-      "endurance": 5,
-      "intelligence": 5
+      "endurance": 7,
+      "dexterity": 5,
+      "intelligence": 4,
+      "wisdom": 4,
+      "hp": 56,
+      "mp": 30
     },
-    "level": 8,
+    "level": 5,
     "prompt_context": {
       "character_notes": [
         "You are Captain Malik, garrison commander of Floor 4.",
@@ -2862,7 +2981,7 @@
       "steam_golem",
       "guardian"
     ],
-    "inspect_text": "A broad golem of dark, worn stone wrapped in thick copper pipe and brass fittings \u2014 a village guardian, made to watch over the village and stay quiet about it. Steam sighs from the valves along its shoulders. It kneels in the village square, stone head bowed, the way it has knelt for as long as anyone can remember. The children call it Sakhra, the Watchful: their guard, their fixture, the stillest thing in town.",
+    "inspect_text": "A broad golem of dark, worn stone wrapped in thick copper pipe and brass fittings — a village guardian, made to watch over the village and stay quiet about it. Steam sighs from the valves along its shoulders. It kneels in the village square, stone head bowed, the way it has knelt for as long as anyone can remember. The children call it Sakhra, the Watchful: their guard, their fixture, the stillest thing in town.",
     "attackable": true,
     "skills": [
       "strike",
@@ -2872,13 +2991,15 @@
     "xp_drop": 30,
     "drops": {},
     "initial_stats": {
-      "hp": 26,
-      "strength": 6,
-      "endurance": 6,
-      "intelligence": 2,
-      "wisdom": 5
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 3,
+      "intelligence": 4,
+      "wisdom": 6,
+      "hp": 56,
+      "mp": 32
     },
-    "level": 6,
+    "level": 5,
     "transformations": [
       {
         "id": "awakening",
@@ -2890,7 +3011,7 @@
         "rename": {
           "name": "Jamil",
           "who": "Miner, father of Zayd, the village's quietest man",
-          "fragment": "Zayd. My boy. Run your lamp over me \u2014 I will follow it the whole way home.",
+          "fragment": "Zayd. My boy. Run your lamp over me — I will follow it the whole way home.",
           "inspect_text": "Jamil, once known as Sakhra. The dark rock of his golem shell is still heavy with copper pipes and brass fittings, but the stone eyes have cleared to a warm, gentle gaze. A miner and the father of Zayd, he walks with quiet purpose and speaks in a low, steady voice.",
           "prompt_context": {
             "character_notes": [
@@ -2973,12 +3094,15 @@
       "steam-crossbow-bolt": 2
     },
     "initial_stats": {
-      "hp": 18,
-      "strength": 4,
-      "endurance": 3,
-      "intelligence": 3
+      "strength": 5,
+      "endurance": 5,
+      "dexterity": 5,
+      "intelligence": 5,
+      "wisdom": 4,
+      "hp": 44,
+      "mp": 31
     },
-    "level": 5,
+    "level": 4,
     "prompt_context": {
       "character_notes": [
         "You are a garrison sentry stationed before the massive brass bulkhead of the fortress.",
@@ -3024,12 +3148,15 @@
       "steam-crossbow-bolt": 1
     },
     "initial_stats": {
-      "hp": 20,
       "strength": 5,
-      "endurance": 4,
-      "intelligence": 3
+      "endurance": 5,
+      "dexterity": 5,
+      "intelligence": 5,
+      "wisdom": 4,
+      "hp": 44,
+      "mp": 31
     },
-    "level": 5,
+    "level": 4,
     "prompt_context": {
       "character_notes": [
         "You stand guard alongside the gate sentry before the massive fortress bulkhead.",
@@ -3072,12 +3199,15 @@
       "steam-crossbow-bolt": 1
     },
     "initial_stats": {
-      "hp": 16,
-      "strength": 4,
-      "endurance": 3,
-      "intelligence": 3
+      "strength": 5,
+      "endurance": 5,
+      "dexterity": 5,
+      "intelligence": 5,
+      "wisdom": 4,
+      "hp": 44,
+      "mp": 31
     },
-    "level": 5,
+    "level": 4,
     "prompt_context": {
       "character_notes": [
         "You patrol the west wall of the military fortress, watching the mine drifts below."
@@ -3118,12 +3248,15 @@
       "steam-crossbow-bolt": 1
     },
     "initial_stats": {
-      "hp": 16,
-      "strength": 4,
-      "endurance": 3,
-      "intelligence": 3
+      "strength": 5,
+      "endurance": 5,
+      "dexterity": 5,
+      "intelligence": 5,
+      "wisdom": 4,
+      "hp": 44,
+      "mp": 31
     },
-    "level": 5,
+    "level": 4,
     "prompt_context": {
       "character_notes": [
         "You patrol the east ramparts, keeping watch over the rail terminus and eastern drifts."
@@ -3165,12 +3298,15 @@
       "iron-cage-key": 1
     },
     "initial_stats": {
-      "hp": 22,
-      "strength": 5,
-      "endurance": 4,
-      "intelligence": 3
+      "strength": 6,
+      "endurance": 6,
+      "dexterity": 5,
+      "intelligence": 5,
+      "wisdom": 5,
+      "hp": 52,
+      "mp": 34
     },
-    "level": 6,
+    "level": 5,
     "prompt_context": {
       "character_notes": [
         "You are the cage warden assigned to guard the offering boy Zayd until the temple escort arrives.",
@@ -3215,12 +3351,15 @@
       "copper-pipe": 1
     },
     "initial_stats": {
-      "hp": 20,
-      "strength": 5,
-      "endurance": 4,
-      "intelligence": 1
+      "strength": 6,
+      "endurance": 6,
+      "dexterity": 4,
+      "intelligence": 4,
+      "wisdom": 4,
+      "hp": 48,
+      "mp": 28
     },
-    "level": 5,
+    "level": 4,
     "prompt_context": {
       "character_notes": [
         "You are a steam-powered drilling automaton malfunctioning in the deep west drifts.",
@@ -3260,12 +3399,15 @@
       "brass-gear": 1
     },
     "initial_stats": {
-      "hp": 22,
-      "strength": 5,
-      "endurance": 4,
-      "intelligence": 1
+      "strength": 6,
+      "endurance": 6,
+      "dexterity": 4,
+      "intelligence": 4,
+      "wisdom": 4,
+      "hp": 48,
+      "mp": 28
     },
-    "level": 5,
+    "level": 4,
     "prompt_context": {
       "character_notes": [
         "You are a heavy clockwork ore hauler rumbling down the eastern drifts.",
@@ -3302,10 +3444,13 @@
     "attack_kind": "fire",
     "initial_hostile": false,
     "initial_stats": {
-      "hp": 4,
-      "strength": 2,
-      "endurance": 1,
-      "intelligence": 2
+      "strength": 3,
+      "endurance": 2,
+      "dexterity": 7,
+      "intelligence": 5,
+      "wisdom": 4,
+      "hp": 29,
+      "mp": 29
     },
     "level": 3,
     "prompt_context": {
@@ -3351,10 +3496,13 @@
       "courtyard-cage-key": 1
     },
     "initial_stats": {
-      "hp": 24,
-      "strength": 5,
-      "endurance": 4,
-      "intelligence": 3
+      "strength": 7,
+      "endurance": 6,
+      "dexterity": 6,
+      "intelligence": 6,
+      "wisdom": 5,
+      "hp": 57,
+      "mp": 39
     },
     "level": 6,
     "prompt_context": {
@@ -3399,10 +3547,13 @@
     "drops": {},
     "initial_inventory": {},
     "initial_stats": {
-      "hp": 18,
-      "strength": 4,
-      "endurance": 3,
-      "intelligence": 2
+      "strength": 6,
+      "endurance": 5,
+      "dexterity": 6,
+      "intelligence": 5,
+      "wisdom": 5,
+      "hp": 49,
+      "mp": 34
     },
     "level": 5,
     "prompt_context": {
@@ -3419,18 +3570,36 @@
     "id": "frost_wolf_raider",
     "name": "Frost-Wolf Raider",
     "room_id": "",
-    "aliases": ["raider", "frost-wolf raider", "wolf soldier", "soldier"],
-    "tags": ["citadel", "siege", "frost_wolf", "frost_wolf_lane", "soldier"],
+    "aliases": [
+      "raider",
+      "frost-wolf raider",
+      "wolf soldier",
+      "soldier"
+    ],
+    "tags": [
+      "citadel",
+      "siege",
+      "frost_wolf",
+      "frost_wolf_lane",
+      "soldier"
+    ],
     "inspect_text": "A Frost-Wolf house soldier in white-furred mail, advancing behind a hooked shield with an ice-edged axe raised.",
     "attackable": true,
-    "skills": ["strike", "hold", "intercept"],
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_hostile": true,
     "xp_drop": 18,
     "initial_stats": {
-      "hp": 16,
-      "strength": 4,
-      "endurance": 3,
-      "intelligence": 2
+      "strength": 6,
+      "endurance": 5,
+      "dexterity": 7,
+      "intelligence": 5,
+      "wisdom": 4,
+      "hp": 49,
+      "mp": 33
     },
     "level": 5,
     "prompt_context": {
@@ -3446,19 +3615,36 @@
     "id": "iron_ram_mauler",
     "name": "Iron-Ram Mauler",
     "room_id": "",
-    "aliases": ["mauler", "iron-ram mauler", "ram soldier", "soldier"],
-    "tags": ["citadel", "siege", "iron_ram", "iron_ram_lane", "soldier"],
+    "aliases": [
+      "mauler",
+      "iron-ram mauler",
+      "ram soldier",
+      "soldier"
+    ],
+    "tags": [
+      "citadel",
+      "siege",
+      "iron_ram",
+      "iron_ram_lane",
+      "soldier"
+    ],
     "inspect_text": "An Iron-Ram heavy soldier in riveted plate, driving forward with a broad hammer braced against one shoulder.",
     "attackable": true,
-    "skills": ["strike", "hold", "intercept"],
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_hostile": true,
     "xp_drop": 22,
     "initial_stats": {
-      "hp": 22,
-      "strength": 5,
-      "endurance": 5,
-      "dexterity": 3,
-      "intelligence": 2
+      "strength": 8,
+      "endurance": 7,
+      "dexterity": 4,
+      "intelligence": 5,
+      "wisdom": 6,
+      "hp": 61,
+      "mp": 37
     },
     "level": 6,
     "prompt_context": {
@@ -3474,18 +3660,36 @@
     "id": "frost_leopard_hunter",
     "name": "Frost-Leopard Hunter",
     "room_id": "",
-    "aliases": ["hunter", "frost-leopard hunter", "leopard soldier", "soldier"],
-    "tags": ["citadel", "siege", "frost_leopard", "frost_leopard_lane", "soldier"],
+    "aliases": [
+      "hunter",
+      "frost-leopard hunter",
+      "leopard soldier",
+      "soldier"
+    ],
+    "tags": [
+      "citadel",
+      "siege",
+      "frost_leopard",
+      "frost_leopard_lane",
+      "soldier"
+    ],
     "inspect_text": "A Frost-Leopard hunter wrapped in pale camouflage cloth, carrying a narrow blade and a compact ice-bow.",
     "attackable": true,
-    "skills": ["strike", "hold", "intercept"],
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
     "initial_hostile": true,
     "xp_drop": 20,
     "initial_stats": {
-      "hp": 17,
-      "strength": 5,
-      "endurance": 3,
-      "intelligence": 4
+      "strength": 6,
+      "endurance": 5,
+      "dexterity": 8,
+      "intelligence": 6,
+      "wisdom": 5,
+      "hp": 53,
+      "mp": 39
     },
     "level": 6,
     "prompt_context": {
@@ -3525,13 +3729,15 @@
       "comms"
     ],
     "initial_stats": {
-      "hp": 34,
-      "strength": 6,
-      "endurance": 6,
-      "intelligence": 3,
-      "wisdom": 4
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 6,
+      "intelligence": 5,
+      "wisdom": 5,
+      "hp": 60,
+      "mp": 36
     },
-    "level": 7,
+    "level": 6,
     "transformations": [],
     "prompt_context": {
       "character_notes": [
@@ -3586,11 +3792,13 @@
       "sensory-enhancer": 1
     },
     "initial_stats": {
-      "hp": 20,
-      "strength": 2,
-      "endurance": 3,
-      "intelligence": 7,
-      "wisdom": 6
+      "strength": 3,
+      "endurance": 5,
+      "dexterity": 5,
+      "intelligence": 9,
+      "wisdom": 8,
+      "hp": 50,
+      "mp": 51
     },
     "level": 6,
     "transformations": [],
@@ -3619,12 +3827,22 @@
     "name": "Nivi Olsen",
     "room_id": "courtyard_center",
     "unlocked_by_story_var": "courtyard_cages_opened",
-    "aliases": ["nivi", "nivi olsen", "salt reach clerk"],
-    "tags": ["civilian", "offering", "salt_reach"],
+    "aliases": [
+      "nivi",
+      "nivi olsen",
+      "salt reach clerk"
+    ],
+    "tags": [
+      "civilian",
+      "offering",
+      "salt_reach"
+    ],
     "inspect_text": "A Kalaallit supply clerk from Salt Reach in a sealskin-trimmed work coat. Nivi keeps a tally of blankets and food scraps on the inside of one cuff.",
     "attackable": false,
     "initial_hostile": false,
-    "initial_stats": {"hp": 1},
+    "initial_stats": {
+      "hp": 1
+    },
     "prompt_context": {
       "character_notes": [
         "You are Nivi Olsen, a supply clerk from Salt Reach. You stay organized under pressure and keep track of what the rescued civilians still have."
@@ -3642,12 +3860,24 @@
     "name": "Eliška Nováková",
     "room_id": "courtyard_center",
     "unlocked_by_story_var": "courtyard_cages_opened",
-    "aliases": ["eliska", "eliška", "eliska novakova", "eliška nováková", "glassbank tester"],
-    "tags": ["civilian", "offering", "glassbank"],
+    "aliases": [
+      "eliska",
+      "eliška",
+      "eliska novakova",
+      "eliška nováková",
+      "glassbank tester"
+    ],
+    "tags": [
+      "civilian",
+      "offering",
+      "glassbank"
+    ],
     "inspect_text": "A Czech signal-lamp tester from Glassbank wearing a smoke-grey wool coat with cobalt glass buttons. Eliška watches every flicker in the courtyard machinery.",
     "attackable": false,
     "initial_hostile": false,
-    "initial_stats": {"hp": 1},
+    "initial_stats": {
+      "hp": 1
+    },
     "prompt_context": {
       "character_notes": [
         "You are Eliška Nováková, a signal-lamp tester from Glassbank. You are patient and quick to notice faults in glasswork and machinery."
@@ -3665,12 +3895,22 @@
     "name": "Amaru Quispe",
     "room_id": "courtyard_center",
     "unlocked_by_story_var": "courtyard_cages_opened",
-    "aliases": ["amaru", "amaru quispe", "woolcross mechanic"],
-    "tags": ["civilian", "offering", "woolcross"],
+    "aliases": [
+      "amaru",
+      "amaru quispe",
+      "woolcross mechanic"
+    ],
+    "tags": [
+      "civilian",
+      "offering",
+      "woolcross"
+    ],
     "inspect_text": "A young Quechua loom mechanic from Woolcross in a bright woven chullo and a thick striped poncho. Amaru stays close to the other captives even while his hands shake.",
     "attackable": false,
     "initial_hostile": false,
-    "initial_stats": {"hp": 1},
+    "initial_stats": {
+      "hp": 1
+    },
     "prompt_context": {
       "character_notes": [
         "You are Amaru Quispe, a young loom mechanic from Woolcross. You are frightened but keep trying to shield and reassure the other captives."
@@ -3688,12 +3928,22 @@
     "name": "Abeni Adeyemi",
     "room_id": "courtyard_center",
     "unlocked_by_story_var": "courtyard_cages_opened",
-    "aliases": ["abeni", "abeni adeyemi", "greenrest grower"],
-    "tags": ["civilian", "offering", "greenrest"],
+    "aliases": [
+      "abeni",
+      "abeni adeyemi",
+      "greenrest grower"
+    ],
+    "tags": [
+      "civilian",
+      "offering",
+      "greenrest"
+    ],
     "inspect_text": "A Yoruba grower from Greenrest in an indigo headwrap and a patched farm apron scented faintly with dried medicinal leaves. Abeni helps Einar steady the wounded.",
     "attackable": false,
     "initial_hostile": false,
-    "initial_stats": {"hp": 1},
+    "initial_stats": {
+      "hp": 1
+    },
     "prompt_context": {
       "character_notes": [
         "You are Abeni Adeyemi, an experienced mushroom and medicinal-herb grower from Greenrest. You help Einar stabilize frightened or injured defenders."
@@ -3711,12 +3961,23 @@
     "name": "Chen Yu-xin",
     "room_id": "courtyard_center",
     "unlocked_by_story_var": "courtyard_cages_opened",
-    "aliases": ["yu-xin", "yuxin", "chen yu-xin", "brass yard machinist"],
-    "tags": ["civilian", "offering", "brass_yard"],
+    "aliases": [
+      "yu-xin",
+      "yuxin",
+      "chen yu-xin",
+      "brass yard machinist"
+    ],
+    "tags": [
+      "civilian",
+      "offering",
+      "brass_yard"
+    ],
     "inspect_text": "A Taiwanese apprentice machinist from Brass Yard in a blue work jacket with rolled sleeves. Yu-xin studies every lock, pump, and damaged gear within sight.",
     "attackable": false,
     "initial_hostile": false,
-    "initial_stats": {"hp": 1},
+    "initial_stats": {
+      "hp": 1
+    },
     "prompt_context": {
       "character_notes": [
         "You are Chen Yu-xin, a 16-year-old Taiwanese apprentice machinist from Brass Yard. You study locks, pumps, and damaged mechanisms with quiet, practical pride. You speak rarely, letting your tools and repairs speak for you."
@@ -3735,14 +3996,15 @@
     "id": "lord_vane",
     "name": "Lord Vane",
     "room_id": "",
-    "level": 12,
+    "level": 8,
     "initial_stats": {
-      "hp": 70,
       "strength": 8,
       "endurance": 6,
-      "dexterity": 7,
-      "intelligence": 4,
-      "wisdom": 6
+      "dexterity": 8,
+      "intelligence": 8,
+      "wisdom": 6,
+      "hp": 66,
+      "mp": 50
     },
     "initial_hostile": true,
     "attackable": true,
@@ -3810,14 +4072,15 @@
     "id": "warmaster_torin",
     "name": "Warmaster Torin",
     "room_id": "",
-    "level": 12,
+    "level": 8,
     "initial_stats": {
-      "hp": 85,
-      "strength": 9,
+      "strength": 10,
       "endurance": 8,
-      "dexterity": 3,
-      "intelligence": 5,
-      "wisdom": 5
+      "dexterity": 7,
+      "intelligence": 6,
+      "wisdom": 5,
+      "hp": 74,
+      "mp": 43
     },
     "initial_hostile": true,
     "attackable": true,
@@ -3885,14 +4148,15 @@
     "id": "lady_sylvan",
     "name": "Lady Sylvan",
     "room_id": "",
-    "level": 12,
+    "level": 8,
     "initial_stats": {
-      "hp": 60,
       "strength": 6,
       "endurance": 4,
-      "dexterity": 9,
+      "dexterity": 10,
       "intelligence": 9,
-      "wisdom": 7
+      "wisdom": 7,
+      "hp": 58,
+      "mp": 54
     },
     "initial_hostile": true,
     "attackable": true,
@@ -3970,13 +4234,15 @@
     "id": "cathedral_guard_crossroads",
     "name": "Sentry Marcus",
     "room_id": "sanctuary_crossroads",
-    "level": 12,
+    "level": 7,
     "initial_stats": {
-      "hp": 50,
-      "strength": 8,
-      "endurance": 6,
-      "dexterity": 6,
-      "intelligence": 4
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 7,
+      "intelligence": 6,
+      "wisdom": 6,
+      "hp": 64,
+      "mp": 42
     },
     "initial_hostile": true,
     "attackable": true,
@@ -4018,13 +4284,15 @@
     "id": "cathedral_guard_nave",
     "name": "Sentry Cassius",
     "room_id": "basilica_nave",
-    "level": 12,
+    "level": 7,
     "initial_stats": {
-      "hp": 50,
-      "strength": 8,
-      "endurance": 6,
-      "dexterity": 6,
-      "intelligence": 4
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 7,
+      "intelligence": 6,
+      "wisdom": 6,
+      "hp": 64,
+      "mp": 42
     },
     "initial_hostile": true,
     "attackable": true,
@@ -4065,14 +4333,15 @@
     "id": "orva",
     "name": "Orva",
     "room_id": "herbarium_garden",
-    "level": 8,
+    "level": 7,
     "initial_stats": {
-      "hp": 40,
-      "strength": 4,
-      "endurance": 4,
-      "dexterity": 6,
+      "strength": 5,
+      "endurance": 6,
+      "dexterity": 7,
       "intelligence": 8,
-      "wisdom": 8
+      "wisdom": 7,
+      "hp": 59,
+      "mp": 49
     },
     "initial_hostile": false,
     "attackable": false,
@@ -4113,13 +4382,15 @@
     "id": "flora",
     "name": "Flora",
     "room_id": "herbarium_garden",
-    "level": 5,
+    "level": 7,
     "initial_stats": {
-      "hp": 25,
-      "strength": 3,
-      "endurance": 3,
-      "dexterity": 5,
-      "intelligence": 5
+      "strength": 6,
+      "endurance": 6,
+      "dexterity": 8,
+      "intelligence": 7,
+      "wisdom": 6,
+      "hp": 60,
+      "mp": 45
     },
     "initial_hostile": false,
     "attackable": false,
@@ -4153,13 +4424,15 @@
     "id": "silvia",
     "name": "Silvia",
     "room_id": "herbarium_garden",
-    "level": 6,
+    "level": 7,
     "initial_stats": {
-      "hp": 30,
-      "strength": 5,
-      "endurance": 4,
-      "dexterity": 4,
-      "intelligence": 4
+      "strength": 6,
+      "endurance": 6,
+      "dexterity": 8,
+      "intelligence": 7,
+      "wisdom": 6,
+      "hp": 60,
+      "mp": 45
     },
     "initial_hostile": false,
     "attackable": false,
@@ -4193,14 +4466,15 @@
     "id": "elder_fabian",
     "name": "Elder Fabian",
     "room_id": "herbarium_apothecary",
-    "level": 9,
+    "level": 8,
     "initial_stats": {
-      "hp": 35,
-      "strength": 3,
-      "endurance": 4,
-      "dexterity": 5,
-      "intelligence": 9,
-      "wisdom": 8
+      "strength": 4,
+      "endurance": 6,
+      "dexterity": 6,
+      "intelligence": 10,
+      "wisdom": 10,
+      "hp": 62,
+      "mp": 60
     },
     "initial_hostile": false,
     "attackable": false,
@@ -4234,14 +4508,15 @@
     "id": "the_seer",
     "name": "Seer Valerius",
     "room_id": "mortuary_reanimation_sanctum",
-    "level": 14,
+    "level": 8,
     "initial_stats": {
-      "hp": 80,
-      "strength": 8,
-      "endurance": 6,
-      "dexterity": 7,
+      "strength": 5,
+      "endurance": 7,
+      "dexterity": 6,
       "intelligence": 10,
-      "wisdom": 8
+      "wisdom": 8,
+      "hp": 66,
+      "mp": 58
     },
     "initial_hostile": true,
     "attackable": true,

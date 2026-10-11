@@ -236,13 +236,13 @@ fn allied_bishop_supports_wounded_ally_in_combat() {
         .next_hostile_strike_at
         .insert("goblin-1".to_string(), state.clock.current_time_minutes);
 
-    // Set player HP to 6 (> 50% so bishop doesn't intercept, but taking 1 damage wounds player)
+    // Set player HP to 12 (> 50% so bishop doesn't intercept, but taking 1 damage wounds player)
     state
         .combat
         .actor_stats
         .entry("player".to_string())
         .or_default()
-        .insert("hp".to_string(), 6);
+        .insert("hp".to_string(), 12);
 
     state.clock.turn_number = 1;
     let dialogue =
@@ -254,11 +254,11 @@ fn allied_bishop_supports_wounded_ally_in_combat() {
     let text = outcome.text();
     let end_state = runtime.export_state().unwrap();
 
-    // Goblin strikes player for 1 damage (6 -> 5).
-    // Bishop reacts with support heal for 4 (5 -> 9).
+    // Goblin strikes player for 2 damage (12 -> 10).
+    // Bishop reacts with support heal for 4 (10 -> 14).
     assert_eq!(
         end_state.actor_stat("player", "hp"),
-        9,
+        14,
         "Player should be healed by 4 after strike"
     );
 

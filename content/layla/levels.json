@@ -3,17 +3,41 @@
     {
       "exp_required": 50,
       "stat_changes": {
-        "hp": 3,
+        "hp": 8,
+        "mp": 2,
         "strength": 1,
         "endurance": 1,
-        "intelligence": 1
+        "dexterity": 1
       },
       "unlocks": []
     },
     {
       "exp_required": 100,
       "stat_changes": {
-        "hp": 3,
+        "hp": 7,
+        "mp": 6,
+        "endurance": 1,
+        "intelligence": 1,
+        "wisdom": 1
+      },
+      "unlocks": []
+    },
+    {
+      "exp_required": 180,
+      "stat_changes": {
+        "hp": 8,
+        "mp": 2,
+        "strength": 1,
+        "endurance": 1,
+        "dexterity": 1
+      },
+      "unlocks": []
+    },
+    {
+      "exp_required": 300,
+      "stat_changes": {
+        "hp": 8,
+        "mp": 5,
         "strength": 1,
         "endurance": 1,
         "intelligence": 1
@@ -21,32 +45,57 @@
       "unlocks": []
     },
     {
-      "exp_required": 180,
+      "exp_required": 450,
       "stat_changes": {
-        "hp": 4,
-        "strength": 2,
+        "hp": 7,
+        "mp": 3,
+        "endurance": 1,
+        "dexterity": 1,
+        "wisdom": 1
+      },
+      "unlocks": []
+    },
+    {
+      "exp_required": 650,
+      "stat_changes": {
+        "hp": 8,
+        "mp": 5,
+        "strength": 1,
         "endurance": 1,
         "intelligence": 1
       },
       "unlocks": []
     },
     {
-      "exp_required": 300,
+      "exp_required": 900,
       "stat_changes": {
-        "hp": 4,
-        "strength": 2,
-        "endurance": 2,
+        "hp": 8,
+        "mp": 3,
+        "strength": 1,
+        "endurance": 1,
+        "wisdom": 1
+      },
+      "unlocks": []
+    },
+    {
+      "exp_required": 1200,
+      "stat_changes": {
+        "hp": 7,
+        "mp": 5,
+        "endurance": 1,
+        "dexterity": 1,
         "intelligence": 1
       },
       "unlocks": []
     },
     {
-      "exp_required": 500,
+      "exp_required": 1600,
       "stat_changes": {
         "hp": 5,
-        "strength": 3,
-        "endurance": 2,
-        "intelligence": 1
+        "mp": 6,
+        "strength": 1,
+        "intelligence": 1,
+        "wisdom": 1
       },
       "unlocks": []
     }

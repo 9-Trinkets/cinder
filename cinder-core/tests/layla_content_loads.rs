@@ -843,7 +843,7 @@ fn trace_deducts_mp_and_recovers_over_time() {
     let state = cinder_core::engine::state::WorldState::new(&pack);
 
     let initial_mp = state.actor_stat("player", "mp");
-    assert_eq!(initial_mp, 10);
+    assert_eq!(initial_mp, 18);
 
     let dialogue =
         std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
@@ -854,7 +854,7 @@ fn trace_deducts_mp_and_recovers_over_time() {
     )
     .expect("runtime from state");
 
-    // Tracing charm-sigil costs 1 MP (10 -> 9 MP)
+    // Tracing charm-sigil costs 1 MP
     let outcome = runtime.run_turn("trace charm-sigil").expect("turn runs");
     assert!(
         !outcome.text().contains("not enough magic"),
@@ -864,9 +864,9 @@ fn trace_deducts_mp_and_recovers_over_time() {
 
     let state_after = runtime.export_state().unwrap();
     let mp_after = state_after.actor_stat("player", "mp");
-    assert_eq!(mp_after, 9, "Charm sigil costs 1 MP");
+    assert_eq!(mp_after, initial_mp - 1, "Charm sigil costs 1 MP");
 
-    // Tracing drain-sigil (after unlocking) costs 2 MP (9 -> 7 MP)
+    // Tracing drain-sigil (after unlocking) costs 2 MP
     let mut state_with_drain = state_after;
     state_with_drain
         .story_vars
@@ -886,28 +886,28 @@ fn trace_deducts_mp_and_recovers_over_time() {
     );
 
     let state2 = runtime2.export_state().unwrap();
-    // Turn 2: drain sigil costs 2 MP (9 - 2 = 7 MP). Same-turn regen is suppressed on spellcast turns.
+    // Turn 2: drain sigil costs 2 MP. Same-turn regen is suppressed on spellcast turns.
     assert_eq!(
         state2.actor_stat("player", "mp"),
-        7,
-        "Drain sigil costs 2 MP (9 -> 7 MP)"
+        initial_mp - 3,
+        "Drain sigil costs 2 MP"
     );
 
     // MP regenerates over time on 5-minute tick intervals (+1 MP every 5 minutes)
     // Moving around advances time by 1 minute each step
     let _ = runtime2.run_turn("south").expect("move south"); // minute 2 -> 3 (no interval crossed)
     let s_t1 = runtime2.export_state().unwrap();
-    assert_eq!(s_t1.actor_stat("player", "mp"), 7);
+    assert_eq!(s_t1.actor_stat("player", "mp"), initial_mp - 3);
 
     let _ = runtime2.run_turn("north").expect("move north"); // minute 3 -> 4 (no interval crossed)
     let s_t2 = runtime2.export_state().unwrap();
-    assert_eq!(s_t2.actor_stat("player", "mp"), 7);
+    assert_eq!(s_t2.actor_stat("player", "mp"), initial_mp - 3);
 
     let _ = runtime2.run_turn("south").expect("move south"); // minute 4 -> 5 (5-min interval crossed -> +1 MP)
     let s_t3 = runtime2.export_state().unwrap();
     assert_eq!(
         s_t3.actor_stat("player", "mp"),
-        8,
+        initial_mp - 2,
         "MP recovered 1 point at minute 5"
     );
 
