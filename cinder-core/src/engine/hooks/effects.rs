@@ -5,6 +5,7 @@ use crate::engine::state::{
     ActorStance, ConversationMemoryKind, ConversationMemoryLine, SpawnActorConfig,
     SpawnActorOutcome, WorldState,
 };
+use crate::engine::world_mutation::{WorldMutation, WorldMutationApplier};
 use serde::{Deserialize, Deserializer};
 use serde_json::Value;
 
@@ -135,14 +136,27 @@ impl WorldHookEffect {
                 stat,
                 delta,
             } => {
-                state.adjust_pair_stat(participant_a_id, participant_b_id, stat, *delta)?;
+                WorldMutationApplier::new(state, content).apply(
+                    &WorldMutation::AdjustPairStat {
+                        participant_a_id: participant_a_id.clone(),
+                        participant_b_id: participant_b_id.clone(),
+                        stat: stat.clone(),
+                        delta: *delta,
+                    },
+                )?;
             }
             WorldHookEffect::AdjustActorStat {
                 actor_id,
                 stat,
                 delta,
             } => {
-                state.adjust_actor_stat(content, actor_id, stat, *delta)?;
+                WorldMutationApplier::new(state, content).apply(
+                    &WorldMutation::AdjustActorStat {
+                        actor_id: actor_id.clone(),
+                        stat: stat.clone(),
+                        delta: *delta,
+                    },
+                )?;
             }
             WorldHookEffect::ConvertActorToAlly {
                 actor_id,
@@ -178,77 +192,13 @@ impl WorldHookEffect {
                 self.apply_set_stance_by_tag(state, content, effect, lines.as_deref_mut());
             }
             WorldHookEffect::MoveActor { actor_id, room_id } => {
-                let is_player =
-                    actor_id == "player" || actor_id == &content.settings.combat.player_actor_id;
-                if is_player {
-                    let from_room_id = state.current_room_id.clone();
-                    let first_visit = !state
-                        .actor_has_visited_room(&content.settings.combat.player_actor_id, room_id);
-                    state.current_room_id = room_id.clone();
-                    state
-                        .mark_actor_room_visited(&content.settings.combat.player_actor_id, room_id);
-                    state.set_actor_room(&content.settings.combat.player_actor_id, room_id);
-                    state.set_actor_room("player", room_id);
-                    if let Some(lines) = lines.as_deref_mut() {
-                        lines.extend_lines(
-                            crate::engine::reducer::beat_advance::advance_objective_for_signal(
-                                state,
-                                content,
-                                &format!("room_left:{from_room_id}"),
-                            ),
-                        );
-                        lines.extend_lines(
-                            crate::engine::reducer::beat_advance::advance_objective_for_signal(
-                                state,
-                                content,
-                                &format!("room_entered:{room_id}"),
-                            ),
-                        );
-                        lines.extend_lines(
-                            crate::engine::reducer::beat_advance::advance_objective_for_signal(
-                                state,
-                                content,
-                                &format!("player_moved:{room_id}"),
-                            ),
-                        );
-                        lines.extend_lines(
-                            crate::engine::reducer::beat_advance::advance_objective_for_signal(
-                                state,
-                                content,
-                                "player_moved",
-                            ),
-                        );
-                        let _ = crate::engine::hooks::apply_narrating_world_hook_effects(
-                            state,
-                            content,
-                            crate::engine::hook_ids::PLAYER_MOVED,
-                            serde_json::json!({
-                                "from_room_id": from_room_id,
-                                "to_room_id": room_id,
-                                "first_visit": first_visit,
-                                "story_vars": state.story_vars.to_map(),
-                            }),
-                            lines,
-                        );
-                    }
-                } else {
-                    state.set_actor_room(actor_id, room_id);
-                }
+                self.apply_move_actor(state, content, actor_id, room_id, lines.as_deref_mut());
             }
             WorldHookEffect::SetStoryVar { key, value } => {
                 self.apply_set_story_var(state, content, key, value, lines.as_deref_mut());
             }
             WorldHookEffect::GrantSkill { skill_id, actor_id } => {
-                if content.skill(skill_id).is_none() {
-                    return Err(format!("hook grants unknown skill '{skill_id}'"));
-                }
-                let actor_id = actor_id
-                    .as_deref()
-                    .unwrap_or(&content.settings.combat.player_actor_id);
-                if state.actor(content, actor_id).is_none() {
-                    return Err(format!("hook grants skill to unknown actor '{actor_id}'"));
-                }
-                state.grant_actor_skill(actor_id, skill_id);
+                self.apply_grant_skill(state, content, skill_id, actor_id.as_deref())?;
             }
             WorldHookEffect::AcquireItem {
                 item_id,
@@ -360,6 +310,89 @@ impl WorldHookEffect {
                 }
             }
         }
+    }
+
+    fn apply_move_actor(
+        &self,
+        state: &mut WorldState,
+        content: &ContentPack,
+        actor_id: &str,
+        room_id: &str,
+        lines: Option<&mut NarrativeLines>,
+    ) {
+        let is_player =
+            actor_id == "player" || actor_id == content.settings.combat.player_actor_id.as_str();
+        if is_player {
+            let from_room_id = state.current_room_id.clone();
+            let first_visit =
+                !state.actor_has_visited_room(&content.settings.combat.player_actor_id, room_id);
+            state.current_room_id = room_id.to_string();
+            state.mark_actor_room_visited(&content.settings.combat.player_actor_id, room_id);
+            state.set_actor_room(&content.settings.combat.player_actor_id, room_id);
+            state.set_actor_room("player", room_id);
+            if let Some(lines) = lines {
+                lines.extend_lines(
+                    crate::engine::reducer::beat_advance::advance_objective_for_signal(
+                        state,
+                        content,
+                        &format!("room_left:{from_room_id}"),
+                    ),
+                );
+                lines.extend_lines(
+                    crate::engine::reducer::beat_advance::advance_objective_for_signal(
+                        state,
+                        content,
+                        &format!("room_entered:{room_id}"),
+                    ),
+                );
+                lines.extend_lines(
+                    crate::engine::reducer::beat_advance::advance_objective_for_signal(
+                        state,
+                        content,
+                        &format!("player_moved:{room_id}"),
+                    ),
+                );
+                lines.extend_lines(
+                    crate::engine::reducer::beat_advance::advance_objective_for_signal(
+                        state,
+                        content,
+                        "player_moved",
+                    ),
+                );
+                let _ = crate::engine::hooks::apply_narrating_world_hook_effects(
+                    state,
+                    content,
+                    crate::engine::hook_ids::PLAYER_MOVED,
+                    serde_json::json!({
+                        "from_room_id": from_room_id,
+                        "to_room_id": room_id,
+                        "first_visit": first_visit,
+                        "story_vars": state.story_vars.to_map(),
+                    }),
+                    lines,
+                );
+            }
+        } else {
+            state.set_actor_room(actor_id, room_id);
+        }
+    }
+
+    fn apply_grant_skill(
+        &self,
+        state: &mut WorldState,
+        content: &ContentPack,
+        skill_id: &str,
+        actor_id: Option<&str>,
+    ) -> Result<(), String> {
+        if content.skill(skill_id).is_none() {
+            return Err(format!("hook grants unknown skill '{skill_id}'"));
+        }
+        let actor_id = actor_id.unwrap_or(&content.settings.combat.player_actor_id);
+        if state.actor(content, actor_id).is_none() {
+            return Err(format!("hook grants skill to unknown actor '{actor_id}'"));
+        }
+        state.grant_actor_skill(actor_id, skill_id);
+        Ok(())
     }
 
     fn apply_set_story_var(

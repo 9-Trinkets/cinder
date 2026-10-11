@@ -1,9 +1,12 @@
-use crate::content::types::{AdvanceCondition, AdvanceEffect, ContentPack};
+use crate::content::types::{
+    AdvanceCondition, AdvanceEffect, ContentPack, SurvivorRewardDefinition,
+};
 use crate::engine::narrative::{NarrativeLine, NarrativeLines};
 use crate::engine::state::{
     GamePhase, SpawnActorConfig, SpawnActorOutcome, VariableStore, WorldState,
 };
 use crate::engine::turn_policies::clear_inactive_objective_state;
+use crate::engine::world_mutation::{WorldMutation, WorldMutationApplier};
 
 use super::handlers::{handle_item_transferred, rendered_message_line};
 use super::observation::render_actor_speech_line;
@@ -165,100 +168,132 @@ pub(super) fn apply_stage_effects(
     messages: &mut Vec<NarrativeLine>,
 ) {
     for effect in effects {
-        match effect {
-            AdvanceEffect::AdjustActorStat {
-                actor_id,
-                stat,
-                delta,
-            } => {
-                if let Err(error) = state.adjust_actor_stat(content, actor_id, stat, *delta) {
-                    eprintln!("[cinder] stage effect error: {error}");
-                }
+        if let Err(error) = apply_stage_effect(state, content, effect, messages) {
+            eprintln!("[cinder] stage effect error: {error}");
+        }
+    }
+}
+
+fn apply_stage_effect(
+    state: &mut WorldState,
+    content: &ContentPack,
+    effect: &AdvanceEffect,
+    messages: &mut Vec<NarrativeLine>,
+) -> Result<(), String> {
+    let mutation = match effect {
+        AdvanceEffect::AdjustActorStat {
+            actor_id,
+            stat,
+            delta,
+        } => WorldMutation::AdjustActorStat {
+            actor_id: actor_id.clone(),
+            stat: stat.clone(),
+            delta: *delta,
+        },
+        AdvanceEffect::AdjustPairStat {
+            participant_a_id,
+            participant_b_id,
+            stat,
+            delta,
+        } => WorldMutation::AdjustPairStat {
+            participant_a_id: participant_a_id.clone(),
+            participant_b_id: participant_b_id.clone(),
+            stat: stat.clone(),
+            delta: *delta,
+        },
+        AdvanceEffect::SetStoryVar { key, value } => WorldMutation::SetStoryVar {
+            key: key.clone(),
+            value: value.clone(),
+        },
+        AdvanceEffect::GrantItem { item_id, message } => {
+            if !state.has_item(item_id) {
+                state.add_item(item_id);
+                push_effect_message(content, message, messages);
             }
-            AdvanceEffect::AdjustPairStat {
-                participant_a_id,
-                participant_b_id,
-                stat,
-                delta,
-            } => {
-                if let Err(error) =
-                    state.adjust_pair_stat(participant_a_id, participant_b_id, stat, *delta)
-                {
-                    eprintln!("[cinder] stage effect error: {error}");
-                }
-            }
-            AdvanceEffect::SetStoryVar { key, value } => {
-                state.story_vars.set_unchecked(key, value);
-            }
-            AdvanceEffect::GrantItem { item_id, message } => {
-                if !state.has_item(item_id) {
-                    state.add_item(item_id);
-                    push_effect_message(content, message, messages);
-                }
-            }
-            AdvanceEffect::ResolveSurvivorRewards {
+            return Ok(());
+        }
+        AdvanceEffect::ResolveSurvivorRewards {
+            rewards,
+            survivor_count_story_var,
+            all_survived_story_var,
+            all_survived_message,
+        } => {
+            resolve_survivor_rewards(
+                state,
+                content,
                 rewards,
                 survivor_count_story_var,
                 all_survived_story_var,
                 all_survived_message,
-            } => {
-                let health_stat_id = &content.settings.combat.health_stat_id;
-                let mut survivor_count = 0;
-                for reward in rewards {
-                    if state.actor_is_defeated(&reward.actor_id, health_stat_id) {
-                        continue;
-                    }
-                    survivor_count += 1;
-                    let newly_unlocked =
-                        state.story_vars.get(&reward.unlock_story_var) != Some("true");
-                    state
-                        .story_vars
-                        .set_unchecked(&reward.unlock_story_var, "true");
-                    if newly_unlocked {
-                        let actor_name = state
-                            .actor_display_name(content, &reward.actor_id)
-                            .unwrap_or(&reward.actor_id);
-                        if let Some(speech) = content.render_message(&reward.message, &[])
-                            && !speech.trim().is_empty()
-                        {
-                            messages.push(NarrativeLine::narration(render_actor_speech_line(
-                                content,
-                                &actor_name,
-                                None,
-                                &speech,
-                            )));
-                        }
-                    }
-                    if !state.has_item(&reward.item_id) {
-                        let mut transfer_lines = NarrativeLines::default();
-                        state.actor_add_item(&reward.actor_id, &reward.item_id);
-                        let player_id = content.settings.combat.player_actor_id.clone();
-                        handle_item_transferred(
-                            state,
-                            content,
-                            &reward.item_id,
-                            &reward.actor_id,
-                            &player_id,
-                            Some(&reward.actor_id),
-                            &mut transfer_lines,
-                        );
-                        messages.extend(transfer_lines.0);
-                    }
-                }
-                state
-                    .story_vars
-                    .set_unchecked(survivor_count_story_var, &survivor_count.to_string());
-                if !all_survived_story_var.is_empty() && survivor_count == rewards.len() {
-                    let newly_unlocked =
-                        state.story_vars.get(all_survived_story_var) != Some("true");
-                    state
-                        .story_vars
-                        .set_unchecked(all_survived_story_var, "true");
-                    if newly_unlocked {
-                        push_effect_message(content, all_survived_message, messages);
-                    }
-                }
+                messages,
+            );
+            return Ok(());
+        }
+    };
+    WorldMutationApplier::new(state, content).apply(&mutation)
+}
+
+fn resolve_survivor_rewards(
+    state: &mut WorldState,
+    content: &ContentPack,
+    rewards: &[SurvivorRewardDefinition],
+    survivor_count_story_var: &str,
+    all_survived_story_var: &str,
+    all_survived_message: &str,
+    messages: &mut Vec<NarrativeLine>,
+) {
+    let health_stat_id = &content.settings.combat.health_stat_id;
+    let mut survivor_count = 0;
+    for reward in rewards {
+        if state.actor_is_defeated(&reward.actor_id, health_stat_id) {
+            continue;
+        }
+        survivor_count += 1;
+        let newly_unlocked = state.story_vars.get(&reward.unlock_story_var) != Some("true");
+        state
+            .story_vars
+            .set_unchecked(&reward.unlock_story_var, "true");
+        if newly_unlocked {
+            let actor_name = state
+                .actor_display_name(content, &reward.actor_id)
+                .unwrap_or(&reward.actor_id);
+            if let Some(speech) = content.render_message(&reward.message, &[])
+                && !speech.trim().is_empty()
+            {
+                messages.push(NarrativeLine::narration(render_actor_speech_line(
+                    content,
+                    &actor_name,
+                    None,
+                    &speech,
+                )));
             }
+        }
+        if !state.has_item(&reward.item_id) {
+            let mut transfer_lines = NarrativeLines::default();
+            state.actor_add_item(&reward.actor_id, &reward.item_id);
+            let player_id = content.settings.combat.player_actor_id.clone();
+            handle_item_transferred(
+                state,
+                content,
+                &reward.item_id,
+                &reward.actor_id,
+                &player_id,
+                Some(&reward.actor_id),
+                &mut transfer_lines,
+            );
+            messages.extend(transfer_lines.0);
+        }
+    }
+    state
+        .story_vars
+        .set_unchecked(survivor_count_story_var, &survivor_count.to_string());
+    if !all_survived_story_var.is_empty() && survivor_count == rewards.len() {
+        let newly_unlocked = state.story_vars.get(all_survived_story_var) != Some("true");
+        state
+            .story_vars
+            .set_unchecked(all_survived_story_var, "true");
+        if newly_unlocked {
+            push_effect_message(content, all_survived_message, messages);
         }
     }
 }

@@ -43,6 +43,7 @@ pub use story_defs::{
     BeatDefinition, BeatsDefinition, MenuTriggerMode, OpeningDefinition, OpeningMenuDefinition,
     OpeningMenuOptionDefinition, OpeningMovieDefinition, OpeningMovieFrameDefinition,
     OpeningPromptContext, ProtectionRuleDefinition, SpeechTopicSignal, StageAssignmentDefinition,
+    SurvivorRewardDefinition,
 };
 
 mod theme;

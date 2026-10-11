@@ -24,6 +24,7 @@ pub mod state;
 pub mod turn_policies;
 pub mod turn_runner;
 pub mod workflows;
+pub(crate) mod world_mutation;
 
 /// Shared synthetic content packs for tests and integrations (e.g. the
 /// `tests/` suite). Deliberately public so integration tests can build the
