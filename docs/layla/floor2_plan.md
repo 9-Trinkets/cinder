@@ -4,6 +4,16 @@ Living design plan for **level 2** of Layla: the underground forest and the elf 
 
 > Status: **design audited and fleshed out; chess army and loot built in content.** The sensory descriptions and feature architectures below document canonical intent and govern current and future content passes across `rooms.json`, `actors.json`, and `movement.json`.
 
+> [!IMPORTANT]
+> **Writing Guide for Floor 2:**
+> All player-facing text must use **simple sentences and everyday words for teenagers**. Avoid fancy, archaic, or textbook words:
+> - Say **glowing plants**, not *bioluminescent flora*.
+> - Say **giant cave**, not *subterranean vaulted biome*.
+> - Say **tall cliffs**, not *sheer limestone escarpments*.
+> - Say **plant smell**, not *vegetal aroma*.
+> - Say **tough guard**, not *living redoubt*.
+> - Use the 4 canonical party orders: `guard`, `follow`, `patrol`, and `deploy`.
+
 ---
 
 ## Premise
@@ -108,7 +118,7 @@ They wear armor fashioned from hardened forest materials: layered broad leaves c
 | **Elf Pawn** | 8 | 3 | 6 | 2 | 1 | 3 | 1 tick | `leaf-spear`, `leaf-paste` |
 
 ### Progression Dynamics:
-1. **Party Synergy Requirement:** Arriving on Floor 2, Layla and her Floor 1 golems (Level 1) cannot simply steamroll the elven ranks. A Level 3 pawn can threaten Layla alone; fighting a Rook or the Queen requires smart use of the **Party System** (having dark golems on `guard` intercept incoming blows while pale golems counterattack).
+1. **Party Synergy Requirement:** Arriving on Floor 2, Layla and her Floor 1 golems (Level 1) cannot simply steamroll the elven ranks. A Level 3 pawn can threaten Layla alone; fighting a Rook or the Queen requires smart use of the **Party System** (having dark golems on `guard` intercept incoming blows while pale golems on `follow`, `patrol`, or `deploy` counterattack).
 2. **Mental Resistance against Chalk Rings:**
    - The engine's surround rule (`settings.surround_rule`) tests `intelligence`:
      $$\text{player\_int} + \text{player\_level} \ge \text{target\_int} + 2 \times \text{target\_level}$$

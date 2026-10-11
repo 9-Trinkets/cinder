@@ -234,14 +234,21 @@ Below the fire moat of Floor 3, the dungeon stops being abstract game boards and
 - Floors 1, 2, and 3 were the **border defenses against outside invasion** (surface adventurers): the goblin cave, the elf army forest, and the fire ring moat.
 - Floors 4, 5, and 6 are the **kingdom inside**, divided into three social classes:
 
+**The Virtual Spaces & Broken Illusions (Settled Lore):**
+The floors have always been virtual spaces and partitioned simulations. On Floors 1 to 3, ladders and rock shafts gave the illusion of digging down underground. But starting on Floor 4, that illusion breaks down: each floor is an open virtual world with its own open sky and atmosphere (Floor 4's cavernous steam basin, Floor 5's frozen mountain citadel under a purple sky, Floor 6's vast cathedral terrace, Floor 7's white antechamber). Ladders and physical stairs do not connect them. Starting on Floor 4, travel between floors is strictly handled by arcane teleportation platforms.
+
+**The Monster Pipeline (Resource & Utility Lore):**
+Monsters are converted from people, but they are not just stocked as guards on Floors 1 to 3. They are general utilities, workers, and protective resources placed wherever the kingdom needs them (such as Sakhra guarding Deepwell village, or the guardian beasts protecting the worker towns unlocked in Floor 5.5).
+
 #### Level 4 — The Commoners (Miners, Farmers, and Laborers)
 The working foundation of the kingdom. Simple stone villages, mushroom farms, and deep geothermal steam mines:
 - **Geothermal Steam Economy:** Miners drill into deep volcanic heat vents and copper veins that power the kingdom's lights, tools, boilers, and steam machinery.
 - **Guarded Teleportation Gates:** There are no open stairs between floors. People can only travel through **Teleportation Gates** inside heavily guarded military camps. Commoners are barred from the gates unless soldiers take them away as a **sacrifice or offering** for the temple.
 - **The Teleportation Sigil:** In the mine complex, Layla lifts the **teleport scroll** from Commander Malik's safe and learns the **Teleportation Sigil** (`teleport-sigil`). This lets her blink past locked bars and sneak into guarded camps to solve quests.
+- **The Ticking Clock:** Zayd is held in the fortress cage awaiting the scheduled batch transit window to Floor 5. Layla races against time to free him before he is shipped.
 
-**The truth of the offering (settled canon).** The "sacrifice" taken up the stairs is not a ritual — it is the **reprogramming itself**. The temple's conversion works wipe a person's memory and reshape the body into a dungeon piece: the goblin shaman's golems, the elf army's ranks, and the village's "disappeared" were all the same source. Zayd's parents, who the village believes died in a "steam drill collapse," are among the finished pieces:
-- **Sakhra** — the village's guardian golem — is **Zayd's father**, bricked in stone and fitted with steam pistons. He has guarded the village, and his own son, since Zayd could walk. Only the lantern he gave his boy can wake him: **he wakes by light**.
+**The truth of the offering (settled canon).** The "sacrifice" taken away is not a ritual — it is the **reprogramming itself**. The temple's conversion works wipe a person's memory and bind their spirit into a monster shell or dungeon piece: the goblin shaman's golems, the elf army's ranks, the town guardians, and the village's "disappeared" were all the same source. Zayd's parents, who the village believes died in a "steam drill collapse," are among the finished pieces:
+- **Sakhra** — the village's guardian golem — is **Zayd's father (Jamil)**, bricked in stone and fitted with steam pistons. He has guarded the village, and his own son, since Zayd could walk. Only the lantern he gave his boy can wake him: **he wakes by light**.
 - **`elf-queen-4`** — the elf chess queen on Floor 2 — is **Zayd's mother**, the piece nearest waking of any in the dungeon. She wanders the ranks searching for a son she cannot name; **she wakes by voice** (Zayd's).
 - Freeing Zayd (side quest "Save the Boy Zayd") and raising either parent's Wisdom to 10+ ("awakening") is the floor's secret quest, **"Return the Light."** The queen **may be destroyed by chance** (she is a booked boss fight) — that is a sanctioned easter egg, and the parent thread resolves as long as *either* parent wakes.
 
@@ -249,16 +256,17 @@ The working foundation of the kingdom. Simple stone villages, mushroom farms, an
 The game genre pivots to **Tower Defense (Real-Time Strategy)**. Everything in this world is literally pure computer code—1s and 0s—and Layla discovers that the dungeon's floors are separate virtual biomes partitioned by the company. Arriving in an **ice world** of snowy mountain castles, Layla teleports onto a platform at the center of a 7-room **hexagonal courtyard** filled with cages holding virtual "offerings" (mostly old people and children from various towns). After cutting down the sentries and looting the cage key, Layla frees the captives, recruiting **Commander Astrid** (a formidable female garrison commander with a great tower shield) and **Einar** (a compassionate male healer from Floor 6). Einar gives Layla a smuggled **sensory enhancer** that heightens her senses and perception, upgrading her map HUD to track allies and teleport nodes in real time. Surrounding the courtyard are the estates of **three noble houses** whose forces mobilize in **exponentially harder waves** with a strict spawning cadence (each house queues 30 soldiers, dispatching squads of 3 at fixed intervals through the north, southeast, or southwest estate approach). Astrid and her allies hold those three approach rooms (`guard` with counterattack), while Einar heals (`support` + `lowest_health_ally`). The house leaders remain sealed in their throne rooms until the final wave. Then all three march through their estates toward the courtyard, where Layla must defeat or awaken them to rout their armies and end the siege, costing the Handler his Sector-5 terminal and forcing him to withdraw to the Royal Core.
 
 #### Level 6 — The Clergy (The High Sanctuary & The Inquisition)
-The floor-by-floor design for Level 6 — the monster conversion pipeline (harvest, execution, reanimation, deployment), the Werewolf social deduction genre, the Day/Night liturgical cycle, spirits, and the revival sigil — lives in **`docs/layla/floor6_plan.md`**. What follows is the storyline canon this level carries.
+The floor-by-floor design for Level 6 — the spiritual monster conversion pipeline, the Werewolf social deduction genre, the Day/Night liturgical cycle, spirits, and the revival sigil — lives in **`docs/layla/floor6_plan.md`**. What follows is the storyline canon this level carries.
 
-The temple leaders who enforce obedience. Vast underground cathedrals, libraries, and mortuary vaults. Layla discovers that the dungeon is an automated monster assembly line: executed corpses from Floor 5 are revived on Floor 6 via the **Revival Sigil** and brainwashed through the **Rite of Oblivion** into dungeon monsters. Infiltrating alone as a "werewolf" via Einar's clandestine token while her party waits disconnected on Floor 5, Layla deduces the identities of the **Seer** and the **Witch**, gains the spiritual enhancer pill to perceive lingering spirits, learns the dark revival sigil (raising fallen spirits only as monsters), and assassinates the Seer to break the reanimation ritual before activating the main platform to bring her party through.
+The temple leaders who enforce obedience. Vast underground cathedrals, libraries, and binding vaults. Layla discovers that the dungeon is an automated monster assembly line: offerings arriving from Floor 5 have their spirits separated into soul containers and re-bound through the **Rite of Oblivion** into monster shells and utility constructs. Infiltrating alone as a "werewolf" via Einar's clandestine token while her party waits on Floor 5, Layla deduces the identities of the **Seer** and the **Witch**, gains the spiritual enhancer pill to perceive lingering spirits, learns the dark revival sigil (raising fallen spirits only as monsters), and assassinates the Seer to break the re-binding ritual before activating the main platform to bring her party through.
 
 ### Level 7 — The Royal Core: The Handler on his throne (the current Dungeon Master)
-The throne room at the very top of the kingdom. The dark lord spoken of in the
-lower floors is the Handler himself, in his true seat: both the ruler of the
-realm and the current **Dungeon Master**. Confronting him brings the final
-resolution to Layla's journey — student against examiner, trainee against the
-one who trained her.
+The final test of Layla's journey:
+- **Solo Teleportation:** Layla teleports to the White Antechamber alone first.
+- **Dungeon Generation Assist:** The Handler hands her the **Sigil of Creation**. Layla builds her own dungeon, picking dimensions, features, and descriptions with LLM assistance.
+- **Party Deployment:** Once the dungeon is built, her party teleports directly into the created dungeon, and Layla can station her companions and set sigils to defend herself.
+- **The Boss Trial:** The Handler invades her dungeon to hunt and eliminate her within a time limit.
+- Confronting him brings the final resolution to Layla's journey — student against examiner, trainee against the one who trained her.
 
 ### Factions, Choices & The Quest System
 Floors 4, 5, and 6 introduce an active **Quest System** (one Main Quest and side quests on each floor), putting Layla in the role of a **mediator and problem-solver**:
@@ -270,7 +278,7 @@ Floors 4, 5, and 6 introduce an active **Quest System** (one Main Quest and side
 ### The Hidden Stat: Wisdom (WIS) & The "Awakening" Mechanic
 In this kingdom, people and monsters have been brainwashed into fixed roles (Peasant, Knight, Priest, Golem, Pawn). To break this spell, Layla uses a hidden stat: **Wisdom (WIS)** — now implemented for real in `content/layla/stats.json` (seed default 3, range 0–10, surfaced in the vitals/inspect UI):
 - **Default Followers:** When Layla charms a creature, it follows her quietly and obeys basic orders without speaking.
-- **Boosting the Mind:** Layla can give followers Wisdom gear (crystal amulets, leaf jewelry, clear-mind potions, and above all **Zayd's Lantern**, +6 WIS) to raise their WIS stat.
+- **Boosting the Mind:** Layla can give followers Wisdom gear (mementos like **Zayd's Lantern**, +6 WIS, or town mementos) to raise their WIS stat. Once given, mementos cannot be retrieved.
 - **The Awakening:** When a follower's Wisdom reaches 10 or higher:
   - They break free from their mind-wiped role and remember who they are.
   - Their generic name changes back to their real name (e.g. `golem-dark-nw` → *Orin*, `sakhra` → *Jamil*, `elf-queen-4` → Zayd's mother).
@@ -278,8 +286,13 @@ In this kingdom, people and monsters have been brainwashed into fixed roles (Pea
 - Per-piece awakening storylines (who each surviving golem/elf was, and what they say on waking) are recorded in **`docs/layla/floor4_plan.md` § 5**.
 
 ### The Planned Endgame (canon intent)
-- **Primary ending — become the dungeon master.** Layla defeats the current **dark lord / dungeon master**. This completes her corporate reprogramming: she takes the throne and runs the dungeon against human adventurers.
-- **Alternative ending — escape.** Layla refuses the throne. She breaks out of the simulation and **frees herself from the company that made the game**, leading the awakened people of the kingdom out to the open air.
+- **Primary Ending — Become the Dungeon Master:** Layla outlasts the timer or defeats the Handler in her dungeon. The Handler withers and dies, congratulating her. Layla ascends to the throne as the new Dungeon Master, running the dungeon against future human adventurers.
+- **Secret Escape Ending — Break the Cycle & Pass the Torch:**
+  - **Prerequisites:**
+    1. Layla must have **at least one awakened party member** in her company.
+    2. During the trial, Layla **does not deploy any party members** into the dungeon. She faces the Handler alone and **purely runs away and evades** him until a secret exit appears.
+  - **The Choice:** Entering the secret exit leads outside the simulation into the real world. However, to keep the virtual world from collapsing, Layla must choose one of her awakened companions to stay behind and take her place as the new Dungeon Master.
+  - **Rebranding:** Layla escapes into freedom. The game itself renames from *Layla* to the name of whoever replaced her (e.g., *Jamil*, *Astrid*, *Orin*).
 
 ## The Unresolved Threads (deliberately open)
 

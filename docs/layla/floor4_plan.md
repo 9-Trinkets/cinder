@@ -18,12 +18,14 @@ This is not an abandoned ruin. Thousands of commoners live and work here under t
   The caverns are crisscrossed by thick copper and iron pipes, hissing steam valves, rattling ore carts, and brass pressure gauges. High-pressure steam engines power the heavy mining equipment and heat the underground town.
 - **The Industry — Geothermal Steam & Mining:**
   The miners drill into rich volcanic veins and deep geothermal shafts. High-pressure steam and boiling underground springs superheat heavy boilers, driving the pistons, dynamos, and industrial machinery across the floor.
+- **The Reality — Virtual Spaces & Broken Illusions:**
+  The floors have always been virtual spaces and partitioned simulations. On Floors 1 to 3, ladders and cave shafts created the illusion of digging down underground. But starting on Floor 4, that illusion breaks down: each floor is an open virtual world with its own open sky and atmosphere. The ladders don't exist anymore. There are no physical stairs leading down or up. The only way to move between floors is through arcane **teleportation platforms** linked into the world's power conduits.
 - **The Problem — The Barred Gate:**
-  There are no stairs leading up. The only way forward is a massive **teleportation gate** powered by high-pressure steam boilers and pneumatic conduits. It sits inside a fortified military complex in the center of the floor. Commoners are forbidden from entering — unless the guards select them as a living **offering** for the temple priests above.
+  The only way to reach Floor 5 is a massive **teleportation platform** powered by high-pressure steam boilers and pneumatic conduits. It sits inside a fortified military complex in the center of the floor. Commoners are forbidden from entering — unless the guards select them as a living **offering** for the temple priests above.
 
 ### The Lie the Floor Tells
 
-The village runs on a cover story: the chosen ones are taken to the temple as an **offering** for the rituals upstairs. The truth is worse and plainer — the offering is the **reprogramming**. Up on the temple floors, a device (later floors will build it in its final, ritual form) **wipes a person's memory and reshapes their body into a dungeon piece** that protects the machine. That is where the shaman's golems came from, where the elves of Floor 2 came from, and where the village's "disappeared" go — including Zayd's parents. Zayd's father, told he died in a "steam drill collapse," was turned into the guardian golem that has kept watch in the village square ever since. Zayd's mother was reshaped into a chess queen who now wanders the ranks on Floor 2, searching for a son she cannot name.
+The village runs on a cover story: the chosen ones are taken to the temple as an **offering** for the rituals upstairs. The truth is worse and plainer — the offering is the **reprogramming**. Up on the temple floors, the machine **wipes a person's memory and binds their spirit into a monster shell or dungeon piece**. These monsters are not just stocked on Floors 1 to 3; they are utilities, workers, and guardian resources placed anywhere across the kingdom (like Sakhra guarding Deepwell village, or the guardian beasts protecting the worker towns). That is where the shaman's golems came from, where the elves of Floor 2 came from, and where the village's "disappeared" go — including Zayd's parents. Zayd's father, told he died in a "steam drill collapse," was turned into the guardian golem that has kept watch in the village square ever since. Zayd's mother was reshaped into a chess queen who now wanders the ranks on Floor 2, searching for a son she cannot name.
 
 Layla does not realize — yet — that she is moving through *her own* process. She is a being being reprogrammed toward the dungeon-master role, meeting the finished product of that process everywhere she looks.
 
@@ -94,21 +96,21 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 ## 4. The Quests
 
 ### Main Quests: "The Way Down" & "The Teleportation Scroll"
-- **Goal:** Infiltrate the Inner Military Complex, defeat Commander Malik, crack his iron safe for the **Teleportation Scroll**, learn the **Teleportation Sigil**, and activate the central teleport platform to descend to Floor 5.
-- **Why You Need It:** There are no stairs leading up or down from the cavern. The only path forward is the massive geothermal Teleportation Platform inside the fortified complex. Learning the Teleportation Sigil unlocks fast-travel anchors across the dungeon and powers up the descent gate to Floor 5.
+- **Goal:** Infiltrate the Inner Military Complex, defeat Commander Malik, crack his iron safe for the **Teleportation Scroll**, learn the **Teleportation Sigil**, and activate the central teleport platform to teleport to Floor 5.
+- **Why You Need It:** There are no stairs leading up or down from the cavern. The floors are partitioned virtual spaces with no physical shafts between them. The only path forward is the massive geothermal Teleportation Platform inside the fortified complex. Learning the Teleportation Sigil unlocks fast-travel anchors across the dungeon and powers up transit to Floor 5.
 - **How to Complete It:**
   1. Gather intel in the village from Yasmin, Tariq, and the guards about the fortress layout and Commander Malik.
   2. Enter the military complex via one of two paths:
      - **Diversion route (puzzle):** Release the steam overpressure valve in the wash basin terrace (`village_west_1`) to pop the northern gate hydraulic locks (`turn valve`).
      - **Combat route:** Defeat the garrison guards stationed at `village_north_gate` (`garrison_guard`), loot the dropped `fortress-gate-key`, and manually unlock the bulkhead (`unlock gate`).
   3. Enter `command_bastion`, defeat Commander Malik (`captain_malik`) to obtain `commander-safe-key`, unlock his iron safe (`unlock safe`), take the scroll, and read it (`use teleport scroll` → `knows_teleport`).
-  4. Step onto `teleport_platform` (unlocked once Malik falls), trace the Teleportation Sigil (`trace teleport sigil`), and descend to Floor 5 (`descend`).
+  4. Step onto `teleport_platform` (unlocked once Malik falls), trace the Teleportation Sigil (`trace teleport sigil`), and teleport to Floor 5 (`teleport floor 5`).
 
 - **The Teleportation System (Anchor Architecture):**
   - **The Sigil (`teleport-sigil`):** A double triangle with intersecting lines drawn in magic chalk (costs 4 MP). Tracing it links the space into the floor's arcane-geothermal grid.
-  - **Permanent Platform Anchors:** Stepping onto powered transport platforms (`teleport_platform` on Floor 4, `floor5_start` on Floor 5) automatically discovers permanent anchors (`anchor_floor4_platform`, `anchor_floor5_gate`). Teleporting to permanent anchors (`teleport <anchor>`) is infinite and never consumes the anchor point.
-  - **Temporary Chalk Anchors:** Tracing the sigil in non-platform rooms places a single-use chalk anchor. Up to 3 active chalk anchors can exist simultaneously across the floor; tracing a 4th automatically evicts the oldest anchor (FIFO). Teleporting to a chalk anchor instantly consumes it, rubbing the chalk mark away.
-  - **Platform Activation:** Tracing the Teleportation Sigil on the central `teleport_platform` activates the sleeping conduits (`platform_activated = "true"`), opening the exit down to Floor 5.
+  - **Permanent Platform Anchors:** Stepping onto powered transport platforms (`teleport_platform` on Floor 4, `courtyard_center` on Floor 5) automatically discovers permanent anchors (`anchor_floor4_platform`, `anchor_floor5_gate`). Teleporting between permanent anchors (`teleport <anchor>`) carries party members, is infinite, and never consumes the anchor point.
+  - **Temporary Chalk Anchors:** Tracing the sigil in non-platform rooms places a single-use chalk anchor. Up to 3 active chalk anchors can exist simultaneously across the floor; tracing a 4th automatically evicts the oldest anchor (FIFO). Teleporting to a chalk anchor instantly consumes it, rubbing the chalk mark away, and does not bring party companions.
+  - **Platform Activation:** Tracing the Teleportation Sigil on the central `teleport_platform` activates the sleeping conduits (`platform_activated = "true"`), enabling inter-floor teleportation to Floor 5.
 
 **Beat stages:** `mq_hear_gate` ("The Way Down") → `mq_find_scroll` ("The Teleportation Scroll") → `mq_use_teleport_platform` ("The Teleportation Scroll").
 
@@ -116,12 +118,13 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 - **The Boy (Zayd, age 11):**
   - The village believes Zayd lost both parents in a steam drill collapse years ago. With no family left, the village took turns looking after him: Yasmin gave him bread, miners taught him the machinery, Tariq let him fiddle with gears, and the elders looked the other way when he played pranks. Only Sakhra, the guardian golem, was *always* beside him.
   - He was wild, loud, and constantly climbed on steam pipes and threw pebbles at the soldiers. But he had a loyal heart, always carrying heavy coal buckets for the elderly and tending to injured stray animals. He still brings his lamp to the old golem and talks to it about his parents.
-- **The Tragedy:**
+- **The Tragedy & The Ticking Clock:**
   - The temple priests sent an order demanding one youth as an **offering** for the rituals above.
   - Paralyzed with fear for their own children, the village elders made a cowardly decision: they gave up Zayd, rationalizing that *"he has no mother to cry for him."*
-  - The moment Malik's soldiers dragged Zayd away in brass shackles, heavy guilt crushed the village. Nobody can look at one another without shame.
+  - Malik's soldiers dragged Zayd away in brass shackles and locked him in the suspended `steam_prison_cage`.
+  - **The Ticking Clock:** Zayd is temporarily held in the fortress cage waiting for the scheduled batch transit window/cull to Floor 5. Layla is racing against time to save him before Priest Harun completes the transfer.
 - **Rescuing Zayd:**
-  - Zayd is locked in the suspended `steam_prison_cage`, awaiting the priest's transport wagon (`priest_harun`), guarded by `garrison_warden`.
+  - Zayd is locked in the suspended `steam_prison_cage` guarded by `garrison_warden`.
   - Layla defeats or charms the warden to loot the `iron-cage-key`, then unlocks the heavy padlock on the cage (`unlock cage`).
   - **The handler turns.** The handler's route sheet does not cover a missing offering. He orders Layla to leave the boy: *"Let the offering ship, Layla. That's the job."* Saving Zayd is Layla's first deliberate act of rebellion against the system.
 - **The Reward & The Family Heirloom:**
@@ -238,10 +241,10 @@ With recruited party members, players can issue tactical commands to coordinate 
   - **Safe Cracking (`unlock safe`):** Authored `UNLOCK_SAFE` action at `command_bastion`. Unlocking the safe consumes `commander-safe-key`, sets story var `safe_unlocked = "true"`, awards `teleport-scroll` to Layla, and advances the main quest objective `mq_find_scroll` to `mq_use_teleport_platform`.
   - **Learning Teleportation:** Reading or using the scroll (`read teleport scroll` / `use teleport scroll`) sets story var `knows_teleport = "true"`, grants the `teleport-sigil` ability, and triggers the Handler's tactical tutorial on anchor networks.
   - Verified via full end-to-end integration test `cinder-core/tests/layla_floor4_bastion.rs`.
-- **Central Teleport Platform Activation & Floor 5 Descent (`teleport_platform`):**
+- **Central Teleport Platform Activation & Floor 5 Teleportation (`teleport_platform`):**
   - **Platform Access & Discovery:** Accessible exclusively through `command_bastion` once `malik_defeated` is true. Stepping onto `teleport_platform` auto-discovers and registers permanent fast-travel anchors: `anchor_floor4_platform` and `anchor_floor5_gate`.
   - **Sigil Activation:** Tracing the sigil (`trace teleport sigil`) on the platform activates the steam conduits and arcane rings, setting story var `platform_activated = "true"`. Unlike regular rooms, tracing here activates the permanent station rather than consuming MP for a temporary chalk anchor.
-  - **Floor 5 Descent:** Once `platform_activated` is set, descending via `go floor 5` or `descend` unlocks the passage down to `floor5_start`.
+  - **Floor 5 Teleportation:** There are no physical stairs, ladders, or tunnels down to Floor 5. Once `platform_activated` is set, transit is performed exclusively via `teleport floor 5` (or `teleport courtyard_center`), bridging across the dimensional divide to Floor 5's courtyard.
   - **Anchor Network Fast-Travel:** With `knows_teleport`, player can execute `teleport <anchor_id>` to blink instantaneously between known anchors, supporting both single-use chalk anchors (up to 3 FIFO) and reusable permanent platform anchors without consumption.
   - Verified via full end-to-end integration test `cinder-core/tests/layla_floor4_teleport.rs`.
 

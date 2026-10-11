@@ -6,9 +6,11 @@ use crate::content::types::{
 };
 use crate::engine::commands::resolve_actor_reference_input;
 use crate::engine::events::WorldEvent;
-use crate::engine::turn_policies::{
-    command_availability_issue, command_unavailable_message, story_var_is_truthy,
+use crate::engine::item_creation::{
+    craftable_available, craftable_unlocked, item_creation_storage, plan_item_creation,
+    render_item_creation_rejection,
 };
+use crate::engine::turn_policies::{command_availability_issue, command_unavailable_message};
 use std::collections::BTreeMap;
 
 fn to_item_storage(storage: ActionItemStorageTarget) -> ItemStorageTarget {
@@ -91,29 +93,15 @@ fn resolved_created_item_id(
 ) -> Option<String> {
     let item_creation = action.item_creation.as_ref()?;
     let item_id = &item_creation.creates_item;
-    let craftable_unlocked = |craftable_id: &str| -> bool {
-        match item_creation.craftable_item_gates.get(craftable_id) {
-            None => true,
-            Some(gate) if gate.is_empty() => true,
-            Some(gate) => story_var_is_truthy(context.planner_state, gate),
-        }
-    };
-    let craftable_available = |craftable_id: &str| {
-        craftable_unlocked(craftable_id)
-            && !trace_mark_already_in_room(
-                content,
-                context.planner_state,
-                craftable_id,
-                context.current_room_id,
-            )
-    };
+    let state = context.planner_state;
+    let room_id = context.current_room_id;
     if !item_creation.craftable_items.is_empty() {
         if let Some(input_val) = input.map(str::trim).filter(|s| !s.is_empty()) {
             return item_creation
                 .craftable_items
                 .iter()
                 .find(|craftable_id| {
-                    craftable_unlocked(craftable_id)
+                    craftable_unlocked(state, item_creation, craftable_id)
                         && craftable_matches_input(content, craftable_id, input_val)
                 })
                 .cloned();
@@ -121,39 +109,26 @@ fn resolved_created_item_id(
         return item_creation
             .craftable_items
             .iter()
-            .find(|craftable_id| craftable_available(craftable_id))
+            .find(|craftable_id| {
+                craftable_available(content, state, item_creation, craftable_id, room_id)
+            })
             .cloned();
     }
     if !item_creation.creates_item_target_template.is_empty() {
         let input_val = input.unwrap_or_default().trim();
         return Some(
-            resolve_actor_reference_input(
-                content,
-                context.planner_state,
-                context.current_room_id,
-                input_val,
-            )
-            .map(|resolved| item_creation.resolve_target_item_id(Some(&resolved.actor_id)))
-            .unwrap_or_else(|| item_id.clone()),
+            resolve_actor_reference_input(content, state, room_id, input_val)
+                .map(|resolved| item_creation.resolve_target_item_id(Some(&resolved.actor_id)))
+                .unwrap_or_else(|| item_id.clone()),
         );
     }
     Some(
         (!item_creation.creates_item_story_var.is_empty())
             .then_some(item_creation.creates_item_story_var.as_str())
-            .and_then(|var_key| context.planner_state.story_vars.get(var_key))
+            .and_then(|var_key| state.story_vars.get(var_key))
             .map(|value| value.to_string())
             .unwrap_or_else(|| item_id.clone()),
     )
-}
-
-fn trace_mark_already_in_room(
-    content: &ContentPack,
-    state: &crate::engine::state::WorldState,
-    item_id: &str,
-    room_id: &str,
-) -> bool {
-    content.item(item_id).is_some_and(|item| item.trace_mark)
-        && state.has_item_in_storage(item_id, ItemStorageTarget::CurrentRoom, room_id)
 }
 
 pub(super) fn plan_content_command(
@@ -174,100 +149,25 @@ pub(super) fn plan_content_command(
         .player_command
         .as_ref()
         .unwrap_or_else(|| panic!("action '{}' should define player_command", action.id));
-    let created_item_id = resolved_created_item_id(content, action, input, context);
-    if action
-        .item_creation
-        .as_ref()
-        .is_some_and(|creation| !creation.craftable_items.is_empty())
-        && created_item_id.is_none()
-    {
+    let plan = plan_item_creation(
+        content,
+        context.planner_state,
+        action,
+        resolved_created_item_id(content, action, input, context),
+        context.current_room_id,
+        &content.settings.combat.player_actor_id,
+    );
+    if let Some(rejection) = &plan.rejection {
         planned.events.push(WorldEvent::ActionRejected {
-            message: content
-                .render_message("error.no_craftable_available", &[])
-                .unwrap_or_default(),
+            message: render_item_creation_rejection(
+                content,
+                rejection,
+                content.opening.title.as_str(),
+            ),
         });
         return false;
     }
-    if let Some(item_id) = created_item_id.as_deref()
-        && action
-            .item_creation
-            .as_ref()
-            .is_some_and(|creation| creation.storage == ActionItemStorageTarget::CurrentRoom)
-        && trace_mark_already_in_room(
-            content,
-            context.planner_state,
-            item_id,
-            context.current_room_id,
-        )
-    {
-        let label = content.item_label(item_id);
-        planned.events.push(WorldEvent::ActionRejected {
-            message: content
-                .render_message("error.trace_mark_exists", &[("label", label)])
-                .unwrap_or_default(),
-        });
-        return false;
-    }
-    if let Some(ref item_id) = created_item_id
-        && let Some(item) = content.item(item_id)
-    {
-        if let Some(max) = item.max_active_instances
-            && !item.spawn_template_id.is_empty()
-        {
-            let active = context
-                .planner_state
-                .active_spawned_actor_count(content, &item.spawn_template_id);
-            if active >= max {
-                let template_name = content
-                    .actor(&item.spawn_template_id)
-                    .map(|a| a.name.as_str())
-                    .unwrap_or(&item.spawn_template_id);
-                let msg_key = if !item.max_instances_message.is_empty() {
-                    &item.max_instances_message
-                } else {
-                    "sigil.spawn_limit"
-                };
-                let max_str = max.to_string();
-                let message = content
-                    .render_message(
-                        msg_key,
-                        &[("actor", template_name), ("max", max_str.as_str())],
-                    )
-                    .unwrap_or_else(|| {
-                        format!("You cannot sustain more than {} active summons.", max)
-                    });
-                planned.events.push(WorldEvent::ActionRejected { message });
-                return false;
-            }
-        }
-        if item.mp_cost > 0 {
-            let current_mp = context
-                .planner_state
-                .actor_stat_u32(&content.settings.combat.player_actor_id, "mp");
-            if current_mp < item.mp_cost {
-                let cost_str = item.mp_cost.to_string();
-                let current_str = current_mp.to_string();
-                let message = content
-                    .render_message(
-                        "magic.insufficient_mp",
-                        &[
-                            ("actor", content.opening.title.as_str()),
-                            ("item", content.item_label(item_id)),
-                            ("mp_cost", cost_str.as_str()),
-                            ("mp", current_str.as_str()),
-                        ],
-                    )
-                    .unwrap_or_else(|| {
-                        format!(
-                            "You do not have enough magic to trace that (needs {} MP, have {}).",
-                            item.mp_cost, current_mp
-                        )
-                    });
-                planned.events.push(WorldEvent::ActionRejected { message });
-                return false;
-            }
-        }
-    }
+    let created_item_id = plan.resolved_id;
     let mut payload = BTreeMap::new();
     if let Some(input_metadata) = &metadata.input {
         let value = input.unwrap_or_default().trim();
@@ -314,11 +214,7 @@ pub(super) fn plan_content_command(
         }
         planned.events.push(WorldEvent::ItemAcquired {
             item_id,
-            storage: action
-                .item_creation
-                .as_ref()
-                .map(|ic| to_item_storage(ic.storage.clone()))
-                .unwrap_or_default(),
+            storage: item_creation_storage(action),
         });
     }
     if let Some(item_id) = &action.available.consumes_item {

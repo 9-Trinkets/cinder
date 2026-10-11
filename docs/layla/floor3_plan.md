@@ -4,6 +4,15 @@ Living design plan for **level 3** of Layla: the fire-rooms and the fire element
 
 > Status: **redesign finalized around Mancala mechanics (movement & resources); kinetic boss loop, trap economy, and sprite seed dynamics defined.** Supersedes the earlier stationary boss placement in `oh`. Implementation decisions are recorded under [Engine & Content Requirements](#engine--content-requirements).
 
+> [!IMPORTANT]
+> **Writing Guide for Floor 3:**
+> All player-facing text must use **simple sentences and everyday words for teenagers**. Avoid fancy, archaic, or textbook words:
+> - Say **black glass**, not *vitrified obsidian*.
+> - Say **heat waves**, not *thermal mirages* or *chiaroscuro*.
+> - Say **round dish**, not *monumental kalah*.
+> - Say **fire pit**, not *volcanic hollow*.
+> - Use the 4 canonical party orders: `guard`, `follow`, `patrol`, and `deploy`.
+
 ---
 
 ## Premise
@@ -129,8 +138,8 @@ Layla enters Floor 3 with her surviving golems from Floor 1, leveled through Flo
 
 - **Dark Golems on `guard` (Interception):**
   When Layla is tracing a sigil on the floor or navigating through rooms with active fire sprites, `guard` golems intercept incoming strikes (`combat.guard_intercepts`). Made of cold river stone and dense volcanic granite, they withstand fire attacks far better than Layla.
-- **Pale Golems on `assist` (Sweepers):**
-  Set to `assist`, pale golems retaliate against sprites the moment combat begins (`combat.party_counterattack`). With their raw attack power, they can one-shot 4 HP sprites, clearing the lane before traps can be spoiled.
+- **Pale Golems on `follow` or `patrol` (Sweepers):**
+  Set to `follow`, `patrol`, or `deploy`, pale golems retaliate against sprites the moment combat begins (`combat.party_counterattack`). With their raw attack power, they can one-shot 4 HP sprites, clearing the lane before traps can be spoiled.
 
 ---
 

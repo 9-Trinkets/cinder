@@ -11,6 +11,14 @@ knobs) so the level's tutorial-by-discovery arc is never lost.
 > goblin pass. Implementation decisions are recorded under
 > [Open Threads](#open-threads).
 
+> [!IMPORTANT]
+> **Writing Guide for Floor 1:**
+> All player-facing text must use **simple sentences and everyday words for teenagers**. Avoid fancy, archaic, or textbook words:
+> - Say **stone monster**, not *lithic automaton*.
+> - Say **cave**, not *subterranean cavern*.
+> - Say **bone pile**, not *ossuary deposit*.
+> - Use the 4 canonical party orders: `guard`, `follow`, `patrol`, and `deploy`.
+
 ---
 
 ## Premise

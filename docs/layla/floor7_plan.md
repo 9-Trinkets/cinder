@@ -23,21 +23,25 @@ If she wins by fighting or surviving with her party, she ascends as the new Dung
 
 Floor 7 begins in a single, quiet room: **The White Antechamber** (`floor7_antechamber`).
 
-There are no locked doors, no monsters, and no stairs down. The floor and ceiling are smooth, glowing white stone that stretches out into quiet mist. In the center of the room sits a plain wooden table with two chairs, an old brass teapot, and a radio transmitter.
+- **Solo Arrival:** Layla teleports to the White Antechamber alone first from Floor 6's Sanctuary Platform. Her party remains stationed behind on Floor 6, keeping them safe while she meets the examiner in person.
+- **The Room:** There are no locked doors, no monsters, and no stairs down. The floor and ceiling are smooth, glowing white stone that stretches out into quiet mist. In the center of the room sits a plain wooden table with two chairs, an old brass teapot, and a radio transmitter.
 
 Sitting in one of the chairs is the **Handler**.
 
 ```
-[ THE WHITE ANTECHAMBER ]
-          │
-          ▼
-   (The Handler speaks)
-          │
-          ▼
- [ Sigil of Creation Scroll ]
-          │
-          ▼
-  < BUILD YOUR DUNGEON >
+[ FLOOR 6 PLATFORM ]  ──(Solo Teleport)────>  [ THE WHITE ANTECHAMBER ]
+                                                          │
+                                                          ▼
+                                                  (The Handler speaks)
+                                                          │
+                                                          ▼
+                                              [ Sigil of Creation Scroll ]
+                                                          │
+                                                          ▼
+                                              < BUILD YOUR DUNGEON >
+                                                          │
+                                                          ▼
+[ PARTY TELEPORTED TO DUNGEON ENTRANCE ] <──(Dungeon Created)
 ```
 
 ### Who the Handler Is
@@ -85,15 +89,17 @@ Layla stands in the blank room, touches the floor with her chalk, and chooses th
    - The player can type a short phrase or idea (e.g. *"A quiet flooded shrine where water drips"* or *"A rusty furnace corridor where bells echo"*).
    - The built-in LLM takes the layout, theme, and player prompt to create a real, fully playable set of connected rooms complete with room titles, inspect text, and environmental features.
    - The newly built dungeon appears instantly, opening an archway from the white antechamber directly into the entrance room of Layla's creation.
+   - At the same moment, **Layla's party is automatically teleported into the entrance room** from Floor 6, reuniting with her inside her created domain!
 
 ### 2.2 The Preparation Phase: Setting Up Defenses
-Layla and her followers can freely walk through the newly created dungeon before the fight starts. The player has full freedom to prepare:
+Layla meets her reunited companions in the entrance room. She can freely walk through the newly created dungeon before the fight starts. The player has full freedom to prepare:
 
 1. **Stationing Party Members:**
-   - Using the party commands (`deploy`, `guard`, `follow`), Layla can station her companions in specific rooms.
-   - She can put Astrid in a choke point to guard the doorway.
-   - She can station Sakhra or an awakened companion in the center room.
-   - She can leave companions by the back exit, or keep them with her.
+   - Using the canonical party commands (`deploy`, `guard`, `follow`, `patrol`), Layla can station her companions in specific rooms.
+   - She can station Astrid at a choke point to guard a doorway (`guard`).
+   - She can station Sakhra or an awakened companion in the center room (`deploy`).
+   - She can have companions patrol between wings (`patrol`).
+   - Or, if aiming for the **Secret Escape**, she chooses **not to deploy** any companion into the dungeon rooms, keeping them all safe at the entrance.
 2. **Drawing Sigils:**
    - Layla can trace any of the marks she mastered across her journey:
      - `charm-sigil`: Ready to encircle invaders.

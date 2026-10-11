@@ -62,7 +62,7 @@ same ownership map.
       "conditions": [
         {
           "condition": "order_is",
-          "orders": ["follow", "patrol", "guard"]
+          "orders": ["follow", "patrol", "guard", "deploy"]
         }
       ],
       "target": "attacker",

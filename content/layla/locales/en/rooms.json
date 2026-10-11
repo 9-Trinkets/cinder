@@ -13240,7 +13240,7 @@
     "id": "mortuary_descent",
     "title": "The Undercrypt Stairs",
     "summary": "A broad spiral staircase of pale dressed stone winds down beneath the acropolis. Brass wall sconces cast long shadows across the cool limestone steps.",
-    "inspect_text": "The air grows cooler with every step. Passages branch west toward the embalming laboratory and south into the silent catacombs.",
+    "inspect_text": "The air grows cooler with every step. Passages branch west toward the shell workshop and south into the silent soul vaults.",
     "allow_rest": false,
     "features": [
       {
@@ -13367,23 +13367,23 @@
   },
   {
     "id": "mortuary_embalming_hall",
-    "title": "The Embalming Laboratory",
-    "summary": "A wide, clinical chamber equipped with massive slate preparation tables, copper basins, and jars of embalming bitumen. Linen shrouds lie neatly folded on cedar shelving.",
-    "inspect_text": "This is where bodies harvested from the upper floors are cleansed and prepared before the reanimation ritual. Stone channels in the floor drain toward a central sump.",
+    "title": "The Shell Workshop",
+    "summary": "A wide, quiet chamber equipped with slate carving tables, copper basins, and rows of unformed stone and brass monster shells waiting to be bound with spirits.",
+    "inspect_text": "This is where empty golem and beast shells are carved and fitted with rune conduits before spirits are bound into them.",
     "allow_rest": false,
     "features": [
       {
         "id": "mortuary_embalming_hall-tables",
-        "label": "the slate preparation tables",
+        "label": "the slate carving tables",
         "aliases": [
           "tables",
           "slabs",
           "basins",
-          "linen"
+          "shells"
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "Smooth slabs of black slate fitted with drainage gutters and bronze restraining straps."
+        "inspect_text": "Smooth slabs of black slate where empty stone shells and mechanical limbs rest under rune-inscribed clamps."
       }
     ],
     "exits": [
@@ -13447,7 +13447,7 @@
           "lab",
           "back"
         ],
-        "menu_label": "Return to the Embalming Laboratory",
+        "menu_label": "Return to the Shell Workshop",
         "requires_story_var": ""
       },
       {
@@ -13725,7 +13725,7 @@
         ],
         "allow_rest": false,
         "consumables": [],
-        "inspect_text": "Stone chimney cowls venting warm exhaust from the lower embalming chambers into the open mountain air."
+        "inspect_text": "Stone chimney cowls venting warm exhaust from the lower shell workshops into the open mountain air."
       }
     ],
     "exits": [

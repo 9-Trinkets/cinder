@@ -11,6 +11,7 @@ pub mod events;
 pub mod hook_ids;
 pub mod hooks;
 pub mod hostile_actions;
+pub mod item_creation;
 pub mod menus;
 pub mod messaging;
 pub mod narrative;

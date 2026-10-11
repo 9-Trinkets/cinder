@@ -4,6 +4,10 @@ use crate::content::types::{
 };
 use crate::engine::events::WorldEvent;
 use crate::engine::hooks::apply_world_hook_effects;
+use crate::engine::item_creation::{
+    ItemCreationRejection, craftable_available, craftable_unlocked, item_creation_storage,
+    plan_item_creation, render_item_creation_rejection,
+};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{
     ActorStance, ConversationMemoryKind, ConversationMemoryLine, WorldState,
@@ -40,86 +44,30 @@ pub(super) fn handle_actor_command_used(
     let mut lines = NarrativeLines::default();
     let previous_current_room_id = state.current_room_id.clone();
     let command = content.command(command_id)?;
-    let created_item_id = resolved_created_item_id(state, content, command, command_context);
-    if command
-        .item_creation
-        .as_ref()
-        .is_some_and(|creation| !creation.craftable_items.is_empty())
-        && created_item_id.is_none()
-    {
-        return None;
-    }
-    if created_item_id.as_deref().is_some_and(|item_id| {
-        command
-            .item_creation
-            .as_ref()
-            .is_some_and(|creation| creation.storage == ActionItemStorageTarget::CurrentRoom)
-            && content.item(item_id).is_some_and(|item| item.trace_mark)
-            && state.has_item_in_storage(
-                item_id,
-                ItemStorageTarget::CurrentRoom,
-                command_context.room_id,
-            )
-    }) {
-        return None;
-    }
-    if let Some(ref item_id) = created_item_id
-        && let Some(item) = content.item(item_id)
-    {
-        if let Some(max) = item.max_active_instances
-            && !item.spawn_template_id.is_empty()
-        {
-            let active = state.active_spawned_actor_count(content, &item.spawn_template_id);
-            if active >= max {
-                let template_name = content
-                    .actor(&item.spawn_template_id)
-                    .map(|a| a.name.as_str())
-                    .unwrap_or(&item.spawn_template_id);
-                let msg_key = if !item.max_instances_message.is_empty() {
-                    &item.max_instances_message
-                } else {
-                    "sigil.spawn_limit"
-                };
-                let max_str = max.to_string();
-                if let Some(line) = content.render_message(
-                    msg_key,
-                    &[("actor", template_name), ("max", max_str.as_str())],
-                ) {
-                    lines.narration(line);
-                } else {
-                    lines.narration(format!(
-                        "You cannot sustain more than {} active summons.",
-                        max
-                    ));
-                }
-                return Some(lines);
-            }
-        }
-        if item.mp_cost > 0 {
-            let current_mp = state.actor_stat_u32(command_context.actor_id, "mp");
-            if current_mp < item.mp_cost {
-                let cost_str = item.mp_cost.to_string();
-                let current_str = current_mp.to_string();
-                if let Some(line) = content.render_message(
-                    "magic.insufficient_mp",
-                    &[
-                        ("actor", command_context.actor_name),
-                        ("item", content.item_label(item_id)),
-                        ("mp_cost", cost_str.as_str()),
-                        ("mp", current_str.as_str()),
-                    ],
-                ) {
-                    lines.narration(line);
-                } else {
-                    lines.narration(format!(
-                        "You do not have enough magic to trace that (needs {} MP, have {}).",
-                        item.mp_cost, current_mp
-                    ));
-                }
-                return Some(lines);
-            }
+    let plan = plan_item_creation(
+        content,
+        state,
+        command,
+        resolved_created_item_id(state, content, command, command_context),
+        command_context.room_id,
+        command_context.actor_id,
+    );
+    match &plan.rejection {
+        None => {}
+        Some(
+            ItemCreationRejection::NoCraftableAvailable
+            | ItemCreationRejection::TraceMarkExists { .. },
+        ) => return None,
+        Some(rejection) => {
+            lines.narration(render_item_creation_rejection(
+                content,
+                rejection,
+                command_context.actor_name,
+            ));
+            return Some(lines);
         }
     }
+    let created_item_id = plan.resolved_id;
     let (item_label, feature_label) = resolve_actor_command_labels(content, command_context)?;
     if !apply_actor_command_realization_effects(state, content, command, command_context) {
         return None;
@@ -141,14 +89,7 @@ pub(super) fn handle_actor_command_used(
     apply_new_command_effects(state, content, command, command_context, &mut lines, outbox);
     apply_command_objective_progress_effects(state, command);
     if let Some(item_id) = created_item_id {
-        let storage = command
-            .item_creation
-            .as_ref()
-            .map(|creation| match creation.storage {
-                ActionItemStorageTarget::PlayerInventory => ItemStorageTarget::PlayerInventory,
-                ActionItemStorageTarget::CurrentRoom => ItemStorageTarget::CurrentRoom,
-            })
-            .unwrap_or_default();
+        let storage = item_creation_storage(command);
         if let Some(item) = content.item(&item_id)
             && item.mp_cost > 0
         {
@@ -231,21 +172,6 @@ fn resolved_created_item_id(
 ) -> Option<String> {
     let creation = command.item_creation.as_ref()?;
     let default_item_id = &creation.creates_item;
-    let unlocked = |item_id: &str| match creation.craftable_item_gates.get(item_id) {
-        None => true,
-        Some(gate) if gate.is_empty() => true,
-        Some(gate) => crate::engine::turn_policies::story_var_is_truthy(state, gate),
-    };
-    let available = |item_id: &str| {
-        unlocked(item_id)
-            && !(creation.storage == ActionItemStorageTarget::CurrentRoom
-                && content.item(item_id).is_some_and(|item| item.trace_mark)
-                && state.has_item_in_storage(
-                    item_id,
-                    ItemStorageTarget::CurrentRoom,
-                    context.room_id,
-                ))
-    };
     if !creation.craftable_items.is_empty() {
         if let Some(input) = context
             .freeform_text
@@ -253,15 +179,13 @@ fn resolved_created_item_id(
             .filter(|s| !s.is_empty())
         {
             let normalized = input.to_ascii_lowercase().replace(' ', "");
-            if let Some(item_id) = creation
-                .craftable_items
-                .iter()
-                .find(|item_id| item_id.eq_ignore_ascii_case(input) && unlocked(item_id))
-            {
+            if let Some(item_id) = creation.craftable_items.iter().find(|item_id| {
+                item_id.eq_ignore_ascii_case(input) && craftable_unlocked(state, creation, item_id)
+            }) {
                 return Some(item_id.clone());
             }
             if let Some(item_id) = creation.craftable_items.iter().find(|item_id| {
-                unlocked(item_id)
+                craftable_unlocked(state, creation, item_id)
                     && content.item(item_id).is_some_and(|item| {
                         item.label.to_ascii_lowercase().replace(' ', "") == normalized
                     })
@@ -272,7 +196,7 @@ fn resolved_created_item_id(
         return creation
             .craftable_items
             .iter()
-            .find(|item_id| available(item_id))
+            .find(|item_id| craftable_available(content, state, creation, item_id, context.room_id))
             .cloned();
     }
     if !creation.creates_item_target_template.is_empty() {

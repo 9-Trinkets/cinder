@@ -1,8 +1,8 @@
 # Floor 6 — The High Sanctuary (The Clergy & The Inquisition)
 
-Living design plan for **Level 6** of Layla. Like earlier levels (the deep forest on Floor 2, the geothermal valley on Floor 4, and the snow peaks and glaciers on Floor 5), Floor 6 is a distinct magical partitioned world: a breathtaking sacred acropolis set under open skies, featuring soaring white limestone basilicas, sunlit colonnades, open cloister courtyards, terraces overlooking endless seas of clouds, towering bell towers, and silent embalming crypts below.
+Living design plan for **Level 6** of Layla. Like earlier levels (the deep forest on Floor 2, the geothermal valley on Floor 4, and the snow peaks and glaciers on Floor 5), Floor 6 is a distinct magical partitioned world: a breathtaking sacred acropolis set under open skies, featuring soaring white limestone basilicas, sunlit colonnades, open cloister courtyards, terraces overlooking endless seas of clouds, towering bell towers, and quiet soul vaults below.
 
-Here, Layla discovers the terrifying truth of the dungeon: it is a **closed-loop bio-computational factory** that harvests living humans from the worker towns, executes them in Floor 5's citadel, and revives and brainwashes them in Floor 6 into dungeon monsters.
+Here, Layla discovers the terrifying truth of the dungeon: it is a **closed-loop monster creation pipeline** that takes workers from the worker towns, separates their spirits into soul containers in Floor 5's citadel, and re-binds them in Floor 6 into dungeon monsters, workers, and utility guardians.
 
 The gameplay genre for Floor 6 is **Social Deduction / Infiltration (Werewolf / Mafia)**. Layla infiltrates the cathedral alone as the "Werewolf" in sheep's clothing, operating under a fast-paced **Cathedral Watch Rotation (Guard Shifts)** to deduce the identities of the **Seer** and the **Witch**, learn the dark **Revival Sigil**, and unlock the main teleport platform to bring her party through.
 
@@ -10,31 +10,32 @@ All player-facing text must follow the writing guide: **simple sentences and eve
 
 ---
 
-## 1. The Lore & Narrative Spine: The Monster Assembly Line
+## 1. The Lore & Narrative Spine: The Monster Creation Pipeline
 
-Up until Floor 6, the player has encountered monsters as combat obstacles and seen people taken away as "offerings." Floor 6 exposes the industrial pipeline that connects them:
+Up until Floor 6, the player has encountered monsters as combat obstacles and seen people taken away as "offerings." Floor 6 exposes the factory pipeline that connects them:
 
 ```
 [Floor 4 / Worker Towns]  ──(Harvest)──────>  Civilians selected as "Offerings"
                                                    │
                                                    ▼
-[Floor 5 / Frost Citadel] ──(Execution)────>  Caged in Courtyard & Systematically Executed
+[Floor 5 / Frost Citadel] ──(Separation)───>  Caged in Courtyard; Spirits Separated from Shells
                                                    │
                                                    ▼
-[Floor 6 / High Sanctuary]──(Reprogramming)─>  Corpses Revived via Revival Sigil
+[Floor 6 / High Sanctuary]──(Re-binding)───>  Spirits Sealed in Anchored Soul Containers
                                               Memories Erased via "Rite of Oblivion"
-                                              Bound into Dungeon Monsters (Golems, Elves, Beasts)
+                                              Bound into Monster Shells (Golems, Elves, Beasts)
                                                    │
                                                    ▼
-[Floors 1, 2, 3]          ──(Deployment)───>  Stocked on lower floors as game pieces
+[Entire Kingdom & Dungeon]──(Deployment)───>  Deployed as Workers, Guards, and Utilities
+                                              (Deepwell, Worker Towns, and Dungeon Floors 1-3)
 ```
 
 ### The Truth of the Disappeared
-In the High Sanctuary’s mortuary records and embalming vaults, Layla finds the ledger of transitions:
-- **Sakhra** (Zayd's father) was an executed miner from Deepwell, revived and sealed in steam-driven stone.
-- **The Elf Queen** on Floor 2 was Zayd's mother, revived and placed in the chess ranks.
-- **The Goblin Golems** on Floor 1 were the earliest batches of commoners.
-- Every monster on the board was once a living person from the worker towns.
+In the High Sanctuary’s soul vaults and binding records, Layla finds the ledger of transitions:
+- **Sakhra** (Zayd's father, Jamil) was a miner from Deepwell, his spirit bound into steam-driven stone to guard his home town.
+- **The Elf Queen** on Floor 2 was Zayd's mother, her spirit bound into an elf chess piece.
+- **The Goblin Golems** on Floor 1 were early batches of workers bound to stone to guard the borders.
+- Every monster on the board and in the kingdom was once a living person from the worker towns.
 
 ### The Spirits & Defeat Mechanics: Dust, Drops, and Anchored Spirits
 
@@ -70,7 +71,7 @@ Rather than a hard failure or immersion-breaking plot armor, Einar's survival st
   - **The Keepsake (Silver Arrow Hairpin):** Einar's half of the twin arrow.
   - **The Mission Briefing:**
     > *Astrid: "The Frost Citadel is secure, Layla, but our path to the Royal Core is blocked. High above us sits Floor 6—the High Sanctuary. Its brass gates are sealed from within. Our army cannot storm those walls from the outside. If we want to reach the throne, someone must slip inside and activate their master teleport platform."*
-    > *Einar: "That cathedral is not a place of prayer, Layla. Before they threw me into the cages down here, I worked in their dispensary. The high clergy takes every person executed in this citadel, wipes their memories, and turns them into the monsters you've been fighting all the way up this tower. The man conducting this horror is their high priest, Seer Valerius. Valerius hides the ritual behind thick illusions, but someone inside can help. My partner, Orva, is trapped in the cathedral herb gardens. The priests call her 'the Witch' because she secretly brews remedies to resist their mind-wiping magic. She is also... the woman I love. Take this token to slip past their outer wards, and use these invisibility potions to walk past the guards. Find Orva, show her this arrow pin, and say: 'The arrow always finds home.' She will give you the spirit pill to reveal Valerius's ritual and defeat him."*
+    > *Einar: "That cathedral is not a place of prayer, Layla. Before they threw me into the cages down here, I worked in their dispensary. The high clergy takes the spirits separated from the people in this citadel, wipes their memories, and binds them into monster shells that guard the kingdom and the lower floors. The man conducting this horror is their high priest, Seer Valerius. Valerius hides the ritual behind thick illusions, but someone inside can help. My partner, Orva, is trapped in the cathedral herb gardens. The priests call her 'the Witch' because she secretly brews remedies to resist their mind-wiping magic. She is also... the woman I love. Take this token to slip past their outer wards, and use these invisibility potions to walk past the guards. Find Orva, show her this arrow pin, and say: 'The arrow always finds home.' She will give you the spirit pill to reveal Valerius's ritual and defeat him."*
 - **Fail-Forward Path (If Einar Fell on Floor 5):**
   - When Einar falls in the siege, his physical shell crumbles into grey dust. Layla or Astrid retrieves his leather satchel (`einar-satchel`) from the dust.
   - Inside the satchel: the Clandestine Token, the 3 Invisibility Potions, Einar's silver arrow hairpin, and his farewell note with the secret phrase.
@@ -108,7 +109,7 @@ Floor 6 cuts out complicated shift schedules and trivia tests in favor of direct
    - Layla drinks a potion and slips down into the dark stone reanimation sanctum (`mortuary_reanimation_sanctum`).
    - Before taking the pill, the room appeared to be a quiet, cold hall of stone tables and lanterns.
    - With **Spiritual Sight** active, the room is revealed in all its horror:
-     > *The chamber is filled with dozens of glowing, translucent human spirits floating silently above the altar—the souls of executed offerings waiting to be wiped and converted into monsters.*
+     > *The chamber is filled with dozens of glowing, translucent human spirits floating silently above the altar—the souls of offerings waiting to be wiped and bound into monster shells.*
      > *In the center of all the glowing spirits stands **a single living man** in dark robes conducting the binding rite: **Seer Valerius**.*
 3. **The Immediate Deduction:**
    - Layla knows at once: *Every other figure in this room is a ghost. The only living person standing among them is Seer Valerius!*

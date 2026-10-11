@@ -70,7 +70,7 @@ The Handler is Layla's remote examiner — and secretly the reigning Dungeon Mas
 
 ### When the Handler Speaks
 The Handler speaks **exclusively** on significant narrative moments:
-- **Floor transitions:** Introducing new environments (e.g. descending to Floor 2's deep wood or Floor 5's citadel).
+- **Floor transitions:** Introducing new environments (e.g. descending to Floor 2's deep wood or teleporting across to Floor 5's citadel).
 - **Major quest milestones:** Acknowledging the freeing of prisoners, finding Zayd, or clearing corrupted guardians.
 - **Tactical emergencies:** Countdown warnings when siege forces breach civilian quarters (`civilian.breach_warning`).
 - **Story friction:** Challenging Layla when her choices diverge from corporate expectations.
@@ -171,7 +171,7 @@ Quests in Layla structure player progression and provide narrative weight across
 
 | Quest Tier | UI Badge | Purpose & Scope | Player Expectation |
 |---|---|---|---|
-| **Main** (`quest_kind: "main"`) | Gold `MAIN` | Core progression spine. Mandatory objectives required to unlock routes, solve floor obstacles, and descend to deeper levels. | **Always active.** Once unlocked on Floor 4, the player must always have an active main quest step in their feed so they are never directionless. |
+| **Main** (`quest_kind: "main"`) | Gold `MAIN` | Core progression spine. Mandatory objectives required to unlock routes, solve floor obstacles, and advance to deeper floors. | **Always active.** Once unlocked on Floor 4, the player must always have an active main quest step in their feed so they are never directionless. |
 | **Side** (`quest_kind: "side"`) | Iris `SIDE` | Optional narrative arcs rooted in local communities, moral quandaries, and companion stories (e.g. *Save the Boy Zayd*, *The Five Offerings*). | Rewarded with companions, powerful gear, lore revelations, or town teleportation tokens. |
 | **Secret** (`quest_kind: "secret"`) | Pine `SECRET` | Hidden trials, secret awakening rituals, or alternative non-violent pathways discovered through experimentation, exploration, or pacifism (e.g. *Trial of the Silent Path*, *Return the Light*). | Invisible until triggered by player initiative; rewards mastery, emergent secrets, and unusual choices. |
 
@@ -195,7 +195,7 @@ Quest summaries and updates must give the player clear agency without spoiling t
 | Scenario | ❌ "How" Walkthrough (Avoid) | ❌ Evasive Mystery (Avoid) | ✅ Clear "What, Not How" (Approved) |
 |---|---|---|---|
 | Rescue Zayd | *"Turn the overpressure valve in the wash basin terrace to open the bulkhead, kill the warden, loot the key, and type unlock cage."* | *"Someone has been taken and someone has the key."* | **Summary:** *"Rescue the orphan boy Zayd from the fortress prison cage before he is shipped away."*<br>**Update:** *"The garrison is holding Zayd in an iron cage inside the military complex."* |
-| Infiltrate Fortress | *"Speak to Tariq to learn about steam lines, then vent the terrace valve or defeat the gate guards."* | *"Something down there is worth more than the men standing in front of it."* | **Summary:** *"Find a way past the sealed fortress gate to descend deeper into the dungeon."*<br>**Update:** *"The iron bulkhead seals the road north. Ask the villagers how to reach the lower floors."* |
+| Infiltrate Fortress | *"Speak to Tariq to learn about steam lines, then vent the terrace valve or defeat the gate guards."* | *"Something down there is worth more than the men standing in front of it."* | **Summary:** *"Find a way past the sealed fortress gate to reach the teleport platform."*<br>**Update:** *"The iron bulkhead seals the road north. Ask the villagers how to reach the military complex."* |
 | Teleportation Scroll | *"Defeat Commander Malik in the bastion, take his key, unlock his safe, and read the scroll."* | *"A door that does not open for you holds what you need."* | **Summary:** *"Retrieve Commander Malik's Teleportation Scroll from the fortress safe."*<br>**Update:** *"The scroll is locked inside Commander Malik's safe within the fortress bastion."* |
 | Return the Light (Secret) | *"Stand in front of Sakhra with Zayd's lantern in inventory and run awaken sakhra."* | *"Something in the square has been standing out there a long time."* | **Summary:** *"Bring the amber light of Zayd's lantern to the silent guardian golem Sakhra in the village square."*<br>**Update:** *"The amber filament in Zayd's miner lantern matches the core of the stone golem standing silent in the square."* |
 

@@ -63,7 +63,8 @@
               "orders": [
                 "follow",
                 "patrol",
-                "guard"
+                "guard",
+                "deploy"
               ]
             }
           ],

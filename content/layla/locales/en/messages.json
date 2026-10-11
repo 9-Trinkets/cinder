@@ -161,7 +161,7 @@
     "floor4.arrival.the_village": "You step off the last stair into gaslight and the smell of bread. Warm stone rings under your boots, worn pale in a path from the stairs down to a low iron hearth. Somebody has raked ash over a pair of small boots by the hearthstones and gone off to do something else. Up ahead, past the steam pipes, an iron bulkhead seals off the entire north side of the village, and two soldiers stand in front of it not moving at all. Somewhere behind the terraces a cart wheel grinds over a grate, and somebody calls a number out loud and gets it wrong.",
     "handler.descend.the_village": {
         "voice": "handler",
-        "text": "Floor four. Worker settlement — picking up civilian life signs. Keep your head down and stay off the garrison's radar. Quest feed enabled. Find the route down."
+        "text": "Floor four. Worker settlement — picking up civilian life signs. Keep your head down and stay off the garrison's radar. Quest feed enabled. Find the platform."
     },
     "handler.descend.high_sanctuary": {
         "voice": "handler",
@@ -211,7 +211,7 @@
     },
     "handler.quest.teleport_scroll_complete": {
         "voice": "handler",
-        "text": "Signed off on the retrieval. What you found inside stays off the record. The floor below is open. Move."
+        "text": "Signed off on the retrieval. What you found inside stays off the record. The next floor is open. Move."
     },
     "handler.quest.free_prisoners_complete": {
         "voice": "handler",
@@ -252,7 +252,7 @@
         "text": "The shell holds a man again. Record updated. Some lines read better quiet. Move when ready."
     },
     "sigil.chalk_anchor_placed": "You draw the double triangle on the stone. The chalk glows with a soft light, anchoring this room.",
-    "platform.activated": "As you finish tracing the double triangle, blue light flares through the brass conduits. The platform roars to life with ancient power, opening the descent to Floor 5!",
+    "platform.activated": "As you finish tracing the double triangle, blue light flares through the brass conduits. The platform roars to life with ancient power, powering transit to Floor 5!",
     "transformation.wake.intro": "The warmth of high wisdom stirs deep within {actor_name}. The fog in their mind shatters.",
     "transformation.wake.fragment": "\"{fragment}\"",
     "transformation.wake.reveal": "{actor_name} remembers who they are: {actor_name} is now {woken_name}.",

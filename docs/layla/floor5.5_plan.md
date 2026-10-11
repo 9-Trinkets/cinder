@@ -21,7 +21,7 @@ Between the heavy battle at the Frost Citadel (Floor 5) and sneaking alone into 
 ## 1. Story & Setting: The Real People Behind the Monsters
 
 ### The Break Between Floors 5 and 6
-On Floor 5, Layla saved five workers locked in cages while rival noble houses attacked the castle. On Floor 6, she will learn a dark secret: the dungeon is a giant factory that takes normal workers, wipes their memories, and turns them into monsters for the lower floors.
+On Floor 5, Layla saved five workers locked in cages while rival noble houses attacked the castle. On Floor 6, she will learn a dark secret: the dungeon is a giant factory that takes normal workers, separates their spirits into soul containers, wipes their memories, and binds them into monsters, workers, and utility guardians placed across the kingdom and the lower floors.
 
 **Floor 5.5 connects those two parts of the story.**
 
