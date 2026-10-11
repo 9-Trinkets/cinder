@@ -99,6 +99,9 @@ impl MovementEligibilityPolicy for DefaultMovementEligibilityPolicy {
         if should_hold(content, state, &actor.id) {
             return false;
         }
+        if state.actor_is_imprisoned(content, &actor.id) {
+            return false;
+        }
         true
     }
 }

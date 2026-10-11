@@ -12723,10 +12723,10 @@
       },
       {
         "room_id": "scriptorium_archive_vault",
-        "label": "East",
+        "label": "West",
         "aliases": [
-          "east",
-          "e",
+          "west",
+          "w",
           "vault",
           "archive",
           "catechism"
@@ -12754,7 +12754,7 @@
     "id": "scriptorium_library",
     "title": "The Great Cathedral Library",
     "summary": "Towering cedar bookshelves rise two stories high, accessed by rolling brass ladders. Hundreds of bound folios and manuscripts stand in orderly cataloged rows.",
-    "inspect_text": "Leather-bound volumes of theological law, astronomical tables, and historical chronicles fill the shelves. An inconspicuous corner shelf conceals a sliding seam to the east.",
+    "inspect_text": "Leather-bound volumes of theological law, astronomical tables, and historical chronicles fill the shelves. An inconspicuous corner shelf conceals a sliding seam to the west.",
     "allow_rest": true,
     "features": [
       {
@@ -12787,10 +12787,10 @@
       },
       {
         "room_id": "scriptorium_secret_archive",
-        "label": "East",
+        "label": "West",
         "aliases": [
-          "east",
-          "e",
+          "west",
+          "w",
           "secret",
           "archive",
           "shelf",
@@ -12806,7 +12806,7 @@
     "id": "scriptorium_archive_vault",
     "title": "The Catechism Chamber",
     "summary": "A reinforced stone chamber lined with iron-bound chest drawers. Manuscripts containing official dogma catechisms, exam rubrics, and liturgical hours are kept here under lock.",
-    "inspect_text": "Heavy iron grates secure several of the manuscript drawers. Passages lead west to the main scriptorium and north toward the inner archives.",
+    "inspect_text": "Heavy iron grates secure several of the manuscript drawers. Passages lead east to the main scriptorium and north toward the inner archives.",
     "allow_rest": false,
     "features": [
       {
@@ -12826,10 +12826,10 @@
     "exits": [
       {
         "room_id": "scriptorium_cloister",
-        "label": "West",
+        "label": "East",
         "aliases": [
-          "west",
-          "w",
+          "east",
+          "e",
           "scriptorium",
           "hall",
           "back"
@@ -12877,10 +12877,10 @@
     "exits": [
       {
         "room_id": "scriptorium_library",
-        "label": "West",
+        "label": "East",
         "aliases": [
-          "west",
-          "w",
+          "east",
+          "e",
           "library",
           "books",
           "back"
@@ -12959,7 +12959,7 @@
     "id": "herbarium_garden",
     "title": "The Glass Solarium",
     "summary": "A warm, bright botanical courtyard covered by an intricate wrought-iron and glass dome. Raised stone beds hold rare alpine mosses, flowering medicinal shrubs, and terraced herbs.",
-    "inspect_text": "Steam from warm floor pipes keeps the air humid and fragrant. Stone benches line the perimeter, stairs lead up to the Southwest Garden Bastion, and doors open south to the dispensary and west to the still room.",
+    "inspect_text": "Steam from warm floor pipes keeps the air humid and fragrant. Stone benches line the perimeter, stairs lead up to the Southwest Garden Bastion, and doors open south to the still room and east to the dispensary.",
     "allow_rest": true,
     "features": [
       {
@@ -12991,29 +12991,29 @@
         "requires_story_var": ""
       },
       {
-        "room_id": "herbarium_apothecary",
+        "room_id": "herbarium_still_room",
         "label": "South",
         "aliases": [
           "south",
           "s",
-          "apothecary",
-          "dispensary",
-          "shop"
-        ],
-        "menu_label": "Enter the Dispensary Hall",
-        "requires_story_var": ""
-      },
-      {
-        "room_id": "herbarium_still_room",
-        "label": "West",
-        "aliases": [
-          "west",
-          "w",
           "still",
           "distillation",
           "lab"
         ],
         "menu_label": "Enter the Distillation Chamber",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "herbarium_apothecary",
+        "label": "East",
+        "aliases": [
+          "east",
+          "e",
+          "apothecary",
+          "dispensary",
+          "shop"
+        ],
+        "menu_label": "Enter the Dispensary Hall",
         "requires_story_var": ""
       },
       {
@@ -13056,10 +13056,10 @@
     "exits": [
       {
         "room_id": "herbarium_garden",
-        "label": "North",
+        "label": "West",
         "aliases": [
-          "north",
-          "n",
+          "west",
+          "w",
           "garden",
           "solarium",
           "back"
@@ -13069,10 +13069,10 @@
       },
       {
         "room_id": "herbarium_water_clock",
-        "label": "West",
+        "label": "South",
         "aliases": [
-          "west",
-          "w",
+          "south",
+          "s",
           "clock",
           "water clock",
           "cloister"
@@ -13107,10 +13107,10 @@
     "exits": [
       {
         "room_id": "herbarium_garden",
-        "label": "East",
+        "label": "North",
         "aliases": [
-          "east",
-          "e",
+          "north",
+          "n",
           "garden",
           "solarium",
           "back"
@@ -13120,10 +13120,10 @@
       },
       {
         "room_id": "herbarium_water_clock",
-        "label": "South",
+        "label": "East",
         "aliases": [
-          "south",
-          "s",
+          "east",
+          "e",
           "clock",
           "water clock"
         ],
@@ -13157,10 +13157,10 @@
     "exits": [
       {
         "room_id": "herbarium_still_room",
-        "label": "North",
+        "label": "West",
         "aliases": [
-          "north",
-          "n",
+          "west",
+          "w",
           "still",
           "distillation",
           "lab"
@@ -13170,10 +13170,10 @@
       },
       {
         "room_id": "herbarium_apothecary",
-        "label": "East",
+        "label": "North",
         "aliases": [
-          "east",
-          "e",
+          "north",
+          "n",
           "apothecary",
           "dispensary",
           "hall"
@@ -13240,7 +13240,7 @@
     "id": "mortuary_descent",
     "title": "The Undercrypt Stairs",
     "summary": "A broad spiral staircase of pale dressed stone winds down beneath the acropolis. Brass wall sconces cast long shadows across the cool limestone steps.",
-    "inspect_text": "The air grows cooler with every step. Passages branch east toward the silent catacombs and south into the embalming hall.",
+    "inspect_text": "The air grows cooler with every step. Passages branch west toward the embalming laboratory and south into the silent catacombs.",
     "allow_rest": false,
     "features": [
       {
@@ -13274,10 +13274,10 @@
       },
       {
         "room_id": "mortuary_crypt",
-        "label": "East",
+        "label": "South",
         "aliases": [
-          "east",
-          "e",
+          "south",
+          "s",
           "crypt",
           "catacombs"
         ],
@@ -13286,15 +13286,29 @@
       },
       {
         "room_id": "mortuary_embalming_hall",
-        "label": "South",
+        "label": "West",
         "aliases": [
-          "south",
-          "s",
+          "west",
+          "w",
           "embalming",
           "lab",
           "hall"
         ],
         "menu_label": "Enter the Embalming Laboratory",
+        "requires_story_var": ""
+      },
+      {
+        "room_id": "sanctuary_wall_se_tower",
+        "label": "Up",
+        "aliases": [
+          "up",
+          "u",
+          "ladder",
+          "flue",
+          "tower",
+          "bastion"
+        ],
+        "menu_label": "Climb ladder to Southeast Bastion",
         "requires_story_var": ""
       }
     ],
@@ -13304,7 +13318,7 @@
     "id": "mortuary_crypt",
     "title": "The Silent Catacombs",
     "summary": "Vaulted stone corridors lined with burial niches and carved sarcophagi. The atmosphere is solemn, quiet, and chill, disturbed only by a faint draft from the corner flue.",
-    "inspect_text": "Stone plaques commemorate forgotten overseers. An iron ladder in a recessed chimney climbs to the Southeast Charnel Bastion, while a heavy arch leads south to the reanimation sanctum.",
+    "inspect_text": "Stone plaques commemorate forgotten overseers. Passages lead north to the undercrypt stairs and west toward the inner sanctum.",
     "allow_rest": false,
     "features": [
       {
@@ -13324,10 +13338,10 @@
     "exits": [
       {
         "room_id": "mortuary_descent",
-        "label": "West",
+        "label": "North",
         "aliases": [
-          "west",
-          "w",
+          "north",
+          "n",
           "stairs",
           "descent",
           "back"
@@ -13337,29 +13351,15 @@
       },
       {
         "room_id": "mortuary_reanimation_sanctum",
-        "label": "South",
+        "label": "West",
         "aliases": [
-          "south",
-          "s",
+          "west",
+          "w",
           "sanctum",
           "seer",
           "in"
         ],
         "menu_label": "Enter the Reanimation Sanctum",
-        "requires_story_var": ""
-      },
-      {
-        "room_id": "sanctuary_wall_se_tower",
-        "label": "Up",
-        "aliases": [
-          "up",
-          "u",
-          "ladder",
-          "flue",
-          "tower",
-          "bastion"
-        ],
-        "menu_label": "Climb ladder to Southeast Bastion",
         "requires_story_var": ""
       }
     ],
@@ -13389,10 +13389,10 @@
     "exits": [
       {
         "room_id": "mortuary_descent",
-        "label": "North",
+        "label": "East",
         "aliases": [
-          "north",
-          "n",
+          "east",
+          "e",
           "stairs",
           "descent",
           "back"
@@ -13402,10 +13402,10 @@
       },
       {
         "room_id": "mortuary_reanimation_sanctum",
-        "label": "East",
+        "label": "South",
         "aliases": [
-          "east",
-          "e",
+          "south",
+          "s",
           "sanctum",
           "seer"
         ],
@@ -13439,10 +13439,10 @@
     "exits": [
       {
         "room_id": "mortuary_embalming_hall",
-        "label": "West",
+        "label": "North",
         "aliases": [
-          "west",
-          "w",
+          "north",
+          "n",
           "embalming",
           "lab",
           "back"
@@ -13452,10 +13452,10 @@
       },
       {
         "room_id": "mortuary_crypt",
-        "label": "North",
+        "label": "East",
         "aliases": [
-          "north",
-          "n",
+          "east",
+          "e",
           "crypt",
           "catacombs"
         ],
@@ -13760,7 +13760,7 @@
     "id": "sanctuary_wall_se_tower",
     "title": "The Southeast Charnel Bastion",
     "summary": "A heavy, thick-walled stone bastion built above the mountain's eastern drop. Cold mountain air howls past narrow slit windows, carrying the scent of snow and cedar smoke.",
-    "inspect_text": "Catwalks lead north along the East Rampart and west along the South Terrace Wall. A recessed iron ladder leads down into the mortuary catacombs.",
+    "inspect_text": "Catwalks lead north along the East Rampart and west along the South Terrace Wall. A recessed iron ladder leads down into the mortuary undercrypt.",
     "allow_rest": false,
     "features": [
       {
@@ -13804,16 +13804,17 @@
         "requires_story_var": ""
       },
       {
-        "room_id": "mortuary_crypt",
+        "room_id": "mortuary_descent",
         "label": "Down",
         "aliases": [
           "down",
           "d",
           "ladder",
-          "crypt",
-          "catacombs"
+          "descent",
+          "stairs",
+          "undercrypt"
         ],
-        "menu_label": "Climb ladder down to Catacombs",
+        "menu_label": "Climb ladder down to Undercrypt",
         "requires_story_var": ""
       }
     ],

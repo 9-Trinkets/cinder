@@ -69,6 +69,9 @@ fn try_surround_room(
             if relationship.stance == ActorStance::Allied || relationship.follows_player {
                 return false;
             }
+            if state.actor_is_imprisoned(content, &actor.id) {
+                return false;
+            }
             true
         })
         .map(|actor| (actor.id.clone(), actor.room_id.clone()))

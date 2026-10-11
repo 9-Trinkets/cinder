@@ -1843,3 +1843,46 @@ fn floor5_squad_party_marches_together_and_promotes_follower_on_leader_defeat() 
     assert_eq!(state.actor_room_id(&f1_id, ""), "frost_wolf_gallery");
     assert_eq!(state.actor_room_id(&f2_id, ""), "frost_wolf_gallery");
 }
+
+#[test]
+fn caged_actors_cannot_be_charmed_or_follow_player_before_unlocking_cages() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_center".to_string();
+
+    // Verify caged actors are marked as imprisoned initially
+    assert!(state.actor_is_imprisoned(&pack, "commander_astrid"));
+    assert!(state.actor_is_imprisoned(&pack, "einar"));
+    assert!(state.actor_is_imprisoned(&pack, "nivi_olsen"));
+    assert!(state.actor_is_imprisoned(&pack, "eliska_novakova"));
+
+    // If an imprisoned actor has follows_player = true, moving player must NOT move them
+    state.set_follows_player("commander_astrid", true);
+    state.set_follows_player("nivi_olsen", true);
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+    runtime
+        .run_turn("go north")
+        .expect("walk to courtyard_north");
+    let s_after_move = runtime.export_state().unwrap();
+
+    assert_eq!(s_after_move.current_room_id, "courtyard_north");
+    assert_eq!(
+        s_after_move.actor_room_id("commander_astrid", "courtyard_center"),
+        "courtyard_center",
+        "Astrid must remain locked in courtyard_center cage"
+    );
+    assert_eq!(
+        s_after_move.actor_room_id("nivi_olsen", "courtyard_center"),
+        "courtyard_center",
+        "Civilians must remain locked in courtyard_center cage"
+    );
+
+    // Now unlock cages and verify they are no longer imprisoned
+    let mut s_unlocked = s_after_move;
+    s_unlocked
+        .story_vars
+        .set_unchecked("courtyard_cages_opened", "true");
+    assert!(!s_unlocked.actor_is_imprisoned(&pack, "commander_astrid"));
+    assert!(!s_unlocked.actor_is_imprisoned(&pack, "nivi_olsen"));
+}

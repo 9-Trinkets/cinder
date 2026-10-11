@@ -44,6 +44,38 @@ impl WorldState {
         self.actor_room_id(actor_id, &actor.room_id) == room_id
     }
 
+    /// Whether an actor is currently locked in a cell or cage and unable to
+    /// move, be converted by charm encirclement, or follow the player.
+    pub fn actor_is_imprisoned(&self, content: &ContentPack, actor_id: &str) -> bool {
+        // Floor 5 courtyard cages:
+        let cages_opened = self.story_vars.get("courtyard_cages_opened") == Some("true")
+            || self
+                .active_objective_stage_ids
+                .iter()
+                .any(|id| id == "sq_five_offerings");
+        if !cages_opened {
+            let is_courtyard_prisoner = actor_id == "commander_astrid"
+                || actor_id == "einar"
+                || content
+                    .actor(actor_id)
+                    .is_some_and(|a| a.tags.iter().any(|t| t == "offering" || t == "civilian"));
+            if is_courtyard_prisoner && self.actor_is_in_room(content, actor_id, "courtyard_center")
+            {
+                return true;
+            }
+        }
+
+        // Floor 4 garrison holding cell:
+        if actor_id == "zayd"
+            && self.story_vars.get("zayd_rescued") != Some("true")
+            && self.actor_is_in_room(content, actor_id, "garrison_holding_cell")
+        {
+            return true;
+        }
+
+        false
+    }
+
     pub fn actor_has_visited_room(&self, actor_id: &str, room_id: &str) -> bool {
         self.actor_known_room_ids
             .get(actor_id)

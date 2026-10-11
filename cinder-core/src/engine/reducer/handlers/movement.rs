@@ -115,6 +115,9 @@ pub(crate) fn sync_followers_to_room(
         if state.actor_stat(&follower_id, &content.settings.combat.health_stat_id) <= 0 {
             continue;
         }
+        if state.actor_is_imprisoned(content, &follower_id) {
+            continue;
+        }
         let follower_room = state.actor_current_room_id(content, &follower_id);
         let already_here = follower_room == to_room_id;
         if already_here {

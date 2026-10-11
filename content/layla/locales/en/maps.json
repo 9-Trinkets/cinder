@@ -1195,12 +1195,12 @@
       },
       {
         "room_id": "scriptorium_archive_vault",
-        "x": 21.0,
+        "x": 15.0,
         "y": 6.0
       },
       {
         "room_id": "scriptorium_secret_archive",
-        "x": 21.0,
+        "x": 15.0,
         "y": 3.0
       },
       {
@@ -1240,22 +1240,22 @@
       },
       {
         "room_id": "mortuary_crypt",
-        "x": 21.0,
-        "y": 18.0
-      },
-      {
-        "room_id": "mortuary_embalming_hall",
         "x": 18.0,
         "y": 21.0
       },
       {
+        "room_id": "mortuary_embalming_hall",
+        "x": 15.0,
+        "y": 18.0
+      },
+      {
         "room_id": "mortuary_reanimation_sanctum",
-        "x": 21.0,
+        "x": 15.0,
         "y": 21.0
       },
       {
         "room_id": "sanctuary_main_platform",
-        "x": 21.0,
+        "x": 15.0,
         "y": 24.0
       }
     ],

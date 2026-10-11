@@ -129,7 +129,7 @@ fn floor6_outer_wall_ring_traversal() {
         ("sanctuary_wall_nw_tower", "basilica_nave"),
         ("sanctuary_wall_ne_tower", "scriptorium_cloister"),
         ("sanctuary_wall_sw_tower", "herbarium_garden"),
-        ("sanctuary_wall_se_tower", "mortuary_crypt"),
+        ("sanctuary_wall_se_tower", "mortuary_descent"),
     ];
 
     for (tower, interior) in corner_connections {
