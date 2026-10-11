@@ -68,8 +68,9 @@ Rather than a hard failure or immersion-breaking plot armor, Einar's survival st
   - **1x Clandestine Sanctuary Token:** Teleports Layla alone into the High Sanctuary terrace.
   - **3x Invisibility Potions:** Cool glass bottles that hide Layla from cathedral guards for 8 turns each.
   - **The Keepsake (Silver Arrow Hairpin):** Einar's half of the twin arrow.
-  - **The Instruction:**
-    > *"Find Orva in the herb garden. She wears the other half of this silver arrow pinned in her hair. Say to her: 'The arrow always finds home.' She has a pill that lets you see spirits. The cathedral is full of white-armored guards who will attack strangers on sight. Drink a potion whenever you need to slip past them without being seen."*
+  - **The Mission Briefing:**
+    > *Astrid: "The Frost Citadel is secure, Layla, but our path to the Royal Core is blocked. High above us sits Floor 6—the High Sanctuary. Its brass gates are sealed from within. Our army cannot storm those walls from the outside. If we want to reach the throne, someone must slip inside and activate their master teleport platform."*
+    > *Einar: "That cathedral is not a place of prayer, Layla. Before they threw me into the cages down here, I worked in their dispensary. The high clergy takes every person executed in this citadel, wipes their memories, and turns them into the monsters you've been fighting all the way up this tower. The man conducting this horror is their high priest, Seer Valerius. Valerius hides the ritual behind thick illusions, but someone inside can help. My partner, Orva, is trapped in the cathedral herb gardens. The priests call her 'the Witch' because she secretly brews remedies to resist their mind-wiping magic. She is also... the woman I love. Take this token to slip past their outer wards, and use these invisibility potions to walk past the guards. Find Orva, show her this arrow pin, and say: 'The arrow always finds home.' She will give you the spirit pill to reveal Valerius's ritual and defeat him."*
 - **Fail-Forward Path (If Einar Fell on Floor 5):**
   - When Einar falls in the siege, his physical shell crumbles into grey dust. Layla or Astrid retrieves his leather satchel (`einar-satchel`) from the dust.
   - Inside the satchel: the Clandestine Token, the 3 Invisibility Potions, Einar's silver arrow hairpin, and his farewell note with the secret phrase.

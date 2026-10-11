@@ -32,13 +32,17 @@ pub enum SpawnActorOutcome {
 }
 
 impl WorldState {
-    /// Removes every runtime instance created from `template_id`.
+    /// Removes every runtime instance created from `template_id` that is not allied to the player.
     pub fn despawn_template_instances(&mut self, template_id: &str) -> usize {
         let prefix = format!("{template_id}-");
         let actor_ids = self
             .spawned_actors
             .keys()
             .filter(|actor_id| actor_id.starts_with(&prefix))
+            .filter(|actor_id| {
+                let rel = self.relationship(actor_id);
+                rel.stance != ActorStance::Allied && !rel.follows_player
+            })
             .cloned()
             .collect::<Vec<_>>();
         for actor_id in &actor_ids {

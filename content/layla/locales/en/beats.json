@@ -269,8 +269,13 @@
       "beat_note": "Layla enters Floor 6 alone using the clandestine sanctuary token. Her party remains on Floor 5 until the main teleport platform is unlocked.",
       "update_message": "Infiltrate the High Sanctuary alone using the clandestine token.",
       "narrative_lines": [
-        "Einar places a silver token and three bottles of blue invisibility potion into your hands. Beside them, he gives you a silver hairpin shaped like a feathered arrow.",
-        "Einar: My love, Orva... she is trapped inside as the cathedral herbalist. She is the Witch. Show her this arrow pin and tell her: The arrow always finds home. She will give you what you need to expose the Seer. Drink the potions to slip past the white guards unseen."
+        "Astrid lowers her great shield and points toward the towering white spire rising through the mountain clouds above.",
+        "Astrid: The Frost Citadel is secure, Layla, but our path to the Royal Core is blocked. High above us sits Floor 6—the High Sanctuary. Its brass gates are sealed from within. Our army cannot storm those walls from the outside. If we want to reach the throne, someone must slip inside and activate their master teleport platform.",
+        "Einar steps forward, his expression grave as he clutches his herbalist satchel.",
+        "Einar: That cathedral is not a place of prayer, Layla. Before they threw me into the cages down here, I worked in their dispensary. The high clergy takes every person executed in this citadel, wipes their memories, and turns them into the monsters you've been fighting all the way up this tower. The man conducting this horror is their high priest, Seer Valerius.",
+        "Einar: Valerius hides the ritual behind thick illusions, but someone inside can help. My partner, Orva, is trapped in the cathedral herb gardens. The priests call her 'the Witch' because she secretly brews remedies to resist their mind-wiping magic. She is also... the woman I love.",
+        "Einar presses a silver token, three bottles of blue invisibility potion, and a silver hairpin shaped like a feathered arrow into your hands.",
+        "Einar: This token can slip only one person through their outer wards. Drink these invisibility potions to walk past the white-armored cathedral guards unseen. Find Orva in the herb garden. Show her this arrow pin and tell her: 'The arrow always finds home.' She will give you the spirit pill to reveal Valerius's ritual and defeat him. Once the Seer falls, activate the master platform so Astrid and the rest of us can join you."
       ],
       "on_advance_effects": [
         {

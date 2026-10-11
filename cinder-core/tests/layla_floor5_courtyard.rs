@@ -792,6 +792,86 @@ fn floor5_wave_one_raiders_march_until_their_lane_stops() {
 }
 
 #[test]
+fn floor5_charmed_soldiers_do_not_despawn_when_house_lane_stops() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_north".to_string();
+    state.active_objective_stage_ids = vec!["frost_wolf_dispatch".to_string()];
+
+    // Spawn 2 frost wolf raiders
+    let raider1 = match state.spawn_actor(
+        &pack,
+        SpawnActorConfig {
+            template_id: "frost_wolf_raider",
+            room_id: Some("courtyard_north"),
+            stance: None,
+            follows_player: false,
+            scale_with_actor_id: None,
+            scale_stat: None,
+            max_active_instances: None,
+        },
+    ) {
+        SpawnActorOutcome::Success(info) => info.instance_id,
+        outcome => panic!("expected spawn, got {outcome:?}"),
+    };
+    let raider2 = match state.spawn_actor(
+        &pack,
+        SpawnActorConfig {
+            template_id: "frost_wolf_raider",
+            room_id: Some("courtyard_north"),
+            stance: None,
+            follows_player: false,
+            scale_with_actor_id: None,
+            scale_stat: None,
+            max_active_instances: None,
+        },
+    ) {
+        SpawnActorOutcome::Success(info) => info.instance_id,
+        outcome => panic!("expected spawn, got {outcome:?}"),
+    };
+
+    // Charm raider1: mark allied and following player
+    state.set_stance(&raider1, ActorStance::Allied);
+    state.set_follows_player(&raider1, true);
+
+    // Now stop the Frost-Wolf lane (head of house defeated or charmed)
+    state
+        .story_vars
+        .set_unchecked("frost_wolf_lane_stopped", "true");
+    state.current_time_minutes += 30;
+
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+    let routed = runtime.run_turn("look").expect("look on routed turn");
+
+    let after_stop = runtime.export_state().expect("export state");
+    // raider2 was not charmed, so it should be routed and despawned
+    assert!(
+        !after_stop.spawned_actors.contains_key(&raider2),
+        "uncharmed raider2 should be despawned on rout"
+    );
+    // raider1 was charmed by Layla, so it must NOT be despawned!
+    assert!(
+        after_stop.spawned_actors.contains_key(&raider1),
+        "charmed raider1 must stay with Layla when head of house retreats"
+    );
+    assert_eq!(
+        after_stop.relationship(&raider1).stance,
+        ActorStance::Allied,
+        "charmed raider1 remains allied"
+    );
+    assert!(
+        after_stop.relationship(&raider1).follows_player,
+        "charmed raider1 continues following player"
+    );
+    // The rout narrative should only mention the 1 uncharmed soldier that broke formation
+    assert!(
+        routed.text().contains("1 raiders break formation"),
+        "rout message should count only uncharmed soldiers: {}",
+        routed.text()
+    );
+}
+
+#[test]
 fn floor5_guard_blocks_wave_soldiers_at_the_north_approach() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);
