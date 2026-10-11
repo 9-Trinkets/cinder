@@ -2,6 +2,7 @@ use crate::content::types::ContentPack;
 use crate::engine::events::ObservationMode;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
+use crate::engine::reducer::context::ReduceCtx;
 use crate::engine::reducer::observation::{
     render_feature_consumables_line, render_room_observation, render_story_text,
 };
@@ -21,13 +22,10 @@ pub(crate) fn handle_current_room_observed(
     }
 }
 
-pub(crate) fn handle_feature_observed(
-    state: &mut WorldState,
-    content: &ContentPack,
-    room_id: &str,
-    feature_id: &str,
-    lines: &mut NarrativeLines,
-) {
+pub(crate) fn handle_feature_observed(ctx: &mut ReduceCtx<'_>, room_id: &str, feature_id: &str) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     if let Some(feature) = content.feature(room_id, feature_id) {
         lines.narration(feature.inspect_text.clone());
         if let Some(consumables_line) =
@@ -50,12 +48,10 @@ pub(crate) fn handle_feature_observed(
     ));
 }
 
-pub(crate) fn handle_actor_observed(
-    state: &mut WorldState,
-    content: &ContentPack,
-    actor_id: &str,
-    lines: &mut NarrativeLines,
-) {
+pub(crate) fn handle_actor_observed(ctx: &mut ReduceCtx<'_>, actor_id: &str) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     if let Some(actor) = content.actor(actor_id) {
         let inspect = if let Some(rename) = content
             .applied_transformation(state, actor_id)
@@ -78,13 +74,14 @@ pub(crate) fn handle_actor_observed(
 }
 
 pub(crate) fn handle_actor_observed_room(
-    state: &mut WorldState,
-    content: &ContentPack,
+    ctx: &mut ReduceCtx<'_>,
     actor_id: &str,
     actor_name: &str,
     room_id: &str,
-    lines: &mut NarrativeLines,
 ) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     if let Some(room) = content.room(room_id) {
         state.mark_actor_observed_room(actor_id, room_id);
         state.push_actor_observation_note(actor_id, room.inspect_text.clone());
@@ -105,14 +102,15 @@ pub(crate) fn handle_actor_observed_room(
 }
 
 pub(crate) fn handle_actor_observed_feature(
-    state: &mut WorldState,
-    content: &ContentPack,
+    ctx: &mut ReduceCtx<'_>,
     actor_id: &str,
     actor_name: &str,
     room_id: &str,
     feature_id: &str,
-    lines: &mut NarrativeLines,
 ) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     if let Some(feature) = content.feature(room_id, feature_id) {
         state.mark_actor_feature_seen(actor_id, room_id, feature_id);
         state.push_actor_observation_note(actor_id, feature.inspect_text.clone());
@@ -140,16 +138,17 @@ pub(crate) struct ActorObservationContext<'a> {
 }
 
 pub(crate) fn handle_actor_observed_actor(
-    state: &mut WorldState,
-    content: &ContentPack,
+    ctx: &mut ReduceCtx<'_>,
     room_id: &str,
-    lines: &mut NarrativeLines,
-    ctx: ActorObservationContext<'_>,
+    aoc: ActorObservationContext<'_>,
 ) {
-    let actor_id = ctx.actor_id;
-    let actor_name = ctx.actor_name;
-    let target_actor_id = ctx.target_actor_id;
-    let target_actor_name = ctx.target_actor_name;
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
+    let actor_id = aoc.actor_id;
+    let actor_name = aoc.actor_name;
+    let target_actor_id = aoc.target_actor_id;
+    let target_actor_name = aoc.target_actor_name;
     if let Some(target_actor) = content.actor(target_actor_id) {
         state.mark_actor_studied_actor(actor_id, target_actor_id);
         state.push_actor_observation_note(actor_id, target_actor.inspect_text.clone());

@@ -1,20 +1,17 @@
-use crate::content::types::ContentPack;
 use crate::engine::combat_cooldowns::{CombatCooldownKind, actor_combat_cooldown_minutes};
 use crate::engine::combat_targets::select_hostile_target;
-use crate::engine::narrative::NarrativeLines;
 use crate::engine::party_policy::{consume_party_reaction, select_defensive_reaction};
 use crate::engine::reducer::combat::{defeat_actor, resisted_damage};
 use crate::engine::reducer::command_effects::{actor_display_name, defeat_player_if_dead};
-use crate::engine::state::{ActorStance, GamePhase, WorldState};
+use crate::engine::state::{ActorStance, GamePhase};
 
+use super::super::context::ReduceCtx;
 use super::combat_reactions::resolve_post_damage_reactions;
 
-pub(crate) fn handle_hostile_strike(
-    state: &mut WorldState,
-    content: &ContentPack,
-    actor_id: &str,
-    lines: &mut NarrativeLines,
-) {
+pub(crate) fn handle_hostile_strike(ctx: &mut ReduceCtx<'_>, actor_id: &str) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     let combat = &content.settings.combat;
     if state.phase != GamePhase::Active
         || state.stance(actor_id) != ActorStance::Hostile
@@ -207,24 +204,26 @@ pub(crate) fn handle_hostile_strike(
 }
 
 pub(crate) fn handle_pair_stat_adjusted(
-    state: &mut WorldState,
+    ctx: &mut ReduceCtx<'_>,
     participant_a_id: &str,
     participant_b_id: &str,
     stat: &str,
     delta: i32,
 ) {
+    let state = &mut *ctx.state;
     let _ = state.adjust_pair_stat(participant_a_id, participant_b_id, stat, delta);
 }
 
 pub(crate) fn handle_hostile_heal(
-    state: &mut WorldState,
-    content: &ContentPack,
+    ctx: &mut ReduceCtx<'_>,
     actor_id: &str,
     target_id: &str,
     amount: i32,
     message: &str,
-    lines: &mut NarrativeLines,
 ) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     let combat = &content.settings.combat;
     if state.phase != GamePhase::Active
         || state.stance(actor_id) != ActorStance::Hostile

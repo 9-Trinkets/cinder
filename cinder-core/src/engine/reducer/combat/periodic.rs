@@ -4,15 +4,17 @@ use crate::content::types::{
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{GamePhase, WorldState};
 
+use super::super::context::ReduceCtx;
 use super::{actor_display_name, defeat_actor, defeat_player_if_dead};
 
 pub(in crate::engine::reducer) fn handle_periodic_actor_effect_applied(
-    state: &mut WorldState,
-    content: &ContentPack,
+    ctx: &mut ReduceCtx<'_>,
     actor_id: &str,
     effect_id: &str,
-    lines: &mut NarrativeLines,
 ) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     let Some(definition) = content
         .settings
         .periodic_actor_effects

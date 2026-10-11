@@ -2,6 +2,8 @@ mod actor_commands;
 pub(crate) mod beat_advance;
 pub mod combat;
 mod command_effects;
+mod context;
+mod dispatch;
 mod equipment;
 pub(crate) mod handlers;
 mod movement;
@@ -12,29 +14,14 @@ mod surround;
 mod tick;
 pub mod transformations;
 
-use self::actor_commands::ActorCommandContext;
-use self::combat::handle_periodic_actor_effect_applied;
-use self::handlers::{
-    ActorObservationContext, apply_content_event, handle_act_ended, handle_action_rejected,
-    handle_actor_command_used_event, handle_actor_moved, handle_actor_observed,
-    handle_actor_observed_actor, handle_actor_observed_feature, handle_actor_observed_room,
-    handle_actor_relocated, handle_channel_message, handle_current_room_observed,
-    handle_feature_observed, handle_help_shown, handle_hostile_heal, handle_hostile_strike,
-    handle_item_acquired, handle_item_consumed, handle_item_observed, handle_item_transferred,
-    handle_menu_choice_made, handle_menu_opened, handle_menu_selection_toggled,
-    handle_narrative_line, handle_pair_stat_adjusted, handle_party_order_assigned,
-    handle_player_dropped_item, handle_player_followed_actor, handle_player_moved,
-    handle_player_took_item, handle_player_used_item, handle_turn_started, handle_unknown_input,
-};
-
 pub(crate) use self::handlers::handler_attributed_line;
 pub(crate) use self::observation::render_actor_speech_line;
 
+use self::context::ReduceCtx;
 use crate::content::types::ContentPack;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{GamePhase, WorldState};
-use crate::engine::turn_policies::apply_command_objective_progress_effects;
 use serde::{Deserialize, Serialize};
 use std::collections::VecDeque;
 
@@ -68,309 +55,21 @@ pub fn apply_events(
     // Queue-based so handlers can spawn follow-up events (e.g. relationship
     // updates triggered by command effects) that are applied in the same pass.
     let mut pending: VecDeque<TimestampedWorldEvent> = events.iter().cloned().collect();
+    let mut spawned_events: Vec<WorldEvent> = Vec::new();
     while let Some(entry) = pending.pop_front() {
-        match &entry.event {
-            WorldEvent::TurnStarted {
-                turn_number,
-                raw_input,
-                advances_time,
-            } => {
-                handle_turn_started(
-                    state,
-                    content,
-                    *turn_number,
-                    raw_input,
-                    *advances_time,
-                    &suppressed_actor_stats,
-                    &mut lines,
-                );
-            }
-            WorldEvent::CurrentRoomObserved { room_id, mode } => {
-                if state.phase != GamePhase::Active {
-                    continue;
-                }
-                handle_current_room_observed(state, content, room_id, mode.clone(), &mut lines);
-            }
-            WorldEvent::FeatureObserved {
-                room_id,
-                feature_id,
-            } => {
-                handle_feature_observed(state, content, room_id, feature_id, &mut lines);
-            }
-            WorldEvent::ActorObserved { actor_id } => {
-                handle_actor_observed(state, content, actor_id, &mut lines);
-            }
-            WorldEvent::ChannelMessage { message } => {
-                handle_channel_message(state, content, &mut lines, message);
-            }
-            WorldEvent::ActorStatAdjusted {
-                actor_id,
-                stat,
-                delta,
-            } => {
-                if let Err(e) = state.adjust_actor_stat(content, actor_id, stat, *delta) {
-                    eprintln!("[cinder] ActorStatAdjusted error: {e}");
-                }
-            }
-            WorldEvent::PairStatAdjusted {
-                participant_a_id,
-                participant_b_id,
-                stat,
-                delta,
-            } => {
-                handle_pair_stat_adjusted(state, participant_a_id, participant_b_id, stat, *delta);
-            }
-            WorldEvent::StoryVarSet { key, value } => {
-                state.story_vars.set_unchecked(key, value);
-            }
-            WorldEvent::ActorCommandUsed {
-                actor_id,
-                actor_name,
-                room_id,
-                command_id,
-                target_room_id,
-                target_actor_id,
-                target_actor_name,
-                context_label,
-                feature_id,
-                consumable_id,
-                freeform_text,
-            } => {
-                let mut spawned_events = Vec::new();
-                handle_actor_command_used_event(
-                    state,
-                    content,
-                    &mut lines,
-                    &mut spawned_events,
-                    command_id,
-                    &ActorCommandContext {
-                        actor_id,
-                        actor_name,
-                        room_id,
-                        target_room_id: target_room_id.as_deref(),
-                        target_actor_id: target_actor_id.as_deref(),
-                        target_actor_name: target_actor_name.as_deref(),
-                        context_label: context_label.as_deref(),
-                        feature_id: feature_id.as_deref(),
-                        consumable_id: consumable_id.as_deref(),
-                        freeform_text: freeform_text.as_deref(),
-                    },
-                );
-                for event in spawned_events {
-                    pending.push_back(TimestampedWorldEvent::now(event));
-                }
-            }
-            WorldEvent::ActorObservedRoom {
-                actor_id,
-                actor_name,
-                room_id,
-            } => {
-                handle_actor_observed_room(
-                    state, content, actor_id, actor_name, room_id, &mut lines,
-                );
-            }
-            WorldEvent::ActorObservedFeature {
-                actor_id,
-                actor_name,
-                room_id,
-                feature_id,
-            } => {
-                handle_actor_observed_feature(
-                    state, content, actor_id, actor_name, room_id, feature_id, &mut lines,
-                );
-            }
-            WorldEvent::ActorObservedActor {
-                actor_id,
-                actor_name,
-                room_id,
-                target_actor_id,
-                target_actor_name,
-            } => {
-                handle_actor_observed_actor(
-                    state,
-                    content,
-                    room_id,
-                    &mut lines,
-                    ActorObservationContext {
-                        actor_id,
-                        actor_name,
-                        target_actor_id,
-                        target_actor_name,
-                    },
-                );
-            }
-            WorldEvent::ActorRelocated {
-                actor_id,
-                to_room_id,
-            } => {
-                handle_actor_relocated(state, content, actor_id, to_room_id, &mut lines);
-            }
-            WorldEvent::ActorMoved {
-                actor_id,
-                from_room_id,
-                to_room_id,
-                ..
-            } => {
-                handle_actor_moved(
-                    state,
-                    content,
-                    actor_id,
-                    from_room_id,
-                    to_room_id,
-                    &mut lines,
-                );
-            }
-            WorldEvent::PlayerMoved { to_room_id, .. } => {
-                handle_player_moved(state, content, to_room_id, &mut lines);
-            }
-            WorldEvent::PlayerFollowedActor { actor_id } => {
-                handle_player_followed_actor(state, content, actor_id.as_deref(), &mut lines);
-            }
-            WorldEvent::MenuOpened { menu_id } => {
-                handle_menu_opened(state, content, menu_id, &mut lines);
-            }
-            WorldEvent::MenuChoiceMade {
-                menu_id,
-                option_id,
-                title,
-            } => {
-                handle_menu_choice_made(state, content, menu_id, option_id, title, &mut lines);
-            }
-            WorldEvent::MenuSelectionToggled {
-                menu_id,
-                option_id,
-                selected,
-            } => {
-                handle_menu_selection_toggled(state, content, menu_id, option_id, *selected);
-            }
-            WorldEvent::NarrativeLine { text } => {
-                handle_narrative_line(text, &mut lines);
-            }
-            WorldEvent::ActionRejected { message } => {
-                handle_action_rejected(message, content, &mut lines);
-            }
-            WorldEvent::PartyOrderAssigned { actor_id, order } => {
-                handle_party_order_assigned(state, content, actor_id, (*order).clone(), &mut lines);
-            }
-            WorldEvent::HelpShown => {
-                handle_help_shown(state, content, &mut lines);
-            }
-            WorldEvent::UnknownInput { raw_input } => {
-                handle_unknown_input(content, raw_input, &mut lines);
-            }
-            WorldEvent::ActEnded => {
-                handle_act_ended(state, content, &mut lines);
-            }
-            WorldEvent::PlayerTookItem { item_id } => {
-                handle_player_took_item(state, content, item_id, &mut lines);
-            }
-            WorldEvent::PlayerDroppedItem { item_id } => {
-                handle_player_dropped_item(state, content, item_id, &mut lines);
-            }
-            WorldEvent::PlayerEquippedItem { item_id } => {
-                equipment::apply_equip(state, content, item_id, &mut lines);
-            }
-            WorldEvent::PlayerUnequippedItem { item_id } => {
-                equipment::apply_unequip(state, content, item_id, &mut lines);
-            }
-            WorldEvent::PlayerUsedItem { item_id } => {
-                handle_player_used_item(state, content, item_id, &mut lines);
-            }
-            WorldEvent::ItemTransferred {
-                item_id,
-                from_actor_id,
-                to_actor_id,
-                initiator_actor_id,
-            } => {
-                handle_item_transferred(
-                    state,
-                    content,
-                    item_id,
-                    from_actor_id,
-                    to_actor_id,
-                    initiator_actor_id.as_deref(),
-                    &mut lines,
-                );
-            }
-            WorldEvent::ItemAcquired { item_id, storage } => {
-                handle_item_acquired(state, content, item_id, *storage, &mut lines);
-            }
-            WorldEvent::ItemConsumed {
-                item_id,
-                storage,
-                consumer_id,
-                consumer_name,
-            } => {
-                handle_item_consumed(
-                    state,
-                    content,
-                    item_id,
-                    *storage,
-                    consumer_id.as_deref(),
-                    consumer_name.as_deref(),
-                    &mut lines,
-                );
-            }
-            WorldEvent::ChalkAnchorConsumed { room_id } => {
-                handle_chalk_anchor_consumed(state, room_id);
-            }
-            WorldEvent::ItemObserved { item_id } => {
-                handle_item_observed(state, content, item_id, &mut lines);
-            }
-            WorldEvent::CommandObjectiveProgressApplied { command_id } => {
-                if let Some(command) = content.command(command_id) {
-                    apply_command_objective_progress_effects(state, command);
-                }
-            }
-            WorldEvent::ContentEvent { event_id, payload } => {
-                apply_content_event(state, content, event_id, payload, &mut lines);
-            }
-            WorldEvent::ActorRelationshipUpdated {
-                actor_id,
-                relationship,
-            } => {
-                if state.phase == GamePhase::Active {
-                    state.set_relationship(actor_id, *relationship);
-                }
-            }
-            WorldEvent::StageEffectApplied { effect } => {
-                let mut effect_lines = Vec::new();
-                beat_advance::apply_stage_effects(
-                    state,
-                    content,
-                    std::slice::from_ref(effect),
-                    &mut effect_lines,
-                );
-                lines.extend_lines(effect_lines);
-            }
-            WorldEvent::HostileStrike { actor_id } => {
-                handle_hostile_strike(state, content, actor_id, &mut lines);
-            }
-            WorldEvent::HostileHeal {
-                actor_id,
-                target_id,
-                amount,
-                message,
-            } => {
-                handle_hostile_heal(
-                    state, content, actor_id, target_id, *amount, message, &mut lines,
-                );
-            }
-            WorldEvent::PeriodicActorEffectApplied {
-                actor_id,
-                effect_id,
-            } => {
-                handle_periodic_actor_effect_applied(
-                    state, content, actor_id, effect_id, &mut lines,
-                );
-            }
-            WorldEvent::ScriptedSequenceStepPlayed {
-                sequence_id,
-                next_step,
-                finished,
-            } => {
-                state.apply_scripted_sequence_progress(sequence_id, *next_step, *finished);
-            }
+        spawned_events.clear();
+        {
+            let mut ctx = ReduceCtx {
+                state: &mut *state,
+                content,
+                lines: &mut lines,
+                suppressed_actor_stats: &suppressed_actor_stats,
+                outbox: &mut spawned_events,
+            };
+            dispatch::dispatch(&mut ctx, &entry.event);
+        }
+        for event in spawned_events.drain(..) {
+            pending.push_back(TimestampedWorldEvent::now(event));
         }
     }
     // Transformation triggers are evaluated once the whole batch has settled, so
@@ -391,13 +90,4 @@ pub fn apply_events(
         lines,
         phase: state.phase.clone(),
     }
-}
-
-fn handle_chalk_anchor_consumed(state: &mut WorldState, room_id: &str) {
-    state.remove_chalk_anchor(room_id);
-    state.remove_item_from_storage(
-        "teleport-sigil",
-        crate::content::types::ItemStorageTarget::CurrentRoom,
-        room_id,
-    );
 }

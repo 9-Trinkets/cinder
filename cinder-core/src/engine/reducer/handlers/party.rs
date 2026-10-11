@@ -4,15 +4,18 @@ use crate::engine::reducer::beat_advance::advance_objective_for_signal;
 use crate::engine::state::WorldState;
 
 use super::super::command_effects::actor_display_name;
+use super::super::context::ReduceCtx;
 use super::feedback::push_message;
 
 pub(crate) fn handle_party_order_assigned(
-    state: &mut WorldState,
-    content: &ContentPack,
+    ctx: &mut ReduceCtx<'_>,
     actor_id: &str,
     order: PartyOrderKind,
-    lines: &mut NarrativeLines,
 ) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
+
     let was_in_room = state.actor_is_in_room(content, actor_id, &state.current_room_id);
     if let Err(error) = state.assign_party_order(content, actor_id, order.clone()) {
         eprintln!("[cinder] party order error: {error}");
@@ -60,12 +63,10 @@ pub(crate) fn handle_party_order_assigned(
     );
 }
 
-pub(crate) fn handle_player_followed_actor(
-    state: &mut WorldState,
-    content: &ContentPack,
-    actor_id: Option<&str>,
-    lines: &mut NarrativeLines,
-) {
+pub(crate) fn handle_player_followed_actor(ctx: &mut ReduceCtx<'_>, actor_id: Option<&str>) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     state.followed_actor_id = actor_id.map(ToString::to_string);
     let feedback_text = match actor_id {
         Some(id) => {

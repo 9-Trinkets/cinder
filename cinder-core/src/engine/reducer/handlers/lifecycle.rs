@@ -1,20 +1,19 @@
-use crate::content::types::ContentPack;
-use crate::engine::narrative::NarrativeLines;
+use super::super::context::ReduceCtx;
 use crate::engine::reducer::beat_advance::{advance_objective_for_signal, time_reached_signals};
 use crate::engine::reducer::tick::{
     advance_actor_stats_on_tick, advance_house_progress_objectives,
     advance_stat_threshold_objectives, increment_shared_room_safety,
 };
-use crate::engine::state::WorldState;
 pub(crate) fn handle_turn_started(
-    state: &mut WorldState,
-    content: &ContentPack,
+    ctx: &mut ReduceCtx<'_>,
     turn_number: u32,
     _raw_input: &str,
     advances_time: bool,
-    suppressed_actor_stats: &[(&str, &str)],
-    lines: &mut NarrativeLines,
 ) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let suppressed_actor_stats = ctx.suppressed_actor_stats;
+    let lines = &mut *ctx.lines;
     state.turn_number = turn_number;
     if advances_time {
         increment_shared_room_safety(state, content);
@@ -50,10 +49,7 @@ pub(crate) fn handle_turn_started(
 /// the actor's cooldown. Strike *policy* (who strikes, when) lives in tick
 /// behaviors, never here.
 /// First living, following actor with the `guard` role in the room, if any.
-pub(crate) fn handle_act_ended(
-    state: &mut WorldState,
-    _content: &ContentPack,
-    _lines: &mut NarrativeLines,
-) {
+pub(crate) fn handle_act_ended(ctx: &mut ReduceCtx<'_>) {
+    let state = &mut *ctx.state;
     state.phase = crate::engine::state::GamePhase::ActEnded;
 }

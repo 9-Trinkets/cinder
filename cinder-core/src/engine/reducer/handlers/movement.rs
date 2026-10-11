@@ -11,15 +11,13 @@ use crate::engine::reducer::tick::advance_house_progress_objectives;
 use crate::engine::state::WorldState;
 use serde_json::json;
 
+use super::super::context::ReduceCtx;
 use super::feedback::push_message;
 
-pub(crate) fn handle_actor_relocated(
-    state: &mut WorldState,
-    content: &ContentPack,
-    actor_id: &str,
-    to_room_id: &str,
-    lines: &mut NarrativeLines,
-) {
+pub(crate) fn handle_actor_relocated(ctx: &mut ReduceCtx<'_>, actor_id: &str, to_room_id: &str) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     state.mark_actor_room_visited(actor_id, to_room_id);
     state
         .actor_room_overrides
@@ -28,13 +26,14 @@ pub(crate) fn handle_actor_relocated(
 }
 
 pub(crate) fn handle_actor_moved(
-    state: &mut WorldState,
-    content: &ContentPack,
+    ctx: &mut ReduceCtx<'_>,
     actor_id: &str,
     from_room_id: &str,
     to_room_id: &str,
-    lines: &mut NarrativeLines,
 ) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     apply_actor_move_transition(
         state,
         content,

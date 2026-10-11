@@ -2,6 +2,7 @@ use crate::content::types::ContentPack;
 use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
+use crate::engine::reducer::context::ReduceCtx;
 use crate::engine::reducer::observation::render_story_text;
 use crate::engine::state::WorldState;
 use serde_json::json;
@@ -28,13 +29,14 @@ pub(crate) fn handle_menu_opened(
 }
 
 pub(crate) fn handle_menu_choice_made(
-    state: &mut WorldState,
-    content: &ContentPack,
+    ctx: &mut ReduceCtx<'_>,
     menu_id: &str,
     option_id: &str,
     title: &str,
-    lines: &mut NarrativeLines,
 ) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     state.active_menu_id = None;
     if let Some(menu) = content.menu(menu_id) {
         let is_multi_select = menu.max_selections > 0;
@@ -138,12 +140,13 @@ pub(crate) fn handle_menu_choice_made(
 }
 
 pub(crate) fn handle_menu_selection_toggled(
-    state: &mut WorldState,
-    content: &ContentPack,
+    ctx: &mut ReduceCtx<'_>,
     menu_id: &str,
     option_id: &str,
     selected: bool,
 ) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
     if let Some(menu) = content.menu(menu_id) {
         let max = menu.max_selections;
         if selected {

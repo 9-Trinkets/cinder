@@ -2,17 +2,19 @@ use crate::content::types::{ContentPack, ItemStorageTarget, PackMessageVoice};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
 use crate::engine::reducer::command_effects::{trigger_placement_hooks, trigger_surrounded_hooks};
+use crate::engine::reducer::context::ReduceCtx;
 use crate::engine::state::WorldState;
 
 use super::feedback::{push_message, push_rendered_message};
 
 pub(crate) fn handle_item_acquired(
-    state: &mut WorldState,
-    content: &ContentPack,
+    ctx: &mut ReduceCtx<'_>,
     item_id: &str,
     storage: ItemStorageTarget,
-    lines: &mut NarrativeLines,
 ) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     let room_id = state.current_room_id.clone();
     if storage == ItemStorageTarget::CurrentRoom
         && content.item(item_id).is_some_and(|item| item.trace_mark)
@@ -87,12 +89,10 @@ pub(crate) fn handle_item_acquired(
 
 /// Moves a loose item from the current room into the player's inventory in
 /// response to the generic `take <item>` command.
-pub(crate) fn handle_player_took_item(
-    state: &mut WorldState,
-    content: &ContentPack,
-    item_id: &str,
-    lines: &mut NarrativeLines,
-) {
+pub(crate) fn handle_player_took_item(ctx: &mut ReduceCtx<'_>, item_id: &str) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     let room_id = state.current_room_id.clone();
     let label = content.item_label(item_id);
     if content
@@ -120,12 +120,10 @@ pub(crate) fn handle_player_took_item(
 
 /// Moves an inventory item into the current room in response to the generic
 /// `drop <item>` command.
-pub(crate) fn handle_player_dropped_item(
-    state: &mut WorldState,
-    content: &ContentPack,
-    item_id: &str,
-    lines: &mut NarrativeLines,
-) {
+pub(crate) fn handle_player_dropped_item(ctx: &mut ReduceCtx<'_>, item_id: &str) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     let room_id = state.current_room_id.clone();
     let label = content.item_label(item_id);
     if content
@@ -262,14 +260,15 @@ fn render_acquired_line(
 }
 
 pub(crate) fn handle_item_consumed(
-    state: &mut WorldState,
-    content: &ContentPack,
+    ctx: &mut ReduceCtx<'_>,
     item_id: &str,
     storage: ItemStorageTarget,
     consumer_id: Option<&str>,
     consumer_name: Option<&str>,
-    lines: &mut NarrativeLines,
 ) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     let label = content.item_label(item_id);
     let room_id = state.current_room_id.clone();
     if state.remove_item_from_storage(item_id, storage, &room_id) {
@@ -288,12 +287,9 @@ pub(crate) fn handle_item_consumed(
     }
 }
 
-pub(crate) fn handle_item_observed(
-    _state: &mut WorldState,
-    content: &ContentPack,
-    item_id: &str,
-    lines: &mut NarrativeLines,
-) {
+pub(crate) fn handle_item_observed(ctx: &mut ReduceCtx<'_>, item_id: &str) {
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     if let Some(item) = content.item(item_id) {
         lines.narration(item.description.clone());
     } else {

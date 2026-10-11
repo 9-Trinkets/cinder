@@ -4,6 +4,7 @@ use crate::engine::hooks::apply_world_hook_effects;
 use crate::engine::messaging::{ChannelAudience, ChannelKind, ChannelMessage};
 use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
+use crate::engine::reducer::context::ReduceCtx;
 use crate::engine::reducer::observation::render_actor_speech_line;
 use crate::engine::reducer::tick::advance_house_progress_objectives;
 use crate::engine::state::{ConversationMemoryKind, ConversationMemoryLine, WorldState};
@@ -17,12 +18,10 @@ use serde_json::json;
 /// triggers speech hooks, and narrates the line when the player can hear it.
 /// Local channels only deliver to actors sharing the speaker's room; direct
 /// channels always deliver.
-pub(crate) fn handle_channel_message(
-    state: &mut WorldState,
-    content: &ContentPack,
-    lines: &mut NarrativeLines,
-    message: &ChannelMessage,
-) {
+pub(crate) fn handle_channel_message(ctx: &mut ReduceCtx<'_>, message: &ChannelMessage) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     match &message.audience {
         ChannelAudience::Targeted {
             recipient_id,

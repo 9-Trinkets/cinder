@@ -1,28 +1,24 @@
+use super::super::context::ReduceCtx;
 use crate::content::types::{ContentPack, PackMessageVoice};
 use crate::engine::commands::{player_command_help_text, player_command_suggestions};
 use crate::engine::narrative::{NarrativeLine, NarrativeLines};
 use crate::engine::reducer::observation::render_actor_speech_line;
-use crate::engine::state::WorldState;
 
-pub(crate) fn handle_narrative_line(text: &str, lines: &mut NarrativeLines) {
+pub(crate) fn handle_narrative_line(ctx: &mut ReduceCtx<'_>, text: &str) {
+    let lines = &mut *ctx.lines;
     lines.narration(text.to_string());
 }
 
-pub(crate) fn handle_action_rejected(
-    message: &str,
-    _content: &ContentPack,
-    lines: &mut NarrativeLines,
-) {
+pub(crate) fn handle_action_rejected(ctx: &mut ReduceCtx<'_>, message: &str) {
+    let lines = &mut *ctx.lines;
     if !message.is_empty() {
         lines.error(message.to_string());
     }
 }
 
-pub(crate) fn handle_help_shown(
-    _state: &mut WorldState,
-    content: &ContentPack,
-    lines: &mut NarrativeLines,
-) {
+pub(crate) fn handle_help_shown(ctx: &mut ReduceCtx<'_>) {
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     let available_commands = player_command_help_text(content);
     let help = content.render_template(
         &content.opening.help_text,
@@ -31,11 +27,9 @@ pub(crate) fn handle_help_shown(
     lines.narration(help);
 }
 
-pub(crate) fn handle_unknown_input(
-    content: &ContentPack,
-    raw_input: &str,
-    lines: &mut NarrativeLines,
-) {
+pub(crate) fn handle_unknown_input(ctx: &mut ReduceCtx<'_>, raw_input: &str) {
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     let available_commands = player_command_suggestions(content);
     let text = content.render_template(
         &content.presentation.error_text.unknown_input,

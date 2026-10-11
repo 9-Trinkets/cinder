@@ -1,22 +1,20 @@
 use super::menus::handle_menu_opened;
-use crate::content::types::ContentPack;
-use crate::engine::events::WorldEvent;
 use crate::engine::hooks::apply_narrating_world_hook_effects;
-use crate::engine::narrative::NarrativeLines;
 use crate::engine::reducer::actor_commands::{ActorCommandContext, handle_actor_command_used};
 use crate::engine::reducer::beat_advance::advance_objective_for_signal;
+use crate::engine::reducer::context::ReduceCtx;
 use crate::engine::reducer::observation::render_story_text;
-use crate::engine::state::WorldState;
 use serde_json::{Value, json};
 
 pub(crate) fn handle_actor_command_used_event(
-    state: &mut WorldState,
-    content: &ContentPack,
-    lines: &mut NarrativeLines,
-    outbox: &mut Vec<WorldEvent>,
+    ctx: &mut ReduceCtx<'_>,
     command_id: &str,
     command_context: &ActorCommandContext<'_>,
 ) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
+    let outbox = &mut *ctx.outbox;
     if let Some(new_lines) =
         handle_actor_command_used(state, content, command_id, command_context, outbox)
     {
@@ -25,12 +23,13 @@ pub(crate) fn handle_actor_command_used_event(
 }
 
 pub(crate) fn apply_content_event(
-    state: &mut WorldState,
-    content: &ContentPack,
+    ctx: &mut ReduceCtx<'_>,
     event_id: &str,
     payload: &std::collections::BTreeMap<String, String>,
-    lines: &mut NarrativeLines,
 ) {
+    let state = &mut *ctx.state;
+    let content = ctx.content;
+    let lines = &mut *ctx.lines;
     let event = content
         .content_event(event_id)
         .unwrap_or_else(|| panic!("missing content event definition '{event_id}'"));
