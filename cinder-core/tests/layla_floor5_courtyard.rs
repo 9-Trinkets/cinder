@@ -120,6 +120,9 @@ fn floor5_courtyard_siege_soldiers_attack_civilians_and_charmed_civilians_can_ev
     state
         .stage_started_minutes
         .insert("sq_five_offerings".to_string(), state.current_time_minutes);
+    state
+        .story_vars
+        .set_unchecked("courtyard_cages_opened", "true");
     let raider_id = match state.spawn_actor(
         &pack,
         SpawnActorConfig {
@@ -224,6 +227,9 @@ fn floor5_protection_quest_fails_on_third_death_without_ending_game() {
     state
         .stage_started_minutes
         .insert("sq_five_offerings".to_string(), state.current_time_minutes);
+    state
+        .story_vars
+        .set_unchecked("courtyard_cages_opened", "true");
     let raider_id = match state.spawn_actor(
         &pack,
         SpawnActorConfig {

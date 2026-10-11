@@ -103,11 +103,6 @@ fn living_civilians_in_room(
     state: &WorldState,
     room_id: &str,
 ) -> Vec<String> {
-    let cages_opened = state.story_vars.get("courtyard_cages_opened") == Some("true")
-        || state
-            .active_objective_stage_ids
-            .iter()
-            .any(|id| id == "sq_five_offerings");
     content
         .actors
         .iter()
@@ -118,7 +113,7 @@ fn living_civilians_in_room(
                     .tags
                     .iter()
                     .any(|tag| tag == "civilian" || tag == "offering")
-                && (!actor.tags.iter().any(|tag| tag == "offering") || cages_opened)
+                && !state.actor_is_imprisoned(content, &actor.id)
                 && state.actor_is_in_room(content, &actor.id, room_id)
                 && !state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
         })
@@ -133,7 +128,7 @@ fn living_civilians_in_room(
                             .tags
                             .iter()
                             .any(|tag| tag == "civilian" || tag == "offering")
-                        && (!actor.tags.iter().any(|tag| tag == "offering") || cages_opened)
+                        && !state.actor_is_imprisoned(content, &actor.id)
                         && state.actor_is_in_room(content, &actor.id, room_id)
                         && !state
                             .actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id)
@@ -264,6 +259,8 @@ mod tests {
         let offering_id = content.actors[1].id.clone();
         content.actors[0].tags.push("siege".to_string());
         content.actors[1].tags.push("offering".to_string());
+        content.actors[1].unlocked_by_story_var = Some("courtyard_cages_opened".to_string());
+        content.actors[1].room_id = room_id.clone();
         crate::engine::test_fixtures::rebuild_test_pack_indexes(&mut content);
 
         let mut state = WorldState::new(&content);

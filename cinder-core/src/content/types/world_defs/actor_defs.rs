@@ -99,6 +99,13 @@ pub struct ActorDefinition {
     pub transformations: Vec<ActorTransformation>,
     #[serde(default)]
     pub game_data: BTreeMap<String, String>,
+    /// Story variable required to free or unlock this actor from imprisonment.
+    /// While this story variable is not truthy and the actor is in their home room,
+    /// the actor is considered imprisoned: they cannot move on their own, cannot
+    /// follow the player, cannot be charmed/converted via encirclement, and are
+    /// not targeted by siege troops.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub unlocked_by_story_var: Option<String>,
 }
 
 impl ActorDefinition {

@@ -265,6 +265,7 @@ pub fn test_actor(id: &str, name: &str, room_id: &str) -> ActorDefinition {
         initial_inventory: BTreeMap::new(),
         game_data: BTreeMap::new(),
         skills: vec![],
+        unlocked_by_story_var: None,
     }
 }
 
