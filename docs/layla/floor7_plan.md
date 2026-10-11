@@ -120,8 +120,10 @@ flowchart TD
     HuntLoop -->|Fights with companions / Deployed party| BattleTrack[Battle Path: Slay Handler or Outlast Timer]
     BattleTrack --> End1[Ending 1: The Ascendance - Layla becomes Dungeon Master]
     
-    HuntLoop -->|Zero party deployed & Runs the entire time| EvasionTrack[Secret Evasion Path: Pure Running]
-    EvasionTrack --> DoorOpens[Secret Exit Door Appears in Room]
+    HuntLoop -->|Zero party deployed & Runs entire time| EvasionCheck{Has at least one awakened companion?}
+    EvasionCheck -->|No awakened ally| NoSuccessor[No one can protect the towns -> Must take Master's Seat]
+    NoSuccessor --> End1
+    EvasionCheck -->|Yes, has awakened ally| DoorOpens[Secret Backdoor Opens in Room]
     DoorOpens --> End2[Ending 2: Freedom - Escape & Name a Successor]
 ```
 
@@ -157,12 +159,13 @@ This is the standard ending—the one the corporation designed her to achieve.
 ### Ending 2: The Secret Escape (The Freedom Ending)
 This is the true, secret ending. It resolves the mystery at the heart of the story: *Is Layla a corporate machine, or a person with a heart?*
 
-#### How to trigger it:
-1. **Zero Party Deployed:** Layla does **not** deploy Astrid, Einar, Sakhra, or any other companion into the dungeon rooms. She leaves them safely in the antechamber or keeps them behind. She refuses to use her friends as meat shields or disposable pawns.
-2. **Pure Running:** Layla never attacks the Handler. She relies purely on her own agility, maze layout, and quick movement to stay one step ahead of him, running from room to room until the timer runs out.
+#### How to trigger it (All three conditions required):
+1. **At Least One Awakened Companion in Party:** Layla must have restored the soul of at least one companion during her journey (such as Jamil from Floor 4, or Keld, Miloš, Yana, Dayo, or Chen Ming-de from Floor 5.5). If Layla has no awakened allies, she has no one capable of taking the Master's Seat with human empathy to keep the simulation alive, so the escape backdoor cannot open.
+2. **Zero Party Deployed:** Layla does **not** deploy Astrid, Einar, Sakhra, or any other companion into the dungeon rooms. She leaves them safely behind in the antechamber. She refuses to use her friends as meat shields or disposable pawns.
+3. **Pure Running:** Layla never attacks the Handler. She relies purely on her own agility, maze layout, and quick movement to stay one step ahead of him, running from room to room until the timer runs out.
 
 #### The Revelation:
-When the timer hits zero without Layla sacrificing a single soul:
+When the timer hits zero with all three conditions met:
 - The Handler stops running. He lowers his weapon, leans against the wall, and starts to laugh—not with malice, but with genuine joy.
 - He speaks through the radio one last time:
   > *"Every trainee before you built an abattoir. They put their friends in doorways to get butchered so they could keep their own score high. They thought being a Dungeon Master meant learning how to kill without feeling it. But you... you ran. You took the hits yourself so nobody else had to bleed. You didn't become a master. You became a person."*
@@ -183,7 +186,7 @@ Someone must take the Master's Seat to keep the world alive.
 
 ```mermaid
 flowchart TD
-    SecretRun[Zero Party Deployed + Pure Evasion] --> Backdoor[Secret Backdoor Opens]
+    SecretRun[Has Awakened Ally + Zero Party Deployed + Pure Evasion] --> Backdoor[Secret Backdoor Opens]
     Backdoor --> Danger[Warning: Empty Core will Purge Towns]
     Danger --> ChooseSuccessor[Layla Must Choose an Awakened Companion to Take the Seat]
     ChooseSuccessor --> RenameGame[Game Permanently Renamed to Successor's Name]
@@ -217,8 +220,8 @@ Floor 7 integrates with the engine's LLM prompt pipeline to generate real rooms 
 3. **Safety Fallback:**
    - If the LLM call fails or times out, the engine falls back to a clean pre-authored 3x3 blueprint matching the chosen theme.
 
-### 5.2 Tracking Deployed Companions
-In `cinder-core`, a simple query checks whether any party member was assigned to combat in the trial dungeon:
+### 5.2 Tracking Deployed Companions & Awakened Status
+In `cinder-core`, simple queries check whether party members were deployed and whether Layla has awakened companions:
 ```rust
 pub fn trial_has_deployed_companions(state: &WorldState, trial_room_ids: &[String]) -> bool {
     state.party_members().iter().any(|member_id| {
@@ -226,8 +229,13 @@ pub fn trial_has_deployed_companions(state: &WorldState, trial_room_ids: &[Strin
         trial_room_ids.contains(&room) && state.party_order(member_id).is_some()
     })
 }
+
+pub fn can_trigger_secret_escape(state: &WorldState, trial_room_ids: &[String]) -> bool {
+    !trial_has_deployed_companions(state, trial_room_ids)
+        && !state.awakened_party_members().is_empty()
+}
 ```
-If `trial_has_deployed_companions` is `false` when the trial ends, the game sets story var `trial_pure_evasion = "true"`, triggering the secret escape quest.
+If `can_trigger_secret_escape` is true when the trial ends, story var `trial_pure_evasion = "true"` is set, triggering the secret escape quest.
 
 ### 5.3 The Meta Game Rename
 When Ending 2 completes:
@@ -259,6 +267,5 @@ When Ending 2 completes:
    - Defeat the Handler or outlast the timer.
    - Assert Handler withers, golden archway opens, and Layla takes the Master's Seat.
 5. **Secret Escape Condition (Ending 2):**
-   - Start trial with zero deployed companions.
-   - Survive until time expires by running between rooms.
-   - Assert backdoor appears, successor selection prompts only awakened companions, and game title renames successfully.
+   - Case A (Escape Success): Party has at least one awakened companion (e.g. Jamil), zero companions deployed into the trial, and Layla outruns the Handler until the timer expires. Assert backdoor opens, successor prompt lists only awakened companions, and game title renames successfully upon choice.
+   - Case B (No Awakened Companion): Zero companions deployed and Layla outruns the Handler, but party has zero awakened companions. Assert backdoor does not open (cannot leave core unattended), prompting Layla to take the Master's Seat (Ending 1).
