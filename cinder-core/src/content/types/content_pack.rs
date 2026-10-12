@@ -60,6 +60,20 @@ impl ContentPack {
             .and_then(|&index| self.skills.skills.get(index))
     }
 
+    /// SP thresholds for a given skill. Uses skill's own thresholds if set,
+    /// otherwise pack-level `skills.sp_thresholds`, otherwise engine default.
+    pub fn skill_sp_thresholds(&self, skill_id: &str) -> &[u32] {
+        if let Some(skill) = self.skill(skill_id) {
+            if let Some(thresholds) = &skill.sp_thresholds {
+                return thresholds.as_slice();
+            }
+        }
+        if let Some(thresholds) = &self.skills.sp_thresholds {
+            return thresholds.as_slice();
+        }
+        &crate::engine::skills::SKILL_SP_THRESHOLDS
+    }
+
     pub fn map_for_room(&self, room_id: &str) -> Option<&MapDefinition> {
         self.maps
             .iter()

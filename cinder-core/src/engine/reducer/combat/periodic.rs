@@ -47,7 +47,10 @@ pub(in crate::engine::reducer) fn handle_periodic_actor_effect_applied(
         && definition.trigger.room_item == "drain-sigil"
     {
         let drain_lvl = state.actor_skill_level(player_id, "drain");
-        crate::engine::skills::drain_damage(drain_lvl)
+        content
+            .skill("drain")
+            .and_then(|s| s.param_value("damage", drain_lvl))
+            .unwrap_or_else(|| crate::engine::skills::drain_damage(drain_lvl) as i64) as i32
     } else {
         *amount
     };
@@ -409,7 +412,11 @@ fn handle_trigger_depletion(
         && definition.trigger.max_activations.is_some()
     {
         let drain_lvl = state.actor_skill_level(&content.settings.combat.player_actor_id, "drain");
-        crate::engine::skills::drain_charges(drain_lvl)
+        content
+            .skill("drain")
+            .and_then(|s| s.param_value("charges", drain_lvl))
+            .map(|c| c as u32)
+            .unwrap_or_else(|| crate::engine::skills::drain_charges(drain_lvl))
     } else {
         let Some(max) = definition.trigger.max_activations else {
             return;

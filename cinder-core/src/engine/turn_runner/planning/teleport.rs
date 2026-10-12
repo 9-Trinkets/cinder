@@ -54,7 +54,8 @@ pub(super) fn plan_teleport_command(
 
     let player_id = &content.settings.combat.player_actor_id;
     let trace_lvl = state.actor_skill_level(player_id, "trace");
-    let mp_cost = crate::engine::skills::effective_trace_mp_cost(
+    let mp_cost = crate::engine::skills::effective_trace_mp_cost_for_pack(
+        content,
         crate::engine::skills::TELEPORT_BASE_MP_COST,
         trace_lvl,
     );

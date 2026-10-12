@@ -52,7 +52,12 @@ pub(crate) fn handle_hostile_strike(ctx: &mut ReduceCtx<'_>, actor_id: &str) {
         .map(|decision| decision.actor_id.clone());
     if let Some(guard_id) = guard_id {
         let guard_intercept_level = state.actor_skill_level(&guard_id, "intercept");
-        let soaked = crate::engine::skills::intercept_damage_soaked(guard_intercept_level);
+        let soaked = content
+            .skill("intercept")
+            .and_then(|s| s.param_value("damage_soaked", guard_intercept_level))
+            .unwrap_or_else(|| {
+                crate::engine::skills::intercept_damage_soaked(guard_intercept_level) as i64
+            }) as i32;
         let guard_defense = state.actor_combat_defense(content, &guard_id).max(0);
         let raw_guard_takes =
             (state.actor_combat_attack(content, actor_id) - guard_defense - soaked)

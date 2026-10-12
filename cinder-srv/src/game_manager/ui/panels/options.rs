@@ -204,7 +204,9 @@ pub(crate) fn craftable_item_panel_options(
                     let trace_lvl = state.actor_skill_level(player_id, "trace");
                     let base_mp = item.map(|i| i.mp_cost).unwrap_or(0);
                     let mp_cost = if item.is_some_and(|i| i.trace_mark) {
-                        cinder_core::engine::skills::effective_trace_mp_cost(base_mp, trace_lvl)
+                        cinder_core::engine::skills::effective_trace_mp_cost_for_pack(
+                            content, base_mp, trace_lvl,
+                        )
                     } else {
                         base_mp
                     };

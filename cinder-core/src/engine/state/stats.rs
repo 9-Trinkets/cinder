@@ -311,7 +311,12 @@ impl WorldState {
             0
         };
         let strike_bonus = if self.actor_has_skill(actor_id, "strike") {
-            crate::engine::skills::strike_bonus_damage(self.actor_skill_level(actor_id, "strike"))
+            let lvl = self.actor_skill_level(actor_id, "strike");
+            content
+                .skill("strike")
+                .and_then(|s| s.param_value("bonus_damage", lvl))
+                .unwrap_or_else(|| crate::engine::skills::strike_bonus_damage(lvl) as i64)
+                as i32
         } else {
             0
         };

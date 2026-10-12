@@ -454,6 +454,14 @@ fn install_skill_behaviors(
 }
 
 fn validate_skills(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
+    if let Some(thresholds) = &pack.skills.sp_thresholds {
+        if thresholds.is_empty() {
+            return Err("skills.json sp_thresholds cannot be empty".into());
+        }
+        if !thresholds.windows(2).all(|w| w[0] < w[1]) {
+            return Err("skills.json sp_thresholds must be strictly increasing".into());
+        }
+    }
     let mut declared = BTreeSet::new();
     for skill in &pack.skills.skills {
         if skill.id.trim().is_empty() {
@@ -461,6 +469,31 @@ fn validate_skills(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
         }
         if !declared.insert(skill.id.as_str()) {
             return Err(format!("skills.json declares duplicate skill '{}'", skill.id).into());
+        }
+        if let Some(thresholds) = &skill.sp_thresholds {
+            if thresholds.is_empty() {
+                return Err(format!("skill '{}' sp_thresholds cannot be empty", skill.id).into());
+            }
+            if !thresholds.windows(2).all(|w| w[0] < w[1]) {
+                return Err(format!(
+                    "skill '{}' sp_thresholds must be strictly increasing",
+                    skill.id
+                )
+                .into());
+            }
+        }
+        if let Some(scaling) = &skill.scaling {
+            for (param_name, param) in &scaling.parameters {
+                if let Some(step) = param.step_levels {
+                    if step == 0 {
+                        return Err(format!(
+                            "skill '{}' parameter '{}' step_levels must be greater than 0",
+                            skill.id, param_name
+                        )
+                        .into());
+                    }
+                }
+            }
         }
         if let Some(action) = &skill.player_action
             && action.id.trim().is_empty()

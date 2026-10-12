@@ -5,10 +5,10 @@
 /// 0, 10, 25, 45, 70, 100, 135, 175, 220, 270.
 pub const SKILL_SP_THRESHOLDS: [u32; 10] = [0, 10, 25, 45, 70, 100, 135, 175, 220, 270];
 
-/// Calculates the skill level (1..=10) achieved for a given cumulative SP.
-pub fn skill_level_from_sp(sp: u32) -> u32 {
+/// Calculates the skill level (1..=thresholds.len()) achieved for a given cumulative SP using provided thresholds.
+pub fn skill_level_from_sp_with_thresholds(sp: u32, thresholds: &[u32]) -> u32 {
     let mut level = 1;
-    for (idx, &threshold) in SKILL_SP_THRESHOLDS.iter().enumerate().skip(1) {
+    for (idx, &threshold) in thresholds.iter().enumerate().skip(1) {
         if sp >= threshold {
             level = (idx + 1) as u32;
         } else {
@@ -18,19 +18,37 @@ pub fn skill_level_from_sp(sp: u32) -> u32 {
     level
 }
 
+/// Calculates the skill level (1..=10) achieved for a given cumulative SP.
+pub fn skill_level_from_sp(sp: u32) -> u32 {
+    skill_level_from_sp_with_thresholds(sp, &SKILL_SP_THRESHOLDS)
+}
+
+/// Cumulative SP required to reach `level` using provided thresholds.
+pub fn skill_sp_for_level_with_thresholds(level: u32, thresholds: &[u32]) -> u32 {
+    if thresholds.is_empty() {
+        return 0;
+    }
+    let idx = (level.max(1) as usize - 1).min(thresholds.len() - 1);
+    thresholds[idx]
+}
+
 /// Cumulative SP required to reach `level` (1..=10).
 pub fn skill_sp_for_level(level: u32) -> u32 {
-    let idx = (level.max(1).min(10) - 1) as usize;
-    SKILL_SP_THRESHOLDS[idx]
+    skill_sp_for_level_with_thresholds(level, &SKILL_SP_THRESHOLDS)
+}
+
+/// Cumulative SP required for the next level after `level` using provided thresholds.
+pub fn skill_next_level_sp_with_thresholds(level: u32, thresholds: &[u32]) -> u32 {
+    if thresholds.is_empty() {
+        return 0;
+    }
+    let idx = (level as usize).min(thresholds.len() - 1);
+    thresholds[idx]
 }
 
 /// Cumulative SP required for the next level after `level`. At level 10, returns 270.
 pub fn skill_next_level_sp(level: u32) -> u32 {
-    if level >= 10 {
-        SKILL_SP_THRESHOLDS[9]
-    } else {
-        SKILL_SP_THRESHOLDS[level as usize]
-    }
+    skill_next_level_sp_with_thresholds(level, &SKILL_SP_THRESHOLDS)
 }
 
 /// Follower cap for charm: 2 * skill_level (2 to 20).
@@ -77,6 +95,25 @@ pub fn effective_trace_mp_cost(base_mp: u32, trace_level: u32) -> u32 {
         0
     } else {
         let discount = trace_mp_discount(trace_level);
+        base_mp.saturating_sub(discount).max(1)
+    }
+}
+
+/// Computes the effective MP cost for tracing a sigil or casting a sigil spell,
+/// discounted by Trace skill level looking up content configuration when available.
+pub fn effective_trace_mp_cost_for_pack(
+    content: &crate::content::types::ContentPack,
+    base_mp: u32,
+    trace_level: u32,
+) -> u32 {
+    if base_mp == 0 {
+        0
+    } else {
+        let discount = content
+            .skill("trace")
+            .and_then(|s| s.param_value("mp_discount", trace_level))
+            .map(|d| d as u32)
+            .unwrap_or_else(|| trace_mp_discount(trace_level));
         base_mp.saturating_sub(discount).max(1)
     }
 }
@@ -196,5 +233,104 @@ mod tests {
         // Teleport
         assert_eq!(teleport_anchor_capacity(1), 1);
         assert_eq!(teleport_anchor_capacity(10), 6);
+    }
+
+    #[test]
+    fn content_declarative_skill_scaling_and_summaries() {
+        let pack = crate::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+
+        // Global pack SP thresholds
+        assert_eq!(pack.skill_sp_thresholds("strike"), &SKILL_SP_THRESHOLDS);
+
+        // Strike
+        let strike = pack.skill("strike").expect("strike exists");
+        assert_eq!(strike.param_value("bonus_damage", 1), Some(0));
+        assert_eq!(strike.param_value("bonus_damage", 5), Some(4));
+        assert_eq!(strike.param_value("bonus_damage", 10), Some(9));
+        assert_eq!(
+            strike.format_summary(1),
+            Some("Bonus damage: +0".to_string())
+        );
+        assert_eq!(
+            strike.format_summary(10),
+            Some("Bonus damage: +9".to_string())
+        );
+
+        // Charm
+        let charm = pack.skill("charm").expect("charm exists");
+        assert_eq!(charm.param_value("follower_cap", 1), Some(2));
+        assert_eq!(charm.param_value("follower_cap", 10), Some(20));
+        assert_eq!(charm.format_summary(1), Some("Follower cap: 2".to_string()));
+        assert_eq!(
+            charm.format_summary(10),
+            Some("Follower cap: 20".to_string())
+        );
+
+        // Heal
+        let heal = pack.skill("heal").expect("heal exists");
+        assert_eq!(heal.param_value("amount", 1), Some(4));
+        assert_eq!(heal.param_value("amount", 10), Some(31));
+        assert_eq!(heal.format_summary(1), Some("Restores: 4 HP".to_string()));
+        assert_eq!(heal.format_summary(10), Some("Restores: 31 HP".to_string()));
+
+        // Intercept
+        let intercept = pack.skill("intercept").expect("intercept exists");
+        assert_eq!(intercept.param_value("damage_soaked", 1), Some(0));
+        assert_eq!(intercept.param_value("damage_soaked", 2), Some(0));
+        assert_eq!(intercept.param_value("damage_soaked", 3), Some(1));
+        assert_eq!(intercept.param_value("damage_soaked", 10), Some(5));
+        assert_eq!(
+            intercept.format_summary(1),
+            Some("Damage soaked: -0".to_string())
+        );
+        assert_eq!(
+            intercept.format_summary(10),
+            Some("Damage soaked: -5".to_string())
+        );
+
+        // Trace
+        let trace = pack.skill("trace").expect("trace exists");
+        assert_eq!(trace.param_value("mp_discount", 1), Some(0));
+        assert_eq!(trace.param_value("mp_discount", 2), Some(0));
+        assert_eq!(trace.param_value("mp_discount", 3), Some(1));
+        assert_eq!(trace.param_value("mp_discount", 10), Some(4));
+        assert_eq!(trace.format_summary(1), Some("Base MP cost".to_string()));
+        assert_eq!(trace.format_summary(2), Some("Base MP cost".to_string()));
+        assert_eq!(trace.format_summary(3), Some("-1 Tracing MP".to_string()));
+        assert_eq!(trace.format_summary(10), Some("-4 Tracing MP".to_string()));
+
+        // Teleport
+        let teleport = pack.skill("teleport").expect("teleport exists");
+        assert_eq!(teleport.param_value("anchor_capacity", 1), Some(1));
+        assert_eq!(teleport.param_value("anchor_capacity", 10), Some(6));
+        assert_eq!(teleport.format_summary(1), Some("Anchors: 1".to_string()));
+        assert_eq!(teleport.format_summary(10), Some("Anchors: 6".to_string()));
+
+        // Drain
+        let drain = pack.skill("drain").expect("drain exists");
+        assert_eq!(drain.param_value("damage", 1), Some(2));
+        assert_eq!(drain.param_value("damage", 10), Some(11));
+        assert_eq!(drain.param_value("charges", 1), Some(4));
+        assert_eq!(drain.param_value("charges", 10), Some(13));
+        assert_eq!(
+            drain.format_summary(1),
+            Some("Damage: 2 · Charges: 4".to_string())
+        );
+        assert_eq!(
+            drain.format_summary(10),
+            Some("Damage: 11 · Charges: 13".to_string())
+        );
+
+        // Static skills
+        let hold = pack.skill("hold").expect("hold exists");
+        assert_eq!(
+            hold.format_summary(1),
+            Some("Holds ground in room".to_string())
+        );
+        let comms = pack.skill("comms").expect("comms exists");
+        assert_eq!(
+            comms.format_summary(1),
+            Some("Telepathic link with awakened allies".to_string())
+        );
     }
 }

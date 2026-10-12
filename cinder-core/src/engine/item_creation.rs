@@ -127,7 +127,11 @@ pub fn plan_item_creation(
             }
             let trace_lvl = state.actor_skill_level(actor_id, "trace");
             let mp_cost = if item.trace_mark {
-                crate::engine::skills::effective_trace_mp_cost(item.mp_cost, trace_lvl)
+                crate::engine::skills::effective_trace_mp_cost_for_pack(
+                    content,
+                    item.mp_cost,
+                    trace_lvl,
+                )
             } else {
                 item.mp_cost
             };
@@ -263,7 +267,7 @@ pub fn craftable_option_states(
             let at_instance_limit = at_spawn_limit;
             let base_mp = item.map(|i| i.mp_cost).unwrap_or(0);
             let mp_cost = if item.is_some_and(|i| i.trace_mark) {
-                crate::engine::skills::effective_trace_mp_cost(base_mp, trace_lvl)
+                crate::engine::skills::effective_trace_mp_cost_for_pack(content, base_mp, trace_lvl)
             } else {
                 base_mp
             };

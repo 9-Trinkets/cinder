@@ -24,9 +24,14 @@ pub(super) fn build_player_skills(
         };
         let level = state.actor_skill_level(player_id, skill_id);
         let sp = state.actor_skill_sp(player_id, skill_id);
-        let sp_level_min = cinder_core::engine::skills::skill_sp_for_level(level);
-        let sp_level_max = cinder_core::engine::skills::skill_next_level_sp(level);
-        let scalar_summary = cinder_core::engine::skills::skill_scalar_summary(skill_id, level);
+        let thresholds = content.skill_sp_thresholds(skill_id);
+        let sp_level_min =
+            cinder_core::engine::skills::skill_sp_for_level_with_thresholds(level, thresholds);
+        let sp_level_max =
+            cinder_core::engine::skills::skill_next_level_sp_with_thresholds(level, thresholds);
+        let scalar_summary = skill
+            .format_summary(level)
+            .unwrap_or_else(|| cinder_core::engine::skills::skill_scalar_summary(skill_id, level));
 
         result.push(PlayerSkillItem {
             id: skill.id.clone(),

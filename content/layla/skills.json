@@ -1,5 +1,17 @@
 {
   "strict": true,
+  "sp_thresholds": [
+    0,
+    10,
+    25,
+    45,
+    70,
+    100,
+    135,
+    175,
+    220,
+    270
+  ],
   "skills": [
     {
       "id": "strike",
@@ -8,6 +20,15 @@
       "target": "single_enemy",
       "description": "A focused physical attack against a target in the room.",
       "reaction_priority": 30,
+      "scaling": {
+        "parameters": {
+          "bonus_damage": {
+            "base": 0,
+            "growth_per_level": 1
+          }
+        },
+        "summary_template": "Bonus damage: +{bonus_damage}"
+      },
       "player_action": {
         "id": "attack",
         "command": "ATTACK",
@@ -133,6 +154,25 @@
       "target": "single_ally",
       "description": "Steps in front of incoming attacks aimed at a vulnerable ally, absorbing the blow.",
       "reaction_priority": 10,
+      "scaling": {
+        "parameters": {
+          "damage_soaked": {
+            "table": [
+              0,
+              0,
+              1,
+              1,
+              2,
+              2,
+              3,
+              3,
+              4,
+              5
+            ]
+          }
+        },
+        "summary_template": "Damage soaked: -{damage_soaked}"
+      },
       "reactions": [
         {
           "id": "guard-order",
@@ -215,6 +255,9 @@
       "kind": "defend",
       "target": "self_actor",
       "description": "Holds defensive stance when critically wounded, avoiding risky exposure.",
+      "scaling": {
+        "summary_template": "Holds ground in room"
+      },
       "reactions": [
         {
           "id": "survival-hold",
@@ -242,6 +285,15 @@
       "target": "lowest_health_ally",
       "description": "Unseals soothing draughts for any wounded ally, restoring health.",
       "reaction_priority": 20,
+      "scaling": {
+        "parameters": {
+          "amount": {
+            "base": 4,
+            "growth_per_level": 3
+          }
+        },
+        "summary_template": "Restores: {amount} HP"
+      },
       "reactions": [
         {
           "id": "healer-support-order",
@@ -327,6 +379,17 @@
       "kind": "spell",
       "target": "room",
       "description": "Inscribes glowing tactical chalk sigils upon the stone.",
+      "scaling": {
+        "parameters": {
+          "mp_discount": {
+            "base": 0,
+            "step_levels": 2,
+            "growth_per_step": 1
+          }
+        },
+        "summary_template": "-{mp_discount} Tracing MP",
+        "zero_summary": "Base MP cost"
+      },
       "player_action": {
         "id": "trace",
         "command": "TRACE",
@@ -397,6 +460,25 @@
       "kind": "spell",
       "target": "anchor",
       "description": "Instantly transports the party back to the armed teleportation anchor.",
+      "scaling": {
+        "parameters": {
+          "anchor_capacity": {
+            "table": [
+              1,
+              1,
+              2,
+              2,
+              3,
+              3,
+              4,
+              4,
+              5,
+              6
+            ]
+          }
+        },
+        "summary_template": "Anchors: {anchor_capacity}"
+      },
       "player_action": {
         "id": "teleport",
         "command": "TELEPORT",
@@ -443,21 +525,46 @@
       "label": "Comms",
       "kind": "support",
       "target": "none",
-      "description": "Enables remote radio and synaptic dispatches to relay tactical updates and battlefield status across rooms."
+      "description": "Enables remote radio and synaptic dispatches to relay tactical updates and battlefield status across rooms.",
+      "scaling": {
+        "summary_template": "Telepathic link with awakened allies"
+      }
     },
     {
       "id": "charm",
       "label": "Charm",
       "kind": "spell",
       "target": "room",
-      "description": "Convert and command creatures to fight beside you."
+      "description": "Convert and command creatures to fight beside you.",
+      "scaling": {
+        "parameters": {
+          "follower_cap": {
+            "base": 2,
+            "growth_per_level": 2
+          }
+        },
+        "summary_template": "Follower cap: {follower_cap}"
+      }
     },
     {
       "id": "drain",
       "label": "Drain",
       "kind": "spell",
       "target": "room",
-      "description": "A dark spiral that saps health from enemies who cross it."
+      "description": "A dark spiral that saps health from enemies who cross it.",
+      "scaling": {
+        "parameters": {
+          "damage": {
+            "base": 2,
+            "growth_per_level": 1
+          },
+          "charges": {
+            "base": 4,
+            "growth_per_level": 1
+          }
+        },
+        "summary_template": "Damage: {damage} · Charges: {charges}"
+      }
     }
   ]
 }

@@ -252,7 +252,10 @@ fn companion_heal_amount(content: &ContentPack, state: &WorldState, actor_id: &s
         .and_then(|actor| actor.skill(&skill.id))
         .and_then(|assignment| assignment.power());
     let heal_lvl = state.actor_skill_level(actor_id, &skill.id);
-    let scalar_amount = crate::engine::skills::heal_amount(heal_lvl);
+    let scalar_amount = skill
+        .param_value("amount", heal_lvl)
+        .unwrap_or_else(|| crate::engine::skills::heal_amount(heal_lvl) as i64)
+        as i32;
     Some(authored_power.unwrap_or(scalar_amount))
 }
 

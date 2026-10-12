@@ -93,7 +93,11 @@ pub(super) fn handle_actor_command_used(
         if let Some(item) = content.item(&item_id) {
             let trace_lvl = state.actor_skill_level(command_context.actor_id, "trace");
             let mp_cost = if item.trace_mark {
-                crate::engine::skills::effective_trace_mp_cost(item.mp_cost, trace_lvl)
+                crate::engine::skills::effective_trace_mp_cost_for_pack(
+                    content,
+                    item.mp_cost,
+                    trace_lvl,
+                )
             } else {
                 item.mp_cost
             };
@@ -488,7 +492,11 @@ fn handle_teleport_sigil_placement(
     }
     let player_id = &content.settings.combat.player_actor_id;
     let teleport_level = state.actor_skill_level(player_id, "teleport");
-    let capacity = crate::engine::skills::teleport_anchor_capacity(teleport_level);
+    let capacity = content
+        .skill("teleport")
+        .and_then(|s| s.param_value("anchor_capacity", teleport_level))
+        .map(|c| c as usize)
+        .unwrap_or_else(|| crate::engine::skills::teleport_anchor_capacity(teleport_level));
     if let Some(evicted_room) = state.add_chalk_anchor(room_id, capacity) {
         state.remove_item_from_storage(
             "teleport-sigil",

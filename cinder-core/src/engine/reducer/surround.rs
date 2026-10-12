@@ -123,7 +123,11 @@ fn try_surround_room(
                 .filter(|actor| state.is_party_member(content, &actor.id))
                 .count();
             let charm_level = state.actor_skill_level(player_id, "charm");
-            let cap = crate::engine::skills::charm_follower_cap(charm_level);
+            let cap = content
+                .skill("charm")
+                .and_then(|s| s.param_value("follower_cap", charm_level))
+                .map(|v| v as usize)
+                .unwrap_or_else(|| crate::engine::skills::charm_follower_cap(charm_level));
             if current_followers >= cap {
                 push_message(lines, content, "surround.refused", &[]);
                 refused_count += 1;

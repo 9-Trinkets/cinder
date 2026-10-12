@@ -56,7 +56,13 @@ pub(crate) fn handle_item_acquired(
                 && let Some(evicted_room) = {
                     let player_id = &content.settings.combat.player_actor_id;
                     let teleport_level = state.actor_skill_level(player_id, "teleport");
-                    let capacity = crate::engine::skills::teleport_anchor_capacity(teleport_level);
+                    let capacity = content
+                        .skill("teleport")
+                        .and_then(|s| s.param_value("anchor_capacity", teleport_level))
+                        .map(|c| c as usize)
+                        .unwrap_or_else(|| {
+                            crate::engine::skills::teleport_anchor_capacity(teleport_level)
+                        });
                     state.add_chalk_anchor(&room_id, capacity)
                 }
             {

@@ -208,7 +208,11 @@ pub(super) fn plan_content_command(
                 .planner_state
                 .actor_skill_level(&content.settings.combat.player_actor_id, "trace");
             let mp_cost = if item.trace_mark {
-                crate::engine::skills::effective_trace_mp_cost(item.mp_cost, trace_lvl)
+                crate::engine::skills::effective_trace_mp_cost_for_pack(
+                    content,
+                    item.mp_cost,
+                    trace_lvl,
+                )
             } else {
                 item.mp_cost
             };
