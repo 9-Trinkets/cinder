@@ -676,12 +676,12 @@ fn layla_action_bar_shortcuts_are_consistent() {
 }
 
 #[test]
-fn erase_action_hidden_from_overflow_when_no_sigils_in_room() {
+fn erase_action_is_consolidated_into_trace_panel_and_never_surfaces_in_overflow() {
     let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
     let runtime = CinderRuntime::new(pack.clone(), false).unwrap();
 
-    // At game start, current room has no chalk sigils -> erase is NOT in overflow
+    // At game start, no sigils -> erase is NOT in overflow
     let overflow = build_overflow_actions(
         &runtime,
         &pack,
@@ -690,12 +690,9 @@ fn erase_action_hidden_from_overflow_when_no_sigils_in_room() {
         &PanelOptionGroups::default(),
     )
     .unwrap();
-    assert!(
-        !overflow.iter().any(|a| a.id == "erase"),
-        "erase action should be hidden when room has no sigils"
-    );
+    assert!(!overflow.iter().any(|a| a.id == "erase"));
 
-    // Place a trace mark in the current room -> erase becomes visible in overflow
+    // Place a trace mark in the current room -> erase still NOT in overflow (Proposal 1)
     let room_id = state.current_room_id.clone();
     state.add_item_to_storage("charm-sigil", ItemStorageTarget::CurrentRoom, &room_id);
     let overflow_with_sigil = build_overflow_actions(
@@ -707,7 +704,15 @@ fn erase_action_hidden_from_overflow_when_no_sigils_in_room() {
     )
     .unwrap();
     assert!(
-        overflow_with_sigil.iter().any(|a| a.id == "erase"),
-        "erase action should be present when room has a trace mark"
+        !overflow_with_sigil.iter().any(|a| a.id == "erase"),
+        "erase action is consolidated into trace panel and should not surface in overflow"
+    );
+
+    // But in the Trace panel, Erase Sigils is present!
+    let trace_action = pack.action("trace").expect("trace action");
+    let trace_opts = craftable_item_panel_options(&pack, &state, trace_action, "trace");
+    assert!(
+        trace_opts.iter().any(|a| a.id == "erase"),
+        "erase option must be present in the trace panel when sigils exist"
     );
 }

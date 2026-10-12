@@ -54,14 +54,8 @@ pub(crate) fn build_overflow_actions(
             if a.id == "give" && panels.give.is_empty() {
                 return false;
             }
-            if a.id == "erase"
-                && !state
-                    .loose_room_items(&current_room_id)
-                    .into_iter()
-                    .any(|(item_id, count)| {
-                        count > 0 && content.item(&item_id).is_some_and(|i| i.trace_mark)
-                    })
-            {
+            // Sigil erasing is consolidated into the Trace panel and never surfaces in overflow
+            if a.id == "erase" {
                 return false;
             }
             action_is_available(content, state, a, &current_room_id)
