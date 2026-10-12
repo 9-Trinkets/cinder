@@ -578,7 +578,9 @@
       "player_enabled": true,
       "target_mode": "none",
       "outcome_mode": "event",
-      "available": {},
+      "available": {
+        "requires_room_trace_mark": true
+      },
       "ui": {
         "bar": false,
         "overflow": false,

@@ -78,6 +78,20 @@ struct RoomItemGate;
 impl AvailabilityRule for RoomItemGate {
     fn check(&self, ctx: &AvailabilityContext<'_>) -> Result<(), CommandAvailabilityIssue> {
         let available = &ctx.action.available;
+        if available.requires_room_trace_mark {
+            let has_trace_mark =
+                ctx.state
+                    .loose_room_items(ctx.room_id)
+                    .into_iter()
+                    .any(|(item_id, count)| {
+                        count > 0 && ctx.content.item(&item_id).is_some_and(|i| i.trace_mark)
+                    });
+            if !has_trace_mark {
+                return Err(CommandAvailabilityIssue::RoomItemCondition(
+                    "trace_mark".to_string(),
+                ));
+            }
+        }
         if !available.requires_room_item.is_empty()
             && !ctx.state.has_item_in_storage(
                 &available.requires_room_item,

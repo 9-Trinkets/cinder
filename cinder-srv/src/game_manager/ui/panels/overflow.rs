@@ -24,7 +24,11 @@ pub(crate) fn build_overflow_actions(
 ) -> Result<Vec<OverflowAction>, String> {
     let has_talk = bar_ids.contains(&"speak") || bar_ids.contains(&"talk");
     let modal_covered: Vec<&str> = vec!["inspect_feature", "inspect_actor"];
-    let current_room_id = runtime.current_room_id().unwrap_or_default();
+    let current_room_id = if !state.current_room_id.is_empty() {
+        state.current_room_id.clone()
+    } else {
+        runtime.current_room_id().unwrap_or_default()
+    };
     let mut overflow_actions: Vec<OverflowAction> = content
         .actions
         .iter()
@@ -48,6 +52,16 @@ pub(crate) fn build_overflow_actions(
                 return false;
             }
             if a.id == "give" && panels.give.is_empty() {
+                return false;
+            }
+            if a.id == "erase"
+                && !state
+                    .loose_room_items(&current_room_id)
+                    .into_iter()
+                    .any(|(item_id, count)| {
+                        count > 0 && content.item(&item_id).is_some_and(|i| i.trace_mark)
+                    })
+            {
                 return false;
             }
             action_is_available(content, state, a, &current_room_id)

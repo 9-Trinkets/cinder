@@ -674,3 +674,40 @@ fn layla_action_bar_shortcuts_are_consistent() {
     assert_eq!(empty_bar[2].id, "trace");
     assert_eq!(empty_bar[2].shortcut, Some(3));
 }
+
+#[test]
+fn erase_action_hidden_from_overflow_when_no_sigils_in_room() {
+    let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    let runtime = CinderRuntime::new(pack.clone(), false).unwrap();
+
+    // At game start, current room has no chalk sigils -> erase is NOT in overflow
+    let overflow = build_overflow_actions(
+        &runtime,
+        &pack,
+        &state,
+        &["look", "move", "trace", "talk"],
+        &PanelOptionGroups::default(),
+    )
+    .unwrap();
+    assert!(
+        !overflow.iter().any(|a| a.id == "erase"),
+        "erase action should be hidden when room has no sigils"
+    );
+
+    // Place a trace mark in the current room -> erase becomes visible in overflow
+    let room_id = state.current_room_id.clone();
+    state.add_item_to_storage("charm-sigil", ItemStorageTarget::CurrentRoom, &room_id);
+    let overflow_with_sigil = build_overflow_actions(
+        &runtime,
+        &pack,
+        &state,
+        &["look", "move", "trace", "talk"],
+        &PanelOptionGroups::default(),
+    )
+    .unwrap();
+    assert!(
+        overflow_with_sigil.iter().any(|a| a.id == "erase"),
+        "erase action should be present when room has a trace mark"
+    );
+}

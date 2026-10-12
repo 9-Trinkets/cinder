@@ -13,6 +13,9 @@ pub struct ActionAvailability {
     /// Room must NOT contain this item for the action to be available.
     #[serde(default)]
     pub requires_room_without_item: String,
+    /// Room must contain at least one loose item with `trace_mark == true`.
+    #[serde(default)]
+    pub requires_room_trace_mark: bool,
     /// A story variable that must be set (to a truthy value) for the action
     /// to be available, e.g. `warden_defeated`.
     #[serde(default)]

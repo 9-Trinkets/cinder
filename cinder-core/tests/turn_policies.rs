@@ -485,3 +485,52 @@ fn action_requiring_item_hides_when_item_not_in_inventory() {
         &state.current_room_id
     ));
 }
+
+#[test]
+fn action_requiring_room_trace_mark_hides_when_no_sigils_in_room() {
+    let mut pack = minimal_test_pack();
+    pack.items.push(ItemDefinition {
+        id: "charm-sigil".to_string(),
+        label: "Charm Sigil".to_string(),
+        trace_mark: true,
+        ..ItemDefinition::default()
+    });
+    pack.items.push(ItemDefinition {
+        id: "rock".to_string(),
+        label: "Rock".to_string(),
+        trace_mark: false,
+        ..ItemDefinition::default()
+    });
+    pack.actions.push(ActionDefinition {
+        id: "erase".to_string(),
+        command: "erase".to_string(),
+        available: ActionAvailability {
+            requires_room_trace_mark: true,
+            ..ActionAvailability::default()
+        },
+        ..ActionDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut pack);
+    let erase = pack.action("erase").unwrap();
+    let mut state = WorldState::new(&pack);
+    let room_id = state.current_room_id.clone();
+
+    // No items in room -> unavailable
+    assert!(!action_is_available(&pack, &state, erase, &room_id));
+
+    // Regular item (not trace mark) -> still unavailable
+    state.add_item_to_storage(
+        "rock",
+        cinder_core::content::types::ItemStorageTarget::CurrentRoom,
+        &room_id,
+    );
+    assert!(!action_is_available(&pack, &state, erase, &room_id));
+
+    // Add trace mark to room -> available
+    state.add_item_to_storage(
+        "charm-sigil",
+        cinder_core::content::types::ItemStorageTarget::CurrentRoom,
+        &room_id,
+    );
+    assert!(action_is_available(&pack, &state, erase, &room_id));
+}
