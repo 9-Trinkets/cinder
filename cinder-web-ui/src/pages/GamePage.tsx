@@ -85,7 +85,15 @@ export default function GamePage() {
     const panel = action.panel as string | undefined
     if (panel) {
       const options = uiSnapshot?.panel_options?.[panel] ?? []
-      if (options.length === 1 && action.id !== 'give') {
+      if (
+        options.length === 1 &&
+        !options[0].disabled &&
+        action.id !== 'give' &&
+        action.id !== 'trace' &&
+        panel !== 'trace' &&
+        action.id !== 'drop' &&
+        panel !== 'drop'
+      ) {
         handleSelectPanelOption(panel, options[0])
         return
       }
@@ -347,7 +355,15 @@ export default function GamePage() {
                 const panel = (action as unknown as Record<string, unknown>).panel as string | undefined
                 if (panel) {
                   const options = uiSnapshot?.panel_options?.[panel] ?? []
-                  if (options.length === 1 && action.id !== 'give') {
+                  if (
+                    options.length === 1 &&
+                    !options[0].disabled &&
+                    action.id !== 'give' &&
+                    action.id !== 'trace' &&
+                    panel !== 'trace' &&
+                    action.id !== 'drop' &&
+                    panel !== 'drop'
+                  ) {
                     handleSelectPanelOption(panel, options[0])
                     return
                   }

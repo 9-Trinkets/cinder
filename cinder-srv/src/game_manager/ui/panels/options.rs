@@ -244,34 +244,47 @@ pub(crate) fn craftable_item_panel_options(
                 })
                 .collect();
 
-            let trace_in_room: Vec<String> = state
-                .loose_room_items(&state.current_room_id)
-                .into_iter()
-                .filter(|(item_id, count)| {
-                    *count > 0 && content.item(item_id).is_some_and(|i| i.trace_mark)
-                })
-                .map(|(item_id, _)| item_id)
-                .collect();
+            if action.id == "trace" || phrase == "trace" {
+                let trace_in_room: Vec<String> = state
+                    .loose_room_items(&state.current_room_id)
+                    .into_iter()
+                    .filter(|(item_id, count)| {
+                        *count > 0 && content.item(item_id).is_some_and(|i| i.trace_mark)
+                    })
+                    .map(|(item_id, _)| item_id)
+                    .collect();
 
-            if !trace_in_room.is_empty() {
-                let title = if trace_in_room.len() == 1 {
-                    format!(
-                        "Erase {}",
-                        title_case(content.item_label(&trace_in_room[0]))
-                    )
+                if !trace_in_room.is_empty() {
+                    let title = if trace_in_room.len() == 1 {
+                        format!(
+                            "Erase {}",
+                            title_case(content.item_label(&trace_in_room[0]))
+                        )
+                    } else {
+                        "Erase Sigils".to_string()
+                    };
+                    options.push(PanelOptionData {
+                        id: "erase".to_string(),
+                        title,
+                        subtitle: Some("Wipe chalk marks from this room".to_string()),
+                        command: Some("erase".to_string()),
+                        disabled: false,
+                        selected: false,
+                        group: None,
+                        panel: None,
+                    });
                 } else {
-                    "Erase Sigils".to_string()
-                };
-                options.push(PanelOptionData {
-                    id: "erase".to_string(),
-                    title,
-                    subtitle: Some("Wipe chalk marks from this room".to_string()),
-                    command: Some("erase".to_string()),
-                    disabled: false,
-                    selected: false,
-                    group: None,
-                    panel: None,
-                });
+                    options.push(PanelOptionData {
+                        id: "erase".to_string(),
+                        title: "Erase Sigil".to_string(),
+                        subtitle: Some("No sigils in this room".to_string()),
+                        command: None,
+                        disabled: true,
+                        selected: false,
+                        group: None,
+                        panel: None,
+                    });
+                }
             }
 
             options

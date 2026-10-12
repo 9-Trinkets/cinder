@@ -692,6 +692,19 @@ fn erase_action_is_consolidated_into_trace_panel_and_never_surfaces_in_overflow(
     .unwrap();
     assert!(!overflow.iter().any(|a| a.id == "erase"));
 
+    // In the Trace panel, Erase Sigil is present even when no sigils exist (disabled)
+    let trace_action = pack.action("trace").expect("trace action");
+    let trace_opts_empty = craftable_item_panel_options(&pack, &state, trace_action, "trace");
+    let erase_empty = trace_opts_empty.iter().find(|a| a.id == "erase");
+    assert!(
+        erase_empty.is_some(),
+        "erase option must be present in the trace panel even when no sigils exist"
+    );
+    assert!(
+        erase_empty.unwrap().disabled,
+        "erase option must be disabled when no sigils exist in the room"
+    );
+
     // Place a trace mark in the current room -> erase still NOT in overflow (Proposal 1)
     let room_id = state.current_room_id.clone();
     state.add_item_to_storage("charm-sigil", ItemStorageTarget::CurrentRoom, &room_id);
@@ -708,11 +721,15 @@ fn erase_action_is_consolidated_into_trace_panel_and_never_surfaces_in_overflow(
         "erase action is consolidated into trace panel and should not surface in overflow"
     );
 
-    // But in the Trace panel, Erase Sigils is present!
-    let trace_action = pack.action("trace").expect("trace action");
+    // In the Trace panel, Erase Sigils is now enabled!
     let trace_opts = craftable_item_panel_options(&pack, &state, trace_action, "trace");
+    let erase_with_sigil = trace_opts.iter().find(|a| a.id == "erase");
     assert!(
-        trace_opts.iter().any(|a| a.id == "erase"),
+        erase_with_sigil.is_some(),
         "erase option must be present in the trace panel when sigils exist"
+    );
+    assert!(
+        !erase_with_sigil.unwrap().disabled,
+        "erase option must be enabled in the trace panel when sigils exist"
     );
 }
