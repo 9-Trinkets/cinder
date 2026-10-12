@@ -53,8 +53,11 @@ pub(super) fn plan_teleport_command(
     }
 
     let player_id = &content.settings.combat.player_actor_id;
-    let teleport_lvl = state.actor_skill_level(player_id, "teleport");
-    let mp_cost = crate::engine::skills::teleport_mp_cost(teleport_lvl);
+    let trace_lvl = state.actor_skill_level(player_id, "trace");
+    let mp_cost = crate::engine::skills::effective_trace_mp_cost(
+        crate::engine::skills::TELEPORT_BASE_MP_COST,
+        trace_lvl,
+    );
     if content.stats.actor.contains_key("mp") {
         let current_mp = state.actor_stat_u32(player_id, "mp");
         if current_mp < mp_cost {

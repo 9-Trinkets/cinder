@@ -203,14 +203,22 @@ pub(super) fn plan_content_command(
     }
 
     if let Some(item_id) = created_item_id {
-        if let Some(item) = content.item(&item_id)
-            && item.mp_cost > 0
-        {
-            planned.events.push(WorldEvent::ActorStatAdjusted {
-                actor_id: content.settings.combat.player_actor_id.clone(),
-                stat: "mp".to_string(),
-                delta: -(item.mp_cost as i32),
-            });
+        if let Some(item) = content.item(&item_id) {
+            let trace_lvl = context
+                .planner_state
+                .actor_skill_level(&content.settings.combat.player_actor_id, "trace");
+            let mp_cost = if item.trace_mark {
+                crate::engine::skills::effective_trace_mp_cost(item.mp_cost, trace_lvl)
+            } else {
+                item.mp_cost
+            };
+            if mp_cost > 0 {
+                planned.events.push(WorldEvent::ActorStatAdjusted {
+                    actor_id: content.settings.combat.player_actor_id.clone(),
+                    stat: "mp".to_string(),
+                    delta: -(mp_cost as i32),
+                });
+            }
         }
         planned.events.push(WorldEvent::ItemAcquired {
             item_id,

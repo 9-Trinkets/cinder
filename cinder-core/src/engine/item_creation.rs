@@ -19,8 +19,6 @@ pub enum ItemCreationRejection {
     TraceMarkExists { item_id: String },
     /// The item's active spawned-instance cap is reached.
     InstanceLimit { item_id: String, max: usize },
-    /// The actor has reached their active sigil capacity.
-    SigilCapacityLimit { max: usize },
     /// The actor lacks the MP to create the item.
     InsufficientMp {
         item_id: String,
@@ -115,21 +113,6 @@ pub fn plan_item_creation(
             };
         }
         if let Some(item) = content.item(item_id) {
-            if item.trace_mark
-                && storage == ActionItemStorageTarget::CurrentRoom
-                && state.actor_has_skill(actor_id, "trace")
-            {
-                let trace_level = state.actor_skill_level(actor_id, "trace");
-                let max_sigils = crate::engine::skills::trace_sigil_capacity(trace_level);
-                if state.total_active_trace_marks(content) >= max_sigils {
-                    return ItemCreationPlan {
-                        resolved_id: Some(item_id.to_string()),
-                        rejection: Some(ItemCreationRejection::SigilCapacityLimit {
-                            max: max_sigils,
-                        }),
-                    };
-                }
-            }
             if let Some(max) = item.max_active_instances
                 && !item.spawn_template_id.is_empty()
                 && state.active_spawned_actor_count(content, &item.spawn_template_id) >= max
@@ -142,14 +125,20 @@ pub fn plan_item_creation(
                     }),
                 };
             }
-            if item.mp_cost > 0 {
+            let trace_lvl = state.actor_skill_level(actor_id, "trace");
+            let mp_cost = if item.trace_mark {
+                crate::engine::skills::effective_trace_mp_cost(item.mp_cost, trace_lvl)
+            } else {
+                item.mp_cost
+            };
+            if mp_cost > 0 {
                 let current_mp = state.actor_stat_u32(actor_id, "mp");
-                if current_mp < item.mp_cost {
+                if current_mp < mp_cost {
                     return ItemCreationPlan {
                         resolved_id: Some(item_id.to_string()),
                         rejection: Some(ItemCreationRejection::InsufficientMp {
                             item_id: item_id.to_string(),
-                            mp_cost: item.mp_cost,
+                            mp_cost,
                             current_mp,
                         }),
                     };
@@ -199,9 +188,6 @@ pub fn render_item_creation_rejection(
                     &[("actor", template_name), ("max", max_str.as_str())],
                 )
                 .unwrap_or_else(|| format!("You cannot sustain more than {max} active summons."))
-        }
-        ItemCreationRejection::SigilCapacityLimit { max } => {
-            format!("You cannot sustain more than {max} active sigils at your current trace level.")
         }
         ItemCreationRejection::InsufficientMp {
             item_id,
@@ -261,8 +247,6 @@ pub fn craftable_option_states(
     };
     let actor_mp = state.actor_stat_u32(actor_id, "mp");
     let trace_lvl = state.actor_skill_level(actor_id, "trace");
-    let trace_cap = crate::engine::skills::trace_sigil_capacity(trace_lvl);
-    let total_sigils = state.total_active_trace_marks(content);
     creation
         .craftable_items
         .iter()
@@ -276,11 +260,13 @@ pub fn craftable_option_states(
                         && state.active_spawned_actor_count(content, &i.spawn_template_id) >= max
                 })
             });
-            let at_sigil_limit = item.is_some_and(|i| i.trace_mark)
-                && state.actor_has_skill(actor_id, "trace")
-                && total_sigils >= trace_cap;
-            let at_instance_limit = at_spawn_limit || at_sigil_limit;
-            let mp_cost = item.map(|i| i.mp_cost).unwrap_or(0);
+            let at_instance_limit = at_spawn_limit;
+            let base_mp = item.map(|i| i.mp_cost).unwrap_or(0);
+            let mp_cost = if item.is_some_and(|i| i.trace_mark) {
+                crate::engine::skills::effective_trace_mp_cost(base_mp, trace_lvl)
+            } else {
+                base_mp
+            };
             CraftableOptionState {
                 item_id: item_id.clone(),
                 already_traced,

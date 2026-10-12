@@ -168,7 +168,7 @@ pub(crate) fn craftable_item_panel_options(
         .map(|ic| &ic.craftable_items)
         .filter(|craftables| !craftables.is_empty())
         .map(|craftables| {
-            craftables
+            let mut options: Vec<PanelOptionData> = craftables
                 .iter()
                 .filter(|item_id| {
                     let unlocked = || -> bool {
@@ -201,7 +201,13 @@ pub(crate) fn craftable_item_panel_options(
                         );
                     let player_id = &content.settings.combat.player_actor_id;
                     let player_mp = state.actor_stat_u32(player_id, "mp");
-                    let mp_cost = item.map(|i| i.mp_cost).unwrap_or(0);
+                    let trace_lvl = state.actor_skill_level(player_id, "trace");
+                    let base_mp = item.map(|i| i.mp_cost).unwrap_or(0);
+                    let mp_cost = if item.is_some_and(|i| i.trace_mark) {
+                        cinder_core::engine::skills::effective_trace_mp_cost(base_mp, trace_lvl)
+                    } else {
+                        base_mp
+                    };
                     let at_instance_limit = item.is_some_and(|i| {
                         i.max_active_instances.is_some_and(|max| {
                             !i.spawn_template_id.is_empty()
@@ -236,7 +242,39 @@ pub(crate) fn craftable_item_panel_options(
                         panel: None,
                     }
                 })
-                .collect()
+                .collect();
+
+            let trace_in_room: Vec<String> = state
+                .loose_room_items(&state.current_room_id)
+                .into_iter()
+                .filter(|(item_id, count)| {
+                    *count > 0 && content.item(item_id).is_some_and(|i| i.trace_mark)
+                })
+                .map(|(item_id, _)| item_id)
+                .collect();
+
+            if !trace_in_room.is_empty() {
+                let title = if trace_in_room.len() == 1 {
+                    format!(
+                        "Erase {}",
+                        title_case(content.item_label(&trace_in_room[0]))
+                    )
+                } else {
+                    "Erase Sigils".to_string()
+                };
+                options.push(PanelOptionData {
+                    id: "erase".to_string(),
+                    title,
+                    subtitle: Some("Wipe chalk marks from this room".to_string()),
+                    command: Some("erase".to_string()),
+                    disabled: false,
+                    selected: false,
+                    group: None,
+                    panel: None,
+                });
+            }
+
+            options
         })
         .unwrap_or_default()
 }

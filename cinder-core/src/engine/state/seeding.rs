@@ -87,7 +87,7 @@ pub(super) fn seeded_actor_skill_levels(
                     let lvl = if actor.id == *player_id {
                         1
                     } else {
-                        skill.level().unwrap_or(char_level).clamp(1, char_level)
+                        skill.level().unwrap_or(char_level).clamp(1, 10)
                     };
                     (skill.id().to_string(), lvl)
                 })

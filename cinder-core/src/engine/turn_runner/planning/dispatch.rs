@@ -2,6 +2,7 @@ use super::super::types::PlannedTurn;
 use super::PlanningContext;
 use super::content::plan_content_command;
 use super::dialogue::plan_dialogue_command;
+use super::erase::plan_erase_command;
 use super::observe::{plan_observe_room, plan_observe_target};
 use super::targeted::plan_targeted_state_command;
 use super::targetless::plan_targetless_command;
@@ -85,6 +86,13 @@ pub(crate) fn plan_authored_command(
         .is_some_and(|metadata| metadata.kind == "teleport")
     {
         return plan_teleport_command(content, action, input, &context, planned);
+    }
+    if action
+        .player_command
+        .as_ref()
+        .is_some_and(|metadata| metadata.kind == "erase")
+    {
+        return plan_erase_command(content, action, input, &context, planned);
     }
     if action.outcome_mode == CommandOutcomeMode::Dialogue {
         plan_dialogue_command(content, action, input, &context, planned)

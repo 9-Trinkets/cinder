@@ -58,20 +58,26 @@ pub fn intercept_damage_soaked(level: u32) -> i32 {
     }
 }
 
-/// Active sigil capacity for trace:
-/// Starts at 4 at Level 1 and scales: 4, 5, 6, 7, 8, 9, 10, 11, 12, 14.
-pub fn trace_sigil_capacity(level: u32) -> usize {
-    match level.clamp(1, 10) {
-        1 => 4,
-        2 => 5,
-        3 => 6,
-        4 => 7,
-        5 => 8,
-        6 => 9,
-        7 => 10,
-        8 => 11,
-        9 => 12,
-        _ => 14,
+/// MP discount for tracing sigils and sigil spells by Trace skill level (1..=10).
+/// Scales 0 to 4 MP discount across levels 1..=10:
+/// Levels 1-2: 0 MP
+/// Levels 3-4: 1 MP
+/// Levels 5-6: 2 MP
+/// Levels 7-8: 3 MP
+/// Levels 9-10: 4 MP
+pub fn trace_mp_discount(level: u32) -> u32 {
+    let lvl = level.clamp(1, 10);
+    lvl.saturating_sub(1) / 2
+}
+
+/// Computes the effective MP cost for tracing a sigil or casting a sigil spell,
+/// discounted by Trace skill level, and never reducing below 1 (unless base was 0).
+pub fn effective_trace_mp_cost(base_mp: u32, trace_level: u32) -> u32 {
+    if base_mp == 0 {
+        0
+    } else {
+        let discount = trace_mp_discount(trace_level);
+        base_mp.saturating_sub(discount).max(1)
     }
 }
 
@@ -97,17 +103,8 @@ pub fn teleport_anchor_capacity(level: u32) -> usize {
     }
 }
 
-/// MP cost for teleporting: 6 MP down to 1 MP.
-pub fn teleport_mp_cost(level: u32) -> u32 {
-    match level.clamp(1, 10) {
-        1 => 6,
-        2..=3 => 5,
-        4..=5 => 4,
-        6..=7 => 3,
-        8..=9 => 2,
-        _ => 1,
-    }
-}
+/// Base MP cost for casting teleportation.
+pub const TELEPORT_BASE_MP_COST: u32 = 6;
 
 /// Pure scalar summary string for UI display.
 pub fn skill_scalar_summary(skill_id: &str, level: u32) -> String {
@@ -117,17 +114,20 @@ pub fn skill_scalar_summary(skill_id: &str, level: u32) -> String {
         "strike" => format!("Bonus damage: +{}", strike_bonus_damage(lvl)),
         "heal" => format!("Restores: {} HP", heal_amount(lvl)),
         "intercept" => format!("Damage soaked: -{}", intercept_damage_soaked(lvl)),
-        "trace" => format!("Active sigils: {}", trace_sigil_capacity(lvl)),
+        "trace" => {
+            let discount = trace_mp_discount(lvl);
+            if discount == 0 {
+                "Base MP cost".to_string()
+            } else {
+                format!("-{} Tracing MP", discount)
+            }
+        }
         "drain" => format!(
             "Damage: {} · Charges: {}",
             drain_damage(lvl),
             drain_charges(lvl)
         ),
-        "teleport" => format!(
-            "Anchors: {} · MP cost: {}",
-            teleport_anchor_capacity(lvl),
-            teleport_mp_cost(lvl)
-        ),
+        "teleport" => format!("Anchors: {}", teleport_anchor_capacity(lvl)),
         "hold" => "Holds ground in room".to_string(),
         "comms" => "Telepathic link with awakened allies".to_string(),
         _ => String::new(),
@@ -176,9 +176,16 @@ mod tests {
         assert_eq!(intercept_damage_soaked(10), 5);
 
         // Trace
-        assert_eq!(trace_sigil_capacity(1), 4);
-        assert_eq!(trace_sigil_capacity(9), 12);
-        assert_eq!(trace_sigil_capacity(10), 14);
+        assert_eq!(trace_mp_discount(1), 0);
+        assert_eq!(trace_mp_discount(2), 0);
+        assert_eq!(trace_mp_discount(3), 1);
+        assert_eq!(trace_mp_discount(5), 2);
+        assert_eq!(trace_mp_discount(10), 4);
+
+        assert_eq!(effective_trace_mp_cost(1, 1), 1); // Never drops below 1
+        assert_eq!(effective_trace_mp_cost(1, 10), 1);
+        assert_eq!(effective_trace_mp_cost(5, 5), 3); // 5 - 2 = 3
+        assert_eq!(effective_trace_mp_cost(5, 10), 1); // 5 - 4 = 1
 
         // Drain
         assert_eq!(drain_damage(1), 2);
@@ -189,7 +196,5 @@ mod tests {
         // Teleport
         assert_eq!(teleport_anchor_capacity(1), 1);
         assert_eq!(teleport_anchor_capacity(10), 6);
-        assert_eq!(teleport_mp_cost(1), 6);
-        assert_eq!(teleport_mp_cost(10), 1);
     }
 }

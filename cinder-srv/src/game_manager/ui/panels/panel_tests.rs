@@ -125,7 +125,8 @@ fn trace_panel_keeps_already_traced_unlocked_marks_visible() {
 
     let options = craftable_item_panel_options(&content, &state, &action, "trace");
 
-    assert_eq!(options.len(), 3);
+    assert_eq!(options.len(), 4);
+    assert!(options.iter().any(|option| option.id == "erase"));
     let drain = options
         .iter()
         .find(|option| option.id == "drain-sigil")

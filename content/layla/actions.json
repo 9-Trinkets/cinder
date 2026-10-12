@@ -556,6 +556,44 @@
           "required": false
         }
       }
+    },
+    {
+      "id": "erase",
+      "command": "ERASE",
+      "label": "Erase Sigil",
+      "group": "territory",
+      "phrases": [
+        "erase",
+        "erase sigil",
+        "erase sigils",
+        "erase mark",
+        "erase marks",
+        "wipe sigil",
+        "wipe sigils",
+        "wipe mark",
+        "wipe marks",
+        "wipe",
+        "rub out"
+      ],
+      "player_enabled": true,
+      "target_mode": "none",
+      "outcome_mode": "event",
+      "available": {},
+      "ui": {
+        "bar": false,
+        "overflow": false,
+        "group": "territory",
+        "sort_order": 53
+      },
+      "player_command": {
+        "usage": "erase [sigil]",
+        "example": "erase",
+        "advances_time": true,
+        "input": {
+          "required": false
+        },
+        "kind": "erase"
+      }
     }
   ]
 }

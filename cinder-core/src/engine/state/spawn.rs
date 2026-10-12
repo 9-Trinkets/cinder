@@ -175,7 +175,7 @@ impl WorldState {
         let mut skill_sps = std::collections::BTreeMap::new();
         for skill in &instance.skills {
             let skill_id = skill.id().to_string();
-            let lvl = skill.level().unwrap_or(char_level).clamp(1, char_level);
+            let lvl = skill.level().unwrap_or(char_level).clamp(1, 10);
             let sp = crate::engine::skills::skill_sp_for_level(lvl);
             skill_levels.insert(skill_id.clone(), lvl);
             skill_sps.insert(skill_id, sp);

@@ -90,17 +90,18 @@ pub(super) fn handle_actor_command_used(
     apply_command_objective_progress_effects(state, command);
     if let Some(item_id) = created_item_id {
         let storage = item_creation_storage(command);
-        if let Some(item) = content.item(&item_id)
-            && item.mp_cost > 0
-        {
-            state
-                .adjust_actor_stat(
-                    content,
-                    command_context.actor_id,
-                    "mp",
-                    -(item.mp_cost as i32),
-                )
-                .unwrap_or_else(|e| eprintln!("[cinder] mp deduct error: {e}"));
+        if let Some(item) = content.item(&item_id) {
+            let trace_lvl = state.actor_skill_level(command_context.actor_id, "trace");
+            let mp_cost = if item.trace_mark {
+                crate::engine::skills::effective_trace_mp_cost(item.mp_cost, trace_lvl)
+            } else {
+                item.mp_cost
+            };
+            if mp_cost > 0 {
+                state
+                    .adjust_actor_stat(content, command_context.actor_id, "mp", -(mp_cost as i32))
+                    .unwrap_or_else(|e| eprintln!("[cinder] mp deduct error: {e}"));
+            }
         }
         state.add_item_to_storage(&item_id, storage, command_context.room_id);
         if storage == ItemStorageTarget::CurrentRoom {

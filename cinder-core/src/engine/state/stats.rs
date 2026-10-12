@@ -86,10 +86,9 @@ impl WorldState {
             .insert(actor_id.to_string(), level.clamp(1, 10));
     }
 
-    /// Sets the skill level for an actor, capped by character level (1..=10).
+    /// Sets the skill level for an actor (1..=10).
     pub fn set_actor_skill_level(&mut self, actor_id: &str, skill_id: &str, level: u32) {
-        let char_lvl = self.actor_level(actor_id).min(10);
-        let clamped = level.clamp(1, char_lvl);
+        let clamped = level.clamp(1, 10);
         self.combat
             .actor_skill_levels
             .entry(actor_id.to_string())
@@ -103,7 +102,7 @@ impl WorldState {
             .insert(skill_id.to_string(), sp);
     }
 
-    /// Awards SP to an actor's skill, checking for level-up capped by character level.
+    /// Awards SP to an actor's skill (1..=10).
     /// Returns true if the skill level increased.
     pub fn award_skill_sp(&mut self, actor_id: &str, skill_id: &str, sp_delta: u32) -> bool {
         let current_sp = self.actor_skill_sp(actor_id, skill_id);
@@ -114,11 +113,8 @@ impl WorldState {
             .or_default()
             .insert(skill_id.to_string(), new_sp);
 
-        let char_level = self.actor_level(actor_id);
         let old_level = self.actor_skill_level(actor_id, skill_id);
-        let new_level = crate::engine::skills::skill_level_from_sp(new_sp)
-            .min(char_level)
-            .clamp(1, 10);
+        let new_level = crate::engine::skills::skill_level_from_sp(new_sp).clamp(1, 10);
         if new_level > old_level {
             self.set_actor_skill_level(actor_id, skill_id, new_level);
             true
@@ -127,14 +123,11 @@ impl WorldState {
         }
     }
 
-    /// Re-evaluates all skills against SP when character level increases.
+    /// Re-evaluates all skills against SP.
     pub fn recheck_actor_skill_levels(&mut self, actor_id: &str) {
-        let char_level = self.actor_level(actor_id);
         if let Some(skill_sps) = self.combat.actor_skill_sp.get(actor_id).cloned() {
             for (skill_id, sp) in skill_sps {
-                let target_level = crate::engine::skills::skill_level_from_sp(sp)
-                    .min(char_level)
-                    .clamp(1, 10);
+                let target_level = crate::engine::skills::skill_level_from_sp(sp).clamp(1, 10);
                 let current_level = self.actor_skill_level(actor_id, &skill_id);
                 if target_level > current_level {
                     self.set_actor_skill_level(actor_id, &skill_id, target_level);
@@ -533,5 +526,30 @@ impl WorldState {
             .or_default()
             .insert(stat_key.to_string(), clamped);
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn skill_level_is_not_capped_by_character_level() {
+        let content = crate::engine::test_fixtures::minimal_test_pack();
+        let mut state = WorldState::new(&content);
+        state.set_actor_level("player", 1);
+        assert_eq!(state.actor_level("player"), 1);
+
+        // Can set skill level above character level
+        state.set_actor_skill_level("player", "strike", 5);
+        assert_eq!(state.actor_skill_level("player", "strike"), 5);
+
+        // SP progression advances skill level regardless of character level
+        state.set_actor_skill_level("player", "heal", 1);
+        assert_eq!(state.actor_skill_level("player", "heal"), 1);
+        // 25 SP reaches level 3
+        state.award_skill_sp("player", "heal", 25);
+        assert_eq!(state.actor_skill_level("player", "heal"), 3);
+        assert_eq!(state.actor_level("player"), 1);
     }
 }

@@ -653,3 +653,35 @@ fn mp_regenerates_on_tick_interval_and_clamps_at_max() {
     }
     assert_eq!(state.actor_stat(ACTOR_A_ID, "mp"), 10);
 }
+
+#[test]
+fn tracing_trace_mark_awards_trace_sp() {
+    let mut pack = reducer_test_pack();
+    pack.items.push(ItemDefinition {
+        id: "charm-sigil".to_string(),
+        trace_mark: true,
+        ..ItemDefinition::default()
+    });
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.grant_actor_skill(&pack.settings.combat.player_actor_id, "trace");
+    assert_eq!(
+        state.actor_skill_sp(&pack.settings.combat.player_actor_id, "trace"),
+        0
+    );
+
+    apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::ItemAcquired {
+            item_id: "charm-sigil".to_string(),
+            storage: ItemStorageTarget::CurrentRoom,
+        })],
+    );
+
+    assert_eq!(
+        state.actor_skill_sp(&pack.settings.combat.player_actor_id, "trace"),
+        1
+    );
+}
