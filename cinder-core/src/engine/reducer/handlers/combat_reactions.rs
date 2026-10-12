@@ -109,10 +109,10 @@ pub(super) fn resolve_post_damage_reactions(
         }
         let outcome = match decision.action {
             PartyReactionAction::Counterattack => {
-                resolve_counterattack(state, content, attacker_id, room_id, &decision)
+                resolve_counterattack(state, content, attacker_id, room_id, &decision, lines)
             }
             PartyReactionAction::Support => {
-                resolve_support(state, content, attacker_id, room_id, &decision)
+                resolve_support(state, content, attacker_id, room_id, &decision, lines)
             }
             PartyReactionAction::Hold => Some(PartyReactionOutcome::Hold {
                 actor: actor_display_name(state, content, &decision.actor_id),
@@ -152,6 +152,7 @@ fn resolve_counterattack(
     attacker_id: &str,
     room_id: &str,
     decision: &PartyReactionDecision,
+    lines: &mut NarrativeLines,
 ) -> Option<PartyReactionOutcome> {
     let combat = &content.settings.combat;
     let target_id = resolve_party_reaction_target(content, state, decision, attacker_id, room_id)?;
@@ -181,7 +182,14 @@ fn resolve_counterattack(
             no_effect: true,
         })
     } else {
-        state.award_skill_sp(&decision.actor_id, "strike", 1);
+        crate::engine::reducer::award_actor_skill_sp(
+            state,
+            content,
+            &decision.actor_id,
+            "strike",
+            1,
+            lines,
+        );
         state
             .adjust_actor_stat(content, &target_id, &combat.health_stat_id, -damage)
             .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
@@ -205,6 +213,7 @@ fn resolve_support(
     attacker_id: &str,
     room_id: &str,
     decision: &PartyReactionDecision,
+    lines: &mut NarrativeLines,
 ) -> Option<PartyReactionOutcome> {
     let target_id = resolve_party_reaction_target(content, state, decision, attacker_id, room_id)?;
     let player_id = content.settings.combat.player_actor_id.as_str();
@@ -222,7 +231,14 @@ fn resolve_support(
         return None;
     };
     let heal_delta = if stat == &content.settings.combat.health_stat_id {
-        state.award_skill_sp(&decision.actor_id, "heal", 2);
+        crate::engine::reducer::award_actor_skill_sp(
+            state,
+            content,
+            &decision.actor_id,
+            "heal",
+            2,
+            lines,
+        );
         companion_heal_amount(content, state, &decision.actor_id).unwrap_or(*delta)
     } else {
         *delta

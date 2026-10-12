@@ -219,6 +219,7 @@ pub(super) fn build_ui_snapshot(
         crafted_consumable_labels: crafted_consumable_labels(content, &current_room_id),
         show_relationship_sidebar: content.settings.show_relationship_sidebar,
         show_vitals_sidebar: content.vitals_sidebar_shown(&state),
+        show_skills_sidebar: content.skills_sidebar_shown(&state),
         relationship_pairs: if content.settings.show_relationship_sidebar {
             runtime.relationship_pairs().unwrap_or_default()
         } else {

@@ -147,7 +147,9 @@ fn try_surround_room(
         let relationship = state.relationship(&actor_id);
         let converted = relationship.stance == ActorStance::Allied || relationship.follows_player;
         if converted {
-            state.award_skill_sp(player_id, "charm", 10);
+            crate::engine::reducer::award_actor_skill_sp(
+                state, content, player_id, "charm", 10, lines,
+            );
             state.initialize_party_order(content, &actor_id);
             let party_room_id = state.current_room_id.clone();
             if state.actor_room_id(&actor_id, &actor_home_room_id) != party_room_id {

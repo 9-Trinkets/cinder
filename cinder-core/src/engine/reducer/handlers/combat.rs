@@ -64,7 +64,14 @@ pub(crate) fn handle_hostile_strike(ctx: &mut ReduceCtx<'_>, actor_id: &str) {
                 .max(combat.minimum_damage);
         let guard_takes = resisted_damage(content, &guard_id, &attack_kind, raw_guard_takes);
         let guard_name = actor_display_name(state, content, &guard_id);
-        state.award_skill_sp(&guard_id, "intercept", 3);
+        crate::engine::reducer::award_actor_skill_sp(
+            state,
+            content,
+            &guard_id,
+            "intercept",
+            3,
+            lines,
+        );
         if raw_guard_takes > 0 && guard_takes == 0 {
             if let Some(line) = content.render_message(
                 "combat.no_effect",
@@ -133,7 +140,9 @@ pub(crate) fn handle_hostile_strike(ctx: &mut ReduceCtx<'_>, actor_id: &str) {
                 lines.narration(line);
             }
         } else {
-            state.award_skill_sp(actor_id, "strike", 1);
+            crate::engine::reducer::award_actor_skill_sp(
+                state, content, actor_id, "strike", 1, lines,
+            );
             state
                 .adjust_actor_stat(content, &target_id, &combat.health_stat_id, -damage)
                 .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
@@ -269,7 +278,7 @@ pub(crate) fn handle_hostile_heal(
     }
 
     let before = state.actor_stat(target_id, &combat.health_stat_id);
-    state.award_skill_sp(actor_id, "heal", 2);
+    crate::engine::reducer::award_actor_skill_sp(state, content, actor_id, "heal", 2, lines);
     state
         .adjust_actor_stat(content, target_id, &combat.health_stat_id, amount.max(0))
         .unwrap_or_else(|error| eprintln!("[cinder] hostile heal stat error: {error}"));

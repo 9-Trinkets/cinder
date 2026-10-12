@@ -405,6 +405,15 @@ impl ContentPack {
                 || self.story_var_is_truthy(state, &self.settings.vitals_sidebar_story_var))
     }
 
+    /// Whether the player's Skills sidebar section is shown,
+    /// honoring `show_skills_sidebar` plus the optional
+    /// `skills_sidebar_story_var` gate.
+    pub fn skills_sidebar_shown(&self, state: &WorldState) -> bool {
+        self.settings.show_skills_sidebar
+            && (self.settings.skills_sidebar_story_var.is_empty()
+                || self.story_var_is_truthy(state, &self.settings.skills_sidebar_story_var))
+    }
+
     /// Whether the minimap widget is shown, honoring the
     /// `minimap_requires_story_var` gate (empty = always shown).
     pub fn minimap_shown(&self, state: &WorldState) -> bool {

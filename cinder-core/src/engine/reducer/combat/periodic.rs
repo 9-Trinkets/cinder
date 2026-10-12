@@ -63,7 +63,7 @@ pub(in crate::engine::reducer) fn handle_periodic_actor_effect_applied(
         return;
     }
     if state.actor_has_skill(player_id, "drain") && definition.trigger.room_item == "drain-sigil" {
-        state.award_skill_sp(player_id, "drain", 2);
+        crate::engine::reducer::award_actor_skill_sp(state, content, player_id, "drain", 2, lines);
     }
     let remaining = state.actor_stat(actor_id, health_stat_id);
     let actor_name = actor_display_name(state, content, actor_id);

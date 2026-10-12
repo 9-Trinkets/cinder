@@ -110,7 +110,14 @@ pub(super) fn handle_actor_command_used(
         state.add_item_to_storage(&item_id, storage, command_context.room_id);
         if storage == ItemStorageTarget::CurrentRoom {
             if content.item(&item_id).is_some_and(|item| item.trace_mark) {
-                state.award_skill_sp(command_context.actor_id, "trace", 1);
+                crate::engine::reducer::award_actor_skill_sp(
+                    state,
+                    content,
+                    command_context.actor_id,
+                    "trace",
+                    1,
+                    &mut lines,
+                );
             }
             if item_id == "teleport-sigil" {
                 handle_teleport_sigil_placement(

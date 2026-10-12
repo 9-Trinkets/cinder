@@ -119,6 +119,15 @@ pub struct ContentSettingsDefinition {
     /// only after `first_mob_defeated`).
     #[serde(default)]
     pub vitals_sidebar_story_var: String,
+    /// Whether the sidebar shows the player's Skills section.
+    #[serde(default = "default_true")]
+    pub show_skills_sidebar: bool,
+    /// Story var that additionally gates the Skills sidebar section.
+    /// Empty keeps the static `show_skills_sidebar` behavior; non-empty shows
+    /// them only once the var is truthy (e.g. layered teaching: skills appear
+    /// only after `first_skill_used`).
+    #[serde(default)]
+    pub skills_sidebar_story_var: String,
     /// Story var that gates the whole minimap widget. Empty keeps the minimap
     /// always rendered; non-empty hides it until the var is truthy (e.g. the
     /// map is a boss-drop reward, revealed once `shaman_defeated`).
@@ -219,6 +228,8 @@ impl Default for ContentSettingsDefinition {
             show_relationship_sidebar: false,
             show_vitals_sidebar: true,
             vitals_sidebar_story_var: String::default(),
+            show_skills_sidebar: true,
+            skills_sidebar_story_var: String::default(),
             minimap_requires_story_var: String::default(),
             level_reveal_room_prefix: String::default(),
             quests_reveal_room_prefix: String::default(),

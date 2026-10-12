@@ -1867,5 +1867,55 @@
     "input_overlay": {
       "rules": []
     }
+  },
+  "actor.skill_used": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "player"
+            },
+            {
+              "path": "story_vars.first_skill_used",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.first_skill_used"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "player"
+            },
+            {
+              "path": "story_vars.first_skill_used",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "first_skill_used",
+            "value": "true"
+          }
+        }
+      ]
+    }
   }
 }

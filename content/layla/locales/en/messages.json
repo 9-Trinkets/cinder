@@ -167,6 +167,10 @@
         "voice": "handler",
         "text": "Floor six. High Sanctuary. Monastic perimeter. You're alone. Stay quiet."
     },
+    "handler.first_skill_used": {
+        "voice": "handler",
+        "text": "Technique, chalk, blade. Repeat a motion enough times and it gets sharper — or at least less clumsy. I've patched skill proficiency into your readout. Keep practicing. Don't expect praise."
+    },
     "handler.first_mob_killed": {
         "voice": "handler",
         "text": "First one down. No clever speech. Just the job. Vitals are on your readout now. Keep moving."

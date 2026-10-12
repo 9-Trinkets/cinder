@@ -25,7 +25,14 @@ pub(super) fn dispatch(ctx: &mut ReduceCtx<'_>, event: &WorldEvent) -> bool {
             skill_id,
             sp,
         } => {
-            ctx.state.award_skill_sp(actor_id, skill_id, *sp);
+            crate::engine::reducer::award_actor_skill_sp(
+                ctx.state,
+                ctx.content,
+                actor_id,
+                skill_id,
+                *sp,
+                ctx.lines,
+            );
             true
         }
         WorldEvent::PairStatAdjusted {

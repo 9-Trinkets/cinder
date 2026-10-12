@@ -271,6 +271,7 @@ fn killing_the_shaman_first_still_unlocks_vitals() {
 fn handler_reward_lines_are_defined() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     for key in [
+        "handler.first_skill_used",
         "handler.first_mob_killed",
         "handler.first_mob_charmed",
         "handler.clean_shaman_reward",
@@ -278,4 +279,109 @@ fn handler_reward_lines_are_defined() {
     ] {
         assert!(pack.messages.contains_key(key), "{key} must exist");
     }
+}
+
+#[test]
+fn first_skill_use_grants_skills_readout_and_handler_line() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "r2c2".to_string(); // goblin-1
+    // Give goblin enough health to survive so vitals are not unlocked yet
+    state
+        .combat
+        .actor_stats
+        .entry("goblin-1".to_string())
+        .or_default()
+        .insert("hp".to_string(), 100);
+
+    assert!(
+        !pack.skills_sidebar_shown(&state),
+        "skills readout must stay hidden before first skill use"
+    );
+    assert!(
+        !pack.vitals_sidebar_shown(&state),
+        "vitals must stay hidden before first mob kill"
+    );
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+    let outcome = runtime
+        .run_turn("attack goblin")
+        .expect("attack goblin succeeds");
+
+    let after = runtime.export_state().expect("state exported");
+    assert_eq!(after.story_vars.get("first_skill_used"), Some("true"));
+    assert!(
+        pack.skills_sidebar_shown(&after),
+        "first skill use must reveal the skills readout"
+    );
+    assert!(
+        !pack.vitals_sidebar_shown(&after),
+        "vitals must remain hidden if the mob was not killed"
+    );
+    assert!(
+        handler_spoke(&outcome.lines, "Technique, chalk, blade"),
+        "Handler must comment on the first skill use"
+    );
+}
+
+#[test]
+fn first_skill_use_beat_is_one_shot() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "r2c2".to_string();
+    state
+        .combat
+        .actor_stats
+        .entry("goblin-1".to_string())
+        .or_default()
+        .insert("hp".to_string(), 100);
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+    let first = runtime
+        .run_turn("attack goblin")
+        .expect("attack goblin succeeds");
+    assert!(handler_spoke(&first.lines, "Technique, chalk, blade"));
+
+    let second = runtime
+        .run_turn("attack goblin")
+        .expect("second attack succeeds");
+    assert!(
+        !handler_spoke(&second.lines, "Technique, chalk, blade"),
+        "the first-skill-use beat must not repeat"
+    );
+}
+
+#[test]
+fn tracing_sigil_first_reveals_skills_readout_before_vitals() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let state = WorldState::new(&pack);
+
+    assert!(
+        !pack.skills_sidebar_shown(&state),
+        "skills readout must stay hidden before first skill use"
+    );
+    assert!(
+        !pack.vitals_sidebar_shown(&state),
+        "vitals must stay hidden before first kill"
+    );
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+    let outcome = runtime
+        .run_turn("trace charm")
+        .expect("trace charm succeeds");
+
+    let after = runtime.export_state().expect("state exported");
+    assert_eq!(after.story_vars.get("first_skill_used"), Some("true"));
+    assert!(
+        pack.skills_sidebar_shown(&after),
+        "tracing a sigil must reveal the skills readout"
+    );
+    assert!(
+        !pack.vitals_sidebar_shown(&after),
+        "vitals must remain hidden when tracing a sigil without killing a mob"
+    );
+    assert!(
+        handler_spoke(&outcome.lines, "Technique, chalk, blade"),
+        "Handler must comment on the first skill use when tracing"
+    );
 }

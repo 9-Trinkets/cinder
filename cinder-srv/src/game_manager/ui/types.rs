@@ -335,6 +335,9 @@ pub struct UiSnapshot {
     /// Whether the sidebar shows the Vitals + Level sections (combat packs).
     /// Honors `show_vitals_sidebar` and the `vitals_sidebar_story_var` gate.
     pub show_vitals_sidebar: bool,
+    /// Whether the sidebar shows the Skills section.
+    /// Honors `show_skills_sidebar` and the `skills_sidebar_story_var` gate.
+    pub show_skills_sidebar: bool,
     pub theme: ThemeDefinition,
 }
 

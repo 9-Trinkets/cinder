@@ -416,6 +416,7 @@ export interface UiSnapshot {
   show_relationship_sidebar: boolean
   relationship_pairs: RelationshipPair[]
   show_vitals_sidebar: boolean
+  show_skills_sidebar: boolean
   theme: ThemeDefinition
   ui_text: {
     language_name: string

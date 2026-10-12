@@ -75,9 +75,18 @@ pub(in crate::engine::reducer) fn apply_attack_target(
             lines.narration(line);
         }
     } else {
-        state.award_skill_sp(&combat.player_actor_id, "strike", 1);
+        crate::engine::reducer::award_actor_skill_sp(
+            state,
+            content,
+            &combat.player_actor_id,
+            "strike",
+            1,
+            lines,
+        );
         for ally_id in &allied_participants {
-            state.award_skill_sp(ally_id, "strike", 1);
+            crate::engine::reducer::award_actor_skill_sp(
+                state, content, ally_id, "strike", 1, lines,
+            );
         }
         let remaining = adjust_actor_stat(
             state,

@@ -9,6 +9,7 @@ pub(crate) mod handlers;
 mod movement;
 mod observation;
 mod protection;
+pub mod skills;
 mod summaries;
 mod surround;
 mod tick;
@@ -16,6 +17,7 @@ pub mod transformations;
 
 pub(crate) use self::handlers::handler_attributed_line;
 pub(crate) use self::observation::render_actor_speech_line;
+pub use self::skills::award_actor_skill_sp;
 
 use self::context::ReduceCtx;
 use crate::content::types::ContentPack;

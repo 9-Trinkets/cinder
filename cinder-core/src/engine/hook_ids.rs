@@ -8,4 +8,5 @@ pub const ACTOR_ATTACKED: &str = "actor.attacked";
 pub const ACTOR_TIME_ADVANCED: &str = "actor.time_advanced";
 pub const ACTOR_SURROUNDED: &str = "actor.surrounded";
 pub const ACTOR_DEFEATED: &str = "actor.defeated";
+pub const ACTOR_SKILL_USED: &str = "actor.skill_used";
 pub const STATE_NOTES: &str = "actor.state_notes";

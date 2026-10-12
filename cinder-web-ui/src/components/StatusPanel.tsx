@@ -144,54 +144,54 @@ export default function StatusPanel({
               </div>
             </Section>
           )}
-
-          {uiSnapshot.skills && uiSnapshot.skills.length > 0 && (
-            <Section title="Skills" defaultOpen>
-              <ul className="space-y-2">
-                {uiSnapshot.skills.map(skill => {
-                  const isMax = skill.level >= 10
-                  const spSpan = skill.sp_level_max - skill.sp_level_min
-                  const spProgress = isMax
-                    ? 100
-                    : spSpan > 0
-                      ? Math.min(100, Math.max(0, ((skill.sp - skill.sp_level_min) / spSpan) * 100))
-                      : 0
-                  return (
-                    <li key={skill.id} className="rounded-lg border border-subtle bg-surface/40 p-2 text-xs">
-                      <div className="flex items-baseline justify-between">
-                        <span className="font-medium text-text">
-                          {skill.label}
-                          <span className="ml-1.5 text-[10px] font-mono text-pine">Lv {skill.level}</span>
-                        </span>
-                        <span className="text-[10px] tabular-nums text-muted font-mono">
-                          {isMax ? 'MAX' : `${skill.sp} / ${skill.sp_level_max} SP`}
-                        </span>
-                      </div>
-                      <div className="mt-1 h-1.5 w-full rounded-full bg-overlay overflow-hidden">
-                        <div
-                          role="progressbar"
-                          aria-valuenow={skill.sp}
-                          aria-valuemin={skill.sp_level_min}
-                          aria-valuemax={skill.sp_level_max}
-                          className="h-full rounded-full transition-all duration-300"
-                          style={{
-                            width: `${spProgress}%`,
-                            backgroundColor: 'var(--color-iris)',
-                          }}
-                        />
-                      </div>
-                      {skill.scalar_summary && (
-                        <div className="mt-1 text-[10px] text-muted">
-                          {skill.scalar_summary}
-                        </div>
-                      )}
-                    </li>
-                  )
-                })}
-              </ul>
-            </Section>
-          )}
         </>
+      )}
+
+      {uiSnapshot.show_skills_sidebar && uiSnapshot.skills && uiSnapshot.skills.length > 0 && (
+        <Section title="Skills" defaultOpen>
+          <ul className="space-y-2">
+            {uiSnapshot.skills.map(skill => {
+              const isMax = skill.level >= 10
+              const spSpan = skill.sp_level_max - skill.sp_level_min
+              const spProgress = isMax
+                ? 100
+                : spSpan > 0
+                  ? Math.min(100, Math.max(0, ((skill.sp - skill.sp_level_min) / spSpan) * 100))
+                  : 0
+              return (
+                <li key={skill.id} className="rounded-lg border border-subtle bg-surface/40 p-2 text-xs">
+                  <div className="flex items-baseline justify-between">
+                    <span className="font-medium text-text">
+                      {skill.label}
+                      <span className="ml-1.5 text-[10px] font-mono text-pine">Lv {skill.level}</span>
+                    </span>
+                    <span className="text-[10px] tabular-nums text-muted font-mono">
+                      {isMax ? 'MAX' : `${skill.sp} / ${skill.sp_level_max} SP`}
+                    </span>
+                  </div>
+                  <div className="mt-1 h-1.5 w-full rounded-full bg-overlay overflow-hidden">
+                    <div
+                      role="progressbar"
+                      aria-valuenow={skill.sp}
+                      aria-valuemin={skill.sp_level_min}
+                      aria-valuemax={skill.sp_level_max}
+                      className="h-full rounded-full transition-all duration-300"
+                      style={{
+                        width: `${spProgress}%`,
+                        backgroundColor: 'var(--color-iris)',
+                      }}
+                    />
+                  </div>
+                  {skill.scalar_summary && (
+                    <div className="mt-1 text-[10px] text-muted">
+                      {skill.scalar_summary}
+                    </div>
+                  )}
+                </li>
+              )
+            })}
+          </ul>
+        </Section>
       )}
 
       {uiSnapshot.party.length > 0 && (
