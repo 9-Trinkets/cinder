@@ -13434,6 +13434,20 @@
         "allow_rest": false,
         "consumables": [],
         "inspect_text": "A bronze altar surrounded by glowing silver circles. Faint magical humming vibrates through the metal."
+      },
+      {
+        "id": "mortuary_reanimation_sanctum-spirits",
+        "label": "the captive spirits",
+        "aliases": [
+          "spirits",
+          "souls",
+          "ghosts",
+          "offerings",
+          "captives"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "Dozens of pale, translucent human spirits floating silently above the altar. Their faces resemble the miners and villagers of Deepwell and Salt Reach, waiting to be stripped of memory and bound into dungeon monsters."
       }
     ],
     "exits": [
@@ -13510,6 +13524,21 @@
         "allow_rest": false,
         "consumables": [],
         "inspect_text": "A colossal bronze circle etched with four interlocked rings. It awaits a command pulse to synchronize with the lower floor teleport pads."
+      },
+      {
+        "id": "sanctuary_main_platform-ascent",
+        "label": "the glowing white stair",
+        "aliases": [
+          "stair",
+          "stairs",
+          "portal",
+          "archway",
+          "light",
+          "ascent"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A staircase woven from pure white light floating over the cliff edge, leading up into the calm mist toward Floor 7: The White Antechamber."
       }
     ],
     "exits": [
@@ -13526,9 +13555,33 @@
         ],
         "menu_label": "Return to the Seer's Sanctum",
         "requires_story_var": ""
+      },
+      {
+        "room_id": "floor7_antechamber",
+        "label": "Up",
+        "aliases": [
+          "up",
+          "u",
+          "ascend",
+          "ascent",
+          "stair",
+          "stairs",
+          "floor7",
+          "antechamber",
+          "portal"
+        ],
+        "menu_label": "Ascend to Floor 7 (The White Antechamber)",
+        "requires_story_var": "anchor_floor6_platform"
       }
     ],
-    "descriptions": []
+    "descriptions": [
+      {
+        "actor_defeated": "",
+        "requires_story_var": "anchor_floor6_platform",
+        "summary": "A colossal open-air stone platform thrusting out above the clouds. The bronze resonance anchor pulses with warm blue light, linking the sanctuary to the Frost Citadel. Astrid stands watch by the rampart, while a glowing stair of white light leads up toward Floor 7.",
+        "inspect_text": "The mountain wind whips across the flagstones. The resonance anchor is fully activated, linking Floor 6 to the lower floors. Above the cliff edge, a staircase of pure white light leads up to Floor 7: The White Antechamber."
+      }
+    ]
   },
   {
     "id": "sanctuary_wall_nw_tower",
@@ -13990,6 +14043,46 @@
           "bell tower"
         ],
         "menu_label": "Walk north to the Northwest Bell Tower",
+        "requires_story_var": ""
+      }
+    ],
+    "descriptions": []
+  },
+  {
+    "id": "floor7_antechamber",
+    "title": "The White Antechamber",
+    "summary": "A vast, quiet chamber of glowing white stone stretching into silent mist. In the center sits a plain wooden table with two chairs, an antique brass teapot, and a radio transmitter.",
+    "inspect_text": "There are no monsters, no locked iron gates, and no traps here. Smooth white stone stretches in every direction into soft light. At the table sits an older man in a faded grey coat: the Handler.",
+    "allow_rest": true,
+    "features": [
+      {
+        "id": "floor7_antechamber-table",
+        "label": "the wooden table",
+        "aliases": [
+          "table",
+          "teapot",
+          "chairs",
+          "radio",
+          "tea"
+        ],
+        "allow_rest": false,
+        "consumables": [],
+        "inspect_text": "A simple oak table with two chairs. Steam rises quietly from an antique brass teapot next to a familiar portable radio."
+      }
+    ],
+    "exits": [
+      {
+        "room_id": "sanctuary_main_platform",
+        "label": "Down",
+        "aliases": [
+          "down",
+          "d",
+          "back",
+          "return",
+          "platform",
+          "floor6"
+        ],
+        "menu_label": "Return to the Sanctuary Platform",
         "requires_story_var": ""
       }
     ],

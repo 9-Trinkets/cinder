@@ -265,5 +265,13 @@
     "item.invisibility-potion.used": "You drink the shimmering blue potion. A cold chill sweeps over your skin as you fade from sight. Cathedral guards cannot see you for 8 turns.",
     "item.spirit-pill.used": "You swallow the bitter white pill. Your eyes tingle with sudden heat, and a pale glow outlines the world. You can now see spirits.",
     "item.revival_scroll_read.learned": "You read the glowing parchment. The silver lines of the Revival Sigil burn into your mind.",
-    "sanctuary.platform_activated": "You trace the sigil upon the central anchor. A great beam of blue light shoots straight into the sky, activating the platform so Astrid and your companions can join you!"
+    "sanctuary.platform_activated": "You trace the sigil upon the central anchor. A great beam of blue light shoots straight into the sky, activating the platform so Astrid and your companions can join you!",
+    "floor7.antechamber_arrival": "You step through the white light into a vast, silent room of glowing white stone. The mountain wind is gone. At a plain wooden table sits an older man in a faded grey coat, watching you with tired, knowing eyes: the Handler.",
+    "sanctuary.secret_archive_arrival": "You step quietly into the hidden archive. Stacks of iron racks hold secret mortuary ledgers with official Inquisition seals.",
+    "handler.quest.archive_discovered": {
+        "voice": "handler",
+        "text": "So you found the logs. Every monster in this place was once a person from the worker towns below. Now you see the machine for what it is."
+    },
+    "sanctuary.reunion_astrid": "Astrid: 'The acropolis perimeter is secure, Layla. Einar and Orva are safe, and we will hold this platform with our shields. Climb the white stair and finish what we started.'",
+    "sanctuary.reunion_einar": "Einar: 'Layla... I can never thank you enough. Orva is safe, and the Seer's binding ritual is broken. Be careful up there. We are with you in spirit.'"
 }

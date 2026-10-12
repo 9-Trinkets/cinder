@@ -312,7 +312,8 @@
         }
       ],
       "next_stage_ids": [
-        "mq_find_the_witch"
+        "mq_find_the_witch",
+        "sq_archive_of_the_disappeared"
       ],
       "completion_effects": []
     },
@@ -411,11 +412,49 @@
           ]
         }
       ],
-      "next_stage_ids": [],
+      "next_stage_ids": [
+        "mq_prepare_the_ascent"
+      ],
       "completion_effects": [
         {
           "kind": "set_story_var",
           "key": "floor6_infiltration_complete",
+          "value": "true"
+        }
+      ],
+      "actor_relocations": []
+    },
+    {
+      "id": "mq_prepare_the_ascent",
+      "quest_id": "high_sanctuary_infiltration",
+      "quest_title": "The High Sanctuary",
+      "quest_kind": "main",
+      "summary": "Reunite with your companions on the platform and ascend the white stair to Floor 7.",
+      "beat_note": "Astrid, Einar, and Orva are reunited on the Sanctuary Platform. Commander Astrid will hold the platform while Layla climbs the white stair to Floor 7.",
+      "update_message": "Speak with Commander Astrid and ascend to Floor 7 via the glowing white stair.",
+      "narrative_lines": [
+        "Blue light flashes across the mountain cliff. Commander Astrid and Einar materialize on the stone platform, their weapons drawn. Astrid plants her heavy shield into the flagstones, securing the acropolis perimeter. Einar rushes forward and embraces Orva, their twin silver arrows gleaming in the sunlight.",
+        "Astrid: The acropolis perimeter is secure, Layla. We will hold this platform with our shields so nothing can sneak up behind you. The white stair is open. Ascend to Floor 7 and end this game."
+      ],
+      "on_advance_effects": [],
+      "advance_signals": [
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.entered_floor7",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        },
+        "room_entered:floor7_antechamber"
+      ],
+      "next_stage_ids": [],
+      "completion_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "floor6_ascent_completed",
           "value": "true"
         }
       ],
@@ -427,8 +466,45 @@
         {
           "actor_id": "einar",
           "to_room_id": "sanctuary_main_platform"
+        },
+        {
+          "actor_id": "orva",
+          "to_room_id": "sanctuary_main_platform"
         }
       ]
+    },
+    {
+      "id": "sq_archive_of_the_disappeared",
+      "quest_id": "archive_of_the_disappeared",
+      "quest_title": "The Truth of the Disappeared",
+      "quest_kind": "side",
+      "summary": "Uncover the secret mortuary ledgers in the Scriptorium archive to learn the truth about the dungeon monsters.",
+      "beat_note": "In the hidden archive of the Scriptorium, confidential mortuary ledgers detail the harvest of citizens from Deepwell and Salt Reach and their conversion into dungeon golems and elves.",
+      "update_message": "Inspect the confidential mortuary ledgers in the hidden archive beneath the Scriptorium.",
+      "completion_message": "handler.quest.archive_discovered",
+      "narrative_lines": [
+        "Behind locked doors in the Scriptorium, iron racks hold confidential registries of the disappeared. If you can slip past the scribes and guards, the truth behind the monster creation pipeline awaits."
+      ],
+      "on_advance_effects": [],
+      "advance_signals": [
+        "feature_observed:scriptorium_secret_archive-ledgers",
+        "feature_observed:mortuary_reanimation_sanctum-spirits"
+      ],
+      "next_stage_ids": [],
+      "completion_effects": [
+        {
+          "kind": "set_story_var",
+          "key": "discovered_monster_pipeline",
+          "value": "true"
+        },
+        {
+          "kind": "adjust_actor_stat",
+          "actor_id": "player",
+          "stat": "wisdom",
+          "delta": 1
+        }
+      ],
+      "actor_relocations": []
     },
     {
       "id": "sq_five_offerings",

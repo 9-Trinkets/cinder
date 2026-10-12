@@ -238,3 +238,224 @@ fn test_floor6_defeat_seer_and_activate_platform() {
         "anchor_floor6_platform must be armed upon reaching platform"
     );
 }
+
+#[test]
+fn test_floor6_reunion_and_ascent_to_floor7() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "mortuary_reanimation_sanctum".to_string();
+    state.clock.turn_number = 1;
+    state.active_objective_stage_ids = vec!["mq_activate_sanctuary_platform".to_string()];
+    state.story_vars.set_unchecked("seer_defeated", "true");
+
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+
+    // Move to platform to activate it
+    let move_out = runtime.run_turn("go south").expect("move to platform");
+    let s_platform = runtime.export_state().unwrap();
+    assert_eq!(s_platform.current_room_id, "sanctuary_main_platform");
+    assert_eq!(
+        s_platform.story_vars.get("anchor_floor6_platform"),
+        Some("true")
+    );
+
+    // Quest advanced to mq_prepare_the_ascent
+    assert!(
+        s_platform
+            .active_objective_stage_ids
+            .contains(&"mq_prepare_the_ascent".to_string()),
+        "mq_prepare_the_ascent must be active: {:?}",
+        s_platform.active_objective_stage_ids
+    );
+
+    // Astrid, Einar, and Orva relocated to platform for reunion
+    assert_eq!(
+        s_platform.actor_room_id("commander_astrid", ""),
+        "sanctuary_main_platform"
+    );
+    assert_eq!(
+        s_platform.actor_room_id("einar", ""),
+        "sanctuary_main_platform"
+    );
+    assert_eq!(
+        s_platform.actor_room_id("orva", ""),
+        "sanctuary_main_platform"
+    );
+
+    // Companions on the platform do NOT follow player so they hold the platform
+    assert!(!s_platform.follows_player("commander_astrid"));
+    assert!(!s_platform.follows_player("einar"));
+
+    // Look around platform: shows activated description with glowing stair
+    let look_platform = runtime.run_turn("look").expect("look at platform");
+    assert!(
+        look_platform.text().contains("white light")
+            || look_platform.text().contains("stair")
+            || look_platform.text().contains("platform")
+            || move_out.text().contains("platform"),
+        "platform description: {}",
+        look_platform.text()
+    );
+
+    // Inspect the glowing white stair
+    let look_stair = runtime.run_turn("look at stair").expect("look at stair");
+    assert!(
+        look_stair.text().contains("staircase") || look_stair.text().contains("White Antechamber"),
+        "stair inspect text: {}",
+        look_stair.text()
+    );
+
+    // Ascend to Floor 7 (The White Antechamber)
+    let ascend_out = runtime.run_turn("ascend").expect("ascend to floor 7");
+    let s_antechamber = runtime.export_state().unwrap();
+    assert_eq!(
+        s_antechamber.current_room_id, "floor7_antechamber",
+        "Layla ascends into floor7_antechamber"
+    );
+    assert_eq!(s_antechamber.story_vars.get("entered_floor7"), Some("true"));
+    assert!(
+        ascend_out.text().contains("Handler") || ascend_out.text().contains("white stone"),
+        "Handler arrival line: {}",
+        ascend_out.text()
+    );
+
+    // mq_prepare_the_ascent is completed
+    assert!(
+        s_antechamber
+            .completed_stage_ids
+            .contains("mq_prepare_the_ascent"),
+        "mq_prepare_the_ascent must be completed"
+    );
+
+    // Companions remained stationed on Floor 6 (solo arrival in antechamber)
+    assert_eq!(
+        s_antechamber.actor_room_id("commander_astrid", ""),
+        "sanctuary_main_platform",
+        "Astrid must stay on sanctuary platform"
+    );
+    assert_eq!(
+        s_antechamber.actor_room_id("einar", ""),
+        "sanctuary_main_platform",
+        "Einar must stay on sanctuary platform"
+    );
+}
+
+#[test]
+fn test_floor6_stealth_patrols_lucius_and_antonius() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "mortuary_portal".to_string();
+    state.clock.turn_number = 1;
+    state.add_item("invisibility-potion");
+    state.add_item("invisibility-potion");
+
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+
+    // 1. Mortuary Patrol: Sentry Lucius in mortuary_descent
+    // Drink potion before descending
+    runtime
+        .run_turn("drink invisibility potion")
+        .expect("drink potion");
+    assert!(runtime.export_state().unwrap().is_player_invisible());
+
+    // Enter mortuary_descent with Sentry Lucius
+    runtime.run_turn("go in").expect("enter undercrypt stairs");
+    let s1 = runtime.export_state().unwrap();
+    assert_eq!(s1.current_room_id, "mortuary_descent");
+
+    // Verify Sentry Lucius is present
+    let look_descent = runtime.run_turn("look").expect("look at descent");
+    assert!(
+        look_descent.text().contains("Lucius"),
+        "Sentry Lucius must be present in mortuary_descent: {}",
+        look_descent.text()
+    );
+
+    // Sentry Lucius does NOT damage invisible player during tick
+    let hp_before = s1.actor_stat("player", "hp");
+    runtime.run_tick().expect("tick with Lucius");
+    let hp_after = runtime.export_state().unwrap().actor_stat("player", "hp");
+    assert_eq!(hp_before, hp_after, "Lucius must ignore invisible player");
+
+    // Move to crossroads, then scriptorium_portal
+    runtime.run_turn("go out").expect("return to portal");
+    runtime
+        .run_turn("go northwest")
+        .expect("return to crossroads");
+    runtime
+        .run_turn("go northeast")
+        .expect("go to scriptorium portal");
+
+    // 2. Scriptorium Patrol: Sentry Antonius in scriptorium_cloister
+    // Drink second potion
+    runtime
+        .run_turn("drink invisibility potion")
+        .expect("drink second potion");
+    assert!(runtime.export_state().unwrap().is_player_invisible());
+
+    // Enter scriptorium_cloister with Sentry Antonius
+    runtime.run_turn("go in").expect("enter scriptorium hall");
+    let s2 = runtime.export_state().unwrap();
+    assert_eq!(s2.current_room_id, "scriptorium_cloister");
+
+    // Verify Sentry Antonius is present
+    let look_cloister = runtime.run_turn("look").expect("look at cloister");
+    assert!(
+        look_cloister.text().contains("Antonius"),
+        "Sentry Antonius must be present in scriptorium_cloister: {}",
+        look_cloister.text()
+    );
+
+    // Sentry Antonius does NOT damage invisible player during tick
+    let hp_before2 = s2.actor_stat("player", "hp");
+    runtime.run_tick().expect("tick with Antonius");
+    let hp_after2 = runtime.export_state().unwrap().actor_stat("player", "hp");
+    assert_eq!(
+        hp_before2, hp_after2,
+        "Antonius must ignore invisible player"
+    );
+}
+
+#[test]
+fn test_floor6_secret_archive_side_quest() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "scriptorium_secret_archive".to_string();
+    state.clock.turn_number = 1;
+    state.active_objective_stage_ids = vec!["sq_archive_of_the_disappeared".to_string()];
+
+    let initial_wisdom = state.actor_stat("player", "wisdom");
+    let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
+
+    // Inspect the confidential mortuary ledgers
+    let look_ledgers = runtime
+        .run_turn("look at ledgers")
+        .expect("look at ledgers");
+    assert!(
+        look_ledgers.text().contains("monster classes")
+            || look_ledgers.text().contains("golems")
+            || look_ledgers.text().contains("elves")
+            || look_ledgers.text().contains("entries"),
+        "ledger inspect text: {}",
+        look_ledgers.text()
+    );
+
+    let s = runtime.export_state().unwrap();
+    // Quest completed
+    assert!(
+        s.completed_stage_ids
+            .contains("sq_archive_of_the_disappeared"),
+        "sq_archive_of_the_disappeared must be completed"
+    );
+    assert_eq!(
+        s.story_vars.get("discovered_monster_pipeline"),
+        Some("true")
+    );
+    // Player awarded 1 Wisdom
+    let final_wisdom = s.actor_stat("player", "wisdom");
+    assert_eq!(
+        final_wisdom,
+        initial_wisdom + 1,
+        "inspecting archive ledgers must award 1 Wisdom"
+    );
+}

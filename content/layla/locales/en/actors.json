@@ -4335,6 +4335,104 @@
     }
   },
   {
+    "id": "cathedral_guard_mortuary",
+    "name": "Sentry Lucius",
+    "room_id": "mortuary_descent",
+    "level": 7,
+    "initial_stats": {
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 7,
+      "intelligence": 6,
+      "wisdom": 6,
+      "hp": 64,
+      "mp": 42
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
+    "aliases": [
+      "lucius",
+      "sentry lucius",
+      "guard lucius",
+      "guard",
+      "cathedral guard",
+      "sentry",
+      "soldier"
+    ],
+    "tags": [
+      "guard",
+      "cathedral",
+      "soldier"
+    ],
+    "inspect_text": "A stern guard clad in gleaming white armor, patrolling the cold stone stairs of the mortuary descent with a broadsword.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Sentry Lucius, guarding the stairs to the mortuary crypts and sanctum.",
+        "You arrest or cut down any unauthorized intruders."
+      ],
+      "response_notes": [
+        "Demand intruders stop immediately."
+      ],
+      "behavior_examples": [
+        "He stands guard on the stone stairs, his broadsword resting against his white breastplate."
+      ]
+    }
+  },
+  {
+    "id": "cathedral_guard_scriptorium",
+    "name": "Sentry Antonius",
+    "room_id": "scriptorium_cloister",
+    "level": 7,
+    "initial_stats": {
+      "strength": 7,
+      "endurance": 7,
+      "dexterity": 7,
+      "intelligence": 6,
+      "wisdom": 6,
+      "hp": 64,
+      "mp": 42
+    },
+    "initial_hostile": true,
+    "attackable": true,
+    "skills": [
+      "strike",
+      "hold",
+      "intercept"
+    ],
+    "aliases": [
+      "antonius",
+      "sentry antonius",
+      "guard antonius",
+      "guard",
+      "cathedral guard",
+      "sentry",
+      "soldier"
+    ],
+    "tags": [
+      "guard",
+      "cathedral",
+      "soldier"
+    ],
+    "inspect_text": "A vigilant guard in silver-trimmed white plate armor, watching the scriptorium hall with a heavy poleaxe.",
+    "prompt_context": {
+      "character_notes": [
+        "You are Sentry Antonius, guarding the scriptorium hall and archive vault.",
+        "You challenge anyone seeking access to the library or secret records."
+      ],
+      "response_notes": [
+        "Order intruders to step back from the archive doors."
+      ],
+      "behavior_examples": [
+        "He grips his poleaxe firmly, his eyes scanning between the writing desks."
+      ]
+    }
+  },
+  {
     "id": "orva",
     "name": "Orva",
     "room_id": "herbarium_garden",

@@ -108,7 +108,10 @@
       "frost_leopard_hunter": "deploy courtyard_center",
       "lord_vane": "deploy courtyard_center",
       "warmaster_torin": "deploy courtyard_center",
-      "lady_sylvan": "deploy courtyard_center"
+      "lady_sylvan": "deploy courtyard_center",
+      "commander_astrid": "guard",
+      "einar": "guard",
+      "orva": "guard"
     }
   },
   "surround_rule": {
