@@ -1200,12 +1200,13 @@ fn layla_party_actors_keep_their_live_reactive_behaviors() {
     }
     assert!(!state.actor_has_skill("einar", "intercept"));
 
-    for skill_id in ["strike", "hold", "trace"] {
+    for skill_id in ["strike", "trace", "charm"] {
         assert!(
             state.actor_has_skill("player", skill_id),
             "Layla lost '{skill_id}'"
         );
     }
+    assert!(!state.actor_has_skill("player", "hold"));
 }
 
 #[test]
