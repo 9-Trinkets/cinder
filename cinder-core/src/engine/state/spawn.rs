@@ -56,6 +56,10 @@ impl WorldState {
             self.relations.party_orders.remove(actor_id);
             self.relations.followed_actors.remove(actor_id);
             self.combat.next_hostile_strike_at.remove(actor_id);
+            self.combat.actor_level.remove(actor_id);
+            self.combat.actor_skills.remove(actor_id);
+            self.combat.actor_skill_levels.remove(actor_id);
+            self.combat.actor_skill_sp.remove(actor_id);
         }
         actor_ids.len()
     }
@@ -163,6 +167,25 @@ impl WorldState {
                 .map(|skill| skill.id().to_string())
                 .collect(),
         );
+        let char_level = instance.level.max(1).min(10);
+        self.combat
+            .actor_level
+            .insert(instance_id.clone(), char_level);
+        let mut skill_levels = std::collections::BTreeMap::new();
+        let mut skill_sps = std::collections::BTreeMap::new();
+        for skill in &instance.skills {
+            let skill_id = skill.id().to_string();
+            let lvl = skill.level().unwrap_or(char_level).clamp(1, char_level);
+            let sp = crate::engine::skills::skill_sp_for_level(lvl);
+            skill_levels.insert(skill_id.clone(), lvl);
+            skill_sps.insert(skill_id, sp);
+        }
+        self.combat
+            .actor_skill_levels
+            .insert(instance_id.clone(), skill_levels);
+        self.combat
+            .actor_skill_sp
+            .insert(instance_id.clone(), skill_sps);
         self.mark_actor_room_visited(&instance_id, &target_room_id);
         self.actors
             .spawned_actors

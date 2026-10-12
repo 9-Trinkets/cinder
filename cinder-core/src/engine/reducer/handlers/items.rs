@@ -50,8 +50,12 @@ pub(crate) fn handle_item_acquired(
             }
             if item_id == "teleport-sigil"
                 && !content.is_permanent_teleport_room(&room_id)
-                && let Some(evicted_room) =
-                    state.add_chalk_anchor(&room_id, content.teleports.chalk_capacity())
+                && let Some(evicted_room) = {
+                    let player_id = &content.settings.combat.player_actor_id;
+                    let teleport_level = state.actor_skill_level(player_id, "teleport");
+                    let capacity = crate::engine::skills::teleport_anchor_capacity(teleport_level);
+                    state.add_chalk_anchor(&room_id, capacity)
+                }
             {
                 state.remove_item_from_storage(
                     "teleport-sigil",

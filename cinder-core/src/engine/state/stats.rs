@@ -26,6 +26,12 @@ pub struct CombatState {
     /// Acquired skills per actor.
     #[serde(default)]
     pub actor_skills: BTreeMap<String, BTreeSet<String>>,
+    /// Per-actor skill levels (actor_id -> (skill_id -> level 1..=10)).
+    #[serde(default)]
+    pub actor_skill_levels: BTreeMap<String, BTreeMap<String, u32>>,
+    /// Per-actor skill proficiency points (actor_id -> (skill_id -> total SP)).
+    #[serde(default)]
+    pub actor_skill_sp: BTreeMap<String, BTreeMap<String, u32>>,
     /// Next game-minute at which each hostile actor may autonomously strike.
     /// Absent entries have no pending autonomous strike.
     #[serde(default)]
@@ -50,6 +56,91 @@ impl WorldState {
             .copied()
             .unwrap_or(1)
             .max(1)
+    }
+
+    /// Current level for an actor's skill; absent entries read as level 1.
+    pub fn actor_skill_level(&self, actor_id: &str, skill_id: &str) -> u32 {
+        self.combat
+            .actor_skill_levels
+            .get(actor_id)
+            .and_then(|skills| skills.get(skill_id))
+            .copied()
+            .unwrap_or(1)
+            .clamp(1, 10)
+    }
+
+    /// Current skill proficiency (SP) for an actor's skill.
+    pub fn actor_skill_sp(&self, actor_id: &str, skill_id: &str) -> u32 {
+        self.combat
+            .actor_skill_sp
+            .get(actor_id)
+            .and_then(|skills| skills.get(skill_id))
+            .copied()
+            .unwrap_or(0)
+    }
+
+    /// Sets the character level for an actor (1..=10).
+    pub fn set_actor_level(&mut self, actor_id: &str, level: u32) {
+        self.combat
+            .actor_level
+            .insert(actor_id.to_string(), level.clamp(1, 10));
+    }
+
+    /// Sets the skill level for an actor, capped by character level (1..=10).
+    pub fn set_actor_skill_level(&mut self, actor_id: &str, skill_id: &str, level: u32) {
+        let char_lvl = self.actor_level(actor_id).min(10);
+        let clamped = level.clamp(1, char_lvl);
+        self.combat
+            .actor_skill_levels
+            .entry(actor_id.to_string())
+            .or_default()
+            .insert(skill_id.to_string(), clamped);
+        let sp = crate::engine::skills::skill_sp_for_level(clamped);
+        self.combat
+            .actor_skill_sp
+            .entry(actor_id.to_string())
+            .or_default()
+            .insert(skill_id.to_string(), sp);
+    }
+
+    /// Awards SP to an actor's skill, checking for level-up capped by character level.
+    /// Returns true if the skill level increased.
+    pub fn award_skill_sp(&mut self, actor_id: &str, skill_id: &str, sp_delta: u32) -> bool {
+        let current_sp = self.actor_skill_sp(actor_id, skill_id);
+        let new_sp = current_sp.saturating_add(sp_delta);
+        self.combat
+            .actor_skill_sp
+            .entry(actor_id.to_string())
+            .or_default()
+            .insert(skill_id.to_string(), new_sp);
+
+        let char_level = self.actor_level(actor_id);
+        let old_level = self.actor_skill_level(actor_id, skill_id);
+        let new_level = crate::engine::skills::skill_level_from_sp(new_sp)
+            .min(char_level)
+            .clamp(1, 10);
+        if new_level > old_level {
+            self.set_actor_skill_level(actor_id, skill_id, new_level);
+            true
+        } else {
+            false
+        }
+    }
+
+    /// Re-evaluates all skills against SP when character level increases.
+    pub fn recheck_actor_skill_levels(&mut self, actor_id: &str) {
+        let char_level = self.actor_level(actor_id);
+        if let Some(skill_sps) = self.combat.actor_skill_sp.get(actor_id).cloned() {
+            for (skill_id, sp) in skill_sps {
+                let target_level = crate::engine::skills::skill_level_from_sp(sp)
+                    .min(char_level)
+                    .clamp(1, 10);
+                let current_level = self.actor_skill_level(actor_id, &skill_id);
+                if target_level > current_level {
+                    self.set_actor_skill_level(actor_id, &skill_id, target_level);
+                }
+            }
+        }
     }
 
     /// Experience an actor holds toward their next level.
@@ -226,7 +317,28 @@ impl WorldState {
         } else {
             0
         };
-        base + weapon_bonus
+        let strike_bonus = if self.actor_has_skill(actor_id, "strike") {
+            crate::engine::skills::strike_bonus_damage(self.actor_skill_level(actor_id, "strike"))
+        } else {
+            0
+        };
+        base + weapon_bonus + strike_bonus
+    }
+
+    /// Total count of active trace mark items across all room inventories.
+    pub fn total_active_trace_marks(&self, content: &ContentPack) -> usize {
+        self.inventory
+            .room_item_stock
+            .iter()
+            .filter(|(key, count)| {
+                if **count == 0 {
+                    return false;
+                }
+                let item_id = key.split("::").nth(1).unwrap_or(key.as_str());
+                content.item(item_id).is_some_and(|item| item.trace_mark)
+            })
+            .map(|(_, count)| *count as usize)
+            .sum()
     }
 
     /// Effective combat defense rating: the actor's effective defense attribute

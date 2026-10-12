@@ -3,9 +3,46 @@ use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::{ActorStance, WorldState};
 
 use super::{
-    EquippedItem, InventoryItem, PanelOptionData, PartyMember, PartySkill, PlayerStatus, StatValue,
+    EquippedItem, InventoryItem, PanelOptionData, PartyMember, PartySkill, PlayerSkillItem,
+    PlayerStatus, StatValue,
 };
 use std::collections::{BTreeMap, BTreeSet};
+
+pub(super) fn build_player_skills(
+    state: &WorldState,
+    content: &ContentPack,
+) -> Vec<PlayerSkillItem> {
+    let player_id = &content.settings.combat.player_actor_id;
+    let Some(skills_set) = state.combat.actor_skills.get(player_id) else {
+        return Vec::new();
+    };
+
+    let mut result = Vec::new();
+    for skill_id in skills_set {
+        let Some(skill) = content.skill(skill_id) else {
+            continue;
+        };
+        let level = state.actor_skill_level(player_id, skill_id);
+        let sp = state.actor_skill_sp(player_id, skill_id);
+        let sp_level_min = cinder_core::engine::skills::skill_sp_for_level(level);
+        let sp_level_max = cinder_core::engine::skills::skill_next_level_sp(level);
+        let scalar_summary = cinder_core::engine::skills::skill_scalar_summary(skill_id, level);
+
+        result.push(PlayerSkillItem {
+            id: skill.id.clone(),
+            label: skill.label.clone(),
+            kind: skill.kind,
+            level,
+            sp,
+            sp_level_min,
+            sp_level_max,
+            scalar_summary,
+        });
+    }
+
+    result.sort_by(|a, b| a.label.cmp(&b.label));
+    result
+}
 
 /// The player's progress toward the next level. XP/level are per-actor now:
 /// `actor_xp` holds progress toward the *next* level (reset past each
@@ -152,6 +189,7 @@ pub(super) fn build_party_members(
                         id: skill.id.clone(),
                         label: skill.label.clone(),
                         kind: skill.kind,
+                        level: Some(state.actor_skill_level(&actor_id, &skill.id)),
                     })
                 })
                 .collect();

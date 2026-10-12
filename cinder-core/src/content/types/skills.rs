@@ -30,6 +30,13 @@ impl ActorSkillAssignment {
         }
     }
 
+    pub fn level(&self) -> Option<u32> {
+        match self {
+            Self::Id(_) => None,
+            Self::Configured(config) => config.level,
+        }
+    }
+
     pub fn narration_key(&self) -> Option<&str> {
         match self {
             Self::Id(_) => None,
@@ -39,11 +46,13 @@ impl ActorSkillAssignment {
 }
 
 /// Actor-specific parameters for an assigned skill.
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ActorSkillConfig {
     pub id: String,
     #[serde(default)]
     pub power: Option<i32>,
+    #[serde(default)]
+    pub level: Option<u32>,
     #[serde(default)]
     pub narration_key: Option<String>,
 }

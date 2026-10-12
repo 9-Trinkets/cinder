@@ -236,15 +236,17 @@ pub(crate) fn decide_movement(
     current_room_id: &str,
     preferred_target_room_id: Option<&str>,
 ) -> Result<Vec<WorldEvent>, Box<dyn Error>> {
-    if should_hold(&content, state, &actor.id) {
+    let hold = should_hold(&content, state, &actor.id);
+    let guard = state.stance(&actor.id) == ActorStance::Hostile
+        && room_has_living_guard(&content, state, current_room_id);
+    let followed = state.followed_actor(&actor.id).is_some();
+    if hold {
         return Ok(vec![]);
     }
-    if state.stance(&actor.id) == ActorStance::Hostile
-        && room_has_living_guard(&content, state, current_room_id)
-    {
+    if guard {
         return Ok(vec![]);
     }
-    if state.followed_actor(&actor.id).is_some() {
+    if followed {
         return Ok(vec![]);
     }
     let target_room_id = if let Some(order) = state.party_order(&content, &actor.id)
@@ -263,6 +265,10 @@ pub(crate) fn decide_movement(
         }
     } else {
         required_movement_target_room_id(state, rules, current_room_id)
+            .or_else(|| {
+                let content_rules = content.movement_rules(&actor.id);
+                required_movement_target_room_id(state, &content_rules, current_room_id)
+            })
             .or_else(|| preferred_target_room_id.map(str::to_string))
     };
     let Some(target_room_id) = target_room_id else {

@@ -282,6 +282,8 @@ impl WorldState {
                 actor_xp: BTreeMap::new(),
                 actor_level: seeded_actor_levels(content),
                 actor_skills: seeded_actor_skills(content),
+                actor_skill_levels: seeded_actor_skill_levels(content),
+                actor_skill_sp: seeded_actor_skill_sp(content, &seeded_actor_skill_levels(content)),
                 next_hostile_strike_at: BTreeMap::new(),
                 invisible_until_minute: None,
             },
@@ -447,11 +449,37 @@ impl WorldState {
 
     /// Grants a skill to an actor. Returns true if the skill was newly acquired.
     pub fn grant_actor_skill(&mut self, actor_id: &str, skill_id: &str) -> bool {
-        self.combat
+        let is_new = self
+            .combat
             .actor_skills
             .entry(actor_id.to_string())
             .or_default()
-            .insert(skill_id.to_string())
+            .insert(skill_id.to_string());
+        if is_new {
+            let char_level = self.actor_level(actor_id);
+            let skill_level = if actor_id == self.player_actor_id {
+                1
+            } else {
+                char_level.clamp(1, 10)
+            };
+            self.combat
+                .actor_skill_levels
+                .entry(actor_id.to_string())
+                .or_default()
+                .entry(skill_id.to_string())
+                .or_insert(skill_level);
+            self.combat
+                .actor_skill_sp
+                .entry(actor_id.to_string())
+                .or_default()
+                .entry(skill_id.to_string())
+                .or_insert(if actor_id == self.player_actor_id {
+                    0
+                } else {
+                    crate::engine::skills::skill_sp_for_level(skill_level)
+                });
+        }
+        is_new
     }
 
     /// Backfills authored starting skills into a restored save. Acquired skills
@@ -502,9 +530,24 @@ impl WorldState {
             .collect::<Vec<_>>();
         self.combat
             .actor_skills
-            .entry(player_id)
+            .entry(player_id.clone())
             .or_default()
             .extend(story_unlocked_skills);
+
+        if self
+            .story_vars
+            .get("knows_drain")
+            .is_some_and(|v| v == "true")
+        {
+            self.grant_actor_skill(&player_id, "drain");
+        }
+        if self
+            .story_vars
+            .get("knows_teleport")
+            .is_some_and(|v| v == "true")
+        {
+            self.grant_actor_skill(&player_id, "teleport");
+        }
 
         // Ensure any awakened actors possess the comms skill
         let awakened_ids = self
@@ -516,6 +559,35 @@ impl WorldState {
         for actor_id in awakened_ids {
             if self.is_actor_awakened(&actor_id) {
                 self.grant_actor_skill(&actor_id, "comms");
+            }
+        }
+
+        // Ensure all registered actor skills have skill levels and SP initialized
+        let all_skills = self.combat.actor_skills.clone();
+        for (actor_id, skills) in all_skills {
+            let char_level = self.actor_level(&actor_id);
+            for skill_id in skills {
+                let default_lvl = if actor_id == player_id {
+                    1
+                } else {
+                    char_level.clamp(1, 10)
+                };
+                self.combat
+                    .actor_skill_levels
+                    .entry(actor_id.clone())
+                    .or_default()
+                    .entry(skill_id.clone())
+                    .or_insert(default_lvl);
+                self.combat
+                    .actor_skill_sp
+                    .entry(actor_id.clone())
+                    .or_default()
+                    .entry(skill_id)
+                    .or_insert(if actor_id == player_id {
+                        0
+                    } else {
+                        crate::engine::skills::skill_sp_for_level(default_lvl)
+                    });
             }
         }
     }
@@ -651,8 +723,9 @@ pub struct WorldSnapshot {
 
 mod seeding;
 use seeding::{
-    seeded_actor_equipment, seeded_actor_inventories, seeded_actor_levels, seeded_actor_skills,
-    seeded_actor_stats, seeded_feature_consumable_stock, seeded_pair_stats,
+    seeded_actor_equipment, seeded_actor_inventories, seeded_actor_levels,
+    seeded_actor_skill_levels, seeded_actor_skill_sp, seeded_actor_skills, seeded_actor_stats,
+    seeded_feature_consumable_stock, seeded_pair_stats,
 };
 mod act_cast;
 pub use act_cast::{

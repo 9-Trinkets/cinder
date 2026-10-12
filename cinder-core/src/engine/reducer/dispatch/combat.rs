@@ -20,6 +20,14 @@ pub(super) fn dispatch(ctx: &mut ReduceCtx<'_>, event: &WorldEvent) -> bool {
             }
             true
         }
+        WorldEvent::SkillSpAwarded {
+            actor_id,
+            skill_id,
+            sp,
+        } => {
+            ctx.state.award_skill_sp(actor_id, skill_id, *sp);
+            true
+        }
         WorldEvent::PairStatAdjusted {
             participant_a_id,
             participant_b_id,

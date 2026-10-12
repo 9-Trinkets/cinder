@@ -1082,7 +1082,9 @@ fn layla_skills_declare_only_live_behaviors() {
             "heal",
             "trace",
             "teleport",
-            "comms"
+            "comms",
+            "charm",
+            "drain"
         ],
         "skills.json must stay a 1:1 map of the live behaviors"
     );

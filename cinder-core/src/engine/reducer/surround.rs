@@ -117,6 +117,20 @@ fn try_surround_room(
             continue;
         }
 
+        if state.actor_has_skill(player_id, "charm") {
+            let current_followers = state
+                .onstage_actors(content)
+                .filter(|actor| state.is_party_member(content, &actor.id))
+                .count();
+            let charm_level = state.actor_skill_level(player_id, "charm");
+            let cap = crate::engine::skills::charm_follower_cap(charm_level);
+            if current_followers >= cap {
+                push_message(lines, content, "surround.refused", &[]);
+                refused_count += 1;
+                continue;
+            }
+        }
+
         apply_narrating_world_hook_effects(
             state,
             content,
@@ -129,6 +143,7 @@ fn try_surround_room(
         let relationship = state.relationship(&actor_id);
         let converted = relationship.stance == ActorStance::Allied || relationship.follows_player;
         if converted {
+            state.award_skill_sp(player_id, "charm", 10);
             state.initialize_party_order(content, &actor_id);
             let party_room_id = state.current_room_id.clone();
             if state.actor_room_id(&actor_id, &actor_home_room_id) != party_room_id {

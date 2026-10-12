@@ -71,6 +71,53 @@ pub(super) fn seeded_actor_skills(content: &ContentPack) -> BTreeMap<String, BTr
         .collect()
 }
 
+pub(super) fn seeded_actor_skill_levels(
+    content: &ContentPack,
+) -> BTreeMap<String, BTreeMap<String, u32>> {
+    let player_id = &content.settings.combat.player_actor_id;
+    content
+        .actors
+        .iter()
+        .map(|actor| {
+            let char_level = actor.level.max(1).min(10);
+            let skill_levels = actor
+                .skills
+                .iter()
+                .map(|skill| {
+                    let lvl = if actor.id == *player_id {
+                        1
+                    } else {
+                        skill.level().unwrap_or(char_level).clamp(1, char_level)
+                    };
+                    (skill.id().to_string(), lvl)
+                })
+                .collect();
+            (actor.id.clone(), skill_levels)
+        })
+        .collect()
+}
+
+pub(super) fn seeded_actor_skill_sp(
+    content: &ContentPack,
+    skill_levels: &BTreeMap<String, BTreeMap<String, u32>>,
+) -> BTreeMap<String, BTreeMap<String, u32>> {
+    let player_id = &content.settings.combat.player_actor_id;
+    let mut result = BTreeMap::new();
+    for (actor_id, skills) in skill_levels {
+        let mut sp_map = BTreeMap::new();
+        for (skill_id, &level) in skills {
+            let sp = if actor_id == player_id {
+                0
+            } else {
+                crate::engine::skills::skill_sp_for_level(level)
+            };
+            sp_map.insert(skill_id.clone(), sp);
+        }
+        result.insert(actor_id.clone(), sp_map);
+    }
+    result
+}
+
 pub(super) fn seeded_feature_consumable_stock(content: &ContentPack) -> BTreeMap<String, u32> {
     let mut stock = BTreeMap::new();
     for room in &content.rooms {

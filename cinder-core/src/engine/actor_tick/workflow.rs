@@ -3,7 +3,7 @@ use super::{
     HostilityStageEnvelope, room_is_in_tick_scope, tick_scope_room_ids,
 };
 use crate::content::types::ContentPack;
-use crate::engine::actor_turn::movement::required_movement_target_room_id;
+use crate::engine::actor_turn::movement::effective_movement_target_room_id;
 use crate::engine::conversation_memory::refresh_conversation_summaries;
 use crate::engine::dialogue::DialogueGenerator;
 use crate::engine::events::{TimestampedWorldEvent, WorldEvent};
@@ -40,9 +40,8 @@ pub(crate) fn peek_conversational_speaker(
     let conversational: Vec<String> = candidate_actors
         .into_iter()
         .filter(|actor| {
-            let rules = content.movement_rules(&actor.id);
             let current_room_id = state.actor_room_id(&actor.id, &actor.room_id);
-            required_movement_target_room_id(state, &rules, current_room_id).is_none()
+            effective_movement_target_room_id(content, state, &actor.id, current_room_id).is_none()
         })
         .map(|actor| actor.id.clone())
         .collect();
@@ -109,9 +108,8 @@ pub(crate) fn select_tick_actors(
 
     let mut mandatory_movers = Vec::new();
     for actor in &candidate_actors {
-        let rules = content.movement_rules(&actor.id);
         let current_room_id = state.actor_room_id(&actor.id, &actor.room_id);
-        if required_movement_target_room_id(state, &rules, current_room_id).is_some() {
+        if effective_movement_target_room_id(content, state, &actor.id, current_room_id).is_some() {
             mandatory_movers.push(actor.id.clone());
         }
     }

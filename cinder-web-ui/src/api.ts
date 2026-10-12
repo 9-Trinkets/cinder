@@ -252,6 +252,18 @@ export interface PartySkill {
   id: string
   label: string
   kind: SkillKind | null
+  level?: number
+}
+
+export interface PlayerSkillItem {
+  id: string
+  label: string
+  kind?: SkillKind | null
+  level: number
+  sp: number
+  sp_level_min: number
+  sp_level_max: number
+  scalar_summary: string
 }
 
 export interface PartyMember {
@@ -394,6 +406,7 @@ export interface UiSnapshot {
   equipped_items: EquippedItem[]
   party: PartyMember[]
   player: PlayerStatus
+  skills?: PlayerSkillItem[]
   minimap: MinimapData | null
   levels_revealed: boolean
   quests_revealed?: boolean

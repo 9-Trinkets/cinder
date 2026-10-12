@@ -22,7 +22,7 @@ use self::panels::{
 use self::room::{build_room_consumables, crafted_consumable_labels};
 use self::sidebar::{
     build_current_room_items, build_equipped_items, build_inventory, build_party_members,
-    build_player_status,
+    build_player_skills, build_player_status,
 };
 
 pub(super) fn build_ui_snapshot(
@@ -204,6 +204,7 @@ pub(super) fn build_ui_snapshot(
         game_over: state.phase != GamePhase::Active,
         party,
         player: build_player_status(&state, content),
+        skills: build_player_skills(&state, content),
         minimap: if content.minimap_shown(&state) {
             build_minimap(&state, content, &current_room_id)
         } else {

@@ -119,6 +119,29 @@ pub(crate) fn required_movement_target_room_id(
     }
 }
 
+pub(crate) fn effective_movement_target_room_id(
+    content: &ContentPack,
+    state: &WorldState,
+    actor_id: &str,
+    current_room_id: &str,
+) -> Option<String> {
+    if let Some(order) = state.party_order(content, actor_id) {
+        let order_lower = order.to_ascii_lowercase();
+        if order_lower.starts_with("deploy") {
+            let target = order
+                .strip_prefix("deploy:")
+                .or_else(|| order.strip_prefix("deploy "))
+                .unwrap_or("")
+                .trim();
+            if !target.is_empty() && target != current_room_id && content.room(target).is_some() {
+                return Some(target.to_string());
+            }
+        }
+    }
+    let rules = content.movement_rules(actor_id);
+    required_movement_target_room_id(state, &rules, current_room_id)
+}
+
 pub(crate) fn planned_move_target_room_id(move_events: &[WorldEvent]) -> Option<&str> {
     move_events.iter().find_map(|event| match event {
         WorldEvent::ActorMoved { to_room_id, .. } => Some(to_room_id.as_str()),

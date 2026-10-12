@@ -181,6 +181,7 @@ fn resolve_counterattack(
             no_effect: true,
         })
     } else {
+        state.award_skill_sp(&decision.actor_id, "strike", 1);
         state
             .adjust_actor_stat(content, &target_id, &combat.health_stat_id, -damage)
             .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
@@ -221,6 +222,7 @@ fn resolve_support(
         return None;
     };
     let heal_delta = if stat == &content.settings.combat.health_stat_id {
+        state.award_skill_sp(&decision.actor_id, "heal", 2);
         companion_heal_amount(content, state, &decision.actor_id).unwrap_or(*delta)
     } else {
         *delta
@@ -245,10 +247,13 @@ fn resolve_support(
 /// Healing potency for a companion comes from its assigned heal skill.
 fn companion_heal_amount(content: &ContentPack, state: &WorldState, actor_id: &str) -> Option<i32> {
     let skill = state.actor_skill_of_kind(content, actor_id, SkillKind::Heal)?;
-    state
+    let authored_power = state
         .actor(content, actor_id)
         .and_then(|actor| actor.skill(&skill.id))
-        .and_then(|assignment| assignment.power())
+        .and_then(|assignment| assignment.power());
+    let heal_lvl = state.actor_skill_level(actor_id, &skill.id);
+    let scalar_amount = crate::engine::skills::heal_amount(heal_lvl);
+    Some(authored_power.unwrap_or(scalar_amount))
 }
 
 fn render(content: &ContentPack, outcomes: &[PartyReactionOutcome], lines: &mut NarrativeLines) {

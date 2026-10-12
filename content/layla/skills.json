@@ -444,6 +444,20 @@
       "kind": "support",
       "target": "none",
       "description": "Enables remote radio and synaptic dispatches to relay tactical updates and battlefield status across rooms."
+    },
+    {
+      "id": "charm",
+      "label": "Charm",
+      "kind": "spell",
+      "target": "room",
+      "description": "Convert and command creatures to fight beside you."
+    },
+    {
+      "id": "drain",
+      "label": "Drain",
+      "kind": "spell",
+      "target": "room",
+      "description": "A dark spiral that saps health from enemies who cross it."
     }
   ]
 }

@@ -104,6 +104,9 @@ pub(super) fn handle_actor_command_used(
         }
         state.add_item_to_storage(&item_id, storage, command_context.room_id);
         if storage == ItemStorageTarget::CurrentRoom {
+            if content.item(&item_id).is_some_and(|item| item.trace_mark) {
+                state.award_skill_sp(command_context.actor_id, "trace", 1);
+            }
             if item_id == "teleport-sigil" {
                 handle_teleport_sigil_placement(
                     state,
@@ -482,8 +485,10 @@ fn handle_teleport_sigil_placement(
     if content.is_permanent_teleport_room(room_id) {
         return;
     }
-    if let Some(evicted_room) = state.add_chalk_anchor(room_id, content.teleports.chalk_capacity())
-    {
+    let player_id = &content.settings.combat.player_actor_id;
+    let teleport_level = state.actor_skill_level(player_id, "teleport");
+    let capacity = crate::engine::skills::teleport_anchor_capacity(teleport_level);
+    if let Some(evicted_room) = state.add_chalk_anchor(room_id, capacity) {
         state.remove_item_from_storage(
             "teleport-sigil",
             ItemStorageTarget::CurrentRoom,

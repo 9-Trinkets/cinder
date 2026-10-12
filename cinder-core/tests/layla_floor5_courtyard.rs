@@ -892,6 +892,13 @@ fn floor5_guard_blocks_wave_soldiers_at_the_north_approach() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_center".to_string();
     state.clock.turn_number = 1;
+    state.set_actor_level("player", 5);
+    state
+        .combat
+        .actor_stats
+        .entry("player".to_string())
+        .or_default()
+        .insert("hp".to_string(), 49);
     state.set_stance("elf-knight-2", ActorStance::Allied);
     state.set_follows_player("elf-knight-2", false);
     state
@@ -1578,6 +1585,8 @@ fn floor5_charming_spawned_house_leaders_stops_their_armies() {
 
     // Boost player intelligence so the resistance check passes against level 12 bosses
     let player_id = &pack.settings.combat.player_actor_id;
+    state.set_actor_level(player_id, 5);
+    state.set_actor_skill_level(player_id, "charm", 5);
     state
         .combat
         .actor_stats
@@ -1947,6 +1956,13 @@ fn floor5_squad_party_marches_together_and_promotes_follower_on_leader_defeat() 
     let mut state = WorldState::new(&pack);
     state.current_room_id = "courtyard_center".to_string();
     state.clock.turn_number = 1;
+    state.set_actor_level("player", 5);
+    state
+        .combat
+        .actor_stats
+        .entry("player".to_string())
+        .or_default()
+        .insert("hp".to_string(), 49);
     state
         .story_vars
         .set_unchecked("citadel_final_wave_open", "true");

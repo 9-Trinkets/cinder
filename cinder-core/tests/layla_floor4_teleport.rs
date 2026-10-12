@@ -48,6 +48,8 @@ fn test_chalk_anchors_fifo_eviction_and_mp_cost() {
     let mut state = WorldState::new(&pack);
     state.story_vars.set_unchecked("knows_teleport", "true");
     state.acquire_player_item(&pack, "magic-chalk");
+    state.set_actor_level("player", 5);
+    state.set_actor_skill_level("player", "teleport", 5);
     state
         .combat
         .initial_actor_stats

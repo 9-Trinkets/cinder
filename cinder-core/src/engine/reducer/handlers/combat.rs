@@ -37,8 +37,8 @@ pub(crate) fn handle_hostile_strike(ctx: &mut ReduceCtx<'_>, actor_id: &str) {
     .max(combat.minimum_damage);
     let attack_kind = state
         .actor(content, actor_id)
-        .map(|actor| actor.attack_kind())
-        .unwrap_or("physical");
+        .map(|actor| actor.attack_kind().to_string())
+        .unwrap_or_else(|| "physical".to_string());
     let actor_name = actor_display_name(state, content, actor_id);
     let target_name = actor_display_name(state, content, &target_id);
     // A guarding follower intercepts the blow aimed at the player. The guard
@@ -51,15 +51,19 @@ pub(crate) fn handle_hostile_strike(ctx: &mut ReduceCtx<'_>, actor_id: &str) {
         .as_ref()
         .map(|decision| decision.actor_id.clone());
     if let Some(guard_id) = guard_id {
+        let guard_intercept_level = state.actor_skill_level(&guard_id, "intercept");
+        let soaked = crate::engine::skills::intercept_damage_soaked(guard_intercept_level);
         let guard_defense = state.actor_combat_defense(content, &guard_id).max(0);
-        let raw_guard_takes = (state.actor_combat_attack(content, actor_id) - guard_defense)
-            .max(combat.minimum_damage);
-        let guard_takes = resisted_damage(content, &guard_id, attack_kind, raw_guard_takes);
+        let raw_guard_takes =
+            (state.actor_combat_attack(content, actor_id) - guard_defense - soaked)
+                .max(combat.minimum_damage);
+        let guard_takes = resisted_damage(content, &guard_id, &attack_kind, raw_guard_takes);
         let guard_name = actor_display_name(state, content, &guard_id);
+        state.award_skill_sp(&guard_id, "intercept", 3);
         if raw_guard_takes > 0 && guard_takes == 0 {
             if let Some(line) = content.render_message(
                 "combat.no_effect",
-                &[("actor", guard_name.as_str()), ("kind", attack_kind)],
+                &[("actor", guard_name.as_str()), ("kind", &attack_kind)],
             ) {
                 lines.narration(line);
             }
@@ -112,18 +116,19 @@ pub(crate) fn handle_hostile_strike(ctx: &mut ReduceCtx<'_>, actor_id: &str) {
             consume_party_reaction(content, state, decision);
         }
     } else {
-        let damage = resisted_damage(content, &target_id, attack_kind, raw_damage);
+        let damage = resisted_damage(content, &target_id, &attack_kind, raw_damage);
         let is_current_room = room_id == state.current_room_id;
         if raw_damage > 0 && damage == 0 {
             if is_current_room
                 && let Some(line) = content.render_message(
                     "combat.no_effect",
-                    &[("actor", target_name.as_str()), ("kind", attack_kind)],
+                    &[("actor", target_name.as_str()), ("kind", &attack_kind)],
                 )
             {
                 lines.narration(line);
             }
         } else {
+            state.award_skill_sp(actor_id, "strike", 1);
             state
                 .adjust_actor_stat(content, &target_id, &combat.health_stat_id, -damage)
                 .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
@@ -259,6 +264,7 @@ pub(crate) fn handle_hostile_heal(
     }
 
     let before = state.actor_stat(target_id, &combat.health_stat_id);
+    state.award_skill_sp(actor_id, "heal", 2);
     state
         .adjust_actor_stat(content, target_id, &combat.health_stat_id, amount.max(0))
         .unwrap_or_else(|error| eprintln!("[cinder] hostile heal stat error: {error}"));

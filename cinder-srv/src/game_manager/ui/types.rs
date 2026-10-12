@@ -61,6 +61,22 @@ pub struct PartySkill {
     pub id: String,
     pub label: String,
     pub kind: Option<SkillKind>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub level: Option<u32>,
+}
+
+/// An acquired skill owned by the player, including its proficiency level and SP progress.
+#[derive(Clone, Serialize)]
+pub struct PlayerSkillItem {
+    pub id: String,
+    pub label: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub kind: Option<SkillKind>,
+    pub level: u32,
+    pub sp: u32,
+    pub sp_level_min: u32,
+    pub sp_level_max: u32,
+    pub scalar_summary: String,
 }
 
 /// One living follower and its current combat directive.
@@ -300,6 +316,9 @@ pub struct UiSnapshot {
     pub party: Vec<PartyMember>,
     /// The player's vitals and other stats for the sidebar.
     pub player: PlayerStatus,
+    /// Player's acquired skills and proficiency levels.
+    #[serde(default)]
+    pub skills: Vec<PlayerSkillItem>,
     pub minimap: Option<MinimapData>,
     /// Whether party levels are visible yet. Derived from the content's
     /// `level_reveal_room_prefix`: false until the player has travelled to a

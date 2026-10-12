@@ -42,13 +42,25 @@ pub(in crate::engine::reducer) fn handle_periodic_actor_effect_applied(
         return;
     }
     let PeriodicActorEffect::Damage { amount } = &definition.effect;
-    if *amount <= 0 {
+    let player_id = &content.settings.combat.player_actor_id;
+    let actual_amount = if state.actor_has_skill(player_id, "drain")
+        && definition.trigger.room_item == "drain-sigil"
+    {
+        let drain_lvl = state.actor_skill_level(player_id, "drain");
+        crate::engine::skills::drain_damage(drain_lvl)
+    } else {
+        *amount
+    };
+    if actual_amount <= 0 {
         return;
     }
     let health_stat_id = &content.settings.combat.health_stat_id;
-    if let Err(error) = state.adjust_actor_stat(content, actor_id, health_stat_id, -*amount) {
+    if let Err(error) = state.adjust_actor_stat(content, actor_id, health_stat_id, -actual_amount) {
         eprintln!("[cinder] periodic effect stat error ({effect_id}, {actor_id}): {error}");
         return;
+    }
+    if state.actor_has_skill(player_id, "drain") && definition.trigger.room_item == "drain-sigil" {
+        state.award_skill_sp(player_id, "drain", 2);
     }
     let remaining = state.actor_stat(actor_id, health_stat_id);
     let actor_name = actor_display_name(state, content, actor_id);
@@ -75,7 +87,7 @@ pub(in crate::engine::reducer) fn handle_periodic_actor_effect_applied(
             &definition.message,
             &[
                 ("actor", actor_name.as_str()),
-                ("damage", amount.to_string().as_str()),
+                ("damage", actual_amount.to_string().as_str()),
                 ("remaining", remaining.to_string().as_str()),
                 ("effect_id", effect_id),
                 ("room", room_title),
@@ -391,8 +403,18 @@ fn handle_trigger_depletion(
     is_adjacent: bool,
     lines: &mut NarrativeLines,
 ) {
-    let Some(max_activations) = definition.trigger.max_activations else {
-        return;
+    let max_activations = if state
+        .actor_has_skill(&content.settings.combat.player_actor_id, "drain")
+        && definition.trigger.room_item == "drain-sigil"
+        && definition.trigger.max_activations.is_some()
+    {
+        let drain_lvl = state.actor_skill_level(&content.settings.combat.player_actor_id, "drain");
+        crate::engine::skills::drain_charges(drain_lvl)
+    } else {
+        let Some(max) = definition.trigger.max_activations else {
+            return;
+        };
+        max
     };
     let key = format!("{room_id}::{}", definition.trigger.room_item);
     let remaining_charges = state

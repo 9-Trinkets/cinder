@@ -52,6 +52,32 @@ pub(super) fn plan_teleport_command(
         return false;
     }
 
+    let player_id = &content.settings.combat.player_actor_id;
+    let teleport_lvl = state.actor_skill_level(player_id, "teleport");
+    let mp_cost = crate::engine::skills::teleport_mp_cost(teleport_lvl);
+    if content.stats.actor.contains_key("mp") {
+        let current_mp = state.actor_stat_u32(player_id, "mp");
+        if current_mp < mp_cost {
+            planned.events.push(WorldEvent::ActionRejected {
+                message: format!(
+                    "You need at least {mp_cost} MP to teleport, but only have {current_mp} MP."
+                ),
+            });
+            return false;
+        }
+        planned.events.push(WorldEvent::ActorStatAdjusted {
+            actor_id: player_id.to_string(),
+            stat: "mp".to_string(),
+            delta: -(mp_cost as i32),
+        });
+    }
+
+    planned.events.push(WorldEvent::SkillSpAwarded {
+        actor_id: player_id.to_string(),
+        skill_id: "teleport".to_string(),
+        sp: 5,
+    });
+
     if is_permanent {
         planned.events.push(WorldEvent::NarrativeLine {
             text: "The brass platform glows with blue light. The air blurs around you, and you step out at your destination."

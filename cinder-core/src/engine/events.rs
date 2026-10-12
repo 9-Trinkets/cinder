@@ -41,6 +41,11 @@ pub enum WorldEvent {
         stat: String,
         delta: i32,
     },
+    SkillSpAwarded {
+        actor_id: String,
+        skill_id: String,
+        sp: u32,
+    },
     PairStatAdjusted {
         participant_a_id: String,
         participant_b_id: String,

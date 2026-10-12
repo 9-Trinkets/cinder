@@ -20,7 +20,8 @@
     "skills": [
       "strike",
       "hold",
-      "trace"
+      "trace",
+      "charm"
     ],
     "inspect_text": "Yourself.",
     "attackable": false,
@@ -3843,6 +3844,7 @@
     "initial_stats": {
       "hp": 1
     },
+    "level": 5,
     "prompt_context": {
       "character_notes": [
         "You are Nivi Olsen, a supply clerk from Salt Reach. You stay organized under pressure and keep track of what the rescued civilians still have."
@@ -3878,6 +3880,7 @@
     "initial_stats": {
       "hp": 1
     },
+    "level": 5,
     "prompt_context": {
       "character_notes": [
         "You are Eliška Nováková, a signal-lamp tester from Glassbank. You are patient and quick to notice faults in glasswork and machinery."
@@ -3911,6 +3914,7 @@
     "initial_stats": {
       "hp": 1
     },
+    "level": 5,
     "prompt_context": {
       "character_notes": [
         "You are Amaru Quispe, a young loom mechanic from Woolcross. You are frightened but keep trying to shield and reassure the other captives."
@@ -3944,6 +3948,7 @@
     "initial_stats": {
       "hp": 1
     },
+    "level": 5,
     "prompt_context": {
       "character_notes": [
         "You are Abeni Adeyemi, an experienced mushroom and medicinal-herb grower from Greenrest. You help Einar stabilize frightened or injured defenders."
@@ -3978,6 +3983,7 @@
     "initial_stats": {
       "hp": 1
     },
+    "level": 5,
     "prompt_context": {
       "character_notes": [
         "You are Chen Yu-xin, a 16-year-old Taiwanese apprentice machinist from Brass Yard. You study locks, pumps, and damaged mechanisms with quiet, practical pride. You speak rarely, letting your tools and repairs speak for you."

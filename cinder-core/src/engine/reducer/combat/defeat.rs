@@ -154,6 +154,7 @@ pub(in crate::engine::reducer) fn award_defeat_xp(
         state.combat.actor_xp.insert(target.clone(), accrued);
         *state.combat.actor_level.entry(target.clone()).or_insert(1) = level;
         if gained > 0 {
+            state.recheck_actor_skill_levels(&target);
             leveled.push((target, level));
         }
     }

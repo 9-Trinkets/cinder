@@ -346,6 +346,7 @@ mod tests {
             crate::content::types::ActorSkillConfig {
                 id: "heal".to_string(),
                 power: Some(10),
+                level: None,
                 narration_key: Some("combat.sylvan_heal".to_string()),
             },
         )];
@@ -353,6 +354,7 @@ mod tests {
             crate::content::types::ActorSkillConfig {
                 id: "heal".to_string(),
                 power: Some(4),
+                level: None,
                 narration_key: Some("combat.bishop_heal".to_string()),
             },
         )];

@@ -2,7 +2,7 @@ use super::ActorTurnStageEnvelope;
 use super::workflow::{
     ActorTickRoleRunner, ActorTickWorkflowEnvelope, extract_inbound_message, route_tick_workflow,
 };
-use crate::engine::actor_turn::movement::required_movement_target_room_id;
+use crate::engine::actor_turn::movement::effective_movement_target_room_id;
 use crate::engine::actor_turn::{
     build_actor_turn, decide_actor_turn_action, realize_actor_turn_action, run_actor_turn,
 };
@@ -45,7 +45,14 @@ impl ActorTickRoleRunner {
             return route_tick_workflow("npc_actor_turn_apply", &envelope);
         }
         let current_room_id = state.actor_room_id(&actor.id, &actor.room_id).to_string();
-        if required_movement_target_room_id(&state, &rules, &current_room_id).is_some() {
+        if effective_movement_target_room_id(
+            self.content.as_ref(),
+            &state,
+            &actor_id,
+            &current_room_id,
+        )
+        .is_some()
+        {
             let events =
                 run_actor_turn(self.content.clone(), &state, &actor, &rules).map_err(|error| {
                     let _ = self.emit_trace(
