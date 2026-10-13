@@ -206,9 +206,15 @@ fn apply_stage_effect(
             key: key.clone(),
             value: value.clone(),
         },
-        AdvanceEffect::GrantItem { item_id, message } => {
+        AdvanceEffect::GrantItem {
+            item_id,
+            count,
+            message,
+        } => {
             if !state.has_item(item_id) {
-                state.add_item(item_id);
+                for _ in 0..*count {
+                    state.add_item(item_id);
+                }
                 push_effect_message(content, message, messages);
             }
             return Ok(());

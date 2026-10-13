@@ -116,6 +116,7 @@ fn terminal_completion_rewards_apply_once_and_signal_can_override_default_succes
                 next_stage_ids: vec!["wrong-branch".to_string()],
                 completion_effects: vec![AdvanceEffect::GrantItem {
                     item_id: "quest-token".to_string(),
+                    count: 1,
                     message: String::new(),
                 }],
                 ..BeatDefinition::default()
@@ -141,4 +142,50 @@ fn terminal_completion_rewards_apply_once_and_signal_can_override_default_succes
 
     apply_events(&mut state, &pack, &signal);
     assert_eq!(state.item_count("quest-token"), 1);
+}
+
+#[test]
+fn terminal_completion_grant_item_honors_count_and_still_applies_once() {
+    let mut pack = reducer_test_pack();
+    pack.items.push(ItemDefinition {
+        id: "invisibility-potion".to_string(),
+        label: "invisibility potion".to_string(),
+        ..ItemDefinition::default()
+    });
+    pack.beats = BeatsDefinition {
+        initial_stage_ids: vec!["choice".to_string()],
+        stages: vec![
+            BeatDefinition {
+                id: "choice".to_string(),
+                advance_signals: vec![AdvanceSignal::Conditional {
+                    signal: "story_vars_changed".to_string(),
+                    conditions: vec![],
+                    next_stage_ids: Some(vec![]),
+                }],
+                next_stage_ids: vec!["wrong-branch".to_string()],
+                completion_effects: vec![AdvanceEffect::GrantItem {
+                    item_id: "invisibility-potion".to_string(),
+                    count: 3,
+                    message: String::new(),
+                }],
+                ..BeatDefinition::default()
+            },
+            BeatDefinition {
+                id: "wrong-branch".to_string(),
+                ..BeatDefinition::default()
+            },
+        ],
+        ..BeatsDefinition::default()
+    };
+    let mut state = WorldState::new(&pack);
+
+    let signal = [TimestampedWorldEvent::now(WorldEvent::StoryVarSet {
+        key: "ready".to_string(),
+        value: "true".to_string(),
+    })];
+    apply_events(&mut state, &pack, &signal);
+    assert_eq!(state.item_count("invisibility-potion"), 3);
+
+    apply_events(&mut state, &pack, &signal);
+    assert_eq!(state.item_count("invisibility-potion"), 3);
 }

@@ -316,7 +316,9 @@ fn validate_stage_effects(
 ) -> Result<(), Box<dyn Error>> {
     for effect in effects {
         match effect {
-            AdvanceEffect::GrantItem { item_id, message } => {
+            AdvanceEffect::GrantItem {
+                item_id, message, ..
+            } => {
                 validate_reward_reference(pack, stage_id, item_id, message)?;
             }
             AdvanceEffect::ResolveSurvivorRewards {

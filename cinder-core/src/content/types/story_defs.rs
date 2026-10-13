@@ -119,6 +119,8 @@ pub enum AdvanceEffect {
     },
     GrantItem {
         item_id: String,
+        #[serde(default = "default_grant_count")]
+        count: u32,
         #[serde(default)]
         message: String,
     },
@@ -130,6 +132,10 @@ pub enum AdvanceEffect {
         #[serde(default)]
         all_survived_message: String,
     },
+}
+
+fn default_grant_count() -> u32 {
+    1
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]

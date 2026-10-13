@@ -284,15 +284,8 @@
         },
         {
           "kind": "grant_item",
-          "item_id": "invisibility-potion"
-        },
-        {
-          "kind": "grant_item",
-          "item_id": "invisibility-potion"
-        },
-        {
-          "kind": "grant_item",
-          "item_id": "invisibility-potion"
+          "item_id": "invisibility-potion",
+          "count": 3
         },
         {
           "kind": "grant_item",
