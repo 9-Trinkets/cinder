@@ -154,7 +154,7 @@ The scavenged truth: with Zayd safe, the pieces fall into place — the old gole
 
 Wisdom (WIS) is now a **real stat** in `content/layla/stats.json` (default 3, range 0–10, seeded to every actor, surfaced generically in the vitals/sidebar and inspect UI).
 
-- **What wisdom means:** how much of their *pre-machine* self a converted piece still holds. Golems converted and bricked in stone carry the least (3–5). Elves converted into ranked pieces carry more (7–9) — the army's refusal to be bound and its final choice to stand down are *this* stat leaking through. The queen is the closest to waking of all.
+- **What wisdom means:** how much of their *pre-machine* self a converted piece still holds. Golems converted into heavy stone shells carry the least (3–5). Elves converted into ranked pieces carry more (7–9) — the army's refusal to be bound and its final choice to stand down are *this* stat leaking through. The queen is the closest to waking of all.
 - **Raising wisdom:** Equipping **Zayd's Lantern** (+6 WIS) shines its warm, steady light into a follower's mind. Raisable to the 10-line.
 - **Reaching Wisdom 10 triggers an Awakening:**
   - The follower breaks free from its mind-wiped role and remembers who it was.

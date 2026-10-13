@@ -155,7 +155,7 @@ level carries.
 Level 1 is a **Go grid** that reads as a living **goblin cave**. A rare tribe of
 **goblins** hunts the floor beneath a **goblin shaman**, who binds the **golems**
 with chalk rings — and "living stone" is literal: the golems are the earliest
-converts, villagers taken by the priests, bricked in stone, and delivered to the
+converts, villagers taken by the priests, magically converted into stone golems, and delivered to the
 outer border to guard the descent (see Level 4 below). The shaman does not sculpt
 the stone; he acts as the floor's border warden, carving the binding marks onto the
 converts' chests to keep them locked in place. The goblins are conscious and hostile,
@@ -248,7 +248,7 @@ The working foundation of the kingdom. Simple stone villages, mushroom farms, an
 - **The Ticking Clock:** Zayd is held in the fortress cage awaiting the scheduled batch transit window to Floor 5. Layla races against time to free him before he is shipped.
 
 **The truth of the offering (settled canon).** The "sacrifice" taken away is not a ritual — it is the **reprogramming itself**. The temple's conversion works wipe a person's memory and bind their spirit into a monster shell or dungeon piece: the goblin shaman's golems, the elf army's ranks, the town guardians, and the village's "disappeared" were all the same source. Zayd's parents, who the village believes died in a "steam drill collapse," are among the finished pieces:
-- **Sakhra** — the village's guardian golem — is **Zayd's father (Jamil)**, bricked in stone and fitted with steam pistons. He has guarded the village, and his own son, since Zayd could walk. Only the lantern he gave his boy can wake him: **he wakes by light**.
+- **Sakhra** — the village's guardian golem — is **Zayd's father (Jamil)**, magically converted into a stone golem and fitted with steam pistons. He has guarded the village, and his own son, since Zayd could walk. Only the lantern he gave his boy can wake him: **he wakes by light**.
 - **`elf-queen-4`** — the elf chess queen on Floor 2 — is **Zayd's mother**, the piece nearest waking of any in the dungeon. She wanders the ranks searching for a son she cannot name; **she wakes by voice** (Zayd's).
 - Freeing Zayd (side quest "Save the Boy Zayd") and raising either parent's Wisdom to 10+ ("awakening") is the floor's secret quest, **"Return the Light."** The queen **may be destroyed by chance** (she is a booked boss fight) — that is a sanctioned easter egg, and the parent thread resolves as long as *either* parent wakes.
 

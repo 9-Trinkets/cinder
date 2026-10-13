@@ -131,7 +131,7 @@ Older, larger, quieter. The floor's maker.
 ### Golems (×4 — the bound converts)
 
 Crude, patient, made. Still, silent, and no longer elegant "architecture."
-**Canon:** these are converts — people bricked in stone (see the Premise note).
+**Canon:** these are converts — people magically converted into stone golems (see the Premise note).
 The material detail below is *what the conversion leaves behind*; it should never
 be written as if there was never a person in there.
 
