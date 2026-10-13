@@ -518,6 +518,21 @@ fn use_panel_surfaces_leaf_paste_under_items() {
 }
 
 #[test]
+fn use_panel_shows_stack_count_when_multiple() {
+    let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.add_item("leaf-paste");
+    state.add_item("leaf-paste");
+    state.add_item("leaf-paste");
+
+    let use_opts = build_use_panel_options(&pack, &state);
+    assert_eq!(use_opts.len(), 1);
+    assert_eq!(use_opts[0].id, "leaf-paste");
+    assert_eq!(use_opts[0].title, "Leaf Paste ×3");
+    assert_eq!(use_opts[0].command.as_deref(), Some("use leaf-paste"));
+}
+
+#[test]
 fn use_panel_surfaces_bitter_moss_under_items() {
     let pack = cinder_core::loader::load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);

@@ -220,6 +220,13 @@ pub(crate) fn build_use_panel_options(
                 (title_case(label), None)
             };
 
+            let count = state.item_count(&item_id);
+            let title = if count > 1 {
+                format!("{title} ×{count}")
+            } else {
+                title
+            };
+
             PanelOptionData {
                 id: item_id.clone(),
                 title,
