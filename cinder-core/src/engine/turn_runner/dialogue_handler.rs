@@ -138,28 +138,34 @@ pub(super) fn handle_actor_dialogue(
                 &attraction_request.other_person_id,
             ));
         }
-        Err(error) => planned.events.push(WorldEvent::ActionRejected {
-            message: {
-                emit_trace(
-                    "actor_dialogue",
-                    "model.response",
-                    serde_json::json!({
-                        "role": role_name,
-                        "actor_id": request.actor_id.clone(),
-                        "actor_name": request.actor_name.clone(),
-                        "error": error.clone(),
-                        "backend": trace_backend,
-                    }),
-                )?;
-                content.render_template(
-                    &content.presentation.error_text.dialogue_unavailable,
-                    &[
-                        ("actor_name", request.actor_name.as_str()),
-                        ("error", error.as_str()),
-                    ],
-                )
-            },
-        }),
+        Err(error) => {
+            eprintln!(
+                "[cinder] actor dialogue failed for '{}': {error}",
+                request.actor_name
+            );
+            planned.events.push(WorldEvent::ActionRejected {
+                message: {
+                    emit_trace(
+                        "actor_dialogue",
+                        "model.response",
+                        serde_json::json!({
+                            "role": role_name,
+                            "actor_id": request.actor_id.clone(),
+                            "actor_name": request.actor_name.clone(),
+                            "error": error.clone(),
+                            "backend": trace_backend,
+                        }),
+                    )?;
+                    content.render_template(
+                        &content.presentation.error_text.dialogue_unavailable,
+                        &[
+                            ("actor_name", request.actor_name.as_str()),
+                            ("error", error.as_str()),
+                        ],
+                    )
+                },
+            });
+        }
     }
     Ok(RouteEnvelope {
         next: next_role,
