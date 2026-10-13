@@ -51,17 +51,17 @@ pub(crate) fn handle_item_acquired(
                 match item_id {
                     "charm-sigil" => {
                         crate::engine::reducer::award_actor_skill_sp(
-                            state, content, player_id, "charm", 2, lines,
+                            state, content, player_id, "charm", 1, lines,
                         );
                     }
                     "drain-sigil" => {
                         crate::engine::reducer::award_actor_skill_sp(
-                            state, content, player_id, "drain", 2, lines,
+                            state, content, player_id, "drain", 1, lines,
                         );
                     }
                     "teleport-sigil" => {
                         crate::engine::reducer::award_actor_skill_sp(
-                            state, content, player_id, "teleport", 2, lines,
+                            state, content, player_id, "teleport", 1, lines,
                         );
                     }
                     _ => {}

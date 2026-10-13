@@ -16,14 +16,14 @@ fn tracing_sigils_awards_discipline_sp() {
 
     let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
 
-    // Tracing charm-sigil awards 1 SP to trace and 2 SP to charm
+    // Tracing charm-sigil awards 1 SP to trace and 1 SP to charm
     runtime
         .run_turn("trace charm-sigil")
         .expect("trace charm-sigil succeeds");
 
     let s1 = runtime.export_state().expect("state exported");
     assert_eq!(s1.actor_skill_sp(player_id, "trace"), 1);
-    assert_eq!(s1.actor_skill_sp(player_id, "charm"), 2);
+    assert_eq!(s1.actor_skill_sp(player_id, "charm"), 1);
 }
 
 #[test]
@@ -33,8 +33,8 @@ fn charm_bonus_scales_surround_threshold() {
 
     let player_id = &pack.settings.combat.player_actor_id;
     // Base stats: player int 3, level 1.
-    // At charm level 1, charm_bonus is +2 -> player score = 3 + 1 + 2 = 6.
-    // Target with intelligence 5, level 1 has resistance 5 + 2*1 = 7 > 6.
+    // At charm level 1, charm_bonus is +1 -> player score = 3 + 1 + 1 = 5.
+    // Target with intelligence 4, level 1 has resistance 4 + 2*1 = 6 > 5.
     let mut target = state
         .actor(&pack, "goblin-shaman")
         .cloned()
@@ -51,14 +51,14 @@ fn charm_bonus_scales_surround_threshold() {
         .actor_stats
         .entry("test-resistant-mob".to_string())
         .or_default()
-        .insert("intelligence".to_string(), 5);
+        .insert("intelligence".to_string(), 4);
     s.combat
         .actor_stats
         .entry("test-resistant-mob".to_string())
         .or_default()
         .insert("hp".to_string(), 20);
 
-    // At charm level 1 (+2 bonus): score 6 < 7 (fails resistance)
+    // At charm level 1 (+1 bonus): score 5 < 6 (fails resistance)
     s.set_actor_skill_level(player_id, "charm", 1);
     let passes_lvl1 = {
         let p_int = s
@@ -68,14 +68,14 @@ fn charm_bonus_scales_surround_threshold() {
         let c_bonus = pack_with_mob
             .skill("charm")
             .and_then(|sk| sk.param_value("charm_bonus", 1))
-            .unwrap_or(2) as u32;
+            .unwrap_or(1) as u32;
         let t_int = s.actor_stat("test-resistant-mob", "intelligence").max(0) as u32;
         let t_lvl = s.actor_level("test-resistant-mob");
         p_int + p_lvl + c_bonus >= t_int + 2 * t_lvl
     };
-    assert!(!passes_lvl1, "Level 1 charm cannot overcome resistance 7");
+    assert!(!passes_lvl1, "Level 1 charm cannot overcome resistance 6");
 
-    // At charm level 2 (+4 bonus): score 3 + 1 + 4 = 8 >= 7 (passes resistance!)
+    // At charm level 2 (+2 bonus): score 3 + 1 + 2 = 6 >= 6 (passes resistance!)
     s.set_actor_skill_level(player_id, "charm", 2);
     let passes_lvl2 = {
         let p_int = s
@@ -85,14 +85,14 @@ fn charm_bonus_scales_surround_threshold() {
         let c_bonus = pack_with_mob
             .skill("charm")
             .and_then(|sk| sk.param_value("charm_bonus", 2))
-            .unwrap_or(4) as u32;
+            .unwrap_or(2) as u32;
         let t_int = s.actor_stat("test-resistant-mob", "intelligence").max(0) as u32;
         let t_lvl = s.actor_level("test-resistant-mob");
         p_int + p_lvl + c_bonus >= t_int + 2 * t_lvl
     };
     assert!(
         passes_lvl2,
-        "Level 2 charm (+4 bonus) overcomes resistance 7"
+        "Level 2 charm (+2 bonus) overcomes resistance 6"
     );
 }
 
@@ -134,9 +134,10 @@ fn multiple_followers_do_not_block_surrounds_or_charm_sp_gain() {
         ActorStance::Allied,
         "Pale golem must be converted"
     );
-    // Player gained SP (2 from trace + 10 from surround conversion)
-    assert!(
-        s_after.actor_skill_sp(player_id, "charm") >= initial_sp + 10,
+    // Player gained SP (1 from trace + 10 from surround conversion)
+    assert_eq!(
+        s_after.actor_skill_sp(player_id, "charm"),
+        initial_sp + 11,
         "Player must gain Charm SP on surround conversion"
     );
     assert!(

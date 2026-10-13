@@ -698,14 +698,14 @@ fn surround_evaluates_mobs_individually_in_mixed_room() {
 #[test]
 fn charm_bonus_enables_converting_targets_with_higher_resistance() {
     let mut pack = surround_test_pack();
-    // Strong mob: int 5, level 2 -> resistance 5 + 2*2 = 9.
-    add_surround_target(&mut pack, "strong-mob", 5, 2);
+    // Strong mob: int 5, level 1 -> resistance 5 + 2*1 = 7.
+    add_surround_target(&mut pack, "strong-mob", 5, 1);
 
     let mut state = WorldState::new(&pack);
     state.current_room_id = KITCHEN_ID.to_string();
 
-    // Give player charm skill at level 2 (+4 bonus).
-    // Player intelligence 5, level 1 + charm bonus 4 = 10 >= 9.
+    // Give player charm skill at level 2 (+2 bonus).
+    // Player intelligence 5, level 1 + charm bonus 2 = 8 >= 7.
     state
         .combat
         .actor_skills

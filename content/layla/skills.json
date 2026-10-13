@@ -539,8 +539,8 @@
       "scaling": {
         "parameters": {
           "charm_bonus": {
-            "base": 2,
-            "growth_per_level": 2
+            "base": 1,
+            "growth_per_level": 1
           }
         },
         "summary_template": "Charm bonus: +{charm_bonus}"

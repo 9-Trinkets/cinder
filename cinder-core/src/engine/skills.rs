@@ -51,9 +51,9 @@ pub fn skill_next_level_sp(level: u32) -> u32 {
     skill_next_level_sp_with_thresholds(level, &SKILL_SP_THRESHOLDS)
 }
 
-/// Charm bonus added to surround conversion check: 2 * skill_level (2 to 20).
+/// Charm bonus added to surround conversion check: 1 per skill level (1 to 10).
 pub fn charm_bonus(level: u32) -> u32 {
-    2 * level.clamp(1, 10)
+    level.clamp(1, 10)
 }
 
 /// Follower cap for charm (compatibility): 2 * skill_level (2 to 20).
@@ -202,8 +202,8 @@ mod tests {
     #[test]
     fn scalar_values_match_spec() {
         // Charm
-        assert_eq!(charm_bonus(1), 2);
-        assert_eq!(charm_bonus(10), 20);
+        assert_eq!(charm_bonus(1), 1);
+        assert_eq!(charm_bonus(10), 10);
 
         // Strike
         assert_eq!(strike_bonus_damage(1), 0);
@@ -263,12 +263,12 @@ mod tests {
 
         // Charm
         let charm = pack.skill("charm").expect("charm exists");
-        assert_eq!(charm.param_value("charm_bonus", 1), Some(2));
-        assert_eq!(charm.param_value("charm_bonus", 10), Some(20));
-        assert_eq!(charm.format_summary(1), Some("Charm bonus: +2".to_string()));
+        assert_eq!(charm.param_value("charm_bonus", 1), Some(1));
+        assert_eq!(charm.param_value("charm_bonus", 10), Some(10));
+        assert_eq!(charm.format_summary(1), Some("Charm bonus: +1".to_string()));
         assert_eq!(
             charm.format_summary(10),
-            Some("Charm bonus: +20".to_string())
+            Some("Charm bonus: +10".to_string())
         );
 
         // Heal
