@@ -1,5 +1,6 @@
 use super::{ActorStance, WorldState, remap_story_actor_id};
 use crate::content::types::{ContentPack, PartyOrderKind};
+use crate::engine::orders::{OrderKind, parse_order};
 
 impl WorldState {
     pub fn is_party_member(&self, content: &ContentPack, actor_id: &str) -> bool {
@@ -52,10 +53,12 @@ impl WorldState {
     ) -> Result<(), String> {
         let actor_id = remap_story_actor_id(self, actor_id).to_string();
         validate_party_member(content, self, &actor_id)?;
-        let follows = !matches!(order.to_ascii_lowercase().as_str(), "guard" | "patrol")
-            && !order.to_ascii_lowercase().starts_with("deploy");
+        let holds_position = matches!(
+            parse_order(&order),
+            Some(OrderKind::Hold | OrderKind::Patrol | OrderKind::Deploy(_))
+        );
         self.relations.party_orders.insert(actor_id.clone(), order);
-        self.set_follows_player(&actor_id, follows);
+        self.set_follows_player(&actor_id, !holds_position);
         self.set_followed_actor(&actor_id, None);
         Ok(())
     }
@@ -72,8 +75,10 @@ impl WorldState {
             .get(&actor_id)
             .cloned()
             .unwrap_or_else(|| "follow".to_string());
-        if !matches!(order.to_ascii_lowercase().as_str(), "guard" | "patrol")
-            && self.stance(&actor_id) == ActorStance::Allied
+        if !matches!(
+            parse_order(&order),
+            Some(OrderKind::Hold) | Some(OrderKind::Patrol)
+        ) && self.stance(&actor_id) == ActorStance::Allied
         {
             self.set_follows_player(&actor_id, true);
         }

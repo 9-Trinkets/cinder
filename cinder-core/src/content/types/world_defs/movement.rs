@@ -20,62 +20,45 @@ pub struct MovementConfigDefinition {
 }
 
 /// Pack-wide movement defaults, applied to any actor that doesn't declare its
-/// own rules/destination. Pure `movement.json` owns direction + cadence; the
+/// own rules/order. Pure `movement.json` owns direction + cadence; the
 /// *eligibility* to hold vs. move is decided by `behavior.json`.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct MovementDefaultsDefinition {
     #[serde(default)]
-    pub wander: Option<WanderDefinition>,
+    pub order: Option<MovementOrderDefinition>,
 }
 
-/// Destination directive for a wandering actor. `movement.json` is the single
-/// place that says *where* (and how often) an actor drifts when it is free to
-/// move; whether it is actually free to move is `behavior.json`'s concern.
+/// A movement order authored for an actor. `movement.json` is the single place
+/// that says *where* (and how often) an actor drifts when it is free to move;
+/// whether it is actually free to move is `behavior.json`'s concern.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
-pub struct WanderDefinition {
-    /// How the destination is chosen when the actor wanders.
+pub struct MovementOrderDefinition {
+    /// A word from the shared order vocabulary, e.g. `patrol`, `guard`, `exit`,
+    /// `deploy` (see `engine::orders`).
     #[serde(default)]
-    pub mode: WanderMode,
-    /// How often the actor wanders: 1 = every tick, 2 = every other tick, etc.
-    /// 0 means it never wanders.
+    pub token: String,
+    /// How often the actor acts: 1 = every tick, 2 = every other tick, etc.
+    /// 0 means stationary.
     #[serde(default)]
     pub cadence_ticks: u32,
-    /// Optional fixed destination; used by `WanderMode::To` and ignored
-    /// otherwise.
+    /// Optional fixed destination for target-bearing orders (`deploy`/`to`).
     #[serde(default)]
-    pub room_id: String,
-    /// Optional exit label or alias; used by `WanderMode::ExitLabel` and
-    /// ignored otherwise.
+    pub target_room_id: String,
+    /// Optional exit label or alias for the `exit` order.
     #[serde(default)]
     pub exit_label: String,
 }
 
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
-pub enum WanderMode {
-    /// Pick a random reachable adjacent room each time.
-    #[default]
-    RandomAdjacent,
-    /// Step toward the player's current room.
-    TowardPlayer,
-    /// Stay put (movement suppressed).
-    Stay,
-    /// Move toward the fixed `room_id` destination.
-    To,
-    /// Follow an exit matching `exit_label` by label or alias.
-    ExitLabel,
-}
-
-/// Per-actor movement rules (and an optional per-actor wander directive) that
-/// override the pack-wide `MovementConfigDefinition::defaults`.
+/// Per-actor movement rules (and an optional per-actor order) that override the
+/// pack-wide `MovementConfigDefinition::defaults`.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ActorMovementRulesDefinition {
     #[serde(default)]
     pub target_rules: Vec<ActorMovementTargetRuleDefinition>,
-    /// Per-actor wander directive; falls back to the pack-wide default in
-    /// `MovementConfigDefinition::defaults.wander`.
+    /// Per-actor order; falls back to the pack-wide default in
+    /// `MovementConfigDefinition::defaults.order`.
     #[serde(default)]
-    pub wander: Option<WanderDefinition>,
+    pub order: Option<MovementOrderDefinition>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]

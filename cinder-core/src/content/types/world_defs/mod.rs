@@ -28,7 +28,7 @@ pub use behavior::{BehaviorActorDefinition, BehaviorDefinition};
 pub use drops::{DropChanceSpec, DropConditionSpec, DropPoolEntry, DropPoolSpec, DropSpec};
 pub use movement::{
     ActorMovementRulesDefinition, ActorMovementTargetRuleDefinition, MovementConfigDefinition,
-    MovementDefaultsDefinition, MovementTargetBehavior, WanderDefinition, WanderMode,
+    MovementDefaultsDefinition, MovementOrderDefinition, MovementTargetBehavior,
 };
 pub use presentation::{ErrorTextDefinition, PresentationDefinition, PresentationTextDefinition};
 pub use rooms::{

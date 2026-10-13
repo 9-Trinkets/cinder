@@ -187,10 +187,9 @@ Every room on Floor 3 features high-detail inspectable surfaces grounding the Ma
 
 To fully power this redesign in the engine and content pack:
 
-1. **Clockwise Movement Mode for `movement.json`:**
-   - In `cinder-core/src/content/types/world_defs/movement.rs` and `cinder-core/src/engine/actor_tick/movement.rs`:
-   - Introduce `WanderMode::ExitLabel { label: String }` (or `Route { waypoints: Vec<String> }`).
-   - For `fire-elemental`, configure `mode: "exit_label", label: "Clockwise"`, with `cadence_ticks: 2`.
+1. **Clockwise movement order for `movement.json` (implemented):**
+   - The shared order vocabulary lives in `cinder-core/src/engine/orders.rs`; an order token maps to a strategy in `cinder-core/src/engine/actor_tick/movement/mod.rs` (`strategy_from_order`).
+   - Author the `exit` order for `fire-elemental`: `"fire-elemental": { "order": { "token": "exit", "exit_label": "Clockwise", "cadence_ticks": 2 } }`.
 2. **Actor Turn Tick Scope:**
    - Ensure `actor_tick_scope: "current_board"` in `settings.json` keeps the elemental moving even when Layla is 2–3 rooms away setting traps.
 3. **Sprite Interception Verification:**

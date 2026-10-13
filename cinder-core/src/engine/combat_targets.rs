@@ -1,4 +1,5 @@
 use crate::content::types::ContentPack;
+use crate::engine::orders::is_hold;
 use crate::engine::state::{ActorStance, WorldState};
 
 pub(crate) fn select_hostile_target(
@@ -13,7 +14,7 @@ pub(crate) fn select_hostile_target(
     if let Some(guard) = party_candidates.iter().find(|actor_id| {
         state
             .party_order(content, actor_id)
-            .is_some_and(|order| order.eq_ignore_ascii_case("guard"))
+            .is_some_and(|order| is_hold(&order))
     }) {
         return Some(guard.clone());
     }
@@ -48,7 +49,7 @@ pub(crate) fn room_has_living_guard(
         .any(|actor_id| {
             state
                 .party_order(content, &actor_id)
-                .is_some_and(|order| order.eq_ignore_ascii_case("guard"))
+                .is_some_and(|order| is_hold(&order))
         })
 }
 

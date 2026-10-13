@@ -5,6 +5,7 @@ use crate::content::types::{
 use crate::engine::actor_tick::decide_movement;
 use crate::engine::events::WorldEvent;
 use crate::engine::hooks::{pair_state_note, room_candidate_score};
+use crate::engine::orders::{OrderKind, parse_order};
 use crate::engine::state::WorldState;
 use serde_json::json;
 use std::collections::{BTreeSet, VecDeque};
@@ -125,17 +126,12 @@ pub(crate) fn effective_movement_target_room_id(
     actor_id: &str,
     current_room_id: &str,
 ) -> Option<String> {
-    if let Some(order) = state.party_order(content, actor_id) {
-        let order_lower = order.to_ascii_lowercase();
-        if order_lower.starts_with("deploy") {
-            let target = order
-                .strip_prefix("deploy:")
-                .or_else(|| order.strip_prefix("deploy "))
-                .unwrap_or("")
-                .trim();
-            if !target.is_empty() && target != current_room_id && content.room(target).is_some() {
-                return Some(target.to_string());
-            }
+    if let Some(order) = state.party_order(content, actor_id)
+        && let Some(OrderKind::Deploy(target)) = parse_order(&order)
+    {
+        let target = target.trim();
+        if !target.is_empty() && target != current_room_id && content.room(target).is_some() {
+            return Some(target.to_string());
         }
     }
     let rules = content.movement_rules(actor_id);

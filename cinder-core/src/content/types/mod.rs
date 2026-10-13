@@ -65,11 +65,11 @@ pub use world_defs::{
     BeatObjectiveProgressKeyDefinition, BeatObjectivesDefinition, BehaviorActorDefinition,
     BehaviorDefinition, ConsumableDefinition, ConsumableKind, DropChanceSpec, DropConditionSpec,
     DropPoolEntry, DropPoolSpec, DropSpec, ErrorTextDefinition, MovementConfigDefinition,
-    MovementDefaultsDefinition, MovementTargetBehavior, PresentationDefinition,
-    PresentationTextDefinition, RoomDefinition, RoomDescriptionOverride, RoomExitDefinition,
-    RoomFeatureDefinition, SpeechConfigDefinition, StatDefinition, StatsDefinition,
-    TeleportAnchorDefinition, TeleportNetworkDefinition, TransformationRename,
-    TransformationTrigger, WanderDefinition, WanderMode,
+    MovementDefaultsDefinition, MovementOrderDefinition, MovementTargetBehavior,
+    PresentationDefinition, PresentationTextDefinition, RoomDefinition, RoomDescriptionOverride,
+    RoomExitDefinition, RoomFeatureDefinition, SpeechConfigDefinition, StatDefinition,
+    StatsDefinition, TeleportAnchorDefinition, TeleportNetworkDefinition, TransformationRename,
+    TransformationTrigger,
 };
 
 mod command_defs;

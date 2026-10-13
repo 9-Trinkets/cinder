@@ -2,10 +2,11 @@ pub(crate) mod pathfinding;
 pub(crate) mod strategies;
 
 use super::{room_is_in_tick_scope, tick_scope_room_ids};
-use crate::content::types::{ActorDefinition, ContentPack, WanderDefinition, WanderMode};
+use crate::content::types::{ActorDefinition, ContentPack, MovementOrderDefinition};
 use crate::engine::behavior::should_hold;
 use crate::engine::combat_targets::room_has_living_guard;
 use crate::engine::events::WorldEvent;
+use crate::engine::orders::{OrderKind, parse_order};
 use crate::engine::state::{ActorStance, GamePhase, WorldState};
 use std::collections::BTreeSet;
 use std::error::Error;
@@ -35,20 +36,44 @@ pub(crate) trait MovementStrategy: Send + Sync {
     ) -> Option<String>;
 }
 
-/// Creates a concrete `MovementStrategy` from a content `WanderDefinition`.
-pub(crate) fn strategy_from_wander(wander: &WanderDefinition) -> Box<dyn MovementStrategy> {
-    match wander.mode {
-        WanderMode::Stay => Box::new(StayStrategy),
-        WanderMode::RandomAdjacent => Box::new(RandomAdjacentStrategy::new(wander.cadence_ticks)),
-        WanderMode::TowardPlayer => Box::new(TowardPlayerStrategy::new(wander.cadence_ticks)),
-        WanderMode::To => Box::new(ToDestinationStrategy::new(
-            wander.cadence_ticks,
-            wander.room_id.clone(),
-        )),
-        WanderMode::ExitLabel => Box::new(ExitLabelStrategy::new(
-            wander.cadence_ticks,
-            wander.exit_label.clone(),
-        )),
+/// Creates a concrete `MovementStrategy` from a content `MovementOrderDefinition`.
+/// A single place maps an order token to a strategy; a new movement behavior is a
+/// new token in `engine::orders` plus a new arm here.
+pub(crate) fn strategy_from_order(
+    order: &MovementOrderDefinition,
+) -> Option<Box<dyn MovementStrategy>> {
+    let cadence = order.cadence_ticks;
+    match parse_order(&order.token)? {
+        OrderKind::Hold => Some(Box::new(StayStrategy)),
+        OrderKind::Patrol => Some(Box::new(RandomAdjacentStrategy::new(cadence))),
+        OrderKind::Hunt => Some(Box::new(TowardPlayerStrategy::new(cadence))),
+        OrderKind::Follow => None,
+        OrderKind::Deploy(target) => Some(Box::new(DeployStrategy::new(
+            cadence,
+            order_target(order, target),
+        ))),
+        OrderKind::Goto(target) => Some(Box::new(ToDestinationStrategy::new(
+            cadence,
+            order_target(order, target),
+        ))),
+        OrderKind::Exit(label) => {
+            let label = if label.is_empty() {
+                order.exit_label.clone()
+            } else {
+                label
+            };
+            Some(Box::new(ExitLabelStrategy::new(cadence, label)))
+        }
+    }
+}
+
+/// The target for a target-bearing order, preferring an inline token target and
+/// falling back to the authored `target_room_id`.
+fn order_target(order: &MovementOrderDefinition, inline: String) -> String {
+    if inline.is_empty() {
+        order.target_room_id.clone()
+    } else {
+        inline
     }
 }
 
@@ -130,35 +155,28 @@ impl MovementStrategyResolver for DefaultMovementStrategyResolver {
             return None;
         }
         if let Some(order) = state.party_order(content, actor_id) {
-            let order_lower = order.to_ascii_lowercase();
-            return match order_lower.as_str() {
-                "guard" => Some(Box::new(StayStrategy)),
-                "patrol" => {
-                    let authored = content
-                        .movement
-                        .actors
-                        .get(actor_id)
-                        .and_then(|rules| rules.wander.as_ref());
-                    if let Some(wander) = authored {
-                        Some(strategy_from_wander(wander))
+            let authored = content
+                .movement
+                .actors
+                .get(actor_id)
+                .and_then(|rules| rules.order.as_ref());
+            return match parse_order(&order) {
+                Some(OrderKind::Hold) => Some(Box::new(StayStrategy)),
+                Some(OrderKind::Patrol) => authored
+                    .and_then(strategy_from_order)
+                    .or_else(|| Some(Box::new(RandomAdjacentStrategy::new(1)))),
+                Some(OrderKind::Follow) => None,
+                Some(OrderKind::Deploy(target)) => {
+                    let target = if target.is_empty() {
+                        authored
+                            .map(|order| order.target_room_id.clone())
+                            .unwrap_or_default()
                     } else {
-                        Some(Box::new(RandomAdjacentStrategy::new(1)))
-                    }
+                        target
+                    };
+                    Some(Box::new(DeployStrategy::new(1, target)))
                 }
-                "follow" => None,
-                _ => {
-                    if order_lower.starts_with("deploy") {
-                        let target = order
-                            .strip_prefix("deploy:")
-                            .or_else(|| order.strip_prefix("deploy "))
-                            .unwrap_or("")
-                            .trim()
-                            .to_string();
-                        Some(Box::new(DeployStrategy::new(1, target)))
-                    } else {
-                        None
-                    }
-                }
+                _ => None,
             };
         }
 
@@ -166,9 +184,9 @@ impl MovementStrategyResolver for DefaultMovementStrategyResolver {
             .movement
             .actors
             .get(actor_id)
-            .and_then(|rules| rules.wander.as_ref())
-            .or(content.movement.defaults.wander.as_ref())
-            .map(strategy_from_wander)
+            .and_then(|rules| rules.order.as_ref())
+            .or(content.movement.defaults.order.as_ref())
+            .and_then(strategy_from_order)
     }
 }
 
@@ -218,14 +236,14 @@ pub(crate) fn plan_wander_moves_with_dependencies(
 }
 
 #[cfg(test)]
-fn wander_destination(
+fn order_destination(
     content: &ContentPack,
     state: &WorldState,
     actor: &ActorDefinition,
     current_room_id: &str,
-    wander: &WanderDefinition,
+    order: &MovementOrderDefinition,
 ) -> Option<String> {
-    strategy_from_wander(wander).plan_destination(content, state, actor, current_room_id)
+    strategy_from_order(order)?.plan_destination(content, state, actor, current_room_id)
 }
 
 pub(crate) fn decide_movement(
@@ -250,14 +268,9 @@ pub(crate) fn decide_movement(
         return Ok(vec![]);
     }
     let target_room_id = if let Some(order) = state.party_order(&content, &actor.id)
-        && (order.to_ascii_lowercase().starts_with("deploy")
-            || order.to_ascii_lowercase() == "deploy")
+        && let Some(OrderKind::Deploy(target)) = parse_order(&order)
     {
-        let target = order
-            .strip_prefix("deploy:")
-            .or_else(|| order.strip_prefix("deploy "))
-            .unwrap_or("")
-            .trim();
+        let target = target.trim();
         if !target.is_empty() && content.room(target).is_some() {
             Some(target.to_string())
         } else {
@@ -297,6 +310,25 @@ mod tests {
     use crate::engine::test_fixtures::minimal_test_pack;
 
     #[test]
+    fn order_tokens_map_to_strategies_through_one_registry() {
+        let plan = |token: &str, cadence: u32| {
+            let order = MovementOrderDefinition {
+                token: token.to_string(),
+                cadence_ticks: cadence,
+                ..Default::default()
+            };
+            strategy_from_order(&order).map(|strategy| strategy.cadence_ticks())
+        };
+        assert_eq!(plan("hold", 9), Some(0));
+        assert_eq!(plan("guard", 9), Some(0));
+        assert_eq!(plan("patrol", 3), Some(3));
+        assert_eq!(plan("wander", 2), Some(2));
+        assert_eq!(plan("advance", 2), Some(2));
+        assert_eq!(plan("follow", 1), None);
+        assert_eq!(plan("mystery", 1), None);
+    }
+
+    #[test]
     fn engaged_hostile_does_not_wander_away_from_player_room() {
         let mut content = minimal_test_pack();
         assert!(content.actors.len() >= 2, "fixture needs two actors");
@@ -309,22 +341,20 @@ mod tests {
             .actors
             .entry(engaged_id.clone())
             .or_default()
-            .wander = Some(WanderDefinition {
-            mode: WanderMode::RandomAdjacent,
+            .order = Some(MovementOrderDefinition {
+            token: "patrol".to_string(),
             cadence_ticks: 1,
-            room_id: String::new(),
-            exit_label: String::new(),
+            ..Default::default()
         });
         content
             .movement
             .actors
             .entry(roaming_id.clone())
             .or_default()
-            .wander = Some(WanderDefinition {
-            mode: WanderMode::RandomAdjacent,
+            .order = Some(MovementOrderDefinition {
+            token: "patrol".to_string(),
             cadence_ticks: 1,
-            room_id: String::new(),
-            exit_label: String::new(),
+            ..Default::default()
         });
         content.behavior.defaults.hold = Some(serde_json::json!({
             "rule": "effect_table",
@@ -377,15 +407,14 @@ mod tests {
     #[test]
     fn exit_label_wander_follows_named_exit() {
         let content = minimal_test_pack();
-        let wander = WanderDefinition {
-            mode: WanderMode::ExitLabel,
+        let order = MovementOrderDefinition {
+            token: "exit".to_string(),
             cadence_ticks: 1,
-            room_id: String::new(),
             exit_label: "kitchen".to_string(),
+            ..Default::default()
         };
-
         let state = WorldState::new(&content);
-        let dest = wander_destination(&content, &state, &content.actors[0], "lounge", &wander);
+        let dest = order_destination(&content, &state, &content.actors[0], "lounge", &order);
         assert_eq!(dest.as_deref(), Some("kitchen"));
     }
 

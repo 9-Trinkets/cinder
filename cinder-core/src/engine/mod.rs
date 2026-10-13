@@ -16,6 +16,7 @@ pub mod menus;
 pub mod messaging;
 pub mod narrative;
 pub mod neuron;
+pub(crate) mod orders;
 mod party_policy;
 pub mod reducer;
 pub mod roles;
