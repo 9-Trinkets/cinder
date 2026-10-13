@@ -71,7 +71,7 @@ export default function ShellMenu({
   onDeleteBookmark,
 }: ShellMenuProps) {
   const t = ui.ui_text
-  const items = flattenItems(t).filter(item => item.id !== 'quests' || ui.quests_revealed !== false)
+  const items = flattenItems(t).filter(item => item.id !== 'quests' || ui.sidebar_sections.includes('quests'))
 
   if (view === 'rooms') {
     return (

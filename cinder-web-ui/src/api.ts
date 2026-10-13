@@ -408,15 +408,11 @@ export interface UiSnapshot {
   player: PlayerStatus
   skills?: PlayerSkillItem[]
   minimap: MinimapData | null
-  levels_revealed: boolean
-  quests_revealed?: boolean
+  sidebar_sections: string[]
   current_room_items: InventoryItem[]
   room_consumables: RoomConsumableGroup[]
   crafted_consumable_labels: string[]
-  show_relationship_sidebar: boolean
   relationship_pairs: RelationshipPair[]
-  show_vitals_sidebar: boolean
-  show_skills_sidebar: boolean
   theme: ThemeDefinition
   ui_text: {
     language_name: string

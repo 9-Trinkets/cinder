@@ -367,61 +367,29 @@ impl ContentPack {
             .map(|lvl| lvl.exp_required)
     }
 
-    /// Whether party levels are shown in the sidebar. Levels stay hidden (as
-    /// a reward) until the player has travelled to a room on the board named
-    /// by `level_reveal_room_prefix`. An empty prefix keeps them always
-    /// visible.
-    pub fn levels_revealed_for_room(&self, room_id: &str) -> bool {
-        let prefix = &self.settings.level_reveal_room_prefix;
-        prefix.is_empty()
-            || room_id.starts_with(prefix.as_str())
-            || room_id.starts_with('o')
-            || room_id.starts_with("mine_")
-            || room_id.starts_with("boiler_")
-            || room_id.starts_with("village_")
-            || room_id.starts_with("fortress_")
-            || room_id.starts_with("teleport_")
+    /// Ordered ids of the sidebar sections currently visible for `state`,
+    /// honoring each section's `story_var` gate. Callers render sections in
+    /// this order and skip ids their renderer registry doesn't know.
+    pub fn visible_sidebar_sections(&self, state: &WorldState) -> Vec<String> {
+        self.settings
+            .sidebar
+            .sections
+            .iter()
+            .filter(|section| match section.story_var.as_deref() {
+                Some(var) if !var.is_empty() => self.story_var_is_truthy(state, var),
+                _ => true,
+            })
+            .map(|section| section.id.clone())
+            .collect()
     }
 
-    /// Whether the quests panel is shown in the sidebar. Quests stay hidden
-    /// until the player has travelled to a room on the board named by
-    /// `quests_reveal_room_prefix`. An empty prefix keeps them always visible.
-    pub fn quests_revealed_for_room(&self, room_id: &str) -> bool {
-        let prefix = &self.settings.quests_reveal_room_prefix;
-        prefix.is_empty()
-            || room_id.starts_with(prefix.as_str())
-            || room_id.starts_with("village_")
-            || room_id.starts_with("garrison_")
-            || room_id.starts_with("fortress_")
-            || room_id.starts_with("teleport_")
+    /// The map (board) id a room belongs to, or an empty string when the room
+    /// is on no map.
+    pub fn board_id_for_room(&self, room_id: &str) -> String {
+        self.map_for_room(room_id)
+            .map(|map| map.id.clone())
+            .unwrap_or_default()
     }
-
-    /// Whether the Vitals (HP + stats) + Level sidebar sections are shown,
-    /// honoring `show_vitals_sidebar` plus the optional
-    /// `vitals_sidebar_story_var` gate.
-    pub fn vitals_sidebar_shown(&self, state: &WorldState) -> bool {
-        self.settings.show_vitals_sidebar
-            && (self.settings.vitals_sidebar_story_var.is_empty()
-                || self.story_var_is_truthy(state, &self.settings.vitals_sidebar_story_var))
-    }
-
-    /// Whether the player's Skills sidebar section is shown,
-    /// honoring `show_skills_sidebar` plus the optional
-    /// `skills_sidebar_story_var` gate.
-    pub fn skills_sidebar_shown(&self, state: &WorldState) -> bool {
-        self.settings.show_skills_sidebar
-            && (self.settings.skills_sidebar_story_var.is_empty()
-                || self.story_var_is_truthy(state, &self.settings.skills_sidebar_story_var))
-    }
-
-    /// Whether the minimap widget is shown, honoring the
-    /// `minimap_requires_story_var` gate (empty = always shown).
-    pub fn minimap_shown(&self, state: &WorldState) -> bool {
-        self.settings.minimap_requires_story_var.is_empty()
-            || self.story_var_is_truthy(state, &self.settings.minimap_requires_story_var)
-    }
-
-    /// Whether a story variable reads truthy, matching the action-availability
     /// rules ("truthy" = any non-empty value other than "false"/"0").
     pub fn story_var_is_truthy(&self, state: &WorldState, key: &str) -> bool {
         state.story_vars.get(key).is_some_and(|value| {

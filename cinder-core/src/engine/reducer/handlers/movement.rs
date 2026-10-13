@@ -84,6 +84,26 @@ pub(crate) fn handle_player_moved(
         lines,
     )
     .unwrap_or_else(|error| eprintln!("[cinder] hook warning (player.moved): {error}"));
+
+    let from_board_id = content.board_id_for_room(&from_room_id);
+    let to_board_id = content.board_id_for_room(to_room_id);
+    if !to_board_id.is_empty() && from_board_id != to_board_id {
+        apply_narrating_world_hook_effects(
+            state,
+            content,
+            hook_ids::BOARD_ENTERED,
+            json!({
+                "from_room_id": from_room_id,
+                "to_room_id": to_room_id,
+                "from_board_id": from_board_id,
+                "to_board_id": to_board_id,
+                "first_visit": first_visit,
+                "story_vars": state.story_vars.to_map(),
+            }),
+            lines,
+        )
+        .unwrap_or_else(|error| eprintln!("[cinder] hook warning (board.entered): {error}"));
+    }
 }
 
 /// Moves every living follower into the player's room (used when the player

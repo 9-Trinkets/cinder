@@ -4,6 +4,7 @@ pub const SHARED_ROOM_TICK: &str = "conversation.shared_room_tick";
 pub const PAIR_STATE_NOTES: &str = "conversation.pair_state_notes";
 pub const ACTOR_MOVED: &str = "actor.moved";
 pub const PLAYER_MOVED: &str = "player.moved";
+pub const BOARD_ENTERED: &str = "board.entered";
 pub const ACTOR_ATTACKED: &str = "actor.attacked";
 pub const ACTOR_TIME_ADVANCED: &str = "actor.time_advanced";
 pub const ACTOR_SURROUNDED: &str = "actor.surrounded";

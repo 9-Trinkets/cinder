@@ -263,20 +263,47 @@ fn room_observation_distinguishes_trace_marks_from_takeable_loose_items() {
 }
 
 #[test]
-fn level_reveal_follows_the_declared_room_prefix() {
+fn sidebar_sections_follow_declared_order_and_story_var_gates() {
+    use cinder_core::content::types::{SidebarDefinition, SidebarSectionDefinition};
     let mut pack = minimal_test_pack();
-    assert!(
-        pack.levels_revealed_for_room("alpha"),
-        "empty prefix: levels always visible"
+    let state = WorldState::new(&pack);
+
+    // No declared sections means nothing is shown.
+    assert!(pack.visible_sidebar_sections(&state).is_empty());
+
+    pack.settings.sidebar = SidebarDefinition {
+        sections: vec![
+            SidebarSectionDefinition {
+                id: "location".to_string(),
+                story_var: None,
+            },
+            SidebarSectionDefinition {
+                id: "level".to_string(),
+                story_var: Some("levels_revealed".to_string()),
+            },
+            SidebarSectionDefinition {
+                id: "vitals".to_string(),
+                story_var: Some(String::new()),
+            },
+        ],
+    };
+
+    // A gated section stays hidden until its var is truthy; an empty var is
+    // treated as "always visible"; order follows the declared list.
+    assert_eq!(
+        pack.visible_sidebar_sections(&state),
+        vec!["location".to_string(), "vitals".to_string()]
     );
-    pack.settings.level_reveal_room_prefix = "down".to_string();
-    assert!(
-        !pack.levels_revealed_for_room("topside"),
-        "upper stays hidden"
-    );
-    assert!(
-        pack.levels_revealed_for_room("down-barrow"),
-        "descended board reveals levels"
+
+    let mut state = state;
+    state.story_vars.set_unchecked("levels_revealed", "true");
+    assert_eq!(
+        pack.visible_sidebar_sections(&state),
+        vec![
+            "location".to_string(),
+            "level".to_string(),
+            "vitals".to_string()
+        ]
     );
 }
 

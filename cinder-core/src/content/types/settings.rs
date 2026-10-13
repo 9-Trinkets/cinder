@@ -68,6 +68,29 @@ impl<'de> Deserialize<'de> for SurroundRule {
     }
 }
 
+/// One sidebar section a pack can show. Presence in
+/// [`SidebarDefinition::sections`] means the section may appear at all;
+/// its position in the list is the display order.
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct SidebarSectionDefinition {
+    /// Section id the web UI's renderer registry keys on (e.g. `"vitals"`).
+    /// Unknown ids are skipped by the client.
+    pub id: String,
+    /// Optional story var that gates the section: it is shown only once this
+    /// var is truthy. Absent (or empty) means always visible.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub story_var: Option<String>,
+}
+
+/// Ordered declarative list of the sidebar sections a pack shows. The engine
+/// resolves it to the visible ids in [`SidebarDefinition::sections`] order,
+/// honoring each section's `story_var` gate.
+#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
+pub struct SidebarDefinition {
+    #[serde(default)]
+    pub sections: Vec<SidebarSectionDefinition>,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ContentSettingsDefinition {
     #[serde(default)]
@@ -106,44 +129,11 @@ pub struct ContentSettingsDefinition {
     pub fallback_required_story_vars: Vec<String>,
     #[serde(default = "default_true")]
     pub show_act_closure: bool,
+    /// Declarative sidebar section list. Presence means a section may appear;
+    /// order is display order; a section's optional `story_var` gates it (see
+    /// [`SidebarSectionDefinition`]). Omitting a section hides it entirely.
     #[serde(default)]
-    pub show_relationship_sidebar: bool,
-    /// Whether the sidebar shows the player's Vitals (HP + stats) and Level
-    /// sections. Combat packs (e.g. layla) enable these; story packs without a
-    /// combat system disable them to keep the sidebar focused.
-    #[serde(default = "default_true")]
-    pub show_vitals_sidebar: bool,
-    /// Story var that additionally gates the Vitals + Level sidebar sections.
-    /// Empty keeps the static `show_vitals_sidebar` behavior; non-empty shows
-    /// them only once the var is truthy (e.g. layered teaching: stats appear
-    /// only after `first_mob_defeated`).
-    #[serde(default)]
-    pub vitals_sidebar_story_var: String,
-    /// Whether the sidebar shows the player's Skills section.
-    #[serde(default = "default_true")]
-    pub show_skills_sidebar: bool,
-    /// Story var that additionally gates the Skills sidebar section.
-    /// Empty keeps the static `show_skills_sidebar` behavior; non-empty shows
-    /// them only once the var is truthy (e.g. layered teaching: skills appear
-    /// only after `first_skill_used`).
-    #[serde(default)]
-    pub skills_sidebar_story_var: String,
-    /// Story var that gates the whole minimap widget. Empty keeps the minimap
-    /// always rendered; non-empty hides it until the var is truthy (e.g. the
-    /// map is a boss-drop reward, revealed once `shaman_defeated`).
-    #[serde(default)]
-    pub minimap_requires_story_var: String,
-    /// Room-id prefix that, once the player has travelled to a room on that
-    /// board, reveals party levels in the sidebar. Empty means levels are
-    /// always visible. Treats level info as a reward and foreshadows a
-    /// hierarchy (e.g. a chess board) when the player descends.
-    #[serde(default)]
-    pub level_reveal_room_prefix: String,
-    /// Room-id prefix that reveals the quests panel in the sidebar once the
-    /// player has travelled to a room on that board. Empty means quests are
-    /// always visible.
-    #[serde(default)]
-    pub quests_reveal_room_prefix: String,
+    pub sidebar: SidebarDefinition,
     /// Skill definitions (or legacy behavior rules in non-strict packs)
     /// define eligible hostile actions. `rules` applies them directly; `llm`
     /// asks a validated planner to choose a subset.
@@ -225,14 +215,7 @@ impl Default for ContentSettingsDefinition {
             fallback_required_story_vars: Vec::new(),
             workflow_id: String::default(),
             show_act_closure: true,
-            show_relationship_sidebar: false,
-            show_vitals_sidebar: true,
-            vitals_sidebar_story_var: String::default(),
-            show_skills_sidebar: true,
-            skills_sidebar_story_var: String::default(),
-            minimap_requires_story_var: String::default(),
-            level_reveal_room_prefix: String::default(),
-            quests_reveal_room_prefix: String::default(),
+            sidebar: SidebarDefinition::default(),
             autonomous_hostility_mode: AutonomousHostilityMode::Rules,
             periodic_actor_effects: Vec::new(),
             channels: Vec::new(),

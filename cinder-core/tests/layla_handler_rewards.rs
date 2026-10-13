@@ -5,6 +5,7 @@
 //! praise. Kills read as competence, not virtue.
 
 use cinder_core::content::loader::load_named_pack;
+use cinder_core::content::types::ContentPack;
 use cinder_core::engine::narrative::{NarrativeLine, NarrativeLineKind};
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::{ActorStance, WorldState};
@@ -13,6 +14,12 @@ fn handler_spoke(lines: &[NarrativeLine], needle: &str) -> bool {
     lines
         .iter()
         .any(|line| line.kind == NarrativeLineKind::Channel && line.text.contains(needle))
+}
+
+fn section_shown(pack: &ContentPack, state: &WorldState, id: &str) -> bool {
+    pack.visible_sidebar_sections(state)
+        .iter()
+        .any(|section| section == id)
 }
 
 fn strong_player(state: &mut WorldState) {
@@ -35,7 +42,7 @@ fn first_mob_kill_grants_vitals_readout_and_handler_line() {
 
     // Vitals stay hidden until Layla proves she can handle herself.
     assert!(
-        !pack.vitals_sidebar_shown(&state),
+        !section_shown(&pack, &state, "vitals"),
         "vitals must stay hidden until the first kill"
     );
 
@@ -47,7 +54,7 @@ fn first_mob_kill_grants_vitals_readout_and_handler_line() {
     let after = runtime.export_state().expect("state exported");
     assert_eq!(after.story_vars.get("first_mob_defeated"), Some("true"));
     assert!(
-        pack.vitals_sidebar_shown(&after),
+        section_shown(&pack, &after, "vitals"),
         "the first kill must reveal the vitals readout"
     );
     assert!(
@@ -241,7 +248,7 @@ fn killing_a_golem_first_also_unlocks_vitals() {
         "a golem kill must count as the first mob kill"
     );
     assert!(
-        pack.vitals_sidebar_shown(&after),
+        section_shown(&pack, &after, "vitals"),
         "killing a golem first must still reveal vitals"
     );
     assert!(
@@ -264,7 +271,7 @@ fn killing_the_shaman_first_still_unlocks_vitals() {
 
     let after = runtime.export_state().expect("state exported");
     assert_eq!(after.story_vars.get("first_mob_defeated"), Some("true"));
-    assert!(pack.vitals_sidebar_shown(&after));
+    assert!(section_shown(&pack, &after, "vitals"));
 }
 
 #[test]
@@ -295,11 +302,11 @@ fn first_skill_use_grants_skills_readout_and_handler_line() {
         .insert("hp".to_string(), 100);
 
     assert!(
-        !pack.skills_sidebar_shown(&state),
+        !section_shown(&pack, &state, "skills"),
         "skills readout must stay hidden before first skill use"
     );
     assert!(
-        !pack.vitals_sidebar_shown(&state),
+        !section_shown(&pack, &state, "vitals"),
         "vitals must stay hidden before first mob kill"
     );
 
@@ -311,11 +318,11 @@ fn first_skill_use_grants_skills_readout_and_handler_line() {
     let after = runtime.export_state().expect("state exported");
     assert_eq!(after.story_vars.get("first_skill_used"), Some("true"));
     assert!(
-        pack.skills_sidebar_shown(&after),
+        section_shown(&pack, &after, "skills"),
         "first skill use must reveal the skills readout"
     );
     assert!(
-        !pack.vitals_sidebar_shown(&after),
+        !section_shown(&pack, &after, "vitals"),
         "vitals must remain hidden if the mob was not killed"
     );
     assert!(
@@ -357,11 +364,11 @@ fn tracing_sigil_first_reveals_skills_readout_before_vitals() {
     let state = WorldState::new(&pack);
 
     assert!(
-        !pack.skills_sidebar_shown(&state),
+        !section_shown(&pack, &state, "skills"),
         "skills readout must stay hidden before first skill use"
     );
     assert!(
-        !pack.vitals_sidebar_shown(&state),
+        !section_shown(&pack, &state, "vitals"),
         "vitals must stay hidden before first kill"
     );
 
@@ -373,11 +380,11 @@ fn tracing_sigil_first_reveals_skills_readout_before_vitals() {
     let after = runtime.export_state().expect("state exported");
     assert_eq!(after.story_vars.get("first_skill_used"), Some("true"));
     assert!(
-        pack.skills_sidebar_shown(&after),
+        section_shown(&pack, &after, "skills"),
         "tracing a sigil must reveal the skills readout"
     );
     assert!(
-        !pack.vitals_sidebar_shown(&after),
+        !section_shown(&pack, &after, "vitals"),
         "vitals must remain hidden when tracing a sigil without killing a mob"
     );
     assert!(

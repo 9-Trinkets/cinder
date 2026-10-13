@@ -226,10 +226,10 @@ Every system feature unlocks through a diegetic act. Each lock sets a story var
 |---|---|---|---|
 | 1 | Start, in a guard room with a golem, chalk already in her pocket | **Look**, **Attack** | attack is target-gated only (golem is a legit neutral target in the room) — no gate |
 | 2 | The handler's opening comms exchange teaches the chalk procedure: trace a closed ring around an enemy until it closes and draws it into step | **Trace** is available from the start | Scripted `handler-comms` sequence — chalk is on Layla, so there is no pickup/equip gate to climb |
-| 3 | **Defeat the first mob** (a goblin — or the golem) | **Stats / vitals sidebar** | `actor.defeated` → `vitals_sidebar_story_var` (new knob) |
+| 3 | **Defeat the first mob** (a goblin — or the golem) | **Stats / vitals sidebar** | `actor.defeated` sets `first_mob_defeated`; the `vitals` sidebar section gates on it |
 | 4 | **First charm** (ring a golem) | **Party / follower bar** | already derived from follower existence — no gate |
-| 5 | **Defeat the shaman** (first boss) | **Map / minimap** widget | `shaman_defeated` → `minimap_requires_story_var` (new knob) |
-| 6 | **Descend to floor 2 (the chess level)** | **Level / XP section** appears on the sidebar | XP accrues silently on floor 1; the levels display is itself an unlocked feature, gated on descending (`level_reveal_room_prefix: "d"`) |
+| 5 | **Defeat the shaman** (first boss) | **Map / minimap** widget | `shaman_defeated` gates the `map` sidebar section |
+| 6 | **Descend to floor 2 (the chess level)** | **Level / XP section** appears on the sidebar | XP accrues silently on floor 1; descending to the Deep Forest board sets `levels_revealed` (via `board.entered`), which the `level` sidebar section gates on |
 
 ### On XP and levels (explicit design choice)
 
@@ -258,16 +258,17 @@ Every system feature unlocks through a diegetic act. Each lock sets a story var
 Additions to the engine (cinder-core / cinder-srv + web UI) required to support
 the surface order:
 
-1. `vitals_sidebar_story_var` — replaces the static `show_vitals_sidebar` bool
-   with "vitals shown when this story var is truthy."
-2. `minimap_requires_story_var` — hide the minimap until a story var is truthy
-   (currently the minimap always renders).
-3. Levels-section visibility — already implemented as
-   `level_reveal_room_prefix` (rooms on the "d" board reveal party levels), so
-   XP can accrue without a visible level bar on floor 1.
-4. A scripted opening sequence on `handler-comms` so the chalk procedure comes
+1. `sidebar.sections` — one declarative list per pack. A section's presence sets
+   *may appear* and its order sets display order; an optional `story_var` gates it
+   ("shown when this story var is truthy"), and omission means *never shown*. This
+   replaces the static `show_*` bools and the per-feature `*_story_var` knobs
+   (`vitals_sidebar_story_var`, `minimap_requires_story_var`) in one pass.
+2. `board.entered` — a new trigger fired when the player crosses between map
+   boards, with a sticky `levels_revealed` story var so the level section stays
+   unlocked after descending (never re-locks on backtrack).
+3. A scripted opening sequence on `handler-comms` so the chalk procedure comes
    from Layla's assigned handler rather than a disembodied system voice.
-5. *(Removed during implementation)* `requires_equipped_item` — dropped with the
+4. *(Removed during implementation)* `requires_equipped_item` — dropped with the
    chalk-on-floor pickup. The chalk stays in Layla's starting inventory and
    `trace` is available from the start.
 
@@ -277,13 +278,14 @@ the surface order:
 
 | Story var | Set by | Gates |
 |---|---|---|
-| `first_mob_defeated` | `actor.defeated` on first kill | Stats/vitals (`vitals_sidebar_story_var`) |
-| `shaman_defeated` | `actor.defeated` on the shaman | Map/minimap widget (`minimap_requires_story_var`) |
+| `first_mob_defeated` | `actor.defeated` on first kill | Stats/vitals (`vitals` sidebar section) |
+| `shaman_defeated` | `actor.defeated` on the shaman | Map/minimap widget (`map` sidebar section) |
+| `levels_revealed` | `board.entered` on the Deep Forest board | Level/XP section (`level` sidebar section) |
 | `knows_drain` / `knows_spawn` | `item.scroll_read` / `item.spawn_scroll_read` (already implemented) | drain / spawn sigils |
 
-Levels are gated by `level_reveal_room_prefix: "d"` (room-based, not a story
-var). No `chalk_equipped` / `looked_room` gates: the chalk is on Layla at start
-and `trace`/`move` are available immediately.
+Levels are gated by the sticky `levels_revealed` story var (`board.entered` on
+descent). No `chalk_equipped` / `looked_room` gates: the chalk is on Layla at
+start and `trace`/`move` are available immediately.
 
 ---
 

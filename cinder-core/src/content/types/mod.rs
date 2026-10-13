@@ -10,7 +10,9 @@ mod messages;
 pub use messages::{PackMessage, PackMessageVoice};
 
 mod settings;
-pub use settings::{ContentSettingsDefinition, SurroundRule};
+pub use settings::{
+    ContentSettingsDefinition, SidebarDefinition, SidebarSectionDefinition, SurroundRule,
+};
 pub(super) use settings::{default_actor_targeted_speech, default_stat_default_value};
 
 mod channels;

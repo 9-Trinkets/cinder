@@ -134,25 +134,12 @@ pub(super) fn build_ui_snapshot(
     let mut panel_options = build_panel_options(runtime, content, &state, panels)?;
     panel_options.extend(sidebar::build_party_order_panels(content, &state, &party));
 
-    let player_id = if state.player_actor_id.is_empty() {
-        "player"
-    } else {
-        state.player_actor_id.as_str()
-    };
-    let player_visited_rooms = state
-        .actors
-        .actor_known_room_ids
-        .get(player_id)
-        .or_else(|| state.actors.actor_known_room_ids.get("player"));
+    let sidebar_sections = content.visible_sidebar_sections(&state);
+    let show_map = sidebar_sections.iter().any(|id| id == "map");
+    let show_quests = sidebar_sections.iter().any(|id| id == "quests");
+    let show_relationships = sidebar_sections.iter().any(|id| id == "relationships");
 
-    let levels_revealed = content.levels_revealed_for_room(&current_room_id)
-        || player_visited_rooms
-            .is_some_and(|rooms| rooms.iter().any(|r| content.levels_revealed_for_room(r)));
-    let quests_revealed = content.quests_revealed_for_room(&current_room_id)
-        || player_visited_rooms
-            .is_some_and(|rooms| rooms.iter().any(|r| content.quests_revealed_for_room(r)));
-
-    let (objectives, quests, objective_message) = if quests_revealed {
+    let (objectives, quests, objective_message) = if show_quests {
         (objectives, quests, objective_message)
     } else {
         (Vec::new(), Vec::new(), String::new())
@@ -205,22 +192,18 @@ pub(super) fn build_ui_snapshot(
         party,
         player: build_player_status(&state, content),
         skills: build_player_skills(&state, content),
-        minimap: if content.minimap_shown(&state) {
+        minimap: if show_map {
             build_minimap(&state, content, &current_room_id)
         } else {
             None
         },
-        levels_revealed,
-        quests_revealed,
+        sidebar_sections,
         current_room_items: build_current_room_items(content, &state, &current_room_id),
         equipped_items: build_equipped_items(&state, content),
         inventory: build_inventory(runtime, content),
         room_consumables: build_room_consumables(runtime, content, &current_room_id),
         crafted_consumable_labels: crafted_consumable_labels(content, &current_room_id),
-        show_relationship_sidebar: content.settings.show_relationship_sidebar,
-        show_vitals_sidebar: content.vitals_sidebar_shown(&state),
-        show_skills_sidebar: content.skills_sidebar_shown(&state),
-        relationship_pairs: if content.settings.show_relationship_sidebar {
+        relationship_pairs: if show_relationships {
             runtime.relationship_pairs().unwrap_or_default()
         } else {
             Vec::new()
@@ -348,16 +331,16 @@ mod tests {
         let runtime = CinderRuntime::new(pack.clone(), false).expect("runtime creates");
 
         // Turn 0: Layla starts on floor 1 (r1c1). Even though Floor 4 NPCs (like Sakhra)
-        // are initialized in village_square, the player has never visited Floor 4.
+        // are initialized in village_square, the unlock story vars are unset.
         let snapshot = build_ui_snapshot(&runtime, "layla", &[]).expect("snapshot builds");
 
         assert!(
-            !snapshot.quests_revealed,
-            "quests must not be revealed on floor 1"
+            !snapshot.sidebar_sections.iter().any(|id| id == "quests"),
+            "quests section must not be visible on floor 1"
         );
         assert!(
-            !snapshot.levels_revealed,
-            "levels must not be revealed on floor 1"
+            !snapshot.sidebar_sections.iter().any(|id| id == "level"),
+            "level section must not be visible on floor 1"
         );
         assert!(
             snapshot.quests.is_empty(),
@@ -372,20 +355,23 @@ mod tests {
             "objective message must be empty when not revealed"
         );
 
-        // When the player steps onto Floor 4 (e.g. village_square), quests and levels unlock.
+        // Descending to Floor 4 fires the board.entered hook, which sets the
+        // sticky unlock vars. Simulate that here along with the room change.
         let mut state = runtime.export_state().expect("state exports");
+        state.story_vars.set_unchecked("levels_revealed", "true");
+        state.story_vars.set_unchecked("quests_revealed", "true");
         state.current_room_id = "village_square".to_string();
         state.mark_actor_room_visited("player", "village_square");
         let runtime_f4 = CinderRuntime::from_state(pack, state, false).expect("runtime from state");
 
         let snapshot_f4 = build_ui_snapshot(&runtime_f4, "layla", &[]).expect("f4 snapshot builds");
         assert!(
-            snapshot_f4.quests_revealed,
-            "quests must be revealed in village_square"
+            snapshot_f4.sidebar_sections.iter().any(|id| id == "quests"),
+            "quests section must be visible in village_square"
         );
         assert!(
-            snapshot_f4.levels_revealed,
-            "levels must be revealed in village_square"
+            snapshot_f4.sidebar_sections.iter().any(|id| id == "level"),
+            "level section must be visible in village_square"
         );
         assert!(
             !snapshot_f4.objectives.is_empty(),

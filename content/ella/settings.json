@@ -12,5 +12,17 @@
   "actor_tick_scope": "current_board",
   "fallback_stage_id": "go-to-bed",
   "fallback_required_story_vars": ["movie_title", "snack_title"],
-  "show_vitals_sidebar": false
+  "sidebar": {
+    "sections": [
+      { "id": "location" },
+      { "id": "map" },
+      { "id": "party" },
+      { "id": "equipped" },
+      { "id": "inventory" },
+      { "id": "room_items" },
+      { "id": "room_consumables" },
+      { "id": "secrets" },
+      { "id": "quests" }
+    ]
+  }
 }

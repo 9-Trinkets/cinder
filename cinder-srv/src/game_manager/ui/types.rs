@@ -320,24 +320,16 @@ pub struct UiSnapshot {
     #[serde(default)]
     pub skills: Vec<PlayerSkillItem>,
     pub minimap: Option<MinimapData>,
-    /// Whether party levels are visible yet. Derived from the content's
-    /// `level_reveal_room_prefix`: false until the player has travelled to a
-    /// room on that board. Level info stays hidden to reward descent.
-    pub levels_revealed: bool,
-    /// Whether quests/objectives are revealed yet in the sidebar.
-    pub quests_revealed: bool,
+    /// Ordered ids of the sidebar sections this pack shows right now, after
+    /// applying each section's story-var gate. The web UI renders them in this
+    /// order, skipping ids it has no renderer for.
+    #[serde(default)]
+    pub sidebar_sections: Vec<String>,
     /// Loose items lying in the current room (dropped there).
     pub current_room_items: Vec<InventoryItem>,
     pub room_consumables: Vec<RoomConsumableGroup>,
     pub crafted_consumable_labels: Vec<String>,
-    pub show_relationship_sidebar: bool,
     pub relationship_pairs: Vec<RelationshipPair>,
-    /// Whether the sidebar shows the Vitals + Level sections (combat packs).
-    /// Honors `show_vitals_sidebar` and the `vitals_sidebar_story_var` gate.
-    pub show_vitals_sidebar: bool,
-    /// Whether the sidebar shows the Skills section.
-    /// Honors `show_skills_sidebar` and the `skills_sidebar_story_var` gate.
-    pub show_skills_sidebar: bool,
     pub theme: ThemeDefinition,
 }
 

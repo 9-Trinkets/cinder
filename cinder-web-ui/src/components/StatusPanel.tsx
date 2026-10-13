@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import * as api from '../api'
 import Minimap from './Minimap'
 import Section from './Section'
@@ -42,112 +43,113 @@ export default function StatusPanel({
   hideLocation?: boolean
 }) {
   const player = uiSnapshot.player
-  return (
-    <div>
-      {!hideLocation && (
-        <Section title="Location" defaultOpen>
-          <p className="text-text font-medium">{uiSnapshot.current_room_name}</p>
-          <p className="text-text text-xs">
-            Day {uiSnapshot.day_number}
-            {uiSnapshot.time_label ? <span className="text-muted ml-1">— {uiSnapshot.time_label}</span> : null}
-          </p>
-        </Section>
-      )}
+  const levelsRevealed = uiSnapshot.sidebar_sections.includes('level')
 
-      {uiSnapshot.minimap && (
+  const renderers: Record<string, () => ReactNode> = {
+    location: () => (
+      <Section title="Location" defaultOpen>
+        <p className="text-text font-medium">{uiSnapshot.current_room_name}</p>
+        <p className="text-text text-xs">
+          Day {uiSnapshot.day_number}
+          {uiSnapshot.time_label ? <span className="text-muted ml-1">— {uiSnapshot.time_label}</span> : null}
+        </p>
+      </Section>
+    ),
+
+    map: () =>
+      uiSnapshot.minimap ? (
         <Section title={uiSnapshot.ui_text.minimap_sidebar_label || 'Map'} defaultOpen>
           <Minimap map={uiSnapshot.minimap} uiText={uiSnapshot.ui_text} />
         </Section>
-      )}
+      ) : null,
 
-      {uiSnapshot.show_vitals_sidebar && (
-        <>
-          <Section title="Vitals" defaultOpen>
-            <div className="flex items-baseline justify-between text-xs">
-              <span className="text-text">HP</span>
-              <span className="text-muted">{player.hp}/{player.hp_max}</span>
+    vitals: () => (
+      <Section title="Vitals" defaultOpen>
+        <div className="flex items-baseline justify-between text-xs">
+          <span className="text-text">HP</span>
+          <span className="text-muted">{player.hp}/{player.hp_max}</span>
+        </div>
+        <div className="h-1.5 w-full rounded-full bg-overlay overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-300"
+            style={{
+              width: `${player.hp_max > 0 ? (player.hp / player.hp_max) * 100 : 0}%`,
+              backgroundColor: 'var(--color-pine)',
+            }}
+          />
+        </div>
+        {player.mp !== undefined && player.mp_max !== undefined && (
+          <>
+            <div className="flex items-baseline justify-between text-xs mt-1.5">
+              <span className="text-text">MP</span>
+              <span className="text-muted">{player.mp}/{player.mp_max}</span>
             </div>
             <div className="h-1.5 w-full rounded-full bg-overlay overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-300"
                 style={{
-                  width: `${player.hp_max > 0 ? (player.hp / player.hp_max) * 100 : 0}%`,
-                  backgroundColor: 'var(--color-pine)',
+                  width: `${player.mp_max > 0 ? (player.mp / player.mp_max) * 100 : 0}%`,
+                  backgroundColor: 'var(--color-iris)',
                 }}
               />
             </div>
-            {player.mp !== undefined && player.mp_max !== undefined && (
-              <>
-                <div className="flex items-baseline justify-between text-xs mt-1.5">
-                  <span className="text-text">MP</span>
-                  <span className="text-muted">{player.mp}/{player.mp_max}</span>
-                </div>
-                <div className="h-1.5 w-full rounded-full bg-overlay overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-300"
-                    style={{
-                      width: `${player.mp_max > 0 ? (player.mp / player.mp_max) * 100 : 0}%`,
-                      backgroundColor: 'var(--color-iris)',
-                    }}
-                  />
-                </div>
-              </>
-            )}
-            {(player.attack !== undefined || player.defense !== undefined) && (
-              <div className="grid grid-cols-2 gap-2 text-xs pt-1.5 pb-1 border-t border-overlay/40">
-                {player.attack !== undefined && (
-                  <div className="flex justify-between">
-                    <span className="text-muted">Attack</span>
-                    <span className="text-text font-medium">{player.attack}</span>
-                  </div>
-                )}
-                {player.defense !== undefined && (
-                  <div className="flex justify-between">
-                    <span className="text-muted">Defense</span>
-                    <span className="text-text font-medium">{player.defense}</span>
-                  </div>
-                )}
+          </>
+        )}
+        {(player.attack !== undefined || player.defense !== undefined) && (
+          <div className="grid grid-cols-2 gap-2 text-xs pt-1.5 pb-1 border-t border-overlay/40">
+            {player.attack !== undefined && (
+              <div className="flex justify-between">
+                <span className="text-muted">Attack</span>
+                <span className="text-text font-medium">{player.attack}</span>
               </div>
             )}
-            {player.stats.length > 0 && (
-              <ul className="space-y-0.5 pt-1 border-t border-overlay/30">
-                {player.stats.map(stat => (
-                  <li key={stat.id} className="flex justify-between text-xs">
-                    <span className="text-muted">{stat.id}</span>
-                    <span className="text-text">{stat.value}</span>
-                  </li>
-                ))}
-              </ul>
+            {player.defense !== undefined && (
+              <div className="flex justify-between">
+                <span className="text-muted">Defense</span>
+                <span className="text-text font-medium">{player.defense}</span>
+              </div>
             )}
-          </Section>
+          </div>
+        )}
+        {player.stats.length > 0 && (
+          <ul className="space-y-0.5 pt-1 border-t border-overlay/30">
+            {player.stats.map(stat => (
+              <li key={stat.id} className="flex justify-between text-xs">
+                <span className="text-muted">{stat.id}</span>
+                <span className="text-text">{stat.value}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Section>
+    ),
 
-          {uiSnapshot.levels_revealed && (
-            <Section title="Level" defaultOpen>
-              <div className="flex items-baseline justify-between text-xs">
-                <span className="text-text font-medium">Level {player.level}</span>
-                <span className="text-muted">
-                  {player.xp_max > 0 ? `${player.xp} / ${player.xp_max} XP` : 'MAX'}
-                </span>
-              </div>
-              <div className="h-1.5 w-full rounded-full bg-overlay overflow-hidden">
-                <div
-                  role="progressbar"
-                  aria-valuenow={player.xp}
-                  aria-valuemin={0}
-                  aria-valuemax={player.xp_max || 1}
-                  className="h-full rounded-full transition-all duration-300"
-                  style={{
-                    width: `${player.xp_max > 0 ? (player.xp / player.xp_max) * 100 : 100}%`,
-                    backgroundColor: 'var(--color-gold)',
-                  }}
-                />
-              </div>
-            </Section>
-          )}
-        </>
-      )}
+    level: () => (
+      <Section title="Level" defaultOpen>
+        <div className="flex items-baseline justify-between text-xs">
+          <span className="text-text font-medium">Level {player.level}</span>
+          <span className="text-muted">
+            {player.xp_max > 0 ? `${player.xp} / ${player.xp_max} XP` : 'MAX'}
+          </span>
+        </div>
+        <div className="h-1.5 w-full rounded-full bg-overlay overflow-hidden">
+          <div
+            role="progressbar"
+            aria-valuenow={player.xp}
+            aria-valuemin={0}
+            aria-valuemax={player.xp_max || 1}
+            className="h-full rounded-full transition-all duration-300"
+            style={{
+              width: `${player.xp_max > 0 ? (player.xp / player.xp_max) * 100 : 100}%`,
+              backgroundColor: 'var(--color-gold)',
+            }}
+          />
+        </div>
+      </Section>
+    ),
 
-      {uiSnapshot.show_skills_sidebar && uiSnapshot.skills && uiSnapshot.skills.length > 0 && (
+    skills: () =>
+      uiSnapshot.skills && uiSnapshot.skills.length > 0 ? (
         <Section title="Skills" defaultOpen>
           <ul className="space-y-2">
             {uiSnapshot.skills.map(skill => {
@@ -192,9 +194,10 @@ export default function StatusPanel({
             })}
           </ul>
         </Section>
-      )}
+      ) : null,
 
-      {uiSnapshot.party.length > 0 && (
+    party: () =>
+      uiSnapshot.party.length > 0 ? (
         <Section title="Party" defaultOpen>
           <ul className="space-y-2">
             {uiSnapshot.party.map(member => (
@@ -209,7 +212,7 @@ export default function StatusPanel({
                       <span className="block truncate text-xs font-medium text-text">{member.label}</span>
                       <span className="mt-0.5 block text-[10px] uppercase tracking-[0.14em] text-pine">
                         {member.order ? orderLabel(member.order) : 'No order'}
-                        {uiSnapshot.levels_revealed ? ` · Lv ${member.level}` : ''}
+                        {levelsRevealed ? ` · Lv ${member.level}` : ''}
                       </span>
                     </span>
                     <span className="text-muted transition-transform duration-200 group-hover:translate-x-0.5">›</span>
@@ -241,7 +244,7 @@ export default function StatusPanel({
                         }`}
                       >
                         {skill.label}
-                        {uiSnapshot.levels_revealed && skill.level !== undefined
+                        {levelsRevealed && skill.level !== undefined
                           ? ` Lv ${skill.level}`
                           : ''}
                       </li>
@@ -278,9 +281,10 @@ export default function StatusPanel({
             ))}
           </ul>
         </Section>
-      )}
+      ) : null,
 
-      {uiSnapshot.equipped_items.length > 0 && (
+    equipped: () =>
+      uiSnapshot.equipped_items.length > 0 ? (
         <Section title="Equipped">
           <ul className="space-y-0.5">
             {uiSnapshot.equipped_items.map((item, i) => (
@@ -290,9 +294,10 @@ export default function StatusPanel({
             ))}
           </ul>
         </Section>
-      )}
+      ) : null,
 
-      {uiSnapshot.inventory.length > 0 && (
+    inventory: () =>
+      uiSnapshot.inventory.length > 0 ? (
         <Section title="Inventory">
           <ul className="space-y-0.5">
             {uiSnapshot.inventory.map((item, i) => (
@@ -317,9 +322,10 @@ export default function StatusPanel({
             ))}
           </ul>
         </Section>
-      )}
+      ) : null,
 
-      {uiSnapshot.current_room_items.length > 0 && (
+    room_items: () =>
+      uiSnapshot.current_room_items.length > 0 ? (
         <Section title={uiSnapshot.ui_text.room_items_sidebar_label || 'On the ground'}>
           <ul className="space-y-0.5">
             {uiSnapshot.current_room_items.map((item, i) => (
@@ -345,9 +351,10 @@ export default function StatusPanel({
             ))}
           </ul>
         </Section>
-      )}
+      ) : null,
 
-      {uiSnapshot.room_consumables.length > 0 && (
+    room_consumables: () =>
+      uiSnapshot.room_consumables.length > 0 ? (
         <Section title="Available">
           {uiSnapshot.room_consumables.map((group, gi) => (
             <div key={gi}>
@@ -366,71 +373,82 @@ export default function StatusPanel({
             </div>
           ))}
         </Section>
-      )}
+      ) : null,
 
-      {uiSnapshot.secrets_total > 0 && (
+    secrets: () =>
+      uiSnapshot.secrets_total > 0 ? (
         <Section title="Secrets Found">
           <p className="text-text font-medium">{uiSnapshot.secrets_found} / {uiSnapshot.secrets_total}</p>
         </Section>
-      )}
+      ) : null,
 
-      {uiSnapshot.quests_revealed !== false && (
-        <Section title="Quests" defaultOpen>
-          {uiSnapshot.objectives && uiSnapshot.objectives.length > 0 ? (
-            <div className="space-y-2.5">
-              {uiSnapshot.objectives.map((obj, idx) => {
-                const isMain = obj.quest_kind?.toLowerCase() === 'main'
-                const isSide = obj.quest_kind?.toLowerCase() === 'side'
-                const hasQuestCard = Boolean(obj.quest_title || obj.quest_kind)
+    quests: () => (
+      <Section title="Quests" defaultOpen>
+        {uiSnapshot.objectives && uiSnapshot.objectives.length > 0 ? (
+          <div className="space-y-2.5">
+            {uiSnapshot.objectives.map((obj, idx) => {
+              const isMain = obj.quest_kind?.toLowerCase() === 'main'
+              const isSide = obj.quest_kind?.toLowerCase() === 'side'
+              const hasQuestCard = Boolean(obj.quest_title || obj.quest_kind)
 
-                if (hasQuestCard) {
-                  return (
-                    <div key={obj.stage_id || idx} className="rounded-lg bg-overlay/60 p-2.5 border border-subtle">
-                      <div className="flex items-center justify-between gap-2 mb-1">
-                        <span className="font-semibold text-text text-xs">
-                          {obj.quest_title || (isMain ? 'Main Quest' : 'Side Quest')}
+              if (hasQuestCard) {
+                return (
+                  <div key={obj.stage_id || idx} className="rounded-lg bg-overlay/60 p-2.5 border border-subtle">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <span className="font-semibold text-text text-xs">
+                        {obj.quest_title || (isMain ? 'Main Quest' : 'Side Quest')}
+                      </span>
+                      {obj.quest_kind && (
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-semibold uppercase tracking-wider ${
+                          isMain
+                            ? 'bg-gold/15 text-gold border border-gold/30'
+                            : isSide
+                            ? 'bg-iris/15 text-iris border border-iris/30'
+                            : 'bg-pine/15 text-pine border border-pine/30'
+                        }`}>
+                          {obj.quest_kind}
                         </span>
-                        {obj.quest_kind && (
-                          <span className={`text-[10px] px-1.5 py-0.5 rounded font-semibold uppercase tracking-wider ${
-                            isMain
-                              ? 'bg-gold/15 text-gold border border-gold/30'
-                              : isSide
-                              ? 'bg-iris/15 text-iris border border-iris/30'
-                              : 'bg-pine/15 text-pine border border-pine/30'
-                          }`}>
-                            {obj.quest_kind}
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-text font-medium text-xs mb-0.5">{obj.summary}</p>
-                      {obj.message && obj.message !== obj.summary && (
-                        <p className="text-muted text-[11px] leading-relaxed">{obj.message}</p>
                       )}
                     </div>
-                  )
-                }
-
-                return (
-                  <div key={obj.stage_id || idx} className="rounded-lg bg-overlay/40 p-2 border border-subtle/60">
-                    <p className="text-text text-xs leading-relaxed">{obj.summary}</p>
+                    <p className="text-text font-medium text-xs mb-0.5">{obj.summary}</p>
                     {obj.message && obj.message !== obj.summary && (
-                      <p className="text-muted text-[11px] leading-relaxed mt-0.5">{obj.message}</p>
+                      <p className="text-muted text-[11px] leading-relaxed">{obj.message}</p>
                     )}
                   </div>
                 )
-              })}
-            </div>
-          ) : (
-            <p className="text-text text-xs leading-relaxed">
-              {uiSnapshot.objective_message || 'No active quests.'}
-            </p>
-          )}
-        </Section>
-      )}
+              }
 
-      {uiSnapshot.show_relationship_sidebar && uiSnapshot.relationship_pairs.length > 0 && (
+              return (
+                <div key={obj.stage_id || idx} className="rounded-lg bg-overlay/40 p-2 border border-subtle/60">
+                  <p className="text-text text-xs leading-relaxed">{obj.summary}</p>
+                  {obj.message && obj.message !== obj.summary && (
+                    <p className="text-muted text-[11px] leading-relaxed mt-0.5">{obj.message}</p>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        ) : (
+          <p className="text-text text-xs leading-relaxed">
+            {uiSnapshot.objective_message || 'No active quests.'}
+          </p>
+        )}
+      </Section>
+    ),
+
+    relationships: () =>
+      uiSnapshot.relationship_pairs.length > 0 ? (
         <RelationshipChart pairs={uiSnapshot.relationship_pairs} />
-      )}
+      ) : null,
+  }
+
+  return (
+    <div>
+      {uiSnapshot.sidebar_sections.map(id => {
+        if (id === 'location' && hideLocation) return null
+        const render = renderers[id]
+        return render ? <div key={id}>{render()}</div> : null
+      })}
     </div>
   )
 }

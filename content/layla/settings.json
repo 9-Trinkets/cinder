@@ -44,11 +44,22 @@
   ],
   "feedback_channel_id": "handler-comms",
   "show_act_closure": false,
-  "vitals_sidebar_story_var": "first_mob_defeated",
-  "skills_sidebar_story_var": "first_skill_used",
-  "minimap_requires_story_var": "shaman_defeated",
-  "level_reveal_room_prefix": "d",
-  "quests_reveal_room_prefix": "village_",
+  "sidebar": {
+    "sections": [
+      { "id": "location" },
+      { "id": "map", "story_var": "shaman_defeated" },
+      { "id": "vitals", "story_var": "first_mob_defeated" },
+      { "id": "level", "story_var": "levels_revealed" },
+      { "id": "skills", "story_var": "first_skill_used" },
+      { "id": "party" },
+      { "id": "equipped" },
+      { "id": "inventory" },
+      { "id": "room_items" },
+      { "id": "room_consumables" },
+      { "id": "secrets" },
+      { "id": "quests", "story_var": "quests_revealed" }
+    ]
+  },
   "theme": {
     "base": "#101218",
     "surface": "#181c26",

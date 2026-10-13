@@ -470,20 +470,29 @@ fn floor4_mineral_and_chalk_lore_integrity() {
 }
 
 #[test]
-fn floor4_quests_panel_hidden_before_floor4_and_revealed_on_floor4() {
+fn floor4_board_entry_sets_quests_revealed_var() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
 
-    // Floors 1-3 rooms should NOT reveal quests
-    assert!(!pack.quests_revealed_for_room("deep_forest_start"));
-    assert!(!pack.quests_revealed_for_room("deep_forest_2"));
-    assert!(!pack.quests_revealed_for_room("cave_start"));
-    assert!(!pack.quests_revealed_for_room("oh"));
+    // The unlocking is event-driven: entering the Floor 4 board sets the
+    // sticky story var that the `quests` sidebar section gates on.
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "oh".to_string();
+    state.story_vars.set_unchecked("elemental_released", "true");
 
-    // Floor 4 rooms MUST reveal quests
-    assert!(pack.quests_revealed_for_room("village_square"));
-    assert!(pack.quests_revealed_for_room("village_south_1"));
-    assert!(pack.quests_revealed_for_room("village_north_gate"));
-    assert!(pack.quests_revealed_for_room("village_west_2"));
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime =
+        cinder_core::engine::runtime::CinderRuntime::with_dialogue_generator(pack, state, dialogue)
+            .expect("runtime creates");
+
+    let before = runtime.export_state().unwrap();
+    assert_eq!(before.story_vars.get("quests_revealed"), None);
+
+    let _ = runtime.run_turn("go down").expect("descend to floor 4");
+    assert_eq!(runtime.current_room_id().unwrap(), "village_square");
+
+    let after = runtime.export_state().unwrap();
+    assert_eq!(after.story_vars.get("quests_revealed"), Some("true"));
 }
 
 #[test]

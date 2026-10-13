@@ -153,7 +153,7 @@ The elves forge their equipment from the living materials of their subterranean 
 
 | # | Trigger / Action | Feature / Story Beat Unlocked | Engine / Script Mechanism |
 |---|---|---|---|
-| 1 | **Descend to Floor 2** (`d1c1`) | **Levels & XP Sidebar Display** becomes visible | Gated by `level_reveal_room_prefix: "d"`. Party levels are now revealed. |
+| 1 | **Descend to Floor 2** (`d1c1`) | **Levels & XP Sidebar Display** becomes visible | `board.entered` sets the sticky `levels_revealed` var, which the `level` sidebar section gates on. Party levels are now revealed. |
 | 2 | **Engage wandering patrols** | Dynamic combat against coordinated multi-cadence foes | Driven by `movement.json` cadences and `settings.combat.ally_attack`. |
 | 3 | **Defeat Elf King** (`elf-king-5` at `d8c5`) | **King's Defeat Narrative** & **Army Ceasefire** | Hook `actor.defeated` on `elf-king-5`: narrates `king.defeated`, sets `elf_king_defeated = true`, sets all `elf` tags to `stance: neutral`. |
 | 4 | **Loot & Read Drain Scroll** | **Drain Sigil (`drain-sigil`)** unlocked | Triggers `item.scroll_read`, sets `knows_drain = true`, enabling `trace drain-sigil`. |

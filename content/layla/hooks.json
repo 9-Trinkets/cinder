@@ -2012,5 +2012,56 @@
         }
       ]
     }
+  },
+  "board.entered": {
+    "rule": "effect_table",
+    "rule_config": {
+      "cases_path": "rules",
+      "next_on_match": "next",
+      "next_on_default": "complete",
+      "default_payload_template": {
+        "effects": []
+      }
+    },
+    "input_overlay": {
+      "rules": [
+        {
+          "conditions": [
+            {
+              "path": "to_board_id",
+              "operator": "equal",
+              "value": "deep-forest"
+            },
+            {
+              "path": "story_vars.levels_revealed",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "levels_revealed",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_board_id",
+              "operator": "equal",
+              "value": "the-commoners"
+            },
+            {
+              "path": "story_vars.quests_revealed",
+              "operator": "not_exists"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "quests_revealed",
+            "value": "true"
+          }
+        }
+      ]
+    }
   }
 }
