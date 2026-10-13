@@ -538,12 +538,12 @@
       "description": "Convert and command creatures to fight beside you.",
       "scaling": {
         "parameters": {
-          "follower_cap": {
+          "charm_bonus": {
             "base": 2,
             "growth_per_level": 2
           }
         },
-        "summary_template": "Follower cap: {follower_cap}"
+        "summary_template": "Charm bonus: +{charm_bonus}"
       }
     },
     {

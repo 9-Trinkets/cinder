@@ -13,7 +13,7 @@ use crate::engine::reducer::combat::VEC_EMPTY_TAGS;
 /// Whether the pack's surround gate lets an encircled actor convert. With no
 /// rule (`SurroundRule::None`) every candidate converts and the pack gates via
 /// its own hook conditions. With `Resistance` the player must out-score the
-/// target against the configured stat: `player_stat + player_level >=
+/// target against the configured stat: `player_stat + player_level + charm_bonus >=
 /// target_stat + 2*target_level`. The player stat is the *effective* value so
 /// equipped bonuses count.
 fn surround_rule_passes(state: &WorldState, content: &ContentPack, target_actor_id: &str) -> bool {
@@ -23,9 +23,19 @@ fn surround_rule_passes(state: &WorldState, content: &ContentPack, target_actor_
     let player_id = &content.settings.combat.player_actor_id;
     let player_stat = state.effective_actor_stat(content, player_id, stat).max(0) as u32;
     let player_level = state.actor_level(player_id);
+    let charm_bonus = if state.actor_has_skill(player_id, "charm") {
+        let charm_level = state.actor_skill_level(player_id, "charm");
+        content
+            .skill("charm")
+            .and_then(|s| s.param_value("charm_bonus", charm_level))
+            .map(|v| v.max(0) as u32)
+            .unwrap_or_else(|| crate::engine::skills::charm_bonus(charm_level))
+    } else {
+        0
+    };
     let target_stat = state.actor_stat(target_actor_id, stat).max(0) as u32;
     let target_level = state.actor_level(target_actor_id);
-    player_stat + player_level >= target_stat + 2 * target_level
+    player_stat + player_level + charm_bonus >= target_stat + 2 * target_level
 }
 
 /// Evaluates encirclement for a candidate room. If all neighboring rooms contain
@@ -115,24 +125,6 @@ fn try_surround_room(
             push_message(lines, content, "surround.refused", &[]);
             refused_count += 1;
             continue;
-        }
-
-        if state.actor_has_skill(player_id, "charm") {
-            let current_followers = state
-                .onstage_actors(content)
-                .filter(|actor| state.is_party_member(content, &actor.id))
-                .count();
-            let charm_level = state.actor_skill_level(player_id, "charm");
-            let cap = content
-                .skill("charm")
-                .and_then(|s| s.param_value("follower_cap", charm_level))
-                .map(|v| v as usize)
-                .unwrap_or_else(|| crate::engine::skills::charm_follower_cap(charm_level));
-            if current_followers >= cap {
-                push_message(lines, content, "surround.refused", &[]);
-                refused_count += 1;
-                continue;
-            }
         }
 
         apply_narrating_world_hook_effects(

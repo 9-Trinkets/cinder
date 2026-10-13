@@ -44,14 +44,28 @@ pub(crate) fn handle_item_acquired(
         }
         ItemStorageTarget::CurrentRoom => {
             if content.item(item_id).is_some_and(|item| item.trace_mark) {
+                let player_id = &content.settings.combat.player_actor_id;
                 crate::engine::reducer::award_actor_skill_sp(
-                    state,
-                    content,
-                    &content.settings.combat.player_actor_id,
-                    "trace",
-                    1,
-                    lines,
+                    state, content, player_id, "trace", 1, lines,
                 );
+                match item_id {
+                    "charm-sigil" => {
+                        crate::engine::reducer::award_actor_skill_sp(
+                            state, content, player_id, "charm", 2, lines,
+                        );
+                    }
+                    "drain-sigil" => {
+                        crate::engine::reducer::award_actor_skill_sp(
+                            state, content, player_id, "drain", 2, lines,
+                        );
+                    }
+                    "teleport-sigil" => {
+                        crate::engine::reducer::award_actor_skill_sp(
+                            state, content, player_id, "teleport", 2, lines,
+                        );
+                    }
+                    _ => {}
+                }
             }
             if let Some((line, voice)) =
                 render_acquired_line(content, item_id, "item.acquired_room", label)

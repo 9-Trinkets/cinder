@@ -694,3 +694,67 @@ fn surround_evaluates_mobs_individually_in_mixed_room() {
     // Because refusal occurred, the ring is spent
     assert!(!state.has_item_in_storage("marker", ItemStorageTarget::CurrentRoom, KITCHEN_ID));
 }
+
+#[test]
+fn charm_bonus_enables_converting_targets_with_higher_resistance() {
+    let mut pack = surround_test_pack();
+    // Strong mob: int 5, level 2 -> resistance 5 + 2*2 = 9.
+    add_surround_target(&mut pack, "strong-mob", 5, 2);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = KITCHEN_ID.to_string();
+
+    // Give player charm skill at level 2 (+4 bonus).
+    // Player intelligence 5, level 1 + charm bonus 4 = 10 >= 9.
+    state
+        .combat
+        .actor_skills
+        .entry(ACTOR_A_ID.to_string())
+        .or_default()
+        .insert("charm".to_string());
+    state.set_actor_skill_level(ACTOR_A_ID, "charm", 2);
+
+    let output = trace_marker(&mut state, &pack);
+
+    assert_eq!(state.stance("strong-mob"), ActorStance::Allied);
+    assert!(state.actor_is_in_room(&pack, "strong-mob", KITCHEN_ID));
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|l| l.text.contains("turns toward you"))
+    );
+    assert!(!output.lines.iter().any(|l| l.text.contains(REFUSAL)));
+}
+
+#[test]
+fn multiple_followers_do_not_block_subsequent_surrounds() {
+    let mut pack = surround_test_pack();
+    add_surround_target(&mut pack, "mob-1", 1, 1);
+    add_surround_target(&mut pack, "mob-2", 1, 1);
+    add_surround_target(&mut pack, "mob-3", 1, 1);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = KITCHEN_ID.to_string();
+    // Blair is already an allied follower
+    state.set_actor_stance(&pack, ACTOR_B_ID, ActorStance::Allied, true);
+
+    state
+        .combat
+        .actor_skills
+        .entry(ACTOR_A_ID.to_string())
+        .or_default()
+        .insert("charm".to_string());
+    state.set_actor_skill_level(ACTOR_A_ID, "charm", 1);
+
+    let initial_sp = state.actor_skill_sp(ACTOR_A_ID, "charm");
+
+    let output = trace_marker(&mut state, &pack);
+
+    // All 3 mobs convert without any follower cap refusal
+    assert_eq!(state.stance("mob-1"), ActorStance::Allied);
+    assert_eq!(state.stance("mob-2"), ActorStance::Allied);
+    assert_eq!(state.stance("mob-3"), ActorStance::Allied);
+    assert!(!output.lines.iter().any(|l| l.text.contains(REFUSAL)));
+    assert_eq!(state.actor_skill_sp(ACTOR_A_ID, "charm"), initial_sp + 30);
+}

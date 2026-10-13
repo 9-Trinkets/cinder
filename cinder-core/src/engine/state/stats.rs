@@ -116,7 +116,11 @@ impl WorldState {
         let old_level = self.actor_skill_level(actor_id, skill_id);
         let new_level = crate::engine::skills::skill_level_from_sp(new_sp).clamp(1, 10);
         if new_level > old_level {
-            self.set_actor_skill_level(actor_id, skill_id, new_level);
+            self.combat
+                .actor_skill_levels
+                .entry(actor_id.to_string())
+                .or_default()
+                .insert(skill_id.to_string(), new_level);
             true
         } else {
             false
