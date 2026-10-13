@@ -277,7 +277,11 @@ pub(super) fn build_party_order_panels(
     state: &WorldState,
     members: &[PartyMember],
 ) -> BTreeMap<String, Vec<PanelOptionData>> {
-    let directives = content.settings.party.directives();
+    let directives = content
+        .settings
+        .player_party()
+        .map(|party| party.directives())
+        .unwrap_or_default();
     let deploy_targets = build_deploy_targets_for_player(content, state);
     let mut panels = BTreeMap::new();
 
@@ -539,7 +543,7 @@ mod tests {
     #[test]
     fn party_order_panels_mark_the_current_order_and_use_actor_ids() {
         let mut content = minimal_test_pack();
-        content.settings.party.initial_orders = std::collections::BTreeMap::from([
+        content.settings.ensure_player_party().initial_orders = std::collections::BTreeMap::from([
             ("guide-a".to_string(), "follow".to_string()),
             ("guide-b".to_string(), "guard".to_string()),
         ]);
@@ -576,7 +580,8 @@ mod tests {
         let mut content = minimal_test_pack();
         let player_id = content.settings.combat.player_actor_id.clone();
         content.actors.retain(|a| a.id == player_id);
-        content.settings.party.directives = vec!["guard".to_string(), "deploy".to_string()];
+        content.settings.ensure_player_party().directives =
+            vec!["guard".to_string(), "deploy".to_string()];
 
         let mut room_b = content.rooms[0].clone();
         room_b.id = "kitchen".to_string();

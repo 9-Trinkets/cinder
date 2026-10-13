@@ -390,7 +390,12 @@ fn install_skill_behaviors(
             )
             .into());
         }
-        if let Some(rule) = settings.party.combat_rules.first() {
+        if let Some(rule) = settings
+            .parties
+            .iter()
+            .flat_map(|party| &party.combat_rules)
+            .next()
+        {
             return Err(format!(
                 "strict skills require party reaction '{}' to be authored in skills.json",
                 rule.id
@@ -401,9 +406,9 @@ fn install_skill_behaviors(
 
     let mut reactions = Vec::new();
     let mut reaction_ids = settings
-        .party
-        .combat_rules
+        .parties
         .iter()
+        .flat_map(|party| &party.combat_rules)
         .map(|rule| rule.id.clone())
         .collect::<BTreeSet<_>>();
     for (skill_index, skill) in skills.skills.iter().enumerate() {
@@ -449,7 +454,7 @@ fn install_skill_behaviors(
         (*priority, *skill_index, *rule_index)
     });
     settings
-        .party
+        .ensure_player_party()
         .combat_rules
         .extend(reactions.into_iter().map(|(_, _, _, rule)| rule));
     Ok(())
@@ -595,7 +600,12 @@ fn validate_skills(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
             .into());
         }
     }
-    for rule in &pack.settings.party.combat_rules {
+    for rule in pack
+        .settings
+        .parties
+        .iter()
+        .flat_map(|party| &party.combat_rules)
+    {
         if !rule.skill_id.is_empty() && pack.skill(&rule.skill_id).is_none() {
             return Err(format!(
                 "party combat rule '{}' references unknown skill '{}'",
@@ -635,7 +645,12 @@ fn validate_skills(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
             .into());
         }
     }
-    for rule in &pack.settings.party.combat_rules {
+    for rule in pack
+        .settings
+        .parties
+        .iter()
+        .flat_map(|party| &party.combat_rules)
+    {
         if rule.skill_id.is_empty() {
             return Err(format!(
                 "strict skills require party combat rule '{}' to name a skill",

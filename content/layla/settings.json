@@ -102,29 +102,33 @@
       "contribution_percent": 100
     }
   },
-  "party": {
-    "directives": [
-      "guard",
-      "follow",
-      "patrol",
-      "deploy"
-    ],
-    "initial_orders": {
-      "golem-dark-nw": "follow",
-      "golem-dark-sw": "follow",
-      "golem-pale-ne": "follow",
-      "golem-pale-se": "follow",
-      "frost_wolf_raider": "deploy courtyard_center",
-      "iron_ram_mauler": "deploy courtyard_center",
-      "frost_leopard_hunter": "deploy courtyard_center",
-      "lord_vane": "deploy courtyard_center",
-      "warmaster_torin": "deploy courtyard_center",
-      "lady_sylvan": "deploy courtyard_center",
-      "commander_astrid": "guard",
-      "einar": "guard",
-      "orva": "guard"
+  "parties": [
+    {
+      "id": "player",
+      "controller": "player",
+      "directives": [
+        "guard",
+        "follow",
+        "patrol",
+        "deploy"
+      ],
+      "initial_orders": {
+        "golem-dark-nw": "follow",
+        "golem-dark-sw": "follow",
+        "golem-pale-ne": "follow",
+        "golem-pale-se": "follow",
+        "frost_wolf_raider": "deploy courtyard_center",
+        "iron_ram_mauler": "deploy courtyard_center",
+        "frost_leopard_hunter": "deploy courtyard_center",
+        "lord_vane": "deploy courtyard_center",
+        "warmaster_torin": "deploy courtyard_center",
+        "lady_sylvan": "deploy courtyard_center",
+        "commander_astrid": "guard",
+        "einar": "guard",
+        "orva": "guard"
+      }
     }
-  },
+  ],
   "surround_rule": {
     "mode": "resistance",
     "stat": "intelligence"

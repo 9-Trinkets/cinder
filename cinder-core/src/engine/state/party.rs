@@ -1,8 +1,117 @@
 use super::{ActorStance, WorldState, remap_story_actor_id};
-use crate::content::types::{ContentPack, PartyOrderKind};
+use crate::content::types::{ContentPack, PartyController, PartyOrderKind};
 use crate::engine::orders::{OrderKind, parse_order};
+use serde::{Deserialize, Serialize};
+use std::collections::{BTreeMap, BTreeSet};
+
+/// Party id used for the player's command group when a pack authors none.
+pub const PLAYER_PARTY_ID: &str = "player";
+
+/// A runtime command group. The player party's roster is assembled from allies
+/// at runtime; AI parties carry content-authored members.
+#[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
+pub struct Party {
+    pub id: String,
+    pub controller: PartyController,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub leader: Option<String>,
+    #[serde(default)]
+    pub members: BTreeSet<String>,
+}
+
+impl Party {
+    pub fn is_player_controlled(&self) -> bool {
+        self.controller == PartyController::Player
+    }
+}
+
+/// Seeds the party registry from content: authored members for every party,
+/// plus every initially-allied or following actor in the player party.
+pub(crate) fn seeded_parties(content: &ContentPack) -> BTreeMap<String, Party> {
+    let mut parties = BTreeMap::new();
+    for definition in &content.settings.parties {
+        let id = if definition.id.is_empty() {
+            PLAYER_PARTY_ID.to_string()
+        } else {
+            definition.id.clone()
+        };
+        parties.insert(
+            id.clone(),
+            Party {
+                id,
+                controller: definition.controller,
+                leader: definition.leader.clone(),
+                members: definition.members.iter().cloned().collect(),
+            },
+        );
+    }
+    if !parties.values().any(Party::is_player_controlled) {
+        parties.insert(
+            PLAYER_PARTY_ID.to_string(),
+            Party {
+                id: PLAYER_PARTY_ID.to_string(),
+                controller: PartyController::Player,
+                leader: None,
+                members: BTreeSet::new(),
+            },
+        );
+    }
+    let player_actor_id = content.settings.combat.player_actor_id.as_str();
+    for actor in &content.actors {
+        if actor.id == player_actor_id {
+            continue;
+        }
+        let relationship = actor.initial_relationship.unwrap_or_default();
+        if relationship.stance == ActorStance::Allied || relationship.follows_player {
+            for party in parties
+                .values_mut()
+                .filter(|party| party.is_player_controlled())
+            {
+                party.members.insert(actor.id.clone());
+            }
+        }
+    }
+    parties
+}
 
 impl WorldState {
+    /// Returns the party that contains `actor_id`, if any.
+    pub fn party_of_actor(&self, actor_id: &str) -> Option<&Party> {
+        let actor_id = remap_story_actor_id(self, actor_id);
+        self.parties
+            .values()
+            .find(|party| party.members.contains(actor_id))
+    }
+
+    /// Adds or removes an actor from the player party, creating the player
+    /// party on demand so deserialized states self-heal. `is_member` is the
+    /// authoritative allied-or-following signal.
+    pub fn sync_player_party_membership(&mut self, actor_id: &str, is_member: bool) {
+        let actor_id = remap_story_actor_id(self, actor_id).to_string();
+        if is_member && !self.parties.values().any(Party::is_player_controlled) {
+            self.parties.insert(
+                PLAYER_PARTY_ID.to_string(),
+                Party {
+                    id: PLAYER_PARTY_ID.to_string(),
+                    controller: PartyController::Player,
+                    leader: None,
+                    members: BTreeSet::new(),
+                },
+            );
+        }
+        for party in self
+            .parties
+            .values_mut()
+            .filter(|party| party.is_player_controlled())
+        {
+            if is_member {
+                party.members.insert(actor_id.clone());
+            } else {
+                party.members.remove(&actor_id);
+            }
+        }
+    }
+
     pub fn is_party_member(&self, content: &ContentPack, actor_id: &str) -> bool {
         let actor_id = remap_story_actor_id(self, actor_id);
         if content.is_player_actor(actor_id) {
@@ -14,35 +123,24 @@ impl WorldState {
         if self.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id) {
             return false;
         }
-        let rel = self.relationship(actor_id);
-        rel.follows_player || rel.stance == ActorStance::Allied
+        self.parties
+            .values()
+            .any(|party| party.is_player_controlled() && party.members.contains(actor_id))
     }
 
     pub fn party_order(&self, content: &ContentPack, actor_id: &str) -> Option<PartyOrderKind> {
         let actor_id = remap_story_actor_id(self, actor_id);
-        self.relations
-            .party_orders
-            .get(actor_id)
-            .cloned()
-            .or_else(|| content.settings.party.initial_orders.get(actor_id).cloned())
-            .or_else(|| {
-                let template_id = actor_id.split_once('-').map(|(t, _)| t).unwrap_or(actor_id);
-                content
-                    .settings
-                    .party
-                    .initial_orders
-                    .get(template_id)
-                    .cloned()
-            })
-            .or_else(|| {
-                if self.stance(actor_id) == ActorStance::Allied
-                    && !content.is_player_actor(actor_id)
-                {
-                    Some("follow".to_string())
-                } else {
-                    None
-                }
-            })
+        if let Some(order) = self.relations.party_orders.get(actor_id) {
+            return Some(order.clone());
+        }
+        if let Some(order) = authored_party_order(content, actor_id) {
+            return Some(order);
+        }
+        if self.stance(actor_id) == ActorStance::Allied && !content.is_player_actor(actor_id) {
+            Some("follow".to_string())
+        } else {
+            None
+        }
     }
 
     pub fn assign_party_order(
@@ -70,10 +168,9 @@ impl WorldState {
         }
         let order = content
             .settings
-            .party
-            .initial_orders
-            .get(&actor_id)
-            .cloned()
+            .parties
+            .iter()
+            .find_map(|party| party.initial_orders.get(&actor_id).cloned())
             .unwrap_or_else(|| "follow".to_string());
         if !matches!(
             parse_order(&order),
@@ -84,6 +181,24 @@ impl WorldState {
         }
         self.relations.party_orders.insert(actor_id, order);
     }
+}
+
+/// The authored standing order for `actor_id`: exact id first, then the
+/// template prefix before the first `-` (so `elf-pawn-1` matches `elf-pawn`).
+fn authored_party_order(content: &ContentPack, actor_id: &str) -> Option<PartyOrderKind> {
+    let template_id = actor_id
+        .split_once('-')
+        .map(|(template, _)| template)
+        .unwrap_or(actor_id);
+    for party in &content.settings.parties {
+        if let Some(order) = party.initial_orders.get(actor_id) {
+            return Some(order.clone());
+        }
+        if let Some(order) = party.initial_orders.get(template_id) {
+            return Some(order.clone());
+        }
+    }
+    None
 }
 
 fn validate_party_member(
@@ -114,13 +229,17 @@ fn validate_party_member(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::content::types::PartyDefinition;
     use crate::engine::test_fixtures::minimal_test_pack;
     use std::collections::BTreeMap;
 
     fn allied_state() -> (ContentPack, WorldState) {
         let mut content = minimal_test_pack();
-        content.settings.party.initial_orders =
-            BTreeMap::from([("blair".to_string(), "guard".to_string())]);
+        content.settings.parties = vec![PartyDefinition {
+            id: "player".to_string(),
+            initial_orders: BTreeMap::from([("blair".to_string(), "guard".to_string())]),
+            ..PartyDefinition::default()
+        }];
         let mut state = WorldState::new(&content);
         state.set_stance("blair", ActorStance::Allied);
         state.set_follows_player("blair", true);

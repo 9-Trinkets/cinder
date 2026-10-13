@@ -106,10 +106,33 @@ pub struct PartyCombatDecisionRule {
     pub message: String,
 }
 
-/// Content-authored initial directives and ordered combat policy. Empty
-/// defaults keep packs without controllable parties behavior-compatible.
+/// Who controls a party's orders.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "snake_case")]
+pub enum PartyController {
+    /// The player issues orders at runtime (e.g. `order golem guard`).
+    #[default]
+    Player,
+    /// Orders come from authored standing orders; the engine drives moves.
+    Ai,
+}
+
+/// One faction-agnostic command group. Membership is explicit for AI parties;
+/// the player party gathers allies dynamically at runtime. `combat_rules` and
+/// `initial_orders` are content-authored and empty by default.
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
-pub struct PartyPolicyDefinition {
+pub struct PartyDefinition {
+    /// Stable party id (e.g. `"player"`, `"elf-army"`).
+    #[serde(default)]
+    pub id: String,
+    #[serde(default)]
+    pub controller: PartyController,
+    /// Actor this party rallies around; used for leader-relative orders.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub leader: Option<String>,
+    /// Actors authored as fixed members of this party.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub members: Vec<String>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub directives: Vec<String>,
     #[serde(default)]
@@ -124,8 +147,8 @@ fn base_directive(s: &str) -> &str {
         .unwrap_or(s)
 }
 
-impl PartyPolicyDefinition {
-    /// The distinct directive ids this policy references: any author-defined
+impl PartyDefinition {
+    /// The distinct directive ids this party references: any author-defined
     /// `directives`, plus every initial order and every directive named by an
     /// `OrderIs` condition. Used to build `order <member> <directive>` affordances.
     pub fn directives(&self) -> Vec<String> {
@@ -167,7 +190,8 @@ mod tests {
 
     #[test]
     fn party_orders_and_policy_round_trip_through_json() {
-        let policy = PartyPolicyDefinition {
+        let policy = PartyDefinition {
+            id: "player".to_string(),
             directives: Vec::new(),
             initial_orders: BTreeMap::from([("stone-guard".to_string(), "guard".to_string())]),
             combat_rules: vec![PartyCombatDecisionRule {
@@ -189,16 +213,17 @@ mod tests {
                 cooldown: PartyReactionCooldown::ActorCombatInterval,
                 message: "combat.guard_intercepts".to_string(),
             }],
+            ..Default::default()
         };
-        let restored: PartyPolicyDefinition =
+        let restored: PartyDefinition =
             serde_json::from_value(serde_json::to_value(&policy).unwrap()).unwrap();
         assert_eq!(restored, policy);
     }
 
     #[test]
     fn empty_party_policy_is_backward_compatible() {
-        let policy: PartyPolicyDefinition = serde_json::from_str("{}").unwrap();
-        assert_eq!(policy, PartyPolicyDefinition::default());
+        let policy: PartyDefinition = serde_json::from_str("{}").unwrap();
+        assert_eq!(policy, PartyDefinition::default());
         assert_eq!(
             PartyDecisionTier::EVALUATION_ORDER,
             [PartyDecisionTier::Survival, PartyDecisionTier::Order]
@@ -207,7 +232,7 @@ mod tests {
 
     #[test]
     fn directives_union_initial_orders_and_condition_orders() {
-        let policy = PartyPolicyDefinition {
+        let policy = PartyDefinition {
             directives: vec!["guard".to_string(), "follow".to_string()],
             initial_orders: BTreeMap::from([
                 ("a".to_string(), "assist".to_string()),
@@ -233,6 +258,7 @@ mod tests {
                 cooldown: PartyReactionCooldown::ActorCombatInterval,
                 message: "combat.counter".to_string(),
             }],
+            ..Default::default()
         };
         assert_eq!(
             policy.directives(),

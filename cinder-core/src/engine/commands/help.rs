@@ -15,8 +15,12 @@ pub(crate) fn player_command_suggestions(content: &ContentPack) -> String {
 fn player_command_help_lines(content: &ContentPack) -> Vec<String> {
     let mut groups: BTreeMap<String, Vec<String>> = BTreeMap::new();
 
-    if !content.settings.party.initial_orders.is_empty() {
-        let directives = content.settings.party.directives();
+    if let Some(party) = content
+        .settings
+        .player_party()
+        .filter(|party| !party.initial_orders.is_empty())
+    {
+        let directives = party.directives();
         let usage = if directives.is_empty() {
             "<directive>".to_string()
         } else {

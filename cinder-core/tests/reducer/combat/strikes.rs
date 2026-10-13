@@ -2,7 +2,7 @@ use super::super::common::*;
 use super::transcript;
 use cinder_core::content::types::{
     CombatSettingsDefinition, PackMessage, PartyCandidatePriority, PartyCombatDecisionRule,
-    PartyDecisionCondition, PartyDecisionTier, PartyPolicyDefinition, PartyReactionAction,
+    PartyDecisionCondition, PartyDecisionTier, PartyDefinition, PartyReactionAction,
     PartyReactionCooldown, PartyReactionWindow, PartyTargetSelection, StatDefinition,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
@@ -253,8 +253,8 @@ fn hostile_strike_against_guard_takes_at_least_minimum_damage() {
     salamander.initial_stats = BTreeMap::from([("confidence".to_string(), 3)]);
     salamander.attack_kind = "fire".to_string();
     pack.actors.push(salamander);
-    pack.settings.party = PartyPolicyDefinition {
-        directives: Vec::new(),
+    pack.settings.parties = vec![PartyDefinition {
+        id: "player".to_string(),
         initial_orders: BTreeMap::from([("bodyguard".to_string(), "guard".to_string())]),
         combat_rules: vec![PartyCombatDecisionRule {
             id: "defender-intercepts".to_string(),
@@ -271,7 +271,8 @@ fn hostile_strike_against_guard_takes_at_least_minimum_damage() {
             cooldown: PartyReactionCooldown::FixedMinutes { minutes: 5 },
             message: "combat.guard_intercepts".to_string(),
         }],
-    };
+        ..PartyDefinition::default()
+    }];
     // The guard soaks the entire blow against its own defense: defense 3 would
     // theoretically zero it out, but the minimum-damage floor still applies.
     let mut guard = test_actor("bodyguard", "golem bodyguard", LOUNGE_ID);

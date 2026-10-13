@@ -24,11 +24,16 @@ pub(crate) fn select_defensive_reaction(
     state: &WorldState,
 ) -> Option<PartyReactionDecision> {
     for tier in PartyDecisionTier::EVALUATION_ORDER {
-        for rule in content.settings.party.combat_rules.iter().filter(|rule| {
-            rule.tier == tier
-                && rule.window == PartyReactionWindow::BeforeHostileDamage
-                && rule.action == PartyReactionAction::Intercept
-        }) {
+        for rule in content
+            .settings
+            .player_party_combat_rules()
+            .iter()
+            .filter(|rule| {
+                rule.tier == tier
+                    && rule.window == PartyReactionWindow::BeforeHostileDamage
+                    && rule.action == PartyReactionAction::Intercept
+            })
+        {
             let mut candidates = state
                 .onstage_actors(content)
                 .enumerate()
@@ -88,20 +93,24 @@ pub(crate) fn select_post_damage_reactions(
             PartyDecisionTier::EVALUATION_ORDER
                 .into_iter()
                 .find_map(|tier| {
-                    content.settings.party.combat_rules.iter().find(|rule| {
-                        rule.tier == tier
-                            && rule.window == PartyReactionWindow::AfterHostileDamage
-                            && matches!(
-                                rule.action,
-                                PartyReactionAction::Counterattack
-                                    | PartyReactionAction::Support
-                                    | PartyReactionAction::Hold
-                            )
-                            && rule.conditions.iter().all(|condition| {
-                                condition_matches(content, state, &actor.id, room_id, condition)
-                            })
-                            && actor_may_use_reaction(state, &actor.id, &rule.skill_id)
-                    })
+                    content
+                        .settings
+                        .player_party_combat_rules()
+                        .iter()
+                        .find(|rule| {
+                            rule.tier == tier
+                                && rule.window == PartyReactionWindow::AfterHostileDamage
+                                && matches!(
+                                    rule.action,
+                                    PartyReactionAction::Counterattack
+                                        | PartyReactionAction::Support
+                                        | PartyReactionAction::Hold
+                                )
+                                && rule.conditions.iter().all(|condition| {
+                                    condition_matches(content, state, &actor.id, room_id, condition)
+                                })
+                                && actor_may_use_reaction(state, &actor.id, &rule.skill_id)
+                        })
                 })
                 .map(|rule| PartyReactionDecision {
                     actor_id: actor.id.clone(),
@@ -322,9 +331,7 @@ fn compare_candidates(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::content::types::{
-        PartyCombatDecisionRule, PartyPolicyDefinition, PartyTargetSelection,
-    };
+    use crate::content::types::{PartyCombatDecisionRule, PartyDefinition, PartyTargetSelection};
     use crate::engine::test_fixtures::{minimal_test_pack, rebuild_test_pack_indexes};
 
     fn defensive_pack() -> ContentPack {
@@ -332,13 +339,8 @@ mod tests {
         content.settings.combat.player_actor_id = "blair".to_string();
         content.settings.combat.health_stat_id = "stamina".to_string();
         content.settings.combat.defense_stat_id = "confidence".to_string();
-        let mut drew = content.actor("casey").unwrap().clone();
-        drew.id = "drew".to_string();
-        drew.name = "Drew".to_string();
-        drew.room_id = "lounge".to_string();
-        content.actors.push(drew);
-        content.settings.party = PartyPolicyDefinition {
-            directives: Vec::new(),
+        content.settings.parties = vec![PartyDefinition {
+            id: "player".to_string(),
             initial_orders: std::collections::BTreeMap::from([
                 ("casey".to_string(), "guard".to_string()),
                 ("drew".to_string(), "guard".to_string()),
@@ -361,7 +363,13 @@ mod tests {
                 cooldown: PartyReactionCooldown::ActorCombatInterval,
                 message: "combat.guard".to_string(),
             }],
-        };
+            ..PartyDefinition::default()
+        }];
+        let mut drew = content.actor("casey").unwrap().clone();
+        drew.id = "drew".to_string();
+        drew.name = "Drew".to_string();
+        drew.room_id = "lounge".to_string();
+        content.actors.push(drew);
         rebuild_test_pack_indexes(&mut content);
         content
     }

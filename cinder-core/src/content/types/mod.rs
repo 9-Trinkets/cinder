@@ -25,8 +25,8 @@ pub use sequences::{ScriptedLine, ScriptedSequence, ScriptedSequenceGate, Sequen
 
 mod party_defs;
 pub use party_defs::{
-    PartyCandidatePriority, PartyCombatDecisionRule, PartyDecisionCondition, PartyDecisionTier,
-    PartyOrderKind, PartyPolicyDefinition, PartyReactionAction, PartyReactionCooldown,
+    PartyCandidatePriority, PartyCombatDecisionRule, PartyController, PartyDecisionCondition,
+    PartyDecisionTier, PartyDefinition, PartyOrderKind, PartyReactionAction, PartyReactionCooldown,
     PartyReactionWindow, PartySupportEffect, PartyTargetSelection,
 };
 

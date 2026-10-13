@@ -1005,25 +1005,18 @@ fn layla_shipped_pack_invariants_and_wiring() {
         pack.message_voice("combat.attack_hit"),
         cinder_core::content::types::PackMessageVoice::Narration
     );
+    let player_party = pack.settings.player_party().expect("player party authored");
     assert_eq!(
-        pack.settings
-            .party
-            .initial_orders
-            .get("golem-dark-nw")
-            .cloned(),
+        player_party.initial_orders.get("golem-dark-nw").cloned(),
         Some("follow".to_string())
     );
     assert_eq!(
-        pack.settings
-            .party
-            .initial_orders
-            .get("golem-pale-ne")
-            .cloned(),
+        player_party.initial_orders.get("golem-pale-ne").cloned(),
         Some("follow".to_string())
     );
-    assert_eq!(pack.settings.party.combat_rules.len(), 5);
+    assert_eq!(player_party.combat_rules.len(), 5);
     assert_eq!(
-        pack.settings.party.combat_rules[0].tier,
+        player_party.combat_rules[0].tier,
         cinder_core::content::types::PartyDecisionTier::Survival
     );
     assert_eq!(
@@ -1144,8 +1137,7 @@ fn layla_skill_behaviors_compile_into_generic_runtime_indexes() {
 
     let rules = pack
         .settings
-        .party
-        .combat_rules
+        .player_party_combat_rules()
         .iter()
         .map(|rule| (rule.id.as_str(), rule.skill_id.as_str()))
         .collect::<Vec<_>>();
@@ -1248,8 +1240,7 @@ fn party_rules_bind_explicitly_to_the_expected_skills() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let bindings = pack
         .settings
-        .party
-        .combat_rules
+        .player_party_combat_rules()
         .iter()
         .map(|rule| (rule.id.as_str(), rule.skill_id.as_str()))
         .collect::<BTreeMap<_, _>>();

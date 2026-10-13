@@ -3,7 +3,8 @@ use std::collections::BTreeSet;
 
 use super::{
     ActorTickScope, AutonomousHostilityMode, CombatSettingsDefinition, MessagingChannel,
-    PartyPolicyDefinition, PeriodicActorEffectDefinition, ThemeDefinition,
+    PartyCombatDecisionRule, PartyController, PartyDefinition, PeriodicActorEffectDefinition,
+    ThemeDefinition,
 };
 
 /// How the "actor surrounded" conversion hook decides whether an encircled
@@ -155,9 +156,10 @@ pub struct ContentSettingsDefinition {
     /// Binds the generic strike mechanism to this pack's stat vocabulary.
     #[serde(default)]
     pub combat: CombatSettingsDefinition,
-    /// Typed actor roles and ordered autonomous party combat rules.
+    /// Faction-agnostic parties: the player's command group plus any
+    /// AI-controlled groups. At most one party may use the player controller.
     #[serde(default)]
-    pub party: PartyPolicyDefinition,
+    pub parties: Vec<PartyDefinition>,
     /// Whether encircling an actor converts it at all, and under what numeric
     /// gate (see [`SurroundRule`]). Refused conversions narrate the pack's
     /// `surround.refused` message.
@@ -221,10 +223,45 @@ impl Default for ContentSettingsDefinition {
             channels: Vec::new(),
             feedback_channel_id: String::default(),
             combat: CombatSettingsDefinition::default(),
-            party: PartyPolicyDefinition::default(),
+            parties: Vec::new(),
             surround_rule: SurroundRule::None,
             equipment_slots: BTreeSet::new(),
             theme: ThemeDefinition::default(),
         }
+    }
+}
+
+impl ContentSettingsDefinition {
+    /// The party the player controls, if authored.
+    pub fn player_party(&self) -> Option<&PartyDefinition> {
+        self.parties
+            .iter()
+            .find(|party| party.controller == PartyController::Player)
+    }
+
+    /// Ordered combat rules authored on the player party (empty if none).
+    pub fn player_party_combat_rules(&self) -> &[PartyCombatDecisionRule] {
+        self.player_party()
+            .map_or(&[], |party| party.combat_rules.as_slice())
+    }
+
+    /// The party the player controls, creating a bare `"player"` party if the
+    /// pack authored none. Loader-authored party reactions attach here.
+    pub fn ensure_player_party(&mut self) -> &mut PartyDefinition {
+        if self
+            .parties
+            .iter()
+            .all(|party| party.controller != PartyController::Player)
+        {
+            self.parties.push(PartyDefinition {
+                id: "player".to_string(),
+                controller: PartyController::Player,
+                ..PartyDefinition::default()
+            });
+        }
+        self.parties
+            .iter_mut()
+            .find(|party| party.controller == PartyController::Player)
+            .expect("player party exists after insertion")
     }
 }

@@ -23,8 +23,11 @@ mod spawn;
 mod stats;
 mod tracking;
 
+use party::seeded_parties;
+
 pub use clock::Clock;
 pub use inventory::Inventory;
+pub use party::Party;
 pub use relationships::RelationshipGraph;
 pub use sequences::ScriptedSequencePlayhead;
 pub use spawn::{SpawnActorConfig, SpawnActorOutcome, SpawnedActorInfo};
@@ -89,6 +92,10 @@ pub struct WorldState {
     pub feature_consumable_stock: BTreeMap<String, u32>,
     #[serde(flatten)]
     pub relations: RelationshipGraph,
+    /// Faction-agnostic command groups keyed by party id. The player party
+    /// gathers allies dynamically; AI parties carry authored members.
+    #[serde(default)]
+    pub parties: BTreeMap<String, Party>,
     pub active_menu_id: Option<String>,
     #[serde(default)]
     pub pending_menu_selections: Vec<String>,
@@ -335,6 +342,7 @@ impl WorldState {
                 followed_actor_id: None,
                 party_reaction_ready_at: BTreeMap::new(),
             },
+            parties: seeded_parties(content),
             active_menu_id: None,
             pending_menu_selections: Vec::new(),
             generated_menu_options: HashMap::new(),

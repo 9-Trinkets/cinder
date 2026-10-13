@@ -1,7 +1,7 @@
 use super::common::*;
 use cinder_core::content::types::{
     ActorSkillAssignment, ContentPack, PackMessage, PartyCandidatePriority,
-    PartyCombatDecisionRule, PartyDecisionCondition, PartyDecisionTier, PartyPolicyDefinition,
+    PartyCombatDecisionRule, PartyDecisionCondition, PartyDecisionTier, PartyDefinition,
     PartyReactionAction, PartyReactionCooldown, PartyReactionWindow, PartyTargetSelection,
     SkillDefinition,
 };
@@ -10,6 +10,18 @@ use cinder_core::engine::reducer::apply_events;
 use cinder_core::engine::state::{ActorStance, WorldState};
 use std::collections::BTreeMap;
 
+fn player_party(
+    initial_orders: BTreeMap<String, String>,
+    combat_rules: Vec<PartyCombatDecisionRule>,
+) -> PartyDefinition {
+    PartyDefinition {
+        id: "player".to_string(),
+        initial_orders,
+        combat_rules,
+        ..PartyDefinition::default()
+    }
+}
+
 #[test]
 fn guard_order_makes_defender_the_direct_target_without_spending_reaction_cooldown() {
     let mut pack = reducer_test_pack();
@@ -17,10 +29,9 @@ fn guard_order_makes_defender_the_direct_target_without_spending_reaction_cooldo
     pack.settings.combat.health_stat_id = "stamina".to_string();
     pack.settings.combat.attack_stat_id = "confidence".to_string();
     pack.settings.combat.defense_stat_id = "hunger".to_string();
-    pack.settings.party = PartyPolicyDefinition {
-        directives: Vec::new(),
-        initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), "guard".to_string())]),
-        combat_rules: vec![PartyCombatDecisionRule {
+    pack.settings.parties = vec![player_party(
+        BTreeMap::from([(ACTOR_B_ID.to_string(), "guard".to_string())]),
+        vec![PartyCombatDecisionRule {
             id: "defender-intercepts".to_string(),
             skill_id: String::new(),
             tier: PartyDecisionTier::Order,
@@ -35,7 +46,7 @@ fn guard_order_makes_defender_the_direct_target_without_spending_reaction_cooldo
             cooldown: PartyReactionCooldown::FixedMinutes { minutes: 5 },
             message: "combat.guard_intercepts".to_string(),
         }],
-    };
+    )];
     pack.messages.insert(
         "combat.guard_intercepts".to_string(),
         PackMessage::Narration("{guard} blocks {actor} and takes {damage} damage.".to_string()),
@@ -75,10 +86,9 @@ fn direct_guard_targeting_does_not_depend_on_reaction_readiness() {
     pack.settings.combat.health_stat_id = "stamina".to_string();
     pack.settings.combat.attack_stat_id = "confidence".to_string();
     pack.settings.combat.defense_stat_id = "hunger".to_string();
-    pack.settings.party = PartyPolicyDefinition {
-        directives: Vec::new(),
-        initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), "guard".to_string())]),
-        combat_rules: vec![PartyCombatDecisionRule {
+    pack.settings.parties = vec![player_party(
+        BTreeMap::from([(ACTOR_B_ID.to_string(), "guard".to_string())]),
+        vec![PartyCombatDecisionRule {
             id: "defender-intercepts".to_string(),
             skill_id: String::new(),
             tier: PartyDecisionTier::Order,
@@ -93,7 +103,7 @@ fn direct_guard_targeting_does_not_depend_on_reaction_readiness() {
             cooldown: PartyReactionCooldown::ActorCombatInterval,
             message: String::new(),
         }],
-    };
+    )];
     let mut state = WorldState::new(&pack);
     state
         .actors
@@ -127,10 +137,9 @@ fn follower_intercepts_strike_when_player_health_is_low() {
     pack.settings.combat.health_stat_id = "stamina".to_string();
     pack.settings.combat.attack_stat_id = "confidence".to_string();
     pack.settings.combat.defense_stat_id = "hunger".to_string();
-    pack.settings.party = PartyPolicyDefinition {
-        directives: Vec::new(),
-        initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), "follow".to_string())]),
-        combat_rules: vec![
+    pack.settings.parties = vec![player_party(
+        BTreeMap::from([(ACTOR_B_ID.to_string(), "follow".to_string())]),
+        vec![
             PartyCombatDecisionRule {
                 id: "guard-order".to_string(),
                 skill_id: String::new(),
@@ -165,7 +174,7 @@ fn follower_intercepts_strike_when_player_health_is_low() {
                 message: "combat.guard_intercepts".to_string(),
             },
         ],
-    };
+    )];
     pack.messages.insert(
         "combat.guard_intercepts".to_string(),
         PackMessage::Narration(
@@ -233,9 +242,9 @@ fn follower_intercepts_strike_when_player_health_is_low() {
 }
 
 /// Builds the same follow-protect-player policy the Layla pack ships.
-fn intercept_policy() -> cinder_core::content::types::PartyPolicyDefinition {
-    PartyPolicyDefinition {
-        directives: Vec::new(),
+fn intercept_policy() -> PartyDefinition {
+    PartyDefinition {
+        id: "player".to_string(),
         initial_orders: BTreeMap::from([(ACTOR_B_ID.to_string(), "follow".to_string())]),
         combat_rules: vec![PartyCombatDecisionRule {
             id: "follow-protect-player".to_string(),
@@ -255,6 +264,7 @@ fn intercept_policy() -> cinder_core::content::types::PartyPolicyDefinition {
             cooldown: PartyReactionCooldown::ActorCombatInterval,
             message: "combat.guard_intercepts".to_string(),
         }],
+        ..PartyDefinition::default()
     }
 }
 
@@ -290,7 +300,7 @@ fn a_follower_without_the_intercept_skill_does_not_intercept() {
     pack.settings.combat.health_stat_id = "stamina".to_string();
     pack.settings.combat.attack_stat_id = "confidence".to_string();
     pack.settings.combat.defense_stat_id = "hunger".to_string();
-    pack.settings.party = intercept_policy();
+    pack.settings.parties = vec![intercept_policy()];
     pack.messages.insert(
         "combat.guard_intercepts".to_string(),
         PackMessage::Narration("{guard} takes {damage}.".to_string()),
@@ -338,7 +348,7 @@ fn the_same_follower_intercepts_once_it_learns_the_skill() {
     pack.settings.combat.health_stat_id = "stamina".to_string();
     pack.settings.combat.attack_stat_id = "confidence".to_string();
     pack.settings.combat.defense_stat_id = "hunger".to_string();
-    pack.settings.party = intercept_policy();
+    pack.settings.parties = vec![intercept_policy()];
     pack.messages.insert(
         "combat.guard_intercepts".to_string(),
         PackMessage::Narration("{guard} takes {damage}.".to_string()),

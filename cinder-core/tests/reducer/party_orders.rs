@@ -1,5 +1,5 @@
 use super::common::*;
-use cinder_core::content::types::{PackMessage, PackMessageVoice};
+use cinder_core::content::types::{PackMessage, PackMessageVoice, PartyDefinition};
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
 use cinder_core::engine::narrative::NarrativeLineKind;
 use cinder_core::engine::reducer::apply_events;
@@ -8,10 +8,14 @@ use std::collections::BTreeMap;
 
 fn party_order_pack() -> cinder_core::content::types::ContentPack {
     let mut pack = reducer_test_pack();
-    pack.settings.party.initial_orders = BTreeMap::from([
-        (ACTOR_A_ID.to_string(), "guard".to_string()),
-        (ACTOR_B_ID.to_string(), "follow".to_string()),
-    ]);
+    pack.settings.parties = vec![PartyDefinition {
+        id: "player".to_string(),
+        initial_orders: BTreeMap::from([
+            (ACTOR_A_ID.to_string(), "guard".to_string()),
+            (ACTOR_B_ID.to_string(), "follow".to_string()),
+        ]),
+        ..PartyDefinition::default()
+    }];
     pack.messages.insert(
         "party.order_guard_assigned".to_string(),
         PackMessage::Voiced {

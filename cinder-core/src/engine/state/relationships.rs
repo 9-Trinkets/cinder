@@ -57,6 +57,8 @@ impl WorldState {
         if relationship.stance != ActorStance::Hostile {
             self.combat.next_hostile_strike_at.remove(actor_id.as_str());
         }
+        let is_member = relationship.stance == ActorStance::Allied || relationship.follows_player;
+        self.sync_player_party_membership(&actor_id, is_member);
     }
 
     pub fn set_stance(&mut self, actor_id: &str, stance: ActorStance) {

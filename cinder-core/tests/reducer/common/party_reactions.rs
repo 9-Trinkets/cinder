@@ -1,7 +1,7 @@
 use super::*;
 use cinder_core::content::types::{
     ContentPack, PackMessage, PartyCombatDecisionRule, PartyDecisionCondition, PartyDecisionTier,
-    PartyOrderKind, PartyPolicyDefinition, PartyReactionAction, PartyReactionCooldown,
+    PartyDefinition, PartyOrderKind, PartyReactionAction, PartyReactionCooldown,
     PartyReactionWindow, PartyTargetSelection,
 };
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
@@ -53,11 +53,12 @@ pub fn reaction_pack(
     pack.settings.combat.attack_stat_id = "confidence".to_string();
     pack.settings.combat.defense_stat_id = "hunger".to_string();
     pack.settings.combat.minimum_damage = 1;
-    pack.settings.party = PartyPolicyDefinition {
-        directives: Vec::new(),
+    pack.settings.parties = vec![PartyDefinition {
+        id: "player".to_string(),
         initial_orders,
         combat_rules: rules,
-    };
+        ..PartyDefinition::default()
+    }];
     pack.messages.insert(
         "combat.party_counterattack".to_string(),
         PackMessage::Narration(
