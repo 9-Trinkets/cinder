@@ -2123,3 +2123,130 @@ fn caged_actors_cannot_be_charmed_or_follow_player_before_unlocking_cages() {
     assert!(!s_unlocked.actor_is_imprisoned(&pack, "commander_astrid"));
     assert!(!s_unlocked.actor_is_imprisoned(&pack, "nivi_olsen"));
 }
+
+#[test]
+fn teleporting_to_floor5_resolves_way_down_quest_if_bypassed() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "teleport_platform".to_string();
+    state.active_objective_stage_ids = vec![
+        "mq_hear_gate".to_string(),
+        "sq_listen_courtyard_cages".to_string(),
+    ];
+    state.story_vars.set_unchecked("knows_teleport", "true");
+    state
+        .story_vars
+        .set_unchecked("anchor_floor4_platform", "true");
+    state.story_vars.set_unchecked("anchor_floor5_gate", "true");
+    state.acquire_player_item(&pack, "magic-chalk");
+    state
+        .combat
+        .actor_stats
+        .entry("player".to_string())
+        .or_default()
+        .insert("mp".to_string(), 20);
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+
+    let pre_objs = runtime.current_objective_summaries().unwrap();
+    assert!(
+        pre_objs
+            .iter()
+            .any(|o| o.quest_id.as_deref() == Some("the_way_down")),
+        "The Way Down should be active before teleporting: {:?}",
+        pre_objs
+    );
+
+    runtime
+        .run_turn("teleport floor 5")
+        .expect("teleport floor 5 succeeds");
+
+    assert_eq!(runtime.current_room_id().unwrap(), "courtyard_center");
+    let after_objs = runtime.current_objective_summaries().unwrap();
+
+    assert!(
+        !after_objs
+            .iter()
+            .any(|o| o.quest_id.as_deref() == Some("the_way_down")),
+        "The Way Down must be resolved upon arriving on Floor 5: {:?}",
+        after_objs
+    );
+    assert!(
+        after_objs
+            .iter()
+            .any(|o| o.quest_id.as_deref() == Some("free_courtyard_prisoners")),
+        "Floor 5 main quest must be active: {:?}",
+        after_objs
+    );
+
+    let quests = runtime.quest_summaries().unwrap();
+    let way_down = quests
+        .iter()
+        .find(|q| q.quest_id == "the_way_down")
+        .expect("the_way_down in quests");
+    assert_eq!(way_down.status, "completed");
+}
+
+#[test]
+fn existing_state_on_floor5_resolves_way_down_quest_on_first_turn() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_center".to_string();
+    state.active_objective_stage_ids = vec![
+        "mq_hear_gate".to_string(),
+        "sq_listen_courtyard_cages".to_string(),
+    ];
+    state.story_vars.set_unchecked("knows_teleport", "true");
+    state
+        .story_vars
+        .set_unchecked("anchor_floor4_platform", "true");
+    state.story_vars.set_unchecked("anchor_floor5_gate", "true");
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+
+    runtime.run_turn("look").expect("turn runs");
+
+    let after_objs = runtime.current_objective_summaries().unwrap();
+    assert!(
+        !after_objs
+            .iter()
+            .any(|o| o.quest_id.as_deref() == Some("the_way_down")),
+        "The Way Down must be resolved on Floor 5: {:?}",
+        after_objs
+    );
+    assert!(
+        after_objs
+            .iter()
+            .any(|o| o.quest_id.as_deref() == Some("free_courtyard_prisoners")),
+        "Floor 5 main quest must be active: {:?}",
+        after_objs
+    );
+}
+
+#[test]
+fn turning_valve_advances_way_down_to_teleport_scroll() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "village_west_1".to_string();
+    state.active_objective_stage_ids = vec!["mq_hear_gate".to_string()];
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+
+    runtime.run_turn("turn valve").expect("turn valve succeeds");
+
+    let after_objs = runtime.current_objective_summaries().unwrap();
+    assert!(
+        !after_objs
+            .iter()
+            .any(|o| o.quest_id.as_deref() == Some("the_way_down")),
+        "The Way Down must advance after turning the valve: {:?}",
+        after_objs
+    );
+    assert!(
+        after_objs
+            .iter()
+            .any(|o| o.quest_id.as_deref() == Some("teleport_scroll")),
+        "The Teleportation Scroll must now be active: {:?}",
+        after_objs
+    );
+}

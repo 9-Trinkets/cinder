@@ -269,7 +269,10 @@
         "id": "layla.valve_turned",
         "event_text": "You grab the heavy iron wheel and pull with all your strength. The valve screeches open with a blast of steam. White vapor roars out of the wash flue and climbs to the cavern roof. Down the line toward the fortress, hydraulic lock-pins clunk free and the heavy brass bulkhead unlocks.",
         "hook_id": "valve.diverted",
-        "signals": []
+        "signals": [
+          "fortress_gate_opened",
+          "valve_diverted"
+        ]
       },
       "available": {
         "allowed_rooms": [

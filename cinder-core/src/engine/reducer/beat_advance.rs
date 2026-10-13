@@ -539,6 +539,18 @@ pub(super) fn evaluate_advance_condition(
             .and_then(|v| v.as_array())
             .map(|arr| arr.contains(&cond.value))
             .unwrap_or(false),
+        "starts_with" => match (actual.and_then(|v| v.as_str()), cond.value.as_str()) {
+            (Some(s), Some(p)) => s.starts_with(p),
+            _ => false,
+        },
+        "ends_with" => match (actual.and_then(|v| v.as_str()), cond.value.as_str()) {
+            (Some(s), Some(p)) => s.ends_with(p),
+            _ => false,
+        },
+        "contains" => match (actual.and_then(|v| v.as_str()), cond.value.as_str()) {
+            (Some(s), Some(p)) => s.contains(p),
+            _ => false,
+        },
         _ => false,
     }
 }
@@ -641,6 +653,42 @@ mod tests {
         };
 
         assert!(!evaluate_advance_condition(&input, &condition));
+    }
+
+    #[test]
+    fn advance_condition_string_operators() {
+        let input = serde_json::json!({
+            "current_room_id": "courtyard_center",
+            "tag": "prefix-middle-suffix"
+        });
+
+        let cond_starts = AdvanceCondition {
+            path: "current_room_id".to_string(),
+            operator: "starts_with".to_string(),
+            value: serde_json::json!("courtyard_"),
+        };
+        assert!(evaluate_advance_condition(&input, &cond_starts));
+
+        let cond_ends = AdvanceCondition {
+            path: "tag".to_string(),
+            operator: "ends_with".to_string(),
+            value: serde_json::json!("suffix"),
+        };
+        assert!(evaluate_advance_condition(&input, &cond_ends));
+
+        let cond_contains = AdvanceCondition {
+            path: "tag".to_string(),
+            operator: "contains".to_string(),
+            value: serde_json::json!("middle"),
+        };
+        assert!(evaluate_advance_condition(&input, &cond_contains));
+
+        let cond_fails = AdvanceCondition {
+            path: "current_room_id".to_string(),
+            operator: "starts_with".to_string(),
+            value: serde_json::json!("village_"),
+        };
+        assert!(!evaluate_advance_condition(&input, &cond_fails));
     }
 
     #[test]

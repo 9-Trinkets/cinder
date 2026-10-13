@@ -19,7 +19,90 @@
         "spoken_to:garrison_sentry_gate",
         "spoken_to:garrison_guard",
         "speech_topic:teleport_scroll",
-        "speech_topic:next_floor"
+        "speech_topic:next_floor",
+        "fortress_gate_opened",
+        "valve_diverted",
+        "room_entered:fortress_gate",
+        "room_entered:fortress_inner_hall",
+        "room_entered:fortress_bastion",
+        "room_entered:teleport_platform",
+        "item_acquired:teleport-scroll",
+        "knows_teleport",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.fortress_gate_open",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.knows_teleport",
+              "operator": "equal",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "signal": "room_entered:courtyard_center",
+          "next_stage_ids": []
+        },
+        {
+          "signal": "room_entered:floor5_start",
+          "next_stage_ids": []
+        },
+        {
+          "signal": "descend_floor_5",
+          "next_stage_ids": []
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "current_room_id",
+              "operator": "starts_with",
+              "value": "courtyard_"
+            }
+          ],
+          "next_stage_ids": []
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ],
+          "next_stage_ids": []
+        },
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ],
+          "next_stage_ids": []
+        }
       ],
       "next_stage_ids": [
         "mq_find_scroll"
@@ -45,6 +128,61 @@
               "value": "true"
             }
           ]
+        },
+        {
+          "signal": "room_entered:courtyard_center",
+          "next_stage_ids": []
+        },
+        {
+          "signal": "room_entered:floor5_start",
+          "next_stage_ids": []
+        },
+        {
+          "signal": "descend_floor_5",
+          "next_stage_ids": []
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "current_room_id",
+              "operator": "starts_with",
+              "value": "courtyard_"
+            }
+          ],
+          "next_stage_ids": []
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ],
+          "next_stage_ids": []
+        },
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ],
+          "next_stage_ids": []
         }
       ],
       "next_stage_ids": [
@@ -63,7 +201,47 @@
       "advance_signals": [
         "room_entered:courtyard_center",
         "room_entered:floor5_start",
-        "descend_floor_5"
+        "descend_floor_5",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "current_room_id",
+              "operator": "starts_with",
+              "value": "courtyard_"
+            }
+          ]
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ]
+        },
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ]
+        }
       ],
       "next_stage_ids": [
         "mq_free_prisoners"
@@ -76,7 +254,47 @@
       "advance_signals": [
         "room_entered:courtyard_center",
         "room_entered:floor5_start",
-        "descend_floor_5"
+        "descend_floor_5",
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "current_room_id",
+              "operator": "starts_with",
+              "value": "courtyard_"
+            }
+          ]
+        },
+        {
+          "signal": "command_used",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ]
+        },
+        {
+          "signal": "story_vars_changed",
+          "conditions": [
+            {
+              "path": "story_vars.values.anchor_floor5_gate",
+              "operator": "equal",
+              "value": "true"
+            },
+            {
+              "path": "current_room_id",
+              "operator": "not_equal",
+              "value": "teleport_platform"
+            }
+          ]
+        }
       ],
       "next_stage_ids": [
         "mq_free_prisoners"
