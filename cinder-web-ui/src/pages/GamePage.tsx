@@ -523,7 +523,6 @@ export default function GamePage() {
             <FolioPanel
               uiSnapshot={uiSnapshot}
               onTakeItem={itemId => void execCommand(`take ${itemId}`)}
-              onUseItem={itemId => void execCommand(`use ${itemId}`)}
               onOpenPanel={setQuickPanel}
             />
           </aside>
@@ -554,7 +553,6 @@ export default function GamePage() {
           <FolioPanel
             uiSnapshot={uiSnapshot}
             onTakeItem={itemId => void execCommand(`take ${itemId}`)}
-            onUseItem={itemId => void execCommand(`use ${itemId}`)}
             onOpenPanel={panel => { setShowFolio(false); setQuickPanel(panel) }}
           />
         </Modal>
