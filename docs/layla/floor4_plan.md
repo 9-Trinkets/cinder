@@ -81,7 +81,7 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 |---|---|---|---|---|
 | **Elder Rashid** | `elder_rashid` | Village Elder | `village_south_1` | Exhausted, burdened by grief and guilt. Quiet, regretful sentences. Desperate to undo his betrayal of Zayd. |
 | **Yasmin** | `yasmin` | Town Baker | `village_east_2` | Passionate, outspoken, furious at the elders. Baked for Zayd every morning; demands someone save him. |
-| **Tariq** | `tariq` | Clockmaker & Tinkerer | `village_west_2` | Clever, watchful, the village's sceptic. The wires of the collapse lie are easiest to trip around him. Doubts the "steam drill collapse" story — the doorway to the truth. |
+| **Tariq** | `tariq` | Clockmaker & Tinkerer | `village_west_2` | Clever, watchful village engineer. Knows steam line pressure, valves, and machinery. Skeptical of official stories about mining equipment failures, but keeps his head down to survive. Guides Layla to the wash basin overpressure valve. |
 | **Zayd** | `zayd` | Boy (age 11) | `steam_prison_cage` (to be placed) | Scrappy, soot-stained, defiant. Even caged, he glares at the guards and clutches his parents' lantern. Still talks to the guardian golem. |
 | **Commander Malik** | `captain_malik` | Garrison Captain | `command_bastion` | Cold, proud, precise. Brass officer armor. Views miners as replaceable labor; follows the priests' orders without questions. |
 | **Priest Harun** | `priest_harun` | Temple Emissary | `command_bastion` | Eerie, soft-spoken, from the upper floors. Smooth talk about "sacred duty" while he waits to take Zayd away. On defeat he narrates the truth of the offering (hook `priest_harun.defeat`). |
@@ -137,7 +137,7 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
 ### Secret Quest: "Return the Light" (Freeing Zayd's Parents)
 The scavenged truth: with Zayd safe, the pieces fall into place — the old golem in the village square, and the wandering queen on the lower-forest ranks. The clues:
 
-1. **The golem (Sakhra).** Tariq finds the plaster-and-pipe joints on the guardian golem odd — that isn't how a guardian is built, that's a *person,* bricked in stone and holding steam pipes over old scars. Zayd, who played on Sakhra's knees, is the only one who never needed the clue: *"He's been here my whole life. He feels like mine."*
+1. **The golem (Sakhra).** Zayd, who played on Sakhra's knees, always noticed the rhythm: *"His steam chest wheezes just like my dad did after working in the coal shafts."* Up close with high Wisdom / Zayd's Lantern, the stone seams reveal living human contours underneath, rather than sculpted granite. Sakhra has guarded his son in silence since before Zayd could walk.
 2. **The queen.** On Floor 2, the queen's inspect_text reads like a worried mother's patrol — she is always moving, always looking, retracing the same file. A player with `zayd` freed can find her circling, and her description shifts to a person searching for someone whose face she can't hold onto.
 3. **The lantern.** Zayd's Lantern (+WIS) is the one light that reaches a piece. Its description now carries the truth of its maker: it was his parents' lamp — of course it was the first thing the conversion works could not quite put out.
 
