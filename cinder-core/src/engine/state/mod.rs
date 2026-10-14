@@ -27,7 +27,7 @@ use party::seeded_parties;
 
 pub use clock::Clock;
 pub use inventory::Inventory;
-pub use party::Party;
+pub use party::{PLAYER_PARTY_ID, Party};
 pub use relationships::RelationshipGraph;
 pub use sequences::ScriptedSequencePlayhead;
 pub use spawn::{SpawnActorConfig, SpawnActorOutcome, SpawnedActorInfo};

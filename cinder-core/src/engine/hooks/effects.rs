@@ -45,6 +45,12 @@ pub(crate) enum WorldHookEffect {
     },
     /// Sets the stance of matching living actors carrying `tag`.
     SetStanceByTag(SetStanceByTagEffect),
+    /// Sets a content-authored standing order for any actor, driving
+    /// AI-controlled parties without requiring the actor to be allied.
+    SetPartyOrder { actor_id: String, order: String },
+    /// Sets a content-authored standing order for every living actor carrying
+    /// `tag` (e.g. advance a whole role group reactively).
+    SetPartyOrderByTag { tag: String, order: String },
     /// Moves an actor to a designated room.
     MoveActor { actor_id: String, room_id: String },
     /// Sets a story variable (e.g. a flag marking a boss as defeated).
@@ -190,6 +196,12 @@ impl WorldHookEffect {
             }
             WorldHookEffect::SetStanceByTag(effect) => {
                 self.apply_set_stance_by_tag(state, content, effect, lines.as_deref_mut());
+            }
+            WorldHookEffect::SetPartyOrder { actor_id, order } => {
+                state.set_authored_party_order(actor_id, order.clone());
+            }
+            WorldHookEffect::SetPartyOrderByTag { tag, order } => {
+                state.set_party_order_by_tag(content, tag, order);
             }
             WorldHookEffect::MoveActor { actor_id, room_id } => {
                 self.apply_move_actor(state, content, actor_id, room_id, lines.as_deref_mut());
@@ -656,5 +668,56 @@ where
         other => Err(serde::de::Error::custom(format!(
             "delta must be an integer or integer string, got {other}"
         ))),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::engine::test_fixtures::{minimal_test_pack, rebuild_test_pack_indexes};
+
+    fn effect(value: serde_json::Value) -> WorldHookEffect {
+        serde_json::from_value(value).expect("deserialize hook effect")
+    }
+
+    #[test]
+    fn set_party_order_effect_drives_non_allied_ai_party_members() {
+        let mut content = minimal_test_pack();
+        content.settings.combat.health_stat_id = "stamina".to_string();
+        content
+            .actors
+            .iter_mut()
+            .find(|actor| actor.id == "casey")
+            .expect("casey fixture")
+            .tags = vec!["pawn".to_string()];
+        rebuild_test_pack_indexes(&mut content);
+        let mut state = WorldState::new(&content);
+        state.set_stance("casey", ActorStance::Hostile);
+
+        let single = effect(serde_json::json!({
+            "kind": "set_party_order",
+            "actor_id": "casey",
+            "order": "deploy d7c1",
+        }));
+        single
+            .apply(&mut state, &content, &serde_json::json!({}), None)
+            .expect("apply single order");
+        assert_eq!(
+            state.party_order(&content, "casey"),
+            Some("deploy d7c1".to_string())
+        );
+
+        let by_tag = effect(serde_json::json!({
+            "kind": "set_party_order_by_tag",
+            "tag": "pawn",
+            "order": "advance",
+        }));
+        by_tag
+            .apply(&mut state, &content, &serde_json::json!({}), None)
+            .expect("apply order by tag");
+        assert_eq!(
+            state.party_order(&content, "casey"),
+            Some("advance".to_string())
+        );
     }
 }

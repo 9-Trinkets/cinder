@@ -393,11 +393,12 @@ fn install_skill_behaviors(
         if let Some(rule) = settings
             .parties
             .iter()
+            .filter(|party| party.controller == crate::content::types::PartyController::Player)
             .flat_map(|party| &party.combat_rules)
             .next()
         {
             return Err(format!(
-                "strict skills require party reaction '{}' to be authored in skills.json",
+                "strict skills require player party reaction '{}' to be authored in skills.json",
                 rule.id
             )
             .into());

@@ -657,7 +657,8 @@
       "elf pawn"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "pawn"
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
@@ -744,7 +745,8 @@
       "elf pawn"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "pawn"
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
@@ -831,7 +833,8 @@
       "elf pawn"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "pawn"
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
@@ -918,7 +921,8 @@
       "elf pawn"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "pawn"
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
@@ -1005,7 +1009,8 @@
       "elf pawn"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "pawn"
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
@@ -1092,7 +1097,8 @@
       "elf pawn"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "pawn"
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
@@ -1179,7 +1185,8 @@
       "elf pawn"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "pawn"
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
@@ -1266,7 +1273,8 @@
       "elf pawn"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "pawn"
     ],
     "inspect_text": "An elf sentry in stiff leaf armor, spear held at the ready. Their eyes are pale green, and they track your smallest movement without blinking.",
     "attackable": true,
@@ -1353,7 +1361,8 @@
       "elf rook"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "rook"
     ],
     "inspect_text": "A broad elf sentinel in heavy plates of lacquered bark. They plant their feet wide and hold still, the way a gate holds.",
     "attackable": true,
@@ -1436,7 +1445,8 @@
       "elf knight"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "knight"
     ],
     "inspect_text": "An elf warrior in a crest of dark curved bark. They never stop shifting weight, ready to spring sideways the moment anything moves.",
     "attackable": true,
@@ -1520,7 +1530,8 @@
     ],
     "tags": [
       "elf",
-      "healer"
+      "healer",
+      "bishop"
     ],
     "skills": [
       "strike",
@@ -1610,7 +1621,8 @@
     ],
     "tags": [
       "elf",
-      "healer"
+      "healer",
+      "queen"
     ],
     "skills": [
       "strike",
@@ -1691,7 +1703,8 @@
       "elf king"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "king"
     ],
     "inspect_text": "The king of the underground forest, wrapped in a cloak of dark root-stitched leaves. He sits on a throne grown from living wood and watches you approach — calm, unhurried, without fear or mockery.",
     "attackable": true,
@@ -1747,7 +1760,8 @@
     ],
     "tags": [
       "elf",
-      "healer"
+      "healer",
+      "bishop"
     ],
     "skills": [
       "strike",
@@ -1836,7 +1850,8 @@
       "elf knight"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "knight"
     ],
     "inspect_text": "An elf warrior in a crest of dark curved bark. They never stop shifting weight, ready to spring sideways the moment anything moves.",
     "attackable": true,
@@ -1919,7 +1934,8 @@
       "elf rook"
     ],
     "tags": [
-      "elf"
+      "elf",
+      "rook"
     ],
     "inspect_text": "A broad elf sentinel in heavy plates of lacquered bark. They plant their feet wide and hold still, the way a gate holds.",
     "attackable": true,

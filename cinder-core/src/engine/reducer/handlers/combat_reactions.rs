@@ -7,7 +7,7 @@ use crate::engine::party_policy::{
 use crate::engine::reducer::combat::{defeat_actor, resisted_damage};
 use crate::engine::reducer::command_effects::actor_display_name;
 use crate::engine::reducer::summaries::summarize_actor_names;
-use crate::engine::state::{ActorStance, WorldState};
+use crate::engine::state::WorldState;
 
 use super::feedback::push_message;
 
@@ -100,10 +100,11 @@ pub(super) fn resolve_post_damage_reactions(
     content: &ContentPack,
     attacker_id: &str,
     room_id: &str,
+    protected_id: &str,
     lines: &mut NarrativeLines,
 ) {
     let mut outcomes = Vec::new();
-    for decision in select_post_damage_reactions(content, state, room_id) {
+    for decision in select_post_damage_reactions(content, state, room_id, protected_id) {
         if state.actor_is_defeated(attacker_id, &content.settings.combat.health_stat_id) {
             break;
         }
@@ -217,10 +218,12 @@ fn resolve_support(
 ) -> Option<PartyReactionOutcome> {
     let target_id = resolve_party_reaction_target(content, state, decision, attacker_id, room_id)?;
     let player_id = content.settings.combat.player_actor_id.as_str();
-    let not_ally_or_outside = target_id != player_id
-        && (state.stance(&target_id) != ActorStance::Allied
-            || !state.actor_is_in_room(content, &target_id, room_id));
-    if not_ally_or_outside
+    let is_party_target =
+        target_id == player_id || state.share_party(&decision.actor_id, &target_id);
+    if !is_party_target
+        || !crate::engine::combat_targets::party_actor_is_in_room(
+            content, state, &target_id, room_id,
+        )
         || state.actor_is_defeated(&target_id, &content.settings.combat.health_stat_id)
     {
         return None;

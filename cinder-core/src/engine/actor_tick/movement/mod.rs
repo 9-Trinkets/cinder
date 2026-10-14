@@ -165,7 +165,29 @@ impl MovementStrategyResolver for DefaultMovementStrategyResolver {
                 Some(OrderKind::Patrol) => authored
                     .and_then(strategy_from_order)
                     .or_else(|| Some(Box::new(RandomAdjacentStrategy::new(1)))),
-                Some(OrderKind::Follow) => None,
+                Some(OrderKind::Follow) => {
+                    // Player-party followers are driven by the follow-player
+                    // system. For AI parties, "follow" tracks the party leader.
+                    let leader = state
+                        .party_of_actor(actor_id)
+                        .filter(|party| !party.is_player_controlled())
+                        .and_then(|party| party.leader.clone());
+                    let Some(leader) = leader.filter(|leader| leader != actor_id) else {
+                        return None;
+                    };
+                    let leader_room = state.actor_current_room_id(content, &leader);
+                    if leader_room.is_empty() {
+                        return None;
+                    }
+                    Some(Box::new(ToDestinationStrategy::new(
+                        1,
+                        leader_room.to_string(),
+                    )))
+                }
+                Some(OrderKind::Hunt) => {
+                    let cadence = authored.map_or(1, |order| order.cadence_ticks);
+                    Some(Box::new(TowardPlayerStrategy::new(cadence)))
+                }
                 Some(OrderKind::Deploy(target)) => {
                     let target = if target.is_empty() {
                         authored
@@ -175,6 +197,28 @@ impl MovementStrategyResolver for DefaultMovementStrategyResolver {
                         target
                     };
                     Some(Box::new(DeployStrategy::new(1, target)))
+                }
+                Some(OrderKind::Goto(target)) => {
+                    let cadence = authored.map_or(1, |order| order.cadence_ticks);
+                    let target = if target.is_empty() {
+                        authored
+                            .map(|order| order.target_room_id.clone())
+                            .unwrap_or_default()
+                    } else {
+                        target
+                    };
+                    Some(Box::new(ToDestinationStrategy::new(cadence, target)))
+                }
+                Some(OrderKind::Exit(label)) => {
+                    let cadence = authored.map_or(1, |order| order.cadence_ticks);
+                    let label = if label.is_empty() {
+                        authored
+                            .map(|order| order.exit_label.clone())
+                            .unwrap_or_default()
+                    } else {
+                        label
+                    };
+                    Some(Box::new(ExitLabelStrategy::new(cadence, label)))
                 }
                 _ => None,
             };
@@ -326,6 +370,82 @@ mod tests {
         assert_eq!(plan("advance", 2), Some(2));
         assert_eq!(plan("follow", 1), None);
         assert_eq!(plan("mystery", 1), None);
+    }
+
+    #[test]
+    fn ai_party_follow_order_tracks_the_leader() {
+        use crate::content::types::{PartyController, PartyDefinition};
+        let mut content = minimal_test_pack();
+        let follower = content.actors[0].id.clone();
+        let mut leader = content.actors[1].clone();
+        leader.id = "chief".to_string();
+        leader.name = "Chief".to_string();
+        leader.room_id = "kitchen".to_string();
+        content.actors.push(leader);
+        content.actors[0].room_id = "lounge".to_string();
+        content.settings.parties = vec![PartyDefinition {
+            id: "army".to_string(),
+            controller: PartyController::Ai,
+            leader: Some("chief".to_string()),
+            members: vec!["chief".to_string(), follower.clone()],
+            initial_orders: std::collections::BTreeMap::from([(
+                follower.clone(),
+                "follow".to_string(),
+            )]),
+            ..PartyDefinition::default()
+        }];
+        crate::engine::test_fixtures::rebuild_test_pack_indexes(&mut content);
+
+        let state = WorldState::new(&content);
+        let strategy = DefaultMovementStrategyResolver
+            .resolve(&content, &state, &follower)
+            .expect("follow resolves to a leader-tracking strategy");
+        let actor = content.actor(&follower).unwrap();
+        assert_eq!(
+            strategy.plan_destination(&content, &state, actor, "lounge"),
+            Some("kitchen".to_string())
+        );
+    }
+
+    #[test]
+    fn ai_party_advance_order_chases_the_player() {
+        use crate::content::types::{PartyController, PartyDefinition};
+        let mut content = minimal_test_pack();
+        let rusher = content.actors[1].id.clone();
+        content.actors[1].room_id = "lounge".to_string();
+        content
+            .movement
+            .actors
+            .entry(rusher.clone())
+            .or_default()
+            .order = Some(MovementOrderDefinition {
+            token: "patrol".to_string(),
+            cadence_ticks: 3,
+            ..Default::default()
+        });
+        content.settings.parties = vec![PartyDefinition {
+            id: "army".to_string(),
+            controller: PartyController::Ai,
+            members: vec![rusher.clone()],
+            initial_orders: std::collections::BTreeMap::from([(
+                rusher.clone(),
+                "advance".to_string(),
+            )]),
+            ..PartyDefinition::default()
+        }];
+        crate::engine::test_fixtures::rebuild_test_pack_indexes(&mut content);
+
+        let mut state = WorldState::new(&content);
+        state.current_room_id = "kitchen".to_string();
+        let strategy = DefaultMovementStrategyResolver
+            .resolve(&content, &state, &rusher)
+            .expect("advance resolves to a chase strategy");
+        assert_eq!(strategy.cadence_ticks(), 3);
+        let actor = content.actor(&rusher).unwrap();
+        assert_eq!(
+            strategy.plan_destination(&content, &state, actor, "lounge"),
+            Some("kitchen".to_string())
+        );
     }
 
     #[test]

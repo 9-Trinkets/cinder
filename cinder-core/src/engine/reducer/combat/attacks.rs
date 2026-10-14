@@ -8,7 +8,10 @@ use crate::engine::reducer::summaries::summarize_actor_names;
 use crate::engine::state::{ActorStance, WorldState};
 use serde_json::json;
 
-use super::{VEC_EMPTY_TAGS, actor_display_name, adjust_actor_stat, defeat_actor, resisted_damage};
+use super::{
+    VEC_EMPTY_TAGS, actor_display_name, adjust_actor_stat, apply_leader_intercept, defeat_actor,
+    resisted_damage,
+};
 
 pub(in crate::engine::reducer) fn apply_attack_target(
     state: &mut WorldState,
@@ -67,7 +70,21 @@ pub(in crate::engine::reducer) fn apply_attack_target(
         .map(|actor| actor.attack_kind())
         .unwrap_or("physical");
     let total_damage = resisted_damage(content, target_actor_id, attack_kind, raw_damage);
-    if raw_damage > 0 && total_damage == 0 {
+    // A party member guarding `target_actor_id`'s leader may throw itself in
+    // front of the blow (e.g. the elf army shielding its king from the player).
+    let intercepted = apply_leader_intercept(
+        state,
+        content,
+        &combat.player_actor_id,
+        raw_damage,
+        attack_kind,
+        target_actor_id,
+        room_id,
+        lines,
+    );
+    if intercepted {
+        // The guard absorbed the strike; the target takes no direct damage.
+    } else if raw_damage > 0 && total_damage == 0 {
         if let Some(line) = content.render_message(
             "combat.no_effect",
             &[("actor", target_name.as_str()), ("kind", attack_kind)],

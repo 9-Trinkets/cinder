@@ -18,6 +18,7 @@ pub mod narrative;
 pub mod neuron;
 pub(crate) mod orders;
 mod party_policy;
+mod party_scope;
 pub mod reducer;
 pub mod roles;
 pub mod runtime;

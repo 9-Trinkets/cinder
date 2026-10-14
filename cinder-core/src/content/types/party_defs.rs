@@ -49,13 +49,32 @@ pub enum PartyReactionCooldown {
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(tag = "condition", rename_all = "snake_case")]
 pub enum PartyDecisionCondition {
-    OrderIs { orders: Vec<PartyOrderKind> },
-    ActorHealthAtMostPercent { percent: u8 },
-    ActorHealthAtLeastPercent { percent: u8 },
-    PlayerHealthAtMostPercent { percent: u8 },
-    ActorHasTag { tag: String },
+    OrderIs {
+        orders: Vec<PartyOrderKind>,
+    },
+    ActorHealthAtMostPercent {
+        percent: u8,
+    },
+    ActorHealthAtLeastPercent {
+        percent: u8,
+    },
+    /// Health of the literal player actor.
+    PlayerHealthAtMostPercent {
+        percent: u8,
+    },
+    /// Health of the party's leader (`leader` actor, or the protected actor when
+    /// the party has no authored leader). Engine-driven AI parties use this to
+    /// react to their leader taking damage.
+    LeaderHealthAtMostPercent {
+        percent: u8,
+    },
+    ActorHasTag {
+        tag: String,
+    },
     AnyAllyWounded,
-    AnyAllyHealthAtMostPercent { percent: u8 },
+    AnyAllyHealthAtMostPercent {
+        percent: u8,
+    },
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
@@ -63,6 +82,9 @@ pub enum PartyDecisionCondition {
 pub enum PartyTargetSelection {
     SelfActor,
     Player,
+    /// The acting party's leader (falls back to the player actor for the player
+    /// party). Lets AI parties guard their own king instead of the player.
+    Leader,
     Attacker,
     LowestHealthAlly,
 }

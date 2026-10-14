@@ -1,6 +1,5 @@
 use crate::engine::combat_cooldowns::{CombatCooldownKind, actor_combat_cooldown_minutes};
 use crate::engine::combat_targets::select_hostile_target;
-use crate::engine::party_policy::{consume_party_reaction, select_defensive_reaction};
 use crate::engine::reducer::combat::{defeat_actor, resisted_damage};
 use crate::engine::reducer::command_effects::{actor_display_name, defeat_player_if_dead};
 use crate::engine::state::{ActorStance, GamePhase};
@@ -41,93 +40,20 @@ pub(crate) fn handle_hostile_strike(ctx: &mut ReduceCtx<'_>, actor_id: &str) {
         .unwrap_or_else(|| "physical".to_string());
     let actor_name = actor_display_name(state, content, actor_id);
     let target_name = actor_display_name(state, content, &target_id);
-    // A guarding follower intercepts the blow aimed at the player. The guard
-    // soaks the attacker's raw strike against its own defense, floored by the
-    // minimum-damage rule just like a direct hit on the player.
-    let defensive_reaction = (target_id == combat.player_actor_id)
-        .then(|| select_defensive_reaction(content, state))
-        .flatten();
-    let guard_id = defensive_reaction
-        .as_ref()
-        .map(|decision| decision.actor_id.clone());
-    if let Some(guard_id) = guard_id {
-        let guard_intercept_level = state.actor_skill_level(&guard_id, "intercept");
-        let soaked = content
-            .skill("intercept")
-            .and_then(|s| s.param_value("damage_soaked", guard_intercept_level))
-            .unwrap_or_else(|| {
-                crate::engine::skills::intercept_damage_soaked(guard_intercept_level) as i64
-            }) as i32;
-        let guard_defense = state.actor_combat_defense(content, &guard_id).max(0);
-        let raw_guard_takes =
-            (state.actor_combat_attack(content, actor_id) - guard_defense - soaked)
-                .max(combat.minimum_damage);
-        let guard_takes = resisted_damage(content, &guard_id, &attack_kind, raw_guard_takes);
-        let guard_name = actor_display_name(state, content, &guard_id);
-        crate::engine::reducer::award_actor_skill_sp(
-            state,
-            content,
-            &guard_id,
-            "intercept",
-            3,
-            lines,
-        );
-        if raw_guard_takes > 0 && guard_takes == 0 {
-            if let Some(line) = content.render_message(
-                "combat.no_effect",
-                &[("actor", guard_name.as_str()), ("kind", &attack_kind)],
-            ) {
-                lines.narration(line);
-            }
-        } else {
-            state
-                .adjust_actor_stat(content, &guard_id, &combat.health_stat_id, -guard_takes)
-                .unwrap_or_else(|error| eprintln!("[cinder] combat stat error: {error}"));
-            let is_current_room = room_id == state.current_room_id;
-            if is_current_room {
-                let message = defensive_reaction
-                    .as_ref()
-                    .map(|decision| decision.message.as_str())
-                    .filter(|message| !message.is_empty())
-                    .unwrap_or("combat.guard_intercepts");
-                if let Some(line) = content.render_message(
-                    message,
-                    &[
-                        ("actor", actor_name.as_str()),
-                        ("guard", guard_name.as_str()),
-                        ("damage", guard_takes.to_string().as_str()),
-                    ],
-                ) {
-                    lines.narration(line);
-                }
-            }
-        }
-        let remaining = state.effective_actor_stat(content, &guard_id, &combat.health_stat_id);
-        if remaining <= 0 && guard_takes > 0 {
-            if room_id == state.current_room_id {
-                if let Some(line) =
-                    content.render_message("combat.guard_falls", &[("guard", guard_name.as_str())])
-                {
-                    lines.narration(line);
-                }
-            } else {
-                let offscreen_state = state
-                    .offscreen_combat_states
-                    .entry(room_id.clone())
-                    .or_default();
-                if !offscreen_state.reported_fallen_allies.contains(&guard_id) {
-                    offscreen_state
-                        .reported_fallen_allies
-                        .insert(guard_id.clone());
-                    offscreen_state.newly_fallen_allies.push(guard_name.clone());
-                }
-            }
-            defeat_actor(state, content, &guard_id, &room_id, lines);
-        }
-        if let Some(decision) = defensive_reaction.as_ref() {
-            consume_party_reaction(content, state, decision);
-        }
-    } else {
+    // A guarding party member intercepts the blow aimed at its leader (the
+    // player, for the player party). The guard soaks the raw strike.
+    let incoming_attack = state.actor_combat_attack(content, actor_id);
+    let intercepted = crate::engine::reducer::combat::apply_leader_intercept(
+        state,
+        content,
+        actor_id,
+        incoming_attack,
+        &attack_kind,
+        &target_id,
+        &room_id,
+        lines,
+    );
+    if !intercepted {
         let damage = resisted_damage(content, &target_id, &attack_kind, raw_damage);
         let is_current_room = room_id == state.current_room_id;
         if raw_damage > 0 && damage == 0 {
@@ -225,7 +151,7 @@ pub(crate) fn handle_hostile_strike(ctx: &mut ReduceCtx<'_>, actor_id: &str) {
         defeat_player_if_dead(state, content, lines);
     }
     if state.phase == GamePhase::Active {
-        resolve_post_damage_reactions(state, content, actor_id, &room_id, lines);
+        resolve_post_damage_reactions(state, content, actor_id, &room_id, &target_id, lines);
     }
 }
 

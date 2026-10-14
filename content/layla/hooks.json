@@ -316,6 +316,20 @@
             {
               "path": "actor_id",
               "operator": "equal",
+              "value": "elf-king-5"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_party_order_by_tag",
+            "tag": "elf",
+            "order": "hold"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
               "value": "fire-elemental"
             }
           ],
@@ -2059,6 +2073,62 @@
             "kind": "set_story_var",
             "key": "quests_revealed",
             "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_board_id",
+              "operator": "equal",
+              "value": "deep-forest"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_party_order_by_tag",
+            "tag": "pawn",
+            "order": "advance"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_board_id",
+              "operator": "equal",
+              "value": "deep-forest"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_party_order_by_tag",
+            "tag": "knight",
+            "order": "advance"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_board_id",
+              "operator": "equal",
+              "value": "deep-forest"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_party_order_by_tag",
+            "tag": "rook",
+            "order": "follow"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_board_id",
+              "operator": "equal",
+              "value": "deep-forest"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_party_order_by_tag",
+            "tag": "queen",
+            "order": "advance"
           }
         }
       ]

@@ -75,12 +75,84 @@ pub(crate) fn seeded_parties(content: &ContentPack) -> BTreeMap<String, Party> {
 }
 
 impl WorldState {
-    /// Returns the party that contains `actor_id`, if any.
+    /// Returns the party that contains `actor_id`, if any. When an actor is both
+    /// an authored member of an AI party and an allied follower gathered into
+    /// the player party, the player party wins so reactions and orders treat it
+    /// as an ally.
     pub fn party_of_actor(&self, actor_id: &str) -> Option<&Party> {
         let actor_id = remap_story_actor_id(self, actor_id);
         self.parties
             .values()
-            .find(|party| party.members.contains(actor_id))
+            .find(|party| party.is_player_controlled() && party.members.contains(actor_id))
+            .or_else(|| {
+                self.parties
+                    .values()
+                    .find(|party| party.members.contains(actor_id))
+            })
+    }
+
+    /// The player-controlled party, if the registry has one.
+    pub fn player_party(&self) -> Option<&Party> {
+        self.parties
+            .values()
+            .find(|party| party.is_player_controlled())
+    }
+
+    /// Whether two actors belong to the same command group.
+    pub fn share_party(&self, left: &str, right: &str) -> bool {
+        let left = remap_story_actor_id(self, left);
+        let right = remap_story_actor_id(self, right);
+        self.parties
+            .values()
+            .any(|party| party.members.contains(left) && party.members.contains(right))
+    }
+
+    /// The leader an actor's party rallies around. Player parties fall back to
+    /// the player actor; AI parties without an authored leader have none.
+    pub fn party_leader_for(&self, content: &ContentPack, actor_id: &str) -> Option<String> {
+        let party = self.party_of_actor(actor_id)?;
+        if let Some(leader) = &party.leader {
+            return Some(leader.clone());
+        }
+        party
+            .is_player_controlled()
+            .then(|| content.settings.combat.player_actor_id.clone())
+    }
+
+    /// Sets a content-authored order for any actor, bypassing the allied-only
+    /// checks so a pack can drive an AI party (`controller: ai`) reactively.
+    pub fn set_authored_party_order(&mut self, actor_id: &str, order: PartyOrderKind) {
+        let actor_id = remap_story_actor_id(self, actor_id).to_string();
+        self.relations.party_orders.insert(actor_id, order);
+    }
+
+    /// Sets a content-authored order for every onstage living actor carrying
+    /// `tag`. Returns the ids ordered. Lets a pack move a whole role group.
+    pub fn set_party_order_by_tag(
+        &mut self,
+        content: &ContentPack,
+        tag: &str,
+        order: &str,
+    ) -> Vec<String> {
+        let health_stat_id = &content.settings.combat.health_stat_id;
+        let ids: Vec<String> = self
+            .actors(content)
+            .filter(|actor| !content.is_player_actor(&actor.id))
+            .filter(|actor| actor.tags.iter().any(|actor_tag| actor_tag.as_str() == tag))
+            .map(|actor| actor.id.clone())
+            .collect();
+        let mut changed = Vec::new();
+        for actor_id in ids {
+            if self.actor_current_room_id(content, &actor_id).is_empty() {
+                continue;
+            }
+            if self.actor_is_defeated(&actor_id, health_stat_id) {
+                continue;
+            }
+            self.set_authored_party_order(&actor_id, order.to_string());
+            changed.push(actor_id);
+        }
+        changed
     }
 
     /// Adds or removes an actor from the player party, creating the player
