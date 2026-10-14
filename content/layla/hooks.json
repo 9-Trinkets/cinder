@@ -789,6 +789,7 @@
             "tag": "golem",
             "stance": "allied",
             "follows_player": true,
+            "move_to_player": true,
             "messages": [
               "conversion.ring"
             ]

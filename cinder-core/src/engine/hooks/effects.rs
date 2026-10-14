@@ -110,6 +110,8 @@ pub(crate) struct SetStanceByTagEffect {
     #[serde(default)]
     pub follows_player: bool,
     #[serde(default)]
+    pub move_to_player: bool,
+    #[serde(default)]
     pub messages: Vec<String>,
 }
 
@@ -307,10 +309,34 @@ impl WorldHookEffect {
             stance,
             from_stances,
             follows_player,
+            move_to_player,
             messages,
         } = effect;
         let changed =
             state.set_actor_stance_by_tag(content, tag, *stance, from_stances, *follows_player);
+        if *move_to_player {
+            let target_room_id = state.current_room_id.clone();
+            let health_stat_id = &content.settings.combat.health_stat_id;
+            let matching_actors: Vec<String> = state
+                .actors(content)
+                .filter(|actor| {
+                    !content.is_player_actor(&actor.id)
+                        && actor.tags.iter().any(|actor_tag| actor_tag.as_str() == tag)
+                        && !state.actor_is_defeated(&actor.id, health_stat_id)
+                        && !state.actor_is_offstage(content, &actor.id)
+                        && !state.actor_is_imprisoned(content, &actor.id)
+                        && state.stance(&actor.id) == *stance
+                })
+                .map(|actor| actor.id.clone())
+                .collect();
+            for actor_id in matching_actors {
+                state.mark_actor_room_visited(&actor_id, &target_room_id);
+                state
+                    .actors
+                    .actor_room_overrides
+                    .insert(actor_id, target_room_id.clone());
+            }
+        }
         if let Some(lines) = lines {
             for (_actor_id, actor_name) in changed {
                 for key in messages {

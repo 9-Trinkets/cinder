@@ -105,6 +105,29 @@ fn clean_shaman_trial_triggers_and_rewards_ring_on_clean_run() {
         s_equip.actor_current_room_id(&pack, "sakhra"),
         "village_square"
     );
+
+    // Floor 1 cave golems are bound by the ring and assemble in Layla's room (r5c5)
+    for golem_id in [
+        "golem-dark-nw",
+        "golem-pale-ne",
+        "golem-dark-sw",
+        "golem-pale-se",
+    ] {
+        assert_eq!(
+            s_equip.relationship(golem_id).stance,
+            cinder_core::engine::state::ActorStance::Allied,
+            "cave golem {golem_id} must be allied"
+        );
+        assert!(
+            s_equip.follows_player(golem_id),
+            "cave golem {golem_id} must follow player"
+        );
+        assert_eq!(
+            s_equip.actor_current_room_id(&pack, golem_id),
+            "r5c5",
+            "cave golem {golem_id} must immediately relocate to player's room"
+        );
+    }
 }
 
 #[test]
