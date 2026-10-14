@@ -132,21 +132,26 @@ The fortified center of the floor, enclosed behind high iron fences, steam-power
   - Escorting Zayd safely home reunites him with Yasmin, turns Zayd into a permanent village ally, and completes side quest `sq_return_zayd`.
   - Zayd hands Layla his most cherished possession — the brass-bound miner's lantern with a warm amber filament that never goes cold, and the only clue to the secret his parents share:
     > *"My mom and dad gave me this before the rocks fell. They said light always finds a way through stone. Take it... wherever you're going in the deep dark, I hope their light guides your way."*
-  - Layla receives **Zayd's Lantern** — the key item of the floor's secret and the tool to awaken Sakhra.
+  - Layla receives **Zayd's Lantern** — the key item of the floor's secret and the catalyst for awakening Sakhra.
 
-### Secret Quest: "Return the Light" (Freeing Zayd's Parents)
-The scavenged truth: with Zayd safe, the pieces fall into place — the old golem in the village square, and the wandering queen on the lower-forest ranks. The clues:
+### Secret Quest: "Return the Light" (Freeing Zayd's Parents — The Two-Stage Arc)
+The scavenged truth: with Zayd safe, the clues begin to align — the silent old golem in the village square, and the wandering queen on the lower-forest ranks.
 
-1. **The golem (Sakhra).** Zayd, who played on Sakhra's knees, always noticed the rhythm: *"His steam chest wheezes just like my dad did after working in the coal shafts."* Up close with high Wisdom / Zayd's Lantern, the stone seams reveal living human contours underneath, rather than sculpted granite. Sakhra has guarded his son in silence since before Zayd could walk.
-2. **The queen.** On Floor 2, the queen's inspect_text reads like a worried mother's patrol — she is always moving, always looking, retracing the same file. A player with `zayd` freed can find her circling, and her description shifts to a person searching for someone whose face she can't hold onto.
-3. **The lantern.** Zayd's Lantern (+WIS) is the one light that reaches a piece. Its description now carries the truth of its maker: it was his parents' lamp — of course it was the first thing the conversion works could not quite put out.
+1. **The golem (Sakhra).** Zayd, who played on Sakhra's knees, always noticed the rhythm: *"His steam chest wheezes just like my dad did after working in the coal shafts."* Up close, Sakhra has guarded his son in silence since before Zayd could walk.
+2. **The queen.** On Floor 2, the queen's patrol resembles a worried mother — she is always moving, always looking, retracing the same file for a child whose name she cannot recall.
+3. **The lantern.** Zayd's Lantern (+6 WIS) carries the lingering warmth and memory shards of his parents — the one thing the conversion works could not extinguish.
 
-**The awakening — one light, two ways to wake:**
+**Narrative Staging (Option C Architecture):**
+- **Stage 1 (Floor 4 — The Subtle Resonance):**
+  When Layla passes Sakhra with Zayd's Lantern, the amber glow reflects off the stone chest. The golem's valve releases a single, deep steam sigh, and Layla's four golems gather close in silent bedrock resonance. However, **Sakhra does NOT fully awaken on Floor 4**. The horrific truth that monsters are converted human villagers is withheld to maintain suspense and narrative pacing until the High Sanctuary.
+- **Stage 2 (Floor 6 — Awakening via the Bind Sigil):**
+  On Floor 6 (The High Sanctuary), Layla witnesses the three-stage conversion pipeline:
+  1. *Kill the offering* (strips secular flesh, releases the spirit).
+  2. *Spawn a monster shell* using the **Spawn Sigil** (`spawn-sigil`).
+  3. *Bind the spirit into the shell* using the **Bind Sigil** (`bind-sigil`).
+  After defeating the high clergy and mastering the **Bind Sigil**, Layla learns to reverse the spiritual enslavement. By channeling the **Bind Sigil** through **Zayd's Lantern**, she binds the preserved memories and spirit shards back into Sakhra's core, awakening **Jamil** as a conscious ally (without altering his stone shell), and restoring Queen Nazira on Floor 2 via Zayd's voice and lantern.
 
-- **The father wakes by light.** Bring the lantern to Sakhra. The lantern's warm glow is the light his son kept carrying to him — the only warmth a guardian's fog keeps. At WIS 10, the stone eyes clear and a voice comes out of the golem for the first time: his pipe hiss gives way to speech, and he says Zayd's name. He has been beside his son the whole floor, and he remembers.
-- **The mother wakes by voice.** The queen is already at the edge of waking (her wisdom sits highest of any piece on the board — she is a mother who never fully stopped). The extra point of light is not a tool but a voice: Zayd's, calling her name across the ranks. The son wakes what light cannot reach. *(One lantern only, and no second lamp in this design — the family wakes by different lights, on purpose.)*
-
-- **The payoff.** The awakened parents stay with Layla as free allies — two humans who remember the flavour of bread and the weight of a child — the proof the whole game has been circling: the program can be *undone*, and she is not the only one being unmade.
+- **The payoff.** The awakened parents become free allies who remember the flavor of bread and the weight of their child — the living proof that the dungeon's reprogramming can be undone.
 
 ---
 

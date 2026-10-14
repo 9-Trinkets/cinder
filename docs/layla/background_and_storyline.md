@@ -139,12 +139,17 @@ recalled skill:
   barriers. *As a master power: instantaneous movement and breach of fortified sectors.*
    Learned on Floor 4 from the **teleport scroll** lifted out of Commander Malik's safe
    (`item.teleport_scroll_read`).
+- **Bind sigil** (`bind-sigil`) — a confining rune of overlapping concentric arcs
+  that anchors an unbound spirit or memory fragment into a construct vessel.
+  *As a master power: the final stage of monster creation.* Learned on Floor 6
+  in the High Sanctuary. When reversed by Layla, it anchors preserved memory shards
+  and spirits back to their owners to restore true names and awaken minds.
 
 **How learning a sigil feels.** A new mark is never studied — it is remembered.
 Reading its scroll sends heat through the back of Layla's hand, and the lines
 settle in (`item.scroll_read.learned`: *"The lines settle into your hand"*).
 Her hands simply know the shape afterward the way they know how to fight.
-Later powers (e.g. the Floor 6 revival sigil) arrive the same way.
+Later powers arrive the same way.
 
 ### Level 1 — The Goblin Cave (Go)
 The floor-by-floor design for level 1 — cast and power economy (goblins, golems,
@@ -248,9 +253,9 @@ The working foundation of the kingdom. Simple stone villages, mushroom farms, an
 - **The Ticking Clock:** Zayd is held in the fortress cage awaiting the scheduled batch transit window to Floor 5. Layla races against time to free him before he is shipped.
 
 **The truth of the offering (settled canon).** The "sacrifice" taken away is not a ritual — it is the **reprogramming itself**. The temple's conversion works wipe a person's memory and bind their spirit into a monster shell or dungeon piece: the goblin shaman's golems, the elf army's ranks, the town guardians, and the village's "disappeared" were all the same source. Zayd's parents, who the village believes died in a "steam drill collapse," are among the finished pieces:
-- **Sakhra** — the village's guardian golem — is **Zayd's father (Jamil)**, magically converted into a stone golem and fitted with steam pistons. He has guarded the village, and his own son, since Zayd could walk. Only the lantern he gave his boy can wake him: **he wakes by light**.
-- **`elf-queen-4`** — the elf chess queen on Floor 2 — is **Zayd's mother**, the piece nearest waking of any in the dungeon. She wanders the ranks searching for a son she cannot name; **she wakes by voice** (Zayd's).
-- Freeing Zayd (side quest "Save the Boy Zayd") and raising either parent's Wisdom to 10+ ("awakening") is the floor's secret quest, **"Return the Light."** The queen **may be destroyed by chance** (she is a booked boss fight) — that is a sanctioned easter egg, and the parent thread resolves as long as *either* parent wakes.
+- **Sakhra** — the village's guardian golem — is **Zayd's father (Jamil)**, magically converted into a stone golem and fitted with steam pistons. He has guarded the village, and his own son, since Zayd could walk. On Floor 4, Zayd's Lantern causes a subtle resonance and a deep steam sigh, but Sakhra remains unawakened. Full awakening occurs on Floor 6 when Layla obtains the **Bind Sigil** (`bind-sigil`) and channels the memories preserved in the lantern back into Sakhra's core.
+- **`elf-queen-4`** — the elf chess queen on Floor 2 — is **Zayd's mother**, the piece nearest waking of any in the dungeon. She wanders the ranks searching for a son she cannot name; she is awakened on Floor 6 through Zayd's voice and the Bind Sigil.
+- Freeing Zayd (side quest "Save the Boy Zayd") and eventually restoring his parents on Floor 6 constitutes the secret quest arc, **"Return the Light."** The queen **may be destroyed by chance** (she is a booked boss fight) — that is a sanctioned easter egg, and the parent thread resolves as long as *either* parent wakes.
 
 #### Level 5 — The Frost Citadel (The Hexagon Courtyard & The Three Houses)
 The game genre pivots to **Tower Defense (Real-Time Strategy)**. Everything in this world is literally pure computer code—1s and 0s—and Layla discovers that the dungeon's floors are separate virtual biomes partitioned by the company. Arriving in an **ice world** of snowy mountain castles, Layla teleports onto a platform at the center of a 7-room **hexagonal courtyard** filled with cages holding virtual "offerings" (mostly old people and children from various towns). After cutting down the sentries and looting the cage key, Layla frees the captives, recruiting **Commander Astrid** (a formidable female garrison commander with a great tower shield) and **Einar** (a compassionate male healer from Floor 6). Einar gives Layla a smuggled **sensory enhancer** that heightens her senses and perception, upgrading her map HUD to track allies and teleport nodes in real time. Surrounding the courtyard are the estates of **three noble houses** whose forces mobilize in **exponentially harder waves** with a strict spawning cadence (each house queues 30 soldiers, dispatching squads of 3 at fixed intervals through the north, southeast, or southwest estate approach). Astrid and her allies hold those three approach rooms (`guard` with counterattack), while Einar heals (`support` + `lowest_health_ally`). The house leaders remain sealed in their throne rooms until the final wave. Then all three march through their estates toward the courtyard, where Layla must defeat or awaken them to rout their armies and end the siege, costing the Handler his Sector-5 terminal and forcing him to withdraw to the Royal Core.
@@ -258,7 +263,7 @@ The game genre pivots to **Tower Defense (Real-Time Strategy)**. Everything in t
 #### Level 6 — The Clergy (The High Sanctuary & The Inquisition)
 The floor-by-floor design for Level 6 — the spiritual monster conversion pipeline, the Werewolf social deduction genre, the Day/Night liturgical cycle, spirits, and the revival sigil — lives in **`docs/layla/floor6_plan.md`**. What follows is the storyline canon this level carries.
 
-The temple leaders who enforce obedience. Vast underground cathedrals, libraries, and binding vaults. Layla discovers that the dungeon is an automated monster assembly line: offerings arriving from Floor 5 have their spirits separated into soul containers and re-bound through the **Rite of Oblivion** into monster shells and utility constructs. Infiltrating alone as a "werewolf" via Einar's clandestine token while her party waits on Floor 5, Layla deduces the identities of the **Seer** and the **Witch**, gains the spiritual enhancer pill to perceive lingering spirits, learns the dark revival sigil (raising fallen spirits only as monsters), and assassinates the Seer to break the re-binding ritual before activating the main platform to bring her party through.
+The temple leaders who enforce obedience. Vast underground cathedrals, libraries, and binding vaults. Layla discovers that the dungeon is an automated monster assembly line: offerings arriving from Floor 5 have their spirits separated into soul containers and re-bound through the **Rite of Oblivion** into monster shells and utility constructs. Infiltrating alone as a "werewolf" via Einar's clandestine token while her party waits on Floor 5, Layla deduces the identities of the **Seer** and the **Witch**, gains the spiritual enhancer pill to perceive lingering spirits, learns the Bind Sigil (mastering the creation and binding cycle to awaken lost souls and restore true names), and assassinates the Seer to break the re-binding ritual before activating the main platform to bring her party through.
 
 ### Level 7 — The Royal Core: The Handler on his throne (the current Dungeon Master)
 The final test of Layla's journey:

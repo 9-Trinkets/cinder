@@ -4,7 +4,7 @@ Living design plan for **Level 6** of Layla. Like earlier levels (the deep fores
 
 Here, Layla discovers the terrifying truth of the dungeon: it is a **closed-loop monster creation pipeline** that takes workers from the worker towns, separates their spirits into soul containers in Floor 5's citadel, and re-binds them in Floor 6 into dungeon monsters, workers, and utility guardians.
 
-The gameplay genre for Floor 6 is **Social Deduction / Infiltration (Werewolf / Mafia)**. Layla infiltrates the cathedral alone as the "Werewolf" in sheep's clothing, operating under a fast-paced **Cathedral Watch Rotation (Guard Shifts)** to deduce the identities of the **Seer** and the **Witch**, learn the dark **Revival Sigil**, and unlock the main teleport platform to bring her party through.
+The gameplay genre for Floor 6 is **Social Deduction / Infiltration (Werewolf / Mafia)**. Layla infiltrates the cathedral alone as the "Werewolf" in sheep's clothing, operating under a fast-paced **Cathedral Watch Rotation (Guard Shifts)** to deduce the identities of the **Seer** and the **Witch**, learn the arcane **Bind Sigil** (`bind-sigil`), and unlock the main teleport platform to bring her party through.
 
 All player-facing text must follow the writing guide: **simple sentences and everyday words for teenagers**. Avoid archaic or pseudo-academic jargon (use "priest" instead of "hierophant", "hall" instead of "peristyle", "pill" instead of "tincture", "spirit" instead of "wraithly apparition").
 
@@ -12,18 +12,31 @@ All player-facing text must follow the writing guide: **simple sentences and eve
 
 ## 1. The Lore & Narrative Spine: The Monster Creation Pipeline
 
-Up until Floor 6, the player has encountered monsters as combat obstacles and seen people taken away as "offerings." Floor 6 exposes the factory pipeline that connects them:
+Up until Floor 6, the player has encountered monsters as combat obstacles and seen people taken away as "offerings." Floor 6 exposes the factory pipeline that connects them. The conversion process consists of three distinct stages:
+
+```
+[The 3-Step Monster Conversion Pipeline]
+
+1. Kill the Offering       ──> Physical shell is eliminated; spirit/ether is stripped of secular impurities.
+         │
+         ▼
+2. Spawn Monster Shell    ──> High Sanctuary priests trace the Spawn Sigil (生紋) to manifest a vessel.
+         │
+         ▼
+3. Bind Spirit to Shell   ──> Priests execute the Rite of Oblivion and trace the Bind Sigil (縛紋),
+                              anchoring the amnesiac spirit into the monster construct.
+```
 
 ```
 [Floor 4 / Worker Towns]  ──(Harvest)──────>  Civilians selected as "Offerings"
                                                    │
                                                    ▼
-[Floor 5 / Frost Citadel] ──(Separation)───>  Caged in Courtyard; Spirits Separated from Shells
+[Floor 5 / Frost Citadel] ──(Sorting)─────>   Caged in Courtyard; Prepared for Transit
                                                    │
                                                    ▼
-[Floor 6 / High Sanctuary]──(Re-binding)───>  Spirits Sealed in Anchored Soul Containers
-                                              Memories Erased via "Rite of Oblivion"
-                                              Bound into Monster Shells (Golems, Elves, Beasts)
+[Floor 6 / High Sanctuary]──(Conversion)──>   1. Execution (Flesh dissolved)
+                                              2. Spawn Shell (Spawn Sigil / 生紋)
+                                              3. Memory Erased & Spirit Bound (Bind Sigil / 縛紋)
                                                    │
                                                    ▼
 [Entire Kingdom & Dungeon]──(Deployment)───>  Deployed as Workers, Guards, and Utilities
@@ -113,9 +126,14 @@ Floor 6 cuts out complicated shift schedules and trivia tests in favor of direct
      > *In the center of all the glowing spirits stands **a single living man** in dark robes conducting the binding rite: **Seer Valerius**.*
 3. **The Immediate Deduction:**
    - Layla knows at once: *Every other figure in this room is a ghost. The only living person standing among them is Seer Valerius!*
-4. **The Boss Fight & Revival Sigil:**
+4. **The Boss Fight & Bind Sigil:**
    - Layla engages and defeats Seer Valerius in combat.
-   - Seer Valerius drops the **Revival Sigil Scroll**, teaching Layla the `revive-sigil`.
+   - Seer Valerius drops the **Bind Sigil Scroll**, teaching Layla the `bind-sigil`.
+   - **Mastering Creation & Reclaiming True Names:**
+     With both the **Spawn Sigil** (`spawn-sigil`, learned on Floor 3) and the **Bind Sigil** (`bind-sigil`), Layla masters the complete arcane lifecycle. Rather than enslaving souls into mindless constructs, she reverses the High Sanctuary's corruption:
+     - By channeling the **Bind Sigil** through **Zayd's Lantern**, she binds the lingering memory shards and spirits of Zayd's parents back into Sakhra's core, awakening **Jamil** as a conscious ally (without physical change to his stone shell).
+     - Similarly, she can awaken Queen Nazira (`elf-queen-4`) on Floor 2 via Zayd's voice and the Bind Sigil.
+     - She can bind fallen friendly spirits into summoned shells to sustain her party.
 
 ---
 
