@@ -2086,7 +2086,35 @@
           "payload_template": {
             "kind": "set_party_order_by_tag",
             "tag": "pawn",
-            "order": "advance"
+            "order": "follow"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_board_id",
+              "operator": "equal",
+              "value": "deep-forest"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_party_order",
+            "actor_id": "elf-pawn-5",
+            "order": "guard"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_board_id",
+              "operator": "equal",
+              "value": "deep-forest"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_party_order",
+            "actor_id": "elf-pawn-6",
+            "order": "guard"
           }
         },
         {
@@ -2101,6 +2129,20 @@
             "kind": "set_party_order_by_tag",
             "tag": "knight",
             "order": "advance"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_board_id",
+              "operator": "equal",
+              "value": "deep-forest"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_party_order_by_tag",
+            "tag": "bishop",
+            "order": "follow"
           }
         },
         {
@@ -2128,7 +2170,7 @@
           "payload_template": {
             "kind": "set_party_order_by_tag",
             "tag": "queen",
-            "order": "advance"
+            "order": "patrol"
           }
         }
       ]

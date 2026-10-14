@@ -6,38 +6,48 @@ use cinder_core::loader::load_named_pack;
 fn elf_army_party_authors_role_orders() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
 
-    let army = pack
-        .settings
-        .parties
-        .iter()
-        .find(|party| party.id == "elf-army")
-        .expect("elf-army party authored");
-    assert_eq!(army.controller, PartyController::Ai);
-    assert_eq!(army.leader.as_deref(), Some("elf-king-5"));
-    assert_eq!(army.members.len(), 16);
-    let rule_ids = army
-        .combat_rules
-        .iter()
-        .map(|rule| rule.id.as_str())
-        .collect::<Vec<_>>();
-    assert_eq!(rule_ids, vec!["elf-guard-intercept", "elf-assist-counter"]);
-    assert!(
-        army.combat_rules
+    for (party_id, leader, member_count) in [
+        ("elf-vanguard-west", "elf-knight-2", 4),
+        ("elf-vanguard-east", "elf-knight-7", 4),
+        ("elf-queen-patrol", "elf-queen-4", 3),
+        ("elf-royal-court", "elf-king-5", 5),
+    ] {
+        let squad = pack
+            .settings
+            .parties
             .iter()
-            .all(|rule| !rule.skill_id.is_empty()),
-        "AI-party rules must bind a skill so gating stays skill-driven"
-    );
+            .find(|party| party.id == party_id)
+            .unwrap_or_else(|| panic!("{party_id} party authored"));
+        assert_eq!(squad.controller, PartyController::Ai);
+        assert_eq!(squad.leader.as_deref(), Some(leader));
+        assert_eq!(squad.members.len(), member_count);
+        assert!(
+            squad
+                .combat_rules
+                .iter()
+                .all(|rule| !rule.skill_id.is_empty()),
+            "AI-party rules must bind a skill so gating stays skill-driven"
+        );
+    }
 
     let state = WorldState::new(&pack);
-    for (actor_id, order) in [
-        ("elf-pawn-1", "patrol"),
-        ("elf-pawn-8", "patrol"),
-        ("elf-rook-1", "guard"),
-        ("elf-knight-2", "patrol"),
-        ("elf-bishop-3", "guard"),
-        ("elf-queen-4", "patrol"),
-        ("elf-king-5", "guard"),
-        ("elf-rook-8", "guard"),
+    for (actor_id, order, expected_party) in [
+        ("elf-pawn-1", "patrol", "elf-vanguard-west"),
+        ("elf-pawn-2", "patrol", "elf-vanguard-west"),
+        ("elf-knight-2", "patrol", "elf-vanguard-west"),
+        ("elf-bishop-3", "guard", "elf-vanguard-west"),
+        ("elf-pawn-3", "patrol", "elf-queen-patrol"),
+        ("elf-pawn-4", "patrol", "elf-queen-patrol"),
+        ("elf-queen-4", "patrol", "elf-queen-patrol"),
+        ("elf-pawn-5", "guard", "elf-royal-court"),
+        ("elf-pawn-6", "guard", "elf-royal-court"),
+        ("elf-rook-1", "guard", "elf-royal-court"),
+        ("elf-king-5", "guard", "elf-royal-court"),
+        ("elf-rook-8", "guard", "elf-royal-court"),
+        ("elf-bishop-6", "guard", "elf-vanguard-east"),
+        ("elf-knight-7", "patrol", "elf-vanguard-east"),
+        ("elf-pawn-7", "patrol", "elf-vanguard-east"),
+        ("elf-pawn-8", "patrol", "elf-vanguard-east"),
     ] {
         assert_eq!(
             state.party_order(&pack, actor_id).as_deref(),
@@ -48,8 +58,8 @@ fn elf_army_party_authors_role_orders() {
             state
                 .party_of_actor(actor_id)
                 .map(|party| party.id.as_str()),
-            Some("elf-army"),
-            "{actor_id} should belong to the elf-army party"
+            Some(expected_party),
+            "{actor_id} should belong to the {expected_party} party"
         );
     }
 }
@@ -87,7 +97,7 @@ fn allied_elf_resolves_to_the_player_party() {
         state
             .party_of_actor("elf-bishop-3")
             .map(|party| party.id.as_str()),
-        Some("elf-army")
+        Some("elf-vanguard-west")
     );
 
     state.set_actor_stance(&pack, "elf-bishop-3", ActorStance::Allied, false);
@@ -182,4 +192,53 @@ fn guarding_rook_shields_the_elf_king_from_the_player() {
         text.contains("steps across"),
         "expected intercept narration: {text}"
     );
+}
+
+#[test]
+fn board_entry_mobilizes_squad_orders_and_king_defeat_clears_hostility() {
+    use cinder_core::engine::dialogue::ScriptedDialogueGenerator;
+    use cinder_core::engine::runtime::CinderRuntime;
+
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+
+    // Start in r5c5 (Floor 1 end room) with shaman defeated so the trapdoor is open
+    state.current_room_id = "r5c5".to_string();
+    state.clock.turn_number = 1;
+    state.story_vars.set_unchecked("shaman_defeated", "true");
+    let dialogue = std::sync::Arc::new(ScriptedDialogueGenerator::new());
+    let runtime = CinderRuntime::with_dialogue_generator(pack.clone(), state, dialogue)
+        .expect("runtime creates");
+
+    // Move Down into Floor 2 (d1c1), triggering board.entered for deep-forest
+    let outcome = runtime.run_turn("down").expect("descends to floor 2");
+    assert!(outcome.text().contains("Mushroom Grove") || outcome.text().contains("d1c1"));
+
+    let end_state = runtime.export_state().unwrap();
+
+    // Verify squad mobilized orders
+    for (actor_id, expected_order) in [
+        ("elf-knight-2", "advance"),
+        ("elf-bishop-3", "follow"),
+        ("elf-pawn-1", "follow"),
+        ("elf-pawn-2", "follow"),
+        ("elf-knight-7", "advance"),
+        ("elf-bishop-6", "follow"),
+        ("elf-pawn-7", "follow"),
+        ("elf-pawn-8", "follow"),
+        ("elf-queen-4", "patrol"),
+        ("elf-pawn-3", "follow"),
+        ("elf-pawn-4", "follow"),
+        ("elf-king-5", "guard"),
+        ("elf-rook-1", "follow"),
+        ("elf-rook-8", "follow"),
+        ("elf-pawn-5", "guard"),
+        ("elf-pawn-6", "guard"),
+    ] {
+        assert_eq!(
+            end_state.party_order(&pack, actor_id).as_deref(),
+            Some(expected_order),
+            "expected {actor_id} to have order {expected_order} after board entry"
+        );
+    }
 }

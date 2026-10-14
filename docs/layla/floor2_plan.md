@@ -62,45 +62,64 @@ They wear armor fashioned from hardened forest materials: layered broad leaves c
 
 ### Pawns (×8 — `elf-pawn-1` to `elf-pawn-8`)
 - **Station:** Row `d7` (`d7c1` through `d7c8`).
-- **Stats:** Level 3 | HP 6 | Str 2 | Def 1 | Int 3 | XP 10.
+- **Stats:** Level 2 | HP 29 | Str 4 | Def 1 | Int 3 | XP 10.
 - **Weapon & Gear:** `leaf-spear`, `leaf-paste`.
-- **Behavior:** The advance screen. Quick and alert. In `movement.json`, they move on a fast **1-tick cadence**, probing the mid-forest and intercepting intruders.
+- **Behavior:** Distributed across the 4 tactical squads. Pawns 1 & 2 follow Knight 2; Pawns 7 & 8 follow Knight 7; Pawns 3 & 4 follow Queen 4; Pawns 5 & 6 guard the entrance to the King's Grove (`d7c5`, `d7c6`).
 - **Inspect text:** *"A lithe elf sentry clad in stiff leaf armor, balancing a spear with effortless precision. Their silver-green eyes track your every twitch with clinical discipline."*
 
 ### Knights (×2 — `elf-knight-2`, `elf-knight-7`)
 - **Station:** `d8c2` and `d8c7` (back rank flanks).
-- **Stats:** Level 4 | HP 10 | Str 4 | Def 2 | Int 4 | XP 25.
+- **Stats:** Level 3 | HP 35 | Str 5 | Def 2 | Int 3 | XP 25.
 - **Weapon & Gear:** `leaf-helm`, `leaf-gloves`.
-- **Behavior:** Outriders and skirmishers. Patrol on a **2-tick cadence**, capable of aggressive pursuit.
+- **Behavior:** Designated leaders of the West Vanguard (`elf-vanguard-west`) and East Vanguard (`elf-vanguard-east`). Advance toward Layla on a **2-tick cadence**, supported by a Bishop healer and two flanking Pawns.
 - **Inspect text:** *"An agile elf warrior bearing a crest of dark curved bark. They balance on the balls of their feet, ready to spring sideways or leap past obstacles in an instant."*
 
 ### Bishops (×2 — `elf-bishop-3`, `elf-bishop-6`)
 - **Station:** `d8c3` and `d8c6` (royal guard flank).
-- **Stats:** Level 4 | HP 10 | Str 4 | Def 2 | Int 4 | XP 25.
+- **Stats:** Level 3 | HP 35 | Str 3 | Def 2 | Int 4 | XP 25.
 - **Weapon & Gear:** `leaf-crook`, `leaf-boots`.
-- **Behavior:** Channelers and battlefield tacticians. Patrol on a **3-tick cadence**, maintaining sightlines.
+- **Behavior:** Channelers and combat healers. Assigned to follow their respective Vanguard Knight leaders into battle. In combat, they cast `heal` (Power 4, `combat.bishop_heal`) to sustain their vanguard comrades.
 - **Inspect text:** *"An austere elf holding a tall crooked bough that pulses with faint green light. Their gaze cuts diagonally across the grove, measuring distances and angles."*
 
 ### Rooks (×2 — `elf-rook-1`, `elf-rook-8`)
 - **Station:** `d8c1` and `d8c8` (corner bastions).
-- **Stats:** Level 5 | HP 14 | Str 5 | Def 3 | Int 4 | XP 40.
+- **Stats:** Level 3 | HP 41 | Str 6 | Def 3 | Int 3 | XP 40.
 - **Weapon & Gear:** `leaf-plate`, `leaf-paste`.
-- **Behavior:** Heavy shock infantry clad in dense, multi-layered leaf breastplates. Move on a deliberate **3-tick cadence**.
+- **Behavior:** Heavy shock bodyguards in the Royal Court (`elf-royal-court`). Pathfinds to/holds `d8c5` beside the King. Uses `elf-guard-intercept` to jump in and absorb attacks directed at the King while health $\ge 25\%$.
 - **Inspect text:** *"A broad-shouldered elf sentinel armored in heavy plates of lacquered bark and compressed leaf. They stand like a living redoubt, unyielding and direct."*
 
 ### The Elf Queen (×1 — `elf-queen-4`)
 - **Station:** `d8c4` (beside the King).
-- **Stats:** Level 6 | HP 16 | Str 6 | Def 3 | Int 6 | XP 60.
+- **Stats:** Level 3 | HP 47 | Str 7 | Def 3 | Int 5 | XP 60.
 - **Weapon & Gear:** `leaf-ring` (50% drop chance).
-- **Behavior:** The army's supreme champion. Lethal combatant with high strength and intellect. Patrols on a **4-tick cadence**, sweeping across adjacent glades.
+- **Behavior:** Leader of the roaming patrol squad (`elf-queen-patrol`), accompanied by Pawns 3 & 4. Roams the central mid-forest on a **4-tick cadence**. Potent striker with Power 6 `heal`.
 - **Inspect text:** *"A formidable elf commander whose braided leaf ring hums with quiet power. Her movements are fluid, swift, and completely without hesitation."*
 
 ### The Elf King (×1 — `elf-king-5` — Boss of Floor 2)
 - **Station:** `d8c5` ("The King's Grove").
-- **Stats:** Level 8 | HP 20 | Str 6 | Def 4 | Int 7 | XP 0 (Defeat is a story victory).
+- **Stats:** Level 3 | HP 53 | Str 7 | Def 4 | Int 5 | XP 0 (Defeat is a story victory).
 - **Weapon & Gear:** Drops the **`drain-scroll`** (100%) and `leaf-cloak` (35%).
-- **Behavior:** **Stationary.** Sits upon the woven root-throne of `d8c5`, calmly awaiting Layla.
+- **Behavior:** Leader of the Royal Court (`elf-royal-court`). **Stationary.** Sits upon the woven root-throne of `d8c5`, guarded by Rooks 1 & 8 and Pawns 5 & 6.
 - **Inspect text:** *"The sovereign of the underground forest, draped in a mantle of dark root-stitched leaves. He sits upon a throne grown from living wood, watching you approach with neither malice nor fear."*
+
+---
+
+### Tactical Squad Organizations
+
+Instead of a single monolithic army swarming Layla, the 16 pieces operate as 4 coordinated AI parties:
+
+1. **West Vanguard (`elf-vanguard-west`)**:
+   - *Composition:* `elf-knight-2` (Leader), `elf-bishop-3`, `elf-pawn-1`, `elf-pawn-2`.
+   - *Tactic:* Knight advances along Queenside files (`c1`–`c3`) on a 2-tick cadence, flanked by pawns and supported by Bishop healing.
+2. **East Vanguard (`elf-vanguard-east`)**:
+   - *Composition:* `elf-knight-7` (Leader), `elf-bishop-6`, `elf-pawn-7`, `elf-pawn-8`.
+   - *Tactic:* Knight advances along Kingside files (`c6`–`c8`) on a 2-tick cadence with Bishop healing.
+3. **Queen's Patrol (`elf-queen-patrol`)**:
+   - *Composition:* `elf-queen-4` (Leader), `elf-pawn-3`, `elf-pawn-4`.
+   - *Tactic:* Wandering roaming patrol across mid-forest ranks (`d3`–`d6`) on a 4-tick cadence.
+4. **The Royal Court (`elf-royal-court`)**:
+   - *Composition:* `elf-king-5` (Leader), `elf-rook-1`, `elf-rook-8`, `elf-pawn-5`, `elf-pawn-6`.
+   - *Tactic:* Stationary fortress defense at `d8c5`. Pawns hold the sentry approaches at `d7c5` and `d7c6`; Rooks stand in `d8c5` intercepting strikes against the King.
 
 ---
 
@@ -199,7 +218,7 @@ Every room in the 8×8 grid must have inspectable features to ground the player'
 
 1. **Features in `rooms.json`** — all 64 rooms (`d1c1`–`d8c8`) carry the canonical archetype features defined above, two per room. No room has an empty `features` list (`content/layla/locales/en/rooms.json`).
 2. **Rich Inspect Text for Elf Actors** — every elf (`elf-pawn-*` through `elf-king-5`) has rank-appropriate `inspect_text` in `content/layla/locales/en/actors.json`.
-3. **Elf army as an AI party with standing orders** — the sixteen pieces form the `elf-army` party (leader `elf-king-5`), driven by authored per-role `initial_orders`, the `board.entered` / `actor.defeated` order hooks, and role reactions (guard interception, counterattack). The king's defeat hook sets `elf_king_defeated`, narrates the ceasefire, flips `elf` actors to `neutral` (`follows_player: false`), and orders the survivors to `hold`. Covered by `cinder-core/tests/layla_elf_army.rs`.
+3. **Elf army structured into 4 tactical squads with standing orders** — the sixteen pieces form 4 coordinated AI parties (`elf-vanguard-west`, `elf-vanguard-east`, `elf-queen-patrol`, `elf-royal-court`), driven by authored per-squad `initial_orders`, dynamic mobilization on `board.entered`, and role reactions (guard interception, counterattack, and combat healing). The king's defeat hook sets `elf_king_defeated`, narrates the ceasefire, flips all `elf` actors to `neutral` (`follows_player: false`), and orders the survivors to `hold`. Covered by `cinder-core/tests/layla_elf_army.rs`.
 
 **Open:**
 
