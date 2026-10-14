@@ -150,6 +150,28 @@ fn sync_followers_of_actor(
     to_room_id: &str,
     lines: &mut NarrativeLines,
 ) {
+    let mut visited = std::collections::BTreeSet::new();
+    visited.insert(leader_id.to_string());
+    sync_followers_of_actor_inner(
+        state,
+        content,
+        leader_id,
+        from_room_id,
+        to_room_id,
+        lines,
+        &mut visited,
+    );
+}
+
+fn sync_followers_of_actor_inner(
+    state: &mut WorldState,
+    content: &ContentPack,
+    leader_id: &str,
+    from_room_id: &str,
+    to_room_id: &str,
+    lines: &mut NarrativeLines,
+    visited: &mut std::collections::BTreeSet<String>,
+) {
     let followers = state.followers_of(content, leader_id);
     let health_stat_id = if content.settings.combat.health_stat_id.is_empty() {
         "hp"
@@ -157,6 +179,9 @@ fn sync_followers_of_actor(
         &content.settings.combat.health_stat_id
     };
     for follower_id in followers {
+        if !visited.insert(follower_id.clone()) {
+            continue;
+        }
         if state.actor_is_offstage(content, &follower_id) {
             continue;
         }
@@ -187,18 +212,34 @@ fn sync_followers_of_actor(
                 ],
             ));
         }
+        if state.current_room_id == from_room_id
+            && let Some(destination) = content.room(to_room_id)
+        {
+            let actor_name = content
+                .actor(&follower_id)
+                .map(|actor| actor.name.as_str())
+                .unwrap_or(follower_id.as_str());
+            lines.narration(content.render_template(
+                &content.presentation.presentation_text.actor_departed,
+                &[
+                    ("actor_name", actor_name),
+                    ("room_title", destination.title.as_str()),
+                ],
+            ));
+        }
         lines.extend_lines(advance_objective_for_signal(
             state,
             content,
             &format!("actor_entered:{follower_id}:{to_room_id}"),
         ));
-        sync_followers_of_actor(
+        sync_followers_of_actor_inner(
             state,
             content,
             &follower_id,
             from_room_id,
             to_room_id,
             lines,
+            visited,
         );
     }
 }

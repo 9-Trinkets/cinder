@@ -108,7 +108,11 @@ impl WorldState {
             }
             if party.leader.as_deref() == Some(leader_id) {
                 for member in &party.members {
-                    if member != leader_id && !followers.contains(member) {
+                    if member != leader_id
+                        && self.party_of_actor(member).map(|p| p.id.as_str())
+                            == Some(party.id.as_str())
+                        && !followers.contains(member)
+                    {
                         let is_follow = self
                             .party_order(content, member)
                             .and_then(|order| parse_order(&order))

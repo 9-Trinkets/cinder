@@ -352,3 +352,80 @@ fn vanguard_followers_march_together_with_their_knight_and_succeed_on_defeat() {
         "new leader must inherit the advance order"
     );
 }
+
+#[test]
+fn knight_waits_for_separated_squad_and_never_moves_alone() {
+    use cinder_core::engine::dialogue::ScriptedDialogueGenerator;
+    use cinder_core::engine::runtime::CinderRuntime;
+
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+
+    // Initial positions from content:
+    // elf-knight-2: d8c2
+    // elf-bishop-3: d8c3
+    // elf-pawn-1: d7c1
+    // elf-pawn-2: d7c2
+    for id in ["elf-knight-2", "elf-bishop-3", "elf-pawn-1", "elf-pawn-2"] {
+        state.set_actor_stance(&pack, id, ActorStance::Hostile, false);
+    }
+    // Player is at d1c1
+    state.current_room_id = "d1c1".to_string();
+    state.clock.turn_number = 1;
+    // Set clock to 1 so tick start lands on 2 (an even cadence)
+    state.clock.current_time_minutes = 1;
+
+    let dialogue = std::sync::Arc::new(ScriptedDialogueGenerator::new());
+    let runtime = CinderRuntime::with_dialogue_generator(pack.clone(), state, dialogue)
+        .expect("runtime creates");
+
+    // Tick 1: Knight is separated from followers.
+    // Even though cadence is satisfied (clock 2), knight MUST hold in d8c2 waiting for squad!
+    runtime.run_tick().expect("tick 1");
+    let s1 = runtime.export_state().unwrap();
+    assert_eq!(
+        s1.actor_current_room_id(&pack, "elf-knight-2"),
+        "d8c2",
+        "knight must wait in d8c2 for squad assembly and not move alone"
+    );
+
+    // Tick 2: Followers continue pathfinding into d8c2
+    runtime.run_tick().expect("tick 2");
+    let s2 = runtime.export_state().unwrap();
+
+    // Verify followers are assembling in d8c2
+    assert_eq!(
+        s2.actor_current_room_id(&pack, "elf-bishop-3"),
+        "d8c2",
+        "bishop must have assembled in d8c2"
+    );
+    assert_eq!(
+        s2.actor_current_room_id(&pack, "elf-pawn-2"),
+        "d8c2",
+        "pawn 2 must have assembled in d8c2"
+    );
+
+    // Run until assembled and advance commences
+    let mut advanced_together = false;
+    for _ in 1..=5 {
+        runtime.run_tick().expect("subsequent tick");
+        let cur = runtime.export_state().unwrap();
+        let k_room = cur.actor_current_room_id(&pack, "elf-knight-2");
+        if k_room != "d8c2" {
+            // Knight has advanced to a new room! All squad members MUST be with it!
+            for follower_id in ["elf-bishop-3", "elf-pawn-1", "elf-pawn-2"] {
+                assert_eq!(
+                    cur.actor_current_room_id(&pack, follower_id),
+                    k_room,
+                    "follower {follower_id} must have moved into {k_room} with knight leader"
+                );
+            }
+            advanced_together = true;
+            break;
+        }
+    }
+    assert!(
+        advanced_together,
+        "vanguard squad should advance together after assembly"
+    );
+}

@@ -141,6 +141,33 @@ pub(crate) trait MovementStrategyResolver {
     ) -> Option<Box<dyn MovementStrategy>>;
 }
 
+fn has_unjoined_followers(content: &ContentPack, state: &WorldState, actor_id: &str) -> bool {
+    let Some(party) = state.party_of_actor(actor_id) else {
+        return false;
+    };
+    if party.is_player_controlled() || party.leader.as_deref() != Some(actor_id) {
+        return false;
+    }
+    let leader_room = state.actor_current_room_id(content, actor_id);
+    if leader_room.is_empty() {
+        return false;
+    }
+    let health_stat_id = if content.settings.combat.health_stat_id.is_empty() {
+        "hp"
+    } else {
+        &content.settings.combat.health_stat_id
+    };
+    let leader_stance = state.stance(actor_id);
+    let followers = state.followers_of(content, actor_id);
+    followers.iter().any(|follower_id| {
+        state.stance(follower_id) == leader_stance
+            && !state.actor_is_offstage(content, follower_id)
+            && !state.actor_is_defeated(follower_id, health_stat_id)
+            && !state.actor_is_imprisoned(content, follower_id)
+            && state.actor_current_room_id(content, follower_id) != leader_room
+    })
+}
+
 #[derive(Debug, Clone, Copy, Default)]
 pub(crate) struct DefaultMovementStrategyResolver;
 
@@ -153,6 +180,9 @@ impl MovementStrategyResolver for DefaultMovementStrategyResolver {
     ) -> Option<Box<dyn MovementStrategy>> {
         if state.followed_actor(actor_id).is_some() {
             return None;
+        }
+        if has_unjoined_followers(content, state, actor_id) {
+            return Some(Box::new(StayStrategy));
         }
         if let Some(order) = state.party_order(content, actor_id) {
             let authored = content
