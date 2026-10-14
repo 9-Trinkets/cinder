@@ -63,7 +63,7 @@ pub(in crate::engine::reducer) fn defeat_actor(
         &actor_name,
         lines,
     );
-    let followers = state.followers_of(actor_id);
+    let followers = state.followers_of(content, actor_id);
     let health_stat_id = if content.settings.combat.health_stat_id.is_empty() {
         "hp"
     } else {
@@ -76,11 +76,17 @@ pub(in crate::engine::reducer) fn defeat_actor(
         })
         .collect();
     if let Some((new_leader, rest)) = living_followers.split_first() {
-        if let Some(order) = state.relations.party_orders.get(actor_id).cloned() {
+        if let Some(order) = state.party_order(content, actor_id) {
             state
                 .relations
                 .party_orders
                 .insert(new_leader.clone(), order);
+        }
+        if let Some(party) = state.party_of_actor(actor_id) {
+            let party_id = party.id.clone();
+            if let Some(p) = state.parties.get_mut(&party_id) {
+                p.leader = Some(new_leader.clone());
+            }
         }
         state.set_followed_actor(new_leader, None);
         for follower_id in rest {

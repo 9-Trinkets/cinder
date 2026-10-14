@@ -1,5 +1,6 @@
 use super::*;
 use crate::content::types::PartyOrderKind;
+use crate::engine::orders::{OrderKind, parse_order};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 
@@ -92,14 +93,34 @@ impl WorldState {
         }
     }
 
-    pub fn followers_of(&self, leader_id: &str) -> Vec<String> {
+    pub fn followers_of(&self, content: &ContentPack, leader_id: &str) -> Vec<String> {
         let leader_id = remap_story_actor_id(self, leader_id);
-        self.relations
+        let mut followers: Vec<String> = self
+            .relations
             .followed_actors
             .iter()
             .filter(|(_, target)| target.as_str() == leader_id)
             .map(|(follower, _)| follower.clone())
-            .collect()
+            .collect();
+        for party in self.parties.values() {
+            if party.is_player_controlled() {
+                continue;
+            }
+            if party.leader.as_deref() == Some(leader_id) {
+                for member in &party.members {
+                    if member != leader_id && !followers.contains(member) {
+                        let is_follow = self
+                            .party_order(content, member)
+                            .and_then(|order| parse_order(&order))
+                            .is_some_and(|kind| matches!(kind, OrderKind::Follow));
+                        if is_follow {
+                            followers.push(member.clone());
+                        }
+                    }
+                }
+            }
+        }
+        followers
     }
 
     /// Sets an actor's stance and follower state, and initializes party order if Allied.

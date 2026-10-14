@@ -139,10 +139,10 @@
         "elf-pawn-2"
       ],
       "initial_orders": {
-        "elf-knight-2": "patrol",
-        "elf-bishop-3": "guard",
-        "elf-pawn-1": "patrol",
-        "elf-pawn-2": "patrol"
+        "elf-knight-2": "advance",
+        "elf-bishop-3": "follow",
+        "elf-pawn-1": "follow",
+        "elf-pawn-2": "follow"
       },
       "combat_rules": [
         {
@@ -178,10 +178,10 @@
         "elf-pawn-8"
       ],
       "initial_orders": {
-        "elf-knight-7": "patrol",
-        "elf-bishop-6": "guard",
-        "elf-pawn-7": "patrol",
-        "elf-pawn-8": "patrol"
+        "elf-knight-7": "advance",
+        "elf-bishop-6": "follow",
+        "elf-pawn-7": "follow",
+        "elf-pawn-8": "follow"
       },
       "combat_rules": [
         {
@@ -217,8 +217,8 @@
       ],
       "initial_orders": {
         "elf-queen-4": "patrol",
-        "elf-pawn-3": "patrol",
-        "elf-pawn-4": "patrol"
+        "elf-pawn-3": "follow",
+        "elf-pawn-4": "follow"
       },
       "combat_rules": [
         {
@@ -256,8 +256,8 @@
       ],
       "initial_orders": {
         "elf-king-5": "guard",
-        "elf-rook-1": "guard",
-        "elf-rook-8": "guard",
+        "elf-rook-1": "follow",
+        "elf-rook-8": "follow",
         "elf-pawn-5": "guard",
         "elf-pawn-6": "guard"
       },

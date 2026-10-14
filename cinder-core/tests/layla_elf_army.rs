@@ -32,22 +32,22 @@ fn elf_army_party_authors_role_orders() {
 
     let state = WorldState::new(&pack);
     for (actor_id, order, expected_party) in [
-        ("elf-pawn-1", "patrol", "elf-vanguard-west"),
-        ("elf-pawn-2", "patrol", "elf-vanguard-west"),
-        ("elf-knight-2", "patrol", "elf-vanguard-west"),
-        ("elf-bishop-3", "guard", "elf-vanguard-west"),
-        ("elf-pawn-3", "patrol", "elf-queen-patrol"),
-        ("elf-pawn-4", "patrol", "elf-queen-patrol"),
+        ("elf-pawn-1", "follow", "elf-vanguard-west"),
+        ("elf-pawn-2", "follow", "elf-vanguard-west"),
+        ("elf-knight-2", "advance", "elf-vanguard-west"),
+        ("elf-bishop-3", "follow", "elf-vanguard-west"),
+        ("elf-pawn-3", "follow", "elf-queen-patrol"),
+        ("elf-pawn-4", "follow", "elf-queen-patrol"),
         ("elf-queen-4", "patrol", "elf-queen-patrol"),
         ("elf-pawn-5", "guard", "elf-royal-court"),
         ("elf-pawn-6", "guard", "elf-royal-court"),
-        ("elf-rook-1", "guard", "elf-royal-court"),
+        ("elf-rook-1", "follow", "elf-royal-court"),
         ("elf-king-5", "guard", "elf-royal-court"),
-        ("elf-rook-8", "guard", "elf-royal-court"),
-        ("elf-bishop-6", "guard", "elf-vanguard-east"),
-        ("elf-knight-7", "patrol", "elf-vanguard-east"),
-        ("elf-pawn-7", "patrol", "elf-vanguard-east"),
-        ("elf-pawn-8", "patrol", "elf-vanguard-east"),
+        ("elf-rook-8", "follow", "elf-royal-court"),
+        ("elf-bishop-6", "follow", "elf-vanguard-east"),
+        ("elf-knight-7", "advance", "elf-vanguard-east"),
+        ("elf-pawn-7", "follow", "elf-vanguard-east"),
+        ("elf-pawn-8", "follow", "elf-vanguard-east"),
     ] {
         assert_eq!(
             state.party_order(&pack, actor_id).as_deref(),
@@ -162,9 +162,12 @@ fn guarding_rook_shields_the_elf_king_from_the_player() {
         .actor_room_overrides
         .insert("elf-rook-1".to_string(), "d8c5".to_string());
     state.set_actor_stance(&pack, "elf-rook-1", ActorStance::Hostile, false);
-    assert_eq!(
-        state.party_order(&pack, "elf-rook-1").as_deref(),
-        Some("guard")
+    assert!(
+        matches!(
+            state.party_order(&pack, "elf-rook-1").as_deref(),
+            Some("guard" | "follow")
+        ),
+        "rook order must be guard or follow"
     );
 
     let king_initial_hp = state.actor_stat("elf-king-5", "hp");
@@ -241,4 +244,111 @@ fn board_entry_mobilizes_squad_orders_and_king_defeat_clears_hostility() {
             "expected {actor_id} to have order {expected_order} after board entry"
         );
     }
+
+    // Advance turns until the vanguard reaches the player, asserting squad cohesion:
+    // Once assembled, all followers march into rooms together with their knight leader.
+    let mut reached_player = false;
+    for _ in 1..=20 {
+        let _ = runtime.run_turn("look").expect("look turn");
+        let _ = runtime.run_tick().expect("run tick");
+        let cur = runtime.export_state().unwrap();
+        let k_room = cur.actor_current_room_id(&pack, "elf-knight-2");
+        if k_room == cur.current_room_id {
+            reached_player = true;
+            // The entire squad must arrive in the player's room together
+            assert_eq!(
+                cur.actor_current_room_id(&pack, "elf-bishop-3"),
+                cur.current_room_id
+            );
+            assert_eq!(
+                cur.actor_current_room_id(&pack, "elf-pawn-1"),
+                cur.current_room_id
+            );
+            assert_eq!(
+                cur.actor_current_room_id(&pack, "elf-pawn-2"),
+                cur.current_room_id
+            );
+            break;
+        }
+    }
+    assert!(reached_player, "knight should have advanced to player room");
+}
+
+#[test]
+fn vanguard_followers_march_together_with_their_knight_and_succeed_on_defeat() {
+    use cinder_core::engine::dialogue::ScriptedDialogueGenerator;
+    use cinder_core::engine::runtime::CinderRuntime;
+
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+
+    // Assemble West Vanguard in d7c2 (facing player at d1c1)
+    for id in ["elf-knight-2", "elf-bishop-3", "elf-pawn-1", "elf-pawn-2"] {
+        state
+            .actors
+            .actor_room_overrides
+            .insert(id.to_string(), "d7c2".to_string());
+        state.set_actor_stance(&pack, id, ActorStance::Hostile, false);
+    }
+    state.current_room_id = "d1c1".to_string();
+    state.clock.turn_number = 1;
+    // Set clock to 1 so after tick start (+1 minute) it becomes 2 (even, cadence 2 fires)
+    state.clock.current_time_minutes = 1;
+
+    let dialogue = std::sync::Arc::new(ScriptedDialogueGenerator::new());
+    let runtime = CinderRuntime::with_dialogue_generator(pack.clone(), state, dialogue)
+        .expect("runtime creates");
+
+    // Run tick: leader advances toward player (d1c1)
+    runtime.run_tick().expect("tick runs");
+    let s1 = runtime.export_state().unwrap();
+    let k_room = s1.actor_current_room_id(&pack, "elf-knight-2").to_string();
+    assert_ne!(k_room, "d7c2", "knight should have advanced to a new room");
+
+    // All squad followers must have moved with the knight into the new room!
+    for follower_id in ["elf-bishop-3", "elf-pawn-1", "elf-pawn-2"] {
+        assert_eq!(
+            s1.actor_current_room_id(&pack, follower_id),
+            k_room,
+            "follower {follower_id} must have moved into {k_room} with knight leader"
+        );
+    }
+
+    // Now defeat the knight leader: squad leadership must succeed to one of the followers
+    let mut s2 = s1;
+    s2.combat
+        .actor_stats
+        .entry("elf-knight-2".to_string())
+        .or_default()
+        .insert("hp".to_string(), 1);
+    // Put player in the same room as the vanguard to strike
+    s2.current_room_id = k_room.to_string();
+
+    let runtime2 = CinderRuntime::with_dialogue_generator(
+        pack.clone(),
+        s2,
+        std::sync::Arc::new(ScriptedDialogueGenerator::new()),
+    )
+    .expect("runtime creates");
+    let _ = runtime2
+        .run_turn("attack elf knight")
+        .expect("attack defeats knight");
+    let end_state = runtime2.export_state().unwrap();
+
+    assert!(end_state.actor_is_defeated("elf-knight-2", "hp"));
+    let party = end_state.party_of_actor("elf-bishop-3").unwrap();
+    let new_leader = party.leader.as_deref().expect("new leader was chosen");
+    assert_ne!(
+        new_leader, "elf-knight-2",
+        "defeated knight should no longer be leader"
+    );
+    assert!(
+        ["elf-bishop-3", "elf-pawn-1", "elf-pawn-2"].contains(&new_leader),
+        "successor must be a living squad member"
+    );
+    assert_eq!(
+        end_state.party_order(&pack, new_leader).as_deref(),
+        Some("advance"),
+        "new leader must inherit the advance order"
+    );
 }

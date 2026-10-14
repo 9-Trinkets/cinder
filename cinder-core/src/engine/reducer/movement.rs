@@ -150,7 +150,7 @@ fn sync_followers_of_actor(
     to_room_id: &str,
     lines: &mut NarrativeLines,
 ) {
-    let followers = state.followers_of(leader_id);
+    let followers = state.followers_of(content, leader_id);
     let health_stat_id = if content.settings.combat.health_stat_id.is_empty() {
         "hp"
     } else {
@@ -172,6 +172,21 @@ fn sync_followers_of_actor(
             .actors
             .actor_room_overrides
             .insert(follower_id.clone(), to_room_id.to_string());
+        if state.current_room_id == to_room_id
+            && let Some(origin) = content.room(from_room_id)
+        {
+            let actor_name = content
+                .actor(&follower_id)
+                .map(|actor| actor.name.as_str())
+                .unwrap_or(follower_id.as_str());
+            lines.narration(content.render_template(
+                &content.presentation.presentation_text.actor_arrived,
+                &[
+                    ("actor_name", actor_name),
+                    ("room_title", origin.title.as_str()),
+                ],
+            ));
+        }
         lines.extend_lines(advance_objective_for_signal(
             state,
             content,
