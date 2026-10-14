@@ -774,7 +774,7 @@
     "rule": "effect_table",
     "rule_config": {
       "cases_path": "rules",
-      "next_on_match": "complete",
+      "next_on_match": "next",
       "next_on_default": "complete",
       "default_payload_template": {
         "effects": []
@@ -789,10 +789,18 @@
             "tag": "golem",
             "stance": "allied",
             "follows_player": true,
-            "move_to_player": true,
             "messages": [
               "conversion.ring"
             ]
+          }
+        },
+        {
+          "conditions": [],
+          "payload_template": {
+            "kind": "move_actors",
+            "tag": "golem",
+            "stance": "allied",
+            "room_id": "player"
           }
         }
       ]
@@ -1252,7 +1260,7 @@
             }
           ],
           "payload_template": {
-            "kind": "move_actor",
+            "kind": "move_actors",
             "actor_id": "zayd",
             "room_id": "village_south_1"
           }
@@ -1927,7 +1935,7 @@
             "value": "true"
           },
           {
-            "kind": "move_actor",
+            "kind": "move_actors",
             "actor_id": "player",
             "room_id": "sanctuary_grand_terrace"
           }
