@@ -877,7 +877,7 @@
       "rules": []
     }
   },
-  "item.revival_scroll_read": {
+  "item.bind_scroll_read": {
     "rule": "effect_table",
     "rule_config": {
       "cases_path": "rules",
@@ -887,16 +887,16 @@
         "effects": [
           {
             "kind": "set_story_var",
-            "key": "knows_revive",
+            "key": "knows_bind",
             "value": "true"
           },
           {
             "kind": "acquire_item",
-            "item_id": "revive-sigil"
+            "item_id": "bind-sigil"
           },
           {
             "kind": "narrate_message",
-            "key": "item.revival_scroll_read.learned"
+            "key": "item.bind_scroll_read.learned"
           }
         ]
       }
@@ -1599,7 +1599,7 @@
       ]
     }
   },
-  "item.revive_sigil_placed": {
+  "item.bind_sigil_placed": {
     "rule": "effect_table",
     "rule_config": {
       "cases_path": "rules",

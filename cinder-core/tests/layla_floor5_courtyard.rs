@@ -435,8 +435,8 @@ fn floor5_unlock_cages_frees_astrid_and_einar() {
         "Einar must offer sensory enhancer in thanks: {text}"
     );
     assert!(
-        !text.contains("warmth of high wisdom"),
-        "Must not trigger wisdom awakening on cage unlock: {text}"
+        !text.contains("dormant memory stirs") && !text.contains("fog in their mind"),
+        "Must not trigger awakening on cage unlock: {text}"
     );
     assert!(!text.contains("\"\""), "Must not emit empty quotes: {text}");
 
@@ -1594,27 +1594,24 @@ fn floor5_charming_spawned_house_leaders_stops_their_armies() {
         .or_default()
         .insert("intelligence".to_string(), 50);
 
-    for (template_id, throne_room_id, muster_room_id, stopped_var, expected_wisdom) in [
+    for (template_id, throne_room_id, muster_room_id, stopped_var) in [
         (
             "lord_vane",
             "frost_wolf_throne",
             "frost_wolf_muster",
             "frost_wolf_lane_stopped",
-            6,
         ),
         (
             "warmaster_torin",
             "iron_ram_throne",
             "iron_ram_muster",
             "iron_ram_lane_stopped",
-            5,
         ),
         (
             "lady_sylvan",
             "frost_leopard_throne",
             "frost_leopard_muster",
             "frost_leopard_lane_stopped",
-            7,
         ),
     ] {
         let leader_id = match state.spawn_actor(
@@ -1654,11 +1651,10 @@ fn floor5_charming_spawned_house_leaders_stops_their_armies() {
             ActorStance::Allied,
             "{template_id} should be allied when charmed"
         );
-        // Ensure wisdom was not increased (charming does not awaken them)
-        assert_eq!(
-            state.actor_stat(&leader_id, "wisdom"),
-            expected_wisdom,
-            "{template_id} wisdom must remain unchanged"
+        // Ensure charming does not awaken them
+        assert!(
+            !state.is_actor_awakened(&leader_id),
+            "{template_id} must not be awakened by charming"
         );
     }
 

@@ -13,8 +13,9 @@
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::content::types::{ContentPack, ItemStorageTarget, PackMessageVoice};
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
-use cinder_core::engine::narrative::{NarrativeLine, NarrativeLineKind};
+use cinder_core::engine::narrative::{NarrativeLine, NarrativeLineKind, NarrativeLines};
 use cinder_core::engine::reducer::apply_events;
+use cinder_core::engine::reducer::transformations::maybe_apply_transformations;
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 
@@ -54,21 +55,19 @@ fn awakening_jamil_draws_a_handler_comment() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = "village_square".to_string();
     state.active_objective_stage_ids = vec!["sq_awaken_father".to_string()];
-    state.add_item("zayd-lantern");
+    state.story_vars.set_unchecked("awakened:sakhra", "true");
 
-    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
-    let outcome = runtime
-        .run_turn("give battered miner's lantern to sakhra")
-        .expect("give lantern to sakhra");
+    let mut lines = NarrativeLines::default();
+    let applied = maybe_apply_transformations(&mut state, &pack, "sakhra", &mut lines);
+    assert!(applied);
 
-    let after = runtime.export_state().expect("state exported");
-    assert!(after.is_actor_awakened("sakhra"), "the quest must complete");
+    assert!(state.is_actor_awakened("sakhra"), "the quest must complete");
     assert!(
-        handler_lines(&outcome.lines)
+        handler_lines(&lines.0)
             .iter()
             .any(|line| line.text.contains("read better quiet")),
         "Handler must comment on awakening Jamil: {:#?}",
-        outcome.lines
+        lines.0
     );
 }
 

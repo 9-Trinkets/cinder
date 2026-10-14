@@ -194,8 +194,8 @@ Below the board, in the descent rooms, lies an underground forest populated by a
 **full chess army of elves**: pawns, rooks, knights, bishops, a queen, and a
 **king**. (Chess — another language Layla speaks from an older life.) They are
 armed and hostile, and the most *nearly-woken* converts in the dungeon: villagers
-reprogrammed into ranked pieces, carrying far more **Wisdom** than the golems
-(7–9 vs 3). That high wisdom is why they keep flashes of will — why the army
+reprogrammed into ranked pieces whose conversion sits closest to the surface.
+That preserved spirit resonance is why they keep flashes of will — why the army
 "refuses to be bound" and why, at the end, it can choose to stand down. The
 **queen** in particular is the closest to waking of any piece on the board: she
 is Zayd's mother (see Level 4), a convert who never fully stopped searching for
@@ -205,8 +205,8 @@ teaches the drain sigil.
 Defeating the **elf king** (hook `king.defeated`) does not bind the others by a
 ring — they simply *choose* to lower their weapons and let Layla pass. The
 contrast with the golems is deliberate: the shaman's ring *binds* golems to her
-will; the elves *decline to be bound*. Read as conversions, this is the wisdom
-stat leaking through the wipe. This is the game's freedom theme showing
+will; the elves *decline to be bound*. Read as conversions, this is their human
+memory and spirit identity leaking through the wipe. This is the game's freedom theme showing
 its first full face — and a warning about what rings do to a mind.
 
 ### Level 3 — The Fire-Rooms (Mancala / the Old Fire / the Elemental)
@@ -261,9 +261,9 @@ The working foundation of the kingdom. Simple stone villages, mushroom farms, an
 The game genre pivots to **Tower Defense (Real-Time Strategy)**. Everything in this world is literally pure computer code—1s and 0s—and Layla discovers that the dungeon's floors are separate virtual biomes partitioned by the company. Arriving in an **ice world** of snowy mountain castles, Layla teleports onto a platform at the center of a 7-room **hexagonal courtyard** filled with cages holding virtual "offerings" (mostly old people and children from various towns). After cutting down the sentries and looting the cage key, Layla frees the captives, recruiting **Commander Astrid** (a formidable female garrison commander with a great tower shield) and **Einar** (a compassionate male healer from Floor 6). Einar gives Layla a smuggled **sensory enhancer** that heightens her senses and perception, upgrading her map HUD to track allies and teleport nodes in real time. Surrounding the courtyard are the estates of **three noble houses** whose forces mobilize in **exponentially harder waves** with a strict spawning cadence (each house queues 30 soldiers, dispatching squads of 3 at fixed intervals through the north, southeast, or southwest estate approach). Astrid and her allies hold those three approach rooms (`guard` with counterattack), while Einar heals (`support` + `lowest_health_ally`). The house leaders remain sealed in their throne rooms until the final wave. Then all three march through their estates toward the courtyard, where Layla must defeat or awaken them to rout their armies and end the siege, costing the Handler his Sector-5 terminal and forcing him to withdraw to the Royal Core.
 
 #### Level 6 — The Clergy (The High Sanctuary & The Inquisition)
-The floor-by-floor design for Level 6 — the spiritual monster conversion pipeline, the Werewolf social deduction genre, the Day/Night liturgical cycle, spirits, and the revival sigil — lives in **`docs/layla/floor6_plan.md`**. What follows is the storyline canon this level carries.
+The floor-by-floor design for Level 6 — the spiritual monster conversion pipeline, the Werewolf social deduction genre, the Day/Night liturgical cycle, spirits, and the bind sigil — lives in **`docs/layla/floor6_plan.md`**. What follows is the storyline canon this level carries.
 
-The temple leaders who enforce obedience. Vast underground cathedrals, libraries, and binding vaults. Layla discovers that the dungeon is an automated monster assembly line: offerings arriving from Floor 5 have their spirits separated into soul containers and re-bound through the **Rite of Oblivion** into monster shells and utility constructs. Infiltrating alone as a "werewolf" via Einar's clandestine token while her party waits on Floor 5, Layla deduces the identities of the **Seer** and the **Witch**, gains the spiritual enhancer pill to perceive lingering spirits, learns the Bind Sigil (mastering the creation and binding cycle to awaken lost souls and restore true names), and assassinates the Seer to break the re-binding ritual before activating the main platform to bring her party through.
+The temple leaders who enforce obedience. Vast underground cathedrals, libraries, and binding vaults. Layla discovers that the dungeon is an automated monster assembly line: offerings arriving from Floor 5 have their spirits separated into soul containers and re-bound through the **Rite of Oblivion** into monster shells and utility constructs. Infiltrating alone as a "werewolf" via Einar's clandestine token while her party waits on Floor 5, Layla deduces the identities of the **Seer** and the **Witch**, gains the spirit pill to perceive lingering spirits, learns the Bind Sigil (mastering the creation and binding cycle to awaken lost souls and restore true names), and assassinates the Seer to break the re-binding ritual before activating the main platform to bring her party through.
 
 ### Level 7 — The Royal Core: The Handler on his throne (the current Dungeon Master)
 The final test of Layla's journey:
@@ -280,15 +280,28 @@ Floors 4, 5, and 6 introduce an active **Quest System** (one Main Quest and side
 - **Rebellion:** Plots against cruel lords, where Layla discovers the temple priests secretly pulled the strings.
 - **The Core Test:** Every choice tests whether Layla will rule as a tyrant (becoming the next Dungeon Master) or help the kingdom's people unite and break free.
 
-### The Hidden Stat: Wisdom (WIS) & The "Awakening" Mechanic
-In this kingdom, people and monsters have been brainwashed into fixed roles (Peasant, Knight, Priest, Golem, Pawn). To break this spell, Layla uses a hidden stat: **Wisdom (WIS)** — now implemented for real in `content/layla/stats.json` (seed default 3, range 0–10, surfaced in the vitals/inspect UI):
-- **Default Followers:** When Layla charms a creature, it follows her quietly and obeys basic orders without speaking.
-- **Boosting the Mind:** Layla can give followers Wisdom gear (mementos like **Zayd's Lantern**, +6 WIS, or town mementos) to raise their WIS stat. Once given, mementos cannot be retrieved.
-- **The Awakening:** When a follower's Wisdom reaches 10 or higher:
-  - They break free from their mind-wiped role and remember who they are.
-  - Their generic name changes back to their real name (e.g. `golem-dark-nw` → *Orin*, `sakhra` → *Jamil*, `elf-queen-4` → Zayd's mother).
-  - Full speech (`speak`) unlocks: they remember their past life, talk about kingdom secrets, and fight as loyal, free allies.
-- Per-piece awakening storylines (who each surviving golem/elf was, and what they say on waking) are recorded in **`docs/layla/floor4_plan.md` § 5**.
+### The Monster Conversion & Awakening Mechanics
+
+In this kingdom, monsters are not natural wildlife—they are human offerings converted through an arcane factory pipeline into obedient constructs. The canonical conversion process runs in three stages:
+
+1. **Kill the Offering:** The secular physical shell is destroyed, separating the spirit container.
+2. **Spawn a Physical Body:** An artificial monster body or dungeon shell is created (e.g. using the Spawn Sigil).
+3. **Bind the Spirit:** The spirit of the offering is bound into the monster shell using the High Sanctuary's binding rites and the Bind Sigil (`bind-sigil`), scrubbing secular memories and locking the actor into a functional monster role (Golems, Pawns, Knights, Town Guardians).
+
+To break this mind-wipe and restore an offering's humanity, Layla must perform the canonical **Awakening Process**:
+
+1. **Find Spirit Shards on Memento Items:** Mementos preserved by loved ones (such as Zayd's Lantern, town tokens, or family keepsakes) carry the dormant spirit shards and preserved identities of converted people.
+2. **Bind the Spirit Shards to Monsters:** Using the **Bind Sigil** (`bind-sigil`, learned on Floor 6 from Seer Valerius), Layla channels and binds these spirit shards back into the monsters' cores.
+
+When a monster's spirit shard is bound:
+- The mind-wipe shatters and their lost memories flood back.
+- Their generic monster name reverts to their true human name (e.g. `golem-dark-nw` → *Orin*, `sakhra` → *Jamil*, `elf-queen-4` → *Nazira*).
+- Full human speech (`speak`) unlocks: they remember their past life, provide lore and guidance, and become loyal, free companions.
+
+> [!NOTE]
+> The old `wisdom` stat and mementos' stat-boosting effects (+6 WIS) have been completely retconned and removed from the game engine and design. Mementos do not boost stats; they carry the spirit shards needed for memory restoration via the Bind Sigil.
+
+Per-piece awakening storylines (who each surviving golem/elf was, and what they say on waking) are recorded in **`docs/layla/floor4_plan.md` § 5**.
 
 ### The Planned Endgame (canon intent)
 - **Primary Ending — Become the Dungeon Master:** Layla outlasts the timer or defeats the Handler in her dungeon. The Handler withers and dies, congratulating her. Layla ascends to the throne as the new Dungeon Master, running the dungeon against future human adventurers.
@@ -352,7 +365,7 @@ All guidelines for prose style, the voice architecture (second-person narration 
 - **Encircling** converts neutral-but-wakeable golems to allies when fully
   surrounded by chalk rings.
 - **Drain sigil** saps 2 HP per tick from hostile living targets standing on it.
-- **L3 clock (planned):** the fire elemental laps the ring clockwise on a fixed
+- **L3 clock:** the fire elemental laps the ring clockwise on a fixed
   cadence and spawns fire sprites as it goes;
   the party exists to keep the sprite waves from compounding.
 - **Guard followers** intercept damage aimed at Layla.

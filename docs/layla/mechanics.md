@@ -23,12 +23,11 @@ Each floor challenges the party with higher-level enemies and rewards deeper exp
 
 ## 2. Core Stats and Stat Budgets
 
-Every character has five core primary stats:
+Every character has four core primary stats:
 - **Strength (STR)**: Physical hitting power and close-quarters force.
 - **Endurance (END)**: Physical defense and body toughness.
 - **Dexterity (DEX)**: Speed and combat action frequency.
 - **Intelligence (INT)**: Tactical mark mastery and spell power.
-- **Wisdom (WIS)**: Self-awareness and spiritual awakening.
 
 ### The Stat Budget Formula
 To keep encounters balanced, the sum of a character's base stats is strictly determined by their level:
@@ -62,11 +61,10 @@ $$\mathbf{Max\ HP} = 8 + (\mathbf{Level} \times 4) + (\mathbf{Endurance} \times 
 - Each point of **Strength** gives **+1 HP**.
 
 ### Max MP (Magic Points)
-$$\mathbf{Max\ MP} = 4 + (\mathbf{Level} \times 2) + (\mathbf{Intelligence} \times 3) + (\mathbf{Wisdom} \times 1)$$
+$$\mathbf{Max\ MP} = 4 + (\mathbf{Level} \times 2) + (\mathbf{Intelligence} \times 3)$$
 
 - Every level gained gives **+2 base MP**.
 - Each point of **Intelligence** gives **+3 MP**.
-- Each point of **Wisdom** gives **+1 MP**.
 
 ---
 

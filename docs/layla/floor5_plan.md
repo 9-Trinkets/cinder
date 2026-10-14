@@ -167,7 +167,7 @@ Each house possesses a unique crest, banner, combat style, and a commanding **He
 - **Head of House:** **Lord Vane** (`lord_vane`).
   - *Personality:* A severe clan warlord trapped in the Citadel's frost-bind.
   - *Location:* The Howling Dais.
-  - *Resolution:* Defeat him or raise his Wisdom enough to break the frost-bind.
+  - *Resolution:* Defeat him or charm him to break the frost-bind.
 
 ### 2. House Iron-Ram (The Southeast Estate)
 - **Crest & Banner:** A horned iron ram's skull over cross-hammers on a crimson and charcoal banner.
@@ -175,7 +175,7 @@ Each house possesses a unique crest, banner, combat style, and a commanding **He
 - **Head of House:** **Warmaster Torin** (`warmaster_torin`).
   - *Personality:* A master engineer and commander trapped in a furnace trance.
   - *Location:* The Anvil Throne.
-  - *Resolution:* Defeat him or raise his Wisdom enough to clear the trance.
+  - *Resolution:* Defeat him or charm him to clear the trance.
 
 ### 3. House Frost-Leopard (The Southwest Estate)
 - **Crest & Banner:** A snarling silver snow leopard leaping across crags on an ash-grey and ice-blue banner.
@@ -183,7 +183,7 @@ Each house possesses a unique crest, banner, combat style, and a commanding **He
 - **Head of House:** **Lady Sylvan** (`lady_sylvan`).
   - *Personality:* A calm, calculating matron trapped in a frost-mirror haze.
   - *Location:* The Opal Throne.
-  - *Resolution:* Defeat her or raise her Wisdom enough to clear the haze.
+  - *Resolution:* Defeat her or charm her to clear the haze.
 
 ---
 

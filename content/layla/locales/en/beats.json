@@ -566,7 +566,7 @@
       "quest_title": "The High Sanctuary",
       "quest_kind": "main",
       "summary": "Swallow the spirit pill and defeat Seer Valerius in the Reanimation Sanctum.",
-      "beat_note": "Orva gave Layla the spirit pill. Swallow it to gain spiritual sight, revealing Seer Valerius as the lone living human among the captive spirits. Defeat him to break the ritual and claim the Revival Scroll.",
+      "beat_note": "Orva gave Layla the spirit pill. Swallow it to gain spiritual sight, revealing Seer Valerius as the lone living human among the captive spirits. Defeat him to break the ritual and claim the Bind Scroll.",
       "update_message": "Swallow the spirit pill and defeat Seer Valerius.",
       "narrative_lines": [
         "Orva clutches the silver arrow pin to her chest, her eyes wide with relief. 'Einar... he lives! Take this spirit pill. Swallow it before you face Seer Valerius. Without it, you will only see empty air, but with it, you will see the captive spirits and the Seer directing them. Stop him!'"
@@ -605,7 +605,7 @@
       "quest_title": "The High Sanctuary",
       "quest_kind": "main",
       "summary": "Activate the master resonance anchor on the Sanctuary Platform to bring Astrid and the party through.",
-      "beat_note": "Seer Valerius has fallen, and the Revival Scroll is recovered. Head south from the sanctum to the mountain terrace platform and activate the master resonance anchor.",
+      "beat_note": "Seer Valerius has fallen, and the Bind Scroll is recovered. Head south from the sanctum to the mountain terrace platform and activate the master resonance anchor.",
       "update_message": "Activate the master anchor on the platform to bring your party through.",
       "narrative_lines": [
         "The dark ritual is broken, and Seer Valerius lies defeated. Head to the outer platform and activate the master resonance anchor to bring Commander Astrid and your companions up to Floor 6."
@@ -707,12 +707,6 @@
           "kind": "set_story_var",
           "key": "discovered_monster_pipeline",
           "value": "true"
-        },
-        {
-          "kind": "adjust_actor_stat",
-          "actor_id": "player",
-          "stat": "wisdom",
-          "delta": 1
         }
       ],
       "actor_relocations": []

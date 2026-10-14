@@ -163,6 +163,10 @@ skill records.
 This prevents a future skill from being partially implemented across multiple
 files.
 
+Strict enforcement of authored combat reactions is scoped to the **player
+party**: an AI-controlled party may author its own `combat_rules` (as the Floor 2
+`elf-army` does for guard interception and counterattack).
+
 ## Authoring Workflow
 
 To add an actor, assign existing skill ids and provide only actor-specific

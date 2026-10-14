@@ -17,8 +17,7 @@
         "hp": 7,
         "mp": 6,
         "endurance": 1,
-        "intelligence": 1,
-        "wisdom": 1
+        "intelligence": 1
       },
       "unlocks": []
     },
@@ -50,8 +49,7 @@
         "hp": 7,
         "mp": 3,
         "endurance": 1,
-        "dexterity": 1,
-        "wisdom": 1
+        "dexterity": 1
       },
       "unlocks": []
     },
@@ -72,8 +70,7 @@
         "hp": 8,
         "mp": 3,
         "strength": 1,
-        "endurance": 1,
-        "wisdom": 1
+        "endurance": 1
       },
       "unlocks": []
     },
@@ -94,8 +91,7 @@
         "hp": 5,
         "mp": 6,
         "strength": 1,
-        "intelligence": 1,
-        "wisdom": 1
+        "intelligence": 1
       },
       "unlocks": []
     }

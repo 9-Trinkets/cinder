@@ -26,7 +26,7 @@ The board language shifts sharply from **Go** to **Chess**:
 - **Go (Floor 1)** was about space, territory, encircling silent stones, and making breathing room.
 - **Chess (Floor 2)** is about **ranked armies**, **geometric movement**, and **commanding combat**. The objective is no longer enclosing territory, but navigating an advancing military hierarchy to face and defeat their **King**.
 
-The forest is held by an **Elf Army** of 16 soldiers. They carry themselves as conscious, disciplined, free-willed troops — not scavengers like the goblins. Their power budget and behavior are authored as if they were elite warriors. Beneath that surface sits the canonical truth (see `docs/layla/floor4_plan.md`): the army is a **ranked conversion**. These elves are villagers from the kingdom below who were taken as offerings and reshaped into pieces — but their reprogramming sits closest to the surface of anything in the dungeon. Their **Wisdom is high (7–9)** by design, and it leaks. The "free will" the floor showcases *is* that wisdom straining the wipe — which is exactly why they resist binding and why, after their king falls, they can genuinely choose to stand down.
+The forest is held by an **Elf Army** of 16 soldiers. They carry themselves as conscious, disciplined, free-willed troops — not scavengers like the goblins. Their power budget and behavior are authored as if they were elite warriors. Beneath that surface sits the canonical truth (see `docs/layla/floor4_plan.md`): the army is a **ranked conversion**. These elves are villagers from the kingdom below who were taken as offerings and reshaped into pieces — but their reprogramming sits closest to the surface of anything in the dungeon. Their human spirit sits close to the surface, and it leaks. The "free will" the floor showcases *is* their preserved spirit straining the wipe — which is exactly why they resist binding and why, after their king falls, they can genuinely choose to stand down.
 
 ---
 
@@ -123,7 +123,7 @@ They wear armor fashioned from hardened forest materials: layered broad leaves c
    - The engine's surround rule (`settings.surround_rule`) tests `intelligence`:
      $$\text{player\_int} + \text{player\_level} \ge \text{target\_int} + 2 \times \text{target\_level}$$
    - An Elf Pawn requires $3 + 2(3) = 9$. A Knight/Bishop requires $4 + 2(4) = 12$. The King requires $7 + 2(8) = 23$.
-   - This mathematical reality prevents early-level trivialization via chalk encirclement, reinforcing the fiction: *elves carry enough wisdom to refuse the ring*. Cast from the conversion canon, that refusal is a half-memory surfacing — the signature of a piece standing close to **awakening** (WIS 10). The highest wisdom sits on the queen (`elf-queen-4`, WIS 9 — this floor's most-woken piece; see Floor 4 for who she was before the wipe).
+   - This mathematical reality prevents early-level trivialization via chalk encirclement, reinforcing the fiction: *elves carry enough spirit resonance to refuse the ring*. Cast from the conversion canon, that refusal is a half-memory surfacing — the signature of a piece standing closest to regaining their true identity. The strongest resonance sits on the queen (`elf-queen-4` — this floor's most-woken piece; see Floor 4 and Floor 6 for who she was before the wipe).
 
 ---
 
@@ -169,7 +169,7 @@ The climax of Floor 2 provides the first major philosophical turning point in La
 2. **The Elves' Choice:** When the Elf King is struck down, **no ring binds the survivors**. The engine hook changes their stance to `neutral`, but `follows_player` remains `false`. In prose (`king.defeated`):
    > *"The elf king falls. The forest holds its breath. Then, one by one, the other elves lower their weapons and step back. No ring binds them — they simply choose to let you pass. You feel their eyes on you a long moment, and you lower your own blade."*
 
-   **Canon reading:** they were conversions all along, and their surrender is the **wisdom stat leaking through the wipe** — the closest the chess pieces get to awakening unaided. Whether that becomes a full awakening (WIS 10, name restored, speech unlocked) is a Floor 4 decision, keyed off Zayd's Lantern. The crown piece, `elf-queen-4`, is Zayd's mother — the nearest to waking — and she is a boss fight who **may be destroyed by chance**; the narrative must not soft-lock on her surviving (see `docs/layla/floor4_plan.md`).
+   **Canon reading:** they were conversions all along, and their surrender is their **human spirit leaking through the wipe** — the closest the chess pieces get to awakening unaided. Full awakening (name restored, speech unlocked) occurs later on Floor 6, when Layla masters the Bind Sigil and restores memory using spirit shards on mementos (see `docs/layla/floor6_plan.md`). The crown piece, `elf-queen-4`, is Zayd's mother — the nearest to waking — and she is a boss fight who **may be destroyed by chance**; the narrative must not soft-lock on her surviving (see `docs/layla/floor4_plan.md`).
 3. **The Warning:** Layla begins to glimpse that power in this place is fundamentally about choice: whether she will become an instrument of binding (the corporate Dungeon Master), or someone capable of recognizing and granting freedom.
 
 ---
@@ -193,8 +193,14 @@ Every room in the 8×8 grid must have inspectable features to ground the player'
 
 ---
 
-## Open Threads & Next Steps
+## Implementation Status & Open Threads
 
-1. **Features in `rooms.json`:** Currently, Floor 2 rooms have `features: []`. Populate the canonical features defined above across `d1c1`–`d8c8`.
-2. **Rich Inspect Text for Elf Actors:** Update `actors.json` elf definitions with evocative inspect text and behavioral subtext reflecting their ranks.
-3. **Column / File Variations:** As with Floor 1's distance gradients, subtle flavor variations distinguishing Queenside files (`c1`–`c3`), Central Royal files (`c4`–`c5`), and Kingside files (`c6`–`c8`) will make the 64 rooms feel like a living geography rather than 8 cloned rows.
+**Complete:**
+
+1. **Features in `rooms.json`** — all 64 rooms (`d1c1`–`d8c8`) carry the canonical archetype features defined above, two per room. No room has an empty `features` list (`content/layla/locales/en/rooms.json`).
+2. **Rich Inspect Text for Elf Actors** — every elf (`elf-pawn-*` through `elf-king-5`) has rank-appropriate `inspect_text` in `content/layla/locales/en/actors.json`.
+3. **Elf army as an AI party with standing orders** — the sixteen pieces form the `elf-army` party (leader `elf-king-5`), driven by authored per-role `initial_orders`, the `board.entered` / `actor.defeated` order hooks, and role reactions (guard interception, counterattack). The king's defeat hook sets `elf_king_defeated`, narrates the ceasefire, flips `elf` actors to `neutral` (`follows_player: false`), and orders the survivors to `hold`. Covered by `cinder-core/tests/layla_elf_army.rs`.
+
+**Open:**
+
+4. **Column / File Variations** — within a row the file rooms are still identical (e.g. `d1c2`, `d1c5`, and `d1c8` share the same title, summary, and features). Give Queenside (`c1`–`c3`), Central Royal (`c4`–`c5`) and Kingside (`c6`–`c8`) files subtle distinct flavor so the 64 rooms read as living geography rather than 8 cloned rows.

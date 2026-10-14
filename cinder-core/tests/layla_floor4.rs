@@ -1166,7 +1166,7 @@ fn zayd_home_shifts_villager_prompts_to_relief_and_dread() {
     // must not rename anyone. A non-silent transformation falls back to the
     // pack's `transformation.wake.*` prose, which is wrong for a villager
     // whose name and identity never changed.
-    for wake_leak in ["remembers who they are", "high wisdom"] {
+    for wake_leak in ["remembers who they are", "dormant memory"] {
         assert!(
             !arrival_text.contains(wake_leak),
             "village mood shift leaked awakening prose ({wake_leak}): {arrival_text}"

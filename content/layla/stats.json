@@ -5,7 +5,6 @@
     "strength": { "default": 3, "min": 0, "max": 25 },
     "endurance": { "default": 1, "min": 0, "max": 25 },
     "dexterity": { "default": 6, "min": 0, "max": 25 },
-    "intelligence": { "default": 3, "min": 0, "max": 25 },
-    "wisdom": { "default": 3, "min": 0, "max": 25 }
+    "intelligence": { "default": 3, "min": 0, "max": 25 }
   }
 }

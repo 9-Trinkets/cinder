@@ -4,7 +4,7 @@ Living design plan for **Level 4** of Layla. This floor covers the geothermal mi
 
 All text for players must use **simple sentences and everyday words for teenagers**. Avoid unusual, archaic, or fancy words (use "offering" instead of "tithe", "gate" instead of "portal", "platform" instead of "dais", "furnace" instead of "crucible").
 
-> Status: **plan rewritten to canonical truth.** The village ring and the military complex are built in content (rooms `village_*` and the fortress loop, actors `elder_rashid`, `yasmin`, `tariq`, `zayd`, `priest_harun`, `captain_malik`, garrison, `sakhra`), including the fortress entry routes, Zayd's rescue and escort, the Malik/safe confrontation, and the teleport platform (all integration-tested). The mines remain world-lore rather than playable map space, and the quest beat objectives, mother-awakening, and expanded awakening dialogue are the open implementation work. This revision settles the canonical backstory of the "offering" (the conversion), re-casts **Sakhra as Zayd's father**, and keys the **Wisdom (WIS) stat** that the pack now implements for real.
+> Status: **plan rewritten to canonical truth.** The village ring and the military complex are built in content (rooms `village_*` and the fortress loop, actors `elder_rashid`, `yasmin`, `tariq`, `zayd`, `priest_harun`, `captain_malik`, garrison, `sakhra`), including the fortress entry routes, Zayd's rescue and escort, the Malik/safe confrontation, and the teleport platform (all integration-tested). The mines remain world-lore rather than playable map space, and the quest beat objectives, mother-awakening, and expanded awakening dialogue are the open implementation work. This revision settles the canonical backstory of the "offering" (the conversion), re-casts **Sakhra as Zayd's father**, and establishes the canonical awakening pipeline via mementos, spirit shards, and the Bind Sigil.
 
 ---
 
@@ -155,21 +155,26 @@ The scavenged truth: with Zayd safe, the clues begin to align — the silent old
 
 ---
 
-## 5. Party Wisdom & Awakening
+## 5. Party Memory & Awakening via Spirit Shards
 
-Wisdom (WIS) is now a **real stat** in `content/layla/stats.json` (default 3, range 0–10, seeded to every actor, surfaced generically in the vitals/sidebar and inspect UI).
+The dungeon's monsters are not wild beasts; they are human offerings converted into pieces through the High Sanctuary's three-stage pipeline (Kill offering → Spawn physical body → Bind spirit).
 
-- **What wisdom means:** how much of their *pre-machine* self a converted piece still holds. Golems converted into heavy stone shells carry the least (3–5). Elves converted into ranked pieces carry more (7–9) — the army's refusal to be bound and its final choice to stand down are *this* stat leaking through. The queen is the closest to waking of all.
-- **Raising wisdom:** Equipping **Zayd's Lantern** (+6 WIS) shines its warm, steady light into a follower's mind. Raisable to the 10-line.
-- **Reaching Wisdom 10 triggers an Awakening:**
-  - The follower breaks free from its mind-wiped role and remembers who it was.
-  - Its generic name changes to its real name; full speech unlocks.
-  - It stops being a piece and teaches the party: floor secrets, pipe-puzzle shortcuts, enemy patrol habits — and, for the parents, *the truth about the offering.*
+- **The Awakening Pipeline:**
+  1. **Find spirit shards on mementos:** Memento items preserved by friends and family (such as **Zayd's Lantern**, town keepsakes, or family tokens) hold preserved spirit shards containing the memories and identities of the converted.
+  2. **Bind spirit shards to monsters:** Using the **Bind Sigil** (`bind-sigil`, learned on Floor 6), Layla binds these preserved spirit shards back into the monster's core.
+- **The Awakening Transformation:**
+  - The monster breaks free from its mind-wiped role and remembers who it was.
+  - Its generic name changes back to its real name; full speech unlocks.
+  - It ceases to be a piece and teaches the party: floor secrets, pipe-puzzle shortcuts, enemy patrol habits — and, for the parents, *the truth about the offering.*
+- **Pacing & Suspense:** On Floor 4, carrying Zayd's Lantern near Sakhra produces a subtle amber resonance and steam sigh, but full awakening does not occur until Floor 6 when the Bind Sigil is mastered.
 - **Hard limit:** the **goblin shaman** and the **elf king** cannot be awakened — their conversion took deepest, or they were never pieces at all. They can only be defeated (established in Floor 1/2 canon; the king's real name is a story the parents may one day tell on Floor 6).
+
+> [!NOTE]
+> The old `wisdom` stat and mementos' stat-boosting effects (+6 WIS) have been completely removed. Awakening is triggered by binding spirit shards to monsters using the Bind Sigil, not by reaching a stat threshold.
 
 ### Who They Were (awakening storylines for surviving pieces)
 
-Only pieces that were **not destroyed** can wake, and only if they receive enough wisdom (10+). Simple one-line storylines, to be authored into `actors.json` `prompt_context` and awakening narration as the mechanic grows:
+Only pieces that were **not destroyed** can wake, and only when their preserved spirit shard is bound. Simple one-line storylines, to be authored into `actors.json` `prompt_context` and awakening narration as the mechanic grows:
 
 | Piece (actor id) | Woken name | Who they were | Fragment on waking |
 |---|---|---|---|
@@ -232,11 +237,11 @@ With recruited party members, players can issue tactical commands to coordinate 
   - Escorting Zayd back to `village_square` triggers safe arrival hook in `player.moved` (gated on `zayd_safe` `not_exists`): sets `zayd_safe = "true"`, converts Zayd back to static village ally (`follows_player = false`), awards `zayd-lantern` to Layla's inventory, narrates the reunion with Yasmin, and completes side quest `sq_return_zayd`.
   - Added `WorldHookEffect::AcquireItem` engine effect to cinder-core and wired `SetStoryVar` to emit beat advancement signals.
   - Verified via full end-to-end integration test `floor4_zayd_rescue_and_village_escort`.
-- **Follower Awakening Mechanic (Party Wisdom & True Names):**
-  - Added `ActorAwakening` model and `awakening` property to `ActorDefinition`.
-  - Added `awakened_actors` and `actor_name_overrides` tracking to `WorldState`, dynamic name override in `actor_display_name` and `display_actor_name`, and awakened inspect text and prompt context overrides.
+- **Follower Awakening Mechanic (Spirit Shards & True Names):**
+  - Added transformation model and `transformations` property to `ActorDefinition`.
+  - Added `transformed_stages` and `actor_name_overrides` tracking to `WorldState`, dynamic name override in `actor_display_name` and `display_actor_name`, and awakened inspect text and prompt context overrides.
   - Authored awakening definitions across surviving Floor 1-3 pieces: `sakhra` (Jamil, father of Zayd), `golem-dark-nw` (Orin), `golem-pale-ne` (Mari), `golem-dark-sw` (Ferid), `golem-pale-se` (Hana), and `elf-queen-4` (Nazira, mother of Zayd).
-  - Placed `sakhra` in `village_square` (starts neutral to prevent premature party following on Floor 1). Giving `zayd-lantern` (+6 WIS) raises his wisdom to 11 (≥ 10), triggering the Awakening: Sakhra remembers his identity as Jamil, breaking out of his mind-wipe with his waking fragment, unlocking human speech and guidance, and joining the party as a loyal ally.
+  - Placed `sakhra` in `village_square` (starts neutral to prevent premature party following on Floor 1). Carrying `zayd-lantern` near Sakhra creates a deep steam sigh and bedrock resonance. Sakhra's full awakening into Jamil occurs when Layla masters the Bind Sigil on Floor 6, channeling the lantern's preserved spirit shard back into his core to restore his voice and memory.
   - Authored: `sq_return_zayd` leads into the secret quest beat `sq_awaken_father` ("Return the Light").
   - Enforced hard limits: `goblin-shaman` and `elf-king-5` cannot awaken.
   - Verified via full end-to-end integration tests `cinder-core/tests/layla_floor4_awakening.rs`.

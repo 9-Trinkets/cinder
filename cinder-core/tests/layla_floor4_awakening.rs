@@ -1,4 +1,4 @@
-//! Integration tests for Floor 4 Follower Awakening mechanic.
+//! Integration tests for Follower Awakening mechanic via spirit restoration.
 
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::engine::narrative::NarrativeLines;
@@ -7,13 +7,12 @@ use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 
 #[test]
-fn sakhra_awakens_into_jamil_via_zayd_lantern() {
+fn sakhra_awakens_into_jamil_when_awakening_triggered() {
     let pack = load_named_pack("layla", Some("en")).expect("pack loads");
     let mut state = WorldState::new(&pack);
 
     // Place player and sakhra in village_square
     state.current_room_id = "village_square".to_string();
-    state.add_item("zayd-lantern");
 
     let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
 
@@ -23,12 +22,19 @@ fn sakhra_awakens_into_jamil_via_zayd_lantern() {
         Some("Sakhra")
     );
 
-    // Give lantern to Sakhra -> Sakhra auto-equips (+6 WIS, base 5 WIS -> 11 WIS >= 10)
-    let turn_out = runtime
-        .run_turn("give battered miner's lantern to sakhra")
-        .expect("give lantern");
+    // Trigger awakening via story var (e.g. from spirit shard binding)
+    let mut state = runtime.export_state().unwrap();
+    state.story_vars.set_unchecked("awakened:sakhra", "true");
+    let mut lines = NarrativeLines::default();
+    let applied = maybe_apply_transformations(&mut state, &pack, "sakhra", &mut lines);
+    assert!(applied);
 
-    let text = turn_out.text();
+    let text = lines
+        .0
+        .iter()
+        .map(|l| l.text.as_str())
+        .collect::<Vec<_>>()
+        .join(" ");
     assert!(
         text.contains("Zayd. My boy. Run your lamp over me"),
         "awakening fragment present: {text}"
@@ -37,6 +43,8 @@ fn sakhra_awakens_into_jamil_via_zayd_lantern() {
         text.contains("Sakhra is now Jamil"),
         "awakening name change narrated: {text}"
     );
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
 
     // After awakening: display name is now Jamil
     assert_eq!(
@@ -63,55 +71,37 @@ fn sakhra_awakens_into_jamil_via_zayd_lantern() {
 }
 
 #[test]
-fn awakening_persists_when_lantern_transferred_to_another_follower() {
+fn awakening_persists_once_triggered() {
     let pack = load_named_pack("layla", Some("en")).expect("pack loads");
     let mut state = WorldState::new(&pack);
 
     state.current_room_id = "village_square".to_string();
-    state.add_item("zayd-lantern");
-
-    // Also place golem-dark-nw in village_square as ally
-    state
-        .actors
-        .actor_room_overrides
-        .insert("golem-dark-nw".to_string(), "village_square".to_string());
-    state.set_stance(
-        "golem-dark-nw",
-        cinder_core::engine::state::ActorStance::Allied,
-    );
-
-    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
 
     // 1. Awaken Sakhra -> Jamil
-    runtime
-        .run_turn("give battered miner's lantern to sakhra")
-        .expect("give lantern to sakhra");
+    state.story_vars.set_unchecked("awakened:sakhra", "true");
+    let mut lines = NarrativeLines::default();
+    maybe_apply_transformations(&mut state, &pack, "sakhra", &mut lines);
+
     assert_eq!(
-        runtime.actor_display_name("sakhra").unwrap().as_deref(),
+        state.actor_display_name(&pack, "sakhra").as_deref(),
         Some("Jamil")
     );
+    assert!(state.is_actor_awakened("sakhra"));
 
-    // 2. Take lantern back from Jamil
-    let take_out = runtime
-        .run_turn("take battered miner's lantern from jamil")
-        .expect("take lantern back");
-    assert!(
-        take_out.text().contains("take") || take_out.text().contains("battered miner's lantern")
-    );
+    // 2. Awaken golem-dark-nw into Orin
+    state
+        .story_vars
+        .set_unchecked("awakened:golem-dark-nw", "true");
+    let mut lines = NarrativeLines::default();
+    let applied = maybe_apply_transformations(&mut state, &pack, "golem-dark-nw", &mut lines);
+    assert!(applied);
 
-    // Jamil remains awakened!
-    assert_eq!(
-        runtime.actor_display_name("sakhra").unwrap().as_deref(),
-        Some("Jamil")
-    );
-    let s = runtime.export_state().unwrap();
-    assert!(s.is_actor_awakened("sakhra"));
-
-    // 3. Give lantern to golem-dark-nw (base 4 WIS + 6 = 10 WIS) -> awakens into Orin!
-    let orin_turn = runtime
-        .run_turn("give battered miner's lantern to dark golem")
-        .expect("give lantern to golem");
-    let orin_text = orin_turn.text();
+    let orin_text = lines
+        .0
+        .iter()
+        .map(|l| l.text.as_str())
+        .collect::<Vec<_>>()
+        .join(" ");
     assert!(
         orin_text.contains("Orin"),
         "Orin awakening narrated: {orin_text}"
@@ -121,10 +111,7 @@ fn awakening_persists_when_lantern_transferred_to_another_follower() {
         "Orin fragment narrated: {orin_text}"
     );
     assert_eq!(
-        runtime
-            .actor_display_name("golem-dark-nw")
-            .unwrap()
-            .as_deref(),
+        state.actor_display_name(&pack, "golem-dark-nw").as_deref(),
         Some("Orin")
     );
 }
@@ -135,19 +122,13 @@ fn hard_limit_shaman_and_king_cannot_awaken() {
     let mut state = WorldState::new(&pack);
     let mut lines = NarrativeLines::default();
 
-    // Set high wisdom on shaman and elf king
+    // Even if story vars are set, shaman and king have no awakening transformations
     state
-        .combat
-        .actor_stats
-        .entry("goblin-shaman".to_string())
-        .or_default()
-        .insert("wisdom".to_string(), 20);
+        .story_vars
+        .set_unchecked("awakened:goblin-shaman", "true");
     state
-        .combat
-        .actor_stats
-        .entry("elf-king-5".to_string())
-        .or_default()
-        .insert("wisdom".to_string(), 20);
+        .story_vars
+        .set_unchecked("awakened:elf-king-5", "true");
 
     let shaman_awakened =
         maybe_apply_transformations(&mut state, &pack, "goblin-shaman", &mut lines);
@@ -185,9 +166,9 @@ fn transformation_with_empty_fragment_omits_empty_quotes() {
     if let Some(actor) = pack.actors.iter_mut().find(|a| a.id == "sakhra") {
         actor.transformations = vec![cinder_core::content::types::ActorTransformation {
             id: "test_empty_fragment".to_string(),
-            trigger: cinder_core::content::types::TransformationTrigger::Stat {
-                stat: "wisdom".to_string(),
-                gte: 1,
+            trigger: cinder_core::content::types::TransformationTrigger::StoryVar {
+                key: "test_wake".to_string(),
+                value: "true".to_string(),
             },
             rename: Some(cinder_core::content::types::TransformationRename {
                 name: "Jamil".to_string(),
@@ -198,6 +179,7 @@ fn transformation_with_empty_fragment_omits_empty_quotes() {
         }];
     }
     let mut state = WorldState::new(&pack);
+    state.story_vars.set_unchecked("test_wake", "true");
     let mut lines = NarrativeLines::default();
     let transformed = maybe_apply_transformations(&mut state, &pack, "sakhra", &mut lines);
     assert!(transformed);

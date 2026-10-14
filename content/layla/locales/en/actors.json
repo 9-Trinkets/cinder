@@ -8,7 +8,6 @@
       "endurance": 1,
       "dexterity": 5,
       "intelligence": 3,
-      "wisdom": 3,
       "hp": 18,
       "mp": 18
     },
@@ -64,7 +63,6 @@
       "endurance": 4,
       "dexterity": 2,
       "intelligence": 1,
-      "wisdom": 4,
       "hp": 28,
       "mp": 13
     },
@@ -72,9 +70,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:golem-dark-nw",
+          "value": "true"
         },
         "rename": {
           "name": "Orin",
@@ -139,7 +137,6 @@
       "endurance": 4,
       "dexterity": 2,
       "intelligence": 1,
-      "wisdom": 4,
       "hp": 28,
       "mp": 13
     },
@@ -147,9 +144,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:golem-pale-ne",
+          "value": "true"
         },
         "rename": {
           "name": "Mari",
@@ -214,7 +211,6 @@
       "endurance": 2,
       "dexterity": 4,
       "intelligence": 6,
-      "wisdom": 4,
       "hp": 24,
       "mp": 30
     },
@@ -276,7 +272,6 @@
       "endurance": 4,
       "dexterity": 2,
       "intelligence": 1,
-      "wisdom": 4,
       "hp": 28,
       "mp": 13
     },
@@ -284,9 +279,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:golem-dark-sw",
+          "value": "true"
         },
         "rename": {
           "name": "Ferid",
@@ -351,7 +346,6 @@
       "endurance": 4,
       "dexterity": 2,
       "intelligence": 1,
-      "wisdom": 4,
       "hp": 28,
       "mp": 13
     },
@@ -359,9 +353,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:golem-pale-se",
+          "value": "true"
         },
         "rename": {
           "name": "Hana",
@@ -426,7 +420,6 @@
       "endurance": 2,
       "dexterity": 6,
       "intelligence": 2,
-      "wisdom": 2,
       "hp": 21,
       "mp": 14
     },
@@ -484,7 +477,6 @@
       "endurance": 2,
       "dexterity": 6,
       "intelligence": 2,
-      "wisdom": 2,
       "hp": 21,
       "mp": 14
     },
@@ -542,7 +534,6 @@
       "endurance": 2,
       "dexterity": 6,
       "intelligence": 2,
-      "wisdom": 2,
       "hp": 21,
       "mp": 14
     },
@@ -600,7 +591,6 @@
       "endurance": 2,
       "dexterity": 6,
       "intelligence": 2,
-      "wisdom": 2,
       "hp": 21,
       "mp": 14
     },
@@ -674,7 +664,6 @@
       "endurance": 3,
       "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 4,
       "hp": 29,
       "mp": 21
     },
@@ -682,9 +671,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-1",
+          "value": "true"
         },
         "rename": {
           "name": "Ays",
@@ -762,7 +751,6 @@
       "endurance": 3,
       "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 4,
       "hp": 29,
       "mp": 21
     },
@@ -770,9 +758,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-2",
+          "value": "true"
         },
         "rename": {
           "name": "Barak",
@@ -850,7 +838,6 @@
       "endurance": 3,
       "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 4,
       "hp": 29,
       "mp": 21
     },
@@ -858,9 +845,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-3",
+          "value": "true"
         },
         "rename": {
           "name": "Dunya",
@@ -938,7 +925,6 @@
       "endurance": 3,
       "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 4,
       "hp": 29,
       "mp": 21
     },
@@ -946,9 +932,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-4",
+          "value": "true"
         },
         "rename": {
           "name": "Qamar",
@@ -1026,7 +1012,6 @@
       "endurance": 3,
       "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 4,
       "hp": 29,
       "mp": 21
     },
@@ -1034,9 +1019,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-5",
+          "value": "true"
         },
         "rename": {
           "name": "Sari",
@@ -1114,7 +1099,6 @@
       "endurance": 3,
       "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 4,
       "hp": 29,
       "mp": 21
     },
@@ -1122,9 +1106,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-6",
+          "value": "true"
         },
         "rename": {
           "name": "Nadim",
@@ -1202,7 +1186,6 @@
       "endurance": 3,
       "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 4,
       "hp": 29,
       "mp": 21
     },
@@ -1210,9 +1193,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-7",
+          "value": "true"
         },
         "rename": {
           "name": "Rima",
@@ -1290,7 +1273,6 @@
       "endurance": 3,
       "dexterity": 4,
       "intelligence": 3,
-      "wisdom": 4,
       "hp": 29,
       "mp": 21
     },
@@ -1298,9 +1280,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-pawn-8",
+          "value": "true"
         },
         "rename": {
           "name": "Yusuf",
@@ -1378,7 +1360,6 @@
       "endurance": 6,
       "dexterity": 3,
       "intelligence": 3,
-      "wisdom": 3,
       "hp": 44,
       "mp": 22
     },
@@ -1386,9 +1367,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-rook-1",
+          "value": "true"
         },
         "rename": {
           "name": "Farhan",
@@ -1462,7 +1443,6 @@
       "endurance": 4,
       "dexterity": 5,
       "intelligence": 3,
-      "wisdom": 4,
       "hp": 37,
       "mp": 23
     },
@@ -1470,9 +1450,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-knight-2",
+          "value": "true"
         },
         "rename": {
           "name": "Aziz",
@@ -1494,7 +1474,7 @@
       ],
       "subtext_notes": [
         "You were a messenger once, in a life you cannot reach — you ran faster than the summons that was catching you. The speed stayed. The name did not.",
-        "The wisdom in you is enough to refuse a ring, and it is why you can put your weapon down freely the moment the king falls."
+        "The spirit in you is enough to refuse a ring, and it is why you can put your weapon down freely the moment the king falls."
       ],
       "response_notes": [
         "Speak in a quick, low, off-handed way, with a dry amusement at how slowly the straight lines of the rank move.",
@@ -1552,7 +1532,6 @@
       "endurance": 3,
       "dexterity": 4,
       "intelligence": 6,
-      "wisdom": 5,
       "hp": 32,
       "mp": 33
     },
@@ -1560,9 +1539,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-bishop-3",
+          "value": "true"
         },
         "rename": {
           "name": "Istawa",
@@ -1583,7 +1562,7 @@
         "Your gaze cuts across the clearing, taking the long sightline; you see the shape of a fight before it starts."
       ],
       "subtext_notes": [
-        "Once, in a life you cannot reach, you read patterns — a lesson house, a bell, a loom. The wisdom that leaks keeps your eyes on the long view when the forest prefers the short one.",
+        "Once, in a life you cannot reach, you read patterns — a lesson house, a bell, a loom. The spirit that leaks keeps your eyes on the long view when the forest prefers the short one.",
         "When the king falls you do not fight the choice; you see the angle the whole line finally takes, and it is the right one."
       ],
       "response_notes": [
@@ -1643,7 +1622,6 @@
       "endurance": 4,
       "dexterity": 5,
       "intelligence": 5,
-      "wisdom": 3,
       "hp": 36,
       "mp": 28
     },
@@ -1651,9 +1629,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-queen-4",
+          "value": "true"
         },
         "rename": {
           "name": "Nazira",
@@ -1676,7 +1654,7 @@
       ],
       "subtext_notes": [
         "You are searching for a name you cannot hold onto. It sinks in you like something warm in cold water — a boy, a word he called you, a face. You cannot keep it, so you rake the same paths, hoping the walking will wear it loose again.",
-        "Your wisdom runs deeper than any piece on the board — close enough to wake. What wakes a piece of the forest is light; what wakes a queen is a voice.",
+        "Your memory runs deeper than any piece on the board — close enough to wake. What wakes a piece of the forest is a spirit shard; what wakes a queen is a voice.",
         "In the part of you that does not remember, you are a mother scanning a crowd for her son. That is what the patrol always was."
       ],
       "response_notes": [
@@ -1728,7 +1706,6 @@
       "endurance": 5,
       "dexterity": 4,
       "intelligence": 4,
-      "wisdom": 3,
       "hp": 40,
       "mp": 25
     },
@@ -1782,7 +1759,6 @@
       "endurance": 3,
       "dexterity": 4,
       "intelligence": 6,
-      "wisdom": 5,
       "hp": 32,
       "mp": 33
     },
@@ -1790,9 +1766,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-bishop-6",
+          "value": "true"
         },
         "rename": {
           "name": "Ruwan",
@@ -1813,7 +1789,7 @@
         "Your gaze cuts across the clearing, taking the long sightline; you see the shape of a fight before it starts."
       ],
       "subtext_notes": [
-        "Once, in a life you cannot reach, you read patterns — a lesson house, a bell, a loom. The wisdom that leaks keeps your eyes on the long view when the forest prefers the short one.",
+        "Once, in a life you cannot reach, you read patterns — a lesson house, a bell, a loom. The spirit that leaks keeps your eyes on the long view when the forest prefers the short one.",
         "When the king falls you do not fight the choice; you see the angle the whole line finally takes, and it is the right one."
       ],
       "response_notes": [
@@ -1867,7 +1843,6 @@
       "endurance": 4,
       "dexterity": 5,
       "intelligence": 3,
-      "wisdom": 4,
       "hp": 37,
       "mp": 23
     },
@@ -1875,9 +1850,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-knight-7",
+          "value": "true"
         },
         "rename": {
           "name": "Layali",
@@ -1899,7 +1874,7 @@
       ],
       "subtext_notes": [
         "You were a messenger once, in a life you cannot reach — you ran faster than the summons that was catching you. The speed stayed. The name did not.",
-        "The wisdom in you is enough to refuse a ring, and it is why you can put your weapon down freely the moment the king falls."
+        "The spirit in you is enough to refuse a ring, and it is why you can put your weapon down freely the moment the king falls."
       ],
       "response_notes": [
         "Speak in a quick, low, off-handed way, with a dry amusement at how slowly the straight lines of the rank move.",
@@ -1951,7 +1926,6 @@
       "endurance": 6,
       "dexterity": 3,
       "intelligence": 3,
-      "wisdom": 3,
       "hp": 44,
       "mp": 22
     },
@@ -1959,9 +1933,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:elf-rook-8",
+          "value": "true"
         },
         "rename": {
           "name": "Salma",
@@ -2046,7 +2020,6 @@
       "endurance": 3,
       "dexterity": 3,
       "intelligence": 5,
-      "wisdom": 3,
       "hp": 29,
       "mp": 26
     },
@@ -2095,7 +2068,6 @@
       "endurance": 2,
       "dexterity": 7,
       "intelligence": 5,
-      "wisdom": 4,
       "hp": 29,
       "mp": 29
     },
@@ -2142,7 +2114,6 @@
       "endurance": 2,
       "dexterity": 7,
       "intelligence": 5,
-      "wisdom": 4,
       "hp": 29,
       "mp": 29
     },
@@ -2189,7 +2160,6 @@
       "endurance": 2,
       "dexterity": 7,
       "intelligence": 5,
-      "wisdom": 4,
       "hp": 29,
       "mp": 29
     },
@@ -2254,7 +2224,6 @@
       "endurance": 10,
       "dexterity": 8,
       "intelligence": 8,
-      "wisdom": 8,
       "hp": 86,
       "mp": 56
     }
@@ -2288,7 +2257,6 @@
       "endurance": 2,
       "dexterity": 7,
       "intelligence": 5,
-      "wisdom": 4,
       "hp": 29,
       "mp": 29
     },
@@ -2335,7 +2303,6 @@
       "endurance": 2,
       "dexterity": 7,
       "intelligence": 5,
-      "wisdom": 4,
       "hp": 29,
       "mp": 29
     },
@@ -2382,7 +2349,6 @@
       "endurance": 2,
       "dexterity": 7,
       "intelligence": 5,
-      "wisdom": 4,
       "hp": 29,
       "mp": 29
     },
@@ -2423,7 +2389,6 @@
       "endurance": 3,
       "dexterity": 3,
       "intelligence": 7,
-      "wisdom": 6,
       "hp": 31,
       "mp": 37
     },
@@ -2510,7 +2475,6 @@
       "endurance": 3,
       "dexterity": 5,
       "intelligence": 5,
-      "wisdom": 4,
       "hp": 33,
       "mp": 29
     },
@@ -2598,7 +2562,6 @@
       "endurance": 4,
       "dexterity": 4,
       "intelligence": 7,
-      "wisdom": 5,
       "hp": 40,
       "mp": 38
     },
@@ -2682,7 +2645,6 @@
       "endurance": 3,
       "dexterity": 5,
       "intelligence": 5,
-      "wisdom": 4,
       "hp": 33,
       "mp": 29
     },
@@ -2734,7 +2696,6 @@
       "endurance": 2,
       "dexterity": 4,
       "intelligence": 5,
-      "wisdom": 5,
       "hp": 24,
       "mp": 28
     },
@@ -2788,7 +2749,6 @@
       "endurance": 2,
       "dexterity": 5,
       "intelligence": 5,
-      "wisdom": 3,
       "hp": 25,
       "mp": 26
     },
@@ -2891,7 +2851,6 @@
       "endurance": 4,
       "dexterity": 4,
       "intelligence": 8,
-      "wisdom": 7,
       "hp": 44,
       "mp": 45
     },
@@ -2955,7 +2914,6 @@
       "endurance": 7,
       "dexterity": 5,
       "intelligence": 4,
-      "wisdom": 4,
       "hp": 56,
       "mp": 30
     },
@@ -3011,7 +2969,6 @@
       "endurance": 7,
       "dexterity": 3,
       "intelligence": 4,
-      "wisdom": 6,
       "hp": 56,
       "mp": 32
     },
@@ -3020,9 +2977,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:sakhra",
+          "value": "true"
         },
         "rename": {
           "name": "Jamil",
@@ -3066,7 +3023,7 @@
       "subtext_notes": [
         "You possess immense physical strength and durability.",
         "When encircled with chalk rings, you bond with the maker and serve as an immovable guardian.",
-        "When illuminated by high Wisdom (such as Zayd's lantern), something long-sleeping in your stone stirs toward waking."
+        "When illuminated by the spirit shard in Zayd's lantern, something long-sleeping in your stone stirs toward waking."
       ],
       "response_notes": [
         "Do not speak in human language; communicate through hydraulic hisses, brass clicks, and low vibrations.",
@@ -3114,7 +3071,6 @@
       "endurance": 5,
       "dexterity": 5,
       "intelligence": 5,
-      "wisdom": 4,
       "hp": 44,
       "mp": 31
     },
@@ -3168,7 +3124,6 @@
       "endurance": 5,
       "dexterity": 5,
       "intelligence": 5,
-      "wisdom": 4,
       "hp": 44,
       "mp": 31
     },
@@ -3219,7 +3174,6 @@
       "endurance": 5,
       "dexterity": 5,
       "intelligence": 5,
-      "wisdom": 4,
       "hp": 44,
       "mp": 31
     },
@@ -3268,7 +3222,6 @@
       "endurance": 5,
       "dexterity": 5,
       "intelligence": 5,
-      "wisdom": 4,
       "hp": 44,
       "mp": 31
     },
@@ -3318,7 +3271,6 @@
       "endurance": 6,
       "dexterity": 5,
       "intelligence": 5,
-      "wisdom": 5,
       "hp": 52,
       "mp": 34
     },
@@ -3371,7 +3323,6 @@
       "endurance": 6,
       "dexterity": 4,
       "intelligence": 4,
-      "wisdom": 4,
       "hp": 48,
       "mp": 28
     },
@@ -3419,7 +3370,6 @@
       "endurance": 6,
       "dexterity": 4,
       "intelligence": 4,
-      "wisdom": 4,
       "hp": 48,
       "mp": 28
     },
@@ -3464,7 +3414,6 @@
       "endurance": 2,
       "dexterity": 7,
       "intelligence": 5,
-      "wisdom": 4,
       "hp": 29,
       "mp": 29
     },
@@ -3516,7 +3465,6 @@
       "endurance": 6,
       "dexterity": 6,
       "intelligence": 6,
-      "wisdom": 5,
       "hp": 57,
       "mp": 39
     },
@@ -3567,7 +3515,6 @@
       "endurance": 5,
       "dexterity": 6,
       "intelligence": 5,
-      "wisdom": 5,
       "hp": 49,
       "mp": 34
     },
@@ -3613,7 +3560,6 @@
       "endurance": 5,
       "dexterity": 7,
       "intelligence": 5,
-      "wisdom": 4,
       "hp": 49,
       "mp": 33
     },
@@ -3658,7 +3604,6 @@
       "endurance": 7,
       "dexterity": 4,
       "intelligence": 5,
-      "wisdom": 6,
       "hp": 61,
       "mp": 37
     },
@@ -3703,7 +3648,6 @@
       "endurance": 5,
       "dexterity": 8,
       "intelligence": 6,
-      "wisdom": 5,
       "hp": 53,
       "mp": 39
     },
@@ -3749,7 +3693,6 @@
       "endurance": 7,
       "dexterity": 6,
       "intelligence": 5,
-      "wisdom": 5,
       "hp": 60,
       "mp": 36
     },
@@ -3812,7 +3755,6 @@
       "endurance": 5,
       "dexterity": 5,
       "intelligence": 9,
-      "wisdom": 8,
       "hp": 50,
       "mp": 51
     },
@@ -4023,7 +3965,6 @@
       "endurance": 6,
       "dexterity": 8,
       "intelligence": 8,
-      "wisdom": 6,
       "hp": 66,
       "mp": 50
     },
@@ -4051,9 +3992,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:lord_vane",
+          "value": "true"
         },
         "rename": {
           "name": "Lord Vane",
@@ -4099,7 +4040,6 @@
       "endurance": 8,
       "dexterity": 7,
       "intelligence": 6,
-      "wisdom": 5,
       "hp": 74,
       "mp": 43
     },
@@ -4127,9 +4067,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:warmaster_torin",
+          "value": "true"
         },
         "rename": {
           "name": "Warmaster Torin",
@@ -4175,7 +4115,6 @@
       "endurance": 4,
       "dexterity": 10,
       "intelligence": 9,
-      "wisdom": 7,
       "hp": 58,
       "mp": 54
     },
@@ -4209,9 +4148,9 @@
       {
         "id": "awakening",
         "trigger": {
-          "kind": "stat",
-          "stat": "wisdom",
-          "gte": 10
+          "kind": "story_var",
+          "key": "awakened:lady_sylvan",
+          "value": "true"
         },
         "rename": {
           "name": "Lady Sylvan",
@@ -4261,7 +4200,6 @@
       "endurance": 7,
       "dexterity": 7,
       "intelligence": 6,
-      "wisdom": 6,
       "hp": 64,
       "mp": 42
     },
@@ -4311,7 +4249,6 @@
       "endurance": 7,
       "dexterity": 7,
       "intelligence": 6,
-      "wisdom": 6,
       "hp": 64,
       "mp": 42
     },
@@ -4360,7 +4297,6 @@
       "endurance": 7,
       "dexterity": 7,
       "intelligence": 6,
-      "wisdom": 6,
       "hp": 64,
       "mp": 42
     },
@@ -4409,7 +4345,6 @@
       "endurance": 7,
       "dexterity": 7,
       "intelligence": 6,
-      "wisdom": 6,
       "hp": 64,
       "mp": 42
     },
@@ -4458,7 +4393,6 @@
       "endurance": 6,
       "dexterity": 7,
       "intelligence": 8,
-      "wisdom": 7,
       "hp": 59,
       "mp": 49
     },
@@ -4507,7 +4441,6 @@
       "endurance": 6,
       "dexterity": 8,
       "intelligence": 7,
-      "wisdom": 6,
       "hp": 60,
       "mp": 45
     },
@@ -4549,7 +4482,6 @@
       "endurance": 6,
       "dexterity": 8,
       "intelligence": 7,
-      "wisdom": 6,
       "hp": 60,
       "mp": 45
     },
@@ -4591,7 +4523,6 @@
       "endurance": 6,
       "dexterity": 6,
       "intelligence": 10,
-      "wisdom": 10,
       "hp": 62,
       "mp": 60
     },
@@ -4633,7 +4564,6 @@
       "endurance": 7,
       "dexterity": 6,
       "intelligence": 10,
-      "wisdom": 8,
       "hp": 66,
       "mp": 58
     },
@@ -4644,10 +4574,10 @@
       "hold"
     ],
     "initial_inventory": {
-      "revival-scroll": 1
+      "bind-scroll": 1
     },
     "drops": {
-      "revival-scroll": 1
+      "bind-scroll": 1
     },
     "xp_drop": 100,
     "aliases": [

@@ -211,7 +211,7 @@ pub enum TransformationTrigger {
     Always,
     /// Requires an (effective) stat to meet a threshold.
     Stat {
-        /// Stat key, e.g. `"wisdom"`.
+        /// Stat key, e.g. `"strength"`.
         stat: String,
         #[serde(default = "default_trigger_gte")]
         gte: i32,

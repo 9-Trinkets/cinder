@@ -43,8 +43,8 @@ fn awakening_any_actor_grants_comms() {
     // Apply transformation / awakening
     let mut lines = cinder_core::engine::narrative::NarrativeLines::default();
     state
-        .adjust_actor_stat(&pack, "golem-dark-nw", "wisdom", 10)
-        .unwrap();
+        .story_vars
+        .set_unchecked("awakened:golem-dark-nw", "true");
     cinder_core::engine::reducer::transformations::maybe_apply_transformations(
         &mut state,
         &pack,
@@ -338,9 +338,7 @@ fn jamil_awakened_uses_jamil_persona_and_sanitizes_stage_directions() {
 
     // Awaken Sakhra into Jamil
     let mut lines = cinder_core::engine::narrative::NarrativeLines::default();
-    state
-        .adjust_actor_stat(&pack, "sakhra", "wisdom", 10)
-        .unwrap();
+    state.story_vars.set_unchecked("awakened:sakhra", "true");
     cinder_core::engine::reducer::transformations::maybe_apply_transformations(
         &mut state, &pack, "sakhra", &mut lines,
     );

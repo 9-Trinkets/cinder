@@ -161,7 +161,7 @@ Each town blocks the memento with a gate made from the town's own work. Every ga
 Salt Reach uses **charm** on purpose — it is the sigil every player already has, a warm-up before the four towns that follow teach **teleport**, **drain**, **spawn**, and finally the two-part Brass Yard gate. Each town hides a teaching scroll for its gate's sigil, so the puzzle stays solvable even if the player skipped that scroll earlier.
 
 ### What the Memento Rule Is
-A memento gives its holder **+6 Wisdom**. Monsters in these towns start with low Wisdom (roughly 4–6). Reach 10 and the fog breaks — the monster remembers who it was.
+A memento carries a preserved **spirit shard** of the missing person. Monsters in these towns are mind-wiped converts. When Layla binds the spirit shard from the memento to the monster (using the Bind Sigil), the fog breaks — the monster remembers who it was.
 
 > [!IMPORTANT]
 > **Once Layla gives a Memento to a companion, she cannot take it back.**
@@ -188,9 +188,9 @@ Just like the stone golems that roamed near Deepwell on Floor 4, each worker tow
 ```mermaid
 flowchart TD
     RescuedNPC[Rescued Friend in Town] -->|Gives Quest| MissingQuest[Look for the Missing Relative]
-    MissingQuest -->|Find Clues in Outskirts| GetMemento[Recover Memento (+6 WIS)]
+    MissingQuest -->|Find Clues in Outskirts| GetMemento[Recover Memento with Spirit Shard]
     WildArea[Explore Town Outskirts] -->|Draw a Charm Ring| CharmMonster[Charm Local Monster into Party]
-    GetMemento -->|Give Memento to Charmed Monster| Awaken[Wisdom Reaches 10 -> Awakens]
+    GetMemento -->|Bind Spirit Shard to Monster via Bind Sigil| Awaken[Spirit Shard Bound -> Awakens]
     Awaken --> HumanSelf[True Name & Voice Return + Loyal Companion]
 ```
 
@@ -507,6 +507,6 @@ These are the design checks that must hold when the floor is built. They confirm
 
 1. **Party travel.** With Astrid and Einar in Layla's party, teleporting into a town square brings them along. Companions can explore, guard, and fight in the town.
 2. **Memento is permanent.** Once Layla gives a memento to a companion, she cannot take it back. The command is refused with a clear line about the awakened mind, and the companion keeps the item.
-3. **Awakening at Wisdom 10.** A charmed town monster starts with low Wisdom. Giving it the matching memento raises Wisdom to 10 or higher, which wakes it: its true name, title, and voice return, and it becomes a loyal companion.
+3. **Awakening via Spirit Shard Binding.** A charmed town monster is a mind-wiped convert. Binding the matching memento's spirit shard to it wakes it: its true name, title, and voice return, and it becomes a loyal companion.
 4. **Floor 6 stays solo.** When Layla consumes the stealth token to enter the High Sanctuary, her party — including the awakened relatives — remains behind at the Citadel, preserving Floor 6's solo infiltration.
 5. **Every gate has two ways.** Each town gate opens with its headline sigil and with the alternate path. A player who lacks one scroll is never stuck, and the gate still teaches the sigil it was built around.

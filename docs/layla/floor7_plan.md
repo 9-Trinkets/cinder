@@ -188,7 +188,7 @@ Someone must take the Master's Seat to keep the world alive.
 
 - Layla cannot leave a mindless monster in charge—they would obey the corporate cull protocols.
 - **She must choose one of her AWAKENED companions to take her place.**
-- Because they are awakened (their Wisdom is 10 or higher and their human memories are intact), they have free will, empathy, and love for their people. They will run the dungeon as a protector, ending the culls and keeping the worker towns safe.
+- Because they are awakened (their spirit shards are bound and their human memories are intact), they have free will, empathy, and love for their people. They will run the dungeon as a protector, ending the culls and keeping the worker towns safe.
 
 ```mermaid
 flowchart TD

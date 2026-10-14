@@ -255,10 +255,7 @@
       "ring",
       "off-hand"
     ],
-    "stat_bonuses": {
-      "wisdom": 6
-    },
-    "description": "A dented miner's lantern of heavy brass, fitted with low-pressure vent clips. A warm amber filament hums quietly behind the smudged glass. The casing stays faintly warm to the touch, and the initial 'J' is scratched into the base plate beneath layers of old machine grease."
+    "description": "A dented miner's lantern of heavy brass, fitted with low-pressure vent clips. A warm amber filament hums quietly behind the smudged glass, carrying the preserved spirit shard of a miner long forgotten. The casing stays faintly warm to the touch, and the initial 'J' is scratched into the base plate beneath layers of old machine grease."
   },
   {
     "id": "iron-cage-key",
@@ -441,22 +438,22 @@
     "description": "A small white pill given by Orva in the herb garden. Swallowing it lets you see the glowing spirits of the dead."
   },
   {
-    "id": "revival-scroll",
-    "label": "revival scroll",
-    "aliases": ["revival scroll", "revive scroll", "scroll"],
+    "id": "bind-scroll",
+    "label": "bind scroll",
+    "aliases": ["bind scroll", "binding scroll", "scroll"],
     "kind": "misc",
-    "use_hook": "item.revival_scroll_read",
-    "description": "A parchment scroll covered in glowing silver letters. Reading it teaches you the Revival Sigil."
+    "use_hook": "item.bind_scroll_read",
+    "description": "A parchment scroll covered in glowing silver runes recovered from Seer Valerius. Reading it teaches you the Bind Sigil."
   },
   {
-    "id": "revive-sigil",
-    "label": "revival sigil",
-    "aliases": ["revival sigil", "revive sigil", "sigil"],
+    "id": "bind-sigil",
+    "label": "bind sigil",
+    "aliases": ["bind sigil", "binding sigil", "sigil"],
     "kind": "misc",
-    "description": "A circular mark drawn in silver chalk. It channels life energy back into fallen spirits.",
-    "look_description": "A ring of silver chalk glowing with soft, warm light on the stone floor.",
+    "description": "An interlocking knot drawn in silver chalk. Used to bind spirits into bodies or anchor spirit shards to restore lost memories.",
+    "look_description": "An interlocking silver knot glowing with quiet, binding power on the stone floor.",
     "trace_mark": true,
     "mp_cost": 5,
-    "placement_hook": "item.revive_sigil_placed"
+    "placement_hook": "item.bind_sigil_placed"
   }
 ]

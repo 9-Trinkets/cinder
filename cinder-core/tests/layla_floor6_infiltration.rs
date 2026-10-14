@@ -4,7 +4,7 @@
 //! - Witch & Deduction: Finding Orva among gardeners (inspecting Flora's bronze leaf, Silvia's cord, Orva's silver arrow)
 //! - Code Word: Speaking "The arrow always finds home" to Orva receives the spirit pill
 //! - Spiritual Sight: Swallowing pill reveals trapped spirits and exposes the living Seer
-//! - Boss Battle: Slaying the Seer, obtaining Revival Scroll, learning Revival Sigil
+//! - Boss Battle: Slaying the Seer, obtaining Bind Scroll, learning Bind Sigil
 //! - Platform Activation: Linking Floor 6 to lower floors and reuniting with Astrid & Einar
 
 use cinder_core::content::loader::load_named_pack;
@@ -204,24 +204,20 @@ fn test_floor6_defeat_seer_and_activate_platform() {
         "seer_defeated story var must be set"
     );
 
-    // Pick up revival scroll dropped by the Seer
-    runtime
-        .run_turn("take revival scroll")
-        .expect("take scroll");
-    assert!(runtime.export_state().unwrap().has_item("revival-scroll"));
+    // Pick up bind scroll dropped by the Seer
+    runtime.run_turn("take bind scroll").expect("take scroll");
+    assert!(runtime.export_state().unwrap().has_item("bind-scroll"));
 
-    // Read revival scroll to learn Revival Sigil
-    let read_out = runtime
-        .run_turn("read revival scroll")
-        .expect("read scroll");
+    // Read bind scroll to learn Bind Sigil
+    let read_out = runtime.run_turn("read bind scroll").expect("read scroll");
     assert!(
-        read_out.text().contains("Revival Sigil") || read_out.text().contains("mind"),
+        read_out.text().contains("Bind Sigil") || read_out.text().contains("mind"),
         "read scroll output: {}",
         read_out.text()
     );
     let s_after_read = runtime.export_state().unwrap();
-    assert_eq!(s_after_read.story_vars.get("knows_revive"), Some("true"));
-    assert!(s_after_read.has_item("revive-sigil"));
+    assert_eq!(s_after_read.story_vars.get("knows_bind"), Some("true"));
+    assert!(s_after_read.has_item("bind-sigil"));
 
     // Move to platform
     runtime.run_turn("go south").expect("move to platform");
@@ -424,7 +420,6 @@ fn test_floor6_secret_archive_side_quest() {
     state.clock.turn_number = 1;
     state.active_objective_stage_ids = vec!["sq_archive_of_the_disappeared".to_string()];
 
-    let initial_wisdom = state.actor_stat("player", "wisdom");
     let runtime = CinderRuntime::from_state(pack, state, false).expect("runtime creates");
 
     // Inspect the confidential mortuary ledgers
@@ -450,12 +445,5 @@ fn test_floor6_secret_archive_side_quest() {
     assert_eq!(
         s.story_vars.get("discovered_monster_pipeline"),
         Some("true")
-    );
-    // Player awarded 1 Wisdom
-    let final_wisdom = s.actor_stat("player", "wisdom");
-    assert_eq!(
-        final_wisdom,
-        initial_wisdom + 1,
-        "inspecting archive ledgers must award 1 Wisdom"
     );
 }
