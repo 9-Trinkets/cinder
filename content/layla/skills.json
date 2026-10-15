@@ -249,35 +249,6 @@
       ]
     },
     {
-      "id": "hold",
-      "label": "Hold",
-      "kind": "defend",
-      "target": "self_actor",
-      "description": "Holds defensive stance when critically wounded, avoiding risky exposure.",
-      "scaling": {
-        "summary_template": "Holds ground in room"
-      },
-      "reactions": [
-        {
-          "id": "survival-hold",
-          "tier": "survival",
-          "window": "after_hostile_damage",
-          "action": "hold",
-          "conditions": [
-            {
-              "condition": "actor_health_at_most_percent",
-              "percent": 25
-            }
-          ],
-          "target": "self_actor",
-          "cooldown": {
-            "mode": "actor_combat_interval"
-          },
-          "message": "combat.party_holds"
-        }
-      ]
-    },
-    {
       "id": "heal",
       "label": "Heal",
       "kind": "heal",

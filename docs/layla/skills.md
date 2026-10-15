@@ -101,7 +101,6 @@ Lower `priority` values execute first, allowing healing to preempt striking.
 |---|---|---|---|
 | `strike` | Attack command | Counterattack | Hostile strike |
 | `intercept` | None | Guard/follow interception | None |
-| `hold` | None | Critical-health hold | None |
 | `heal` | None | Heal lowest-health ally | Heal hostile ally |
 | `trace` | Trace command | None | None |
 | `teleport` | Teleport command | None | None |

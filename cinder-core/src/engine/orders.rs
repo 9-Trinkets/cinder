@@ -13,7 +13,7 @@
 /// A parsed order token.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) enum OrderKind {
-    /// Hold position. Authored as `hold`/`stay`; the party directive is `guard`.
+    /// Hold position. Authored and assigned as `guard`.
     Hold,
     /// Drift to a random reachable adjacent room (`patrol`/`wander`/`roam`).
     Patrol,
@@ -41,7 +41,7 @@ pub(crate) fn parse_order(token: &str) -> Option<OrderKind> {
     let base = parts.next().unwrap_or_default().to_ascii_lowercase();
     let target = parts.next().unwrap_or_default().trim().to_string();
     match base.as_str() {
-        "hold" | "guard" | "stay" | "stationary" => Some(OrderKind::Hold),
+        "guard" => Some(OrderKind::Hold),
         "patrol" | "wander" | "roam" | "random_adjacent" => Some(OrderKind::Patrol),
         "hunt" | "advance" | "toward_player" | "chase" | "pursue" => Some(OrderKind::Hunt),
         "follow" => Some(OrderKind::Follow),
@@ -52,7 +52,7 @@ pub(crate) fn parse_order(token: &str) -> Option<OrderKind> {
     }
 }
 
-/// Whether `token` is a hold/guard order.
+/// Whether `token` is a guard order.
 pub(crate) fn is_hold(token: &str) -> bool {
     matches!(parse_order(token), Some(OrderKind::Hold))
 }
@@ -64,8 +64,7 @@ mod tests {
     #[test]
     fn parses_canonical_tokens_and_aliases() {
         assert_eq!(parse_order("guard"), Some(OrderKind::Hold));
-        assert_eq!(parse_order("HOLD"), Some(OrderKind::Hold));
-        assert_eq!(parse_order("stay"), Some(OrderKind::Hold));
+        assert_eq!(parse_order("GUARD"), Some(OrderKind::Hold));
         assert_eq!(parse_order("patrol"), Some(OrderKind::Patrol));
         assert_eq!(parse_order("random_adjacent"), Some(OrderKind::Patrol));
         assert_eq!(parse_order("advance"), Some(OrderKind::Hunt));
@@ -102,12 +101,15 @@ mod tests {
         assert_eq!(parse_order(""), None);
         assert_eq!(parse_order("   "), None);
         assert_eq!(parse_order("assist"), None);
+        assert_eq!(parse_order("hold"), None);
+        assert_eq!(parse_order("stay"), None);
+        assert_eq!(parse_order("stationary"), None);
     }
 
     #[test]
     fn hold_helper_matches_only_hold_orders() {
         assert!(is_hold("guard"));
-        assert!(is_hold("hold"));
+        assert!(!is_hold("hold"));
         assert!(!is_hold("patrol"));
         assert!(!is_hold("deploy:gate"));
     }

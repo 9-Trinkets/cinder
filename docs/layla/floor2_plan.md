@@ -218,7 +218,7 @@ Every room in the 8×8 grid must have inspectable features to ground the player'
 
 1. **Features in `rooms.json`** — all 64 rooms (`d1c1`–`d8c8`) carry the canonical archetype features defined above, two per room. No room has an empty `features` list (`content/layla/locales/en/rooms.json`).
 2. **Rich Inspect Text for Elf Actors** — every elf (`elf-pawn-*` through `elf-king-5`) has rank-appropriate `inspect_text` in `content/layla/locales/en/actors.json`.
-3. **Elf army structured into 4 tactical squads with standing orders** — the sixteen pieces form 4 coordinated AI parties (`elf-vanguard-west`, `elf-vanguard-east`, `elf-queen-patrol`, `elf-royal-court`), driven by authored per-squad `initial_orders`, dynamic mobilization on `board.entered`, and role reactions (guard interception, counterattack, and combat healing). The king's defeat hook sets `elf_king_defeated`, narrates the ceasefire, flips all `elf` actors to `neutral` (`follows_player: false`), and orders the survivors to `hold`. Covered by `cinder-core/tests/layla_elf_army.rs`.
+3. **Elf army structured into 4 tactical squads with standing orders** — the sixteen pieces form 4 coordinated AI parties (`elf-vanguard-west`, `elf-vanguard-east`, `elf-queen-patrol`, `elf-royal-court`), driven by authored per-squad `initial_orders`, dynamic mobilization on `board.entered`, and role reactions (guard interception, counterattack, and combat healing). The king's defeat hook sets `elf_king_defeated`, narrates the ceasefire, flips all `elf` actors to `neutral` (`follows_player: false`), and orders the survivors to `guard`. Covered by `cinder-core/tests/layla_elf_army.rs`.
 
 **Open:**
 

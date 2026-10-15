@@ -348,7 +348,7 @@
           "payload_template": {
             "kind": "set_party_order_by_tag",
             "tag": "elf",
-            "order": "hold"
+            "order": "guard"
           }
         },
         {

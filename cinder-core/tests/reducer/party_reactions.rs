@@ -4,8 +4,6 @@ use cinder_core::content::types::{
     PartyCombatDecisionRule, PartyDecisionCondition, PartyDecisionTier, PartyReactionAction,
     PartyReactionCooldown, PartyReactionWindow, PartySupportEffect, PartyTargetSelection,
 };
-use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
-use cinder_core::engine::reducer::apply_events;
 use std::collections::BTreeMap;
 
 #[test]
@@ -55,51 +53,6 @@ fn explicit_assist_reacts_without_a_default_combat_role() {
     let _ = hostile_strike(&mut state, &pack);
 
     assert_eq!(state.actor_stat(ACTOR_C_ID, "stamina"), 17);
-}
-
-#[test]
-fn survival_hold_interrupts_an_assist_order_and_consumes_readiness() {
-    let hold = rule(
-        "survival-hold",
-        PartyDecisionTier::Survival,
-        PartyReactionAction::Hold,
-        vec![PartyDecisionCondition::ActorHealthAtMostPercent { percent: 25 }],
-        PartyTargetSelection::SelfActor,
-    );
-    let assist = rule(
-        "ordered-assist",
-        PartyDecisionTier::Order,
-        PartyReactionAction::Counterattack,
-        vec![PartyDecisionCondition::OrderIs {
-            orders: vec!["assist".to_string()],
-        }],
-        PartyTargetSelection::Attacker,
-    );
-    let pack = reaction_pack(BTreeMap::new(), vec![hold, assist]);
-    let mut state = combat_state(&pack);
-    state
-        .adjust_actor_stat(&pack, ACTOR_B_ID, "stamina", -8)
-        .unwrap();
-    state
-        .assign_party_order(&pack, ACTOR_B_ID, "assist".to_string())
-        .unwrap();
-
-    let output = apply_events(
-        &mut state,
-        &pack,
-        &[TimestampedWorldEvent::now(WorldEvent::HostileStrike {
-            actor_id: ACTOR_C_ID.to_string(),
-        })],
-    );
-
-    assert_eq!(state.actor_stat(ACTOR_C_ID, "stamina"), 20);
-    assert!(output.lines.iter().any(|line| line.text == "Blair holds."));
-    assert!(
-        state
-            .relations
-            .party_reaction_ready_at
-            .contains_key(ACTOR_B_ID)
-    );
 }
 
 #[test]

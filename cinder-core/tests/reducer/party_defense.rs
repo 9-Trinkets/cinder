@@ -317,10 +317,7 @@ fn a_follower_without_the_intercept_skill_does_not_intercept() {
         .iter_mut()
         .find(|actor| actor.id == ACTOR_B_ID)
         .expect("follower exists");
-    follower.skills = vec![
-        ActorSkillAssignment::Id("strike".to_string()),
-        ActorSkillAssignment::Id("hold".to_string()),
-    ];
+    follower.skills = vec![ActorSkillAssignment::Id("strike".to_string())];
     rebuild_test_pack_indexes(&mut pack);
 
     let mut state = intercept_scenario(&pack);
@@ -365,7 +362,6 @@ fn the_same_follower_intercepts_once_it_learns_the_skill() {
         .expect("follower exists");
     follower.skills = vec![
         ActorSkillAssignment::Id("strike".to_string()),
-        ActorSkillAssignment::Id("hold".to_string()),
         ActorSkillAssignment::Id("intercept".to_string()),
     ];
     rebuild_test_pack_indexes(&mut pack);

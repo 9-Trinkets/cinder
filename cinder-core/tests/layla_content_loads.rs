@@ -1014,10 +1014,10 @@ fn layla_shipped_pack_invariants_and_wiring() {
         player_party.initial_orders.get("golem-pale-ne").cloned(),
         Some("follow".to_string())
     );
-    assert_eq!(player_party.combat_rules.len(), 5);
+    assert_eq!(player_party.combat_rules.len(), 4);
     assert_eq!(
         player_party.combat_rules[0].tier,
-        cinder_core::content::types::PartyDecisionTier::Survival
+        cinder_core::content::types::PartyDecisionTier::Order
     );
     assert_eq!(
         pack.channel("handler-comms")
@@ -1071,7 +1071,6 @@ fn layla_skills_declare_only_live_behaviors() {
         vec![
             "strike",
             "intercept",
-            "hold",
             "heal",
             "trace",
             "teleport",
@@ -1101,9 +1100,6 @@ fn layla_skills_declare_only_live_behaviors() {
 
     let intercept = pack.skill("intercept").unwrap();
     assert_eq!(intercept.reactions.len(), 2);
-
-    let hold = pack.skill("hold").unwrap();
-    assert_eq!(hold.reactions.len(), 1);
 
     let heal = pack.skill("heal").unwrap();
     assert_eq!(heal.reactions.len(), 1);
@@ -1144,7 +1140,6 @@ fn layla_skill_behaviors_compile_into_generic_runtime_indexes() {
     assert_eq!(
         rules,
         vec![
-            ("survival-hold", "hold"),
             ("guard-order", "intercept"),
             ("follow-protect-player", "intercept"),
             ("healer-support-order", "heal"),
@@ -1173,9 +1168,9 @@ fn layla_party_actors_keep_their_live_reactive_behaviors() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let state = cinder_core::engine::state::WorldState::new(&pack);
 
-    // Astrid is the Guardian: interception and the survival hold must survive
-    // the skills gate, which only binds actors that declare skills.
-    for skill_id in ["strike", "hold", "intercept"] {
+    // Astrid is the Guardian: interception must survive the skills gate, which
+    // only binds actors that declare skills.
+    for skill_id in ["strike", "intercept"] {
         assert!(
             state.actor_has_skill("commander_astrid", skill_id),
             "Astrid lost '{skill_id}'"
@@ -1183,7 +1178,7 @@ fn layla_party_actors_keep_their_live_reactive_behaviors() {
     }
     assert!(!state.actor_has_skill("commander_astrid", "heal"));
 
-    for skill_id in ["strike", "hold", "heal"] {
+    for skill_id in ["strike", "heal"] {
         assert!(
             state.actor_has_skill("einar", skill_id),
             "Einar lost '{skill_id}'"
@@ -1197,7 +1192,6 @@ fn layla_party_actors_keep_their_live_reactive_behaviors() {
             "Layla lost '{skill_id}'"
         );
     }
-    assert!(!state.actor_has_skill("player", "hold"));
 }
 
 #[test]
@@ -1250,7 +1244,6 @@ fn party_rules_bind_explicitly_to_the_expected_skills() {
             ("follow-protect-player", "intercept"),
             ("guard-order", "intercept"),
             ("healer-support-order", "heal"),
-            ("survival-hold", "hold"),
         ])
     );
 }

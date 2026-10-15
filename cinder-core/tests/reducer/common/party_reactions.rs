@@ -36,7 +36,6 @@ pub fn rule(
         message: match action {
             PartyReactionAction::Counterattack => "combat.party_counterattack",
             PartyReactionAction::Support => "combat.party_support",
-            PartyReactionAction::Hold => "combat.party_holds",
             PartyReactionAction::Intercept => "",
         }
         .to_string(),
@@ -88,14 +87,6 @@ pub fn reaction_pack(
         PackMessage::Narration(
             "{actors} support {target} for {amount}. ({remaining} remaining)".to_string(),
         ),
-    );
-    pack.messages.insert(
-        "combat.party_holds".to_string(),
-        PackMessage::Narration("{actor} holds.".to_string()),
-    );
-    pack.messages.insert(
-        "combat.party_holds_group".to_string(),
-        PackMessage::Narration("{actors} hold.".to_string()),
     );
     pack.messages.insert(
         "combat.no_effect".to_string(),

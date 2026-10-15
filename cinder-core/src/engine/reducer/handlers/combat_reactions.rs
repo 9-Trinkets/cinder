@@ -31,10 +31,6 @@ enum PartyReactionOutcome {
         stat: String,
         message: String,
     },
-    Hold {
-        actor: String,
-        message: String,
-    },
 }
 
 impl PartyReactionOutcome {
@@ -75,22 +71,13 @@ impl PartyReactionOutcome {
                     ..
                 },
             ) => target_id == other_target && stat == other_stat && message == other_message,
-            (
-                Self::Hold { message, .. },
-                Self::Hold {
-                    message: other_message,
-                    ..
-                },
-            ) => message == other_message,
             _ => false,
         }
     }
 
     fn actor(&self) -> &str {
         match self {
-            Self::Counterattack { actor, .. }
-            | Self::Support { actor, .. }
-            | Self::Hold { actor, .. } => actor,
+            Self::Counterattack { actor, .. } | Self::Support { actor, .. } => actor,
         }
     }
 }
@@ -115,10 +102,6 @@ pub(super) fn resolve_post_damage_reactions(
             PartyReactionAction::Support => {
                 resolve_support(state, content, attacker_id, room_id, &decision, lines)
             }
-            PartyReactionAction::Hold => Some(PartyReactionOutcome::Hold {
-                actor: actor_display_name(state, content, &decision.actor_id),
-                message: decision.message.clone(),
-            }),
             PartyReactionAction::Intercept => None,
         };
         if let Some(outcome) = outcome {
@@ -377,22 +360,6 @@ fn render_group(content: &ContentPack, group: &[PartyReactionOutcome], lines: &m
             } else {
                 for outcome in group {
                     render_support(content, outcome, lines);
-                }
-            }
-        }
-        PartyReactionOutcome::Hold { message, .. } => {
-            if message.is_empty() {
-                return;
-            }
-            if let Some(key) = group_key(
-                content,
-                group.len(),
-                ("combat.party_holds_group", "combat.party_holds_large"),
-            ) {
-                render_aggregate(content, group, lines, key, &[]);
-            } else {
-                for outcome in group {
-                    push_message(lines, content, message, &[("actor", outcome.actor())]);
                 }
             }
         }

@@ -124,9 +124,7 @@ pub(crate) fn select_post_damage_reactions(
                             && rule.window == PartyReactionWindow::AfterHostileDamage
                             && matches!(
                                 rule.action,
-                                PartyReactionAction::Counterattack
-                                    | PartyReactionAction::Support
-                                    | PartyReactionAction::Hold
+                                PartyReactionAction::Counterattack | PartyReactionAction::Support
                             )
                             && rule.conditions.iter().all(|condition| {
                                 condition_matches(

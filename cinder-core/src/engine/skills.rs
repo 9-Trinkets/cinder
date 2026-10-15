@@ -170,7 +170,6 @@ pub fn skill_scalar_summary(skill_id: &str, level: u32) -> String {
             drain_charges(lvl)
         ),
         "teleport" => format!("Anchors: {}", teleport_anchor_capacity(lvl)),
-        "hold" => "Holds ground in room".to_string(),
         "comms" => "Telepathic link with awakened allies".to_string(),
         _ => String::new(),
     }
@@ -327,11 +326,6 @@ mod tests {
         );
 
         // Static skills
-        let hold = pack.skill("hold").expect("hold exists");
-        assert_eq!(
-            hold.format_summary(1),
-            Some("Holds ground in room".to_string())
-        );
         let comms = pack.skill("comms").expect("comms exists");
         assert_eq!(
             comms.format_summary(1),

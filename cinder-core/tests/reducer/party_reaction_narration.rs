@@ -8,45 +8,6 @@ use cinder_core::engine::state::ActorStance;
 use std::collections::BTreeMap;
 
 #[test]
-fn multiple_holds_are_narrated_once() {
-    let hold = rule(
-        "survival-hold",
-        PartyDecisionTier::Survival,
-        PartyReactionAction::Hold,
-        vec![PartyDecisionCondition::ActorHealthAtMostPercent { percent: 25 }],
-        PartyTargetSelection::SelfActor,
-    );
-    let mut pack = reaction_pack(
-        BTreeMap::from([
-            (ACTOR_B_ID.to_string(), "assist".to_string()),
-            (SECOND_ALLY_ID.to_string(), "assist".to_string()),
-        ]),
-        vec![hold],
-    );
-    add_second_ally(&mut pack);
-    let mut state = combat_state(&pack);
-    state.set_stance(SECOND_ALLY_ID, ActorStance::Allied);
-    state
-        .adjust_actor_stat(&pack, ACTOR_B_ID, "stamina", -8)
-        .unwrap();
-    state
-        .adjust_actor_stat(&pack, SECOND_ALLY_ID, "stamina", -8)
-        .unwrap();
-
-    let output = hostile_strike(&mut state, &pack);
-
-    assert_eq!(
-        output
-            .lines
-            .iter()
-            .filter(|line| line.text.contains("hold"))
-            .map(|line| line.text.as_str())
-            .collect::<Vec<_>>(),
-        vec!["Blair and Drew hold."]
-    );
-}
-
-#[test]
 fn matching_support_reactions_are_narrated_once() {
     let mut support = rule(
         "medic-default",
@@ -100,28 +61,35 @@ fn mixed_reactions_are_narrated_in_execution_order_without_nonadjacent_grouping(
         }],
         PartyTargetSelection::Attacker,
     );
-    let hold = rule(
-        "ordered-hold",
+    let mut support = rule(
+        "ordered-support",
         PartyDecisionTier::Order,
-        PartyReactionAction::Hold,
+        PartyReactionAction::Support,
         vec![PartyDecisionCondition::OrderIs {
             orders: vec!["guard".to_string()],
         }],
-        PartyTargetSelection::SelfActor,
+        PartyTargetSelection::Player,
     );
+    support.support_effect = Some(PartySupportEffect::AdjustActorStat {
+        stat: "stamina".to_string(),
+        delta: 3,
+    });
     let mut pack = reaction_pack(
         BTreeMap::from([
             (ACTOR_B_ID.to_string(), "assist".to_string()),
             (SECOND_ALLY_ID.to_string(), "guard".to_string()),
             (THIRD_ALLY_ID.to_string(), "assist".to_string()),
         ]),
-        vec![counter, hold],
+        vec![counter, support],
     );
     add_second_ally(&mut pack);
     add_ally(&mut pack, THIRD_ALLY_ID, "Evan", 7);
     let mut state = combat_state(&pack);
     state.set_stance(SECOND_ALLY_ID, ActorStance::Allied);
     state.set_stance(THIRD_ALLY_ID, ActorStance::Allied);
+    state
+        .adjust_actor_stat(&pack, ACTOR_A_ID, "stamina", -3)
+        .unwrap();
 
     let output = hostile_strike(&mut state, &pack);
 
@@ -139,7 +107,7 @@ fn mixed_reactions_are_narrated_in_execution_order_without_nonadjacent_grouping(
         vec![
             "Casey strikes Drew! Drew takes 3 damage. (7 HP remaining)",
             "Blair hits Casey for 3 fire. (17 remaining)",
-            "Drew holds.",
+            "Drew supports Alex for 3. (20 remaining)",
             "Evan hits Casey for 5 cold. (12 remaining)",
         ]
     );
@@ -171,16 +139,20 @@ fn empty_messages_suppress_normal_reaction_narration_without_suppressing_mechani
         stat: "stamina".to_string(),
         delta: 3,
     });
-    let mut hold = rule(
-        "silent-hold",
+    let mut guarded = rule(
+        "silent-guard",
         PartyDecisionTier::Order,
-        PartyReactionAction::Hold,
+        PartyReactionAction::Support,
         vec![PartyDecisionCondition::OrderIs {
             orders: vec!["guard".to_string()],
         }],
-        PartyTargetSelection::SelfActor,
+        PartyTargetSelection::Player,
     );
-    hold.message.clear();
+    guarded.message.clear();
+    guarded.support_effect = Some(PartySupportEffect::AdjustActorStat {
+        stat: "stamina".to_string(),
+        delta: 3,
+    });
     let mut pack = reaction_pack(
         BTreeMap::from([
             (ACTOR_B_ID.to_string(), "assist".to_string()),
@@ -190,7 +162,7 @@ fn empty_messages_suppress_normal_reaction_narration_without_suppressing_mechani
             (FIFTH_ALLY_ID.to_string(), "guard".to_string()),
             (SIXTH_ALLY_ID.to_string(), "guard".to_string()),
         ]),
-        vec![counter, support, hold],
+        vec![counter, support, guarded],
     );
     add_second_ally(&mut pack);
     add_ally(&mut pack, THIRD_ALLY_ID, "Evan", 7);

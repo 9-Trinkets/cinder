@@ -67,7 +67,7 @@ In the High Sanctuary’s soul vaults and binding records, Layla finds the ledge
 ## 2. Einar & Astrid's Conspiracy: The Infiltration Mission & Branching Descent
 
 ### Einar's Survival Dynamic: Fail-Forward Branching
-Einar is a dedicated healer (`hp: 20`, `heal`, `hold`). During the Floor 5 siege, he is stationed in the central courtyard (`courtyard_center`) tending the wounded offerings. If the defense lanes hold, Einar survives. However, if a lane is overwhelmed and siege forces breach the courtyard center, Einar can be defeated.
+Einar is a dedicated healer (`hp: 20`, `heal`). During the Floor 5 siege, he is stationed in the central courtyard (`courtyard_center`) tending the wounded offerings. If the defense lanes hold, Einar survives. However, if a lane is overwhelmed and siege forces breach the courtyard center, Einar can be defeated.
 
 Rather than a hard failure or immersion-breaking plot armor, Einar's survival status drives a **dynamic branching infiltration into Floor 6**:
 

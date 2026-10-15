@@ -33,7 +33,6 @@ pub enum PartyReactionAction {
     Intercept,
     Counterattack,
     Support,
-    Hold,
 }
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]

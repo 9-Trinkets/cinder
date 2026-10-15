@@ -393,7 +393,6 @@ mod tests {
             };
             strategy_from_order(&order).map(|strategy| strategy.cadence_ticks())
         };
-        assert_eq!(plan("hold", 9), Some(0));
         assert_eq!(plan("guard", 9), Some(0));
         assert_eq!(plan("patrol", 3), Some(3));
         assert_eq!(plan("wander", 2), Some(2));
