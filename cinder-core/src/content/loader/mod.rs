@@ -11,9 +11,9 @@ use crate::content::types::{
     ActionsDefinition, ActorDefinition, AdvanceEffect, BeatObjectivesDefinition, BeatsDefinition,
     BehaviorDefinition, ContentPack, ContentSettingsDefinition, ItemDefinition, LevelingDefinition,
     MapDefinition, MovementConfigDefinition, OpeningDefinition, OpeningMenuDefinition,
-    OpeningMovieDefinition, PresentationDefinition, RoomDefinition, SequencesDefinition,
-    SkillsDefinition, SpeechConfigDefinition, SpeechIntentsConfig, StatsDefinition,
-    TeleportNetworkDefinition, UiTextDefinition,
+    OpeningMovieDefinition, PartyDefinition, PresentationDefinition, RoomDefinition,
+    SequencesDefinition, SkillsDefinition, SpeechConfigDefinition, SpeechIntentsConfig,
+    StatsDefinition, TeleportNetworkDefinition, UiTextDefinition,
 };
 use serde_json::Value;
 use std::collections::{BTreeMap, BTreeSet};
@@ -68,10 +68,15 @@ pub fn available_packs() -> Vec<String> {
 }
 
 pub fn load_pack_settings(pack_id: &str) -> Result<ContentSettingsDefinition, Box<dyn Error>> {
-    Ok(
+    let mut settings =
         read_optional_json::<ContentSettingsDefinition>(&pack_dir(pack_id), "settings.json")?
-            .unwrap_or_default(),
-    )
+            .unwrap_or_default();
+    if let Some(parties) =
+        read_optional_json::<Vec<PartyDefinition>>(&pack_dir(pack_id), "parties.json")?
+    {
+        settings.parties = parties;
+    }
+    Ok(settings)
 }
 
 pub fn load_pack_from_dir(path: &Path) -> Result<ContentPack, Box<dyn Error>> {
@@ -84,6 +89,9 @@ pub fn load_pack_from_dir_with_locale(
 ) -> Result<ContentPack, Box<dyn Error>> {
     let mut settings =
         read_optional_json::<ContentSettingsDefinition>(path, "settings.json")?.unwrap_or_default();
+    if let Some(parties) = read_optional_json::<Vec<PartyDefinition>>(path, "parties.json")? {
+        settings.parties = parties;
+    }
     let effective_locale = match locale {
         Some(locale) if !locale.trim().is_empty() => locale.to_string(),
         _ if !settings.default_language.trim().is_empty() => settings.default_language.clone(),

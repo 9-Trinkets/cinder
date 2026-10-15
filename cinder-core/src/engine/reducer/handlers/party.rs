@@ -23,18 +23,27 @@ pub(crate) fn handle_party_order_assigned(
     }
     let actor = actor_display_name(state, content, actor_id);
     let player_room = state.current_room_id.clone();
-    let base_order = if order.to_ascii_lowercase().starts_with("deploy") {
-        "deploy"
-    } else {
-        order.as_str()
+    let parsed = crate::engine::orders::parse_order(&order);
+    let (base_order, raw_target) = match &parsed {
+        Some(crate::engine::orders::OrderKind::Deploy(target_room)) => {
+            ("deploy", target_room.as_str())
+        }
+        Some(crate::engine::orders::OrderKind::Hold) => ("guard", ""),
+        Some(crate::engine::orders::OrderKind::Follow) => ("follow", ""),
+        Some(crate::engine::orders::OrderKind::Patrol) => ("patrol", ""),
+        _ => (order.as_str(), ""),
     };
-    let key = if !was_in_room && (order == "guard" || order == "follow") {
+    let is_recall_order = matches!(
+        parsed,
+        Some(crate::engine::orders::OrderKind::Hold | crate::engine::orders::OrderKind::Follow)
+    );
+    let key = if !was_in_room && is_recall_order {
         state.mark_actor_room_visited(actor_id, &player_room);
         state
             .actors
             .actor_room_overrides
             .insert(actor_id.to_string(), player_room);
-        let recall_key = format!("party.order_{order}_recalled");
+        let recall_key = format!("party.order_{base_order}_recalled");
         if content.message(&recall_key).is_some() {
             recall_key
         } else {
@@ -42,15 +51,6 @@ pub(crate) fn handle_party_order_assigned(
         }
     } else {
         format!("party.order_{base_order}_assigned")
-    };
-    let raw_target = if order.to_ascii_lowercase().starts_with("deploy") {
-        order
-            .strip_prefix("deploy:")
-            .or_else(|| order.strip_prefix("deploy "))
-            .unwrap_or("")
-            .trim()
-    } else {
-        ""
     };
     let target = content
         .room(raw_target)

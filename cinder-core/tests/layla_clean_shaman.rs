@@ -180,3 +180,137 @@ fn clean_shaman_trial_forfeited_if_layla_attacked_floor1_mob() {
         "Player must NOT receive shaman-ring if floor 1 mobs were attacked"
     );
 }
+
+#[test]
+fn cave_golem_intercepts_for_layla_on_guard_order() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+
+    // Layla is in r3c3 with golem-dark-nw
+    state.current_room_id = "r3c3".to_string();
+    state.set_actor_stance(
+        &pack,
+        "golem-dark-nw",
+        cinder_core::engine::state::ActorStance::Allied,
+        true,
+    );
+    state.set_follows_player("golem-dark-nw", true);
+    state
+        .assign_party_order(&pack, "golem-dark-nw", "guard".to_string())
+        .expect("assign guard");
+
+    // Put a hostile goblin in r3c3 ready to strike
+    state
+        .actors
+        .actor_room_overrides
+        .insert("goblin-1".to_string(), "r3c3".to_string());
+    state.set_actor_stance(
+        &pack,
+        "goblin-1",
+        cinder_core::engine::state::ActorStance::Hostile,
+        false,
+    );
+    state
+        .combat
+        .next_hostile_strike_at
+        .insert("goblin-1".to_string(), state.clock.current_time_minutes);
+
+    // Layla is at full HP (18)
+    let player_hp_before = state.actor_stat("player", "hp");
+    assert_eq!(player_hp_before, 18);
+    let golem_hp_before = state.actor_stat("golem-dark-nw", "hp");
+
+    state.clock.turn_number = 1;
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime = CinderRuntime::with_dialogue_generator(pack.clone(), state, dialogue)
+        .expect("runtime creates");
+
+    let outcome = runtime.run_tick().expect("tick runs");
+    let end_state = runtime.export_state().unwrap();
+
+    // Golem on guard draws hostile fire away from Layla: Layla's HP remains untouched at 18!
+    assert_eq!(
+        end_state.actor_stat("player", "hp"),
+        player_hp_before,
+        "Layla should take 0 damage because golem on guard draws enemy strike"
+    );
+    assert!(
+        end_state.actor_stat("golem-dark-nw", "hp") < golem_hp_before,
+        "Golem should have taken the strike damage"
+    );
+    assert!(
+        outcome.text().contains("strikes dark golem"),
+        "Guard target narration should be emitted: {}",
+        outcome.text()
+    );
+}
+
+#[test]
+fn following_cave_golem_intercepts_for_layla_when_wounded() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+
+    // Layla is in r3c3 with golem-dark-nw
+    state.current_room_id = "r3c3".to_string();
+    state.set_actor_stance(
+        &pack,
+        "golem-dark-nw",
+        cinder_core::engine::state::ActorStance::Allied,
+        true,
+    );
+    state.set_follows_player("golem-dark-nw", true);
+    state
+        .assign_party_order(&pack, "golem-dark-nw", "follow".to_string())
+        .expect("assign follow");
+
+    // Put a hostile goblin in r3c3 ready to strike
+    state
+        .actors
+        .actor_room_overrides
+        .insert("goblin-1".to_string(), "r3c3".to_string());
+    state.set_actor_stance(
+        &pack,
+        "goblin-1",
+        cinder_core::engine::state::ActorStance::Hostile,
+        false,
+    );
+    state
+        .combat
+        .next_hostile_strike_at
+        .insert("goblin-1".to_string(), state.clock.current_time_minutes);
+
+    // Layla is at 50% HP (9 / 18 <= 50%)
+    state
+        .combat
+        .actor_stats
+        .entry("player".to_string())
+        .or_default()
+        .insert("hp".to_string(), 9);
+    let golem_hp_before = state.actor_stat("golem-dark-nw", "hp");
+
+    state.clock.turn_number = 1;
+    let dialogue =
+        std::sync::Arc::new(cinder_core::engine::dialogue::ScriptedDialogueGenerator::new());
+    let runtime = CinderRuntime::with_dialogue_generator(pack.clone(), state, dialogue)
+        .expect("runtime creates");
+
+    let outcome = runtime.run_tick().expect("tick runs");
+    let end_state = runtime.export_state().unwrap();
+
+    // Following golem intercepted for wounded Layla!
+    assert_eq!(
+        end_state.actor_stat("player", "hp"),
+        9,
+        "Layla should take 0 damage because golem intercepted"
+    );
+    assert!(
+        end_state.actor_stat("golem-dark-nw", "hp") < golem_hp_before,
+        "Golem should have soaked the strike damage"
+    );
+    assert!(
+        outcome.text().contains("dark golem steps across"),
+        "Intercept narration should be emitted: {}",
+        outcome.text()
+    );
+}

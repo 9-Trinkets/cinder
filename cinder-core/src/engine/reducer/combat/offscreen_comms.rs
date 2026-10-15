@@ -13,30 +13,31 @@ pub fn actor_can_use_comms(state: &WorldState, actor_id: &str) -> bool {
     state.actor_has_skill(actor_id, "comms") || state.is_actor_awakened(actor_id)
 }
 
-/// Selects a single primary reporter for a room based on leadership and identity hierarchy:
-/// 1. Commander Astrid (garrison leader)
-/// 2. Einar (companion apothecary)
-/// 3. Other authored named NPCs
-/// 4. Awakened companions (e.g. golems)
-pub fn select_reporter<'a>(candidates: &[&'a str], content: &'a ContentPack) -> Option<&'a str> {
+/// Selects a single primary reporter for a room:
+/// 1. The first actor among candidates possessing the `comms` skill, prioritizing
+///    authored order in the content pack.
+/// 2. Any other candidate possessing the `comms` skill.
+/// 3. Fallback to the first candidate.
+pub fn select_reporter<'a>(
+    state: &WorldState,
+    candidates: &[&'a str],
+    content: &'a ContentPack,
+) -> Option<&'a str> {
     if candidates.is_empty() {
         return None;
     }
-    if let Some(&id) = candidates
+    if let Some(id) = content
+        .actors
         .iter()
-        .find(|&&id| id == "commander_astrid" || id == "astrid")
+        .map(|a| a.id.as_str())
+        .find(|&id| candidates.contains(&id) && state.actor_has_skill(id, "comms"))
     {
         return Some(id);
     }
-    if let Some(&id) = candidates.iter().find(|&&id| id == "einar") {
-        return Some(id);
-    }
-    let authored_named = candidates
+    if let Some(&id) = candidates
         .iter()
-        .filter(|&&id| content.actor(id).is_some())
-        .copied()
-        .collect::<Vec<_>>();
-    if let Some(&id) = authored_named.first() {
+        .find(|&&id| state.actor_has_skill(id, "comms"))
+    {
         return Some(id);
     }
     candidates.first().copied()
@@ -185,7 +186,8 @@ pub fn evaluate_offscreen_combat_dispatches(
             continue;
         }
 
-        let reporter_id = select_reporter(&comms_candidates, content).expect("reporter candidate");
+        let reporter_id =
+            select_reporter(state, &comms_candidates, content).expect("reporter candidate");
         let reporter_name = actor_display_name(state, content, reporter_id);
         let room_name = content
             .room(&room_id)

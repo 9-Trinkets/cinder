@@ -43,6 +43,9 @@ impl WorldState {
         content: &'a ContentPack,
         actor_id: &str,
     ) -> &'a str {
+        if content.is_player_actor(actor_id) {
+            return &self.current_room_id;
+        }
         if let Some(room_id) = self.actors.actor_room_overrides.get(actor_id) {
             return room_id;
         }

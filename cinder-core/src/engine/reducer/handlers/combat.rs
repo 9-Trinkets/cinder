@@ -81,7 +81,7 @@ pub(crate) fn handle_hostile_strike(ctx: &mut ReduceCtx<'_>, actor_id: &str) {
             });
             let is_guard = state
                 .party_order(content, &target_id)
-                .is_some_and(|order| order.eq_ignore_ascii_case("guard"));
+                .is_some_and(|order| crate::engine::orders::is_hold(&order));
             if is_current_room {
                 let damage = damage.to_string();
                 let remaining_text = remaining.to_string();
