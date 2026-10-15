@@ -787,18 +787,15 @@ mod shipped_pack_load_tests {
             let loaded = load_pack_from_dir_with_locale(&dir, Some("en"))
                 .unwrap_or_else(|e| panic!("pack {pack} failed to load: {e}"));
             assert!(
-                loaded.behavior.defaults.strike.is_some()
-                    || loaded.skills.skills.iter().any(|skill| {
-                        skill.autonomous.iter().any(|use_| {
-                            use_.action == crate::content::types::SkillAutonomousAction::Strike
-                        })
-                    }),
-                "{pack}: hostile strike behavior absent"
-            );
-            assert!(
                 loaded.behavior.defaults.hold.is_some(),
                 "{pack}: hold default absent"
             );
+            if loaded.skills.strict {
+                assert!(
+                    loaded.behavior.defaults.strike.is_none(),
+                    "{pack}: strict pack authors a legacy behavior strike"
+                );
+            }
             assert!(!loaded.rooms.is_empty(), "{pack}: rooms absent");
             assert!(!loaded.actors.is_empty(), "{pack}: actors absent");
         }
