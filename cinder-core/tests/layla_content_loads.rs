@@ -1151,7 +1151,6 @@ fn layla_skill_behaviors_compile_into_generic_runtime_indexes() {
             ("assist-order", "strike"),
         ]
     );
-    assert!(pack.behavior.defaults.strike.is_none());
 }
 
 #[test]

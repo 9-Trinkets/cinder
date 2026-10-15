@@ -390,27 +390,25 @@ fn install_skill_behaviors(
     actions: &mut Vec<crate::content::types::ActionDefinition>,
     settings: &mut ContentSettingsDefinition,
 ) -> Result<(), Box<dyn Error>> {
-    if skills.strict {
-        if let Some(action) = actions.iter().find(|action| !action.skill_id.is_empty()) {
-            return Err(format!(
-                "strict skills require skill action '{}' to be authored in skills.json",
-                action.id
-            )
-            .into());
-        }
-        if let Some(rule) = settings
-            .parties
-            .iter()
-            .filter(|party| party.controller == crate::content::types::PartyController::Player)
-            .flat_map(|party| &party.combat_rules)
-            .next()
-        {
-            return Err(format!(
-                "strict skills require player party reaction '{}' to be authored in skills.json",
-                rule.id
-            )
-            .into());
-        }
+    if let Some(action) = actions.iter().find(|action| !action.skill_id.is_empty()) {
+        return Err(format!(
+            "skills require skill action '{}' to be authored in skills.json",
+            action.id
+        )
+        .into());
+    }
+    if let Some(rule) = settings
+        .parties
+        .iter()
+        .filter(|party| party.controller == crate::content::types::PartyController::Player)
+        .flat_map(|party| &party.combat_rules)
+        .next()
+    {
+        return Err(format!(
+            "skills require player party reaction '{}' to be authored in skills.json",
+            rule.id
+        )
+        .into());
     }
 
     let mut reactions = Vec::new();
@@ -587,12 +585,11 @@ fn validate_skills(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
                 )
                 .into());
             }
-            if pack.skills.strict
-                && skill.kind == Some(crate::content::types::SkillKind::Heal)
+            if skill.kind == Some(crate::content::types::SkillKind::Heal)
                 && assignment.power().is_none()
             {
                 return Err(format!(
-                    "strict skills require actor '{}' to configure power for heal skill '{}'",
+                    "skills require actor '{}' to configure power for heal skill '{}'",
                     actor.id, skill_id
                 )
                 .into());
@@ -609,18 +606,23 @@ fn validate_skills(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
             .into());
         }
     }
-    for rule in pack
-        .settings
-        .parties
-        .iter()
-        .flat_map(|party| &party.combat_rules)
-    {
-        if !rule.skill_id.is_empty() && pack.skill(&rule.skill_id).is_none() {
-            return Err(format!(
-                "party combat rule '{}' references unknown skill '{}'",
-                rule.id, rule.skill_id
-            )
-            .into());
+    for party in &pack.settings.parties {
+        let player_controlled = party.controller == crate::content::types::PartyController::Player;
+        for rule in &party.combat_rules {
+            if player_controlled && rule.skill_id.is_empty() {
+                return Err(format!(
+                    "skills require player party combat rule '{}' to name a skill",
+                    rule.id
+                )
+                .into());
+            }
+            if !rule.skill_id.is_empty() && pack.skill(&rule.skill_id).is_none() {
+                return Err(format!(
+                    "party combat rule '{}' references unknown skill '{}'",
+                    rule.id, rule.skill_id
+                )
+                .into());
+            }
         }
     }
     for level in pack
@@ -639,46 +641,15 @@ fn validate_skills(pack: &ContentPack) -> Result<(), Box<dyn Error>> {
         validate_hook_skill_grants(pack, hook_id, hook)?;
     }
 
-    if !pack.skills.strict {
-        return Ok(());
-    }
-
     for action in &pack.actions {
         if matches!(action.command.as_str(), "ATTACK" | "TRACE" | "TELEPORT")
             && action.skill_id.is_empty()
         {
-            return Err(format!(
-                "strict skills require action '{}' to name a skill",
-                action.id
-            )
-            .into());
+            return Err(format!("skills require action '{}' to name a skill", action.id).into());
         }
     }
-    for rule in pack
-        .settings
-        .parties
-        .iter()
-        .flat_map(|party| &party.combat_rules)
-    {
-        if rule.skill_id.is_empty() {
-            return Err(format!(
-                "strict skills require party combat rule '{}' to name a skill",
-                rule.id
-            )
-            .into());
-        }
-    }
-    if pack.behavior.defaults.strike.is_some()
-        || pack
-            .behavior
-            .actors
-            .values()
-            .any(|behavior| behavior.strike.is_some())
-    {
-        return Err(
-            "strict skills require hostile skill behavior to be authored in skills.json".into(),
-        );
-    }
+    // Movement-only behavior: hold rules are permitted; attacks are authored in
+    // skills.json. Combat actors must own a skill with an autonomous strike.
     for actor in &pack.actors {
         if (actor.attackable || actor.initial_hostile)
             && !actor.skills.iter().any(|assignment| {
@@ -790,12 +761,6 @@ mod shipped_pack_load_tests {
                 loaded.behavior.defaults.hold.is_some(),
                 "{pack}: hold default absent"
             );
-            if loaded.skills.strict {
-                assert!(
-                    loaded.behavior.defaults.strike.is_none(),
-                    "{pack}: strict pack authors a legacy behavior strike"
-                );
-            }
             assert!(!loaded.rooms.is_empty(), "{pack}: rooms absent");
             assert!(!loaded.actors.is_empty(), "{pack}: actors absent");
         }

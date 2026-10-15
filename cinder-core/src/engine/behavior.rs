@@ -1,19 +1,16 @@
-//! Content-driven hostile behavior decisions during a background tick.
+//! Content-driven movement hold decisions during a background tick.
 //!
-//! Non-skill movement holds and compatibility hostile strikes are declared in
-//! `behavior.json` as neuron `effect_table` rules evaluated against a shared
-//! actor/world input JSON:
+//! Movement holds are declared in `behavior.json` as neuron `effect_table`
+//! rules evaluated against a shared actor/world input JSON:
 //!
-//! - `strike`: compatibility path for packs without centralized skills.
 //! - `hold`: yields `{ "kind": "hold" }` when the actor must stay put
 //!   (blocking movement); an empty result means it is free to move.
 //!
-//! Strict skill packs author autonomous skill eligibility in `skills.json`.
+//! Attacks and support are authored as autonomous uses in `skills.json`.
 //! Movement destination and cadence remain in `movement.json`.
 
 use crate::content::types::{BehaviorActorDefinition, ContentPack};
 use crate::engine::combat_targets::select_hostile_target;
-use crate::engine::events::WorldEvent;
 use crate::engine::neuron::evaluate_symbolic_value;
 use crate::engine::state::{ActorStance, WorldState};
 use serde_json::{Value, json};
@@ -117,33 +114,6 @@ pub(crate) fn skill_rule_emits(
         rule_decides(&Some(rule.clone()), effect_kind, content, state, actor_id),
         Decision::Yes
     )
-}
-
-/// Should this actor declare a strike this tick? Fully decided by the pack's
-/// `strike` rule in `behavior.json` (stance, health, cooldown, room, etc.).
-pub(crate) fn strike_event(
-    content: &ContentPack,
-    state: &WorldState,
-    actor_id: &str,
-) -> Option<WorldEvent> {
-    if state.phase != crate::engine::state::GamePhase::Active {
-        return None;
-    }
-    let behavior = resolved_behavior(content, actor_id);
-    if !behavior.strike_skill_id.is_empty()
-        && !state.actor_has_skill(actor_id, &behavior.strike_skill_id)
-    {
-        return None;
-    }
-    match rule_decides(&behavior.strike, "strike", content, state, actor_id) {
-        Decision::Yes if select_hostile_target(content, state, actor_id).is_some() => {
-            Some(WorldEvent::HostileStrike {
-                actor_id: actor_id.to_string(),
-            })
-        }
-        Decision::No => None,
-        Decision::Yes => None,
-    }
 }
 
 /// Must this actor hold still (blocked from moving) this tick? Decided by the

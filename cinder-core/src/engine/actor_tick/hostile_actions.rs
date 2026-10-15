@@ -18,7 +18,7 @@ impl ActorTickRoleRunner {
             .state
             .lock()
             .map_err(|_| "failed to lock state for hostility decide".to_string())?;
-        // behavior.json defines the eligible strikes. The mode only chooses
+        // skills.json defines the eligible strikes. The mode only chooses
         // whether rules apply all of them or an LLM selects a validated subset.
         let eligible_events = plan_rules_hostile_actions(self.content.as_ref(), &state);
         let events = if matches!(
@@ -151,7 +151,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn llm_candidates_come_only_from_behavior_selected_events() {
+    fn llm_candidates_come_only_from_skill_selected_events() {
         let content = crate::engine::test_fixtures::minimal_test_pack();
         let mut state = WorldState::new(&content);
         state.current_room_id = "kitchen".to_string();

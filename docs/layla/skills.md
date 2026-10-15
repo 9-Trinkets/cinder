@@ -148,12 +148,11 @@ skill records.
 
 ## Strict Validation
 
-`"strict": true` makes split authorship invalid. The loader rejects:
+Skill validation is always strict: split authorship is invalid. The loader rejects:
 
 - empty or duplicate skill ids;
 - unknown or duplicate actor assignments;
 - skill-backed entries authored in legacy `actions.json` or party settings;
-- hostile strike rules authored in `behavior.json`;
 - nested actions or reactions that bind a different skill id;
 - incompatible autonomous action and skill kinds;
 - combat actors without an autonomous strike skill;

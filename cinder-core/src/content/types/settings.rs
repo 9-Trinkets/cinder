@@ -135,9 +135,9 @@ pub struct ContentSettingsDefinition {
     /// [`SidebarSectionDefinition`]). Omitting a section hides it entirely.
     #[serde(default)]
     pub sidebar: SidebarDefinition,
-    /// Skill definitions (or legacy behavior rules in non-strict packs)
-    /// define eligible hostile actions. `rules` applies them directly; `llm`
-    /// asks a validated planner to choose a subset.
+    /// How the engine selects autonomous hostile actions from skill definitions.
+    /// `rules` applies them directly; `llm` asks a validated planner to choose
+    /// a subset.
     #[serde(default)]
     pub autonomous_hostility_mode: AutonomousHostilityMode,
     /// Content-authored actor effects evaluated after each background tick.

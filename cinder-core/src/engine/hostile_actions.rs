@@ -2,8 +2,8 @@
 //! background tick. The reducer resolves the mechanics of each declared
 //! [`WorldEvent::HostileStrike`] generically; this module only selects.
 //!
-//! The selection policy itself is content-driven: each pack's `behavior.json`
-//! `strike` rule decides per actor (see [`crate::engine::behavior`]).
+//! The selection policy is content-driven: each pack's `skills.json` authors
+//! the autonomous uses that decide per actor (see [`crate::engine::behavior`]).
 //! Rust retains reducer eligibility backstops, cooldown scheduling, and damage
 //! mechanics, but does not add another selection policy here.
 
@@ -32,12 +32,7 @@ pub(crate) fn plan_rules_hostile_actions(
         .collect::<Vec<_>>();
     actor_ids
         .into_iter()
-        .filter_map(|actor_id| {
-            if let Some(event) = centralized_skill_event(content, state, &actor_id) {
-                return Some(event);
-            }
-            behavior::strike_event(content, state, &actor_id)
-        })
+        .filter_map(|actor_id| centralized_skill_event(content, state, &actor_id))
         .collect()
 }
 

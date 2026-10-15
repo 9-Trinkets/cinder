@@ -253,12 +253,12 @@ impl SkillDefinition {
 }
 
 /// Top-level container for all skills declared in `skills.json`.
+///
+/// Skills are always strictly enforced: every skill reference and actor
+/// capability is validated, and runtime behavior never falls back to implicit
+/// ownership.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct SkillsDefinition {
-    /// When enabled, all skill references and actor capabilities are validated
-    /// and runtime behavior never falls back to implicit ownership.
-    #[serde(default)]
-    pub strict: bool,
     /// Pack-level default SP level-up thresholds for skills.
     #[serde(default)]
     pub sp_thresholds: Option<Vec<u32>>,
