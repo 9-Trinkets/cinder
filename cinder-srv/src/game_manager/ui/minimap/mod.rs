@@ -1,7 +1,19 @@
-use cinder_core::content::types::{ContentPack, MapRevealCondition};
-use cinder_core::engine::state::{ActorStance, WorldState};
+//! Minimap projection, split into layers: a [`RevealPolicy`] decides visibility,
+//! a [`RoomDecorator`] annotates visible rooms with entities and teleport
+//! anchors, and [`MinimapProjector`] orchestrates them into a [`MinimapData`]
+//! payload together with the de-duplicated room connections.
+
+mod decorate;
+mod visibility;
+
+use cinder_core::content::types::{ContentPack, MapDefinition, RoomExitDefinition};
+use cinder_core::engine::state::WorldState;
 use std::collections::BTreeSet;
 
+use self::decorate::RoomDecorator;
+use self::visibility::{
+    MapVisibility, RevealPolicy, VisitedAndConditionRevealPolicy, story_var_is_truthy,
+};
 use super::{MinimapConnection, MinimapData, MinimapRoom};
 
 pub(super) fn build_minimap(
@@ -9,114 +21,90 @@ pub(super) fn build_minimap(
     content: &ContentPack,
     current_room_id: &str,
 ) -> Option<MinimapData> {
-    let map = content.map_for_room(current_room_id)?;
-    let player_id = &content.settings.combat.player_actor_id;
-    let visited_room_ids = map
-        .rooms
-        .iter()
-        .filter(|room| {
-            room.room_id == current_room_id
-                || state.actor_has_visited_room(player_id, &room.room_id)
+    MinimapProjector {
+        reveal: VisitedAndConditionRevealPolicy,
+    }
+    .project(state, content, current_room_id)
+}
+
+/// Orchestrates the minimap layers for the map containing `current_room_id`.
+struct MinimapProjector<P: RevealPolicy> {
+    reveal: P,
+}
+
+impl<P: RevealPolicy> MinimapProjector<P> {
+    fn project(
+        &self,
+        state: &WorldState,
+        content: &ContentPack,
+        current_room_id: &str,
+    ) -> Option<MinimapData> {
+        let map = content.map_for_room(current_room_id)?;
+        let player_id = &content.settings.combat.player_actor_id;
+        let visibility = self.reveal.visibility(map, state, content, current_room_id);
+        let entity_tracking = entity_tracking_enabled(state);
+        let decorator = RoomDecorator::new(content, state, player_id, entity_tracking);
+        let rooms = project_rooms(map, &visibility, current_room_id, &decorator);
+        let connections = project_connections(content, state, map, &visibility);
+        let has_teleports = rooms.iter().any(|room| room.has_teleport);
+
+        Some(MinimapData {
+            id: map.id.clone(),
+            label: map.label.clone(),
+            fully_revealed: visibility.fully_revealed(),
+            visited_count: visibility.visited_count(),
+            total_count: visibility.total_count(),
+            rooms,
+            connections,
+            entity_tracking,
+            has_teleports,
         })
-        .map(|room| room.room_id.as_str())
-        .collect::<BTreeSet<_>>();
-    let fully_revealed = visited_room_ids.len() == map.rooms.len()
-        || map
-            .reveal_conditions
-            .iter()
-            .any(|condition| reveal_condition_met(state, content, condition));
-    let visible_room_ids = if fully_revealed {
-        map.rooms
-            .iter()
-            .map(|room| room.room_id.as_str())
-            .collect::<BTreeSet<_>>()
-    } else {
-        visited_room_ids.clone()
-    };
+    }
+}
 
-    let entity_tracking = story_var_is_truthy(state, "has_sensory_enhancer")
-        || story_var_is_truthy(state, "map_entity_tracking");
+/// Whether the entity overlay (allies/hostiles and teleport anchors) is active.
+fn entity_tracking_enabled(state: &WorldState) -> bool {
+    story_var_is_truthy(state, "has_sensory_enhancer")
+        || story_var_is_truthy(state, "map_entity_tracking")
+}
 
-    let is_teleport_anchor = |room_id: &str| -> bool {
-        let permanent = content.teleports.permanent_anchors.iter().any(|anchor| {
-            anchor.room_id == room_id
-                && (anchor.armed_by.is_empty() || story_var_is_truthy(state, &anchor.armed_by))
-        });
-        let chalk = state.chalk_anchors.iter().any(|r| r == room_id);
-        permanent || chalk
-    };
-
-    let rooms: Vec<MinimapRoom> = map
-        .rooms
+/// Projects the visible rooms of `map` into decorated [`MinimapRoom`]s.
+fn project_rooms(
+    map: &MapDefinition,
+    visibility: &MapVisibility,
+    current_room_id: &str,
+    decorator: &RoomDecorator,
+) -> Vec<MinimapRoom> {
+    map.rooms
         .iter()
-        .filter(|room| visible_room_ids.contains(room.room_id.as_str()))
-        .filter_map(|map_room| {
-            let room = content.room(&map_room.room_id)?;
-            let has_teleport = entity_tracking && is_teleport_anchor(&map_room.room_id);
-            let (ally_names, hostile_names) = if entity_tracking {
-                let mut allies = Vec::new();
-                let mut hostiles = Vec::new();
-                for actor in state.onstage_actors(content) {
-                    if actor.id == *player_id {
-                        continue;
-                    }
-                    if state.actor_is_defeated(&actor.id, &content.settings.combat.health_stat_id) {
-                        continue;
-                    }
-                    if state.actor_is_in_room(content, &actor.id, &map_room.room_id) {
-                        let name = content
-                            .actor(&actor.id)
-                            .map(|a| a.name.clone())
-                            .unwrap_or_else(|| actor.id.clone());
-                        match state.stance(&actor.id) {
-                            ActorStance::Allied => allies.push(name),
-                            ActorStance::Hostile => hostiles.push(name),
-                            _ => {}
-                        }
-                    }
-                }
-                (allies, hostiles)
-            } else {
-                (Vec::new(), Vec::new())
-            };
-            Some(MinimapRoom {
-                id: room.id.clone(),
-                label: room.title.clone(),
-                x: map_room.x,
-                y: map_room.y,
-                current: room.id == current_room_id,
-                visited: visited_room_ids.contains(room.id.as_str()),
-                has_teleport,
-                ally_count: ally_names.len(),
-                hostile_count: hostile_names.len(),
-                ally_names,
-                hostile_names,
-            })
-        })
-        .collect();
+        .filter(|room| visibility.is_visible(&room.room_id))
+        .filter_map(|map_room| decorator.annotate(map_room, current_room_id, visibility))
+        .collect()
+}
 
-    let mut seen_connections = BTreeSet::new();
+/// Projects the undirected connections between visible rooms, de-duplicating
+/// each pair and hiding exits gated by an unsatisfied story variable.
+fn project_connections(
+    content: &ContentPack,
+    state: &WorldState,
+    map: &MapDefinition,
+    visibility: &MapVisibility,
+) -> Vec<MinimapConnection> {
+    let mut seen = BTreeSet::new();
     let mut connections = Vec::new();
     for map_room in &map.rooms {
-        if !visible_room_ids.contains(map_room.room_id.as_str()) {
+        if !visibility.is_visible(&map_room.room_id) {
             continue;
         }
         let Some(room) = content.room(&map_room.room_id) else {
             continue;
         };
         for exit in &room.exits {
-            if !visible_room_ids.contains(exit.room_id.as_str())
-                || (!exit.requires_story_var.is_empty()
-                    && !story_var_is_truthy(state, &exit.requires_story_var))
-            {
+            if !exit_is_revealed(state, exit, visibility) {
                 continue;
             }
-            let pair = if room.id < exit.room_id {
-                (room.id.as_str(), exit.room_id.as_str())
-            } else {
-                (exit.room_id.as_str(), room.id.as_str())
-            };
-            if seen_connections.insert(pair) {
+            let pair = ordered_room_pair(&room.id, &exit.room_id);
+            if seen.insert(pair) {
                 connections.push(MinimapConnection {
                     from: pair.0.to_string(),
                     to: pair.1.to_string(),
@@ -124,49 +112,29 @@ pub(super) fn build_minimap(
             }
         }
     }
-
-    let has_teleports = rooms.iter().any(|r| r.has_teleport);
-
-    Some(MinimapData {
-        id: map.id.clone(),
-        label: map.label.clone(),
-        fully_revealed,
-        visited_count: visited_room_ids.len(),
-        total_count: fully_revealed.then_some(map.rooms.len()),
-        rooms,
-        connections,
-        entity_tracking,
-        has_teleports,
-    })
+    connections
 }
 
-fn reveal_condition_met(
+fn exit_is_revealed(
     state: &WorldState,
-    content: &ContentPack,
-    condition: &MapRevealCondition,
+    exit: &RoomExitDefinition,
+    visibility: &MapVisibility,
 ) -> bool {
-    match condition {
-        MapRevealCondition::Always => true,
-        MapRevealCondition::ActorDefeated { actor_id } => {
-            state.actor_is_defeated(actor_id, &content.settings.combat.health_stat_id)
-        }
-        MapRevealCondition::StoryVarTruthy { key } => story_var_is_truthy(state, key),
-    }
+    visibility.is_visible(&exit.room_id)
+        && (exit.requires_story_var.is_empty()
+            || story_var_is_truthy(state, &exit.requires_story_var))
 }
 
-fn story_var_is_truthy(state: &WorldState, key: &str) -> bool {
-    state.story_vars.get(key).is_some_and(|value| {
-        !matches!(
-            value.trim().to_ascii_lowercase().as_str(),
-            "" | "false" | "0"
-        )
-    })
+/// Orders a connection's two endpoints so each undirected pair is keyed once.
+fn ordered_room_pair<'a>(a: &'a str, b: &'a str) -> (&'a str, &'a str) {
+    if a < b { (a, b) } else { (b, a) }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use cinder_core::content::types::{MapDefinition, MapRevealCondition, MapRoomDefinition};
+    use cinder_core::engine::state::ActorStance;
     use cinder_core::engine::test_fixtures::minimal_test_pack;
 
     fn mapped_pack() -> ContentPack {
