@@ -1,5 +1,5 @@
 use cinder_core::content::types::{PanelDataSource, SkillKind, ThemeDefinition, UiTextDefinition};
-use cinder_core::engine::runtime::{ActClosure, RelationshipPair};
+use cinder_core::engine::runtime::{ActClosure, PanelOption, RelationshipPair};
 use serde::Serialize;
 use std::collections::BTreeMap;
 
@@ -209,6 +209,21 @@ pub struct PanelOptionData {
     pub group: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub panel: Option<String>,
+}
+
+impl From<PanelOption> for PanelOptionData {
+    fn from(option: PanelOption) -> Self {
+        PanelOptionData {
+            id: option.id,
+            title: option.title,
+            subtitle: None,
+            command: Some(option.command),
+            disabled: false,
+            selected: false,
+            group: None,
+            panel: None,
+        }
+    }
 }
 
 /// The per-panel option sets built for one UI snapshot, grouped so that the

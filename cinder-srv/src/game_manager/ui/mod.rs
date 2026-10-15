@@ -25,6 +25,14 @@ use self::sidebar::{
     build_player_skills, build_player_status,
 };
 
+/// The borrowed runtime, content pack, and exported state shared by the panel
+/// builders, so each builder does not re-thread the same three references.
+pub(crate) struct UiContext<'a> {
+    pub runtime: &'a CinderRuntime,
+    pub content: &'a ContentPack,
+    pub state: &'a WorldState,
+}
+
 pub(super) fn build_ui_snapshot(
     runtime: &CinderRuntime,
     pack_id: &str,
@@ -130,8 +138,13 @@ pub(super) fn build_ui_snapshot(
         .iter()
         .map(|action| action.id.as_str())
         .collect();
-    let overflow_actions = build_overflow_actions(runtime, content, &state, &bar_ids, &panels)?;
-    let mut panel_options = build_panel_options(runtime, content, &state, panels)?;
+    let ctx = UiContext {
+        runtime,
+        content,
+        state: &state,
+    };
+    let overflow_actions = build_overflow_actions(&ctx, &bar_ids, &panels)?;
+    let mut panel_options = build_panel_options(&ctx, panels)?;
     panel_options.extend(sidebar::build_party_order_panels(content, &state, &party));
 
     let sidebar_sections = content.visible_sidebar_sections(&state);

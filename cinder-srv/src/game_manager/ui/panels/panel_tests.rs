@@ -1,17 +1,30 @@
 use super::super::PanelOptionGroups;
 use super::super::PartyMember;
+use super::super::UiContext;
 use super::action_bar::takeable_loose_items;
 use super::options::craftable_item_panel_options;
 use super::overflow::overflow_action_title;
 use super::*;
 use cinder_core::content::types::{
-    ActionAvailability, ActionDefinition, ActionItemCreation, ActionUi, ItemDefinition,
-    ItemStorageTarget,
+    ActionAvailability, ActionDefinition, ActionItemCreation, ActionUi, ContentPack,
+    ItemDefinition, ItemStorageTarget,
 };
 use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 use cinder_core::engine::test_fixtures::{minimal_test_pack, rebuild_test_pack_indexes};
 use std::collections::BTreeMap;
+
+fn ctx_of<'a>(
+    runtime: &'a CinderRuntime,
+    content: &'a ContentPack,
+    state: &'a WorldState,
+) -> UiContext<'a> {
+    UiContext {
+        runtime,
+        content,
+        state,
+    }
+}
 
 #[test]
 fn bar_shows_actions_that_are_bar_only_even_when_not_typed_command() {
@@ -184,9 +197,7 @@ fn equipment_panel_lists_each_equipped_item_once_and_held_gear_separately() {
 
     let runtime = CinderRuntime::new(content.clone(), false).unwrap();
     let overflow = build_overflow_actions(
-        &runtime,
-        &content,
-        &state,
+        &ctx_of(&runtime, &content, &state),
         &[],
         &PanelOptionGroups {
             equipment: options,
@@ -241,9 +252,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
     assert!(!bar_no_party.iter().any(|a| a.id == "give"));
     assert!(give_opts_no_party.is_empty());
     let overflow_no_party = build_overflow_actions(
-        &runtime,
-        &content,
-        &state,
+        &ctx_of(&runtime, &content, &state),
         &[],
         &PanelOptionGroups {
             give: give_opts_no_party,
@@ -262,9 +271,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
     assert_eq!(give_opts[0].command.as_deref(), Some("give potion to zayd"));
 
     let overflow_with_party = build_overflow_actions(
-        &runtime,
-        &content,
-        &state,
+        &ctx_of(&runtime, &content, &state),
         &[],
         &PanelOptionGroups {
             give: give_opts,
@@ -289,9 +296,7 @@ fn give_surfaces_in_overflow_above_drop_when_party_and_droppable_items_exist() {
     assert!(give_opts_no_items.is_empty());
     let empty_drop_opts = build_drop_panel_options(&content, &empty_state);
     let overflow_no_items = build_overflow_actions(
-        &runtime,
-        &content,
-        &empty_state,
+        &ctx_of(&runtime, &content, &empty_state),
         &[],
         &PanelOptionGroups {
             give: give_opts_no_items,
@@ -362,9 +367,7 @@ fn take_surfaces_in_overflow_items_group_when_companion_has_items_even_without_r
 
     let runtime = CinderRuntime::new(content.clone(), false).unwrap();
     let overflow = build_overflow_actions(
-        &runtime,
-        &content,
-        &state,
+        &ctx_of(&runtime, &content, &state),
         &[],
         &PanelOptionGroups {
             take: take_opts,
@@ -433,9 +436,7 @@ fn items_section_orders_take_give_drop() {
     let drop_opts = build_drop_panel_options(&content, &state);
     let runtime = CinderRuntime::new(content.clone(), false).unwrap();
     let overflow = build_overflow_actions(
-        &runtime,
-        &content,
-        &state,
+        &ctx_of(&runtime, &content, &state),
         &[],
         &PanelOptionGroups {
             take: take_opts,
@@ -698,9 +699,7 @@ fn erase_action_is_consolidated_into_trace_panel_and_never_surfaces_in_overflow(
 
     // At game start, no sigils -> erase is NOT in overflow
     let overflow = build_overflow_actions(
-        &runtime,
-        &pack,
-        &state,
+        &ctx_of(&runtime, &pack, &state),
         &["look", "move", "trace", "talk"],
         &PanelOptionGroups::default(),
     )
@@ -724,9 +723,7 @@ fn erase_action_is_consolidated_into_trace_panel_and_never_surfaces_in_overflow(
     let room_id = state.current_room_id.clone();
     state.add_item_to_storage("charm-sigil", ItemStorageTarget::CurrentRoom, &room_id);
     let overflow_with_sigil = build_overflow_actions(
-        &runtime,
-        &pack,
-        &state,
+        &ctx_of(&runtime, &pack, &state),
         &["look", "move", "trace", "talk"],
         &PanelOptionGroups::default(),
     )

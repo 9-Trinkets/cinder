@@ -1,11 +1,11 @@
 use super::super::{
-    OverflowAction, PanelConfigData, PanelOptionGroups, append_stage_menu_overflow_actions,
+    OverflowAction, PanelConfigData, PanelOptionData, PanelOptionGroups, UiContext,
+    append_stage_menu_overflow_actions,
 };
 use super::panel_config_data;
 use cinder_core::content::types::{
-    ActionDefinition, ContentPack, PanelDataSource, PanelSelectAction,
+    ActionDefinition, ContentPack, PanelDataSource, PanelSelectAction, UiTextDefinition,
 };
-use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 use cinder_core::engine::turn_policies::action_is_available;
 
@@ -15,15 +15,213 @@ pub(crate) fn overflow_action_title(action: &ActionDefinition) -> String {
     action.label.clone()
 }
 
-pub(crate) fn build_overflow_actions(
-    runtime: &CinderRuntime,
+/// Actions owned by dedicated modal panels and never surfaced as overflow buttons.
+const MODAL_COVERED: &[&str] = &["inspect_feature", "inspect_actor"];
+
+/// The item-panel actions built generically rather than authored (see
+/// [`GENERIC_ITEM_ACTIONS`]).
+fn is_items_group(id: &str) -> bool {
+    matches!(id, "take" | "use" | "drop" | "give")
+}
+
+/// Where a generic item action is spliced into the authored overflow list.
+#[derive(Clone, Copy)]
+enum InsertAnchor {
+    /// Append after every authored action.
+    End,
+    /// Insert immediately before the first action whose id is listed; append if
+    /// none is present.
+    Before(&'static [&'static str]),
+}
+
+/// A display string for a generic item action: a localized `UiTextDefinition`
+/// field, or a fixed literal.
+#[derive(Clone, Copy)]
+enum TextSource {
+    TakeLabel,
+    UseLabel,
+    DropLabel,
+    Literal(&'static str),
+}
+
+impl TextSource {
+    fn resolve(self, ui_text: &UiTextDefinition) -> String {
+        match self {
+            TextSource::TakeLabel => ui_text.take_label.clone(),
+            TextSource::UseLabel => ui_text.use_label.clone(),
+            TextSource::DropLabel => ui_text.drop_label.clone(),
+            TextSource::Literal(text) => text.to_string(),
+        }
+    }
+}
+
+/// Declarative spec for one generic item action. They all produce the same
+/// `OverflowAction` shape; only the labels, panel wiring, and where they land in
+/// the overflow list differ, so a table replaces the hand-written blocks.
+struct GenericItemAction {
+    id: &'static str,
+    label: TextSource,
+    usage: &'static str,
+    panel: &'static str,
+    panel_title: TextSource,
+    prompt: TextSource,
+    group: &'static str,
+    data_source: PanelDataSource,
+    anchor: InsertAnchor,
+}
+
+/// Ordered table of the generic item actions. Order is meaningful: it fixes the
+/// relative position of the plain `End` entries (`drop`, then `equipment`).
+const GENERIC_ITEM_ACTIONS: &[GenericItemAction] = &[
+    GenericItemAction {
+        id: "take",
+        label: TextSource::TakeLabel,
+        usage: "take <item>",
+        panel: "take",
+        panel_title: TextSource::TakeLabel,
+        prompt: TextSource::Literal(""),
+        group: "items",
+        data_source: PanelDataSource::LooseRoomItems,
+        anchor: InsertAnchor::Before(&["give", "drop"]),
+    },
+    GenericItemAction {
+        id: "use",
+        label: TextSource::UseLabel,
+        usage: "use <item>",
+        panel: "use",
+        panel_title: TextSource::UseLabel,
+        prompt: TextSource::Literal(""),
+        group: "items",
+        data_source: PanelDataSource::InventoryItems,
+        anchor: InsertAnchor::Before(&["give", "drop"]),
+    },
+    GenericItemAction {
+        id: "give",
+        label: TextSource::Literal("Give"),
+        usage: "give <item> to <companion>",
+        panel: "give",
+        panel_title: TextSource::Literal("Give to Companion"),
+        prompt: TextSource::Literal("Choose an item to give"),
+        group: "items",
+        data_source: PanelDataSource::InventoryItems,
+        anchor: InsertAnchor::Before(&["drop"]),
+    },
+    GenericItemAction {
+        id: "drop",
+        label: TextSource::DropLabel,
+        usage: "drop <item>",
+        panel: "drop",
+        panel_title: TextSource::DropLabel,
+        prompt: TextSource::Literal(""),
+        group: "items",
+        data_source: PanelDataSource::InventoryItems,
+        anchor: InsertAnchor::End,
+    },
+    GenericItemAction {
+        id: "equipment",
+        label: TextSource::Literal("Equipment"),
+        usage: "equip <item> / unequip <item>",
+        panel: "equipment",
+        panel_title: TextSource::Literal("Equipment"),
+        prompt: TextSource::Literal("Choose an item to equip or stow."),
+        group: "",
+        data_source: PanelDataSource::InventoryItems,
+        anchor: InsertAnchor::End,
+    },
+];
+
+/// The panel options that gate whether a generic item action is worth surfacing.
+fn generic_panel_options<'a>(id: &str, panels: &'a PanelOptionGroups) -> &'a [PanelOptionData] {
+    match id {
+        "take" => &panels.take,
+        "use" => &panels.use_item,
+        "give" => &panels.give,
+        "drop" => &panels.drop,
+        "equipment" => &panels.equipment,
+        _ => &[],
+    }
+}
+
+/// Whether an authored action belongs as an overflow button.
+fn surfaces_in_overflow(
+    action: &ActionDefinition,
+    bar_ids: &[&str],
+    has_talk: bool,
     content: &ContentPack,
     state: &WorldState,
+    current_room_id: &str,
+    panels: &PanelOptionGroups,
+) -> bool {
+    if !action.player_enabled || bar_ids.contains(&action.id.as_str()) {
+        return false;
+    }
+    if MODAL_COVERED.contains(&action.id.as_str()) {
+        return false;
+    }
+    if (action.id == "speak" || action.id == "talk") && has_talk {
+        return false;
+    }
+    // Sigil erasing is consolidated into the Trace panel and never surfaces in
+    // overflow.
+    if action.id == "erase" {
+        return false;
+    }
+    if is_items_group(&action.id) && generic_panel_options(&action.id, panels).is_empty() {
+        return false;
+    }
+    action_is_available(content, state, action, current_room_id)
+}
+
+/// Surfaces the generic item actions (take/use/give/drop/equipment) into the
+/// overflow list, each only when its panel has options and it is not already
+/// present as an authored action.
+fn insert_generic_item_actions(
+    overflow_actions: &mut Vec<OverflowAction>,
+    content: &ContentPack,
+    panels: &PanelOptionGroups,
+) {
+    for spec in GENERIC_ITEM_ACTIONS {
+        if generic_panel_options(spec.id, panels).is_empty() {
+            continue;
+        }
+        if overflow_actions.iter().any(|action| action.id == spec.id) {
+            continue;
+        }
+        let action = OverflowAction {
+            id: spec.id.to_string(),
+            label: spec.label.resolve(&content.ui_text),
+            group: spec.group.to_string(),
+            usage: spec.usage.to_string(),
+            panel: spec.panel.to_string(),
+            panel_config: Some(PanelConfigData {
+                title: spec.panel_title.resolve(&content.ui_text),
+                prompt: spec.prompt.resolve(&content.ui_text),
+                data_source: spec.data_source.clone(),
+                on_select: PanelSelectAction::ExecuteCommand,
+            }),
+        };
+        match spec.anchor {
+            InsertAnchor::End => overflow_actions.push(action),
+            InsertAnchor::Before(ids) => {
+                match overflow_actions
+                    .iter()
+                    .position(|existing| ids.contains(&existing.id.as_str()))
+                {
+                    Some(position) => overflow_actions.insert(position, action),
+                    None => overflow_actions.push(action),
+                }
+            }
+        }
+    }
+}
+
+pub(crate) fn build_overflow_actions(
+    ctx: &UiContext,
     bar_ids: &[&str],
     panels: &PanelOptionGroups,
 ) -> Result<Vec<OverflowAction>, String> {
+    let (runtime, content, state) = (ctx.runtime, ctx.content, ctx.state);
     let has_talk = bar_ids.contains(&"speak") || bar_ids.contains(&"talk");
-    let modal_covered: Vec<&str> = vec!["inspect_feature", "inspect_actor"];
     let current_room_id = if !state.current_room_id.is_empty() {
         state.current_room_id.clone()
     } else {
@@ -32,55 +230,34 @@ pub(crate) fn build_overflow_actions(
     let mut overflow_actions: Vec<OverflowAction> = content
         .actions
         .iter()
-        .filter(|a| {
-            if !a.player_enabled || bar_ids.contains(&a.id.as_str()) {
-                return false;
-            }
-            if modal_covered.contains(&a.id.as_str()) {
-                return false;
-            }
-            if (a.id == "speak" || a.id == "talk") && has_talk {
-                return false;
-            }
-            if a.id == "take" && panels.take.is_empty() {
-                return false;
-            }
-            if a.id == "use" && panels.use_item.is_empty() {
-                return false;
-            }
-            if a.id == "drop" && panels.drop.is_empty() {
-                return false;
-            }
-            if a.id == "give" && panels.give.is_empty() {
-                return false;
-            }
-            // Sigil erasing is consolidated into the Trace panel and never surfaces in overflow
-            if a.id == "erase" {
-                return false;
-            }
-            action_is_available(content, state, a, &current_room_id)
+        .filter(|action| {
+            surfaces_in_overflow(
+                action,
+                bar_ids,
+                has_talk,
+                content,
+                state,
+                &current_room_id,
+                panels,
+            )
         })
-        .map(|a| {
-            let label = overflow_action_title(a);
-            let usage = a
-                .player_command
-                .as_ref()
-                .map(|player_command| player_command.usage.clone())
-                .unwrap_or_default();
-            let group = if (a.id == "take" || a.id == "use" || a.id == "drop" || a.id == "give")
-                && a.ui.group.is_empty()
-            {
+        .map(|action| {
+            let group = if is_items_group(&action.id) && action.ui.group.is_empty() {
                 "items".to_string()
             } else {
-                a.ui.group.clone()
+                action.ui.group.clone()
             };
             OverflowAction {
-                id: a.id.clone(),
-                label,
+                id: action.id.clone(),
+                label: overflow_action_title(action),
                 group,
-                usage,
-                panel: a.ui.panel.clone().unwrap_or_default(),
-                panel_config: a.ui.panel_config.as_ref().map(panel_config_data),
+                usage: action
+                    .player_command
+                    .as_ref()
+                    .map(|player_command| player_command.usage.clone())
+                    .unwrap_or_default(),
+                panel: action.ui.panel.clone().unwrap_or_default(),
+                panel_config: action.ui.panel_config.as_ref().map(panel_config_data),
             }
         })
         .collect();
@@ -89,114 +266,7 @@ pub(crate) fn build_overflow_actions(
         append_stage_menu_overflow_actions(&mut overflow_actions, content, &active_stages);
     }
 
-    // Surface the generic `take <item>` overflow action in the "items" group
-    // directly above give and drop when there are takeable items.
-    if !panels.take.is_empty() && !overflow_actions.iter().any(|a| a.id == "take") {
-        let take_action = OverflowAction {
-            id: "take".to_string(),
-            label: content.ui_text.take_label.clone(),
-            group: "items".to_string(),
-            usage: "take <item>".to_string(),
-            panel: "take".to_string(),
-            panel_config: Some(PanelConfigData {
-                title: content.ui_text.take_label.clone(),
-                prompt: String::new(),
-                data_source: PanelDataSource::LooseRoomItems,
-                on_select: PanelSelectAction::ExecuteCommand,
-            }),
-        };
-        if let Some(pos) = overflow_actions
-            .iter()
-            .position(|a| a.id == "give" || a.id == "drop")
-        {
-            overflow_actions.insert(pos, take_action);
-        } else {
-            overflow_actions.push(take_action);
-        }
-    }
-
-    // Surface the generic `use <item>` overflow action in the "items" group
-    // directly above give and drop when there are usable items.
-    if !panels.use_item.is_empty() && !overflow_actions.iter().any(|a| a.id == "use") {
-        let use_action = OverflowAction {
-            id: "use".to_string(),
-            label: content.ui_text.use_label.clone(),
-            group: "items".to_string(),
-            usage: "use <item>".to_string(),
-            panel: "use".to_string(),
-            panel_config: Some(PanelConfigData {
-                title: content.ui_text.use_label.clone(),
-                prompt: String::new(),
-                data_source: PanelDataSource::InventoryItems,
-                on_select: PanelSelectAction::ExecuteCommand,
-            }),
-        };
-        if let Some(pos) = overflow_actions
-            .iter()
-            .position(|a| a.id == "give" || a.id == "drop")
-        {
-            overflow_actions.insert(pos, use_action);
-        } else {
-            overflow_actions.push(use_action);
-        }
-    }
-
-    // Surface the generic `give <item> to <companion>` overflow action in the "items" group
-    // directly above drop when the player holds something droppable and has companions.
-    if !panels.give.is_empty() && !overflow_actions.iter().any(|a| a.id == "give") {
-        let give_action = OverflowAction {
-            id: "give".to_string(),
-            label: "Give".to_string(),
-            group: "items".to_string(),
-            usage: "give <item> to <companion>".to_string(),
-            panel: "give".to_string(),
-            panel_config: Some(PanelConfigData {
-                title: "Give to Companion".to_string(),
-                prompt: "Choose an item to give".to_string(),
-                data_source: PanelDataSource::InventoryItems,
-                on_select: PanelSelectAction::ExecuteCommand,
-            }),
-        };
-        if let Some(drop_pos) = overflow_actions.iter().position(|a| a.id == "drop") {
-            overflow_actions.insert(drop_pos, give_action);
-        } else {
-            overflow_actions.push(give_action);
-        }
-    }
-
-    // Surface the generic `drop <item>` overflow action when the player holds
-    // something droppable. Structure mirrors authored panel actions so moving
-    // it to the main bar later is a placement-only change.
-    if !panels.drop.is_empty() && !overflow_actions.iter().any(|a| a.id == "drop") {
-        overflow_actions.push(OverflowAction {
-            id: "drop".to_string(),
-            label: content.ui_text.drop_label.clone(),
-            group: "items".to_string(),
-            usage: "drop <item>".to_string(),
-            panel: "drop".to_string(),
-            panel_config: Some(PanelConfigData {
-                title: content.ui_text.drop_label.clone(),
-                prompt: String::new(),
-                data_source: PanelDataSource::InventoryItems,
-                on_select: PanelSelectAction::ExecuteCommand,
-            }),
-        });
-    }
-    if !panels.equipment.is_empty() {
-        overflow_actions.push(OverflowAction {
-            id: "equipment".to_string(),
-            label: "Equipment".to_string(),
-            group: String::new(),
-            usage: "equip <item> / unequip <item>".to_string(),
-            panel: "equipment".to_string(),
-            panel_config: Some(PanelConfigData {
-                title: "Equipment".to_string(),
-                prompt: "Choose an item to equip or stow.".to_string(),
-                data_source: PanelDataSource::InventoryItems,
-                on_select: PanelSelectAction::ExecuteCommand,
-            }),
-        });
-    }
+    insert_generic_item_actions(&mut overflow_actions, content, panels);
 
     Ok(overflow_actions)
 }

@@ -1,18 +1,23 @@
-use super::super::{PanelOptionData, PanelOptionGroups};
+use super::super::{PanelOptionData, PanelOptionGroups, UiContext};
 use super::title_case;
 use cinder_core::content::types::{
     ActionDefinition, CommandEffect, ContentPack, ItemStorageTarget, PanelDataSource,
 };
-use cinder_core::engine::runtime::CinderRuntime;
+use cinder_core::engine::runtime::{CinderRuntime, PanelOption};
 use cinder_core::engine::state::{ActorStance, WorldState};
 use std::collections::BTreeMap;
 
+/// Actions whose panel options the UI builds generically instead of from the
+/// authored panel config.
+fn is_generic_item_action(id: &str) -> bool {
+    matches!(id, "take" | "give" | "use")
+}
+
 pub(crate) fn build_panel_options(
-    runtime: &CinderRuntime,
-    content: &ContentPack,
-    state: &WorldState,
+    ctx: &UiContext,
     panels: PanelOptionGroups,
 ) -> Result<BTreeMap<String, Vec<PanelOptionData>>, String> {
+    let (runtime, content, state) = (ctx.runtime, ctx.content, ctx.state);
     let PanelOptionGroups {
         take: take_panel_options,
         use_item: use_panel_options,
@@ -22,7 +27,7 @@ pub(crate) fn build_panel_options(
     } = panels;
     let mut panel_options: BTreeMap<String, Vec<PanelOptionData>> = BTreeMap::new();
     for action in &content.actions {
-        if action.id == "take" || action.id == "give" || action.id == "use" {
+        if is_generic_item_action(&action.id) {
             continue;
         }
         if let (Some(panel_name), Some(panel_config)) = (&action.ui.panel, &action.ui.panel_config)
@@ -32,114 +37,23 @@ pub(crate) fn build_panel_options(
                 .first()
                 .map(|s| s.as_str())
                 .unwrap_or(&action.command);
-            let options = match panel_config.data_source {
+            let options = match &panel_config.data_source {
                 PanelDataSource::ActorsInRoom => {
-                    let is_attack = action.has_effect(CommandEffect::AttackTarget);
-                    runtime
-                        .panel_options(&PanelDataSource::ActorsInRoom)
-                        .map_err(|error| error.to_string())?
-                        .into_iter()
-                        .filter(|opt| {
-                            if !is_attack {
-                                return true;
-                            }
-                            let actor_id = opt.id.strip_prefix("actor:").unwrap_or(&opt.id);
-                            // Never offer allies or followers as attack targets so
-                            // the player can't accidentally strike their own party.
-                            let relationship = state.relationship(actor_id);
-                            relationship.stance != ActorStance::Allied
-                                && !relationship.follows_player
-                        })
-                        .map(|opt| {
-                            let actor_id = opt.id.strip_prefix("actor:").unwrap_or(&opt.id);
-                            PanelOptionData {
-                                id: actor_id.to_string(),
-                                title: opt.title.clone(),
-                                subtitle: None,
-                                command: Some(format!("{} {}", phrase, actor_id)),
-                                disabled: false,
-                                selected: false,
-                                group: None,
-                                panel: None,
-                            }
-                        })
-                        .collect()
+                    map_actor_target_options(runtime, state, action, phrase)?
                 }
-                PanelDataSource::Exits => runtime
-                    .panel_options(&PanelDataSource::Exits)
-                    .map_err(|error| error.to_string())?
-                    .into_iter()
-                    .map(|opt| {
-                        let subtitle = if opt.menu_text.is_empty()
-                            || opt.menu_text.eq_ignore_ascii_case(&opt.title)
-                        {
-                            None
-                        } else {
-                            Some(opt.menu_text)
-                        };
-                        PanelOptionData {
-                            id: opt.id.clone(),
-                            title: opt.title.clone(),
-                            subtitle,
-                            command: Some(opt.command.clone()),
-                            disabled: false,
-                            selected: false,
-                            group: None,
-                            panel: None,
-                        }
-                    })
-                    .collect(),
-                PanelDataSource::Features => runtime
-                    .panel_options(&PanelDataSource::Features)
-                    .map_err(|error| error.to_string())?
-                    .into_iter()
-                    .map(|opt| PanelOptionData {
-                        id: opt.id.clone(),
-                        title: opt.title.clone(),
-                        subtitle: None,
-                        command: Some(opt.command.clone()),
-                        disabled: false,
-                        selected: false,
-                        group: None,
-                        panel: None,
-                    })
-                    .collect(),
+                PanelDataSource::Exits => map_exit_panel_options(runtime)?,
                 PanelDataSource::CraftableItems => {
                     craftable_item_panel_options(content, state, action, phrase)
                 }
-                PanelDataSource::LooseRoomItems => runtime
-                    .panel_options(&PanelDataSource::LooseRoomItems)
-                    .map_err(|error| error.to_string())?
-                    .into_iter()
-                    .map(|opt| PanelOptionData {
-                        id: opt.id.clone(),
-                        title: opt.title.clone(),
-                        subtitle: None,
-                        command: Some(opt.command.clone()),
-                        disabled: false,
-                        selected: false,
-                        group: None,
-                        panel: None,
-                    })
-                    .collect(),
-                PanelDataSource::InventoryItems => runtime
-                    .panel_options(&PanelDataSource::InventoryItems)
-                    .map_err(|error| error.to_string())?
-                    .into_iter()
-                    .map(|opt| PanelOptionData {
-                        id: opt.id.clone(),
-                        title: opt.title.clone(),
-                        subtitle: None,
-                        command: Some(opt.command.clone()),
-                        disabled: false,
-                        selected: false,
-                        group: None,
-                        panel: None,
-                    })
-                    .collect(),
                 PanelDataSource::FollowActors | PanelDataSource::TeleportAnchors => {
                     map_actor_or_teleport_options(runtime, &panel_config.data_source)?
                 }
+                data_source => runtime
+                    .panel_options(data_source)
+                    .map_err(|error| error.to_string())?
+                    .into_iter()
+                    .map(PanelOptionData::from)
+                    .collect(),
             };
             panel_options.insert(panel_name.clone(), options);
         }
@@ -150,6 +64,61 @@ pub(crate) fn build_panel_options(
     panel_options.insert("drop".to_string(), drop_panel_options);
     panel_options.insert("equipment".to_string(), equipment_panel_options);
     Ok(panel_options)
+}
+
+/// Whether an in-room actor is a legal attack target: never allies or followers.
+fn is_hostile_target(state: &WorldState, option: &PanelOption) -> bool {
+    let actor_id = option.id.strip_prefix("actor:").unwrap_or(&option.id);
+    let relationship = state.relationship(actor_id);
+    relationship.stance != ActorStance::Allied && !relationship.follows_player
+}
+
+/// Options for a panel backed by actors in the room. Attack panels additionally
+/// hide allies and followers so the player can't strike their own party.
+fn map_actor_target_options(
+    runtime: &CinderRuntime,
+    state: &WorldState,
+    action: &ActionDefinition,
+    phrase: &str,
+) -> Result<Vec<PanelOptionData>, String> {
+    let is_attack = action.has_effect(CommandEffect::AttackTarget);
+    Ok(runtime
+        .panel_options(&PanelDataSource::ActorsInRoom)
+        .map_err(|error| error.to_string())?
+        .into_iter()
+        .filter(|option| !is_attack || is_hostile_target(state, option))
+        .map(|option| {
+            let actor_id = option
+                .id
+                .strip_prefix("actor:")
+                .unwrap_or(&option.id)
+                .to_string();
+            PanelOptionData {
+                id: actor_id.clone(),
+                command: Some(format!("{phrase} {actor_id}")),
+                ..option.into()
+            }
+        })
+        .collect())
+}
+
+/// Options for a panel backed by room exits. The authored menu label, when it
+/// differs from the room title, becomes the subtitle.
+fn map_exit_panel_options(runtime: &CinderRuntime) -> Result<Vec<PanelOptionData>, String> {
+    Ok(runtime
+        .panel_options(&PanelDataSource::Exits)
+        .map_err(|error| error.to_string())?
+        .into_iter()
+        .map(|option| {
+            let has_subtitle = !option.menu_text.is_empty()
+                && !option.menu_text.eq_ignore_ascii_case(&option.title);
+            let subtitle = has_subtitle.then(|| option.menu_text.clone());
+            PanelOptionData {
+                subtitle,
+                ..option.into()
+            }
+        })
+        .collect())
 }
 
 pub(crate) fn craftable_item_panel_options(
@@ -303,18 +272,14 @@ fn map_actor_or_teleport_options(
         .panel_options(data_source)
         .map_err(|error| error.to_string())?
         .into_iter()
-        .map(|opt| {
-            let group = (is_teleport && !opt.menu_text.is_empty()).then(|| opt.menu_text.clone());
-            let subtitle = (!is_teleport && !opt.menu_text.is_empty()).then(|| opt.menu_text);
+        .map(|option| {
+            let menu_text = option.menu_text.clone();
+            let group = (is_teleport && !menu_text.is_empty()).then(|| menu_text.clone());
+            let subtitle = (!is_teleport && !menu_text.is_empty()).then_some(menu_text);
             PanelOptionData {
-                id: opt.id,
-                title: opt.title,
                 subtitle,
-                command: Some(opt.command),
-                disabled: false,
-                selected: false,
                 group,
-                panel: None,
+                ..option.into()
             }
         })
         .collect();
