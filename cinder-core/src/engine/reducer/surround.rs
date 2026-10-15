@@ -142,7 +142,11 @@ fn try_surround_room(
             crate::engine::reducer::award_actor_skill_sp(
                 state, content, player_id, "charm", 10, lines,
             );
-            state.initialize_party_order(content, &actor_id);
+            if relationship.follows_player {
+                let _ = state.assign_party_order(content, &actor_id, "follow".to_string());
+            } else {
+                state.initialize_party_order(content, &actor_id);
+            }
             let party_room_id = state.current_room_id.clone();
             if state.actor_room_id(&actor_id, &actor_home_room_id) != party_room_id {
                 state.mark_actor_room_visited(&actor_id, &party_room_id);

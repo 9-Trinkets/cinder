@@ -291,6 +291,9 @@ impl WorldHookEffect {
             messages,
             lines,
         );
+        if follows_player {
+            let _ = state.assign_party_order(content, actor_id, "follow".to_string());
+        }
     }
 
     fn apply_set_actor_stance(

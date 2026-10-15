@@ -705,7 +705,7 @@ fn charm_bonus_enables_converting_targets_with_higher_resistance() {
     let mut state = WorldState::new(&pack);
     state.current_room_id = KITCHEN_ID.to_string();
 
-    // Give player charm skill at level 2 (+2 bonus).
+    // Give player charm skill at level 3 (+2 bonus).
     // Player intelligence 5, level 1 + charm bonus 2 = 8 >= 7.
     state
         .combat
@@ -713,7 +713,7 @@ fn charm_bonus_enables_converting_targets_with_higher_resistance() {
         .entry(ACTOR_A_ID.to_string())
         .or_default()
         .insert("charm".to_string());
-    state.set_actor_skill_level(ACTOR_A_ID, "charm", 2);
+    state.set_actor_skill_level(ACTOR_A_ID, "charm", 3);
 
     let output = trace_marker(&mut state, &pack);
 

@@ -887,6 +887,63 @@ fn floor5_charmed_soldiers_do_not_despawn_when_house_lane_stops() {
 }
 
 #[test]
+fn floor5_charmed_mauler_follows_player_without_steps_away_ping_pong() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_center".to_string();
+
+    // Spawn an iron_ram_mauler in courtyard_center with default enemy order deploy courtyard_center
+    let mauler = match state.spawn_actor(
+        &pack,
+        SpawnActorConfig {
+            template_id: "iron_ram_mauler",
+            room_id: Some("courtyard_center"),
+            stance: Some(ActorStance::Hostile),
+            follows_player: false,
+            scale_with_actor_id: None,
+            scale_stat: None,
+            max_active_instances: None,
+        },
+    ) {
+        SpawnActorOutcome::Success(info) => info.instance_id,
+        outcome => panic!("expected spawn, got {outcome:?}"),
+    };
+    state
+        .relations
+        .party_orders
+        .insert(mauler.clone(), "deploy courtyard_center".to_string());
+
+    // Layla charms the mauler (sets allied and follows_player, overriding party order to follow)
+    state.set_actor_stance(&pack, &mauler, ActorStance::Allied, true);
+
+    assert_eq!(state.stance(&mauler), ActorStance::Allied);
+    assert_eq!(state.party_order(&pack, &mauler).as_deref(), Some("follow"));
+    assert!(state.relationship(&mauler).follows_player);
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime creates");
+
+    // Layla leaves courtyard_center to southeast_approach
+    let outcome = runtime
+        .run_turn("southeast")
+        .expect("move to southeast approach");
+
+    // Must NOT have the annoying ping-pong line
+    assert!(
+        !outcome.text().contains("steps away to Frost Courtyard"),
+        "charmed mauler should not rubber-band back to courtyard: {}",
+        outcome.text()
+    );
+
+    let cur = runtime.export_state().unwrap();
+    // Mauler should be in courtyard_southeast with Layla
+    assert_eq!(
+        cur.actor_current_room_id(&pack, &mauler),
+        "courtyard_southeast",
+        "charmed mauler should travel with Layla"
+    );
+}
+
+#[test]
 fn floor5_guard_blocks_wave_soldiers_at_the_north_approach() {
     let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
     let mut state = WorldState::new(&pack);

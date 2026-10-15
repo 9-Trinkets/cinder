@@ -75,7 +75,7 @@ fn charm_bonus_scales_surround_threshold() {
     };
     assert!(!passes_lvl1, "Level 1 charm cannot overcome resistance 6");
 
-    // At charm level 2 (+2 bonus): score 3 + 1 + 2 = 6 >= 6 (passes resistance!)
+    // At charm level 2 (+1 bonus): score 5 < 6 (still fails resistance)
     s.set_actor_skill_level(player_id, "charm", 2);
     let passes_lvl2 = {
         let p_int = s
@@ -85,14 +85,34 @@ fn charm_bonus_scales_surround_threshold() {
         let c_bonus = pack_with_mob
             .skill("charm")
             .and_then(|sk| sk.param_value("charm_bonus", 2))
+            .unwrap_or(1) as u32;
+        let t_int = s.actor_stat("test-resistant-mob", "intelligence").max(0) as u32;
+        let t_lvl = s.actor_level("test-resistant-mob");
+        p_int + p_lvl + c_bonus >= t_int + 2 * t_lvl
+    };
+    assert!(
+        !passes_lvl2,
+        "Level 2 charm (+1 bonus) cannot overcome resistance 6"
+    );
+
+    // At charm level 3 (+2 bonus): score 3 + 1 + 2 = 6 >= 6 (passes resistance!)
+    s.set_actor_skill_level(player_id, "charm", 3);
+    let passes_lvl3 = {
+        let p_int = s
+            .effective_actor_stat(&pack_with_mob, player_id, "intelligence")
+            .max(0) as u32;
+        let p_lvl = s.actor_level(player_id);
+        let c_bonus = pack_with_mob
+            .skill("charm")
+            .and_then(|sk| sk.param_value("charm_bonus", 3))
             .unwrap_or(2) as u32;
         let t_int = s.actor_stat("test-resistant-mob", "intelligence").max(0) as u32;
         let t_lvl = s.actor_level("test-resistant-mob");
         p_int + p_lvl + c_bonus >= t_int + 2 * t_lvl
     };
     assert!(
-        passes_lvl2,
-        "Level 2 charm (+2 bonus) overcomes resistance 6"
+        passes_lvl3,
+        "Level 3 charm (+2 bonus) overcomes resistance 6"
     );
 }
 

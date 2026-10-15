@@ -683,6 +683,123 @@
               "path": "item_id",
               "operator": "equal",
               "value": "charm-sigil"
+            },
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "elf-king-5"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_story_var",
+            "key": "elf_king_defeated",
+            "value": "true"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            },
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "elf-king-5"
+            }
+          ],
+          "payload_template": {
+            "kind": "actor_speech",
+            "actor_id": "elf-king-5",
+            "key": "king.speech"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            },
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "elf-king-5"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "king.aftermath"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            },
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "elf-king-5"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.floor2_court_cleared"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            },
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "elf-king-5"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_stance_by_tag",
+            "tag": "elf",
+            "stance": "neutral",
+            "from_stances": [
+              "hostile"
+            ],
+            "follows_player": false,
+            "messages": []
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            },
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "elf-king-5"
+            }
+          ],
+          "payload_template": {
+            "kind": "set_party_order_by_tag",
+            "tag": "elf",
+            "order": "guard"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
             }
           ],
           "payload_template": {

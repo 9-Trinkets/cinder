@@ -238,18 +238,14 @@ impl WorldState {
         if self.relations.party_orders.contains_key(&actor_id) {
             return;
         }
-        let order = content
-            .settings
-            .parties
-            .iter()
-            .find_map(|party| party.initial_orders.get(&actor_id).cloned())
-            .unwrap_or_else(|| "follow".to_string());
-        if !matches!(
+        let order =
+            authored_party_order(content, &actor_id).unwrap_or_else(|| "follow".to_string());
+        let holds_position = matches!(
             parse_order(&order),
-            Some(OrderKind::Hold) | Some(OrderKind::Patrol)
-        ) && self.stance(&actor_id) == ActorStance::Allied
-        {
-            self.set_follows_player(&actor_id, true);
+            Some(OrderKind::Hold | OrderKind::Patrol | OrderKind::Deploy(_))
+        );
+        if self.stance(&actor_id) == ActorStance::Allied {
+            self.set_follows_player(&actor_id, !holds_position);
         }
         self.relations.party_orders.insert(actor_id, order);
     }

@@ -429,3 +429,63 @@ fn knight_waits_for_separated_squad_and_never_moves_alone() {
         "vanguard squad should advance together after assembly"
     );
 }
+
+#[test]
+fn charming_elf_king_triggers_ceasefire_and_unlocks_floor3_descent() {
+    use cinder_core::content::types::ItemStorageTarget;
+    use cinder_core::engine::dialogue::ScriptedDialogueGenerator;
+    use cinder_core::engine::runtime::CinderRuntime;
+
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads and validates");
+    let mut state = WorldState::new(&pack);
+
+    // Player has charm skill at level 10 (score: 3 int + 1 lvl + 6 bonus = 10 >= 4 int + 2*3 lvl = 10 resistance)
+    let player_id = &pack.settings.combat.player_actor_id;
+    state
+        .combat
+        .actor_skills
+        .entry(player_id.clone())
+        .or_default()
+        .insert("charm".to_string());
+    state.set_actor_skill_level(player_id, "charm", 10);
+
+    // Layla is in d8c4 (west neighbor of king court d8c5)
+    state.current_room_id = "d8c4".to_string();
+
+    // Place charm sigils in other neighbors of d8c5 (d8c6, d7c5)
+    state.add_item_to_storage("charm-sigil", ItemStorageTarget::CurrentRoom, "d8c6");
+    state.add_item_to_storage("charm-sigil", ItemStorageTarget::CurrentRoom, "d7c5");
+
+    let dialogue = std::sync::Arc::new(ScriptedDialogueGenerator::new());
+    let runtime = CinderRuntime::with_dialogue_generator(pack.clone(), state, dialogue)
+        .expect("runtime creates");
+
+    // Trace charm-sigil in d8c4 to complete the ring surrounding d8c5
+    let _outcome = runtime
+        .run_turn("trace charm-sigil")
+        .expect("trace completes ring");
+    let s = runtime.export_state().unwrap();
+
+    // 1. King should be charmed (Allied, order follow)
+    assert_eq!(s.stance("elf-king-5"), ActorStance::Allied);
+    assert_eq!(
+        s.party_order(&pack, "elf-king-5").as_deref(),
+        Some("follow")
+    );
+
+    // 2. elf_king_defeated story var must be true
+    assert_eq!(s.story_vars.get("elf_king_defeated"), Some("true"));
+
+    // 3. Other elves must be neutral with order guard
+    assert_eq!(s.stance("elf-queen-4"), ActorStance::Neutral);
+    assert_eq!(
+        s.party_order(&pack, "elf-queen-4").as_deref(),
+        Some("guard")
+    );
+
+    // 4. Move east into d8c5 and descend down to oan (Floor 3 arrival)
+    let _to_court = runtime.run_turn("east").expect("move to king court");
+    let _to_floor3 = runtime.run_turn("down").expect("descend to floor 3");
+    let final_s = runtime.export_state().unwrap();
+    assert_eq!(final_s.current_room_id, "oan");
+}
