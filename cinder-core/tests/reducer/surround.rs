@@ -4,7 +4,8 @@ use cinder_core::content::types::{
     CombatSettingsDefinition, CommandEffect, CommandTargetMode, ContentPack, ItemDefinition,
     ItemKind, ItemStorageTarget, PackMessage, StatDefinition, SurroundRule,
 };
-use cinder_core::engine::reducer::ReducerOutput;
+use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
+use cinder_core::engine::reducer::{ReducerOutput, apply_events};
 use cinder_core::engine::state::{ActorStance, WorldState};
 use serde_json::json;
 use std::collections::BTreeMap;
@@ -757,4 +758,42 @@ fn multiple_followers_do_not_block_subsequent_surrounds() {
     assert_eq!(state.stance("mob-3"), ActorStance::Allied);
     assert!(!output.lines.iter().any(|l| l.text.contains(REFUSAL)));
     assert_eq!(state.actor_skill_sp(ACTOR_A_ID, "charm"), initial_sp + 30);
+}
+
+#[test]
+fn enemy_walking_into_a_completed_ring_is_converted() {
+    let mut pack = surround_test_pack();
+    // The golem waits in the kitchen; the lounge's only neighbor already holds
+    // a marker, so the ring around the lounge is complete before it enters.
+    let mut golem = test_actor("golem", "dark golem", KITCHEN_ID);
+    golem.initial_stats.insert("intelligence".to_string(), 1);
+    pack.actors.push(golem);
+    rebuild_test_pack_indexes(&mut pack);
+
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = KITCHEN_ID.to_string();
+    state.add_item_to_storage("marker", ItemStorageTarget::CurrentRoom, KITCHEN_ID);
+
+    // A completed ring alone converts nobody; the trap springs on entry.
+    assert_ne!(state.stance("golem"), ActorStance::Allied);
+
+    let output = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::ActorMoved {
+            actor_id: "golem".to_string(),
+            from_room_id: KITCHEN_ID.to_string(),
+            to_room_id: LOUNGE_ID.to_string(),
+        })],
+    );
+
+    assert_eq!(state.stance("golem"), ActorStance::Allied);
+    assert!(
+        output
+            .lines
+            .iter()
+            .any(|line| line.text.contains("turns toward you")),
+        "conversion narration missing, got: {:?}",
+        output.lines
+    );
 }

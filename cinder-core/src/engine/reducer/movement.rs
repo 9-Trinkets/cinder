@@ -140,6 +140,14 @@ pub(super) fn apply_actor_move_transition(
         movement.to_room_id,
         lines,
     );
+    // Re-check encirclement now that the actor occupies the destination room, so
+    // a completed sigil ring converts enemies that walk into it after the fact.
+    super::surround::trigger_surrounded_hooks_on_room_entry(
+        state,
+        content,
+        movement.to_room_id,
+        lines,
+    );
 }
 
 fn sync_followers_of_actor(

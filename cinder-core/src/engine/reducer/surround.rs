@@ -5,7 +5,7 @@ use crate::engine::narrative::NarrativeLines;
 use crate::engine::state::{ActorStance, WorldState};
 use serde_json::json;
 
-use std::collections::HashSet;
+use std::collections::{BTreeSet, HashSet};
 
 use super::handlers::push_message;
 use crate::engine::reducer::combat::VEC_EMPTY_TAGS;
@@ -212,6 +212,43 @@ pub(super) fn trigger_surrounded_hooks(
     for room_id in candidate_rooms {
         let stop = try_surround_room(state, content, item_id, source_room_id, &room_id, lines);
         if stop {
+            break;
+        }
+    }
+}
+
+/// Re-evaluates encirclement for a room an actor has just entered. Any item
+/// lying in *every* neighboring room is treated as a candidate encircling item;
+/// the `actor.surrounded` hook filters by `item_id`, so items that are not
+/// conversion tokens are harmless no-ops. This is what lets a trap convert an
+/// enemy that walks into an already-completed ring, rather than only converting
+/// whoever was standing there when the final sigil was placed.
+pub(super) fn trigger_surrounded_hooks_on_room_entry(
+    state: &mut WorldState,
+    content: &ContentPack,
+    room_id: &str,
+    lines: &mut NarrativeLines,
+) {
+    let neighbors = content.adjacent_room_ids(room_id);
+    if neighbors.is_empty() {
+        return;
+    }
+    let mut candidates: Option<BTreeSet<String>> = None;
+    for neighbor in &neighbors {
+        let items: BTreeSet<String> = state
+            .loose_room_items(neighbor)
+            .into_iter()
+            .map(|(item_id, _)| item_id)
+            .collect();
+        candidates = Some(match candidates.take() {
+            None => items,
+            Some(acc) => acc.intersection(&items).cloned().collect(),
+        });
+    }
+    for item_id in candidates.unwrap_or_default() {
+        // No placement room exists for a movement trigger; the entered room
+        // stands in so a spent single-use ring still clears from its neighbors.
+        if try_surround_room(state, content, &item_id, room_id, room_id, lines) {
             break;
         }
     }
