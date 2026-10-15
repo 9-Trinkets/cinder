@@ -42,6 +42,19 @@
         {
           "conditions": [
             {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "the_seer"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.seer_valerius_defeated"
+          }
+        },
+        {
+          "conditions": [
+            {
               "path": "tags",
               "operator": "array_contains_any",
               "value": ["house_head"]
@@ -301,6 +314,19 @@
             }
           ],
           "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.floor2_court_cleared"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "elf-king-5"
+            }
+          ],
+          "payload_template": {
             "kind": "set_stance_by_tag",
             "tag": "elf",
             "stance": "neutral",
@@ -336,6 +362,19 @@
           "payload_template": {
             "kind": "narrate_message",
             "key": "elemental.release"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "fire-elemental"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.floor3_elemental_resolved"
           }
         },
         {
@@ -611,6 +650,24 @@
             }
           ],
           "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.floor3_elemental_resolved"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "item_id",
+              "operator": "equal",
+              "value": "charm-sigil"
+            },
+            {
+              "path": "actor_id",
+              "operator": "equal",
+              "value": "fire-elemental"
+            }
+          ],
+          "payload_template": {
             "kind": "set_stance_by_tag",
             "tag": "sprite",
             "stance": "allied",
@@ -822,6 +879,10 @@
           {
             "kind": "narrate_message",
             "key": "item.scroll_read.learned"
+          },
+          {
+            "kind": "narrate_message",
+            "key": "handler.drain_tutorial"
           }
         ]
       }
@@ -846,6 +907,10 @@
           {
             "kind": "narrate_message",
             "key": "item.spawn_scroll_read.learned"
+          },
+          {
+            "kind": "narrate_message",
+            "key": "handler.spawn_tutorial"
           }
         ]
       }
@@ -906,6 +971,10 @@
           {
             "kind": "narrate_message",
             "key": "item.bind_scroll_read.learned"
+          },
+          {
+            "kind": "narrate_message",
+            "key": "handler.bind_tutorial"
           }
         ]
       }
@@ -983,6 +1052,24 @@
             "actor_id": "orva",
             "stance": "allied",
             "follows_player": false
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "sanctuary_main_platform"
+            },
+            {
+              "path": "first_visit",
+              "operator": "equal",
+              "value": true
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.sanctuary_platform_armed"
           }
         },
         {
@@ -1173,6 +1260,25 @@
           "payload_template": {
             "kind": "narrate_message",
             "key": "handler.descend.the_village",
+            "generate_commentary": true
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "to_room_id",
+              "operator": "equal",
+              "value": "courtyard_center"
+            },
+            {
+              "path": "first_visit",
+              "operator": "equal",
+              "value": true
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.descend.frost_citadel",
             "generate_commentary": true
           }
         },
@@ -1604,6 +1710,19 @@
             "kind": "narrate_message",
             "key": "sanctuary.platform_activated"
           }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_main_platform"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.sanctuary_platform_armed"
+          }
         }
       ]
     }
@@ -1645,6 +1764,19 @@
           "payload_template": {
             "kind": "narrate_message",
             "key": "sanctuary.platform_activated"
+          }
+        },
+        {
+          "conditions": [
+            {
+              "path": "room_id",
+              "operator": "equal",
+              "value": "sanctuary_main_platform"
+            }
+          ],
+          "payload_template": {
+            "kind": "narrate_message",
+            "key": "handler.sanctuary_platform_armed"
           }
         }
       ]

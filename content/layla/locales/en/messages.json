@@ -163,6 +163,10 @@
         "voice": "handler",
         "text": "Floor four. Worker settlement — picking up civilian life signs. Keep your head down and stay off the garrison's radar. Quest feed enabled. Find the platform."
     },
+    "handler.descend.frost_citadel": {
+        "voice": "handler",
+        "text": "Floor five. Frost Citadel courtyard. Three garrison houses have the perimeter pinned down, and the culling cages are loaded. Move fast before the wolves start feeding."
+    },
     "handler.descend.high_sanctuary": {
         "voice": "handler",
         "text": "Floor six. High Sanctuary. Monastic perimeter. You're alone. Stay quiet."
@@ -186,6 +190,34 @@
     "handler.sensory_enhancer_unlocked": {
         "voice": "handler",
         "text": "Citadel perception capsule. Good. Swallow it. The sensor feed is clearing up — your map will track allies and portals now."
+    },
+    "handler.drain_tutorial": {
+        "voice": "handler",
+        "text": "Drain sigil. Spiral on the stone. Anything that steps inside feeds your reserves until it has nothing left. Quiet, efficient, ruthless. Use it to choke narrow thresholds."
+    },
+    "handler.spawn_tutorial": {
+        "voice": "handler",
+        "text": "Spawn sigil. Pulls an elemental spark into physical form. They don't last forever and they test your concentration, but a distraction with teeth buys time. Keep your summon cap in mind."
+    },
+    "handler.bind_tutorial": {
+        "voice": "handler",
+        "text": "The Bind Sigil. That's Valerius's personal chalk line — hooks wandering souls back into living anchors. Handle that pattern carefully, Layla. It's the difference between a broken shell and a person."
+    },
+    "handler.floor2_court_cleared": {
+        "voice": "handler",
+        "text": "The King yields his square. Eight pieces on the defense and you took the court with a chalk stub. Checkmate, Layla. Stairway to the crucible is unsealed. Move down."
+    },
+    "handler.floor3_elemental_resolved": {
+        "voice": "handler",
+        "text": "Core temperature dropping to baseline. The machine breathes cooler without an elemental boiling in the pipe. Sluice gates open. Descent to floor four is clear."
+    },
+    "handler.seer_valerius_defeated": {
+        "voice": "handler",
+        "text": "Valerius is down. The reanimation circle just bled out into cold air. That's the grand architect of the converter pipeline, Layla. You just cut the head off the snake."
+    },
+    "handler.sanctuary_platform_armed": {
+        "voice": "handler",
+        "text": "Acropolis relay lit up. Whole mountain grid just hummed. You brought your little army to the door. Stairway to the top is white and clear."
     },
     
     "bastion.entry_scene": "You step through the reinforced archway into the command bastion. Heavy steam vents hiss along the vaulted granite ceiling. Ahead, standing over a brass tactical map table, Captain Malik and Priest Harun are locked in a venomous exchange, oblivious to your entrance.",
@@ -220,6 +252,10 @@
     "handler.quest.free_prisoners_complete": {
         "voice": "handler",
         "text": "Cage count reads zero. All breathing. Nowhere on my forecast. Three gates unlocked now. Don't linger."
+    },
+    "handler.quest.citadel_siege_complete": {
+        "voice": "handler",
+        "text": "Three command signals flatlined. The raiders are pulling back through the snow. You held a civilian center against a three-flank military push. Don't expect the High Sanctuary above to be as sloppy."
     },
     "civilian.breach_warning": {
         "voice": "handler",

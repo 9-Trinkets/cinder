@@ -392,3 +392,182 @@ fn tracing_sigil_first_reveals_skills_readout_before_vitals() {
         "Handler must comment on the first skill use when tracing"
     );
 }
+
+#[test]
+fn handler_boss_and_sigil_lines_are_defined() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    for key in [
+        "handler.descend.frost_citadel",
+        "handler.drain_tutorial",
+        "handler.spawn_tutorial",
+        "handler.bind_tutorial",
+        "handler.floor2_court_cleared",
+        "handler.floor3_elemental_resolved",
+        "handler.seer_valerius_defeated",
+        "handler.sanctuary_platform_armed",
+        "handler.quest.citadel_siege_complete",
+    ] {
+        let msg = pack
+            .messages
+            .get(key)
+            .unwrap_or_else(|| panic!("{key} must exist"));
+        assert_eq!(
+            msg.voice(),
+            cinder_core::content::types::PackMessageVoice::Handler,
+            "{key} must have voice: handler"
+        );
+    }
+}
+
+#[test]
+fn scroll_reading_triggers_handler_sigil_tutorials() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+
+    // 1. Drain scroll
+    let mut s1 = WorldState::new(&pack);
+    s1.acquire_player_item(&pack, "drain-scroll");
+    let rt1 = CinderRuntime::from_state(pack.clone(), s1, false).expect("runtime");
+    let out1 = rt1.run_turn("read scroll").expect("read drain scroll");
+    assert!(
+        handler_spoke(&out1.lines, "Drain sigil"),
+        "Handler must comment on learning Drain Sigil: {:#?}",
+        out1.lines
+    );
+
+    // 2. Spawn scroll
+    let mut s2 = WorldState::new(&pack);
+    s2.acquire_player_item(&pack, "spawn-scroll");
+    let rt2 = CinderRuntime::from_state(pack.clone(), s2, false).expect("runtime");
+    let out2 = rt2.run_turn("use ember scroll").expect("read spawn scroll");
+    assert!(
+        handler_spoke(&out2.lines, "Spawn sigil"),
+        "Handler must comment on learning Spawn Sigil: {:#?}",
+        out2.lines
+    );
+
+    // 3. Bind scroll
+    let mut s3 = WorldState::new(&pack);
+    s3.acquire_player_item(&pack, "bind-scroll");
+    let rt3 = CinderRuntime::from_state(pack.clone(), s3, false).expect("runtime");
+    let out3 = rt3.run_turn("read bind scroll").expect("read bind scroll");
+    assert!(
+        handler_spoke(&out3.lines, "The Bind Sigil"),
+        "Handler must comment on learning Bind Sigil: {:#?}",
+        out3.lines
+    );
+}
+
+#[test]
+fn floor5_courtyard_first_visit_triggers_handler_descend() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "teleport_platform".to_string();
+    state.story_vars.set_unchecked("knows_teleport", "true");
+    state
+        .story_vars
+        .set_unchecked("anchor_floor4_platform", "true");
+    state.story_vars.set_unchecked("anchor_floor5_gate", "true");
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime");
+    let out = runtime
+        .run_turn("teleport floor5_start")
+        .expect("teleport to floor 5");
+
+    assert_eq!(runtime.current_room_id().unwrap(), "courtyard_center");
+    assert!(
+        handler_spoke(&out.lines, "Frost Citadel") || handler_spoke(&out.lines, "Floor five."),
+        "Handler must comment on first visit to Floor 5 courtyard: {:#?}",
+        out.lines
+    );
+}
+
+#[test]
+fn floor2_elf_king_defeat_triggers_court_cleared_commentary() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "d8c5".to_string(); // elf-king room
+    strong_player(&mut state);
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime");
+    let out = runtime
+        .run_turn("attack elf king")
+        .expect("attack elf king succeeds");
+
+    assert!(
+        handler_spoke(&out.lines, "The King yields his square"),
+        "Handler must comment on Elf King defeat: {:#?}",
+        out.lines
+    );
+}
+
+#[test]
+fn floor3_fire_elemental_resolution_triggers_commentary() {
+    use cinder_core::content::types::ItemStorageTarget as Storage;
+    use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
+    use cinder_core::engine::reducer::apply_events;
+
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+
+    state.current_room_id = "oas".to_string();
+    let player_id = pack.settings.combat.player_actor_id.clone();
+    state.combat.actor_level.insert(player_id.clone(), 12);
+
+    for room_id in ["o6", "o7", "oh"] {
+        state.add_item_to_storage("charm-sigil", Storage::CurrentRoom, room_id);
+    }
+
+    let out = apply_events(
+        &mut state,
+        &pack,
+        &[TimestampedWorldEvent::now(WorldEvent::ItemAcquired {
+            item_id: "charm-sigil".to_string(),
+            storage: Storage::CurrentRoom,
+        })],
+    );
+
+    assert!(
+        handler_spoke(&out.lines.0, "Core temperature dropping to baseline"),
+        "Handler must comment on Fire Elemental charm: {:#?}",
+        out.lines.0
+    );
+}
+
+#[test]
+fn floor6_seer_valerius_defeat_triggers_commentary() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "mortuary_reanimation_sanctum".to_string(); // seer room
+    strong_player(&mut state);
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime");
+    let out = runtime
+        .run_turn("attack seer valerius")
+        .expect("attack seer succeeds");
+
+    assert!(
+        handler_spoke(&out.lines, "Valerius is down"),
+        "Handler must comment on Seer Valerius defeat: {:#?}",
+        out.lines
+    );
+}
+
+#[test]
+fn floor6_sanctuary_platform_activation_triggers_commentary() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "mortuary_reanimation_sanctum".to_string();
+
+    let runtime = CinderRuntime::from_state(pack.clone(), state, false).expect("runtime");
+    let out = runtime.run_turn("go south").expect("move to platform");
+
+    assert_eq!(
+        runtime.current_room_id().unwrap(),
+        "sanctuary_main_platform"
+    );
+    assert!(
+        handler_spoke(&out.lines, "Acropolis relay lit up"),
+        "Handler must comment on reaching the Sanctuary Platform: {:#?}",
+        out.lines
+    );
+}

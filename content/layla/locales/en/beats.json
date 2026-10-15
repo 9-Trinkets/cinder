@@ -410,6 +410,7 @@
       "summary": "The siege is over. Receive the survivors' thanks and prepare for Floor 6.",
       "beat_note": "Each living civilian thanks Layla and gives her an inactive town token. Using a token consumes it and registers that town with the teleport spell.",
       "update_message": "The survivors are safe. Their town tokens can now be added to the teleport spell.",
+      "completion_message": "handler.quest.citadel_siege_complete",
       "narrative_lines": [
         "The surviving workers gather around the courtyard teleport pad. One by one, they step forward to thank you."
       ],

@@ -22,6 +22,7 @@ const COMPLETION_MARKS: &[&str] = &[
     "inside your reach",
     "Signed off on the retrieval",
     "Cage count reads zero",
+    "Three command signals flatlined",
 ];
 
 fn handler_lines(lines: &[NarrativeLine]) -> Vec<&NarrativeLine> {
@@ -135,6 +136,7 @@ fn quest_completion_messages_exist_and_are_handler_voiced() {
         "handler.quest.teleport_scroll_complete",
         "handler.quest.free_prisoners_complete",
         "handler.quest.save_zayd_complete",
+        "handler.quest.citadel_siege_complete",
     ] {
         let message = pack
             .messages
@@ -146,6 +148,33 @@ fn quest_completion_messages_exist_and_are_handler_voiced() {
             "{key} must be handler-voiced so it renders as a Handler comm"
         );
     }
+}
+
+#[test]
+fn completing_citadel_siege_draws_a_handler_comment() {
+    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
+    let mut state = WorldState::new(&pack);
+    state.current_room_id = "courtyard_center".to_string();
+    state.active_objective_stage_ids = vec!["mq_secure_courtyard".to_string()];
+    let lines = fire(
+        &mut state,
+        &pack,
+        WorldEvent::StoryVarSet {
+            key: "citadel_survivor_settlement_complete".to_string(),
+            value: "true".to_string(),
+        },
+    );
+
+    assert!(
+        state.completed_stage_ids.contains("mq_secure_courtyard"),
+        "the siege quest must complete"
+    );
+    assert!(
+        handler_lines(&lines)
+            .iter()
+            .any(|line| line.text.contains("Three command signals flatlined")),
+        "Handler must comment on completing the Citadel siege: {lines:#?}"
+    );
 }
 
 #[test]
