@@ -211,7 +211,7 @@
     "zayd.lantern_speech": "I... I'm sorry I don't have anything valuable to give you as a reward for saving me. But here—this was my dad's lantern from the lower drift. The glass never really goes cold, even near the frost vents. Please, take it with you... you'll need the light down there more than me.",
     "handler.teleport_tutorial": {
         "voice": "handler",
-        "text": "Good. That sigil hooks your chalk to anchors. Powered platforms are permanent. Anywhere else, you have three anchors and they burn out on use. Don't waste them."
+        "text": "Good. That sigil hooks your chalk to anchors. Powered platforms are permanent. Anywhere else, your anchor capacity is limited and chalk burns out on use. The sharper your technique, the more anchors you can hold. Don't waste them."
     },
     "handler.quest.teleport_scroll_complete": {
         "voice": "handler",
@@ -250,10 +250,6 @@
     "handler.quest.save_zayd_complete": {
         "voice": "handler",
         "text": "The boy is off my board and inside your reach. File closed. Don't make a habit of this."
-    },
-    "handler.quest.awaken_jamil_complete": {
-        "voice": "handler",
-        "text": "The shell holds a man again. Record updated. Some lines read better quiet. Move when ready."
     },
     "sigil.chalk_anchor_placed": "You draw the double triangle on the stone. The chalk glows with a soft light, anchoring this room.",
     "platform.activated": "As you finish tracing the double triangle, blue light flares through the brass conduits. The platform roars to life with ancient power, powering transit to Floor 5!",

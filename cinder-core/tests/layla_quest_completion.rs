@@ -13,15 +13,12 @@
 use cinder_core::content::loader::load_named_pack;
 use cinder_core::content::types::{ContentPack, ItemStorageTarget, PackMessageVoice};
 use cinder_core::engine::events::{TimestampedWorldEvent, WorldEvent};
-use cinder_core::engine::narrative::{NarrativeLine, NarrativeLineKind, NarrativeLines};
+use cinder_core::engine::narrative::{NarrativeLine, NarrativeLineKind};
 use cinder_core::engine::reducer::apply_events;
-use cinder_core::engine::reducer::transformations::maybe_apply_transformations;
-use cinder_core::engine::runtime::CinderRuntime;
 use cinder_core::engine::state::WorldState;
 
-/// The four quest-closing Handler lines, by the phrase that identifies each.
+/// The quest-closing Handler lines, by the phrase that identifies each.
 const COMPLETION_MARKS: &[&str] = &[
-    "read better quiet",
     "inside your reach",
     "Signed off on the retrieval",
     "Cage count reads zero",
@@ -48,34 +45,9 @@ fn fire(state: &mut WorldState, pack: &ContentPack, event: WorldEvent) -> Vec<Na
 }
 
 #[test]
-fn awakening_jamil_draws_a_handler_comment() {
-    // `sq_awaken_father` is quest-terminal *and* has no `next_stage_ids`, so
-    // its comment can only come from `completion_message`.
-    let pack = load_named_pack("layla", Some("en")).expect("layla loads");
-    let mut state = WorldState::new(&pack);
-    state.current_room_id = "village_square".to_string();
-    state.active_objective_stage_ids = vec!["sq_awaken_father".to_string()];
-    state.story_vars.set_unchecked("awakened:sakhra", "true");
-
-    let mut lines = NarrativeLines::default();
-    let applied = maybe_apply_transformations(&mut state, &pack, "sakhra", &mut lines);
-    assert!(applied);
-
-    assert!(state.is_actor_awakened("sakhra"), "the quest must complete");
-    assert!(
-        handler_lines(&lines.0)
-            .iter()
-            .any(|line| line.text.contains("read better quiet")),
-        "Handler must comment on awakening Jamil: {:#?}",
-        lines.0
-    );
-}
-
-#[test]
 fn returning_zayd_draws_a_handler_comment() {
-    // `sq_return_zayd` closes the `save_zayd` quest even though it hands off to
-    // a different quest afterwards, so the comment has to follow the quest_id
-    // boundary rather than the chain's tail.
+    // `sq_return_zayd` is quest-terminal and carries the `save_zayd`
+    // `completion_message`, so the Handler comment fires on the closing beat.
     let pack = load_named_pack("layla", Some("en")).expect("layla loads");
     let mut state = WorldState::new(&pack);
     state.current_room_id = "village_square".to_string();
@@ -163,7 +135,6 @@ fn quest_completion_messages_exist_and_are_handler_voiced() {
         "handler.quest.teleport_scroll_complete",
         "handler.quest.free_prisoners_complete",
         "handler.quest.save_zayd_complete",
-        "handler.quest.awaken_jamil_complete",
     ] {
         let message = pack
             .messages

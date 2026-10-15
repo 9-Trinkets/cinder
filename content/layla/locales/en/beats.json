@@ -1090,23 +1090,6 @@
           ]
         }
       ],
-      "next_stage_ids": [
-        "sq_awaken_father"
-      ]
-    },
-    {
-      "id": "sq_awaken_father",
-      "quest_id": "awaken_jamil",
-      "quest_title": "Return the Light",
-      "quest_kind": "secret",
-      "summary": "Bring the amber light of Zayd's lantern to the silent guardian golem Sakhra in the village square.",
-      "beat_note": "Zayd gave Layla his father's miner lantern. Its warm light can awaken the sleeping memories within the guardian golem Sakhra.",
-      "update_message": "The amber filament in Zayd's miner lantern matches the core of the stone golem standing silent in the square.",
-      "completion_message": "handler.quest.awaken_jamil_complete",
-      "advance_signals": [
-        "actor_awakened:sakhra",
-        "actor_awakened"
-      ],
       "next_stage_ids": []
     },
     {

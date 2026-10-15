@@ -242,7 +242,7 @@ With recruited party members, players can issue tactical commands to coordinate 
   - Added `transformed_stages` and `actor_name_overrides` tracking to `WorldState`, dynamic name override in `actor_display_name` and `display_actor_name`, and awakened inspect text and prompt context overrides.
   - Authored awakening definitions across surviving Floor 1-3 pieces: `sakhra` (Jamil, father of Zayd), `golem-dark-nw` (Orin), `golem-pale-ne` (Mari), `golem-dark-sw` (Ferid), `golem-pale-se` (Hana), and `elf-queen-4` (Nazira, mother of Zayd).
   - Placed `sakhra` in `village_square` (starts neutral to prevent premature party following on Floor 1). Carrying `zayd-lantern` near Sakhra creates a deep steam sigh and bedrock resonance. Sakhra's full awakening into Jamil occurs when Layla masters the Bind Sigil on Floor 6, channeling the lantern's preserved spirit shard back into his core to restore his voice and memory.
-  - Authored: `sq_return_zayd` leads into the secret quest beat `sq_awaken_father` ("Return the Light").
+  - Temporarily removed the authored hand-off `sq_return_zayd` → `sq_awaken_father` ("Return the Light"): the quest cannot be completed without the Bind Sigil, so it returns once the **Bind Sigil → Zayd's Lantern → Sakhra (Jamil)** path is implemented.
   - Enforced hard limits: `goblin-shaman` and `elf-king-5` cannot awaken.
   - Verified via full end-to-end integration tests `cinder-core/tests/layla_floor4_awakening.rs`.
 - **Command Bastion Confrontation & Commander Malik Safe (`command_bastion`):**

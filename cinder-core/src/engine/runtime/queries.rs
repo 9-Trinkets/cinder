@@ -278,6 +278,10 @@ impl CinderRuntime {
                             .copied()
                             .find(|stage| state.completed_stage_ids.contains(&stage.id))
                     })?;
+                let kind = canonical
+                    .quest_kind
+                    .clone()
+                    .unwrap_or_else(|| "quest".to_string());
                 let status = if failed_stage.is_some() {
                     "failed"
                 } else if active_stages.is_empty() {
@@ -285,6 +289,11 @@ impl CinderRuntime {
                 } else {
                     "active"
                 };
+                // A secret quest must not spoil itself while it is in play: keep
+                // it out of the quest log until it resolves as completed.
+                if kind == "secret" && status != "completed" {
+                    return None;
+                }
                 Some(QuestSummary {
                     quest_id,
                     title: canonical
@@ -292,10 +301,7 @@ impl CinderRuntime {
                         .as_deref()
                         .map(|title| render_story_text(title, &state))
                         .unwrap_or_else(|| canonical.id.clone()),
-                    kind: canonical
-                        .quest_kind
-                        .clone()
-                        .unwrap_or_else(|| "quest".to_string()),
+                    kind,
                     status: status.to_string(),
                     summary: render_story_text(&display_stage.summary, &state),
                     message: render_story_text(&display_stage.update_message, &state),
@@ -553,5 +559,45 @@ mod tests {
         assert_eq!(failed.title, "Fragile Work");
         assert_eq!(failed.kind, "side");
         assert_eq!(failed.summary, "The work was lost.");
+    }
+
+    #[test]
+    fn secret_quests_stay_hidden_until_completed() {
+        let mut content = minimal_test_pack();
+        content.beats.initial_stage_ids = vec!["secret_open".to_string()];
+        content.beats.stages = vec![
+            BeatDefinition {
+                id: "secret_open".to_string(),
+                quest_id: Some("hidden_quest".to_string()),
+                quest_title: Some("A Quiet Errand".to_string()),
+                quest_kind: Some("secret".to_string()),
+                summary: "Something stirs in the dark.".to_string(),
+                ..BeatDefinition::default()
+            },
+            BeatDefinition {
+                id: "secret_done".to_string(),
+                quest_id: Some("solved_secret".to_string()),
+                quest_title: Some("A Solved Secret".to_string()),
+                quest_kind: Some("secret".to_string()),
+                summary: "It is done.".to_string(),
+                ..BeatDefinition::default()
+            },
+        ];
+        let mut state = WorldState::new(&content);
+        state.completed_stage_ids.insert("secret_done".to_string());
+
+        let runtime = CinderRuntime::from_state(content, state, false).unwrap();
+        let quests = runtime.quest_summaries().unwrap();
+
+        assert!(
+            quests.iter().all(|quest| quest.quest_id != "hidden_quest"),
+            "an active secret quest must not surface in the quest log: {quests:?}"
+        );
+        let solved = quests
+            .iter()
+            .find(|quest| quest.quest_id == "solved_secret")
+            .expect("a completed secret quest is revealed");
+        assert_eq!(solved.kind, "secret");
+        assert_eq!(solved.status, "completed");
     }
 }
